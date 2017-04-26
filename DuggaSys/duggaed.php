@@ -56,7 +56,7 @@ pdoConnect();
 			<div class='inputwrapper'><span>Deadline Date:</span><input class='textinput datepicker' type='text' id='deadline' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
-            <input style='float:left; 'class='submit-button' type='button' value='Delete' onclick='deleteDugga();' />
+			<input style='float:left; 'class='submit-button' type='button' value='Delete' onclick='deleteDugga();' />
 			<input style='float:right; 'class='submit-button' type='button' value='Save' onclick='updateDugga();' />
 		</div>
 	</div>
@@ -66,7 +66,7 @@ pdoConnect();
 	<div id='editVariant' class='loginBox' style='width:80%; left:20%; display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Variant</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div onclick='closeWindows();closeVariant();'>x</div>
 		</div>
 		<div style='padding:5px;display:flex;'>
 			<input type='hidden' id='vid' value='Toddler' />
@@ -78,12 +78,11 @@ pdoConnect();
 							<legend>Instruction file</legend>
 							<div style="display:flex;flex-wrap:nowrap;flex-direction:row;">
 								<select name="type" id="type" style="flex:1">
-									<option value="pick"> Pick filetype </option>
 									<option value="md">Markdown</option>
 									<option value="pdf">PDF</option>
 									<option value="html">HTML</option>
 								</select><br/>
-								<input type="text" name="filelink" placeholder="File link" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;"><br/>
+								<input type="text" name="filelink" id="filelink" placeholder="File link" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;"><br/>
 							</div>
 						</fieldset>
 					</div>
@@ -109,7 +108,7 @@ pdoConnect();
 		<div style='padding:5px;'>
 			<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteVariant();' />
 			<input id="toggleVariantButton" style='float:left;' class='submit-button' type='button' value='Disable' onclick='toggleVariant();' />
-			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateVariant();' />
+			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateVariant();closeVariant();' />
 		</div>
 	</div>
 	<!-- Edit Variant Dialog END -->

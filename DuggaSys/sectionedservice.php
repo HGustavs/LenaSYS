@@ -40,6 +40,7 @@ $coursenamealt=getOP('coursenamealt');
 $comments=getOP('comments');
 $unmarked = 0;
 $rowcolor=getOP('rowcolor');
+// course start and end dates, for a version of a course, created for swimlane functionality
 $startdate=getOP('startdate');
 $enddate=getOP('enddate');
 $grouptype=getOP('grouptype');
@@ -187,7 +188,8 @@ if(checklogin()){
 			$query->bindParam(':versname', $versname);				
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':coursenamealt', $coursenamealt);
-     if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
+// if start and end dates are null, insert mysql null value into database
+      if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
      else $query->bindParam(':startdate', $startdate);
      if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
      else $query->bindParam(':enddate', $enddate);
@@ -203,6 +205,7 @@ if(checklogin()){
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':vers', $versid);
 			$query->bindParam(':versname', $versname);				
+// if start and end dates are null, insert mysql null value into database
      if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
      else $query->bindParam(':startdate', $startdate);
      if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
@@ -315,7 +318,7 @@ foreach($query->fetchAll() as $row) {
 $entries=array();
 
 if($cvisibility){
-	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments,rowcolor FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments,rowcolor,grouptype FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
@@ -344,7 +347,8 @@ if($cvisibility){
 						'deadline'=> $row['deadline'],
 						'qrelease' => $row['qrelease'],
 						'comments' => $row['comments'],
-						'rowcolor' => $row['rowcolor']
+						'rowcolor' => $row['rowcolor'],
+						'grouptype' => $row['grouptype']
 					)
 				);
 		}

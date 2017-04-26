@@ -3,13 +3,9 @@ var retdata;
 
 AJAXService("get",{},"SECTION");
 
-//----------------------------------------
-// Commands:
-//----------------------------------------
-
-var xelink;
-
+// These functions loads at page load
 $(function() {
+// Picking dates when creating a new version
 	$("#startdate").datepicker({
 		dateFormat: "yy-mm-dd",
 		minDate: 0,
@@ -21,9 +17,7 @@ $(function() {
 	$('#enddate').datepicker({
 		dateFormat: "yy-mm-dd"
 	});
-});
-
-$(function() {
+// Picking dates when modifying a version
 	$("#estartdate").datepicker({
 		dateFormat: "yy-mm-dd",
 		minDate: 0,
@@ -36,6 +30,12 @@ $(function() {
 		dateFormat: "yy-mm-dd"
 	});
 });
+
+//----------------------------------------
+// Commands:
+//----------------------------------------
+
+var xelink;
 
 function displaymessage(){
    $(".messagebox").css("display","block");
@@ -55,6 +55,7 @@ function showSubmitButton(){
   $(".updateDugga").css("display","none"); 
   $(".deleteDugga").css("display","none"); 
   $(".closeDugga").css("display","inline-block"); 
+  $("#overlay").css("display","block"); 
 } 
  
 function showSaveButton(){ 
@@ -62,6 +63,7 @@ function showSaveButton(){
   $(".updateDugga").css("display","block");
   $(".deleteDugga").css("display","block");
   $(".closeDugga").css("display","none"); 
+  $("#overlay").css("display","none"); 
 } 
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments,rowcolor,grouptype)
@@ -90,16 +92,10 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str+="<option value='3'>U-3-4-5</option>";
 
 	$("#gradesys").html(str);
-	
-	// Display Select Marker
-	$(".item").css("border","none");
-	$(".item").css("box-shadow","none");
-	$("#I"+lid).css("border","2px dashed #FC5");
-	$("#I"+lid).css("box-shadow","1px 1px 3px #000 inset");
 		
 	// Set grouptype
 	str="";
-	if(grouptype==0) str+="<option selected='selected' value='0'>Regular dugga</option>"
+	if(grouptype==null||grouptype==0) str+="<option selected='selected' value='0'>Regular dugga</option>"
 	else str+="<option value='0'>Regular dugga</option>";
 	
 	if(grouptype==1) str+="<option selected='selected' value='1'>Group dugga</option>"
@@ -207,8 +203,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	str="";
 	if(rowcolor==0) str+="<option selected='selected' value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>"
 	else str+="<option value='0' style='background-color: #dad8db; color: #927b9e;'>Standard</option>";
-	if(rowcolor==1) str+="<option selected='selected' value='1' style='background-color: #927b9e; color: white'>Header</option>"
-	else str+="<option value='1' style='background-color: #927b9e; color: white'>Header</option>";
+	if(rowcolor==1) str+="<option selected='selected' value='1' style='background-color: #927b9e; color: white;'>Header</option>"
+	else str+="<option value='1' style='background-color: #927b9e; color: white;'>Header</option>";
 	$("#rowcolor").html(str);
 		
 	// Set Link
@@ -306,6 +302,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	}
 	$("#editSection").css("display","block");
+	$("#overlay").css("display","block");
 	
 }
 
@@ -407,6 +404,7 @@ function deleteItem()
 	lid=$("#lid").val();
 	AJAXService("DEL",{lid:lid},"SECTION");
 	$("#editSection").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function updateItem()
@@ -427,6 +425,7 @@ function updateItem()
 	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
 	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments,rowcolor:rowcolor,grouptype:grouptype},"SECTION");
 	$("#editSection").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 // Create New Dugga/Example
@@ -457,6 +456,7 @@ function newItem()
   if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs; 
   AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment,rowcolor:rowcolor,grouptype:grouptype},"SECTION"); 
   $("#editSection").css("display","none"); 
+  window.location.reload();		// Refreshes page to make it able to update items
 }
 
 function closeSelect()
@@ -469,6 +469,7 @@ function closeSelect()
 function showCreateVersion()
 {
 	$("#newCourseVersion").css("display", "block");
+	$("#overlay").css("display", "block");
 }
 
 function createVersion(){
@@ -483,13 +484,14 @@ function createVersion(){
 	var coursevers = $("#course-coursevers").text();
 	var startdate = $("#startdate").val();
 	var enddate = $("#enddate").val();
+/*  If start date for a version is not selected when creating a version, set the current date as the start date */
+//  Date Format: 2017-04-27 00:00:00
   if(startdate === "None" || startdate === null || startdate.length === 0) {
-    // 2017-04-27 00:00:00
     var date = new Date();
     startdate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
   }
+/*  If end date for a version is not selected when creating a version, set the start date as the end date */
   if(enddate === "None" || enddate === null || enddate.length === 0) {
-    // 2017-04-27 00:00:00
     enddate = startdate;
   }
 	
@@ -515,6 +517,7 @@ function createVersion(){
 	}
 
 	$("#newCourseVersion").css("display","none");
+	$("#overlay").css("display","none");
 	
 	window.setTimeout(function(){
 		changeURL("sectioned.php?courseid=" + courseid + "&coursename=" + coursename + "&coursevers=" + versid);
@@ -528,6 +531,7 @@ function showEditVersion(versid, versname, startdate, enddate)
 	$("#estartdate").val(startdate);
 	$("#eenddate").val(enddate);
 	$("#editCourseVersion").css("display", "block");
+	$("#overlay").css("display", "block");
 }
 
 function updateVersion(){
@@ -538,12 +542,14 @@ function updateVersion(){
 	var makeactive = $("#emakeactive").is(':checked');
    var startdate = $("#estartdate").val();
    var enddate = $("#eenddate").val();
-
+/*  If start date for a version is not selected when creating a version, set the current date as the start date */
+//  Date Format: 2017-04-27 00:00:00
   if(startdate === "None" || startdate === null || startdate.length === 0) {
     // 2017-04-27 00:00:00
     var date = new Date();
     startdate = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
   }
+/*  If end date for a version is not selected when creating a version, set the start date as the end date */
   if(enddate === "None" || enddate === null || enddate.length === 0) {
     enddate = startdate;
   }
@@ -565,6 +571,7 @@ function updateVersion(){
 	}
 
 	$("#editCourseVersion").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function goToVersion(selected)
@@ -608,28 +615,29 @@ function returnedSection(data)
     
 		str="";
 
-		str+="<table class='navheader'><tr>";			
+		str+="<table class='navheader'><tr class='trsize'>";
 
-		if(data['writeaccess']) {
-			str+="<td style='width:112px;'><select class='course-dropdown' onchange='goToVersion(this)'>";
-			if (retdata['versions'].length > 0) {
-				for ( i = 0; i < retdata['versions'].length; i++) {
-					var item = retdata['versions'][i];
-					if (retdata['courseid'] == item['cid']) {
-						var vvers = item['vers'];
-						var vname = item['versname'];
-						str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
-						if(retdata['coursevers']==vvers){
-							str += "selected";
-						}
-						str += ">" + vname + " - " + vvers + "</option>";
-					}
-				}
-			}
-			str+="</select></td>";
+        if(data['writeaccess']) {
+            str+="<td style='display: inline-block; margin-right:2px; width:112px;'><select class='course-dropdown' onchange='goToVersion(this)'>";
+            if (retdata['versions'].length > 0) {
+                for ( i = 0; i < retdata['versions'].length; i++) {
+                    var item = retdata['versions'][i];
+                    if (retdata['courseid'] == item['cid']) {
+                        var vvers = item['vers'];
+                        var vname = item['versname'];
+                        str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+                        if(retdata['coursevers']==vvers){
+                            str += "selected";
+                        }
+                        str += ">" + vname + " - " + vvers + "</option>";
+                    }
+                }
+            }
+            str+="</select></td>";
 			
-			str+="<td style='width:112px;'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Edit version' class='submit-button-rounded' title='Edit the selected version' onclick='showEditVersion";
 
+// Retrieve start and end dates for a version, if there are such, else set to null
       var startdate = null;
       var enddate = null;
       if (retdata['versions'].length > 0) {
@@ -645,26 +653,28 @@ function returnedSection(data)
 			str+='("'+querystring['coursevers']+'","'+versionname+'","'+startdate+'","'+enddate+'")';
 			str+=";'></td>";	
 
-			str+="<td style='width:112px;'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></td>";
-			str+="<td style='width:112px;'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/></td>";
-			str+="<td style='width:112px;'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></td>";
-			str+="<td style='width:112px;'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='width:112px;'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='width:112px;'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='width:112px;'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='New version' class='submit-button-rounded' title='Create a new version of this course' onclick='showCreateVersion();'></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Access' class='submit-button-rounded' title='Give students access to the selected version' onclick='accessCourse();'/></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Results' class='submit-button-rounded' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Tests' class='submit-button-rounded' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Files' class='submit-button-rounded' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Analysis' class='submit-button-rounded' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Groups' class='submit-button-rounded' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 
-
-		}else{
+    }else{
 			// No version selector for students
 		}
 
-		if(retdata["writeaccess"]){
-      str += "<td><input type='button' value='New Item' class='submit-button' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
-			str+="</tr></table>";
-      str += "<input type='button' class='fab' value='+' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>"; 
-		}else{
-			str+="</tr></table>";
-		}
+        if(retdata["writeaccess"]){
+            str += "<td><input type='button' value='+' class='submit-button-rounded-newitem' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
+            str+="</tr></table>";
+            str += "<input type='button' class='fab' value='+' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>";
+        }else{
+            str+="</tr></table>";
+        }
+
+
+
 
 		// Course Name
 		str+="<div class='course'>";
@@ -929,7 +939,7 @@ function returnedSection(data)
 						
 					}
 				}
-				
+
 				// Add generic td for deadlines if one exists
 				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")){
 					if(kk==1){
@@ -937,7 +947,12 @@ function returnedSection(data)
 					}else{
 						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;' ";
 					}
+					var dl = deadline.split(" ");
+					if(dl[1] == "00:00:00"){
+                        str+=" >"+deadline.slice(0, -8);+"</td>";
+					}else{
 					str+=" >"+deadline.slice(0, -3);+"</td>";
+					}
 				} else {
 					// Do nothing
 				}
@@ -949,13 +964,13 @@ function returnedSection(data)
 						
 					
 						if(parseInt(item['kind']) === 0){
-								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";
+								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' /></td>";
 						}else if(parseInt(item['kind']) === 1){
-								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";											
+								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' /></td>";											
 						}else if(parseInt(item['kind']) === 4){
-								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";											
+								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' /></td>";											
 						}else{
-								str+="' ><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['grouptype']+"\");' /></td>";																	
+								str+="' ><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' /></td>";																	
 						}
 				}
 

@@ -37,6 +37,14 @@ function checklogin()
 }	
 
 /**
+ * Helper function to display the login box if the user is not authenticated
+ */
+function showLoginPopup()
+{
+	echo '<script>$(function() { showLoginPopup(); });</script>';
+}
+
+/**
  * Returns the number of failed logins from this IP address in the
  * last 30 minutes.
  * @param string $addr Address to look up
@@ -72,7 +80,7 @@ function getQuestion($username)
 		pdoConnect();
 	}
 
-	$query = $pdo->prepare("SELECT uid,username,superuser,securityquestion FROM user WHERE username=:username LIMIT 1");
+	$query = $pdo->prepare("SELECT uid,username,superuser,securityquestion,requestedpasswordchange FROM user WHERE username=:username LIMIT 1");
 
 	$query->bindParam(':username', $username);
 
@@ -81,14 +89,11 @@ function getQuestion($username)
 	if($query->rowCount() > 0) {
 		// Fetch the result
 		$row = $query->fetch(PDO::FETCH_ASSOC);
-		$_SESSION['uid'] = $row['uid'];
-		$_SESSION["loginname"]=$row['username'];
-		$_SESSION["superuser"]=$row['superuser'];
 		$_SESSION["securityquestion"]=$row['securityquestion'];
 
 		/*If the security question is null/default there is no point in allowing the user to continue.
 		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question*/
-		if($_SESSION["superuser"]==1){
+		if($row["superuser"]==1){
 			$_SESSION["getname"] = "Username not found";
 			//$_SESSION["getname"] = "User is a superuser";
 			return false;
@@ -96,7 +101,7 @@ function getQuestion($username)
 
 		$query = $pdo->prepare("SELECT access FROM user_course WHERE uid=:uid AND access='W'");
 
-   		$query->bindParam(':uid', $_SESSION['uid']);
+   		$query->bindParam(':uid', $row['uid']);
 
     	$query->execute();
 
@@ -106,8 +111,13 @@ function getQuestion($username)
       		return false;
     	}	
 
-		if($_SESSION["securityquestion"]==null){
+		if($row["securityquestion"]==null){
 			$_SESSION["getname"] = "Security question not found";
+			return false;
+		}
+
+		if($row["requestedpasswordchange"]==1){
+			$_SESSION["getname"] = "You already have a pending reset password request";
 			return false;
 		}
 
@@ -127,21 +137,30 @@ function checkAnswer($username, $securityquestionanswer)
 		pdoConnect();
 	}
 
-	$query = $pdo->prepare("SELECT uid,username,password FROM user WHERE username=:username and securityquestionanswer=password(LCASE(:sqa)) LIMIT 1");
+	$query = $pdo->prepare("SELECT uid,username,securityquestionanswer FROM user WHERE username=:username LIMIT 1");
 
 	$query->bindParam(':username', $username);
-	$query->bindParam(':sqa', $securityquestionanswer);
-
 	$query->execute();
 
 	if($query->rowCount() > 0) {
 		// Fetch the result
 		$row = $query->fetch(PDO::FETCH_ASSOC);
-		$_SESSION['uid'] = $row['uid'];
-		$_SESSION["loginname"]=$row['username'];
+		$securityquestionanswer = strtolower($securityquestionanswer);
 
-		return true;
-
+		if (password_verify($securityquestionanswer, $row['securityquestionanswer'])){
+			if (standardPasswordNeedsRehash($row['securityquestionanswer'], PASSWORD_BCRYPT)) {
+ 			// The php password is not up to date, update it to be even safer (the cost may have changed, or another algoritm than bcrypt is used)
+ 				$row['securityquestionanswer'] = password_hash($securityquestionanswer, PASSWORD_BCRYPT);
+ 				$query = $pdo->prepare("UPDATE user SET securityquestionanswer = :sqa WHERE uid=:uid");
+ 				$query->bindParam(':uid', $row['uid']);
+ 				$query->bindParam(':sqa', $row['securityquestionanswer']);
+ 				$query->execute();
+ 			}
+ 			return true;
+		} else{
+			//Wrong password
+			return false;
+		}
 	} else {
 		return false;
 	}
@@ -169,6 +188,27 @@ function requestChange($username)
 }
 
 /**
+ * Hash a string with the global LenaSys settings.
+ * By having this function encapsulated it enables simpler change in the future.
+ * @param string $text Text to hash
+ * @return string Hashed text
+ */
+function standardPasswordHash($text)
+{
+	return password_hash($text, PASSWORD_BCRYPT);
+}
+
+/**
+ * Test if a hashed string meets the global LenaSys settings. 
+ * @param string $text Text to check
+ * @return boolean
+ */
+function standardPasswordNeedsRehash($text)
+{
+	return password_needs_rehash($text, PASSWORD_BCRYPT);
+}
+
+/**
  * Log in the user with the specified username and password and
  * optionally set cookies for the user to be remembered until next
  * time they visit the site.
@@ -184,10 +224,9 @@ function login($username, $password, $savelogin)
 	if($pdo == null) {
 		pdoConnect();
 	}
+	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,securityquestion,password(:pwd) as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
 
-//echo "SELECT uid,username,password,superuser FROM user WHERE username=:username and password=password(':pwd') LIMIT 1";
 
-	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname FROM user WHERE username=:username and password=password(:pwd) LIMIT 1");
 
 	$query->bindParam(':username', $username);
 	$query->bindParam(':pwd', $password);
@@ -197,18 +236,62 @@ function login($username, $password, $savelogin)
 	if($query->rowCount() > 0) {
 		// Fetch the result
 		$row = $query->fetch(PDO::FETCH_ASSOC);
+
+		if ($row['password'] == $row['mysql_pwd_input']) {
+			// User still has a mysql password, update to better
+			$row['password'] = standardPasswordHash($password);
+			$query = $pdo->prepare("UPDATE user SET password = :pwd WHERE uid=:uid");
+			$query->bindParam(':uid', $row['uid']);
+			$query->bindParam(':pwd', $row['password']);
+			$query->execute();
+		} else if (password_verify($password, $row['password'])) {
+			// User has a php password
+			if (standardPasswordNeedsRehash($row['password'], PASSWORD_BCRYPT)) {
+				// The php password is not up to date, update it to be even safer (the cost may have changed, or another algoritm than bcrypt is used)
+				$row['password'] = standardPasswordHash($password);
+				$query = $pdo->prepare("UPDATE user SET password = :pwd WHERE uid=:uid");
+				$query->bindParam(':uid', $row['uid']);
+				$query->bindParam(':pwd', $row['password']);
+				$query->execute();
+			}
+		} else {
+			// Wrong password entered
+			return false;
+		}
+
 		$_SESSION['uid'] = $row['uid'];
 		$_SESSION["loginname"]=$row['username'];
 		$_SESSION["passwd"]=$row['password'];
 		$_SESSION["superuser"]=$row['superuser'];
 		$_SESSION["lastname"]=$row['lastname'];
 		$_SESSION["firstname"]=$row['firstname'];
+        
+        if($row['securityquestion'] != null) {
+            $_SESSION["securityquestion"]="set";
+        }
+
+        // Since teacher and superusers can not have security question we can just say that they have one inorder to not show them the popup that they need to set one
+        if($row['superuser'] == 1) {
+            $_SESSION["securityquestion"]="set";
+        }
+
+        $query = $pdo->prepare("SELECT access FROM user_course WHERE uid=:uid AND access='W'");
+
+		$query->bindParam(':uid', $row['uid']);
+
+		$query->execute();
+
+		if($query->rowCount() > 0){
+			$_SESSION["securityquestion"]="set";
+		}
 
 		// Save some login details in cookies.
-		if($savelogin) {
+		// The current try at a solution solution is unsafe as anyone with access to the computer can check the cookie and get the full password
+		// Therefore the solution has been commented away
+		/*if($savelogin) {
 			setcookie('username', $row['username'], time()+60*60*24*30, '/');
 			setcookie('password', $password, time()+60*60*24*30, '/');
-		}
+		}*/
 		return true;
 
 	} else {

@@ -75,9 +75,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$debug="Error updating user".$error[2];
 		}
 	}else if(strcmp($opt,"CHPWD")==0){
-		$query = $pdo->prepare("UPDATE user set password=password(:pwd), requestedpasswordchange=0 where uid=:uid;");
+		$query = $pdo->prepare("UPDATE user set password=:pwd, requestedpasswordchange=0 where uid=:uid;");
 		$query->bindParam(':uid', $uid);
-		$query->bindParam(':pwd', $pw);
+		$query->bindParam(':pwd', standardPasswordHash($pw));
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -120,14 +120,14 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					// assigned password which can be printed later.
 					if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) {
 							$rnd=makeRandomString(9);
-							$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password),now(),:className);';	
+							$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,:password,now(),:className);';	
 							$stmt = $pdo->prepare($querystring);
 							$stmt->bindParam(':username', $username);
 							$stmt->bindParam(':email', $saveemail);
 							$stmt->bindParam(':firstname', $firstname);
 							$stmt->bindParam(':lastname', $lastname);
 							$stmt->bindParam(':ssn', $ssn);
-							$stmt->bindParam(':password', $rnd);
+							$stmt->bindParam(':password', standardPasswordHash($rnd));
 							$stmt->bindParam(':className', $className);
 							
 							if(!$stmt->execute()) {

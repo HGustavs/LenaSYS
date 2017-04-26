@@ -14,6 +14,18 @@ var inParams = "UNK";;
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 
+//show or hide securitynotification based on localstorage variables
+$( document ).ready(function() {
+    if (localStorage.getItem("securityquestion") === null && localStorage.getItem("securitynotification") == "on"){
+        showSecurityPopup();
+    }
+});
+
+// Set the localstorage item securitynotifaction to on or off.
+function setSecurityNotifaction(param){
+    localStorage.setItem("securitynotification", param);
+}
+
 function toggleloginnewpass(){
 	resetFields();
 	if(status == 0){
@@ -576,11 +588,23 @@ function addSecurityQuestionProfile(username) {
 				if(result['getname'] == "success") {
 					$("#challengeQuestion").html(result['securityquestion']);
 				}else{
-					console.log("Username was not found OR User does not have a question OR User might be a teacher");
+					if(typeof result.reason != "undefined") {
+						$("#changeChallengeQuestion #securityQuestionError").html("<div class='alert danger'>" + result.reason + "</div>");
+					} else {
+						$("#changeChallengeQuestion #securityQuestionError").html("<div class='alert danger'>" + result['getname']  + "</div>");
+					}
+					$("#changeChallengeQuestion #challengeQuestion").css("background-color", "rgba(255, 0, 6, 0.2)");
+					$("#changeChallengeQuestion #securityQuestionError").css("color", "rgba(255, 0, 6, 0.8)");
 			}
 		}
 	});
 }
+
+function checkHTTPS() { 
+  if (location.protocol != 'https:') { 
+    /* do something */ 
+  } 
+} 
 
 function processResetPasswordCheckUsername() {
 
@@ -631,7 +655,6 @@ function processResetPasswordCheckSecurityAnswer() {
 			},
 			success:function(data) {
 				var result = JSON.parse(data);
-				
 				if(result['checkanswer'] == "success") {
 					$.ajax({
 						type:"POST",
@@ -682,21 +705,17 @@ function processLogin() {
 			success:function(data) {
 				var result = JSON.	parse(data);
 				if(result['login'] == "success") {
+                    if(result['securityquestion'] != null) {
+                        localStorage.setItem("securityquestion", "set");
+                    } else {
+                        setSecurityNotifaction("on"); 
+                    }
+                    
 					setExpireCookie();
 					setExpireCookieLogOut();
-					$("#userName").html(result['username']);
-					$("#loginbutton").removeClass("loggedout");
-					$("#loginbutton").addClass("loggedin");
-
-					hideLoginPopup();
-
-
-					$("#login #username").val("");
-					$("#login #password").val("");
-					$("#loginbutton").off("click");
-					$("#loginbutton").click(function(){processLogout();});
-
-					location.reload();
+					
+					// Fake a second login, this will reload the page and enable chrome and firefox to save username and password
+					$("#loginForm").submit();
 				}else{
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
@@ -719,6 +738,8 @@ function processLogout() {
 		type:"POST",
 		url: "../Shared/loginlogout.php",
 		success:function(data) {
+            localStorage.removeItem("securityquestion");
+            localStorage.removeItem("securitynotification");
 			var urlDivided = window.location.href.split("/");
 			urlDivided.pop();
 			urlDivided.pop();
@@ -836,6 +857,12 @@ function sendReceiptEmail(){
 			window.location="mailto:"+email+"?Subject=LENASys%20Dugga%20Receipt&body=This%20is%20your%20receipt%20:%20"+receipt+"%0A%0A/LENASys Administrators";
 			hideReceiptPopup();
 	}
+}
+
+function showSecurityPopup()
+{
+   $("#securitynotification").css("display","block");
+   $("#overlay").css("display","block");
 }
 
 function showDuggaInfoPopup()

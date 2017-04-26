@@ -27,7 +27,7 @@ var versions;
 var clist;
 var onlyPending=false;
 var timeZero=new Date(0);
-var hideTeacher=false;
+var showTeachers = false;
 
 function setup(){
 	//Benchmarking function
@@ -50,13 +50,18 @@ function setup(){
   filt+="</span></td>";
   $("#menuHook").before(filt);
 
-  // Set part of filter config 
+  // Set part of filter config
   if (localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending")=="true"){
       onlyPending=true;
   } else {
       onlyPending=false;
   }
-  	
+
+  var t = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+  if(t != null) {
+    showTeachers=((t.indexOf("showteachers**true",0)>=0)?true:false);
+  }
+
   window.onscroll = function() {magicHeading()};
 
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "RESULT");
@@ -64,133 +69,139 @@ function setup(){
 
 function redrawtable()
 {
-		str="";
+  str="";
 
-    str+="<div id='horizhighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
-		str+="<div id='verthighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
-		
-		// Redraw Magic heading 
-		str += "<div id='upperDecker' style='position:absolute;left:0px;display:none;'>";
-		str += "<table class='markinglist' style='table-layout: fixed;'>";
-		str += "<thead>";
-		str += "<tr class='markinglist-header'>";
-		str += "<th id='header' class='rowno' ><span>#<span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
-		if (momtmp.length > 0){
-				// Make first header row!
-				//    No such header for magic heading - by design
-				
-				// Make second header row!
-				for(var j=0;j<momtmp.length;j++){
-						if(momtmp[j].kind==3){
-								str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
-						}else{
-								//str+="<th class='result-header dugga-result-subheadermagic'>Course part grade</th>"								
-								str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"													
-						}
-				}
-				str+="</tr>";
-		}		
-		str += "</thead>"
-		str += "</table>"
-		str += "</div>"
-		
-		// Redraw main result table    
+  str+="<div id='horizhighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
+  str+="<div id='verthighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
 
-		str+="<table class='markinglist' id='markinglist'>";
-		str+="<thead>";
-		str+="<tr class='markinglist-header'>";
-		str+="<th id='header' ></th><th colspan='1' id='subheading' class='result-header'>";
-		str+="";
-		str+="</th>";
+  // Redraw Magic heading 
+  str += "<div id='upperDecker' style='position:absolute;left:0px;display:none;'>";
+  str += "<table class='markinglist' style='table-layout: fixed;'>";
+  str += "<thead>";
+  str += "<tr class='markinglist-header'>";
+  str += "<th id='header' class='rowno' ><span>#<span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
+  if (momtmp.length > 0){
+    // Make first header row!
+    //    No such header for magic heading - by design
 
-		if (momtmp.length > 0){
-				// Make first header row!
-				var colsp=1;
-				var colpos=1;
-				var momname=momtmp[0].momname;
-				for(var j=1;j<momtmp.length;j++){						
-						if(momtmp[j].momname!==momname){
-								str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"								
-								momname = momtmp[j].momname;
-								colpos=j;
-								colsp=0;
-						}
-						colsp++;
-				}
-				str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"								
-				str+="</tr><tr class='markinglist-header'>";
+    // Make second header row!
+    for(var j=0;j<momtmp.length;j++){
+      if(momtmp[j].kind==3){
+        str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
+      }else{
+        str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"													
+      }
+    }
+    str+="</tr>";
+  }		
+  str += "</thead>"
+  str += "</table>"
+  str += "</div>"
 
-				// Make second header row!
-				str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
-				for(var j=0;j<momtmp.length;j++){
-						if(momtmp[j].kind==3){
-								str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
-						}else{
-								str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
-						}
-				}
-				str+="</tr></thead><tbody>";
+  // Redraw main result table    
+  str+="<table class='markinglist' id='markinglist'>";
+  str+="<thead>";
+  str+="<tr class='markinglist-header'>";
+  str+="<th id='header' ></th><th colspan='1' id='subheading' class='result-header'>";
+  str+="";
+  str+="</th>";
 
-				// Make result table
-        var row=1;
-				for(var i=0;i<students.length;i++){
-            var show;		// wont var show=onlyPending; ??
-            if (onlyPending){
-                show=false;
-            } else {
-                show=true;
-            }
-            var strt="";
-						strt+="<tr class='fumo'>"
-            strt+="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>"
-						var student=students[i];
-						for(var j=0;j<student.length;j++){                
-								strt+="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);' style='padding-left:6px;' id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data c"+j;
-								if(j==0){
-									strt+="'>"+student[j].grade+"</td>";																	
-								}else{
-										if(student[j].kind==4){	strt+=" dugga-moment"; }
-										// color based on pass,fail,pending,assigned,unassigned
-										if (student[j].grade === 1 && student[j].needMarking === false) {strt += " dugga-fail"}
-										else if (student[j].grade > 1) {strt += " dugga-pass"}
-										else if (student[j].needMarking === true) {strt += " dugga-pending"; show=true;}
-										else if (student[j].grade === 0 /*&& student[j].userAnswer === null*/) {strt += " dugga-assigned"}
-										else {strt += " dugga-unassigned"}
-										strt += "'>";
-										strt += "<div class='gradeContainer";                    
-										if(student[j].ishere===false){
-											strt += " grading-hidden";
-										}
-										strt += "'>";
-										if (student[j].grade === null ){
-												strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'I', student[j].qvariant, student[j].quizId);
-										} else if (student[j].grade === -1 ){
-  												strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'IFeedback', student[j].qvariant, student[j].quizId);
-  									}else {
-												strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'U', student[j].qvariant, student[j].quizId);
-										}										
-										strt += "<img id='korf' class='fist";
-										if(student[j].userAnswer===null && !(student[j].quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
-											strt += " grading-hidden";
-										}
-										strt +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\",\"" + student[j].qvariant + "\",\"" + student[j].quizId + "\");' />";
-										strt += "</div>";
-										strt += "<div class='text-center'>"                                 
-                    if (student[j].submitted.getTime() !== timeZero.getTime()){
-                        strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();  
-                    }
-										strt += "</div></td>";											
-								}
-						}
-						strt+="</tr>"
-            if(show){
-                str+=strt; 
-                row++;
-            }
-				}
-				str+="</tbody></table>";
-				document.getElementById("content").innerHTML=str;
-		}
+  if (momtmp.length > 0){
+    // Make first header row!
+    var colsp=1;
+    var colpos=1;
+    var momname=momtmp[0].momname;
+    for(var j=1;j<momtmp.length;j++){
+      if(momtmp[j].momname!==momname){
+        str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"								
+        momname = momtmp[j].momname;
+        colpos=j;
+        colsp=0;
+      }
+      colsp++;
+    }
+    str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"								
+    str+="</tr><tr class='markinglist-header'>";
+
+    // Make second header row!
+    str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
+    for(var j=0;j<momtmp.length;j++){
+      if(momtmp[j].kind==3){
+        str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
+      }else{
+        str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
+      }
+    }
+    str+="</tr></thead><tbody>";
+
+    // Make result table
+    var row=1;
+    for(var i=0;i<students.length;i++){
+      var isTeacher = false; // Will be true if a member of the course has "W" access
+      var show;
+      if (onlyPending){
+        show=false;
+      } else {
+        show=true;
+      }
+      var strt="";
+      strt+="<tr class='fumo'>"
+      strt+="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>"
+      var student=students[i];
+      for(var j=0;j<student.length;j++){
+        if(student[j].access == "W") { // Member is a teacher
+          isTeacher = true;
+        }
+        strt+="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
+        // Mark the cell if it is a teacher, first iteration: changing background color to bright yellow to indicate something
+        strt+=" style='padding-left:6px;"+((student[j].access=="W")?" background-color: #ffff90;":"")+"'";
+        strt+=" id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data c"+j;
+        if(j==0){
+          strt+="'>"+student[j].grade+"</td>";																	
+        } else {
+          if(student[j].kind==4){	strt+=" dugga-moment"; }
+          // color based on pass,fail,pending,assigned,unassigned
+          if (student[j].grade === 1 && student[j].needMarking === false) {strt += " dugga-fail";}
+          else if (student[j].grade > 1) {strt += " dugga-pass";}
+          else if (student[j].needMarking === true) {strt += " dugga-pending"; show=true;}
+          else if (student[j].grade === 0 ) {strt += " dugga-assigned";}
+          else {strt += " dugga-unassigned";}
+          strt += "'>";
+          strt += "<div class='gradeContainer";                    
+          if(student[j].ishere===false){
+            strt += " grading-hidden";
+          }
+          strt += "'>";
+          if (student[j].grade === null ){
+            strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'I', student[j].qvariant, student[j].quizId);
+          } else if (student[j].grade === -1 ){
+            strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'IFeedback', student[j].qvariant, student[j].quizId);
+          }else {
+            strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'U', student[j].qvariant, student[j].quizId);
+          }
+          strt += "<img id='korf' class='fist";
+          if(student[j].userAnswer===null && !(student[j].quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
+            strt += " grading-hidden";
+          }
+          strt +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\",\"" + student[j].qvariant + "\",\"" + student[j].quizId + "\");' />";
+          strt += "</div>";
+          strt += "<div class='text-center'>"                                 
+          if (student[j].submitted.getTime() !== timeZero.getTime()){
+            strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();  
+          }
+          strt += "</div></td>";											
+        }
+      }
+      strt+="</tr>"
+      // Only show teachers if the showTeacher variable is set (should be off by default)
+      if(show && (showTeachers || (!showTeachers && !isTeacher))) {
+        str+=strt; 
+        row++;
+      }
+    }
+    str+="</tbody></table>";
+    document.getElementById("content").innerHTML=str;
+  }
 }
 
 function cellIn(ev)
@@ -521,8 +532,7 @@ function process()
 					}
 					var student=new Array;
 					// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-					student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class});
-										
+					student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class,access:entries[i].access,setTeacher});
 					// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 					for(var j=0;j<momtmp.length;j++){
 							// If it is a feedback quiz -- we have special handling.
@@ -573,13 +583,29 @@ function process()
 				dstr+="' for='hdr"+lid+"check' ";
 				dstr+=">"+name+"</label></div>";
 		}
-		dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>"
+    // Filter for teachers.
+    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'>";
+    dstr+="<input type='checkbox' class='headercheck' name='showTeachers' value='0' id='showteachers'";
+    if(clist){
+      index=clist.indexOf("showteachers");
+      if(index>-1){
+        if(clist[index+1]=="true"){
+          dstr+=" checked";
+        }
+      }
+    }
+    dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>";
 
-		document.getElementById("dropdownc").innerHTML=dstr;	
-		
-		var dstr="";
-    if (onlyPending){ dstr+=" checked='true'"; }
-    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending1'><label class='headerlabel' for='pending0'>Only pending</label><input name='teacher' type='checkbox' class='headercheck' value='0' id='teacher1'><label class='headerlabel' for='teacher0'>Hide Teacher</label></div>";
+    // Filter for only showing pending
+    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
+    if (onlyPending){ dstr+=" checked"; }
+    dstr+="><label class='headerlabel' for='pending'>Only pending</label>";
+	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
+
+	document.getElementById("dropdownc").innerHTML=dstr;
+	var dstr="";
+
+	// Sorting
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort ascending</label><input name='sortdir' type='radio' class='headercheck' value='0' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
 	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
 	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
@@ -627,11 +653,16 @@ function leavec()
 	$(".headercheck").each(function(){
 			str+=$(this).attr("id")+"**"+$(this).is(':checked')+"**";
 	});
-	
-	old=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
-	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
+  
+  showTeachers=$('#showteachers').is(":checked");
+  	old=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+  	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
 
-	if(str!=old) process();
+  onlyPending=$('#pending').is(":checked");
+    var opend=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending");
+    localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
+
+	if(str!=old || onlyPending==opend) process();
 }
 
 function hovers()
@@ -645,22 +676,22 @@ function leaves()
 	$('#dropdowns').css('display','none'); 
 	var col=0;
 	var dir=1;
-  onlyPending=$('#onlyPending').is(":checked");
+
 	var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
 	var odir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir"); 
-  var opend=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending");
+
 		
 	$("input[name='sortcol']:checked").each(function() {col=this.value;});
 	$("input[name='sortdir']:checked").each(function() {dir=this.value;});
 	
 	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);
 	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
-  localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
 
-	if (!(ocol==col && odir==dir && onlyPending==opend) || typechanged) {
-			typechanged=false;
-			resort();
-	}
+
+	if (!(ocol==col && odir==dir) || typechanged) {
+    typechanged=false;
+    resort();
+}
 }
 
 function sorttype(t){

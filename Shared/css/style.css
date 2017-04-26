@@ -119,9 +119,7 @@ h6 {
   padding:0px;
 }
 
-body {
-  background: #ddd;
-}
+
 
 hr {
   border: 0;
@@ -155,6 +153,8 @@ p {
   text-align:center;
   padding: 10px;
   font-size: 10pt;
+  background-color: #ddd;
+
 }
 
 .err{
@@ -402,13 +402,13 @@ p {
 
 .LightBox {
 	width:36px;
-	vertical-align:bottom;
+	vertical-align:middle;
 	overflow:hidden;
 }
 
 .LightBoxFilled {
 	width:36px;
-	vertical-align:bottom;
+	vertical-align:middle;
 	overflow:hidden;
   background-color: #927b9e;
   border-top-left-radius: 13px;
@@ -416,14 +416,14 @@ p {
 }
 
 .StopLight {
-	vertical-align:bottom;
+	vertical-align:middle;
 	overflow:hidden;
 	border:1px solid yellow;
 	width:26px;
 	height:26px;
-	margin-left: 6px;
+	margin-left: 3px;
 	margin-right: 2px;
-	margin-top: 4px;
+	margin-top: 2px;
 	margin-bottom: 0px;
 	border-radius:14px;
 	border:1px solid #000;
@@ -501,7 +501,14 @@ header td {
 }
 
 .navheader {
+  height: 20px;
+  margin-bottom: 10px;
   width:100%;
+}
+
+.trsize {
+  margin-top:5px;
+  margin-bottom:20px;
 }
 
 .navButt {
@@ -597,6 +604,31 @@ header td {
   left:0px;
   right: 0px;
   background:#fff;
+}
+
+#cookiemsg {
+  background-color: #fecc56;
+  z-index: 1000;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  height: 50.4px;
+  padding: 0 20px 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+#cookiemsg p {
+  margin: 0px;
+  margin-right: 20px;
+  display: inline;
+  align-self: center;
+  color: #614875;
+}
+
+#cookiemsg input {
+  float: none;
+  align-self: center;
 }
 
 /* --------------================################================-------------- *
@@ -1052,6 +1084,40 @@ input.submit-button {
   float:right;
 }
 
+input.submit-button-rounded {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  background-color:#927b9e;
+  border-radius:4px;
+  width:110px;
+  height:30px;
+  color:#fff;
+  cursor:pointer;
+  margin-top:6px;
+  margin-bottom:2px;
+  margin-left:0px;
+  font-size:14px;
+  transition:1s background-color;
+  float:left;
+}
+
+input.submit-button-rounded-newitem {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: bold;
+  background-color:#927b9e;
+  border-radius:4px;
+  width:40px;
+  height:30px;
+  color:#fff;
+  cursor:pointer;
+  margin-top:6px;
+  margin-bottom:2px;
+  margin-left:0px;
+  font-size:16px;
+  text-align: center;
+  transition:1s background-color;
+  float:right;
+}
+
 input.fileed-button {
     background-color:#7B5A96;
     margin-right:6px;
@@ -1126,7 +1192,7 @@ input.new-item-button:hover {
 input.large-button {
   width:160px !important;
   height:48px !important;
-  line-height:48px !important;  
+  line-height:48px !important;
 }
 
 .list {
@@ -1138,7 +1204,7 @@ input.large-button {
   font-size: 16px;
 }
 
-.list tbody tr:nth-child(odd) { 
+.list tbody tr:nth-child(odd) {
   background-color: #ccc;
 }
 
@@ -1157,7 +1223,7 @@ input.large-button {
 }
 
 .list td {
-  border-right:2px solid #dbd0d8; 
+  border-right:2px solid #dbd0d8;
   line-height:28px;
   padding-left:8px;
 }
@@ -1183,8 +1249,8 @@ input.large-button {
   border:none;
 }
 
-.list tr:hover { 
-  /*background-color: #dbd0d8;*/ 
+.list tr:hover {
+  /*background-color: #dbd0d8;*/
 }
 
 .list--nomargin {
@@ -1197,7 +1263,7 @@ input.large-button {
 
 
 .list#testTable td{
-    padding:8px; 
+    padding:8px;
     text-align:center;border:none;
 }
 
@@ -1211,11 +1277,11 @@ input.large-button {
 }
 
 .list#testTable tr{
-    line-height:45px; 
+    line-height:45px;
     border-bottom:1px solid gray;
 }
 .list#testTable tr>tr{
-    line-height:45px; 
+    line-height:45px;
     border-bottom:none;
 }
 
@@ -1228,7 +1294,7 @@ input.large-button {
 }
 
 .list#testTable #plorf, .list#testTable #dorf {
-    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2); 
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
     padding:10px;
 }
 
@@ -1241,7 +1307,7 @@ input.large-button {
 }
 
 .list#testTable input {
-    border-width: 2px !important; 
+    border-width: 2px !important;
     border-style: inset !important;
 }
 
@@ -1258,12 +1324,12 @@ input.large-button {
 }
 
 span.arrow {
-    padding:10px; 
-    cursor:pointer; 
+    padding:10px;
+    cursor:pointer;
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
 }
 
-.list#testTable input { 
+.list#testTable input {
   border-width: 2px !important;
   border-style: inset !important;
 }
@@ -1279,7 +1345,7 @@ span.arrow {
   width:100%;
   padding:1px;
   border-left: 2px solid #dbd0d8;
-  border-bottom:2px solid #dbd0d8; 
+  border-bottom:2px solid #dbd0d8;
   font-family: hack,"Lucida Console", Monaco, monospace;
 }
 
@@ -1289,10 +1355,10 @@ span.arrow {
 }
 
 .markinglist  th {
-  background:#614875; 
+  background:#614875;
   color:#fff;
-  font-style: italic; 
-  font-size: 12px; 
+  font-style: italic;
+  font-size: 12px;
   white-space: nowrap;
 }
 
@@ -1303,7 +1369,7 @@ span.arrow {
 }
 
 .markinginnertable  td {
-  color:#000;border:none; 
+  color:#000;border:none;
 }
 
 .markinglist tr:hover {
@@ -1316,7 +1382,7 @@ span.arrow {
 
 .feedback-list caption {
   border-left:2px solid #dbd0d8;
-  background:#614875; 
+  background:#614875;
   color:#fff;line-height:28px;
 }
 
@@ -1433,6 +1499,7 @@ span.arrow {
 .course-dropdown {
 	height: 30px;
 	margin-top: 6px;
+    float:right;
 }
 
 .course-menu-wrapper {
@@ -1718,9 +1785,8 @@ span.arrow {
   width:50px;
   height:50px;
   border-radius:25px;
-  line-height:50px;
   box-shadow:0px 0px 15px #888;
-  bottom:50px;
+  bottom:55px;
   right:50px;
   font-size:24px;
   text-align:center;
@@ -1729,6 +1795,8 @@ span.arrow {
   z-index:4000;
   border:none;
   cursor: pointer;
+  padding-left: 7px;
+  padding-top: 1px;
 }
 
 .dugga-pass {
@@ -2028,6 +2096,14 @@ span.arrow {
   line-height: 47px;
 }
 
+.grouprow > div {
+  text-align: center;
+  font-size: 20px;
+  color:#614875 !important;
+  min-height: 47px;
+  line-height: 47px;
+}
+
 /*styling for contribution.php*/
 /*this was inline-CSS before, only moved it to the right file*/
 .fumho th {
@@ -2111,12 +2187,12 @@ table {
 /* JQuery UI Complement for missing icons in the DatePicker */
 
 .ui-datepicker .ui-datepicker-next span {
-  background: url("../icons/PlayT.svg"); 
+  background: url("../icons/PlayT.svg");
   transform: rotate(0deg);
 }
 
 .ui-datepicker .ui-datepicker-prev span {
-  background: url("../icons/PlayT.svg"); 
+  background: url("../icons/PlayT.svg");
   transform: rotate(180deg);
 }
 /*end, styling for contribution.php*/
@@ -2126,11 +2202,45 @@ table {
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
   font-size:14px;
   text-align:center;
-  background-color:#614875;    
+  background-color:#614875;
   color:#fff;
   padding:6px;
   margin:1px;
   border-radius: 2px;
   border:0px;
   cursor: pointer;
+}
+
+/* Modal Content/Box */
+.SwimContentWrap {
+  position: absolute;
+  left: 4%;
+  top: 62px;
+}
+
+/* The Close Button */
+.SwimClose {
+  color: white;
+  position: absolute;
+  top: 62px;
+  left: 2%;
+  font-size: 28px;
+  font-weight: bold;
+  height: 30px;
+  width: 35px;
+  margin-right: 10px;
+  cursor:pointer;
+}
+
+.swimlaneOverlay {
+  display: none; /* Hidden by default */
+  position: absolute; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }

@@ -44,7 +44,7 @@ pdoConnect();
 	<div id='editSection' class='loginBox' style='width:460px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Item</h3>
-			<div onclick='closeWindows(); closeSelect();'>x</div>
+			<div onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='lid' value='Toddler' />
@@ -64,8 +64,8 @@ pdoConnect();
 		<!-- Error message, no duggas present-->
 		<div style='padding:5px;'>
 			<input style='float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' /> 
-			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' /> 
-			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();' /> 
+			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();showSaveButton();' /> 
+			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();showSaveButton();' /> 
 			<input style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' /> 
     </div>
 	</div>
@@ -104,8 +104,8 @@ pdoConnect();
 			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
 			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' disabled /></div>
 			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
-			<div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='estartdate' value='None' /></div>
-			<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='eenddate' value='None' /></div>
+			<div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='estartdate' value='' /></div>
+			<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='eenddate' value='' /></div>
 		</div>
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateVersion();' />
