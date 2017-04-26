@@ -30,7 +30,7 @@ foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
 }
 
 // Get amount of course parts.
-$querystring = "SELECT count(*) FROM listentries WHERE kind=4 AND cid=:cid AND vers=:vers";
+$querystring = "SELECT kind FROM listentries WHERE (kind=4 OR kind=3) AND cid=:cid AND vers=:vers";
 $stmt = $pdo->prepare($querystring);
 $stmt->bindParam(':cid', $course);
 $stmt->bindParam(':vers', $vers);
@@ -39,8 +39,18 @@ try {
 } catch (PDOException $e) {
   // Error handling to $debug
 }
+
+$numberOfParts = 0;
+$hasDuggas = false;
 foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
-  $numberOfParts = $row['count(*)'];
+  if ($row['kind'] == 4) {
+      $numberOfParts++;
+  } else if ($row['kind'] == 3) {
+      $hasDuggas = true;
+  }
+}
+if ($numberOfParts == 0 && $hasDuggas) {
+    $numberOfParts = 1;
 }
 
 // Get start and end of course.
@@ -129,7 +139,7 @@ $versLength = $versEndWeek - $versStartWeek + 1;
       ?>
         </svg>
     </div>
-
+    <div id="duggas" style="background: white">
   <?php if (isset($_GET["courseid"]) && isset($_GET["coursevers"])) {
     // Total svg size + add heading.
     echo '<svg width="' . (200 * ($numberOfParts + 1) + 50) . '" height="' . (70 + (70 * $versLength)) . '">';
@@ -152,12 +162,14 @@ $versLength = $versEndWeek - $versStartWeek + 1;
     $white = true;
     $i = 0;
     $j = 0;
-    $pos = 0;
+    $pos = 250;
     $oldWeek = 0;
     $id = 0;
     $duggaInfoArray = array();
+    $hasCoursePart = false;
     foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
       if ($row['kind'] == 4) {
+        $hasCoursePart = true;
         $j = 0;
         $pos = (($i * 200) + 250);
         echo '<text y="50" x="' . ($pos + 10) . '" fill="white">' . $row['entryname'] . '</text>';
@@ -178,6 +190,9 @@ $versLength = $versEndWeek - $versStartWeek + 1;
         $startweek = $startdate->format("W") - $versStartWeek + 1;
         if ($j == 0) {
           $oldWeek = $deadlineweek;
+        }
+        if (!$hasCoursePart) {
+          echo '<text y="50" x="' . ($pos + 10) . '" fill="white">No course part</text>';
         }
 
         array_push($duggaInfoArray, ("<b>" . $row['entryname'] . "</b><br> Release date: " . $row['qrelease'] . "<br> Deadline: " .
@@ -220,6 +235,7 @@ $versLength = $versEndWeek - $versStartWeek + 1;
   ?>
 
     </svg>
+    </div>
 </div>
 
 <!-- Box for dugga info on mouse over -->
