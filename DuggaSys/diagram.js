@@ -295,13 +295,14 @@ diagram.delete = function (object)
 {
 	for(i=0;i<this.length;i++){
 		if(this[i]==object){
-          		this.splice(i,1);
-        	}
-
+    		this.splice(i,1);
+  	}
 	}
-
 }
 
+//--------------------------------------------------------------------
+// inside - executes inside methond in all diagram objects (currently of kind==2)
+//--------------------------------------------------------------------
 diagram.insides = function (ex, ey, sx, sy) {	
 	//ensure that an entity cannot scale below the minimum size
 	for(var i = 0; i < this.length; i++) {
@@ -393,13 +394,29 @@ diagram.linedist = function (xk,yk)
 		return -1;
 }
 //--------------------------------------------------------------------
+// eraseObjectLines - removes all the lines connected to an object
+//--------------------------------------------------------------------
+diagram.eraseObjectLines = function(object, private_lines){
+  for(j = 0; j < private_lines.length; j++){
+    console.log(private_lines[j].to);
+    if(private_lines[j].topLeft != object.centerpoint){
+      points[private_lines[j].topLeft] = waldoPoint;
+    }
+    else if(private_lines[j].bottomRight != object.centerpoint){
+      points[private_lines[j].bottomRight] = waldoPoint;
+    }
+
+    diagram.delete(private_lines[j]);
+  }
+}
+//--------------------------------------------------------------------
 // inside - executes linedist methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
 diagram.getLineObjects = function (){
   var lines = new Array();
   for(i = 0; i < this.length; i++){
     if(diagram[i].symbolkind == 4){
-      lines.push(lines);
+      lines.push(diagram[i]);
     }
   }
   return lines;
@@ -913,10 +930,10 @@ function updategfx()
     drawGrid();
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
-				
+
 		// Redraw diagram
 		diagram.draw();
-				
+
 // Make a bool operation between PathA and PathB
 //		pathA.boolOp(pathC);
 
@@ -924,8 +941,8 @@ function updategfx()
 		points.drawpoints();
 
 		// Draw all symbols
-		
-		
+
+
 }
 
 // Recursive Pos of div in document - should work in most browsers
@@ -1097,7 +1114,7 @@ function doubleclick(ev)
 	var posistionX = (startX+xPos);
 	var posistionY = (startY+yPos);
 	console.log(posistionX+" | "+posistionY);
-	if(diagram[selobj].targeted == true){ 
+	if(diagram[selobj].targeted == true){
         openAppearanceDialogMenu();
         document.getElementById('nametext').value = diagram[selobj].name;
 		document.getElementById('fontColor').value = diagram[selobj].fontColor;
@@ -1284,12 +1301,39 @@ function mouseupevt(ev) {
 function movePoint(point){
   point = waldoPoint;
 }
+function getConnectedLines(object){
+  // Adds the different connectors into an array to reduce the amount of code
+  var private_points = object.getPoints();
+  var lines = diagram.getLineObjects();
+  var object_lines = [];
+  for(i = 0; i < lines.length; i++){
+    var line = lines[i];
 
+    //Line
+    //Lines connected to object's centerpoint
+    //Line always have topLeft and bottomRight if symbolkind == 4, because that means it's a line object
+    if(line.topLeft == object.centerpoint || line.bottomRight == object.centerpoint) {
+      object_lines.push(line);
+    }
+
+    //Connected to connectors top, right, bottom and left.
+    for(var j = 0; j < private_points.length; j++){
+      if (line.topLeft == private_points[j] || line.bottomRight == private_points[j]) {
+        object_lines.push(line);
+      }
+    }
+  }
+  return object_lines;
+}
 function eraseObject(object){
   var canvas = document.getElementById("myCanvas");
   canvas.style.cursor="default";
 
+  var private_lines = object.getLines();
+
   object.erase();
+
+  diagram.eraseObjectLines(object,private_lines)
 
   diagram.delete(object);
   updategfx();
