@@ -936,7 +936,7 @@ function returnedSection(data)
 						
 					}
 				}
-				
+
 				// Add generic td for deadlines if one exists
 				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")){
 					if(kk==1){
@@ -944,7 +944,12 @@ function returnedSection(data)
 					}else{
 						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;' ";
 					}
+					var dl = deadline.split(" ");
+					if(dl[1] == "00:00:00"){
+                        str+=" >"+deadline.slice(0, -8);+"</td>";
+					}else{
 					str+=" >"+deadline.slice(0, -3);+"</td>";
+					}
 				} else {
 					// Do nothing
 				}
