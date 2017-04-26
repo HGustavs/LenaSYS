@@ -614,8 +614,26 @@ function returnedSection(data)
 
 		str+="<table class='navheader'><tr class='trsize'>";
 
+        if(data['writeaccess']) {
+            str+="<td style='display: inline-block; margin-right:2px; width:112px;'><select class='course-dropdown' onchange='goToVersion(this)'>";
+            if (retdata['versions'].length > 0) {
+                for ( i = 0; i < retdata['versions'].length; i++) {
+                    var item = retdata['versions'][i];
+                    if (retdata['courseid'] == item['cid']) {
+                        var vvers = item['vers'];
+                        var vname = item['versname'];
+                        str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+                        if(retdata['coursevers']==vvers){
+                            str += "selected";
+                        }
+                        str += ">" + vname + " - " + vvers + "</option>";
+                    }
+                }
+            }
+            str+="</select></td>";
+
 			
-			str+="<td style='width:112px;'><input type='button' value='Edit version' class='submit-button-rounded' title='Edit the selected version' onclick='showEditVersion";
+		str+="<td style='width:112px;'><input type='button' value='Edit version' class='submit-button-rounded' title='Edit the selected version' onclick='showEditVersion";
 
 // Retrieve start and end dates for a version, if there are such, else set to null
       var startdate = null;
@@ -644,24 +662,6 @@ function returnedSection(data)
     }else{
 			// No version selector for students
 		}
-
-    if(data['writeaccess']) {
-        str+="<td style='width:112px;'><select class='course-dropdown' onchange='goToVersion(this)'>";
-        if (retdata['versions'].length > 0) {
-            for ( i = 0; i < retdata['versions'].length; i++) {
-                var item = retdata['versions'][i];
-                if (retdata['courseid'] == item['cid']) {
-                    var vvers = item['vers'];
-                    var vname = item['versname'];
-                    str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
-                    if(retdata['coursevers']==vvers){
-                        str += "selected";
-                    }
-                    str += ">" + vname + " - " + vvers + "</option>";
-                }
-            }
-        }
-        str+="</select></td>";
 
         if(retdata["writeaccess"]){
             str += "<td><input type='button' value='+' class='submit-button-rounded-newitem' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
