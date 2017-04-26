@@ -1069,6 +1069,10 @@ input.fileed-button:hover {
     background-color:#91859b;
 }
 
+input.fileed-button:hover {
+    background-color:#91859b;
+}
+
 input.submit-button:disabled {
   opacity: 0.3;
 }
