@@ -226,6 +226,8 @@ function login($username, $password, $savelogin)
 	}
 	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,securityquestion,password(:pwd) as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
 
+
+
 	$query->bindParam(':username', $username);
 	$query->bindParam(':pwd', $password);
 
@@ -267,6 +269,21 @@ function login($username, $password, $savelogin)
         if($row['securityquestion'] != null) {
             $_SESSION["securityquestion"]="set";
         }
+
+        // Since teacher and superusers can not have security question we can just say that they have one inorder to not show them the popup that they need to set one
+        if($row['superuser'] == 1) {
+            $_SESSION["securityquestion"]="set";
+        }
+
+        $query = $pdo->prepare("SELECT access FROM user_course WHERE uid=:uid AND access='W'");
+
+		$query->bindParam(':uid', $row['uid']);
+
+		$query->execute();
+
+		if($query->rowCount() > 0){
+			$_SESSION["securityquestion"]="set";
+		}
 
 		// Save some login details in cookies.
 		// The current try at a solution solution is unsafe as anyone with access to the computer can check the cookie and get the full password
