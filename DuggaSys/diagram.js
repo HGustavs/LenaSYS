@@ -55,7 +55,8 @@ var crossStrokeStyle2 = "#d51";
 var minEntityX = 100;
 var minEntityY = 50;
 
-
+// set timer varibale for hash and saving
+var hash_timer = 5000;
 
 var attributeTemplate = { // Defines entity/attribute/relations predefined sizes
   width: 7*gridSize,
@@ -772,7 +773,7 @@ function Path() {
 // the code seems to start here. think this is the Main();
 function initcanvas()
 {
-	setInterval(hashfunction, 1000);
+	setInterval(hashfunction, hash_timer);
     widthWindow = (window.innerWidth-20);
 	heightWindow = (window.innerHeight-220);
 	document.getElementById("canvasDiv").innerHTML="<canvas id='myCanvas' style='border:1px solid #000000;' width='"+(widthWindow*zv)+"' height='"+(heightWindow*zv)+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
@@ -1418,8 +1419,9 @@ function dialogForm() {
             "Text size:<br>" +
             "<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
             "<button type='submit'  class='submit-button' onclick='changeNameRelation(form); setType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
-    }
+    } 
 }
+
 
 //setTextSize(): used to change the size of the text. unifinish can's get it to work.
 function setTextSizeEntity(form){
@@ -1958,6 +1960,7 @@ function loadDiagram(){
 function removeLocal(){
 	 localStorage.clear();
 }
+
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 
