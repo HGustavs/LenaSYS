@@ -856,6 +856,7 @@ function sendReceiptEmail(){
 function showSecurityPopup()
 {
    $("#securitynotification").css("display","block");
+   $("#overlay").css("display","block");
 }
 
 function showDuggaInfoPopup()
