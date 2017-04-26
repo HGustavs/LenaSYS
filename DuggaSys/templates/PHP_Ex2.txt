@@ -8,25 +8,14 @@ From the standpoint of the browser the result is identical.
 Hello!
 ~~~
 
-1. asd
-2. awed
-  1. asd
-  2. asd
-  3. asd
-    1. asd
-      1. asd
-    2. asd
-      1. asd
-3. asd
-4. asd
-* asd
-* awed
-  * asd
-  * asd
-  * asd
-    * asd
-      * asd
-    * asd
-      * asd
-* asd
-* asd
+| Head1 | Head2 | Head3 |
+| :----: | ---: | ---- |
+| Head4 | Head5 | Head6 |
+| Head7 | Head8 | Head9 |
+| Head4 | Head5 | Head6 |
+| Head5 | Head6 | Head7 |
+| Head5 | Head6 | Head7 |
+| :----: | :---: | :----: |
+| Head5 | Head6 | Head7 |
+| Head5 | Head6 | Head7 |
+| Head5 | Head6 | Head7 |

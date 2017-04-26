@@ -472,7 +472,7 @@ function process()
 		if (clist){	
 				clist=clist.split("**"); 
 		} 
-		
+
 		// Create temporary list that complies with dropdown
 		momtmp=new Array;
 		var momname = "tore";
@@ -496,6 +496,12 @@ function process()
 						momtmp.push(moments[l]);
 				}
 		}
+
+		// If momtmp doesn't contain any items no filters were selected
+		if(momtmp.length === 0) {
+			document.getElementById("content").innerHTML="<h3>Filter list is blank</h3>";
+		}
+
 		// Reconstitute table
 		students=new Array;
 		for(i=0;i<entries.length;i++){
@@ -526,15 +532,7 @@ function process()
 					}
 					var student=new Array;
 					// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-					student.push({
-            grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),
-            firstname:entries[i].firstname,
-            lastname:entries[i].lastname,
-            ssn:entries[i].ssn,
-            class:entries[i].class,
-            access:entries[i].access,
-            setTeacher});
-										
+					student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class,access:entries[i].access,setTeacher});
 					// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 					for(var j=0;j<momtmp.length;j++){
 							// If it is a feedback quiz -- we have special handling.

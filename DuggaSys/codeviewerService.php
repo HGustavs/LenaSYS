@@ -466,7 +466,6 @@
 				
 			array_push($box,array($row['boxid'],$boxContent,$content,$row['wordlistid'],$row['boxtitle'],$row['filename'], $row['fontsize']));
 		}
-
 		$array = array(
 			'before' => $backwardExamples,
 			'after' => $forwardExamples,
@@ -485,8 +484,10 @@
 			'wordlists' => $wordLists, 
 			'writeaccess' => $writeAccess,
 			'debug' => $debug,
-			'beforeafter' => $beforeAfters, 
-			'public' => $public
+			'beforeafter' => $beforeAfters,
+			'public' => $public,
+            'courseid' => $courseId,
+            'courseversion' => $courseVersion
 		);
 		echo json_encode($array);
 	}else{
