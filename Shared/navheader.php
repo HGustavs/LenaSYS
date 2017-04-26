@@ -98,7 +98,10 @@
             });
 
             function loadSwimlane() {
-                $('.SwimContentWrap').load(path + "/../../Shared/swimlane.php?courseid=" + <?php Print($cid) ?> + "&coursevers=" + <?php Print($coursevers) ?>);
+                $('.SwimContentWrap').load(path + "/../../Shared/swimlane.php?courseid=" +
+                  <?php ((isset($cid)) ? Print($cid) : Print(0)) ?> +
+                        "&coursevers=" +
+                  <?php ((isset($coursevers)) ? Print($coursevers) : Print(0)) ?>);
                 swimBox.style.display = "block";
             }
 

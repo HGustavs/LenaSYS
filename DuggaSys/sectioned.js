@@ -631,9 +631,8 @@ function returnedSection(data)
                 }
             }
             str+="</select></td>";
-
 			
-		str+="<td style='width:112px;'><input type='button' value='Edit version' class='submit-button-rounded' title='Edit the selected version' onclick='showEditVersion";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Edit version' class='submit-button-rounded' title='Edit the selected version' onclick='showEditVersion";
 
 // Retrieve start and end dates for a version, if there are such, else set to null
       var startdate = null;
