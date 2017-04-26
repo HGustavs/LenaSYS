@@ -224,7 +224,7 @@ function login($username, $password, $savelogin)
 	if($pdo == null) {
 		pdoConnect();
 	}
-	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,password(:pwd) as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
+	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,securityquestion,password(:pwd) as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
 
 	$query->bindParam(':username', $username);
 	$query->bindParam(':pwd', $password);
@@ -263,6 +263,10 @@ function login($username, $password, $savelogin)
 		$_SESSION["superuser"]=$row['superuser'];
 		$_SESSION["lastname"]=$row['lastname'];
 		$_SESSION["firstname"]=$row['firstname'];
+        
+        if($row['securityquestion'] != null) {
+            $_SESSION["securityquestion"]="set";
+        }
 
 		// Save some login details in cookies.
 		// The current try at a solution solution is unsafe as anyone with access to the computer can check the cookie and get the full password
