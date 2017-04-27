@@ -154,7 +154,7 @@ p {
   padding: 10px;
   font-size: 10pt;
   background-color: #ddd;
-
+  
 }
 
 .err{
@@ -402,13 +402,13 @@ p {
 
 .LightBox {
 	width:36px;
-	vertical-align:middle;
+	vertical-align:bottom;
 	overflow:hidden;
 }
 
 .LightBoxFilled {
 	width:36px;
-	vertical-align:middle;
+	vertical-align:bottom;
 	overflow:hidden;
   background-color: #927b9e;
   border-top-left-radius: 13px;
@@ -416,14 +416,14 @@ p {
 }
 
 .StopLight {
-	vertical-align:middle;
+	vertical-align:bottom;
 	overflow:hidden;
 	border:1px solid yellow;
 	width:26px;
 	height:26px;
-	margin-left: 3px;
+	margin-left: 6px;
 	margin-right: 2px;
-	margin-top: 2px;
+	margin-top: 4px;
 	margin-bottom: 0px;
 	border-radius:14px;
 	border:1px solid #000;
@@ -1192,7 +1192,7 @@ input.new-item-button:hover {
 input.large-button {
   width:160px !important;
   height:48px !important;
-  line-height:48px !important;
+  line-height:48px !important;  
 }
 
 .list {
@@ -1204,7 +1204,7 @@ input.large-button {
   font-size: 16px;
 }
 
-.list tbody tr:nth-child(odd) {
+.list tbody tr:nth-child(odd) { 
   background-color: #ccc;
 }
 
@@ -1223,7 +1223,7 @@ input.large-button {
 }
 
 .list td {
-  border-right:2px solid #dbd0d8;
+  border-right:2px solid #dbd0d8; 
   line-height:28px;
   padding-left:8px;
 }
@@ -1249,8 +1249,8 @@ input.large-button {
   border:none;
 }
 
-.list tr:hover {
-  /*background-color: #dbd0d8;*/
+.list tr:hover { 
+  /*background-color: #dbd0d8;*/ 
 }
 
 .list--nomargin {
@@ -1263,7 +1263,7 @@ input.large-button {
 
 
 .list#testTable td{
-    padding:8px;
+    padding:8px; 
     text-align:center;border:none;
 }
 
@@ -1277,11 +1277,11 @@ input.large-button {
 }
 
 .list#testTable tr{
-    line-height:45px;
+    line-height:45px; 
     border-bottom:1px solid gray;
 }
 .list#testTable tr>tr{
-    line-height:45px;
+    line-height:45px; 
     border-bottom:none;
 }
 
@@ -1294,7 +1294,7 @@ input.large-button {
 }
 
 .list#testTable #plorf, .list#testTable #dorf {
-    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
+    box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2); 
     padding:10px;
 }
 
@@ -1307,7 +1307,7 @@ input.large-button {
 }
 
 .list#testTable input {
-    border-width: 2px !important;
+    border-width: 2px !important; 
     border-style: inset !important;
 }
 
@@ -1324,12 +1324,12 @@ input.large-button {
 }
 
 span.arrow {
-    padding:10px;
-    cursor:pointer;
+    padding:10px; 
+    cursor:pointer; 
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
 }
 
-.list#testTable input {
+.list#testTable input { 
   border-width: 2px !important;
   border-style: inset !important;
 }
@@ -1345,7 +1345,7 @@ span.arrow {
   width:100%;
   padding:1px;
   border-left: 2px solid #dbd0d8;
-  border-bottom:2px solid #dbd0d8;
+  border-bottom:2px solid #dbd0d8; 
   font-family: hack,"Lucida Console", Monaco, monospace;
 }
 
@@ -1355,10 +1355,10 @@ span.arrow {
 }
 
 .markinglist  th {
-  background:#614875;
+  background:#614875; 
   color:#fff;
-  font-style: italic;
-  font-size: 12px;
+  font-style: italic; 
+  font-size: 12px; 
   white-space: nowrap;
 }
 
@@ -1369,7 +1369,7 @@ span.arrow {
 }
 
 .markinginnertable  td {
-  color:#000;border:none;
+  color:#000;border:none; 
 }
 
 .markinglist tr:hover {
@@ -1382,7 +1382,7 @@ span.arrow {
 
 .feedback-list caption {
   border-left:2px solid #dbd0d8;
-  background:#614875;
+  background:#614875; 
   color:#fff;line-height:28px;
 }
 
@@ -2187,12 +2187,12 @@ table {
 /* JQuery UI Complement for missing icons in the DatePicker */
 
 .ui-datepicker .ui-datepicker-next span {
-  background: url("../icons/PlayT.svg");
+  background: url("../icons/PlayT.svg"); 
   transform: rotate(0deg);
 }
 
 .ui-datepicker .ui-datepicker-prev span {
-  background: url("../icons/PlayT.svg");
+  background: url("../icons/PlayT.svg"); 
   transform: rotate(180deg);
 }
 /*end, styling for contribution.php*/
@@ -2202,7 +2202,7 @@ table {
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
   font-size:14px;
   text-align:center;
-  background-color:#614875;
+  background-color:#614875;    
   color:#fff;
   padding:6px;
   margin:1px;
