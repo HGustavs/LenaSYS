@@ -31,6 +31,19 @@ $(function() {
 	});
 });
 
+var showInline = false;
+
+$(window).on('resize',function() {
+//  console.log($(window).width());
+  if($(window).width() < 480 && showInline == true) {
+    jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeOut(1000);
+    showInline = false;
+  } else if($(window).width() >= 480 && showInline == false) {
+    jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeIn(1000);
+    showInline = true;
+  }
+});
+
 //----------------------------------------
 // Commands:
 //----------------------------------------
@@ -673,6 +686,15 @@ function returnedSection(data)
             str+="</tr></table>";
         }
 
+      // hide som elements if to narrow
+     var hiddenInline = "";
+     if($(window).width() < 480) {
+        showInline = false;
+        hiddenInline = "none";
+      } else {
+        showInline = true;
+        hiddenInline = "inline";
+      }
 
 
     // Course Name
@@ -682,7 +704,7 @@ function returnedSection(data)
 			str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-right:10px; max-width: 400px'>"+data.coursename+"</div>";
       str+="<div class='nowrap'";
 			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
-			str+="<div id='course-versname' style='margin-right:10px;'>"+versionname+"</div>";
+			str+="<div id='course-versname' class='thisDateShouldDisappearWhenScreenIsTooSmall' style='margin-right:10px;'>"+versionname+"</div>";
       str+='</div>';
 			str+="<div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div>";
 			str+="<div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
@@ -914,12 +936,7 @@ function returnedSection(data)
           var momentname = momentsplit.splice(0,momentsplit.length-1);
           var momenthp = momentsplit[momentsplit.length-1];
 
-          str+="<div style='display:flex;'>";
-            str+="<div class='nowrap"+blorf+"' style='padding-left:5px;'>";
-              str+="<span class='ellipsis'>"+momentname+"</span> ";
-              str+=momenthp
-           str+="</div><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
-          str+="</div>";
+          str+="<div style='display:flex;'><div class='nowrap"+blorf+"' style='padding-left:5px;'><span class='ellipsis'>"+momentname+"</span> "+momenthp+"</div><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {	
@@ -958,18 +975,32 @@ function returnedSection(data)
 
 				// Add generic td for deadlines if one exists
 				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")){
-					if(kk==1){
-						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;' ";
+/*					if(kk==1){
+						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;'";
 					}else{
-						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;' ";
+						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;'";
 					}
+*/
 					var dl = deadline.split(" ");
-					if(dl[1] == "00:00:00"){
-                        str+=" >"+deadline.slice(0, -8);+"</td>";
-					}else{
-					str+=" >"+deadline.slice(0, -3);+"</td>";
+         str+="<td style='text-align:right;white-space:nowrap;overflow:hidden;width:145px;'>";
+
+         var timeFilterAndFormat = "00:00:00";
+         var yearFormat = "0000-";
+         var dateFormat = "00-00";
+
+         str+="<span class='thisDateShouldDisappearWhenScreenIsTooSmall' style='display:"+hiddenInline+";'>";
+
+          // If the deadline is 00:00:00, only show YYYY-MM-DD
+         if(dl[1] == timeFilterAndFormat) {
+          str+=deadline.slice(0, yearFormat.length)+"</span>"+deadline.slice(yearFormat.length, yearFormat.length+dateFormat.length);
+					} else {
+          // If the deadline is set to another time, show the full YYYY-MM-DD HH:MM:SS
+          // If the screen is to narrow, only show the MM-DD HH:MM
+          str+=deadline.slice(0, yearFormat.length)+"</span>"+deadline.slice(yearFormat.length, yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length-3)+"<span class='thisDateShouldDisappearWhenScreenIsTooSmall' style='display:"+hiddenInline+";'>"+deadline.slice(yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length-3, yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length)+"</span>"
+;
 					}
-				} else {
+        str+="</td>";
+       } else {
 					// Do nothing
 				}
 
