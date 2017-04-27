@@ -10,10 +10,13 @@ var courselist;
 function setup(){  	
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "GROUP");
 }
+function Groupbutton(){
+	alert("test");
+}
 
 function returnedGroup(data)
 {
-	console.log(data);
+	
 	var headings = data.headings;
 	var tableContent = data.tableContent;
 	/* entries=data.entries;
@@ -25,13 +28,18 @@ function returnedGroup(data)
 			
 	// Init the table string. 
 	str="";
+	
+	str+="<table class='navheader'><tr class='trsize'>";
+	str+="<td ><input style='display: inline-block; margin-right:2px; width:112px;' type='button' value='New Group' class='submit-button' onclick='Groupbutton();'/>";
+	str+="</tr></table>";
+	
 
 	// Create the table headers. 
 	str+="<table class='markinglist' id='markinglist'>";
 	str+="<thead>";
 	str+="<tr class='markinglist-header'>";
 	
-	str += "<th id='header' class='grouprow' ><span>#<span></th>";
+	str+="<th id='header' class='grouprow' ><span>#<span></th>";
 	str+="<th colspan='1' id='subheading' class='result-header'>";
 	str+="Studenter";
 	str+="</th>";
