@@ -869,16 +869,21 @@ function zoomOutMode(e){
 }
 
 function zoomInClick(){
-	zv+=0.1;
+	ctx.restore();
+	ctx.scale(1,1);
+	zv=1.25;
 	reWrite();
-	ctx.scale(1.1,1.1);
+	ctx.scale(zv,zv);
 }
 
 function zoomOutClick(){
-	zv-=0.1;
+	ctx.restore();
+	ctx.scale(1,1);
+	zv=0.75;
 	reWrite();
-	ctx.scale(0.9,0.9);
+	ctx.scale(zv,zv);
 }
+
 function getUploads() {
     document.getElementById('buttonid').addEventListener('click', openDialog);
     function openDialog() {
@@ -1927,7 +1932,7 @@ function hashfunction()
 			};
 		a = JSON.stringify(obj);
 		
-		localStorage.setItem('localdiagram', a);
+		localStorage.setItem('localdiagram'+numberStorage, a);
 		
 		
 		console.log(hash.toString(16));
@@ -1936,9 +1941,13 @@ function hashfunction()
 
 // retrive an old diagram if it exist.
 function loadDiagram(){
-	
+	var checkLocalStorage = localStorage.getItem('localdiagram');
 	//loacal storage and hash
-	var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
+	if(checkLocalStorage == "" || checkLocalStorage == null) {
+		console.log("Hej");
+	} else {
+		var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
+	}
 	var localhexHash = localStorage.getItem('localhash');
 	
 	console.log("local hash: ", localhexHash);
@@ -2002,7 +2011,7 @@ function loadDiagram(){
 
 //remove localstorage
 function removeLocal(){
-    localStorage.setItem('localhash', "");
+    localStorage.setItem('localdiagram', "");
 }
 
 
