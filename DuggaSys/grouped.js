@@ -50,7 +50,7 @@ function returnedGroup(data)
 	
 	// Itererate the headings, that are dependent on the cid and coursevers. 
 	for(var i = 0; i < headings.length; i++) {
-		str+="<th class='result-header'>"+headings[i].entryname+"</th>";	
+		str+="<th id="+headings[i].lid+" class='result-header'>"+headings[i].entryname+"</th>";	
 	}
 	
 	
@@ -76,9 +76,10 @@ function returnedGroup(data)
 	for(var i = 0; i < tableContent.length; i++) { // create table rows. 
 		row++;
 		str+="<tr>";
+		// I think the row would need ugid, cid and lid as DOM id. 
 		str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
 		for(var j = 1; j < tableContent[i].length; j++) {
-			str+="<td>"+tableContent[i][j]+"</td>";
+			str+="<td>"+tableContent[i][j]+"</td>"; // Iterates all content, but i dont want to write out ugid, cid and lid ...
 		}
 		str+="</tr>";
 	}
