@@ -1,6 +1,3 @@
-<script src="../Shared/js/jquery-1.11.0.min.js"></script>
-
-
 <!-- PHP to set up variables and connect to database -->
 <?php
 date_default_timezone_set("Europe/Stockholm");
@@ -74,51 +71,6 @@ $versEndWeek = $versEnd->format("W");
 $versLength = $versEndWeek - $versStartWeek + 1;
 
 ?>
-
-<!-- javascript for scroll and circle mouseover -->
-<script>
-
-    var circlePosX;
-    var circlePosY;
-    var mouseX;
-    var mouseY;
-
-    // Get mouse position.
-    $(document).mousemove(function (e) {
-        mouseX = e.pageX;
-        mouseY = e.pageY;
-    });
-
-    // Move left column with side scroll.
-    $(window).scroll(function () {
-        $('#weeks').css({
-            'left': $(this).scrollLeft()
-        });
-    });
-
-    function mouseOverCircle(circle, text) {
-        circle.setAttribute("r", 15);
-        circlePosY = parseInt(circle.getAttribute('cy')) - 70;
-        circlePosX = parseInt(circle.getAttribute('cx')) + 20;
-        document.getElementById("duggaInfoText").innerHTML = text;
-        $('#duggainfo').css({'top': circlePosY, 'left': circlePosX}).fadeIn('fast');
-    }
-
-    function mouseGoneFromCircle(circle) {
-        circle.setAttribute("r", 10);
-        $('#duggainfo').fadeOut('fast');
-    }
-
-    function mouseOverLine(text) {
-        document.getElementById("currentDateText").innerHTML = text;
-        $('#currentDate').css({'top': mouseY, 'left': mouseX}).fadeIn('fast');
-    }
-
-    function mouseGoneFromLine() {
-        $('#currentDate').fadeOut('fast');
-    }
-
-</script>
 
 <!-- Swimlane Box Start! -->
 <div id="swimlanebox" class="swimlanebox">
