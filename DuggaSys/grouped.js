@@ -14,6 +14,24 @@ function Groupbutton(){
 	alert("test");
 }
 
+function selectGroup(name)
+{
+	// Set Name		
+	$("#groupname").val(name);
+	$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='"+name+"' style='width:448px;'/>");
+	
+	//Display pop-up
+	$("#groupSection").css("display","block");
+	$("#overlay").css("display","block");
+}
+
+function createGroup()
+{
+	alert("Group should be created");
+	$("#groupSection").css("display","none");
+	$("#overlay").css("display","none");
+}
+
 function returnedGroup(data)
 {
 	
@@ -30,7 +48,7 @@ function returnedGroup(data)
 	str="";
 	
 	str+="<table class='navheader'><tr class='trsize'>";
-	str+="<td ><input style='display: inline-block; margin-right:2px; width:112px;' type='button' value='New Group' class='submit-button' onclick='Groupbutton();'/>";
+	str+="<td ><input style='display: inline-block; margin-right:2px; width:112px;' type='button' value='New Group' class='submit-button' onclick='selectGroup();'/>";
 	str+="</tr></table>";
 	
 
