@@ -276,7 +276,7 @@ function returnedFile(data)
 			str4+="<table class='list' style='margin-bottom:8px;' >";
 
 		  str4+="<thead style='cursor:pointer;'>" + 
-		  "<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID<span>" +
+		  "<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>" +
 		  "<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" +
     //  str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th>" +
 		  "<th>Course Local File</th>" +
