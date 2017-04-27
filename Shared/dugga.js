@@ -893,12 +893,12 @@ function sessionExpireMessage() {
 
 	function checkIfExpired() {
 
-			if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
+			//if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
 				// alert('Session is about to expire in 30 minutes');
 				$(".expiremessagebox").css("display","block");
 
 				clearInterval(intervalId);
-			}
+			//}
 
 		}
 	}
