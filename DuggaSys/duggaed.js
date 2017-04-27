@@ -56,6 +56,13 @@ function addVariant(cid,qid)
 
 function updateVariant()
 {
+	var fieldnames = [];
+
+	for(i=0; i<submissionRow; i++){
+		fieldnames += $("#fieldname"+i).val();
+	}
+	console.log(fieldnames);
+
 	$("#editVariant").css("display","none");
 	$("#overlay").css("display","none");
 
