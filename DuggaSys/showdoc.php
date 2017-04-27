@@ -37,6 +37,33 @@
 		
 				return $str;
 		}
+		function parseLineByLine($instring) {
+			$str = $inString;	
+			$markdown = "";
+
+			$currentLineFeed = strrpos($str, "/n");
+			$currentLine = "";
+			$prevLine = "";
+			$remainingLines = "";
+			$nextLine = "";
+
+			while($currentLineFeed == true) { // EOF
+				$prevLine = $currentLine;
+				$currentLine = substr($str, 0, $currentLineFeed);
+				$remainingLines = substr($str, $currentLineFeed + 1, strlen($str));
+
+				$nextLine = substr($remainingLines, 0, strrpos($remainingLines, "/n"));
+
+				$markdown += ""; // identifier funtion here
+
+				// line done parsing. change start position to next line
+		        $str = $remainingLines;
+		        $currentLineFeed = strrpos($str, "/n");
+			}
+			$markdown += ""; // identifier funtion here
+			
+			return $markdown;
+		}
 
 		function markdownBlock($instring)
 		{
