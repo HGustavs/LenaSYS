@@ -7,7 +7,6 @@
 
 		function parseMarkdown($inString)
 		{	
-				$str="";
 				$inString=preg_replace("/\</", "&lt;",$inString);
 				$inString=preg_replace("/\>/", "&gt;",$inString);
 
@@ -21,6 +20,7 @@
 				
 				$specialBlockStart=true;
 				foreach ($codearray as $workstr) {
+					
 						if(substr($workstr,0,3)==="@@@" && $specialBlockStart===true){
 								$specialBlockStart=false;
 								$str.="<pre><code>".substr($workstr,3)."</code></pre>";
@@ -28,14 +28,51 @@
 								$specialBlockStart=false;
 								$str.="<div class='console'><pre>".substr($workstr,3)."</pre></div>";
 						} else if ($workstr !== "") {
-								$str.=markdownBlock(preg_replace("/^\&{3}|^\@{3}/","",$workstr));
+
+								$str.=parseLineByLine(preg_replace("/^\&{3}|^\@{3}/","",$workstr));
 								$specialBlockStart=true;
-						} else {
-								$str.=$workstr;
 						}
+						
+						$str.=$workstr;
+						
 				}
-		
+	
 				return $str;
+		}
+
+		function parseLineByLine($inString) {
+			$str = $inString;	
+			$markdown = "";
+
+			$currentLineFeed = strrpos($str, "/n");
+			$currentLine = "";
+			$prevLine = "";
+			$remainingLines = "";
+			$nextLine = "";
+
+			while($currentLineFeed == true) { // EOF
+				$prevLine = $currentLine;
+				$currentLine = substr($str, 0, $currentLineFeed);
+				$remainingLines = substr($str, $currentLineFeed + 1, strlen($str));
+
+				$nextLine = substr($remainingLines, 0, strrpos($remainingLines, "/n"));
+
+				$markdown .= identifier($prevLine, $currentLine, $markdown, $nextLine);
+
+				// line done parsing. change start position to next line
+		        $str = $remainingLines;
+		        $currentLineFeed = strrpos($str, "/n");
+			}
+			$markdown .= identifier($prevLine, $currentLine, $markdown, $nextLine);
+
+
+			return $markdown;
+		}
+
+		// identify what to parse and parse it
+		function identifier($prevLine, $currentLine, $markdown, $nextLine) {
+
+			return $markdown;
 		}
 
 		function markdownBlock($instring)
@@ -245,6 +282,7 @@
 												case "gif": $ctype="image/gif"; break;
 												case "png": $ctype="image/png"; break;
 												case "jpg": $ctype="image/jpg"; break;
+												//default: $ctype=mime_content_type($filename); break;
 											}
 											header("Content-Type: ".$ctype);
 											header('Content-Disposition: inline; filename="' .$filename.'"');
