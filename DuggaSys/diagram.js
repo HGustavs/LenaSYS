@@ -1120,8 +1120,11 @@ function doubleclick(ev)
         document.getElementById('nametext').value = diagram[selobj].name;
 		document.getElementById('fontColor').value = diagram[selobj].fontColor;
 		document.getElementById('font').value = diagram[selobj].font;
-	    document.getElementById('attributeType').value = diagram[selobj].attributeType;
 	    document.getElementById('TextSize').value = diagram[selobj].sizeOftext;
+		if(document.getElementById('entityType') !=null)
+	    {document.getElementById('entityType').value = diagram[selobj].entityType;}
+		if(document.getElementById('attributeType') !=null)
+		{document.getElementById('attributeType').value = diagram[selobj].attributeType;}
   }
 }
 
