@@ -431,7 +431,6 @@ function Symbol(kind) {
       var object_lines = [];
       for(i = 0; i < lines.length; i++){
         var line = lines[i];
-
         //Connected to connectors top, right, bottom and left; topLeft, bottomRight, centerpoint or middleDivider.
         for(var j = 0; j < private_points.length; j++){
           if (line.topLeft == private_points[j] || line.bottomRight == private_points[j]) {
@@ -439,6 +438,7 @@ function Symbol(kind) {
             break;
           }
         }
+        break;
       }
       return object_lines;
     }
@@ -686,17 +686,42 @@ function Symbol(kind) {
 
       }else if(this.symbolkind==4){
         // ER Attribute relationship is a single line
-        if(this.sel || this.targeted){
-          ctx.strokeStyle="#F82";
-        }else{
+        if(this.type == "weak"){
+          ctx.lineWidth=ctx.lineWidth*3;
+          if(this.sel || this.targeted){
+            ctx.strokeStyle="#F82";
+          }else{
+            ctx.strokeStyle="#000";
+          }
+          ctx.beginPath();
+          ctx.moveTo(x1,y1);
+          ctx.lineTo(x2,y2);
+          ctx.stroke();
+
+          ctx.lineWidth=ctx.lineWidth/3;
+          ctx.strokeStyle="#fff";
+
+          ctx.beginPath();
+          ctx.moveTo(x1,y1);
+          ctx.lineTo(x2,y2);
+          ctx.stroke();
+
           ctx.strokeStyle="#000";
         }
-        ctx.beginPath();
-        ctx.moveTo(x1,y1);
-        ctx.lineTo(x2,y2);
-        ctx.stroke();
+        else{
+          if(this.sel || this.targeted){
+            ctx.strokeStyle="#F82";
+          }else{
+            ctx.strokeStyle="#000";
+          }
+          ctx.beginPath();
+          ctx.moveTo(x1,y1);
+          ctx.lineTo(x2,y2);
+          ctx.stroke();
 
-        ctx.strokeStyle="#000";
+          ctx.strokeStyle="#000";
+        }
+
       }else if(this.symbolkind==5){
 
           ctx.font="bold "+parseInt(textsize)+"px "+this.font;
