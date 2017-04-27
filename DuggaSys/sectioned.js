@@ -656,8 +656,8 @@ function returnedSection(data)
 			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='New version' class='submit-button-rounded' title='Create a new version of this course' onclick='showCreateVersion();'></td>";
 			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Access' class='submit-button-rounded' title='Give students access to the selected version' onclick='accessCourse();'/></td>";
 			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Results' class='submit-button-rounded' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Tests' class='submit-button-rounded' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Files' class='submit-button-rounded' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Tests' class='submit-button-rounded' title='Tests' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Files' class='submit-button-rounded' title='Files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Analysis' class='submit-button-rounded' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Groups' class='submit-button-rounded' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 
@@ -666,7 +666,7 @@ function returnedSection(data)
 		}
 
         if(retdata["writeaccess"]){
-            str += "<td><input type='button' value='+' class='submit-button-rounded-newitem' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
+            str += "<td><input type='button' value='+' class='submit-button-rounded-newitem' title='New item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
             str+="</tr></table>";
             str += "<input type='button' class='fab' value='+' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>";
         }else{
