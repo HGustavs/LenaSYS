@@ -2163,3 +2163,15 @@ table {
   border:0px;
   cursor: pointer;
 }
+
+img.light-disabled {
+  opacity: 0.5;
+}
+
+img.light-enabled {
+  opacity: 1;
+}
+
+img.clickable:hover {
+  cursor: pointer;
+}
