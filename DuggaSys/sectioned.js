@@ -675,9 +675,9 @@ function returnedSection(data)
 
 
 
-
-		// Course Name
-		str+="<div class='course ellipseBox' style='display: flex;align-items: center;justify-content: center;'>";
+    // Course Name
+    // This will ellipsis on the course name, and keep course code and vers always fully expanded
+    str+="<div class='course ellipseBox' style='display: flex;align-items: center;justify-content: center;'>";
 			str+="<div style='display: none; margin-right:10px;'></div>";
 			str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-right:10px; max-width: 400px'>"+data.coursename+"</div>";
       str+="<div class='nowrap'";
@@ -910,14 +910,27 @@ function returnedSection(data)
 				}else if (parseInt(item['kind']) == 1) {					// Section
 					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 4) {		// Moment
-					str+="<span class='"+blorf+"' style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+          var momentsplit = item['entryname'].split(" ");
+          var momentname = momentsplit.splice(0,momentsplit.length-1);
+          var momenthp = momentsplit[momentsplit.length-1];
+
+          str+="<div style='display:flex;'>";
+            str+="<div class='nowrap"+blorf+"' style='padding-left:5px;'>";
+              str+="<span class='ellipsis'>"+momentname+"</span> ";
+              str+=momenthp
+           str+="</div><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+          str+="</div>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {	
 					if(parseInt(item['rowcolor']) == 1) {
 						str+="<a class='"+blorf+"' style='font-size:14pt;color:white;cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
 					}else{	// Test / Dugga
-						str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
+          var duggasplit = item['entryname'].split(" ");
+          var dugganame = duggasplit.splice(0,duggasplit.length-1);
+          var dugganumber = duggasplit[duggasplit.length-1];
+
+						str+="<div style='display:flex;'><a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' ><span class='nowrap'><span class='ellipsis'>"+dugganame+"</span> "+dugganumber+"</span></a></div>";
 					}
 				}else if(parseInt(item['kind']) == 5){			// Link
 					if(item['link'].substring(0,4) === "http"){
