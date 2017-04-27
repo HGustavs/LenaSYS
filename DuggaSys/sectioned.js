@@ -660,11 +660,9 @@ function returnedSection(data)
 			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
 			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-
     }else{
 			// No version selector for students
 		}
-
         if(retdata["writeaccess"]){
             str += "<td><input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
             str+="</tr></table>";
@@ -672,9 +670,6 @@ function returnedSection(data)
         }else{
             str+="</tr></table>";
         }
-
-
-
 
 		// Course Name
 		str+="<div class='course'>";

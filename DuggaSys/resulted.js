@@ -558,6 +558,7 @@ function process()
 		}			
 		// Update dropdown list
 		var dstr="";
+    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectdugga' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 		for(var j=0;j<moments.length;j++){
 				var lid=moments[j].lid;
 				var name=moments[j].entryname;
@@ -566,7 +567,7 @@ function process()
 				
 				if (moments[j].kind == 4) {dstr +=" checkmoment";}
 				
-				dstr+="'><input type='checkbox' class='headercheck' id='hdr"+lid+"check'";
+				dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
 				if (clist){
 						index=clist.indexOf("hdr"+lid+"check");
 						if(index>-1){
@@ -597,7 +598,7 @@ function process()
     dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>";
 
     // Filter for only showing pending
-    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
+    dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
     if (onlyPending){ dstr+=" checked"; }
     dstr+="><label class='headerlabel' for='pending'>Only pending</label>";
 	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
@@ -664,6 +665,17 @@ function leavec()
 
 	if(str!=old || onlyPending==opend) process();
 }
+
+// Function to select and unselect all duggas 
+function checkedAll () {
+    var aa =  document.getElementsByName("selectdugga");
+    checked = document.getElementById('selectdugga').checked;
+     
+    for (var i =0; i < aa.length; i++) 
+    {
+        aa[i].checked = checked;
+    }
+ }
 
 function hovers()
 {
@@ -1050,7 +1062,7 @@ function returnedResults(data)
 		subheading=0;
 
 		if (data['debug'] !== "NONE!") alert(data['debug']);
-    
+
 		$(document).ready(function () {
 						$("#dropdownc").mouseleave(function () {
 								leavec();
@@ -1061,7 +1073,7 @@ function returnedResults(data)
 								leaves();
 						});
 		});
-	
+
 		allData = data; // used by dugga.js
 	
 		if (data['dugganame'] !== "") {

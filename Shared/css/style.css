@@ -2218,26 +2218,34 @@ table {
   position: absolute;
   left: 4%;
   top: 62px;
+  overflow: auto;
+  padding: 0;
 }
 
 /* The Close Button */
 .SwimClose {
   color: white;
   position: absolute;
-  top: 62px;
-  left: 2%;
+  text-align: center;
+  float: right;
+  right: 0px;
+  top: 0px;
   font-size: 28px;
   font-weight: bold;
   height: 30px;
-  width: 35px;
-  margin-right: 10px;
+  width: 30px;
   cursor:pointer;
+  background-color: rgb(204,63,65);
+}
+
+.SwimClose:hover {
+  opacity: 0.5;
 }
 
 .swimlaneOverlay {
   display: none; /* Hidden by default */
   position: absolute; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 10000; /* Sit on top */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
