@@ -244,7 +244,7 @@ function returnedFile(data)
       str3+="<thead style='cursor:pointer;'>";
       //str3+="<tr onclick='toggleTableVisibility(\"course\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID<span></div></th><th>Course File</th>" +
 	
-      str3+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID<span>" +
+      str3+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>" +
       "<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" +
       "<th>Course File</th>" +
 	  "<th>File extension</th>" +
