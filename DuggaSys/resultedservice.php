@@ -175,7 +175,11 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 	if(strcmp($opt,"DUGGA")==0){
 
 		// in this case moment refers to the listentry and not the parent moment listentry
-		$query = $pdo->prepare("SELECT userAnswer.useranswer as aws,entryname,quizFile,qrelease,deadline,param,variant.variantanswer as facit,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,link,feedback as duggaFeedback FROM userAnswer,listentries,quiz,variant WHERE variant.vid=userAnswer.variant AND userAnswer.cid=listentries.cid AND listentries.cid=quiz.cid AND userAnswer.vers=listentries.vers AND listentries.link=quiz.id AND listentries.lid=userAnswer.moment AND uid=:luid AND userAnswer.moment=:moment AND listentries.cid=:cid AND listentries.vers=:vers;");
+		$query = $pdo->prepare("
+      SELECT userAnswer.useranswer AS aws,entryname,quizFile,qrelease,deadline,param,variant.variantanswer AS facit,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,link,feedback AS duggaFeedback 
+      FROM userAnswer,listentries,quiz,variant
+      WHERE variant.vid=userAnswer.variant AND userAnswer.cid=listentries.cid AND listentries.cid=quiz.cid AND userAnswer.vers=listentries.vers AND listentries.link=quiz.id AND listentries.lid=userAnswer.moment AND uid=:luid AND userAnswer.moment=:moment AND listentries.cid=:cid AND listentries.vers=:vers;
+    ");
 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
@@ -217,7 +221,11 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			}
 		} else {
 				//we need the paramters for the variant
-				$queryp = $pdo->prepare("SELECT quizFile,quizID,vid,param FROM quiz,listentries,variant WHERE listentries.cid=:cid AND listentries.vers=:vers AND lid=:moment AND listentries.link=variant.quizID AND variant.quizID=quiz.id LIMIT 1;");
+				$queryp = $pdo->prepare("
+          SELECT quizFile,quizID,vid,param
+          FROM quiz,listentries,variant
+          WHERE listentries.cid=:cid AND listentries.vers=:vers AND lid=:moment AND listentries.link=variant.quizID AND variant.quizID=quiz.id LIMIT 1;
+        ");
 				$queryp->bindParam(':cid', $cid);
 				$queryp->bindParam(':vers', $vers);
 				$queryp->bindParam(':moment', $listentry);
@@ -246,7 +254,11 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$duggaentry=$listentry;
 			$duggauser=$luid;
 
-			$query = $pdo->prepare("SELECT lastname,firstname,username FROM user WHERE uid=:uid");
+			$query = $pdo->prepare("
+        SELECT lastname,firstname,username
+        FROM user
+        WHERE uid=:uid
+      ");
 			$query->bindParam(':uid', $luid);
 
 			if(!$query->execute()) {
@@ -306,7 +318,11 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 				
 		}
 		*/
-		$query = $pdo->prepare("SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class FROM user,user_course WHERE user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;");
+		$query = $pdo->prepare("
+      SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class,user_course.access
+      FROM user,user_course
+      WHERE user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;
+    ");
 		//		$query = $pdo->prepare("select user_course.cid as cid,user.uid as uid,username,firstname,lastname,ssn,access from user,user_course where user.uid=user_course.uid and user_course.cid=:cid;");
 		$query->bindParam(':coursevers', $vers);
 		$query->bindParam(':cid', $cid);
@@ -326,7 +342,8 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
 				'ssn' => $row['ssn'],
-				'class' => $row['class']
+				'class' => $row['class'],
+				'access' => $row['access']
 			);
 /*
 			$entry = array(
@@ -343,7 +360,11 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 		}
 
 		// All results from current course and vers?
-		$query = $pdo->prepare("select aid,quiz,variant,userAnswer.moment as dugga,grade,uid,useranswer,UNIX_TIMESTAMP(submitted)as submitted,userAnswer.vers,UNIX_TIMESTAMP(marked) as marked,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,listentries.moment as moment,if((submitted > marked && !isnull(marked))||(isnull(marked) && !isnull(useranswer)), true, false) as needMarking from userAnswer,listentries where userAnswer.cid=:cid and userAnswer.vers=:vers and userAnswer.moment=listentries.lid;");
+		$query = $pdo->prepare("
+      SELECT aid,quiz,variant,userAnswer.moment AS dugga,grade,uid,useranswer,UNIX_TIMESTAMP(submitted) AS submitted,userAnswer.vers,UNIX_TIMESTAMP(marked) AS marked,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,listentries.moment AS moment,if((submitted > marked && !isnull(marked))||(isnull(marked) && !isnull(useranswer)), true, false) AS needMarking
+      FROM userAnswer,listentries
+      WHERE userAnswer.cid=:cid AND userAnswer.vers=:vers AND userAnswer.moment=listentries.lid;
+    ");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 
@@ -382,7 +403,13 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 		// All dugga/moment entries from current course version
 		//$query = $pdo->prepare("SELECT listentries.*,quizFile FROM listentries,quiz WHERE listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
 		//$query = $pdo->prepare("SELECT listentries.*,quizFile,variant.vid as qvariant FROM listentries,quiz,variant WHERE quiz.id=variant.quizID AND listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) GROUP BY lid ORDER BY pos;");
-		$query = $pdo->prepare("SELECT listentries.*,quizFile,COUNT(variant.vid) as qvariant FROM listentries LEFT JOIN quiz ON  listentries.link=quiz.id LEFT JOIN variant ON quiz.id=variant.quizID WHERE listentries.cid=:cid and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) GROUP BY lid ORDER BY pos;");
+		$query = $pdo->prepare("
+      SELECT listentries.*,quizFile,COUNT(variant.vid) AS qvariant
+      FROM listentries
+      LEFT JOIN quiz ON listentries.link=quiz.id
+      LEFT JOIN variant ON quiz.id=variant.quizID
+      WHERE listentries.cid=:cid AND listentries.vers=:vers AND (listentries.kind=3 OR listentries.kind=4) GROUP BY lid ORDER BY pos;
+    ");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 
@@ -435,7 +462,12 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 
 // Get the files for the dugga we are marking
 if(strcmp($opt,"DUGGA")===0){
-	$query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid order by filename,updtime asc;");
+	$query = $pdo->prepare("
+    SELECT subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment
+    FROM submission
+    WHERE uid=:uid AND vers=:vers AND cid=:cid
+    ORDER BY filename,updtime asc;
+  ");
 	$query->bindParam(':uid', $luid);
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':vers', $vers);
@@ -518,7 +550,10 @@ if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
 
 $teachers=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT teacher, uid FROM user_course;");
+	$query = $pdo->prepare("
+    SELECT teacher, uid
+    FROM user_course;
+  ");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();

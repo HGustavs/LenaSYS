@@ -28,6 +28,7 @@ $(function(){$( "#release" ).datepicker({dateFormat: "yy-mm-dd"});$( "#deadline"
 function closeEditFile()
 {
 		$("#editFile").css("display","none");
+		$("#overlay").css("display","none");
 }
 
 function deleteFile(fileid,filename){
@@ -55,6 +56,7 @@ function createLink()
 		$("#filey").css("display","none");
 		$("#linky").css("display","block");
 		$("#selecty").css("display","none");
+		$("#overlay").css("display","block");
 		$("#kind").val("LINK");
 		$("#cid").val(querystring['cid']);
 		$("#coursevers").val(querystring['coursevers']);
@@ -90,6 +92,7 @@ function createFile(kind)
 		$("#editFile").css("display","block");
 		$("#filey").css("display","block");
 		$("#linky").css("display","none");
+		$("#overlay").css("display","block");
 		if(kind!="LFILE") $("#selecty").css("display","block");
 		$("#kind").val(kind);
 		$("#cid").val(querystring['cid']);
@@ -351,6 +354,14 @@ function setupSort(){
 	filt+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
 	filt+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
 	filt+="<div id='dropdowns' class='dropdown-list-container'>";
+	filt+="<div class='checkbox-dugga'><form>"+ 
+	"<input type='radio' name='sort' value='0' onclick='sorttype(0)' class='headercheck' id='FNASC'><label class='headerlabel' for='FNASC'>File Name ASC</label><br />"+
+	"<input type='radio' name='sort' value='1' onclick='sorttype(1)' class='headercheck' id='FNDESC'><label class='headerlabel' for='FNDESC'>File Name DESC</label><br />"+
+    "<input type='radio' name='sort' value='2' onclick='sorttype(2)' class='headercheck' id='FE'><label class='headerlabel' for='FE'>File Extension</label><br />"+
+    "<input type='radio' name='sort' value='3' onclick='sorttype(3)' class='headercheck' id='Upld'><label class='headerlabel' for='Upld'>Upload Date</label><br />"+  
+    "<input type='radio' name='sort' value='4' onclick='sorttype(4)' class='headercheck' id='FS'><label class='headerlabel' for='FS'>File Size</label><br />"+
+    "<input type='radio' name='sort' value='5' onclick='sorttype(5)' class='headercheck' id='FK'><label class='headerlabel' for='FK'>File Kind</label><br />"+ 
+    "</form></div>";
 	filt+="</div>";
 	filt+="</span></td>";
 	$("#menuHook").before(filt); //menuHook is set between buttons and navName
@@ -367,10 +378,17 @@ function leaves(){
 //Switch Content between one table and separate tables;
 
 function switchcontent() {
+	var allcont = $("#allcontent");
+	if(allcont.css('display') != 'none'){
+        $("button.switchContent").first().html('Switch to One table');
+	}
+	else{
+        $("button.switchContent").first().html('Switch to Multiple tables');
+    }
 		$("#allglobalfiles").toggle("hide");
 		$("#allcoursefiles").toggle("hide");
     	$("#alllocalfiles").toggle("hide");
-		$("#allcontent").toggle("show");
+    allcont.toggle("show");
 }
 
 function convertfilekind(kind){
@@ -416,13 +434,14 @@ function searchcontent(){
 	str="";
 	str+="<table class='list' style='margin-bottom:8px;' >";
 	str+="<thead style='cursor:pointer;'>";
-	str+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span></div></th>" +
-    "<th>Search Results<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></th>" +
+	str+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>"+
+	"<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" +
+    "<th>Search Results</th>" +
     "<th>File extension</th>" +
     "<th>Upload date & time</th>" +
     "<th>File size</th>" +
     "<th>File Kind</th>" +
-    "<th class='last'><input class='submit-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
+    "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
 	str+="</thead><tbody id='searchresults_body'>";
 	for(i=0;i<searchdata.length;i++){
 		item = searchdata[i];

@@ -20,16 +20,19 @@ function addUsers()
 		var newUserJSON = JSON.stringify(newUsersArr);	
 		AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
 		$("#createUsers").css("display","none");
+		$("#overlay").css("display","none");
 }
 
 function showCreateUsersPopup()
 {
 	$("#createUsers").css("display","block");
+	$("#overlay").css("display","block");
 }
 
 function hideCreateUsersPopup()
 {
 	$("#createUsers").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function changeAccess(cid,uid,val)
@@ -107,6 +110,8 @@ function selectUser(uid,username,ssn,firstname,lastname,access,className,teacher
 
 	// Displays the cogwheel box
 	$("#editUsers").css("display","block");
+	
+	$("#overlay").css("display","block");
 }
 
 function updateUser()
@@ -122,6 +127,7 @@ function updateUser()
 	AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,className:className,cid:querystring['cid'],coursevers:querystring['coursevers'],teacher:teach},"ACCESS");
 	
 	$("#editUsers").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function closeEdituser()
@@ -183,8 +189,9 @@ function returnedAccess(data)
 	// Fill section list with information
 	str="";
 	if (data['entries'].length > 0) {
-
-		  str+="<table class='list'>";
+		str="<input id='searchinput' type='text' name='search' placeholder='Search..' onkeypress='return searchKeyPress(event);' >";
+		str+="<button id='searchbutton' class='switchContent' onclick='keyUpSearch();' type='button'>Search</button>";
+		str+="<table class='list'>";
       str+="<tr><th class='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:140px; cursor: pointer;'>Username</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>SSN</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>First Name</th>" +
@@ -195,7 +202,7 @@ function returnedAccess(data)
           	"<th style='text-align:left; padding-left:8px; width:90px;'>Version</th>" +
 		  	"<th style='text-align:left; padding-left:8px; width:90px;'>Access</th>" +
 			"<th style='text-align:left; padding-left:8px; width:90px;'>Settings</th>" +
-			"<th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr>";
+			"<th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr><tbody id='accesstable_body'>";
 		for(i=0;i<data['entries'].length;i++){
 			var item=data['entries'][i];
 
@@ -269,10 +276,36 @@ function returnedAccess(data)
 			str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+item['username']+" ?\")) resetPw(\""+item['uid']+"\",\""+item['username']+"\"); return false;' style='float:none;'></td>";
 			str+="</tr>";
 		}
-		str+="</table>";
+		str+="</tbody></table>";
 	}
 	var slist=document.getElementById("accessedcontent");
 	slist.innerHTML=str;
 	
 	if(data['debug']!="NONE!") alert(data['debug']);
+}
+
+//excuted onclick button for quick searching in table
+function keyUpSearch() {
+	var $rows = $('#accesstable_body tr');
+	$('#searchinput').keyup(function() {
+	    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+	    
+	    $rows.show().filter(function() {
+	        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+	        return !~text.indexOf(val);
+	    }).hide();
+	});
+}
+
+//waiting for enter key to be pressed when typing to searchinput
+function searchKeyPress(e)
+{
+    // look for window.event in case event isn't passed in
+    e = e || window.event;
+    if (e.keyCode == 13)
+    {
+        document.getElementById('searchbutton').click();
+        return false;
+    }
+    return true;
 }

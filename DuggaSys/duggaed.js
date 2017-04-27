@@ -7,6 +7,7 @@ var sessionkind=0;
 var querystring=parseGet();
 var filez;
 var variant = [];
+var submissionRow = 0;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -33,6 +34,7 @@ function deleteVariant()
 	var vid=$("#vid").val();
 	if(confirm("Do you really want to delete this Variant?")) AJAXService("DELVARI",{cid:querystring['cid'],vid:vid,coursevers:querystring['coursevers']},"DUGGA");
 	$("#editVariant").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function toggleVariant()
@@ -44,6 +46,7 @@ function toggleVariant()
 		if(confirm("Do you really want to enable this Variant?")) AJAXService("TOGGLEVARI",{cid:querystring['cid'],vid:vid,disabled:"0",coursevers:querystring['coursevers']},"DUGGA");
 	}
 	$("#editVariant").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function addVariant(cid,qid)
@@ -54,6 +57,7 @@ function addVariant(cid,qid)
 function updateVariant()
 {
 	$("#editVariant").css("display","none");
+	$("#overlay").css("display","none");
 
 	var vid=$("#vid").val();
 	var answer=$("#variantanswer").val();
@@ -78,11 +82,13 @@ function deleteDugga()
     did=$("#did").val();
     if(confirm("Do you really want to delete this dugga?")) AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
     $("#editDugga").css("display","none");
+    $("#overlay").css("display","none");
 }
 
 function updateDugga()
 {
 	$("#editDugga").css("display","none");
+	$("#overlay").css("display","none");
 
 	var did=$("#did").val();
 	var nme=$("#name").val();
@@ -99,6 +105,7 @@ function updateDugga()
 function closeEditDugga()
 {
 	$("#editDugga").css("display","none");
+	$("#overlay").css("display","none");
 }
 
 function showLoginPopup()
@@ -116,6 +123,7 @@ function hideLoginPopup()
 function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 {
 	$("#editDugga").css("display","block");
+	$("#overlay").css("display","block");
 	$("#did").val(did); // Set Variant ID
 	$("#name").val(name); // Set Dugga name
 	$("#release").val(release); // Set Release date name
@@ -151,10 +159,27 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 	$("#template").html(str);
 }
 
+// Adds a submission row in Edit Variant
+function addSubmissionRow() {
+	$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>"+
+					"<select name='type' id='submissionType"+submissionRow+"' style='width:65px;'>"+
+						"<option value='pdf'>PDF</option>"+
+						"<option value='zip'>Zip</option>"+
+						"<option value='link'>Link</option>"+
+						"<option value='text'>Text</option>"+
+					"</select>"+
+					"<input type='text' name='fieldname' id='fieldname"+submissionRow+"' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='text' name='instruction' id='instruction"+submissionRow+"' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>"+
+				 "</div>");
+	submissionRow++;
+}
+
 function selectVariant(vid,param,answer,template,dis)
 {
 
 	$("#editVariant").css("display","block"); // Display edit dialog
+	$("#overlay").css("display","block"); 
 	$("#vid").val(vid); // Set Variant ID
 	//var pparam = parseParameters(param);
 	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
@@ -165,6 +190,58 @@ function selectVariant(vid,param,answer,template,dis)
 	} else {
 		$("#toggleVariantButton").val("Disable"); // Set Variant answer
 	}
+	
+	//Parse JSON to add data to forms again
+	var data = $("#parameter").val();
+	if(data == "" || data == "UNK"){}
+	else{
+		var result = JSON.parse(data);
+		//Adds data to forms 
+		if(result["type"]!=undefined){
+			$("#type").val(result["type"]);
+		}
+		
+		if(result["filelink"]!=undefined){
+			$("#filelink").val(result["filelink"]);
+		}
+		
+		if(result["submissions"]!=undefined){
+			//Adds more submission rows if necessary
+			for(i = 0; i < result["submissions"].length; i++){
+				if(i > 0 && i <= submissionRow) {
+					addSubmissionRow();
+				}
+				if(result["submissions"][i]["type"]!=undefined){
+					$("#submissionType"+i).val(result["submissions"][i]["type"]);
+				}
+				if(result["submissions"][i]["fieldname"]!=undefined){
+					$("#fieldname"+i).val(result["submissions"][i]["fieldname"]);
+				}
+				if(result["submissions"][i]["instruction"]!=undefined){
+					$("#instruction"+i).val(result["submissions"][i]["instruction"]);
+				}
+			}
+		}
+	}
+
+}
+
+function closeVariant(){
+	//Removes data from forms, going back to original style
+	$("#type").val("md");
+	$("#filelink").val("");
+	for(i = 0; i < 100; i++){
+		$("#submissionType"+i).val("pdf");
+		$("#fieldname"+i).val("");
+		$("#instruction"+i).val("");
+	}
+	//Removes all submission rows
+	for(i=0; i < submissionRow; i++){
+		$("#submissionType"+i).parent().remove();
+	}
+	submissionRow=0;
+	//Adds one submission row so that one is visible next time it's opened
+	addSubmissionRow();
 }
 
 function isInArray(array, search)
@@ -380,6 +457,7 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 	});
 
 	$("#resultpopover").css("display", "block");
+	$("#overlay").css("display", "block");
 
 }
 
@@ -472,6 +550,7 @@ function changeanswer(vidd,num)
 function closePreview()
 {
 	$("#resultpopover").css("display", "none");
+	$("#overlay").css("display", "none");
 	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
 
 }
@@ -499,8 +578,7 @@ $(document).ready(function(){
 
 		// Handle the dynamic amount of submission types
 		for(var i = 2; i < formData.length; i++) {
-			// console.log(formData[i]);
-			if(i % 2 == 0) {
+			if(i % 3 == 2) {
 				// The start of a new submissions field, prepend with curly bracket
 				jsonStr += "{";
 			}
@@ -508,20 +586,7 @@ $(document).ready(function(){
 			if(formData[i]['value'].length > 0) {
 				jsonStr += '"' + formData[i]['name'] + '":"' + formData[i]['value'] + '",';
 			}
-			if(i % 2 == 0) { // i is divisible by 2 - add the type field to the JSON string.
-				jsonStr += '"type":';
-				// Add the type k/v pair to the submission element
-				if(formData[i]['value'] === "project_report") {
-					jsonStr += '"pdf",';
-				} else if(formData[i]['value'] === "project_link") {
-					jsonStr += '"link",';
-				} else if(formData[i]['value'] === "project_zip") {
-					jsonStr += '"zip",';
-				} else if(formData[i]['value'] === "textsubmit") {
-					jsonStr += '"text",';
-				}
-			}
-			if(i % 2 == 1) {
+			if(i % 3 == 1) {
 				// This submission field is complete, prepare for next
 				// Remove the last comma
 				jsonStr = jsonStr.substr(0, jsonStr.length-1);
@@ -535,12 +600,8 @@ $(document).ready(function(){
 		jsonStr += ']'; // The end of the submissions array.
 		// Here, the freetext field handling should be added as it comes after the submissions array.
 		jsonStr += '}'; // The end of the JSON-string.
-
+		
 		return jsonStr;
-	}
-
-	function addSubmissionRow() {
-		$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'><select name='fieldname' id='fieldname' style='margin-bottom:3px;flex:4;'><option value='project_report'>Project report</option><option value='project_zip'>Project ZIP</option><option value='project_link'>Project link</option><option value='textsubmit'>Text submit</option></select><input type='text' name='instruction' id='instruction' placeholder='Upload instruction' style='flex:15;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/><input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></button><br/></div>");
 	}
 
 	$(document).on('click','.delButton', function(){
@@ -555,7 +616,6 @@ $(document).ready(function(){
 	});
 
 	$('#createjson').click(function(){
-		// console.log("asdasd");
 		$('#parameter').val(createJSONString($('#jsonform').serializeArray()));
 	});
 });
