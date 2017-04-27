@@ -73,9 +73,14 @@
 </header>
     <body>
     <div class="swimlaneOverlay" id="swimlaneOverlay">
-        <span class='SwimClose''>&times;</span>
         <!-- the external content of swimlane is loaded into this div -->
         <div class="SwimContentWrap" id ="SwimContentWrap">
+            <div class="SwimContent" id="SwimContent">
+
+            </div>
+            <div class="SwimClose">
+                <span>&times;</span>
+            </div>
         </div>
     </div>
         <script>
@@ -87,7 +92,7 @@
             });
 
             function loadSwimlane() {
-                $('.SwimContentWrap').load(path + "/../../Shared/swimlane.php?courseid=" +
+                $('.SwimContent').load(path + "/../../Shared/swimlane.php?courseid=" +
                   <?php ((isset($cid)) ? Print($cid) : Print(0)) ?> +
                         "&coursevers=" +
                   <?php ((isset($coursevers)) ? Print($coursevers) : Print(0)) ?>);
