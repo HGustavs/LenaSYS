@@ -54,9 +54,9 @@ pdoConnect();
 			</select>
 			<button onclick='openAppearanceDialogMenu();'>Change Apperance</button>
 			<button onclick='debugMode();'>Debug</button>
-			<button onclick='removeLocal();'>Removed Hashed Diagram</button>
+			<button onclick='clearCanvas(); removeLocal();'>Removed Hashed Diagram</button>
 			<button onclick='eraseSelectedObject();'>Delete Object</button>
-			<button onclick='clearCanvas();'>Delete All</button>
+			<button onclick='clearCanvas(); removeLocal();'>Delete All</button>
 			<button id='zoomInButton' class='unpressed' style='right:0; position:fixed; margin-right:120px;'>+</button>
 			<button id='zoomOutButton' class='unpressed' style='right:0; position:fixed; margin-right:100px;'>-</button>
 	        <select id='download' onchange='downloadMode(this)'>
