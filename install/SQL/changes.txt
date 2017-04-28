@@ -80,3 +80,8 @@ CREATE TABLE `usergroup_listentries` (
 Added rows to 'vers' to have a start date and end date to a version of a course
   startdate     DATETIME,
   enddate       DATETIME,
+
+/* -----------------------------*/
+/* -------- Usergroup ----------*/
+/* -----------------------------*/
+Removed the field name from the table (the usergroup's name).
