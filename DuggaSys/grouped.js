@@ -47,10 +47,11 @@ function returnedGroup(data)
 	// Init the table string. 
 	str="";
 	
-	str+="<table class='navheader'><tr class='trsize'>";
-	str+="<td ><input style='display: inline-block; margin-right:2px; width:112px;' type='button' value='New Group' class='submit-button' onclick='selectGroup();'/>";
-	str+="</tr></table>";
 	
+	str+="<div class='titles' style='padding-bottom:10px;'>";
+	str+="<h1 style='flex:10;text-align:center;'>Groups</h1>";
+	str+="<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='New Group' onclick='selectGroup();'/>";
+	str+="</div>";
 
 	// Create the table headers. 
 	str+="<table class='markinglist' id='markinglist'>";

@@ -299,9 +299,11 @@ function returnedDugga(data)
 	str="";
 	if (data['files'].length > 0) {
 
-		str+="<div style='float:right;padding-bottom:10px;'>";
-		str+="<input class='submit-button' type='button' value='Add Dugga' onclick='createDugga();'/>";
+		str+="<div class='titles' style='padding-top:10px;'>";
+		str+="<h1 style='flex:10;text-align:center;'>Tests</h1>";
+		str+="<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='Add Dugga' onclick='createDugga();'/>";
 		str+="</div>";
+		
 		str+="<table class='list' id='testTable'>";
 		str+="<tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Release</th><th>Deadline</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr>";
 
