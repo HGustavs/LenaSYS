@@ -648,7 +648,7 @@ function returnedSection(data)
             }
             str+="</select></td>";
 			
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Edit version' class='submit-button-rounded' title='Edit the selected version' onclick='showEditVersion";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
 
 // Retrieve start and end dates for a version, if there are such, else set to null
       var startdate = null;
@@ -666,20 +666,18 @@ function returnedSection(data)
 			str+='("'+querystring['coursevers']+'","'+versionname+'","'+startdate+'","'+enddate+'")';
 			str+=";'></td>";	
 
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='New version' class='submit-button-rounded' title='Create a new version of this course' onclick='showCreateVersion();'></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Access' class='submit-button-rounded' title='Give students access to the selected version' onclick='accessCourse();'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Results' class='submit-button-rounded' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Tests' class='submit-button-rounded' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Files' class='submit-button-rounded' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Analysis' class='submit-button-rounded' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Groups' class='submit-button-rounded' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
     }else{
 			// No version selector for students
 		}
-
         if(retdata["writeaccess"]){
-            str += "<td><input type='button' value='+' class='submit-button-rounded-newitem' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
+            str += "<td><input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
             str+="</tr></table>";
             str += "<input type='button' class='fab' value='+' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>";
         }else{
@@ -695,7 +693,6 @@ function returnedSection(data)
         showInline = true;
         hiddenInline = "inline";
       }
-
 
     // Course Name
     // This will ellipsis on the course name, and keep course code and vers always fully expanded
@@ -1152,6 +1149,13 @@ $(document).on('click', '.section', function () {
 	$(this).nextUntil('.section').slideToggle();
 	$(this).children('.arrowRight').slideToggle();
 	$(this).children('.arrowComp').slideToggle();
+});
+
+// Function for toggling content for all moments
+$(document).on('click', '.hide-moments-button', function () {
+    $('.moment').nextUntil('.moment').slideToggle();
+    $('.moment').children('.arrowRight').slideToggle();
+    $('.moment').children('.arrowComp').slideToggle();
 });
 
 // Function to prevent collapsing when clicking icons

@@ -1064,13 +1064,12 @@ button.option {
   width: 38px;
   height: 38px;
   padding: 6px 12px;
-  margin: 2px 0px 2px -38px;
+
 }
 
 input.submit-button {
     background-color:#614875;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  background-color:#614875;
   border:0px;
   width:110px;
   height:30px;
@@ -1081,33 +1080,17 @@ input.submit-button {
   margin-left:4px;
   font-size:14px;
   transition:1s background-color;
-  float:right;
-}
-
-input.submit-button-rounded {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  background-color:#927b9e;
-  border-radius:4px;
-  width:110px;
-  height:30px;
-  color:#fff;
-  cursor:pointer;
-  margin-top:6px;
-  margin-bottom:2px;
-  margin-left:0px;
-  font-size:14px;
-  transition:1s background-color;
   float:left;
 }
 
-input.submit-button-rounded-newitem {
+input.submit-button-newitem {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-weight: bold;
-  background-color:#927b9e;
-  border-radius:4px;
+  background-color:#614875;
+  border: 0px;
   width:40px;
   height:30px;
-  color:#fff;
+  color:#fff;f
   cursor:pointer;
   margin-top:6px;
   margin-bottom:2px;
@@ -1116,6 +1099,24 @@ input.submit-button-rounded-newitem {
   text-align: center;
   transition:1s background-color;
   float:right;
+}
+
+input.hide-moments-button {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  background-color:rgb(253, 203, 96);
+  border: 0px;
+  width:77px;
+  height:25px;
+  color:rgb(97, 73, 116);
+  cursor:pointer;
+  margin-top:2px;
+  margin-bottom:2px;
+  padding: 0px;
+  margin-left:0px;
+  font-size:10px;
+  font-weight: bold;
+  transition:1s background-color;
+  float:left;
 }
 
 input.fileed-button {
@@ -2006,7 +2007,8 @@ span.arrow {
   visibility: hidden;
 }
 .headerlabel {
-  color: #000;
+  color: white;
+  font-size: 16px;
   direction: rtl;
   max-width: 140px;
   min-width: 140px;
@@ -2216,26 +2218,34 @@ table {
   position: absolute;
   left: 4%;
   top: 62px;
+  overflow: auto;
+  padding: 0;
 }
 
 /* The Close Button */
 .SwimClose {
   color: white;
   position: absolute;
-  top: 62px;
-  left: 2%;
+  text-align: center;
+  float: right;
+  right: 0px;
+  top: 0px;
   font-size: 28px;
   font-weight: bold;
   height: 30px;
-  width: 35px;
-  margin-right: 10px;
+  width: 30px;
   cursor:pointer;
+  background-color: rgb(204,63,65);
+}
+
+.SwimClose:hover {
+  opacity: 0.5;
 }
 
 .swimlaneOverlay {
   display: none; /* Hidden by default */
   position: absolute; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 10000; /* Sit on top */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
