@@ -1090,7 +1090,7 @@ input.submit-button-newitem {
   border: 0px;
   width:40px;
   height:30px;
-  color:#fff;f
+  color:#fff;
   cursor:pointer;
   margin-top:6px;
   margin-bottom:2px;
@@ -2007,7 +2007,7 @@ span.arrow {
   visibility: hidden;
 }
 .headerlabel {
-  color: white;
+  color: black;
   font-size: 16px;
   direction: rtl;
   max-width: 140px;
