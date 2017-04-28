@@ -99,6 +99,9 @@ function selectVariant(vid,param,answer,template,dis)
 function closeVariant(){
 	//Hides error message
 	$("#submissionError").css("display", "none");
+	for(i=0; i<submissionRow; i++){
+		$("#fieldname"+i).css("background-color", "white");
+	}
 	//Removes data from forms, going back to original style
 	$("#type").val("md");
 	$("#filelink").val("");
@@ -147,6 +150,7 @@ function updateVariant()
 
 	for(i=0; i<submissionRow; i++){
 		fieldnames.push($("#fieldname"+i).val());
+		$("#fieldname"+i).css("background-color", "white");
 	}
 	fieldnames.sort();
 	
@@ -155,6 +159,11 @@ function updateVariant()
 	for(i=0; i<fieldnames.length; i++){
 		if(fieldnames[i]==fieldnames[i+1]){
 			correct = "no";
+			for(j=0; j<submissionRow; j++){
+				if(fieldnames[i]==$("#fieldname"+j).val()){
+					$("#fieldname"+j).css("background-color", "rgba(255, 0, 6, 0.2)");
+				}
+			}
 		}
 	}
 	
