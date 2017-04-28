@@ -82,7 +82,7 @@ pdoConnect();
 	<div id='editFile' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit File/Link</h3>
-			<div onclick='closeEditFile();'>x</div>
+			<div class='cursorPointer' onclick='closeEditFile();'>x</div>
 		</div>
 		<form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
 			<div style='padding:5px;'>

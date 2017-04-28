@@ -48,7 +48,7 @@ pdoConnect();
 	
 	<div id='resultpopover' class='resultPopover' style='display:none'>
 		<div class='loginBoxheader'>
-			<h3 style='width:100%;' id='Nameof'>Show Results</h3><div onclick='closeWindows();'>x</div>
+			<h3 style='width:100%;' id='Nameof'>Show Results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 		<div id="MarkCont" style="position:absolute; left:4px; right:204px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb; overflow:scroll;"> </div>
 		<div style="position:absolute; right:2px; top:34px; background:#bbb; width:200px;"><div id='markMenuPlaceholder'></div><div id="teacherFeedbackTable"></div></div>
@@ -58,7 +58,7 @@ pdoConnect();
 	
 	<div id='previewpopover' class='previewPopover' style='display:none;'>
 		<div class='loginBoxheader'>
-			<h3 style='width:100%;' id='Nameof'>Document Preview</h3><div onclick='closeWindows();'>x</div>
+			<h3 style='width:100%;' id='Nameof'>Document Preview</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 		<div style="position:absolute;left:0px;top:34px;bottom:0px;right:0px;">
 			<table width="100%" height="100%">
@@ -99,7 +99,7 @@ pdoConnect();
 	
 	<div id='statisticspopover' class='previewpopover' style='display:none;'>
 		<div class='loginBoxheader'>
-			<h3 style='width:100%;' id='Nameof'>Collective results</h3><div onclick='closeWindows();'>x</div>
+			<h3 style='width:100%;' id='Nameof'>Collective results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 	</div>
 </body>
