@@ -2260,7 +2260,6 @@ table {
 }
 
 .ellipsis {
-/*  max-width: 200px;*/ /* width setting for Section Ed ellipsis. Should be set in another place since not good to have in a generic ellipsis */
   overflow: hidden;
   text-overflow: ellipsis; /* rest */
   -o-text-overflow: ellipsis; /* opera */
