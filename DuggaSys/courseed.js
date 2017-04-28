@@ -305,21 +305,8 @@ function returnedCourse(data)
 	// Course Name
 	str += "<div id='Courselistc'>";
   
-  str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;'>";
-//    str += "<div class='head'>";
-//      str += "<div id='lena' style='nowrap' style='max-width: 100%;'>";
-        str += "<a href='https://github.com/HGustavs/LenaSYS_2014'>";
-          str += "<span class='sys'>";
-            str += "<span class='lena'>LENA</span>";
-            str += "Sys";
-          str += "</span>";
-        str += "</a> ";
-       str += "<div class='ellipsis' style='margin: *'>";
-        str += "Course Organization System";
-        str += "</div>";
-//      str += "</div>";
-//    str += "</div>";
-  str += "</div>";
+// Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
+  str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;'><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div class='ellipsis'> Course Organization System</div></div>";
 
 	// For now we only have two kinds of sections
 	if (data['entries'].length > 0) {
