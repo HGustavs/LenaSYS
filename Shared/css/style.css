@@ -1175,8 +1175,8 @@ input.new-item-button:hover {
 }
 
 .unpressed{
-  background: ;
-  color: ;
+  background: rebeccapurple;
+  color: mediumpurple;
 }
 .pressed{
   background: grey;

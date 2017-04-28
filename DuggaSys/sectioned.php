@@ -65,7 +65,7 @@ pdoConnect();
 		<div style='padding:5px;'>
 			<input style='float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' /> 
 			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();showSaveButton();' /> 
-			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();showSaveButton();' /> 
+			<input style='margin-left:220px; display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();showSaveButton();' />
 			<input style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' /> 
     </div>
 	</div>
