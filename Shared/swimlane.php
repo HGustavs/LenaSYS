@@ -84,8 +84,15 @@ $versLength = $versEndWeek - $versStartWeek + 1;
       echo '<text y="55" x="8" fill="white">Version: ' . $vers . '</text>';
 
       // Add right amount of weeks to left column.
+      $markRow = false;
       for ($i = 1; $i <= $versLength; $i++) {
-        echo '<rect x="0" y="' . ($i * 70) . '" width="250" height="70" style="fill:rgb(255,255,255);stroke-width:2;stroke:rgb(0,0,0)" />';
+        if ($markRow){
+          echo '<rect x="0" y="' . ($i * 70) . '" width="250" height="70" fill-opacity="0.3" style="fill:rgb(146,125,156)" />';
+          $markRow = false;
+        } else {
+          echo '<rect x="0" y="' . ($i * 70) . '" width="250" height="70" style="fill:rgb(255,255,255)" />';
+          $markRow = true;
+        }
         echo '<text x="95" y="' . (40 + ($i * 70)) . '" fill="black">Week ' . $i . '</text>';
       }
       ?>
@@ -135,6 +142,19 @@ $versLength = $versEndWeek - $versStartWeek + 1;
         }
         echo ')" />';
         $i++;
+
+        // Add more clear rows into the view.
+        $markRow = false;
+        for ($iter = 1; $iter <= $versLength; $iter++) {
+          if ($markRow) {
+            echo '<rect x="' . ($pos) .
+              '" y="' . ($iter * 70) .
+              '" width="200" height="70" fill-opacity="0.1" style="fill:rgb(146,125,156);" />';
+            $markRow = false;
+          } else {
+            $markRow = true;
+          }
+        }
       } else if ($row['kind'] == 3) {
         $deadlineString = $row['deadline'];
         $startString = $row['qrelease'];

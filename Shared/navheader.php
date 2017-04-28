@@ -104,16 +104,16 @@
             var mouseX;
             var mouseY;
 
-            // Get mouse position.
+            /* Get mouse position. */
             $(document).mousemove(function (e) {
                 mouseX = e.pageX;
                 mouseY = e.pageY;
             });
 
-            // Move left column with side scroll.
+            /* Move left column with side scroll. */
             $(window).scroll(function () {
                 $('#weeks').css({
-                    'left': $(this).scrollLeft() + 5
+                    'left': $(this).scrollLeft()
                 });
             });
 
@@ -139,14 +139,14 @@
                 $('#currentDate').fadeOut('fast');
             }
 
-            var exitButton = document.getElementsByClassName("SwimClose")[0]; // Get the button that opens the modal
+            var exitButton = document.getElementsByClassName("SwimClose")[0]; /* Get the button that opens the modal */
 
-            // When the user clicks on <span> (x), close the modal
+            /* When the user clicks on <span> (x), close the modal */
             exitButton.onclick = function() {
                 swimBox.style.display = "none";
             }
 
-            // When the user clicks anywhere outside of the modal, close it
+            /* When the user clicks anywhere outside of the modal, close it */
             window.onclick = function(event) {
                 if (event.target == swimBox) {
                     swimBox.style.display = "none";
