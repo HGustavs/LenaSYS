@@ -804,12 +804,10 @@ function initcanvas()
 		makegfx();
 
 	updategfx();
-
 	document.getElementById("moveButton").addEventListener('click', movemode, false);
 	document.getElementById("zoomInButton").addEventListener('click', zoomInMode, false);
 	document.getElementById("zoomOutButton").addEventListener('click', zoomOutMode, false);
 	canvas.addEventListener('dblclick', doubleclick, false);
-
 }
 // Function to enable and disable the grid, functionality is related to cx and cy
 
@@ -869,16 +867,23 @@ function zoomOutMode(e){
 }
 
 function zoomInClick(){
+	var oldZV = zv;
 	zv+=0.1;
 	reWrite();
-	ctx.scale(1.1,1.1);
+	// To be able to use the 10% increase och decrease, we need to use this calcuation.
+	var inScale = ((1/oldZV)*zv);
+	ctx.scale(inScale,inScale);
 }
 
 function zoomOutClick(){
+	var oldZV = zv;
 	zv-=0.1;
 	reWrite();
-	ctx.scale(0.9,0.9);
+	// To be able to use the 10% increase och decrease, we need to use this calcuation.
+	var outScale = ((1/oldZV)*zv);
+	ctx.scale(outScale,outScale);
 }
+
 function getUploads() {
     document.getElementById('buttonid').addEventListener('click', openDialog);
     function openDialog() {
@@ -978,14 +983,14 @@ function mousemoveevt(ev, t) {
 	moy = cy;
 	hovobj = diagram.inside(cx, cy);
 	if (ev.pageX || ev.pageY == 0) { // Chrome
-		cx = ev.pageX - acanvas.offsetLeft;
-		cy = ev.pageY - acanvas.offsetTop;
+		cx = (ev.pageX - acanvas.offsetLeft)*(1/zv);
+		cy = (ev.pageY - acanvas.offsetTop)*(1/zv);
 	} else if (ev.layerX || ev.layerX == 0) { // Firefox
-		cx = ev.layerX - acanvas.offsetLeft;
-		cy = ev.layerY - acanvas.offsetTop;
+		cx = (ev.layerX - acanvas.offsetLeft)*(1/zv);
+		cy = (ev.layerY - acanvas.offsetTop)*(1/zv);
 	} else if (ev.offsetX || ev.offsetX == 0) { // Opera
-		cx = ev.offsetX - acanvas.offsetLeft;
-		cy = ev.offsetY - acanvas.offsetTop;
+		cx = (ev.offsetX - acanvas.offsetLeft)*(1/zv);
+		cy = (ev.offsetY - acanvas.offsetTop)*(1/zv);
 	}
 	if(md == 1 || md == 2 || md == 0 && uimode != " ") {
 		if(snapToGrid) {
@@ -1939,9 +1944,13 @@ function hashfunction()
 
 // retrive an old diagram if it exist.
 function loadDiagram(){
-	
+	var checkLocalStorage = localStorage.getItem('localdiagram');
 	//loacal storage and hash
-	var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
+	if(checkLocalStorage == "" || checkLocalStorage == null) {
+		console.log("Hej");
+	} else {
+		var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
+	}
 	var localhexHash = localStorage.getItem('localhash');
 	
 	console.log("local hash: ", localhexHash);
@@ -2005,7 +2014,7 @@ function loadDiagram(){
 
 //remove localstorage
 function removeLocal(){
-    localStorage.setItem('localhash', "");
+    localStorage.setItem('localdiagram', "");
 }
 
 
