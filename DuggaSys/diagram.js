@@ -198,7 +198,7 @@ points.distance = function(xk,yk)
 {
 		var dist=50000000;
 		var ind=-1;
-		for(i=0;i<this.length;i++){
+		for(var i=0;i<this.length;i++){
 				var dx=xk-this[i].x;
 				var dy=yk-this[i].y;
 
@@ -234,7 +234,7 @@ points.distanceBetweenPoints = function( x1, y1, x2, y2, axis) {
 
 points.clearsel = function()
 {
-		for(i=0;i<this.length;i++){
+		for(var i=0;i<this.length;i++){
 				this[i].selected=0;
 		}
 }
@@ -253,18 +253,18 @@ diagram.draw = function () {
 	// On every draw of diagram adjust the midpoint if there is one to adjust
 	this.adjust();
 	// Render figures
-	for(i = 0; i < this.length; i++) {
+	for(var i = 0; i < this.length; i++) {
 		if(this[i].kind == 1) {
 			this[i].draw(1, 1);
 		}
 	}
 	// Render Lines
-	for(i = 0; i < this.length; i++) {
+	for(var i = 0; i < this.length; i++) {
 		if(this[i].symbolkind == 4) {
 			this[i].draw();
 		}
 	}
-	for(i = 0; i < this.length; i++) {
+	for(var i = 0; i < this.length; i++) {
 		if(this[i].kind == 2 && !(this[i].symbolkind == 4)) {
 			this[i].draw();
 		}
@@ -277,7 +277,7 @@ diagram.draw = function () {
 
 diagram.adjust = function ()
 {
-		for(i=0;i<this.length;i++){
+		for(var i=0;i<this.length;i++){
 				item=this[i];
 
 				// Diagram item
@@ -294,7 +294,7 @@ diagram.adjust = function ()
 
 diagram.delete = function (object)
 {
-	for(i=0;i<this.length;i++){
+	for(var i=0;i<this.length;i++){
 		if(this[i]==object){
     		this.splice(i,1);
   	}
@@ -378,7 +378,7 @@ diagram.inside = function (xk, yk) {
 
 diagram.linedist = function (xk,yk)
 {
-		for(i=0;i<this.length;i++){
+		for(var i=0;i<this.length;i++){
 				item=this[i];
 
 				if(item.kind==2){
@@ -398,16 +398,16 @@ diagram.linedist = function (xk,yk)
 // eraseObjectLines - removes all the lines connected to an object
 //--------------------------------------------------------------------
 diagram.eraseObjectLines = function(object, private_lines){
-  for(j = 0; j < private_lines.length; j++){
-    console.log(private_lines[j].to);
-    if(private_lines[j].topLeft != object.centerpoint){
-      points[private_lines[j].topLeft] = waldoPoint;
+  for(var i = 0; ij < private_lines.length; i++){
+    console.log(private_lines[i].to);
+    if(private_lines[i].topLeft != object.centerpoint){
+      points[private_lines[i].topLeft] = waldoPoint;
     }
-    else if(private_lines[j].bottomRight != object.centerpoint){
-      points[private_lines[j].bottomRight] = waldoPoint;
+    else if(private_lines[i].bottomRight != object.centerpoint){
+      points[private_lines[i].bottomRight] = waldoPoint;
     }
 
-    diagram.delete(private_lines[j]);
+    diagram.delete(private_lines[i]);
   }
 }
 //--------------------------------------------------------------------
@@ -415,7 +415,7 @@ diagram.eraseObjectLines = function(object, private_lines){
 //--------------------------------------------------------------------
 diagram.getLineObjects = function (){
   var lines = new Array();
-  for(i = 0; i < this.length; i++){
+  for(var i = 0; i < this.length; i++){
     if(diagram[i].symbolkind == 4){
       lines.push(diagram[i]);
     }
@@ -427,14 +427,16 @@ diagram.getLineObjects = function (){
 //--------------------------------------------------------------------
 diagram.updateLineRelations = function(){
   var private_lines = this.getLineObjects();
-  for (i = 0; i < private_lines.length; i++) {
+  console.log("LEEEENGTH:"+private_lines.length);
+  for (var i = 0; i < private_lines.length; i++) {
+    private_lines[i].type = "idek";
+
     var connected_objects = connectedObjects(private_lines[i]);
-    for(j = 0; j < connected_objects.length; j++){
-      if(connected_objects[j].type == "weak"){
-        private_lines[i].type = "weak";
-      }
-      if(i == 1 && connected_objects[j].type != "weak"){
-        private_lines[i].type = "idek";
+    if(connected_objects.length >= 2){
+      for(var j = 0; j < connected_objects.length; j++){
+        if(connected_objects[j].type == "weak"){
+          private_lines[i].type = "weak";
+        }
       }
     }
   }
@@ -1310,11 +1312,12 @@ function mouseupevt(ev) {
 	}
 	document.addEventListener("click", clickOutsideDialogMenu);
 	updategfx();
+
+  diagram.updateLineRelations();
 	// Clear mouse state
 	md = 0;
 	if (uimode != "CreateFigure") {
 		uimode = " ";
-    diagram.updateLineRelations();
 	}
 }
 
@@ -1326,7 +1329,7 @@ function getConnectedLines(object){
   var private_points = object.getPoints();
   var lines = diagram.getLineObjects();
   var object_lines = [];
-  for(i = 0; i < lines.length; i++){
+  for(var i = 0; i < lines.length; i++){
     var line = lines[i];
 
     //Line
@@ -1629,13 +1632,21 @@ function Consolemode(action){
 }
 function connectedObjects(line){
   var private_objects = [];
-  var numItems = 0;
-  for (i = 0; i < diagram.length && numItems < 2; i++) {
-    var private_points = diagram[i].getPoints();
-    for (j = 0; j < private_points.length && numItems < 2; j++) {
-      if (private_points[j]==line.topLeft||private_points[j]==line.bottomRight) {
-        private_objects.push(diagram[i]);
-        numItems++;
+  for (var i = 0; i < diagram.length; i++) {
+    if(diagram[i].kind==2 && diagram[i].symbolkind != 4){
+      var object_points = diagram[i].getPoints();
+      for (var j = 0; j < object_points.length; j++) {
+        console.log(object_points.length);
+
+        if (object_points[j]==line.topLeft||object_points[j]==line.bottomRight) {
+          private_objects.push(diagram[i]);
+        }
+        if(private_objects.length>=2){
+          break;
+        }
+      }
+      if(private_objects.length>=2){
+        break;
       }
     }
   }
@@ -1660,7 +1671,7 @@ function drawGrid(){
   ctx.setLineDash([5, 0]);
   var quadrantx = (startX < 0)? startX: -startX,
     quadranty = (startY < 0)? startY: -startY;
-  for(i = 0+quadrantx; i < quadrantx+widthWindow; i++){
+  for(var i = 0+quadrantx; i < quadrantx+widthWindow; i++){
     if(i%5==0){
       i++;
     }
@@ -1670,7 +1681,7 @@ function drawGrid(){
     ctx.stroke();
     ctx.closePath();
   }
-  for(i = 0+quadranty; i < quadranty+heightWindow; i++){
+  for(var i = 0+quadranty; i < quadranty+heightWindow; i++){
     if(i%5==0){
       i++;
     }
@@ -1683,7 +1694,7 @@ function drawGrid(){
 
   //Draws the thick lines
   ctx.strokeStyle="rgb(208,208,220)";
-  for(i = 0+quadrantx; i < quadrantx+widthWindow; i++){
+  for(var i = 0+quadrantx; i < quadrantx+widthWindow; i++){
     if(i%5==0){
       ctx.beginPath();
       ctx.moveTo(i*gridSize,0+startY);
@@ -1692,7 +1703,7 @@ function drawGrid(){
       ctx.closePath();
     }
   }
-  for(i = 0+quadranty; i < quadranty+heightWindow; i++){
+  for(var i = 0+quadranty; i < quadranty+heightWindow; i++){
     if(i%5==0){
       ctx.beginPath();
       ctx.moveTo(0+startX, i*gridSize);

@@ -398,19 +398,19 @@ function Symbol(kind) {
 
     this.getPoints = function(){
       var private_points = [];
-      for(i = 0; i < this.connectorTop.length; i++){
+      for(var i = 0; i < this.connectorTop.length; i++){
         private_points.push(this.connectorTop[i].to);
         private_points.push(this.connectorTop[i].from);
       }
-      for(i = 0; i < this.connectorRight.length; i++){
+      for(var i = 0; i < this.connectorRight.length; i++){
         private_points.push(this.connectorRight[i].to);
         private_points.push(this.connectorRight[i].from);
       }
-      for(i = 0; i < this.connectorBottom.length; i++){
+      for(var i = 0; i < this.connectorBottom.length; i++){
         private_points.push(this.connectorBottom[i].to);
         private_points.push(this.connectorBottom[i].from);
       }
-      for(i = 0; i < this.connectorLeft.length; i++){
+      for(var i = 0; i < this.connectorLeft.length; i++){
         private_points.push(this.connectorLeft[i].to);
         private_points.push(this.connectorLeft[i].from);
       }
