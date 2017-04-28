@@ -29,6 +29,93 @@ $(function() {
 // Commands:
 //----------------------------------------
 
+// Adds a submission row in Edit Variant
+function addSubmissionRow() {
+	$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>"+
+					"<select name='type' id='submissionType"+submissionRow+"' style='width:65px;'>"+
+						"<option value='pdf'>PDF</option>"+
+						"<option value='zip'>Zip</option>"+
+						"<option value='link'>Link</option>"+
+						"<option value='text'>Text</option>"+
+					"</select>"+
+					"<input type='text' name='fieldname' id='fieldname"+submissionRow+"' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='text' name='instruction' id='instruction"+submissionRow+"' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>"+
+				 "</div>");
+	submissionRow++;
+}
+
+function selectVariant(vid,param,answer,template,dis)
+{
+
+	$("#editVariant").css("display","block"); // Display edit dialog
+	$("#overlay").css("display","block"); 
+	$("#vid").val(vid); // Set Variant ID
+	//var pparam = parseParameters(param);
+	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
+	//var panswer = parseParameters(answer);
+	$("#variantanswer").val(decodeURIComponent(answer)); // Set Variant answer
+	if(dis.localeCompare("1")===0){
+		$("#toggleVariantButton").val("Enable"); // Set Variant answer
+	} else {
+		$("#toggleVariantButton").val("Disable"); // Set Variant answer
+	}
+	
+	//Parse JSON to add data to forms again
+	var data = $("#parameter").val();
+	if(data == "" || data == "UNK"){}
+	else{
+		var result = JSON.parse(data);
+		//Adds data to forms 
+		if(result["type"]!=undefined){
+			$("#type").val(result["type"]);
+		}
+		
+		if(result["filelink"]!=undefined){
+			$("#filelink").val(result["filelink"]);
+		}
+		
+		if(result["submissions"]!=undefined){
+			//Adds more submission rows if necessary
+			for(i = 0; i < result["submissions"].length; i++){
+				if(i > 0 && i <= submissionRow) {
+					addSubmissionRow();
+				}
+				if(result["submissions"][i]["type"]!=undefined){
+					$("#submissionType"+i).val(result["submissions"][i]["type"]);
+				}
+				if(result["submissions"][i]["fieldname"]!=undefined){
+					$("#fieldname"+i).val(result["submissions"][i]["fieldname"]);
+				}
+				if(result["submissions"][i]["instruction"]!=undefined){
+					$("#instruction"+i).val(result["submissions"][i]["instruction"]);
+				}
+			}
+		}
+	}
+
+}
+
+function closeVariant(){
+	//Hides error message
+	$("#submissionError").css("display", "none");
+	//Removes data from forms, going back to original style
+	$("#type").val("md");
+	$("#filelink").val("");
+	for(i = 0; i < 100; i++){
+		$("#submissionType"+i).val("pdf");
+		$("#fieldname"+i).val("");
+		$("#instruction"+i).val("");
+	}
+	//Removes all submission rows
+	for(i=0; i < submissionRow; i++){
+		$("#submissionType"+i).parent().remove();
+	}
+	submissionRow=0;
+	//Adds one submission row so that one is visible next time it's opened
+	addSubmissionRow();
+}
+
 function deleteVariant()
 {
 	var vid=$("#vid").val();
@@ -59,18 +146,33 @@ function updateVariant()
 	var fieldnames = [];
 
 	for(i=0; i<submissionRow; i++){
-		fieldnames += $("#fieldname"+i).val();
+		fieldnames.push($("#fieldname"+i).val());
 	}
-	console.log(fieldnames);
-
-	$("#editVariant").css("display","none");
-	$("#overlay").css("display","none");
-
-	var vid=$("#vid").val();
-	var answer=$("#variantanswer").val();
-	var parameter=$("#parameter").val();
-
-	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
+	fieldnames.sort();
+	
+	var correct = "yes";
+	
+	for(i=0; i<fieldnames.length; i++){
+		if(fieldnames[i]==fieldnames[i+1]){
+			correct = "no";
+		}
+	}
+	
+	if(correct=="yes"){
+		$("#editVariant").css("display","none");
+		$("#overlay").css("display","none");
+		
+		var vid=$("#vid").val();
+		var answer=$("#variantanswer").val();
+		var parameter=$("#parameter").val();
+		
+		AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
+		
+		closeVariant();
+	}
+	else{
+		$("#submissionError").css("display", "block");
+	}
 }
 
 function closeEditVariant()
@@ -164,91 +266,6 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 		}
 	}
 	$("#template").html(str);
-}
-
-// Adds a submission row in Edit Variant
-function addSubmissionRow() {
-	$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>"+
-					"<select name='type' id='submissionType"+submissionRow+"' style='width:65px;'>"+
-						"<option value='pdf'>PDF</option>"+
-						"<option value='zip'>Zip</option>"+
-						"<option value='link'>Link</option>"+
-						"<option value='text'>Text</option>"+
-					"</select>"+
-					"<input type='text' name='fieldname' id='fieldname"+submissionRow+"' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
-					"<input type='text' name='instruction' id='instruction"+submissionRow+"' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
-					"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>"+
-				 "</div>");
-	submissionRow++;
-}
-
-function selectVariant(vid,param,answer,template,dis)
-{
-
-	$("#editVariant").css("display","block"); // Display edit dialog
-	$("#overlay").css("display","block"); 
-	$("#vid").val(vid); // Set Variant ID
-	//var pparam = parseParameters(param);
-	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
-	//var panswer = parseParameters(answer);
-	$("#variantanswer").val(decodeURIComponent(answer)); // Set Variant answer
-	if(dis.localeCompare("1")===0){
-		$("#toggleVariantButton").val("Enable"); // Set Variant answer
-	} else {
-		$("#toggleVariantButton").val("Disable"); // Set Variant answer
-	}
-	
-	//Parse JSON to add data to forms again
-	var data = $("#parameter").val();
-	if(data == "" || data == "UNK"){}
-	else{
-		var result = JSON.parse(data);
-		//Adds data to forms 
-		if(result["type"]!=undefined){
-			$("#type").val(result["type"]);
-		}
-		
-		if(result["filelink"]!=undefined){
-			$("#filelink").val(result["filelink"]);
-		}
-		
-		if(result["submissions"]!=undefined){
-			//Adds more submission rows if necessary
-			for(i = 0; i < result["submissions"].length; i++){
-				if(i > 0 && i <= submissionRow) {
-					addSubmissionRow();
-				}
-				if(result["submissions"][i]["type"]!=undefined){
-					$("#submissionType"+i).val(result["submissions"][i]["type"]);
-				}
-				if(result["submissions"][i]["fieldname"]!=undefined){
-					$("#fieldname"+i).val(result["submissions"][i]["fieldname"]);
-				}
-				if(result["submissions"][i]["instruction"]!=undefined){
-					$("#instruction"+i).val(result["submissions"][i]["instruction"]);
-				}
-			}
-		}
-	}
-
-}
-
-function closeVariant(){
-	//Removes data from forms, going back to original style
-	$("#type").val("md");
-	$("#filelink").val("");
-	for(i = 0; i < 100; i++){
-		$("#submissionType"+i).val("pdf");
-		$("#fieldname"+i).val("");
-		$("#instruction"+i).val("");
-	}
-	//Removes all submission rows
-	for(i=0; i < submissionRow; i++){
-		$("#submissionType"+i).parent().remove();
-	}
-	submissionRow=0;
-	//Adds one submission row so that one is visible next time it's opened
-	addSubmissionRow();
 }
 
 function isInArray(array, search)
