@@ -489,7 +489,7 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="DIAGRAM"){
 			$.ajax({
-				url: "contributionservice.php",
+				url: "diagramservice.php",
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",

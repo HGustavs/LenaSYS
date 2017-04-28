@@ -808,7 +808,7 @@ function Path() {
 // the code seems to start here. think this is the Main();
 function initcanvas()
 {
-	setInterval(hashfunction, hash_timer);
+	//setInterval(hashfunction, hash_timer);
     widthWindow = (window.innerWidth-20);
 	heightWindow = (window.innerHeight-220);
 	document.getElementById("canvasDiv").innerHTML="<canvas id='myCanvas' style='border:1px solid #000000;' width='"+(widthWindow*zv)+"' height='"+(heightWindow*zv)+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
