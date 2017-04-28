@@ -57,6 +57,7 @@ var minEntityY = 50;
 
 // set timer varibale for hash and saving
 var hash_timer = 5000;
+var current_hash = 0;
 
 var attributeTemplate = { // Defines entity/attribute/relations predefined sizes
   width: 7*gridSize,
@@ -808,7 +809,9 @@ function Path() {
 // the code seems to start here. think this is the Main();
 function initcanvas()
 {
-	//setInterval(hashfunction, hash_timer);
+	//hashes the current diagram, and then compare if it have been change to see if it needs to be saved.
+	setInterval(hashcurrent, hash_timer);
+	setInterval(hashfunction, hash_timer+500);
     widthWindow = (window.innerWidth-20);
 	heightWindow = (window.innerHeight-220);
 	document.getElementById("canvasDiv").innerHTML="<canvas id='myCanvas' style='border:1px solid #000000;' width='"+(widthWindow*zv)+"' height='"+(heightWindow*zv)+"' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
@@ -1310,6 +1313,7 @@ function mouseupevt(ev) {
 		diagram.insides(cx, cy, sx, sy);
 	}
 	document.addEventListener("click", clickOutsideDialogMenu);
+	hashfunction();
 	updategfx();
 
   diagram.updateLineRelations();
@@ -1431,11 +1435,12 @@ function resetSelectionCreateFigure() {
  * Opens the dialog menu for appearance.
  */
 function openAppearanceDialogMenu() {
-	var canvas = document.getElementById("myCanvas");
+	var canvas = document.getElementById("myCanvas");	
 	canvas.style.cursor="default";
     $("#appearance").show();
     $("#appearance").width("auto");
     dimDialogMenu(true);
+	hashcurrent();
     dialogForm();
 }
 
@@ -1446,7 +1451,7 @@ function dialogForm() {
     if(diagram[selobj].symbolkind==1){
         form.innerHTML = "Class name: </br>" +
           "<input id='nametext' type='text'></br>" +
-          "<button type='submit'  class='submit-button' onclick='changeName(form)' style='float:none;display:block;margin:10px auto'>Ok</button>";
+          "<button type='submit'  class='submit-button' onclick='changeName(form); hashfunction();' style='float:none;display:block;margin:10px auto'>Ok</button>";
     }
     if(diagram[selobj].symbolkind==2){
         form.innerHTML = "Attribute name:</br>" +
@@ -1459,7 +1464,7 @@ function dialogForm() {
       		"<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
           "Text size:<br>" +
       		"<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
-      		"<button type='submit'  class='submit-button' onclick='changeNameAttr(form); setType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
+      		"<button type='submit'  class='submit-button' onclick='changeNameAttr(form); setType(form);hashfunction(); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
     if(diagram[selobj].symbolkind==3){
         form.innerHTML = "Entity name: </br>" +
@@ -1472,7 +1477,7 @@ function dialogForm() {
       	  "<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
           "Text size:<br>" +
       		"<select id ='TextSize'><option value='Tiny' selected>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
-          "<button type='submit'  class='submit-button' onclick='changeNameEntity(form); setEntityType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
+          "<button type='submit'  class='submit-button' onclick='changeNameEntity(form); setEntityType(form);hashfunction(); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
     if(diagram[selobj].symbolkind==5){
         form.innerHTML = "Relation name:</br>" +
@@ -1483,7 +1488,7 @@ function dialogForm() {
             "<select id ='fontColor'><option value='black' selected>Black</option><option value='blue'>Blue</option><option value='Green'>Green</option><option value='grey'>Grey</option><option value='red'>Red</option><option value='yellow'>Yellow</option></select><br>" +
             "Text size:<br>" +
             "<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
-            "<button type='submit'  class='submit-button' onclick='changeNameRelation(form); setType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
+            "<button type='submit'  class='submit-button' onclick='changeNameRelation(form); setType(form);hashfunction(); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
     }
 }
 
@@ -1847,28 +1852,49 @@ function hashfunction()
 		}
 
 		var hexHash = hash.toString(16);
-		var copyDiagram = JSON.parse(JSON.stringify(diagram));
-		localStorage.setItem('localhash', hexHash);
-		//localStorage.setItem('localdiagram', copyDiagram);
+		
+		if(current_hash != hexHash){
+			localStorage.setItem('localhash', hexHash);
 
-		for (i = 0; i < diagram.length; i++){
-        c[i] = diagram[i].constructor.name;
-        c[i] = c[i].replace(/"/g,"");
+			for (i = 0; i < diagram.length; i++){
+			c[i] = diagram[i].constructor.name;
+			c[i] = c[i].replace(/"/g,"");
 			}
 
-		var obj = {
-		diagram: diagram,
-		points: points,
-		diagram_names: c
-			};
-		a = JSON.stringify(obj);
+			var obj = {
+			diagram: diagram,
+			points: points,
+			diagram_names: c
+				};
+			a = JSON.stringify(obj);
 
-		localStorage.setItem('localdiagram', a);
+			localStorage.setItem('localdiagram', a);
 
-
-		console.log(hash.toString(16));
-		return hexHash;
+			console.log("new diagram saved");
+			return hexHash;
+		} else{console.log("no saving needed");}
+		
+		
 	}
+}
+
+//This function is used to hash the current diagram, but not storing it locally, so we can compare the current hash with the hash after we have made some changes
+// to see if it need to be saved.
+function hashcurrent(){
+	var hash = 0;
+	var diagramToString = "";
+	for(var i = 0; i < diagram.length; i++){
+		diagramToString = diagramToString + JSON.stringify(diagram[i])
+	}
+	
+	for (i = 0; i < diagramToString.length; i++) {
+        char = diagramToString.charCodeAt(i);
+        hash = ((hash<<5)-hash)+char;
+        hash = hash & hash; // Convert to 32bit integer
+		}
+		
+		current_hash = hash.toString(16);
+		console.log("current hash");
 }
 
 // retrive an old diagram if it exist.
@@ -1889,7 +1915,7 @@ function loadDiagram(){
 	var diagramToString = "";
 	var hash = 0;
 	for(var i = 0; i < diagram.length; i++){
-		diagramToString = diagramToString + JSON.stringify(diagram[i])
+		diagramToString = diagramToString + JSON.stringify(diagram[i]);
 	}
 
     if (diagram.length == 0){console.log(hash);}
