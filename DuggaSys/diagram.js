@@ -873,6 +873,7 @@ function zoomInClick(){
 	// To be able to use the 10% increase och decrease, we need to use this calcuation.
 	var inScale = ((1/oldZV)*zv);
 	ctx.scale(inScale,inScale);
+	updategfx();
 }
 
 function zoomOutClick(){
@@ -882,6 +883,7 @@ function zoomOutClick(){
 	// To be able to use the 10% increase och decrease, we need to use this calcuation.
 	var outScale = ((1/oldZV)*zv);
 	ctx.scale(outScale,outScale);
+	updategfx();
 }
 
 function getUploads() {
@@ -933,7 +935,7 @@ var erEntityA;
 function updategfx()
 {
 		ctx.clearRect(startX,startY,widthWindow,heightWindow);
-    drawGrid();
+    	drawGrid();
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
 
@@ -992,6 +994,8 @@ function mousemoveevt(ev, t) {
 		cx = (ev.offsetX - acanvas.offsetLeft)*(1/zv);
 		cy = (ev.offsetY - acanvas.offsetTop)*(1/zv);
 	}
+	cx += startX;
+	cy += startY;
 	if(md == 1 || md == 2 || md == 0 && uimode != " ") {
 		if(snapToGrid) {
 			cx = Math.round(cx / gridSize) * gridSize;
@@ -1041,8 +1045,6 @@ function mousemoveevt(ev, t) {
 		}
 	}
 	diagram.linedist(cx, cy);
-	cx += startX;
-	cy += startY;
 	updategfx();
 	// Update quadrants -- This for-loop needs to be moved to a diragram method, just like updategfx or even inside updategfx
 	for(var i = 0; i < diagram.length; i++) {
