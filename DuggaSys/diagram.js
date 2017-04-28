@@ -198,7 +198,7 @@ points.distance = function(xk,yk)
 {
 		var dist=50000000;
 		var ind=-1;
-		for(i=0;i<this.length;i++){
+		for(var i=0;i<this.length;i++){
 				var dx=xk-this[i].x;
 				var dy=yk-this[i].y;
 
@@ -234,7 +234,7 @@ points.distanceBetweenPoints = function( x1, y1, x2, y2, axis) {
 
 points.clearsel = function()
 {
-		for(i=0;i<this.length;i++){
+		for(var i=0;i<this.length;i++){
 				this[i].selected=0;
 		}
 }
@@ -253,18 +253,18 @@ diagram.draw = function () {
 	// On every draw of diagram adjust the midpoint if there is one to adjust
 	this.adjust();
 	// Render figures
-	for(i = 0; i < this.length; i++) {
+	for(var i = 0; i < this.length; i++) {
 		if(this[i].kind == 1) {
 			this[i].draw(1, 1);
 		}
 	}
 	// Render Lines
-	for(i = 0; i < this.length; i++) {
+	for(var i = 0; i < this.length; i++) {
 		if(this[i].symbolkind == 4) {
 			this[i].draw();
 		}
 	}
-	for(i = 0; i < this.length; i++) {
+	for(var i = 0; i < this.length; i++) {
 		if(this[i].kind == 2 && !(this[i].symbolkind == 4)) {
 			this[i].draw();
 		}
@@ -277,7 +277,7 @@ diagram.draw = function () {
 
 diagram.adjust = function ()
 {
-		for(i=0;i<this.length;i++){
+		for(var i=0;i<this.length;i++){
 				item=this[i];
 
 				// Diagram item
@@ -294,7 +294,7 @@ diagram.adjust = function ()
 
 diagram.delete = function (object)
 {
-	for(i=0;i<this.length;i++){
+	for(var i=0;i<this.length;i++){
 		if(this[i]==object){
     		this.splice(i,1);
   	}
@@ -304,7 +304,7 @@ diagram.delete = function (object)
 //--------------------------------------------------------------------
 // inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
-diagram.insides = function (ex, ey, sx, sy) {	
+diagram.insides = function (ex, ey, sx, sy) {
 	//ensure that an entity cannot scale below the minimum size
 	for(var i = 0; i < this.length; i++) {
 		if (sx > ex) {
@@ -378,7 +378,7 @@ diagram.inside = function (xk, yk) {
 
 diagram.linedist = function (xk,yk)
 {
-		for(i=0;i<this.length;i++){
+		for(var i=0;i<this.length;i++){
 				item=this[i];
 
 				if(item.kind==2){
@@ -398,16 +398,16 @@ diagram.linedist = function (xk,yk)
 // eraseObjectLines - removes all the lines connected to an object
 //--------------------------------------------------------------------
 diagram.eraseObjectLines = function(object, private_lines){
-  for(j = 0; j < private_lines.length; j++){
-    console.log(private_lines[j].to);
-    if(private_lines[j].topLeft != object.centerpoint){
-      points[private_lines[j].topLeft] = waldoPoint;
+  for(var i = 0; ij < private_lines.length; i++){
+    console.log(private_lines[i].to);
+    if(private_lines[i].topLeft != object.centerpoint){
+      points[private_lines[i].topLeft] = waldoPoint;
     }
-    else if(private_lines[j].bottomRight != object.centerpoint){
-      points[private_lines[j].bottomRight] = waldoPoint;
+    else if(private_lines[i].bottomRight != object.centerpoint){
+      points[private_lines[i].bottomRight] = waldoPoint;
     }
 
-    diagram.delete(private_lines[j]);
+    diagram.delete(private_lines[i]);
   }
 }
 //--------------------------------------------------------------------
@@ -415,14 +415,32 @@ diagram.eraseObjectLines = function(object, private_lines){
 //--------------------------------------------------------------------
 diagram.getLineObjects = function (){
   var lines = new Array();
-  for(i = 0; i < this.length; i++){
+  for(var i = 0; i < this.length; i++){
     if(diagram[i].symbolkind == 4){
       lines.push(diagram[i]);
     }
   }
   return lines;
 }
+//--------------------------------------------------------------------
+// updateLineRelations - updates a line's relation depending on what object it is connected to
+//--------------------------------------------------------------------
+diagram.updateLineRelations = function(){
+  var private_lines = this.getLineObjects();
+  console.log("LEEEENGTH:"+private_lines.length);
+  for (var i = 0; i < private_lines.length; i++) {
+    private_lines[i].type = "idek";
 
+    var connected_objects = connectedObjects(private_lines[i]);
+    if(connected_objects.length >= 2){
+      for(var j = 0; j < connected_objects.length; j++){
+        if(connected_objects[j].type == "weak"){
+          private_lines[i].type = "weak";
+        }
+      }
+    }
+  }
+}
 //--------------------------------------------------------------------
 // path - stores a number of segments
 //--------------------------------------------------------------------
@@ -950,7 +968,6 @@ function updategfx()
 
 		// Draw all symbols
 
-
 }
 
 // Recursive Pos of div in document - should work in most browsers
@@ -1302,6 +1319,8 @@ function mouseupevt(ev) {
 	}
 	document.addEventListener("click", clickOutsideDialogMenu);
 	updategfx();
+
+  diagram.updateLineRelations();
 	// Clear mouse state
 	md = 0;
 	if (uimode != "CreateFigure") {
@@ -1317,7 +1336,7 @@ function getConnectedLines(object){
   var private_points = object.getPoints();
   var lines = diagram.getLineObjects();
   var object_lines = [];
-  for(i = 0; i < lines.length; i++){
+  for(var i = 0; i < lines.length; i++){
     var line = lines[i];
 
     //Line
@@ -1473,7 +1492,7 @@ function dialogForm() {
             "Text size:<br>" +
             "<select id ='TextSize'><option value='Tiny'>Tiny</option><option value='Small'>Small</option><option value='Medium'>Medium</option><option value='Large'>Large</option></select><br>" +
             "<button type='submit'  class='submit-button' onclick='changeNameRelation(form); setType(form); updategfx();' style='float:none;display:block;margin:10px auto'>OK</button>";
-    } 
+    }
 }
 
 
@@ -1618,6 +1637,29 @@ function Consolemode(action){
 		updategfx();
 	}
 }
+function connectedObjects(line){
+  var private_objects = [];
+  for (var i = 0; i < diagram.length; i++) {
+    if(diagram[i].kind==2 && diagram[i].symbolkind != 4){
+      var object_points = diagram[i].getPoints();
+      for (var j = 0; j < object_points.length; j++) {
+        console.log(object_points.length);
+
+        if (object_points[j]==line.topLeft||object_points[j]==line.bottomRight) {
+          private_objects.push(diagram[i]);
+        }
+        if(private_objects.length>=2){
+          break;
+        }
+      }
+      if(private_objects.length>=2){
+        break;
+      }
+    }
+  }
+  return private_objects;
+}
+
 function cross(xk,yk)
 {
 				ctx.strokeStyle="#4f6";
@@ -1636,8 +1678,7 @@ function drawGrid(){
   ctx.setLineDash([5, 0]);
   var quadrantx = (startX < 0)? startX: -startX,
     quadranty = (startY < 0)? startY: -startY;
-  console.log(quadrantx+" : "+widthWindow+ "; "+(quadrantx+widthWindow));
-  for(i = 0+quadrantx; i < quadrantx+widthWindow; i++){
+  for(var i = 0+quadrantx; i < quadrantx+widthWindow; i++){
     if(i%5==0){
       i++;
     }
@@ -1647,7 +1688,7 @@ function drawGrid(){
     ctx.stroke();
     ctx.closePath();
   }
-  for(i = 0+quadranty; i < quadranty+heightWindow; i++){
+  for(var i = 0+quadranty; i < quadranty+heightWindow; i++){
     if(i%5==0){
       i++;
     }
@@ -1660,7 +1701,7 @@ function drawGrid(){
 
   //Draws the thick lines
   ctx.strokeStyle="rgb(208,208,220)";
-  for(i = 0+quadrantx; i < quadrantx+widthWindow; i++){
+  for(var i = 0+quadrantx; i < quadrantx+widthWindow; i++){
     if(i%5==0){
       ctx.beginPath();
       ctx.moveTo(i*gridSize,0+startY);
@@ -1669,7 +1710,7 @@ function drawGrid(){
       ctx.closePath();
     }
   }
-  for(i = 0+quadranty; i < quadranty+heightWindow; i++){
+  for(var i = 0+quadranty; i < quadranty+heightWindow; i++){
     if(i%5==0){
       ctx.beginPath();
       ctx.moveTo(0+startX, i*gridSize);
@@ -1812,12 +1853,12 @@ function hashfunction()
         hash = ((hash<<5)-hash)+char;
         hash = hash & hash; // Convert to 32bit integer
 		}
-		
+
 		var hexHash = hash.toString(16);
 		var copyDiagram = JSON.parse(JSON.stringify(diagram));
 		localStorage.setItem('localhash', hexHash);
 		//localStorage.setItem('localdiagram', copyDiagram);
-		
+
 		for (i = 0; i < diagram.length; i++){
         c[i] = diagram[i].constructor.name;
         c[i] = c[i].replace(/"/g,"");
@@ -1829,10 +1870,10 @@ function hashfunction()
 		diagram_names: c
 			};
 		a = JSON.stringify(obj);
-		
+
 		localStorage.setItem('localdiagram', a);
-		
-		
+
+
 		console.log(hash.toString(16));
 		return hexHash;
 	}
@@ -1840,6 +1881,7 @@ function hashfunction()
 
 // retrive an old diagram if it exist.
 function loadDiagram(){
+
 	var checkLocalStorage = localStorage.getItem('localdiagram');
 	//loacal storage and hash
 	if(checkLocalStorage == "" || checkLocalStorage == null) {
@@ -1848,10 +1890,10 @@ function loadDiagram(){
 		var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
 	}
 	var localhexHash = localStorage.getItem('localhash');
-	
+
 	console.log("local hash: ", localhexHash);
 	console.log("local localDiagram: ", localDiagram);
-	
+
 	var diagramToString = "";
 	var hash = 0;
 	for(var i = 0; i < diagram.length; i++){
@@ -1865,17 +1907,17 @@ function loadDiagram(){
         hash = ((hash<<5)-hash)+char;
         hash = hash & hash; // Convert to 32bit integer
 		}
-		
+
 		var hexHash = hash.toString(16);
-		
-		
+
+
 		}
 		console.log("hash: " + hexHash);
-		
+
 	if(typeof localhexHash !== "undefined" && typeof localDiagram !== "undefined"){
-		
+
 		if(localhexHash != hexHash){
-				
+
 				var dia = JSON.parse(JSON.stringify(localDiagram));
 				b= dia;
 				for (i = 0; i < b.diagram.length; i++) {
@@ -1901,10 +1943,10 @@ function loadDiagram(){
 				console.log("State is loaded");
 				//Redrawn old state.
 				updategfx();
-				
-				
+
+
 				} else {console.log("the hashes are identical")}
-	
+
 	}else{console.log("no diagram have been saved.")}
 }
 
