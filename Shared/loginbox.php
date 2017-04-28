@@ -126,7 +126,7 @@
 		<div id='resetcomplete' style="display:none">
 			<div class='loginBoxheader' id="completeid">
 				<h3>Request complete</h3>
-				<div onclick="closeWindows()">x</div>
+				<div class='cursorPointer' onclick="closeWindows()">x</div>
 			</div>
 			  <div class="table-wrap">
 				<table>
@@ -151,7 +151,7 @@
     <div class="loginBox" id="securitynotification" style="display:none;">
          <div class='loginBoxheader'>
           <h3>Choose a challenge question</h3>
-          <div onclick="closeWindows(); setSecurityNotifaction('off');">x</div>
+          <div class='cursorPointer' onclick="closeWindows(); setSecurityNotifaction('off');">x</div>
         </div>  
         <p id="securitynotificationmessage">You need to choose a challenge question. You can do this by visiting your profile page(clicking your username) or by clicking <a onclick="closeWindows(); setSecurityNotifaction('off');" href='profile.php'>here</a> </p>
     </div>
@@ -160,7 +160,7 @@
   <div class="expiremessagebox" style="display:none">
     <div class='loginBoxheader'>
       <h3>Alert</h3>
-      <div onclick="closeWindows()">x</div>
+      <div class='cursorPointer' onclick="closeWindows()">x</div>
     </div>
     <p id="expiremessage">Your session will expire in about 30 minutes.</p>
   </div>

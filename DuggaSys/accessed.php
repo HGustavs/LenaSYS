@@ -49,7 +49,7 @@
 	<div id='createUsers' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Create Users</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 		<div class='note'>
             <p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
@@ -70,7 +70,7 @@
 	<div id='editUsers' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Users</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 					
 		<div style='padding:5px;'>
