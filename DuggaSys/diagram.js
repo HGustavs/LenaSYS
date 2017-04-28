@@ -822,12 +822,10 @@ function initcanvas()
 		makegfx();
 
 	updategfx();
-
 	document.getElementById("moveButton").addEventListener('click', movemode, false);
 	document.getElementById("zoomInButton").addEventListener('click', zoomInMode, false);
 	document.getElementById("zoomOutButton").addEventListener('click', zoomOutMode, false);
 	canvas.addEventListener('dblclick', doubleclick, false);
-
 }
 // Function to enable and disable the grid, functionality is related to cx and cy
 
@@ -887,16 +885,25 @@ function zoomOutMode(e){
 }
 
 function zoomInClick(){
+	var oldZV = zv;
 	zv+=0.1;
 	reWrite();
-	ctx.scale(1.1,1.1);
+	// To be able to use the 10% increase och decrease, we need to use this calcuation.
+	var inScale = ((1/oldZV)*zv);
+	ctx.scale(inScale,inScale);
+	updategfx();
 }
 
 function zoomOutClick(){
+	var oldZV = zv;
 	zv-=0.1;
 	reWrite();
-	ctx.scale(0.9,0.9);
+	// To be able to use the 10% increase och decrease, we need to use this calcuation.
+	var outScale = ((1/oldZV)*zv);
+	ctx.scale(outScale,outScale);
+	updategfx();
 }
+
 function getUploads() {
     document.getElementById('buttonid').addEventListener('click', openDialog);
     function openDialog() {
@@ -946,7 +953,7 @@ var erEntityA;
 function updategfx()
 {
 		ctx.clearRect(startX,startY,widthWindow,heightWindow);
-    drawGrid();
+    	drawGrid();
 		// Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
 		erEntityA.sortAllConnectors();
 
@@ -995,15 +1002,17 @@ function mousemoveevt(ev, t) {
 	moy = cy;
 	hovobj = diagram.inside(cx, cy);
 	if (ev.pageX || ev.pageY == 0) { // Chrome
-		cx = ev.pageX - acanvas.offsetLeft;
-		cy = ev.pageY - acanvas.offsetTop;
+		cx = (ev.pageX - acanvas.offsetLeft)*(1/zv);
+		cy = (ev.pageY - acanvas.offsetTop)*(1/zv);
 	} else if (ev.layerX || ev.layerX == 0) { // Firefox
-		cx = ev.layerX - acanvas.offsetLeft;
-		cy = ev.layerY - acanvas.offsetTop;
+		cx = (ev.layerX - acanvas.offsetLeft)*(1/zv);
+		cy = (ev.layerY - acanvas.offsetTop)*(1/zv);
 	} else if (ev.offsetX || ev.offsetX == 0) { // Opera
-		cx = ev.offsetX - acanvas.offsetLeft;
-		cy = ev.offsetY - acanvas.offsetTop;
+		cx = (ev.offsetX - acanvas.offsetLeft)*(1/zv);
+		cy = (ev.offsetY - acanvas.offsetTop)*(1/zv);
 	}
+	cx += startX;
+	cy += startY;
 	if(md == 1 || md == 2 || md == 0 && uimode != " ") {
 		if(snapToGrid) {
 			cx = Math.round(cx / gridSize) * gridSize;
@@ -1053,8 +1062,6 @@ function mousemoveevt(ev, t) {
 		}
 	}
 	diagram.linedist(cx, cy);
-	cx += startX;
-	cy += startY;
 	updategfx();
 	// Update quadrants -- This for-loop needs to be moved to a diragram method, just like updategfx or even inside updategfx
 	for(var i = 0; i < diagram.length; i++) {
@@ -1828,113 +1835,6 @@ function mouseupcanvas(e){
 
 
 
-function downloadMode(el){
-    var canvas = document.getElementById("content");
-    var selectBox = document.getElementById("download");
-    download = selectBox.options[selectBox.selectedIndex].value;
-
-    if(download.toString() == "getImage"){
-        console.log("b");
-        getImage();
-    }
-    if(download == "Save"){
-        Save();
-    }
-    if(download == "Load"){
-        Load();
-    } if(download == "Export"){
-		SaveFile(el);
-	}
-}
-
-function getImage(){
-
-    window.open( document.getElementById("myCanvas").toDataURL("image/png"), 'Image');
-}
-
-var ac = [];
-function Save() {
-    for (i = 0; i < diagram.length; i++){
-        c[i] = diagram[i].constructor.name;
-        c[i] = c[i].replace(/"/g,"");
-    }
-
-	var obj = {
-		diagram: diagram,
-		points: points,
-		diagram_names: c
-	};
-	 a = JSON.stringify(obj);
-    console.log("State is saved");
-
-}
-function SaveFile(el){
-		Save();
-        var data = "text/json;charset=utf-8," + encodeURIComponent(a);
-        el.setAttribute("class",'icon-download');
-        el.setAttribute("href", "data:" + data);
-        el.setAttribute("download", "diagram.txt");
-        updategfx();
-}
-function LoadFile(){
-    var pp = JSON.parse(a);
-    b = pp;
-	//diagram fix
-    for (i = 0; i < b.diagram.length; i++) {
-        if (b.diagram_names[i] == "Symbol") {
-            b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
-        } else if (b.diagram_names[i] == "Path") {
-            b.diagram[i] = Object.assign(new Path, b.diagram[i]);
-        }
-    }
-    diagram.length = b.diagram.length;
-    for (i = 0; i < b.diagram.length;i++) {
-        diagram[i] = b.diagram[i];
-    }
-
-    // Points fix
-    for (i = 0; i < b.points.length; i++) {
-        b.points[i] = Object.assign(new Path, b.points[i]);
-    }
-    points.length = b.points.length;
-    for (i = 0; i< b.points.length; i++ ){
-        points[i] = b.points[i];
-    }
-    console.log("State is loaded");
-    //Redrawn old state.
-    updategfx();
-}
-
-function Load() {
-    // Implement a JSON.parse() that will unmarshall a b c, so we can add
-    // them to their respecive array so it can redraw the desired canvas.
-
-	var dia = JSON.parse(a);
-	b= dia;
-	for (i = 0; i < b.diagram.length; i++) {
-		if (b.diagram_names[i] == "Symbol") {
-			b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
-		} else if (b.diagram_names[i] == "Path") {
-			b.diagram[i] = Object.assign(new Path, b.diagram[i]);
-		}
-	}
-	diagram.length = b.diagram.length;
-	for (i = 0; i < b.diagram.length;i++) {
-		diagram[i] = b.diagram[i];
-	}
-
-	// Points fix
-	for (i = 0; i < b.points.length; i++) {
-		b.points[i] = Object.assign(new Path, b.points[i]);
-	}
-	points.length = b.points.length;
-	for (i = 0; i< b.points.length; i++ ){
-		points[i] = b.points[i];
-	}
-    console.log("State is loaded");
-    //Redrawn old state.
-    updategfx();
-}
 
 //calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram. it also save the local diagram
 function hashfunction()
@@ -1975,14 +1875,20 @@ function hashfunction()
 
 
 		console.log(hash.toString(16));
+		return hexHash;
 	}
 }
 
 // retrive an old diagram if it exist.
 function loadDiagram(){
 
+	var checkLocalStorage = localStorage.getItem('localdiagram');
 	//loacal storage and hash
-	var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
+	if(checkLocalStorage == "" || checkLocalStorage == null) {
+		console.log("Hej");
+	} else {
+		var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
+	}
 	var localhexHash = localStorage.getItem('localhash');
 
 	console.log("local hash: ", localhexHash);
@@ -2046,7 +1952,7 @@ function loadDiagram(){
 
 //remove localstorage
 function removeLocal(){
-    localStorage.setItem('localhash', "");
+    localStorage.setItem('localdiagram', "");
 }
 
 
