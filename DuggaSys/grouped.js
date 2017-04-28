@@ -66,9 +66,7 @@ function returnedGroup(data)
 	str+="Grupper";
 	str+="</th>";
 
-	
-	//drawtable();	
-	// Read dropdown from local storage
+	// Read dropdown from local storage (??)
 	courselist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
 	if (courselist){	
 		courselist=courselist.split("**"); 
@@ -76,35 +74,23 @@ function returnedGroup(data)
 	
 	// Itererate the headings, that are dependent on the cid and coursevers. 
 	for(var i = 0; i < headings.length; i++) {
-		str+="<th class='result-header'>"+headings[i].entryname+"</th>";	
+		str+="<th id="+headings[i].lid+" title ='Listentry id "+headings[i].lid+"' class='result-header'>"+headings[i].entryname+"</th>";	
 	}
 	
-	
-	
-	/* str+="</th><th colspan='1' class='result-header dugga-result-subheader' id='header0'><div class='dugga-result-subheader-div' title='Grupper'>Grupper</div></th>"	
-	str+="</th><th colspan='1' class='result-header dugga-result-subheader' id='header0'><div class='dugga-result-subheader-div' title='Uppgifter'>Uppgifter</div></th>"	
-	str+="</th><th colspan='1' class='result-header dugga-result-subheader' id='header0'><div class='dugga-result-subheader-div' title='Aktiv'>Aktiv i kursen</div></th>"	
-/*	for(var l=0;l<moments.length;l++){
-		if(moments[l].name){
-			str+="</tr><tr class='markinglist-header'>";
-			str+="<th class='result-header dugga-result-subheader' id='header"+(l+1)+"'><div class='dugga-result-subheader-div' title='"+moments[l].username+"'>"+moments[l].username+"</div></th>";	
-			
-			str+="<th class='result-header dugga-result-subheader' id='header"+(l+1)+"'><div class='dugga-result-subheader-div' title='"+moments[l].name+"'>"+moments[l].name+"</div></th>";	
-			str+="</tr>";
-			
-
-		}
-	} */
 	str+="</thead>";
 	// Iterate the tableContent. 
 	str += "<tbody>";
 	var row=0;
+
 	for(var i = 0; i < tableContent.length; i++) { // create table rows. 
 		row++;
 		str+="<tr>";
 		str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
-		for(var j = 1; j < tableContent[i].length; j++) {
-			str+="<td>"+tableContent[i][j]+"</td>";
+		str+="<td>"+tableContent[i].username+"</td><td>"+tableContent[i].name+"</td>"; // Iterates all content, but i dont want to write out ugid, cid and lid ...
+		for(var lid in tableContent[i].assignedlids) {
+			var greenlight = tableContent[i].assignedlids[lid] === 1 ? "light-enabled" : "light-disabled";
+			var redlight = tableContent[i].assignedlids[lid] === 0 ? "light-enabled" : "light-disabled";
+			str+="<td title='Listentry id "+lid+"' id="+'u'+tableContent[i].uid+'_c'+tableContent[i].cid+'_l'+lid+" onclick='togglelid()'>"+"<img class='clickable "+greenlight+"' src='../Shared/icons/StopG.svg' alt='Green light'><img class='clickable "+redlight+"' src='../Shared/icons/StopR.svg' alt='Red light'>"+"</td>";
 		}
 		str+="</tr>";
 	}
@@ -112,4 +98,9 @@ function returnedGroup(data)
 	str+="</table>";
 	document.getElementById("content").innerHTML=str;
 		
+}
+
+// Placeholder function for making AJAX request to assign a group to a lid. 
+function togglelid() {
+	console.log('You have tried to toggle a lid');
 }
