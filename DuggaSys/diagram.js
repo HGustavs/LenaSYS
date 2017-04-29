@@ -212,8 +212,7 @@ points.clearsel = function() {
 // diagram - stores a global list of diagram objects
 // A diagram object could for instance be a path, or a symbol
 //--------------------------------------------------------------------
-
-var diagram=[];
+var diagram = [];
 
 //--------------------------------------------------------------------
 // draw - executes draw methond in all diagram objects
@@ -222,19 +221,19 @@ diagram.draw = function () {
 	// On every draw of diagram adjust the midpoint if there is one to adjust
 	this.adjust();
 	// Render figures
-	for(var i = 0; i < this.length; i++) {
-		if(this[i].kind == 1) {
+	for (var i = 0; i < this.length; i++) {
+		if (this[i].kind == 1) {
 			this[i].draw(1, 1);
 		}
 	}
 	// Render Lines
-	for(var i = 0; i < this.length; i++) {
-		if(this[i].symbolkind == 4) {
+	for (var i = 0; i < this.length; i++) {
+		if (this[i].symbolkind == 4) {
 			this[i].draw();
 		}
 	}
-	for(var i = 0; i < this.length; i++) {
-		if(this[i].kind == 2 && !(this[i].symbolkind == 4)) {
+	for (var i = 0; i < this.length; i++) {
+		if (this[i].kind == 2 && !(this[i].symbolkind == 4)) {
 			this[i].draw();
 		}
 	}
@@ -243,30 +242,22 @@ diagram.draw = function () {
 //--------------------------------------------------------------------
 // adjust - adjusts all the fixed midpoints or other points of interest to the actual geometric midpoint of the symbol
 //--------------------------------------------------------------------
-
-diagram.adjust = function ()
-{
-		for(var i=0;i<this.length;i++){
-				item=this[i];
-
-				// Diagram item
-				if(item.kind==2){
-						item.adjust();
-				}
-
+diagram.adjust = function () {
+	for (var i = 0 ; i < this.length; i++) {
+		if (this[i].kind == 2) {
+			this[i].adjust();
 		}
-
+	}
 }
+
 //--------------------------------------------------------------------
 // delete - deletes sent object from diagram
 //--------------------------------------------------------------------
-
-diagram.delete = function (object)
-{
-	for(var i=0;i<this.length;i++){
-		if(this[i]==object){
-    		this.splice(i,1);
-  	}
+diagram.delete = function (object) {
+	for (var i = 0; i < this.length; i++) {
+		if (this[i] == object) {
+			this.splice(i, 1);
+		}
 	}
 }
 
@@ -275,48 +266,51 @@ diagram.delete = function (object)
 //--------------------------------------------------------------------
 diagram.insides = function (ex, ey, sx, sy) {
 	//ensure that an entity cannot scale below the minimum size
-	for(var i = 0; i < this.length; i++) {
-		if (sx > ex) {
-			var tempa = ex;
-			ex = sx;
-			sx = tempa;
-		}
-		if (sy > ey) {
-			var tempb = ey;
-			ey = sy;
-			sy = tempb;
-		}
-		if(!(this[i].kind == 1)) {
-			if(points[this[i].topLeft].x > points[this[i].bottomRight].x || points[this[i].topLeft].x > points[this[i].bottomRight].x - minEntityX) {
-				points[this[i].topLeft].x = points[this[i].bottomRight].x - minEntityX;
+	if (sx > ex) {
+		var tempEndX = ex;
+		ex = sx;
+		sx = tempEndX;
+	}
+	if (sy > ey) {
+		var tempEndY = ey;
+		ey = sy;
+		sy = tempEndY;
+	}
+	for (var i = 0; i < this.length; i++) {
+		if (this[i].kind != 1) {
+			var tempTopLeftX = points[this[i].topLeft].x;
+			var tempTopLeftY = points[this[i].topLeft].y;
+			var tempBottomRightX = points[this[i].bottomRight].x;
+			var tempBottomRightY = points[this[i].bottomRight].y;
+			if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
+				tempTopLeftX = tempBottomRightX - minEntityX;
 			}
-			if(points[this[i].topLeft].y > points[this[i].bottomRight].y || points[this[i].topLeft].y > points[this[i].bottomRight].y - minEntityY) {
-				points[this[i].topLeft].y = points[this[i].bottomRight].y - minEntityY;
+			if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
+				tempTopLeftY = tempBottomRightY - minEntityY;
 			}
-			var tx = points[this[i].topLeft].x;
-			var ty = points[this[i].topLeft].y;
-			var bx = points[this[i].bottomRight].x;
-			var by = points[this[i].bottomRight].y;
-			if(sx < tx && ex > tx && sy < ty && ey > ty && sx < bx && ex > bx && sy < by && ey > by) {
+			if (sx < tempTopLeftX && ex > tempTopLeftX &&
+				sy < tempTopLeftY && ey > tempTopLeftY &&
+				sx < tempBottomRightX && ex > tempBottomRightX &&
+				sy < tempBottomRightY && ey > tempBottomRightY) {
 				this[i].targeted = true;
 				// return i;
 			} else {
 				this[i].targeted = false;
 			}
 		}
-		if(this[i].kind == 1) {
+		if (this[i].kind == 1) {
 			var tempPoints = [];
 			for (var j = 0; j < this[i].segments.length; j++) {
 				tempPoints.push({x:points[this[i].segments[j].pa].x, y:points[this[i].segments[j].pa].y});
 			}
 			var pointsSelected = 0;
 			for (var j = 0; j < tempPoints.length; j++) {
-				if(tempPoints[j].x < ex && tempPoints[j].x > sx &&
+				if (tempPoints[j].x < ex && tempPoints[j].x > sx &&
 					tempPoints[j].y < ey && tempPoints[j].y > sy) {
 					pointsSelected++;
 				}
 			}
-			if(pointsSelected >= tempPoints.length) {
+			if (pointsSelected >= tempPoints.length) {
 				this[i].targeted = true;
 			} else {
 				this[i].targeted = false;
@@ -330,90 +324,82 @@ diagram.insides = function (ex, ey, sx, sy) {
 // inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
 diagram.inside = function (xk, yk) {
-	for(var i = 0; i < this.length; i++) {
-		item = this[i];
-		if(item.kind == 2) {
-			var insided = item.inside(xk, yk);
-			if(insided == true) return i;
+	for (var i = 0; i < this.length; i++) {
+		if (this[i].kind == 2) {
+			if (this[i].inside(xk, yk) == true) {
+				return i;
+			}
 		}
 	}
 	return -1;
 }
 
-
 //--------------------------------------------------------------------
 // inside - executes linedist methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
-
-diagram.linedist = function (xk,yk)
-{
-		for(var i=0;i<this.length;i++){
-				item=this[i];
-
-				if(item.kind==2){
-						var insided=item.linedist(xk,yk);
-						if(insided!=-1&&insided<15){
-								item.sel=true;
-						}else{
-								item.sel=false;
-						}
-				}
-
+diagram.linedist = function (xk, yk) {
+	for (var i = 0; i < this.length; i++) {
+		var item = this[i];
+		if (item.kind == 2) {
+			var insided = item.linedist(xk, yk);
+			if (insided != -1 && insided < 15) {
+				item.sel = true;
+			} else {
+				item.sel = false;
+			}
 		}
-
-		return -1;
+	}
+	return -1;
 }
+
 //--------------------------------------------------------------------
 // eraseObjectLines - removes all the lines connected to an object
 //--------------------------------------------------------------------
-diagram.eraseObjectLines = function(object, private_lines){
-  for(var i = 0; ij < private_lines.length; i++){
-    console.log(private_lines[i].to);
-    if(private_lines[i].topLeft != object.centerpoint){
-      points[private_lines[i].topLeft] = waldoPoint;
-    }
-    else if(private_lines[i].bottomRight != object.centerpoint){
-      points[private_lines[i].bottomRight] = waldoPoint;
-    }
-
-    diagram.delete(private_lines[i]);
-  }
+diagram.eraseObjectLines = function(object, privateLines) {
+	for (var i = 0; i < privateLines.length; i++) {
+		if (privateLines[i].topLeft != object.centerpoint) {
+			points[privateLines[i].topLeft] = waldoPoint;
+		} else if(privateLines[i].bottomRight != object.centerpoint) {
+			points[privateLines[i].bottomRight] = waldoPoint;
+		}
+		diagram.delete(privateLines[i]);
+	}
 }
+
 //--------------------------------------------------------------------
 // inside - executes linedist methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
-diagram.getLineObjects = function (){
-  var lines = new Array();
-  for(var i = 0; i < this.length; i++){
-    if(diagram[i].symbolkind == 4){
-      lines.push(diagram[i]);
-    }
-  }
-  return lines;
+diagram.getLineObjects = function () {
+	var lines = new Array();
+	for (var i = 0; i < this.length; i++) {
+		if (diagram[i].symbolkind == 4) {
+			lines.push(diagram[i]);
+		}
+	}
+	return lines;
 }
+
 //--------------------------------------------------------------------
 // updateLineRelations - updates a line's relation depending on what object it is connected to
 //--------------------------------------------------------------------
-diagram.updateLineRelations = function(){
-  var private_lines = this.getLineObjects();
-  console.log("LEEEENGTH:"+private_lines.length);
-  for (var i = 0; i < private_lines.length; i++) {
-    private_lines[i].type = "idek";
-
-    var connected_objects = connectedObjects(private_lines[i]);
-    if(connected_objects.length >= 2){
-      for(var j = 0; j < connected_objects.length; j++){
-        if(connected_objects[j].type == "weak"){
-          private_lines[i].type = "weak";
-        }
-      }
-    }
-  }
+diagram.updateLineRelations = function() {
+	var privateLines = this.getLineObjects();
+	for (var i = 0; i < privateLines.length; i++) {
+		privateLines[i].type = "idek";
+		var connectedObjects = connectedObjects(privateLines[i]);
+		if (connectedObjects.length >= 2) {
+			for (var j = 0; j < connectedObjects.length; j++) {
+				if (connectedObjects[j].type == "weak") {
+					privateLines[i].type = "weak";
+				}
+			}
+		}
+	}
 }
+
 //--------------------------------------------------------------------
 // path - stores a number of segments
 //--------------------------------------------------------------------
-
 function Path() {
 		this.kind=1;							// Path kind
 
