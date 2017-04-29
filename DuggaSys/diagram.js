@@ -131,96 +131,81 @@ var points = [
 // addpoint
 // Creates a new point and returns index of that point
 //--------------------------------------------------------------------
-
-points.addpoint = function (xk,yk,selval)
+points.addpoint = function (xk, yk, selval)
 {
-		var newpnt={x:xk,y:yk,selected:selval};
-		var pos=this.length;
-		this.push(newpnt);
-		return pos;
+	var newpnt = {x:xk, y:yk, selected:selval};
+	var pos = this.length;
+	this.push(newpnt);
+	return pos;
 }
 
 //--------------------------------------------------------------------
 // drawpoints
 // Draws each of the points as a cross
 //--------------------------------------------------------------------
-
 points.drawpoints = function ()
 {
-		// Mark points
-		ctx.strokeStyle= crossStrokeStyle1;
-		ctx.lineWidth=2;
-		for(var i=0;i<this.length;i++){
-				var point=this[i];
-
-				if(point.selected==0){
-						ctx.beginPath();
-						ctx.moveTo(point.x-crossl,point.y-crossl);
-						ctx.lineTo(point.x+crossl,point.y+crossl);
-						ctx.moveTo(point.x+crossl,point.y-crossl);
-						ctx.lineTo(point.x-crossl,point.y+crossl);
-						ctx.stroke();
-				}else{
-						ctx.save();
-						ctx.fillStyle= crossfillStyle;
-						ctx.strokeStyle= crossStrokeStyle2;
-						ctx.fillRect(point.x-crossl,point.y-crossl,crossl*2,crossl*2);
-						ctx.strokeRect(point.x-crossl,point.y-crossl,crossl*2,crossl*2);
-						ctx.restore();
-				}
-
+	// Mark points
+	ctx.strokeStyle = crossStrokeStyle1;
+	ctx.lineWidth = 2;
+	for (var i = 0; i < this.length; i++) {
+		var point = this[i];
+		if (point.selected == 0) {
+			ctx.beginPath();
+			ctx.moveTo(point.x - crossl, point.y - crossl);
+			ctx.lineTo(point.x + crossl, point.y + crossl);
+			ctx.moveTo(point.x + crossl, point.y - crossl);
+			ctx.lineTo(point.x - crossl, point.y + crossl);
+			ctx.stroke();
+		} else {
+			ctx.save();
+			ctx.fillStyle = crossfillStyle;
+			ctx.strokeStyle = crossStrokeStyle2;
+			ctx.fillRect(point.x - crossl, point.y - crossl, crossl * 2, crossl * 2);
+			ctx.strokeRect(point.x - crossl, point.y - crossl, crossl * 2, crossl * 2);
+			ctx.restore();
 		}
-		ctx.lineWidth=1;
+	}
+	ctx.lineWidth = 1;
 }
 
 //--------------------------------------------------------------------
 // distancepoint
 // Returns the distance to closest point and the index of that point
 //--------------------------------------------------------------------
-
-points.distance = function(xk,yk)
-{
-		var dist=50000000;
-		var ind=-1;
-		for(var i=0;i<this.length;i++){
-				var dx=xk-this[i].x;
-				var dy=yk-this[i].y;
-
-				var dd=(dx*dx)+dy*dy;
-				if(dd<dist){
-						dist=dd;
-						ind=i;
-				}
+points.distance = function(xk, yk) {
+	var dist = 50000000;
+	var ind = -1;
+	for (var i = 0; i < this.length; i++) {
+		var dx = xk - this[i].x;
+		var dy = yk - this[i].y;
+		var dd = (dx * dx) + dy * dy;
+		if (dd < dist) {
+			dist = dd;
+			ind = i;
 		}
-
-		return {dist:Math.sqrt(dist),ind:ind};
+	}
+	return {dist:Math.sqrt(dist), ind:ind};
 }
 
-points.distanceBetweenPoints = function( x1, y1, x2, y2, axis) {
-
+points.distanceBetweenPoints = function(x1, y1, x2, y2, axis) {
 	xs = x2 - x1;
-    ys = y2 - y1;
-
-    if(axis==true) {
-        return xs;
-    }
-    else {
-    	return ys;
+	ys = y2 - y1;
+	if (axis == true) {
+		return xs;
+	} else {
+		return ys;
 	}
 }
-
-
 
 //--------------------------------------------------------------------
 // clearsel
 // Clears all selects from the array "points"
 //--------------------------------------------------------------------
-
-points.clearsel = function()
-{
-		for(var i=0;i<this.length;i++){
-				this[i].selected=0;
-		}
+points.clearsel = function() {
+	for (var i = 0; i < this.length; i++) {
+		this[i].selected = 0;
+	}
 }
 
 //--------------------------------------------------------------------
