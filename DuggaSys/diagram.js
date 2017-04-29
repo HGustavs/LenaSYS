@@ -1,65 +1,60 @@
-var querystring=parseGet();
+var querystring = parseGet();
 var retdata;
 
-AJAXService("get",{},"DIAGRAM");
+AJAXService("get", {}, "DIAGRAM");
 
 /*
-
 -----------------------=====================##################=====================-----------------------
-		Layout (curve drawing tools)
+										Layout (curve drawing tools)
 -----------------------=====================##################=====================-----------------------
-
-		Path - A collection of segments
-				fill color
-				line color
-				a number of segments
-	 Segment - A collection of curves connecting points
-	 Point - A 2d coordinate
-
+	Path - A collection of segments
+		fill color
+		line color
+		a number of segments
+	Segment - A collection of curves connecting points
+	Point - A 2d coordinate
 */
 
 // Global settings
 var gridSize = 16;
 
-var crossl=4.0;				// Size of point cross
-var tolerance = 8;		// Size of tolerance area around the point
+var crossl = 4.0;					// Size of point cross
+var tolerance = 8;					// Size of tolerance area around the point
 var ctx;							// Canvas context
-var acanvas;					// Canvas Element
+var acanvas;						// Canvas Element
 var sel;							// Selection state
-var cx,cy=0;					// Current Mouse coordinate x and y
-var sx,sy=0;					// Start Mouse coordinate x and y
-var zv = 1.00;				// The value of the zoom
-var mox,moy=0;				// Old mouse x and y
-var md=0;							// Mouse state
-var hovobj=-1;
+var cx, cy = 0;						// Current Mouse coordinate x and y
+var sx, sy = 0;						// Start Mouse coordinate x and y
+var zv = 1.00;						// The value of the zoom
+var mox, moy = 0;					// Old mouse x and y
+var md = 0;							// Mouse state
+var hovobj = -1;
 var lineStartObj = -1;
-var movobj=-1;				// Moving object ID
-var selobj = -1;			// The last selected object
-var uimode="normal";		// User interface mode e.g. normal or create class currently
-var figureMode = null;		// Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
-var widthWindow;			// The width on the users screen is saved is in this var.
-var heightWindow;			// The height on the users screen is saved is in this var.
+var movobj = -1;					// Moving object ID
+var selobj = -1;					// The last selected object
+var uimode = "normal";				// User interface mode e.g. normal or create class currently
+var figureMode = null;				// Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
+var widthWindow;					// The width on the users screen is saved is in this var.
+var heightWindow;					// The height on the users screen is saved is in this var.
 var consoleInt = 0;
-var startX=0; var startY=0;			// Current X- and Y-coordinant from which the canvas start from
-var waldoPoint = {x:-10,y:-10,selected:false};
-var activePoint = null; //This point indicates what point is being hovered by the user
-var p1=null,					// When creating a new figure, these two variables are used ...
- 		p2=null;					// to keep track of points created with mousedownevt and mouseupevt
-var snapToGrid = true; // Will the clients actions snap to grid
-// set the color for the crosses.
-var crossStrokeStyle1 = "#f64";
+var startX = 0, startY = 0;			// Current X- and Y-coordinant from which the canvas start from
+var waldoPoint = {x:-10, y:-10, selected:false};
+var activePoint = null;				//This point indicates what point is being hovered by the user
+var p1 = null;						// When creating a new figure, these two variables are used ...
+var p2 = null;						// to keep track of points created with mousedownevt and mouseupevt
+var snapToGrid = true;				// Will the clients actions snap to grid
+
+var crossStrokeStyle1 = "#f64";		// set the color for the crosses.
 var crossfillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 
-//the minimum size for an Enitny are set by the values seen below.
-var minEntityX = 100;
+var minEntityX = 100;				//the minimum size for an Enitny are set by the values seen below.
 var minEntityY = 50;
 
-// set timer varibale for hash and saving
-var hash_timer = 5000;
+var hash_timer = 5000;				// set timer varibale for hash and saving
 var current_hash = 0;
 
-var attributeTemplate = { // Defines entity/attribute/relations predefined sizes
+var attributeTemplate = {			// Defines entity/attribute/relations predefined sizes
   width: 7*gridSize,
   height: 4*gridSize
 };
@@ -76,25 +71,20 @@ var classTemplate = {
   height: 7*gridSize
 };
 
+var a = [], b = [], c = [];
 
-var a,b,c;
-a = [];
-b = [];
-c = [];
-
-var mousedownX = 0; var mousedownY = 0;	// Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
-var mousemoveX = 0; var mousemoveY = 0; // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
-var mouseDiffX = 0; var mouseDiffY = 0; // Saves to diff between mousedown and mousemove to know how much to translate the diagram
+var mousedownX = 0, mousedownY = 0;	// Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
+var mousemoveX = 0, mousemoveY = 0;	// Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
+var mouseDiffX = 0, mouseDiffY = 0;	// Saves to diff between mousedown and mousemove to know how much to translate the diagram
 
 var xPos = 0;
 var yPos = 0;
 
 //this block of the code is used to handel keyboard input;
-window.addEventListener("keydown",this.keyDownHandler, false);
+window.addEventListener("keydown", this.keyDownHandler, false);
 
 function keyDownHandler(e){
 	var key = e.keyCode;
-
 	//Delete selected objects when del key is pressed down.
 	if(key == 46){
 		eraseSelectedObject();
@@ -106,43 +96,36 @@ function keyDownHandler(e){
 // A point can not be physically deleted but marked as deleted in order to reuse
 // the sequence number again. e.g. point[5] will remain point[5] until it is deleted
 //--------------------------------------------------------------------
-
-var points=[
-						// Path A -- Segment 1 (0,1,2,3)
-						{x:20,y:200,selected:0},{x:60,y:200,selected:0},{x:100,y:40,selected:0},{x:140,y:40,selected:0},
-						// Path B -- Segment 1 (4,5 and 17,18)
-						{x:180,y:200,selected:0},{x:220,y:200,selected:0},
-						// Path A -- Segment 2 (6,7,8,9)
-						{x:300,y:250,selected:0},{x:320,y:250,selected:0},{x:320,y:270,selected:0},{x:300,y:270,selected:0},
-            // Path C -- Segment 1 (10,11,12,13)
-            {x:70,y:130,selected:0},{x:70,y:145,selected:0},{x:170,y:130,selected:0},{x:170,y:145,selected:0},
-            // Class A -- TopLeft BottomRight MiddleDivider 14,15,16
-            {x:310,y:60,selected:0},{x:400,y:160,selected:0},{x:355,y:115,selected:0},
-						// Path B -- Segment 1 (4,5 and 17,18)
-            {x:100,y:40,selected:0},{x:140,y:40,selected:0},
-						// ER Attribute A -- TopLeft BottomRight MiddlePointConnector 19,20,21
-            {x:300,y:200,selected:0},{x:400,y:250,selected:0},{x:350,y:225,selected:0},
-						// ER Attribute B -- TopLeft BottomRight MiddlePointConnector 22,23,24
-            {x:300,y:275,selected:0},{x:400,y:325,selected:0},{x:350,y:300,selected:0},
-						// ER Entity A -- TopLeft BottomRight MiddlePointConnector 25,26,27
-            {x:150,y:275,selected:0},{x:250,y:325,selected:0},{x:200,y:300,selected:0},
-						// ER Entity Connector Right Points -- 28,29
-            {x:225,y:290,selected:1},
-            {x:225,y:310,selected:1},
-
-						// ER Attribute C -- TopLeft BottomRight MiddlePointConnector 30,31,32
-					  {x:15,y:275,selected:0},{x:115,y:325,selected:0},{x:65,y:300,selected:0},
-						// ER Attribute D -- TopLeft BottomRight MiddlePointConnector 33,34,35
-						{x:15,y:350,selected:0},{x:115,y:400,selected:0},{x:65,y:375,selected:0},
-						// ER Attribute E -- TopLeft BottomRight MiddlePointConnector 36,37,38
-            {x:15,y:200,selected:0},{x:115,y:250,selected:0},{x:65,y:225,selected:0},
-
-						// ER Entity Connector Left Points -- 39,40,41
-					  {x:150,y:225,selected:0},
-					  {x:150,y:235,selected:0},
-					  {x:150,y:245,selected:0},
-
-           ];
+var points = [
+	// Path A -- Segment 1 (0, 1, 2, 3)
+	{x:20, y:200, selected:0}, {x:60, y:200, selected:0}, {x:100, y:40, selected:0}, {x:140, y:40, selected:0},
+	// Path B -- Segment 1 (4, 5 and 17, 18)
+	{x:180, y:200, selected:0}, {x:220, y:200, selected:0},
+	// Path A -- Segment 2 (6, 7, 8, 9)
+	{x:300, y:250, selected:0}, {x:320, y:250, selected:0}, {x:320, y:270, selected:0}, {x:300, y:270, selected:0},
+	// Path C -- Segment 1 (10, 11, 12, 13)
+	{x:70, y:130, selected:0}, {x:70, y:145, selected:0}, {x:170, y:130, selected:0}, {x:170, y:145, selected:0},
+	// Class A -- TopLeft BottomRight MiddleDivider 14, 15, 16
+	{x:310, y:60, selected:0}, {x:400, y:160, selected:0}, {x:355, y:115, selected:0},
+	// Path B -- Segment 1 (4, 5 and 17, 18)
+	{x:100, y:40, selected:0}, {x:140, y:40, selected:0},
+	// ER Attribute A -- TopLeft BottomRight MiddlePointConnector 19, 20, 21
+	{x:300, y:200, selected:0}, {x:400, y:250, selected:0}, {x:350, y:225, selected:0},
+	// ER Attribute B -- TopLeft BottomRight MiddlePointConnector 22, 23, 24
+	{x:300, y:275, selected:0}, {x:400, y:325, selected:0}, {x:350, y:300, selected:0},
+	// ER Entity A -- TopLeft BottomRight MiddlePointConnector 25, 26, 27
+	{x:150, y:275, selected:0}, {x:250, y:325, selected:0}, {x:200, y:300, selected:0},
+	// ER Entity Connector Right Points -- 28, 29
+	{x:225, y:290, selected:1}, {x:225, y:310, selected:1},
+	// ER Attribute C -- TopLeft BottomRight MiddlePointConnector 30, 31, 32
+	{x:15, y:275, selected:0}, {x:115, y:325, selected:0}, {x:65, y:300, selected:0},
+	// ER Attribute D -- TopLeft BottomRight MiddlePointConnector 33, 34, 35
+	{x:15, y:350, selected:0}, {x:115, y:400, selected:0}, {x:65, y:375, selected:0},
+	// ER Attribute E -- TopLeft BottomRight MiddlePointConnector 36, 37, 38
+	{x:15, y:200, selected:0}, {x:115, y:250, selected:0}, {x:65, y:225, selected:0},
+	// ER Entity Connector Left Points -- 39, 40, 41
+	{x:150, y:225, selected:0}, {x:150, y:235, selected:0}, {x:150, y:245, selected:0}
+];
 
 //--------------------------------------------------------------------
 // addpoint
