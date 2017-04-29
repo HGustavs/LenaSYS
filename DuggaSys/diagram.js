@@ -401,54 +401,32 @@ diagram.updateLineRelations = function() {
 // path - stores a number of segments
 //--------------------------------------------------------------------
 function Path() {
-		this.kind=1;							// Path kind
+	this.kind = 1;					// Path kind
+	this.segments = Array();		// Segments
+	this.sel;						// Selected object info
+	this.intarr = Array();			// Intersection list (one list per segment)
+	this.tmplist = Array();			// Temporary list for testing of intersections
+	this.auxlist = Array();			// Auxillary temp list for testing of intersections
+	this.fillColor = "#48B";		// Fill color (default is blueish)
+	this.strokeColor = "#246";		// Stroke color (default is dark blue)
+	this.Opacity = 0.5;				// Opacity (default is 50%)
+	this.linewidth = 3;				// Line Width (stroke width - default is 3 pixels)
+	this.isorganized = true;		// This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
+									// An organized path can contain several sub-path, each of which must be organized
 
-		this.segments=Array();		// Segments
-		this.sel;									// Selected object info
-		this.intarr=Array();			// Intersection list (one list per segment)
-
-		this.tmplist=Array();			// Temporary list for testing of intersections
-		this.auxlist=Array();			// Auxillary temp list for testing of intersections
-
-		this.fillColor="#48B";		// Fill color (default is blueish)
-		this.strokeColor="#246";	// Stroke color (default is dark blue)
-		this.Opacity=0.5;					// Opacity (default is 50%)
-		this.linewidth=3;					// Line Width (stroke width - default is 3 pixels)
-
-		this.isorganized=true;			// This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
-																// An organized path can contain several sub-path, each of which must be organized
-
-		//--------------------------------------------------------------------
-		// move
-		// Performs a delta-move on all points in a path
-		//--------------------------------------------------------------------
-
-    this.move = function(movex,movey)
-    {
-						// Mar all segment points as unmoved
-						for(var i=0;i<this.segments.length;i++){
-								var seg=this.segments[i];
-								points[seg.pa].moved=false;
-								points[seg.pb].moved=false;
-						}
-
-						// Move segments that have not previously been moved
-						for(var i=0;i<this.segments.length;i++){
-								var seg=this.segments[i];
-
-								if(points[seg.pa].moved==false){
-										points[seg.pa].x+=movex;
-										points[seg.pa].y+=movey;
-										points[seg.pa].moved=true;
-								}
-								if(points[seg.pb].moved==false){
-										points[seg.pb].x+=movex;
-										points[seg.pb].y+=movey;
-										points[seg.pb].moved=true;
-								}
-
-						}
-    }
+	//--------------------------------------------------------------------
+	// move
+	// Performs a delta-move on all points in a path
+	//--------------------------------------------------------------------
+	this.move = function(movex, movey) {
+		for (var i = 0; i < this.segments.length; i++) {
+			var seg = this.segments[i];
+			points[seg.pa].x += movex;
+			points[seg.pa].y += movey;
+			points[seg.pb].x += movex;
+			points[seg.pb].y += movey;
+		}
+	}
 
 		//--------------------------------------------------------------------
 		// addsegment
