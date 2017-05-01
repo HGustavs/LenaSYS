@@ -1,5 +1,5 @@
 -----------------------------------------------------
-	##List of changed variable names##
+    ##List of changed variable names##
 - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #
@@ -7,6 +7,6 @@
 # standard
 #
 
-Old Name			New Name
+Old Name                New Name
 -----------------------------------------------------
-private_lines			privateLines
+private_lines           privateLines
