@@ -735,14 +735,6 @@ function returnedSection(data)
 				}
 				// All are visible according to database
 
-				/*
-				var listentry = document.getElementsByClassname('example');
-				if (parseInt(item['rowcolor']) < 0){
-					listentry.style.backgroundColor = "green";
-				}else{
-					listentry.style.backgroundColor = "red";
-				}
-				*/
 
 				// Content table 		
 				str+="<table id='lid"+item['lid']+"' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
