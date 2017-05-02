@@ -23,13 +23,13 @@
 					
 						if(substr($workstr,0,3)==="@@@" && $specialBlockStart===true){
 								$specialBlockStart=false;
-								$str.="<pre><code>".substr($workstr,3)."</code></pre>";
+								$workstr="<pre><code>".substr($workstr,3)."</code></pre>";
 						} else if (substr($workstr,0,3)==="&&&" && $specialBlockStart===true){
 								$specialBlockStart=false;
-								$str.="<div class='console'><pre>".substr($workstr,3)."</pre></div>";
+								$workstr="<div class='console'><pre>".substr($workstr,3)."</pre></div>";
 						} else if ($workstr !== "") {
 
-								$str.=parseLineByLine(preg_replace("/^\&{3}|^\@{3}/","",$workstr));
+								$workstr=parseLineByLine(preg_replace("/^\&{3}|^\@{3}/","",$workstr));
 								$specialBlockStart=true;
 						}
 						
@@ -44,33 +44,39 @@
 			$str = $inString;	
 			$markdown = "";
 
-			$currentLineFeed = strrpos($str, "/n");
+			$currentLineFeed = strpos($str, PHP_EOL);
 			$currentLine = "";
 			$prevLine = "";
 			$remainingLines = "";
 			$nextLine = "";
 
-			while($currentLineFeed == true) { // EOF
+			while($currentLineFeed !== false) { // EOF
 				$prevLine = $currentLine;
 				$currentLine = substr($str, 0, $currentLineFeed);
 				$remainingLines = substr($str, $currentLineFeed + 1, strlen($str));
 
-				$nextLine = substr($remainingLines, 0, strrpos($remainingLines, "/n"));
+				$nextLine = substr($remainingLines, 0, strpos($remainingLines, PHP_EOL));
 
-				$markdown .= identifier($prevLine, $currentLine, $markdown, $nextLine);
+
+				$markdown = identifier($prevLine, $currentLine, $markdown, $nextLine);
 
 				// line done parsing. change start position to next line
 		        $str = $remainingLines;
-		        $currentLineFeed = strrpos($str, "/n");
-			}
-			$markdown .= identifier($prevLine, $currentLine, $markdown, $nextLine);
+		        $currentLineFeed = strpos($str, PHP_EOL);
 
+		        
+			}
 
 			return $markdown;
 		}
 
 		// identify what to parse and parse it
 		function identifier($prevLine, $currentLine, $markdown, $nextLine) {
+			$markdown .= markdownBlock($currentLine);
+
+			if(preg_match("/\br*/", $currentLine)){
+            	$markdown .= "<br>";
+        	}
 
 			return $markdown;
 		}
