@@ -87,7 +87,7 @@ function resetFields(){
 function setExpireCookie(){
 
 	var expireDate = new Date();
-	expireDate.setTime(expireDate.getTime() + (1 * 2 * 5000));
+	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));
   //8100000
 	document.cookie = "sessionEndTime=expireC; expires="+ expireDate.toGMTString() +"; path=/";
 	//console.log(expireDate);
@@ -909,7 +909,7 @@ function sessionExpireMessage() {
 
 	if(document.cookie.indexOf('sessionEndTime=expireC') > -1){
 		var intervalId = setInterval(function() {
-		console.log("testEMessage");
+		//console.log("testEMessage");
 		checkIfExpired();
 		}, 2000);
 	}
