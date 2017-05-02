@@ -62,10 +62,6 @@ function returnedGroup(data)
 	str+="Studenter";
 	str+="</th>";
 
-	str+="<th colspan='1' id='subheading' class='result-header'>";
-	str+="Grupper";
-	str+="</th>";
-
 	// Read dropdown from local storage (??)
 	courselist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
 	if (courselist){	
