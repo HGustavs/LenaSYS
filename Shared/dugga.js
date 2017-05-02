@@ -183,12 +183,11 @@ function loadCSS(href) {
 
 function randomstring()
 {
-//		str="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890![]#/()=+-_:;.,*";
 		str="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890";
 
 		var valu="";
 		for(i=0;i<9;i++){
-				valu+=str.substr(Math.round(Math.random()*78),1);
+				valu+=str.charAt(Math.floor(Math.random()*str.length));
 		}
 
 		return valu;
