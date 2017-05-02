@@ -84,28 +84,25 @@
                     $markdown .= "<br>";
                 }
             }
-
-
 			return $markdown;
 		}
-
+        // Check if its an ordered list
 		function isOrderdList($item) {
 			// return true if ordered list
 			return preg_match('/\s*\d*\.\s(.*)/', $item);
 		}
-
         // The creation and destruction of ordered lists
         function handleOrderedList($currentLine, $prevLine, $nextLine) {
             $markdown = "";
-            $value = substr(preg_match('/\s*\d*\.\s*/', $currentLine), 0, strlen($currentLine));
-            $currentLineIndentation = preg_match('/\s*\d*/',$currentLine);
-            $nextLineIndentation = preg_match('/\s*\d*/', $nextLine);
-            //Open a new ordered list^
+            $value = substr($currentLine, preg_match('/^\s*\d*\.\s*/', $currentLine)+1, strlen($currentLine));
+            $currentLineIndentation = preg_match('/^\s*\d*/',$currentLine);
+            $nextLineIndentation = preg_match('/^\s*\d*/', $nextLine);
+            //Open a new ordered list
             if(!isOrderdList($prevLine)) {
                 $markdown .= "<ol>";
             }
             // Open a new sublist
-            if($currentLineIndentation < $nextLineIndentation) {
+            if(strlen($currentLineIndentation) < strlen($nextLineIndentation)) {
                 $markdown .= "<li>";
                 $markdown .=  $value;
 
@@ -113,11 +110,11 @@
                 $markdown .= "<ol>";
             }
             // Close sublists
-            else if($currentLineIndentation > $nextLineIndentation) {
+            else if(strlen($currentLineIndentation) > strlen($nextLineIndentation)) {
                 $markdown .= "<li>";
                 $markdown .=  $value;
                 $markdown .= "</li>";
-                $sublistsToClose = ($currentLineIndentation - $nextLineIndentation) / 2;
+                $sublistsToClose = (strlen($currentLineIndentation) - strlen($nextLineIndentation)) / 2;
                 for($i = 0; $i < $sublistsToClose; $i++) {
                     $markdown .= "</ol></li>";
                 }
@@ -132,7 +129,6 @@
             if(!isOrderdList($currentLine)) {
                 $markdown .= "</ol>";
             }
-
             return $markdown;
         }
 		function markdownBlock($instring)
