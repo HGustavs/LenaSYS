@@ -558,7 +558,7 @@ function process()
 		}			
 		// Update dropdown list
 		var dstr="";
-    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectduggatoggle' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 		for(var j=0;j<moments.length;j++){
 				var lid=moments[j].lid;
 				var name=moments[j].entryname;
@@ -671,7 +671,7 @@ function leavec()
 function checkedAll() {
   // Current state
   var duggaElements = document.getElementsByName("selectdugga");
-  var selectToggle = document.getElementById('selectduggatoggle');
+  var selectToggle = document.getElementById('selectdugga');
 
   // Are there any elements checked?
   var anyChecked = false;
@@ -701,7 +701,7 @@ function checkedAll() {
 function toggleAll() {
   // Current state
   var duggaElements = document.getElementsByName("selectdugga");
-  var selectToggle = document.getElementById('selectduggatoggle');
+  var selectToggle = document.getElementById('selectdugga');
 
   // Are there any elements checked?
   var anyChecked = false;
