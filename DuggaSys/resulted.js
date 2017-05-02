@@ -28,6 +28,7 @@ var clist;
 var onlyPending=false;
 var timeZero=new Date(0);
 var showTeachers = false;
+var duggaArray = [[]];
 
 function setup(){
 	//Benchmarking function
@@ -558,8 +559,12 @@ function process()
 		}			
 		// Update dropdown list
 		var dstr="";
-    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
-		for(var j=0;j<moments.length;j++){
+
+    	dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+
+    	var activeMoment = 0;
+    	for(var j=0;j<moments.length;j++){
+
 				var lid=moments[j].lid;
 				var name=moments[j].entryname;
 				dstr+="<div class='checkbox-dugga";				
@@ -567,7 +572,17 @@ function process()
 				
 				if (moments[j].kind == 4) {dstr +=" checkmoment";}
 				
-				dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check' onclick='toggleAll();'";
+				dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
+            	if (moments[j].kind == 4) {
+                    duggaArray.push( [] );
+                    var idAddString = "hdr"+lid+"check";
+                	dstr+=" onclick='checkMomentParts(" + activeMoment + ", \"" + idAddString + "\"); toggleAll();'";
+                    activeMoment++;
+                } else {
+            		var idAddString = "hdr"+lid+"check";
+                    duggaArray[activeMoment-1].push(idAddString);
+				}
+
 				if (clist){
 						index=clist.indexOf("hdr"+lid+"check");
 						if(index>-1){
@@ -714,6 +729,13 @@ function toggleAll() {
   }
 
   selectToggle.checked = anyChecked;
+}
+
+function checkMomentParts(pos, id) {
+	for (var i = 0; i < duggaArray[pos].length; i++) {
+		var setThis = document.getElementById(duggaArray[pos][i]);
+		setThis.checked = document.getElementById(id).checked;
+	}
 }
 
 function hovers()
