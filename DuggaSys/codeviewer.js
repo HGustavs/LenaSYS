@@ -436,7 +436,6 @@ var openBoxID;
 function displayEditContent(boxid)
 {
 	// The information stored about the box is fetched
-	adsadsadsadasd
 	var box = retData['box'][boxid-1]; 	
 	
 	// Keeps track of the currently open box. Used when saving the box content.
