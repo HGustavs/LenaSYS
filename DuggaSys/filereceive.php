@@ -152,7 +152,8 @@ if($ha){
 							
 								$temp = explode(".", $filea["name"]);
 								$extension = end($temp); //stores the file type
-								if(in_array($extension, $allowedX)&&in_array($filea['type'], $allowedT)){ 
+								$filetype = mime_content_type($filea["tmp_name"]);
+								if(in_array($extension, $allowedX)&&in_array($filetype, $allowedT)){ 
 										//  if file type is allowed, continue the uploading process.
 				
 										$fname=$filea['name'];
@@ -211,7 +212,7 @@ if($ha){
 								}else{ 
 									//if the file extension is not allowed
 									if(!in_array($extension, $allowedX)) echo "Extension ".$extension." not allowed.\n";
-									if(!in_array($filea['type'], $allowedT)) echo "Type ".$filea['type']." not allowed.\n";
+									if(!in_array($filetype, $allowedT)) echo "Type ".$filetype." not allowed.\n";
 									$error=true;
 								}
 						}
