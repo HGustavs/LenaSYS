@@ -45,6 +45,50 @@ function addSubmissionRow() {
 	submissionRow++;
 }
 
+/**
+* @TODO Make it possible to allow for no submission fields, or omission of any other field.
+* @TODO Add the free text field submission.
+* This function demands specific names on the form fields, elaborate on this
+* @param formData an array of the "Edit Variant: Param" form.
+* @return a JSON string
+*/
+function createJSONString(formData) {
+	// Init the JSON string variable
+	var jsonStr = "{";
+
+	// Get the first static fields
+	jsonStr += '"' + formData[0]['name'] + '":"' + formData[0]['value'] + '",';
+	jsonStr += '"' + formData[1]['name'] + '":"' + formData[1]['value'] + '",';
+	jsonStr += '"submissions":[';
+
+	// Handle the dynamic amount of submission types
+	for(var i = 2; i < formData.length; i++) {
+		if(i % 3 == 2) {
+			// The start of a new submissions field, prepend with curly bracket
+			jsonStr += "{";
+		}
+		// Input the values of the array. This parses the option-select first, then the textfield. But if the text field is empty, then do not write it to JSON.
+		if(formData[i]['value'].length > 0) {
+			jsonStr += '"' + formData[i]['name'] + '":"' + formData[i]['value'] + '",';
+		}
+		if(i % 3 == 1) {
+			// This submission field is complete, prepare for next
+			// Remove the last comma
+			jsonStr = jsonStr.substr(0, jsonStr.length-1);
+			// Prepare for next submissions array element.
+			jsonStr += "},";
+		}
+	}
+	// Remove the last comma
+	jsonStr = jsonStr.substr(0, jsonStr.length-1);
+	// Append the end of the submissions array.
+	jsonStr += ']'; // The end of the submissions array.
+	// Here, the freetext field handling should be added as it comes after the submissions array.
+	jsonStr += '}'; // The end of the JSON-string.
+	
+	return jsonStr;
+}
+
 function selectVariant(vid,param,answer,template,dis)
 {
 
@@ -176,6 +220,7 @@ function updateVariant()
 		}
 	}
 	else{
+		$('#parameter').val(createJSONString($('#jsonform').serializeArray()));
 		$("#editVariant").css("display","none");
 		$("#overlay").css("display","none");
 		
@@ -599,50 +644,6 @@ function closePreview()
 $(document).ready(function(){
 
 	addSubmissionRow();
-
-	/**
-	* @TODO Make it possible to allow for no submission fields, or omission of any other field.
-	* @TODO Add the free text field submission.
-	* This function demands specific names on the form fields, elaborate on this
-	* @param formData an array of the "Edit Variant: Param" form.
-	* @return a JSON string
-	*/
-	function createJSONString(formData) {
-		// Init the JSON string variable
-		var jsonStr = "{";
-
-		// Get the first static fields
-		jsonStr += '"' + formData[0]['name'] + '":"' + formData[0]['value'] + '",';
-		jsonStr += '"' + formData[1]['name'] + '":"' + formData[1]['value'] + '",';
-		jsonStr += '"submissions":[';
-
-		// Handle the dynamic amount of submission types
-		for(var i = 2; i < formData.length; i++) {
-			if(i % 3 == 2) {
-				// The start of a new submissions field, prepend with curly bracket
-				jsonStr += "{";
-			}
-			// Input the values of the array. This parses the option-select first, then the textfield. But if the text field is empty, then do not write it to JSON.
-			if(formData[i]['value'].length > 0) {
-				jsonStr += '"' + formData[i]['name'] + '":"' + formData[i]['value'] + '",';
-			}
-			if(i % 3 == 1) {
-				// This submission field is complete, prepare for next
-				// Remove the last comma
-				jsonStr = jsonStr.substr(0, jsonStr.length-1);
-				// Prepare for next submissions array element.
-				jsonStr += "},";
-			}
-		}
-		// Remove the last comma
-		jsonStr = jsonStr.substr(0, jsonStr.length-1);
-		// Append the end of the submissions array.
-		jsonStr += ']'; // The end of the submissions array.
-		// Here, the freetext field handling should be added as it comes after the submissions array.
-		jsonStr += '}'; // The end of the JSON-string.
-		
-		return jsonStr;
-	}
 
 	$(document).on('click','.delButton', function(){
 		if($(this).parent().parent().children().length > 1) {
