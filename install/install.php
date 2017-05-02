@@ -4,9 +4,28 @@
 </head>
 <body>
     <?php
+    // Create a version of dirname for <PHP7 compability
+    function cdirname($path, $level) {
+      $paths = explode("/", $path);
+      $r = '';
+      if(count($paths) <= $level) {
+        $r = '/';
+      } else {
+        $r = '/';
+        for($i = 0; $i < count($paths) - $level; $i++) {
+          if($i > 1) {
+            $r .= '/';
+          }
+          $r .= $paths[$i];
+        }
+      }
+      return $r;
+    };
+
     ob_start();
     /************* MODAL TO SHOW STEPS BEFORE AND AFTER ****************/
-    $putFileHere = dirname(getcwd(), 1); // Path to lenasys
+ 
+    $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
     echo "
                     <div id='warning' class='modal'>
                 
@@ -151,7 +170,7 @@
     </form>
 
     <?php if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
-        $putFileHere = dirname(getcwd(), 2); // Path to lenasys
+        $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
         ob_end_clean(); // Remove form and start installation.
 
         echo "
@@ -194,7 +213,7 @@
         ob_flush();
 
         /***** START ******/
-        $putFileHere = dirname(getcwd(), 1); // Path to lenasys
+        $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
         echo "<h1>Installation</h1>";
         echo "<hr>";
         flush();
@@ -378,9 +397,9 @@
         ob_flush();
 
         # All this code prints further instructions to complete installation.
-        $putFileHere = dirname(getcwd(), 2); // Path to lenasys
+        $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
         echo "<h1><span style='color: red;' />!!!READ BELOW!!!</span></h1>";
-        $lenaInstall = dirname($_SERVER['SCRIPT_NAME'], 2);
+        $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
         echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
         echo "<input type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
         echo "</form>";
