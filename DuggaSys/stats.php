@@ -44,6 +44,10 @@ include '../Shared/navheader.php';
 
 <!-- Content START -->
 <div id="content">
+	<div class='titles' style='padding-top:10px;'>
+		<h1 style='flex:1;text-align:center;'>Analysis</h1>
+	</div>
+	
     <table class="list">
             <tbody>
                 <tr>

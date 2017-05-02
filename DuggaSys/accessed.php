@@ -31,7 +31,10 @@
 	<div id="wrappall">
 		<div id="newbutton">
 			<?PHP
-				echo "<div style='float:right;'><input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/></div>";
+				echo "<div class='titles' style='padding-top:10px;'>";
+					echo "<h1 style='flex:10;text-align:center;'>Access</h1>";
+					echo "<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/>";
+				echo "</div>";
 				//needs to calculate if the user has access to this button before writing out
 			?>		
 		</div>
