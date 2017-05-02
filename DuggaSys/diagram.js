@@ -500,7 +500,6 @@ function getUploads() {
             a = evt.currentTarget.result;
             LoadFile();
         }
-        // LoadFile();
     }
 }
 
@@ -665,10 +664,6 @@ function mousedownevt(ev) {
         md = 2;
     } else if (movobj != -1) {
         md = 3;
-        //Last moved object
-        //if(selobj != -1) {
-        //    diagram[selobj].targeted = false;
-        //}
         selobj = diagram.inside(cx, cy);
         if (diagram[selobj].targeted == false) {
             for (var i = 0; i < diagram.length; i++) {
@@ -775,7 +770,6 @@ function mouseupevt(ev) {
             points[classB.bottomRight].y = points[classB.topLeft].y - classTemplate.height;
         }
         classB.middleDivider = p3;
-        console.log("banan:" + points[classB.middleDivider].y);
         points[classB.middleDivider].x = ((classB.bottomRight.x + classB.topLeft.x) * 0.5);
         points[classB.middleDivider].y = ((classB.bottomRight.y + classB.topLeft.y) * 0.5);
         diagram.push(classB);
@@ -1397,7 +1391,6 @@ function hashfunction() {
         diagramToString = diagramToString + JSON.stringify(diagram[i])
     }
     if (diagram.length == 0) {
-        console.log(hash);
     } else {
         for (var i = 0; i < diagramToString.length; i++) {
             var char = diagramToString.charCodeAt(i);
@@ -1414,10 +1407,8 @@ function hashfunction() {
             var obj = {diagram:diagram, points:points, diagram_names:c};
             a = JSON.stringify(obj);
             localStorage.setItem('localdiagram', a);
-            console.log("new diagram saved");
             return hexHash;
         } else {
-            console.log("no saving needed");
         }
     }
 }
@@ -1436,7 +1427,6 @@ function hashcurrent() {
         hash = hash & hash; // Convert to 32bit integer
     }
     current_hash = hash.toString(16);
-    console.log("current hash");
 }
 
 // retrive an old diagram if it exist.
@@ -1444,20 +1434,16 @@ function loadDiagram() {
     var checkLocalStorage = localStorage.getItem('localdiagram');
     //loacal storage and hash
     if (checkLocalStorage == "" || checkLocalStorage == null) {
-        console.log("Hej");
     } else {
         var localDiagram = JSON.parse(localStorage.getItem('localdiagram'));
     }
     var localhexHash = localStorage.getItem('localhash');
-    console.log("local hash: ", localhexHash);
-    console.log("local localDiagram: ", localDiagram);
     var diagramToString = "";
     var hash = 0;
     for(var i = 0; i < diagram.length; i++) {
         diagramToString = diagramToString + JSON.stringify(diagram[i]);
     }
     if (diagram.length == 0) {
-        console.log(hash);
     } else {
         for (var i = 0; i < diagramToString.length; i++) {
             var char = diagramToString.charCodeAt(i);
@@ -1466,7 +1452,6 @@ function loadDiagram() {
         }
         var hexHash = hash.toString(16);
     }
-    console.log("hash: " + hexHash);
     if (typeof localhexHash !== "undefined" && typeof localDiagram !== "undefined") {
         if (localhexHash != hexHash) {
             var dia = JSON.parse(JSON.stringify(localDiagram));
@@ -1490,14 +1475,11 @@ function loadDiagram() {
             for (var i = 0; i < b.points.length; i++) {
                 points[i] = b.points[i];
             }
-            console.log("State is loaded");
             //Redrawn old state.
             updategfx();
         } else {
-            console.log("the hashes are identical");
         }
     } else {
-        console.log("no diagram have been saved.");
     }
 }
 
