@@ -2258,7 +2258,6 @@ table {
 }
 
 .ellipsis {
-  max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis; /* rest */
   -o-text-overflow: ellipsis; /* opera */
