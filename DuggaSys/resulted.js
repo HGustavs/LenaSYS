@@ -558,7 +558,7 @@ function process()
 		}			
 		// Update dropdown list
 		var dstr="";
-    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectdugga' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 		for(var j=0;j<moments.length;j++){
 				var lid=moments[j].lid;
 				var name=moments[j].entryname;
@@ -567,7 +567,7 @@ function process()
 				
 				if (moments[j].kind == 4) {dstr +=" checkmoment";}
 				
-				dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
+				dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check' onclick='toggleAll();'";
 				if (clist){
 						index=clist.indexOf("hdr"+lid+"check");
 						if(index>-1){
@@ -641,6 +641,7 @@ function process()
 
 function hoverc()
 {
+  toggleAll(); // Check toggle all if there are any elements checked
     $('#dropdowns').css('display','none');
   	$('#dropdownc').css('display','block');
 }
@@ -667,15 +668,53 @@ function leavec()
 }
 
 // Function to select and unselect all duggas 
-function checkedAll () {
-    var aa =  document.getElementsByName("selectdugga");
-    checked = document.getElementById('selectdugga').checked;
-     
-    for (var i =0; i < aa.length; i++) 
-    {
-        aa[i].checked = checked;
+function checkedAll() {
+  // Current state
+  var duggaElements = document.getElementsByName("selectdugga");
+  var selectToggle = document.getElementById('selectdugga');
+
+  // Are there any elements checked?
+  var anyChecked = false;
+
+  for (var i =0; i < duggaElements.length; i++) {
+    if(duggaElements[i].checked) {
+      anyChecked = true;
+      break;
     }
- }
+  }
+
+  // Yes, there is at lease one element checked, so default is clear
+  if(anyChecked) {
+    selectToggle.checked = false;
+    for (var i =0; i < duggaElements.length; i++) {
+      duggaElements[i].checked = false;    
+    }
+  } else { // There are no element(s) checked, so set all
+    selectToggle.checked = true;
+    for (var i =0; i < duggaElements.length; i++) {
+      duggaElements[i].checked = true;    
+    }
+  }
+}
+
+// Check all/none box if there are any filters on, else uncheck
+function toggleAll() {
+  // Current state
+  var duggaElements = document.getElementsByName("selectdugga");
+  var selectToggle = document.getElementById('selectdugga');
+
+  // Are there any elements checked?
+  var anyChecked = false;
+
+  for (var i =0; i < duggaElements.length; i++) {
+    if(duggaElements[i].checked) {
+      anyChecked = true;
+      break;
+    }
+  }
+
+  selectToggle.checked = anyChecked;
+}
 
 function hovers()
 {
