@@ -78,7 +78,7 @@ chmod 777 loglena4.db
 
 **Note:** For the push notification system to work the server needs to use https, so make sure that is set up and valid. 
 
-To set up htts, look at the guide on this wiki page: [Getting a free ssl certificate and installing it when not having access to port 80](https://github.com/HGustavs/LenaSYS/wiki/Getting-a-free-ssl-certificate-and-installing-it-when-not-having-access-to-port-80)
+To set up https, look at the guide on this wiki page: [Getting a free ssl certificate and installing it when not having access to port 80](https://github.com/HGustavs/LenaSYS/wiki/Getting-a-free-ssl-certificate-and-installing-it-when-not-having-access-to-port-80)
 
 **Note:** Only install if there is no other push notifications installation on the system already, if an installation already exists follow the guide further below for instructions for that.
 
