@@ -176,6 +176,7 @@ Testing Link:
 		<span id='forwdrop' style='left:100px;display:none;' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'>Forw</div><span id='forwdropc'>bii</span></span>
 		<!-- Dropdowns END -->
 		<!-- Example Content Cog Wheel Dialog START -->
+		<!-- Width changed to 510 from 468 -->
 		<div id='editContent' class='loginBox' style='width:510px;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Content</h3>
