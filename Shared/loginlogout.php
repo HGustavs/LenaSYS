@@ -22,7 +22,7 @@ if($opt=="LOGIN"){
 		
 		$savelogin = array_key_exists('saveuserlogin', $_POST) && $_POST['saveuserlogin'] == 'on';
 		
-		pdoConnect(); // Made sure if actually connects to a database
+		pdoConnect(); // Makes sure it actually connects to a database
 		
 		// Default values
 		$res = array("login" => "failed");

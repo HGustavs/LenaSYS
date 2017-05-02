@@ -47,18 +47,15 @@ function addSubmissionRow() {
 
 function selectVariant(vid,param,answer,template,dis)
 {
-
 	$("#editVariant").css("display","block"); // Display edit dialog
 	$("#overlay").css("display","block"); 
 	$("#vid").val(vid); // Set Variant ID
-	//var pparam = parseParameters(param);
 	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
-	//var panswer = parseParameters(answer);
 	$("#variantanswer").val(decodeURIComponent(answer)); // Set Variant answer
 	if(dis.localeCompare("1")===0){
-		$("#toggleVariantButton").val("Enable"); // Set Variant answer
+		$("#toggleVariantButton").val("Enable");
 	} else {
-		$("#toggleVariantButton").val("Disable"); // Set Variant answer
+		$("#toggleVariantButton").val("Disable");
 	}
 	
 	//Parse JSON to add data to forms again
@@ -93,7 +90,6 @@ function selectVariant(vid,param,answer,template,dis)
 			}
 		}
 	}
-
 }
 
 function closeVariant(){
@@ -158,6 +154,7 @@ function updateVariant()
 	var correct;
 	var value = [];
 	
+	//If the same fieldname has been input more than once
 	for(i=0; i<fieldnames.length; i++){
 		if(fieldnames[i]==fieldnames[i+1]){
 			correct = "no";
@@ -165,6 +162,7 @@ function updateVariant()
 		}
 	}
 	
+	//If wrong fieldnames (same name used more than once)
 	if(correct=="no"){
 		$("#submissionError").css("display", "block");
 		for(i=0; i<rows; i++){
@@ -175,6 +173,7 @@ function updateVariant()
 			}
 		}
 	}
+	//If correct input in forms, close box
 	else{
 		$("#editVariant").css("display","none");
 		$("#overlay").css("display","none");
@@ -201,7 +200,6 @@ function createDugga()
 
 function deleteDugga()
 {
-   // var did=$("#id").val();
     did=$("#did").val();
     if(confirm("Do you really want to delete this dugga?")) AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
     $("#editDugga").css("display","none");
@@ -294,7 +292,7 @@ function showVariant(param){
     var index = variant.indexOf(param);
     
     
-    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) {// Check if dugga row and corresponding variant
+    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) { // Check if dugga row and corresponding variant
         if(!isInArray(variant, param)){
              variant.push(param);
         }
@@ -595,7 +593,7 @@ function closePreview()
 
 }
 
-// Needed for button clicks.. :)
+// Needed for button clicks
 $(document).ready(function(){
 
 	addSubmissionRow();
