@@ -42,6 +42,7 @@ var waldoPoint = {x:-10, y:-10, selected:false};
 var activePoint = null;             //This point indicates what point is being hovered by the user
 var p1 = null;                      // When creating a new figure, these two variables are used ...
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
+var p3 = null;                      // Middlepoint/centerpoint
 var snapToGrid = true;              // Will the clients actions snap to grid
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossfillStyle = "#d51";
@@ -700,7 +701,53 @@ function doubleclick(ev) {
         }
     }
 }
-
+function resize() {
+    if (uimode == "CreateClass" && md == 4) {
+        if (cx >= sx && (cx - sx) < classTemplate.width) {
+            cx = sx + classTemplate.width;
+        } else if (cx < sx && (sx - cx) < classTemplate.width) {
+            cx = sx - classTemplate.width;
+        }
+        if (cy >= sy && (cy - sy) < classTemplate.width) {
+            cy = sy + classTemplate.height;
+        } else if (cy < sy && (sy - cy) < classTemplate.height) {
+            cy = sy - classTemplate.height;
+        }
+    } else if (uimode == "CreateERAttr" && md == 4) {
+        if (cx >= sx && (cx - sx) < attributeTemplate.width) {
+            cx = sx + attributeTemplate.width;
+        } else if (cx < sx && (sx - cx) < attributeTemplate.width) {
+            cx = sx - attributeTemplate.width;
+        }
+        if (cy >= sy && (cy - sy) < attributeTemplate.width) {
+            cy = sy + attributeTemplate.height;
+        } else if (cy < sy && (sy - cy) < attributeTemplate.height) {
+            cy = sy - attributeTemplate.height;
+        }
+    } else if (uimode == "CreateEREntity" && md == 4) {
+        if (cx >= sx && (cx - sx) < entityTemplate.width) {
+            cx = sx + entityTemplate.width;
+        } else if (cx < sx && (sx - cx) < entityTemplate.width) {
+            cx = sx - entityTemplate.width;
+        }
+        if (cy >= sy && (cy - sy) < entityTemplate.width) {
+            cy = sy + entityTemplate.height;
+        } else if (cy < sy && (sy - cy) < entityTemplate.height) {
+            cy = sy - entityTemplate.height;
+        }
+    } else if (uimode == "CreateERRelation" && md == 4) {
+        if (cx >= sx && (cx - sx) < relationTemplate.width) {
+            cx = sx + relationTemplate.width;
+        } else if (cx < sx && (sx - cx) < relationTemplate.width) {
+            cx = sx - relationTemplate.width;
+        }
+        if (cy >= sy && (cy - sy) < relationTemplate.width) {
+            cy = sy + relationTemplate.height;
+        } else if (cy < sy && (sy - cy) < relationTemplate.height) {
+            cy = sy - relationTemplate.height;
+        }
+    }
+}
 function mouseupevt(ev) {
     if (snapToGrid) {
         cx = Math.round(cx / gridSize) * gridSize;
@@ -708,21 +755,14 @@ function mouseupevt(ev) {
     }
     // Code for creating a new class
     if (md == 4 && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
+        resize();
+
         // Add required points
         p1 = points.addpoint(sx, sy, false);
         p2 = points.addpoint(cx, cy, false);
-        var swap = null;
-        /*if(p1.x > p2.x){
-            swap = p1.x;
-            p1.x = p2.x;
-            p2.x = swap;
-        }
-        if(p1.y > p2.y){
-            swap = p1.y;
-            p1.y = p2.y;
-            p2.y = swap;
-        }*/
-        var p3 = points.addpoint((cx + sx) * 0.5, (cy + sy) * 0.5, false);
+
+
+        p3 = points.addpoint((sx + cx) * 0.5, (sy + cy) * 0.5, false);
     }
     if (uimode == "CreateLine" && md == 4) {
         sel = points.distance(cx, cy);
@@ -764,36 +804,15 @@ function mouseupevt(ev) {
         classB.attributes.push({visibility:"+", text:"height:Integer"});
         classB.topLeft = p1;
         classB.bottomRight = p2;
-        if (points[classB.bottomRight].x >= points[classB.topLeft].x && (points[classB.bottomRight].x - points[classB.topLeft].x) < classTemplate.width) {
-            points[classB.bottomRight].x = points[classB.topLeft].x + classTemplate.width;
-        } else if (points[classB.bottomRight].x < points[classB.topLeft].x && (points[classB.topLeft].x - points[classB.bottomRight].x) < classTemplate.width) {
-            points[classB.bottomRight].x = points[classB.topLeft].x - classTemplate.width;
-        }
-        if (points[classB.bottomRight].y >= points[classB.topLeft].y && (points[classB.bottomRight].y - points[classB.topLeft].y) < classTemplate.width) {
-            points[classB.bottomRight].y = points[classB.topLeft].y + classTemplate.height;
-        } else if (points[classB.bottomRight].y < points[classB.topLeft].y && (points[classB.topLeft].y - points[classB.bottomRight].y) < classTemplate.height) {
-            points[classB.bottomRight].y = points[classB.topLeft].y - classTemplate.height;
-        }
+
         classB.middleDivider = p3;
-        console.log("banan:" + points[classB.middleDivider].y);
-        points[classB.middleDivider].x = ((classB.bottomRight.x + classB.topLeft.x) * 0.5);
-        points[classB.middleDivider].y = ((classB.bottomRight.y + classB.topLeft.y) * 0.5);
         diagram.push(classB);
     } else if (uimode == "CreateERAttr" && md == 4) {
         erAttributeA = new Symbol(2);
         erAttributeA.name = "Attr" + diagram.length;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
-        if (points[erAttributeA.bottomRight].x >= points[erAttributeA.topLeft].x && (points[erAttributeA.bottomRight].x - points[erAttributeA.topLeft].x) < attributeTemplate.width) {
-            points[erAttributeA.bottomRight].x = points[erAttributeA.topLeft].x + attributeTemplate.width;
-        } else if (points[erAttributeA.bottomRight].x < points[erAttributeA.topLeft].x && (points[erAttributeA.topLeft].x - points[erAttributeA.bottomRight].x) < attributeTemplate.width) {
-            points[erAttributeA.bottomRight].x = points[erAttributeA.topLeft].x - attributeTemplate.width;
-        }
-        if (points[erAttributeA.bottomRight].y >= points[erAttributeA.topLeft].y && (points[erAttributeA.bottomRight].y - points[erAttributeA.topLeft].y) < attributeTemplate.width) {
-            points[erAttributeA.bottomRight].y = points[erAttributeA.topLeft].y + attributeTemplate.height;
-        } else if (points[erAttributeA.bottomRight].y < points[erAttributeA.topLeft].y && (points[erAttributeA.topLeft].y - points[erAttributeA.bottomRight].y) < attributeTemplate.height) {
-            points[erAttributeA.bottomRight].y = points[erAttributeA.topLeft].y - attributeTemplate.height;
-        }
+
         erAttributeA.centerpoint = p3;
         erAttributeA.attributeType = "";
         erAttributeA.fontColor = "#253";
@@ -809,16 +828,7 @@ function mouseupevt(ev) {
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerpoint = p3;
-        if (points[erEnityA.bottomRight].x >= points[erEnityA.topLeft].x && (points[erEnityA.bottomRight].x - points[erEnityA.topLeft].x) < entityTemplate.width) {
-            points[erEnityA.bottomRight].x = points[erEnityA.topLeft].x + entityTemplate.width;
-        } else if (points[erEnityA.bottomRight].x < points[erEnityA.topLeft].x && (points[erEnityA.topLeft].x - points[erEnityA.bottomRight].x) < entityTemplate.width) {
-            points[erEnityA.bottomRight].x = points[erEnityA.topLeft].x - entityTemplate.width;
-        }
-        if (points[erEnityA.bottomRight].y >= points[erEnityA.topLeft].y && (points[erEnityA.bottomRight].y - points[erEnityA.topLeft].y) < entityTemplate.width) {
-            points[erEnityA.bottomRight].y = points[erEnityA.topLeft].y + entityTemplate.height;
-        } else if (points[erEnityA.bottomRight].y < points[erEnityA.topLeft].y && (points[erEnityA.topLeft].y - points[erEnityA.bottomRight].y) < entityTemplate.height) {
-            points[erEnityA.bottomRight].y = points[erEnityA.topLeft].y - entityTemplate.height;
-        }
+
         erEnityA.entityType = "";
         erEnityA.fontColor = "#253";
         erEnityA.font = "Arial";
@@ -841,16 +851,7 @@ function mouseupevt(ev) {
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.middleDivider = p3;
-        if (points[erRelationA.bottomRight].x >= points[erRelationA.topLeft].x && (points[erRelationA.bottomRight].x - points[erRelationA.topLeft].x) < relationTemplate.width) {
-            points[erRelationA.bottomRight].x = points[erRelationA.topLeft].x + relationTemplate.width;
-        } else if (points[erRelationA.bottomRight].x < points[erRelationA.topLeft].x && (points[erRelationA.topLeft].x - points[erRelationA.bottomRight].x) < relationTemplate.width) {
-            points[erRelationA.bottomRight].x = points[erRelationA.topLeft].x - relationTemplate.width;
-        }
-        if (points[erRelationA.bottomRight].y >= points[erRelationA.topLeft].y && (points[erRelationA.bottomRight].y - points[erRelationA.topLeft].y) < relationTemplate.width) {
-            points[erRelationA.bottomRight].y = points[erRelationA.topLeft].y + relationTemplate.height;
-        } else if (points[erRelationA.bottomRight].y < points[erRelationA.topLeft].y && (points[erRelationA.topLeft].y - points[erRelationA.bottomRight].y) < relationTemplate.height) {
-            points[erRelationA.bottomRight].y = points[erRelationA.topLeft].y - relationTemplate.height;
-        }
+
         diagram.push(erRelationA);
         //selecting the newly created relation and open the dialog menu.
         selobj = diagram.length -1;
