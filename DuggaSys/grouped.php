@@ -41,6 +41,23 @@
 		include '../Shared/loginbox.php';
 	?>
 	<!-- Login Dialog END -->
+	
+	<!-- Create Group Dialog START -->
+	<div id='groupSection' class='loginBox' style='width:285px;display:none;'>
+		<div class='loginBoxheader'>
+			<h3>Create Group</h3>
+			<div onclick='closeWindows();'>x</div>
+		</div>
+		<div style='padding:5px;'>
+			<div id='inputwrapper-name' class='inputwrapper'><span>Name:</span><input style='float:none; margin-left: 5px;' type='text' class='textinput' id='name' placeholder='Name' /></div>
+		</div>
+		<p style="display:none; color:red;" id="groupNameError">Du måste ange ett namn för att skapa en grupp.</p>
+		<div style='padding:5px;'>
+			<input style='float:none; display: inline-block;' class='submit-button ' type='button' value='Cancel' onclick='closeWindows();' /> 
+			<input style='margin-left: 40px; float:none; display: inline-block;' class='submit-button' type='button' value='Submit' onclick='createGroup();' /> 
+		</div>
+	</div>
+	<!-- Create Group Dialog END -->
 
 </body>
 </html>

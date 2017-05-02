@@ -40,7 +40,7 @@ if (@include_once "../vendor/autoload.php") {
 			if ($stmt->execute()) {
 				$results = $stmt->fetchAll();
 				foreach($results as $row) {
-					$query = "UPDATE user_push_registration SET daysOfUnsent = daysOfUnsent + 1, lastSent = CURDATE() WHERE id = :id AND lastSent <> CURDATE()";
+					$query = "UPDATE user_push_registration SET daysOfUnsent = daysOfUnsent + 1, lastSent = CURDATE() WHERE id = :id AND (lastSent <> CURDATE() OR lastSent IS NULL)";
 					$stmt = $pdo->prepare($query);
 					$stmt->bindParam(':id', $row['id']);
 					$stmt->execute();
