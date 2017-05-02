@@ -1793,7 +1793,8 @@ span.arrow {
   background-color:#fecc56;
   color:#614875;
   z-index:4000;
-  border:none;
+  border:0;
+  outline: none;
   cursor: pointer;
   padding-left: 7px;
   padding-top: 1px;
