@@ -87,8 +87,8 @@ function resetFields(){
 function setExpireCookie(){
 
 	var expireDate = new Date();
-	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));
-
+	expireDate.setTime(expireDate.getTime() + (1 * 2 * 5000));
+  //8100000
 	document.cookie = "sessionEndTime=expireC; expires="+ expireDate.toGMTString() +"; path=/";
 	//console.log(expireDate);
 
@@ -882,7 +882,26 @@ function hideDuggaInfoPopup()
 		startDuggaHighScore();
 	}
 }
+//----------------------------------------------------------------------------------
+// Simple page reload function
+//----------------------------------------------------------------------------------
+function reloadPage(){
+   location.reload();
+}
+//----------------------------------------------------------------------------------
+// Refresh function, refreshes the current session by resetting the php session cookie
+//----------------------------------------------------------------------------------
+function refreshUserSession(){
+	$.ajax({
+					type: "POST",
+					url: "../Shared/loginlogout.php",
+					data:{opt:'REFRESH'},
+					success:function(html) {
+						alert(html);
+					}
 
+		 });
+}
 //----------------------------------------------------------------------------------
 // Timeout function, gives a prompt if the session is about to expire
 //----------------------------------------------------------------------------------
@@ -890,7 +909,7 @@ function sessionExpireMessage() {
 
 	if(document.cookie.indexOf('sessionEndTime=expireC') > -1){
 		var intervalId = setInterval(function() {
-		//console.log("testEMessage");
+		console.log("testEMessage");
 		checkIfExpired();
 		}, 2000);
 	}
@@ -924,9 +943,7 @@ function sessionExpireLogOut() {
 		if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
-			$(".expiremessagebox").css("display","block");
-			$("#expiremessage").text("Your session has timed out");
-			//location.reload();
+			$(".endsessionmessagebox").css("display","block");
 			clearInterval(intervalId);
 		}
 

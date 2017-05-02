@@ -774,7 +774,7 @@ header td {
   margin-left: 1px;
 }
 
-.loginBox, .expiremessagebox {
+.loginBox, .expiremessagebox, .endsessionmessagebox {
   display:block;
   padding:4px;
   background-color: #ccc;

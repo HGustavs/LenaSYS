@@ -14,9 +14,13 @@ include_once "../../coursesyspw.php";
 
 $opt=getOP('opt');
 
-// If not login we assume logout
-if($opt=="LOGIN"){
+if($opt=="REFRESH"){
+			$lifetime=18000;
+			session_regenerate_id(true);
+			setcookie(session_name(),session_id(),time()+$lifetime);
 	
+}else if($opt=="LOGIN"){
+// If not login we assume logout	
 		$username=getOP('username');
 		$password=getOP('password');
 		
