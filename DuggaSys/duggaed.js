@@ -38,7 +38,7 @@ function addSubmissionRow() {
 						"<option value='link'>Link</option>"+
 						"<option value='text'>Text</option>"+
 					"</select>"+
-					"<input type='text' name='fieldname' id='fieldname"+submissionRow+"' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='text' name='fieldname' class='fieldnameRows' id='fieldname"+submissionRow+"' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
 					"<input type='text' name='instruction' id='instruction"+submissionRow+"' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
 					"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>"+
 				 "</div>");
@@ -147,27 +147,35 @@ function addVariant(cid,qid)
 function updateVariant()
 {
 	var fieldnames = [];
-
-	for(i=0; i<submissionRow; i++){
-		fieldnames.push($("#fieldname"+i).val());
-		$("#fieldname"+i).css("background-color", "white");
-	}
+	var rows = $(".fieldnameRows").length;
+	
+	$(".fieldnameRows").each(function(){
+		fieldnames.push($(this).val());
+		$(this).css("background-color", "white");
+	});
 	fieldnames.sort();
 	
-	var correct = "yes";
+	var correct;
+	var value = [];
 	
 	for(i=0; i<fieldnames.length; i++){
 		if(fieldnames[i]==fieldnames[i+1]){
 			correct = "no";
-			for(j=0; j<submissionRow; j++){
-				if(fieldnames[i]==$("#fieldname"+j).val()){
-					$("#fieldname"+j).css("background-color", "rgba(255, 0, 6, 0.2)");
+			value.push(fieldnames[i]);
+		}
+	}
+	
+	if(correct=="no"){
+		$("#submissionError").css("display", "block");
+		for(i=0; i<rows; i++){
+			for(j=0; j<value.length; j++){
+				if($("#fieldname"+i).val()==value[j]){
+					$("#fieldname"+i).css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
 			}
 		}
 	}
-	
-	if(correct=="yes"){
+	else{
 		$("#editVariant").css("display","none");
 		$("#overlay").css("display","none");
 		
@@ -178,9 +186,6 @@ function updateVariant()
 		AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
 		
 		closeVariant();
-	}
-	else{
-		$("#submissionError").css("display", "block");
 	}
 }
 
