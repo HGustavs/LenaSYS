@@ -1086,13 +1086,13 @@ input.submit-button {
 input.submit-button-newitem {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-weight: bold;
-  background-color:#614875;
+  background-color:rgb(253, 203, 96);
   border: 0px;
-  width:40px;
-  height:30px;
-  color:#fff;
+  width:35px;
+  height:25px;
+  color:rgb(97, 73, 116);
   cursor:pointer;
-  margin-top:6px;
+  margin-top:2px;
   margin-bottom:2px;
   margin-left:0px;
   font-size:16px;
@@ -2260,7 +2260,6 @@ table {
 }
 
 .ellipsis {
-  max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis; /* rest */
   -o-text-overflow: ellipsis; /* opera */
