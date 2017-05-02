@@ -179,7 +179,7 @@ Testing Link:
 		<div id='editContent' class='loginBox' style='width:510px;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Content</h3>
-				<div onclick='closeEditContent();'>x</div>
+				<div class='cursorPointer' onclick='closeEditContent();'>x</div>
 			</div>	
 			<table width="100%" style="table-layout:fixed;">
 				<tr>
