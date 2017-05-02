@@ -572,11 +572,11 @@ function process()
 				
 				if (moments[j].kind == 4) {dstr +=" checkmoment";}
 				
-				dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check' onclick='toggleAll();'";
+				dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
             	if (moments[j].kind == 4) {
                     duggaArray.push( [] );
                     var idAddString = "hdr"+lid+"check";
-                	dstr+=" onclick='checkMomentParts(" + activeMoment + ", \"" + idAddString + "\");'";
+                	dstr+=" onclick='checkMomentParts(" + activeMoment + ", \"" + idAddString + "\"); toggleAll();'";
                     activeMoment++;
                 } else {
             		var idAddString = "hdr"+lid+"check";
