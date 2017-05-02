@@ -5,6 +5,8 @@ University of Skövde Code Viewer and Course Organization System
 
 # Install Instructions
 
+Make sure you have a working install of apache2 and other needed packages, look at the wiki page for this at [Configuring web server for LenaSYS installation](https://github.com/HGustavs/LenaSYS/wiki/Configuring-web-server-for-LenaSYS-installation) for further information
+
 To install a fresh copy of LenaSYS on your system an installes has been created called 'install.php'.
 This installer is located in the LenaSYS directory.
 What the installer will do is to help you create a new user in the MySQL database and a new database and fill it with some test data (if desired) to help you get started. It will also guide you through the steps necessary to link LenaSYS to this newly created database and get it running. 
@@ -74,7 +76,8 @@ chmod 777 loglena4.db
 
 # Push notifications installation
 
-**Note:** For the push notification system to work the server needs to use https, so make sure that is set up and valid.
+**Note:** For the push notification system to work the server needs to use https, so make sure that is set up and valid. 
+If you need help with setting it up, look at the wiki page for this at [Getting a free ssl certificate and installing it when not having access to port 80](https://github.com/HGustavs/LenaSYS/wiki/Getting-a-free-ssl-certificate-and-installing-it-when-not-having-access-to-port-80)
 
 **Note:** Only install if there is no other push notifications installation on the system already, if an installation already exists follow the guide further below for instructions for that.
 
