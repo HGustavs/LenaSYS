@@ -14,19 +14,23 @@ include_once "../../coursesyspw.php";
 
 $opt=getOP('opt');
 
-// If not login we assume logout
-if($opt=="LOGIN"){
+if($opt=="REFRESH"){
+		$lifetime=18000;
+		session_regenerate_id(true);
+		setcookie(session_name(),session_id(),time()+$lifetime);
 	
+}else if($opt=="LOGIN"){
+
 		$username=getOP('username');
 		$password=getOP('password');
-		
+
 		$savelogin = array_key_exists('saveuserlogin', $_POST) && $_POST['saveuserlogin'] == 'on';
-		
+
 		pdoConnect(); // Made sure if actually connects to a database
-		
+
 		// Default values
 		$res = array("login" => "failed");
-		
+
 		if(failedLoginCount($_SERVER['REMOTE_ADDR'])>=10){
 			$res["login"] = "failed";
 			$res["reason"] = "Too many failed attempts, try again later";

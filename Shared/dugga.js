@@ -76,7 +76,7 @@ function setExpireCookie(){
 
 	var expireDate = new Date();
 	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));
-
+ 
 	document.cookie = "sessionEndTime=expireC; expires="+ expireDate.toGMTString() +"; path=/";
 	//console.log(expireDate);
 
@@ -855,7 +855,20 @@ function hideDuggaInfoPopup()
 		startDuggaHighScore();
 	}
 }
+//----------------------------------------------------------------------------------
+// Refresh function, refreshes the current session by resetting the php session cookie
+//----------------------------------------------------------------------------------
+function refreshUserSession(){
+	$.ajax({
+					type: "POST",
+					url: "../Shared/loginlogout.php",
+					data:{opt:'REFRESH'},
+					success:function(html) {
+						alert(html);
+					}
 
+		 });
+}
 //----------------------------------------------------------------------------------
 // Timeout function, gives a prompt if the session is about to expire
 //----------------------------------------------------------------------------------
@@ -892,7 +905,7 @@ function sessionExpireLogOut() {
 	}
 
 	function checkIfExpired() {
-		
+
 		if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
@@ -903,7 +916,7 @@ function sessionExpireLogOut() {
 
 	}
 }
-	
+
 //----------------------------------------------------------------------------------
 // A function that handles the onmouseover/onmouseout events on the loginbutton-td, changing the icon-image on hover.
 //----------------------------------------------------------------------------------
@@ -1195,32 +1208,7 @@ function resetFields(){
 	$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
 }
 
-//----------------------------------------------------------------------------------
-// Sets cookie that expires when there's 30 min left of session
-//----------------------------------------------------------------------------------
 
-function setExpireCookie(){
-
-	var expireDate = new Date();
-	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));
-
-	document.cookie = "sessionEndTime=expireC; expires="+ expireDate.toGMTString() +"; path=/";
-	//console.log(expireDate);
-
-}
-
-//----------------------------------------------------------------------------------
-// Sets a cookie that expires at the same time as the user is logged out (when the session ends)
-//----------------------------------------------------------------------------------
-function setExpireCookieLogOut(){
-
-	var expireDate = new Date();
-	expireDate.setTime(expireDate.getTime() + (1 * 2 * 9000000));
-
-	document.cookie = "sessionEndTimeLogOut=expireC; expires="+ expireDate.toGMTString() +"; path=/";
-
-}
-//----------------------------------------------------------------------------------
 function closeWindows(){
 
 	var index_highest = 0;
@@ -1983,56 +1971,7 @@ function hideDuggaInfoPopup()
 	}
 }
 
-//----------------------------------------------------------------------------------
-// Timeout function, gives a prompt if the session is about to expire
-//----------------------------------------------------------------------------------
-function sessionExpireMessage() {
 
-	if(document.cookie.indexOf('sessionEndTime=expireC') > -1){
-		var intervalId = setInterval(function() {
-		//console.log("testEMessage");
-		checkIfExpired();
-		}, 2000);
-	}
-
-	function checkIfExpired() {
-
-			if (document.cookie.indexOf('sessionEndTime=expireC') == -1){
-				// alert('Session is about to expire in 30 minutes');
-				$(".expiremessagebox").css("display","block");
-
-				clearInterval(intervalId);
-			}
-
-		}
-	}
-
-//----------------------------------------------------------------------------------
-// Gives an alert when user is timed out (when the session ends)
-//----------------------------------------------------------------------------------
-function sessionExpireLogOut() {
-
-	if(document.cookie.indexOf('sessionEndTimeLogOut=expireC') > -1){
-		var intervalId = setInterval(function() {
-			//console.log("testTimeout");
-			checkIfExpired();
-		}, 2000);
-	}
-
-	function checkIfExpired() {
-		
-		if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
-			//alert('Your session has expired');
-			// When reloaded the log in icon should change from green to red
-			$(".expiremessagebox").css("display","block");
-			$("#expiremessage").text("Your session has timed out");
-			//location.reload();
-			clearInterval(intervalId);
-		}
-
-	}
-}
-	
 //----------------------------------------------------------------------------------
 // A function that handles the onmouseover/onmouseout events on the loginbutton-td, changing the icon-image on hover.
 //----------------------------------------------------------------------------------
