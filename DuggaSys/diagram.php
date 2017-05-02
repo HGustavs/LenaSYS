@@ -86,16 +86,28 @@
         include '../Shared/loginbox.php';
     ?>
     <?php
-        if(isset($_POST['StringDiagram'])) {
+    if(!isset($_POST['StringDiagram'])) {
+        mkdir("Save", 0777,true);
+        $getID = fopen("Save/id.txt", "r");
+        $a = intval(fread($getID,filesize("Save/id.txt")));
+        $a += 1;
+        $overwriteID = fopen("Save/id.txt", "w");
+        mkdir ("Save/$a", 0777, true);
+        fwrite($overwriteID,$a);
+    }
+    ?>
+    <?php
+    if(isset($_POST['StringDiagram'])) {
             $str = $_POST['StringDiagram'];
             $hash = $_POST['Hash'];
             save($str,$hash);
         }
-        function save($data, $hash) {
-            mkdir("Saves/b", 0777, true);
-            $myfile = fopen("Saves/b/$hash.txt", "w");
-            fwrite($myfile, $data);
-        }
+    function save($data, $hash) {
+        $getID = fopen("Save/id.txt", "r");
+        $a = intval(fread($getID,filesize("Save/id.txt")));
+        $myfile = fopen("Save/$a/$hash.txt", "w");
+        fwrite($myfile, $data);
+    }
     ?>
 </body>
 </html>
