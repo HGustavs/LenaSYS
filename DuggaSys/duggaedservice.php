@@ -47,7 +47,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php",
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 	if(strcmp($opt,"ADDUGGA")===0){
-		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,creator,vers) VALUES (:cid,1,1,'New Dugga','test.html',:uid,:coursevers)";	
+		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,release,deadline,creator,vers) VALUES (:cid,1,1,'New Dugga','test.html',:release,:deadline,:uid,:coursevers)";	
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':cid', $cid);
 		$stmt->bindParam(':uid', $userid);

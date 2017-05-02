@@ -71,9 +71,15 @@ function closeEditVariant()
 	$("#editVariant").css("display","none");
 }
 
-function createDugga()
-{
+function createDuggaV2()
+{	
 	AJAXService("ADDUGGA",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
+}
+
+function newDugga()
+{
+	$("#editDugga").css("display","block");
+	$("#overlay").css("display","block");
 }
 
 function deleteDugga()
@@ -120,6 +126,22 @@ function hideLoginPopup()
 	$("#overlay").css("display","none");
 }
 
+function showSubmitButton(){ 
+  $(".submitDugga").css("display","inline-block"); 
+  $(".updateDugga").css("display","none"); 
+  $(".deleteDugga").css("display","none"); 
+  $(".closeDugga").css("display","inline-block"); 
+  $("#overlay").css("display","block"); 
+} 
+ 
+function showSaveButton(){ 
+  $(".submitDugga").css("display","none"); 
+  $(".updateDugga").css("display","block");
+  $(".deleteDugga").css("display","block");
+  $(".closeDugga").css("display","none"); 
+  $("#overlay").css("display","none"); 
+} 
+
 function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 {
 	$("#editDugga").css("display","block");
@@ -157,6 +179,49 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 		}
 	}
 	$("#template").html(str);
+}
+
+function createDugga(cid,did,name,autograde,gradesys,template,release,deadline,vers)
+{
+	$("#editDugga").css("display","block");
+	$("#overlay").css("display","block");
+	$("#did").val(did); // Set Variant ID
+	$("#qname").val(name); // Set Dugga name
+	$("#release").val(release); // Set Release date name
+	$("#deadline").val(deadline); // Set Deadline date name
+	
+	//----------------------------------------------------
+	// Set Autograde
+	//----------------------------------------------------
+	var str="";
+	if(autograde==0) str+="<option selected='selected' value='0'>Off</option>"
+	else str+="<option value='0'>Hidden</option>";
+	if(autograde==1) str+="<option selected='selected' value='1'>On</option>"
+	else str+="<option value='1'>Public</option>";
+	$("#autograde").html(str);
+
+	str="";
+	if(gradesys==1) str+="<option selected='selected' value='1'>U-G-VG</option>"
+	else str+="<option value='1'>U-G-VG</option>";
+	if(gradesys==2) str+="<option selected='selected' value='2'>U-G</option>"
+	else str+="<option value='2'>U-G</option>";
+	if(gradesys==3) str+="<option selected='selected' value='3'>U-3-4-5</option>"
+	else str+="<option value='3'>U-3-4-5</option>";
+	$("#gradesys").html(str);
+
+	str="";
+	for(var j=0;j<filez.length;j++){
+		filen=filez[j];
+		if(filen!=".."&&filen!="."){
+			if(template==filen) str+="<option selected='selected' value='"+filen+"'>"+filen+"</option>"
+			else str+="<option value='"+filen+"'>"+filen+"</option>"
+		}
+	}
+	$("#editDugga").css("display","none");
+	$("#overlay").css("display","none");
+	$("#template").html(str);
+	//autograde, gradesystem, qname, quizFile, release, deadline, creator, vers
+	AJAXService("ADDUGGA",{cid:querystring['cid'],autograde:autograde,gradesystem:gradesys,qname:qname,quizFile:quizFile,release:release,deadline:deadline,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 // Adds a submission row in Edit Variant
@@ -300,7 +365,7 @@ function returnedDugga(data)
 	if (data['files'].length > 0) {
 
 		str+="<div style='float:right;padding-bottom:10px;'>";
-		str+="<input class='submit-button' type='button' value='Add Dugga' onclick='createDugga();'/>";
+		str+="<input class='submit-button' type='button' value='Add Dugga' onclick='newDugga();showSubmitButton();'/>";
 		str+="</div>";
 		str+="<table class='list' id='testTable'>";
 		str+="<tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Release</th><th>Deadline</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr>";
@@ -371,7 +436,7 @@ function returnedDugga(data)
 
 			str+="<td style='padding:4px;'>";
 			str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-			str+=" onclick='selectDugga(\""+item['did']+"\",\""+item['name']+"\",\""+item['autograde']+"\",\""+item['gradesystem']+"\",\""+item['template']+"\",\""+item['release']+"\",\""+item['deadline']+"\");' >";
+			str+=" onclick='selectDugga(\""+item['did']+"\",\""+item['name']+"\",\""+item['autograde']+"\",\""+item['gradesystem']+"\",\""+item['template']+"\",\""+item['release']+"\",\""+item['deadline']+"\");showSaveButton();' >";
 			str+="</td>";
 			str+="</tr>";
 
