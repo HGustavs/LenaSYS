@@ -1296,6 +1296,9 @@ function clearCanvas() {
         diagram[diagram.length - 1].erase();
         diagram.pop();
     }
+    for(var i = 0; i < points.length; i++){
+        points[i]="";
+    }
     updategfx();
 }
 
