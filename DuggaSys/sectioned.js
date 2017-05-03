@@ -699,7 +699,7 @@ function returnedSection(data)
         	str+="<div id='course-showhide' style='position:absolute; left:15px;'>";
         	str += "<input type='button' value='Show/hide all' class='hide-moments-button' title='Show/hide'/>";
         	str+="</div>";
-			str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px; max-width: 400px'>"+data.coursename+"</div>";
+			str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;'>"+data.coursename+"</div>";
       str+="<div class='nowrap'";
 			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
 			str+="<div id='course-versname' class='thisDateShouldDisappearWhenScreenIsTooSmall' style='margin-right:10px;'>"+versionname+"</div>";
