@@ -151,8 +151,8 @@ function returnedFile(data)
 		str1+="<thead style='cursor:pointer;'>";
 		str1+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>" +
 		"<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" + 
-		"<th>Link URL</th>" +
-		"<th>Upload date & time</th>" +
+		"<th style='min-width:180px;' >Link URL</th>" +
+		"<th style='min-width:180px;' >Upload date & time</th>" +
 		"<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
 		//str1+="<tr><th class='first' style='width:64px;'>ID</th><th style='width:30px' ></th></tr>";
 		str1+="</thead><tbody id='links_body'>"
