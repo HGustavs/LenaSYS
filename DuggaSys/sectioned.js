@@ -696,7 +696,9 @@ function returnedSection(data)
     // Course Name
     // This will ellipsis on the course name, and keep course code and vers always fully expanded
     str+="<div class='course ellipseBox' style='display: flex;align-items: center;justify-content: center;'>";
-			str+="<div style='display: none; margin-right:10px;'></div>";
+        	str+="<div id='course-showhide' style='display: flex; position:absolute; left:15px;'>";
+        	str += "<input type='button' value='Show/hide all' class='hide-moments-button' title='Show/hide'/>";
+        	str+="</div>";
 			str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-right:10px; max-width: 400px'>"+data.coursename+"</div>";
       str+="<div class='nowrap'";
 			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
