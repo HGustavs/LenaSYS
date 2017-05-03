@@ -71,6 +71,10 @@ function redrawtable()
 {
   str="";
 
+  str+="<div class='titles' style='padding-bottom:10px;'>";
+    str+="<h1 style='flex:1;text-align:center;'>Results</h1>";
+  str+="</div>";
+  
   str+="<div id='horizhighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
   str+="<div id='verthighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
 

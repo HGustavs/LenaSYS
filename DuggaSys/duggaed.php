@@ -74,6 +74,13 @@ pdoConnect();
 			<input type='hidden' id='vid' value='Toddler' />
 			<div id="leftDivDialog">
 				<form name="jsonform" id="jsonform">
+					<!-- Error message -->
+					<div id="submissionError" style="display:none;height:80px;">
+						<fieldset style="width:90%;border-color:red;">
+							<legend style="color:red"><b>Warning!</b></legend>
+							<p style="color:red">Each submission name needs to be unique.</p>
+						</fieldset>
+					</div>
 					<!-- Instruction for assignment -->
 					<div class="inputwrapper" style="height:80px">
 						<fieldset style="width:90%">
@@ -110,7 +117,7 @@ pdoConnect();
 		<div style='padding:5px;'>
 			<input style='float:left;' class='submit-button' type='button' value='Delete' onclick='deleteVariant();' />
 			<input id="toggleVariantButton" style='float:left;' class='submit-button' type='button' value='Disable' onclick='toggleVariant();' />
-			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateVariant();closeVariant();' />
+			<input style='float:right;' class='submit-button' type='button' value='Save' onclick='updateVariant();' />
 		</div>
 	</div>
 	<!-- Edit Variant Dialog END -->

@@ -79,7 +79,7 @@ function getQuestion($username)
 	if($pdo == null) {
 		pdoConnect();
 	}
-
+  //Gets info for the user whose username has been input
 	$query = $pdo->prepare("SELECT uid,username,superuser,securityquestion,requestedpasswordchange FROM user WHERE username=:username LIMIT 1");
 
 	$query->bindParam(':username', $username);
@@ -91,11 +91,10 @@ function getQuestion($username)
 		$row = $query->fetch(PDO::FETCH_ASSOC);
 		$_SESSION["securityquestion"]=$row['securityquestion'];
 
-		/*If the security question is null/default there is no point in allowing the user to continue.
-		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question*/
+		/* If the security question is null/default there is no point in allowing the user to continue.
+		Returning something else than false here might be good since false right now means there is no user with this name, that the name belong to a superuser or that there is no question */
 		if($row["superuser"]==1){
 			$_SESSION["getname"] = "Username not found";
-			//$_SESSION["getname"] = "User is a superuser";
 			return false;
 		}
 
@@ -107,7 +106,6 @@ function getQuestion($username)
 
     	if($query->rowCount() > 0) { 
     		$_SESSION["getname"] = "Username not found";
-			//$_SESSION["getname"] = "User is a teacher";
       		return false;
     	}	
 
@@ -136,7 +134,7 @@ function checkAnswer($username, $securityquestionanswer)
 	if($pdo == null) {
 		pdoConnect();
 	}
-
+  //Gets info for the user whose username has been input
 	$query = $pdo->prepare("SELECT uid,username,securityquestionanswer FROM user WHERE username=:username LIMIT 1");
 
 	$query->bindParam(':username', $username);
@@ -177,8 +175,6 @@ function requestChange($username)
 	$query = $pdo->prepare("UPDATE user set requestedpasswordchange=1 where username=:username;");
 
 	$query->bindParam(':username', $username);
-
-	//$query->execute();
 
 	if(!$query->execute()) {
 		return false;
@@ -226,8 +222,6 @@ function login($username, $password, $savelogin)
 	}
 	$query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,securityquestion,password(:pwd) as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
 
-
-
 	$query->bindParam(':username', $username);
 	$query->bindParam(':pwd', $password);
 
@@ -270,7 +264,7 @@ function login($username, $password, $savelogin)
             $_SESSION["securityquestion"]="set";
         }
 
-        // Since teacher and superusers can not have security question we can just say that they have one inorder to not show them the popup that they need to set one
+        // Since teacher and superusers can not have security question we can just say that they have one in order to not show them the popup that they need to set one
         if($row['superuser'] == 1) {
             $_SESSION["securityquestion"]="set";
         }

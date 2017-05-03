@@ -10,16 +10,9 @@ var courselist;
 function setup(){  	
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "GROUP");
 }
-function Groupbutton(){
-	alert("test");
-}
 
-function selectGroup(name)
+function selectGroup()
 {
-	// Set Name		
-	$("#groupname").val(name);
-	$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='"+name+"' style='width:448px;'/>");
-	
 	//Display pop-up
 	$("#groupSection").css("display","block");
 	$("#overlay").css("display","block");
@@ -27,9 +20,18 @@ function selectGroup(name)
 
 function createGroup()
 {
-	alert("Group should be created");
-	$("#groupSection").css("display","none");
-	$("#overlay").css("display","none");
+	name=$("#name").val(); 
+	if(name){
+		AJAXService("NEWGROUP",{name:name},"GROUP"); 
+		$("#groupSection").css("display","none");
+		$("#groupNameError").css("display","none");
+		$("#overlay").css("display","none");
+		$("#name").val('');
+		window.location.reload();	
+	}
+	else{
+		$("#groupNameError").css("display","block");
+	}
 }
 
 function returnedGroup(data)
@@ -47,10 +49,11 @@ function returnedGroup(data)
 	// Init the table string. 
 	str="";
 	
-	str+="<table class='navheader'><tr class='trsize'>";
-	str+="<td ><input style='display: inline-block; margin-right:2px; width:112px;' type='button' value='New Group' class='submit-button' onclick='selectGroup();'/>";
-	str+="</tr></table>";
 	
+	str+="<div class='titles' style='padding-bottom:10px;'>";
+	str+="<h1 style='flex:10;text-align:center;'>Groups</h1>";
+	str+="<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='New Group' onclick='selectGroup();'/>";
+	str+="</div>";
 
 	// Create the table headers. 
 	str+="<table class='markinglist' id='markinglist'>";
@@ -73,8 +76,10 @@ function returnedGroup(data)
 	} 
 	
 	// Itererate the headings, that are dependent on the cid and coursevers. 
-	for(var i = 0; i < headings.length; i++) {
-		str+="<th id="+headings[i].lid+" title ='Listentry id "+headings[i].lid+"' class='result-header'>"+headings[i].entryname+"</th>";	
+	if(headings){
+		for(var i = 0; i < headings.length; i++) {
+			str+="<th id="+headings[i].lid+" title ='Listentry id "+headings[i].lid+"' class='result-header'>"+headings[i].entryname+"</th>";	
+		}
 	}
 	
 	str+="</thead>";
