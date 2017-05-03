@@ -79,9 +79,9 @@ $versLength = $versEndWeek - $versStartWeek + 1;
       // Course information.
       echo '<svg width="250" height="' . (70 + (70 * $versLength)) . '">';
       echo '<rect y="0" x="0" width="250" height="70" style="fill:rgb(97,73,116)" />';
-      echo '<text y="15" x="8" fill="white">' . $coursecode . '</text>';
-      echo '<text y="35" x="8" fill="white">' . $coursename . '</text>';
-      echo '<text y="55" x="8" fill="white">Version: ' . $vers . '</text>';
+      echo '<text y="20" x="8" font-weight="bold" fill="white">' . $coursecode . '</text>';
+      echo '<text y="40" x="8" fill="white">' . $coursename . '</text>';
+      echo '<text y="60" x="8" fill="white">Version: ' . $vers . '</text>';
 
       // Add right amount of weeks to left column.
       $markRow = false;
@@ -93,7 +93,7 @@ $versLength = $versEndWeek - $versStartWeek + 1;
           echo '<rect x="0" y="' . ($i * 70) . '" width="250" height="70" style="fill:rgb(255,255,255)" />';
           $markRow = true;
         }
-        echo '<text x="95" y="' . (40 + ($i * 70)) . '" fill="black">Week ' . $i . '</text>';
+        echo '<text x="95" y="' . (40 + ($i * 70)) . '" font-weight="bold" fill="black">Week ' . $i . '</text>';
       }
       ?>
         </svg>
@@ -131,7 +131,7 @@ $versLength = $versEndWeek - $versStartWeek + 1;
         $hasCoursePart = true;
         $j = 0;
         $pos = (($i * 200) + 250);
-        echo '<text y="50" x="' . ($pos + 10) . '" fill="white">' . $row['entryname'] . '</text>';
+        echo '<text y="50" x="' . ($pos + 10) . '" font-weight="bold" fill="white">' . $row['entryname'] . '</text>';
         echo '<rect y="70" x="' . $pos . '" width="200" height="' . (70 * $versLength) . '" style="fill:rgb(';
         if ($white) {
           echo '250,250,250';
@@ -184,13 +184,13 @@ $versLength = $versEndWeek - $versStartWeek + 1;
         echo '<line x1="' . ($pos + $j + 10) . '" y1="' . (100 + ($startweek - 1) * 70) .
           '" x2="' . ($pos + $j + 30) .
           '" y2="' . (100 + ($startweek - 1) * 70) .
-          '" style="stroke:rgb(83,166,84);stroke-width:2" />';
+          '" style="stroke:rgb(83,166,84);stroke-width:3" />';
         echo '<line x1="' . ($pos + $j + 20) . '" y1="' . (100 + ($startweek - 1) * 70) .
           '" x2="' . ($pos + $j + 20) .
-          '" y2="' . (100 + ($deadlineweek - 1) * 70) . '" style="stroke:rgb(83,166,84);stroke-width:2" />';
+          '" y2="' . (100 + ($deadlineweek - 1) * 70) . '" style="stroke:rgb(83,166,84);stroke-width:3" />';
         echo '<circle id="' . $id . '" onmouseover="mouseOverCircle(this,\'' . $duggaInfoArray[$id++] . '\')" onmouseout="mouseGoneFromCircle(this)" cx="' .
           ($pos + $j + 20) . '" cy="' . (100 + ($deadlineweek - 1) * 70) .
-          '" r="10" stroke="rgb(83,166,84)" stroke-width="2" fill="rgb(253,203,96)" />';
+          '" r="10" stroke="rgb(83,166,84)" stroke-width="3" fill="rgb(253,203,96)" />';
         $j += 25;
         $oldWeek = $deadlineweek;
 
