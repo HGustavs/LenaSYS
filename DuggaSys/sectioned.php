@@ -88,7 +88,7 @@ pdoConnect();
 			<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
-			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='createVersion();' />
+			<input class='submit-button' type='button' value='Create' title='Save changes' onclick='createVersion();' />
 		</div>
 	</div>
 	<!-- New Version Dialog END -->
