@@ -177,11 +177,11 @@ function returnedFile(data)
 			str5+="<thead style='cursor:pointer;'>";
 			str5+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>"+
 			"<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" +
-            "<th>Files</th>" +
-            "<th>File extension</th>" +
-            "<th>Upload date & time</th>" +
-            "<th>File size</th>" +
-				"<th>File Kind</th>" +
+            "<th style='min-width:180px;' >Files</th>" +
+            "<th style='min-width:130px;' >File extension</th>" +
+            "<th style='min-width:180px;' >Upload date & time</th>" +
+            "<th style='min-width:130px;' >File size</th>" +
+			"<th>File Kind</th>" +
             "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
 			str5+="</thead><tbody id='allcontent_body'>";
 
