@@ -783,11 +783,12 @@ header td {
   min-height: 100px;
   z-index: 9000;
   position: fixed;
-  top: 40%;
+  top: 30%;
   left: 50%;
   margin-left: -178px;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
+
 
 .loginBox textarea, #import{
   width:100%;
@@ -887,7 +888,7 @@ input {
 
 .loginBox .inputwrapper input[type="checkbox"]{
   margin-right:200px;
-	height:24px;
+  height:24px;
 }
 
 .loginBox select {
@@ -942,11 +943,10 @@ input {
 }
 
 .loginBox form {
-  padding: 10px;
+  padding: 20px;
 }
 
 .loginBox .text {
-  font-weight: bold;
   font-size: 0.8em;
 }
 
@@ -972,12 +972,9 @@ input {
 }
 
 .loginBox .forgotPw {
-  font-family: arial;
-  font-size: 10pt;
-  font-weight: bold;
-  text-decoration: underline;
   cursor: pointer;
-  padding-left: 10px;
+  text-decoration: underline;
+  margin-left: 46px;
 }
 
 .loginBox .form-control {
@@ -990,8 +987,34 @@ input {
 
 .loginBox td{
   margin-left:4px;
+
 }
 
+.buttonLoginBox{
+  background-color: #614875;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 260px;
+  height: 40px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  border: none;
+  border-radius: 0px;
+  margin-top: 30px;
+}
+
+.loginBoxTable{
+  border-collapse: collapse;
+  font-family: Roboto, Arial Narrow;
+  margin-left: -2px;
+}
+.loginBoxTable tr{
+  padding: 20px;  
+}
+#loginBoxTitle{
+  font-size: 15px;
+  font-color: #614875;  
+}
 /* ---- ---- ---- --- HigescoreBox --- ---- ---- ---- */
 
 #HighscoreTable{
@@ -1068,7 +1091,7 @@ button.option {
 }
 
 input.submit-button {
-    background-color:#614875;
+  background-color:#614875;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   background-color:#614875;
   border:0px;
@@ -2243,6 +2266,12 @@ table {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+
+.nowrap
+{
+  white-space: nowrap;
 }
 
 /* Stoplight functionality for the group editor page. */

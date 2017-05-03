@@ -3,60 +3,49 @@
   <div id="overlay" style="display:none"></div>
   
 	<!-- Login Box Start! -->
-
-  <div id='loginBox' class="loginBox" style="display:none">
+  <div id='loginBox' class="loginBox" style="display:none; width: 295px;">
 		<div id='login'>
 			<div class='loginBoxheader'>
 				<h3>Login</h3>
 				<div class="cursorPointer" onclick="closeWindows()">x</div>
 			</div>
-				<form action="" id="loginForm" method="post">
-			  <div class="table-wrap">
-				<table>
-					<tr>
+			<form action="" id="loginForm" method="post">
+				<table class="loginBoxTable">
+					
+					<tr>	
 						<td>
-							<label class="text">Username:</label>
+							<label id="loginBoxTitle">Sign in</label>
 						</td>
 					</tr>
 					<tr>
 						<td>
-
-							<input id="username" placeholder="Username" class='form-control textinput' type='text' autofocus >
+							<input id="username" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<label class="text">Password:</label>
+							<input id="password" placeholder="Password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
 						</td>
 					</tr>
 					<tr>
-						<td>
-							<input id="password" placeholder="Password" class='form-control textinput' type='password' >
-						</td>
-					</tr>
-					<tr>
-						<td>
+						<td class="nowrap">
 							<input id='saveuserlogin' type='checkbox' value="on">
 							<label class="text">Remember me</label>
-						</td>
-					</tr>
-					<tr>
-						<td id="message"></td>
-					</tr>
-					<tr>
-						<td>
-							<label class='forgotPw' onclick='toggleloginnewpass();'>Forgot password?</label>
-
+							
+							<label class='text forgotPw' onclick='toggleloginnewpass();'>Forgot Password?</label>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='submit-button' onclick="processLogin();" value='Login'>
+							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login'>
 						</td>
 					</tr>
-				</table>
-			  </div>
-				</form>
+					<tr>
+						<!-- Message displayed when using wrong password or username -->
+						<td id="message";></td>
+					</tr>
+				</table>	
+			</form>
 		</div>
 		<div id='newpassword' style="display:none">
 			<div class='loginBoxheader' id="passwordid">
@@ -77,7 +66,7 @@
 					</tr>
 	
 					<tr>
-						<td id="message2"></td>
+						<td id="message2" style='margin-left: 20px'; ></td>
 					</tr>
 					<tr>
 						<td>
