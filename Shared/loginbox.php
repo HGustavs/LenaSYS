@@ -11,10 +11,7 @@
 			</div>
 			<form action="" id="loginForm" method="post">
 				<table class="loginBoxTable">
-					<tr>
-						<!-- Message displayed when using wrong password or username -->
-						<td id="message";></td>
-					</tr>
+					
 					<tr>	
 						<td>
 							<label id="loginBoxTitle">Sign in</label>
@@ -31,7 +28,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td>
+						<td class="nowrap">
 							<input id='saveuserlogin' type='checkbox' value="on">
 							<label class="text">Remember me</label>
 							
@@ -42,6 +39,10 @@
 						<td>
 							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login'>
 						</td>
+					</tr>
+					<tr>
+						<!-- Message displayed when using wrong password or username -->
+						<td id="message";></td>
 					</tr>
 				</table>	
 			</form>

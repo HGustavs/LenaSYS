@@ -720,7 +720,8 @@ function processLogin() {
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
-						$("#login #message").html("<div class='alert danger' style='color: rgb(199, 80, 80)';>Wrong username or password! </div>");
+						$("#login #message").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong username or password! </div>");
+						
 					}
 					
 					
