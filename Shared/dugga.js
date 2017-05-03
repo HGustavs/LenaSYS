@@ -87,8 +87,8 @@ function resetFields(){
 function setExpireCookie(){
 
 	var expireDate = new Date();
-	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));
-  //8100000
+	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));////8100000, denotes time in milliseconds
+  
 	document.cookie = "sessionEndTime=expireC; expires="+ expireDate.toGMTString() +"; path=/";
 	//console.log(expireDate);
 
