@@ -32,6 +32,14 @@ $(function() {
 });
 
 var showInline = false;
+var menuButtons = [];
+menuButtons.push({ 'width': 1050, 'name': 'buttonEditVers', 'display': true });
+menuButtons.push({ 'width': 950, 'name': 'buttonNewVers', 'display': true });
+menuButtons.push({ 'width': 850, 'name': 'buttonAccess', 'display': true });
+menuButtons.push({ 'width': 750, 'name': 'buttonResults', 'display': true });
+menuButtons.push({ 'width': 650, 'name': 'buttonTests', 'display': true });
+menuButtons.push({ 'width': 550, 'name': 'buttonFiles', 'display': true });
+menuButtons.push({ 'width': 450, 'name': 'buttonAnalysis', 'display': true });
 
 $(window).on('resize',function() {
 //  console.log($(window).width());
@@ -41,6 +49,16 @@ $(window).on('resize',function() {
   } else if($(window).width() >= 480 && showInline == false) {
     jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeIn(1000);
     showInline = true;
+  }
+
+  for(i=0; i<menuButtons.length; i++) {
+    if($(window).width() < menuButtons[i].width && menuButtons[i].display) {      
+      jQuery("[name='"+menuButtons[i].name+"']").fadeOut(100);
+      menuButtons[i].display = false;
+    } else if($(window).width() >= menuButtons[i].width && !menuButtons[i].display) {
+      jQuery("[name='"+menuButtons[i].name+"']").fadeIn(1000);
+      menuButtons[i].display = true;
+    }    
   }
 });
 
@@ -628,7 +646,7 @@ function returnedSection(data)
     
 		str="";
 
-		str+="<table class='navheader'><tr class='trsize'>";
+		str+="<table class='navheader'><tr class='trsize nowrap'>";
 
         if(data['writeaccess']) {
             str+="<td style='display: inline-block; margin-right:2px; width:112px;'><select class='course-dropdown' onchange='goToVersion(this)'>";
@@ -648,7 +666,7 @@ function returnedSection(data)
             }
             str+="</select></td>";
 			
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
+			str+="<td name='tdEditVers' style='margin-right:2px; width:112px;'><div style='display: inline-block;' name='buttonEditVers'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
 
 // Retrieve start and end dates for a version, if there are such, else set to null
       var startdate = null;
@@ -664,15 +682,15 @@ function returnedSection(data)
       }
 
 			str+='("'+querystring['coursevers']+'","'+versionname+'","'+startdate+'","'+enddate+'")';
-			str+=";'></td>";	
+			str+=";'></div></td>";	
 
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td name='buttonNewVers' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></td>";
+			str+="<td name='buttonAccess' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/></td>";
+			str+="<td name='buttonResults' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></td>";
+			str+="<td name='buttonTests' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td name='buttonFiles' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td name='buttonAnalysis' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td name='buttonGroups' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
     }else{
 			// No version selector for students
 		}
