@@ -428,10 +428,10 @@ function resort()
 	 redrawtable();
 	 $("#header"+columno).addClass("result-header-inverse");
    if (sortdir<0){
-     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
-     $("#header"+columno+"magic").append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
+     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
+     $("#header"+columno+"magic").append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
    } else {
-     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>"); 
+     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>"); 
      $("#header"+columno+"magic").append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");    
    }
 }
