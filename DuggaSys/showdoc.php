@@ -263,7 +263,7 @@
 					
 							if(file_exists ( $file)){
 									$file_extension = strtolower(substr(strrchr($filename,"."),1));									
-									if($file_extension=="html" || $file_extension=="css" || $file_extension=="js"){
+									if($file_extension=="html" || $file_extension=="css" || $file_extension=="js" || $file_extension=="php"){
 											//$bummer=file_get_contents($file);
 										    header('Content-Description: File Transfer');
 										    header('Content-Type: application/octet-stream');
@@ -288,7 +288,7 @@
 												case "gif": $ctype="image/gif"; break;
 												case "png": $ctype="image/png"; break;
 												case "jpg": $ctype="image/jpg"; break;
-												//default: $ctype=mime_content_type($filename); break;
+												default: $ctype=mime_content_type($file); break;
 											}
 											header("Content-Type: ".$ctype);
 											header('Content-Disposition: inline; filename="' .$filename.'"');
