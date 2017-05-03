@@ -38,7 +38,7 @@ function returnedGroup(data)
 {
 	
 	var headings = data.headings;
-	var tableContent = data.tableContent;
+	var tablecontent = data.tablecontent;
 	/* entries=data.entries;
 	moments=data.moments;
 	versions=data.versions;
@@ -65,10 +65,6 @@ function returnedGroup(data)
 	str+="Studenter";
 	str+="</th>";
 
-	str+="<th colspan='1' id='subheading' class='result-header'>";
-	str+="Grupper";
-	str+="</th>";
-
 	// Read dropdown from local storage (??)
 	courselist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
 	if (courselist){	
@@ -83,19 +79,19 @@ function returnedGroup(data)
 	}
 	
 	str+="</thead>";
-	// Iterate the tableContent. 
+	// Iterate the tablecontent. 
 	str += "<tbody>";
 	var row=0;
 
-	for(var i = 0; i < tableContent.length; i++) { // create table rows. 
+	for(var i = 0; i < tablecontent.length; i++) { // create table rows. 
 		row++;
 		str+="<tr>";
 		str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
-		str+="<td>"+tableContent[i].username+"</td><td>"+tableContent[i].name+"</td>"; // Iterates all content, but i dont want to write out ugid, cid and lid ...
-		for(var lid in tableContent[i].assignedlids) {
-			var greenlight = tableContent[i].assignedlids[lid] === 1 ? "light-enabled" : "light-disabled";
-			var redlight = tableContent[i].assignedlids[lid] === 0 ? "light-enabled" : "light-disabled";
-			str+="<td title='Listentry id "+lid+"' id="+'u'+tableContent[i].uid+'_c'+tableContent[i].cid+'_l'+lid+" onclick='togglelid()'>"+"<img class='clickable "+greenlight+"' src='../Shared/icons/StopG.svg' alt='Green light'><img class='clickable "+redlight+"' src='../Shared/icons/StopR.svg' alt='Red light'>"+"</td>";
+		str+="<td title="+tablecontent[i].uid+">"+tablecontent[i].username+"</td>"; // Iterates all content, but i dont want to write out ugid, cid and lid ...
+		for(var lid in tablecontent[i].lidstogroup) {
+			if(lid != null) {
+				str+="<td>"+tablecontent[i].lidstogroup[lid]+"</td>";
+			}
 		}
 		str+="</tr>";
 	}
