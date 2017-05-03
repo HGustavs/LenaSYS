@@ -160,7 +160,6 @@ points.drawpoints = function ()
             ctx.restore();
         }
     }
-    ctx.lineWidth = 1;
 }
 
 //--------------------------------------------------------------------
@@ -906,9 +905,15 @@ function getConnectedLines(object) {
 
 function eraseObject(object) {
     document.getElementById("myCanvas").style.cursor = "default";
-    var private_lines = object.getLines();
-    object.erase();
-    diagram.eraseObjectLines(object, private_lines);
+    if(object.kind==2){
+      var private_lines = object.getLines();
+      object.erase();
+      diagram.eraseObjectLines(object, private_lines);
+    }
+    else if(object.kind==1){
+      object.erase();
+    }
+
     diagram.delete(object);
     updategfx();
 }
@@ -920,7 +925,7 @@ function eraseSelectedObject() {
         if (diagram[i].targeted == true) {
             diagram[i].targeted = false;
             eraseObject(diagram[i]);
-            i = 0;
+            i = -1;
             //To avoid removing the same index twice, selobj is reset
             selobj = -1;
         }
