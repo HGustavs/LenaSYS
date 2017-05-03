@@ -31,36 +31,66 @@ $(function() {
 	});
 });
 
+var resizeTimer;
 var showInline = false;
 var menuButtons = [];
-menuButtons.push({ 'width': 1050, 'name': 'buttonEditVers', 'display': true });
-menuButtons.push({ 'width': 950, 'name': 'buttonNewVers', 'display': true });
-menuButtons.push({ 'width': 850, 'name': 'buttonAccess', 'display': true });
-menuButtons.push({ 'width': 750, 'name': 'buttonResults', 'display': true });
-menuButtons.push({ 'width': 650, 'name': 'buttonTests', 'display': true });
-menuButtons.push({ 'width': 550, 'name': 'buttonFiles', 'display': true });
-menuButtons.push({ 'width': 450, 'name': 'buttonAnalysis', 'display': true });
+var menuButtonWidth = 112;
+var menuButtonMarginRight = 2;
+menuButtons.push({ 'width': 1050, 'name': 'EditVers', 'display': true });
+menuButtons.push({ 'width': 950, 'name': 'NewVers', 'display': true });
+menuButtons.push({ 'width': 850, 'name': 'Access', 'display': true });
+menuButtons.push({ 'width': 750, 'name': 'Results', 'display': true });
+menuButtons.push({ 'width': 650, 'name': 'Tests', 'display': true });
+menuButtons.push({ 'width': 550, 'name': 'Files', 'display': true });
+menuButtons.push({ 'width': 450, 'name': 'Analysis', 'display': true });
 
 $(window).on('resize',function() {
 //  console.log($(window).width());
-  if($(window).width() < 480 && showInline == true) {
-    jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeOut(1000);
-    showInline = false;
-  } else if($(window).width() >= 480 && showInline == false) {
-    jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeIn(1000);
-    showInline = true;
-  }
+  // This here timeout stuff is to prevent certain event to be missed if user resize windows too fast
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(function() {
+    if($(window).width() < 480 && showInline == true) {
+      jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeOut(1000);
+      showInline = false;
+    } else if($(window).width() >= 480 && showInline == false) {
+      jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeIn(1000);
+      showInline = true;
+    }
 
+    toggleMenuButtons();
+  }, 250);
+});
+
+function toggleMenuButtons() {
   for(i=0; i<menuButtons.length; i++) {
-    if($(window).width() < menuButtons[i].width && menuButtons[i].display) {      
-      jQuery("[name='"+menuButtons[i].name+"']").fadeOut(100);
+    if($(window).width() < menuButtons[i].width && menuButtons[i].display) {
+      jQuery("[name='button"+menuButtons[i].name+"']").fadeOut({duration: 500, queue: false });;
+      jQuery("[name='td"+menuButtons[i].name+"']").animate({width: '0px'}, {duration: 500, queue: false });
+      jQuery("[name='td"+menuButtons[i].name+"']").animate({marginRight: '0px'}, {duration: 500, queue: false });
       menuButtons[i].display = false;
-    } else if($(window).width() >= menuButtons[i].width && !menuButtons[i].display) {
-      jQuery("[name='"+menuButtons[i].name+"']").fadeIn(1000);
+      jQuery("[name='buttonHamburglarMenu']").fadeOut({duration: 500, queue: false });;
+      jQuery("[name='tdHamburglarMenu']").animate({width: '32px'}, {duration: 500, queue: false });
+      jQuery("[name='tdHamburglarMenu']").animate({marginRight: '2px'}, {duration: 500, queue: false });
+      console.log("out: "+menuButtons[i].name);
+      } else if($(window).width() >= menuButtons[i].width && !menuButtons[i].display) {
+  
+      jQuery("[name='button"+menuButtons[i].name+"']").fadeIn({duration: 500, queue: false });;
+      jQuery("[name='td"+menuButtons[i].name+"']").animate({width: menuButtonWidth+'px'}, {duration: 500, queue: false });
+      jQuery("[name='td"+menuButtons[i].name+"']").animate({marginRight: menuButtonMarginRight+'px'}, {duration: 500, queue: false });
       menuButtons[i].display = true;
+      if(menuButtons[i].name == 'EditVers') {
+        jQuery("[name='buttonHamburglarMenu']").fadeIn({duration: 500, queue: false });;
+        jQuery("[name='tdHamburglarMenu']").animate({width: '0px'}, {duration: 500, queue: false });
+        jQuery("[name='tdHamburglarMenu']").animate({marginRight: '0px'}, {duration: 500, queue: false });
+      }
+      console.log("in: "+menuButtons[i].name);
     }    
   }
-});
+}
+
+function showHamburglarMenu() {
+  $(this).slideDown(1000)
+}
 
 //----------------------------------------
 // Commands:
@@ -79,6 +109,8 @@ $(document).ready(function(){
 	$(".messagebox").mouseout(function(){
         $("#testbutton").css("background-color", "#614875");
     });
+
+    toggleMenuButtons();
 });
 
 function showSubmitButton(){ 
@@ -649,7 +681,10 @@ function returnedSection(data)
 		str+="<table class='navheader'><tr class='trsize nowrap'>";
 
         if(data['writeaccess']) {
-            str+="<td style='display: inline-block; margin-right:2px; width:112px;'><select class='course-dropdown' onchange='goToVersion(this)'>";
+          // Hamburger menu, only show if any buttons are hidden
+          str+="<td name='tdHamburglarMenu' style='display: inline-block; margin-right:0px; margin-right:0px; width: 0px;'><div class='submit-button' style='display: hide; opacity: 0.0;' name='buttonHamburglarMenu' onClick='showHamburglarMenu'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showHamburglarMenu();'></div></td>";
+
+          str+="<td style='display: inline-block; margin-right:2px; width:112px;'><select class='course-dropdown' onchange='goToVersion(this)'>";
             if (retdata['versions'].length > 0) {
                 for ( i = 0; i < retdata['versions'].length; i++) {
                     var item = retdata['versions'][i];
@@ -666,7 +701,7 @@ function returnedSection(data)
             }
             str+="</select></td>";
 			
-			str+="<td name='tdEditVers' style='margin-right:2px; width:112px;'><div style='display: inline-block;' name='buttonEditVers'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
+			str+="<td name='tdEditVers' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' name='buttonEditVers'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
 
 // Retrieve start and end dates for a version, if there are such, else set to null
       var startdate = null;
@@ -684,13 +719,13 @@ function returnedSection(data)
 			str+='("'+querystring['coursevers']+'","'+versionname+'","'+startdate+'","'+enddate+'")';
 			str+=";'></div></td>";	
 
-			str+="<td name='buttonNewVers' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></td>";
-			str+="<td name='buttonAccess' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/></td>";
-			str+="<td name='buttonResults' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></td>";
-			str+="<td name='buttonTests' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td name='buttonFiles' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td name='buttonAnalysis' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td name='buttonGroups' style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
+			str+="<td name='tdNewVers' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' name='buttonNewVers'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></div></td>";
+			str+="<td name='tdAccess' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' name='buttonAccess'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/></div></td>";
+			str+="<td name='tdResults' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' name='buttonResults'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></div></td>";
+			str+="<td name='tdTests' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' name='buttonTests'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+			str+="<td name='tdFiles' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' name='buttonFiles'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+			str+="<td name='tdAnalysis' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' name='buttonAnalysis'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+			str+="<td name='tdGroups' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' name='buttonGroups'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
     }else{
 			// No version selector for students
 		}
