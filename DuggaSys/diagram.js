@@ -351,10 +351,23 @@ diagram.linedist = function (xk, yk) {
 //--------------------------------------------------------------------
 diagram.eraseObjectLines = function(object, privateLines) {
     for (var i = 0; i < privateLines.length; i++) {
-        if (privateLines[i].topLeft != object.centerpoint) {
-            points[privateLines[i].topLeft] = waldoPoint;
-        } else if(privateLines[i].bottomRight != object.centerpoint) {
-            points[privateLines[i].bottomRight] = waldoPoint;
+        var eraseLeft = false;
+        var eraseRight = false;
+
+        for(var j = 0; j < diagram.length;j++){
+            if(points[diagram[j].centerpoint] == points[privateLines[i].topLeft] || points[diagram[j].middleDivider] == points[privateLines[i].topLeft]){
+                eraseLeft = true;
+            }
+            if(points[diagram[j].centerpoint] == points[privateLines[i].bottomRight] || points[diagram[j].middleDivider] == points[privateLines[i].bottomRight]){
+                eraseRight = true;
+            }
+        }
+
+        if(!eraseLeft) {
+            points[privateLines[i].topLeft] = "";
+        }
+        if(!eraseRight) {
+            points[privateLines[i].bottomRight] = "";
         }
         diagram.delete(privateLines[i]);
     }
@@ -869,10 +882,6 @@ function mouseupevt(ev) {
     }
 }
 
-function movePoint(point) {
-  point = waldoPoint;
-}
-
 function getConnectedLines(object) {
     // Adds the different connectors into an array to reduce the amount of code
     var private_points = object.getPoints();
@@ -899,7 +908,7 @@ function eraseObject(object) {
     document.getElementById("myCanvas").style.cursor = "default";
     var private_lines = object.getLines();
     object.erase();
-    diagram.eraseObjectLines(object, private_lines)
+    diagram.eraseObjectLines(object, private_lines);
     diagram.delete(object);
     updategfx();
 }
