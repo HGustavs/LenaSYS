@@ -71,15 +71,24 @@ function closeEditVariant()
 	$("#editVariant").css("display","none");
 }
 
-function createDuggaV2()
-{	
-	AJAXService("ADDUGGA",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
-}
-
-function newDugga()
+function createDugga()
 {
-	$("#editDugga").css("display","block");
-	$("#overlay").css("display","block");
+	var did=$("#did").val();
+	var nme=$("#name").val();
+	var autograde=$("#autograde").val();
+	var gradesys=$("#gradesys").val();
+	var template=$("#template").val();
+	var release=$("#release").val();
+	var deadline=$("#deadline").val();
+	var cid=querystring['cid'];
+	var coursevers=querystring['coursevers'];
+	window.location.reload();
+	$("#editDugga").css("display","none");
+	$("#overlay").css("display","none");
+		
+	
+	//autograde, gradesystem, qname, quizFile, release, deadline, creator, vers
+	AJAXService("ADDUGGA",{cid:cid,autograde:autograde,gradesys:gradesys,nme:nme,template:template,release:release,deadline:deadline,coursevers:coursevers},"DUGGA");
 }
 
 function deleteDugga()
@@ -181,14 +190,11 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 	$("#template").html(str);
 }
 
-function createDugga(cid,did,name,autograde,gradesys,template,release,deadline,vers)
-{
-	$("#editDugga").css("display","block");
-	$("#overlay").css("display","block");
-	$("#did").val(did); // Set Variant ID
-	$("#qname").val(name); // Set Dugga name
-	$("#release").val(release); // Set Release date name
-	$("#deadline").val(deadline); // Set Deadline date name
+function newDugga()
+{	
+	document.getElementById('name').value='New Dugga';
+	document.getElementById('release').value='2017-05-15';
+	document.getElementById('deadline').value='2017-07-31';
 	
 	//----------------------------------------------------
 	// Set Autograde
@@ -217,11 +223,9 @@ function createDugga(cid,did,name,autograde,gradesys,template,release,deadline,v
 			else str+="<option value='"+filen+"'>"+filen+"</option>"
 		}
 	}
-	$("#editDugga").css("display","none");
-	$("#overlay").css("display","none");
 	$("#template").html(str);
-	//autograde, gradesystem, qname, quizFile, release, deadline, creator, vers
-	AJAXService("ADDUGGA",{cid:querystring['cid'],autograde:autograde,gradesystem:gradesys,qname:qname,quizFile:quizFile,release:release,deadline:deadline,coursevers:querystring['coursevers']},"DUGGA");
+	$("#editDugga").css("display","block");
+	$("#overlay").css("display","block");
 }
 
 // Adds a submission row in Edit Variant

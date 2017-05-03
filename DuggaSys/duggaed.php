@@ -52,8 +52,8 @@ pdoConnect();
 			<div class='inputwrapper'><span>Auto-grade:</span><select id='autograde'><option value='0'>Hidden</option><option value='1'>Public</option></select></div>
 			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'><option value='1'>U-G-VG</option><option value='2'>U-G</option><option value='3'>U-3-4-5</option></select></div>
 			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
-			<div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' placeholder='test1' /></div>
-			<div class='inputwrapper'><span>Deadline Date:</span><input class='textinput datepicker' type='text' id='deadline' placeholder='test2' /></div>
+			<div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release'/></div>
+			<div class='inputwrapper'><span>Deadline Date:</span><input class='textinput datepicker' type='text' id='deadline'/></div>
 		</div>
 		<div style='padding:5px;'>
 			<input style='float:left; 'class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteDugga();' />
