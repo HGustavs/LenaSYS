@@ -774,7 +774,7 @@ header td {
   margin-left: 1px;
 }
 
-.loginBox, .expiremessagebox {
+.loginBox, .expiremessagebox, .endsessionmessagebox {
   display:block;
   padding:4px;
   background-color: #ccc;
@@ -2268,7 +2268,33 @@ table {
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+
 .nowrap
 {
   white-space: nowrap;
+}
+
+/* Stoplight functionality for the group editor page. */
+img.light-disabled {
+  opacity: 0.5;
+}
+
+img.light-enabled {
+  opacity: 1;
+}
+
+img.clickable:hover {
+  cursor: pointer;
+} 
+
+/* Title for the subpages of the section-editor */
+
+.titles{
+  width:100%;
+  display:flex;
+  flex-wrap:wrap;
+}
+
+.titles h1{
+  color: #614875;
 }
