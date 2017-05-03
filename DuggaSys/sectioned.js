@@ -1158,6 +1158,13 @@ $(document).on('click', '.hide-moments-button', function () {
     $('.moment').children('.arrowComp').slideToggle();
 });
 
+// Function for toggling content for all sections
+$(document).on('click', '.hide-moments-button', function () {
+    $('.section').nextUntil('.section').slideToggle();
+    $('.section').children('.arrowRight').slideToggle();
+    $('.section').children('.arrowComp').slideToggle();
+});
+
 // Function to prevent collapsing when clicking icons
 $(document).ready(function(){
 	$(document).on('click','#corf',function(e) {
