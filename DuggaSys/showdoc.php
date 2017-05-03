@@ -94,27 +94,26 @@
         // The creation and destruction of ordered lists
         function handleOrderedList($currentLine, $prevLine, $nextLine) {
             $markdown = "";
-            $value = substr($currentLine, preg_match('/^\s*\d*\.\s*/', $currentLine)+1, strlen($currentLine));
-            $currentLineIndentation = preg_match('/^\s*\d*/',$currentLine);
-            $nextLineIndentation = preg_match('/^\s*\d*/', $nextLine);
+            $value = preg_replace('/^\s*\d*\.\s*/','',$currentLine);
+            $currentLineIndentation = substr_count($currentLine, ' ');
+            $nextLineIndentation = substr_count($nextLine, ' ');
             //Open a new ordered list
             if(!isOrderdList($prevLine)) {
                 $markdown .= "<ol>";
             }
             // Open a new sublist
-            if(strlen($currentLineIndentation) < strlen($nextLineIndentation)) {
+            if($currentLineIndentation < $nextLineIndentation) {
                 $markdown .= "<li>";
                 $markdown .=  $value;
-
                 // open sublist
                 $markdown .= "<ol>";
             }
             // Close sublists
-            else if(strlen($currentLineIndentation) > strlen($nextLineIndentation)) {
+            else if($currentLineIndentation > $nextLineIndentation) {
                 $markdown .= "<li>";
                 $markdown .=  $value;
                 $markdown .= "</li>";
-                $sublistsToClose = (strlen($currentLineIndentation) - strlen($nextLineIndentation)) / 2;
+                $sublistsToClose = ($currentLineIndentation - $nextLineIndentation) / 2;
                 for($i = 0; $i < $sublistsToClose; $i++) {
                     $markdown .= "</ol></li>";
                 }
