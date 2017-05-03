@@ -72,15 +72,64 @@
 
 		// identify what to parse and parse it
 		function identifier($prevLine, $currentLine, $markdown, $nextLine) {
-			$markdown .= markdownBlock($currentLine);
 
-			if(preg_match("/\br*/", $currentLine)){
-            	$markdown .= "<br>";
-        	}
-
+            // handle ordered lists <ol></ol>
+            if(isOrderdList($currentLine)) {
+                $markdown .= handleOrderedList($currentLine, $prevLine, $nextLine);
+            }
+            // If its ordinary text then show it directly
+            else{
+                $markdown .= markdownBlock($currentLine);
+                if(preg_match("/\br*/", $currentLine)){
+                    $markdown .= "<br>";
+                }
+            }
 			return $markdown;
 		}
-
+        // Check if its an ordered list
+		function isOrderdList($item) {
+			// return true if ordered list
+			return preg_match('/\s*\d*\.\s(.*)/', $item);
+		}
+        // The creation and destruction of ordered lists
+        function handleOrderedList($currentLine, $prevLine, $nextLine) {
+            $markdown = "";
+            $value = preg_replace('/^\s*\d*\.\s*/','',$currentLine);
+            $currentLineIndentation = substr_count($currentLine, ' ');
+            $nextLineIndentation = substr_count($nextLine, ' ');
+            //Open a new ordered list
+            if(!isOrderdList($prevLine)) {
+                $markdown .= "<ol>";
+            }
+            // Open a new sublist
+            if($currentLineIndentation < $nextLineIndentation) {
+                $markdown .= "<li>";
+                $markdown .=  $value;
+                // open sublist
+                $markdown .= "<ol>";
+            }
+            // Close sublists
+            else if($currentLineIndentation > $nextLineIndentation) {
+                $markdown .= "<li>";
+                $markdown .=  $value;
+                $markdown .= "</li>";
+                $sublistsToClose = ($currentLineIndentation - $nextLineIndentation) / 2;
+                for($i = 0; $i < $sublistsToClose; $i++) {
+                    $markdown .= "</ol></li>";
+                }
+            }
+            // Stay in current list or sublist
+            else {
+                $markdown .= "<li>";
+                $markdown .=  $value;
+                $markdown .= "</li>";
+            }
+            // Close the ordered list
+            if(!isOrderdList($currentLine)) {
+                $markdown .= "</ol>";
+            }
+            return $markdown;
+        }
 		function markdownBlock($instring)
 		{
 				//Regular expressions for italics
