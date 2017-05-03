@@ -4,5 +4,3 @@ sftp-config.json
 .DS_Store
 .idea
 vendor/
-
-Shared/loginprompt\.php
