@@ -678,7 +678,7 @@ function returnedSection(data)
 		}
         if(retdata["writeaccess"]){
             str+="</tr></table>";
-            str += "<input type='button' class='fab' value='+' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>";
+            str += "<input type='button' class='fab' value='+' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>";
         }else{
             str+="</tr></table>";
         }
