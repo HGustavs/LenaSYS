@@ -38,7 +38,7 @@ var widthWindow;                    // The width on the users screen is saved is
 var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
 var startX = 0, startY = 0;         // Current X- and Y-coordinant from which the canvas start from
-var waldoPoint = {x:-10, y:-10, selected:false};
+var waldoPoint = "";
 var activePoint = null;             //This point indicates what point is being hovered by the user
 var p1 = null;                      // When creating a new figure, these two variables are used ...
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
@@ -363,10 +363,10 @@ diagram.eraseObjectLines = function(object, privateLines) {
         }
 
         if(!eraseLeft) {
-            points[privateLines[i].topLeft] = "";
+            movePoint(points[privateLines[i].topLeft]);
         }
         if(!eraseRight) {
-            points[privateLines[i].bottomRight] = "";
+            movePoint(points[privateLines[i].bottomRight]);
         }
         diagram.delete(privateLines[i]);
     }
@@ -880,7 +880,9 @@ function mouseupevt(ev) {
         uimode = "normal";
     }
 }
-
+function movePoint(point){
+  point=waldoPoint;
+}
 function getConnectedLines(object) {
     // Adds the different connectors into an array to reduce the amount of code
     var private_points = object.getPoints();
