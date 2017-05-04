@@ -2293,27 +2293,8 @@ table {
   -o-text-overflow: ellipsis; /* opera */
 }
 
-/* Stoplight functionality for the group editor page. */
-img.light-disabled {
-  opacity: 0.5;
-}
-
-img.light-enabled {
-  opacity: 1;
-}
-
-img.clickable:hover {
-  cursor: pointer;
-} 
-
-/* Title for the subpages of the section-editor */
-
-.titles{
-  width:100%;
-  display:flex;
-  flex-wrap:wrap;
-}
-
-.titles h1{
-  color: #614875;
+.showhidetext {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  color: white;
 }
