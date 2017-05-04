@@ -38,7 +38,7 @@ var widthWindow;                    // The width on the users screen is saved is
 var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
 var startX = 0, startY = 0;         // Current X- and Y-coordinant from which the canvas start from
-var waldoPoint = {x:-10, y:-10, selected:false};
+var waldoPoint = "";
 var activePoint = null;             //This point indicates what point is being hovered by the user
 var p1 = null;                      // When creating a new figure, these two variables are used ...
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
@@ -160,7 +160,6 @@ points.drawpoints = function ()
             ctx.restore();
         }
     }
-    ctx.lineWidth = 1;
 }
 
 //--------------------------------------------------------------------
@@ -351,10 +350,23 @@ diagram.linedist = function (xk, yk) {
 //--------------------------------------------------------------------
 diagram.eraseObjectLines = function(object, privateLines) {
     for (var i = 0; i < privateLines.length; i++) {
-        if (privateLines[i].topLeft != object.centerpoint) {
-            points[privateLines[i].topLeft] = waldoPoint;
-        } else if(privateLines[i].bottomRight != object.centerpoint) {
-            points[privateLines[i].bottomRight] = waldoPoint;
+        var eraseLeft = false;
+        var eraseRight = false;
+
+        for(var j = 0; j < diagram.length;j++){
+            if(points[diagram[j].centerpoint] == points[privateLines[i].topLeft] || points[diagram[j].middleDivider] == points[privateLines[i].topLeft]){
+                eraseLeft = true;
+            }
+            if(points[diagram[j].centerpoint] == points[privateLines[i].bottomRight] || points[diagram[j].middleDivider] == points[privateLines[i].bottomRight]){
+                eraseRight = true;
+            }
+        }
+
+        if(!eraseLeft) {
+            movePoint(points[privateLines[i].topLeft]);
+        }
+        if(!eraseRight) {
+            movePoint(points[privateLines[i].bottomRight]);
         }
         diagram.delete(privateLines[i]);
     }
@@ -868,11 +880,9 @@ function mouseupevt(ev) {
         uimode = "normal";
     }
 }
-
-function movePoint(point) {
-  point = waldoPoint;
+function movePoint(point){
+  point=waldoPoint;
 }
-
 function getConnectedLines(object) {
     // Adds the different connectors into an array to reduce the amount of code
     var private_points = object.getPoints();
@@ -897,9 +907,15 @@ function getConnectedLines(object) {
 
 function eraseObject(object) {
     document.getElementById("myCanvas").style.cursor = "default";
-    var private_lines = object.getLines();
-    object.erase();
-    diagram.eraseObjectLines(object, private_lines)
+    if(object.kind==2){
+      var private_lines = object.getLines();
+      object.erase();
+      diagram.eraseObjectLines(object, private_lines);
+    }
+    else if(object.kind==1){
+      object.erase();
+    }
+
     diagram.delete(object);
     updategfx();
 }
@@ -911,7 +927,7 @@ function eraseSelectedObject() {
         if (diagram[i].targeted == true) {
             diagram[i].targeted = false;
             eraseObject(diagram[i]);
-            i = 0;
+            i = -1;
             //To avoid removing the same index twice, selobj is reset
             selobj = -1;
         }

@@ -359,29 +359,47 @@ function Symbol(kind) {
     // IMP!: Should not be moved back on canvas after this function is run.
     //--------------------------------------------------------------------
     this.movePoints = function () {
-        points[this.topLeft] = waldoPoint;
-        points[this.bottomRight] = waldoPoint;
-        points[this.centerpoint] = waldoPoint;
-        points[this.middleDivider] = waldoPoint;
+        points[this.topLeft] = "";
+        points[this.bottomRight] = "";
+        points[this.centerpoint] = "";
+        points[this.middleDivider] = "";
     }
 
     this.getPoints = function() {
         var private_points = [];
-        for (var i = 0; i < this.connectorTop.length; i++) {
-            private_points.push(this.connectorTop[i].to);
-            private_points.push(this.connectorTop[i].from);
-        }
-        for (var i = 0; i < this.connectorRight.length; i++) {
-            private_points.push(this.connectorRight[i].to);
-            private_points.push(this.connectorRight[i].from);
-        }
-        for (var i = 0; i < this.connectorBottom.length; i++) {
-            private_points.push(this.connectorBottom[i].to);
-            private_points.push(this.connectorBottom[i].from);
-        }
-        for (var i = 0; i < this.connectorLeft.length; i++) {
-            private_points.push(this.connectorLeft[i].to);
-            private_points.push(this.connectorLeft[i].from);
+        if(this.symbolkind==3){
+            for (var i = 0; i < this.connectorTop.length; i++) {
+                if(this.getquadrant(this.connectorTop[i].to.x,this.connectorTop[i].to.y) != -1){
+                    private_points.push(this.connectorTop[i].to);
+                }
+                if(this.getquadrant(this.connectorTop[i].from.x,this.connectorTop[i].from.y) != -1){
+                    private_points.push(this.connectorTop[i].from);
+                }
+            }
+            for (var i = 0; i < this.connectorRight.length; i++) {
+                if(this.getquadrant(this.connectorRight[i].to.x,this.connectorRight[i].to.y) != -1){
+                    private_points.push(this.connectorRight[i].to);
+                }
+                if(this.getquadrant(this.connectorRight[i].from.x,this.connectorRight[i].from.y) != -1){
+                    private_points.push(this.connectorRight[i].from);
+                }
+            }
+            for (var i = 0; i < this.connectorBottom.length; i++) {
+                if(this.getquadrant(this.connectorBottom[i].to.x,this.connectorBottom[i].to.y) != -1){
+                    private_points.push(this.connectorBottom[i].to);
+                }
+                if(this.getquadrant(this.connectorBottom[i].from.x,this.connectorBottom[i].from.y) != -1){
+                    private_points.push(this.connectorBottom[i].from);
+                }
+            }
+            for (var i = 0; i < this.connectorLeft.length; i++) {
+                if(this.getquadrant(this.connectorLeft[i].to.x,this.connectorLeft[i].to.y) != -1){
+                    private_points.push(this.connectorLeft[i].to);
+                }
+                if(this.getquadrant(this.connectorLeft[i].from.x,this.connectorLeft[i].from.y) != -1){
+                    private_points.push(this.connectorLeft[i].from);
+                }
+            }
         }
         private_points.push(this.topLeft);
         private_points.push(this.bottomRight);
@@ -396,18 +414,19 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.getLines = function() {
         var private_points = this.getPoints();
+
         var lines = diagram.getLineObjects();
         var object_lines = [];
         for (var i = 0; i < lines.length; i++) {
-            var line = lines[i];
             //Connected to connectors top, right, bottom and left; topLeft, bottomRight, centerpoint or middleDivider.
             for (var j = 0; j < private_points.length; j++) {
-                if (line.topLeft == private_points[j] || line.bottomRight == private_points[j]) {
-                    object_lines.push(line);
-                    break;
+                if (lines[i].topLeft == private_points[j] || lines[i].bottomRight == private_points[j]) {
+                    if(object_lines.indexOf(lines[i])==-1){
+                        object_lines.push(lines[i]);
+                        break;
+                    }
                 }
             }
-            break;
         }
         return object_lines;
     }
@@ -422,6 +441,7 @@ function Symbol(kind) {
     //     ctx.setLineDash(segments);
     //--------------------------------------------------------------------
     this.draw = function () {
+        ctx.lineWidth = 2;
         if (this.sizeOftext == 'Tiny') {
             textsize = 14;
         } else if (this.sizeOftext == 'Small') {
