@@ -161,7 +161,7 @@
 
 	<!-- LoginBox (receiptbox) Start! -->
 	<div id='receiptBox' class="loginBox" style="display:none">
-		<div class='loginBoxheader'><h3>Kvitto - Duggasvar</h3><div onclick="hideReceiptPopup()">x</div></div>
+		<div class='loginBoxheader'><h3>Kvitto - Duggasvar</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
 		<div id='receiptInfo'></div>
 		<textarea id="receipt" autofocus readonly></textarea>
 		<div class="button-row">
@@ -179,7 +179,7 @@
 
 	<div id='previewpopover' class='previewPopover' style='display:none;'>
 		<div class='loginBoxheader'>
-			<h3 style='width:100%;' id='Nameof'>Submission and feedback view</h3><div onclick='closeWindows();'>x</div>
+			<h3 style='width:100%;' id='Nameof'>Submission and feedback view</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 		<div style="position:absolute;left:0px;top:34px;bottom:0px;right:0px;">
 			<table width="100%" height="100%">
