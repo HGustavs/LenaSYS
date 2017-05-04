@@ -31,7 +31,10 @@
 	<div id="wrappall">
 		<div id="newbutton">
 			<?PHP
-				echo "<div style='float:right;'><input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/></div>";
+				echo "<div class='titles' style='padding-top:10px;'>";
+					echo "<h1 style='flex:10;text-align:center;'>Access</h1>";
+					echo "<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/>";
+				echo "</div>";
 				//needs to calculate if the user has access to this button before writing out
 			?>		
 		</div>
@@ -49,7 +52,7 @@
 	<div id='createUsers' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Create Users</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 		<div class='note'>
             <p>Users must be separated with a linebreak and the format required for each user is as follows:</p>
@@ -70,7 +73,7 @@
 	<div id='editUsers' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Users</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 					
 		<div style='padding:5px;'>

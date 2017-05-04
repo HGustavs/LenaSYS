@@ -102,7 +102,7 @@ if($ha){
 
 		if($storefile){
 				//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
-				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/php","text/markdown", "application/postscript", "application/octet-stream","image/svg+xml", "application/octet-stream", "application/octet-stream", "application/msword", "application/octet-stream", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.oasis.opendocument.text", "text/xml", "text/xml","application/octetstream","application/x-pdf", "application/download" , "application/x-download");
+				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/php","text/markdown", "application/postscript", "application/octet-stream","image/svg+xml", "application/octet-stream", "application/octet-stream", "application/msword", "application/octet-stream", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.oasis.opendocument.text", "text/xml", "text/xml","application/octetstream","application/x-pdf", "application/download" , "application/x-download", "application/x-dosexec", "application/x-sharedlib", "text/x-php");
 				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html","txt", "java", "xml", "js", "css", "php","md","ai", "psd","svg", "sql", "sr", "doc", "sl", "glsl", "docx", "odt", "xslt", "xsl");
 				
 				$swizzled = swizzleArray($_FILES['uploadedfile']);
@@ -152,7 +152,9 @@ if($ha){
 							
 								$temp = explode(".", $filea["name"]);
 								$extension = end($temp); //stores the file type
-								if(in_array($extension, $allowedX)&&in_array($filea['type'], $allowedT)){ 
+								// Determine file MIME-type
+								$filetype = mime_content_type($filea["tmp_name"]);
+								if(in_array($extension, $allowedX)&&in_array($filetype, $allowedT)){ 
 										//  if file type is allowed, continue the uploading process.
 				
 										$fname=$filea['name'];
@@ -187,7 +189,7 @@ if($ha){
 												//  if returned rows equals 0(the existence of the file is not in the db) add data into the db
 												if($norows==0){
 														if($kind=="LFILE"){
-																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,fileize) VALUES(:linkval,'4',:cid,:filesize);");
+																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:linkval,'4',:cid,:filesize);");
 														}else if($kind=="MFILE"){
 																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:linkval,'3',:cid,:filesize);");
 														}else if($kind=="GFILE"){
@@ -211,7 +213,7 @@ if($ha){
 								}else{ 
 									//if the file extension is not allowed
 									if(!in_array($extension, $allowedX)) echo "Extension ".$extension." not allowed.\n";
-									if(!in_array($filea['type'], $allowedT)) echo "Type ".$filea['type']." not allowed.\n";
+									if(!in_array($filetype, $allowedT)) echo "Type ".$filetype." not allowed.\n";
 									$error=true;
 								}
 						}
