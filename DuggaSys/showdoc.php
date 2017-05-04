@@ -64,7 +64,6 @@
 		        $str = $remainingLines;
 		        $currentLineFeed = strpos($str, PHP_EOL);
 
-		        
 			}
 
 			return $markdown;
@@ -77,6 +76,9 @@
             if(isOrderdList($currentLine)) {
                 $markdown .= handleOrderedList($currentLine, $prevLine, $nextLine);
             }
+            elseif (isUnorderdList($currentLine)) {
+            	$markdown .= handleUnorderedList($currentLine, $prevLine, $nextLine);
+            }
             // If its ordinary text then show it directly
             else{
                 $markdown .= markdownBlock($currentLine);
@@ -88,8 +90,13 @@
 		}
         // Check if its an ordered list
 		function isOrderdList($item) {
-			// return true if ordered list
-			return preg_match('/\s*\d*\.\s(.*)/', $item);
+			// return 1 if ordered list
+			return preg_match('/\s*\d+\.\s(.*)/', $item);
+		}
+		// Check if its an unordered list
+		function isUnorderdList($item) {
+			// return 1 if unordered list
+			return preg_match('/\s*[\-\*]\s(.*)/', $item);
 		}
         // The creation and destruction of ordered lists
         function handleOrderedList($currentLine, $prevLine, $nextLine) {
@@ -130,6 +137,44 @@
             }
             return $markdown;
         }
+        function handleUnorderedList($currentLine, $prevLine, $nextLine) {
+            $markdown = "";
+            $value = preg_replace('/^\s*[\-\*]\s*/','',$currentLine);
+            $currentLineIndentation = substr_count($currentLine, ' ');
+            $nextLineIndentation = substr_count($nextLine, ' ');
+            //Open a new unordered list
+            if(!isUnorderdList($prevLine)) {
+                $markdown .= "<ul>";
+            }
+            // Open a new sublist
+            if($currentLineIndentation < $nextLineIndentation) {
+                $markdown .= "<li>";
+                $markdown .=  $value;
+                // open sublist
+                $markdown .= "<ul>";
+            }
+            // Close sublists
+            else if($currentLineIndentation > $nextLineIndentation) {
+                $markdown .= "<li>";
+                $markdown .=  $value;
+                $markdown .= "</li>";
+                $sublistsToClose = ($currentLineIndentation - $nextLineIndentation) / 2;
+                for($i = 0; $i < $sublistsToClose; $i++) {
+                    $markdown .= "</ul></li>";
+                }
+            }
+            // Stay in current list or sublist
+            else {
+                $markdown .= "<li>";
+                $markdown .=  $value;
+                $markdown .= "</li>";
+            }
+            // Close the unordered list
+            if(!isUnorderdList($currentLine)) {
+                $markdown .= "</ul>";
+            }
+            return $markdown;
+        }
 		function markdownBlock($instring)
 		{
 				//Regular expressions for italics
@@ -149,16 +194,6 @@
 				$instring = preg_replace("/^\#{3}\s(.*)=*/m", "<h3>$1</h3>",$instring);	
 				$instring = preg_replace("/^\#{2}\s(.*)=*/m", "<h2>$1</h2>",$instring);	
 				$instring = preg_replace("/^\#{1}\s(.*)=*/m", "<h1>$1</h1>",$instring);	
-
-				//Regular expressions for lists both - and * lists are supported
-				$instring = preg_replace("/^\s*\d*\.\s(.*)/m", "<ol><li>$1</li></ol>",$instring);
-				
-				$instring = preg_replace("/^\s*\-\s(.*)/m", "<ul><li>$1</li></ul>",$instring);
-				$instring = preg_replace("/^\s*\*\s(.*)/m", "<ul><li>$1</li></ul>",$instring);
-
-				// Fix for superflous ul and ol statements
-				$instring= str_replace ("</ul>\n<ul>","",$instring);
-				$instring= str_replace ("</ol>\n<ol>","",$instring);
 
 				//Regular expression for line
 				$instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
