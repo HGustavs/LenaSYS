@@ -36,9 +36,11 @@ function createGroup()
 
 function returnedGroup(data)
 {
-	
+	// console.log(data);
 	var headings = data.headings;
 	var tablecontent = data.tablecontent;
+	var availablegroups = data.availablegroups; // The available groups to put users in
+	
 	/* entries=data.entries;
 	moments=data.moments;
 	versions=data.versions;
@@ -88,10 +90,17 @@ function returnedGroup(data)
 		str+="<tr>";
 		str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
 		str+="<td title='"+tablecontent[i].firstname+" "+tablecontent[i].lastname+" "+tablecontent[i].ssn+"'>"+tablecontent[i].username+"</td>"; // Iterates all content, but i dont want to write out ugid, cid and lid ...
-		for(var lid in tablecontent[i].lidstogroup) {
-			if(lid != null) {
-				str+="<td>"+tablecontent[i].lidstogroup[lid]+"</td>";
+		for(var lid in tablecontent[i].lidstogroup) { // Table cells
+			// uid_lid to identify the cell. The ugid is supplied in the option. Is the cid a necessity? 
+			str+="<td>";
+			str+="<select id="+tablecontent[i].uid+"_"+lid+" onchange=changegroup()>";
+			str+="<option value='-1'>Pick a group</option>";
+			for(var j = 0; j < availablegroups.length; j++) {
+				var selected = tablecontent[i].lidstogroup[lid] == availablegroups[j] ? " selected" : null;
+				str+="<option value="+availablegroups[j]+selected+">Group "+availablegroups[j]+"</option>";
 			}
+			str+="</select>";
+			str+="</td>";
 		}
 		str+="</tr>";
 	}
@@ -102,6 +111,6 @@ function returnedGroup(data)
 }
 
 // Placeholder function for making AJAX request to assign a group to a lid. 
-function togglelid() {
-	console.log('You have tried to toggle a lid');
+function changegroup() {
+	console.log('You have tried to change a group');
 }
