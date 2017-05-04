@@ -2246,6 +2246,7 @@ and (max-device-width : 480px) {
 
 #cookiemsg p {
   margin: 0px;
+  margin-left: 5px;
   display: inline;
   align-self: center;
   color: #614875;
@@ -2254,5 +2255,6 @@ and (max-device-width : 480px) {
 #cookiemsg input {
   float: none;
   align-self: center;
+  margin-right: 5px;
 }
 }
