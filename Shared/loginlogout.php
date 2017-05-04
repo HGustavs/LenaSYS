@@ -14,15 +14,21 @@ include_once "../../coursesyspw.php";
 
 $opt=getOP('opt');
 
-// If not login we assume logout
-if($opt=="LOGIN"){
-	
+if($opt=="REFRESH"){	
+			// $lifetime=18000;
+			ini_set('session.gc_maxlifetime', 18000);
+			session_regenerate_id(true);
+			session_set_cookie_params('18000');
+			// setcookie(session_name(),'',time()+$lifetime);
+			
+}else if($opt=="LOGIN"){
+// If not login we assume logout	
 		$username=getOP('username');
 		$password=getOP('password');
 		
 		$savelogin = array_key_exists('saveuserlogin', $_POST) && $_POST['saveuserlogin'] == 'on';
 		
-		pdoConnect(); // Made sure if actually connects to a database
+		pdoConnect(); // Makes sure it actually connects to a database
 		
 		// Default values
 		$res = array("login" => "failed");
@@ -61,17 +67,19 @@ if($opt=="LOGIN"){
 		
 		// If it's desired to kill the session, also delete the session cookie.
 		// Note: This will destroy the session, and not just the session data!
+		
 		if (ini_get("session.use_cookies")) {
 			$params = session_get_cookie_params();
+			// setcookie(session_name(), session_id(), time() - 42000,
 			setcookie(session_name(), '', time() - 42000,
 				$params["path"], $params["domain"],
 				$params["secure"], $params["httponly"]
 			);
 		}
-		
 		// Finally, destroy the session.
+		session_unset();
 		session_destroy();
-		
+		clearstatcache(); 
 		// Remove the cookies.
 		setcookie('username', '', 0, '/');
 		setcookie('password', '', 0, '/');

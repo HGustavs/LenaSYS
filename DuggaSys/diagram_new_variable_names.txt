@@ -1,0 +1,12 @@
+-----------------------------------------------------
+    ##List of changed variable names##
+- - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#
+# This was done to follow the javascript code
+# standard
+#
+
+Old Name                New Name
+-----------------------------------------------------
+private_lines           privateLines

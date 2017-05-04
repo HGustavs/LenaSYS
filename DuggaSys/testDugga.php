@@ -97,7 +97,7 @@
 
 	<!-- LoginBox (receiptbox) Start! -->
 	<div id='receiptBox' class="loginBox" style="display:none">
-		<div class='loginBoxheader'><h3>Kvitto - Duggasvar</h3><div onclick="hideReceiptPopup()">x</div></div>
+		<div class='loginBoxheader'><h3>Kvitto - Duggasvar</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
 		<div id='receiptInfo'></div>
 		<textarea id="receipt" autofocus readonly></textarea>
 		<div class="button-row">

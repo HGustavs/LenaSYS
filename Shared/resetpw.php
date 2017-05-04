@@ -1,9 +1,5 @@
 <?php
 
-// Set cookie life length and start session
-
-// Start session using parameters above
-
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 
@@ -15,7 +11,7 @@ if($opt=="GETQUESTION"){
 	$username=getOP('username');
 	$securityquestion=getOP('securityquestion');
 
-	pdoConnect(); // Made sure if actually connects to a database
+	pdoConnect(); // Makes sure it actually connects to a database
 
 	// Default values
 	$res = array("getname" => "failed");
@@ -25,13 +21,7 @@ if($opt=="GETQUESTION"){
 		$res["getname"] = "success";
 		$res["username"] = $username;
 		$res["securityquestion"] = $_SESSION["securityquestion"];
-
-		//maybe log this action?
 	}else{
-		//should maybe use tries here so that you cant guess all usernames or maybe just return an error if user does not exist.
-
-		//maybe log this action?
-
 		$res["getname"] = $_SESSION["getname"];
 	}
 	
@@ -41,7 +31,7 @@ if($opt=="GETQUESTION"){
 	$username=getOP('username');
 	$securityquestionanswer=getOP('securityquestionanswer');
 
-	pdoConnect(); // Made sure if actually connects to a database
+	pdoConnect(); // Makse sure it actually connects to a database
 
 	// Default values
 	$res = array("checkanswer" => "failed");
@@ -49,13 +39,7 @@ if($opt=="GETQUESTION"){
 	if(checkAnswer($username, $securityquestionanswer)){
 		$res["checkanswer"] = "success";
 		$res["username"] = $username;
-
-		//maybe log this action?
 	}else{
-		//should maybe use tries here so that you cant guess all usernames or maybe just return an error if user does not exist.
-
-		//maybe log this action?
-
 		$res["checkanswer"] = "failure";
 	}
 	
@@ -64,7 +48,7 @@ if($opt=="GETQUESTION"){
 }else if($opt=="REQUESTCHANGE"){
 	$username=getOP('username');
 
-	pdoConnect(); // Made sure if actually connects to a database
+	pdoConnect(); // Makes sure it actually connects to a database
 
 	// Default values
 	$res = array("requestchange" => "failed");
@@ -72,13 +56,7 @@ if($opt=="GETQUESTION"){
 	if(requestChange($username)){
 		$res["requestchange"] = "success";
 		$res["username"] = $username;
-
-		//maybe log this action?
 	}else{
-		//should maybe use tries here so that you cant guess all usernames or maybe just return an error if user does not exist.
-
-		//maybe log this action?
-
 		$res["requestchange"] = "failure";
 	}
 
