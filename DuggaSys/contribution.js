@@ -1,11 +1,83 @@
 var querystring=parseGet();
 var retdata;
+var contribDataArr = [];
 
 AJAXService("get",{userid:"b14larek"},"CONTRIBUTION");
 
 //----------------------------------------
 // Renderer
 //----------------------------------------
+
+function renderRankTable(){
+  var str="<table class='fumho'><tr><th onclick='sortRank(0);'>login</th><th onclick='sortRank(1);'>allrank</th><th onclick='sortRank(2);'>alleventranks</th><th onclick='sortRank(3);'>allcommentranks</th><th onclick='sortRank(4);'>LOC rank</th></tr>";
+  for (var j=0; j<contribDataArr.length;j++){
+      str+="<tr>";
+      str+="<td>"+contribDataArr[j].name+"</td>";
+      str+="<td>"+contribDataArr[j].allrank+"</td>";
+      str+="<td>"+contribDataArr[j].alleventranks+"</td>";
+      str+="<td>"+contribDataArr[j].allcommentranks+"</td>";
+      str+="<td>"+contribDataArr[j].allrowrank+"</td>";
+      str+="</tr>";
+  }
+  str+="</table>";
+  document.getElementById("rankTable").innerHTML=str;
+}
+
+// sort rank based on column, col
+function sortRank( col ){
+    if(col===0){
+        contribDataArr.sort(function compare(a,b){                        
+            if(a.name>b.name){
+                return 1;
+            }else if(a.name<b.name){
+                return -1;
+            }else{
+                return 0;
+            }
+        });
+   }else if(col===1){
+      contribDataArr.sort(function compare(a,b){
+       if(a.allrank>b.allrank){
+           return -1;
+       }else if(a.allrank<b.allrank){
+           return 1;
+       }else{
+           return 0;
+       }
+      });
+   }else if(col===2){
+      contribDataArr.sort(function compare(a,b){
+       if(a.alleventranks>b.alleventranks){
+           return -1;
+       }else if(a.alleventranks<b.alleventranks){
+           return 1;
+       }else{
+           return 0;
+       }
+      });
+   }else if(col===3){
+      contribDataArr.sort(function compare(a,b){
+       if(a.allcommentranks>b.allcommentranks){
+           return -1;
+       }else if(a.allcommentranks<b.allcommentranks){
+           return 1;
+       }else{
+           return 0;
+       }
+      });
+   }else if(col===4){
+      contribDataArr.sort(function compare(a,b){
+       if(a.allrowrank>b.allrowrank){
+           return -1;
+       }else if(a.allrowrank<b.allrowrank){
+           return 1;
+       }else{
+           return 0;
+       }
+      });
+   }
+   renderRankTable();
+}
 
 function intervaltocolor(size,val)
 {
@@ -176,7 +248,7 @@ function returnedSection(data)
 	
 	// End of table
 
-	str+="</table>"
+	str+="</table><div id='rankTable'></div>";
 	
     str+="<table class='fumho'><tr><th>rowrank</th><th>login</th><th>value</th></tr>";
     var contribData = [];
@@ -189,7 +261,12 @@ function returnedSection(data)
             str+="</tr>";
             if (contribData[data['allrowranks'][i][1]] == undefined){
               contribData[data['allrowranks'][i][1]]={name:data['allrowranks'][i][1]};
-              contribData[data['allrowranks'][i][1]].allrank=data['allrowranks'][i][0];;                            
+              contribData[data['allrowranks'][i][1]].allrowrank=parseInt(data['allrowranks'][i][0]);                            
+              // Also add -1 for allrowrank,allcommentranks,alleventranks
+              contribData[data['allrowranks'][i][1]].allrank=parseInt(-1);                           
+              contribData[data['allrowranks'][i][1]].allcommentranks=parseInt(-1);
+              contribData[data['allrowranks'][i][1]].alleventranks=parseInt(-1);
+
             } else {
               contribData[data['allrowranks'][i][1]].allrank=data['allrowranks'][i][0];
             }
@@ -208,9 +285,13 @@ function returnedSection(data)
             str+="</tr>";
             if (contribData[data['allcommentranks'][i][1]] == undefined){
               contribData[data['allcommentranks'][i][1]]={name:data['allcommentranks'][i][1]};
-              contribData[data['allcommentranks'][i][1]].allcommentranks=data['allcommentranks'][i][0];
+              contribData[data['allcommentranks'][i][1]].allcommentranks=parseInt(data['allcommentranks'][i][0]);
+              // Also add -1 for allrowrank,alleventranks,allrank
+              contribData[data['allcommentranks'][i][1]].allrowrank=parseInt(-1);                           
+              contribData[data['allcommentranks'][i][1]].allrank=parseInt(-1);
+              contribData[data['allcommentranks'][i][1]].alleventranks=parseInt(-1);
             } else {
-              contribData[data['allcommentranks'][i][1]].allcommentranks=data['allcommentranks'][i][0];
+              contribData[data['allcommentranks'][i][1]].allcommentranks=parseInt(data['allcommentranks'][i][0]);
             }
         }
     }    
@@ -224,11 +305,21 @@ function returnedSection(data)
             str+="<td>"+data['alleventranks'][i][1]+"</td>";
             str+="<td>"+data['alleventranks'][i][0]+"</td>";
             str+="</tr>";
-            if (contribData[data['alleventranks'][i][1]] == undefined){
-              contribData[data['alleventranks'][i][1]]={name:data['alleventranks'][i][1]};
-              contribData[data['alleventranks'][i][1]].alleventranks=data['alleventranks'][i][0];
+            var student = data['alleventranks'][i][1];
+            var studentRank = data['alleventranks'][i][0];
+            if (contribData[student] == undefined){
+                contribData[student]={name:student};
+                if (studentRank==="undefined"){
+                  contribData[student].alleventranks=parseInt(-1);
+                } else {
+                  contribData[student].alleventranks=parseInt(studentRank);
+                }              
+                // Also add -1 for allrowrank,allcommentranks,alleventranks
+                contribData[student].allrank=parseInt(-1);                           
+                contribData[student].allrowrank=parseInt(-1);                           
+                contribData[student].allcommentranks=parseInt(-1);
             } else {
-              contribData[data['alleventranks'][i][1]].alleventranks=data['alleventranks'][i][0];
+              contribData[student].alleventranks=parseInt(studentRank);
             }
             
         }
@@ -244,10 +335,17 @@ function returnedSection(data)
             str+="<td>"+data['alltotalranks'][i][0]+"</td>";
             str+="</tr>";
             if (contribData[data['alltotalranks'][i][1]] == undefined){
-              contribData[data['alltotalranks'][i][1]]={name:data['alltotalranks'][i][1],alltotalranks:data['alltotalranks'][i][0]};            
-              //contribData[data['alltotalranks'][i][1]].alltotalranks=data['alltotalranks'][i][0];              
+              if (data['alltotalranks'][i][0]=="undefined"){
+                contribData[data['alltotalranks'][i][1]]={name:data['alltotalranks'][i][1],allrank:parseInt(-1)};            
+              } else {
+                contribData[data['alltotalranks'][i][1]]={name:data['alltotalranks'][i][1],allrank:parseInt(data['alltotalranks'][i][0])};            
+              }              
+              // Also add -1 for allrowrank,allcommentranks,alleventranks
+              contribData[data['alltotalranks'][i][1]].allrowrank=parseInt(-1);                           
+              contribData[data['alltotalranks'][i][1]].allcommentranks=parseInt(-1);
+              contribData[data['alltotalranks'][i][1]].alleventranks=parseInt(-1);
             }else {
-              contribData[data['alltotalranks'][i][1]].alltotalranks=data['alltotalranks'][i][0];
+              contribData[data['alltotalranks'][i][1]].allrank=parseInt(data['alltotalranks'][i][0]);
             }
             console.log(contribData[data['alltotalranks'][i][1]]);
             
@@ -255,23 +353,9 @@ function returnedSection(data)
     }    
     str+="</table>";   
 
-    str+="<table class='fumho'><tr><th>login</th><th>alltotalranks</th><th>allrank</th><th>alleventranks</th><th>allcommentranks</th></tr>";
-    if(data['alltotalranks'].length>0){
-      var studDataArr = [];
-        for (var stud in contribData){
-            studDataArr.push(contribData[stud]);
-            str+="<tr>";
-            str+="<td>"+stud+"</td>";
-            str+="<td>"+contribData[stud].alltotalranks+"</td>";
-            str+="<td>"+contribData[stud].allrank+"</td>";
-            str+="<td>"+contribData[stud].alleventranks+"</td>";
-            str+="<td>"+contribData[stud].allcommentranks+"</td>";
-            str+="</tr>";
-        }
-        console.log(studDataArr);
-    }    
-    str+="</table>";   
-    
-    document.getElementById('content').innerHTML=str;;
-  
+    for (var stud in contribData){
+        contribDataArr.push(contribData[stud]);
+    }
+    document.getElementById('content').innerHTML=str;
+    sortRank(4);  
 }
