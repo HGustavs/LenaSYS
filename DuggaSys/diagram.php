@@ -86,6 +86,13 @@
         include '../Shared/loginbox.php';
     ?>
     <?php
+        if(isset($_POST['id'])){
+
+        }
+    ?>
+
+
+    <?php
     if(!isset($_POST['StringDiagram'])) {
         mkdir("Save", 0777,true);
         $getID = fopen("Save/id.txt", "r");
