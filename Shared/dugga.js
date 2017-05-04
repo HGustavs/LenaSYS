@@ -740,11 +740,7 @@ function processLogout() {
 		success:function(data) {
             localStorage.removeItem("securityquestion");
             localStorage.removeItem("securitynotification");
-			var urlDivided = window.location.href.split("/");
-			urlDivided.pop();
-			urlDivided.pop();
-			var newURL = urlDivided.join('/') + "/DuggaSys/courseed.php";
-			window.location.replace(newURL);
+			location.reload();
 		},
 		error:function() {
 			console.log("error");
@@ -921,12 +917,12 @@ function sessionExpireLogOut() {
 
 	function checkIfExpired() {
 		
-		if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
+			if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
 			$(".expiremessagebox").css("display","block");
 			$("#expiremessage").text("Your session has timed out");
-			//location.reload();
+			processLogout();
 			clearInterval(intervalId);
 		}
 

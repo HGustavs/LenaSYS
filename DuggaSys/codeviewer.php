@@ -179,7 +179,7 @@ Testing Link:
 		<div id='editContent' class='loginBox' style='width:510px;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Content</h3>
-				<div onclick='closeEditContent();'>x</div>
+				<div class='cursorPointer' onclick='closeEditContent();'>x</div>
 			</div>	
 			<table width="100%" style="table-layout:fixed;">
 				<tr>
@@ -227,10 +227,10 @@ Testing Link:
 		</div>
 		<!-- Example Content Cog Wheel Dialog END -->
 		<!-- Code Example Cog Wheel Dialog START -->
-		<div id='editExample' class='loginBox' style='width:464px;display:none;'>
+		<div id='editExample' class='loginBox' style='width:650px;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Example</h3>
-				<div onclick='closeEditExample();'>x</div>
+				<div class='cursorPointer' onclick='closeEditExample();'>x</div>
 			</div>
 			<fieldset>
 				<legend>Example Info</legend>
@@ -260,7 +260,7 @@ Testing Link:
 		<div id='chooseTemplate' class='loginBox' style='width:464px;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Example</h3>
-				<div onclick='closeTemplateWindow();'>x</div>
+				<div class='cursorPointer' onclick='closeTemplateWindow();'>x</div>
 			</div>
 			<table width="100%">
 				<tr>

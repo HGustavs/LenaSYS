@@ -129,7 +129,7 @@ hr {
 
 .hidden {
 	opacity:0.5;
-	border-radius:4px;
+	/* border-radius:4px; */
 	margin-left:16px;
 }
 
@@ -787,6 +787,12 @@ header td {
   left: 50%;
   margin-left: -178px;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
+}
+#editSection {
+  top: 50%;
+  left: 50%;
+  margin-top: -245px;
+  margin-left: -236px;
 }
 
 .loginBox textarea, #import{
@@ -1793,7 +1799,8 @@ span.arrow {
   background-color:#fecc56;
   color:#614875;
   z-index:4000;
-  border:none;
+  border:0;
+  outline: none;
   cursor: pointer;
   padding-left: 7px;
   padding-top: 1px;
