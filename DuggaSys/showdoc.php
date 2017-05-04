@@ -88,8 +88,13 @@
 		}
         // Check if its an ordered list
 		function isOrderdList($item) {
-			// return true if ordered list
+			// return 1 if ordered list
 			return preg_match('/\s*\d+\.\s(.*)/', $item);
+		}
+		// Check if its an unordered list
+		function isUnorderdList($item) {
+			// return 1 if unordered list
+			return preg_match('/\s*[\-\*]\s(.*)/', $item);
 		}
         // The creation and destruction of ordered lists
         function handleOrderedList($currentLine, $prevLine, $nextLine) {
