@@ -82,7 +82,7 @@ if(strcmp($opt,"GET")==0){
 		$lids = array_fill_keys($lids, false);
 	
 		// Second query: Select all users that are connected to the course and the current version of it. Order by the uid. 
-		$query = $pdo->prepare("SELECT user.uid, user.username FROM user, user_course WHERE user.uid = user_course.uid AND user_course.cid = :cid AND user_course.vers = :vers ORDER BY user.uid");
+		$query = $pdo->prepare("SELECT user.uid, user.firstname, user.lastname, user.ssn, user.username FROM user, user_course WHERE user.uid = user_course.uid AND user_course.cid = :cid AND user_course.vers = :vers ORDER BY user.uid");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 		

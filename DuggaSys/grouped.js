@@ -89,7 +89,7 @@ function returnedGroup(data)
 		row++;
 		str+="<tr>";
 		str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
-		str+="<td title="+tablecontent[i].uid+">"+tablecontent[i].username+"</td>"; // Iterates all content, but i dont want to write out ugid, cid and lid ...
+		str+="<td title='"+tablecontent[i].firstname+" "+tablecontent[i].lastname+" "+tablecontent[i].ssn+"'>"+tablecontent[i].username+"</td>"; // Iterates all content, but i dont want to write out ugid, cid and lid ...
 		for(var lid in tablecontent[i].lidstogroup) { // Table cells
 			// uid_lid to identify the cell. The ugid is supplied in the option. Is the cid a necessity? 
 			str+="<td>";
