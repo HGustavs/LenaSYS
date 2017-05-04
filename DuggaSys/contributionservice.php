@@ -293,7 +293,8 @@ $array = array(
     'allrowranks' => $allrowranks,
     'alleventranks' => $alleventranks,
     'allcommentranks' => $allcommentranks,
-    'alltotalranks' => $alltotalranks
+    'alltotalranks' => $alltotalranks,
+    'githubuser' => $gituser
     
 );
 
