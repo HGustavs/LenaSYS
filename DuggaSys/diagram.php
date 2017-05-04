@@ -98,6 +98,7 @@
     ?>
     <?php
     if(isset($_POST['StringDiagram'])) {
+            
             $str = $_POST['StringDiagram'];
             $hash = $_POST['Hash'];
             save($str,$hash);
