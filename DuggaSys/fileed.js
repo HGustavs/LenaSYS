@@ -151,8 +151,8 @@ function returnedFile(data)
 		str1+="<thead style='cursor:pointer;'>";
 		str1+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>" +
 		"<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" + 
-		"<th>Link URL</th>" +
-		"<th>Upload date & time</th>" +
+		"<th style='min-width:180px;' >Link URL</th>" +
+		"<th style='min-width:180px;' >Upload date & time</th>" +
 		"<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
 		//str1+="<tr><th class='first' style='width:64px;'>ID</th><th style='width:30px' ></th></tr>";
 		str1+="</thead><tbody id='links_body'>"
@@ -177,11 +177,11 @@ function returnedFile(data)
 			str5+="<thead style='cursor:pointer;'>";
 			str5+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>"+
 			"<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" +
-            "<th>Files</th>" +
-            "<th>File extension</th>" +
-            "<th>Upload date & time</th>" +
-            "<th>File size</th>" +
-				"<th>File Kind</th>" +
+            "<th style='min-width:180px;' >Files</th>" +
+            "<th style='min-width:130px;' >File extension</th>" +
+            "<th style='min-width:180px;' >Upload date & time</th>" +
+            "<th style='min-width:130px;' >File size</th>" +
+			"<th>File Kind</th>" +
             "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
 			str5+="</thead><tbody id='allcontent_body'>";
 
@@ -211,10 +211,10 @@ function returnedFile(data)
       str2+="<thead style='cursor:pointer;'>";      
       str2+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>" +
       "<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" + 
-      "<th>Global File</th>" +
-	  "<th>File extension</th>" +
-      "<th>Upload date & time</th>" +
-      "<th>File size</th>" +
+      "<th style='min-width:180px;' >Global File</th>" +
+	  "<th style='min-width:130px;' >File extension</th>" +
+      "<th style='min-width:180px;' >Upload date & time</th>" +
+      "<th style='min-width:130px;' >File size</th>" +
       "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
 			str2+="</thead><tbody id='global_body'>"
 			
@@ -246,10 +246,10 @@ function returnedFile(data)
 	
       str3+="<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>" +
       "<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" +
-      "<th>Course File</th>" +
-	  "<th>File extension</th>" +
-      "<th>Upload date & time</th>" +
-      "<th>File size</th>" +
+      "<th style='min-width:180px;' >Course File</th>" +
+	  "<th style='min-width:130px;' >File extension</th>" +
+      "<th style='min-width:180px;' >Upload date & time</th>" +
+      "<th style='min-width:130px;' >File size</th>" +
       "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"MFILE\");'/></th></tr>";
       
 			str3+="<thead><tbody id='course_body'>";
@@ -279,10 +279,10 @@ function returnedFile(data)
 		  "<tr><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><span>ID</span>" +
 		  "<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></th>" +
     //  str4+="<tr onclick='toggleTableVisibility(\"local\");'><th style='width:30px;'><div style='display:flex;justify-content:flex-start;align-items:center;' /><img id='local_icon' src='../Shared/icons/desc_complement.svg'/><span>ID<span></div></th><th>Course Local File</th>" +
-		  "<th>Course Local File</th>" +
-		  "<th>File extension</th>" +
-      	"<th>Upload date & time</th>" +
-        "<th>File size</th>" +
+		  "<th style='min-width:180px;' >Course Local File</th>" +
+		  "<th style='min-width:130px;' >File extension</th>" +
+      	"<th style='min-width:180px;' >Upload date & time</th>" +
+        "<th style='min-width:130px;' >File size</th>" +
         "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"LFILE\");'/></th></tr>";
       
 			str4+="<thead><tbody id='local_body'>"

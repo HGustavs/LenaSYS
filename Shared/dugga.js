@@ -1007,8 +1007,8 @@ function findfilevers(filez,cfield,ctype,displaystate)
 		// Iterate over elements in files array
 		var foundfile=null;
 		var oldfile="";
-		var tab="<table>";
-		tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>"
+		var tab="<table width='100%'>";
+		tab+="<thead><tr><th style='text-align:left;padding:4px;'>Preview</th><th style='text-align:left;padding:4px;'>Filename</th><th style='text-align:left;padding:4px;'>Upload date</th><th style='text-align:left;padding:4px;' colspan=2>Teacher feedback</th></tr></thead>"
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
 			for (var i=filez.length-1;i>=0;i--){
@@ -1016,7 +1016,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
 							tab+="<tr'>"
 
-							tab+="<td>";
+							tab+="<td style='padding:4px'>";
 							// Button for making / viewing feedback - note - only button for given feedback to students.
 							tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>P</button>";
 							tab+="</td>";
