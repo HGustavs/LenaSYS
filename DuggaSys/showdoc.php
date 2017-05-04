@@ -89,7 +89,7 @@
         // Check if its an ordered list
 		function isOrderdList($item) {
 			// return true if ordered list
-			return preg_match('/\s*\d*\.\s(.*)/', $item);
+			return preg_match('/\s*\d+\.\s(.*)/', $item);
 		}
         // The creation and destruction of ordered lists
         function handleOrderedList($currentLine, $prevLine, $nextLine) {
