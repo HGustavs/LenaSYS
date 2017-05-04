@@ -38,17 +38,23 @@ var menuButtonWidth = 112;
 var menuButtonMarginRight = 2;
 menuButtons.push({ 'width': 1050, 'name': 'EditVers', 'display': true });
 menuButtons.push({ 'width': 950, 'name': 'NewVers', 'display': true });
-menuButtons.push({ 'width': 850, 'name': 'Access', 'display': true });
-menuButtons.push({ 'width': 750, 'name': 'Results', 'display': true });
-menuButtons.push({ 'width': 650, 'name': 'Tests', 'display': true });
-menuButtons.push({ 'width': 550, 'name': 'Files', 'display': true });
-menuButtons.push({ 'width': 450, 'name': 'Analysis', 'display': true });
+menuButtons.push({ 'width': 850, 'name': 'Analysis', 'display': true });
+menuButtons.push({ 'width': 750, 'name': 'Access', 'display': true });
+menuButtons.push({ 'width': 650, 'name': 'Files', 'display': true });
+menuButtons.push({ 'width': 550, 'name': 'Tests', 'display': true });
+menuButtons.push({ 'width': 450, 'name': 'Groups', 'display': true });
+menuButtons.push({ 'width': 400, 'name': 'Results', 'display': true });
 
 $(window).on('resize',function() {
-//  console.log($(window).width());
   // This here timeout stuff is to prevent certain event to be missed if user resize windows too fast
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(function() {
+    disappearingFields();
+    toggleMenuButtons();
+  }, 250);
+});
+
+function disappearingFields() {
     if($(window).width() < 480 && showInline == true) {
       jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeOut(1000);
       showInline = false;
@@ -56,10 +62,7 @@ $(window).on('resize',function() {
       jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeIn(1000);
       showInline = true;
     }
-
-    toggleMenuButtons();
-  }, 250);
-});
+}
 
 function toggleMenuButtons() {
   for(i=0; i<menuButtons.length; i++) {
@@ -68,28 +71,14 @@ function toggleMenuButtons() {
       jQuery("[name='td"+menuButtons[i].name+"']").animate({width: '0px'}, {duration: 500, queue: false });
       jQuery("[name='td"+menuButtons[i].name+"']").animate({marginRight: '0px'}, {duration: 500, queue: false });
       menuButtons[i].display = false;
-      jQuery("[name='buttonHamburglarMenu']").fadeOut({duration: 500, queue: false });;
-      jQuery("[name='tdHamburglarMenu']").animate({width: '32px'}, {duration: 500, queue: false });
-      jQuery("[name='tdHamburglarMenu']").animate({marginRight: '2px'}, {duration: 500, queue: false });
-      console.log("out: "+menuButtons[i].name);
       } else if($(window).width() >= menuButtons[i].width && !menuButtons[i].display) {
   
       jQuery("[name='button"+menuButtons[i].name+"']").fadeIn({duration: 500, queue: false });;
       jQuery("[name='td"+menuButtons[i].name+"']").animate({width: menuButtonWidth+'px'}, {duration: 500, queue: false });
       jQuery("[name='td"+menuButtons[i].name+"']").animate({marginRight: menuButtonMarginRight+'px'}, {duration: 500, queue: false });
       menuButtons[i].display = true;
-      if(menuButtons[i].name == 'EditVers') {
-        jQuery("[name='buttonHamburglarMenu']").fadeIn({duration: 500, queue: false });;
-        jQuery("[name='tdHamburglarMenu']").animate({width: '0px'}, {duration: 500, queue: false });
-        jQuery("[name='tdHamburglarMenu']").animate({marginRight: '0px'}, {duration: 500, queue: false });
-      }
-      console.log("in: "+menuButtons[i].name);
     }    
   }
-}
-
-function showHamburglarMenu() {
-  $(this).slideDown(1000)
 }
 
 //----------------------------------------
@@ -678,12 +667,9 @@ function returnedSection(data)
     
 		str="";
 
-		str+="<table class='navheader'><tr class='trsize nowrap'>";
+		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>";
 
         if(data['writeaccess']) {
-          // Hamburger menu, only show if any buttons are hidden
-          str+="<td name='tdHamburglarMenu' style='display: inline-block; margin-right:0px; margin-right:0px; width: 0px;'><div class='submit-button' style='display: hide; opacity: 0.0;' name='buttonHamburglarMenu' onClick='showHamburglarMenu'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showHamburglarMenu();'></div></td>";
-
           str+="<td style='display: inline-block; margin-right:2px; width:112px;'><select class='course-dropdown' onchange='goToVersion(this)'>";
             if (retdata['versions'].length > 0) {
                 for ( i = 0; i < retdata['versions'].length; i++) {
