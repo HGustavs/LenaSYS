@@ -139,12 +139,13 @@
         }
         function handleUnorderedList($currentLine, $prevLine, $nextLine) {
             $markdown = "";
+            $value = preg_replace('/^\s*[\-\*]\s*/','',$currentLine);
             //Open a new unordered list
             if(!isUnorderdList($prevLine)) {
                 $markdown .= "<ul>";
             }
             $markdown .= "<li>";
-            $markdown .=  $currentLine;
+            $markdown .=  $value;
             $markdown .= "</li>";
             // Close the unordered list
             if(!isUnorderdList($currentLine)) {
