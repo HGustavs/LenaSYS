@@ -28,6 +28,7 @@ var clist;
 var onlyPending=false;
 var timeZero=new Date(0);
 var showTeachers = false;
+var duggaArray = [[]];
 
 function setup(){
 	//Benchmarking function
@@ -110,33 +111,43 @@ function redrawtable()
   str+="";
   str+="</th>";
 
-  if (momtmp.length > 0){
     // Make first header row!
     var colsp=1;
     var colpos=1;
-    var momname=momtmp[0].momname;
-    for(var j=1;j<momtmp.length;j++){
-      if(momtmp[j].momname!==momname){
-        str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"								
-        momname = momtmp[j].momname;
-        colpos=j;
-        colsp=0;
-      }
-      colsp++;
-    }
-    str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"								
-    str+="</tr><tr class='markinglist-header'>";
 
-    // Make second header row!
-    str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
-    for(var j=0;j<momtmp.length;j++){
-      if(momtmp[j].kind==3){
-        str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
-      }else{
-        str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
+    // Only write out this part if momtmp array is not empty
+    if (momtmp.length > 0){
+      var momname=momtmp[0].momname;
+      for(var j=1;j<momtmp.length;j++){
+        if(momtmp[j].momname!==momname){
+          str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"								
+          momname = momtmp[j].momname;
+          colpos=j;
+          colsp=0;
+        }
+        colsp++;
       }
+      str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"								
+      str+="</tr><tr class='markinglist-header'>";
+
+      // Make second header row!
+      str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
+      for(var j=0;j<momtmp.length;j++){
+        if(momtmp[j].kind==3){
+          str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
+        }else{
+          str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
+        }
+      }
+      str+="</tr></thead><tbody>";
     }
-    str+="</tr></thead><tbody>";
+
+    // Make second header row if momtmp array is empty
+    if (momtmp.length === 0){
+      str+="</tr><tr class='markinglist-header'>";
+      str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
+      str+="</tr></thead><tbody>";
+    }
 
     // Make result table
     var row=1;
@@ -205,7 +216,6 @@ function redrawtable()
     }
     str+="</tbody></table>";
     document.getElementById("content").innerHTML=str;
-  }
 }
 
 function cellIn(ev)
@@ -431,10 +441,10 @@ function resort()
 	 redrawtable();
 	 $("#header"+columno).addClass("result-header-inverse");
    if (sortdir<0){
-     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
-     $("#header"+columno+"magic").append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
+     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
+     $("#header"+columno+"magic").append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
    } else {
-     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>"); 
+     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>"); 
      $("#header"+columno+"magic").append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");    
    }
 }
@@ -443,7 +453,7 @@ function resort()
 // change to selected column and always start with desc FIFO order for col 1->
 // col 0 get special treatment and is by default sorted on lastname.
 function toggleSortDir(col){
-    var dir;
+    var dir = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
     var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
     
   	if (col != ocol){
@@ -461,10 +471,10 @@ function toggleSortDir(col){
         localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);          
         localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);                
     }	else {
-        $("input[name='sortdir']:checked").each(function() {dir=this.value;});
-        dir=dir*-1;
-        $("input[name='sortdir']:checked").val(dir);
-        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);      
+		//$("input[name='sortdir']:checked").each(function() {dir=this.value;});
+		dir=dir*-1;
+		$("input[name='sortdir']:checked").val(dir);
+		localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
     }
     resort();  
 }
@@ -499,11 +509,6 @@ function process()
 						/* default to show every moment/dugga */
 						momtmp.push(moments[l]);
 				}
-		}
-
-		// If momtmp doesn't contain any items no filters were selected
-		if(momtmp.length === 0) {
-			document.getElementById("content").innerHTML="<h3>Filter list is blank</h3>";
 		}
 
 		// Reconstitute table
@@ -562,7 +567,12 @@ function process()
 		}			
 		// Update dropdown list
 		var dstr="";
-		for(var j=0;j<moments.length;j++){
+
+    	dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+
+    	var activeMoment = 0;
+    	for(var j=0;j<moments.length;j++){
+
 				var lid=moments[j].lid;
 				var name=moments[j].entryname;
 				dstr+="<div class='checkbox-dugga";				
@@ -570,7 +580,17 @@ function process()
 				
 				if (moments[j].kind == 4) {dstr +=" checkmoment";}
 				
-				dstr+="'><input type='checkbox' class='headercheck' id='hdr"+lid+"check'";
+				dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
+            	if (moments[j].kind == 4) {
+                    duggaArray.push( [] );
+                    var idAddString = "hdr"+lid+"check";
+                	dstr+=" onclick='checkMomentParts(" + activeMoment + ", \"" + idAddString + "\"); toggleAll();'";
+                    activeMoment++;
+                } else {
+            		var idAddString = "hdr"+lid+"check";
+                    duggaArray[activeMoment-1].push(idAddString);
+				}
+
 				if (clist){
 						index=clist.indexOf("hdr"+lid+"check");
 						if(index>-1){
@@ -601,7 +621,7 @@ function process()
     dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>";
 
     // Filter for only showing pending
-    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
+    dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
     if (onlyPending){ dstr+=" checked"; }
     dstr+="><label class='headerlabel' for='pending'>Only pending</label>";
 	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
@@ -610,7 +630,7 @@ function process()
 	var dstr="";
 
 	// Sorting
-    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort ascending</label><input name='sortdir' type='radio' class='headercheck' value='0' id='sortdir1'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
+    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir1'>Sort ascending</label><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='-1' id='sortdir0'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
 	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
 	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
 	dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";		
@@ -644,6 +664,7 @@ function process()
 
 function hoverc()
 {
+  toggleAll(); // Check toggle all if there are any elements checked
     $('#dropdowns').css('display','none');
   	$('#dropdownc').css('display','block');
 }
@@ -667,6 +688,62 @@ function leavec()
     localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
 
 	if(str!=old || onlyPending==opend) process();
+}
+
+// Function to select and unselect all duggas 
+function checkedAll() {
+  // Current state
+  var duggaElements = document.getElementsByName("selectdugga");
+  var selectToggle = document.getElementById('selectdugga');
+
+  // Are there any elements checked?
+  var anyChecked = false;
+
+  for (var i =0; i < duggaElements.length; i++) {
+    if(duggaElements[i].checked) {
+      anyChecked = true;
+      break;
+    }
+  }
+
+  // Yes, there is at lease one element checked, so default is clear
+  if(anyChecked) {
+    selectToggle.checked = false;
+    for (var i =0; i < duggaElements.length; i++) {
+      duggaElements[i].checked = false;    
+    }
+  } else { // There are no element(s) checked, so set all
+    selectToggle.checked = true;
+    for (var i =0; i < duggaElements.length; i++) {
+      duggaElements[i].checked = true;    
+    }
+  }
+}
+
+// Check all/none box if there are any filters on, else uncheck
+function toggleAll() {
+  // Current state
+  var duggaElements = document.getElementsByName("selectdugga");
+  var selectToggle = document.getElementById('selectdugga');
+
+  // Are there any elements checked?
+  var anyChecked = false;
+
+  for (var i =0; i < duggaElements.length; i++) {
+    if(duggaElements[i].checked) {
+      anyChecked = true;
+      break;
+    }
+  }
+
+  selectToggle.checked = anyChecked;
+}
+
+function checkMomentParts(pos, id) {
+	for (var i = 0; i < duggaArray[pos].length; i++) {
+		var setThis = document.getElementById(duggaArray[pos][i]);
+		setThis.checked = document.getElementById(id).checked;
+	}
 }
 
 function hovers()
@@ -1054,7 +1131,7 @@ function returnedResults(data)
 		subheading=0;
 
 		if (data['debug'] !== "NONE!") alert(data['debug']);
-    
+
 		$(document).ready(function () {
 						$("#dropdownc").mouseleave(function () {
 								leavec();
@@ -1065,7 +1142,7 @@ function returnedResults(data)
 								leaves();
 						});
 		});
-	
+
 		allData = data; // used by dugga.js
 	
 		if (data['dugganame'] !== "") {

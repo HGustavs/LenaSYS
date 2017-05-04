@@ -41,7 +41,7 @@ pdoConnect();
 	?>
 
 	<!-- Edit Section Dialog START -->
-	<div id='editSection' class='loginBox' style='width:460px;display:none;'>
+	<div id='editSection' class='loginBox' style='width:460px;display:none;position:absolute;top:100px;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Item</h3>
 			<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
@@ -88,7 +88,7 @@ pdoConnect();
 			<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
-			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='createVersion();' />
+			<input class='submit-button' type='button' value='Create' title='Save changes' onclick='createVersion();' />
 		</div>
 	</div>
 	<!-- New Version Dialog END -->
