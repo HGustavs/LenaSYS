@@ -139,7 +139,17 @@
         }
         function handleUnorderedList($currentLine, $prevLine, $nextLine) {
             $markdown = "";
-            
+            //Open a new unordered list
+            if(!isUnorderdList($prevLine)) {
+                $markdown .= "<ul>";
+            }
+            $markdown .= "<li>";
+            $markdown .=  $currentLine;
+            $markdown .= "</li>";
+            // Close the unordered list
+            if(!isUnorderdList($currentLine)) {
+                $markdown .= "</ul>";
+            }
             return $markdown;
         }
 		function markdownBlock($instring)
