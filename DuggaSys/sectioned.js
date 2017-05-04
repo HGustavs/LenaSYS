@@ -696,11 +696,11 @@ function returnedSection(data)
     // Course Name
     // This will ellipsis on the course name, and keep course code and vers always fully expanded
     str+="<div class='course ellipseBox' style='display: flex;align-items: center;justify-content: center;'>";
-        	str+="<div id='course-showhide' style='position:absolute; left:15px;'>";
-        	str += "<input type='button' value='Show/hide all' class='hide-moments-button' title='Show/hide'/>";
+        	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='position:absolute; left:10px; margin-top: 15px; display: flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowCompTop'><img src='../Shared/icons/right_complement.svg' class='arrowRightTop' style='display:none;'>";
+        	str+="<text class='showhidetext' >Show/hide all</text>";
         	str+="</div>";
-			str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;'>"+data.coursename+"</div>";
-      str+="<div class='nowrap'";
+        	str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;'>"+data.coursename+"</div>";
+        str+="<div class='nowrap'";
 			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
 			str+="<div id='course-versname' class='thisDateShouldDisappearWhenScreenIsTooSmall' style='margin-right:10px;'>"+versionname+"</div>";
         if(retdata["writeaccess"]){
@@ -1152,14 +1152,16 @@ $(document).on('click', '.section', function () {
 });
 
 // Function for toggling content for all moments
-$(document).on('click', '.hide-moments-button', function () {
+$(document).on('click', '.showhide', function () {
     $('.moment').nextUntil('.moment').slideToggle();
     $('.moment').children('.arrowRight').slideToggle();
     $('.moment').children('.arrowComp').slideToggle();
 });
 
 // Function for toggling content for all sections
-$(document).on('click', '.hide-moments-button', function () {
+$(document).on('click', '.showhide', function () {
+    $('.showhide').children('.arrowRightTop').slideToggle();
+    $('.showhide').children('.arrowCompTop').slideToggle();
     $('.section').nextUntil('.section').slideToggle();
     $('.section').children('.arrowRight').slideToggle();
     $('.section').children('.arrowComp').slideToggle();
