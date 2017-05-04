@@ -26,8 +26,12 @@ pdoConnect();
 
 	<!-- content START -->
 	<div id="content" >
-
-	<button class="switchContent" onclick="switchcontent(),keyUpSearch()" type="button">Switch to One table</button>
+	
+		<div class='titles' style='padding-top:10px;'>
+			<h1 style='flex:1;text-align:center;'>Files</h1>
+		</div>
+	
+		<button class="switchContent" onclick="switchcontent(),keyUpSearch()" type="button">Switch to One table</button>
 
 		<input id="searchinput" type="text" name="search" placeholder="Search.." onkeypress="return searchKeyPress(event);">
 
@@ -82,7 +86,7 @@ pdoConnect();
 	<div id='editFile' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit File/Link</h3>
-			<div onclick='closeEditFile();'>x</div>
+			<div class='cursorPointer' onclick='closeEditFile();'>x</div>
 		</div>
 		<form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
 			<div style='padding:5px;'>

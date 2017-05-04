@@ -189,7 +189,7 @@ if($ha){
 												//  if returned rows equals 0(the existence of the file is not in the db) add data into the db
 												if($norows==0){
 														if($kind=="LFILE"){
-																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,fileize) VALUES(:linkval,'4',:cid,:filesize);");
+																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:linkval,'4',:cid,:filesize);");
 														}else if($kind=="MFILE"){
 																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:linkval,'3',:cid,:filesize);");
 														}else if($kind=="GFILE"){
