@@ -1070,6 +1070,11 @@ function dialogForm() {
         form.innerHTML =
             "Relation name:</br>" +
             "<input id='nametext' type='text'></br>" +
+            "Relation type: </br>" +
+            "<select id ='relationType'>" +
+                "<option value='weak'>weak</option>" +
+                "<option value='strong' selected>strong</option>" +
+            "</select></br>" +
             "Font family:<br>" +
             "<select id ='font'>" +
                 "<option value='arial' selected>Arial</option>" +
@@ -1135,7 +1140,7 @@ function changeNameRelation() {
     diagram[selobj].fontColor = document.getElementById('fontColor').value;
     diagram[selobj].font = document.getElementById('font').value;
     diagram[selobj].sizeOftext = document.getElementById('TextSize').value;
-    diagram[selobj].entityType = document.getElementById('entityType').value;
+    diagram[selobj].relationType = document.getElementById('relationType').value;
     updategfx();
     $("#appearance").hide();
 }
