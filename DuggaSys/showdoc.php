@@ -64,7 +64,6 @@
 		        $str = $remainingLines;
 		        $currentLineFeed = strpos($str, PHP_EOL);
 
-		        
 			}
 
 			return $markdown;
@@ -76,6 +75,9 @@
             // handle ordered lists <ol></ol>
             if(isOrderdList($currentLine)) {
                 $markdown .= handleOrderedList($currentLine, $prevLine, $nextLine);
+            }
+            elseif (isUnorderdList($currentLine)) {
+            	$markdown .= handleUnorderedList($currentLine, $prevLine, $nextLine);
             }
             // If its ordinary text then show it directly
             else{
@@ -133,6 +135,11 @@
             if(!isOrderdList($currentLine)) {
                 $markdown .= "</ol>";
             }
+            return $markdown;
+        }
+        function handleUnorderedList($currentLine, $prevLine, $nextLine) {
+            $markdown = "";
+            
             return $markdown;
         }
 		function markdownBlock($instring)
