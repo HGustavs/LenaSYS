@@ -240,7 +240,22 @@ function closeEditVariant()
 
 function createDugga()
 {
-	AJAXService("ADDUGGA",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
+	var did=$("#did").val();
+	var nme=$("#name").val();
+	var autograde=$("#autograde").val();
+	var gradesys=$("#gradesys").val();
+	var template=$("#template").val();
+	var release=$("#release").val();
+	var deadline=$("#deadline").val();
+	var cid=querystring['cid'];
+	var coursevers=querystring['coursevers'];
+	window.location.reload();
+	$("#editDugga").css("display","none");
+	$("#overlay").css("display","none");
+		
+	
+	//autograde, gradesystem, qname, quizFile, release, deadline, creator, vers
+	AJAXService("ADDUGGA",{cid:cid,autograde:autograde,gradesys:gradesys,nme:nme,template:template,release:release,deadline:deadline,coursevers:coursevers},"DUGGA");
 }
 
 function deleteDugga()
@@ -286,6 +301,22 @@ function hideLoginPopup()
 	$("#overlay").css("display","none");
 }
 
+function showSubmitButton(){ 
+  $(".submitDugga").css("display","inline-block"); 
+  $(".updateDugga").css("display","none"); 
+  $(".deleteDugga").css("display","none"); 
+  $(".closeDugga").css("display","inline-block"); 
+  $("#overlay").css("display","block"); 
+} 
+ 
+function showSaveButton(){ 
+  $(".submitDugga").css("display","none"); 
+  $(".updateDugga").css("display","block");
+  $(".deleteDugga").css("display","block");
+  $(".closeDugga").css("display","none"); 
+  $("#overlay").css("display","none"); 
+} 
+
 function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 {
 	$("#editDugga").css("display","block");
@@ -323,6 +354,130 @@ function selectDugga(did,name,autograde,gradesys,template,release,deadline)
 		}
 	}
 	$("#template").html(str);
+}
+
+
+function newDugga()
+{	
+	document.getElementById('name').value='New Dugga';
+	document.getElementById('release').value='2017-05-15';
+	document.getElementById('deadline').value='2017-07-31';
+	
+	//----------------------------------------------------
+	// Set Autograde
+	//----------------------------------------------------
+	var str="";
+	if(autograde==0) str+="<option selected='selected' value='0'>Off</option>"
+	else str+="<option value='0'>Hidden</option>";
+	if(autograde==1) str+="<option selected='selected' value='1'>On</option>"
+	else str+="<option value='1'>Public</option>";
+	$("#autograde").html(str);
+
+	str="";
+	if(gradesys==1) str+="<option selected='selected' value='1'>U-G-VG</option>"
+	else str+="<option value='1'>U-G-VG</option>";
+	if(gradesys==2) str+="<option selected='selected' value='2'>U-G</option>"
+	else str+="<option value='2'>U-G</option>";
+	if(gradesys==3) str+="<option selected='selected' value='3'>U-3-4-5</option>"
+	else str+="<option value='3'>U-3-4-5</option>";
+	$("#gradesys").html(str);
+
+	str="";
+	for(var j=0;j<filez.length;j++){
+		filen=filez[j];
+		if(filen!=".."&&filen!="."){
+			if(template==filen) str+="<option selected='selected' value='"+filen+"'>"+filen+"</option>"
+			else str+="<option value='"+filen+"'>"+filen+"</option>"
+		}
+	}
+	$("#template").html(str);
+	$("#editDugga").css("display","block");
+	$("#overlay").css("display","block");
+}
+
+// Adds a submission row in Edit Variant
+function addSubmissionRow() {
+	$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>"+
+					"<select name='type' id='submissionType"+submissionRow+"' style='width:65px;'>"+
+						"<option value='pdf'>PDF</option>"+
+						"<option value='zip'>Zip</option>"+
+						"<option value='link'>Link</option>"+
+						"<option value='text'>Text</option>"+
+					"</select>"+
+					"<input type='text' name='fieldname' id='fieldname"+submissionRow+"' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='text' name='instruction' id='instruction"+submissionRow+"' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>"+
+				 "</div>");
+	submissionRow++;
+}
+
+function selectVariant(vid,param,answer,template,dis)
+{
+
+	$("#editVariant").css("display","block"); // Display edit dialog
+	$("#overlay").css("display","block"); 
+	$("#vid").val(vid); // Set Variant ID
+	//var pparam = parseParameters(param);
+	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
+	//var panswer = parseParameters(answer);
+	$("#variantanswer").val(decodeURIComponent(answer)); // Set Variant answer
+	if(dis.localeCompare("1")===0){
+		$("#toggleVariantButton").val("Enable"); // Set Variant answer
+	} else {
+		$("#toggleVariantButton").val("Disable"); // Set Variant answer
+	}
+	
+	//Parse JSON to add data to forms again
+	var data = $("#parameter").val();
+	if(data == "" || data == "UNK"){}
+	else{
+		var result = JSON.parse(data);
+		//Adds data to forms 
+		if(result["type"]!=undefined){
+			$("#type").val(result["type"]);
+		}
+		
+		if(result["filelink"]!=undefined){
+			$("#filelink").val(result["filelink"]);
+		}
+		
+		if(result["submissions"]!=undefined){
+			//Adds more submission rows if necessary
+			for(i = 0; i < result["submissions"].length; i++){
+				if(i > 0 && i <= submissionRow) {
+					addSubmissionRow();
+				}
+				if(result["submissions"][i]["type"]!=undefined){
+					$("#submissionType"+i).val(result["submissions"][i]["type"]);
+				}
+				if(result["submissions"][i]["fieldname"]!=undefined){
+					$("#fieldname"+i).val(result["submissions"][i]["fieldname"]);
+				}
+				if(result["submissions"][i]["instruction"]!=undefined){
+					$("#instruction"+i).val(result["submissions"][i]["instruction"]);
+				}
+			}
+		}
+	}
+
+}
+
+function closeVariant(){
+	//Removes data from forms, going back to original style
+	$("#type").val("md");
+	$("#filelink").val("");
+	for(i = 0; i < 100; i++){
+		$("#submissionType"+i).val("pdf");
+		$("#fieldname"+i).val("");
+		$("#instruction"+i).val("");
+	}
+	//Removes all submission rows
+	for(i=0; i < submissionRow; i++){
+		$("#submissionType"+i).parent().remove();
+	}
+	submissionRow=0;
+	//Adds one submission row so that one is visible next time it's opened
+	addSubmissionRow();
 }
 
 function isInArray(array, search)
@@ -382,7 +537,7 @@ function returnedDugga(data)
 
 		str+="<div class='titles' style='padding-top:10px;'>";
 		str+="<h1 style='flex:10;text-align:center;'>Tests</h1>";
-		str+="<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='Add Dugga' onclick='createDugga();'/>";
+		str+="<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='Add Dugga' onclick='newDugga();showSubmitButton();'/>";
 		str+="</div>";
 		
 		str+="<table class='list' id='testTable'>";
@@ -454,7 +609,7 @@ function returnedDugga(data)
 
 			str+="<td style='padding:4px;'>";
 			str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-			str+=" onclick='selectDugga(\""+item['did']+"\",\""+item['name']+"\",\""+item['autograde']+"\",\""+item['gradesystem']+"\",\""+item['template']+"\",\""+item['release']+"\",\""+item['deadline']+"\");' >";
+			str+=" onclick='selectDugga(\""+item['did']+"\",\""+item['name']+"\",\""+item['autograde']+"\",\""+item['gradesystem']+"\",\""+item['template']+"\",\""+item['release']+"\",\""+item['deadline']+"\");showSaveButton();' >";
 			str+="</td>";
 			str+="</tr>";
 

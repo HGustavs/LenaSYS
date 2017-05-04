@@ -92,8 +92,8 @@ function resetFields(){
 
 function setExpireCookie(){
 	var expireDate = new Date();
-	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));
-
+	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));////8100000, denotes time in milliseconds
+  
 	document.cookie = "sessionEndTime=expireC; expires="+ expireDate.toGMTString() +"; path=/";
 }
 
@@ -697,8 +697,11 @@ function processLogin() {
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
-						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
+						$("#login #message").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong username or password! </div>");
+						
 					}
+					
+					
 					$("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
@@ -859,7 +862,30 @@ function hideDuggaInfoPopup()
 		startDuggaHighScore();
 	}
 }
+//----------------------------------------------------------------------------------
+// Simple page reload function
+//----------------------------------------------------------------------------------
+function reloadPage(){
+   location.reload();
+}
+//----------------------------------------------------------------------------------
+// Refresh function, refreshes the current session by resetting the php session cookie
+//----------------------------------------------------------------------------------
+function refreshUserSession(){
+	$.ajax({
+					type: "POST",
+					url: "../Shared/loginlogout.php",
+					data:{opt:'REFRESH'},
+					success:function(html) {
+						alert(html);
+					}
 
+		 });
+}
+  setExpireCookie()
+  setExpireCookieLogOut()
+  sessionExpireMessage()
+  sessionExpireLogOut()
 //----------------------------------------------------------------------------------
 // Timeout function, gives a prompt if the session is about to expire
 //----------------------------------------------------------------------------------
@@ -901,9 +927,7 @@ function sessionExpireLogOut() {
 		if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
-			$(".expiremessagebox").css("display","block");
-			$("#expiremessage").text("Your session has timed out");
-			//location.reload();
+			$(".endsessionmessagebox").css("display","block");
 			clearInterval(intervalId);
 		}
 
