@@ -44,7 +44,7 @@ pdoConnect();
 	<div id='editDugga' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Dugga</h3>
-			<div onclick='closeEditDugga();'>x</div>
+			<div class='cursorPointer' onclick='closeEditDugga();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='did' value='Toddler' /></td>
@@ -68,7 +68,7 @@ pdoConnect();
 	<div id='editVariant' class='loginBox' style='width:80%; left:20%; display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Variant</h3>
-			<div onclick='closeWindows();closeVariant();'>x</div>
+			<div class='cursorPointer' onclick='closeWindows();closeVariant();'>x</div>
 		</div>
 		<div style='padding:5px;display:flex;'>
 			<input type='hidden' id='vid' value='Toddler' />
@@ -125,7 +125,7 @@ pdoConnect();
 	<!-- Result Dialog START -->
 	<div id='resultpopover' class='resultPopover' style='display:none'>
 		<div class='loginBoxheader'>
-			<div onclick="closePreview();">x</div>
+			<div class='cursorPointer' onclick="closePreview();">x</div>
 		</div>
 		<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"></div>
 	</div>
