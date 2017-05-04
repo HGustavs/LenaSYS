@@ -25,6 +25,10 @@ pdoConnect();
 	
    <style>
  
+       .fumho {
+           margin-bottom:20px;
+       }
+       
    		.fumho th{
    				background:#620;
    				color:#fff;
