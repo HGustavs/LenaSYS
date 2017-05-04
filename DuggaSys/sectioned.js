@@ -2,84 +2,9 @@ var querystring=parseGet();
 var retdata;
 
 AJAXService("get",{},"SECTION");
-
 // These functions loads at page load
 $(function() {
-// Picking dates when creating a new version
-	$("#startdate").datepicker({
-		dateFormat: "yy-mm-dd",
-		minDate: 0,
-		onSelect: function(date){
-			var newDate = $('#startdate').datepicker('getDate');
-			$('#enddate').datepicker("option","minDate", newDate);
-		}
-	});
-	$('#enddate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-// Picking dates when modifying a version
-	$("#estartdate").datepicker({
-		dateFormat: "yy-mm-dd",
-		minDate: 0,
-		onSelect: function(date){
-			var newDate = $('#estartdate').datepicker('getDate');
-			$('#eenddate').datepicker("option","minDate", newDate);
-		}
-	});
-	$('#eenddate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
 });
-
-var resizeTimer;
-var showInline = false;
-var menuButtons = [];
-var menuButtonWidth = 112;
-var menuButtonMarginRight = 2;
-menuButtons.push({ 'width': 1050, 'name': 'EditVers', 'display': true });
-menuButtons.push({ 'width': 950, 'name': 'NewVers', 'display': true });
-menuButtons.push({ 'width': 850, 'name': 'Analysis', 'display': true });
-menuButtons.push({ 'width': 750, 'name': 'Access', 'display': true });
-menuButtons.push({ 'width': 650, 'name': 'Files', 'display': true });
-menuButtons.push({ 'width': 550, 'name': 'Tests', 'display': true });
-menuButtons.push({ 'width': 450, 'name': 'Groups', 'display': true });
-menuButtons.push({ 'width': 400, 'name': 'Results', 'display': true });
-
-$(window).on('resize',function() {
-  // This here timeout stuff is to prevent certain event to be missed if user resize windows too fast
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(function() {
-    disappearingFields();
-    toggleMenuButtons();
-  }, 250);
-});
-
-function disappearingFields() {
-    if($(window).width() < 480 && showInline == true) {
-      jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeOut(1000);
-      showInline = false;
-    } else if($(window).width() >= 480 && showInline == false) {
-      jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeIn(1000);
-      showInline = true;
-    }
-}
-
-function toggleMenuButtons() {
-  for(i=0; i<menuButtons.length; i++) {
-    if($(window).width() < menuButtons[i].width && menuButtons[i].display) {
-      jQuery("[name='button"+menuButtons[i].name+"']").fadeOut({duration: 500, queue: false });;
-      jQuery("[name='td"+menuButtons[i].name+"']").animate({width: '0px'}, {duration: 500, queue: false });
-      jQuery("[name='td"+menuButtons[i].name+"']").animate({marginRight: '0px'}, {duration: 500, queue: false });
-      menuButtons[i].display = false;
-      } else if($(window).width() >= menuButtons[i].width && !menuButtons[i].display) {
-  
-      jQuery("[name='button"+menuButtons[i].name+"']").fadeIn({duration: 500, queue: false });;
-      jQuery("[name='td"+menuButtons[i].name+"']").animate({width: menuButtonWidth+'px'}, {duration: 500, queue: false });
-      jQuery("[name='td"+menuButtons[i].name+"']").animate({marginRight: menuButtonMarginRight+'px'}, {duration: 500, queue: false });
-      menuButtons[i].display = true;
-    }    
-  }
-}
 
 //----------------------------------------
 // Commands:
@@ -91,6 +16,49 @@ function displaymessage(){
    $(".messagebox").css("display","block");
 }
 
+var resizeTimer;
+var showInline = false;
+var menuButtonWidth = 112;
+var menuButtonMarginRight = 2;
+var menuButtons = [];
+
+menuButtons.push({ 'width': 1050, 'name': 'EditVers', 'display': true });
+menuButtons.push({ 'width': 950, 'name': 'NewVers', 'display': true });
+menuButtons.push({ 'width': 850, 'name': 'Analysis', 'display': true });
+menuButtons.push({ 'width': 750, 'name': 'Access', 'display': true });
+menuButtons.push({ 'width': 650, 'name': 'Files', 'display': true });
+menuButtons.push({ 'width': 550, 'name': 'Tests', 'display': true });
+menuButtons.push({ 'width': 450, 'name': 'Groups', 'display': true });
+menuButtons.push({ 'width': 400, 'name': 'Results', 'display': true });
+
+function disappearingFields() {
+  var windowSize = $(window).width();
+  if(windowSize < 480 && showInline == true) {
+    jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeOut(1000);
+    showInline = false;
+  } else if(windowSize >= 480 && showInline == false) {
+    jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeIn(1000);
+    showInline = true;
+  }
+}
+
+function toggleMenuButtons() {
+  var windowSize = $(window).width();
+  for(i=0; i<menuButtons.length; i++) {
+    if(windowSize < menuButtons[i].width && menuButtons[i].display) {
+      jQuery("[name='button"+menuButtons[i].name+"']").fadeOut({duration: 500, queue: false });
+      jQuery("[name='td"+menuButtons[i].name+"']").animate({width: '0px'}, {duration: 500, queue: false });
+      jQuery("[name='td"+menuButtons[i].name+"']").animate({marginRight: '0px'}, {duration: 500, queue: false });
+      menuButtons[i].display = false;
+    } else if(windowSize >= menuButtons[i].width && !menuButtons[i].display) {  
+      jQuery("[name='button"+menuButtons[i].name+"']").fadeIn({duration: 500, queue: false });
+      jQuery("[name='td"+menuButtons[i].name+"']").animate({width: menuButtonWidth+'px'}, {duration: 500, queue: false });
+      jQuery("[name='td"+menuButtons[i].name+"']").animate({marginRight: menuButtonMarginRight+'px'}, {duration: 500, queue: false });
+      menuButtons[i].display = true;
+    }    
+  }
+}
+
 $(document).ready(function(){
     $(".messagebox").hover(function(){
         $("#testbutton").css("background-color", "red");
@@ -99,7 +67,42 @@ $(document).ready(function(){
         $("#testbutton").css("background-color", "#614875");
     });
 
-    toggleMenuButtons();
+  // Picking dates when creating a new version
+	$("#startdate").datepicker({
+		dateFormat: "yy-mm-dd",
+		minDate: 0,
+		onSelect: function(date){
+			var newDate = $('#startdate').datepicker('getDate');
+			$('#enddate').datepicker("option","minDate", newDate);
+		}
+	});
+
+	$('#enddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+
+  // Picking dates when modifying a version
+	$("#estartdate").datepicker({
+		dateFormat: "yy-mm-dd",
+		minDate: 0,
+		onSelect: function(date){
+			var newDate = $('#estartdate').datepicker('getDate');
+			$('#eenddate').datepicker("option","minDate", newDate);
+		}
+	});
+
+	$('#eenddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+
+  $(window).resize(function() {
+    // This here timeout stuff is to prevent certain event to be missed if user resize windows too fast
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      disappearingFields();
+      toggleMenuButtons();
+    }, 250);
+  });
 });
 
 function showSubmitButton(){ 
@@ -1073,6 +1076,8 @@ function returnedSection(data)
 		str+="</div>";
 		var slist=document.getElementById('Sectionlist');
 		slist.innerHTML=str;	
+    disappearingFields();
+    toggleMenuButtons();
 		if(resave == true){
 			str="";
 			$("#Sectionlist").find(".item").each(function(i) {
