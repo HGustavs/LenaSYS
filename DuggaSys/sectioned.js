@@ -927,13 +927,13 @@ function returnedSection(data)
 				if (parseInt(item['kind']) == 0) {						// Header
 					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
 				}else if (parseInt(item['kind']) == 1) {					// Section
-					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 4) {		// Moment
           var momentsplit = item['entryname'].split(" ");
           var momentname = momentsplit.splice(0,momentsplit.length-1);
           var momenthp = momentsplit[momentsplit.length-1];
 
-          str+="<div style='display:flex;'><div class='nowrap"+blorf+"' style='padding-left:5px;'><span class='ellipsis'>"+momentname+"</span> "+momenthp+"</div><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div>";
+          str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;'><span class='ellipsis'>"+momentname+"</span> "+momenthp+"</div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {	
@@ -1140,8 +1140,8 @@ function returnedHighscore(data){
 // Function for toggling content for each moment
 $(document).on('click', '.moment', function () {
 	$(this).nextUntil('.moment').slideToggle();
-	$(this).children('.arrowRight').slideToggle();
-	$(this).children('.arrowComp').slideToggle();
+    $(this).children('.arrowRight').slideToggle();
+    $(this).children('.arrowComp').slideToggle();
 });
 
 // Function for toggling content for each section

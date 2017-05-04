@@ -72,6 +72,10 @@ function redrawtable()
 {
   str="";
 
+  str+="<div class='titles' style='padding-bottom:10px;'>";
+    str+="<h1 style='flex:1;text-align:center;'>Results</h1>";
+  str+="</div>";
+  
   str+="<div id='horizhighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
   str+="<div id='verthighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
 
@@ -107,33 +111,43 @@ function redrawtable()
   str+="";
   str+="</th>";
 
-  if (momtmp.length > 0){
     // Make first header row!
     var colsp=1;
     var colpos=1;
-    var momname=momtmp[0].momname;
-    for(var j=1;j<momtmp.length;j++){
-      if(momtmp[j].momname!==momname){
-        str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"								
-        momname = momtmp[j].momname;
-        colpos=j;
-        colsp=0;
-      }
-      colsp++;
-    }
-    str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"								
-    str+="</tr><tr class='markinglist-header'>";
 
-    // Make second header row!
-    str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
-    for(var j=0;j<momtmp.length;j++){
-      if(momtmp[j].kind==3){
-        str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
-      }else{
-        str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
+    // Only write out this part if momtmp array is not empty
+    if (momtmp.length > 0){
+      var momname=momtmp[0].momname;
+      for(var j=1;j<momtmp.length;j++){
+        if(momtmp[j].momname!==momname){
+          str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"								
+          momname = momtmp[j].momname;
+          colpos=j;
+          colsp=0;
+        }
+        colsp++;
       }
+      str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"								
+      str+="</tr><tr class='markinglist-header'>";
+
+      // Make second header row!
+      str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
+      for(var j=0;j<momtmp.length;j++){
+        if(momtmp[j].kind==3){
+          str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
+        }else{
+          str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
+        }
+      }
+      str+="</tr></thead><tbody>";
     }
-    str+="</tr></thead><tbody>";
+
+    // Make second header row if momtmp array is empty
+    if (momtmp.length === 0){
+      str+="</tr><tr class='markinglist-header'>";
+      str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
+      str+="</tr></thead><tbody>";
+    }
 
     // Make result table
     var row=1;
@@ -202,7 +216,6 @@ function redrawtable()
     }
     str+="</tbody></table>";
     document.getElementById("content").innerHTML=str;
-  }
 }
 
 function cellIn(ev)
@@ -496,11 +509,6 @@ function process()
 						/* default to show every moment/dugga */
 						momtmp.push(moments[l]);
 				}
-		}
-
-		// If momtmp doesn't contain any items no filters were selected
-		if(momtmp.length === 0) {
-			document.getElementById("content").innerHTML="<h3>Filter list is blank</h3>";
 		}
 
 		// Reconstitute table
