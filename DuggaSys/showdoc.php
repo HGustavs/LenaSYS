@@ -140,13 +140,35 @@
         function handleUnorderedList($currentLine, $prevLine, $nextLine) {
             $markdown = "";
             $value = preg_replace('/^\s*[\-\*]\s*/','',$currentLine);
+            $currentLineIndentation = substr_count($currentLine, ' ');
+            $nextLineIndentation = substr_count($nextLine, ' ');
             //Open a new unordered list
             if(!isUnorderdList($prevLine)) {
                 $markdown .= "<ul>";
             }
-            $markdown .= "<li>";
-            $markdown .=  $value;
-            $markdown .= "</li>";
+            // Open a new sublist
+            if($currentLineIndentation < $nextLineIndentation) {
+                $markdown .= "<li>";
+                $markdown .=  $value;
+                // open sublist
+                $markdown .= "<ul>";
+            }
+            // Close sublists
+            else if($currentLineIndentation > $nextLineIndentation) {
+                $markdown .= "<li>";
+                $markdown .=  $value;
+                $markdown .= "</li>";
+                $sublistsToClose = ($currentLineIndentation - $nextLineIndentation) / 2;
+                for($i = 0; $i < $sublistsToClose; $i++) {
+                    $markdown .= "</ul></li>";
+                }
+            }
+            // Stay in current list or sublist
+            else {
+                $markdown .= "<li>";
+                $markdown .=  $value;
+                $markdown .= "</li>";
+            }
             // Close the unordered list
             if(!isUnorderdList($currentLine)) {
                 $markdown .= "</ul>";
