@@ -343,7 +343,7 @@ function resort()
                  				});
 							}
 						}else{
-							// other columns sort by 
+							// other columns sort by
 							// 0. need marking -> FIFO 
 							// 1. grade
 							// 2. submitted
@@ -655,7 +655,7 @@ function process()
 		dstr+="<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(2)' id='sorttype2' value='2'><label class='headerlabel' for='sorttype2' >Submitted</label></div>";
 		dstr+="<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(3)' id='sorttype3' value='3'><label class='headerlabel' for='sorttype3' >Marked</label></div>";
 		dstr+="</td></tr></table>";
-		dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaves()'>Filter</button></div>"
+		dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaves()'>Sort</button></div>"
 		document.getElementById("dropdowns").innerHTML=dstr;	
 
 		resort();
