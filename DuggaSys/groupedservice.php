@@ -109,7 +109,7 @@ if(strcmp($opt,"GET")==0){
 		$groupData = $query->fetchAll(PDO::FETCH_ASSOC);
 	
 		// Fourth query: Select all available groups
-		$query = $pdo->prepare("SELECT ugid FROM usergroup"); // Query to get all existing groups 
+		$query = $pdo->prepare("SELECT ugid, name FROM usergroup"); // Query to get all existing groups 
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -135,7 +135,7 @@ if(strcmp($opt,"GET")==0){
 		
 		$groups = [];
 		foreach($allGroups as $group) {
-			$groups[] = $group['ugid'];
+			$groups[$group['ugid']] = $group['name'];
 		}
 		
 		// Place the data in the output data array
