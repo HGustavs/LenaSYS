@@ -254,6 +254,12 @@ function returned(data)
 
 }
 
+function returnedTitle(data) {
+	// Update title in retData too in order to keep boxtitle and boxtitle2 synced
+	retData['box'][retData['box'].length-1][4] = data;
+	$("#boxtitle2").text(data);
+}
+
 //---------------------------------------------------------------------------------
 // This functions convert tabs to "&#9;""
 // The indexOf() method returns the position of the first time of a specified value 
@@ -435,6 +441,7 @@ var openBoxID;
 
 function displayEditContent(boxid)
 {
+	$("#boxtitle2").removeAttr("contenteditable");
 	// The information stored about the box is fetched
 	var box = retData['box'][boxid-1]; 	
 	
@@ -554,37 +561,58 @@ function editImpRows(editType)
 function updateContent() 
 {
 	var box = retData['box'][openBoxID-1];
+	var useBoxContent = true;
+
+	// Default to using openbox data and use regular retData as fallback incase it's not open
+	if(!box) {
+		useBoxContent = false;
+		box = retData['box'][retData['box'].length-1];
+	}
 
 	// First a check to is done to see if any changes has been made, then the new values are assigned and changed
 	// TODO: Handle null values
-	if (box[1] != $("#boxcontent").val() || box[3] != $("#wordlist").val() || box[4] != $("#boxtitle").val() || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
-		try {
-			var boxtitle = $("#boxtitle").val();
-			var boxcontent = $("#boxcontent option:selected").val();
-			var wordlist = $("#wordlist").val();
-			var filename = $("#filename option:selected").val();
-			var fontsize = $("#fontsize option:selected").val();
-			var exampleid = querystring['exampleid'];
-			var boxid = box[0];
+	if(useBoxContent) {
+		if (box[1] != $("#boxcontent").val() || box[3] != $("#wordlist").val() || box[4] != $("#boxtitle").val() || box[5] != $("#filename option:selected").val() || box[6] != $("#fontsize option:selected").val() || addedRows.length > 0 || removedRows.length > 0) {
+			try {
+				var boxtitle = $("#boxtitle").val();
+				var boxcontent = $("#boxcontent option:selected").val();
+				var wordlist = $("#wordlist").val();
+				var filename = $("#filename option:selected").val();
+				var fontsize = $("#fontsize option:selected").val();
+				var exampleid = querystring['exampleid'];
+				var boxid = box[0];
 
-			AJAXService("EDITCONTENT", {
-				exampleid : exampleid,
-				boxid : boxid,			
-				boxtitle : boxtitle,
-				boxcontent : boxcontent,
-				wordlist : wordlist,
-				filename : filename,
-				fontsize : fontsize,
-				addedRows : addedRows,
-				removedRows : removedRows
-			}, "BOXCONTENT");
-	
-			addedRows = [];
-			removedRows = [];
-		}catch(e){
-			alert("Error when updating content: "+e.message)
+				AJAXService("EDITCONTENT", {
+					exampleid : exampleid,
+					boxid : boxid,			
+					boxtitle : boxtitle,
+					boxcontent : boxcontent,
+					wordlist : wordlist,
+					filename : filename,
+					fontsize : fontsize,
+					addedRows : addedRows,
+					removedRows : removedRows
+				}, "BOXCONTENT");
+		
+				addedRows = [];
+				removedRows = [];
+			}catch(e){
+				alert("Error when updating content: "+e.message);
+			}
+			setTimeout("location.reload()", 500);
 		}
-		setTimeout("location.reload()", 500);
+	} else {
+		if(box[4] != $("#boxtitle2").text()) {
+			try {
+				AJAXService("EDITTITLE", {
+					exampleid : querystring['exampleid'],
+					boxid : box[0],
+					boxtitle : $("#boxtitle2").text()
+				}, "BOXTITLE");
+			} catch(e) {
+				alert("Error when updating content: " + e.message);
+			}
+		}
 	}
 }
 
@@ -626,17 +654,17 @@ function createboxmenu(contentid, boxid, type)
 			if(type=="DOCUMENT"){
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';	
+				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';	
 				str+="</tr></table>";
 			}else if(type=="CODE"){
 				var str = "<table cellspacing='2'><tr>";
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable" contenteditable="true" onblur="changeboxtitle(this,'+boxid+');">'+retData['box'][boxid-1][4]+'</span></td>';				
+				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable" contenteditable="true" onblur="updateContent();">'+retData['box'][boxid-1][4]+'</span></td>';				
 				str+='</tr></table>';
 			}else if(type=="IFRAME"){
 				var str = '<table cellspacing="2"><tr>';
 				str+="<td class='butto2 editcontentbtn showdesktop codedropbutton' id='settings' title='Edit box settings' onclick='displayEditContent("+boxid+");' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';	
+				str+='<td class="butto2 boxtitlewrap" title="Change box title"><span id="boxtitle2" class="boxtitleEditable">'+retData['box'][boxid-1][4]+'</span></td>';	
 				str+="</tr></table>";
 			}else{
 				var str = "<table cellspacing='2'><tr>";
@@ -1671,7 +1699,9 @@ function updateTemplate()
 //----------------------------------------------------------------------------------
 function closeEditContent()
 {
-		$("#editContent").css("display","none");
+	$("#boxtitle2").attr("contenteditable", true);
+	$("#editContent").css("display","none");
+	openBoxID = null;
 }
 //----------------------------------------------------------------------------------
 // closeEditExample: 
@@ -1679,7 +1709,7 @@ function closeEditContent()
 //----------------------------------------------------------------------------------
 function closeEditExample()
 {
-		$("#editExample").css("display","none");
+	$("#editExample").css("display","none");
 }
 //----------------------------------------------------------------------------------
 // openTemplateWindow:
