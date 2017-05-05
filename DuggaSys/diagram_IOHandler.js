@@ -23,24 +23,14 @@ function downloadMode(el) {
 }
 
 function saveToServer(dia) {
-    //window.open("diagram_IOHandler.php");
-    // $.post("diagram_IOHandler.php",{ string: "ABC" });
-    //$.post( "diagram_IOHandler.php",{DataString: a}, function( a ) {
-    //    $('#stage').html(a);
-    //});
+
     $.ajax({
         url: 'diagram.php',
         type: 'POST', // GET or POST
-        data: {StringDiagram : dia, Hash: hashfunction()} // will be in $_POST on PHP side
-        //success: function(data) { // data is the response from your php script
-        //    // This function is called if your AJAX query was successful
-        //    alert("Response is: " + data);
-        //},
-        //error: function() {
-        //    // This callback is called if your AJAX query has failed
-        //    alert("Error!");
-        //}
+        data: {StringDiagram : dia, Hash: hashfunction()}
+
     });
+    console.log("abc: ");
 }
 
 function getImage() {

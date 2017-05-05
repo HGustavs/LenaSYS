@@ -85,8 +85,9 @@
     <?php
         include '../Shared/loginbox.php';
     ?>
+
     <?php
-        if(isset($_POST['id'])){
+        if(isset($_POST['instance_id'])){
 
         }
     ?>
@@ -103,6 +104,7 @@
         fwrite($overwriteID,$a);
     }
     ?>
+
     <?php
     if(isset($_POST['StringDiagram'])) {
             
@@ -117,5 +119,8 @@
         fwrite($myfile, $data);
     }
     ?>
+    <script type="text/javascript">var id = "<?= $a ?>";</script>
+    <script type="text/javascript" src="diagram_IOHandler.js"></script>
+
 </body>
 </html>
