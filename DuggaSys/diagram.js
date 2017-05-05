@@ -51,6 +51,9 @@ var minEntityX = 100;               //the minimum size for an Enitny are set by 
 var minEntityY = 50;
 var hash_timer = 5000;              // set timer varibale for hash and saving
 var current_hash = 0;
+var lastDiagramedit = localStorage.getItem('last_edit');          // the last date the diagram was change in milisecounds.
+var refresh_timer = setRefreshTime();              //  set how often the diagram should be refreshed.
+var refresh_lock = false;               // used to set if the digram should stop refreshing or not.
 var attributeTemplate = {           // Defines entity/attribute/relations predefined sizes
   width: 7 * gridSize,
   height: 4 * gridSize
@@ -181,11 +184,6 @@ points.distance = function(xk, yk) {
     return {dist:Math.sqrt(dist), ind:ind};
 }
 
-
-//--------------------------------------------------------------------
-// distancepoint
-// Returns the distance between points with arbitrary origo.
-//--------------------------------------------------------------------
 points.distanceBetweenPoints = function(x1, y1, x2, y2, axis) {
     xs = x2 - x1;
     ys = y2 - y1;
@@ -213,7 +211,7 @@ points.clearsel = function() {
 var diagram = [];
 
 //--------------------------------------------------------------------
-// draw - executes draw method in all diagram objects
+// draw - executes draw methond in all diagram objects
 //--------------------------------------------------------------------
 diagram.draw = function () {
     // On every draw of diagram adjust the midpoint if there is one to adjust
@@ -319,7 +317,7 @@ diagram.insides = function (ex, ey, sx, sy) {
 }
 
 //--------------------------------------------------------------------
-// inside - executes inside method in all diagram objects (currently of kind==2)
+// inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
 diagram.inside = function (xk, yk) {
     for (var i = 0; i < this.length; i++) {
@@ -333,7 +331,7 @@ diagram.inside = function (xk, yk) {
 }
 
 //--------------------------------------------------------------------
-// linedist - executes linedist method in all diagram objects (currently of kind==2)
+// inside - executes linedist methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
 diagram.linedist = function (xk, yk) {
     for (var i = 0; i < this.length; i++) {
@@ -378,7 +376,7 @@ diagram.eraseObjectLines = function(object, privateLines) {
 }
 
 //--------------------------------------------------------------------
-// getLineObjects - returns lines from diagram objects (currently of kind==4)
+// inside - executes linedist methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
 diagram.getLineObjects = function () {
     var lines = new Array();
@@ -410,6 +408,8 @@ diagram.updateLineRelations = function() {
 
 function initcanvas() {
     //hashes the current diagram, and then compare if it have been change to see if it needs to be saved.
+    setInterval(refreshFunction, refresh_timer);
+    setInterval(hashcurrent, hash_timer);
     setInterval(hashcurrent, hash_timer);
     setInterval(hashfunction, hash_timer + 500);
     widthWindow = (window.innerWidth - 20);
@@ -430,9 +430,7 @@ function initcanvas() {
     canvas.addEventListener('dblclick', doubleclick, false);
 }
 
-//--------------------------------------------------------------------
 // Function to enable and disable the grid, functionality is related to cx and cy
-//--------------------------------------------------------------------
 function enableGrid(element) {
     if (snapToGrid == false) {
         snapToGrid = true;
@@ -441,9 +439,7 @@ function enableGrid(element) {
     }
 }
 
-//--------------------------------------------------------------------
 // Function for the zoom in and zoom out in the canvas element
-//--------------------------------------------------------------------
 function zoomInMode(e) {
     uimode = "Zoom";
     var canvas = document.getElementById("myCanvas");
@@ -488,9 +484,6 @@ function zoomOutMode(e) {
     }
 }
 
-//--------------------------------------------------------------------
-// Stores zoom value and scales according to old value.
-//--------------------------------------------------------------------
 function zoomInClick() {
     var oldZV = zv;
     zv += 0.1;
@@ -528,9 +521,8 @@ function getUploads() {
     }
 }
 
-//--------------------------------------------------------------------
-// Function that is used for the resize making the page more responsive
-//--------------------------------------------------------------------
+// Function that is used for the resize
+// Making the page more responsive
 function canvassize() {
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 244);
@@ -542,9 +534,7 @@ function canvassize() {
     ctx.scale(zv, zv);
 }
 
-//--------------------------------------------------------------------
 // Listen if the window is the resized
-//--------------------------------------------------------------------
 window.addEventListener('resize', canvassize);
 var erEntityA;
 
@@ -559,9 +549,7 @@ function updategfx() {
     points.drawpoints();
 }
 
-//--------------------------------------------------------------------
 // Recursive Pos of div in document - should work in most browsers
-//--------------------------------------------------------------------
 function findPos(obj) {
     var curleft = 0;
     var curtop = 0;
@@ -595,7 +583,6 @@ function mousemoveevt(ev, t) {
     mox = cx;
     moy = cy;
     hovobj = diagram.inside(cx, cy);
-    // Sets offset based on browser.
     if (ev.pageX || ev.pageY == 0) { // Chrome
         cx = (ev.pageX - acanvas.offsetLeft) * (1 / zv);
         cy = (ev.pageY - acanvas.offsetTop) * (1 / zv);
@@ -624,9 +611,8 @@ function mousemoveevt(ev, t) {
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
-        // If object is selected - move desired point.
+        // If mouse is pressed down and at a point in selected object - move that point
         if (diagram[selobj].targeted == true) {
-            // All selected objects except relations can be scaled.
             if (diagram[selobj].bottomRight == sel.ind && diagram[selobj].symbolkind != 5) {
                 points[diagram[selobj].bottomRight].x = cx;
                 points[diagram[selobj].bottomRight].y = cy;
@@ -690,7 +676,7 @@ function mousemoveevt(ev, t) {
 
 function mousedownevt(ev) {
     if (uimode == "CreateLine") {
-        md = 4; // Box select or Create mode.
+        md = 4;            // Box select or Create mode.
         sx = cx;
         sy = cy;
         sel = points.distance(cx, cy);
@@ -698,7 +684,6 @@ function mousedownevt(ev) {
             p1 = points.addpoint(cx, cy, false);
         } else {
             lineStartObj = hovobj;
-            // Snaps line to centerpoint or middledivider.
             if (diagram[lineStartObj].symbolkind == 2) {
                 p1 = diagram[lineStartObj].centerpoint;
             } else if (diagram[lineStartObj].symbolkind == 5) {
@@ -720,15 +705,12 @@ function mousedownevt(ev) {
             diagram[selobj].targeted = true;
         }
     } else {
-        md = 4; // Box select or Create mode.
+        md = 4;            // Box select or Create mode.
         sx = cx;
         sy = cy;
     }
 }
 
-//--------------------------------------------------------------------
-// Double click event. If object is selected and double clicked - opens the appearance dialog.
-//--------------------------------------------------------------------
 function doubleclick(ev) {
     var posistionX = (startX + xPos);
     var posistionY = (startY + yPos);
@@ -746,10 +728,6 @@ function doubleclick(ev) {
         }
     }
 }
-
-//--------------------------------------------------------------------
-// Resizes objects according to its template size.
-//--------------------------------------------------------------------
 function resize() {
     if (uimode == "CreateClass" && md == 4) {
         if (cx >= sx && (cx - sx) < classTemplate.width) {
@@ -797,7 +775,6 @@ function resize() {
         }
     }
 }
-
 function mouseupevt(ev) {
     if (snapToGrid) {
         cx = Math.round(cx / gridSize) * gridSize;
@@ -923,14 +900,9 @@ function mouseupevt(ev) {
         uimode = "normal";
     }
 }
-
-//--------------------------------------------------------------------
-// Moves point outside canvas - waldoPoint
-//--------------------------------------------------------------------
 function movePoint(point){
   point=waldoPoint;
 }
-
 function getConnectedLines(object) {
     // Adds the different connectors into an array to reduce the amount of code
     var private_points = object.getPoints();
@@ -983,9 +955,6 @@ function eraseSelectedObject() {
     updategfx();
 }
 
-//--------------------------------------------------------------------
-// Sets uimode - used when creating objects in mouseupevt().
-//--------------------------------------------------------------------
 function classmode() {
     document.getElementById("myCanvas").style.cursor = "default";
     uimode = "CreateClass";
@@ -1018,16 +987,16 @@ function relationmode() {
     uimode = "CreateERRelation";
 }
 
-//--------------------------------------------------------------------
-// Resets the select box to its default value (Create Figure)
-//--------------------------------------------------------------------
+/**
+ * Resets the select box to its default value (Create Figure)
+ */
 function resetSelectionCreateFigure() {
     document.getElementById("selectFigure").selectedIndex = 0;
 }
 
-//--------------------------------------------------------------------
-// Opens the dialog menu for appearance.
-//--------------------------------------------------------------------
+/**
+ * Opens the dialog menu for appearance.
+ */
 function openAppearanceDialogMenu() {
     document.getElementById("myCanvas").style.cursor = "default";
     $("#appearance").show();
@@ -1036,9 +1005,7 @@ function openAppearanceDialogMenu() {
     hashcurrent();
     dialogForm();
 }
-//--------------------------------------------------------------------
-// Adapts dialog form based on symbolkind.
-//--------------------------------------------------------------------
+
 function dialogForm() {
     var form = document.getElementById("f01");
     form.innerHTML = "No item selected<type='text'>";
@@ -1217,18 +1184,18 @@ function setType(form) {
     updategfx();
 }
 
-//--------------------------------------------------------------------
-// Closes the dialog menu for appearance.
-//--------------------------------------------------------------------
+/**
+ * Closes the dialog menu for appearance.
+ */
 function closeAppearanceDialogMenu() {
     $("#appearance").hide();
     dimDialogMenu(false);
     document.removeEventListener("click", clickOutsideDialogMenu);
 }
 
-//--------------------------------------------------------------------
-// Closes the dialog menu when click is done outside box.
-//--------------------------------------------------------------------
+/**
+ * Closes the dialog menu when click is done outside box.
+ */
 function clickOutsideDialogMenu(ev) {
     $(document).mousedown(function (ev) {
         var container = $("#appearance");
@@ -1364,9 +1331,7 @@ function drawOval(x1, y1, x2, y2) {
         ctx.quadraticCurveTo(x1, y2, x1, ym);
 }
 
-//--------------------------------------------------------------------
-// Remove all elements in the diagram array. it hides the points by placing them beyond the users view.
-//--------------------------------------------------------------------
+//remove all elements in the diagram array. it hides the points by placing them beyond the users view.
 function clearCanvas() {
     while (diagram.length > 0) {
         diagram[diagram.length - 1].erase();
@@ -1383,9 +1348,7 @@ consloe.log = function(gobBluth) {
     document.getElementById("consloe").innerHTML = ((JSON.stringify(gobBluth) + "<br>") + document.getElementById("consloe").innerHTML);
 }
 
-//--------------------------------------------------------------------
-// debugMode this function show and hides crosses and the consol.
-//--------------------------------------------------------------------
+//debugMode this function show and hides crosses and the consol.
 var ghostingcrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
 function debugMode() {
     if(ghostingcrosses == true) {
@@ -1403,9 +1366,9 @@ function debugMode() {
     }
 }
 
-//--------------------------------------------------------------------
-// Moving around in the canvas
-//--------------------------------------------------------------------
+//---------------------------------------
+// MOVING AROUND IN THE CANVAS
+//---------------------------------------
 function movemode(e, t) {
     uimode = "MoveAround";
     var canvas = document.getElementById("myCanvas");
@@ -1464,10 +1427,8 @@ function mousemoveposcanvas(e) {
 function mouseupcanvas(e) {
     document.getElementById("myCanvas").removeEventListener('mousemove', mousemoveposcanvas, false);
 }
-//--------------------------------------------------------------------
-// Calculate the hash. does this by converting all objects to strings from diagram,
-// then do some sort of calculation. Used to save the diagram. it also save the local diagram
-//--------------------------------------------------------------------
+
+//calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram. it also save the local diagram
 function hashfunction() {
     var diagramToString = "";
     var hash = 0;
@@ -1497,10 +1458,8 @@ function hashfunction() {
     }
 }
 
-//--------------------------------------------------------------------
-// This function is used to hash the current diagram, but not storing it locally,
-// so we can compare the current hash with the hash after we have made some changes to see if it need to be saved.
-//--------------------------------------------------------------------
+//This function is used to hash the current diagram, but not storing it locally, so we can compare the current hash with the hash after we have made some changes
+// to see if it need to be saved.
 function hashcurrent() {
     var hash = 0;
     var diagramToString = "";
@@ -1514,9 +1473,8 @@ function hashcurrent() {
     }
     current_hash = hash.toString(16);
 }
-//--------------------------------------------------------------------
-// Retrive an old diagram if it exist.
-//--------------------------------------------------------------------
+
+// retrive an old diagram if it exist.
 function loadDiagram() {
     var checkLocalStorage = localStorage.getItem('localdiagram');
     //loacal storage and hash
@@ -1570,23 +1528,19 @@ function loadDiagram() {
     }
 }
 
-//--------------------------------------------------------------------
-// Remove localstorage
-//--------------------------------------------------------------------
+//remove localstorage
 function removeLocal() {
     localStorage.setItem('localdiagram', "");
 }
 
-//--------------------------------------------------------------------
 // Function that rewrites the values of zoom and x+y that's under the canvas element
-//--------------------------------------------------------------------
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p>Zoom: " + Math.round((zv * 100)) + "% | Coordinates: X=" + startX + " & Y=" + startY + "</p>";
 }
 
-//--------------------------------------------------------------------
+//----------------------------------------
 // Renderer
-//--------------------------------------------------------------------
+//----------------------------------------
 var momentexists = 0;
 var resave = false;
 function returnedSection(data) {
@@ -1595,3 +1549,62 @@ function returnedSection(data) {
         alert(data['debug']);
     }
 }
+
+//--------------------------------------------------------------------
+// Refresh
+//--------------------------------------------------------------------
+function refreshFunction(){
+    console.log("refreshFunction running");
+    refresh_timer = setRefreshTime();
+    if(refresh_lock == false){
+        console.log("refresh diagram");
+        loadDiagram();
+    } else{
+        //do nothing
+    }
+}
+
+function getCurrentDate(){
+    console.log("getCurrentDate running");
+    var current_date = new Date();
+    var date_in_milisec = current_date.getTime();
+    return date_in_milisec;
+}
+
+function setRefreshTime(){
+    console.log("setRefreshTime running");
+    var currentDiagramchange = getCurrentDate();
+    var time = 5000;
+    lastDiagramedit = localStorage.getItem('last_edit');
+   if(typeof lastDiagramedit !== "undefined"){
+    var timediffrence = currentDiagramchange - lastDiagramedit;
+        if(timediffrence<= 10800000 && timediffrence <= 259200000){
+            refresh_lock = false;
+            console.log("setRefreshTime seting time to" + time + " " + timediffrence);
+            return time;
+        }
+        else if(timediffrence >= 259200000 && timediffrence <= 604800000){
+            refresh_lock = false;
+            time = 300000;
+            console.log("setRefreshTime seting time to" + time+ " " + timediffrence);
+            return time;
+        }
+        else if(timediffrence > 604800000){
+            refresh_lock = true;
+            time = 300000;
+            console.log("setRefreshTime seting time to" + time + " will only update on refresh."+ " " + timediffrence);
+            return time;
+        }
+        else{
+            return time;
+        } 
+   
+    }
+
+    else{
+    return time;
+    }
+
+    }
+
+
