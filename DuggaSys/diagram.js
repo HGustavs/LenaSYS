@@ -584,7 +584,12 @@ function updateActivePoint() {
         activePoint = null;
     }
 }
+function pointDistance(point1, point2){
+    var width = (point1.x > point2.x)? point1.x - point2.x: point2.x - point1.x;
+    var height = (point1.y > point2.y)? point1.y - point2.y: point2.y - point1.y;
 
+    return [width, height];
+}
 function mousemoveevt(ev, t) {
     xPos = ev.clientX;
     yPos = ev.clientY;
@@ -637,8 +642,18 @@ function mousemoveevt(ev, t) {
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
                     if (snapToGrid) {
+                        var obj_topLeft = points[diagram[i].topLeft];
+                        var tlx = (Math.round(obj_topLeft.x / gridSize) * gridSize);
+                        var tly = (Math.round(obj_topLeft.y / gridSize) * gridSize);
+
+                        var deltatlx = obj_topLeft.x - tlx;
+                        var deltatly = obj_topLeft.y - tly;
+
                         cx = Math.round(cx / gridSize) * gridSize;
                         cy = Math.round(cy / gridSize) * gridSize;
+
+                        cx -= deltatlx;
+                        cy -= deltatly;
                     }
                     diagram[i].move(cx - mox, cy - moy);
                 }
@@ -1455,7 +1470,6 @@ function mouseupcanvas(e) {
 // then do some sort of calculation. Used to save the diagram. it also save the local diagram
 //--------------------------------------------------------------------
 function hashfunction() {
-    window.location.hash = diagram;
     var diagramToString = "";
     var hash = 0;
     for (var i = 0; i < diagram.length; i++) {
