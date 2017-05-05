@@ -2318,8 +2318,43 @@ table.navheader div.menuButton {
   -o-transition: opacity 0.5s linear;
 }
 
+/* Hamburger menu */
+table.navheader td.hamburger {
+  pointer-events: none;
+  width: 0px;
+  opacity: 0;
+  -webkit-transition: opacity 0.5s linear, width 0.5s linear;
+  -moz-transition: opacity 0.5s linear, width 0.5s linear;
+  -o-transition: opacity 0.5s linear, width 0.5s linear;
+}
+
+table.navheader nav.hamburgerMenu {
+  position: relative;
+  display: inline-block;
+}
+
+table.navheader nav.hamburgerMenu ul.hamburgerContent {
+  position: absolute;
+  z-index: 10000;
+  opacity: 1.0;
+  visibility: hidden;
+  transition: visibility 0.5s linear;
+	-moz-transition: visibility 0.5s linear;
+	-webkit-transition: visibility 0.5s linear;
+	-o-transition: visibility 0.5s linear;
+}
+
+li.menuButton {
+  pointer-events: none;
+  opacity: 1.0;
+  height: 1em;
+  -webkit-transition: opacity 0.5s linear, height 0.5s linear;
+  -moz-transition: opacity 0.5s linear, height 0.5s linear;
+  -o-transition: opacity 0.5s linear, height 0.5s linear;
+}
+
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
-/*  table.navheader td.editVers,
+  table.navheader td.editVers,
   table.navheader td.analysis,
   table.navheader td.newVers {
     margin-right: 0px;
@@ -2338,11 +2373,32 @@ table.navheader div.menuButton {
     -moz-transition: opacity 0.5s linear;
     -o-transition: opacity 0.5s linear;
   }
-*/
+
+  /* Shows the hamburger */
+  table.navheader td.hamburger {
+    pointer-events: auto;
+    height: 32px;
+    width: 32px;
+    opacity: 1.0;
+    -webkit-transition: opacity 0.5s linear, height 0.5s linear, width 0.5s linear;
+    -moz-transition: opacity 0.5s linear, height 0.5s linear, width 0.5s linear;
+    -o-transition: opacity 0.5s linear, height 0.5s linear, width 0.5s linear;
+  }
+
+  table.navheader li.editVers,
+  table.navheader li.analysis,
+  table.navheader li.newVers {
+    pointer-events: auto;
+    opacity: 1.0;
+    height: 1em;
+    -webkit-transition: opacity 0.5s linear, height 0.5s linear;
+    -moz-transition: opacity 0.5s linear, height 0.5s linear;
+    -o-transition: opacity 0.5s linear, height 0.5s linear;
+  }
 }
 
 @media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
-/*  table.navheader td.access,
+  table.navheader td.access,
   table.navheader td.groups {
     margin-right: 0px;
     width: 0px;
@@ -2350,7 +2406,7 @@ table.navheader div.menuButton {
     -moz-transition: margin-right 0.5s linear, width 0.5s linear;
     -o-transition: margin-right 0.5s linear, width 0.5s linear;
   }
-  
+
   table.navheader div.access,
   table.navheader div.groups {
     pointer-events: none;
@@ -2359,11 +2415,19 @@ table.navheader div.menuButton {
     -moz-transition: opacity 0.5s linear;
     -o-transition: opacity 0.5s linear,;
   }
-*/
+
+  table.navheader li.access,
+  table.navheader li.groups {
+    pointer-events: auto;
+    opacity: 1.0;
+    height: 1em;
+    -webkit-transition: opacity 0.5s linear, height 0.5s linear;
+    -moz-transition: opacity 0.5s linear, height 0.5s linear;
+    -o-transition: opacity 0.5s linear, height 0.5s linear;
+  }
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
-/*
   table.navheader td.tests,
   table.navheader td.files {
     margin-right: 0px;
@@ -2372,7 +2436,7 @@ table.navheader div.menuButton {
     -moz-transition: margin-right 0.5s linear, width 0.5s linear;
     -o-transition: margin-right 0.5s linear, width 0.5s linear;
   }
-  
+
   table.navheader div.tests,
   table.navheader div.files {
     pointer-events: none;
@@ -2381,5 +2445,14 @@ table.navheader div.menuButton {
     -moz-transition: opacity 0.5s linear;
     -o-transition: opacity 0.5s linear;
   }
-*/
+
+  table.navheader li.tests,
+  table.navheader li.files {
+    pointer-events: auto;
+    opacity: 1.0;
+    height: 1em;
+    -webkit-transition: opacity 0.5s linear, height 0.5s linear;
+    -moz-transition: opacity 0.5s linear, height 0.5s linear;
+    -o-transition: opacity 0.5s linear, height 0.5s linear;
+  }
 }

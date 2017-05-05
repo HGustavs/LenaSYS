@@ -70,6 +70,13 @@ $(document).ready(function(){
       disappearingFields();
     }, 250);
   });
+  
+  $(".burger").click(function(e) {
+    alert("tut");
+    $(this).toggleClass("active");
+    $(".hamburger ul").toggleClass("active");
+    e.preventDefault();
+  })
 });
 
 function showSubmitButton(){ 
@@ -637,28 +644,44 @@ function returnedSection(data)
     
 		str="";
 
-//		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
-		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize'>"; // This is for stacking buttons.
+		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
+//		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize'>"; // This is for stacking buttons.
 
-        if(data['writeaccess']) {
-          str+="<td style='display: inline-block;'><select class='course-dropdown' onchange='goToVersion(this)'>";
-            if (retdata['versions'].length > 0) {
-                for ( i = 0; i < retdata['versions'].length; i++) {
-                    var item = retdata['versions'][i];
-                    if (retdata['courseid'] == item['cid']) {
-                        var vvers = item['vers'];
-                        var vname = item['versname'];
-                        str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
-                        if(retdata['coursevers']==vvers){
-                            str += "selected";
-                        }
-                        str += ">" + vname + " - " + vvers + "</option>";
-                    }
+  if(data['writeaccess']) {
+    str+="<td class='hamburger'>";
+      str+="<nav tabindex='0' class='hamburgerMenu'>";
+        str+="<ul class='hamburgerContent'>";
+          str+="<li class='menuButton editVers'><button class='menuButton editVers'>Edit Version</button></li>";
+          str+="<li class='menuButton newVers'><button class='menuButton newVers'>New Version</button></li>";
+          str+="<li class='menuButton access'><button class='menuButton access'>Access</button></li>";
+          str+="<li class='menuButton results'><button class='menuButton results'>Results</button></li>";
+          str+="<li class='menuButton tests'><button class='menuButton tests'>Tests</button></li>";
+          str+="<li class='menuButton files'><button class='menuButton files'>Files</button></li>";
+          str+="<li class='menuButton analysis'><button class='menuButton analysis'>Analysis</button></li>";
+          str+="<li class='menuButton groups'><button class='menuButton groups'>Groups</button></li>";
+        str+="</ul>";
+        str+="<a class='burger' href='#'>&#9776;</a>";
+      str+="</nav>";
+    str+="</td>";
+
+    str+="<td style='display: inline-block;'><select class='course-dropdown' onchange='goToVersion(this)'>";
+    if (retdata['versions'].length > 0) {
+        for ( i = 0; i < retdata['versions'].length; i++) {
+            var item = retdata['versions'][i];
+            if (retdata['courseid'] == item['cid']) {
+                var vvers = item['vers'];
+                var vname = item['versname'];
+                str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+                if(retdata['coursevers']==vvers){
+                    str += "selected";
                 }
+                str += ">" + vname + " - " + vvers + "</option>";
             }
-            str+="</select></td>";
-			
-			str+="<td class='editVers menuButton' style='display: inline-block;'><div class='editVers menuButton'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
+        }
+    }
+    str+="</select></td>";
+    
+    str+="<td class='editVers menuButton' style='display: inline-block;'><div class='editVers menuButton'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
 
 // Retrieve start and end dates for a version, if there are such, else set to null
       var startdate = null;
