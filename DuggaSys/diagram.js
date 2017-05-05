@@ -1469,7 +1469,6 @@ function mouseupcanvas(e) {
 // then do some sort of calculation. Used to save the diagram. it also save the local diagram
 //--------------------------------------------------------------------
 function hashfunction() {
-    window.location.hash = diagram;
     var diagramToString = "";
     var hash = 0;
     for (var i = 0; i < diagram.length; i++) {
