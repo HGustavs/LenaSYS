@@ -621,13 +621,14 @@ function mousemoveevt(ev, t) {
         if (movobj != -1) {
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
-                    var obj_topLeft = points[diagram[i].topLeft];
-
-                    var deltatlx = obj_topLeft.x - (Math.round(obj_topLeft.x / gridSize) * gridSize);
-                    var deltatly = obj_topLeft.y - (Math.round(obj_topLeft.y / gridSize) * gridSize);
-
-                    obj_topLeft = Math.round(cy / gridSize) * gridSize;
                     if (snapToGrid) {
+                        var obj_topLeft = points[diagram[i].topLeft];
+                        var tlx = (Math.round(obj_topLeft.x / gridSize) * gridSize);
+                        var tly = (Math.round(obj_topLeft.y / gridSize) * gridSize);
+
+                        var deltatlx = obj_topLeft.x - tlx;
+                        var deltatly = obj_topLeft.y - tly;
+
                         cx = Math.round(cx / gridSize) * gridSize;
                         cy = Math.round(cy / gridSize) * gridSize;
 
@@ -635,7 +636,6 @@ function mousemoveevt(ev, t) {
                         cy -= deltatly;
                     }
                     diagram[i].move(cx - mox, cy - moy);
-
                 }
             }
         }
