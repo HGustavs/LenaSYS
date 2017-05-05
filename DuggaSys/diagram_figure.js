@@ -16,7 +16,6 @@ function Path() {
                                     // An organized path can contain several sub-path, each of which must be organized
 
     //--------------------------------------------------------------------
-    // move
     // Performs a delta-move on all points in a path
     //--------------------------------------------------------------------
     this.move = function(movex, movey) {
@@ -30,7 +29,6 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // addsegment
     // Adds a segment to a path
     //--------------------------------------------------------------------
     this.addsegment = function(kind, p1, p2, p3, p4, p5, p6, p7, p8) {
@@ -46,7 +44,6 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // addsegment
     // Draws filled path to screen (or svg when that functionality is added)
     //--------------------------------------------------------------------
     this.draw = function (fillstate, strokestate) {
@@ -86,7 +83,6 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // inside
     // Returns true if coordinate xk, yk falls inside the bounding box of the symbol
     //--------------------------------------------------------------------
     this.inside = function (xk, yk) {
@@ -118,7 +114,6 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // recursetest
     // Recursively splits a line at intersection points from top to bottom until there is no line left
     //--------------------------------------------------------------------
     this.recursetest = function(p1,p2) {
@@ -150,7 +145,6 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // intersection
     // Line to line intersection
     // Does not detect intersections on end points (we do not want end points to be part of intersection set)
     //--------------------------------------------------------------------
@@ -222,7 +216,6 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // existsline
     // Checks if a line already exists but in the reverse direction
     // Only checks lines, not bezier curves
     //--------------------------------------------------------------------
@@ -241,7 +234,6 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // recursetest
     // Line to line intersection
     // Does not detect intersections on end points (we do not want end points to be part of intersection set)
     //--------------------------------------------------------------------
@@ -293,7 +285,6 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // drawsegments
     // Debug drawing of a segment set (for example for drawing tmplist, auxlist etc)
     //--------------------------------------------------------------------
     this.drawsegments = function (segmentlist, color) {
@@ -340,10 +331,9 @@ function createFigure() {
     }
 }
 
-/**
- * Free draw, the user have to click for
- * every point to draw on the canvas.
- */
+//--------------------------------------------------------------------
+// Free draw, the user have to click for every point to draw on the canvas.
+//--------------------------------------------------------------------
 function figureFreeDraw() {
     p1 = null;
     if (isFirstPoint) {
@@ -381,9 +371,9 @@ function figureFreeDraw() {
     }
 }
 
-/**
- * Draws a square between p1 and p2.
- */
+//--------------------------------------------------------------------
+// Draws a square between p1 and p2.
+//--------------------------------------------------------------------
 function figureSquare() {
     if (isFirstPoint) {
         p1 = points.addpoint(cx, cy, false);
@@ -401,9 +391,9 @@ function figureSquare() {
     }
 }
 
-/**
- * Resets all varables to ther default start value.
- */
+//--------------------------------------------------------------------
+// Resets all varables to ther default start value.
+//--------------------------------------------------------------------
 function cleanUp() {
     figurePath = new Path;
     startPosition = null;
