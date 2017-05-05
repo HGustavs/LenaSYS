@@ -73,9 +73,14 @@
 </header>
     <body>
     <div class="swimlaneOverlay" id="swimlaneOverlay">
-        <span class='SwimClose''>&times;</span>
         <!-- the external content of swimlane is loaded into this div -->
         <div class="SwimContentWrap" id ="SwimContentWrap">
+            <div class="SwimContent" id="SwimContent">
+
+            </div>
+            <div class="SwimClose">
+                <span>&times;</span>
+            </div>
         </div>
     </div>
         <script>
@@ -87,7 +92,7 @@
             });
 
             function loadSwimlane() {
-                $('.SwimContentWrap').load(path + "/../../Shared/swimlane.php?courseid=" +
+                $('.SwimContent').load(path + "/../../Shared/swimlane.php?courseid=" +
                   <?php ((isset($cid)) ? Print($cid) : Print(0)) ?> +
                         "&coursevers=" +
                   <?php ((isset($coursevers)) ? Print($coursevers) : Print(0)) ?>);
@@ -99,16 +104,16 @@
             var mouseX;
             var mouseY;
 
-            // Get mouse position.
+            /* Get mouse position. */
             $(document).mousemove(function (e) {
                 mouseX = e.pageX;
                 mouseY = e.pageY;
             });
 
-            // Move left column with side scroll.
+            /* Move left column with side scroll. */
             $(window).scroll(function () {
                 $('#weeks').css({
-                    'left': $(this).scrollLeft() + 5
+                    'left': $(this).scrollLeft()
                 });
             });
 
@@ -134,14 +139,14 @@
                 $('#currentDate').fadeOut('fast');
             }
 
-            var exitButton = document.getElementsByClassName("SwimClose")[0]; // Get the button that opens the modal
+            var exitButton = document.getElementsByClassName("SwimClose")[0]; /* Get the button that opens the modal */
 
-            // When the user clicks on <span> (x), close the modal
+            /* When the user clicks on <span> (x), close the modal */
             exitButton.onclick = function() {
                 swimBox.style.display = "none";
             }
 
-            // When the user clicks anywhere outside of the modal, close it
+            /* When the user clicks anywhere outside of the modal, close it */
             window.onclick = function(event) {
                 if (event.target == swimBox) {
                     swimBox.style.display = "none";

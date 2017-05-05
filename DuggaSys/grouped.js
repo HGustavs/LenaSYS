@@ -95,9 +95,9 @@ function returnedGroup(data)
 			str+="<td>";
 			str+="<select id="+tablecontent[i].uid+"_"+lid+" onchange=changegroup()>";
 			str+="<option value='-1'>Pick a group</option>";
-			for(var j = 0; j < availablegroups.length; j++) {
-				var selected = tablecontent[i].lidstogroup[lid] == availablegroups[j] ? " selected" : null;
-				str+="<option value="+availablegroups[j]+selected+">Group "+availablegroups[j]+"</option>";
+			for(var ugid in availablegroups) {
+				var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : "";
+				str+="<option value="+ugid+selected+">"+availablegroups[ugid]+"</option>";
 			}
 			str+="</select>";
 			str+="</td>";

@@ -2,33 +2,8 @@ var querystring=parseGet();
 var retdata;
 
 AJAXService("get",{},"SECTION");
-
 // These functions loads at page load
 $(function() {
-// Picking dates when creating a new version
-	$("#startdate").datepicker({
-		dateFormat: "yy-mm-dd",
-		minDate: 0,
-		onSelect: function(date){
-			var newDate = $('#startdate').datepicker('getDate');
-			$('#enddate').datepicker("option","minDate", newDate);
-		}
-	});
-	$('#enddate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-// Picking dates when modifying a version
-	$("#estartdate").datepicker({
-		dateFormat: "yy-mm-dd",
-		minDate: 0,
-		onSelect: function(date){
-			var newDate = $('#estartdate').datepicker('getDate');
-			$('#eenddate').datepicker("option","minDate", newDate);
-		}
-	});
-	$('#eenddate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
 });
 
 //----------------------------------------
@@ -41,6 +16,49 @@ function displaymessage(){
    $(".messagebox").css("display","block");
 }
 
+var resizeTimer;
+var showInline = false;
+var menuButtonWidth = 112;
+var menuButtonMarginRight = 2;
+var menuButtons = [];
+
+menuButtons.push({ 'width': 1050, 'name': 'EditVers', 'display': true });
+menuButtons.push({ 'width': 950, 'name': 'NewVers', 'display': true });
+menuButtons.push({ 'width': 850, 'name': 'Analysis', 'display': true });
+menuButtons.push({ 'width': 750, 'name': 'Access', 'display': true });
+menuButtons.push({ 'width': 650, 'name': 'Files', 'display': true });
+menuButtons.push({ 'width': 550, 'name': 'Tests', 'display': true });
+menuButtons.push({ 'width': 450, 'name': 'Groups', 'display': true });
+menuButtons.push({ 'width': 400, 'name': 'Results', 'display': true });
+
+function disappearingFields() {
+  var windowSize = $(window).width();
+  if(windowSize < 480 && showInline == true) {
+    jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeOut(1000);
+    showInline = false;
+  } else if(windowSize >= 480 && showInline == false) {
+    jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeIn(1000);
+    showInline = true;
+  }
+}
+
+function toggleMenuButtons() {
+  var windowSize = $(window).width();
+  for(i=0; i<menuButtons.length; i++) {
+    if(windowSize < menuButtons[i].width && menuButtons[i].display) {
+      jQuery("#button"+menuButtons[i].name).fadeOut({duration: 500, queue: false });
+      jQuery("#td"+menuButtons[i].name).animate({width: '0px'}, {duration: 500, queue: false });
+      jQuery("#td"+menuButtons[i].name).animate({marginRight: '0px'}, {duration: 500, queue: false });
+      menuButtons[i].display = false;
+    } else if(windowSize >= menuButtons[i].width && !menuButtons[i].display) {
+      jQuery("#button"+menuButtons[i].name).fadeIn({duration: 500, queue: false });
+      jQuery("#td"+menuButtons[i].name).animate({width: menuButtonWidth+'px'}, {duration: 500, queue: false });
+      jQuery("#td"+menuButtons[i].name).animate({marginRight: menuButtonMarginRight+'px'}, {duration: 500, queue: false });
+      menuButtons[i].display = true;
+    }    
+  }
+}
+
 $(document).ready(function(){
     $(".messagebox").hover(function(){
         $("#testbutton").css("background-color", "red");
@@ -48,6 +66,43 @@ $(document).ready(function(){
 	$(".messagebox").mouseout(function(){
         $("#testbutton").css("background-color", "#614875");
     });
+
+  // Picking dates when creating a new version
+	$("#startdate").datepicker({
+		dateFormat: "yy-mm-dd",
+		minDate: 0,
+		onSelect: function(date){
+			var newDate = $('#startdate').datepicker('getDate');
+			$('#enddate').datepicker("option","minDate", newDate);
+		}
+	});
+
+	$('#enddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+
+  // Picking dates when modifying a version
+	$("#estartdate").datepicker({
+		dateFormat: "yy-mm-dd",
+		minDate: 0,
+		onSelect: function(date){
+			var newDate = $('#estartdate').datepicker('getDate');
+			$('#eenddate').datepicker("option","minDate", newDate);
+		}
+	});
+
+	$('#eenddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+
+  $(window).resize(function() {
+    // This here timeout stuff is to prevent certain event to be missed if user resize windows too fast
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      disappearingFields();
+//      toggleMenuButtons();
+    }, 250);
+  });
 });
 
 function showSubmitButton(){ 
@@ -615,10 +670,11 @@ function returnedSection(data)
     
 		str="";
 
-		str+="<table class='navheader'><tr class='trsize'>";
+//		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
+		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize'>"; // This is for stacking buttons.
 
         if(data['writeaccess']) {
-            str+="<td style='display: inline-block; margin-right:2px; width:112px;'><select class='course-dropdown' onchange='goToVersion(this)'>";
+          str+="<td style='display: inline-block; margin-right:2px; width:112px;'><select class='course-dropdown' onchange='goToVersion(this)'>";
             if (retdata['versions'].length > 0) {
                 for ( i = 0; i < retdata['versions'].length; i++) {
                     var item = retdata['versions'][i];
@@ -635,7 +691,7 @@ function returnedSection(data)
             }
             str+="</select></td>";
 			
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Edit version' class='submit-button-rounded' title='Edit the selected version' onclick='showEditVersion";
+			str+="<td id='tdEditVers' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonEditVers'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
 
 // Retrieve start and end dates for a version, if there are such, else set to null
       var startdate = null;
@@ -651,38 +707,55 @@ function returnedSection(data)
       }
 
 			str+='("'+querystring['coursevers']+'","'+versionname+'","'+startdate+'","'+enddate+'")';
-			str+=";'></td>";	
+			str+=";'></div></td>";	
 
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='New version' class='submit-button-rounded' title='Create a new version of this course' onclick='showCreateVersion();'></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Access' class='submit-button-rounded' title='Give students access to the selected version' onclick='accessCourse();'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Results' class='submit-button-rounded' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Tests' class='submit-button-rounded' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Files' class='submit-button-rounded' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Analysis' class='submit-button-rounded' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-			str+="<td style='display: inline-block; margin-right:2px; width:112px;'><input type='button' value='Groups' class='submit-button-rounded' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></td>";
-
+			str+="<td id='tdNewVers' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonNewVers'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></div></td>";
+			str+="<td id='tdAccess' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonAccess'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/></div></td>";
+			str+="<td id='tdResults' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonResults'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></div></td>";
+			str+="<td id='tdTests' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonTests'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+			str+="<td id='tdFiles' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonFiles'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+			str+="<td id='tdAnalysis' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonAnalysis'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+			str+="<td id='tdGroups' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonGroups'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
     }else{
 			// No version selector for students
 		}
-
         if(retdata["writeaccess"]){
-            str += "<td><input type='button' value='Add Dugga' class='submit-button' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
             str+="</tr></table>";
-            str += "<input type='button' class='fab' value='+' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>";
+            str += "<input type='button' class='fab' value='+' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>";
         }else{
             str+="</tr></table>";
         }
 
+      // hide som elements if to narrow
+     var hiddenInline = "";
+     if($(window).width() < 480) {
+        showInline = false;
+        hiddenInline = "none";
+      } else {
+        showInline = true;
+        hiddenInline = "inline";
+      }
 
-
-
-		// Course Name
-		str+="<div class='course'>";
-			str+="<div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div>";
-			str+="<div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div>";
-			str+="<div id='course-versname' style='display: inline-block; margin-right:10px;'>"+versionname+"</div>";
+    // Course Name
+    // This will ellipsis on the course name, and keep course code and vers always fully expanded
+    str+="<div class='course ellipseBox' style='display: flex;align-items: center;justify-content: center;'>";
+        	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='position:absolute; left:10px; margin-top: 15px; display: flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowCompTop'><img src='../Shared/icons/right_complement.svg' class='arrowRightTop' style='display:none;'>";
+        	str+="<text class='showhidetext' >Show/hide all</text>";
+        	str+="</div>";
+        	str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;'>"+data.coursename+"</div>";
+        str+="<div class='nowrap'";
+			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
+			str+="<div id='course-versname' class='thisDateShouldDisappearWhenScreenIsTooSmall' style='margin-right:10px;'>"+versionname+"</div>";
+        if(retdata["writeaccess"]){
+            str+="<div id='course-newitem' style='display: flex; position: absolute; right:15px;'>";
+            str += "<input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
+           	str+="</div>";
+        }
+      str+="<div style='width: 50px;'></div>";
+      str+='</div>';
 			str+="<div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div>";
 			str+="<div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
+
 		str+="</div>";
 
 		str+="<div id='Sectionlistc' >";
@@ -713,14 +786,6 @@ function returnedSection(data)
 				}
 				// All are visible according to database
 
-				/*
-				var listentry = document.getElementsByClassname('example');
-				if (parseInt(item['rowcolor']) < 0){
-					listentry.style.backgroundColor = "green";
-				}else{
-					listentry.style.backgroundColor = "red";
-				}
-				*/
 
 				// Content table 		
 				str+="<table id='lid"+item['lid']+"' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
@@ -905,16 +970,24 @@ function returnedSection(data)
 				if (parseInt(item['kind']) == 0) {						// Header
 					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
 				}else if (parseInt(item['kind']) == 1) {					// Section
-					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 4) {		// Moment
-					str+="<span class='"+blorf+"' style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+          var momentsplit = item['entryname'].split(" ");
+          var momentname = momentsplit.splice(0,momentsplit.length-1);
+          var momenthp = momentsplit[momentsplit.length-1];
+
+          str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;'><span class='ellipsis'>"+momentname+"</span> "+momenthp+"</div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {	
 					if(parseInt(item['rowcolor']) == 1) {
 						str+="<a class='"+blorf+"' style='font-size:14pt;color:white;cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
 					}else{	// Test / Dugga
-						str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
+          var duggasplit = item['entryname'].split(" ");
+          var dugganame = duggasplit.splice(0,duggasplit.length-1);
+          var dugganumber = duggasplit[duggasplit.length-1];
+
+						str+="<div style='display:flex;'><a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' ><span class='nowrap'><span class='ellipsis'>"+dugganame+"</span> "+dugganumber+"</span></a></div>";
 					}
 				}else if(parseInt(item['kind']) == 5){			// Link
 					if(item['link'].substring(0,4) === "http"){
@@ -942,18 +1015,32 @@ function returnedSection(data)
 
 				// Add generic td for deadlines if one exists
 				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")){
-					if(kk==1){
-						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;' ";
+/*					if(kk==1){
+						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;'";
 					}else{
-						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;' ";
+						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;'";
 					}
+*/
 					var dl = deadline.split(" ");
-					if(dl[1] == "00:00:00"){
-                        str+=" >"+deadline.slice(0, -8);+"</td>";
-					}else{
-					str+=" >"+deadline.slice(0, -3);+"</td>";
+         str+="<td style='text-align:right;white-space:nowrap;overflow:hidden;width:145px;'>";
+
+         var timeFilterAndFormat = "00:00:00";
+         var yearFormat = "0000-";
+         var dateFormat = "00-00";
+
+         str+="<span class='thisDateShouldDisappearWhenScreenIsTooSmall' style='display:"+hiddenInline+";'>";
+
+          // If the deadline is 00:00:00, only show YYYY-MM-DD
+         if(dl[1] == timeFilterAndFormat) {
+          str+=deadline.slice(0, yearFormat.length)+"</span>"+deadline.slice(yearFormat.length, yearFormat.length+dateFormat.length);
+					} else {
+          // If the deadline is set to another time, show the full YYYY-MM-DD HH:MM:SS
+          // If the screen is to narrow, only show the MM-DD HH:MM
+          str+=deadline.slice(0, yearFormat.length)+"</span>"+deadline.slice(yearFormat.length, yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length-3)+"<span class='thisDateShouldDisappearWhenScreenIsTooSmall' style='display:"+hiddenInline+";'>"+deadline.slice(yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length-3, yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length)+"</span>"
+;
 					}
-				} else {
+        str+="</td>";
+       } else {
 					// Do nothing
 				}
 
@@ -990,6 +1077,8 @@ function returnedSection(data)
 		str+="</div>";
 		var slist=document.getElementById('Sectionlist');
 		slist.innerHTML=str;	
+    disappearingFields();
+//    toggleMenuButtons();
 		if(resave == true){
 			str="";
 			$("#Sectionlist").find(".item").each(function(i) {
@@ -1096,8 +1185,8 @@ function returnedHighscore(data){
 // Function for toggling content for each moment
 $(document).on('click', '.moment', function () {
 	$(this).nextUntil('.moment').slideToggle();
-	$(this).children('.arrowRight').slideToggle();
-	$(this).children('.arrowComp').slideToggle();
+    $(this).children('.arrowRight').slideToggle();
+    $(this).children('.arrowComp').slideToggle();
 });
 
 // Function for toggling content for each section
@@ -1105,6 +1194,22 @@ $(document).on('click', '.section', function () {
 	$(this).nextUntil('.section').slideToggle();
 	$(this).children('.arrowRight').slideToggle();
 	$(this).children('.arrowComp').slideToggle();
+});
+
+// Function for toggling content for all moments
+$(document).on('click', '.showhide', function () {
+    $('.moment').nextUntil('.moment').slideToggle();
+    $('.moment').children('.arrowRight').slideToggle();
+    $('.moment').children('.arrowComp').slideToggle();
+});
+
+// Function for toggling content for all sections
+$(document).on('click', '.showhide', function () {
+    $('.showhide').children('.arrowRightTop').slideToggle();
+    $('.showhide').children('.arrowCompTop').slideToggle();
+    $('.section').nextUntil('.section').slideToggle();
+    $('.section').children('.arrowRight').slideToggle();
+    $('.section').children('.arrowComp').slideToggle();
 });
 
 // Function to prevent collapsing when clicking icons
