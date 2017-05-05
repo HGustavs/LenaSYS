@@ -30,15 +30,18 @@ pdoConnect();
             <button type='submit'>New Canvas</button>
         </form>
         <br>
-        <form action='diagram.php?id=+1'>
+        <form action='diagram.php'>
+            <input type="hidden" name="id" value="1"/>
         <button type='submit'>Load Canvas</button>
         </form>
         <br>
-            <form action="diagram.php?id=2">
+            <form action="diagram.php">
+                <input type="hidden" name="id" value="2"/>
         <button type='submit'>Upload Canvas</button>
             </form>
         <br>
-                <form action="diagram.php?id=3">
+                <form action="diagram.php">
+                    <input type="hidden" name="id" value="3"/>
         <button type='submit'>Example Canvas</button>
                 </form>
     </div>
