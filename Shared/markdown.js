@@ -326,7 +326,6 @@ function handleTable(currentLine, prevLine, nextLine) {
 
             // close thead and open tbody
             if(!isTable(prevLine)) {
-                console.log("hej");
                 markdown += "</thead><tbody>";
             }
         }
