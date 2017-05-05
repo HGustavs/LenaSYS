@@ -23,7 +23,6 @@ function Symbol(kind) {
     this.connectorRight = [];
 
     //--------------------------------------------------------------------
-    // getquadrant
     // Returns the quadrant for a x,y coordinate in relation to bounding box and box center
     // Quadrant Layout:
     //       0|1     Top = 0     Right = 1
@@ -79,7 +78,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // quadrants
     // Iterates over all relation ends and checks if any need to change quadrants
     //--------------------------------------------------------------------
     this.quadrants = function () {
@@ -162,7 +160,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // adjust
     // Moves midpoint or other fixed point to geometric center of object again
     // Restricts resizing for classes
     //--------------------------------------------------------------------
@@ -193,7 +190,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // sortConnector
     // Sorts the connector
     //--------------------------------------------------------------------
     this.sortConnector = function (connector,direction,start,end,otherside) {
@@ -228,7 +224,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // sortAllConnectors
     // Sorts all connectors
     //--------------------------------------------------------------------
     this.sortAllConnectors = function () {
@@ -243,7 +238,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // sortAllConnectors
     // Sorts all connectors
     //--------------------------------------------------------------------
     this.sortAllConnectors = function () {
@@ -258,7 +252,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // move
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
     this.inside = function (xk, yk) {
@@ -274,7 +267,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // linedist
     // Returns line distance to segment object e.g. line objects (currently only relationship markers)
     //--------------------------------------------------------------------
     this.linedist = function (xk, yk) {
@@ -304,7 +296,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // move
     // Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
@@ -331,7 +322,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // emptyConnector
     // Empties every connector of the object
     //--------------------------------------------------------------------
     this.emptyConnectors = function () {
@@ -354,7 +344,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // movePoints
     // Moves all relevant points, within the object, off the canvas.
     // IMP!: Should not be moved back on canvas after this function is run.
     //--------------------------------------------------------------------
@@ -409,7 +398,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // getLines
     // Returns all the lines connected to the object
     //--------------------------------------------------------------------
     this.getLines = function() {
@@ -432,7 +420,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // draw
     // Redraws graphics
     //--------------------------------------------------------------------
     //     beginpath - moveto - lineto
