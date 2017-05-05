@@ -30,7 +30,7 @@ function saveToServer(dia) {
         data: {StringDiagram : dia, Hash: hashfunction()}
 
     });
-    console.log("abc: ");
+
 }
 
 function getImage() {

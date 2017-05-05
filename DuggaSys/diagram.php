@@ -108,7 +108,6 @@
 
     <?php
     if(isset($_POST['StringDiagram'])) {
-            
             $str = $_POST['StringDiagram'];
             $hash = $_POST['Hash'];
             save($str,$hash);
@@ -120,7 +119,7 @@
         fwrite($myfile, $data);
     }
     ?>
-    <script type="text/javascript">var id = "<?= $a ?>";</script>
+    <script type="text/javascript">var c_id = "<?= $a ?>";</script>
     <script type="text/javascript" src="diagram_IOHandler.js"></script>
 
 </body>
