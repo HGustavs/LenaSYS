@@ -940,25 +940,25 @@ function returnedSection(data)
 				str+=">";
 
 				// Content of Section Item					
-				if (parseInt(item['kind']) == 0) {						// Header
+				if (parseInt(item['kind']) == 0) {				// Header
 					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
-				}else if (parseInt(item['kind']) == 1) {					// Section
-					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+				}else if (parseInt(item['kind']) == 1) {		// Section
+					str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;'><span class='ellipsis'>"+item['entryname']+"</span></div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 4) {		// Moment
-          var momentsplit = item['entryname'].split(" ");
-          var momentname = momentsplit.splice(0,momentsplit.length-1);
-          var momenthp = momentsplit[momentsplit.length-1];
+          			var momentsplit = item['entryname'].split(" ");
+          			var momentname = momentsplit.splice(0,momentsplit.length-1);
+          			var momenthp = momentsplit[momentsplit.length-1];
 
-          str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;'><span class='ellipsis'>"+momentname+"</span> "+momenthp+"</div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+          			str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;'><span class='ellipsis'>"+momentname+"</span> "+momenthp+"</div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {	
 					if(parseInt(item['rowcolor']) == 1) {
 						str+="<a class='"+blorf+"' style='font-size:14pt;color:white;cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
 					}else{	// Test / Dugga
-          var duggasplit = item['entryname'].split(" ");
-          var dugganame = duggasplit.splice(0,duggasplit.length-1);
-          var dugganumber = duggasplit[duggasplit.length-1];
+          				var duggasplit = item['entryname'].split(" ");
+          				var dugganame = duggasplit.splice(0,duggasplit.length-1);
+          				var dugganumber = duggasplit[duggasplit.length-1];
 
 						str+="<div style='display:flex;'><a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' ><span class='nowrap'><span class='ellipsis'>"+dugganame+"</span> "+dugganumber+"</span></a></div>";
 					}
