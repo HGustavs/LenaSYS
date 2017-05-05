@@ -26,10 +26,21 @@ pdoConnect();
 </head>
 <div id="content">
     <div id="buttonDiv">
-        <button onclick='classmode();'>New Canvas</button>
-        <button onclick='attrmode();'>Load Canvas</button>
-        <button onclick='linemode();'>Upload Canvas</button>
-        <button onclick='entitymode();'>Example Canvas</button>
+        <form action="diagram.php">
+            <button type='submit'>New Canvas</button>
+        </form>
+        <br>
+        <form action='diagram.php?id=+1'>
+        <button type='submit'>Load Canvas</button>
+        </form>
+        <br>
+            <form action="diagram.php?id=2">
+        <button type='submit'>Upload Canvas</button>
+            </form>
+        <br>
+                <form action="diagram.php?id=3">
+        <button type='submit'>Example Canvas</button>
+                </form>
     </div>
 </div>
 <?php
