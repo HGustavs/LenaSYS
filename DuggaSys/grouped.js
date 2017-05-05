@@ -93,7 +93,7 @@ function returnedGroup(data)
 		for(var lid in tablecontent[i].lidstogroup) { // Table cells
 			// uid_lid to identify the cell. The ugid is supplied in the option. Is the cid a necessity? 
 			str+="<td>";
-			str+="<select id="+tablecontent[i].uid+"_"+lid+" onchange=changegroup()>";
+			str+="<select id="+tablecontent[i].uid+"_"+lid+" onchange=changegroup(this)>";
 			str+="<option value='-1'>Pick a group</option>";
 			for(var ugid in availablegroups) {
 				var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : "";
@@ -110,7 +110,35 @@ function returnedGroup(data)
 		
 }
 
-// Placeholder function for making AJAX request to assign a group to a lid. 
-function changegroup() {
+/**
+ * @WIP
+ * Function to make a AJAXRequest to update the group of a student. 
+ * Is called when a dropdown menu is changed.
+ * @param changedElement - the DOM object of the changed element. 
+ */
+function changegroup(changedElement) {
+	var elementId = changedElement.id; // contains uid_lid
+	var value = changedElement.value; // the new ugid
+	
+	var arr = elementId.split("_");
+	var uid = arr[0];
+	var lid = arr[1];
+	
+	// Create JSON object that is to be sent to the AJAXRequest
+	data = {
+		'uid':uid,
+		'lid':lid,
+		'ugid':value
+	};
+	
+	// Placeholder
+	// 				 "UPDATE", data, "GROUP" ?
+	// AJAXRequest(<action>, <data>, <domain>);
+	
+	// Must make a query in AJAXRequest to insert mappings: 
+	// uid to ugid in user_usergroup
+	// ugid to lid in usergroup_listentries
+	
+	// Debugger, needed for now
 	console.log('You have tried to change a group');
 }
