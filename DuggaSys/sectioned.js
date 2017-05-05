@@ -2,9 +2,6 @@ var querystring=parseGet();
 var retdata;
 
 AJAXService("get",{},"SECTION");
-// These functions loads at page load
-$(function() {
-});
 
 //----------------------------------------
 // Commands:
@@ -18,18 +15,6 @@ function displaymessage(){
 
 var resizeTimer;
 var showInline = false;
-var menuButtonWidth = 112;
-var menuButtonMarginRight = 2;
-var menuButtons = [];
-
-menuButtons.push({ 'width': 1050, 'name': 'EditVers', 'display': true });
-menuButtons.push({ 'width': 950, 'name': 'NewVers', 'display': true });
-menuButtons.push({ 'width': 850, 'name': 'Analysis', 'display': true });
-menuButtons.push({ 'width': 750, 'name': 'Access', 'display': true });
-menuButtons.push({ 'width': 650, 'name': 'Files', 'display': true });
-menuButtons.push({ 'width': 550, 'name': 'Tests', 'display': true });
-menuButtons.push({ 'width': 450, 'name': 'Groups', 'display': true });
-menuButtons.push({ 'width': 400, 'name': 'Results', 'display': true });
 
 function disappearingFields() {
   var windowSize = $(window).width();
@@ -39,23 +24,6 @@ function disappearingFields() {
   } else if(windowSize >= 480 && showInline == false) {
     jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeIn(1000);
     showInline = true;
-  }
-}
-
-function toggleMenuButtons() {
-  var windowSize = $(window).width();
-  for(i=0; i<menuButtons.length; i++) {
-    if(windowSize < menuButtons[i].width && menuButtons[i].display) {
-      jQuery("#button"+menuButtons[i].name).fadeOut({duration: 500, queue: false });
-      jQuery("#td"+menuButtons[i].name).animate({width: '0px'}, {duration: 500, queue: false });
-      jQuery("#td"+menuButtons[i].name).animate({marginRight: '0px'}, {duration: 500, queue: false });
-      menuButtons[i].display = false;
-    } else if(windowSize >= menuButtons[i].width && !menuButtons[i].display) {
-      jQuery("#button"+menuButtons[i].name).fadeIn({duration: 500, queue: false });
-      jQuery("#td"+menuButtons[i].name).animate({width: menuButtonWidth+'px'}, {duration: 500, queue: false });
-      jQuery("#td"+menuButtons[i].name).animate({marginRight: menuButtonMarginRight+'px'}, {duration: 500, queue: false });
-      menuButtons[i].display = true;
-    }    
   }
 }
 
@@ -100,7 +68,6 @@ $(document).ready(function(){
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function() {
       disappearingFields();
-//      toggleMenuButtons();
     }, 250);
   });
 });
@@ -1084,7 +1051,6 @@ function returnedSection(data)
 		var slist=document.getElementById('Sectionlist');
 		slist.innerHTML=str;	
     disappearingFields();
-//    toggleMenuButtons();
 		if(resave == true){
 			str="";
 			$("#Sectionlist").find(".item").each(function(i) {
