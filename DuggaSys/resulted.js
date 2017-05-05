@@ -80,7 +80,7 @@ function redrawtable()
   str+="<div id='verthighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
 
   // Redraw Magic heading 
-  str += "<div id='upperDecker' style='position:absolute;left:0px;display:none;'>";
+  str += "<div id='upperDecker' style='position:absolute;left:11px;display:none;'>";
   str += "<table class='markinglist' style='table-layout: fixed;'>";
   str += "<thead>";
   str += "<tr class='markinglist-header'>";
@@ -477,6 +477,7 @@ function toggleSortDir(col){
 		localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
     }
     resort();  
+    magicHeading();
 }
 
 function process()
