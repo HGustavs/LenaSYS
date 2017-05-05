@@ -566,7 +566,12 @@ function updateActivePoint() {
         activePoint = null;
     }
 }
+function pointDistance(point1, point2){
+    var width = (point1.x > point2.x)? point1.x - point2.x: point2.x - point1.x;
+    var height = (point1.y > point2.y)? point1.y - point2.y: point2.y - point1.y;
 
+    return [width, height];
+}
 function mousemoveevt(ev, t) {
     xPos = ev.clientX;
     yPos = ev.clientY;
@@ -616,11 +621,21 @@ function mousemoveevt(ev, t) {
         if (movobj != -1) {
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
+                    var obj_topLeft = points[diagram[i].topLeft];
+
+                    var deltatlx = obj_topLeft.x - (Math.round(obj_topLeft.x / gridSize) * gridSize);
+                    var deltatly = obj_topLeft.y - (Math.round(obj_topLeft.y / gridSize) * gridSize);
+
+                    obj_topLeft = Math.round(cy / gridSize) * gridSize;
                     if (snapToGrid) {
                         cx = Math.round(cx / gridSize) * gridSize;
                         cy = Math.round(cy / gridSize) * gridSize;
+
+                        cx -= deltatlx;
+                        cy -= deltatly;
                     }
                     diagram[i].move(cx - mox, cy - moy);
+
                 }
             }
         }
