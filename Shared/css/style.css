@@ -2298,3 +2298,88 @@ table {
   font-size: 14px;
   color: white;
 }
+
+/* Section editor menu buttons */
+
+table.navheader td.menuButton {
+  margin-right: 2px;
+  width: 112px;
+  -webkit-transition: margin-right 0.5s linear, width 0.5s linear;
+  -moz-transition: margin-right 0.5s linear, width 0.5s linear;
+  -o-transition: margin-right 0.5s linear, width 0.5s linear;
+}
+
+table.navheader div.menuButton {
+  pointer-events: auto;
+  display: inline-block;
+  opacity: 1.0;
+  -webkit-transition: opacity 0.5s linear;
+  -moz-transition: opacity 0.5s linear;
+  -o-transition: opacity 0.5s linear;
+}
+
+@media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
+/*  table.navheader td.editVers,
+  table.navheader td.analysis,
+  table.navheader td.newVers {
+    margin-right: 0px;
+    width: 0px;
+    -webkit-transition: margin-right 0.5s linear, width 0.5s linear;
+    -moz-transition: margin-right 0.5s linear, width 0.5s linear;
+    -o-transition: margin-right 0.5s linear, width 0.5s linear;
+  }
+  
+  table.navheader div.editVers,
+  table.navheader div.analysis,
+  table.navheader div.newVers {
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s linear;
+    -moz-transition: opacity 0.5s linear;
+    -o-transition: opacity 0.5s linear;
+  }
+*/
+}
+
+@media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
+/*  table.navheader td.access,
+  table.navheader td.groups {
+    margin-right: 0px;
+    width: 0px;
+    -webkit-transition: margin-right 0.5s linear, width 0.5s linear;
+    -moz-transition: margin-right 0.5s linear, width 0.5s linear;
+    -o-transition: margin-right 0.5s linear, width 0.5s linear;
+  }
+  
+  table.navheader div.access,
+  table.navheader div.groups {
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s linear;
+    -moz-transition: opacity 0.5s linear;
+    -o-transition: opacity 0.5s linear,;
+  }
+*/
+}
+
+@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
+/*
+  table.navheader td.tests,
+  table.navheader td.files {
+    margin-right: 0px;
+    width: 0px;
+    -webkit-transition: margin-right 0.5s linear, width 0.5s linear;
+    -moz-transition: margin-right 0.5s linear, width 0.5s linear;
+    -o-transition: margin-right 0.5s linear, width 0.5s linear;
+  }
+  
+  table.navheader div.tests,
+  table.navheader div.files {
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s linear;
+    -moz-transition: opacity 0.5s linear;
+    -o-transition: opacity 0.5s linear;
+  }
+*/
+}
