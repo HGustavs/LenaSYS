@@ -2301,17 +2301,6 @@ table {
 
 /* Section editor menu buttons */
 
-@keyframes buttonShrink {
-  0% {
-    margin-right: 2px;
-    width: 112px;
-  }
-  100% {
-    margin-right: 0px;
-    width: 0px;
-  }
-}
-
 table.navheader td.menuButton {
   margin-right: 2px;
   width: 112px;
@@ -2330,7 +2319,7 @@ table.navheader div.menuButton {
 }
 
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
-  table.navheader td.editVers,
+/*  table.navheader td.editVers,
   table.navheader td.analysis,
   table.navheader td.newVers {
     margin-right: 0px;
@@ -2349,10 +2338,11 @@ table.navheader div.menuButton {
     -moz-transition: opacity 0.5s linear;
     -o-transition: opacity 0.5s linear;
   }
+*/
 }
 
 @media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
-  table.navheader td.access,
+/*  table.navheader td.access,
   table.navheader td.groups {
     margin-right: 0px;
     width: 0px;
@@ -2369,9 +2359,11 @@ table.navheader div.menuButton {
     -moz-transition: opacity 0.5s linear;
     -o-transition: opacity 0.5s linear,;
   }
+*/
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
+/*
   table.navheader td.tests,
   table.navheader td.files {
     margin-right: 0px;
@@ -2389,4 +2381,5 @@ table.navheader div.menuButton {
     -moz-transition: opacity 0.5s linear;
     -o-transition: opacity 0.5s linear;
   }
+*/
 }

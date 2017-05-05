@@ -637,8 +637,8 @@ function returnedSection(data)
     
 		str="";
 
-		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
-//		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize'>"; // This is for stacking buttons.
+//		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
+		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize'>"; // This is for stacking buttons.
 
         if(data['writeaccess']) {
           str+="<td style='display: inline-block;'><select class='course-dropdown' onchange='goToVersion(this)'>";
