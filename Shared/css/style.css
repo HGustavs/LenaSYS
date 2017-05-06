@@ -2301,56 +2301,87 @@ table {
 
 /* Section editor menu buttons */
 
+/* The original state of the buttons */
 table.navheader td.menuButton {
   margin-right: 2px;
   width: 112px;
-  -webkit-transition: margin-right 0.5s linear, width 0.5s linear;
-  -moz-transition: margin-right 0.5s linear, width 0.5s linear;
-  -o-transition: margin-right 0.5s linear, width 0.5s linear;
+  transition: 0.5s;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
 }
 
 table.navheader div.menuButton {
   pointer-events: auto;
   display: inline-block;
   opacity: 1.0;
-  -webkit-transition: opacity 0.5s linear;
-  -moz-transition: opacity 0.5s linear;
-  -o-transition: opacity 0.5s linear;
+  transition:  opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
 }
 
-/* Hamburger menu */
+/* Hamburger menu, hidden as default state */
 table.navheader td.hamburger {
   pointer-events: none;
-  width: 0px;
-  opacity: 0;
-  -webkit-transition: opacity 0.5s linear, width 0.5s linear;
-  -moz-transition: opacity 0.5s linear, width 0.5s linear;
-  -o-transition: opacity 0.5s linear, width 0.5s linear;
-}
-
-table.navheader nav.hamburgerMenu {
-  position: relative;
+  text-align: center;
   display: inline-block;
+  cursor: pointer;
+  margin-right: 0px;
+  width: 0px;
+  opacity: 0.0;
+  transition: width 0.5s, opacity 0.5s, margin 0.5s;
+  -webkit-transition: width 0.5s, opacity 0.5s, margin 0.5s;
+  -moz-transition: width 0.5s, opacity 0.5s, margin 0.5s;
+  -o-transition: width 0.5s, opacity 0.5s, margin 0.5s;
 }
 
-table.navheader nav.hamburgerMenu ul.hamburgerContent {
-  position: absolute;
-  z-index: 10000;
-  opacity: 1.0;
-  visibility: hidden;
-  transition: visibility 0.5s linear;
-	-moz-transition: visibility 0.5s linear;
-	-webkit-transition: visibility 0.5s linear;
-	-o-transition: visibility 0.5s linear;
+table.navheader nav.package {
+  margin-left: 0px;
+  widht: 100%;
 }
 
-li.menuButton {
+table.navheader div.bread {
+  padding: 2px 2px 2px 2px;
   pointer-events: none;
-  opacity: 1.0;
-  height: 1em;
-  -webkit-transition: opacity 0.5s linear, height 0.5s linear;
-  -moz-transition: opacity 0.5s linear, height 0.5s linear;
-  -o-transition: opacity 0.5s linear, height 0.5s linear;
+  position: absolute;
+  margin-top: 50px;
+  margin-left: 50px;
+  z-index: 1;
+  background-color: #ccc;
+  border: 2px solid #999;
+  display: none;
+  overflow-x: hidden;
+}
+
+table.navheader input.hamburger {
+  width: 30px;
+  margin: 6px 0px 2px 0px;
+  padding: 1px 6px 1px 6px;
+}
+
+ul.meat {
+  list-style-type: none;
+  margin: 2px 2px 2px 2px;
+  padding: 0px 0px 0px 0px;
+}
+
+ul.meat li {
+  margin: 2px 2px 2px 2px;
+  padding: 0px 0px 0px 0px;
+  pointer-events: none;
+  display: none;
+  height: 0px;
+  opacity: 0;
+  transition: height 0.5s, opacity 0.5s;
+  -webkit-transition: height 0.5s, opacity 0.5s;
+  -moz-transition: height 0.5s, opacity 0.5s;
+  -o-transition: height 0.5s, opacity 0.5s;
+}
+
+ul.meat button.menuButton {
+  margin: 2px 2px 2px 2px;
+  padding: 0px 0px 0px 0px;
 }
 
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
@@ -2359,9 +2390,9 @@ li.menuButton {
   table.navheader td.newVers {
     margin-right: 0px;
     width: 0px;
-    -webkit-transition: margin-right 0.5s linear, width 0.5s linear;
-    -moz-transition: margin-right 0.5s linear, width 0.5s linear;
-    -o-transition: margin-right 0.5s linear, width 0.5s linear;
+    -webkit-transition: margin-right 0.5s, width 0.5s;
+    -moz-transition: margin-right 0.5s, width 0.5s;
+    -o-transition: margin-right 0.5s, width 0.5s;
   }
   
   table.navheader div.editVers,
@@ -2369,31 +2400,34 @@ li.menuButton {
   table.navheader div.newVers {
     pointer-events: none;
     opacity: 0;
-    -webkit-transition: opacity 0.5s linear;
-    -moz-transition: opacity 0.5s linear;
-    -o-transition: opacity 0.5s linear;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
   }
 
   /* Shows the hamburger */
   table.navheader td.hamburger {
     pointer-events: auto;
-    height: 32px;
     width: 32px;
     opacity: 1.0;
-    -webkit-transition: opacity 0.5s linear, height 0.5s linear, width 0.5s linear;
-    -moz-transition: opacity 0.5s linear, height 0.5s linear, width 0.5s linear;
-    -o-transition: opacity 0.5s linear, height 0.5s linear, width 0.5s linear;
+    margin-right: 4px;
+    -webkit-transition: opacity 0.5s, width 0.5s, margin 0.5s;
+    -moz-transition: opacity 0.5s, width 0.5s, margin 0.5s;
+    -o-transition: opacity 0.5s, width 0.5s, margin 0.5s;
   }
 
-  table.navheader li.editVers,
-  table.navheader li.analysis,
-  table.navheader li.newVers {
+  /* Adds them ingredients to the hamburger */
+  ul.meat li.newVers,
+  ul.meat li.editVers,
+  ul.meat li.analysis {
     pointer-events: auto;
+    display: block;
+    height: 26px;
     opacity: 1.0;
-    height: 1em;
-    -webkit-transition: opacity 0.5s linear, height 0.5s linear;
-    -moz-transition: opacity 0.5s linear, height 0.5s linear;
-    -o-transition: opacity 0.5s linear, height 0.5s linear;
+    transition: height 0.5s, opacity 0.5s;
+    -webkit-transition: height 0.5s, opacity 0.5s;
+    -moz-transition: height 0.5s, opacity 0.5s;
+    -o-transition: height 0.5s, opacity 0.5s;
   }
 }
 
@@ -2402,28 +2436,30 @@ li.menuButton {
   table.navheader td.groups {
     margin-right: 0px;
     width: 0px;
-    -webkit-transition: margin-right 0.5s linear, width 0.5s linear;
-    -moz-transition: margin-right 0.5s linear, width 0.5s linear;
-    -o-transition: margin-right 0.5s linear, width 0.5s linear;
+    -webkit-transition: margin-right 0.5s, width 0.5s;
+    -moz-transition: margin-right 0.5s, width 0.5s;
+    -o-transition: margin-right 0.5s, width 0.5s;
   }
 
   table.navheader div.access,
   table.navheader div.groups {
     pointer-events: none;
     opacity: 0;
-    -webkit-transition: opacity 0.5s linear;
-    -moz-transition: opacity 0.5s linear;
-    -o-transition: opacity 0.5s linear,;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s,;
   }
 
-  table.navheader li.access,
-  table.navheader li.groups {
+  ul.meat li.access,
+  ul.meat li.groups {
     pointer-events: auto;
+    display: block;
+    height: 26px;
     opacity: 1.0;
-    height: 1em;
-    -webkit-transition: opacity 0.5s linear, height 0.5s linear;
-    -moz-transition: opacity 0.5s linear, height 0.5s linear;
-    -o-transition: opacity 0.5s linear, height 0.5s linear;
+    transition: height 0.5s, opacity 0.5s;
+    -webkit-transition: height 0.5s, opacity 0.5s;
+    -moz-transition: height 0.5s, opacity 0.5s;
+    -o-transition: height 0.5s, opacity 0.5s;
   }
 }
 
@@ -2432,27 +2468,29 @@ li.menuButton {
   table.navheader td.files {
     margin-right: 0px;
     width: 0px;
-    -webkit-transition: margin-right 0.5s linear, width 0.5s linear;
-    -moz-transition: margin-right 0.5s linear, width 0.5s linear;
-    -o-transition: margin-right 0.5s linear, width 0.5s linear;
+    -webkit-transition: margin-right 0.5s, width 0.5s;
+    -moz-transition: margin-right 0.5s, width 0.5s;
+    -o-transition: margin-right 0.5s, width 0.5s;
   }
 
   table.navheader div.tests,
   table.navheader div.files {
     pointer-events: none;
     opacity: 0;
-    -webkit-transition: opacity 0.5s linear;
-    -moz-transition: opacity 0.5s linear;
-    -o-transition: opacity 0.5s linear;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
   }
 
-  table.navheader li.tests,
-  table.navheader li.files {
+  ul.meat li.tests,
+  ul.meat li.files {
     pointer-events: auto;
+    display: block;
+    height: 26px;
     opacity: 1.0;
-    height: 1em;
-    -webkit-transition: opacity 0.5s linear, height 0.5s linear;
-    -moz-transition: opacity 0.5s linear, height 0.5s linear;
-    -o-transition: opacity 0.5s linear, height 0.5s linear;
+    transition: height 0.5s, opacity 0.5s;
+    -webkit-transition: height 0.5s, opacity 0.5s;
+    -moz-transition: height 0.5s, opacity 0.5s;
+    -o-transition: height 0.5s, opacity 0.5s;
   }
 }

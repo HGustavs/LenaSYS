@@ -13,6 +13,15 @@ function displaymessage(){
    $(".messagebox").css("display","block");
 }
 
+function bigMac() {
+  if($("#hamburglar").val() == "≡") {
+    $("#hamburglar").val("⨯"); 
+  } else {
+    $("#hamburglar").val("≡"); 
+  }
+  $(".bread").toggle();
+}
+
 var resizeTimer;
 var showInline = false;
 
@@ -70,13 +79,6 @@ $(document).ready(function(){
       disappearingFields();
     }, 250);
   });
-  
-  $(".burger").click(function(e) {
-    alert("tut");
-    $(this).toggleClass("active");
-    $(".hamburger ul").toggleClass("active");
-    e.preventDefault();
-  })
 });
 
 function showSubmitButton(){ 
@@ -647,47 +649,12 @@ function returnedSection(data)
 		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
 //		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize'>"; // This is for stacking buttons.
 
-  if(data['writeaccess']) {
-    str+="<td class='hamburger'>";
-      str+="<nav tabindex='0' class='hamburgerMenu'>";
-        str+="<ul class='hamburgerContent'>";
-          str+="<li class='menuButton editVers'><button class='menuButton editVers'>Edit Version</button></li>";
-          str+="<li class='menuButton newVers'><button class='menuButton newVers'>New Version</button></li>";
-          str+="<li class='menuButton access'><button class='menuButton access'>Access</button></li>";
-          str+="<li class='menuButton results'><button class='menuButton results'>Results</button></li>";
-          str+="<li class='menuButton tests'><button class='menuButton tests'>Tests</button></li>";
-          str+="<li class='menuButton files'><button class='menuButton files'>Files</button></li>";
-          str+="<li class='menuButton analysis'><button class='menuButton analysis'>Analysis</button></li>";
-          str+="<li class='menuButton groups'><button class='menuButton groups'>Groups</button></li>";
-        str+="</ul>";
-        str+="<a class='burger' href='#'>&#9776;</a>";
-      str+="</nav>";
-    str+="</td>";
-
-    str+="<td style='display: inline-block;'><select class='course-dropdown' onchange='goToVersion(this)'>";
-    if (retdata['versions'].length > 0) {
-        for ( i = 0; i < retdata['versions'].length; i++) {
-            var item = retdata['versions'][i];
-            if (retdata['courseid'] == item['cid']) {
-                var vvers = item['vers'];
-                var vname = item['versname'];
-                str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
-                if(retdata['coursevers']==vvers){
-                    str += "selected";
-                }
-                str += ">" + vname + " - " + vvers + "</option>";
-            }
-        }
-    }
-    str+="</select></td>";
-    
-    str+="<td class='editVers menuButton' style='display: inline-block;'><div class='editVers menuButton'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
-
+    if(data['writeaccess']) {
 // Retrieve start and end dates for a version, if there are such, else set to null
       var startdate = null;
       var enddate = null;
       if (retdata['versions'].length > 0) {
-      for ( i = 0; i < retdata['versions'].length; i++) {
+        for ( i = 0; i < retdata['versions'].length; i++) {
           var item = retdata['versions'][i];
           if (retdata['courseid'] == item['cid'] && retdata['coursevers'] == item['vers']) {
             startdate = item['startdate'];
@@ -696,21 +663,47 @@ function returnedSection(data)
         }
       }
 
-			str+='("'+querystring['coursevers']+'","'+versionname+'","'+startdate+'","'+enddate+'")';
-			str+=";'></div></td>";	
+      str+="<td class='hamburger'>";
+      str+="<nav tabindex='0' class='package'><input id='hamburglar' type='button' value='&equiv;' class='submit-button hamburger' title='Hamburger'  onClick='bigMac();'></nav>";
+        str+="<div class='bread'>";
+            str+="<ul class='meat'>";
+              str+="<li class='editVers'><button class='submit-button menuButton editVers ' onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");'>Edit Version</button></li>";
+              str+="<li class='newVers'><button class='submit-button menuButton newVers' onclick='showCreateVersion();'>New Version</button></li>";
+              str+="<li class='analysis'><button class='submit-button menuButton analysis' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Analysis</button></li>";
+              str+="<li class='access'><button class='submit-button menuButton access' onclick='accessCourse();'>Access</button></li>";
+              str+="<li class='files'><button class='submit-button menuButton files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Files</button></li>";
+              str+="<li class='tests'><button class='submit-button menuButton tests' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Tests</button></li>";
+              str+="<li class='groups'><button class='submit-button menuButton groups' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Groups</button></li>";
+              str+="<li class='results'><button class='submit-button menuButton results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Results</button></li>";
+            str+="</ul>";
+          str+="</div";
+        str+="</nav>";
+      str+="</td>";
 
+      str+="<td style='display: inline-block;'><select class='course-dropdown' onchange='goToVersion(this)'>";
+      if (retdata['versions'].length > 0) {
+          for ( i = 0; i < retdata['versions'].length; i++) {
+              var item = retdata['versions'][i];
+              if (retdata['courseid'] == item['cid']) {
+                  var vvers = item['vers'];
+                  var vname = item['versname'];
+                  str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+                  if(retdata['coursevers']==vvers){
+                      str += "selected";
+                  }
+                  str += ">" + vname + " - " + vvers + "</option>";
+              }
+          }
+      }
+      str+="</select></td>";
+      
+      str+="<td class='editVers menuButton' style='display: inline-block;'><div class='editVers menuButton'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");'></div></td>";	
 			str+="<td class='newVers menuButton' style='display: inline-block;'><div class='newVers menuButton'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></div></td>";
-
 			str+="<td class='access menuButton' style='display: inline-block;'><div class='access menuButton'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/></div></td>";
-
 			str+="<td class='results menuButton' style='display: inline-block;'><div class='results menuButton'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></div></td>";
-
 			str+="<td class='tests menuButton' style='display: inline-block;'><div class='tests menuButton'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
-
 			str+="<td class='files menuButton' style='display: inline-block;'><div class='files menuButton'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
-
 			str+="<td class='analysis menuButton' style='display: inline-block;'><div class='analysis menuButton'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
-
 			str+="<td class='groups menuButton' style='display: inline-block;'><div class='groups menuButton'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
     }else{
 			// No version selector for students
