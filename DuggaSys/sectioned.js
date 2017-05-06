@@ -14,12 +14,12 @@ function displaymessage(){
 }
 
 function bigMac() {
-  if($("#hamburglar").val() == "≡") {
-    $("#hamburglar").val("⨯"); 
+  if($("#hamburgerIcon").val() == "≡") {
+    $("#hamburgerIcon").val("⨯"); 
   } else {
-    $("#hamburglar").val("≡"); 
+    $("#hamburgerIcon").val("≡"); 
   }
-  $(".bread").toggle();
+  $(".hamburgerMenu").toggle();
 }
 
 var resizeTimer;
@@ -646,8 +646,8 @@ function returnedSection(data)
     
 		str="";
 
-		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
-//		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize'>"; // This is for stacking buttons.
+//		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
+		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize'>"; // This is for stacking buttons.
 
     if(data['writeaccess']) {
 // Retrieve start and end dates for a version, if there are such, else set to null
@@ -664,17 +664,17 @@ function returnedSection(data)
       }
 
       str+="<td class='hamburger'>";
-      str+="<nav tabindex='0' class='package'><input id='hamburglar' type='button' value='&equiv;' class='submit-button hamburger' title='Hamburger'  onClick='bigMac();'></nav>";
-        str+="<div class='bread'>";
-            str+="<ul class='meat'>";
-              str+="<li class='editVers'><button class='submit-button menuButton editVers ' onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");'>Edit Version</button></li>";
-              str+="<li class='newVers'><button class='submit-button menuButton newVers' onclick='showCreateVersion();'>New Version</button></li>";
-              str+="<li class='analysis'><button class='submit-button menuButton analysis' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Analysis</button></li>";
-              str+="<li class='access'><button class='submit-button menuButton access' onclick='accessCourse();'>Access</button></li>";
-              str+="<li class='files'><button class='submit-button menuButton files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Files</button></li>";
-              str+="<li class='tests'><button class='submit-button menuButton tests' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Tests</button></li>";
-              str+="<li class='groups'><button class='submit-button menuButton groups' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Groups</button></li>";
-              str+="<li class='results'><button class='submit-button menuButton results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Results</button></li>";
+        str+="<nav tabindex='0' class='package'><input id='hamburgerIcon' type='button' value='&equiv;' class='submit-button hamburger' title='Hamburger'  onClick='bigMac();'></nav>";
+        str+="<div class='hamburgerMenu'>";
+            str+="<ul class='hamburgerList'>";
+              str+="<li class='editVers'><button class='submit-button menuButton editVers ' onclick='closeWindows(); showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");'>Edit Version</button></li>";
+              str+="<li class='newVers'><button class='submit-button menuButton newVers' onclick='closeWindows(); showCreateVersion();'>New Version</button></li>";
+              str+="<li class='analysis'><button class='submit-button menuButton analysis' onclick='closeWindows(); changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Analysis</button></li>";
+              str+="<li class='access'><button class='submit-button menuButton access' onclick='closeWindows(); accessCourse();'>Access</button></li>";
+              str+="<li class='files'><button class='submit-button menuButton files' onclick='closeWindows(); changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Files</button></li>";
+              str+="<li class='tests'><button class='submit-button menuButton tests' onclick='closeWindows(); changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Tests</button></li>";
+              str+="<li class='groups'><button class='submit-button menuButton groups' onclick='closeWindows(); changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Groups</button></li>";
+              str+="<li class='results'><button class='submit-button menuButton results' onclick='closeWindows(); changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Results</button></li>";
             str+="</ul>";
           str+="</div";
         str+="</nav>";

@@ -2341,7 +2341,7 @@ table.navheader nav.package {
   widht: 100%;
 }
 
-table.navheader div.bread {
+table.navheader div.hamburgerMenu {
   padding: 2px 2px 2px 2px;
   pointer-events: none;
   position: absolute;
@@ -2360,31 +2360,28 @@ table.navheader input.hamburger {
   padding: 1px 6px 1px 6px;
 }
 
-ul.meat {
+ul.hamburgerList {
   list-style-type: none;
   margin: 2px 2px 2px 2px;
   padding: 0px 0px 0px 0px;
 }
 
-ul.meat li {
+ul.hamburgerList li {
   margin: 2px 2px 2px 2px;
   padding: 0px 0px 0px 0px;
   pointer-events: none;
   display: none;
   height: 0px;
   opacity: 0;
-  transition: height 0.5s, opacity 0.5s;
-  -webkit-transition: height 0.5s, opacity 0.5s;
-  -moz-transition: height 0.5s, opacity 0.5s;
-  -o-transition: height 0.5s, opacity 0.5s;
 }
 
-ul.meat button.menuButton {
+ul.hamburgerList button.menuButton {
   margin: 2px 2px 2px 2px;
   padding: 0px 0px 0px 0px;
 }
 
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
+/*
   table.navheader td.editVers,
   table.navheader td.analysis,
   table.navheader td.newVers {
@@ -2405,7 +2402,6 @@ ul.meat button.menuButton {
     -o-transition: opacity 0.5s;
   }
 
-  /* Shows the hamburger */
   table.navheader td.hamburger {
     pointer-events: auto;
     width: 32px;
@@ -2416,22 +2412,19 @@ ul.meat button.menuButton {
     -o-transition: opacity 0.5s, width 0.5s, margin 0.5s;
   }
 
-  /* Adds them ingredients to the hamburger */
-  ul.meat li.newVers,
-  ul.meat li.editVers,
-  ul.meat li.analysis {
+  ul.hamburgerList li.newVers,
+  ul.hamburgerList li.editVers,
+  ul.hamburgerList li.analysis {
     pointer-events: auto;
     display: block;
     height: 26px;
     opacity: 1.0;
-    transition: height 0.5s, opacity 0.5s;
-    -webkit-transition: height 0.5s, opacity 0.5s;
-    -moz-transition: height 0.5s, opacity 0.5s;
-    -o-transition: height 0.5s, opacity 0.5s;
   }
+*/
 }
 
 @media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
+/*
   table.navheader td.access,
   table.navheader td.groups {
     margin-right: 0px;
@@ -2450,20 +2443,18 @@ ul.meat button.menuButton {
     -o-transition: opacity 0.5s,;
   }
 
-  ul.meat li.access,
-  ul.meat li.groups {
+  ul.hamburgerList li.access,
+  ul.hamburgerList li.groups {
     pointer-events: auto;
     display: block;
     height: 26px;
     opacity: 1.0;
-    transition: height 0.5s, opacity 0.5s;
-    -webkit-transition: height 0.5s, opacity 0.5s;
-    -moz-transition: height 0.5s, opacity 0.5s;
-    -o-transition: height 0.5s, opacity 0.5s;
   }
+*/
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
+/*
   table.navheader td.tests,
   table.navheader td.files {
     margin-right: 0px;
@@ -2482,15 +2473,12 @@ ul.meat button.menuButton {
     -o-transition: opacity 0.5s;
   }
 
-  ul.meat li.tests,
-  ul.meat li.files {
+  ul.hamburgerList li.tests,
+  ul.hamburgerList li.files {
     pointer-events: auto;
     display: block;
     height: 26px;
     opacity: 1.0;
-    transition: height 0.5s, opacity 0.5s;
-    -webkit-transition: height 0.5s, opacity 0.5s;
-    -moz-transition: height 0.5s, opacity 0.5s;
-    -o-transition: height 0.5s, opacity 0.5s;
   }
+*/
 }
