@@ -262,7 +262,7 @@ function createFileUploadArea(fileuploadfileds){
 				form +="<input name='link' type='text' size='40' maxlength='256' />";
 				form +="<input type='hidden' name='kind' value='2' />";
 		}else if(type=="text"){
-				form +="<textarea rows='15' name='inputtext'  id='"+fieldname+"Text' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;	width: 100%;background:#f8f8ff;padding:10px;' placeholder='Enter your text and upload.' onkeyup='disableSave();'></textarea>";
+				form +="<textarea rows='15' name='inputtext'  id='"+fieldname+"Text' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;	width: 80%;background:#f8f8ff;padding:10px;margin-bottom:10px;border: 2px solid #e8e6e6;' placeholder='Enter your text and upload.' onkeyup='disableSave();'></textarea><br>";
 				form +="<input type='hidden' name='kind' value='3' />";
 		}else{
 				form +="<input name='uploadedfile[]' type='file' id='inputfile' class='inputfile' multiple='multiple' onchange='this.form.submit();'/>";
@@ -293,7 +293,8 @@ function createFileUploadArea(fileuploadfileds){
 		} else if (type === "text"){
 			str += "<h4>Text Submission</h4>";
 			str += "</div>";
-			str += "<div style='padding:0px;'>";
+            str +="<div id='"+fieldname+"Prev' style='height:50px;overflow:scroll;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;margin-bottom:10px;'><span style='font-style:italic;M'>Submission History</span></div>";
+			str += "<div style='padding:10px;'>";
 			str +="<table style='width:100%;'>";
 			str +="<tr>";
 			str +="<td id='"+fieldname+"'>";
@@ -306,8 +307,8 @@ function createFileUploadArea(fileuploadfileds){
 		}
 		str += "</div>";
 		str += "<div>";
-		str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'>&lt;Submission history&gt;</div>";
 		if (type !== "text"){
+            str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'><span style='font-stile:italic;'>Submission History</span></div>";
             str +="<div style='padding:10px'>";
             str +="<h4>Instructions</h4>";
             str +="<div id='"+fieldname+"Instruction' style='font-style: italic;padding:0px;'></div>"
