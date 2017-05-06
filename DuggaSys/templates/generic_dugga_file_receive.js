@@ -265,11 +265,12 @@ function createFileUploadArea(fileuploadfileds){
 				form +="<textarea rows='15' name='inputtext'  id='"+fieldname+"Text' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;	width: 100%;background:#f8f8ff;padding:10px;' placeholder='Enter your text and upload.' onkeyup='disableSave();'></textarea>";
 				form +="<input type='hidden' name='kind' value='3' />";
 		}else{
-				form +="<input name='uploadedfile[]' type='file' multiple='multiple' onchange='this.form.submit();'/>";
+				form +="<input name='uploadedfile[]' type='file' id='inputfile' class='inputfile' multiple='multiple' onchange='this.form.submit();'/>";
+                form +="<label for='inputfile'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
 				form +="<input type='hidden' name='kind' value='1' />";
 		}
 		
-		form +="<input type='submit' name='okGo' value='Upload'>";
+		form +="<input type='submit' name='okGo' class='file-upload-submit' value='Upload'>";
 		form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 		form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
 		form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";

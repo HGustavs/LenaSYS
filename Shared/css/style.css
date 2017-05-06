@@ -1199,6 +1199,54 @@ input.large-button {
   line-height:48px !important;
 }
 
+/* File upload form */
+
+.inputfile {
+	width: 0.1px;
+	height: 0px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    font-size: 16px;
+    font-weight: 300;
+    padding: 5px;
+    padding-right: 10px;
+    color: white;
+    background-color: #614875;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: red;
+}
+
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+
+.file-upload-submit{
+    font-size: 16px;
+    font-weight: 300;
+    width: 100px;
+    height: 30px;
+    padding: 5px;
+    margin-bottom: 10px;
+    margin-top: 0;
+    color: white;
+    background-color:#614875;
+    cursor: pointer;
+    border: none;
+    border-radius: 0;
+    display: inline-block;
+}
+
 .list {
   width:100%;
   padding:1px;
