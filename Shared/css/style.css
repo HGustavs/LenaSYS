@@ -1223,7 +1223,8 @@ input.large-button {
 
 .inputfile:focus + label,
 .inputfile + label:hover {
-    background-color: red;
+    background-color: #7B5A96;
+    transition:1s background-color;
 }
 
 .inputfile:focus + label {
@@ -1238,7 +1239,7 @@ input.large-button {
     height: 30px;
     padding: 5px;
     margin-bottom: 10px;
-    margin-top: 0;
+    margin-top: -1;
     color: white;
     background-color:#614875;
     cursor: pointer;

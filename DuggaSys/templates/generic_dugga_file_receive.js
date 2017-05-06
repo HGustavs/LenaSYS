@@ -270,7 +270,8 @@ function createFileUploadArea(fileuploadfileds){
 				form +="<input type='hidden' name='kind' value='1' />";
 		}
 		
-		form +="<input type='submit' name='okGo' class='file-upload-submit' value='Upload'>";
+		form +="<input type='submit' id='okGo' name='okGo' class='inputfile' value='Upload'>";
+        form +="<label for='okGo' style='padding-left:20px; padding-right:20px'>Upload</label>";
 		form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 		form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
 		form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";
