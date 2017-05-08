@@ -26,8 +26,9 @@ if(isset($_SESSION['uid'])){
 $password= getOP('password');
 $question = getOP('question');
 $answer = getOP('answer');
-$action = getOP('challenge');
-    
+$action = getOP('action');
+$newPassword = getOP('newPassword');
+$hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
 
 //check if the user is logged in and fetch the password from the db
 if(checklogin() || isSuperUser($userid)){
@@ -43,7 +44,8 @@ if(checklogin() || isSuperUser($userid)){
         
         //If password matches update user security question
         if(password_verify($password, $passwordz)){
-            if($action = "challenge"){
+            //Update challenge question
+            if($action == "challenge"){
                 $querystringz = "UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:userid";
                 $stmt = $pdo->prepare($querystringz);
                 $stmt->bindParam(':userid', $userid);
@@ -56,8 +58,21 @@ if(checklogin() || isSuperUser($userid)){
                     echo "updated";
                 }
             }
+            //Update password
+            if($action == "password"){
+                $passwordquery = "UPDATE user SET password=:PW WHERE uid=:userid";
+                $stmt = $pdo->prepare($passwordquery);
+                $stmt->bindParam(':userid', $userid);
+                $stmt->bindParam(':PW', $hashedPassword);
             
-        } else {
+                if(!$stmt->execute()) {
+                    $error=$stmt->errorInfo(); 
+                }else{
+                    echo "updatedPassword";
+                }
+            }    
+        } 
+        else {
             echo "error";
         }
     }
