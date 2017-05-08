@@ -749,6 +749,9 @@ function doubleclick(ev) {
         if (document.getElementById('attributeType') != null) {
             document.getElementById('attributeType').value = diagram[selobj].attributeType;
         }
+        if (document.getElementById('relationType') != null) {
+            document.getElementById('relationType').value = diagram[selobj].relationType;
+        }
     }
 }
 function resize() {
