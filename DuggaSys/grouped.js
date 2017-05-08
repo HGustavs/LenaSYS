@@ -62,10 +62,8 @@ function returnedGroup(data)
 	str+="<thead>";
 	str+="<tr class='markinglist-header'>";
 	
-	str+="<th id='header' class='grouprow' ><span>#<span></th>";
-	str+="<th colspan='1' id='subheading' class='result-header'>";
-	str+="Studenter";
-	str+="</th>";
+	str+="<th id='header' class='grouprow' style='width:40px'><span>#<span></th>";
+	str+="<th id='subheading' class='result-header' style='width:140px;'>Studenter</th>";
 
 	// Read dropdown from local storage (??)
 	courselist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
@@ -76,7 +74,7 @@ function returnedGroup(data)
 	// Itererate the headings, that are dependent on the cid and coursevers. 
 	if(headings){
 		for(var i = 0; i < headings.length; i++) {
-			str+="<th id="+headings[i].lid+" title ='Listentry id "+headings[i].lid+"' class='result-header'>"+headings[i].entryname+"</th>";	
+			str+="<th id="+headings[i].lid+" title ='Listentry id "+headings[i].lid+"' class='result-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;'>"+headings[i].entryname+"</th>";	
 		}
 	}
 	
@@ -87,13 +85,21 @@ function returnedGroup(data)
 
 	for(var i = 0; i < tablecontent.length; i++) { // create table rows. 
 		row++;
-		str+="<tr>";
+		str+="<tr";
+		if(row%2==1){
+			str+=" class='hi' ";
+		}else{
+			str+=" class='lo' ";
+		}
+		str+=">";
 		str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
-		str+="<td title='"+tablecontent[i].firstname+" "+tablecontent[i].lastname+" "+tablecontent[i].ssn+"'>"+tablecontent[i].username+"</td>"; // Iterates all content, but i dont want to write out ugid, cid and lid ...
+		str+="<td style='padding-left:3px;'><div class='dugga-result-div'>"+tablecontent[i].firstname+" "+tablecontent[i].lastname+"</div>";
+		str+="<div class='dugga-result-div'>"+tablecontent[i].ssn+"</div>";
+		str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
 		for(var lid in tablecontent[i].lidstogroup) { // Table cells
 			// uid_lid to identify the cell. The ugid is supplied in the option. Is the cid a necessity? 
-			str+="<td>";
-			str+="<select id="+tablecontent[i].uid+"_"+lid+" onchange=changegroup(this)>";
+			str+="<td style='padding-left:5px;'>";
+			str+="<select id="+tablecontent[i].uid+"_"+lid+" onchange=changegroup()>";
 			str+="<option value='-1'>Pick a group</option>";
 			for(var ugid in availablegroups) {
 				var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : "";
