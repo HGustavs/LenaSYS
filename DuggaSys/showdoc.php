@@ -4,7 +4,7 @@
 		include_once "../Shared/sessions.php";
 		
 		$file_extension="UNK";
-
+        $tableAlignmentConf = [];
 		function parseMarkdown($inString)
 		{	
 				$inString=preg_replace("/\</", "&lt;",$inString);
@@ -87,7 +87,7 @@
             // If its ordinary text then show it directly
             else{
                 $markdown .= markdownBlock($currentLine);
-                if(preg_match("/\br*/", $currentLine)){
+                if(preg_match('/\br*/', $currentLine)){
                     $markdown .= "<br>";
                 }
             }
@@ -101,7 +101,7 @@
 		// Check if its an unordered list
 		function isUnorderdList($item) {
 			// return 1 if unordered list
-			return preg_match('/\s*[\-\*]\s(.*)/', $item);
+			return preg_match('/\s*[\*]\s(.*)/', $item); // doesn't support dash like markdown!
 		}
 		// CHeck if its a table
 		function isTable($item) {
@@ -186,9 +186,12 @@
             return $markdown;
         }
         function handleTable($currentLine, $prevLine, $nextLine) {
+            global $tableAlignmentConf;
             $markdown = "";
 
-            $columns = $currentLine.split('|').filter(function(v){return v !== '';});
+            $columns = array_values(array_map("trim", array_filter(explode('|', $currentLine), function($k) {
+                return $k !== '';
+            })));
 
             // open table
             if(!isTable($prevLine)) {
@@ -196,11 +199,11 @@
             }
 
             // create thead
-            if(!isTable($prevLine) && $nextLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
+            if(!isTable($prevLine) && preg_match('/^\s*\|\s*[:]?[-]*[:]?\s*\|/', $nextLine)) {
                 $markdown .= "<thead>";
                 $markdown .= "<tr>";
-                for($i = 0; $i < strlen($columns); i++) {
-                    $markdown .= "<th>" + $columns[i] + "</th>";
+                for($i = 0; $i < count($columns); $i++) {
+                    $markdown .= "<th>".$columns[$i]."</th>";
                 }
                 $markdown .= "</tr>";
                 $markdown .= "</thead>";
@@ -208,42 +211,38 @@
             // create tbody
             else {
                 // configure alignment
-                if($currentLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
-                    for($i = 0; i < $columns.length; i++) {
-                        $column = $columns[i].trim();
-
+                if(preg_match('/^\s*\|\s*[:]?[-]*[:]?\s*\|/', $currentLine)) {
+                    for($i = 0; $i < count($columns); $i++) {
                         // align center
-                        if($column.match(/[:][-]*[:]/gm)) $tableAlignmentConf[i] = 1;
+                        if(preg_match('/[:][-]*[:]/', $columns[$i])) $tableAlignmentConf[$i] = 1;
                         // align right
-                        else if($column.match(/[-]*[:]/gm)) $tableAlignmentConf[i] = 2;
+                        else if(preg_match('/[-]*[:]/', $columns[$i])) $tableAlignmentConf[$i] = 2;
                         // align left
-                        else $tableAlignmentConf[i] = 3;
+                        else $tableAlignmentConf[$i] = 3;
                     }
                 }
                 // handle table row
                 else {
-                    $markdown += "<tr style=''>"
-                    for($i = 0; i < $columns.length; i++) {
+                    $markdown .= "<tr style=''>";
+
+                    for($i = 0; $i < count($columns); $i++) {
                         $alignment = "";
 
-                        if($tableAlignmentConf[i] === 1) $alignment = "center";
-                        else if($tableAlignmentConf[i] === 2) $alignment = "right";
+                        if($tableAlignmentConf[$i] === 1) $alignment = "center";
+                        else if($tableAlignmentConf[$i] === 2) $alignment = "right";
                         else $alignment = "left";
 
-                        $markdown .= "<td style='text-align: " . alignment . ";'>" . columns[i].trim() . "</td>";
+                        $markdown .= "<td style='text-align: " . $alignment . ";'>" . $columns[$i] . "</td>";
                     }
                     $markdown .= "</tr>";
-
-                    // close thead and open tbody
-                    if(!isTable($prevLine)) {
-                        $markdown .= "</thead><tbody>";
-                    }
                 }
             }
+
             // close table
             if(!isTable($currentLine)) {
                 $markdown .= "</tbody></table>";
             }
+
             return $markdown;
         }
 		function markdownBlock($instring)
