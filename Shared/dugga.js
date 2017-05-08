@@ -92,8 +92,8 @@ function resetFields(){
 
 function setExpireCookie(){
 	var expireDate = new Date();
-	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));
-
+	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));////8100000, denotes time in milliseconds
+  
 	document.cookie = "sessionEndTime=expireC; expires="+ expireDate.toGMTString() +"; path=/";
 }
 
@@ -470,7 +470,7 @@ function AJAXService(opt,apara,kind)
 			});
 	}else if(kind=="DIAGRAM"){
 			$.ajax({
-				url: "contributionservice.php",
+				url: "diagramservice.php",
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
@@ -697,8 +697,11 @@ function processLogin() {
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
-						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
+						$("#login #message").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong username or password! </div>");
+						
 					}
+					
+					
 					$("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
@@ -717,11 +720,7 @@ function processLogout() {
 		success:function(data) {
             localStorage.removeItem("securityquestion");
             localStorage.removeItem("securitynotification");
-			var urlDivided = window.location.href.split("/");
-			urlDivided.pop();
-			urlDivided.pop();
-			var newURL = urlDivided.join('/') + "/DuggaSys/courseed.php";
-			window.location.replace(newURL);
+			location.reload();
 		},
 		error:function() {
 			console.log("error");
@@ -859,7 +858,30 @@ function hideDuggaInfoPopup()
 		startDuggaHighScore();
 	}
 }
+//----------------------------------------------------------------------------------
+// Simple page reload function
+//----------------------------------------------------------------------------------
+function reloadPage(){
+   location.reload();
+}
+//----------------------------------------------------------------------------------
+// Refresh function, refreshes the current session by resetting the php session cookie
+//----------------------------------------------------------------------------------
+function refreshUserSession(){
+	$.ajax({
+					type: "POST",
+					url: "../Shared/loginlogout.php",
+					data:{opt:'REFRESH'},
+					success:function(html) {
+						alert(html);
+					}
 
+		 });
+}
+  setExpireCookie()
+  setExpireCookieLogOut()
+  sessionExpireMessage()
+  sessionExpireLogOut()
 //----------------------------------------------------------------------------------
 // Timeout function, gives a prompt if the session is about to expire
 //----------------------------------------------------------------------------------
@@ -898,12 +920,11 @@ function sessionExpireLogOut() {
 
 	function checkIfExpired() {
 		
-		if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
+			if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
-			$(".expiremessagebox").css("display","block");
-			$("#expiremessage").text("Your session has timed out");
-			//location.reload();
+			$(".endsessionmessagebox").css("display","block");
+			processLogout();
 			clearInterval(intervalId);
 		}
 
@@ -986,8 +1007,8 @@ function findfilevers(filez,cfield,ctype,displaystate)
 		// Iterate over elements in files array
 		var foundfile=null;
 		var oldfile="";
-		var tab="<table>";
-		tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>"
+		var tab="<table width='100%'>";
+		tab+="<thead><tr><th style='text-align:left;padding:4px;'>Preview</th><th style='text-align:left;padding:4px;'>Filename</th><th style='text-align:left;padding:4px;'>Upload date</th><th style='text-align:left;padding:4px;' colspan=2>Teacher feedback</th></tr></thead>"
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
 			for (var i=filez.length-1;i>=0;i--){
@@ -995,7 +1016,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;
 							tab+="<tr'>"
 
-							tab+="<td>";
+							tab+="<td style='padding:4px'>";
 							// Button for making / viewing feedback - note - only button for given feedback to students.
 							tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>P</button>";
 							tab+="</td>";

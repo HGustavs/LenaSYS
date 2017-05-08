@@ -25,7 +25,7 @@ if(isset($_SESSION['uid'])){
 $opt = getOP('opt');
 $cid = getOP('cid'); // Course id
 $vers = getOP('vers'); // Course version
-$listentry = getOP('moment');
+$listentry = getOP('moment'); // Moment i.e (Biträkningsduggor 1)
 $qvariant=getOP("qvariant");
 $name=getOP("name");
 
@@ -40,10 +40,9 @@ if(strcmp($opt,"GET")==0){
 		// First query: get the headings for the table, which is the listentry names. 
 		$query = $pdo->prepare("SELECT listentries.*,quizFile,COUNT(variant.vid) as qvariant FROM listentries LEFT JOIN quiz ON  listentries.link=quiz.id LEFT JOIN variant ON quiz.id=variant.quizID WHERE listentries.cid=:cid and listentries.vers=:vers and (listentries.kind=4) AND (listentries.grouptype=1 OR listentries.grouptype=3) GROUP BY lid ORDER BY pos;");
 
-		// Constant parameters for testing.
-		/* $cid = 2;
+		/* // Constant parameters for testing.
+		$cid = 2;
 		$vers = 97732; */
-
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 
@@ -69,19 +68,21 @@ if(strcmp($opt,"GET")==0){
 				)
 			);
 		}
-
+		
 		// Put it in the data array
 		$data['headings'] = $headings;
-
-		// Second query: select all users that are in a group, belonging to the cid and the course vers. This makes up the first and second column of the data table. This data is processed in a later step, because the connection to each moment is needed to display the data. 
-
-		// Old solution: Query to get the information by groups
-		/* $query = $pdo->prepare("SELECT GROUP_CONCAT(DISTINCT u.username SEPARATOR '\n') AS students, ug.name AS groupname, ug.ugid FROM user AS u, usergroup AS ug, user_usergroup AS uug, listentries AS le, usergroup_listentries AS ugl WHERE u.uid = uug.uid AND uug.ugid = ug.ugid AND ug.ugid = ugl.ugid AND ugl.lid = le.lid AND le.cid = :cid AND le.kind = 4 AND le.vers = :vers GROUP BY ug.name"); */
-
-		// Second query: select all users that are in a group, belonging to the cid and the course vers. This makes up the first and second column of the data table. This data is processed in a later step, because the connection to each moment is needed to display the data. 
-		// New solution: Query to get the information by user. 
-		$query = $pdo->prepare("SELECT DISTINCT u.username, u.uid, ug.name, ug.ugid FROM user AS u, user_usergroup AS uug, usergroup AS ug, usergroup_listentries AS ugl, listentries AS le WHERE u.uid = uug.uid AND uug.ugid = ug.ugid AND ug.ugid = ugl.ugid AND ugl.lid = le.lid AND le.cid = :cid AND le.vers = :vers AND le.kind = 4");
-
+		
+		// Get a list of the lids, to be used when displayed to what group a user belongs 
+		$lids = [];
+		foreach($headings as $heading) {
+			$lids[] = $heading['lid'];
+		}
+		
+		// Make it a array of keys with false as standard value 
+		$lids = array_fill_keys($lids, false);
+	
+		// Second query: Select all users that are connected to the course and the current version of it. Order by the uid. 
+		$query = $pdo->prepare("SELECT user.uid, user.firstname, user.lastname, user.ssn, user.username FROM user, user_course WHERE user.uid = user_course.uid AND user_course.cid = :cid AND user_course.vers = :vers ORDER BY user.uid");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 		
@@ -91,10 +92,10 @@ if(strcmp($opt,"GET")==0){
 		}
 
 		// Get the first two columns, which is the students and their groups. Save this information, and set the group assignments after the next query. 
-		$studentAndGroupRows = $query->fetchAll(PDO::FETCH_ASSOC); // 2 rows initially. (count = 2)
+		$studentData = $query->fetchAll(PDO::FETCH_ASSOC); // 2 rows initially. (count = 2)
 
-		// Third query, get what listentry each group is associated with. 
-		$query = $pdo->prepare("SELECT listentries.lid, usergroup_listentries.ugid FROM listentries LEFT OUTER JOIN usergroup_listentries on listentries.lid = usergroup_listentries.lid WHERE listentries.cid = :cid AND listentries.vers = :vers AND listentries.kind = 4 AND (listentries.grouptype=1 OR listentries.grouptype=3)");
+		// Third query: Select all user id's that are connected to a group and their lid. 
+		$query = $pdo->prepare("SELECT uug.uid, ugl.lid, uug.ugid FROM user_usergroup AS uug, usergroup_listentries AS ugl, listentries AS l WHERE uug.ugid = ugl.ugid AND ugl.lid = l.lid AND l.cid = :cid AND l.vers = :vers AND l.kind = 4 AND (l.grouptype=1 OR l.grouptype=3) ORDER BY uug.uid");
 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
@@ -105,74 +106,41 @@ if(strcmp($opt,"GET")==0){
 		}
 
 		// Assigned courses
-		$assignedCourses = $query->fetchAll(PDO::FETCH_ASSOC);
+		$groupData = $query->fetchAll(PDO::FETCH_ASSOC);
+	
+		// Fourth query: Select all available groups
+		$query = $pdo->prepare("SELECT ugid, name FROM usergroup"); // Query to get all existing groups 
+		
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error retreiving moments and duggas. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+		}
+		
+		$allGroups = $query->fetchAll(PDO::FETCH_ASSOC); // Contains all groups. 
 
 		// Create array to hold the table contents. 
 		$tableContent = [];
-
-		/*
-
-			// NEW:
-			$studentAndGroupRows
-			+----------+------------+------+
-			| student  | groupname  | ugid |
-			+----------+------------+------+
-			| a13eydth | testsquad1 | 1    |
-			+----------+------------+------+
-			| c13timan | testsquad1 | 1    |
-			+----------+------------+------+
-			| stei     | testsquad2 | 2    |
-			+----------+------------+------+
-			
-			// Also need student that are not assigned to groups to be displayed below this.
-
-		*/
-
-		// Maybe it is better if the database does this with a DISTINCT query. I dunno. 
-		$uniqueLids = [];
-		foreach($assignedCourses as $subArray) {
-			foreach($subArray as $key => $val) {
-				if($key == 'lid') {
-					$uniqueLids[] = $val;
+		
+		foreach($studentData as &$studentRow) { // Iterate the student rows (& for keeping the array up to date)
+			$lidstogroup = $lids;
+			foreach($groupData as $groupRow) {
+				// This checks which group is assigned. However, the existing groups must also be in the dropdown menu, so available groups must also be filled, with null. 
+				if($studentRow['uid'] == $groupRow['uid']) {
+					$lidstogroup[strval($groupRow['lid'])] = $groupRow['ugid']; // Put a new key with lid and a new value for the key, the group id 
 				}
 			}
+			$studentRow['lidstogroup'] = $lidstogroup;
+			array_push($tableContent, $studentRow);
 		}
-		$uniqueLids = array_unique($uniqueLids); // 
-
-		$keyTemplate = array_fill_keys($uniqueLids, 0);
-
-		$rowNumber = 1;
-		// For each group entry row, create the columns, linking each group to the associated listentry. 
-		foreach($studentAndGroupRows as $dbRow) { // Loop through the number of rows. 
-
-			// Create array for the row. 
-			$row = [];
-			
-			// array_push($row, $dbRow['ugid']);
-			$row['ugid'] = $dbRow['ugid'];
-			// array_push($row, $cid);
-			$row['cid'] = $cid;	
-			// array_push($row, $dbRow['students']);
-			$row['username'] = $dbRow['username'];
-			$row['uid'] = $dbRow['uid'];
-			// array_push($row, $dbRow['groupname']);
-			$row['name'] = $dbRow['name'];
-
-			// Iterate through the listentries, and add the list entry id where there is a match for the group. This should later be presented as some kind of boolean instead, to be able to use buttons. 
-			$assignedLids = $keyTemplate;
-			foreach ($assignedCourses as $dbCol) { // Iterate the assigned courses (what lids match which ugid). 
-				foreach($assignedLids as $key => $val) {
-					if($row['ugid'] == $dbCol['ugid']) {
-						$assignedLids[$dbCol['lid']] = 1;
-					}
-				}
-			}
-			$row['assignedlids'] = $assignedLids;
-			array_push($tableContent, $row);
-
-			$rowNumber++;
+		
+		$groups = [];
+		foreach($allGroups as $group) {
+			$groups[$group['ugid']] = $group['name'];
 		}
-		$data['tableContent'] = $tableContent;
+		
+		// Place the data in the output data array
+		$data['tablecontent'] = $tableContent;
+		$data['availablegroups'] = $groups;
  	}
 }
 else if(strcmp($opt,"NEWGROUP")==0){

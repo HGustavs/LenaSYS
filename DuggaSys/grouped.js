@@ -36,9 +36,11 @@ function createGroup()
 
 function returnedGroup(data)
 {
-	
+	// console.log(data);
 	var headings = data.headings;
-	var tableContent = data.tableContent;
+	var tablecontent = data.tablecontent;
+	var availablegroups = data.availablegroups; // The available groups to put users in
+	
 	/* entries=data.entries;
 	moments=data.moments;
 	versions=data.versions;
@@ -65,10 +67,6 @@ function returnedGroup(data)
 	str+="Studenter";
 	str+="</th>";
 
-	str+="<th colspan='1' id='subheading' class='result-header'>";
-	str+="Grupper";
-	str+="</th>";
-
 	// Read dropdown from local storage (??)
 	courselist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
 	if (courselist){	
@@ -83,19 +81,26 @@ function returnedGroup(data)
 	}
 	
 	str+="</thead>";
-	// Iterate the tableContent. 
+	// Iterate the tablecontent. 
 	str += "<tbody>";
 	var row=0;
 
-	for(var i = 0; i < tableContent.length; i++) { // create table rows. 
+	for(var i = 0; i < tablecontent.length; i++) { // create table rows. 
 		row++;
 		str+="<tr>";
 		str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
-		str+="<td>"+tableContent[i].username+"</td><td>"+tableContent[i].name+"</td>"; // Iterates all content, but i dont want to write out ugid, cid and lid ...
-		for(var lid in tableContent[i].assignedlids) {
-			var greenlight = tableContent[i].assignedlids[lid] === 1 ? "light-enabled" : "light-disabled";
-			var redlight = tableContent[i].assignedlids[lid] === 0 ? "light-enabled" : "light-disabled";
-			str+="<td title='Listentry id "+lid+"' id="+'u'+tableContent[i].uid+'_c'+tableContent[i].cid+'_l'+lid+" onclick='togglelid()'>"+"<img class='clickable "+greenlight+"' src='../Shared/icons/StopG.svg' alt='Green light'><img class='clickable "+redlight+"' src='../Shared/icons/StopR.svg' alt='Red light'>"+"</td>";
+		str+="<td title='"+tablecontent[i].firstname+" "+tablecontent[i].lastname+" "+tablecontent[i].ssn+"'>"+tablecontent[i].username+"</td>"; // Iterates all content, but i dont want to write out ugid, cid and lid ...
+		for(var lid in tablecontent[i].lidstogroup) { // Table cells
+			// uid_lid to identify the cell. The ugid is supplied in the option. Is the cid a necessity? 
+			str+="<td>";
+			str+="<select id="+tablecontent[i].uid+"_"+lid+" onchange=changegroup(this)>";
+			str+="<option value='-1'>Pick a group</option>";
+			for(var ugid in availablegroups) {
+				var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : "";
+				str+="<option value="+ugid+selected+">"+availablegroups[ugid]+"</option>";
+			}
+			str+="</select>";
+			str+="</td>";
 		}
 		str+="</tr>";
 	}
@@ -105,7 +110,35 @@ function returnedGroup(data)
 		
 }
 
-// Placeholder function for making AJAX request to assign a group to a lid. 
-function togglelid() {
-	console.log('You have tried to toggle a lid');
+/**
+ * @WIP
+ * Function to make a AJAXRequest to update the group of a student. 
+ * Is called when a dropdown menu is changed.
+ * @param changedElement - the DOM object of the changed element. 
+ */
+function changegroup(changedElement) {
+	var elementId = changedElement.id; // contains uid_lid
+	var value = changedElement.value; // the new ugid
+	
+	var arr = elementId.split("_");
+	var uid = arr[0];
+	var lid = arr[1];
+	
+	// Create JSON object that is to be sent to the AJAXRequest
+	data = {
+		'uid':uid,
+		'lid':lid,
+		'ugid':value
+	};
+	
+	// Placeholder
+	// 				 "UPDATE", data, "GROUP" ?
+	// AJAXRequest(<action>, <data>, <domain>);
+	
+	// Must make a query in AJAXRequest to insert mappings: 
+	// uid to ugid in user_usergroup
+	// ugid to lid in usergroup_listentries
+	
+	// Debugger, needed for now
+	console.log('You have tried to change a group');
 }

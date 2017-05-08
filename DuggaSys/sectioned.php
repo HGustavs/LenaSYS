@@ -41,10 +41,10 @@ pdoConnect();
 	?>
 
 	<!-- Edit Section Dialog START -->
-	<div id='editSection' class='loginBox' style='width:460px;display:none;'>
+	<div id='editSection' class='loginBox' style='width:460px;display:none;position:absolute;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Item</h3>
-			<div onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
+			<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='lid' value='Toddler' />
@@ -76,7 +76,7 @@ pdoConnect();
 	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>New Course Version</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />
@@ -88,7 +88,7 @@ pdoConnect();
 			<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
-			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='createVersion();' />
+			<input class='submit-button' type='button' value='Create' title='Save changes' onclick='createVersion();' />
 		</div>
 	</div>
 	<!-- New Version Dialog END -->
@@ -97,7 +97,7 @@ pdoConnect();
 	<div id='editCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Course Version</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />
@@ -117,7 +117,7 @@ pdoConnect();
 	<div id='HighscoreBox' class='loginBox' style='width:500px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Highscore</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 		<table id ='HighscoreTable' width='100%'>
 			<tr>

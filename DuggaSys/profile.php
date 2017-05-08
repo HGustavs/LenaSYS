@@ -20,6 +20,7 @@ pdoConnect();
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
+	<script src="profile.js"></script>
 
 	<script src="pushnotifications.js"></script>
 </head>
@@ -38,11 +39,11 @@ pdoConnect();
 					<h3>Change challenge question</h3>
 					<form method="post">
 						<label for="currentPassword">Current password</label><br/>
-						<input type="password" id="currentPassword" placeholder="Current password" /><br/><br/>
+						<input type="password" id="currentPassword" class="form-control textinput" placeholder="Current password" /><br/><br/>
 						<label for="challengeQuestion">Challenge question</label><br/>
 						<label id="securityQuestionError"></label>
 						<form action="/action_page.php">
-						  <select name="securityQuestions">
+						  <select id="securityQuestion" class="form-control textinput"name="securityQuestions">
 							<option value="What's your mother's name?" selected>What is your mother's name?</option>
 							<option value="In what year was your father born?">In what year was your father born?</option>
 							<option value="What is your pet’s name?">What is your pet’s name?</option>
@@ -52,10 +53,11 @@ pdoConnect();
 						</form>
 						<!--<?php echo "<textarea id='challengeQuestion' value='' onkeyup='checkScroll(this)' style='height:1.25em; max-height:110px; width:16em; overflow:auto; font-family:sans-serif;'></textarea><br/>" ?>
 						<script>addSecurityQuestionProfile('<?php echo $_SESSION['loginname'] ?>')</script>-->
-						<label for="challengeAnswer">Challenge question</label><br/>
-						<input type="password" id="challengeAnswer" placeholder="Answer to question" /><br/><br/>
-						<button type="button" id="saveChallenge">Save</button><br/><br/>
+						<label for="challengeAnswer">Challenge answer</label><br/>
+						<input type="password" id="challengeAnswer" class="form-control textinput" placeholder="Answer to question" /><br/><br/>
+						<button type="button" onClick="saveChallenge()" id="saveChallenge">Save Challenge</button><br/><br/>
 					</form>
+                    <div id="challengeMessage"></div>
 				</div>
 			
 				<div id="changePassword" style="margin-right:60px;">
@@ -68,7 +70,7 @@ pdoConnect();
 						<input type="password" id="newPassword" placeholder="New password" maxlength="72"/><br/>
 						<label for="newPassword2">New password again</label><br/>
 						<input type="password" id="newPassword2" placeholder="New password again" maxlength="72"/><br/><br/>
-						<button type="button" id="savePassword">Save</button><br/><br/>
+						<button type="button" onClick="saveChallenge()" id="savePassword">Save</button><br/><br/>
 					</form>
 				</div>
 			
