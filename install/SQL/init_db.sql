@@ -489,10 +489,8 @@ CREATE TABLE user_push_registration (
 /* Create the usergroup table. This table consists of groups containing students */
 CREATE TABLE `usergroup` (
   `ugid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL UNIQUE,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `lastupdated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
   PRIMARY KEY (`ugid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
