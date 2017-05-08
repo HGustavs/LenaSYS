@@ -39,6 +39,7 @@
 body {
     font-family: 'Roboto', sans-serif,"Helvetica Neue",Helvetica,Arial,sans-serif;
     margin: 0;
+    min-width: 550px;
 }
 
 #header h1 {
@@ -47,9 +48,10 @@ body {
 }
 
 #inputWrapper {
-    width: 75%;
+    width: 100%;
     margin: auto;
-    background-color: rgb(240,240,240);
+    background-color: rgb(250,250,250);
+    min-width: 550px;
 }
 
 .inputHeading h2 {
@@ -69,8 +71,9 @@ body {
     width: 50%;
     margin: auto;
     text-align: center;
-    padding-bottom: 10px;
-    min-height: 150px;
+    padding: 10px 0;
+    min-height: 375px;
+    background-color: rgb(240,240,240);
 }
 
 #inputFooter {
@@ -104,7 +107,7 @@ body {
 
 .arrow {
     position: relative;
-    bottom: 150px;
+    bottom: 200px;
 }
 
 .arrow:hover {

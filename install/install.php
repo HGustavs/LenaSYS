@@ -137,6 +137,8 @@
     echo '</div>';
 ?>
                 <div class="inputContent" id="td2" valign=top style="display:none;">
+                    <p><b>Enter root log-in credentials for the database you want to use.<br>
+                        Default is user 'root'. Is password for root user is unknown ask a teacher or someone who knows.</b></p>
                     Enter root user. <br>
                     <input type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
                     Enter password for MySQL root. <br>
