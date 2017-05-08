@@ -609,7 +609,7 @@ function processResetPasswordCheckUsername() {
 				if(typeof result.reason != "undefined") {
 					$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
 				} else {
-					$("#newpassword #message2").html("<div class='alert danger'>" + result['getname']  + "</div>");
+					$("#newpassword #message2").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>" + result['getname']  + "</div>");
 				}
 				$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
@@ -657,7 +657,7 @@ function processResetPasswordCheckSecurityAnswer() {
 					if(typeof result.reason != "undefined") {
 						$("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
-						$("#showsecurityquestion #message3").html("<div class='alert danger'>Wrong answer</div>");
+						$("#showsecurityquestion #message3").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong answer</div>");
 					}
 					$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
