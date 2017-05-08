@@ -2381,7 +2381,6 @@ ul.hamburgerList button.menuButton {
 }
 
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
-/*
   table.navheader td.editVers,
   table.navheader td.analysis,
   table.navheader td.newVers {
@@ -2401,7 +2400,6 @@ ul.hamburgerList button.menuButton {
     -moz-transition: opacity 0.5s;
     -o-transition: opacity 0.5s;
   }
-  */
 
   table.navheader td.hamburger {
     pointer-events: auto;
@@ -2424,7 +2422,6 @@ ul.hamburgerList button.menuButton {
 }
 
 @media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
-/*
   table.navheader td.access,
   table.navheader td.groups {
     margin-right: 0px;
@@ -2442,7 +2439,6 @@ ul.hamburgerList button.menuButton {
     -moz-transition: opacity 0.5s;
     -o-transition: opacity 0.5s,;
   }
-  */
 
   ul.hamburgerList li.access,
   ul.hamburgerList li.groups {
@@ -2454,7 +2450,6 @@ ul.hamburgerList button.menuButton {
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
-/*
   table.navheader td.tests,
   table.navheader td.files {
     margin-right: 0px;
@@ -2472,7 +2467,6 @@ ul.hamburgerList button.menuButton {
     -moz-transition: opacity 0.5s;
     -o-transition: opacity 0.5s;
   }
-  */
 
   ul.hamburgerList li.tests,
   ul.hamburgerList li.files {
