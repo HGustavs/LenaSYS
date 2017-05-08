@@ -349,9 +349,9 @@ diagram.linedist = function (xk, yk) {
 }
 
 //--------------------------------------------------------------------
-// eraseObjectLines - removes all the lines connected to an object
+// eraseLines - removes all the lines connected to an object
 //--------------------------------------------------------------------
-diagram.eraseObjectLines = function(object, privateLines) {
+diagram.eraseLines = function(object, privateLines) {
     for (var i = 0; i < privateLines.length; i++) {
         var eraseLeft = false;
         var eraseRight = false;
@@ -365,11 +365,18 @@ diagram.eraseObjectLines = function(object, privateLines) {
             }
         }
 
+        var connected_objects = connectedObjects(privateLines[i]);
         if(!eraseLeft) {
-            movePoint(points[privateLines[i].topLeft]);
+            for(var j = 0; j < connected_objects.length; j++){
+                connected_objects[j].removePointFromConnector(privateLines[i].topLeft);
+            }
+            points[privateLines[i].topLeft] = waldoPoint;
         }
         if(!eraseRight) {
-            movePoint(points[privateLines[i].bottomRight]);
+            for(var j = 0; j < connected_objects.length; j++){
+                connected_objects[j].removePointFromConnector(privateLines[i].bottomRight);
+            }
+            points[privateLines[i].bottomRight] = waldoPoint;
         }
         diagram.delete(privateLines[i]);
     }
@@ -917,7 +924,7 @@ function mouseupevt(ev) {
     }
 }
 function movePoint(point){
-  point=waldoPoint;
+  point="";
 }
 function getConnectedLines(object) {
     // Adds the different connectors into an array to reduce the amount of code
@@ -946,7 +953,8 @@ function eraseObject(object) {
     if(object.kind==2){
       var private_lines = object.getLines();
       object.erase();
-      diagram.eraseObjectLines(object, private_lines);
+
+      diagram.eraseLines(object, private_lines);
     }
     else if(object.kind==1){
       object.erase();
@@ -1613,8 +1621,8 @@ function setRefreshTime(){
         }
         else{
             return time;
-        } 
-   
+        }
+
     }
 
     else{
@@ -1622,5 +1630,3 @@ function setRefreshTime(){
     }
 
     }
-
-
