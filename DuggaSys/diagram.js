@@ -491,7 +491,7 @@ window.addEventListener('resize', canvassize);
 var erEntityA;
 
 function updategfx() {
-    ctx.clearRect((startX*(1/zv)), (startY*(1/zv)), widthWindow, heightWindow);
+    ctx.clearRect(startX, startY, widthWindow, heightWindow);
     if(moveValue == 1){
         ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
@@ -504,7 +504,7 @@ function updategfx() {
     // Draw all points as crosses
     points.drawpoints();
     if (moveValue == 2){
-        ctx.translate((startX*(1/zv)), (startY*(1/zv)));
+        ctx.translate((startX/zv), (startY*zv));
         moveValue = 0;
     }
 }
@@ -546,22 +546,21 @@ function mousemoveevt(ev, t) {
     moy = cy;
     hovobj = diagram.inside(cx, cy);
     if (ev.pageX || ev.pageY == 0) { // Chrome
-        cx = ((ev.pageX - acanvas.offsetLeft) * (1/zv)) + (startX);
-        cy = ((ev.pageY - acanvas.offsetTop) * (1/zv)) + (startY);
-        console.log("CX: "+cx+" | CY: "+cy);
+        cx = (((ev.pageX - acanvas.offsetLeft) * (1/zv)) + (startX*(1/zv)));
+        cy = (((ev.pageY - acanvas.offsetTop) * (1/zv)) + (startY*(1/zv)));
     } else if (ev.layerX || ev.layerX == 0) { // Firefox
-        cx = ((ev.layerX - acanvas.offsetLeft) * (1 / zv)) + (startX*(1/zv));
-        cy = ((ev.layerY - acanvas.offsetTop) * (1 / zv)) + (startY*(1/zv));
+        cx = ((ev.layerX - acanvas.offsetLeft) * (1 / zv));
+        cy = ((ev.layerY - acanvas.offsetTop) * (1 / zv));
     } else if (ev.offsetX || ev.offsetX == 0) { // Opera
-        cx = ((ev.offsetX - acanvas.offsetLeft) * (1 / zv)) + (startX*(1/zv));
-        cy = ((ev.offsetY - acanvas.offsetTop) * (1 / zv)) + (startY*(1/zv));
-    }
+        cx = ((ev.offsetX - acanvas.offsetLeft) * (1 / zv));
+        cy = ((ev.offsetY - acanvas.offsetTop) * (1 / zv));
+    }/*
     if (md == 1 || md == 2 || md == 0 && uimode != " ") {
         if (snapToGrid) {
             cx = Math.round(cx / gridSize) * gridSize;
             cy = Math.round(cy / gridSize) * gridSize;
         }
-    }
+    }*/
     if (md == 0) {
         // Select a new point only if mouse is not already moving a point or selection box
         sel = points.distance(cx, cy);
@@ -633,6 +632,7 @@ function mousemoveevt(ev, t) {
             crossfillStyle = "rgba(255, 102, 68, 0.0)";
         }
     }
+    console.log("CX: "+cx+" | CY: "+cy);
 }
 
 function mousedownevt(ev) {
@@ -862,7 +862,7 @@ function mouseupevt(ev) {
     }
 }
 function movePoint(point){
-  point=waldoPoint;
+    point=waldoPoint;
 }
 function getConnectedLines(object) {
     // Adds the different connectors into an array to reduce the amount of code
@@ -1356,7 +1356,6 @@ function movemode(e, t) {
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
-        mousemoveevt(e, t);
     }
 }
 
@@ -1425,8 +1424,6 @@ function zoomOutMode(e) {
         canvas.addEventListener("click", zoomOutClick, false);
     } else {
         zoomOutButton.className = "unpressed";
-        cx += (startX*zv);
-        cy += (startY*zv);
         canvas.addEventListener("dblclick", doubleclick, false);
         canvas.removeEventListener("click", zoomOutClick, false);
         canvas.style.cursor = "default";
@@ -1440,8 +1437,9 @@ function zoomInClick() {
     // To be able to use the 10% increase och decrease, we need to use this calcuation.
     var inScale = ((1 / oldZV) * zv);
     ctx.scale(inScale, inScale);
-    moveValue = 2;
-    updategfx();
+    if(zv == 1){
+        moveValue = 2;
+    }
 }
 
 function zoomOutClick() {
@@ -1451,8 +1449,6 @@ function zoomOutClick() {
     // To be able to use the 10% increase och decrease, we need to use this calcuation.
     var outScale = ((1 / oldZV) * zv);
     ctx.scale(outScale, outScale);
-    moveValue = 2;
-    updategfx();
 }
 
 //calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram. it also save the local diagram
