@@ -250,7 +250,7 @@ function handleOrderedList(currentLine, prevLine, nextLine) {
     	markdown +=  value;
 
     	// open sublist
-    	markdown += "<ol>" 
+    	markdown += "<ol>";
     }
     // Close sublists
     else if(currentLineIndentation > nextLineIndentation) { 
@@ -288,7 +288,7 @@ function handleTable(currentLine, prevLine, nextLine) {
     // create thead
     if(!isTable(prevLine) && nextLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
         markdown += "<thead>";
-        markdown += "<tr>"
+        markdown += "<tr>";
         for(var i = 0; i < columns.length; i++) {
             markdown += "<th>" + columns[i].trim() + "</th>";
         }
@@ -312,7 +312,7 @@ function handleTable(currentLine, prevLine, nextLine) {
         }
         // handle table row
         else {
-            markdown += "<tr style=''>"
+            markdown += "<tr style=''>";
             for(var i = 0; i < columns.length; i++) {
                 var alignment = "";
 
