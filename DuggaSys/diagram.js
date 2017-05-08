@@ -39,6 +39,7 @@ var heightWindow;                   // The height on the users screen is saved i
 var consoleInt = 0;
 var startX = 0, startY = 0;         // Current X- and Y-coordinant from which the canvas start from
 var waldoPoint = "";
+var moveValue = 0;
 var activePoint = null;             //This point indicates what point is being hovered by the user
 var p1 = null;                      // When creating a new figure, these two variables are used ...
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
@@ -554,6 +555,10 @@ var erEntityA;
 
 function updategfx() {
     ctx.clearRect(startX, startY, widthWindow, heightWindow);
+    if(moveValue == 1){
+        ctx.translate((-mouseDiffX), (-mouseDiffY));
+        moveValue = 0;
+    }
     drawGrid();
     // Sort alla connectors
     diagram.sortConnectors();
@@ -600,17 +605,15 @@ function mousemoveevt(ev, t) {
     moy = cy;
     hovobj = diagram.inside(cx, cy);
     if (ev.pageX || ev.pageY == 0) { // Chrome
-        cx = (ev.pageX - acanvas.offsetLeft) * (1 / zv);
-        cy = (ev.pageY - acanvas.offsetTop) * (1 / zv);
+        cx = ((ev.pageX - acanvas.offsetLeft) * (1 / zv)) + (startX*(1/zv));
+        cy = ((ev.pageY - acanvas.offsetTop) * (1 / zv)) + (startY*(1/zv));
     } else if (ev.layerX || ev.layerX == 0) { // Firefox
-        cx = (ev.layerX - acanvas.offsetLeft) * (1 / zv);
-        cy = (ev.layerY - acanvas.offsetTop) * (1 / zv);
+        cx = ((ev.layerX - acanvas.offsetLeft) * (1 / zv)) + (startX*(1/zv));
+        cy = ((ev.layerY - acanvas.offsetTop) * (1 / zv)) + (startY*(1/zv));
     } else if (ev.offsetX || ev.offsetX == 0) { // Opera
-        cx = (ev.offsetX - acanvas.offsetLeft) * (1 / zv);
-        cy = (ev.offsetY - acanvas.offsetTop) * (1 / zv);
+        cx = ((ev.offsetX - acanvas.offsetLeft) * (1 / zv)) + (startX*(1/zv));
+        cy = ((ev.offsetY - acanvas.offsetTop) * (1 / zv)) + (startY*(1/zv));
     }
-    cx += startX;
-    cy += startY;
     if (md == 1 || md == 2 || md == 0 && uimode != " ") {
         if (snapToGrid) {
             cx = Math.round(cx / gridSize) * gridSize;
@@ -1432,11 +1435,8 @@ function mousemoveposcanvas(e) {
     startY += mouseDiffY;
     mousedownX = mousemoveX;
     mousedownY = mousemoveY;
-    ctx.clearRect(0, 0, widthWindow, heightWindow);
-    ctx.translate((-mouseDiffX), (-mouseDiffY));
-    diagram.sortConnectors();
-    diagram.draw();
-    points.drawpoints();
+    moveValue = 1;
+    updategfx();
     reWrite();
 }
 
