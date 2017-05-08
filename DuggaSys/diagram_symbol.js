@@ -348,12 +348,49 @@ function Symbol(kind) {
     // IMP!: Should not be moved back on canvas after this function is run.
     //--------------------------------------------------------------------
     this.movePoints = function () {
-        points[this.topLeft] = "";
-        points[this.bottomRight] = "";
-        points[this.centerpoint] = "";
-        points[this.middleDivider] = "";
+        points[this.topLeft] = waldoPoint;
+        points[this.bottomRight] = waldoPoint;
+        points[this.centerpoint] = waldoPoint;
+        points[this.middleDivider] = waldoPoint;
     }
-
+    //--------------------------------------------------------------------
+    // Moves all relevant points, within the object, off the canvas.
+    // IMP!: Should not be moved back on canvas after this function is run.
+    //--------------------------------------------------------------------
+    this.removePointFromConnector = function(point) {
+        var broken = false;
+        for(var i = 0; i < this.connectorTop.length; i++){
+            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
+                this.connectorTop.splice(i,1);
+                broken = true;
+                break;
+            }
+        }
+        if(!broken){
+            for(var i = 0; i < this.connectorBottom.length; i++){
+                if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
+                    this.connectorBottom.splice(i,1);
+                    break;
+                }
+            }
+        }
+        if(!broken){
+            for(var i = 0; i < this.connectorRight.length; i++){
+                if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
+                    this.connectorRight.splice(i,1);
+                    break;
+                }
+            }
+        }
+        if(!broken){
+            for(var i = 0; i < this.connectorLeft.length; i++){
+                if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
+                    this.connectorLeft.splice(i,1);
+                    break;
+                }
+            }
+        }
+    }
     this.getPoints = function() {
         var private_points = [];
         if(this.symbolkind==3){
