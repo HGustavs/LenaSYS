@@ -99,13 +99,13 @@ function returnedGroup(data)
 		for(var lid in tablecontent[i].lidstogroup) { // Table cells
 			// uid_lid to identify the cell. The ugid is supplied in the option. Is the cid a necessity? 
 			str+="<td style='padding-left:5px;'>";
-			str+="<select id="+tablecontent[i].uid+"_"+lid+" onchange=changegroup()>";
+			str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+" class='test' onchange=changegroup()>";
 			str+="<option value='-1'>Pick a group</option>";
 			for(var ugid in availablegroups) {
 				var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : "";
 				str+="<option value="+ugid+selected+">"+availablegroups[ugid]+"</option>";
 			}
-			str+="</select>";
+			str+="</select><div class='groupStar'>*</div>";
 			str+="</td>";
 		}
 		str+="</tr>";
