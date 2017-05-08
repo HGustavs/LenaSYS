@@ -428,6 +428,9 @@ function initcanvas() {
     document.getElementById("zoomInButton").addEventListener('click', zoomInMode, false);
     document.getElementById("zoomOutButton").addEventListener('click', zoomOutMode, false);
     canvas.addEventListener('dblclick', doubleclick, false);
+    canvas.addEventListener('touchmove', mousemoveevt, false);
+    canvas.addEventListener('touchstart', mousedownevt, false);
+    canvas.addEventListener('touchend', mouseupevt, false);
 }
 
 // Function to enable and disable the grid, functionality is related to cx and cy
@@ -571,12 +574,14 @@ function updateActivePoint() {
         activePoint = null;
     }
 }
-function pointDistance(point1, point2){
+
+function pointDistance(point1, point2) {
     var width = (point1.x > point2.x)? point1.x - point2.x: point2.x - point1.x;
     var height = (point1.y > point2.y)? point1.y - point2.y: point2.y - point1.y;
 
     return [width, height];
 }
+
 function mousemoveevt(ev, t) {
     xPos = ev.clientX;
     yPos = ev.clientY;
