@@ -87,7 +87,7 @@
     ?>
 
     <?php
-        if(isset($_POST['instance_id'])){
+        if(isset($_POST['id'])){
 
         }
     ?>

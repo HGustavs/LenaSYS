@@ -25,26 +25,41 @@ pdoConnect();
     <script src="diagram_IOHandler.js"></script>
 </head>
 <div id="content">
+    <div style="background-color:#614875;height: 100vh;width: 150px;position:absolute;left:0;right:0;top:50px;padding:20px;>
     <div id="buttonDiv">
-        <form action="diagram.php">
+
+        <form action="diagram_IOHandler.php">
             <button type='submit'>New Canvas</button>
         </form>
         <br>
-        <form action='diagram.php'>
+        <form action='diagram_IOHandler.php'>
             <input type="hidden" name="id" value="1"/>
         <button type='submit'>Load Canvas</button>
         </form>
         <br>
-            <form action="diagram.php">
+        <select name="imgfolder">
+            <option value="genimage">Folders</option>
+            <?php
+            $Mydir = 'Save/'; //  use 'anydirectory_of_your_choice/';
+
+            foreach(glob($Mydir.'*', GLOB_ONLYDIR) as $dir) {
+                $dirname =  basename($dir) ;
+                echo '<option value="' . $dirname . '">' . $dirname . '</option>'  ;
+            }
+            ?>
+        </select>
+
+            <form action="diagram_IOHandler.php">
                 <input type="hidden" name="id" value="2"/>
         <button type='submit'>Upload Canvas</button>
             </form>
         <br>
-                <form action="diagram.php">
+                <form action="diagram_IOHandler.php">
                     <input type="hidden" name="id" value="3"/>
         <button type='submit'>Example Canvas</button>
                 </form>
     </div>
+</div>
 </div>
 <?php
 $noup = "COURSE";
