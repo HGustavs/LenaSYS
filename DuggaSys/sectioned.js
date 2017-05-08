@@ -652,8 +652,7 @@ function returnedSection(data)
     
 		str="";
 
-//		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
-		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize'>"; // This is for stacking buttons.
+		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
 
     if(data['writeaccess']) {
 // Retrieve start and end dates for a version, if there are such, else set to null
