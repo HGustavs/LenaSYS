@@ -406,6 +406,17 @@ diagram.updateLineRelations = function() {
     }
 }
 
+//--------------------------------------------------------------------
+// Sort all connectors related to entity.
+//--------------------------------------------------------------------
+diagram.sortConnectors = function() {
+    for (var i = 0; i < diagram.length; i++){
+        if (diagram[i].symbolkind == 3){
+            diagram[i].sortAllConnectors();
+        }
+    }
+}
+
 function initcanvas() {
     //hashes the current diagram, and then compare if it have been change to see if it needs to be saved.
     setInterval(refreshFunction, refresh_timer);
@@ -541,8 +552,8 @@ var erEntityA;
 function updategfx() {
     ctx.clearRect(startX, startY, widthWindow, heightWindow);
     drawGrid();
-    // Here we explicitly sort connectors... we need to do this dynamically e.g. diagram.sortconnectors
-    erEntityA.sortAllConnectors();
+    // Sort alla connectors
+    diagram.sortConnectors();
     // Redraw diagram
     diagram.draw();
     // Draw all points as crosses
@@ -1418,7 +1429,7 @@ function mousemoveposcanvas(e) {
     mousedownY = mousemoveY;
     ctx.clearRect(0, 0, widthWindow, heightWindow);
     ctx.translate((-mouseDiffX), (-mouseDiffY));
-    erEntityA.sortAllConnectors();
+    diagram.sortConnectors();
     diagram.draw();
     points.drawpoints();
     reWrite();
