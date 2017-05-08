@@ -161,7 +161,7 @@ CREATE TABLE userAnswer (
 	stepsUsed 			INT(11) DEFAULT NULL,
 	totalStepsUsed	INT(11) DEFAULT '0',
 	feedback 				TEXT,
-	timesSubmitted	INT(11) NOT NULL DEFAULT '0',
+	timesGraded	INT(11) NOT NULL DEFAULT '0',
 	PRIMARY KEY 	(aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (uid) REFERENCES user(uid),

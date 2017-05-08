@@ -1,7 +1,7 @@
 Changes needed to the live sql database
 
 Table userAnswer:
-	Added timesSubmitted INT(11) NOT NULL DEFAULT '0'
+	Added timesGraded INT(11) NOT NULL DEFAULT '0'
 
 Table user:
 	Added securityquestion VARCHAR(256) DEFAULT NULL
