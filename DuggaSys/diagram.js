@@ -1546,7 +1546,9 @@ function loadDiagram() {
 
 //remove localstorage
 function removeLocal() {
-    localStorage.setItem('localdiagram', "");
+    for(var i = 0; i < localStorage.length; i++){
+        localStorage.clear();
+    }
 }
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
