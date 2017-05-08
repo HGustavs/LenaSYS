@@ -43,13 +43,14 @@ pdoConnect();
 </div>
 </div>
 
+
 <?php
 $noup = "COURSE";
 include '../Shared/navheader.php';
 ?>
 <!-- content START -->
 <div id='showStored' style="display:none;position:absolute;left:190px;top:50px">
-    <div id="a" style="position:fixed;height:100vh;width:100px;border-right:1px solid black;">
+    <div id="b" style="position:fixed;height:100vh;width:100px;border-right:1px solid black;">
         <?php
         if ($handle = opendir('Save/')) {
         $blacklist = array('.', '..', 'Save', 'id.txt');
@@ -58,7 +59,7 @@ include '../Shared/navheader.php';
             ?>
             <br>
 
-            <button id=but name="answer" value='<?php print $file ?>' style="margin-left:15px;left:10px;width:60px;margin-top:5px;" onclick='redirect(this)'><?php print $file ?></button>
+            <button id=but name="answer" value='<?php print $file ?>' style="margin-left:15px;left:10px;width:60px;margin-top:5px;" onclick='loadStoredFolders("<?php print $file ?>")'><?php print $file ?></button>
 
         <?php
 
@@ -69,12 +70,46 @@ include '../Shared/navheader.php';
         ?>
     </div>
 </div>
+<?php
+
+
+?>
+<div id='showStoredFolders' style="display:none;position:absolute;left:300px;top:50px">
+    <div id="a" style="position:fixed;height:100vh;width:100px;border-right:1px solid black;">
+        <?php
+        if(isset($_POST["Folder"])) {
+        $newFolder = $_POST['Folder'];
+
+
+            if ($handle = opendir("Save/$newFolder/")) {
+                $blacklist = array('.', '..', 'Save', 'id.txt');
+                while (false !== ($file = readdir($handle))) {
+                    if (!in_array($file, $blacklist)) {
+                        ?>
+                        <br>
+
+                        <button id=but name="answer" value='<?php print $file ?>'
+                                style="margin-left:15px;left:10px;width:60px;margin-top:5px;"
+                                onclick='redirect(this)'><?php print $file ?></button>
+
+                        <?php
+
+                    }
+                }
+                closedir($handle);
+            }
+        }
+        ?>
+    </div>
+</div>
 <div id="newFolder" style="visibility:hidden;position:absolute;left:500px;top:55px;">
-    Folder name:<input type="text"  />
+    <form action="diagram_IOHandler.php" method="post">
+    Folder name:<input name="folderName" type="text"  />
     <br>
     Permissions: W<input type="checkbox" name="W" value="W"> R<input type="checkbox" name="R" value="R"> X<input type="checkbox" name="X" value="X">
     <br>
-    <button id="a">Create!</button>
+    <button type="submit" >Create!</button>
+    </form>
 </div>
 <div id='showNew' style="display:none;position:absolute;left:190px;top:50px">
    <div id="a" style="position:fixed;height:100vh;width:300px;border-right:1px solid black;">
@@ -120,6 +155,14 @@ include '../Shared/navheader.php';
 <!-- content END -->
 <?php
 include '../Shared/loginbox.php';
+?>
+<?php
+if(isset($_POST["folderName"])){
+    $name = $_POST["folderName"];
+    if(!is_dir("Save/$name")) {
+        mkdir("Save/$name", 0777, true);
+    }
+}
 ?>
 
 </body>

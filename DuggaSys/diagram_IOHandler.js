@@ -32,6 +32,9 @@ function saveToServer(dia) {
     });
 
 }
+function createFolder(name){
+
+}
 function redirect(doc){
     var a = doc.value;
     if(a){
@@ -44,6 +47,20 @@ function loadNew(){
 }
 function loadStored(){
     document.getElementById('showStored').style.display = "block";
+}
+function loadStoredFolders(f){
+    $.ajax({
+        url: 'diagram_IOHandler.php',
+        type: 'POST', // GET or POST
+        data: {Folder: f},
+        success: function(msg)
+        {
+            alert('POSTED');
+        }
+    });
+    document.getElementById('showStoredFolders').style.display = "block";
+
+
 }
 function loadUpload(){
 
