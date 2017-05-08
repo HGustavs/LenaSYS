@@ -556,18 +556,18 @@ function mousemoveevt(ev, t) {
         cx = (((ev.pageX - acanvas.offsetLeft) * (1/zv)) + (startX*(1/zv)));
         cy = (((ev.pageY - acanvas.offsetTop) * (1/zv)) + (startY*(1/zv)));
     } else if (ev.layerX || ev.layerX == 0) { // Firefox
-        cx = ((ev.layerX - acanvas.offsetLeft) * (1 / zv));
-        cy = ((ev.layerY - acanvas.offsetTop) * (1 / zv));
+        cx = (((ev.layerX - acanvas.offsetLeft) * (1/zv)) + (startX*(1/zv)));
+        cy = (((ev.layerY - acanvas.offsetTop) * (1/zv)) + (startY*(1/zv)));
     } else if (ev.offsetX || ev.offsetX == 0) { // Opera
-        cx = ((ev.offsetX - acanvas.offsetLeft) * (1 / zv));
-        cy = ((ev.offsetY - acanvas.offsetTop) * (1 / zv));
-    }/*
+        cx = (((ev.offsetX - acanvas.offsetLeft) * (1/zv)) + (startX*(1/zv)));
+        cy = (((ev.offsetY - acanvas.offsetTop) * (1/zv)) + (startY*(1/zv)));
+    }
     if (md == 1 || md == 2 || md == 0 && uimode != " ") {
         if (snapToGrid) {
             cx = Math.round(cx / gridSize) * gridSize;
             cy = Math.round(cy / gridSize) * gridSize;
         }
-    }*/
+    }
     if (md == 0) {
         // Select a new point only if mouse is not already moving a point or selection box
         sel = points.distance(cx, cy);
@@ -639,7 +639,6 @@ function mousemoveevt(ev, t) {
             crossfillStyle = "rgba(255, 102, 68, 0.0)";
         }
     }
-    console.log("CX: "+cx+" | CY: "+cy);
 }
 
 function mousedownevt(ev) {
