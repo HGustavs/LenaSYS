@@ -32,7 +32,25 @@ function saveToServer(dia) {
     });
 
 }
+function redirect(doc){
+    var a = doc.value;
+    if(a){
+        location.href="diagram.php?id="+a;
+    }
 
+}
+function loadNew(){
+    document.getElementById('showNew').style.display = "block";
+}
+function loadStored(){
+    document.getElementById('showStored').style.display = "block";
+}
+function loadUpload(){
+
+}
+function loadExample(){
+
+}
 function getImage() {
     window.open(document.getElementById("myCanvas").toDataURL("image/png"), 'Image');
 }

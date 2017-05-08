@@ -25,47 +25,87 @@ pdoConnect();
     <script src="diagram_IOHandler.js"></script>
 </head>
 <div id="content">
-    <div style="background-color:#614875;height: 100vh;width: 150px;position:absolute;left:0;right:0;top:50px;padding:20px;>
-    <div id="buttonDiv">
+    <div style="background-color:#614875;height: 100vh;width: 150px;position:fixed;left:0;right:0;top:50px;padding:20px;">
+    <div id='buttonDiv' >
 
-        <form action="diagram_IOHandler.php">
-            <button type='submit'>New Canvas</button>
-        </form>
+    <input type="button" name="answer" value='New Canvas' onclick='loadNew()' />
+    <br>
+    <br>
+    <input type="button" name="answer" value="Load Canvas" onclick='loadStored()' />
         <br>
-        <form action='diagram_IOHandler.php'>
-            <input type="hidden" name="id" value="1"/>
-        <button type='submit'>Load Canvas</button>
-        </form>
-        <br>
-        <select name="imgfolder">
-            <option value="genimage">Folders</option>
-            <?php
-            $Mydir = 'Save/'; //  use 'anydirectory_of_your_choice/';
+    <br>
 
-            foreach(glob($Mydir.'*', GLOB_ONLYDIR) as $dir) {
-                $dirname =  basename($dir) ;
-                echo '<option value="' . $dirname . '">' . $dirname . '</option>'  ;
-            }
-            ?>
-        </select>
-
-            <form action="diagram_IOHandler.php">
-                <input type="hidden" name="id" value="2"/>
-        <button type='submit'>Upload Canvas</button>
-            </form>
+    <input type="button" name="answer" value="Upload Canvas" onclick='loadUpload()' />
         <br>
-                <form action="diagram_IOHandler.php">
-                    <input type="hidden" name="id" value="3"/>
-        <button type='submit'>Example Canvas</button>
-                </form>
+    <br>
+         <input type="button" name="answer" value="Example Canvas" onclick='loadExample()' />
     </div>
 </div>
 </div>
+
 <?php
 $noup = "COURSE";
 include '../Shared/navheader.php';
 ?>
 <!-- content START -->
+<div id='showStored' style="display:none;position:absolute;left:190px;top:50px">
+    <div id="a" style="position:fixed;height:100vh;width:100px;border-right:1px solid black;">
+        <?php
+        if ($handle = opendir('Save/')) {
+        $blacklist = array('.', '..', 'Save', 'id.txt');
+        while (false !== ($file = readdir($handle))) {
+        if (!in_array($file, $blacklist)) {
+            ?>
+            <br>
+
+            <button id=but name="answer" value='<?php print $file ?>' style="margin-left:15px;left:10px;width:60px;margin-top:5px;" onclick='redirect(this)'><?php print $file ?></button>
+
+        <?php
+
+        }
+        }
+        closedir($handle);
+        }
+        ?>
+    </div>
+</div>
+<div id="newFolder" style="visibility:hidden;position:absolute;left:500px;top:55px;">
+    Folder name:<input type="text"  />
+    <br>
+    Permissions: W<input type="checkbox" name="W" value="W"> R<input type="checkbox" name="R" value="R"> X<input type="checkbox" name="X" value="X">
+    <br>
+    <button id="a">Create!</button>
+</div>
+<div id='showNew' style="display:none;position:absolute;left:190px;top:50px">
+   <div id="a" style="position:fixed;height:100vh;width:300px;border-right:1px solid black;">
+       <button id=but name="answer"  style="margin-left:50px;width:200px;margin-top:5px;" onclick='document.getElementById("newFolder").style.visibility= "visible"'>New Folder</button>
+        <hr>
+       <?php
+       if ($handle = opendir('Save/')) {
+           $blacklist = array('.', '..', 'Save', 'id.txt');
+           while (false !== ($file = readdir($handle))) {
+               if (!in_array($file, $blacklist)) {
+                   ?>
+                   <br>
+
+                   <button id=but name="answer" value='<?php print $file ?>' style="margin-left:90px;left:10px;width:100px;margin-top:5px;" onclick='redirect(this)'><?php print $file ?></button>
+
+                   <?php
+
+               }
+           }
+           closedir($handle);
+       }
+
+       function newMap(){
+
+           mkdir("Save/a",0777,true);
+       }
+       ?>
+
+   </div>
+</div>
+
 
 <!-- The Appearance menu. Default state is display: none; -->
 <div id="appearance" class='loginBox' style='display: none;'>
