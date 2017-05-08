@@ -2401,6 +2401,7 @@ ul.hamburgerList button.menuButton {
     -moz-transition: opacity 0.5s;
     -o-transition: opacity 0.5s;
   }
+  */
 
   table.navheader td.hamburger {
     pointer-events: auto;
@@ -2420,7 +2421,6 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
-*/
 }
 
 @media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
@@ -2433,6 +2433,7 @@ ul.hamburgerList button.menuButton {
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
   }
+  */
 
   table.navheader div.access,
   table.navheader div.groups {
@@ -2450,7 +2451,6 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
-*/
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
@@ -2472,6 +2472,7 @@ ul.hamburgerList button.menuButton {
     -moz-transition: opacity 0.5s;
     -o-transition: opacity 0.5s;
   }
+  */
 
   ul.hamburgerList li.tests,
   ul.hamburgerList li.files {
@@ -2480,5 +2481,4 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
-*/
 }
