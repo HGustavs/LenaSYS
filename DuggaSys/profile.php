@@ -43,12 +43,15 @@ pdoConnect();
 						<label for="challengeQuestion">Challenge question</label><br/>
 						<label id="securityQuestionError"></label>
 						<form action="/action_page.php">
-						  <select id="securityQuestion" class="form-control textinput"name="securityQuestions">
-							<option value="What's your mother's name?" selected>What is your mother's name?</option>
-							<option value="In what year was your father born?">In what year was your father born?</option>
-							<option value="What is your pet’s name?">What is your pet’s name?</option>
-							<option value="Who was your childhood hero?">Who was your childhood hero?</option>
-						  </select>
+				            <select id="securityQuestion" class="form-control textinput"name="securityQuestions">
+                                <option value="What was the name of your first stuffed animal?" selected>What was the name of your first stuffed animal?</option>
+                                <option value="What is your favorite movie quote?" selected>What is your favorite movie quote?</option>
+                                <option value="What was the second best birthday present you ever got?" selected>What was the second birthday present you ever got?</option>
+                                <option value="What is the first name of your favorite childhood friend?" selected>What is the first name of your favorite childhood friend?</option>
+                                <option value="What is the first name of the person you had your second kiss with?" selected>What is the first name of the person you had your second kiss with</option>
+                                <option value="What was your favorite place to visit as a child?" selected>What was your favorite place to visit as a child?</option>
+                                <option value="Where were you when you had your first alcoholic drink (or cigarette)? selected">Where were you when you had your first alcoholic drink (or 
+				            </select>
 						  <br><br>
 						</form>
 						<!--<?php echo "<textarea id='challengeQuestion' value='' onkeyup='checkScroll(this)' style='height:1.25em; max-height:110px; width:16em; overflow:auto; font-family:sans-serif;'></textarea><br/>" ?>
