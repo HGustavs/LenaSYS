@@ -786,15 +786,17 @@ function resize() {
             cy = sy - entityTemplate.height;
         }
     } else if (uimode == "CreateERRelation" && md == 4) {
-        if (cx >= sx && (cx - sx) < relationTemplate.width) {
+        if(cx > sx) {
             cx = sx + relationTemplate.width;
-        } else if (cx < sx && (sx - cx) < relationTemplate.width) {
-            cx = sx - relationTemplate.width;
+        } else{
+            sx=cx;
+            cx = sx+relationTemplate.width;
         }
-        if (cy >= sy && (cy - sy) < relationTemplate.width) {
+        if(cy > sy) {
             cy = sy + relationTemplate.height;
-        } else if (cy < sy && (sy - cy) < relationTemplate.height) {
-            cy = sy - relationTemplate.height;
+        } else{
+            sy=cy;
+            cy = sy+relationTemplate.height;
         }
     }
 }
