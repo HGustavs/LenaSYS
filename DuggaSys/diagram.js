@@ -709,6 +709,36 @@ function mousedownevt(ev) {
         sx = cx;
         sy = cy;
     }
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == 1) {
+            var item = diagram[i];
+            var intersections = 0;
+            if (cx > item.minX && cx < item.maxX && cy > item.minY && cy < item.maxY) {
+                for (var j = 0; j < item.segments.length; j++) {
+                    var pointA = points[item.segments[j].pa];
+                    var pointB = points[item.segments[j].pb];
+                    if ((pointA.x < cx && pointB.x > cx) || (pointA.x > cx && pointB.x < cx)) {
+                        var deltaX = pointB.x - pointA.x;
+                        var deltaY = pointB.y - pointA.y;
+                        var k = deltaY / deltaX;
+                        if (pointB.x < pointA.x) {
+                            var tempPoint = pointA;
+                            pointA = pointB;
+                            pointB = pointA;
+                        }
+                        var x = cx - pointA.x;
+                        var y = (k * x) + pointA.y;
+                        if (y < cy) {
+                            intersections++;
+                        }
+                    }
+                }
+                if ((intersections % 2) > 0) {
+                    console.log("You clicked inside of a figure!");
+                }
+            }
+        }
+    }
 }
 
 function doubleclick(ev) {

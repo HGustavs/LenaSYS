@@ -26,6 +26,7 @@ function Path() {
             points[seg.pb].x += movex;
             points[seg.pb].y += movey;
         }
+        this.calculateBoundingBox();
     }
 
     //--------------------------------------------------------------------
@@ -41,6 +42,37 @@ function Path() {
         } else {
             alert("Unknown segment type: " + kind);
         }
+        this.calculateBoundingBox();
+    }
+
+    //--------------------------------------------------------------------
+    // Calculates a boundary box for the figure.
+    // Saves min and max values of X and Y.
+    // This is to faster check for clicks inside of the figure.
+    //--------------------------------------------------------------------
+    this.calculateBoundingBox = function() {
+        var minX = points[this.segments[0].pa].x;
+        var maxX = minX;
+        var minY = points[this.segments[0].pa].y;
+        var maxY = minY;
+        for (var i = 1; i < this.segments.length; i++) {
+            var tempX = points[this.segments[i].pa].x;
+            var tempY = points[this.segments[i].pa].y;
+            if (tempX < minX) {
+                minX = tempX;
+            } else if (tempX > maxX) {
+                maxX = tempX;
+            }
+            if (tempY < minY) {
+                minY = tempY;
+            } else if (tempY > maxY) {
+                maxY = tempY;
+            }
+        }
+        this.minX = minX;
+        this.maxX = maxX;
+        this.minY = minY;
+        this.maxY = maxY;
     }
 
     //--------------------------------------------------------------------
