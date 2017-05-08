@@ -44,7 +44,7 @@
         var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
         var filePath = "<?php echo $putFileHere; ?>";
 
-        document.getElementById('dialogText').innerHTML="<div style='background-image: url(../Shared/icons/warningTriangle.png); background-size: 150px; background-repeat: no-repeat;'><h1 style='text-align: center;'><span style='color: red;' />" +
+        document.getElementById('dialogText').innerHTML="<div style='background-image: url(../Shared/icons/warningTriangle.png); background-size: 10%; background-repeat: no-repeat;'><h1 style='text-align: center;'><span style='color: red;' />" +
             "!!!!!!READ THIS BEFORE YOU START!!!!!!</span></h1><br>" +
             "<h2 style='text-align: center;'>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
             "<br>" +
@@ -73,8 +73,10 @@
         }
     </script>
 
-    <h1>Fill out all fields to install LenaSYS and create database.</h1>
-    <button id="showModalBtn">Open start-dialog again.</button> (To see what permissions to set) <br>
+    <div id="header">
+        <h1>LenaSYS Installer</h1>
+        <span id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
+    </div>
     <script>
         var btn = document.getElementById("showModalBtn"); // Get the button that opens the modal
         // Open modal on button click
@@ -83,13 +85,12 @@
         }
     </script>
     <form action="install.php?mode=install" method="post">
-        <table cellspacing="0px">
-            <tr align="left">
-                <th valign=top><h2>New/Existing MySQL user and DB</h2></th>
-                <th valign=top bgcolor="#EEEEEE"><h2>MySQL Root Login</h2></th>
-                <th valign=top><h2>Test Data</h2></th>
-            </tr>
-            <tr>
+        <div id="inputWrapper">
+            <div class="inputHeading" id="th1" valign=top style="display:block;"><h2>New/Existing MySQL user and DB</h2></div>
+            <div class="inputHeading" id="th2" valign=top style="display:none;"><h2>MySQL Root Login</h2></div>
+            <div class="inputHeading" id="th3" valign=top style="display:none;"><h2>Test Data</h2></div>
+            <div class="inputHeading" id="th4" valign=top style="display:none;"><h2>Write over?</h2></div>
+            <div class="inputHeading" id="th5" valign=top style="display:none;"><h2>Submit</h2></div>
  <?php
     // Prefill existing credentials, exluding password
     $dbUsername = "";
@@ -120,7 +121,11 @@
         }
       }
     }
-    echo '<td valign=top width="20%">';
+    echo '<div class="inputContent" id="td1" style="display:block;">';
+    echo '<p><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
+            Next enter a password for this user (new or existing).<br>
+            After this enter a database to use. This could also be either an existing or a new database.<br>
+            Finally enter the host. Is installation is running from webserver localhost should be used.</b></p>';
     echo 'Enter new MySQL user. <br>';
     echo '<input type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
     echo 'Enter password for MySQL user. <br>';
@@ -129,15 +134,15 @@
     echo '<input type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
     echo 'Enter hostname (e.g localhost). <br>';
     echo '<input type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
-    echo '</td>';
+    echo '</div>';
 ?>
-                <td valign=top width="30%" bgcolor="#EEEEEE">
+                <div class="inputContent" id="td2" valign=top style="display:none;">
                     Enter root user. <br>
                     <input type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
                     Enter password for MySQL root. <br>
                     <input type="password" name="rootPwd" placeholder="Root Password" /> <br>
-                </td>
-                <td valign=top width="40%">
+                </div>
+                <div class="inputContent" id="td3" valign=top style="display:none;">
                     <input type="checkbox" name="createDB" value="Yes" checked/>
                     Create new database. <br><hr>
                     <input type="checkbox" name="fillDB" value="Yes" checked/>
@@ -149,24 +154,55 @@
                     <input type="checkbox" name="plain" value="Yes" checked/> Plain Text <br>
                     <input type="checkbox" name="sql" value="Yes" checked/> SQL <br>
                     <input type="checkbox" name="sr" value="Yes" checked/> SR <br>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3" bgcolor="#FFCCCC">
+                </div>
+                <div class="inputContent" id="td4" colspan="3" bgcolor="#FFCCCC" style="display:none;">
                     <input type="checkbox" name="writeOverDB" value="Yes" />
                     <b><-- Check the box if you want to write over an existing database and user<br>
                         <span style='color: red;'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE)</span></b><br>
-                </td>
-            </tr>
-        </table>
-        <table width="100%">
-            <tr>
-                <td bgcolor="#EEEEEE">
+                </div>
+                <div class="inputContent" id="td5" bgcolor="#EEEEEE" style="display:none;">
                     <input type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
                     <input type="reset" value="Clear"/>
-                </td>
-            </tr>
-        </table>
+                </div>
+            <div class="arrow" id="leftArrow">
+                <svg height="150" width="150">
+                    <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
+                    <polygon points="100,30 20,75 100,120" style="fill:rgb(255,233,126);" />
+                </svg>
+            </div>
+            <div class="arrow" id="rightArrow">
+                <svg height="150" width="150">
+                    <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
+                    <polygon points="50,30 130,75 50,120" style="fill:rgb(255,233,126);" />
+                </svg>
+            </div>
+            <script>
+                var leftArrow = document.getElementById('leftArrow');
+                var rightArrow = document.getElementById('rightArrow');
+                var inputPage = 1;
+                var previousInputPage = 0;
+
+                leftArrow.onclick = function() {
+                    previousInputPage = inputPage;
+                    if(inputPage > 1) inputPage--;
+                    updateInputPage();
+                }
+
+                rightArrow.onclick = function() {
+                    previousInputPage = inputPage;
+                    if (inputPage < 5) inputPage++;
+                    updateInputPage();
+                }
+
+                function updateInputPage(){
+                    document.getElementById('th' + previousInputPage).style.display = "none";
+                    document.getElementById('th' + inputPage).style.display = "block";
+                    document.getElementById('td' + previousInputPage).style.display = "none";
+                    document.getElementById('td' + inputPage).style.display = "block";
+                }
+            </script>
+            <div id="inputFooter"></div>
+        </div>
     </form>
 
     <?php if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
