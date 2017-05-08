@@ -13,13 +13,19 @@ function displaymessage(){
    $(".messagebox").css("display","block");
 }
 
+// Show the hamburger menu
 function bigMac() {
-  if($("#hamburgerIcon").val() == "≡") {
+  $(".hamburgerMenu").toggle();
+  bigMacSymbol();
+}
+
+// Toggle the '≡' and '⨯' depending on if burger menu is up or not
+function bigMacSymbol() {
+  if($(".hamburgerMenu").css('display') == 'block') {
     $("#hamburgerIcon").val("⨯"); 
   } else {
     $("#hamburgerIcon").val("≡"); 
   }
-  $(".hamburgerMenu").toggle();
 }
 
 var resizeTimer;
@@ -664,11 +670,11 @@ function returnedSection(data)
       }
 
       str+="<td class='hamburger'>";
-      str+="<nav tabindex='0' class='package'><input id='hamburgerIcon' type='button' value='&equiv;' class='submit-button hamburger' title='Hamburger'  onClick='bigMac();'></nav>";
+      str+="<nav tabindex='0' class='package'><input id='hamburgerIcon' type='button' value='&equiv;' class='submit-button hamburger' title='Hamburger'  onClick='bigMac(); bigMacSymbol();'></nav>";
       str+="<div class='hamburgerMenu'>";
       str+="<ul class='hamburgerList'>";
-      str+="<li class='editVers'><button class='submit-button menuButton editVers ' onclick='closeWindows(); showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");'>Edit Version</button></li>";
-      str+="<li class='newVers'><button class='submit-button menuButton newVers' onclick='closeWindows(); showCreateVersion();'>New Version</button></li>";
+      str+="<li class='editVers'><button class='submit-button menuButton editVers ' onclick='closeWindows(); bigMacSymbol(); showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");'>Edit Version</button></li>";
+      str+="<li class='newVers'><button class='submit-button menuButton newVers' onclick='closeWindows(); bigMacSymbol(); showCreateVersion();'>New Version</button></li>";
       str+="<li class='analysis'><button class='submit-button menuButton analysis' onclick='closeWindows(); changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Analysis</button></li>";
       str+="<li class='access'><button class='submit-button menuButton access' onclick='closeWindows(); accessCourse();'>Access</button></li>";
       str+="<li class='files'><button class='submit-button menuButton files' onclick='closeWindows(); changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'>Files</button></li>";
