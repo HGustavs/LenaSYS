@@ -848,6 +848,13 @@ header td {
 
 input {
   border-radius: 2px;
+  height: 26px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+
+
 }
 
 .loginBox .inputwrapper {
