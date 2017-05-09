@@ -516,7 +516,6 @@ function updategfx() {
         moveValue = 0;
     }
 }
-
 function movePoint(point){
     point="";
 }
