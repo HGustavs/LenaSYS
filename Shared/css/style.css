@@ -2380,6 +2380,31 @@ ul.hamburgerList button.menuButton {
   padding: 0px 0px 0px 0px;
 }
 
+/* moment date and course version */
+
+.dateField {
+  display: inline-block;
+  opacity: 1.0;
+  max-width: 1000px; /* Cannot animate to auto width, 1000px should be enough for anyone */
+  pointer-events: auto;
+  transition: opacity 300ms, width 300ms;
+  -webkit-transition: opacity 300ms, width 300ms;
+  -moz-transition: opacity 300ms, width 300ms;
+  -o-transition: opacity 300ms, width 300ms;
+}
+
+.courseVersionField {
+  display: inline-block;
+  margin-right: 10px;
+  opacity: 1.0;
+  max-width: 1000px; /* Cannot animate to auto width, 1000px should be enough for anyone */
+  pointer-events: auto;
+  transition: opacity 300ms, width 300ms, margin 300ms;
+  -webkit-transition: opacity 300ms, width 300ms, margin 300ms;
+  -moz-transition: opacity 300ms, width 300ms, margin 300ms;
+  -o-transition: opacity 300ms, width 300ms, margin 300ms;
+}
+
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
   table.navheader td.editVers,
   table.navheader td.analysis,
@@ -2418,6 +2443,28 @@ ul.hamburgerList button.menuButton {
     display: block;
     height: 26px;
     opacity: 1.0;
+  }
+
+  /* moment date and course version */
+  .dateField {
+    opacity: 0.0;
+    max-width: 0px;
+    pointer-events: none;
+    transition: opacity 300ms, width 300ms;
+    -webkit-transition: opacity 300ms, width 300ms;
+    -moz-transition: opacity 300ms, width 300ms;
+    -o-transition: opacity 300ms, width 300ms;
+  }
+
+  .courseVersionField {
+    margin-right: 0px;
+    opacity: 0.0;
+    max-width: 0px;
+    pointer-events: none;
+    transition: opacity 300ms, width 300ms, margin 300ms;
+    -webkit-transition: opacity 300ms, width 300ms, margin 300ms;
+    -moz-transition: opacity 300ms, width 300ms, margin 300ms;
+    -o-transition: opacity 300ms, width 300ms, margin 300ms;
   }
 }
 
