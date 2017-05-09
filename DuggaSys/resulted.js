@@ -143,15 +143,16 @@ function redrawtable()
           str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
         }
       }
-      str+="</tr></thead><tbody>";
     }
 
     // Make second header row if momtmp array is empty
     if (momtmp.length === 0){
       str+="</tr><tr class='markinglist-header'>";
       str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
-      str+="</tr></thead><tbody>";
     }
+
+    str+="<th style='width: 100%'></th>";
+    str+="</tr></thead><tbody>";
 
     // Make result table
     var row=1;
