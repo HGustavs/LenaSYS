@@ -1,6 +1,8 @@
 <head>
     <title>Install LenaSYS!</title>
     <link rel="stylesheet" type="text/css" href="CSS/install_style.css">
+    <script src="../Shared/js/jquery-1.11.0.min.js"></script>
+    <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 </head>
 <body>
     <?php
@@ -86,11 +88,13 @@
     </script>
     <form action="install.php?mode=install" method="post">
         <div id="inputWrapper">
-            <div class="inputHeading" id="th1" valign=top style="display:block;"><h2>New/Existing MySQL user and DB</h2></div>
-            <div class="inputHeading" id="th2" valign=top style="display:none;"><h2>MySQL Root Login</h2></div>
-            <div class="inputHeading" id="th3" valign=top style="display:none;"><h2>Test Data</h2></div>
-            <div class="inputHeading" id="th4" valign=top style="display:none;"><h2>Write over?</h2></div>
-            <div class="inputHeading" id="th5" valign=top style="display:none;"><h2>Submit</h2></div>
+            <div class="inputHeading" valign=top style="display:block;">
+                <div id="th1" style="display: block; height:50px;"><h2>New/Existing MySQL user and DB</h2></div>
+                <div id="th2" style="display: none; height:50px;"><h2>MySQL Root Login</h2></div>
+                <div id="th3" style="display: none; height:50px;"><h2>Test Data</h2></div>
+                <div id="th4" style="display: none; height:50px;"><h2>Write over?</h2></div>
+                <div id="th5" style="display: none; height:50px;"><h2>Submit</h2></div>
+            </div>
  <?php
     // Prefill existing credentials, exluding password
     $dbUsername = "";
@@ -212,10 +216,8 @@
                 }
 
                 function updateInputPage(){
-                    document.getElementById('th' + previousInputPage).style.display = "none";
-                    document.getElementById('th' + inputPage).style.display = "block";
-                    document.getElementById('td' + previousInputPage).style.display = "none";
-                    document.getElementById('td' + inputPage).style.display = "block";
+                    hideInputPage();
+
                     if (inputPage == 1) {
                         document.getElementById('leftArrow').style.display = "none";
                     } else {
@@ -225,6 +227,27 @@
                         document.getElementById('rightArrow').style.display = "none";
                     } else {
                         document.getElementById('rightArrow').style.display = "block";
+                    }
+                }
+
+                function hideInputPage(){
+                    if (inputPage > previousInputPage) {
+                        $('#th' + previousInputPage).hide("slide", {direction: "left" }, 500);
+                        $('#td' + previousInputPage).hide("slide", {direction: "left" }, 500);
+                    } else {
+                        $('#th' + previousInputPage).hide("slide", {direction: "right" }, 500);
+                        $('#td' + previousInputPage).hide("slide", {direction: "right" }, 500);
+                    }
+                    window.setTimeout(showInputPage,500);
+                }
+
+                function showInputPage(){
+                    if (inputPage > previousInputPage) {
+                        $('#th' + inputPage).show("slide", {direction: "right" }, 500);
+                        $('#td' + inputPage).show("slide", {direction: "right" }, 500);
+                    } else {
+                        $('#th' + inputPage).show("slide", {direction: "left" }, 500);
+                        $('#td' + inputPage).show("slide", {direction: "left" }, 500);
                     }
                 }
             </script>
