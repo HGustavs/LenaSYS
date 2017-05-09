@@ -90,7 +90,7 @@ function drawtable(){
 	
 
 	str+="<th id='header' class='grouprow' style='width:40px'><span>#<span></th>";
-	str+="<th id=tableheader0' class='result-header' onclick='toggleSortDir(0);' style='width:140px;'>Studenter</th>";
+	str+="<th id=tableheader0' class='grouped-header' onclick='toggleSortDir(0);' style='width:140px;'>Studenter</th>";
 
 	// Read dropdown from local storage (??)
 	courselist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
@@ -101,7 +101,7 @@ function drawtable(){
 	// Itererate the headings, that are dependent on the cid and coursevers. 
 	if(moments){
 		for(var i = 0; i < moments.length; i++) {
-			str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+moments[i].lid+"' class='result-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+moments[i].entryname+"</th>";	
+			str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+moments[i].lid+"' class='grouped-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+moments[i].entryname+"</th>";	
 		}
 	}
 	str+="</thead>";
