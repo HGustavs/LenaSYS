@@ -1,3 +1,17 @@
+//Checks if the user is using a secure connection
+function checkConnection(){
+    var isHTTPS;
+    //Calls function from dugga.js
+    checkHTTPS(isHTTPS);
+    if (isHTTPS == true){
+        $("#passForm").css("display", "block");
+    }
+    else{
+        $("#passForm").css("display", "none");
+        $("#passwordMessage").html("Password changing is only allowed on a secure HTTPS connection.");
+    }
+}
+
 function saveChallenge(){
     var password = $("#currentPassword").val();
     var question= $("#securityQuestion").val();

@@ -780,11 +780,9 @@ INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (24,12,'{\"tal\":\"33\"}','{"danswer":\"7\"}',NOW(),6);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode) VALUES (3001,5,'Bitdugga 1HP','12',3,100,6,1,'1339',3,1);
 
-INSERT INTO usergroup (name) VALUES ("testsquad1");
-INSERT INTO usergroup (name) VALUES ("testsquad2");
+INSERT INTO `usergroup` (`ugid`, `lid`, `name`, `created`, `lastupdated`) VALUES (NULL, '2001', 'Festargruppen', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); 
+INSERT INTO `usergroup` (`ugid`, `lid`, `name`, `created`, `lastupdated`) VALUES (NULL, '2013', 'Coola gurppen', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO user_usergroup (uid,ugid) VALUES (209,1);
 INSERT INTO user_usergroup (uid,ugid) VALUES (212,1);
 INSERT INTO user_usergroup (uid,ugid) VALUES (100,2);
-
-INSERT INTO `usergroup_listentries` (`ugid`,`lid`) VALUES (1,2013);
