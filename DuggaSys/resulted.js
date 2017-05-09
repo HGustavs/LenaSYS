@@ -689,6 +689,7 @@ function leavec()
     localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
 
 	if(str!=old || onlyPending==opend) process();
+  magicHeading();
 }
 
 // Function to select and unselect all duggas 
@@ -773,7 +774,8 @@ function leaves()
 	if (!(ocol==col && odir==dir) || typechanged) {
     typechanged=false;
     resort();
-}
+  }
+  magicHeading();
 }
 
 function sorttype(t){
@@ -791,6 +793,7 @@ function sorttype(t){
 				}
 		}
 		typechanged=true;
+    magicHeading();
 }
 
 function magicHeading()
