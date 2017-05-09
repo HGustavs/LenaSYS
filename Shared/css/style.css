@@ -1355,7 +1355,7 @@ input.large-button {
 
 .list#testTable #plorf, .list#testTable #dorf {
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
-    padding:10px;
+    padding:7px;
 }
 
 .list#testTable input, .list#testTable select, .list#testTable label {
@@ -1384,7 +1384,7 @@ input.large-button {
 }
 
 span.arrow {
-    padding:10px;
+    padding:7px;
     cursor:pointer;
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
 }
