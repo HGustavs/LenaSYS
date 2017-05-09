@@ -24,6 +24,7 @@ pdoConnect();
     <script src="diagram_example.js"></script>
     <script src="diagram_IOHandler.js"></script>
 </head>
+<body>
 <div id="content">
     <div style="background-color:#614875;height: 100vh;width: 150px;position:fixed;left:0;right:0;top:50px;padding:20px;">
     <div id='buttonDiv' >
@@ -41,7 +42,7 @@ pdoConnect();
          <input type="button" name="answer" value="Example Canvas" onclick='loadExample()' />
     </div>
 </div>
-</div>
+
 
 
 <?php
@@ -49,6 +50,7 @@ $noup = "COURSE";
 include '../Shared/navheader.php';
 ?>
 <!-- content START -->
+
 <div id='showStored' style="display:none;position:absolute;left:190px;top:50px">
     <div id="b" style="position:fixed;height:100vh;width:100px;border-right:1px solid black;">
         <?php
@@ -58,9 +60,10 @@ include '../Shared/navheader.php';
         if (!in_array($file, $blacklist)) {
             ?>
             <br>
+            <form id="contacts-form" method="post" action="">
 
-            <button id=but name="answer" value='<?php print $file ?>' style="margin-left:15px;left:10px;width:60px;margin-top:5px;" onclick='loadStoredFolders("<?php print $file ?>")'><?php print $file ?></button>
-
+            <button id=but name="answer" value='<?php print $file ?>' style="margin-left:15px;left:10px;width:60px;margin-top:5px;" onclick='document.getElementById("contacts-form").submit()'><?php print $file ?></button>
+            </form>
         <?php
 
         }
@@ -71,37 +74,8 @@ include '../Shared/navheader.php';
     </div>
 </div>
 <?php
-
-
 ?>
-<div id='showStoredFolders' style="display:none;position:absolute;left:300px;top:50px">
-    <div id="a" style="position:fixed;height:100vh;width:100px;border-right:1px solid black;">
-        <?php
-        if(isset($_POST["Folder"])) {
-        $newFolder = $_POST['Folder'];
 
-
-            if ($handle = opendir("Save/$newFolder/")) {
-                $blacklist = array('.', '..', 'Save', 'id.txt');
-                while (false !== ($file = readdir($handle))) {
-                    if (!in_array($file, $blacklist)) {
-                        ?>
-                        <br>
-
-                        <button id=but name="answer" value='<?php print $file ?>'
-                                style="margin-left:15px;left:10px;width:60px;margin-top:5px;"
-                                onclick='redirect(this)'><?php print $file ?></button>
-
-                        <?php
-
-                    }
-                }
-                closedir($handle);
-            }
-        }
-        ?>
-    </div>
-</div>
 <div id="newFolder" style="visibility:hidden;position:absolute;left:500px;top:55px;">
     <form action="diagram_IOHandler.php" method="post">
     Folder name:<input name="folderName" type="text"  />
@@ -152,10 +126,39 @@ include '../Shared/navheader.php';
         <div id="f01"></div>
     </div>
 </div>
+    <div id='showStoredFolders' style="display:none;position:absolute;left:300px;top:50px">
+        <div id="adsds" style="position:fixed;height:100vh;width:100px;border-right:1px solid black;">
+            <?php
+            if (isset($_POST["answer"]) && !empty($_POST)){
+                $newFolder = $_POST['answer'];
+
+
+                if ($handle = opendir("Save/$newFolder/")) {
+                    $blacklist = array('.', '..', 'Save', 'id.txt');
+                    while (false !== ($file = readdir($handle))) {
+                        if (!in_array($file, $blacklist)) {
+                            ?>
+                            <br>
+                            <button id=but name="answer" value='<?php print $file ?>'
+                                    style="margin-left:15px;left:10px;width:60px;margin-top:5px;"
+                                    onclick='redirect(this)'><?php print $file ?></button>
+
+                            <?php
+
+                        }
+                    }
+                    closedir($handle);
+                }
+               
+            }
+            ?>
+        </div>
+    </div>
 <!-- content END -->
 <?php
 include '../Shared/loginbox.php';
 ?>
+
 <?php
 if(isset($_POST["folderName"])){
     $name = $_POST["folderName"];
@@ -164,6 +167,17 @@ if(isset($_POST["folderName"])){
     }
 }
 ?>
+    <?php
+    if(isset($_POST["answer"])){
+        ?>
+        <script>
+            document.getElementById('showStoredFolders').style.display = "block";
+            document.getElementById('showStored').style.display = "block";
 
+        </script>
+        <?php
+    }
+    ?>
+</div>
 </body>
 </html>

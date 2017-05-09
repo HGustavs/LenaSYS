@@ -49,17 +49,20 @@ function loadStored(){
     document.getElementById('showStored').style.display = "block";
 }
 function loadStoredFolders(f){
-    $.ajax({
-        url: 'diagram_IOHandler.php',
-        type: 'POST', // GET or POST
-        data: {Folder: f},
-        success: function(msg)
-        {
-            alert('POSTED');
-        }
-    });
-    document.getElementById('showStoredFolders').style.display = "block";
 
+    document.getElementById('showStoredFolders').style.display = "block";
+    //e.preventDefault();
+//
+    //$.ajax({
+    //    url: 'diagram_IOHandler.php',
+    //    type: 'POST', // GET or POST
+    //    data: {F: f},
+    //    success: function(resp) {
+//
+    //        $('#adsds').html(resp);
+    //    }
+    //    });
+////
 
 }
 function loadUpload(){
