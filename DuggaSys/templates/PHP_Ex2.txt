@@ -1,4 +1,4 @@
-#### **Overview**
+### **Overview**
 The difference between this example and the previous example is that in this case the base html tags are written using echo. 
 
 From the standpoint of the browser the result is identical. 
@@ -8,14 +8,25 @@ From the standpoint of the browser the result is identical.
 Hello!
 ~~~
 
-| Head1 | Head2 | Head3 |
+****Table****
+| Heading | Heading | Heading |
 | :----: | ---: | ---- |
-| Head4 | Head5 | Head6 |
-| Head7 | Head8 | Head9 |
-| Head4 | Head5 | Head6 |
-| Head5 | Head6 | Head7 |
-| Head5 | Head6 | Head7 |
-| :----: | :---: | :----: |
-| Head5 | Head6 | Head7 |
-| Head5 | Head6 | Head7 |
-| Head5 | Head6 | Head7 |
+| item | item | item |
+| item | item | item |
+| item | item | item |
+
+****Unordered list****
+* item
+* item
+* item
+  * item
+  * item
+* item
+
+****Ordered list****
+1. item
+2. item
+3. item
+  1. item
+  2. item
+4. item
