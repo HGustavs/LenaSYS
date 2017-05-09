@@ -106,7 +106,7 @@
 		// CHeck if its a table
 		function isTable($item) {
 			// return 1 if space followed by a pipe-character and have closing pipe-character
-			return preg_match('/\s*\|\s(.*)\|/', $item);
+			return preg_match('/\s*\|\s*(.*)\|/', $item);
 		}
         // The creation and destruction of ordered lists
         function handleOrderedList($currentLine, $prevLine, $nextLine) {
