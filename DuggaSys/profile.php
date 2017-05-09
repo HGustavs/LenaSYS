@@ -24,7 +24,7 @@ pdoConnect();
 
 	<script src="pushnotifications.js"></script>
 </head>
-<body>
+<body onload="checkConnection();">
 
 	<?php
 		$noup="PROFILE";
@@ -64,15 +64,17 @@ pdoConnect();
 			
 				<div id="changePassword" style="margin-right:60px;">
 					<h3>Change password</h3>
-					<form method="post" name="passwordForm">
-						<label for="currentPassword2">Current password</label><br/>
-						<input type="password" class="form-control textinput" id="currentPassword2" placeholder="Current password" maxlength="72"     onkeydown="formEventHandler(event)"/><br/><br/>
-						<label for="newPassword">New password (8 Characters minimum. Must contain a number,<br/> an uppercase and a lowercase letter.)</label><br/>
-						<input type="password" class="form-control textinput" id="newPassword" placeholder="Max 72 characters" maxlength="72"         onkeydown="formEventHandler(event)"/><br/>
-						<label for="newPassword2">Confirm new password</label><br/>
-						<input type="password" class="form-control textinput" id="newPassword2" placeholder="New password again" maxlength="72"       onkeydown="formEventHandler(event)"/><br/><br/>
-						<button type="button" id="passwordButton" onclick="validatePassword();">Update password</button><br/><br/>
-					</form>
+                    <div id="passForm">
+                        <form method="post" name="passwordForm">
+                            <label for="currentPassword2">Current password</label><br/>
+                            <input type="password" class="form-control textinput" id="currentPassword2" placeholder="Current password" maxlength="72"     onkeydown="formEventHandler(event)"/><br/><br/>
+                            <label for="newPassword">New password (8 Characters minimum. Must contain a number,<br/> an uppercase and a lowercase letter.)</label><br/>
+                            <input type="password" class="form-control textinput" id="newPassword" placeholder="Max 72 characters" maxlength="72"         onkeydown="formEventHandler(event)"/><br/>
+                            <label for="newPassword2">Confirm new password</label><br/>
+                            <input type="password" class="form-control textinput" id="newPassword2" placeholder="New password again" maxlength="72"       onkeydown="formEventHandler(event)"/><br/><br/>
+                            <button type="button" id="passwordButton" onclick="validatePassword();">Update password</button><br/><br/>
+                        </form>
+                    </div>
                     <div id="passwordMessage"></div>
 				</div>
 			
