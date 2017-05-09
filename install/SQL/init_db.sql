@@ -490,7 +490,7 @@ CREATE TABLE user_push_registration (
 CREATE TABLE `usergroup` (
   `ugid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `lid` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL UNIQUE,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `lastupdated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ugid`,`lid`),
