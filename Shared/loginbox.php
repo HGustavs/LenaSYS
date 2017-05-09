@@ -31,7 +31,7 @@
 							<input id='saveuserlogin' type='checkbox' value="on">
 							<label class="text">Remember me</label>
 							
-							<label class='text forgotPw' onclick='toggleloginnewpass(); test(); '>Forgot Password?</label>
+							<label class='text forgotPw' onclick='toggleloginnewpass();'>Forgot Password?</label>
 						</td>
 					</tr>
 					<tr>
@@ -88,12 +88,12 @@
 			<form action="" id="loginForm" method="post">
 				<table class="loginBoxTable">			
 					<tr>	
-						<td style='padding-bottom:0px;'>
+						<td>
 							<label id="loginBoxTitle">Please answer your security question</label>
 						</td>
 					</tr>
 					<tr>
-						<td style='padding-top: 20px;'>
+						<td style='padding-top: 14px;'>
 							<label style='font-size: 14px;'> Question: </label>
 							<label id="displaysecurityquestion" class="text">Placeholder question</label>
 						</td>
@@ -111,7 +111,7 @@
 					
 					<tr>
 						<!-- Message displayed when using wrong password or username -->
-						<td id="message2";></td>
+						<td id="message3";></td>
 					</tr>
 				</table>	
 			</form>
@@ -126,16 +126,21 @@
 				<h3>Request complete</h3>
 				<div class='cursorPointer' onclick="closeWindows()">x</div>
 			</div>
-			  <div class="table-wrap">
-				<table>
+			<form action="" id="loginForm" method="post">
+				<table class="loginBoxTable">	
 					<tr>
 						<td>
-							<h5>Your teachers has been notified, a new password will be sent to your school email as soon as possible.</h5>
-							<h5>You can change your password later in the profile page.</h5>
+							<p style='font-size: 0.8em;'>Your teachers have been notified, a new password will be sent to your school email as soon as possible.</p>
+							<p style='font-size: 0.8em;'>You can change your password later in the profile page.</p>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<input type='button' class='buttonLoginBox' onclick="closeWindows();" value='Ok!' style='margin-top: 10px;'>
 						</td>
 					</tr>
 				</table>
-			  </div>
+			</form>
 		</div>
 	</div>
 	<!-- Login Box End! -->
