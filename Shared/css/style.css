@@ -1359,7 +1359,7 @@ input.large-button {
 }
 
 .list#testTable input, .list#testTable select, .list#testTable label {
-    padding:5px;
+    padding:2px;
 }
 
 .selectedtr {
