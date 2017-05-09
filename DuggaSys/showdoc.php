@@ -36,7 +36,7 @@
 						$str.=$workstr;
 						
 				}
-	
+
 				return $str;
 		}
 
@@ -105,7 +105,7 @@
 		}
 		// CHeck if its a table
 		function isTable($item) {
-			// return true if space followed by a pipe-character and have closing pipe-character
+			// return 1 if space followed by a pipe-character and have closing pipe-character
 			return preg_match('/\s*\|\s(.*)\|/', $item);
 		}
         // The creation and destruction of ordered lists
@@ -142,7 +142,7 @@
                 $markdown .= "</li>";
             }
             // Close the ordered list
-            if(!isOrderdList($currentLine)) {
+            if(!isOrderdList($nextLine)) {
                 $markdown .= "</ol>";
             }
             return $markdown;
@@ -180,7 +180,7 @@
                 $markdown .= "</li>";
             }
             // Close the unordered list
-            if(!isUnorderdList($currentLine)) {
+            if(!isUnorderdList($nextLine)) {
                 $markdown .= "</ul>";
             }
             return $markdown;
@@ -239,7 +239,7 @@
             }
 
             // close table
-            if(!isTable($currentLine)) {
+            if(!isTable($nextLine)) {
                 $markdown .= "</tbody></table>";
             }
 
