@@ -1,3 +1,8 @@
+/* 
+----- THIS FILE HAS THE FUNCTIONS FOR THE ARRAY -----
+----- DIAGRAM AND HOW IT SHOULD BE USED BY THE SYSTEM -----
+*/
+
 //--------------------------------------------------------------------
 // Symbol - stores a diagram symbol
 //--------------------------------------------------------------------
