@@ -1,3 +1,7 @@
+/*
+----- THIS FILE HANDLES THE SAVE, DOWNLOAD AND EXPORT FUNCTIONALITY -----
+*/
+
 var a;
 var c;
 var b;

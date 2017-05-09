@@ -20,6 +20,7 @@
     <script src="../Shared/dugga.js"></script>
     <script src="diagram.js"></script>
     <script src="diagram_symbol.js"></script>
+    <script src="diagram_mouse.js"></script>
     <script src="diagram_figure.js"></script>
     <script src="diagram_example.js"></script>
     <script src="diagram_IOHandler.js"></script>
@@ -46,6 +47,7 @@
             </select>
             <button onclick='openAppearanceDialogMenu();'>Change Apperance</button>
             <button onclick='debugMode();'>Debug</button>
+            <button onclick='fontMenu();'>Global Font</button>
             <button onclick='clearCanvas(); removeLocal();'>Removed Hashed Diagram</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
             <button onclick='clearCanvas(); removeLocal();'>Delete All</button>
