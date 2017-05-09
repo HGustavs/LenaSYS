@@ -88,15 +88,20 @@ function drawtable(){
 	str+="<thead>";
 	str+="<tr class='markinglist-header'>";
 	
-	str+="<th id='header' class='grouprow' ><span>#<span></th>";
-	str+="<th colspan='1' id='tableheader0' class='result-header' onclick='toggleSortDir(0);'>";
-	str+="Studenter";
-	str+="</th>";
 
-	// Show moments in table as headers
+	str+="<th id='header' class='grouprow' style='width:40px'><span>#<span></th>";
+	str+="<th id=tableheader0' class='result-header' onclick='toggleSortDir(0);' style='width:140px;'>Studenter</th>";
+
+	// Read dropdown from local storage (??)
+	courselist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+	if (courselist){	
+		courselist=courselist.split("**"); 
+	} 
+	
+	// Itererate the headings, that are dependent on the cid and coursevers. 
 	if(moments){
 		for(var i = 0; i < moments.length; i++) {
-			str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+moments[i].lid+"' class='result-header' onclick=toggleSortDir("+(i+1)+");>"+moments[i].entryname+"</th>";	
+			str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+moments[i].lid+"' class='result-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+moments[i].entryname+"</th>";	
 		}
 	}
 	str+="</thead>";
@@ -105,19 +110,27 @@ function drawtable(){
 	var row=0;
 	for(var i = 0; i < tablecontent.length; i++) { // create table rows. 
 		row++;
-		str+="<tr>";
+		str+="<tr";
+		if(row%2==1){
+			str+=" class='hi' ";
+		}else{
+			str+=" class='lo' ";
+		}
+		str+=">";
 		str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
-		str+="<td title='"+tablecontent[i].firstname+" "+tablecontent[i].lastname+" "+tablecontent[i].ssn+"'>"+tablecontent[i].username+"</td>"; // Iterates all content, but i dont want to write out ugid, cid and lid ...
+		str+="<td style='padding-left:3px;'><div class='dugga-result-div'>"+tablecontent[i].firstname+" "+tablecontent[i].lastname+"</div>";
+		str+="<div class='dugga-result-div'>"+tablecontent[i].ssn+"</div>";
+		str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
 		for(var lid in tablecontent[i].lidstogroup) { // Table cells
 			// uid_lid to identify the cell. The ugid is supplied in the option. Is the cid a necessity? 
-			str+="<td>";
-			str+="<select id="+tablecontent[i].uid+"_"+lid+" onchange=changegroup(this)>";
+			str+="<td style='padding-left:5px;'>";
+			str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+" class='test' onchange=changegroup()>";
 			str+="<option value='-1'>Pick a group</option>";
 			for(var ugid in availablegroups) {
 				var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : "";
 				str+="<option value="+ugid+selected+">"+availablegroups[ugid]+"</option>";
 			}
-			str+="</select>";
+			str+="</select><div class='groupStar'>*</div>";
 			str+="</td>";
 		}
 		str+="</tr>";

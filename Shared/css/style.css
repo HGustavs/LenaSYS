@@ -2134,6 +2134,16 @@ span.arrow {
   line-height: 47px;
 }
 
+.groupStar {
+  display: none;
+  font-size: 20px;
+  color:#614875 !important;
+  min-height: 47px;
+  line-height: 47px;
+  margin: 0px 5px;
+  font-weight: bold;
+}
+
 /*styling for contribution.php*/
 /*this was inline-CSS before, only moved it to the right file*/
 .fumho th {
