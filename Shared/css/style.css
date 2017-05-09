@@ -1323,13 +1323,14 @@ input.large-button {
 
 
 .list#testTable td{
-    padding:8px;
+    padding:0px;
     text-align:center;border:none;
 }
 
 .list#testTable th{
     line-height:45px;
     box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);
+    font-size: 16px;
 }
 
 .list#testTable tr:nth-child(odd), .list#testTable tr:nth-child(even){
@@ -1339,6 +1340,7 @@ input.large-button {
 .list#testTable tr{
     line-height:45px;
     border-bottom:1px solid gray;
+    font-size: 14px;
 }
 .list#testTable tr>tr{
     line-height:45px;
@@ -1355,11 +1357,11 @@ input.large-button {
 
 .list#testTable #plorf, .list#testTable #dorf {
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
-    padding:10px;
+    padding:4px;
 }
 
 .list#testTable input, .list#testTable select, .list#testTable label {
-    padding:5px;
+    padding:0px;
 }
 
 .selectedtr {
@@ -1367,7 +1369,7 @@ input.large-button {
 }
 
 .list#testTable input {
-    border-width: 2px !important;
+    border-width: 1px !important;
     border-style: inset !important;
 }
 
@@ -1384,14 +1386,18 @@ input.large-button {
 }
 
 span.arrow {
-    padding:10px;
+    padding:4px;
     cursor:pointer;
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
 }
 
 .list#testTable input {
-  border-width: 2px !important;
+  border-width: 1px !important;
   border-style: inset !important;
+  border-radius: 0px;
+  font-size:14px;
+  height:17px;
+  color:black;
 }
 
 #testinnertable {
