@@ -552,31 +552,31 @@ function returnedDugga(data)
 			result++;
             str+="<td id='arrowz' onClick='showVariant("+i+")'><span class='arrow' id='arrow"+i+"'>&#9658;</span></td>";
             // Name
-			str+="<td><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
+			str+="<td><input type='text' id='duggav"+result+"' style='font-size:0,875em;border: 0;border-width:0px;' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
 			// Autograde
             if(item['autograde']=="1"){
 				result++;
-				str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:1em;' id='duggav"+result+"' ><option selected value='1'>On</option><option value='2'>Off</option></select></td>";
+				str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:0,875em;' id='duggav"+result+"' ><option selected value='1'>On</option><option value='2'>Off</option></select></td>";
 			}else{
 				result++;
-				str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:1em;' id='duggav"+result+"' ><option value='1'>On</option><option selected value='2'>Off</option></select></td>";
+				str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:0,875em;' id='duggav"+result+"' ><option value='1'>On</option><option selected value='2'>Off</option></select></td>";
 			}
 
 			if(item['gradesystem']=="1"){
 				result++;
                 // Grade system
-				str+="<td><select style='font-size:1em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option selected='selected' value='1'>U/G/VG</option><option value='2'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
+				str+="<td><select style='font-size:0,875em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option selected='selected' value='1'>U/G/VG</option><option value='2'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
 			}else if(item['gradesystem']=="2"){
 				result++;
-				str+="<td class='gradesystem'><select style='font-size:1em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2' selected='selected'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
+				str+="<td class='gradesystem'><select style='font-size:0,875em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2' selected='selected'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
 			}else{
 				result++;
-				str+="<td><select style='font-size:1em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2'>U/G</option><option selected='selected' value='3'>U/3/4/5</option></select></td>";
+				str+="<td><select style='font-size:0,875em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2'>U/G</option><option selected='selected' value='3'>U/3/4/5</option></select></td>";
 			}
 			result++;
             
             // Template
-			str+="<td><select style='font-size:1em;' onchange='changefile("+item['did']+","+result+")' id='duggav"+result+"'>";
+			str+="<td><select style='font-size:0,875em;' onchange='changefile("+item['did']+","+result+")' id='duggav"+result+"'>";
 
 			for(var j=0;j<filez.length;j++){
 				filen=filez[j];
@@ -637,9 +637,9 @@ function returnedDugga(data)
 					}
 					str+="<td colspan='1' style='padding-right:50px;'></td>";
 					result++;
-					str+="<td colspan='1'><label>Params: </label><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeparam("+itemz['vid']+","+result+")' placeholder='"+itemz['param']+"' /></td></td>";
+					str+="<td colspan='1'><label>Params: </label><input type='text' id='duggav"+result+"' style='font-size:0,875em;border: 0;border-width:0px;' onchange='changeparam("+itemz['vid']+","+result+")' placeholder='"+itemz['param']+"' /></td></td>";
 					result++;
-					str+="<td colspan='2'><label>Answer: </label><input type='text' id='duggav"+result+"' style='font-size:1em;border: 0;border-width:0px;' onchange='changeanswer("+itemz['vid']+","+result+")' placeholder='"+itemz['variantanswer']+"' /></td>";
+					str+="<td colspan='2'><label>Answer: </label><input type='text' id='duggav"+result+"' style='font-size:0,875em;border: 0;border-width:0px;' onchange='changeanswer("+itemz['vid']+","+result+")' placeholder='"+itemz['variantanswer']+"' /></td>";
 
 					str+="<td>"+itemz['modified'].substr(0,10)+"</td>";
 
