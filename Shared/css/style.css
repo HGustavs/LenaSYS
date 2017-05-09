@@ -1877,6 +1877,14 @@ span.arrow {
   padding-right: 3px;
   position: relative;
 }
+.grouped-header {
+  border-left:2px solid white;
+  padding-right: 3px;
+  position: relative;
+}
+.grouped-header:hover{
+  cursor:pointer;
+}
 
 .result-data {
   padding:0px;
