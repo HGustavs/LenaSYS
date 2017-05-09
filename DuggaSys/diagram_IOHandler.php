@@ -24,8 +24,10 @@ pdoConnect();
     <script src="diagram_example.js"></script>
     <script src="diagram_IOHandler.js"></script>
 </head>
-<body>
+<body onload="getUpload()">
+
 <div id="content">
+
     <div style="background-color:#614875;height: 100vh;width: 150px;position:fixed;left:0;right:0;top:50px;padding:20px;">
     <div id='buttonDiv' >
 
@@ -36,13 +38,13 @@ pdoConnect();
         <br>
     <br>
 
-    <input type="button" name="answer" value="Upload Canvas" onclick='loadUpload()' />
+        <input id='fileids' type='file' name='file_name' hidden multiple/>
+        <input id='buttonids' type='button' value='Upload Canvas' />
         <br>
     <br>
          <input type="button" name="answer" value="Example Canvas" onclick='loadExample()' />
     </div>
 </div>
-
 
 
 <?php
@@ -131,8 +133,6 @@ include '../Shared/navheader.php';
             <?php
             if (isset($_POST["answer"]) && !empty($_POST)){
                 $newFolder = $_POST['answer'];
-
-
                 if ($handle = opendir("Save/$newFolder/")) {
                     $blacklist = array('.', '..', 'Save', 'id.txt');
                     while (false !== ($file = readdir($handle))) {
@@ -141,7 +141,7 @@ include '../Shared/navheader.php';
                             <br>
                             <button id=but name="answer" value='<?php print $file ?>'
                                     style="margin-left:15px;left:10px;width:60px;margin-top:5px;"
-                                    onclick='redirect(this)'><?php print $file ?></button>
+                                    onclick='redirect(this,"<?php print $newFolder ?>")'><?php print $file ?></button>
 
                             <?php
 
@@ -164,6 +164,12 @@ if(isset($_POST["folderName"])){
     $name = $_POST["folderName"];
     if(!is_dir("Save/$name")) {
         mkdir("Save/$name", 0777, true);
+        mkdir("Save/$name/1",0777,true);
+        $newURL = "diagram.php?id=1&folder=$name";
+        echo '<META HTTP-EQUIV=REFRESH CONTENT="1; '.$newURL.'">';
+    } else {
+        $message = "Directory already exists";
+        echo "<script type='text/javascript'>alert('$message');</script>";
     }
 }
 ?>

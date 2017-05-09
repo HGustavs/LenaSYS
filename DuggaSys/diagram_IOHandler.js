@@ -39,12 +39,15 @@ function saveToServer(dia) {
 function createFolder(name){
 
 }
-function redirect(doc){
+function redirect(doc,folder){
     var a = doc.value;
     if(a){
-        location.href="diagram.php?id="+a;
+        location.href="diagram.php?id="+a+"&folder="+folder;
     }
 
+}
+function redirectas(doc,folder){
+        location.href="diagram.php?id="+doc+"&folder="+folder;
 }
 function loadNew(){
     document.getElementById('showNew').style.display = "block";
@@ -86,7 +89,7 @@ function Save() {
     }
     var obj = {diagram:diagram, points:points, diagram_names:c};
     a = JSON.stringify(obj);
-    saveToServer(a);
+   // saveToServer(a);
     console.log("State is saved");
 }
 
@@ -126,7 +129,22 @@ function LoadFile() {
     //Redrawn old state.
     updategfx();
 }
-
+function getUpload() {
+    document.getElementById('buttonids').addEventListener('click', openDialog);
+    function openDialog() {
+        document.getElementById('fileids').click();
+    }
+    document.getElementById('fileids').addEventListener('change', submitFile);
+    function submitFile() {
+        var reader = new FileReader();
+        var file = document.getElementById('fileids').files[0];
+        reader.readAsText(file, "UTF-8");
+        reader.onload = function (evt) {
+            a = evt.currentTarget.result;
+            // LoadFile();
+        }
+    }
+}
 function Load() {
     // Implement a JSON.parse() that will unmarshall a b c, so we can add
     // them to their respecive array so it can redraw the desired canvas.

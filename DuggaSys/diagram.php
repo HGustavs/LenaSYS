@@ -119,10 +119,13 @@
         $a = intval(fread($getID,filesize("Save/id.txt")));
         $myfile = fopen("Save/$a/$hash.txt", "w");
         fwrite($myfile, $data);
+        //<script type="text/javascript">var c_id = "<?= $a
+        //?//>";</script>
+        //<script type="text/javascript" src="diagram_IOHandler.js"></script>
     }
     ?>
-    <script type="text/javascript">var c_id = "<?= $a ?>";</script>
-    <script type="text/javascript" src="diagram_IOHandler.js"></script>
+
+
 
 </body>
 </html>
