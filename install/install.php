@@ -125,7 +125,7 @@
     echo '<p><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
             Next enter a password for this user (new or existing).<br>
             After this enter a database to use. This could also be either an existing or a new database.<br>
-            Finally enter the host. Is installation is running from webserver localhost should be used.</b></p>';
+            Finally enter the host. Is installation is running from webserver localhost should be used.</b></p><hr>';
     echo 'Enter new MySQL user. <br>';
     echo '<input type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
     echo 'Enter password for MySQL user. <br>';
@@ -138,35 +138,50 @@
 ?>
                 <div class="inputContent" id="td2" valign=top style="display:none;">
                     <p><b>Enter root log-in credentials for the database you want to use.<br>
-                        Default is user 'root'. Is password for root user is unknown ask a teacher or someone who knows.</b></p>
-                    Enter root user. <br>
+                        Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
+                    Enter MySQL root user. <br>
                     <input type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
-                    Enter password for MySQL root. <br>
+                    Enter password for MySQL root user. <br>
                     <input type="password" name="rootPwd" placeholder="Root Password" /> <br>
                 </div>
                 <div class="inputContent" id="td3" valign=top style="display:none;">
+                    <p><b>If you wish to create a new, empty database check the box 'Create new database'. If you want to fill this
+                        database with testdata (located in install/SQL/testdata.sql) you should check the box for this too. If you
+                        are using an existing database and wishes to re-write it you will be able to make this choice on the next page.</b></p><hr>
                     <input type="checkbox" name="createDB" value="Yes" checked/>
                     Create new database. <br><hr>
                     <input type="checkbox" name="fillDB" value="Yes" checked/>
                     Include test data. <br><br>
                     <b>Language keyword highlighting support.<br></b>
-                    <input type="checkbox" name="html" value="Yes" checked/> HTML <br>
-                    <input type="checkbox" name="java" value="Yes" checked/> Java <br>
-                    <input type="checkbox" name="php" value="Yes" checked/> PHP <br>
-                    <input type="checkbox" name="plain" value="Yes" checked/> Plain Text <br>
-                    <input type="checkbox" name="sql" value="Yes" checked/> SQL <br>
-                    <input type="checkbox" name="sr" value="Yes" checked/> SR <br>
+                    <i>Choose which languages you wish to support in codeviewer. (You need to check 'Include test data' to be able to include these.</i><br>
+                    <div id="checkboxContainer" style="text-align: left">
+                        <input type="checkbox" name="html" value="Yes" checked/> HTML <br>
+                        <input type="checkbox" name="java" value="Yes" checked/> Java <br>
+                        <input type="checkbox" name="php" value="Yes" checked/> PHP <br>
+                        <input type="checkbox" name="plain" value="Yes" checked/> Plain Text <br>
+                        <input type="checkbox" name="sql" value="Yes" checked/> SQL <br>
+                        <input type="checkbox" name="sr" value="Yes" checked/> SR <br>
+                    </div>
                 </div>
                 <div class="inputContent" id="td4" colspan="3" bgcolor="#FFCCCC" style="display:none;">
+                    <p><b>If you have entered a user and/or database that already exists you must check the checkboxes below to accept overwriting these.
+                        <br>If you only entered an existing user but a new database only check the box for user overwrite.
+                        <br>If you only entered an existing database for a new user only check the box for database overwrite.
+                        <br>If both are existing both boxes should be checked.
+                        <br>If it's a completely new database and user no box has to be checked.</b></p><hr>
                     <input type="checkbox" name="writeOverDB" value="Yes" />
-                    <b><-- Check the box if you want to write over an existing database and user<br>
-                        <span style='color: red;'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE)</span></b><br>
+                    Yes I want to write over an existing database.<br>
+                    <input type="checkbox" name="writeOverUSR" value="Yes" />
+                    Yes I want to write over an existing user.<br>
+                        <span style='color: red;'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
                 </div>
-                <div class="inputContent" id="td5" bgcolor="#EEEEEE" style="display:none;">
-                    <input type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
-                    <input type="reset" value="Clear"/>
+                <div class="inputContent" id="td5" bgcolor="#EEEEEE" style="display:none">
+                    <p><b>If all fields are filled out correctly the only thing remaining is to smack the 'Install' button below.
+                        Progress of installation will be shown. If any errors occurs please try again and check that your data is correct.
+                        If you still get errors please read installation guidelines on LenaSYS github page or in 'README.md'. </b></p><hr>
+                    <input class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
                 </div>
-            <div class="arrow" id="leftArrow">
+            <div class="arrow" id="leftArrow" style="display:none">
                 <svg height="150" width="150">
                     <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
                     <polygon points="100,30 20,75 100,120" style="fill:rgb(255,233,126);" />
@@ -201,6 +216,16 @@
                     document.getElementById('th' + inputPage).style.display = "block";
                     document.getElementById('td' + previousInputPage).style.display = "none";
                     document.getElementById('td' + inputPage).style.display = "block";
+                    if (inputPage == 1) {
+                        document.getElementById('leftArrow').style.display = "none";
+                    } else {
+                        document.getElementById('leftArrow').style.display = "block";
+                    }
+                    if (inputPage == 5) {
+                        document.getElementById('rightArrow').style.display = "none";
+                    } else {
+                        document.getElementById('rightArrow').style.display = "block";
+                    }
                 }
             </script>
             <div id="inputFooter"></div>
@@ -300,16 +325,19 @@
             ob_flush();
 
             # If checked, write over existing database and user
-            if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
+            if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
                 # User
                 try {
-                    $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
-                    echo "<span style='color: green;' />Successfully removed old user, {$username}.</span><br>";
+                $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
+                echo "<span style='color: green;' />Successfully removed old user, {$username}.</span><br>";
                 } catch (PDOException $e) {
-                    echo "<span style='color: red;' />User with name {$username} 
+                echo "<span style='color: red;' />User with name {$username} 
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
                 flush();
+                ob_flush();
+            }
+            if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
                 # Database
                 try {
                     $connection->query("DROP DATABASE {$databaseName}");
