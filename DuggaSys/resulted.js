@@ -60,7 +60,11 @@ function setup(){
 
   var t = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
   if(t != null) {
-    showTeachers=((t.indexOf("showteachers**true",0)>=0)?true:false);
+  	if((t.indexOf("showteachers**true",0)>=0)){
+  		showTeachers = true;
+	}else{
+  		showTeachers = false;
+	}
   }
 
   window.onscroll = function() {magicHeading()};

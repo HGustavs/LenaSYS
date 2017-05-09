@@ -93,9 +93,9 @@
 
             function loadSwimlane() {
                 $('.SwimContent').load(path + "/../../Shared/swimlane.php?courseid=" +
-                  <?php ((isset($cid)) ? Print($cid) : Print(0)) ?> +
+                  <?php if(isset($cid)){Print($cid);}else{Print(0);}?> +
                         "&coursevers=" +
-                  <?php ((isset($coursevers)) ? Print($coursevers) : Print(0)) ?>);
+                  <?php if(isset($coursevers)){Print($coursevers);}else{Print(0);} ?>);
                 swimBox.style.display = "block";
             }
 

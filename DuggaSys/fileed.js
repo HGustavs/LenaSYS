@@ -393,23 +393,19 @@ function switchcontent() {
 
 function convertfilekind(kind){
 	var retString = "";
-	switch(kind){
-		case "1":
-			retString = "Link";
-			break;
-		case "2":
-			retString = "Global";
-			break;
-		case "3":
-			retString = "Course Local";
-			break;
-		case "4":
-			retString = "Local";
-			break;
-		default:
-			retString = "Not recognized";
-			break;
+
+	if(kind=="1"){
+        retString = "Link";
+	}else if(kind=="2"){
+        retString = "Global";
+	}else if(kind=="3"){
+        retString = "Course Local";
+	}else if(kind=="4"){
+        retString = "Local";
+	}else{
+        retString = "Not recognized";
 	}
+
 	return retString;
 }
 

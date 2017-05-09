@@ -105,16 +105,12 @@
         if(stripos(trim($cred), 'DB_') !== FALSE){
           $tArray = explode('"', trim($cred));
           if(count($tArray) == 5) {
-            switch($tArray[1]) {
-              case "DB_USER":
-                $dbUsername = $tArray[3];
-                break;
-              case "DB_HOST":
-                $dbHostname = $tArray[3];
-                break;
-              case "DB_NAME":
-                $dbName = $tArray[3];
-                break;
+            if($tArray[1]=="DB_USER"){
+              $dbUsername = $tArray[3];
+            }else if($tArray[1]=="DB_HOST"){
+              $dbHostname = $tArray[3];
+            }else if($tArray[1]=="DB_NAME"){
+              $dbName = $tArray[3];
             }
           }
         }
