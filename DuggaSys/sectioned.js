@@ -28,20 +28,6 @@ function bigMacSymbol() {
   }
 }
 
-var resizeTimer;
-var showInline = false;
-
-function disappearingFields() {
-  var windowSize = $(window).width();
-  if(windowSize < 480 && showInline == true) {
-    jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeOut(1000);
-    showInline = false;
-  } else if(windowSize >= 480 && showInline == false) {
-    jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeIn(1000);
-    showInline = true;
-  }
-}
-
 $(document).ready(function(){
     $(".messagebox").hover(function(){
         $("#testbutton").css("background-color", "red");
@@ -77,14 +63,6 @@ $(document).ready(function(){
 	$('#eenddate').datepicker({
 		dateFormat: "yy-mm-dd"
 	});
-
-  $(window).resize(function() {
-    // This here timeout stuff is to prevent certain event to be missed if user resize windows too fast
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function() {
-      disappearingFields();
-    }, 250);
-  });
 });
 
 function showSubmitButton(){ 
@@ -742,7 +720,7 @@ function returnedSection(data)
         	str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;'>"+data.coursename+"</div>";
         str+="<div class='nowrap'";
 			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
-			str+="<div id='course-versname' class='thisDateShouldDisappearWhenScreenIsTooSmall' style='margin-right:10px;'>"+versionname+"</div>";
+			str+="<div id='course-versname' class='courseVersionField'>"+versionname+"</div>";
         if(retdata["writeaccess"]){
             str+="<div id='course-newitem' style='display: flex; position: absolute; right:15px;'>";
             str += "<input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
@@ -1019,24 +997,23 @@ function returnedSection(data)
 					}
 */
 					var dl = deadline.split(" ");
-         str+="<td style='text-align:right;white-space:nowrap;overflow:hidden;width:145px;'>";
 
-         var timeFilterAndFormat = "00:00:00";
-         var yearFormat = "0000-";
-         var dateFormat = "00-00";
+           var timeFilterAndFormat = "00:00:00"; // time to filter away
+           var yearFormat = "0000-";
+           var dateFormat = "00-00";
 
-         str+="<span class='thisDateShouldDisappearWhenScreenIsTooSmall' style='display:"+hiddenInline+";'>";
-
-          // If the deadline is 00:00:00, only show YYYY-MM-DD
-         if(dl[1] == timeFilterAndFormat) {
-          str+=deadline.slice(0, yearFormat.length)+"</span>"+deadline.slice(yearFormat.length, yearFormat.length+dateFormat.length);
-					} else {
-          // If the deadline is set to another time, show the full YYYY-MM-DD HH:MM:SS
-          // If the screen is to narrow, only show the MM-DD HH:MM
-          str+=deadline.slice(0, yearFormat.length)+"</span>"+deadline.slice(yearFormat.length, yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length-3)+"<span class='thisDateShouldDisappearWhenScreenIsTooSmall' style='display:"+hiddenInline+";'>"+deadline.slice(yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length-3, yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length)+"</span>"
-;
-					}
-        str+="</td>";
+           str+="<td style='text-align:right;overflow:hidden;max-width:145px;'><div style='white-space:nowrap;'>";
+           if(dl[1] == timeFilterAndFormat) {
+             str+="<div class='dateField'>";
+             str+=deadline.slice(0, yearFormat.length)
+             str+="</div>";
+             str+=deadline.slice(yearFormat.length, yearFormat.length+dateFormat.length);
+           } else {
+             str+="<span class='dateField'>"+deadline.slice(0, yearFormat.length)+"</span>";
+             str+=deadline.slice(yearFormat.length, yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length-3);
+             str+="<span class='dateField'>"+deadline.slice(yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length-3, yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length)+"</span>";
+           }
+           str+="</div></td>";
        } else {
 					// Do nothing
 				}
@@ -1074,7 +1051,6 @@ function returnedSection(data)
 		str+="</div>";
 		var slist=document.getElementById('Sectionlist');
 		slist.innerHTML=str;	
-    disappearingFields();
 		if(resave == true){
 			str="";
 			$("#Sectionlist").find(".item").each(function(i) {
