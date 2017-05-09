@@ -64,16 +64,16 @@ pdoConnect();
 			
 				<div id="changePassword" style="margin-right:60px;">
 					<h3>Change password</h3>
-					<p style="max-width:165px">(max 72 characters)</p>
-					<form method="post">
+					<form method="post" name="passwordForm">
 						<label for="currentPassword2">Current password</label><br/>
-						<input type="password" id="currentPassword2" placeholder="Current password" maxlength="72"/><br/><br/>
-						<label for="newPassword">New password</label><br/>
-						<input type="password" id="newPassword" placeholder="New password" maxlength="72"/><br/>
-						<label for="newPassword2">New password again</label><br/>
-						<input type="password" id="newPassword2" placeholder="New password again" maxlength="72"/><br/><br/>
-						<button type="button" onClick="saveChallenge()" id="savePassword">Save</button><br/><br/>
+						<input type="password" class="form-control textinput" id="currentPassword2" placeholder="Current password" maxlength="72"     onkeydown="formEventHandler(event)"/><br/><br/>
+						<label for="newPassword">New password (8 Characters minimum. Must contain a number,<br/> an uppercase and a lowercase letter.)</label><br/>
+						<input type="password" class="form-control textinput" id="newPassword" placeholder="Max 72 characters" maxlength="72"         onkeydown="formEventHandler(event)"/><br/>
+						<label for="newPassword2">Confirm new password</label><br/>
+						<input type="password" class="form-control textinput" id="newPassword2" placeholder="New password again" maxlength="72"       onkeydown="formEventHandler(event)"/><br/><br/>
+						<button type="button" id="passwordButton" onclick="validatePassword();">Update password</button><br/><br/>
 					</form>
+                    <div id="passwordMessage"></div>
 				</div>
 			
 				<div id="notificationsOnOff">
