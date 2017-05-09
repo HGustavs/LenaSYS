@@ -39,6 +39,9 @@ var heightWindow;                   // The height on the users screen is saved i
 var consoleInt = 0;
 var startX = 0, startY = 0;         // Current X- and Y-coordinant from which the canvas start from
 var waldoPoint = "";
+var moveValue = 0;
+var zoomStartX = 0;
+var zoomStartY = 0;
 var activePoint = null;             //This point indicates what point is being hovered by the user
 var p1 = null;                      // When creating a new figure, these two variables are used ...
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
@@ -460,71 +463,6 @@ function enableGrid(element) {
     }
 }
 
-// Function for the zoom in and zoom out in the canvas element
-function zoomInMode(e) {
-    uimode = "Zoom";
-    var canvas = document.getElementById("myCanvas");
-    canvas.removeEventListener('click', zoomOutClick, false);
-    canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
-    var zoomInClass = document.getElementById("zoomInButton").className;
-    var zoomInButton = document.getElementById("zoomInButton");
-    document.getElementById("zoomOutButton").className = "unpressed";
-    document.getElementById("moveButton").className = "unpressed";
-    if (zoomInClass == "unpressed") {
-        canvas.removeEventListener('dblclick', doubleclick, false);
-        zoomInButton.className = "pressed";
-        canvas.style.cursor = "zoom-in";
-        canvas.addEventListener("click", zoomInClick, false);
-    } else {
-        zoomInButton.className = "unpressed";
-        canvas.addEventListener("dblclick", doubleclick, false);
-        canvas.removeEventListener("click", zoomInClick, false);
-        canvas.style.cursor = "default";
-    }
-}
-
-function zoomOutMode(e) {
-    uimode = "Zoom";
-    var canvas = document.getElementById("myCanvas");
-    canvas.removeEventListener('click', zoomInClick, false);
-    canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
-    var zoomOutClass = document.getElementById("zoomOutButton").className;
-    var zoomOutButton = document.getElementById("zoomOutButton");
-    document.getElementById("zoomInButton").className = "unpressed";
-    document.getElementById("moveButton").className = "unpressed";
-    if (zoomOutClass == "unpressed") {
-        canvas.removeEventListener('dblclick', doubleclick, false);
-        zoomOutButton.className = "pressed";
-        canvas.style.cursor = "zoom-out";
-        canvas.addEventListener("click", zoomOutClick, false);
-    } else {
-        zoomOutButton.className = "unpressed";
-        canvas.addEventListener("dblclick", doubleclick, false);
-        canvas.removeEventListener("click", zoomOutClick, false);
-        canvas.style.cursor = "default";
-    }
-}
-
-function zoomInClick() {
-    var oldZV = zv;
-    zv += 0.1;
-    reWrite();
-    // To be able to use the 10% increase och decrease, we need to use this calcuation.
-    var inScale = ((1 / oldZV) * zv);
-    ctx.scale(inScale, inScale);
-    updategfx();
-}
-
-function zoomOutClick() {
-    var oldZV = zv;
-    zv -= 0.1;
-    reWrite();
-    // To be able to use the 10% increase och decrease, we need to use this calcuation.
-    var outScale = ((1 / oldZV) * zv);
-    ctx.scale(outScale, outScale);
-    updategfx();
-}
-
 function getUploads() {
     document.getElementById('buttonid').addEventListener('click', openDialog);
     function openDialog() {
@@ -561,6 +499,10 @@ var erEntityA;
 
 function updategfx() {
     ctx.clearRect(startX, startY, widthWindow, heightWindow);
+    if(moveValue == 1){
+        ctx.translate((-mouseDiffX), (-mouseDiffY));
+        moveValue = 0;
+    }
     drawGrid();
     // Sort alla connectors
     diagram.sortConnectors();
@@ -568,6 +510,10 @@ function updategfx() {
     diagram.draw();
     // Draw all points as crosses
     points.drawpoints();
+    if (moveValue == 2){
+        ctx.translate((startX/zv), (startY*zv));
+        moveValue = 0;
+    }
 }
 
 // Recursive Pos of div in document - should work in most browsers
@@ -607,17 +553,15 @@ function mousemoveevt(ev, t) {
     moy = cy;
     hovobj = diagram.inside(cx, cy);
     if (ev.pageX || ev.pageY == 0) { // Chrome
-        cx = (ev.pageX - acanvas.offsetLeft) * (1 / zv);
-        cy = (ev.pageY - acanvas.offsetTop) * (1 / zv);
+        cx = (((ev.pageX - acanvas.offsetLeft) * (1/zv)) + (startX*(1/zv)));
+        cy = (((ev.pageY - acanvas.offsetTop) * (1/zv)) + (startY*(1/zv)));
     } else if (ev.layerX || ev.layerX == 0) { // Firefox
-        cx = (ev.layerX - acanvas.offsetLeft) * (1 / zv);
-        cy = (ev.layerY - acanvas.offsetTop) * (1 / zv);
+        cx = (((ev.layerX - acanvas.offsetLeft) * (1/zv)) + (startX*(1/zv)));
+        cy = (((ev.layerY - acanvas.offsetTop) * (1/zv)) + (startY*(1/zv)));
     } else if (ev.offsetX || ev.offsetX == 0) { // Opera
-        cx = (ev.offsetX - acanvas.offsetLeft) * (1 / zv);
-        cy = (ev.offsetY - acanvas.offsetTop) * (1 / zv);
+        cx = (((ev.offsetX - acanvas.offsetLeft) * (1/zv)) + (startX*(1/zv)));
+        cy = (((ev.offsetY - acanvas.offsetTop) * (1/zv)) + (startY*(1/zv)));
     }
-    cx += startX;
-    cy += startY;
     if (md == 1 || md == 2 || md == 0 && uimode != " ") {
         if (snapToGrid) {
             cx = Math.round(cx / gridSize) * gridSize;
@@ -1417,7 +1361,6 @@ function movemode(e, t) {
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
-        mousemoveevt(e, t);
     }
 }
 
@@ -1438,16 +1381,79 @@ function mousemoveposcanvas(e) {
     startY += mouseDiffY;
     mousedownX = mousemoveX;
     mousedownY = mousemoveY;
-    ctx.clearRect(0, 0, widthWindow, heightWindow);
-    ctx.translate((-mouseDiffX), (-mouseDiffY));
-    diagram.sortConnectors();
-    diagram.draw();
-    points.drawpoints();
+    moveValue = 1;
+    updategfx();
     reWrite();
 }
 
 function mouseupcanvas(e) {
     document.getElementById("myCanvas").removeEventListener('mousemove', mousemoveposcanvas, false);
+}
+
+// Function for the zoom in and zoom out in the canvas element
+function zoomInMode(e) {
+    uimode = "Zoom";
+    var canvas = document.getElementById("myCanvas");
+    canvas.removeEventListener('click', zoomOutClick, false);
+    canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
+    var zoomInClass = document.getElementById("zoomInButton").className;
+    var zoomInButton = document.getElementById("zoomInButton");
+    document.getElementById("zoomOutButton").className = "unpressed";
+    document.getElementById("moveButton").className = "unpressed";
+    if (zoomInClass == "unpressed") {
+        canvas.removeEventListener('dblclick', doubleclick, false);
+        zoomInButton.className = "pressed";
+        canvas.style.cursor = "zoom-in";
+        canvas.addEventListener("click", zoomInClick, false);
+    } else {
+        zoomInButton.className = "unpressed";
+        canvas.addEventListener("dblclick", doubleclick, false);
+        canvas.removeEventListener("click", zoomInClick, false);
+        canvas.style.cursor = "default";
+    }
+}
+
+function zoomOutMode(e) {
+    uimode = "Zoom";
+    var canvas = document.getElementById("myCanvas");
+    canvas.removeEventListener('click', zoomInClick, false);
+    canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
+    var zoomOutClass = document.getElementById("zoomOutButton").className;
+    var zoomOutButton = document.getElementById("zoomOutButton");
+    document.getElementById("zoomInButton").className = "unpressed";
+    document.getElementById("moveButton").className = "unpressed";
+    if (zoomOutClass == "unpressed") {
+        canvas.removeEventListener('dblclick', doubleclick, false);
+        zoomOutButton.className = "pressed";
+        canvas.style.cursor = "zoom-out";
+        canvas.addEventListener("click", zoomOutClick, false);
+    } else {
+        zoomOutButton.className = "unpressed";
+        canvas.addEventListener("dblclick", doubleclick, false);
+        canvas.removeEventListener("click", zoomOutClick, false);
+        canvas.style.cursor = "default";
+    }
+}
+
+function zoomInClick() {
+    var oldZV = zv;
+    zv += 0.1;
+    reWrite();
+    // To be able to use the 10% increase och decrease, we need to use this calcuation.
+    var inScale = ((1 / oldZV) * zv);
+    ctx.scale(inScale, inScale);
+    if(zv == 1){
+        moveValue = 2;
+    }
+}
+
+function zoomOutClick() {
+    var oldZV = zv;
+    zv -= 0.1;
+    reWrite();
+    // To be able to use the 10% increase och decrease, we need to use this calcuation.
+    var outScale = ((1 / oldZV) * zv);
+    ctx.scale(outScale, outScale);
 }
 
 //calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram. it also save the local diagram
