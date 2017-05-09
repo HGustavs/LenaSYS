@@ -176,7 +176,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 		// in this case moment refers to the listentry and not the parent moment listentry
 		$query = $pdo->prepare("
-      SELECT userAnswer.useranswer AS aws,entryname,quizFile,qrelease,deadline,param,variant.variantanswer AS facit,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,link,feedback AS duggaFeedback 
+      SELECT userAnswer.useranswer AS aws,entryname,quizFile,qrelease,deadline,param,variant.variantanswer AS facit,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,link,feedback AS duggaFeedback
       FROM userAnswer,listentries,quiz,variant
       WHERE variant.vid=userAnswer.variant AND userAnswer.cid=listentries.cid AND listentries.cid=quiz.cid AND userAnswer.vers=listentries.vers AND listentries.link=quiz.id AND listentries.lid=userAnswer.moment AND uid=:luid AND userAnswer.moment=:moment AND listentries.cid=:cid AND listentries.vers=:vers;
     ");
@@ -361,7 +361,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 
 		// All results from current course and vers?
 		$query = $pdo->prepare("
-      SELECT aid,quiz,variant,userAnswer.moment AS dugga,grade,uid,useranswer,UNIX_TIMESTAMP(submitted) AS submitted,userAnswer.vers,UNIX_TIMESTAMP(marked) AS marked,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,listentries.moment AS moment,if((submitted > marked && !isnull(marked))||(isnull(marked) && !isnull(useranswer)), true, false) AS needMarking
+      SELECT aid,quiz,variant,userAnswer.moment AS dugga,grade,uid,useranswer,UNIX_TIMESTAMP(submitted) AS submitted,userAnswer.vers,UNIX_TIMESTAMP(marked) AS marked,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,listentries.moment AS moment,if((submitted > marked && !isnull(marked))||(isnull(marked) && !isnull(useranswer)), true, false) AS needMarking,timesGraded
       FROM userAnswer,listentries
       WHERE userAnswer.cid=:cid AND userAnswer.vers=:vers AND userAnswer.moment=listentries.lid;
     ");
@@ -395,7 +395,8 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 					'totalTimeUsed' => $row['totalTimeUsed'],
 					'stepsUsed' => $row['stepsUsed'],
 					'totalStepsUsed' => $row['totalStepsUsed'],
-					'needMarking' => (bool)$row['needMarking']
+					'needMarking' => (bool)$row['needMarking'],
+					'timesGraded' => (int)$row['timesGraded']
 				)
 			);
 		}
