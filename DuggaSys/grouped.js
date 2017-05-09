@@ -2,11 +2,12 @@ var querystring = parseGet();
 var subheading=0;
 var allData;
 var momtmp=new Array;
-var entries;
-var moments;
+var availablegroups=new Array;
+var moments=new Array;
 var versions;
 var courselist;
-
+var students=new Array;
+var tablecontent=new Array;
 function setup(){  	
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "GROUP");
 }
@@ -34,20 +35,45 @@ function createGroup()
 	}
 }
 
-function returnedGroup(data)
-{
-	// console.log(data);
-	var headings = data.headings;
-	var tablecontent = data.tablecontent;
-	var availablegroups = data.availablegroups; // The available groups to put users in
-	
-	/* entries=data.entries;
-	moments=data.moments;
-	versions=data.versions;
-	results=data.results;*/
-	
-	allData = data; // used by dugga.js (for what??)
-			
+function process()
+{			
+		// Read dropdown from local storage
+		clist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+		if (clist){	
+				clist=clist.split("**"); 
+		} 
+
+		// Create temporary list that complies with dropdown
+		momtmp=new Array;
+		var momname = "tore";
+		for(var l=0;l<moments.length;l++){
+				if (moments[l].kind===4){
+						momname = moments[l].entryname;
+				}
+				moments[l].momname = momname;		
+		}
+		
+		// Create temporary list that complies with dropdown
+		momtmp=new Array;
+		for(var l=0;l<moments.length;l++){
+				if (clist !== null ){
+						index=clist.indexOf("hdr"+moments[l].lid+"check");
+						if(clist[index+1]=="true"){
+								momtmp.push(moments[l]);
+						}
+				} else {
+						/* default to show every moment/dugga */
+						momtmp.push(moments[l]);
+				}
+		}
+
+		// Get groups
+		for(i=0;i<availablegroups.length;i++){
+			var uid=availablegroups[i].uid;
+		}
+}
+
+function drawtable(){
 	// Init the table string. 
 	str="";
 	
@@ -62,8 +88,9 @@ function returnedGroup(data)
 	str+="<thead>";
 	str+="<tr class='markinglist-header'>";
 	
+
 	str+="<th id='header' class='grouprow' style='width:40px'><span>#<span></th>";
-	str+="<th id='subheading' class='result-header' style='width:140px;'>Studenter</th>";
+	str+="<th id=tableheader0' class='result-header' onclick='toggleSortDir(0);' style='width:140px;'>Studenter</th>";
 
 	// Read dropdown from local storage (??)
 	courselist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
@@ -72,17 +99,15 @@ function returnedGroup(data)
 	} 
 	
 	// Itererate the headings, that are dependent on the cid and coursevers. 
-	if(headings){
-		for(var i = 0; i < headings.length; i++) {
-			str+="<th id="+headings[i].lid+" title ='Listentry id "+headings[i].lid+"' class='result-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;'>"+headings[i].entryname+"</th>";	
+	if(moments){
+		for(var i = 0; i < moments.length; i++) {
+			str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+moments[i].lid+"' class='result-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+moments[i].entryname+"</th>";	
 		}
 	}
-	
 	str+="</thead>";
 	// Iterate the tablecontent. 
 	str += "<tbody>";
 	var row=0;
-
 	for(var i = 0; i < tablecontent.length; i++) { // create table rows. 
 		row++;
 		str+="<tr";
@@ -112,7 +137,36 @@ function returnedGroup(data)
 	}
 	str += "</tbody>";
 	str+="</table>";
+	
 	document.getElementById("content").innerHTML=str;
+}
+
+function returnedGroup(data)
+{
+	var headings = data.headings;
+	moments=data.moments;
+	tablecontent = data.tablecontent;
+	availablegroups = data.availablegroups; // The available groups to put users in
+	
+	
+	/* availablegroups=data.availablegroups;
+	moments=data.moments;
+	versions=data.versions;
+	results=data.results;*/
+	
+	// Read dropdown from local storage (??)
+	courselist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+	if (courselist){	
+		courselist=courselist.split("**"); 
+	} 
+	var str="";
+	//Show table 
+	drawtable();
+	
+	allData = data; // used by dugga.js (for what??)
+	process();
+	
+	
 		
 }
 
@@ -148,3 +202,101 @@ function changegroup(changedElement) {
 	// Debugger, needed for now
 	console.log('You have tried to change a group');
 }
+
+function resort()
+{
+	// Read sorting config from localStorage to get the right order in table	
+	var sortdir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
+	if (sortdir === null || sortdir === undefined){dir=1;}
+	$("#sortdir"+sortdir).prop("checked", true);
+	var columno=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
+	if (columno === null || columno === undefined ){columno=0;}
+	var colkind=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1");
+	if (colkind == null || colkind == undefined){colkind=0;}
+	if (tablecontent.length > 0) {
+		if(columno < tablecontent.length){
+			// Each if case checks what to sort after and then sorts appropiatle depending on ASC or DESC
+			if(columno==0){
+				if(colkind==1){	
+					tablecontent.sort(function compare(a,b){ 
+						if(a.username>b.username){
+							return sortdir;
+						}else if(a.username<b.username){
+								return -sortdir;
+						}else{
+							return 0;
+						}
+					});
+				}
+			}else{
+				// other columns sort by
+				// 0. no group/groups
+				if(columno > 0){
+					tablecontent.sort(function compare(a,b){
+						if(a.lidstogroup[moments[columno-1].lid]!=false && b.lidstogroup[moments[columno-1].lid]==false ){
+								return -sortdir;
+						} else if(a.lidstogroup[moments[columno-1].lid]==false  && b.lidstogroup[moments[columno-1].lid]!=false ){
+								return sortdir;
+						}else{	
+							if(a.lidstogroup[moments[columno-1].lid]>b.lidstogroup[moments[columno-1].lid]){		  				
+									return sortdir;
+							}else if(a.lidstogroup[moments[columno-1].lid]<b.lidstogroup[moments[columno-1].lid]){
+									return -sortdir;
+							}else{
+									return 0;
+							}
+						}
+					});								
+				}
+			}					 
+		}
+	}
+		
+	drawtable();
+	//Highlights the header that has been clicked and shows ASC or DESC icon
+	for(var m=0;m<columno;m++){
+		$("#tableheader"+columno).removeClass("result-header-inverse");
+	}
+	$("#tableheader"+columno).addClass("result-header-inverse"); 
+    if (sortdir<0){
+		if(columno == 0){
+			$("#tableheader"+columno).empty();
+			$("#tableheader"+columno).append("Studenter");
+			$("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
+		}else{
+			$("#tableheader"+columno).empty();
+			$("#tableheader"+columno).append(moments[columno-1].entryname);
+			$("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
+		}
+    }else{
+		if(columno == 0){
+			$("#tableheader"+columno).empty();
+			$("#tableheader"+columno).append("Studenter");
+			$("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
+		}else{		
+			 $("#tableheader"+columno).empty();
+			 $("#tableheader"+columno).append(moments[columno-1].entryname);
+			 $("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>"); 
+		}  
+	}
+}
+
+// If col and current col are equal we flip sort order 
+function toggleSortDir(col){
+    var dir = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
+    var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
+  	if (col != ocol){
+        if (col == 0){
+            localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1",1);
+        }
+        dir=-1;
+        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);          
+        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);                
+    }else{
+		dir=dir*-1;
+		$("input[name='sortdir']:checked").val(dir);
+		localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
+    }
+    resort();  
+}
+
