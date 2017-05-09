@@ -187,13 +187,13 @@ function isUnorderdList(item) {
 // Check if its an ordered list
 function isOrderdList(item) {
 	// return true if space followed by a digit and a dot
-	return /^\s*\d*\.\s(.*)/gm.test(item); 
+	return /^\s*\d*\.\s(.*)/gm.test(item);
 }
 
 // CHeck if its a table
 function isTable(item) {
 	// return true if space followed by a pipe-character and have closing pipe-character
-	return /\s*\|\s(.*)\|/gm.test(item);
+	return (/^\s*\|\s*(.*)\|\s*/gm).test(item);
 }
 // The creation and destruction of unordered lists
 function handleUnorderedList(currentLine, prevLine, nextLine) {
@@ -248,7 +248,6 @@ function handleOrderedList(currentLine, prevLine, nextLine) {
     if(currentLineIndentation < nextLineIndentation) { 
     	markdown += "<li>";
     	markdown +=  value;
-
     	// open sublist
     	markdown += "<ol>";
     }
@@ -272,19 +271,15 @@ function handleOrderedList(currentLine, prevLine, nextLine) {
     if(!isOrderdList(currentLine)) {
     	markdown += "</ol>";
     }
-
 	return markdown;
 }
 function handleTable(currentLine, prevLine, nextLine) {
     var markdown = "";
-
     var columns = currentLine.split('|').filter(function(v){return v !== '';});
-
     // open table
     if(!isTable(prevLine)) {
         markdown += "<table class='markdown-table'>";
     }
-
     // create thead
     if(!isTable(prevLine) && nextLine.match(/^\s*\|\s*[:]?[-]*[:]?\s*\|/gm)) {
         markdown += "<thead>";

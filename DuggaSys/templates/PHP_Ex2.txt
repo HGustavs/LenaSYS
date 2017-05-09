@@ -8,14 +8,31 @@ From the standpoint of the browser the result is identical.
 Hello!
 ~~~
 
-| Head1 | Head2 | Head3 |
-| :----: | ---: | ---- |
+|Head1|Head2|Head3|
+| :---: | ----: | ----- |
 | Head4 | Head5 | Head6 |
 | Head7 | Head8 | Head9 |
 | Head4 | Head5 | Head6 |
 | Head5 | Head6 | Head7 |
 | Head5 | Head6 | Head7 |
-| :----: | :---: | :----: |
+| :---: | :---: | :---: |
 | Head5 | Head6 | Head7 |
 | Head5 | Head6 | Head7 |
 | Head5 | Head6 | Head7 |
+
+****Unordered list****
+* item
+* item
+* item
+  * item
+  * item
+* item
+
+****Ordered list****
+1. item
+2. item
+3. item
+  1. item
+  2. item
+4. item
+
