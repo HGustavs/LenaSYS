@@ -186,6 +186,11 @@ function Symbol(kind) {
             if (points[this.topLeft].y > points[this.middleDivider].y) {
                 points[this.topLeft].y = points[this.middleDivider].y;
             }
+        } else if (this.symbolkind == 5){
+            points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
+            points[this.topLeft].y = points[this.middleDivider].y-relationTemplate.height/2;
+            points[this.bottomRight].x = points[this.middleDivider].x+relationTemplate.width/2;
+            points[this.bottomRight].y = points[this.middleDivider].y+relationTemplate.height/2;
         }
     }
 
