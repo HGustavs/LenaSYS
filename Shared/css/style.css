@@ -1369,7 +1369,7 @@ input.large-button {
 }
 
 .list#testTable input {
-    border-width: 0px !important;
+    border-width: 1px !important;
     border-style: inset !important;
 }
 
@@ -1392,8 +1392,12 @@ span.arrow {
 }
 
 .list#testTable input {
-  border-width: 0px !important;
+  border-width: 1px !important;
   border-style: inset !important;
+  border-radius: 0px;
+  font-size:14px;
+  height:17px;
+  color:black;
 }
 
 #testinnertable {
