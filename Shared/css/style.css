@@ -1008,9 +1008,6 @@ input {
   font-family: Roboto, Arial Narrow;
   margin-left: -2px;
 }
-.loginBoxTable tr{
-  padding: 20px;  
-}
 #loginBoxTitle{
   font-size: 15px;
 }
