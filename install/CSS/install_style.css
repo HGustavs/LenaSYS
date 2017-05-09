@@ -153,3 +153,53 @@ body {
     cursor: pointer;
     opacity: 0.7;
 }
+
+.button2 {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    height: 30px;
+    margin-top: 10px;
+}
+
+.button2:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+#doThisWrapper {
+    width: 75%;
+    background-color: rgb(250,250,250);
+    margin: auto;
+    text-align: center;
+}
+
+.codeBox {
+    text-align: left;
+    word-wrap: break-word;
+    background-color: #cccccc;
+    min-width: 300px;
+    max-width: 80%;
+    margin: auto;
+    padding: 5px;
+    border-style: solid;
+    border-width: 2px;
+}
+
+#installationProgressWrap {
+    display: block;
+}
+
+#showHideInstallation {
+    color: white;
+    margin-top: 10px;
+}
+
+#showHideInstallation:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

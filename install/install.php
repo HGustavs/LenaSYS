@@ -6,6 +6,7 @@
 </head>
 <body>
     <?php
+    $errors = 0;
     // Create a version of dirname for <PHP7 compability
     function cdirname($path, $level) {
       $paths = explode("/", $path);
@@ -300,16 +301,18 @@
 
         /***** START ******/
         $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
-        echo "<h1>Installation</h1>";
-        echo "<hr>";
+        echo "<div id='header'><h1>Installation</h1></div>";
         flush();
         ob_flush();
 
+        echo "<div id='installationProgressWrap'>";
         # Test permissions on directory before starting installation.
         if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0777)) {
+            $errors++;
             exit ("<span style='color: red;' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span>");
         } else {
             if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
+                $errors++;
                 exit ("<span style='color: red;' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span>");
             } else {
                 echo "<span style='color: green;' />Permissions on {$putFileHere} set correctly.</span><br>";
@@ -320,6 +323,7 @@
         $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
         foreach ($fields AS $fieldname) { //Loop trough each field
             if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname])) {
+                $errors++;
                 exit ("<span style='color: red;' />Please fill all fields.</span>");
             }
         }
@@ -342,6 +346,7 @@
                 $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 echo "<span style='color: green;' />Connected successfully to {$serverName}.</span><br>";
             } catch (PDOException $e) {
+                $errors++;
                 echo "<span style='color: red;' />Connection failed: " . $e->getMessage() . "</span><br>";
             }
             flush();
@@ -354,6 +359,7 @@
                 $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
                 echo "<span style='color: green;' />Successfully removed old user, {$username}.</span><br>";
                 } catch (PDOException $e) {
+                $errors++;
                 echo "<span style='color: red;' />User with name {$username} 
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
@@ -366,6 +372,7 @@
                     $connection->query("DROP DATABASE {$databaseName}");
                     echo "<span style='color: green;' />Successfully removed old database, {$databaseName}.</span><br>";
                 } catch (PDOException $e) {
+                    $errors++;
                     echo "<span style='color: red;' />Database with name {$databaseName} 
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
@@ -378,6 +385,7 @@
                 $connection->query("CREATE DATABASE {$databaseName}");
                 echo "<span style='color: green;' />Database with name {$databaseName} created successfully.</span><br>";
             } catch (PDOException $e) {
+                $errors++;
                 echo "<span style='color: red;' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
             }
             flush();
@@ -391,6 +399,7 @@
                 $connection->query("FLUSH PRIVILEGES");
                 echo "<span style='color: green;' />Successfully created user {$username}.</span><br>";
             } catch (PDOException $e) {
+                $errors++;
                 echo "<span style='color: red;' />Could not create user with name {$username}, maybe it already exists...</span><br>";
             }
             flush();
@@ -443,6 +452,7 @@
                 $initSuccess = true;
                 echo "<span style='color: green;' />Initialization of database complete. </span><br>";
             } catch (PDOException $e) {
+                $errors++;
                 echo "<span style='color: red;' />Failed initialization of database because of query (in init_db.sql): </span><br>";
                 echo "<div style='word-wrap: break-word; background-color: #cccccc; min-width: 300px; max-width: 80%; height: *; margin: 0:auto; padding: 5px; border-style: solid; border-width: 2px;'><code>{$completeQuery}</code></div><br><br>";
             }
@@ -481,22 +491,22 @@
             echo "Skipped creating database.<br>";
         }
 
-        echo "<b>Installation finished.</b><br><hr>";
+        echo "<b>Installation finished.</b><br>";
         flush();
         ob_flush();
+        echo "</div>";
+        echo "<div id='inputFooter'><span style='color: white;'>Installation errors: " . $errors . "</span><br>
+                <span id='showHideInstallation'>Show/hide installation progress.</span></div>";
 
         # All this code prints further instructions to complete installation.
         $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
-        echo "<h1><span style='color: red;' />!!!READ BELOW!!!</span></h1>";
-        $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
-        echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
-        echo "<input type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
-        echo "</form>";
+        echo "<div id='doThisWrapper'>";
+        echo "<h1><span id='warningH1' style='color: red;' />!!!READ BELOW!!!</span></h1>";
         echo "<br><b>To make installation work please make a
             file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
         echo "<b>Bash command to complete all this (Copy all code below and paste it into bash shell as one statement):</b><br>";
-        echo "<div style='word-wrap: break-word; background-color: #cccccc; min-width: 300px; max-width: 80%; height: *; margin: 0:auto; padding: 5px; border-style: solid; border-width: 2px;'><code>";
+        echo "<div class='codeBox'><code>";
         echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
         echo 'define(\"DB_USER\",\"' . $username . '\");\n';
         echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
@@ -508,19 +518,27 @@
         echo "<b> Now create a directory named 'log' (if you dont already have it)<br> 
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
                 (Copy all code below and paste it into bash shell as one statement to do this).</b><br>";
-        echo "<div style='word-wrap: break-word; background-color: #cccccc; min-width: 300px; max-width: 80%; height: *; margin: 0:auto; padding: 5px; border-style: solid; border-width: 2px;'><code>";
+        echo "<div class='codeBox'><code>";
         echo "mkdir " . $putFileHere . "/log && ";
         echo "chmod 777 " . $putFileHere . "/log && ";
         echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
         echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
         echo "</code></div><br>";
+
+        $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
+        echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
+        echo "<input class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
+        echo "</form>";
+        echo "</div>";
     }
 
     # Function to add testdata from specified file. Parameter file = sql file name without .sql.
     function addTestData($file, $connection){
+        global $errors;
         $testDataQuery = @file_get_contents("SQL/{$file}.sql");
 
         if ($testDataQuery === FALSE) {
+            $errors++;
             echo "<span style='color: red;' />Could not find SQL/{$file}.sql, skipped this test data.</span><br>";
         } else {
             # Split SQL file at semi-colons to send each query separated.
@@ -534,6 +552,7 @@
                 }
                 echo "<span style='color: green;' />Successfully filled database with test data from {$file}.sql.</span><br>";
             } catch (PDOException $e) {
+                $errors++;
                 echo "<span style='color: red;' />Failed to fill database with data because of query in {$file}.sql (Skipped the rest of this file):</span><br>";
                 echo "<div style='word-wrap: break-word; background-color: #cccccc; min-width: 300px; max-width: 80%; height: *; margin: 0:auto; padding: 5px; border-style: solid; border-width: 2px;'><code>{$completeQuery}</code></div><br><br>";
             }
@@ -559,6 +578,17 @@
     <script>
         // Show modal
         modal.style.display = "block";
+        var showHideButton = document.getElementById('showHideInstallation');
+
+        showHideButton.onclick = function(){
+            toggleInstallationProgress();
+        }
+
+        function toggleInstallationProgress(){
+            $('#installationProgressWrap').toggle(500);
+        }
+
+        toggleInstallationProgress();
     </script>
 
 </body>
