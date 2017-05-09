@@ -104,17 +104,15 @@ function mousemoveevt(ev, t) {
     moy = cy;
     hovobj = diagram.inside(cx, cy);
     if (ev.pageX || ev.pageY == 0) { // Chrome
-        cx = (ev.pageX - acanvas.offsetLeft) * (1 / zv);
-        cy = (ev.pageY - acanvas.offsetTop) * (1 / zv);
+        cx = (((ev.pageX - acanvas.offsetLeft) * (1/zv)) + (startX*(1/zv)));
+        cy = (((ev.pageY - acanvas.offsetTop) * (1/zv)) + (startY*(1/zv)));
     } else if (ev.layerX || ev.layerX == 0) { // Firefox
-        cx = (ev.layerX - acanvas.offsetLeft) * (1 / zv);
-        cy = (ev.layerY - acanvas.offsetTop) * (1 / zv);
+        cx = (((ev.layerX - acanvas.offsetLeft) * (1/zv)) + (startX*(1/zv)));
+        cy = (((ev.layerY - acanvas.offsetTop) * (1/zv)) + (startY*(1/zv)));
     } else if (ev.offsetX || ev.offsetX == 0) { // Opera
-        cx = (ev.offsetX - acanvas.offsetLeft) * (1 / zv);
-        cy = (ev.offsetY - acanvas.offsetTop) * (1 / zv);
+        cx = (((ev.offsetX - acanvas.offsetLeft) * (1/zv)) + (startX*(1/zv)));
+        cy = (((ev.offsetY - acanvas.offsetTop) * (1/zv)) + (startY*(1/zv)));
     }
-    cx += startX;
-    cy += startY;
     if (md == 1 || md == 2 || md == 0 && uimode != " ") {
         if (snapToGrid) {
             cx = Math.round(cx / gridSize) * gridSize;
@@ -450,7 +448,6 @@ function movemode(e, t) {
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
-        mousemoveevt(e, t);
     }
 }
 
@@ -471,11 +468,8 @@ function mousemoveposcanvas(e) {
     startY += mouseDiffY;
     mousedownX = mousemoveX;
     mousedownY = mousemoveY;
-    ctx.clearRect(0, 0, widthWindow, heightWindow);
-    ctx.translate((-mouseDiffX), (-mouseDiffY));
-    diagram.sortConnectors();
-    diagram.draw();
-    points.drawpoints();
+    moveValue = 1;
+    updategfx();
     reWrite();
 }
 

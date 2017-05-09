@@ -42,6 +42,7 @@ var heightWindow;                   // The height on the users screen is saved i
 var consoleInt = 0;
 var startX = 0, startY = 0;         // Current X- and Y-coordinant from which the canvas start from
 var waldoPoint = "";
+var moveValue = 0;                  // Used to deside if the canvas should translate or not
 var activePoint = null;             //This point indicates what point is being hovered by the user
 var p1 = null;                      // When creating a new figure, these two variables are used ...
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
@@ -499,6 +500,10 @@ var erEntityA;
 
 function updategfx() {
     ctx.clearRect(startX, startY, widthWindow, heightWindow);
+    if(moveValue == 1){
+        ctx.translate((-mouseDiffX), (-mouseDiffY));
+        moveValue = 0;
+    }
     drawGrid();
     // Sort alla connectors
     diagram.sortConnectors();
@@ -506,6 +511,10 @@ function updategfx() {
     diagram.draw();
     // Draw all points as crosses
     points.drawpoints();
+    if (moveValue == 2){
+        ctx.translate((startX/zv), (startY*zv));
+        moveValue = 0;
+    }
 }
 
 function movePoint(point){
