@@ -31,8 +31,10 @@ pdoConnect();
 		include '../Shared/navheader.php';
 		include '../Shared/loginbox.php';
 	?>
-
-	if(checklogin){
+	
+	<?php
+	if(checklogin()){
+	?>
 		<div id="content" style="display:flex">
 			<div style="display:inline-flex;flex-wrap:wrap;margin:0 auto 0 auto;">
 				<div id="changeChallengeQuestion" style="margin-right:60px">
@@ -93,11 +95,11 @@ pdoConnect();
 				</div>
 			</div>
 		</div>
+	<?php
+	} else {
+		showLoginPopup();
 	}
-
-	<script type="text/javascript">
-		checkUserLogin('<?PHP echo json_encode(checklogin()) ?>');
-	</script>
+	?>
 	
 </body>
 </html>
