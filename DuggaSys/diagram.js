@@ -1251,8 +1251,20 @@ function drawGrid() {
     ctx.lineWidth = 1;
     ctx.strokeStyle = "rgb(238, 238, 250)";
     ctx.setLineDash([5, 0]);
-    var quadrantx = (startX < 0)? startX: -startX;
-    var quadranty = (startY < 0)? startY: -startY;
+
+    var quadrantx;
+    var quadranty;
+    if(startX < 0){
+        quadrantx = startX;
+    }else{
+        quadrantx = -startX;
+    }
+    if(startY < 0){
+        quadranty = startY;
+    }else{
+        quadranty = -startY;
+    }
+
     for (var i = 0 + quadrantx; i < quadrantx + widthWindow; i++) {
         if (i % 5 == 0) {
             i++;

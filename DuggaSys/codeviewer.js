@@ -1221,36 +1221,22 @@ function tokenize(instring,inprefix,insuffix)
 function popoverbox(titleData)
 {
 	var popoverMessage = "test";
-	switch(titleData)
-	{
-		case "html":
-			popoverMessage = "Defines the root of an HTML document";
-			break;
-		case "head":
-			popoverMessage = "Defines information about the document";
-			break;
-		case "body":
-			popoverMessage = "Defines the document's body";
-			break;
-		case "div":
-			popoverMessage = "Defines a section in a document";
-			break;
-		case "span":
-			popoverMessage = "Defines a section in a document";
-			break;
-		case "doctype":
-			popoverMessage = "An instruction to the web browser about what version of HTML the page is written in";
-			break;
-		case "":
-			popoverMessage = "";
-			break;
-		case "":
-			popoverMessage = "";
-			break;
-		case "":
-			popoverMessage = "";
-			break;
+	if(titleData=="html"){
+        popoverMessage = "Defines the root of an HTML document";
+	}else if(titleData=="head"){
+        popoverMessage = "Defines information about the document";
+	}else if(titleData=="body"){
+        popoverMessage = "Defines the document's body";
+	}else if(titleData=="div"){
+        popoverMessage = "Defines a section in a document";
+	}else if(titleData=="span"){
+        popoverMessage = "Defines a section in a document";
+	}else if(titleData=="doctype"){
+        popoverMessage = "An instruction to the web browser about what version of HTML the page is written in";
+	}else if(titleData==""){
+        popoverMessage = "";
 	}
+
 	return popoverMessage;
 }
 
