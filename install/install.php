@@ -495,8 +495,8 @@
         flush();
         ob_flush();
         echo "</div>";
-        echo "<div id='inputFooter'><span style='color: white;'>Installation errors: " . $errors . "</span><br>
-                <span id='showHideInstallation'>Show/hide installation progress.</span></div>";
+        echo "<div id='inputFooter'><span id='showHideInstallation'>Show/hide installation progress.</span><br>
+                <span style='color: white;'>Errors: " . $errors . "</span></div>";
 
         # All this code prints further instructions to complete installation.
         $putFileHere = cdirname(getcwd(), 2); // Path to lenasys

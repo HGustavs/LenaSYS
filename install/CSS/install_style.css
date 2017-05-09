@@ -195,8 +195,9 @@ body {
 }
 
 #showHideInstallation {
-    color: white;
+    color: black;
     margin-top: 10px;
+    background-color: rgb(253,203,96);
 }
 
 #showHideInstallation:hover {
