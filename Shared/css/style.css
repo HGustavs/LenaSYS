@@ -261,10 +261,6 @@ p {
   padding-right:8px;
 }
 
-.public {
-
-}
-
 .hidden {
   opacity:0.3 !important;
 }
@@ -1017,7 +1013,6 @@ input {
 }
 #loginBoxTitle{
   font-size: 15px;
-  font-color: #614875;  
 }
 /* ---- ---- ---- --- HigescoreBox --- ---- ---- ---- */
 
@@ -1202,10 +1197,6 @@ input.new-item-button:hover {
   border-radius:4px;
 }
 
-.unpressed{
-  background: ;
-  color: ;
-}
 .pressed{
   background: grey;
   color: white;
@@ -1275,10 +1266,6 @@ input.large-button {
   color:#000;
   line-height:28px;
   border:none;
-}
-
-.list tr:hover {
-  /*background-color: #dbd0d8;*/
 }
 
 .list--nomargin {
@@ -1400,10 +1387,6 @@ span.arrow {
   color:#000;border:none;
 }
 
-.markinglist tr:hover {
-
-}
-
 .markinglist--nomargin {
   margin: 0!important;
 }
@@ -1504,9 +1487,6 @@ span.arrow {
 .duggasys-head__profileicon:hover {
 	height: 100%;
 	padding: 5px;
-}
-.duggasys-head__username {
-
 }
 
 /* End DuggaSys Header */
@@ -2114,9 +2094,6 @@ span.arrow {
   box-shadow:0px 0px 4px #202 inset;
 }
 
-.rowno {
-  /*width:40px;*/
-}
 
 .rowno > div {
   text-align: right;
@@ -2212,7 +2189,7 @@ table {
 .fumho td {
 	padding-left:8px;
 	padding-right:8px;
-	border-right:2px dotted rgba(0,0,0,0.2);'
+	border-right:2px dotted rgba(0,0,0,0.2);
 }
 
 .fumho tr:nth-child(even) {
