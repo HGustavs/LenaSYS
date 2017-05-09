@@ -82,3 +82,5 @@ CREATE TABLE `usergroup_listentries` (
 Added rows to 'vers' to have a start date and end date to a version of a course
   startdate     DATETIME,
   enddate       DATETIME,
+
+// Removed usergroup_listentries, instead added a lid column in usergroup and a constraint to the listentry lid. 
