@@ -228,7 +228,7 @@ function handleUnorderedList(currentLine, prevLine, nextLine) {
     	markdown += "</li>";
     }
     // Close the list
-    if(!isUnorderdList(currentLine)) {
+    if(!isUnorderdList(nextLine)) {
     	markdown += "</ul>";
     }
 
@@ -269,7 +269,7 @@ function handleOrderedList(currentLine, prevLine, nextLine) {
     	markdown += "</li>";
     }
     // Close the ordered list
-    if(!isOrderdList(currentLine)) {
+    if(!isOrderdList(nextLine)) {
     	markdown += "</ol>";
     }
 
@@ -331,7 +331,7 @@ function handleTable(currentLine, prevLine, nextLine) {
         }
     }
     // close table
-    if(!isTable(currentLine)) {
+    if(!isTable(nextLine)) {
         markdown += "</tbody></table>";
     }
     return markdown;
