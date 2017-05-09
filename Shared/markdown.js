@@ -182,7 +182,7 @@ function identifier(prevLine, currentLine, markdown, nextLine){
 // Check if its an unordered list
 function isUnorderdList(item) {
 	// return true if space followed by a dash or astersik 
-	return /^\s*[\-\*]\s(.*)/gm.test(item);
+	return /(\-|\*)\s+[^|]/gm.test(item);
 }
 // Check if its an ordered list
 function isOrderdList(item) {

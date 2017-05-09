@@ -16,13 +16,21 @@ Hello!
 | item | item | item |
 
 
-****Unordered list****
+****Unordered list with bullets****
 * item
 * item
 * item
   * item
   * item
 * item
+
+****Unordered list with dashes****
+- item
+- item
+- item
+  - item
+  - item
+- item
 
 ****Ordered list****
 1. item

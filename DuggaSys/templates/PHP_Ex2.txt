@@ -23,6 +23,14 @@ Hello!
   * item
 * item
 
+****Unordered list with dashes****
+- item
+- item
+- item
+  - item
+  - item
+- item
+
 ****Ordered list****
 1. item
 2. item
