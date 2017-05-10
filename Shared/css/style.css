@@ -1574,6 +1574,10 @@ span.arrow {
 	text-align:center;
 }
 
+#dropdownFilter{
+	width: 150px;
+}
+
 .momentdiv {
 	border-right:2px solid #927b9e;
 	display: inline-block;
