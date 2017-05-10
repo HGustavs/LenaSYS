@@ -2408,7 +2408,7 @@ ul.hamburgerList button.menuButton {
 
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
   table.navheader td.editVers,
-  table.navheader td.analysis,
+  table.navheader td.contribution,
   table.navheader td.newVers {
     margin-right: 0px;
     width: 0px;
@@ -2418,7 +2418,7 @@ ul.hamburgerList button.menuButton {
   }
 
   table.navheader div.editVers,
-  table.navheader div.analysis,
+  table.navheader div.contribution,
   table.navheader div.newVers {
     pointer-events: none;
     opacity: 0;
@@ -2439,7 +2439,7 @@ ul.hamburgerList button.menuButton {
 
   ul.hamburgerList li.newVers,
   ul.hamburgerList li.editVers,
-  ul.hamburgerList li.analysis {
+  ul.hamburgerList li.contribution {
     pointer-events: auto;
     display: block;
     height: 26px;
