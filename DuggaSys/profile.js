@@ -13,21 +13,31 @@ function checkConnection(){
 }
 
 function saveChallenge(){
-    var password = $("#currentPassword").val();
-    var question= $("#securityQuestion").val();
-    var answer= $("#challengeAnswer").val();
+    var message = $("#challengeMessage");
+    var curPassword = $("#currentPassword");
+    var secQuestion = $("#securityQuestion");
+    var chaAnswer = $("#challengeAnswer");
+    
+    var password = curPassword.val();
+    var question = secQuestion.val();
+    var answer = chaAnswer.val();
     
     if(password != "" && question != "" && answer != ""){
         processChallenge(password, question, answer);
     } else {
-        $("#challengeMessage").html("Fill out all the fields");
-        $("#challengeAnswer").css("background-color", "rgba(255, 0, 6, 0.2)");
-        $("#currentPassword").css("background-color", "rgba(255, 0, 6, 0.2)");
+        message.html("Fill out all the fields");
+        updateField(chaAnswer);
+        updateField(curPassword);
     }
 }
 
 function processChallenge(password, question, answer){
-	$.ajax({
+	var message = $("#challengeMessage");
+    var curPassword = $("#currentPassword");
+    var secQuestion = $("#securityQuestion");
+    var chaAnswer = $("#challengeAnswer");
+    
+    $.ajax({
 			type:"POST",
 			url: "profileservice.php",
 			data: {
@@ -39,19 +49,26 @@ function processChallenge(password, question, answer){
 			success:function(data) {
 				var result=data;
                 if(data=="updated"){
-                    $("#challengeMessage").html("Challenge has been updated!!");
-                    $("#currentPassword").css("background-color", "white");
-                    $("#challengeAnswer").css("background-color", "white");
+                    message.html("Challenge has been updated!!");
+                    clearField(curPassword);
+                    clearField(secQuestion);
+                    clearField(chaAnswer);
+                }
+                else if(data=="teacher"){
+                    message.html("Teachers are not allowed to change password!");
+                    clearField(curPassword);
+                    updateField(secQuestion);
+                    updateField(chaAnswer);
                 }
                 else{
-                    $("#challengeMessage").html("Incorrect password!");
-                    $("#challengeAnswer").css("background-color", "white");
-                    $("#currentPassword").css("background-color", "rgba(255, 0, 6, 0.2)");
+                    message.html("Incorrect password!");
+                    clearField(secQuestion);
+                    clearField(chaAnswer);
+                    updateField(curPassword);
                 }
 			},
 			error:function() {
-				console.log("error");
-                $("#challengeMessage").html("Error");
+                message.html("Error");
 			}
 		});
 }
@@ -141,7 +158,6 @@ function clearField(field){
 function formEventHandler(e){
     if(e.which == 13 || e.keyCode == 13){
         validatePassword();
-        console.log("hej");
         return false;
     }
     return true;
@@ -185,7 +201,6 @@ function changePassword(){
             }
         },
         error:function() {
-            console.log("error");
             alert("Something went wrong");
         }
     });
