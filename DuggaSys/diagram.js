@@ -438,7 +438,7 @@ function initcanvas() {
     setInterval(hashcurrent, hash_timer);
     setInterval(hashfunction, hash_timer + 500);
     widthWindow = (window.innerWidth - 20);
-    heightWindow = (window.innerHeight - 220);
+    heightWindow = (window.innerHeight - 80);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zv) + "' height='" + (heightWindow * zv) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
     document.getElementById("valuesCanvas").innerHTML = "<p>Zoom: " + Math.round((zv * 100)) + "% | Coordinates: X=" + startX + " & Y=" + startY + "</p>";
     var canvas = document.getElementById("myCanvas");
@@ -488,7 +488,7 @@ function getUploads() {
 // Making the page more responsive
 function canvassize() {
     widthWindow = (window.innerWidth - 20);
-    heightWindow = (window.innerHeight - 244);
+    heightWindow = (window.innerHeight - 144);
     document.getElementById("myCanvas").setAttribute("width", widthWindow);
     document.getElementById("myCanvas").setAttribute("height", heightWindow);
     ctx.clearRect(startX, startY, widthWindow, heightWindow);
@@ -837,6 +837,9 @@ function dimDialogMenu(dim) {
         $("#overlay").css("display", "none");
     }
 }
+/*
+
+THIS FUNCTION IS NOT USED RIGHT NOW! MIGHT BE USED AT A LATER STAGE
 
 function Consolemode(action) {
     if(action == 1) {
@@ -860,7 +863,7 @@ function Consolemode(action) {
         updategfx();
     }
 }
-
+*/
 function connectedObjects(line) {
     var private_objects = [];
     for (var i = 0; i < diagram.length; i++) {
@@ -976,14 +979,14 @@ function debugMode() {
         crossStrokeStyle1 = "#f64";
         crossfillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
-        ghostingcrosses = false
-        Consolemode(2)
+        ghostingcrosses = false;
+        updategfx();
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossfillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-        ghostingcrosses = true
-        Consolemode(1)
+        ghostingcrosses = true;
+        updategfx();
     }
 }
 
