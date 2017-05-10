@@ -131,6 +131,11 @@ body {
     float: right;
 }
 
+#infoText {
+    text-align: left;
+    margin: 5px;
+}
+
 #checkboxContainer {
     width: 105px;
     margin: auto;

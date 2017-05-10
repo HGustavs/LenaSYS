@@ -128,7 +128,7 @@
     }
     echo '<div id="contentWrapper" style="height:400px">';
     echo '<div class="inputContent" id="td1" style="display:block;">';
-    echo '<p><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
+    echo '<p id="infoText"><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
             Next enter a password for this user (new or existing).<br>
             After this enter a database to use. This could also be either an existing or a new database.<br>
             Finally enter the host. Is installation is running from webserver localhost should be used.</b></p><hr>';
@@ -143,7 +143,7 @@
     echo '</div>';
 ?>
                 <div class="inputContent" id="td2" valign=top style="display:none;">
-                    <p><b>Enter root log-in credentials for the database you want to use.<br>
+                    <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
                         Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
                     Enter MySQL root user. <br>
                     <input type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
@@ -151,7 +151,7 @@
                     <input type="password" name="rootPwd" placeholder="Root Password" /> <br>
                 </div>
                 <div class="inputContent" id="td3" valign=top style="display:none;">
-                    <p><b>If you wish to create a new, empty database check the box 'Create new database'. If you want to fill this
+                    <p id="infoText"><b>If you wish to create a new, empty database check the box 'Create new database'. If you want to fill this
                         database with testdata (located in install/SQL/testdata.sql) you should check the box for this too. If you
                         are using an existing database and wishes to re-write it you will be able to make this choice on the next page.</b></p><hr>
                     <input type="checkbox" name="createDB" value="Yes" checked/>
@@ -170,7 +170,7 @@
                     </div>
                 </div>
                 <div class="inputContent" id="td4" colspan="3" bgcolor="#FFCCCC" style="display:none;">
-                    <p><b>If you have entered a user and/or database that already exists you must check the checkboxes below to accept overwriting these.
+                    <p id="infoText"><b>If you have entered a user and/or database that already exists you must check the checkboxes below to accept overwriting these.
                         <br>If you only entered an existing user but a new database only check the box for user overwrite.
                         <br>If you only entered an existing database for a new user only check the box for database overwrite.
                         <br>If both are existing both boxes should be checked.
@@ -182,7 +182,7 @@
                         <span style='color: red;'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
                 </div>
                 <div class="inputContent" id="td5" bgcolor="#EEEEEE" style="display:none">
-                    <p><b>If all fields are filled out correctly the only thing remaining is to smack the 'Install' button below.
+                    <p id="infoText"><b>If all fields are filled out correctly the only thing remaining is to smack the 'Install' button below.
                         Progress of installation will be shown. If any errors occurs please try again and check that your data is correct.
                         If you still get errors please read installation guidelines on LenaSYS github page or in 'README.md'. </b></p><hr>
                     <input class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
