@@ -190,6 +190,11 @@ body {
     border-width: 2px;
 }
 
+.codeBox:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
 #installationProgressWrap {
     display: block;
 }
@@ -203,4 +208,9 @@ body {
 #showHideInstallation:hover {
     cursor: pointer;
     text-decoration: underline;
+}
+
+#warningH1 {
+    color: white;
+    background-color: rgb(197,81,83);
 }

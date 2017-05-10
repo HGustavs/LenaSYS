@@ -126,6 +126,7 @@
         }
       }
     }
+    echo '<div id="contentWrapper" style="height:400px">';
     echo '<div class="inputContent" id="td1" style="display:block;">';
     echo '<p><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
             Next enter a password for this user (new or existing).<br>
@@ -186,6 +187,7 @@
                         If you still get errors please read installation guidelines on LenaSYS github page or in 'README.md'. </b></p><hr>
                     <input class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
                 </div>
+            </div>
             <div class="arrow" id="leftArrow" style="display:none">
                 <svg height="150" width="150">
                     <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
@@ -496,38 +498,41 @@
         ob_flush();
         echo "</div>";
         echo "<div id='inputFooter'><span id='showHideInstallation'>Show/hide installation progress.</span><br>
-                <span style='color: white;'>Errors: " . $errors . "</span></div>";
+                <span style='color: white;font-size:24px;'>Errors: " . $errors . "</span></div>";
 
         # All this code prints further instructions to complete installation.
         $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
         echo "<div id='doThisWrapper'>";
-        echo "<h1><span id='warningH1' style='color: red;' />!!!READ BELOW!!!</span></h1>";
+        echo "<h1><span id='warningH1' />!!!READ BELOW!!!</span></h1>";
         echo "<br><b>To make installation work please make a
             file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
-        echo "<b>Bash command to complete all this (Copy all code below and paste it into bash shell as one statement):</b><br>";
-        echo "<div class='codeBox'><code>";
+        echo "<b>Bash command to complete all this (Copy all code below/just click the box and paste it into bash shell as one statement):</b><br>";
+        echo "<div class='codeBox' onclick='selectText(\"codeBox1\")'><code id='codeBox1'>";
         echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
         echo 'define(\"DB_USER\",\"' . $username . '\");\n';
         echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
         echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
         echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
         echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
-        echo "</code></div><br>";
+        echo "</code></div>";
 
-        echo "<b> Now create a directory named 'log' (if you dont already have it)<br> 
+        echo '<div id="copied1" style="display:none">Copied to clipboard!<br></div>';
+
+        echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br> 
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
-                (Copy all code below and paste it into bash shell as one statement to do this).</b><br>";
-        echo "<div class='codeBox'><code>";
+                (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
+        echo "<div class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
         echo "mkdir " . $putFileHere . "/log && ";
         echo "chmod 777 " . $putFileHere . "/log && ";
         echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
         echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
-        echo "</code></div><br>";
+        echo "</code></div>";
+        echo '<div id="copied2" style="display:none">Copied to clipboard!<br></div>';
 
         $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
         echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
-        echo "<input class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
+        echo "<br><input class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
         echo "</form>";
         echo "</div>";
     }
@@ -586,6 +591,33 @@
 
         function toggleInstallationProgress(){
             $('#installationProgressWrap').toggle(500);
+        }
+
+        function selectText(containerid) {
+            if (document.selection) {
+                var range = document.body.createTextRange();
+                range.moveToElementText(document.getElementById(containerid));
+                range.select();
+            } else if (window.getSelection) {
+                var range = document.createRange();
+                range.selectNode(document.getElementById(containerid));
+                window.getSelection().addRange(range);
+            }
+
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();
+
+            if (containerid == "codeBox1") {
+                $("#copied1").show("slide", {direction: "left" }, 1000);
+                window.setTimeout(function() { hideCopiedAgain("#copied1")}, 2000);
+            } else if (containerid == "codeBox2") {
+                $("#copied2").show("slide", {direction: "left" }, 1000);
+                window.setTimeout(function() { hideCopiedAgain("#copied2")}, 2000);
+            }
+        }
+
+        function hideCopiedAgain(text){
+            $(text).hide("slide", {direction: "right" }, 1000)
         }
 
         toggleInstallationProgress();
