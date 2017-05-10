@@ -84,11 +84,11 @@ function redrawtable()
   str+="<div id='verthighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
 
   // Redraw Magic heading 
-  str += "<div id='upperDecker' style='position:absolute;left:11px;display:none;'>";
+  str += "<div id='upperDecker' style='position:absolute;left:8px;display:none;'>";
   str += "<table class='markinglist' style='table-layout: fixed;'>";
   str += "<thead>";
   str += "<tr class='markinglist-header'>";
-  str += "<th id='header' class='rowno' ><span>#<span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
+  str += "<th id='header' class='rowno idField' style='width: 28px;'><span>#</span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
   if (momtmp.length > 0){
     // Make first header row!
     //    No such header for magic heading - by design
@@ -101,8 +101,9 @@ function redrawtable()
         str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"													
       }
     }
-    str+="</tr>";
   }		
+  str+="<th style='width: 100%'></th>"; // Padding cell, to make sure the other fields are compressed to a bare minimum
+  str+="</tr>";
   str += "</thead>"
   str += "</table>"
   str += "</div>"
@@ -135,7 +136,7 @@ function redrawtable()
       str+="</tr><tr class='markinglist-header'>";
 
       // Make second header row!
-      str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
+      str+="<th  id='header' class='rowno realIdField'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
       for(var j=0;j<momtmp.length;j++){
         if(momtmp[j].kind==3){
           str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
@@ -143,15 +144,16 @@ function redrawtable()
           str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
         }
       }
-      str+="</tr></thead><tbody>";
     }
 
     // Make second header row if momtmp array is empty
     if (momtmp.length === 0){
       str+="</tr><tr class='markinglist-header'>";
       str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
-      str+="</tr></thead><tbody>";
     }
+
+    str+="<th style='width: 100%'></th>"; // Padding cell, to make sure the other fields are compressed to a bare minimum
+    str+="</tr></thead><tbody>";
 
     // Make result table
     var row=1;
@@ -220,6 +222,11 @@ function redrawtable()
     }
     str+="</tbody></table>";
     document.getElementById("content").innerHTML=str;
+    idField();
+}
+
+function idField() {
+  $(".idField").css("width", $(".realIdField").css("width"));
 }
 
 function cellIn(ev)
