@@ -156,13 +156,9 @@ function parseLineByLine(inString) {
 }
 // This function detect the text type
 function identifier(prevLine, currentLine, markdown, nextLine){
-    // handle unordered lists <ul></ul>
-    if(isUnorderdList(currentLine)) {
-        markdown += handleUnorderedList(currentLine, prevLine, nextLine);
-    }
-    // handle ordered lists <ol></ol>
-    else if(isOrderdList(currentLine)) {
-        markdown += handleOrderedList(currentLine, prevLine, nextLine);
+    // handle lists
+    if(isUnorderdList(currentLine) || isOrderdList(currentLine)) {
+        markdown += handleLists(currentLine, prevLine, nextLine);
     }
     // handle tables
     else if(isTable(currentLine)) {
@@ -283,13 +279,18 @@ function handleOrderedList(currentLine, prevLine, nextLine) {
 }
 function handleLists(currentLine, prevLine, nextLine) {
 	var markdown = "";
-	var value = currentLine.substr(currentLine.match(/^\s*\d*\.\s*/)[0].length, currentLine.length);
-	var currentLineIndentation = currentLine.match(/^\s*\d*/)[0].length;
-    var nextLineIndentation = nextLine.match(/^\s*\d*/)[0].length;
-    
-    // Open a new list
-    if(!isOrderdList(prevLine)) markdown += "<ol>"; // Open a new ordered list
-    if(!isUnorderdList(prevLine)) markdown += "<ul>"; //Open a new unordered list
+
+	var value = "";
+	currentLineIndentation = currentLine.match(/^\s*/)[0].length;
+	nextLineIndentation = nextLine.match(/^\s*/)[0].length;	
+	prevLineIndentation = prevLine.match(/^\s*/)[0].length;
+
+    // decide value
+    if(isOrderdList(currentLine)) value = currentLine.substr(currentLine.match(/^\s*\d*\.\s*/)[0].length, currentLine.length);
+	if(isUnorderdList(currentLine)) value = currentLine.substr(currentLine.match(/^\s*[\-\*]\s*/gm)[0].length, currentLine.length);
+
+    if(!isOrderdList(prevLine) && isOrderdList(currentLine)) markdown += "<ol>"; // Open a new ordered list
+    if(!isUnorderdList(prevLine) && isUnorderdList(currentLine)) markdown += "<ul>"; //Open a new unordered list
     
      // Open a new sublist
     if(currentLineIndentation < nextLineIndentation) { 
@@ -297,7 +298,9 @@ function handleLists(currentLine, prevLine, nextLine) {
     }
     // Close sublists
     else if(currentLineIndentation > nextLineIndentation) { 
- 
+ 		console.log("prev", prevLineIndentation);
+ 		console.log("curr", currentLineIndentation);
+ 		console.log("next", nextLineIndentation);
     }
     // Stay in current list or sublist
     else {
@@ -307,8 +310,8 @@ function handleLists(currentLine, prevLine, nextLine) {
     }
 
     // close list
-    if(!isOrderdList(nextLine)) markdown += "</ol>"; // Close ordered list
-    if(!isUnorderdList(nextLine)) markdown += "</ul>"; // Close unordered list
+    if(!isOrderdList(nextLine) && isOrderdList(currentLine)) markdown += "</ol>"; // Close ordered list
+    if(!isUnorderdList(nextLine) && isUnorderdList(currentLine)) markdown += "</ul>"; // Close unordered list
 
     return markdown;
     

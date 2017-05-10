@@ -1,18 +1,11 @@
-****Unordered list with nested ordered list****
-* item
-* item
-* item
-  * item
-  * item
-  * item
-    * item
-      * item
-      * item (next ordered list item)
-        1. item
-        2. item
-        3. item (last ordered)
-* item
-* item
-* item
-
-
+****Unordered list****
+* item 1*
+* item 2*
+* item 3*
+* item 4*
+* item 5*
+* item 6*
+1. item 1.
+2. item 2.
+3. item 3.
+4. item 4.
