@@ -281,37 +281,41 @@ function handleLists(currentLine, prevLine, nextLine) {
 	var markdown = "";
 
 	var value = "";
-	currentLineIndentation = currentLine.match(/^\s*/)[0].length;
-	nextLineIndentation = nextLine.match(/^\s*/)[0].length;	
-	prevLineIndentation = prevLine.match(/^\s*/)[0].length;
+	var currentLineIndentation = currentLine.match(/^\s*/)[0].length;
+	var nextLineIndentation = nextLine.match(/^\s*/)[0].length;	
+	var prevLineIndentation = prevLine.match(/^\s*/)[0].length;
 
     // decide value
     if(isOrderdList(currentLine)) value = currentLine.substr(currentLine.match(/^\s*\d*\.\s*/)[0].length, currentLine.length);
 	if(isUnorderdList(currentLine)) value = currentLine.substr(currentLine.match(/^\s*[\-\*]\s*/gm)[0].length, currentLine.length);
 
-    if(!isOrderdList(prevLine) && isOrderdList(currentLine)) markdown += "<ol>"; // Open a new ordered list
-    if(!isUnorderdList(prevLine) && isUnorderdList(currentLine)) markdown += "<ul>"; //Open a new unordered list
+	// Open new list
+    if(!isOrderdList(prevLine) && isOrderdList(currentLine) && !isUnorderdList(prevLine)) markdown += "<ol>"; // Open a new ordered list
+    if(!isUnorderdList(prevLine) && isUnorderdList(currentLine) && !isOrderdList(prevLine)) markdown += "<ul>"; //Open a new unordered list
     
-     // Open a new sublist
-    if(currentLineIndentation < nextLineIndentation) { 
-
-    }
-    // Close sublists
-    else if(currentLineIndentation > nextLineIndentation) { 
- 		console.log("prev", prevLineIndentation);
- 		console.log("curr", currentLineIndentation);
- 		console.log("next", nextLineIndentation);
-    }
     // Stay in current list or sublist
-    else {
+    if (currentLineIndentation === prevLineIndentation || currentLineIndentation === nextLineIndentation) {
     	markdown += "<li>";
     	markdown +=  value;
     	markdown += "</li>";
     }
+     // Open a new sublist
+    else if(currentLineIndentation < nextLineIndentation) { 
 
-    // close list
-    if(!isOrderdList(nextLine) && isOrderdList(currentLine)) markdown += "</ol>"; // Close ordered list
-    if(!isUnorderdList(nextLine) && isUnorderdList(currentLine)) markdown += "</ul>"; // Close unordered list
+    }
+    // Close sublists
+    else if(currentLineIndentation > nextLineIndentation) { 
+    	console.log(currentLine);
+ 		console.log("prev", prevLineIndentation);
+ 		console.log("curr", currentLineIndentation);
+ 		console.log("next", nextLineIndentation);
+    }
+    
+   
+
+    // Close list
+    if(!isOrderdList(nextLine) && isOrderdList(currentLine) && !isUnorderdList(nextLine)) markdown += "</ol>"; // Close ordered list
+    if(!isUnorderdList(nextLine) && isUnorderdList(currentLine) && !isOrderdList(nextLine)) markdown += "</ul>"; // Close unordered list
 
     return markdown;
     
