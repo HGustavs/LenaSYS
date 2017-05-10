@@ -1013,11 +1013,11 @@ input {
   margin-left: -2px;
 }
 .loginBoxTable tr{
-  padding: 20px;  
+  padding: 20px;
 }
 #loginBoxTitle{
   font-size: 15px;
-  font-color: #614875;  
+  font-color: #614875;
 }
 /* ---- ---- ---- --- HigescoreBox --- ---- ---- ---- */
 
@@ -2244,10 +2244,11 @@ table {
 /* Modal Content/Box */
 .SwimContentWrap {
   position: absolute;
-  left: 4%;
+  left: 1%;
   top: 62px;
   overflow: auto;
   padding: 0;
+  margin: auto;
 }
 
 /* The Close Button */
@@ -2276,8 +2277,8 @@ table {
   z-index: 10000; /* Sit on top */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
@@ -2415,7 +2416,7 @@ ul.hamburgerList button.menuButton {
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
   }
-  
+
   table.navheader div.editVers,
   table.navheader div.analysis,
   table.navheader div.newVers {
