@@ -482,8 +482,8 @@
                 } else {
                     echo "<span style='color: green;' />Created the directory '{$putFileHere}/courses'.</span><br>";
                 }
-                copyTestFiles("{$putFileHere}/install/courses/global/", "{$putFileHere}/courses/1/");
-
+                copyTestFiles("{$putFileHere}/install/courses/global/", "{$putFileHere}/courses/global/");
+                copyTestFiles("{$putFileHere}/install/courses/1/", "{$putFileHere}/courses/1/");
             } else {
                 echo "Skipped filling database with test data.<br>";
             }
