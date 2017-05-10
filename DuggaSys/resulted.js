@@ -501,7 +501,7 @@ function process()
 
 		// Create temporary list that complies with dropdown
 		momtmp=new Array;
-		var momname = "tore";
+		var momname = "Moment unavailable";
 		for(var l=0;l<moments.length;l++){
 				if (moments[l].kind===4){
 						momname = moments[l].entryname;
@@ -600,7 +600,11 @@ function process()
                     activeMoment++;
                 } else {
             		var idAddString = "hdr"+lid+"check";
-                    duggaArray[activeMoment-1].push(idAddString);
+                    if(activeMoment>0){
+                        duggaArray[activeMoment-1].push(idAddString);
+                    }else{
+                        duggaArray[activeMoment].push(idAddString);
+                    }
 				}
 
 				if (clist){
