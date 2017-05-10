@@ -115,7 +115,6 @@ $allowedExtensions = [
 	"png"		=> ["image/png"],
 	"zip"		=> ["application/zip"],
 	"html"	=> ["text/html"],
-	"txt"		=> ["text/plain"],
 	"java"	=> ["text/plain"],
 	"xml"		=> ["text/plain", "application/xml"],
 	"js"		=> ["text/plain", "application/javascript"],
