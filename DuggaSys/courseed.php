@@ -12,8 +12,6 @@ if (file_exists("../.git/refs/heads/master")) {
 	$version = "v0.7+";
 }
 $noup="NONE";
-$loginvar="COURSE";
-setcookie("loginvar", $loginvar);
 
 ?>
 <!DOCTYPE html>
