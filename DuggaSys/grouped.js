@@ -8,6 +8,7 @@ var versions;
 var courselist;
 var students=new Array;
 var tablecontent=new Array;
+var typechanged=false;
 function setup(){
 	
 	var filt = "";
@@ -30,6 +31,41 @@ function hoverFilter()
 function leaveFilter()
 {
 	$('#dropdownFilter').css('display','none'); 
+	var col=0;
+	var dir=1;
+
+	var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
+	var odir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir"); 
+
+		
+	$("input[name='sortcol']:checked").each(function() {col=this.value;});
+	$("input[name='sortdir']:checked").each(function() {dir=this.value;});
+	
+	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);
+	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
+
+
+	if (!(ocol==col && odir==dir) || typechanged) {
+		typechanged=false;
+		resort();
+	}
+}
+
+function sorttype(t){
+		var c=$("input[name='sortcol']:checked").val();
+		if (c == 0){
+				localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1", t);		
+				$("input[name='sorttype']").prop("checked", false);
+		} else {
+				if (t == -1){
+						t = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
+						$("#sorttype"+t).prop("checked", true);											
+				} else {
+						localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
+						$("#sorttype"+t).prop("checked", true);					
+				}
+		}
+		typechanged=true;
 }
 
 function selectGroup()
@@ -246,15 +282,49 @@ function resort()
 	if (columno === null || columno === undefined ){columno=0;}
 	var colkind=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1");
 	if (colkind == null || colkind == undefined){colkind=0;}
+	
 	if (tablecontent.length > 0) {
 		if(columno < tablecontent.length){
 			// Each if case checks what to sort after and then sorts appropiatle depending on ASC or DESC
 			if(columno==0){
-				if(colkind==1){	
+				if(colkind==0){	
 					tablecontent.sort(function compare(a,b){ 
 						if(a.username>b.username){
 							return sortdir;
 						}else if(a.username<b.username){
+								return -sortdir;
+						}else{
+							return 0;
+						}
+					});
+				}
+				else if(colkind==1){	
+					tablecontent.sort(function compare(a,b){ 
+						if(a.firstname>b.firstname){
+							return sortdir;
+						}else if(a.firstname<b.firstname){
+								return -sortdir;
+						}else{
+							return 0;
+						}
+					});
+				}
+				else if(colkind==2){	
+					tablecontent.sort(function compare(a,b){ 
+						if(a.lastname>b.lastname){
+							return sortdir;
+						}else if(a.lastname<b.lastname){
+								return -sortdir;
+						}else{
+							return 0;
+						}
+					});
+				}
+				else if(colkind==3){	
+					tablecontent.sort(function compare(a,b){ 
+						if(a.ssn>b.ssn){
+							return sortdir;
+						}else if(a.ssn<b.ssn){
 								return -sortdir;
 						}else{
 							return 0;
@@ -323,8 +393,14 @@ function toggleSortDir(col){
     var dir = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
     var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
   	if (col != ocol){
+		$("input[name='sortcol']:checked").prop({"checked":false});
+        $("input[name='sorttype']:checked").prop({"checked":false});
         if (col == 0){
             localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1",1);
+        }else{
+            $("#sortcol"+col).prop({"checked":true});          
+            $("#sorttype0").prop({"checked":true});                      
+            localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", 0);          
         }
         dir=-1;
         localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);          
