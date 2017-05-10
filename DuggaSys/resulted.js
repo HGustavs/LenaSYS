@@ -88,7 +88,7 @@ function redrawtable()
   str += "<table class='markinglist' style='table-layout: fixed;'>";
   str += "<thead>";
   str += "<tr class='markinglist-header'>";
-  str += "<th id='header' class='rowno idField'><span>#</span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
+  str += "<th id='header' class='rowno idField' style='width: 28px;'><span>#</span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
   if (momtmp.length > 0){
     // Make first header row!
     //    No such header for magic heading - by design
@@ -149,7 +149,7 @@ function redrawtable()
     // Make second header row if momtmp array is empty
     if (momtmp.length === 0){
       str+="</tr><tr class='markinglist-header'>";
-      str+="<th  id='header' class='rown'><span>#1</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
+      str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
     }
 
     str+="<th style='width: 100%'></th>"; // Padding cell, to make sure the other fields are compressed to a bare minimum
