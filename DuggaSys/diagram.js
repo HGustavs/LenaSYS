@@ -273,27 +273,6 @@ diagram.insides = function (ex, ey, sx, sy) {
         sy = tempEndY;
     }
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind != 1) {
-            var tempTopLeftX = points[this[i].topLeft].x;
-            var tempTopLeftY = points[this[i].topLeft].y;
-            var tempBottomRightX = points[this[i].bottomRight].x;
-            var tempBottomRightY = points[this[i].bottomRight].y;
-            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
-                tempTopLeftX = tempBottomRightX - minEntityX;
-            }
-            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
-                tempTopLeftY = tempBottomRightY - minEntityY;
-            }
-            if (sx < tempTopLeftX && ex > tempTopLeftX &&
-                sy < tempTopLeftY && ey > tempTopLeftY &&
-                sx < tempBottomRightX && ex > tempBottomRightX &&
-                sy < tempBottomRightY && ey > tempBottomRightY) {
-                this[i].targeted = true;
-                // return i;
-            } else {
-                this[i].targeted = false;
-            }
-        }
         if (this[i].kind == 1) {
             var tempPoints = [];
             for (var j = 0; j < this[i].segments.length; j++) {
@@ -311,6 +290,25 @@ diagram.insides = function (ex, ey, sx, sy) {
             } else {
                 this[i].targeted = false;
             }
+        } else {
+            var tempTopLeftX = points[this[i].topLeft].x;
+            var tempTopLeftY = points[this[i].topLeft].y;
+            var tempBottomRightX = points[this[i].bottomRight].x;
+            var tempBottomRightY = points[this[i].bottomRight].y;
+            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
+                tempTopLeftX = tempBottomRightX - minEntityX;
+            }
+            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
+                tempTopLeftY = tempBottomRightY - minEntityY;
+            }
+            if (sx < tempTopLeftX && ex > tempTopLeftX &&
+                sy < tempTopLeftY && ey > tempTopLeftY &&
+                sx < tempBottomRightX && ex > tempBottomRightX &&
+                sy < tempBottomRightY && ey > tempBottomRightY) {
+                this[i].targeted = true;
+            } else {
+                this[i].targeted = false;
+            }
         }
     }
     return -1;
@@ -319,12 +317,10 @@ diagram.insides = function (ex, ey, sx, sy) {
 //--------------------------------------------------------------------
 // inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
-diagram.inside = function (xk, yk) {
+diagram.inside = function() {
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 2) {
-            if (this[i].inside(xk, yk) == true) {
-                return i;
-            }
+        if (this[i].inside() == true) {
+            return i;
         }
     }
     return -1;
@@ -582,7 +578,7 @@ function mousemoveevt(ev, t) {
     yPos = ev.clientY;
     mox = cx;
     moy = cy;
-    hovobj = diagram.inside(cx, cy);
+    hovobj = diagram.inside();
     if (ev.pageX || ev.pageY == 0) { // Chrome
         cx = (ev.pageX - acanvas.offsetLeft) * (1 / zv);
         cy = (ev.pageY - acanvas.offsetTop) * (1 / zv);
@@ -606,19 +602,28 @@ function mousemoveevt(ev, t) {
         sel = points.distance(cx, cy);
         // If mouse is not pressed highlight closest point
         points.clearsel();
-        movobj = diagram.inside(cx, cy);
+        movobj = diagram.inside();
         updateActivePoint();
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
         // If mouse is pressed down and at a point in selected object - move that point
         if (diagram[selobj].targeted == true) {
-            if (diagram[selobj].bottomRight == sel.ind && diagram[selobj].symbolkind != 5) {
-                points[diagram[selobj].bottomRight].x = cx;
-                points[diagram[selobj].bottomRight].y = cy;
-            } else if (diagram[selobj].topLeft == sel.ind && diagram[selobj].symbolkind != 5) {
-                points[diagram[selobj].topLeft].x = cx;
-                points[diagram[selobj].topLeft].y = cy;
+            if (diagram[selobj].kind == 1) {
+                for (var i = 0; i < diagram[selobj].segments.length; i++) {
+                    if (diagram[selobj].segments[i].pa == sel.ind) {
+                        points[diagram[selobj].segments[i].pa].x = cx;
+                        points[diagram[selobj].segments[i].pa].y = cy;
+                    }
+                }
+            } else {
+                if (diagram[selobj].bottomRight == sel.ind && diagram[selobj].symbolkind != 5) {
+                    points[diagram[selobj].bottomRight].x = cx;
+                    points[diagram[selobj].bottomRight].y = cy;
+                } else if (diagram[selobj].topLeft == sel.ind && diagram[selobj].symbolkind != 5) {
+                    points[diagram[selobj].topLeft].x = cx;
+                    points[diagram[selobj].topLeft].y = cy;
+                }
             }
         }
     } else if (md == 3) {
@@ -627,16 +632,17 @@ function mousemoveevt(ev, t) {
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
                     if (snapToGrid) {
-                        var obj_topLeft = points[diagram[i].topLeft];
-                        var tlx = (Math.round(obj_topLeft.x / gridSize) * gridSize);
-                        var tly = (Math.round(obj_topLeft.y / gridSize) * gridSize);
-
-                        var deltatlx = obj_topLeft.x - tlx;
-                        var deltatly = obj_topLeft.y - tly;
-
+                        if (diagram[i].kind == 1) {
+                            var firstPoint = points[diagram[i].segments[0].pa];
+                        } else {
+                            var firstPoint = points[diagram[i].topLeft];
+                        }
+                        var tlx = (Math.round(firstPoint.x / gridSize) * gridSize);
+                        var tly = (Math.round(firstPoint.y / gridSize) * gridSize);
+                        var deltatlx = firstPoint.x - tlx;
+                        var deltatly = firstPoint.y - tly;
                         cx = Math.round(cx / gridSize) * gridSize;
                         cy = Math.round(cy / gridSize) * gridSize;
-
                         cx -= deltatlx;
                         cy -= deltatly;
                     }
@@ -697,7 +703,7 @@ function mousedownevt(ev) {
         md = 2;
     } else if (movobj != -1) {
         md = 3;
-        selobj = diagram.inside(cx, cy);
+        selobj = diagram.inside();
         if (diagram[selobj].targeted == false) {
             for (var i = 0; i < diagram.length; i++) {
                 diagram[i].targeted = false;
@@ -709,35 +715,8 @@ function mousedownevt(ev) {
         sx = cx;
         sy = cy;
     }
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 1) {
-            var item = diagram[i];
-            var intersections = 0;
-            if (cx > item.minX && cx < item.maxX && cy > item.minY && cy < item.maxY) {
-                for (var j = 0; j < item.segments.length; j++) {
-                    var pointA = points[item.segments[j].pa];
-                    var pointB = points[item.segments[j].pb];
-                    if ((pointA.x < cx && pointB.x > cx) || (pointA.x > cx && pointB.x < cx)) {
-                        var deltaX = pointB.x - pointA.x;
-                        var deltaY = pointB.y - pointA.y;
-                        var k = deltaY / deltaX;
-                        if (pointB.x < pointA.x) {
-                            var tempPoint = pointA;
-                            pointA = pointB;
-                            pointB = pointA;
-                        }
-                        var x = cx - pointA.x;
-                        var y = (k * x) + pointA.y;
-                        if (y < cy) {
-                            intersections++;
-                        }
-                    }
-                }
-                if ((intersections % 2) > 0) {
-                    console.log("You clicked inside of a figure!");
-                }
-            }
-        }
+    if (selobj >= 0) {
+        diagram[selobj].targeted = true;
     }
 }
 
@@ -916,8 +895,8 @@ function mouseupevt(ev) {
         openAppearanceDialogMenu();
     } else if (md == 4 && !(uimode == "CreateFigure") &&
                !(uimode == "CreateLine") && !(uimode == "CreateEREntity") &&
-               !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) &&
-               !(uimode == "MoveAround" ) && !(uimode == "CreateERRelation")) {
+               !(uimode == "CreateERAttr") && !(uimode == "CreateClass") &&
+               !(uimode == "MoveAround") && !(uimode == "CreateERRelation")) {
         diagram.insides(cx, cy, sx, sy);
     }
     document.addEventListener("click", clickOutsideDialogMenu);
