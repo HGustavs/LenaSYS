@@ -1196,3 +1196,13 @@ function loadForm(dir){
     //AJAX
 
 }
+
+//change the font on all entities to the same font. 
+function globalFontColor(){
+    for(var i = 0; i < diagram.length; i++){
+        if(diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5){
+            diagram[i].fontColor = document.getElementById('fontColor').value;
+            updategfx();
+        }
+    }
+}
