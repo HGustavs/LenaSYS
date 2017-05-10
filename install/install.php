@@ -307,11 +307,13 @@
         # Test permissions on directory before starting installation.
         if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0777)) {
             $errors++;
-            exit ("<span style='color: red;' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span>");
+            exit ("<span style='color: red;' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
+                    <a href='install.php' class='returnButton'>Try again.</a>");
         } else {
             if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
                 $errors++;
-                exit ("<span style='color: red;' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span>");
+                exit ("<span style='color: red;' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
+                    <a href='install.php' class='returnButton'>Try again.</a>");
             } else {
                 echo "<span style='color: green;' />Permissions on {$putFileHere} set correctly.</span><br>";
             }
@@ -322,7 +324,8 @@
         foreach ($fields AS $fieldname) { //Loop trough each field
             if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname])) {
                 $errors++;
-                exit ("<span style='color: red;' />Please fill all fields.</span>");
+                exit ("<span style='color: red;' />Please fill all fields.</span><br>
+                    <a href='install.php' class='returnButton'>Try again.</a>");
             }
         }
 
