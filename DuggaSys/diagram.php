@@ -35,7 +35,6 @@
     <!-- content START -->
     <div id="content">
         <div id="buttonDiv">
-            <button onclick='classmode();'>Create Class</button>
             <button onclick='attrmode();'>Create Attribute</button>
             <button onclick='linemode();'>Create Line</button>
             <button onclick='entitymode();'>Create Entity</button>
