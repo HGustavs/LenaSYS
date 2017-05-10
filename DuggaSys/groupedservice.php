@@ -94,7 +94,7 @@ if(strcmp($opt,"GET")==0){
 		$studentData = $query->fetchAll(PDO::FETCH_ASSOC); // 2 rows initially. (count = 2)
 
 		// Third query: Select all user id's that are connected to a group and their lid. 
-		$query = $pdo->prepare("SELECT uug.uid, ugl.lid, uug.ugid FROM user_usergroup AS uug, usergroup_listentries AS ugl, listentries AS l WHERE uug.ugid = ugl.ugid AND ugl.lid = l.lid AND l.cid = :cid AND l.vers = :vers AND l.kind = 4 AND (l.grouptype=1 OR l.grouptype=3) ORDER BY uug.uid");
+		$query = $pdo->prepare("SELECT uug.uid, ug.lid, uug.ugid FROM user_usergroup AS uug, usergroup AS ug, listentries AS l WHERE uug.ugid = ug.ugid AND ug.lid = l.lid AND l.cid = :cid AND l.vers = :vers AND l.kind = 4 AND (l.grouptype = 1 OR l.grouptype = 3) ORDER BY uug.uid");
 
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
