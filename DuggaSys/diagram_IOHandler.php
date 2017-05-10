@@ -31,18 +31,18 @@ pdoConnect();
     <div style="background-color:#614875;height: 100vh;width: 150px;position:fixed;left:0;right:0;top:50px;padding:20px;">
     <div id='buttonDiv' >
 
-    <input type="button" name="answer" value='New Canvas' onclick='loadNew()' />
+    <input class="diagram-sidebar-buttons" type="button" name="answer" value='New Canvas' onclick='loadNew()' />
     <br>
     <br>
-    <input type="button" name="answer" value="Load Canvas" onclick='loadStored()' />
+    <input class="diagram-sidebar-buttons" type="button" name="answer" value="Load Canvas" onclick='loadStored()' />
         <br>
     <br>
 
         <input id='fileids' type='file' name='file_name' hidden multiple/>
-        <input id='buttonids' type='button' value='Upload Canvas' />
+        <input class="diagram-sidebar-buttons" id='buttonids' type='button' value='Upload Canvas' />
         <br>
     <br>
-         <input type="button" name="answer" value="Example Canvas" onclick='loadExample()' />
+         <input class="diagram-sidebar-buttons" type="button" name="answer" value="Example Canvas" onclick='loadExample()' />
     </div>
 </div>
 
@@ -75,8 +75,16 @@ include '../Shared/navheader.php';
         ?>
     </div>
 </div>
-<?php
-?>
+
+    <?php
+
+    if(!empty($_POST['GetID'])){
+        $folder = $_POST["GetID"];
+        $fileInDir = scandir("Save/$folder",1);
+        print_r($fileInDir);
+        ?><script>alert("Hejsan");</script><?php
+    }
+    ?>
 
 <div id="newFolder" style="visibility:hidden;position:absolute;left:500px;top:55px;">
     <form action="diagram_IOHandler.php" method="post">

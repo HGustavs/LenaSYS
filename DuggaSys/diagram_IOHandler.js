@@ -39,20 +39,34 @@ function saveToServer(dia) {
 function createFolder(name){
 
 }
-function redirect(doc,folder){
+function redirect(doc){
     var a = doc.value;
-    if(a){
-        location.href="diagram.php?id="+a+"&folder="+folder;
-    }
+
+    $.ajax({
+        type: "POST",
+        url: "diagram_IOHandler.php",
+        data: {'GetID':a },
+
+        success: function(data){ // <-- note the parameter here, not in your code
+                //location.href="diagram.php?id="+2+"&folder="+a;
+            return false;
+        }
+
+    });
+
 
 }
 function redirectas(doc,folder){
         location.href="diagram.php?id="+doc+"&folder="+folder;
 }
 function loadNew(){
+
+    document.getElementById('showStoredFolders').style.display = "none";
+    document.getElementById('showStored').style.display = "none";
     document.getElementById('showNew').style.display = "block";
 }
 function loadStored(){
+    document.getElementById('showNew').style.display = "none";
     document.getElementById('showStored').style.display = "block";
 }
 function loadStoredFolders(f){
