@@ -1328,6 +1328,26 @@ span.arrow {
 	text-align:center;
 }
 
+
+#dropdownFilter{
+	width: 150px;
+}
+
+.momentdiv {
+	border-right:2px solid #927b9e;
+	display: inline-block;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.momentdiv div{
+	padding:5px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
 .fumo {
 	clear:both;
 	-webkit-box-sizing: border-box;
