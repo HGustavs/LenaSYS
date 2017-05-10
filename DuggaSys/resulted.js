@@ -645,7 +645,7 @@ function process()
 		dstr+="<table><tr><td>";
 		for(var j=0;j<momtmp.length;j++){
 				var lid=moments[j].lid;
-				var name=momtmp[j].entryname;
+				var name=momtmp[j].entryname.slice(0, 3)+"..."+momtmp[j].entryname.slice(momtmp[j].entryname.length-8);
 
 				dstr+="<div class='checkbox-dugga checknarrow ";				
 				if (moments[j].visible == 0){
