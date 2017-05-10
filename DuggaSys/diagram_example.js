@@ -2,7 +2,7 @@
 ----- THIS FILE IS THE EXAMPLE DATA FOR THE DIAGRAM ----- 
 */
 
-function makegfx() {
+function generateExampleCode() {
     // Declare three paths
     var pathA = new Path;
     var pathB = new Path;

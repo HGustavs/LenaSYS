@@ -98,6 +98,8 @@ function keyDownHandler(e){
 // the sequence number again. e.g. point[5] will remain point[5] until it is deleted
 //--------------------------------------------------------------------
 var points = [
+    /*
+    // Points for example code.
     // Path A -- Segment 1 (0, 1, 2, 3)
     {x:20, y:200, selected:0}, {x:60, y:200, selected:0}, {x:100, y:40, selected:0}, {x:140, y:40, selected:0},
     // Path B -- Segment 1 (4, 5 and 17, 18)
@@ -126,6 +128,7 @@ var points = [
     {x:15, y:200, selected:0}, {x:115, y:250, selected:0}, {x:65, y:225, selected:0},
     // ER Entity Connector Left Points -- 39, 40, 41
     {x:150, y:225, selected:0}, {x:150, y:235, selected:0}, {x:150, y:245, selected:0}
+    */
 ];
 
 //--------------------------------------------------------------------
@@ -444,7 +447,7 @@ function initcanvas() {
         acanvas = document.getElementById("myCanvas");
     }
     getUploads();
-    makegfx();
+    // generateExampleCode();
     updategfx();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("zoomInButton").addEventListener('click', zoomInMode, false);
