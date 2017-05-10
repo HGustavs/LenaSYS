@@ -8,8 +8,64 @@ var versions;
 var courselist;
 var students=new Array;
 var tablecontent=new Array;
-function setup(){  	
+var typechanged=false;
+function setup(){
+	
+	var filt = "";
+	filt+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hoverFilter();'>";
+	filt+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+	filt+="<div id='dropdownFilter' class='dropdown-list-container'>";
+	filt+="<p>Test</p>";
+	filt+="</div>";
+	filt+="</span></td>";
+	$("#menuHook").before(filt);
+		
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "GROUP");
+}
+
+function hoverFilter()
+{
+  	$('#dropdownFilter').css('display','block');
+}
+
+function leaveFilter()
+{
+	$('#dropdownFilter').css('display','none'); 
+	var col=0;
+	var dir=1;
+
+	var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
+	var odir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir"); 
+
+		
+	$("input[name='sortcol']:checked").each(function() {col=this.value;});
+	$("input[name='sortdir']:checked").each(function() {dir=this.value;});
+	
+	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);
+	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
+
+
+	if (!(ocol==col && odir==dir) || typechanged) {
+		typechanged=false;
+		resort();
+	}
+}
+
+function sorttype(t){
+		var c=$("input[name='sortcol']:checked").val();
+		if (c == 0){
+				localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1", t);		
+				$("input[name='sorttype']").prop("checked", false);
+		} else {
+				if (t == -1){
+						t = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
+						$("#sorttype"+t).prop("checked", true);											
+				} else {
+						localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
+						$("#sorttype"+t).prop("checked", true);					
+				}
+		}
+		typechanged=true;
 }
 
 function selectGroup()
@@ -71,6 +127,16 @@ function process()
 		for(i=0;i<availablegroups.length;i++){
 			var uid=availablegroups[i].uid;
 		}
+		var dstr="";
+
+	// Sorting
+    dstr+="<div class='checkbox-dugga'><label class='headerlabel' for='sortdir1'>Sort students by:</label></div>";
+	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Username</label></div>";
+	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Firstname</label></div>";
+	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >Lastname</label></div>";
+	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >SSN</label></div>";		
+	dstr+="<div style='display:flex;justify-content:flex-end;'><button onclick='leaveFilter()'>Sort</button></div>"
+	document.getElementById("dropdownFilter").innerHTML=dstr;
 }
 
 function drawtable(){
@@ -160,6 +226,12 @@ function returnedGroup(data)
 	//Show table 
 	drawtable();
 	
+	$(document).ready(function () {
+		$("#filter").mouseleave(function () {
+				leaveFilter();
+		});
+	});
+	
 	allData = data; // used by dugga.js (for what??)
 	process();
 	
@@ -210,15 +282,49 @@ function resort()
 	if (columno === null || columno === undefined ){columno=0;}
 	var colkind=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1");
 	if (colkind == null || colkind == undefined){colkind=0;}
+	
 	if (tablecontent.length > 0) {
 		if(columno < tablecontent.length){
 			// Each if case checks what to sort after and then sorts appropiatle depending on ASC or DESC
 			if(columno==0){
-				if(colkind==1){	
+				if(colkind==0){	
 					tablecontent.sort(function compare(a,b){ 
 						if(a.username>b.username){
 							return sortdir;
 						}else if(a.username<b.username){
+								return -sortdir;
+						}else{
+							return 0;
+						}
+					});
+				}
+				else if(colkind==1){	
+					tablecontent.sort(function compare(a,b){ 
+						if(a.firstname>b.firstname){
+							return sortdir;
+						}else if(a.firstname<b.firstname){
+								return -sortdir;
+						}else{
+							return 0;
+						}
+					});
+				}
+				else if(colkind==2){	
+					tablecontent.sort(function compare(a,b){ 
+						if(a.lastname>b.lastname){
+							return sortdir;
+						}else if(a.lastname<b.lastname){
+								return -sortdir;
+						}else{
+							return 0;
+						}
+					});
+				}
+				else if(colkind==3){	
+					tablecontent.sort(function compare(a,b){ 
+						if(a.ssn>b.ssn){
+							return sortdir;
+						}else if(a.ssn<b.ssn){
 								return -sortdir;
 						}else{
 							return 0;
@@ -287,8 +393,14 @@ function toggleSortDir(col){
     var dir = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
     var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
   	if (col != ocol){
+		$("input[name='sortcol']:checked").prop({"checked":false});
+        $("input[name='sorttype']:checked").prop({"checked":false});
         if (col == 0){
             localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1",1);
+        }else{
+            $("#sortcol"+col).prop({"checked":true});          
+            $("#sorttype0").prop({"checked":true});                      
+            localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", 0);          
         }
         dir=-1;
         localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);          

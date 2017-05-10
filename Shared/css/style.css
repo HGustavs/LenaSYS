@@ -67,15 +67,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.listbar{
-  margin:0px auto;
-  background-color: #614875;
-  color:#fff;
-  display: block;
-  padding-top:1px;
-	height:31px;width:100%;padding:2px;
-}
-
 table {
   border-collapse: collapse;
 }
@@ -135,12 +126,6 @@ hr {
 
 p {
   margin: .5em auto .5em auto;
-}
-
-/* ---- ---- ---- --- Files page --- ---- ---- ---- */
-
-.fileed-row-wrapper{
-	margin-top: 10px;
 }
 
 /* --------------================################================-------------- *
@@ -311,7 +296,7 @@ p {
 }
 
 /*changes the cursor for the cogwheels*/
-#corf, #dorf {
+#dorf {
 	cursor: pointer;
 }
 
@@ -592,7 +577,7 @@ header td {
 }
 
 #div2 {
-  position: absolute;;
+  position: absolute;
   top: 50px;
   bottom: 0px;
   left:0px;
@@ -691,81 +676,6 @@ header td {
   width: 100%;
   height: 100%;
   z-index: 8000;
-}
-
-.receiptBox {
-  display:block;
-  padding:4px;
-  background-color: #ccc;
-  border: 2px solid #999;
-  width: 350px;
-  min-height: 100px;
-  z-index: 9000;
-  position: fixed;
-  top: 40%;
-  left: 50%;
-  margin-top: -100px;
-  margin-left: -178px;
-  box-shadow:2px 2px 4px #000;
-}
-
-.receiptBox select {
-  font-size:14px;
-  float:right;
-  margin-right:4px;
-}
-
-.receiptBoxheader {
-  height: 25px;
-  background-color: #614875;
-  vertical-align: bottom;
-  padding-left: 10px;
-  /*  padding-top: 15px; */
-}
-
-.receiptBox h3 {
-  font-size: 14px;
-  margin-top: 10px;
-  line-height: 0.5em;
-  color: #fff;
-  float: left;
-  width: 50%;
-}
-
-.receiptBoxheader div {
-  padding: 2px 20px 2px 20px;
-  position: absolute;
-  top: 4px;
-  right: 5px;
-  color: #fff;
-  cursor: default;
-  background-color: #c75050;
-  font-family: arial;
-  font-weight: bold;
-  height:20px;
-}
-
-.receiptBoxheader div:hover {
-  background-color: #ce3d3d;
-}
-
-.recepitBox form {
-  padding: 10px;
-}
-
-.recepitBox .text {
-  font-weight: bold;
-  font-size: 0.8em;
-}
-
-.receiptBox .submit {
-  width: 80px;
-  height: 25px;
-  color: #fff;
-  background-color: #614875;
-  border: 0px;
-  border-radius: 4px;
-  margin-left: 1px;
 }
 
 .loginBox, .expiremessagebox, .endsessionmessagebox {
@@ -1159,41 +1069,6 @@ input.submit-button:disabled {
   opacity: 0.3;
 }
 
-input.submit-button-red {
-  background-color:#c75050;
-  border:0px;
-  width:100px;
-  height:30px;
-  color:#fff;
-  cursor:pointer;
-}
-
-input.submit-button-red:hover {
-  background-color:#DF4F4F;
-  border-radius:4px;
-}
-
-input.new-item-button {
-  float:right;
-  background-color:#927B9E;
-  border:0px;
-  width:100px;
-  height:28px;
-  color:#fff;
-  cursor:pointer;
-  margin-top:2px;
-  margin-bottom:2px;
-  font-size:14px;
-  border-radius:4px;
-  transition:0.5s background-color;
-}
-
-input.new-item-button:hover {
-  background-color:#614875;
-  border:1px solid #927B9E;
-  border-radius:4px;
-}
-
 .pressed{
   background: grey;
   color: white;
@@ -1374,20 +1249,6 @@ span.arrow {
   white-space: nowrap;
 }
 
-.markinginnertable {
-  background:#fff;
-  border-top: 2px solid #dbd0d8;
-  border-bottom: 2px solid #dbd0d8;
-}
-
-.markinginnertable  td {
-  color:#000;border:none;
-}
-
-.markinglist--nomargin {
-  margin: 0!important;
-}
-
 .feedback-list caption {
   border-left:2px solid #dbd0d8;
   background:#614875;
@@ -1409,24 +1270,13 @@ span.arrow {
   line-height: normal;
 }
 
-.Trow{
-  font-family: "Lucida Console", Monaco, monospace;
-  font-size: 10px;
-  line-height: 10px;
-}
-
 @media print {
-	.Trow {
-	    page-break-inside : avoid
-	}
 
 	header {display:none;}
 
 	body {margin:0px}
 
 	#content {margin:0px; padding:0px; border:none;}
-
-	#mirth {display:none;}
 }
 
 /* Clearfix styles */
@@ -1444,61 +1294,8 @@ span.arrow {
   zoom: 1; /* ie 6/7 */
 }
 
-/* DuggaSys Header */
-/*******************/
-
-.head__backanchor {
-	color: #ff0;
-}
-.head__backanchor:visited {
-	color: #ff0;
-}
-.head__backanchor:hover {
-	color: #fff;
-}
-
-
-.duggasys-head__backtext {
-	display: block;
-}
-/* Navigation link styles */
-.duggasys-head--nav a {
-	color: #ffffff;
-	text-decoration: none;
-}
-.duggasys-head--nav a:visited {
-	color: #ffffff;
-}
-.duggasys-head--nav a:hover {
-	color: red;
-}
-
-.duggasys-head--userinfo {
-	float: right;
-	margin: 10px 85px 10px 10px;
-}
-.duggasys-head__profileicon {
-	height: 100%;
-	padding: 5px;
-}
-.duggasys-head__profileicon:hover {
-	height: 100%;
-	padding: 5px;
-}
-
-/* End DuggaSys Header */
-/***********************/
-
 /* DuggaSys Sectioneed*/
-.course-menu--settings {
-	float: left;
-	margin-top: 6px;
-}
 
-.course-menu--options {
-	float: right;
-	margin-top: 6px;
-}
 
 /* select element */
 .course-dropdown {
@@ -1507,52 +1304,9 @@ span.arrow {
     float:right;
 }
 
-.course-menu-wrapper {
-  padding-bottom: 10px;
-}
-
 /* End DuggaSys Sectioneed*/
 /**************************/
 
-
-/* DuggaSys resulted*/
-#namecolumn .namecolumnheader {
-	width:200px;
-	height:30px;
-	background: #614875;
-	line-height:30px;
-	color:#FFFFFF;
-	text-align:center;
-}
-
-#namecolumn {
-	margin-top:10px;
-	float:left;
-}
-
-#studentswrapper {
-	overflow-y:hidden;
-	overflow-x:scroll;
-}
-
-#namecolumn .namecolumnstudent{
-	height:64px;
-	width:200px;
-	border-bottom:2px solid #614875;
-	border-left:2px solid #614875;
-	border-right:2px solid #614875;
-	text-align:right;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	padding:10px;
-}
-
-#divtable {
-	float:left;
-	overflow:scroll;
-	width: calc(100% - 200px);
-}
 
 #tableheader {
 	background: #614875;
@@ -1574,19 +1328,9 @@ span.arrow {
 	text-align:center;
 }
 
-.momentdiv {
-	border-right:2px solid #927b9e;
-	display: inline-block;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
 
-.momentdiv div{
-	padding:5px;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+#dropdownFilter{
+	width: 150px;
 }
 
 .fumo {
@@ -1598,59 +1342,6 @@ span.arrow {
 }
 /* End DuggaSys resulted*/
 /**************************/
-
-/* --------------================################================-------------- *
- *                                    UMV                                   *
- * --------------================################================-------------- */
-
-.UmvSearchInput{
-	 margin-top:13px;
- }
-
-.UmvButton {
-  cursor:pointer;
-	background-color:#FFFFFF;
-	border:none;
-	letter-spacing:0.1em;
-	margin-top:13px;
-	margin-left:10px;
-	padding:4px;
-	text-align:center;
-	color:#614875;
-	border-radius:0.5em;
-	font-size:0.75em;
-}
-
-.UmvButton:hover {
-	background-color:#F5F0F5;
-}
-
-/* Searchfield UMV */
-.searchfieldTV{
-	/*font-family: Calibri,sans-serif;*/
-	width: 35%;
-	margin-left:25px;
-	margin-top:-40px;
-	position:absolute;
-}
-
-/* Searchfield UMV input field*/
-.searchfieldTV input{
-	width: 70%;
-	height: 25px;
-	float:left;
-	position:relative;
-	font-size:0.9em;
-	border:none;
-	border-top-left-radius:0.5em;
-	border-bottom-left-radius:0.5em;
-	box-shadow: inset 2px 2px 5px #A9A;
-}
-
-/* Searchfield UMV input text field focus */
-.searchfieldTV input[type=text]:focus{
-	box-shadow: inset 2px 2px 5px #988a98;
-}
 
 .gradeInput {
   margin:0;
@@ -1869,23 +1560,8 @@ span.arrow {
   min-width: 140px;
 }
 
-.result-data-cell {
-  min-width: 105px;
-  padding-left: 2px;
-  display:flex;
-  justify-content: space-around;
-}
-
-.text-right {
-  text-align:right;
-}
-
 .text-center {
-  text-align:center;;
-}
-
-.text-left {
-  text-align:left;
+  text-align:center;
 }
 
 .fist {
@@ -1893,11 +1569,6 @@ span.arrow {
   height:24px;
   float:right;
   /*margin-right:8px;*/
-}
-
-.grade-img {
-  width:24px;
-  height:24px;
 }
 
 .highlightRow {
@@ -1929,25 +1600,6 @@ span.arrow {
 
 .show {
   display:block;
-}
-
-.dialogBoxheader {
-  height: 25px;
-  background-color: #614875;
-  vertical-align: bottom;
-  padding-left: 10px;
-  cursor:move;
-  display:flex;
-  justify-content: space-around;
-  /*  padding-top: 15px; */
-}
-
-.dialogBoxheader h3 {
-  font-size: 14px;
-  margin-top: 10px;
-  line-height: 0.5em;
-  color: #fff;
-  width: 100%;
 }
 
 .gradeContainer {
@@ -2289,4 +1941,15 @@ table {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 14px;
   color: white;
+}
+
+/* Title for the subpages of the section-editor */
+.titles{
+  width:100%;
+  display:flex;
+  flex-wrap:wrap;
+}
+
+.titles h1{
+  color: #614875;
 }

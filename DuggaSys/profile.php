@@ -37,6 +37,9 @@ pdoConnect();
 	?>
 		<div id="content" style="display:flex">
 			<div style="display:inline-flex;flex-wrap:wrap;margin:0 auto 0 auto;">
+				<div style='width:100%;height:50px;'>
+					<h1 style='text-align:center;color:#614875;'>Profile</h1>
+				</div>
 				<div id="changeChallengeQuestion" style="margin-right:60px">
 					<h3>Change challenge question</h3>
 					<form method="post">

@@ -29,6 +29,7 @@ $answer = getOP('answer');
 $action = getOP('action');
 $newPassword = getOP('newPassword');
 $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+$hashedAnswer = standardPasswordHash($answer);
 
 //check if the user is logged in and fetch the password from the db
 if(checklogin() || isSuperUser($userid)){
@@ -44,8 +45,7 @@ if(checklogin() || isSuperUser($userid)){
         $passwordz = $result->password;
         
         //If password matches update user security question
-        if(password_verify($password, $passwordz)){
-            
+        if(password_verify($password, $passwordz)){           
             //Query that selects the user row if it is a superuser or a teacher
             $accessString = "SELECT user.superuser, user_course.access FROM user LEFT JOIN user_course ON user_course.uid=user.uid WHERE  user.uid=:userid AND (user.superuser='1' OR user_course.access='W') LIMIT 1";
             $query = $pdo->prepare($accessString);
@@ -64,7 +64,7 @@ if(checklogin() || isSuperUser($userid)){
                         $stmt = $pdo->prepare($querystringz);
                         $stmt->bindParam(':userid', $userid);
                         $stmt->bindParam(':SQ', $question);
-                        $stmt->bindParam(':answer', $answer);
+                        $stmt->bindParam(':answer', $hashedAnswer);
 
                         if(!$stmt->execute()) {
                             $error=$stmt->errorInfo(); 
