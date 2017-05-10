@@ -105,30 +105,44 @@ function drawtable(){
 		}
 	}
 	str+="</thead>";
-	// Iterate the tablecontent. 
 	str += "<tbody>";
 	var row=0;
-	for(var i = 0; i < tablecontent.length; i++) { // create table rows. 
+	for(var i = 0; i < tablecontent.length; i++) { // Iterate table content, beginning with the row number and user data. 
 		row++;
-		str+="<tr";
-		if(row%2==1){
-			str+=" class='hi' ";
-		}else{
-			str+=" class='lo' ";
-		}
-		str+=">";
+		// Apply class to every other row for easier browsing using ternary operator
+		str+="<tr class='"+ (row % 2 == 1 ? 'hi' : 'lo') + "'>";
 		str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
-		str+="<td style='padding-left:3px;'><div class='dugga-result-div'>"+tablecontent[i].firstname+" "+tablecontent[i].lastname+"</div>";
+		str+="<td style='padding-left:3px;' title="+tablecontent[i].uid+"><div class='dugga-result-div'>"+tablecontent[i].firstname+" "+tablecontent[i].lastname+"</div>";
 		str+="<div class='dugga-result-div'>"+tablecontent[i].ssn+"</div>";
 		str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
-		for(var lid in tablecontent[i].lidstogroup) { // Table cells
-			// uid_lid to identify the cell. The ugid is supplied in the option. Is the cid a necessity? 
+		for(var lid in tablecontent[i].lidstogroup) { // Iterate the data per list entry column
 			str+="<td style='padding-left:5px;'>";
 			str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+" class='test' onchange=changegroup()>";
-			str+="<option value='-1'>Pick a group</option>";
-			for(var ugid in availablegroups) {
-				var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : "";
-				str+="<option value="+ugid+selected+">"+availablegroups[ugid]+"</option>";
+			str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
+			for(var level2lid in availablegroups) {
+				// Iterate the groups in each lid, example: 
+				/*
+				"availablegroups": {
+					"2001": { // Lid to iterate
+						"1": "Festargruppen" // Available groups with ugid as key, name as value
+					},
+					"2013": {
+						"2": "Coola gurppen"
+					}
+				}
+				*/
+				if(level2lid == lid) { // If the group belongs to the current column, lid, iterate all the available groups and create options for them
+					for(var ugid in availablegroups[level2lid]) {
+						// Iterate one level below like: 
+						/*
+						"2001":
+							"1": "Festargruppen" // Available groups with ugid as key, name as value
+						},
+						*/
+						var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
+						str+="<option value="+ugid+selected+">"+availablegroups[level2lid][ugid]+"</option>";
+					}
+				}
 			}
 			str+="</select><div class='groupStar'>*</div>";
 			str+="</td>";
