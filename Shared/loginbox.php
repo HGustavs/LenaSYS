@@ -9,7 +9,7 @@
 				<h3>Login</h3>
 				<div class="cursorPointer" onclick="closeWindows()">x</div>
 			</div>
-			<form action="" id="loginForm" method="post">
+			<div style='padding: 20px;'>
 				<table class="loginBoxTable">			
 					<tr>	
 						<td>
@@ -43,15 +43,15 @@
 						<!-- Message displayed when using wrong password or username -->
 						<td id="message";></td>
 					</tr>
-				</table>	
-			</form>
+				</table>
+			</div>		
 		</div>
 		<div id='newpassword' style="display:none">
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
 				<div class="cursorPointer" onclick="closeWindows()">x</div>
 			</div>
-			<form action="" id="loginForm" method="post">
+			<div style='padding: 20px;'>
 				<table class="loginBoxTable">			
 					<tr>	
 						<td>
@@ -72,8 +72,8 @@
 						<!-- Message displayed when using wrong password or username -->
 						<td id="message2";></td>
 					</tr>
-				</table>	
-			</form>
+				</table>
+			</div>
 			<tr>	
 				<td>
 					<label class='forgotPw' onclick='toggleloginnewpass();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
@@ -85,7 +85,7 @@
 				<h3> Reset Password</h3>
 				<div class="cursorPointer" onclick="closeWindows()">x</div>
 			</div>
-			<form action="" id="loginForm" method="post">
+			<div style='padding: 20px;'>
 				<table class="loginBoxTable">			
 					<tr>	
 						<td>
@@ -113,20 +113,21 @@
 						<!-- Message displayed when using wrong password or username -->
 						<td id="message3";></td>
 					</tr>
-				</table>	
-			</form>
+				</table>
+			</div>			
 			<tr>	
 				<td>
 					<label class='forgotPw' onclick='toggleloginnewpass();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
 				</td>	
 			</tr>
+			
 		</div>
 		<div id='resetcomplete' style="display:none">
 			<div class='loginBoxheader' id="completeid">
 				<h3>Request complete</h3>
 				<div class='cursorPointer' onclick="closeWindows()">x</div>
 			</div>
-			<form action="" id="loginForm" method="post">
+			<div style='padding: 20px;'>
 				<table class="loginBoxTable">	
 					<tr>
 						<td>
@@ -140,7 +141,7 @@
 						</td>
 					</tr>
 				</table>
-			</form>
+			</div>	
 		</div>
 	</div>
 	<!-- Login Box End! -->
