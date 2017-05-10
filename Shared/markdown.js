@@ -293,25 +293,27 @@ function handleLists(currentLine, prevLine, nextLine) {
     if(!isOrderdList(prevLine) && isOrderdList(currentLine) && !isUnorderdList(prevLine)) markdown += "<ol>"; // Open a new ordered list
     if(!isUnorderdList(prevLine) && isUnorderdList(currentLine) && !isOrderdList(prevLine)) markdown += "<ul>"; //Open a new unordered list
     
+     // Open a new sublist
+    if(currentLineIndentation < nextLineIndentation) { 
+    	console.log("open a new sublist");
+    }
     // Stay in current list or sublist
-    if (currentLineIndentation === prevLineIndentation || currentLineIndentation === nextLineIndentation) {
+    if(currentLineIndentation === prevLineIndentation || currentLineIndentation === nextLineIndentation) {
     	markdown += "<li>";
     	markdown +=  value;
     	markdown += "</li>";
     }
-     // Open a new sublist
-    else if(currentLineIndentation < nextLineIndentation) { 
-
-    }
     // Close sublists
-    else if(currentLineIndentation > nextLineIndentation) { 
-    	console.log(currentLine);
- 		console.log("prev", prevLineIndentation);
- 		console.log("curr", currentLineIndentation);
- 		console.log("next", nextLineIndentation);
+    if(currentLineIndentation > nextLineIndentation) { 
+    	console.log("closing sublists");
+    	var sublistsToClose = (currentLineIndentation - nextLineIndentation) / 2;
+    	console.log(sublistsToClose);
+    	for(var i = 0; i < sublistsToClose; i++) {
+    		
+    	}
     }
     
-   
+    
 
     // Close list
     if(!isOrderdList(nextLine) && isOrderdList(currentLine) && !isUnorderdList(nextLine)) markdown += "</ol>"; // Close ordered list
