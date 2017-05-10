@@ -102,8 +102,38 @@ if($ha){
 
 		if($storefile){
 				//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
-				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/php","text/markdown", "application/postscript", "application/octet-stream","image/svg+xml", "application/octet-stream", "application/octet-stream", "application/msword", "application/octet-stream", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.oasis.opendocument.text", "text/xml", "text/xml","application/octetstream","application/x-pdf", "application/download" , "application/x-download", "application/x-dosexec", "application/x-sharedlib", "text/x-php");
-				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html","txt", "java", "xml", "js", "css", "php","md","ai", "psd","svg", "sql", "sr", "doc", "sl", "glsl", "docx", "odt", "xslt", "xsl");
+//				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/php","text/markdown", "application/postscript", "application/octet-stream","image/svg+xml", "application/octet-stream", "application/octet-stream", "application/msword", "application/octet-stream", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.oasis.opendocument.text", "text/xml", "text/xml","application/octetstream","application/x-pdf", "application/download" , "application/x-download", "application/x-dosexec", "application/x-sharedlib", "text/x-php");
+//				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html","txt", "java", "xml", "js", "css", "php","md","ai", "psd","svg", "sql", "sr", "doc", "sl", "glsl", "docx", "odt", "xslt", "xsl");
+				
+// Derived from testing files and IANA assignment of MIME types
+$allowedExtensions = [
+	"txt"		=> ["text/plain"],
+	"pdf"		=> ["application/pdf"],
+	"gif"		=> ["image/gif"],
+	"jpeg"	=> ["image/jpeg"],
+	"jpg"		=> ["image/jpeg"],
+	"png"		=> ["image/png"],
+	"zip"		=> ["application/zip"],
+	"html"	=> ["text/html"],
+	"java"	=> ["text/plain"],
+	"xml"		=> ["text/plain", "application/xml"],
+	"js"		=> ["text/plain", "application/javascript"],
+	"css"		=> ["text/plain", "text/css"],
+	"php"		=> ["text/x-php"],
+	"md"		=> ["text/plain", "text/markdown"],
+	"svg"		=> ["image/svg+xml"],
+	"sql"		=> ["text/plain", "application/sql"],
+	"doc"		=> ["application/msword"],
+	"docx"	=> ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"],
+	"odt"		=> ["application/vnd.oasis.opendocument.text"]
+//	"xslt"	=> [
+//	"xsl"		=> [
+//	"sl"		=> [
+//	"glsl"	=> [
+//	"ai"		=> [
+//	"psd"		=> [
+//	"rar"		=> [
+];
 				
 				$swizzled = swizzleArray($_FILES['uploadedfile']);
 				
@@ -154,7 +184,7 @@ if($ha){
 								$extension = end($temp); //stores the file type
 								// Determine file MIME-type
 								$filetype = mime_content_type($filea["tmp_name"]);
-								if(in_array($extension, $allowedX)&&in_array($filetype, $allowedT)){ 
+								if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension])){
 										//  if file type is allowed, continue the uploading process.
 				
 										$fname=$filea['name'];
@@ -212,8 +242,8 @@ if($ha){
 
 								}else{ 
 									//if the file extension is not allowed
-									if(!in_array($extension, $allowedX)) echo "Extension ".$extension." not allowed.\n";
-									if(!in_array($filetype, $allowedT)) echo "Type ".$filetype." not allowed.\n";
+									if(!array_key_exists($extension, $allowedExtensions)) echo "Extension ".$extension." not allowed.\n";
+								 	else echo "Type $filetype not valid for file extension: $extension" . "\n";
 									$error=true;
 								}
 						}
