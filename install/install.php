@@ -499,6 +499,11 @@
         echo "<div id='inputFooter'><span id='showHideInstallation'>Show/hide installation progress.</span><br>
                 <span id='errorCount'>Errors: " . $errors . "</span></div>";
 
+        # Collapse progress only if there are no error.
+        if ($errors == 0) {
+            echo "<script>$('#installationProgressWrap').toggle(500);</script>";
+        }
+
         # All this code prints further instructions to complete installation.
         $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
         echo "<div id='doThisWrapper'>";
@@ -615,11 +620,9 @@
             }
         }
 
-        function hideCopiedAgain(text){
-            $(text).hide("slide", {direction: "right" }, 1000)
+        function hideCopiedAgain(text) {
+            $(text).hide("slide", {direction: "right"}, 1000)
         }
-
-        toggleInstallationProgress();
     </script>
 
 </body>
