@@ -592,7 +592,7 @@ header td {
 }
 
 #div2 {
-  position: absolute;;
+  position: absolute;
   top: 50px;
   bottom: 0px;
   left:0px;
@@ -1881,7 +1881,7 @@ span.arrow {
 }
 
 .text-center {
-  text-align:center;;
+  text-align:center;
 }
 
 .text-left {
