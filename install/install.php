@@ -47,9 +47,9 @@
         var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
         var filePath = "<?php echo $putFileHere; ?>";
 
-        document.getElementById('dialogText').innerHTML="<div style='background-image: url(../Shared/icons/warningTriangle.png); background-size: 10%; background-repeat: no-repeat;'><h1 style='text-align: center;'><span style='color: red;' />" +
-            "!!!!!!READ THIS BEFORE YOU START!!!!!!</span></h1><br>" +
-            "<h2 style='text-align: center;'>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
+        document.getElementById('dialogText').innerHTML="<div><h1>" +
+            "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
+            "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
             "<br>" +
             "To do this run the command:<br>" +
             "sudo chgrp -R www-data " + filePath + "</h2><br>" +
@@ -89,12 +89,12 @@
     </script>
     <form action="install.php?mode=install" method="post">
         <div id="inputWrapper">
-            <div class="inputHeading" valign=top style="display:block;">
-                <div id="th1" style="display: block; height:50px;"><h2>New/Existing MySQL user and DB</h2></div>
-                <div id="th2" style="display: none; height:50px;"><h2>MySQL Root Login</h2></div>
-                <div id="th3" style="display: none; height:50px;"><h2>Test Data</h2></div>
-                <div id="th4" style="display: none; height:50px;"><h2>Write over?</h2></div>
-                <div id="th5" style="display: none; height:50px;"><h2>Submit</h2></div>
+            <div class="inputHeading" valign=top>
+                <div class="inputFirst" id="th1"><h2>New/Existing MySQL user and DB</h2></div>
+                <div class="inputNotFirst" id="th2"><h2>MySQL Root Login</h2></div>
+                <div class="inputNotFirst" id="th3"><h2>Test Data</h2></div>
+                <div class="inputNotFirst" id="th4"><h2>Write over?</h2></div>
+                <div class="inputNotFirst" id="th5"><h2>Submit</h2></div>
             </div>
  <?php
     // Prefill existing credentials, exluding password
@@ -122,8 +122,8 @@
         }
       }
     }
-    echo '<div id="contentWrapper" style="height:400px">';
-    echo '<div class="inputContent" id="td1" style="display:block;">';
+    echo '<div id="contentWrapper">';
+    echo '<div class="inputContent" id="td1">';
     echo '<p id="infoText"><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
             Next enter a password for this user (new or existing).<br>
             After this enter a database to use. This could also be either an existing or a new database.<br>
@@ -138,7 +138,7 @@
     echo '<input type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
     echo '</div>';
 ?>
-                <div class="inputContent" id="td2" valign=top style="display:none;">
+                <div class="inputContent" id="td2" valign=top>
                     <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
                         Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
                     Enter MySQL root user. <br>
@@ -146,7 +146,7 @@
                     Enter password for MySQL root user. <br>
                     <input type="password" name="rootPwd" placeholder="Root Password" /> <br>
                 </div>
-                <div class="inputContent" id="td3" valign=top style="display:none;">
+                <div class="inputContent" id="td3" valign=top>
                     <p id="infoText"><b>If you wish to create a new, empty database check the box 'Create new database'. If you want to fill this
                         database with testdata (located in install/SQL/testdata.sql) you should check the box for this too. If you
                         are using an existing database and wishes to re-write it you will be able to make this choice on the next page.</b></p><hr>
@@ -156,7 +156,7 @@
                     Include test data. <br><br>
                     <b>Language keyword highlighting support.<br></b>
                     <i>Choose which languages you wish to support in codeviewer. (You need to check 'Include test data' to be able to include these.</i><br>
-                    <div id="checkboxContainer" style="text-align: left">
+                    <div id="checkboxContainer">
                         <input type="checkbox" name="html" value="Yes" checked/> HTML <br>
                         <input type="checkbox" name="java" value="Yes" checked/> Java <br>
                         <input type="checkbox" name="php" value="Yes" checked/> PHP <br>
@@ -165,7 +165,7 @@
                         <input type="checkbox" name="sr" value="Yes" checked/> SR <br>
                     </div>
                 </div>
-                <div class="inputContent" id="td4" colspan="3" bgcolor="#FFCCCC" style="display:none;">
+                <div class="inputContent" id="td4" colspan="3" bgcolor="#FFCCCC">
                     <p id="infoText"><b>If you have entered a user and/or database that already exists you must check the checkboxes below to accept overwriting these.
                         <br>If you only entered an existing user but a new database only check the box for user overwrite.
                         <br>If you only entered an existing database for a new user only check the box for database overwrite.
@@ -175,25 +175,25 @@
                     Yes I want to write over an existing database.<br>
                     <input type="checkbox" name="writeOverUSR" value="Yes" />
                     Yes I want to write over an existing user.<br>
-                        <span style='color: red;'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
+                        <span id='failText'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
                 </div>
-                <div class="inputContent" id="td5" bgcolor="#EEEEEE" style="display:none">
+                <div class="inputContent" id="td5" bgcolor="#EEEEEE">
                     <p id="infoText"><b>If all fields are filled out correctly the only thing remaining is to smack the 'Install' button below.
                         Progress of installation will be shown. If any errors occurs please try again and check that your data is correct.
                         If you still get errors please read installation guidelines on LenaSYS github page or in 'README.md'. </b></p><hr>
                     <input class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
                 </div>
             </div>
-            <div class="arrow" id="leftArrow" style="display:none">
+            <div class="arrow" id="leftArrow">
                 <svg height="150" width="150">
                     <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
-                    <polygon points="100,30 20,75 100,120" style="fill:rgb(255,233,126);" />
+                    <polygon points="100,30 20,75 100,120" />
                 </svg>
             </div>
             <div class="arrow" id="rightArrow">
                 <svg height="150" width="150">
                     <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
-                    <polygon points="50,30 130,75 50,120" style="fill:rgb(255,233,126);" />
+                    <polygon points="50,30 130,75 50,120" />
                 </svg>
             </div>
             <script>
@@ -276,9 +276,9 @@
                 var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
                 var filePath = '{$putFileHere}';
                 
-                document.getElementById('dialogText').innerHTML = '<div style=\'background-image: url(../Shared/icons/warningTriangle.png); background-size: 150px; background-repeat: no-repeat;\'><h1 style=\'text-align: center;\'><span style=\'color: red;\' />!!!WARNING!!!</span></h1><br>' +
-                    '<h2 style=\'text-align: center;\'>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
-                    '<p style=\'text-align: center;\'>If you don\'t follow these instructions nothing will work. Group 3 will not take any ' +
+                document.getElementById('dialogText').innerHTML = '<div><h1>!!!WARNING!!!</h1><br>' +
+                    '<h2>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
+                    '<p>If you don\'t follow these instructions nothing will work. Group 3 will not take any ' +
                     'responsibility for your failing system.</p>';
                 
                 // When the user clicks on <span> (x), close the modal
@@ -307,15 +307,15 @@
         # Test permissions on directory before starting installation.
         if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0777)) {
             $errors++;
-            exit ("<span style='color: red;' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
+            exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
                     <a href='install.php' class='returnButton'>Try again.</a>");
         } else {
             if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
                 $errors++;
-                exit ("<span style='color: red;' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
+                exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
                     <a href='install.php' class='returnButton'>Try again.</a>");
             } else {
-                echo "<span style='color: green;' />Permissions on {$putFileHere} set correctly.</span><br>";
+                echo "<span id='successText' />Permissions on {$putFileHere} set correctly.</span><br>";
             }
         }
 
@@ -324,7 +324,7 @@
         foreach ($fields AS $fieldname) { //Loop trough each field
             if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname])) {
                 $errors++;
-                exit ("<span style='color: red;' />Please fill all fields.</span><br>
+                exit ("<span id='failText' />Please fill all fields.</span><br>
                     <a href='install.php' class='returnButton'>Try again.</a>");
             }
         }
@@ -345,10 +345,10 @@
                 $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
                 // set the PDO error mode to exception
                 $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                echo "<span style='color: green;' />Connected successfully to {$serverName}.</span><br>";
+                echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
             } catch (PDOException $e) {
                 $errors++;
-                echo "<span style='color: red;' />Connection failed: " . $e->getMessage() . "</span><br>";
+                echo "<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>";
             }
             flush();
             ob_flush();
@@ -358,10 +358,10 @@
                 # User
                 try {
                 $connection->query("DELETE FROM mysql.user WHERE user='{$username}';");
-                echo "<span style='color: green;' />Successfully removed old user, {$username}.</span><br>";
+                echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
                 } catch (PDOException $e) {
                 $errors++;
-                echo "<span style='color: red;' />User with name {$username} 
+                echo "<span id='failText' />User with name {$username} 
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
                 flush();
@@ -371,10 +371,10 @@
                 # Database
                 try {
                     $connection->query("DROP DATABASE {$databaseName}");
-                    echo "<span style='color: green;' />Successfully removed old database, {$databaseName}.</span><br>";
+                    echo "<span id='successText' />Successfully removed old database, {$databaseName}.</span><br>";
                 } catch (PDOException $e) {
                     $errors++;
-                    echo "<span style='color: red;' />Database with name {$databaseName} 
+                    echo "<span id='failText' />Database with name {$databaseName} 
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
                 flush();
@@ -384,10 +384,10 @@
             # Create new database
             try {
                 $connection->query("CREATE DATABASE {$databaseName}");
-                echo "<span style='color: green;' />Database with name {$databaseName} created successfully.</span><br>";
+                echo "<span id='successText' />Database with name {$databaseName} created successfully.</span><br>";
             } catch (PDOException $e) {
                 $errors++;
-                echo "<span style='color: red;' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
+                echo "<span id='failText' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
             }
             flush();
             ob_flush();
@@ -398,10 +398,10 @@
                 $connection->query("CREATE USER '{$username}'@'{$serverName}' IDENTIFIED BY '{$password}'");
                 $connection->query("GRANT ALL PRIVILEGES ON *.* TO '{$username}'@'{$serverName}'");
                 $connection->query("FLUSH PRIVILEGES");
-                echo "<span style='color: green;' />Successfully created user {$username}.</span><br>";
+                echo "<span id='successText' />Successfully created user {$username}.</span><br>";
             } catch (PDOException $e) {
                 $errors++;
-                echo "<span style='color: red;' />Could not create user with name {$username}, maybe it already exists...</span><br>";
+                echo "<span id='failText' />Could not create user with name {$username}, maybe it already exists...</span><br>";
             }
             flush();
             ob_flush();
@@ -451,11 +451,11 @@
                     }
                 }
                 $initSuccess = true;
-                echo "<span style='color: green;' />Initialization of database complete. </span><br>";
+                echo "<span id='successText' />Initialization of database complete. </span><br>";
             } catch (PDOException $e) {
                 $errors++;
-                echo "<span style='color: red;' />Failed initialization of database because of query (in init_db.sql): </span><br>";
-                echo "<div style='word-wrap: break-word; background-color: #cccccc; min-width: 300px; max-width: 80%; height: *; margin: 0:auto; padding: 5px; border-style: solid; border-width: 2px;'><code>{$completeQuery}</code></div><br><br>";
+                echo "<span id='failText' />Failed initialization of database because of query (in init_db.sql): </span><br>";
+                echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
             }
             flush();
             ob_flush();
@@ -480,7 +480,7 @@
                 if(@!mkdir("{$putFileHere}/courses", 0770, true)){
                     echo "Did not create courses directory, it already exists.<br>";
                 } else {
-                    echo "<span style='color: green;' />Created the directory '{$putFileHere}/courses'.</span><br>";
+                    echo "<span id='successText' />Created the directory '{$putFileHere}/courses'.</span><br>";
                 }
                 copyTestFiles("{$putFileHere}/install/courses/global/", "{$putFileHere}/courses/1/");
 
@@ -497,7 +497,7 @@
         ob_flush();
         echo "</div>";
         echo "<div id='inputFooter'><span id='showHideInstallation'>Show/hide installation progress.</span><br>
-                <span style='color: white;font-size:24px;'>Errors: " . $errors . "</span></div>";
+                <span id='errorCount'>Errors: " . $errors . "</span></div>";
 
         # All this code prints further instructions to complete installation.
         $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
@@ -516,7 +516,7 @@
         echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
         echo "</code></div>";
 
-        echo '<div id="copied1" style="display:none">Copied to clipboard!<br></div>';
+        echo '<div id="copied1">Copied to clipboard!<br></div>';
 
         echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br> 
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
@@ -527,7 +527,7 @@
         echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
         echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
         echo "</code></div>";
-        echo '<div id="copied2" style="display:none">Copied to clipboard!<br></div>';
+        echo '<div id="copied2">Copied to clipboard!<br></div>';
 
         $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
         echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
@@ -543,7 +543,7 @@
 
         if ($testDataQuery === FALSE) {
             $errors++;
-            echo "<span style='color: red;' />Could not find SQL/{$file}.sql, skipped this test data.</span><br>";
+            echo "<span id='failText' />Could not find SQL/{$file}.sql, skipped this test data.</span><br>";
         } else {
             # Split SQL file at semi-colons to send each query separated.
             $testDataQueryArray = explode(";", $testDataQuery);
@@ -554,11 +554,11 @@
                         $connection->query($completeQuery);
                     }
                 }
-                echo "<span style='color: green;' />Successfully filled database with test data from {$file}.sql.</span><br>";
+                echo "<span id='successText' />Successfully filled database with test data from {$file}.sql.</span><br>";
             } catch (PDOException $e) {
                 $errors++;
-                echo "<span style='color: red;' />Failed to fill database with data because of query in {$file}.sql (Skipped the rest of this file):</span><br>";
-                echo "<div style='word-wrap: break-word; background-color: #cccccc; min-width: 300px; max-width: 80%; height: *; margin: 0:auto; padding: 5px; border-style: solid; border-width: 2px;'><code>{$completeQuery}</code></div><br><br>";
+                echo "<span id='failText' />Failed to fill database with data because of query in {$file}.sql (Skipped the rest of this file):</span><br>";
+                echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
             }
         }
         flush();
@@ -575,7 +575,7 @@
             }
         }
         closedir($dir);
-        echo "<span style='color: green;' />Successfully filled {$destDir} with example files.</span><br>";
+        echo "<span id='successText' />Successfully filled {$destDir} with example files.</span><br>";
     }
     ?>
 
