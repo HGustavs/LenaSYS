@@ -219,3 +219,22 @@ body {
     color: white;
     background-color: rgb(197,81,83);
 }
+
+.returnButton {
+    background-color: rgb(197,81,83);
+    border: none;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 15px;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.returnButton:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
