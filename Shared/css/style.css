@@ -2290,3 +2290,14 @@ table {
   font-size: 14px;
   color: white;
 }
+
+/* Title for the subpages of the section-editor */
+.titles{
+  width:100%;
+  display:flex;
+  flex-wrap:wrap;
+}
+
+.titles h1{
+  color: #614875;
+}
