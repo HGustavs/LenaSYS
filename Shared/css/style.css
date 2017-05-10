@@ -1846,25 +1846,28 @@ span.arrow {
   border-bottom-right-radius: 10px;
 }
 
-.fab {
-  position:fixed;
-  width:50px;
-  height:50px;
-  border-radius:25px;
-  box-shadow:0px 0px 15px #888;
-  top:310px;
-  right:50px;
-  font-size:24px;
-  text-align:center;
-  background-color:#fecc56;
-  color:#614875;
-  z-index:4000;
-  border:0;
-  outline: none;
-  cursor: pointer;
-  padding-left: 7px;
-  padding-top: 1px;
-}
+/* .fab { */
+  /* position:fixed; */
+  /* width:50px; */
+  /* height:50px; */
+  /* border-radius:25px; */
+  /* box-shadow:0px 0px 15px #888; */
+  /* bottom:35px; */
+  /* right:50px; */
+  /* font-size:24px; */
+  /* text-align:center; */
+  /* background-color:#fecc56; */
+  /* color:#614875; */
+  /* z-index:4000; */
+  /* border:0; */
+  /* outline: none; */
+  /* cursor: pointer; */
+  /* padding-left: 7px; */
+  /* padding-top: 1px; */
+/* } */
+/* .fab:hover { */
+  /* transform:scale(1.1); */
+/* } */
 
 .dugga-pass {
 	border-left: 2px solid rgb(219, 208, 216);
