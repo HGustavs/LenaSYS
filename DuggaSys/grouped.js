@@ -8,8 +8,28 @@ var versions;
 var courselist;
 var students=new Array;
 var tablecontent=new Array;
-function setup(){  	
+function setup(){
+	
+	var filt = "";
+	filt+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hoverFilter();'>";
+	filt+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+	filt+="<div id='dropdownFilter' class='dropdown-list-container'>";
+	filt+="<p>Test</p>";
+	filt+="</div>";
+	filt+="</span></td>";
+	$("#menuHook").before(filt);
+		
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "GROUP");
+}
+
+function hoverFilter()
+{
+  	$('#dropdownFilter').css('display','block');
+}
+
+function leaveFilter()
+{
+	$('#dropdownFilter').css('display','none'); 
 }
 
 function selectGroup()
@@ -71,6 +91,16 @@ function process()
 		for(i=0;i<availablegroups.length;i++){
 			var uid=availablegroups[i].uid;
 		}
+		var dstr="";
+
+	// Sorting
+    dstr+="<div class='checkbox-dugga'><label class='headerlabel' for='sortdir1'>Sort students by:</label></div>";
+	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Username</label></div>";
+	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Firstname</label></div>";
+	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >Lastname</label></div>";
+	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >SSN</label></div>";		
+	dstr+="<div style='display:flex;justify-content:flex-end;'><button onclick='leaveFilter()'>Sort</button></div>"
+	document.getElementById("dropdownFilter").innerHTML=dstr;
 }
 
 function drawtable(){
@@ -159,6 +189,12 @@ function returnedGroup(data)
 	var str="";
 	//Show table 
 	drawtable();
+	
+	$(document).ready(function () {
+		$("#filter").mouseleave(function () {
+				leaveFilter();
+		});
+	});
 	
 	allData = data; // used by dugga.js (for what??)
 	process();
