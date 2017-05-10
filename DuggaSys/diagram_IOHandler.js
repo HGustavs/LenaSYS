@@ -48,12 +48,13 @@ function redirect(doc){
         data: {'GetID':a },
 
         success: function(data){ // <-- note the parameter here, not in your code
-                //location.href="diagram.php?id="+2+"&folder="+a;
+                //
             return false;
         }
 
     });
 
+    location.href="diagram.php?id="+0+"&folder="+a;
 
 }
 function redirectas(doc,folder){

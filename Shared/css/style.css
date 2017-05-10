@@ -1128,7 +1128,27 @@ input.submit-button-newitem {
   float:right;
 }
 input.diagram-sidebar-buttons {
-  background-color:#7B5A96;
+   background-color:#7B5A96;
+   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+   border:0px;
+   width:130px;
+   height:30px;
+   color:#fff;
+   cursor:pointer;
+   margin-top:6px;
+   margin-bottom:2px;
+   margin-left:4px;
+   font-size:14px;
+   transition:1s background-color;
+   float:left;
+   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 10px 0 rgba(0,0,0,0.1);
+ }
+input.diagram-sidebar-buttons:hover {
+  background-color:#33AAFF;
+  border-radius:2px;
+}
+button.diagram-menu-buttons {
+  background-color:#ff8000;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   border:0px;
   width:130px;
@@ -1143,8 +1163,8 @@ input.diagram-sidebar-buttons {
   float:left;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 10px 0 rgba(0,0,0,0.1);
 }
-input.diagram-sidebar-buttons:hover {
-  background-color:#33AAFF;
+button.diagram-menu-buttons:hover {
+  background-color:#ffcc55;
   border-radius:2px;
 }
 input.hide-moments-button {

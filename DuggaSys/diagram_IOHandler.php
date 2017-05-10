@@ -54,7 +54,7 @@ include '../Shared/navheader.php';
 <!-- content START -->
 
 <div id='showStored' style="display:none;position:absolute;left:190px;top:50px">
-    <div id="b" style="position:fixed;height:100vh;width:100px;border-right:1px solid black;">
+    <div id="b" style="position:fixed;height:100vh;width:150px;border-right:1px solid black;">
         <?php
         if ($handle = opendir('Save/')) {
         $blacklist = array('.', '..', 'Save', 'id.txt');
@@ -64,7 +64,7 @@ include '../Shared/navheader.php';
             <br>
             <form id="contacts-form" method="post" action="">
 
-            <button id=but name="answer" value='<?php print $file ?>' style="margin-left:15px;left:10px;width:60px;margin-top:5px;" onclick='document.getElementById("contacts-form").submit()'><?php print $file ?></button>
+            <button id=but class="diagram-menu-buttons" name="answer" value='<?php print $file ?>' style="margin-left:25px;left:25px;width:100px;margin-top:5px;" onclick='document.getElementById("contacts-form").submit()'><?php print $file ?></button>
             </form>
         <?php
 
@@ -97,7 +97,9 @@ include '../Shared/navheader.php';
 </div>
 <div id='showNew' style="display:none;position:absolute;left:190px;top:50px">
    <div id="a" style="position:fixed;height:100vh;width:300px;border-right:1px solid black;">
-       <button id=but name="answer"  style="margin-left:50px;width:200px;margin-top:5px;" onclick='document.getElementById("newFolder").style.visibility= "visible"'>New Folder</button>
+       <button id=but class="diagram-menu-buttons" name="answer"  style="margin-left:50px;width:200px;margin-top:5px;" onclick='document.getElementById("newFolder").style.visibility= "visible"'>New Folder</button>
+       <br>
+       <br>
         <hr>
        <?php
        if ($handle = opendir('Save/')) {
@@ -107,7 +109,7 @@ include '../Shared/navheader.php';
                    ?>
                    <br>
 
-                   <button id=but name="answer" value='<?php print $file ?>' style="margin-left:90px;left:10px;width:100px;margin-top:5px;" onclick='redirect(this)'><?php print $file ?></button>
+                   <button id=but class="diagram-menu-buttons" name="answer" value='<?php print $file ?>' style="margin-left:90px;left:10px;width:100px;margin-top:5px;" onclick='redirect(this)'><?php print $file ?></button>
 
                    <?php
 
@@ -147,8 +149,8 @@ include '../Shared/navheader.php';
                         if (!in_array($file, $blacklist)) {
                             ?>
                             <br>
-                            <button id=but name="answer" value='<?php print $file ?>'
-                                    style="margin-left:15px;left:10px;width:60px;margin-top:5px;"
+                            <button id=but class="diagram-menu-buttons" name="answer" value='<?php print $file ?>'
+                                    style="margin-left:25px;left:10px;width:60px;margin-top:5px;"
                                     onclick='redirect(this,"<?php print $newFolder ?>")'><?php print $file ?></button>
 
                             <?php
