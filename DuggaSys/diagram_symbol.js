@@ -192,6 +192,7 @@ function Symbol(kind) {
                 points[this.topLeft].y = points[this.middleDivider].y;
             }
         } else if (this.symbolkind == 5){
+            // Static size of relation. Makes resizing of relation impossible.
             points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
             points[this.topLeft].y = points[this.middleDivider].y-relationTemplate.height/2;
             points[this.bottomRight].x = points[this.middleDivider].x+relationTemplate.width/2;
