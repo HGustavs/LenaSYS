@@ -9,7 +9,7 @@
 				<h3>Login</h3>
 				<div class="cursorPointer" onclick="closeWindows()">x</div>
 			</div>
-			<div style='padding: 20px;'>
+			<form action="" id="loginForm" method="post">
 				<table class="loginBoxTable">			
 					<tr>	
 						<td>
@@ -44,7 +44,7 @@
 						<td id="message";></td>
 					</tr>
 				</table>
-			</div>		
+			</form>		
 		</div>
 		<div id='newpassword' style="display:none">
 			<div class='loginBoxheader'>
