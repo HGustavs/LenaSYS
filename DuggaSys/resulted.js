@@ -653,12 +653,13 @@ function process()
 		for(var j=0;j<momtmp.length;j++){
 				var lid=moments[j].lid;
 				var name=momtmp[j].entryname;
+				var truncatedname=momtmp[j].entryname.slice(0, 3)+"..."+momtmp[j].entryname.slice(momtmp[j].entryname.length-8);
 
 				dstr+="<div class='checkbox-dugga checknarrow ";				
 				if (moments[j].visible == 0){
-						dstr+="checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol"+(j+1)+"' value='"+(j+1)+"'><label class='headerlabel' for='sortcol"+(j+1)+"' >"+name+"</label></div>";
+						dstr+="checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol"+(j+1)+"' value='"+(j+1)+"'><label class='headerlabel' title='"+name+"' for='sortcol"+(j+1)+"' >"+truncatedname+"</label></div>";
 				}else{
-						dstr+="'><input name='sortcol' type='radio' class='sortradio' id='sortcol"+(j+1)+"' onclick='sorttype(-1)' value='"+(j+1)+"'><label class='headerlabel' for='sortcol"+(j+1)+"' >"+name+"</label></div>";
+						dstr+="'><input name='sortcol' type='radio' class='sortradio' id='sortcol"+(j+1)+"' onclick='sorttype(-1)' value='"+(j+1)+"'><label class='headerlabel' title='"+name+"' for='sortcol"+(j+1)+"' >"+truncatedname+"</label></div>";
 				}
 		}
 		dstr+="</td><td style='vertical-align:top;'>";
