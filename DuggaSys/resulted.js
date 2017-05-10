@@ -653,7 +653,11 @@ function process()
 		for(var j=0;j<momtmp.length;j++){
 				var lid=moments[j].lid;
 				var name=momtmp[j].entryname;
-				var truncatedname=momtmp[j].entryname.slice(0, 3)+"..."+momtmp[j].entryname.slice(momtmp[j].entryname.length-8);
+				var truncatedname=name;
+				if(truncatedname.length>12){
+                    truncatedname=momtmp[j].entryname.slice(0, 3)+"..."+momtmp[j].entryname.slice(momtmp[j].entryname.length-8);
+				}
+
 
 				dstr+="<div class='checkbox-dugga checknarrow ";				
 				if (moments[j].visible == 0){
