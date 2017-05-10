@@ -29,6 +29,7 @@ $answer = getOP('answer');
 $action = getOP('action');
 $newPassword = getOP('newPassword');
 $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+$hashedAnswer = password_hash($answer, PASSWORD_BCRYPT);
 
 //check if the user is logged in and fetch the password from the db
 if(checklogin() || isSuperUser($userid)){
@@ -50,7 +51,7 @@ if(checklogin() || isSuperUser($userid)){
                 $stmt = $pdo->prepare($querystringz);
                 $stmt->bindParam(':userid', $userid);
                 $stmt->bindParam(':SQ', $question);
-                $stmt->bindParam(':answer', $answer);
+                $stmt->bindParam(':answer', $hashedAnswer);
 
                 if(!$stmt->execute()) {
                     $error=$stmt->errorInfo(); 
