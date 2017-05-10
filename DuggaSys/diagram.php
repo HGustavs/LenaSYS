@@ -45,9 +45,9 @@
                 <option value='Square'>Square</option>
                 <option value='Free'>Free-Draw</option>
             </select>
-            <button onclick='openAppearanceDialogMenu();'>Change Apperance</button>
+            <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
+            <button onclick='globalAppearanceMenu();'>Global Appearance</button>
             <button onclick='debugMode();'>Debug</button>
-            <button onclick='fontMenu();'>Global Font</button>
             <button onclick='clearCanvas(); removeLocal();'>Removed Hashed Diagram</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
             <button onclick='clearCanvas(); removeLocal();'>Delete All</button>

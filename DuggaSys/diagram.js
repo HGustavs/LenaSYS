@@ -1157,28 +1157,39 @@ function setRefreshTime(){
         return time;
     }
 }
-
-//open a menu to change the font on all entities.
-function fontMenu() {
+function showMenu(){
     document.getElementById("myCanvas").style.cursor = "default";
     $("#appearance").show();
     $("#appearance").width("auto");
-    var form = document.getElementById("f01");
-    form.innerHTML = "Font family:<br>" +
-    "<select id ='font'>" +
-    "<option value='arial' selected>Arial</option>" +
-    "<option value='Courier New'>Courier New</option>" +
-    "<option value='Impact'>Impact</option>" +
-    "<option value='Calibri'>Calibri</option>" +
-    "</select><br>" +
-    "<button type='submit' class='submit-button' onclick='globalFont(); hashfunction(); updategfx();' style='float: none; display: block; margin: 10px auto;'>OK</button>";
+    return document.getElementById("f01");
 }
-
-//change the font on all entities to the same font. 
+//open a menu to change appearance on all entities.
+function globalAppearanceMenu(){
+    var form = showMenu();
+    //AJAX
+    var file = new XMLHttpRequest();
+    file.open('GET', 'forms/global_appearance.php');
+    file.onreadystatechange = function(){
+        form.innerHTML =  file.responseText;
+    }
+    file.send();
+}
+function globalLineThickness(){
+    for(var i = 0; i < diagram.length; i++){
+        if(diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1 || diagram[i].symbolkind == 5){
+            diagram[i].line_width = document.getElementById('line-thickness').value;
+        }
+    }
+}
+//change the font on all entities to the same font.
 function globalFont(){
     for(var i = 0; i < diagram.length; i++){
         if(diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1 || diagram[i].symbolkind == 5){
             diagram[i].font = document.getElementById('font').value;
         }
     }
+}
+function loadForm(dir){
+    //AJAX
+
 }
