@@ -20,6 +20,7 @@
     <script src="../Shared/dugga.js"></script>
     <script src="diagram.js"></script>
     <script src="diagram_symbol.js"></script>
+    <script src="diagram_dialog.js"></script>
     <script src="diagram_mouse.js"></script>
     <script src="diagram_figure.js"></script>
     <script src="diagram_example.js"></script>
@@ -75,7 +76,7 @@
     <!-- The Appearance menu. Default state is display: none; -->
     <div id="appearance" class='loginBox' style='display: none;'>
         <div class='loginBoxheader'>
-            <h3>Apperance</h3>
+            <h3>Appearance</h3>
             <div class='cursorPointer' onclick='closeAppearanceDialogMenu()'>x</div>
         </div>
         <div class='table-wrap'>
