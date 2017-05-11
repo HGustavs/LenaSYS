@@ -589,10 +589,14 @@ function addSecurityQuestionProfile(username) {
 	});
 }
 
-function checkHTTPS() { 
-  if (location.protocol != 'https:') { 
-    //Do something
-  } 
+function checkHTTPS(safeConnection) { 
+    //Checks if the user is using a secure https connection
+    if (location.protocol == 'https:') { 
+        safeConnection = true;
+    } 
+    else{
+        safeConnection = false;    
+    }
 } 
 
 function processResetPasswordCheckUsername() {
@@ -617,7 +621,7 @@ function processResetPasswordCheckUsername() {
 				if(typeof result.reason != "undefined") {
 					$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
 				} else {
-					$("#newpassword #message2").html("<div class='alert danger'>" + result['getname']  + "</div>");
+					$("#newpassword #message2").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>" + result['getname']  + "</div>");
 				}
 				$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
@@ -665,7 +669,7 @@ function processResetPasswordCheckSecurityAnswer() {
 					if(typeof result.reason != "undefined") {
 						$("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
-						$("#showsecurityquestion #message3").html("<div class='alert danger'>Wrong answer</div>");
+						$("#showsecurityquestion #message3").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong answer</div>");
 					}
 					$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
@@ -776,18 +780,6 @@ function setupLoginLogoutButton(isLoggedIn){
 	else{
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){showLoginPopup();});
-	}
-}
-
-//----------------------------------------------------------------------------------
-// Checks if a user is logged in or not. If not, the content in profile.php is hidden
-//----------------------------------------------------------------------------------
-function checkUserLogin(isLoggedIn){
-	
-	if(isLoggedIn === "true"){
-		$("#content").css("display","block");
-	}else{
-		$("#content").css("display","none");
 	}
 }
 

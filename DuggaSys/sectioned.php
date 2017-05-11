@@ -42,6 +42,7 @@ pdoConnect();
 
 	<!-- Edit Section Dialog START -->
 	<div id='editSection' class='loginBox' style='width:460px;display:none;'>
+
 		<div class='loginBoxheader'>
 			<h3>Edit Item</h3>
 			<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
