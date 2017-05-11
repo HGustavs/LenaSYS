@@ -24,19 +24,16 @@ function Path() {
     //--------------------------------------------------------------------
     this.move = function(movex, movey) {
         for (var i = 0; i < this.segments.length; i++) {
-            var seg = this.segments[i];
-            points[seg.pa].x += movex;
-            points[seg.pa].y += movey;
-            points[seg.pb].x += movex;
-            points[seg.pb].y += movey;
+            points[this.segments[i].pa].x += movex;
+            points[this.segments[i].pa].y += movey;
         }
+        this.calculateBoundingBox();
     }
 
     //--------------------------------------------------------------------
     // Adds a segment to a path
     //--------------------------------------------------------------------
     this.addsegment = function(kind, p1, p2, p3, p4, p5, p6, p7, p8) {
-        // Line segment (only kind of segment at the moment)
         if (kind == 1) {
             // Only push segment if it does not already exist
             if (!this.existsline(p1, p2, this.segments)) {
@@ -45,6 +42,37 @@ function Path() {
         } else {
             alert("Unknown segment type: " + kind);
         }
+        this.calculateBoundingBox();
+    }
+
+    //--------------------------------------------------------------------
+    // Calculates a boundary box for the figure.
+    // Saves min and max values of X and Y.
+    // This is to faster check for clicks inside of the figure.
+    //--------------------------------------------------------------------
+    this.calculateBoundingBox = function() {
+        var minX = points[this.segments[0].pa].x;
+        var maxX = minX;
+        var minY = points[this.segments[0].pa].y;
+        var maxY = minY;
+        for (var i = 1; i < this.segments.length; i++) {
+            var tempX = points[this.segments[i].pa].x;
+            var tempY = points[this.segments[i].pa].y;
+            if (tempX < minX) {
+                minX = tempX;
+            } else if (tempX > maxX) {
+                maxX = tempX;
+            }
+            if (tempY < minY) {
+                minY = tempY;
+            } else if (tempY > maxY) {
+                maxY = tempY;
+            }
+        }
+        this.minX = minX;
+        this.maxX = maxX;
+        this.minY = minY;
+        this.maxY = maxY;
     }
 
     //--------------------------------------------------------------------
@@ -89,32 +117,31 @@ function Path() {
     //--------------------------------------------------------------------
     // Returns true if coordinate xk, yk falls inside the bounding box of the symbol
     //--------------------------------------------------------------------
-    this.inside = function (xk, yk) {
-        // Count Crossing linear segments
-        var crosses = 0;
-        // Check against segment list
-        for (var i = 0; i < this.segments.length; i++) {
-            var item = this.segments[i];
-            var pax = points[item.pa].x;
-            var pbx = points[item.pb].x;
-            var pay = points[item.pa].y;
-            var pby = points[item.pb].y;
-            var dx = pbx - pax;
-            var dy = pby - pay;
-            var dd = dx / dy;
-            // Returning working cross even if line goes top to bottom
-            if (pby < pay) {
-                if (yk > pby && yk < pay && ((((yk - pay) * dd) + pax) < xk)) {
-                    crosses++;
-                }
-            } else {
-                if (yk > pay && yk < pby && ((((yk - pay) * dd) + pax) < xk)) {
-                    crosses++;
+    this.inside = function() {
+        var intersections = 0;
+        if (cx > this.minX && cx < this.maxX && cy > this.minY && cy < this.maxY) {
+            for (var j = 0; j < this.segments.length; j++) {
+                var pointA = points[this.segments[j].pa];
+                var pointB = points[this.segments[j].pb];
+                if ((pointA.x <= cx && pointB.x >= cx) || (pointA.x >= cx && pointB.x <= cx)) {
+                    var deltaX = pointB.x - pointA.x;
+                    var deltaY = pointB.y - pointA.y;
+                    var k = deltaY / deltaX;
+                    if (pointB.x < pointA.x) {
+                        var tempPoint = pointA;
+                        pointA = pointB;
+                        pointB = pointA;
+                    }
+                    var x = cx - pointA.x;
+                    var y = (k * x) + pointA.y;
+                    if (y < cy) {
+                        intersections++;
+                    }
                 }
             }
+            return intersections % 2;
         }
-        // Add one to reverse truth value e.g. 0 if 1 etc
-        return (crosses + 1) % 2;
+        return false;
     }
 
     //--------------------------------------------------------------------

@@ -280,27 +280,6 @@ diagram.insides = function (ex, ey, sx, sy) {
         sy = tempEndY;
     }
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind != 1) {
-            var tempTopLeftX = points[this[i].topLeft].x;
-            var tempTopLeftY = points[this[i].topLeft].y;
-            var tempBottomRightX = points[this[i].bottomRight].x;
-            var tempBottomRightY = points[this[i].bottomRight].y;
-            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
-                tempTopLeftX = tempBottomRightX - minEntityX;
-            }
-            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
-                tempTopLeftY = tempBottomRightY - minEntityY;
-            }
-            if (sx < tempTopLeftX && ex > tempTopLeftX &&
-                sy < tempTopLeftY && ey > tempTopLeftY &&
-                sx < tempBottomRightX && ex > tempBottomRightX &&
-                sy < tempBottomRightY && ey > tempBottomRightY) {
-                this[i].targeted = true;
-                // return i;
-            } else {
-                this[i].targeted = false;
-            }
-        }
         if (this[i].kind == 1) {
             var tempPoints = [];
             for (var j = 0; j < this[i].segments.length; j++) {
@@ -318,6 +297,25 @@ diagram.insides = function (ex, ey, sx, sy) {
             } else {
                 this[i].targeted = false;
             }
+        } else {
+            var tempTopLeftX = points[this[i].topLeft].x;
+            var tempTopLeftY = points[this[i].topLeft].y;
+            var tempBottomRightX = points[this[i].bottomRight].x;
+            var tempBottomRightY = points[this[i].bottomRight].y;
+            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
+                tempTopLeftX = tempBottomRightX - minEntityX;
+            }
+            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
+                tempTopLeftY = tempBottomRightY - minEntityY;
+            }
+            if (sx < tempTopLeftX && ex > tempTopLeftX &&
+                sy < tempTopLeftY && ey > tempTopLeftY &&
+                sx < tempBottomRightX && ex > tempBottomRightX &&
+                sy < tempBottomRightY && ey > tempBottomRightY) {
+                this[i].targeted = true;
+            } else {
+                this[i].targeted = false;
+            }
         }
     }
     return -1;
@@ -326,12 +324,10 @@ diagram.insides = function (ex, ey, sx, sy) {
 //--------------------------------------------------------------------
 // inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
-diagram.inside = function (xk, yk) {
+diagram.inside = function() {
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 2) {
-            if (this[i].inside(xk, yk) == true) {
-                return i;
-            }
+        if (this[i].inside() == true) {
+            return i;
         }
     }
     return -1;
