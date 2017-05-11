@@ -367,4 +367,13 @@ function formatted_debug($item, $desc = null) {
 	echo "<hr>";
 }
 
+function debug_to_console($data) {
+	$out = $data;
+	if(is_array(($out))) {
+		$out = implode(',', $out);
+	}
+
+	echo "<script>console.log('Debug php array: " . $out . "');</script>";
+}
+
 ?>
