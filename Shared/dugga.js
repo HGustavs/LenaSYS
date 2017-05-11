@@ -681,13 +681,18 @@ function processLogin() {
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
+		if (saveuserlogin==1){
+        	saveuserlogin = 'on';
+    	}else{
+        	saveuserlogin = 'off';
+    	}
 
 		$.ajax({
 			type:"POST",
 			url: "../Shared/loginlogout.php",
 			data: {
 				username: username,
-				saveuserlogin: saveuserlogin == 1 ? 'on' : 'off',
+				saveuserlogin: saveuserlogin,
 				password: password,
 				opt: "LOGIN"
 			},

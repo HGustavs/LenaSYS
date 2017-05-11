@@ -19,7 +19,7 @@ pdoConnect();
 <head>
     <link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Analysis Page</title>
+    <title>Contribution Page</title>
 
 
 
@@ -45,7 +45,7 @@ include '../Shared/navheader.php';
 <!-- Content START -->
 <div id="content">
 	<div class='titles' style='padding-top:10px;'>
-		<h1 style='flex:1;text-align:center;'>Analysis</h1>
+		<h1 style='flex:1;text-align:center;'>Contribution</h1>
 	</div>
 	
     <table class="list">

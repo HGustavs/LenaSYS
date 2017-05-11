@@ -25,9 +25,9 @@ AJAXService("GET",{cid:querystring['cid']},"FILE");
 
 $(function(){$( "#release" ).datepicker({dateFormat: "yy-mm-dd"});$( "#deadline" ).datepicker({dateFormat: "yy-mm-dd"});});
 
-function closeEditFile()
+function closeAddFile()
 {
-		$("#editFile").css("display","none");
+		$("#addFile").css("display","none");
 		$("#overlay").css("display","none");
 }
 
@@ -35,6 +35,7 @@ function deleteFile(fileid,filename){
 		if(confirm("Do you really want to delete the file/link: "+filename)){
 				AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
 		}
+			window.location.reload(true);
 }
 
 //----------------------------------------
@@ -107,7 +108,7 @@ $(document).on('click','.last',function(e) {
 function createLink()
 {
 		$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' /></td>");
-		$("#editFile").css("display","block");
+		$("#addFile").css("display","block");
 		$("#filey").css("display","none");
 		$("#linky").css("display","block");
 		$("#selecty").css("display","none");
@@ -144,7 +145,7 @@ function createFile(kind)
 				$("#selecty").css("display","none");				
 		}
 
-		$("#editFile").css("display","block");
+		$("#addFile").css("display","block");
 		$("#filey").css("display","block");
 		$("#linky").css("display","none");
 		$("#overlay").css("display","block");
@@ -449,23 +450,19 @@ function switchcontent() {
 
 function convertfilekind(kind){
 	var retString = "";
-	switch(kind){
-		case "1":
-			retString = "Link";
-			break;
-		case "2":
-			retString = "Global";
-			break;
-		case "3":
-			retString = "Course Local";
-			break;
-		case "4":
-			retString = "Local";
-			break;
-		default:
-			retString = "Not recognized";
-			break;
+
+	if(kind=="1"){
+        retString = "Link";
+	}else if(kind=="2"){
+        retString = "Global";
+	}else if(kind=="3"){
+        retString = "Course Local";
+	}else if(kind=="4"){
+        retString = "Local";
+	}else{
+        retString = "Not recognized";
 	}
+
 	return retString;
 }
 
