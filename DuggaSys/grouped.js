@@ -68,29 +68,6 @@ function sorttype(t){
 		typechanged=true;
 }
 
-function selectGroup()
-{
-	//Display pop-up
-	$("#groupSection").css("display","block");
-	$("#overlay").css("display","block");
-}
-
-function createGroup()
-{
-	name=$("#name").val(); 
-	if(name){
-		AJAXService("NEWGROUP",{name:name},"GROUP"); 
-		$("#groupSection").css("display","none");
-		$("#groupNameError").css("display","none");
-		$("#overlay").css("display","none");
-		$("#name").val('');
-		window.location.reload();	
-	}
-	else{
-		$("#groupNameError").css("display","block");
-	}
-}
-
 function process()
 {			
 		// Read dropdown from local storage
@@ -216,6 +193,35 @@ function drawtable(){
 	str+="</table>";
 	
 	document.getElementById("content").innerHTML=str;
+}
+
+function selectGroup()
+{
+	var inp = "";
+	for(i=0; i<moments.length; i++){
+		inp+="<option value='i'>"+moments[i].entryname+"</option>";
+	}
+	document.getElementById("selectMoment").innerHTML=inp;
+	
+	//Display pop-up
+	$("#groupSection").css("display","block");
+	$("#overlay").css("display","block");
+}
+
+function createGroup()
+{
+	name=$("#name").val(); 
+	if(name){
+		AJAXService("NEWGROUP",{name:name},"GROUP"); 
+		$("#groupSection").css("display","none");
+		$("#groupNameError").css("display","none");
+		$("#overlay").css("display","none");
+		$("#name").val('');
+		window.location.reload();	
+	}
+	else{
+		$("#groupNameError").css("display","block");
+	}
 }
 
 function returnedGroup(data)
