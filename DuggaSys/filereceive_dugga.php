@@ -231,7 +231,7 @@ if($ha){
 								}
 								$filetype = mime_content_type($filea["tmp_name"]);
 								//  if file type is allowed, continue the uploading process.
-								if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension])){ 
+								if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension], True)){ 
 										$seq=0;
 										$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
 										$query->bindParam(':did', $duggaid);
