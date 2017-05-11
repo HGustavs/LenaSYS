@@ -24,7 +24,7 @@ pdoConnect();
 
 	<script src="pushnotifications.js"></script>
 </head>
-<body onload="checkConnection();">
+<body>
 
 	<?php
 		$noup="PROFILE";
