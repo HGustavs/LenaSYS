@@ -1,5 +1,5 @@
 Attribute name:</br>
-<input onKeypress="changeObjectAppearance('attributeType');" id='nametext' type='text'></br>
+<input onkeyup="changeObjectAppearance('attributeType');" id='nametext' type='text'></br>
 Attribute type: </br>
 <select onclick="changeObjectAppearance('attributeType');" id='object_type'>
     "<option value='Primary key'>Primary key</option>

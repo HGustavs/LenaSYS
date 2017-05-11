@@ -1,19 +1,19 @@
 Entity name: </br>
-<input onKeypress="changeObjectAppearance('entityType');" id='nametext' type='text'></br>
+<input onkeyup="changeObjectAppearance('entityType');" id='nametext' type='text'></br>
 Entity type: </br>
-<select onClick="changeObjectAppearance('entityType');" id='object_type'>
+<select onclick="changeObjectAppearance('entityType');" id='object_type'>
     <option value='weak'>weak</option>
     <option value='strong' selected>strong</option>
 </select></br>
 Font family:<br>
-<select onClick="changeObjectAppearance('entityType');" id ='font'>
+<select onclick="changeObjectAppearance('entityType');" id ='font'>
     <option value='arial' selected>Arial</option>
     <option value='Courier New'>Courier New</option>
     <option value='Impact'>Impact</option>
     <option value='Calibri'>Calibri</option>
 </select><br>
 Font color:<br>
-<select onClick="changeObjectAppearance('entityType');" id ='fontColor'>
+<select onclick="changeObjectAppearance('entityType');" id ='fontColor'>
     <option value='black' selected>Black</option>
     <option value='blue'>Blue</option>
     <option value='Green'>Green</option>
@@ -22,7 +22,7 @@ Font color:<br>
     <option value='yellow'>Yellow</option>
 </select><br>
 Text size:<br>
-<select onClick="changeObjectAppearance('entityType');" id ='TextSize'>
+<select onclick="changeObjectAppearance('entityType');" id ='TextSize'>
     <option value='Tiny' selected>Tiny</option>
     <option value='Small'>Small</option>
     <option value='Medium'>Medium</option>

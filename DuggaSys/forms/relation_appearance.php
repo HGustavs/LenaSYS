@@ -1,19 +1,19 @@
 Relation name:</br>
-<input onkeypress="changeObjectAppearance('relationType');" id='nametext' type='text'></br>
+<input onkeyup="changeObjectAppearance('relationType');" id='nametext' type='text'></br>
 Relation type: </br>
-<select onClick="changeObjectAppearance('relationType');" id='object_type'>
+<select onclick="changeObjectAppearance('relationType');" id='object_type'>
     <option value='weak'>weak</option>
     <option value='strong' selected>strong</option>
 </select></br>
 Font family:<br>
-<select onClick="changeObjectAppearance('relationType');" id='font'>
+<select onclick="changeObjectAppearance('relationType');" id='font'>
     <option value='arial' selected>Arial</option>
     <option value='Courier New'>Courier New</option>
     <option value='Impact'>Impact</option>
     <option value='Calibri'>Calibri</option>
 </select><br>
 Font color:<br>
-<select onClick="changeObjectAppearance('relationType');" id='fontColor'>
+<select onclick="changeObjectAppearance('relationType');" id='fontColor'>
     <option value='black' selected>Black</option>
     <option value='blue'>Blue</option>
     <option value='Green'>Green</option>
@@ -22,7 +22,7 @@ Font color:<br>
     <option value='yellow'>Yellow</option>
 </select><br>
 Text size:<br>
-<select onClick="changeObjectAppearance('relationType');" id='TextSize'>
+<select onclick="changeObjectAppearance('relationType');" id='TextSize'>
     <option value='Tiny'>Tiny</option>
     <option value='Small'>Small</option>
     <option value='Medium'>Medium</option>
