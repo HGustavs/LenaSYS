@@ -192,21 +192,81 @@ function mousemoveevt(ev, t) {
     }
     // Draw select or create dotted box
     if (md == 4) {
-        ctx.setLineDash([3, 3]);
-        ctx.beginPath(1);
-        ctx.moveTo(sx, sy);
-        ctx.lineTo(cx, sy);
-        ctx.lineTo(cx, cy);
-        ctx.lineTo(sx, cy);
-        ctx.lineTo(sx, sy);
-        ctx.strokeStyle = "#d51";
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.closePath(1);
-        if (ghostingcrosses == true){
-            crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-            crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-            crossfillStyle = "rgba(255, 102, 68, 0.0)";
+        if (uimode == "CreateEREntity"){
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath(1);
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(cx, sy);
+            ctx.lineTo(cx, cy);
+            ctx.lineTo(sx, cy);
+            ctx.lineTo(sx, sy);
+            ctx.strokeStyle = "#d51";
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.closePath(1);
+            if (ghostingcrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossfillStyle = "rgba(255, 102, 68, 0.0)";
+            }
+        } else if(uimode == "CreateERRelation"){
+            var midx = sx+((cx-sx)/2);
+            var midy = sy+((cy-sy)/2);
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath(1);
+            ctx.moveTo(midx, sy);
+            ctx.lineTo(cx, midy);
+            ctx.lineTo(midx, cy);
+            ctx.lineTo(sx, midy);
+            ctx.lineTo(midx, sy);
+            ctx.strokeStyle = "#d51";
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.closePath(1);
+            if (ghostingcrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossfillStyle = "rgba(255, 102, 68, 0.0)";
+            }
+        } else if(uimode == "CreateERAttr"){
+            drawOval(sx, sy, cx, cy);
+            ctx.setLineDash([3, 3]);
+            ctx.strokeStyle = "#d51";
+            ctx.stroke();
+            if (ghostingcrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossfillStyle = "rgba(255, 102, 68, 0.0)";
+            }
+        } else if(uimode == "CreateLine") {
+            ctx.beginPath();
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(cx, cy);
+            ctx.setLineDash([3, 3]);
+            ctx.strokeStyle = "#d51";
+            ctx.stroke();
+            if (ghostingcrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossfillStyle = "rgba(255, 102, 68, 0.0)";
+            }
+        } else {
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath(1);
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(cx, sy);
+            ctx.lineTo(cx, cy);
+            ctx.lineTo(sx, cy);
+            ctx.lineTo(sx, sy);
+            ctx.strokeStyle = "#d51";
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.closePath(1);
+            if (ghostingcrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossfillStyle = "rgba(255, 102, 68, 0.0)";
+            }
         }
     }
 }
