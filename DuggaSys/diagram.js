@@ -446,8 +446,6 @@ function initcanvas() {
     // generateExampleCode();
     updategfx();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
-    document.getElementById("zoomInButton").addEventListener('click', zoomInMode, false);
-    document.getElementById("zoomOutButton").addEventListener('click', zoomOutMode, false);
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
@@ -498,7 +496,7 @@ window.addEventListener('resize', canvassize);
 var erEntityA;
 
 function updategfx() {
-    ctx.clearRect(startX, startY, widthWindow, heightWindow);
+    ctx.clearRect(startX, startY, (widthWindow/zv), (heightWindow/zv)); 
     if(moveValue == 1){
         ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
@@ -510,11 +508,8 @@ function updategfx() {
     diagram.draw();
     // Draw all points as crosses
     points.drawpoints();
-    if (moveValue == 2){
-        ctx.translate((startX/zv), (startY*zv));
-        moveValue = 0;
-    }
 }
+
 function movePoint(point){
     point="";
 }
@@ -731,42 +726,42 @@ function drawGrid() {
     ctx.setLineDash([5, 0]);
     var quadrantx = (startX < 0)? startX: -startX;
     var quadranty = (startY < 0)? startY: -startY;
-    for (var i = 0 + quadrantx; i < quadrantx + widthWindow; i++) {
+    for (var i = 0 + quadrantx; i < quadrantx + (widthWindow/zv); i++) { 
         if (i % 5 == 0) {
             i++;
         }
         ctx.beginPath();
         ctx.moveTo(i * gridSize, 0 + startY);
-        ctx.lineTo(i * gridSize, heightWindow + startY);
+        ctx.lineTo(i * gridSize, (heightWindow/zv) + startY); 
         ctx.stroke();
         ctx.closePath();
     }
-    for (var i = 0 + quadranty; i < quadranty + heightWindow; i++) {
+    for (var i = 0 + quadranty; i < quadranty + (heightWindow/zv); i++) {
         if (i % 5 == 0) {
             i++;
         }
         ctx.beginPath();
         ctx.moveTo(0 + startX, i * gridSize);
-        ctx.lineTo(widthWindow + startX, i * gridSize);
+        ctx.lineTo((widthWindow/zv) + startX, i * gridSize);
         ctx.stroke();
         ctx.closePath();
     }
     //Draws the thick lines
     ctx.strokeStyle = "rgb(208, 208, 220)";
-    for (var i = 0 + quadrantx; i < quadrantx + widthWindow; i++) {
+    for (var i = 0 + quadrantx; i < quadrantx + (widthWindow/zv); i++) {
         if (i % 5 == 0) {
             ctx.beginPath();
             ctx.moveTo(i * gridSize, 0 + startY);
-            ctx.lineTo(i * gridSize, heightWindow + startY);
+            ctx.lineTo(i * gridSize, (heightWindow/zv) + startY); 
             ctx.stroke();
             ctx.closePath();
         }
     }
-    for (var i = 0 + quadranty; i < quadranty + heightWindow; i++) {
+    for (var i = 0 + quadranty; i < quadranty + (heightWindow/zv); i++) {
         if (i % 5 == 0) {
             ctx.beginPath();
             ctx.moveTo(0 + startX, i * gridSize);
-            ctx.lineTo(widthWindow + startX, i * gridSize);
+            ctx.lineTo((widthWindow/zv) + startX, i * gridSize);
             ctx.stroke();
             ctx.closePath();
         }

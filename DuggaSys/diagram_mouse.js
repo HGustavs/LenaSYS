@@ -3,77 +3,13 @@
 */
 
 // Function for the zoom in and zoom out in the canvas element
-function zoomInMode(e) {
-    uimode = "Zoom";
-    var canvas = document.getElementById("myCanvas");
-    canvas.removeEventListener('click', zoomOutClick, false);
-    canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
-    var zoomInClass = document.getElementById("zoomInButton").className;
-    var zoomInButton = document.getElementById("zoomInButton");
-    document.getElementById("zoomOutButton").className = "unpressed";
-    document.getElementById("moveButton").className = "unpressed";
-    if (zoomInClass == "unpressed") {
-        canvas.removeEventListener('dblclick', doubleclick, false);
-        zoomInButton.className = "pressed";
-        canvas.style.cursor = "zoom-in";
-        canvas.addEventListener("click", zoomInClick, false);
-    } else {
-        zoomInButton.className = "unpressed";
-        canvas.addEventListener("dblclick", doubleclick, false);
-        canvas.removeEventListener("click", zoomInClick, false);
-        canvas.style.cursor = "default";
-    }
-}
-
-function zoomOutMode(e) {
-    uimode = "Zoom";
-    var canvas = document.getElementById("myCanvas");
-    canvas.removeEventListener('click', zoomInClick, false);
-    canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
-    var zoomOutClass = document.getElementById("zoomOutButton").className;
-    var zoomOutButton = document.getElementById("zoomOutButton");
-    document.getElementById("zoomInButton").className = "unpressed";
-    document.getElementById("moveButton").className = "unpressed";
-    if (zoomOutClass == "unpressed") {
-        canvas.removeEventListener('dblclick', doubleclick, false);
-        zoomOutButton.className = "pressed";
-        canvas.style.cursor = "zoom-out";
-        canvas.addEventListener("click", zoomOutClick, false);
-    } else {
-        zoomOutButton.className = "unpressed";
-        canvas.addEventListener("dblclick", doubleclick, false);
-        canvas.removeEventListener("click", zoomOutClick, false);
-        canvas.style.cursor = "default";
-    }
-}
-
-function zoomInClick() {
-    if(zv>=2.0){
-        alert("You can't zoom in more!");
-    }else{
-        var oldZV = zv;
-        zv += 0.1;
-        reWrite();
-        // To be able to use the 10% increase och decrease, we need to use this calcuation.
-        var inScale = ((1 / oldZV) * zv);
-        ctx.scale(inScale, inScale);
-        updategfx();
-    }
-}
-
-function zoomOutClick() {
-    if(zv<0.6){
-        alert("You can't zoom out more!");
-    }else{
-        var oldZV = zv;
-        zv -= 0.1;
-        reWrite();
-        // To be able to use the 10% increase och decrease, we need to use this calcuation.
-        var outScale = ((1 / oldZV) * zv);
-        ctx.scale(outScale, outScale);
-        updategfx();
-        drawGrid();
-    }
+function zoomInMode() { 
+    var oldZoomValue = zv; 
+    zv = document.getElementById("ZoomSelect").value; 
+    var newScale = (zv/oldZoomValue); 
+    ctx.scale(newScale,newScale); 
+    reWrite(); 
+    updategfx(); 
 }
 
 // Recursive Pos of div in document - should work in most browsers
@@ -452,11 +388,7 @@ function movemode(e, t) {
     var canvas = document.getElementById("myCanvas");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
-    canvas.removeEventListener("click", zoomOutClick, false);
-    canvas.removeEventListener("click", zoomInClick, false);
     canvas.removeEventListener("dblclick", doubleclick, false);
-    document.getElementById("zoomInButton").className = "unpressed";
-    document.getElementById("zoomOutButton").className = "unpressed";
     if (button == "unpressed") {
         buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
@@ -494,6 +426,7 @@ function mousemoveposcanvas(e) {
     mousedownX = mousemoveX;
     mousedownY = mousemoveY;
     moveValue = 1;
+    drawGrid();
     updategfx();
     reWrite();
 }
