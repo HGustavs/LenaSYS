@@ -2273,7 +2273,7 @@ table {
 
 .swimlaneOverlay {
   display: none; /* Hidden by default */
-  position: absolute; /* Stay in place */
+  position: fixed; /* Stay in place */
   z-index: 10000; /* Sit on top */
   left: 0;
   top: 0;
