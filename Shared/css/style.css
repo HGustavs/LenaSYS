@@ -65,6 +65,7 @@ html, body {
 body {
   font-family: 'Roboto', sans-serif,"Helvetica Neue",Helvetica,Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
+  overflow-y:scroll;
 }
 
 .listbar{
