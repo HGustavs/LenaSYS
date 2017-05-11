@@ -1,3 +1,8 @@
+/*
+----- THIS FILE HAS THE FUNCTIONS FOR THE ARRAY -----
+----- DIAGRAM AND HOW IT SHOULD BE USED BY THE SYSTEM -----
+*/
+
 //--------------------------------------------------------------------
 // Symbol - stores a diagram symbol
 //--------------------------------------------------------------------
@@ -8,6 +13,7 @@ function Symbol(kind) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textsize = 14;             // 14 pixels text size is default
+    this.line_width = 2;
     var textscale = 10;
     this.name = "New Class";        // Default name is new class
     this.key_type = "none"          // Defult key tyoe for a class.
@@ -186,6 +192,12 @@ function Symbol(kind) {
             if (points[this.topLeft].y > points[this.middleDivider].y) {
                 points[this.topLeft].y = points[this.middleDivider].y;
             }
+        } else if (this.symbolkind == 5){
+            // Static size of relation. Makes resizing of relation impossible.
+            points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
+            points[this.topLeft].y = points[this.middleDivider].y-relationTemplate.height/2;
+            points[this.bottomRight].x = points[this.middleDivider].x+relationTemplate.width/2;
+            points[this.bottomRight].y = points[this.middleDivider].y+relationTemplate.height/2;
         }
     }
 
@@ -348,12 +360,49 @@ function Symbol(kind) {
     // IMP!: Should not be moved back on canvas after this function is run.
     //--------------------------------------------------------------------
     this.movePoints = function () {
-        points[this.topLeft] = "";
-        points[this.bottomRight] = "";
-        points[this.centerpoint] = "";
-        points[this.middleDivider] = "";
+        points[this.topLeft] = waldoPoint;
+        points[this.bottomRight] = waldoPoint;
+        points[this.centerpoint] = waldoPoint;
+        points[this.middleDivider] = waldoPoint;
     }
-
+    //--------------------------------------------------------------------
+    // Moves all relevant points, within the object, off the canvas.
+    // IMP!: Should not be moved back on canvas after this function is run.
+    //--------------------------------------------------------------------
+    this.removePointFromConnector = function(point) {
+        var broken = false;
+        for(var i = 0; i < this.connectorTop.length; i++){
+            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
+                this.connectorTop.splice(i,1);
+                broken = true;
+                break;
+            }
+        }
+        if(!broken){
+            for(var i = 0; i < this.connectorBottom.length; i++){
+                if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
+                    this.connectorBottom.splice(i,1);
+                    break;
+                }
+            }
+        }
+        if(!broken){
+            for(var i = 0; i < this.connectorRight.length; i++){
+                if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
+                    this.connectorRight.splice(i,1);
+                    break;
+                }
+            }
+        }
+        if(!broken){
+            for(var i = 0; i < this.connectorLeft.length; i++){
+                if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
+                    this.connectorLeft.splice(i,1);
+                    break;
+                }
+            }
+        }
+    }
     this.getPoints = function() {
         var private_points = [];
         if(this.symbolkind==3){
@@ -428,7 +477,7 @@ function Symbol(kind) {
     //     ctx.setLineDash(segments);
     //--------------------------------------------------------------------
     this.draw = function () {
-        ctx.lineWidth = 2;
+        ctx.lineWidth = this.line_width;
         if (this.sizeOftext == 'Tiny') {
             textsize = 14;
         } else if (this.sizeOftext == 'Small') {
@@ -609,7 +658,7 @@ function Symbol(kind) {
         } else if (this.symbolkind == 4) {
             // ER Attribute relationship is a single line
             if (this.type == "weak") {
-                ctx.lineWidth = ctx.lineWidth * 3;
+                ctx.lineWidth = this.line_width * 3;
                 if (this.sel || this.targeted) {
                     ctx.strokeStyle = "#F82";
                 } else {
@@ -619,7 +668,7 @@ function Symbol(kind) {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
                 ctx.stroke();
-                ctx.lineWidth = ctx.lineWidth / 3;
+                ctx.lineWidth = this.line_width;
                 ctx.strokeStyle = "#fff";
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);

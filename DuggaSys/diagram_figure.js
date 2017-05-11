@@ -1,3 +1,7 @@
+/*
+----- THIS FILE HANDLES THE FIGURES AND -----
+----- PATHS USED BY THE DIAGRAM FUNCTIONS -----
+*/
 //--------------------------------------------------------------------
 // path - stores a number of segments
 //--------------------------------------------------------------------
