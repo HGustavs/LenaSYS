@@ -7,8 +7,6 @@ session_start();
 //pdoConnect();
 /*
 $noup="NONE";
-$loginvar="COURSE";
-setcookie("loginvar", $loginvar);
 */
 ?>
 <!DOCTYPE html>

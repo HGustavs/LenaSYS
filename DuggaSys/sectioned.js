@@ -693,7 +693,7 @@ function returnedSection(data)
 		}
         if(retdata["writeaccess"]){
             str+="</tr></table>";
-            str += "<input type='button' class='fab' value='+' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>";
+            // str += "<input type='button' class='fab' value='+' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>";
         }else{
             str+="</tr></table>";
         }
@@ -710,15 +710,15 @@ function returnedSection(data)
 
     // Course Name
     // This will ellipsis on the course name, and keep course code and vers always fully expanded
+
     str+="<div class='course' style='display: flex;align-items: center;justify-content: center;'>";
         	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 10px; display: flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowCompTop'><img src='../Shared/icons/right_complement.svg' class='arrowRightTop' style='display:none;'>";
         	str+="</div>";
         	str+="<div class='showhide' id='course-showhide-text' style='position:absolute;  cursor: pointer; left:25px; margin-top: 10px; display: flex;' >";
-        	str+="<text class='showhidetext' >Show/hide all</text>";
+        	str+="<text class='showhidetext' >Show/hide all</text>"; 
         	str+="</div>";
 
         	str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;'>"+data.coursename+"</div>";
-        str+="<div class='nowrap'";
 			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
 			str+="<div id='course-versname' class='courseVersionField'>"+versionname+"</div>";
         if(retdata["writeaccess"]){
