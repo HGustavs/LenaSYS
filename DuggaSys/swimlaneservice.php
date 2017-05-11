@@ -15,6 +15,9 @@ $opt=getOP('opt');
 $course=getOP('courseid');
 $vers=getOP('coursevers');
 
+if( $opt=="UNK") $opt = "olle";
+if( $course=="UNK") $course = 2;
+if( $vers=="UNK") $vers = 97732;
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
@@ -68,7 +71,7 @@ foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
 if ($numberOfParts == 0 && $hasDuggas) {
     $numberOfParts = 1;
 }
-information['numberofparts'] = $numberOfParts;
+$information['numberofparts'] = $numberOfParts;
 
 // Get start and end of course.
 $querystring = "SELECT startdate, enddate FROM vers WHERE vers = :vers;";
@@ -80,23 +83,22 @@ try {
   // Error handling to $debug
 }
 foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
-  $information['versstart'] = new DateTime($row['startdate']),
-  $information['versend'] = new DateTime($row['enddate'])
+  $information['versstart'] = new DateTime($row['startdate']);
+  $information['versend'] = new DateTime($row['enddate']);
 }
 
 // Get start and end to week number and calculate length in weeks.
 $information['versstartweek'] = $information['versstart']->format("W");
 $information['versendweek'] = $information['versend']->format("W");
 
-$information['verslength'] = $versEndWeek - $versStartWeek + 1;
+$information['verslength'] = $information['versendweek'] - $information['versstartweek'] + 1;
 
 $moments = array();
 // Get parts and duggas.
-$querystring = "SELECT listentries.entryname, listentries.kind, quiz.qrelease, quiz.deadline 
-                    FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid = :cid AND listentries.vers = :vers;";
+$querystring = "SELECT listentries.entryname, listentries.kind, quiz.qrelease, quiz.deadline FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid = :cid AND listentries.vers = :vers;";
 $stmt = $pdo->prepare($querystring);
 $stmt->bindParam(':cid', $course);
-$stmt->bindParam(':vers', $vers]);
+$stmt->bindParam(':vers', $vers);
 
 try {
   $stmt->execute();
@@ -107,14 +109,16 @@ try {
 foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
   if($row['kind'] == 3) {
     $moments[] = array(
+			'kind' => $row['kind'],
       'entryname' => $row['entryname'],
       'deadline' => $row['deadline'],
       'qrelease' => $row['qrelease']
-    )
+    );
   } else if($row['kind'] == 4) {
     $moments[] = array(
+			'kind' => $row['kind'],
       'entryname' => $row['entryname']
-    )
+    );
   }
 }
 $returnMe = array(
@@ -122,7 +126,7 @@ $returnMe = array(
 	'moments' => $moments
 );
 
-echo json_encode($array);
+echo json_encode($returnMe);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "swimlaneservice.php",$userid,$info);
 

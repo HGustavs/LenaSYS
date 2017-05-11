@@ -29,8 +29,9 @@
                     $coursevers=getOPG('coursevers');
                     if($coursevers=="UNK") $coursevers=getOPG('cvers');
 					echo "<td class='navButt' id='swimlane' title='swimlane'>";
+					echo "<script src='swimlane.js'></script>";
 					$path = getcwd() . "../DuggaSys/swimlane.php?courseid=" . $cid . "&coursevers=" . $coursevers;
-                    echo "<a class ='linkSwimlane' href='JavaScript:void(0);'><img src='../Shared/icons/swimlane.svg'></a></td>";
+                    echo "<a class ='linkSwimlane' onclick='swimlaneSetup();' href='#'><img src='../Shared/icons/swimlane.svg'></a></td>";
 
 			}
 			
