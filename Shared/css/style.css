@@ -884,7 +884,6 @@ input {
 .loginBox .forgotPw {
   cursor: pointer;
   text-decoration: underline;
-  margin-left: 46px;
 }
 
 .loginBox .form-control {
