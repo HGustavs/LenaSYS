@@ -62,9 +62,9 @@ include '../Shared/navheader.php';
         if (!in_array($file, $blacklist)) {
             ?>
             <br>
-            <form id="contacts-form" method="post" action="">
+            <form id="StoredFolders" method="post" action="">
 
-            <button id=but class="diagram-menu-buttons" name="answer" value='<?php print $file ?>' style="margin-left:25px;left:25px;width:100px;margin-top:5px;" onclick='document.getElementById("contacts-form").submit()'><?php print $file ?></button>
+            <button id=but class="diagram-menu-buttons" name="answer" value='<?php print $file ?>' style="margin-left:25px;left:25px;width:100px;margin-top:5px;" onclick='document.getElementById("StoredFolders").submit()' ><?php print $file ?></button>
             </form>
         <?php
 
@@ -76,28 +76,22 @@ include '../Shared/navheader.php';
     </div>
 </div>
 
-    <?php
-
-    if(!empty($_POST['GetID'])){
-        $folder = $_POST["GetID"];
-        $fileInDir = scandir("Save/$folder",1);
-        print_r($fileInDir);
-        ?><script>alert("Hejsan");</script><?php
-    }
-    ?>
 
 <div id="newFolder" style="visibility:hidden;position:absolute;left:500px;top:55px;">
     <form action="diagram_IOHandler.php" method="post">
     Folder name:<input name="folderName" type="text"  />
+        <br>
+        Project name:<input name="projectName" type="text"  />
     <br>
     Permissions: W<input type="checkbox" name="W" value="W"> R<input type="checkbox" name="R" value="R"> X<input type="checkbox" name="X" value="X">
     <br>
     <button type="submit" >Create!</button>
     </form>
 </div>
+
 <div id='showNew' style="display:none;position:absolute;left:190px;top:50px">
    <div id="a" style="position:fixed;height:100vh;width:300px;border-right:1px solid black;">
-       <button id=but class="diagram-menu-buttons" name="answer"  style="margin-left:50px;width:200px;margin-top:5px;" onclick='document.getElementById("newFolder").style.visibility= "visible"'>New Folder</button>
+       <button id=but class="diagram-menu-buttons" name="theFolderName"  style="margin-left:50px;width:200px;margin-top:5px;" onclick='document.getElementById("newFolder").style.visibility= "visible"'>New Folder</button>
        <br>
        <br>
         <hr>
@@ -108,24 +102,47 @@ include '../Shared/navheader.php';
                if (!in_array($file, $blacklist)) {
                    ?>
                    <br>
+            <form id="selectedFolder" method="post" action="">
 
-                   <button id=but class="diagram-menu-buttons" name="answer" value='<?php print $file ?>' style="margin-left:90px;left:10px;width:100px;margin-top:5px;" onclick='redirect(this)'><?php print $file ?></button>
-
+            <button id=but class="diagram-menu-buttons" name="newFolderInFolder" value='<?php print $file ?>' style="margin-left:90px;left:10px;width:100px;margin-top:5px;"><?php print $file ?></button>
+                </form>
                    <?php
+
 
                }
            }
            closedir($handle);
        }
 
-       function newMap(){
-
-           mkdir("Save/a",0777,true);
-       }
        ?>
 
    </div>
 </div>
+    <?php
+    if(isset($_POST["newFolderInFolder"])){
+    $name = $_POST["newFolderInFolder"];
+        ?>
+        <script>
+        document.getElementById("showNew").style.visibility = "block";
+        </script>
+        <?php
+    ?>
+    <div id="newProject" style="visibility:block;position:absolute;left:500px;top:60px;">
+        <form action="diagram_IOHandler.php" method="post">
+            <?php echo "$name" ?> /
+            <br>
+
+            Project name:<input name="projectInFolder" type="text"  />
+            <br>
+            Permissions: W<input type="checkbox" name="W" value="W"> R<input type="checkbox" name="R" value="R"> X<input type="checkbox" name="X" value="X">
+            <br>
+            <input type="hidden" name="Folder" value='<?php print $name ?>'>
+            <button type="submit" >Create!</button>
+        </form>
+    </div>
+    <?php
+        }
+    ?>
 
 
 <!-- The Appearance menu. Default state is display: none; -->
@@ -138,8 +155,8 @@ include '../Shared/navheader.php';
         <div id="f01"></div>
     </div>
 </div>
-    <div id='showStoredFolders' style="display:none;position:absolute;left:300px;top:50px">
-        <div id="adsds" style="position:fixed;height:100vh;width:100px;border-right:1px solid black;">
+    <div id='showStoredFolders' style="display:none;position:absolute;left:360px;top:50px">
+        <div id="adsds" style="position:fixed;height:100vh;width:160px;border-right:1px solid black;">
             <?php
             if (isset($_POST["answer"]) && !empty($_POST)){
                 $newFolder = $_POST['answer'];
@@ -151,7 +168,7 @@ include '../Shared/navheader.php';
                             <br>
                             <button id=but class="diagram-menu-buttons" name="answer" value='<?php print $file ?>'
                                     style="margin-left:25px;left:10px;width:60px;margin-top:5px;"
-                                    onclick='redirect(this,"<?php print $newFolder ?>")'><?php print $file ?></button>
+                                    onclick='redirectas(this,"<?php print $newFolder ?>")'><?php print $file ?></button>
 
                             <?php
 
@@ -168,21 +185,43 @@ include '../Shared/navheader.php';
 <?php
 include '../Shared/loginbox.php';
 ?>
-
+    <?php
+    function createNewestFolder($ad){
+        $value = $ad.value;
+        redirect($ad);
+    }
+    ?>
 <?php
 if(isset($_POST["folderName"])){
     $name = $_POST["folderName"];
-    if(!is_dir("Save/$name")) {
-        mkdir("Save/$name", 0777, true);
-        mkdir("Save/$name/1",0777,true);
-        $newURL = "diagram.php?id=1&folder=$name";
-        echo '<META HTTP-EQUIV=REFRESH CONTENT="1; '.$newURL.'">';
-    } else {
-        $message = "Directory already exists";
-        echo "<script type='text/javascript'>alert('$message');</script>";
-    }
+    $projectName = $_POST["projectName"];
+        if(!is_dir("Save/$name")) {
+            mkdir("Save/$name", 0777, true);
+            mkdir("Save/$name/$projectName",0777,true);
+            $newURL = "diagram.php?id=$projectName&folder=$name";
+            echo '<META HTTP-EQUIV=REFRESH CONTENT="1; '.$newURL.'">';
+        } else {
+            $message = "Directory already exists";
+            echo "<script type='text/javascript'>alert('$message');</script>";
+        }
 }
 ?>
+
+    <?php
+    if(isset($_POST["projectInFolder"])){
+        $projectName = $_POST["projectInFolder"];
+        $name = $_POST["Folder"];
+
+        if(!is_dir("Save/$name/$projectName")) {
+            mkdir("Save/$name/$projectName",0777,true);
+            $newURL = "diagram.php?id=$projectName&folder=$name";
+            echo '<META HTTP-EQUIV=REFRESH CONTENT="1; '.$newURL.'">';
+            } else {
+                $message = "Directory already exists";
+                echo "<script type='text/javascript'>alert('$message');</script>";
+            }
+        }
+    ?>
     <?php
     if(isset($_POST["answer"])){
         ?>

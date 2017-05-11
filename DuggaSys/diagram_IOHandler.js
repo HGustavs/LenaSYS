@@ -58,7 +58,10 @@ function redirect(doc){
 
 }
 function redirectas(doc,folder){
-        location.href="diagram.php?id="+doc+"&folder="+folder;
+        location.href="diagram.php?id="+doc.value+"&folder="+folder;
+}
+function newProject(){
+    document.getElementById('newProject').style.display = "block";
 }
 function loadNew(){
 
