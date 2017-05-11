@@ -262,14 +262,16 @@ function createFileUploadArea(fileuploadfileds){
 				form +="<input name='link' type='text' size='40' maxlength='256' />";
 				form +="<input type='hidden' name='kind' value='2' />";
 		}else if(type=="text"){
-				form +="<textarea rows='15' name='inputtext'  id='"+fieldname+"Text' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;	width: 100%;background:#f8f8ff;padding:10px;' placeholder='Enter your text and upload.' onkeyup='disableSave();'></textarea>";
+				form +="<textarea rows='15' name='inputtext'  id='"+fieldname+"Text' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;	width: 80%;background:#f8f8ff;padding:10px;margin-bottom:10px;border: 2px solid #e8e6e6;' placeholder='Enter your text and upload.' onkeyup='disableSave();'></textarea><br>";
 				form +="<input type='hidden' name='kind' value='3' />";
 		}else{
-				form +="<input name='uploadedfile[]' type='file' multiple='multiple' onchange='this.form.submit();'/>";
+				form +="<input name='uploadedfile[]' type='file' id='inputfile' class='inputfile' multiple='multiple' onchange='this.form.submit();'/>";
+                form +="<label for='inputfile'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
 				form +="<input type='hidden' name='kind' value='1' />";
 		}
 		
-		form +="<input type='submit' name='okGo' value='Upload'>";
+		form +="<input type='submit' id='okGo' name='okGo' class='inputfile' value='Upload'>";
+        form +="<label for='okGo' style='padding-left:20px; padding-right:20px'>Upload</label>";
 		form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 		form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
 		form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";
@@ -278,8 +280,8 @@ function createFileUploadArea(fileuploadfileds){
 		form +="<input type='hidden' name='field' value='"+fieldname+"' />";
 		form +="</form>";
 		
-		str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
-		str += "<div style='height:20px;background-color:#614875;padding:5px;color:#FFF;'>";
+		str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
+		str += "<div style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
 		if (type === "pdf"){
 			str += "<h4>Pdf Submission and Preview</h4>";
 		} else if (type === "link"){
@@ -291,7 +293,8 @@ function createFileUploadArea(fileuploadfileds){
 		} else if (type === "text"){
 			str += "<h4>Text Submission</h4>";
 			str += "</div>";
-			str += "<div style='padding:0px;'>";
+            str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'><span style='font-style:italic;M'>Submission History</span></div>";
+			str += "<div style='padding:10px;'>";
 			str +="<table style='width:100%;'>";
 			str +="<tr>";
 			str +="<td id='"+fieldname+"'>";
@@ -304,9 +307,9 @@ function createFileUploadArea(fileuploadfileds){
 		}
 		str += "</div>";
 		str += "<div>";
-		str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'>&lt;Submission history&gt;</div>";
 		if (type !== "text"){
-            str +="<div style='padding:10px'>";
+            str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'><span style='font-stile:italic;'>Submission History</span></div>";
+            str +="<div style='padding:10px;'>";
             str +="<h4>Instructions</h4>";
             str +="<div id='"+fieldname+"Instruction' style='font-style: italic;padding:0px;'></div>"
             str +="<br />";
@@ -317,13 +320,14 @@ function createFileUploadArea(fileuploadfileds){
 			str += form;
 		}
 		str += "</td>";
-		str += "<td>";
-		str += "<span id='"+fieldname+"File' style='margin:4px;' ></span>";
-		str += "</td>";
-		str += "<td>";
-		str += "<span id='"+fieldname+"Date' style='margin:4px;' ></span>";
-		str += "</td>";
-		str += "</tr>";
+//      Until I can figure out what these do, except mess with the design, I'll have them commented, for the sake of the design
+//		str += "<td>";
+//		str += "<span id='"+fieldname+"File' style='margin:4px;' ></span>";
+//		str += "</td>";
+//		str += "<td>";
+//		str += "<span id='"+fieldname+"Date' style='margin:4px;' ></span>";
+//		str += "</td>";
+//		str += "</tr>";
 		str += "</table>";
         str += "</div>";
 		str += "</div>"
