@@ -51,8 +51,6 @@
             <button onclick='clearCanvas(); removeLocal();'>Removed Hashed Diagram</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
             <button onclick='clearCanvas(); removeLocal();'>Delete All</button>
-            <button id='zoomInButton' class='unpressed' style='right:0; position:fixed; margin-right:120px;'>+</button>
-            <button id='zoomOutButton' class='unpressed' style='right:0; position:fixed; margin-right:100px;'>-</button>
             <select id='download' onchange='downloadMode(this)'>
                 <option selected='selected' disabled>State</option>
                 <option value='getImage'>getImage</option>
@@ -71,6 +69,26 @@
             <div id='valuesCanvas' style='position: absolute; left: 10px; bottom: 5px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'></div>
             <!--<input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
             <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />-->
+            <select name="Zoom" id="ZoomSelect" style='right:10px; position: fixed; bottom: 10px' onchange="zoomInMode();">
+                <option selected='selected' disabled>Choose zoom</option>
+                <option value="0.05">5%</option>
+                <option value="0.1">10%</option>
+                <option value="0.2">20%</option>
+                <option value="0.3">30%</option>
+                <option value="0.5">50%</option>
+                <option value="0.75">75%</option>
+                <option value="1">100%</option>
+                <option value="1.25">125%</option>
+                <option value="1.5">150%</option>
+                <option value="2">200%</option>
+                <option value="4">400%</option>
+                <option value="6">600%</option>
+                <option value="8">800%</option>
+                <option value="10">1000%</option>
+                <option value="12">1200%</option>
+                <option value="14">1400%</option>
+                <option value="16">1600%</option>
+            </select>
         </div>
     </div>
     <!-- The Appearance menu. Default state is display: none; -->
