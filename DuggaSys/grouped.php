@@ -50,9 +50,7 @@
 		</div>
 		<div style='padding:5px;'>
 			<div id='inputwrapper-name' class='inputwrapper' style='display:inline-block;'>
-				<select style='float:none; width:100%; margin: 8px 0px;'>
-					<option>Biträkningsduggor 1HP</option>
-					<option>Frågeduggor 1HP</option>
+				<select id='selectMoment' style='float:none; width:100%; margin: 8px 0px;'>
 				</select><br/>
 				<select style='float:none; width:100%;'>
 					<option value="a">a-z</option>
