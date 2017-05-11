@@ -44,11 +44,11 @@ pdoConnect();
 						<label id="securityQuestionError"></label>
 						<form action="/action_page.php">
 				            <select id="securityQuestion" class="form-control textinput"name="securityQuestions">
-                                <option value="What was the name of your first pet">What was the name of your first pet?</option>
-                                <option value="What is your favourite sports/e-sports team?">What is your favourite sports/e-sports team? </option>
+                                <option value="What was the name of your first pet?">What was the name of your first pet?</option>
+                                <option value="What is your favourite sports/e-sports team?">What is your favourite sports/e-sports team?</option>
                                 <option value="What was the best birthday present you ever got?">What was the best birthday present you ever got?</option>
                                 <option value="What is the first name of your favorite childhood friend?">What is the first name of your favorite childhood friend?</option>
-                                <option value="What is the first name of the person you had your second kiss with?">What is the first name of the person you had your second kiss with</option>
+                                <option value="What is the first name of the person you had your second kiss with?">What is the first name of the person you had your second kiss with?</option>
                                 <option value="What was your favorite place to visit as a child?">What was your favorite place to visit as a child?</option>
                                 <option value="Where did you go on your first vacation?">Where did you go on your first vacation?</option>
 				            </select>
