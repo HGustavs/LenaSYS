@@ -496,7 +496,7 @@ window.addEventListener('resize', canvassize);
 var erEntityA;
 
 function updategfx() {
-    ctx.clearRect(startX, startY, (widthWindow/zv), (heightWindow/zv)); 
+    ctx.clearRect(startX, startY, (widthWindow/zv), (heightWindow/zv));
     if(moveValue == 1){
         ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
@@ -726,13 +726,13 @@ function drawGrid() {
     ctx.setLineDash([5, 0]);
     var quadrantx = (startX < 0)? startX: -startX;
     var quadranty = (startY < 0)? startY: -startY;
-    for (var i = 0 + quadrantx; i < quadrantx + (widthWindow/zv); i++) { 
+    for (var i = 0 + quadrantx; i < quadrantx + (widthWindow/zv); i++) {
         if (i % 5 == 0) {
             i++;
         }
         ctx.beginPath();
         ctx.moveTo(i * gridSize, 0 + startY);
-        ctx.lineTo(i * gridSize, (heightWindow/zv) + startY); 
+        ctx.lineTo(i * gridSize, (heightWindow/zv) + startY);
         ctx.stroke();
         ctx.closePath();
     }
@@ -752,7 +752,7 @@ function drawGrid() {
         if (i % 5 == 0) {
             ctx.beginPath();
             ctx.moveTo(i * gridSize, 0 + startY);
-            ctx.lineTo(i * gridSize, (heightWindow/zv) + startY); 
+            ctx.lineTo(i * gridSize, (heightWindow/zv) + startY);
             ctx.stroke();
             ctx.closePath();
         }

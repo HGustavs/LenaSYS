@@ -3,13 +3,13 @@
 */
 
 // Function for the zoom in and zoom out in the canvas element
-function zoomInMode() { 
-    var oldZoomValue = zv; 
-    zv = document.getElementById("ZoomSelect").value; 
-    var newScale = (zv/oldZoomValue); 
-    ctx.scale(newScale,newScale); 
-    reWrite(); 
-    updategfx(); 
+function zoomInMode() {
+    var oldZoom = zv;
+    zv = document.getElementById("ZoomSelect").value;
+    var newScale = (zv/oldZoom);
+    ctx.scale(newScale,newScale);
+    reWrite();
+    updategfx();
 }
 
 // Recursive Pos of div in document - should work in most browsers
