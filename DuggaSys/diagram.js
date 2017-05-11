@@ -433,6 +433,7 @@ function initcanvas() {
     setInterval(hashcurrent, hash_timer);
     setInterval(hashcurrent, hash_timer);
     setInterval(hashfunction, hash_timer + 500);
+    setInterval(function(){ Save() },10000);
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 80);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zv) + "' height='" + (heightWindow * zv) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";

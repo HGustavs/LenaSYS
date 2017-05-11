@@ -27,26 +27,75 @@ function downloadMode(el) {
 }
 
 function saveToServer(dia) {
-    //window.open("diagram_IOHandler.php");
-    // $.post("diagram_IOHandler.php",{ string: "ABC" });
-    //$.post( "diagram_IOHandler.php",{DataString: a}, function( a ) {
-    //    $('#stage').html(a);
-    //});
+
     $.ajax({
         url: 'diagram.php',
         type: 'POST', // GET or POST
-        data: {StringDiagram : dia, Hash: hashfunction()} // will be in $_POST on PHP side
-        //success: function(data) { // data is the response from your php script
-        //    // This function is called if your AJAX query was successful
-        //    alert("Response is: " + data);
-        //},
-        //error: function() {
-        //    // This callback is called if your AJAX query has failed
-        //    alert("Error!");
-        //}
-    });
-}
+        data: {StringDiagram : dia, Hash: hashfunction()}
 
+    });
+
+}
+function createFolder(name){
+
+}
+function redirect(doc){
+    var a = doc.value;
+
+    $.ajax({
+        type: "POST",
+        url: "diagram_IOHandler.php",
+        data: {'GetID':a },
+
+        success: function(data){ // <-- note the parameter here, not in your code
+                //
+            return false;
+        }
+
+    });
+
+    location.href="diagram.php?id="+0+"&folder="+a;
+
+}
+function redirectas(doc,folder){
+        location.href="diagram.php?id="+doc.value+"&folder="+folder;
+}
+function newProject(){
+    document.getElementById('newProject').style.display = "block";
+}
+function loadNew(){
+
+    document.getElementById('showStoredFolders').style.display = "none";
+    document.getElementById('showStored').style.display = "none";
+    document.getElementById('showNew').style.display = "block";
+}
+function loadStored(){
+    document.getElementById('showNew').style.display = "none";
+    document.getElementById('showStored').style.display = "block";
+}
+function loadStoredFolders(f){
+
+    document.getElementById('showStoredFolders').style.display = "block";
+    //e.preventDefault();
+//
+    //$.ajax({
+    //    url: 'diagram_IOHandler.php',
+    //    type: 'POST', // GET or POST
+    //    data: {F: f},
+    //    success: function(resp) {
+//
+    //        $('#adsds').html(resp);
+    //    }
+    //    });
+////
+
+}
+function loadUpload(){
+
+}
+function loadExample(){
+
+}
 function getImage() {
     window.open(document.getElementById("myCanvas").toDataURL("image/png"), 'Image');
 }
@@ -58,7 +107,7 @@ function Save() {
     }
     var obj = {diagram:diagram, points:points, diagram_names:c};
     a = JSON.stringify(obj);
-    saveToServer(a);
+   // saveToServer(a);
     console.log("State is saved");
 }
 
@@ -98,7 +147,22 @@ function LoadFile() {
     //Redrawn old state.
     updategfx();
 }
-
+function getUpload() {
+    document.getElementById('buttonids').addEventListener('click', openDialog);
+    function openDialog() {
+        document.getElementById('fileids').click();
+    }
+    document.getElementById('fileids').addEventListener('change', submitFile);
+    function submitFile() {
+        var reader = new FileReader();
+        var file = document.getElementById('fileids').files[0];
+        reader.readAsText(file, "UTF-8");
+        reader.onload = function (evt) {
+            a = evt.currentTarget.result;
+            // LoadFile();
+        }
+    }
+}
 function Load() {
     // Implement a JSON.parse() that will unmarshall a b c, so we can add
     // them to their respecive array so it can redraw the desired canvas.
