@@ -1,40 +1,31 @@
-### **Overview**
-The difference between this example and the previous example is that in this case the base html tags are written using echo. 
-
-From the standpoint of the browser the result is identical. 
-
-**Web Page Output:**
-~~~
-Hello!
-~~~
-
-****Table****
-| Heading | Heading | Heading |
-| :----: | ---: | ---- |
-| item | item | item |
-| item | item | item |
-| item | item | item |
-
 ****Unordered list****
-* item
-* item
-* item
-  * item
-  * item
-* item
+* item 1*
+* item 2*
+* item 3*
+  1. item 1.
+  2. item 2.
+    1. item 1.
+    2. item 2.
+      * item 1*
+      * item 2*
+      * item 3*
+        1. item 1.
+        2. item 2.
+      * item 4*
+      * item 5*
+* item 4*
+* item 5*
+  1. item 1.
+  2. item 1.
+    1. item 1.
+    2. item 1.
+      * item 1*
+        * item 1*
+          1. item 1.
+          2. item 1.
+          3. item 1.
+    3. item 1.
+  3. item 1.
+* item 6*
 
-****Unordered list with dashes****
-- item
-- item
-- item
-  - item
-  - item
-- item
 
-****Ordered list****
-1. item
-2. item
-3. item
-  1. item
-  2. item
-4. item
