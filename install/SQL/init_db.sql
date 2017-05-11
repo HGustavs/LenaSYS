@@ -161,7 +161,7 @@ CREATE TABLE userAnswer (
 	stepsUsed 			INT(11) DEFAULT NULL,
 	totalStepsUsed	INT(11) DEFAULT '0',
 	feedback 				TEXT,
-	timesSubmitted	INT(11) NOT NULL DEFAULT '0',
+	timesGraded	INT(11) NOT NULL DEFAULT '0',
 	PRIMARY KEY 	(aid),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (uid) REFERENCES user(uid),
@@ -489,11 +489,14 @@ CREATE TABLE user_push_registration (
 /* Create the usergroup table. This table consists of groups containing students */
 CREATE TABLE `usergroup` (
   `ugid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `lid` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL UNIQUE,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `lastupdated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-  PRIMARY KEY (`ugid`)
+  PRIMARY KEY (`ugid`,`lid`),
+  KEY `lid` (`lid`),
+  KEY `ugid` (`ugid`),
+  CONSTRAINT `lid` FOREIGN KEY (`lid`) REFERENCES `listentries` (`lid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* Create table user_usergroup. This table represents the relation between users and usergroups. */
@@ -507,16 +510,7 @@ CREATE TABLE `user_usergroup` (
   CONSTRAINT `userid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-/* Create table usergroup_listentries. This table represents the relation between usergroups and listentries (coarse moments) */
-CREATE TABLE `usergroup_listentries` (
-  `ugid` int(10) UNSIGNED NOT NULL,
-  `lid` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`ugid`,`lid`),
-  KEY `lid` (`lid`),
-  KEY `ugid` (`ugid`,`lid`),
-  CONSTRAINT `lid` FOREIGN KEY (`lid`) REFERENCES `listentries` (`lid`),
-  CONSTRAINT `ugid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
 
 /*table used for checking participation. i.e participation is 0 = not participated, 1 = participated.*/
 CREATE TABLE user_participant (

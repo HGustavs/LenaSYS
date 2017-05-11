@@ -25,9 +25,9 @@ AJAXService("GET",{cid:querystring['cid']},"FILE");
 
 $(function(){$( "#release" ).datepicker({dateFormat: "yy-mm-dd"});$( "#deadline" ).datepicker({dateFormat: "yy-mm-dd"});});
 
-function closeEditFile()
+function closeAddFile()
 {
-		$("#editFile").css("display","none");
+		$("#addFile").css("display","none");
 		$("#overlay").css("display","none");
 }
 
@@ -35,14 +35,70 @@ function deleteFile(fileid,filename){
 		if(confirm("Do you really want to delete the file/link: "+filename)){
 				AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
 		}
+			window.location.reload(true);
 }
 
-// Function to toggle the content (tbody) under each header
-$(document).on('click','thead',function(){
-	$(this).closest('table').find('tbody').fadeToggle();
-	$('.arrowRight', this).slideToggle();
-	$('.arrowComp', this).slideToggle();
-});
+//----------------------------------------
+// makeSortable(table) <- Makes a table sortable and also allows the table to collapse when
+// 						user double clicks on table head.
+//----------------------------------------
+function makeSortable(table) {
+	var DELAY = 200;
+	var clicks = 0;
+	var timer = null;
+	var th = table.tHead, i;
+	th && (th = th.rows[0]) && (th = th.cells);
+	if (th) i = th.length;
+	else return; // if no `<thead>` then do nothing
+	while (--i >= 0) (function (i) {
+		var dir = 1;
+		th[i].addEventListener('click', function (e) {
+			clicks++;
+			if(clicks === 1) {
+				timer = setTimeout(function () {
+					sortTable(table, i, (dir = 1 - dir));
+					clicks = 0;
+                }, DELAY);
+            } else {
+                clearTimeout(timer);
+                $(this).closest('table').find('tbody').fadeToggle();
+                $('.arrowRight', this).slideToggle();
+                $('.arrowComp', this).slideToggle();  //perform double-click action
+                clicks = 0;             //after action performed, reset counter
+            }
+        });
+        th[i].addEventListener('dblclick', function (e) {
+            e.preventDefault();
+        })
+    }(i));
+}
+
+//----------------------------------------
+// makeAllSortable(parent) <- Makes all tables within given scope sortable.
+//----------------------------------------
+function makeAllSortable(parent) {
+	parent = parent || document.body;
+	var t = parent.getElementsByTagName('table'), i = t.length;
+	while (--i >= 0) makeSortable(t[i]);
+}
+
+//----------------------------------------
+// sortTable(table, col, reverse) <- Sorts table based on given column and whether or not to
+//									reverse the sorting.
+//----------------------------------------
+function sortTable(table, col, reverse) {
+    var tb = table.tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
+        tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
+        i;
+    reverse = -((+reverse) || -1);
+    tr = tr.sort(function (a, b) { // sort rows
+		return reverse // `-1 *` if want opposite order
+		 * (a.cells[col].textContent.trim() // using `.textContent.trim()` for test
+                    .localeCompare(b.cells[col].textContent.trim())
+            );
+    });
+    for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
+}
 
 $(document).on('click','.last',function(e) {
      e.stopPropagation();
@@ -52,7 +108,7 @@ $(document).on('click','.last',function(e) {
 function createLink()
 {
 		$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' /></td>");
-		$("#editFile").css("display","block");
+		$("#addFile").css("display","block");
 		$("#filey").css("display","none");
 		$("#linky").css("display","block");
 		$("#selecty").css("display","none");
@@ -89,7 +145,7 @@ function createFile(kind)
 				$("#selecty").css("display","none");				
 		}
 
-		$("#editFile").css("display","block");
+		$("#addFile").css("display","block");
 		$("#filey").css("display","block");
 		$("#linky").css("display","none");
 		$("#overlay").css("display","block");
@@ -325,6 +381,7 @@ function returnedFile(data)
 	//if there was an error in the php file while fetching, an alert goes off here
 	//-------------------------------------------------------------------------------------
 	if(data['debug']!="NONE!") alert(data['debug']);
+	makeAllSortable();
 }
 
 function getFileInformation(name, getExt) {
@@ -393,23 +450,19 @@ function switchcontent() {
 
 function convertfilekind(kind){
 	var retString = "";
-	switch(kind){
-		case "1":
-			retString = "Link";
-			break;
-		case "2":
-			retString = "Global";
-			break;
-		case "3":
-			retString = "Course Local";
-			break;
-		case "4":
-			retString = "Local";
-			break;
-		default:
-			retString = "Not recognized";
-			break;
+
+	if(kind=="1"){
+        retString = "Link";
+	}else if(kind=="2"){
+        retString = "Global";
+	}else if(kind=="3"){
+        retString = "Course Local";
+	}else if(kind=="4"){
+        retString = "Local";
+	}else{
+        retString = "Not recognized";
 	}
+
 	return retString;
 }
 

@@ -252,6 +252,19 @@
 						$query->execute();
 					}
 				}
+			}else if(strcmp('EDITTITLE',$opt)===0) {
+				$exampleid = $_POST['exampleid'];
+				$boxId = $_POST['boxid'];
+				$boxTitle = $_POST['boxtitle'];
+
+				$query = $pdo->prepare("UPDATE box SET boxtitle=:boxtitle WHERE boxid=:boxid AND exampleid=:exampleid;");	
+				$query->bindParam(':boxtitle', $boxTitle);
+				$query->bindValue(':exampleid', $exampleId);
+				$query->bindParam(':boxid', $boxId);
+				$query->execute();
+
+				echo json_encode($boxTitle);
+				return;
 			}
 		}
 		
