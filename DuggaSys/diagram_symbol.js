@@ -1,4 +1,4 @@
-/* 
+/*
 ----- THIS FILE HAS THE FUNCTIONS FOR THE ARRAY -----
 ----- DIAGRAM AND HOW IT SHOULD BE USED BY THE SYSTEM -----
 */
@@ -13,6 +13,7 @@ function Symbol(kind) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textsize = 14;             // 14 pixels text size is default
+    this.line_width = 2;
     var textscale = 10;
     this.name = "New Class";        // Default name is new class
     this.key_type = "none"          // Defult key tyoe for a class.
@@ -192,6 +193,7 @@ function Symbol(kind) {
                 points[this.topLeft].y = points[this.middleDivider].y;
             }
         } else if (this.symbolkind == 5){
+            // Static size of relation. Makes resizing of relation impossible.
             points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
             points[this.topLeft].y = points[this.middleDivider].y-relationTemplate.height/2;
             points[this.bottomRight].x = points[this.middleDivider].x+relationTemplate.width/2;
@@ -264,12 +266,12 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
-    this.inside = function (xk, yk) {
+    this.inside = function() {
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-        if (xk > x1 && xk < x2 && yk > y1 && yk < y2) {
+        if (x1 < cx && cx < x2 && y1 < cy && cy < y2) {
             return true;
         } else {
             return false;
@@ -475,7 +477,7 @@ function Symbol(kind) {
     //     ctx.setLineDash(segments);
     //--------------------------------------------------------------------
     this.draw = function () {
-        ctx.lineWidth = 2;
+        ctx.lineWidth = this.line_width;
         if (this.sizeOftext == 'Tiny') {
             textsize = 14;
         } else if (this.sizeOftext == 'Small') {
@@ -656,7 +658,7 @@ function Symbol(kind) {
         } else if (this.symbolkind == 4) {
             // ER Attribute relationship is a single line
             if (this.type == "weak") {
-                ctx.lineWidth = ctx.lineWidth * 3;
+                ctx.lineWidth = this.line_width * 3;
                 if (this.sel || this.targeted) {
                     ctx.strokeStyle = "#F82";
                 } else {
@@ -666,7 +668,7 @@ function Symbol(kind) {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
                 ctx.stroke();
-                ctx.lineWidth = ctx.lineWidth / 3;
+                ctx.lineWidth = this.line_width;
                 ctx.strokeStyle = "#fff";
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);

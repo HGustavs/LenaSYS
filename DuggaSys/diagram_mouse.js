@@ -1,69 +1,14 @@
-/* 
+/*
 ----- THIS FILE HANDLES ALL MOUSEEVENTS IN THE DIAGRAM -----
 */
 
 // Function for the zoom in and zoom out in the canvas element
-function zoomInMode(e) {
-    uimode = "Zoom";
-    var canvas = document.getElementById("myCanvas");
-    canvas.removeEventListener('click', zoomOutClick, false);
-    canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
-    var zoomInClass = document.getElementById("zoomInButton").className;
-    var zoomInButton = document.getElementById("zoomInButton");
-    document.getElementById("zoomOutButton").className = "unpressed";
-    document.getElementById("moveButton").className = "unpressed";
-    if (zoomInClass == "unpressed") {
-        canvas.removeEventListener('dblclick', doubleclick, false);
-        zoomInButton.className = "pressed";
-        canvas.style.cursor = "zoom-in";
-        canvas.addEventListener("click", zoomInClick, false);
-    } else {
-        zoomInButton.className = "unpressed";
-        canvas.addEventListener("dblclick", doubleclick, false);
-        canvas.removeEventListener("click", zoomInClick, false);
-        canvas.style.cursor = "default";
-    }
-}
-
-function zoomOutMode(e) {
-    uimode = "Zoom";
-    var canvas = document.getElementById("myCanvas");
-    canvas.removeEventListener('click', zoomInClick, false);
-    canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
-    var zoomOutClass = document.getElementById("zoomOutButton").className;
-    var zoomOutButton = document.getElementById("zoomOutButton");
-    document.getElementById("zoomInButton").className = "unpressed";
-    document.getElementById("moveButton").className = "unpressed";
-    if (zoomOutClass == "unpressed") {
-        canvas.removeEventListener('dblclick', doubleclick, false);
-        zoomOutButton.className = "pressed";
-        canvas.style.cursor = "zoom-out";
-        canvas.addEventListener("click", zoomOutClick, false);
-    } else {
-        zoomOutButton.className = "unpressed";
-        canvas.addEventListener("dblclick", doubleclick, false);
-        canvas.removeEventListener("click", zoomOutClick, false);
-        canvas.style.cursor = "default";
-    }
-}
-
-function zoomInClick() {
-    var oldZV = zv;
-    zv += 0.1;
+function zoomInMode() {
+    var oldZoom = zv;
+    zv = document.getElementById("ZoomSelect").value;
+    var newScale = (zv/oldZoom);
+    ctx.scale(newScale,newScale);
     reWrite();
-    // To be able to use the 10% increase och decrease, we need to use this calcuation.
-    var inScale = ((1 / oldZV) * zv);
-    ctx.scale(inScale, inScale);
-    updategfx();
-}
-
-function zoomOutClick() {
-    var oldZV = zv;
-    zv -= 0.1;
-    reWrite();
-    // To be able to use the 10% increase och decrease, we need to use this calcuation.
-    var outScale = ((1 / oldZV) * zv);
-    ctx.scale(outScale, outScale);
     updategfx();
 }
 
@@ -102,7 +47,7 @@ function mousemoveevt(ev, t) {
     yPos = ev.clientY;
     mox = cx;
     moy = cy;
-    hovobj = diagram.inside(cx, cy);
+    hovobj = diagram.inside();
     if (ev.pageX || ev.pageY == 0) { // Chrome
         cx = (((ev.pageX - acanvas.offsetLeft) * (1/zv)) + (startX*(1/zv)));
         cy = (((ev.pageY - acanvas.offsetTop) * (1/zv)) + (startY*(1/zv)));
@@ -124,30 +69,47 @@ function mousemoveevt(ev, t) {
         sel = points.distance(cx, cy);
         // If mouse is not pressed highlight closest point
         points.clearsel();
-        movobj = diagram.inside(cx, cy);
+        movobj = diagram.inside();
         updateActivePoint();
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
         // If mouse is pressed down and at a point in selected object - move that point
-        points[sel.ind].x = cx;
-        points[sel.ind].y = cy;
+        if (diagram[selobj].targeted == true) {
+            if (diagram[selobj].kind == 1) {
+                for (var i = 0; i < diagram[selobj].segments.length; i++) {
+                    if (diagram[selobj].segments[i].pa == sel.ind) {
+                        points[diagram[selobj].segments[i].pa].x = cx;
+                        points[diagram[selobj].segments[i].pa].y = cy;
+                    }
+                }
+            } else {
+                if (diagram[selobj].bottomRight == sel.ind && diagram[selobj].symbolkind != 5) {
+                    points[diagram[selobj].bottomRight].x = cx;
+                    points[diagram[selobj].bottomRight].y = cy;
+                } else if (diagram[selobj].topLeft == sel.ind && diagram[selobj].symbolkind != 5) {
+                    points[diagram[selobj].topLeft].x = cx;
+                    points[diagram[selobj].topLeft].y = cy;
+                }
+            }
+        }
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1) {
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
                     if (snapToGrid) {
-                        var obj_topLeft = points[diagram[i].topLeft];
-                        var tlx = (Math.round(obj_topLeft.x / gridSize) * gridSize);
-                        var tly = (Math.round(obj_topLeft.y / gridSize) * gridSize);
-
-                        var deltatlx = obj_topLeft.x - tlx;
-                        var deltatly = obj_topLeft.y - tly;
-
+                        if (diagram[i].kind == 1) {
+                            var firstPoint = points[diagram[i].segments[0].pa];
+                        } else {
+                            var firstPoint = points[diagram[i].topLeft];
+                        }
+                        var tlx = (Math.round(firstPoint.x / gridSize) * gridSize);
+                        var tly = (Math.round(firstPoint.y / gridSize) * gridSize);
+                        var deltatlx = firstPoint.x - tlx;
+                        var deltatly = firstPoint.y - tly;
                         cx = Math.round(cx / gridSize) * gridSize;
                         cy = Math.round(cy / gridSize) * gridSize;
-
                         cx -= deltatlx;
                         cy -= deltatly;
                     }
@@ -166,21 +128,81 @@ function mousemoveevt(ev, t) {
     }
     // Draw select or create dotted box
     if (md == 4) {
-        ctx.setLineDash([3, 3]);
-        ctx.beginPath(1);
-        ctx.moveTo(sx, sy);
-        ctx.lineTo(cx, sy);
-        ctx.lineTo(cx, cy);
-        ctx.lineTo(sx, cy);
-        ctx.lineTo(sx, sy);
-        ctx.strokeStyle = "#d51";
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.closePath(1);
-        if (ghostingcrosses == true){
-            crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-            crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-            crossfillStyle = "rgba(255, 102, 68, 0.0)";
+        if (uimode == "CreateEREntity"){
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath(1);
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(cx, sy);
+            ctx.lineTo(cx, cy);
+            ctx.lineTo(sx, cy);
+            ctx.lineTo(sx, sy);
+            ctx.strokeStyle = "#d51";
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.closePath(1);
+            if (ghostingcrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossfillStyle = "rgba(255, 102, 68, 0.0)";
+            }
+        } else if(uimode == "CreateERRelation"){
+            var midx = sx+((cx-sx)/2);
+            var midy = sy+((cy-sy)/2);
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath(1);
+            ctx.moveTo(midx, sy);
+            ctx.lineTo(cx, midy);
+            ctx.lineTo(midx, cy);
+            ctx.lineTo(sx, midy);
+            ctx.lineTo(midx, sy);
+            ctx.strokeStyle = "#d51";
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.closePath(1);
+            if (ghostingcrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossfillStyle = "rgba(255, 102, 68, 0.0)";
+            }
+        } else if(uimode == "CreateERAttr"){
+            drawOval(sx, sy, cx, cy);
+            ctx.setLineDash([3, 3]);
+            ctx.strokeStyle = "#d51";
+            ctx.stroke();
+            if (ghostingcrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossfillStyle = "rgba(255, 102, 68, 0.0)";
+            }
+        } else if(uimode == "CreateLine") {
+            ctx.beginPath();
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(cx, cy);
+            ctx.setLineDash([3, 3]);
+            ctx.strokeStyle = "#d51";
+            ctx.stroke();
+            if (ghostingcrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossfillStyle = "rgba(255, 102, 68, 0.0)";
+            }
+        } else {
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath(1);
+            ctx.moveTo(sx, sy);
+            ctx.lineTo(cx, sy);
+            ctx.lineTo(cx, cy);
+            ctx.lineTo(sx, cy);
+            ctx.lineTo(sx, sy);
+            ctx.strokeStyle = "#d51";
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.closePath(1);
+            if (ghostingcrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossfillStyle = "rgba(255, 102, 68, 0.0)";
+            }
         }
     }
 }
@@ -202,7 +224,6 @@ function mousedownevt(ev) {
             } else {
                 p1 = points.addpoint(cx, cy, false);
             }
-            //p1=diagram[hovobj].centerpoint;
         }
     } else if (uimode != "CreateFigure" && sel.dist < tolerance) {
         md = 2;
@@ -219,6 +240,9 @@ function mousedownevt(ev) {
         md = 4;            // Box select or Create mode.
         sx = cx;
         sy = cy;
+    }
+    if (selobj >= 0) {
+        diagram[selobj].targeted = true;
     }
 }
 
@@ -288,7 +312,7 @@ function mouseupevt(ev) {
         erAttributeA.bottomRight = p2;
 
         erAttributeA.centerpoint = p3;
-        erAttributeA.attributeType = "";
+        erAttributeA.object_type = "";
         erAttributeA.fontColor = "#253";
         erAttributeA.font = "Arial";
         diagram.push(erAttributeA);
@@ -303,7 +327,7 @@ function mouseupevt(ev) {
         erEnityA.bottomRight = p2;
         erEnityA.centerpoint = p3;
 
-        erEnityA.entityType = "";
+        erEnityA.object_type = "";
         erEnityA.fontColor = "#253";
         erEnityA.font = "Arial";
         diagram.push(erEnityA);
@@ -316,6 +340,8 @@ function mouseupevt(ev) {
         erLineA = new Symbol(4);
         erLineA.name = "Line" + diagram.length;
         erLineA.topLeft = p1;
+
+        erLineA.object_type = "";
         erLineA.bottomRight = p2;
         erLineA.centerpoint = p3;
         diagram.push(erLineA);
@@ -351,20 +377,15 @@ function mouseupevt(ev) {
 function doubleclick(ev) {
     var posistionX = (startX + xPos);
     var posistionY = (startY + yPos);
-    if (diagram[selobj].targeted == true) {
+    if (selobj != -1 && diagram[selobj].targeted == true) {
         openAppearanceDialogMenu();
+        console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
         document.getElementById('nametext').value = diagram[selobj].name;
         document.getElementById('fontColor').value = diagram[selobj].fontColor;
         document.getElementById('font').value = diagram[selobj].font;
         document.getElementById('TextSize').value = diagram[selobj].sizeOftext;
-        if (document.getElementById('entityType') != null) {
-            document.getElementById('entityType').value = diagram[selobj].entityType;
-        }
-        if (document.getElementById('attributeType') != null) {
-            document.getElementById('attributeType').value = diagram[selobj].attributeType;
-        }
-        if (document.getElementById('relationType') != null) {
-            document.getElementById('relationType').value = diagram[selobj].relationType;
+        if (document.getElementById('object_type') != null) {
+            document.getElementById('object_type').value = diagram[selobj].object_type;
         }
     }
 }
@@ -427,11 +448,7 @@ function movemode(e, t) {
     var canvas = document.getElementById("myCanvas");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
-    canvas.removeEventListener("click", zoomOutClick, false);
-    canvas.removeEventListener("click", zoomInClick, false);
     canvas.removeEventListener("dblclick", doubleclick, false);
-    document.getElementById("zoomInButton").className = "unpressed";
-    document.getElementById("zoomOutButton").className = "unpressed";
     if (button == "unpressed") {
         buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
@@ -469,6 +486,7 @@ function mousemoveposcanvas(e) {
     mousedownX = mousemoveX;
     mousedownY = mousemoveY;
     moveValue = 1;
+    drawGrid();
     updategfx();
     reWrite();
 }

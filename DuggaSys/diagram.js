@@ -98,6 +98,8 @@ function keyDownHandler(e){
 // the sequence number again. e.g. point[5] will remain point[5] until it is deleted
 //--------------------------------------------------------------------
 var points = [
+    /*
+    // Points for example code.
     // Path A -- Segment 1 (0, 1, 2, 3)
     {x:20, y:200, selected:0}, {x:60, y:200, selected:0}, {x:100, y:40, selected:0}, {x:140, y:40, selected:0},
     // Path B -- Segment 1 (4, 5 and 17, 18)
@@ -126,6 +128,7 @@ var points = [
     {x:15, y:200, selected:0}, {x:115, y:250, selected:0}, {x:65, y:225, selected:0},
     // ER Entity Connector Left Points -- 39, 40, 41
     {x:150, y:225, selected:0}, {x:150, y:235, selected:0}, {x:150, y:245, selected:0}
+    */
 ];
 
 //--------------------------------------------------------------------
@@ -277,27 +280,6 @@ diagram.insides = function (ex, ey, sx, sy) {
         sy = tempEndY;
     }
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind != 1) {
-            var tempTopLeftX = points[this[i].topLeft].x;
-            var tempTopLeftY = points[this[i].topLeft].y;
-            var tempBottomRightX = points[this[i].bottomRight].x;
-            var tempBottomRightY = points[this[i].bottomRight].y;
-            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
-                tempTopLeftX = tempBottomRightX - minEntityX;
-            }
-            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
-                tempTopLeftY = tempBottomRightY - minEntityY;
-            }
-            if (sx < tempTopLeftX && ex > tempTopLeftX &&
-                sy < tempTopLeftY && ey > tempTopLeftY &&
-                sx < tempBottomRightX && ex > tempBottomRightX &&
-                sy < tempBottomRightY && ey > tempBottomRightY) {
-                this[i].targeted = true;
-                // return i;
-            } else {
-                this[i].targeted = false;
-            }
-        }
         if (this[i].kind == 1) {
             var tempPoints = [];
             for (var j = 0; j < this[i].segments.length; j++) {
@@ -315,6 +297,25 @@ diagram.insides = function (ex, ey, sx, sy) {
             } else {
                 this[i].targeted = false;
             }
+        } else {
+            var tempTopLeftX = points[this[i].topLeft].x;
+            var tempTopLeftY = points[this[i].topLeft].y;
+            var tempBottomRightX = points[this[i].bottomRight].x;
+            var tempBottomRightY = points[this[i].bottomRight].y;
+            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
+                tempTopLeftX = tempBottomRightX - minEntityX;
+            }
+            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
+                tempTopLeftY = tempBottomRightY - minEntityY;
+            }
+            if (sx < tempTopLeftX && ex > tempTopLeftX &&
+                sy < tempTopLeftY && ey > tempTopLeftY &&
+                sx < tempBottomRightX && ex > tempBottomRightX &&
+                sy < tempBottomRightY && ey > tempBottomRightY) {
+                this[i].targeted = true;
+            } else {
+                this[i].targeted = false;
+            }
         }
     }
     return -1;
@@ -323,12 +324,10 @@ diagram.insides = function (ex, ey, sx, sy) {
 //--------------------------------------------------------------------
 // inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
-diagram.inside = function (xk, yk) {
+diagram.inside = function() {
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 2) {
-            if (this[i].inside(xk, yk) == true) {
-                return i;
-            }
+        if (this[i].inside() == true) {
+            return i;
         }
     }
     return -1;
@@ -436,7 +435,7 @@ function initcanvas() {
     setInterval(hashfunction, hash_timer + 500);
     setInterval(function(){ Save() },10000);
     widthWindow = (window.innerWidth - 20);
-    heightWindow = (window.innerHeight - 220);
+    heightWindow = (window.innerHeight - 80);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zv) + "' height='" + (heightWindow * zv) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
     document.getElementById("valuesCanvas").innerHTML = "<p>Zoom: " + Math.round((zv * 100)) + "% | Coordinates: X=" + startX + " & Y=" + startY + "</p>";
     var canvas = document.getElementById("myCanvas");
@@ -445,11 +444,9 @@ function initcanvas() {
         acanvas = document.getElementById("myCanvas");
     }
     getUploads();
-    makegfx();
+    // generateExampleCode();
     updategfx();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
-    document.getElementById("zoomInButton").addEventListener('click', zoomInMode, false);
-    document.getElementById("zoomOutButton").addEventListener('click', zoomOutMode, false);
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
@@ -486,7 +483,7 @@ function getUploads() {
 // Making the page more responsive
 function canvassize() {
     widthWindow = (window.innerWidth - 20);
-    heightWindow = (window.innerHeight - 244);
+    heightWindow = (window.innerHeight - 144);
     document.getElementById("myCanvas").setAttribute("width", widthWindow);
     document.getElementById("myCanvas").setAttribute("height", heightWindow);
     ctx.clearRect(startX, startY, widthWindow, heightWindow);
@@ -500,7 +497,7 @@ window.addEventListener('resize', canvassize);
 var erEntityA;
 
 function updategfx() {
-    ctx.clearRect(startX, startY, widthWindow, heightWindow);
+    ctx.clearRect(startX, startY, (widthWindow/zv), (heightWindow/zv));
     if(moveValue == 1){
         ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
@@ -512,11 +509,8 @@ function updategfx() {
     diagram.draw();
     // Draw all points as crosses
     points.drawpoints();
-    if (moveValue == 2){
-        ctx.translate((startX/zv), (startY*zv));
-        moveValue = 0;
-    }
 }
+
 function movePoint(point){
     point="";
 }
@@ -613,134 +607,6 @@ function resetSelectionCreateFigure() {
     document.getElementById("selectFigure").selectedIndex = 0;
 }
 
-/**
- * Opens the dialog menu for appearance.
- */
-function openAppearanceDialogMenu() {
-    document.getElementById("myCanvas").style.cursor = "default";
-    $("#appearance").show();
-    $("#appearance").width("auto");
-    dimDialogMenu(true);
-    hashcurrent();
-    dialogForm();
-}
-
-function dialogForm() {
-    var form = document.getElementById("f01");
-    form.innerHTML = "No item selected<type='text'>";
-    if (diagram[selobj].symbolkind == 1) {
-        form.innerHTML =
-            "Class name: </br>" +
-            "<input id='nametext' type='text'></br>" +
-            "<button type='submit' class='submit-button' onclick='changeName(form); hashfunction();' style='float: none; display: block; margin: 10px auto;'>Ok</button>";
-    }
-    if (diagram[selobj].symbolkind == 2) {
-        form.innerHTML =
-            "Attribute name:</br>" +
-            "<input id='nametext' type='text'></br>" +
-            "Attribute type: </br>" +
-            "<select id ='attributeType'>" +
-                "<option value='Primary key'>Primary key</option>" +
-                "<option value='Normal'>Normal</option>" +
-                "<option value='Multivalue'>Multivalue</option>" +
-                "<option value='Composite' selected>Composite</option>" +
-                "<option value='Drive' selected>Derive</option>" +
-            "</select></br>" +
-            "Font family:<br>" +
-            "<select id ='font'>" +
-                "<option value='arial' selected>Arial</option>" +
-                "<option value='Courier New'>Courier New</option>" +
-                "<option value='Impact'>Impact</option>" +
-                "<option value='Calibri'>Calibri</option>" +
-            "</select><br>" +
-            "Font color:<br>" +
-            "<select id ='fontColor'>" +
-                "<option value='black' selected>Black</option>" +
-                "<option value='blue'>Blue</option>" +
-                "<option value='Green'>Green</option>" +
-                "<option value='grey'>Grey</option>" +
-                "<option value='red'>Red</option>" +
-                "<option value='yellow'>Yellow</option>" +
-            "</select><br>" +
-            "Text size:<br>" +
-            "<select id ='TextSize'>" +
-                "<option value='Tiny'>Tiny</option>" +
-                "<option value='Small'>Small</option>" +
-                "<option value='Medium'>Medium</option>" +
-                "<option value='Large'>Large</option>" +
-            "</select><br>" +
-            "<button type='submit' class='submit-button' onclick='changeNameAttr(form); setType(form); hashfunction(); updategfx();' style='float: none; display: block; margin: 10px auto;'>OK</button>";
-    }
-    if (diagram[selobj].symbolkind == 3) {
-        form.innerHTML =
-            "Entity name: </br>" +
-            "<input id='nametext' type='text'></br>" +
-            "Entity type: </br>" +
-            "<select id ='entityType'>" +
-                "<option value='weak'>weak</option>" +
-                "<option value='strong' selected>strong</option>" +
-            "</select></br>" +
-            "Font family:<br>" +
-            "<select id ='font'>" +
-                "<option value='arial' selected>Arial</option>" +
-                "<option value='Courier New'>Courier New</option>" +
-                "<option value='Impact'>Impact</option>" +
-                "<option value='Calibri'>Calibri</option>" +
-            "</select><br>" +
-            "Font color:<br>" +
-            "<select id ='fontColor'>" +
-                "<option value='black' selected>Black</option>" +
-                "<option value='blue'>Blue</option>" +
-                "<option value='Green'>Green</option>" +
-                "<option value='grey'>Grey</option>" +
-                "<option value='red'>Red</option>" +
-                "<option value='yellow'>Yellow</option>" +
-            "</select><br>" +
-            "Text size:<br>" +
-            "<select id ='TextSize'>" +
-                "<option value='Tiny' selected>Tiny</option>" +
-                "<option value='Small'>Small</option>" +
-                "<option value='Medium'>Medium</option>" +
-                "<option value='Large'>Large</option>" +
-            "</select><br>" +
-            "<button type='submit' class='submit-button' onclick='changeNameEntity(form); setEntityType(form); hashfunction(); updategfx();' style='float: none; display: block; margin: 10px auto;'>OK</button>";
-    }
-    if (diagram[selobj].symbolkind == 5) {
-        form.innerHTML =
-            "Relation name:</br>" +
-            "<input id='nametext' type='text'></br>" +
-            "Relation type: </br>" +
-            "<select id ='relationType'>" +
-                "<option value='weak'>weak</option>" +
-                "<option value='strong' selected>strong</option>" +
-            "</select></br>" +
-            "Font family:<br>" +
-            "<select id ='font'>" +
-                "<option value='arial' selected>Arial</option>" +
-                "<option value='Courier New'>Courier New</option>" +
-                "<option value='Impact'>Impact</option>" +
-                "<option value='Calibri'>Calibri</option>" +
-            "</select><br>" +
-            "Font color:<br>" +
-            "<select id ='fontColor'>" +
-                "<option value='black' selected>Black</option>" +
-                "<option value='blue'>Blue</option>" +
-                "<option value='Green'>Green</option>" +
-                "<option value='grey'>Grey</option>" +
-                "<option value='red'>Red</option>" +
-                "<option value='yellow'>Yellow</option>" +
-            "</select><br>" +
-            "Text size:<br>" +
-            "<select id ='TextSize'>" +
-                "<option value='Tiny'>Tiny</option>" +
-                "<option value='Small'>Small</option>" +
-                "<option value='Medium'>Medium</option>" +
-                "<option value='Large'>Large</option>" +
-            "</select><br>" +
-            "<button type='submit' class='submit-button' onclick='changeNameRelation(form); setType(form); hashfunction(); updategfx();' style='float: none; display: block; margin: 10px auto;'>OK</button>";
-    }
-}
-
 //setTextSize(): used to change the size of the text. unifinish can's get it to work.
 function setTextSizeEntity(form) {
     diagram[selobj].sizeOftext = document.getElementById('TextSize').value;
@@ -751,53 +617,14 @@ function setTextSizeEntity(form) {
     */
 }
 
-function changeNameAttr(form) {
-    dimDialogMenu(false);
-    diagram[selobj].name = document.getElementById('nametext').value;
-    diagram[selobj].fontColor = document.getElementById('fontColor').value;
-    diagram[selobj].font = document.getElementById('font').value;
-    diagram[selobj].sizeOftext = document.getElementById('TextSize').value;
-    diagram[selobj].attributeType = document.getElementById('attributeType').value;
-    updategfx();
-    $("#appearance").hide();
-}
-
-function changeNameEntity(form) {
-    dimDialogMenu(false);
-    diagram[selobj].name = document.getElementById('nametext').value;
-    diagram[selobj].fontColor = document.getElementById('fontColor').value;
-    diagram[selobj].font = document.getElementById('font').value;
-    diagram[selobj].sizeOftext = document.getElementById('TextSize').value;
-    diagram[selobj].entityType = document.getElementById('entityType').value;
-    updategfx();
-    $("#appearance").hide();
-}
-
-function changeNameRelation() {
-    dimDialogMenu(false);
-    diagram[selobj].name = document.getElementById('nametext').value;
-    diagram[selobj].fontColor = document.getElementById('fontColor').value;
-    diagram[selobj].font = document.getElementById('font').value;
-    diagram[selobj].sizeOftext = document.getElementById('TextSize').value;
-    diagram[selobj].relationType = document.getElementById('relationType').value;
-    updategfx();
-    $("#appearance").hide();
-}
-
-function setEntityType(form) {
-    var selectBox = document.getElementById("entityType");
-    diagram[selobj].type = selectBox.options[selectBox.selectedIndex].value;
-    updategfx();
-}
-
 function setType(form) {
-    if (document.getElementById('attributeType').value == 'Primary key') {
+    if (document.getElementById('object_type').value == 'Primary key') {
         diagram[selobj].key_type = 'Primary key';
-    } else if (document.getElementById('attributeType').value == 'Normal') {
+    } else if (document.getElementById('object_type').value == 'Normal') {
         diagram[selobj].key_type = 'Normal';
-    } else if (document.getElementById('attributeType').value == 'Multivalue') {
+    } else if (document.getElementById('object_type').value == 'Multivalue') {
         diagram[selobj].key_type = 'Multivalue';
-    } else if (document.getElementById('attributeType').value == 'Drive') {
+    } else if (document.getElementById('object_type').value == 'Drive') {
         diagram[selobj].key_type = 'Drive';
     }
     updategfx();
@@ -835,6 +662,9 @@ function dimDialogMenu(dim) {
         $("#overlay").css("display", "none");
     }
 }
+/*
+
+THIS FUNCTION IS NOT USED RIGHT NOW! MIGHT BE USED AT A LATER STAGE
 
 function Consolemode(action) {
     if(action == 1) {
@@ -858,7 +688,7 @@ function Consolemode(action) {
         updategfx();
     }
 }
-
+*/
 function connectedObjects(line) {
     var private_objects = [];
     for (var i = 0; i < diagram.length; i++) {
@@ -897,42 +727,42 @@ function drawGrid() {
     ctx.setLineDash([5, 0]);
     var quadrantx = (startX < 0)? startX: -startX;
     var quadranty = (startY < 0)? startY: -startY;
-    for (var i = 0 + quadrantx; i < quadrantx + widthWindow; i++) {
+    for (var i = 0 + quadrantx; i < quadrantx + (widthWindow/zv); i++) {
         if (i % 5 == 0) {
             i++;
         }
         ctx.beginPath();
         ctx.moveTo(i * gridSize, 0 + startY);
-        ctx.lineTo(i * gridSize, heightWindow + startY);
+        ctx.lineTo(i * gridSize, (heightWindow/zv) + startY);
         ctx.stroke();
         ctx.closePath();
     }
-    for (var i = 0 + quadranty; i < quadranty + heightWindow; i++) {
+    for (var i = 0 + quadranty; i < quadranty + (heightWindow/zv); i++) {
         if (i % 5 == 0) {
             i++;
         }
         ctx.beginPath();
         ctx.moveTo(0 + startX, i * gridSize);
-        ctx.lineTo(widthWindow + startX, i * gridSize);
+        ctx.lineTo((widthWindow/zv) + startX, i * gridSize);
         ctx.stroke();
         ctx.closePath();
     }
     //Draws the thick lines
     ctx.strokeStyle = "rgb(208, 208, 220)";
-    for (var i = 0 + quadrantx; i < quadrantx + widthWindow; i++) {
+    for (var i = 0 + quadrantx; i < quadrantx + (widthWindow/zv); i++) {
         if (i % 5 == 0) {
             ctx.beginPath();
             ctx.moveTo(i * gridSize, 0 + startY);
-            ctx.lineTo(i * gridSize, heightWindow + startY);
+            ctx.lineTo(i * gridSize, (heightWindow/zv) + startY);
             ctx.stroke();
             ctx.closePath();
         }
     }
-    for (var i = 0 + quadranty; i < quadranty + heightWindow; i++) {
+    for (var i = 0 + quadranty; i < quadranty + (heightWindow/zv); i++) {
         if (i % 5 == 0) {
             ctx.beginPath();
             ctx.moveTo(0 + startX, i * gridSize);
-            ctx.lineTo(widthWindow + startX, i * gridSize);
+            ctx.lineTo((widthWindow/zv) + startX, i * gridSize);
             ctx.stroke();
             ctx.closePath();
         }
@@ -974,14 +804,14 @@ function debugMode() {
         crossStrokeStyle1 = "#f64";
         crossfillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
-        ghostingcrosses = false
-        Consolemode(2)
+        ghostingcrosses = false;
+        updategfx();
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossfillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-        ghostingcrosses = true
-        Consolemode(1)
+        ghostingcrosses = true;
+        updategfx();
     }
 }
 
@@ -1159,27 +989,36 @@ function setRefreshTime(){
     }
 }
 
-//open a menu to change the font on all entities.
-function fontMenu() {
-    document.getElementById("myCanvas").style.cursor = "default";
-    $("#appearance").show();
-    $("#appearance").width("auto");
-    var form = document.getElementById("f01");
-    form.innerHTML = "Font family:<br>" +
-    "<select id ='font'>" +
-    "<option value='arial' selected>Arial</option>" +
-    "<option value='Courier New'>Courier New</option>" +
-    "<option value='Impact'>Impact</option>" +
-    "<option value='Calibri'>Calibri</option>" +
-    "</select><br>" +
-    "<button type='submit' class='submit-button' onclick='globalFont(); hashfunction(); updategfx();' style='float: none; display: block; margin: 10px auto;'>OK</button>";
-}
 
-//change the font on all entities to the same font. 
+function globalLineThickness(){
+    for(var i = 0; i < diagram.length; i++){
+        if(diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1 || diagram[i].symbolkind == 5){
+            diagram[i].line_width = document.getElementById('line-thickness').value;
+        }
+    }
+}
+//change the font on all entities to the same font.
 function globalFont(){
     for(var i = 0; i < diagram.length; i++){
         if(diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1 || diagram[i].symbolkind == 5){
             diagram[i].font = document.getElementById('font').value;
+        }
+    }
+}
+//change the font color on all entities to the same color. 
+function globalFontColor(){
+    for(var i = 0; i < diagram.length; i++){
+        if(diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5){
+            diagram[i].fontColor = document.getElementById('fontColor').value;
+        }
+    }
+}
+
+//change the text size on all entities to the same size. 
+function globalTextSize(){
+    for(var i = 0; i < diagram.length; i++){
+        if(diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5){
+            diagram[i].sizeOftext = document.getElementById('TextSize').value;
         }
     }
 }
