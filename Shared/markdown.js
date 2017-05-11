@@ -12,6 +12,7 @@ Markdown support javascript
 */
 // GLOBALS
 var tableAlignmentConf = [];
+var openedSublists = [];
 
 
 //Functions for gif image
@@ -295,25 +296,44 @@ function handleLists(currentLine, prevLine, nextLine) {
     
      // Open a new sublist
     if(currentLineIndentation < nextLineIndentation) { 
-    	console.log("open a new sublist");
+    	markdown += "<li>";
+    	markdown +=  value;
+
+    	// begin open sublist
+    	if(isOrderdList(nextLine)) {
+			markdown += "<ol>";
+            openedSublists.push(0);
+		} else {
+			markdown += "<ul>";
+            openedSublists.push(1);
+		}
     }
     // Stay in current list or sublist
-    if(currentLineIndentation === prevLineIndentation || currentLineIndentation === nextLineIndentation) {
+    if(currentLineIndentation === nextLineIndentation) {
     	markdown += "<li>";
     	markdown +=  value;
     	markdown += "</li>";
     }
     // Close sublists
     if(currentLineIndentation > nextLineIndentation) { 
-    	console.log("closing sublists");
-    	var sublistsToClose = (currentLineIndentation - nextLineIndentation) / 2;
-    	console.log(sublistsToClose);
-    	for(var i = 0; i < sublistsToClose; i++) {
-    		
-    	}
+    	markdown += "<li>";
+    	markdown +=  value;
+    	markdown += "</li>";
+
+        var sublistsToClose = (currentLineIndentation - nextLineIndentation) / 2;
+        for(var i = 0; i < sublistsToClose; i++) {
+            var whatSublistToClose = openedSublists[openedSublists.length - 1];
+            openedSublists.pop();
+
+            if(whatSublistToClose === 0) { // close ordered list
+                markdown += "</ol>";
+            } else { // close unordered list
+                markdown += "</ul>";
+            }
+            markdown += "</li>";
+        }
+
     }
-    
-    
 
     // Close list
     if(!isOrderdList(nextLine) && isOrderdList(currentLine) && !isUnorderdList(nextLine)) markdown += "</ol>"; // Close ordered list

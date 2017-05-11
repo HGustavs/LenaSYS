@@ -15,6 +15,17 @@
       * item 5*
 * item 4*
 * item 5*
+  1. item 1.
+  2. item 1.
+    1. item 1.
+    2. item 1.
+      * item 1*
+        * item 1*
+          1. item 1.
+          2. item 1.
+          3. item 1.
+    3. item 1.
+  3. item 1.
 * item 6*
 
 
