@@ -299,7 +299,50 @@
 
         /***** START ******/
         $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
-        echo "<div id='header'><h1>Installation</h1></div>";
+        $totalSteps = 1;
+        if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
+            $totalSteps += 4;
+            if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
+                $totalSteps++;
+            }
+            if (isset($_POST["writeOverDB"]) && $_POST["writeOverDB"] == 'Yes') {
+                $totalSteps++;
+            }
+            if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
+                $totalSteps += 4;
+                  $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
+                  foreach ($checkBoxes AS $boxName) { //Loop trough each field
+                    if (isset($_POST[$boxName]) || !empty($_POST[$boxName])) {
+                      $totalSteps++;
+                    }
+                  }
+            }
+        }
+        $stepsMade = 0;
+        echo "<div id='header'>
+                <h1>Installation</h1>
+                <svg id='progressBar' height='20px' width='50%'>
+                    <rect id='progressRect' width='0' height='20px' />
+                </svg>
+            </div>";
+        echo "
+            <script>
+            var totalSteps = {$totalSteps};
+            
+            function updateProgressBar(){
+                var totalWidth = document.getElementById(\"progressBar\").clientWidth;
+                var stepWidth = totalWidth / totalSteps;
+                
+                document.getElementById(\"progressRect\").setAttribute(\"width\",\"\" + (document.getElementById(\"progressRect\").getAttribute(\"width\")-0 + stepWidth) + \"\");
+                if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.33){
+                    document.getElementById(\"progressRect\").setAttribute(\"fill\", \"rgb(197,81,83)\");
+                } else if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.66){
+                    document.getElementById(\"progressRect\").setAttribute(\"fill\", \"rgb(253,203,96)\");
+                } else {
+                    document.getElementById(\"progressRect\").setAttribute(\"fill\", \"green\");
+                }
+            }
+        </script>";
         flush();
         ob_flush();
 
@@ -318,6 +361,7 @@
                 echo "<span id='successText' />Permissions on {$putFileHere} set correctly.</span><br>";
             }
         }
+        echo "<script>updateProgressBar();</script>";
 
         # Check if all fields are filled.
         $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
@@ -350,6 +394,7 @@
                 $errors++;
                 echo "<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>";
             }
+            echo "<script>updateProgressBar();</script>";
             flush();
             ob_flush();
 
@@ -364,6 +409,7 @@
                 echo "<span id='failText' />User with name {$username} 
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
+                echo "<script>updateProgressBar();</script>";
                 flush();
                 ob_flush();
             }
@@ -377,6 +423,7 @@
                     echo "<span id='failText' />Database with name {$databaseName} 
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
+                echo "<script>updateProgressBar();</script>";
                 flush();
                 ob_flush();
             }
@@ -389,6 +436,7 @@
                 $errors++;
                 echo "<span id='failText' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
             }
+            echo "<script>updateProgressBar();</script>";
             flush();
             ob_flush();
 
@@ -403,6 +451,7 @@
                 $errors++;
                 echo "<span id='failText' />Could not create user with name {$username}, maybe it already exists...</span><br>";
             }
+            echo "<script>updateProgressBar();</script>";
             flush();
             ob_flush();
 
@@ -457,6 +506,7 @@
                 echo "<span id='failText' />Failed initialization of database because of query (in init_db.sql): </span><br>";
                 echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
             }
+            echo "<script>updateProgressBar();</script>";
             flush();
             ob_flush();
 
@@ -491,6 +541,7 @@
         } else {
             echo "Skipped creating database.<br>";
         }
+        echo "<script>updateProgressBar();</script>";
 
         echo "<b>Installation finished.</b><br>";
         flush();
@@ -566,6 +617,7 @@
                 echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
             }
         }
+        echo "<script>updateProgressBar();</script>";
         flush();
         ob_flush();
     }
@@ -581,6 +633,7 @@
         }
         closedir($dir);
         echo "<span id='successText' />Successfully filled {$destDir} with example files.</span><br>";
+        echo "<script>updateProgressBar();</script>";
     }
     ?>
 
