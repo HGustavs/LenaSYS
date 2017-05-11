@@ -73,3 +73,7 @@ CREATE TABLE `user_usergroup` (
 Added rows to 'vers' to have a start date and end date to a version of a course
   startdate     DATETIME,
   enddate       DATETIME,
+
+/* Updated courseexample to match the current version of the course */
+INSERT INTO codeexample ... (1,'PHP Example 1',"PHP Startup","PHP_Ex1.php",1,2013,'2','1',1,1); # Old version
+INSERT INTO codeexample ... (1,'PHP Example 1',"PHP Startup","PHP_Ex1.php",1,45656,'2','1',1,1); # New version

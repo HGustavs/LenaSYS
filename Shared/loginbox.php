@@ -28,6 +28,7 @@
 					</tr>
 					<tr>
 						<td class="nowrap">
+
 							<label class='text forgotPw' onclick='toggleloginnewpass();'>Forgot Password?</label>
 						</td>
 					</tr>

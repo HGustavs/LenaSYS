@@ -65,6 +65,7 @@ html, body {
 body {
   font-family: 'Roboto', sans-serif,"Helvetica Neue",Helvetica,Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
+  overflow-y:scroll;
 }
 
 table {
@@ -585,30 +586,6 @@ header td {
   background:#fff;
 }
 
-#cookiemsg {
-  background-color: #fecc56;
-  z-index: 1000;
-  position: fixed;
-  bottom: 0px;
-  width: 100%;
-  height: 50.4px;
-  padding: 0 20px 0 20px;
-  display: flex;
-  justify-content: center;
-}
-
-#cookiemsg p {
-  margin: 0px;
-  margin-right: 20px;
-  display: inline;
-  align-self: center;
-  color: #614875;
-}
-
-#cookiemsg input {
-  float: none;
-  align-self: center;
-}
 
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
@@ -777,6 +754,13 @@ header td {
 
 input {
   border-radius: 2px;
+  height: 26px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+
+
 }
 
 .loginBox .inputwrapper {
@@ -1084,6 +1068,55 @@ input.large-button {
   line-height:48px !important;
 }
 
+/* File upload form */
+
+.inputfile {
+	width: 0.1px;
+	height: 0px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    font-size: 16px;
+    font-weight: 300;
+    padding: 5px;
+    padding-right: 10px;
+    color: white;
+    background-color: #614875;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #7B5A96;
+    transition:1s background-color;
+}
+
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+
+.file-upload-submit{
+    font-size: 16px;
+    font-weight: 300;
+    width: 100px;
+    height: 30px;
+    padding: 5px;
+    margin-bottom: 10px;
+    margin-top: -1;
+    color: white;
+    background-color:#614875;
+    cursor: pointer;
+    border: none;
+    border-radius: 0;
+    display: inline-block;
+}
+
 .list {
   width:100%;
   padding:1px;
@@ -1148,13 +1181,14 @@ input.large-button {
 
 
 .list#testTable td{
-    padding:8px;
+    padding:0px;
     text-align:center;border:none;
 }
 
 .list#testTable th{
     line-height:45px;
     box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);
+    font-size: 16px;
 }
 
 .list#testTable tr:nth-child(odd), .list#testTable tr:nth-child(even){
@@ -1164,6 +1198,7 @@ input.large-button {
 .list#testTable tr{
     line-height:45px;
     border-bottom:1px solid gray;
+    font-size: 14px;
 }
 .list#testTable tr>tr{
     line-height:45px;
@@ -1180,11 +1215,11 @@ input.large-button {
 
 .list#testTable #plorf, .list#testTable #dorf {
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
-    padding:10px;
+    padding:4px;
 }
 
 .list#testTable input, .list#testTable select, .list#testTable label {
-    padding:5px;
+    padding:0px;
 }
 
 .selectedtr {
@@ -1192,7 +1227,7 @@ input.large-button {
 }
 
 .list#testTable input {
-    border-width: 2px !important;
+    border-width: 1px !important;
     border-style: inset !important;
 }
 
@@ -1209,14 +1244,18 @@ input.large-button {
 }
 
 span.arrow {
-    padding:10px;
+    padding:4px;
     cursor:pointer;
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
 }
 
 .list#testTable input {
-  border-width: 2px !important;
+  border-width: 1px !important;
   border-style: inset !important;
+  border-radius: 0px;
+  font-size:14px;
+  height:17px;
+  color:black;
 }
 
 #testinnertable {
@@ -1474,25 +1513,28 @@ span.arrow {
   border-bottom-right-radius: 10px;
 }
 
-.fab {
-  position:fixed;
-  width:50px;
-  height:50px;
-  border-radius:25px;
-  box-shadow:0px 0px 15px #888;
-  bottom:55px;
-  right:50px;
-  font-size:24px;
-  text-align:center;
-  background-color:#fecc56;
-  color:#614875;
-  z-index:4000;
-  border:0;
-  outline: none;
-  cursor: pointer;
-  padding-left: 7px;
-  padding-top: 1px;
-}
+/* .fab { */
+  /* position:fixed; */
+  /* width:50px; */
+  /* height:50px; */
+  /* border-radius:25px; */
+  /* box-shadow:0px 0px 15px #888; */
+  /* bottom:35px; */
+  /* right:50px; */
+  /* font-size:24px; */
+  /* text-align:center; */
+  /* background-color:#fecc56; */
+  /* color:#614875; */
+  /* z-index:4000; */
+  /* border:0; */
+  /* outline: none; */
+  /* cursor: pointer; */
+  /* padding-left: 7px; */
+  /* padding-top: 1px; */
+/* } */
+/* .fab:hover { */
+  /* transform:scale(1.1); */
+/* } */
 
 .dugga-pass {
 	border-left: 2px solid rgb(219, 208, 216);
@@ -1925,6 +1967,38 @@ table {
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+#cookiemsg {
+  background-color: #fecc56;
+  z-index: 1000;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  height: 60px;
+  padding: 0 20px 0 0px;
+  display: flex;
+  justify-content: center;
+}
+
+#cookiemsg p {
+  margin: 0px;
+  margin-left: 5px;
+  display: inline;
+  align-self: center;
+  color: #614875;
+}
+
+#cookiemsg input {
+  float: none;
+  align-self: center;
+  margin-right: 5px;
+}
+}
+
 .nowrap {
   white-space: nowrap;
 }
@@ -1937,9 +2011,10 @@ table {
 
 .showhidetext {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   color: white;
 }
+
 
 /* Title for the subpages of the section-editor */
 .titles{
