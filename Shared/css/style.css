@@ -768,7 +768,6 @@ header td {
 }
 
 #before, #after {
-  float: left;
   width: 226px;
 }
 
@@ -884,7 +883,6 @@ input {
 .loginBox .forgotPw {
   cursor: pointer;
   text-decoration: underline;
-  margin-left: 46px;
 }
 
 .loginBox .form-control {
