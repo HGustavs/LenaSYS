@@ -157,7 +157,7 @@ function drawtable(){
 		str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
 		for(var lid in tablecontent[i].lidstogroup) { // Iterate the data per list entry column
 			str+="<td style='padding-left:5px;'>";
-			str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+" class='test' onchange=changegroup()>";
+			str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+" class='test' onchange=changegroup(this)>";
 			str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
 			for(var level2lid in availablegroups) {
 				// Iterate the groups in each lid, example: 
@@ -280,13 +280,8 @@ function changegroup(changedElement) {
 		'ugid':value
 	};
 	
-	// Placeholder
-	// 				 "UPDATE", data, "GROUP" ?
-	// AJAXRequest(<action>, <data>, <domain>);
-	
-	// Must make a query in AJAXRequest to insert mappings: 
-	// uid to ugid in user_usergroup
-	// ugid to lid in usergroup_listentries
+	// This AJAXService will map uid to ugid in user_usergroup
+	AJAXService("UPDATEGROUP", data, "GROUP");
 	
 	// Debugger, needed for now
 	console.log('You have tried to change a group');

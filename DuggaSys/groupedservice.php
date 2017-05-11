@@ -151,8 +151,7 @@ if(strcmp($opt,"GET")==0){
 		$data['tablecontent'] = $tableContent;
 		$data['availablegroups'] = $groupsPerLids;
  	}
-}
-else if(strcmp($opt,"NEWGROUP")==0){
+} else if(strcmp($opt,"NEWGROUP")==0){
 	$query = $pdo->prepare("INSERT INTO `usergroup` (`ugid`, `name`, `created`, `lastupdated`) VALUES (DEFAULT, :name, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"); 
 	$query->bindParam(':name', $name);
 
@@ -172,6 +171,31 @@ else if(strcmp($opt,"NEWGROUP")==0){
 			);
 		}
 	}
+} else if(strcmp($opt, "UPDATEGROUP") == 0) {
+	$uid = getOP('uid');
+	$lid = getOP('lid');
+	$ugid = getOP('ugid');
+	
+	if($ugid > 0) { // User wants to assign to a group
+		$query = $pdo->prepare("REPLACE INTO user_usergroup (uid, ugid) VALUES (:uid, :ugid)");
+		$query->bindParam(":uid", $uid);
+		$query->bindParam(":ugid", $ugid);
+		
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error inserting/updating uid/ugid mapping. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+		}
+	} else { // User wants to unassign from a group
+		$query = $pdo->prepare("DELETE FROM user_usergroup WHERE uid = :uid AND ugid = :ugid"); // Remove where there is the combination of uid and ugid
+		$query->bindParam(":uid", $uid);
+		$query->bindParam(":ugid", $ugid);
+		
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error deleting uid/ugid mapping. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+		}
+	}
+	
 }
 
 if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
