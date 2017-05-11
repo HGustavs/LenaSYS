@@ -28,9 +28,6 @@
 					</tr>
 					<tr>
 						<td class="nowrap">
-							<input id='saveuserlogin' type='checkbox' value="on">
-							<label class="text">Remember me</label>
-							
 							<label class='text forgotPw' onclick='toggleloginnewpass();'>Forgot Password?</label>
 						</td>
 					</tr>
