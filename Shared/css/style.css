@@ -900,6 +900,7 @@ input {
   font-family: Roboto, Arial Narrow;
   margin-left: -2px;
 }
+
 #loginBoxTitle{
   font-size: 15px;
 }
@@ -1928,10 +1929,11 @@ table {
 /* Modal Content/Box */
 .SwimContentWrap {
   position: absolute;
-  left: 4%;
+  left: 1%;
   top: 62px;
   overflow: auto;
   padding: 0;
+  margin: auto;
 }
 
 /* The Close Button */
@@ -1956,15 +1958,15 @@ table {
 
 .swimlaneOverlay {
   display: none; /* Hidden by default */
-  position: absolute; /* Stay in place */
+  position: fixed; /* Stay in place */
   z-index: 10000; /* Sit on top */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
 }
 
 
@@ -2015,6 +2017,230 @@ and (max-device-width : 480px) {
   color: white;
 }
 
+/* Section editor menu buttons */
+
+/* The original state of the buttons */
+table.navheader td.menuButton {
+  margin-right: 2px;
+  width: 112px;
+  transition: 0.5s;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+}
+
+table.navheader div.menuButton {
+  pointer-events: auto;
+  display: inline-block;
+  opacity: 1.0;
+  transition:  opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+}
+
+/* Hamburger menu, hidden as default state */
+table.navheader td.hamburger {
+  pointer-events: none;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 0px;
+  width: 0px;
+  opacity: 0.0;
+  transition: width 0.5s, opacity 0.5s, margin 0.5s;
+  -webkit-transition: width 0.5s, opacity 0.5s, margin 0.5s;
+  -moz-transition: width 0.5s, opacity 0.5s, margin 0.5s;
+  -o-transition: width 0.5s, opacity 0.5s, margin 0.5s;
+}
+
+table.navheader nav.package {
+  margin-left: 0px;
+  widht: 100%;
+}
+
+table.navheader div.hamburgerMenu {
+  padding: 2px 2px 2px 2px;
+  pointer-events: none;
+  position: absolute;
+  margin-top: 50px;
+  margin-left: 50px;
+  z-index: 1;
+  background-color: #ccc;
+  border: 2px solid #999;
+  display: none;
+  overflow-x: hidden;
+}
+
+table.navheader input.hamburger {
+  width: 30px;
+  margin: 6px 0px 2px 0px;
+  padding: 1px 6px 1px 6px;
+}
+
+ul.hamburgerList {
+  list-style-type: none;
+  margin: 2px 2px 2px 2px;
+  padding: 0px 0px 0px 0px;
+}
+
+ul.hamburgerList li {
+  margin: 2px 2px 2px 2px;
+  padding: 0px 0px 0px 0px;
+  pointer-events: none;
+  display: none;
+  height: 0px;
+  opacity: 0;
+}
+
+ul.hamburgerList button.menuButton {
+  margin: 2px 2px 2px 2px;
+  padding: 0px 0px 0px 0px;
+}
+
+/* moment date and course version */
+
+.dateField {
+  display: inline-block;
+  opacity: 1.0;
+  max-width: 1000px; /* Cannot animate to auto width, 1000px should be enough for anyone */
+  pointer-events: auto;
+  transition: opacity 300ms, width 300ms;
+  -webkit-transition: opacity 300ms, width 300ms;
+  -moz-transition: opacity 300ms, width 300ms;
+  -o-transition: opacity 300ms, width 300ms;
+}
+
+.courseVersionField {
+  display: inline-block;
+  margin-right: 10px;
+  opacity: 1.0;
+  max-width: 1000px; /* Cannot animate to auto width, 1000px should be enough for anyone */
+  pointer-events: auto;
+  transition: opacity 300ms, width 300ms, margin 300ms;
+  -webkit-transition: opacity 300ms, width 300ms, margin 300ms;
+  -moz-transition: opacity 300ms, width 300ms, margin 300ms;
+  -o-transition: opacity 300ms, width 300ms, margin 300ms;
+}
+
+@media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
+  table.navheader td.editVers,
+  table.navheader td.contribution,
+  table.navheader td.newVers {
+    margin-right: 0px;
+    width: 0px;
+    -webkit-transition: margin-right 0.5s, width 0.5s;
+    -moz-transition: margin-right 0.5s, width 0.5s;
+    -o-transition: margin-right 0.5s, width 0.5s;
+  }
+
+  table.navheader div.editVers,
+  table.navheader div.contribution,
+  table.navheader div.newVers {
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+  }
+
+  table.navheader td.hamburger {
+    pointer-events: auto;
+    width: 32px;
+    opacity: 1.0;
+    margin-right: 4px;
+    -webkit-transition: opacity 0.5s, width 0.5s, margin 0.5s;
+    -moz-transition: opacity 0.5s, width 0.5s, margin 0.5s;
+    -o-transition: opacity 0.5s, width 0.5s, margin 0.5s;
+  }
+
+  ul.hamburgerList li.newVers,
+  ul.hamburgerList li.editVers,
+  ul.hamburgerList li.contribution {
+    pointer-events: auto;
+    display: block;
+    height: 26px;
+    opacity: 1.0;
+  }
+
+  /* moment date and course version */
+  .dateField {
+    opacity: 0.0;
+    max-width: 0px;
+    pointer-events: none;
+    transition: opacity 300ms, width 300ms;
+    -webkit-transition: opacity 300ms, width 300ms;
+    -moz-transition: opacity 300ms, width 300ms;
+    -o-transition: opacity 300ms, width 300ms;
+  }
+
+  .courseVersionField {
+    margin-right: 0px;
+    opacity: 0.0;
+    max-width: 0px;
+    pointer-events: none;
+    transition: opacity 300ms, width 300ms, margin 300ms;
+    -webkit-transition: opacity 300ms, width 300ms, margin 300ms;
+    -moz-transition: opacity 300ms, width 300ms, margin 300ms;
+    -o-transition: opacity 300ms, width 300ms, margin 300ms;
+  }
+}
+
+@media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
+  table.navheader td.access,
+  table.navheader td.groups {
+    margin-right: 0px;
+    width: 0px;
+    -webkit-transition: margin-right 0.5s, width 0.5s;
+    -moz-transition: margin-right 0.5s, width 0.5s;
+    -o-transition: margin-right 0.5s, width 0.5s;
+  }
+
+  table.navheader div.access,
+  table.navheader div.groups {
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s,;
+  }
+
+  ul.hamburgerList li.access,
+  ul.hamburgerList li.groups {
+    pointer-events: auto;
+    display: block;
+    height: 26px;
+    opacity: 1.0;
+  }
+}
+
+@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
+  table.navheader td.tests,
+  table.navheader td.files {
+    margin-right: 0px;
+    width: 0px;
+    -webkit-transition: margin-right 0.5s, width 0.5s;
+    -moz-transition: margin-right 0.5s, width 0.5s;
+    -o-transition: margin-right 0.5s, width 0.5s;
+  }
+
+  table.navheader div.tests,
+  table.navheader div.files {
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+  }
+
+  ul.hamburgerList li.tests,
+  ul.hamburgerList li.files {
+    pointer-events: auto;
+    display: block;
+    height: 26px;
+    opacity: 1.0;
+  }
+}
 /* Title for the subpages of the section-editor */
 .titles{
   width:100%;

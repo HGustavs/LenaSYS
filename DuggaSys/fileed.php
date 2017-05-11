@@ -82,11 +82,11 @@ pdoConnect();
 		include '../Shared/loginbox.php';
 	?>
 
-	<!-- Edit File Dialog START -->
-	<div id='editFile' class='loginBox' style='width:464px;display:none;'>
+	<!-- Add File Dialog START -->
+	<div id='addFile' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
-			<h3>Edit File/Link</h3>
-			<div class='cursorPointer' onclick='closeEditFile();'>x</div>
+			<h3>Add File/Link</h3>
+			<div class='cursorPointer' onclick='closeAddFile();'>x</div>
 		</div>
 		<form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
 			<div style='padding:5px;'>
