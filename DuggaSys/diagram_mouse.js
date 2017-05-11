@@ -1,4 +1,4 @@
-/* 
+/*
 ----- THIS FILE HANDLES ALL MOUSEEVENTS IN THE DIAGRAM -----
 */
 
@@ -316,7 +316,7 @@ function mouseupevt(ev) {
         erAttributeA.bottomRight = p2;
 
         erAttributeA.centerpoint = p3;
-        erAttributeA.attributeType = "";
+        erAttributeA.object_type = "";
         erAttributeA.fontColor = "#253";
         erAttributeA.font = "Arial";
         diagram.push(erAttributeA);
@@ -331,7 +331,7 @@ function mouseupevt(ev) {
         erEnityA.bottomRight = p2;
         erEnityA.centerpoint = p3;
 
-        erEnityA.entityType = "";
+        erEnityA.object_type = "";
         erEnityA.fontColor = "#253";
         erEnityA.font = "Arial";
         diagram.push(erEnityA);
@@ -344,6 +344,8 @@ function mouseupevt(ev) {
         erLineA = new Symbol(4);
         erLineA.name = "Line" + diagram.length;
         erLineA.topLeft = p1;
+
+        erLineA.object_type = "";
         erLineA.bottomRight = p2;
         erLineA.centerpoint = p3;
         diagram.push(erLineA);
@@ -379,20 +381,15 @@ function mouseupevt(ev) {
 function doubleclick(ev) {
     var posistionX = (startX + xPos);
     var posistionY = (startY + yPos);
-    if (diagram[selobj].targeted == true) {
+    if (selobj != -1 && diagram[selobj].targeted == true) {
         openAppearanceDialogMenu();
+        console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
         document.getElementById('nametext').value = diagram[selobj].name;
         document.getElementById('fontColor').value = diagram[selobj].fontColor;
         document.getElementById('font').value = diagram[selobj].font;
         document.getElementById('TextSize').value = diagram[selobj].sizeOftext;
-        if (document.getElementById('entityType') != null) {
-            document.getElementById('entityType').value = diagram[selobj].entityType;
-        }
-        if (document.getElementById('attributeType') != null) {
-            document.getElementById('attributeType').value = diagram[selobj].attributeType;
-        }
-        if (document.getElementById('relationType') != null) {
-            document.getElementById('relationType').value = diagram[selobj].relationType;
+        if (document.getElementById('object_type') != null) {
+            document.getElementById('object_type').value = diagram[selobj].object_type;
         }
     }
 }
