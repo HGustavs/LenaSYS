@@ -29,7 +29,7 @@
                     $coursevers=getOPG('coursevers');
                     if($coursevers=="UNK") $coursevers=getOPG('cvers');
 					echo "<td class='navButt' id='swimlane' title='swimlane'>";
-					$path = getcwd() . "/swimlane.php?courseid=" . $cid . "&coursevers=" . $coursevers;
+					$path = getcwd() . "../DuggaSys/swimlane.php?courseid=" . $cid . "&coursevers=" . $coursevers;
                     echo "<a class ='linkSwimlane' href='JavaScript:void(0);'><img src='../Shared/icons/swimlane.svg'></a></td>";
 
 			}
@@ -92,10 +92,10 @@
             });
 
             function loadSwimlane() {
-                $('.SwimContent').load(path + "/../../Shared/swimlane.php?courseid=" +
-                  <?php ((isset($cid)) ? Print($cid) : Print(0)) ?> +
+                $('.SwimContent').load(path + "/../../DuggaSys/swimlane.php?courseid=" +
+                  <?php if(isset($cid)){Print($cid);}else{Print(0);}?> +
                         "&coursevers=" +
-                  <?php ((isset($coursevers)) ? Print($coursevers) : Print(0)) ?>);
+                  <?php if(isset($coursevers)){Print($coursevers);}else{Print(0);} ?>);
                 swimBox.style.display = "block";
             }
 

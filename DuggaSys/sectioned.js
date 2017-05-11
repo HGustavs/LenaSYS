@@ -2,9 +2,6 @@ var querystring=parseGet();
 var retdata;
 
 AJAXService("get",{},"SECTION");
-// These functions loads at page load
-$(function() {
-});
 
 //----------------------------------------
 // Commands:
@@ -16,46 +13,18 @@ function displaymessage(){
    $(".messagebox").css("display","block");
 }
 
-var resizeTimer;
-var showInline = false;
-var menuButtonWidth = 112;
-var menuButtonMarginRight = 2;
-var menuButtons = [];
-
-menuButtons.push({ 'width': 1050, 'name': 'EditVers', 'display': true });
-menuButtons.push({ 'width': 950, 'name': 'NewVers', 'display': true });
-menuButtons.push({ 'width': 850, 'name': 'Analysis', 'display': true });
-menuButtons.push({ 'width': 750, 'name': 'Access', 'display': true });
-menuButtons.push({ 'width': 650, 'name': 'Files', 'display': true });
-menuButtons.push({ 'width': 550, 'name': 'Tests', 'display': true });
-menuButtons.push({ 'width': 450, 'name': 'Groups', 'display': true });
-menuButtons.push({ 'width': 400, 'name': 'Results', 'display': true });
-
-function disappearingFields() {
-  var windowSize = $(window).width();
-  if(windowSize < 480 && showInline == true) {
-    jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeOut(1000);
-    showInline = false;
-  } else if(windowSize >= 480 && showInline == false) {
-    jQuery('.thisDateShouldDisappearWhenScreenIsTooSmall').fadeIn(1000);
-    showInline = true;
-  }
+// Show the hamburger menu
+function bigMac() {
+  $(".hamburgerMenu").toggle();
+  bigMacSymbol();
 }
 
-function toggleMenuButtons() {
-  var windowSize = $(window).width();
-  for(i=0; i<menuButtons.length; i++) {
-    if(windowSize < menuButtons[i].width && menuButtons[i].display) {
-      jQuery("#button"+menuButtons[i].name).fadeOut({duration: 500, queue: false });
-      jQuery("#td"+menuButtons[i].name).animate({width: '0px'}, {duration: 500, queue: false });
-      jQuery("#td"+menuButtons[i].name).animate({marginRight: '0px'}, {duration: 500, queue: false });
-      menuButtons[i].display = false;
-    } else if(windowSize >= menuButtons[i].width && !menuButtons[i].display) {
-      jQuery("#button"+menuButtons[i].name).fadeIn({duration: 500, queue: false });
-      jQuery("#td"+menuButtons[i].name).animate({width: menuButtonWidth+'px'}, {duration: 500, queue: false });
-      jQuery("#td"+menuButtons[i].name).animate({marginRight: menuButtonMarginRight+'px'}, {duration: 500, queue: false });
-      menuButtons[i].display = true;
-    }    
+// Toggle the '≡' and '⨯' depending on if burger menu is up or not
+function bigMacSymbol() {
+  if($(".hamburgerMenu").css('display') == 'block') {
+    $("#hamburgerIcon").val("⨯"); 
+  } else {
+    $("#hamburgerIcon").val("≡"); 
   }
 }
 
@@ -94,15 +63,6 @@ $(document).ready(function(){
 	$('#eenddate').datepicker({
 		dateFormat: "yy-mm-dd"
 	});
-
-  $(window).resize(function() {
-    // This here timeout stuff is to prevent certain event to be missed if user resize windows too fast
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function() {
-      disappearingFields();
-//      toggleMenuButtons();
-    }, 250);
-  });
 });
 
 function showSubmitButton(){ 
@@ -670,34 +630,14 @@ function returnedSection(data)
     
 		str="";
 
-//		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
-		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize'>"; // This is for stacking buttons.
+		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
 
-        if(data['writeaccess']) {
-          str+="<td style='display: inline-block; margin-right:2px; width:112px;'><select class='course-dropdown' onchange='goToVersion(this)'>";
-            if (retdata['versions'].length > 0) {
-                for ( i = 0; i < retdata['versions'].length; i++) {
-                    var item = retdata['versions'][i];
-                    if (retdata['courseid'] == item['cid']) {
-                        var vvers = item['vers'];
-                        var vname = item['versname'];
-                        str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
-                        if(retdata['coursevers']==vvers){
-                            str += "selected";
-                        }
-                        str += ">" + vname + " - " + vvers + "</option>";
-                    }
-                }
-            }
-            str+="</select></td>";
-			
-			str+="<td id='tdEditVers' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonEditVers'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
-
+    if(data['writeaccess']) {
 // Retrieve start and end dates for a version, if there are such, else set to null
       var startdate = null;
       var enddate = null;
       if (retdata['versions'].length > 0) {
-      for ( i = 0; i < retdata['versions'].length; i++) {
+        for ( i = 0; i < retdata['versions'].length; i++) {
           var item = retdata['versions'][i];
           if (retdata['courseid'] == item['cid'] && retdata['coursevers'] == item['vers']) {
             startdate = item['startdate'];
@@ -706,22 +646,54 @@ function returnedSection(data)
         }
       }
 
-			str+='("'+querystring['coursevers']+'","'+versionname+'","'+startdate+'","'+enddate+'")';
-			str+=";'></div></td>";	
+      str+="<td class='hamburger'>";
+      str+="<nav tabindex='0' class='package'><input id='hamburgerIcon' type='button' value='&equiv;' class='submit-button hamburger' title='Hamburger'  onClick='bigMac(); bigMacSymbol();'></nav>";
+      str+="<div class='hamburgerMenu'>";
+      str+="<ul class='hamburgerList'>";
+      str+="<li class='editVers'><button class='submit-button menuButton editVers ' onclick='closeWindows(); bigMacSymbol(); showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");' title='Edit the selected version'>Edit Version</button></li>";
+      str+="<li class='newVers'><button class='submit-button menuButton newVers' onclick='closeWindows(); bigMacSymbol(); showCreateVersion();' title='Create a new version of this course'>New Version</button></li>";
+      str+="<li class='analysis'><button class='submit-button menuButton analysis' onclick='closeWindows(); changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Access Contribution page'>Contribution</button></li>";
+      str+="<li class='access'><button class='submit-button menuButton access' onclick='closeWindows(); accessCourse();' title='Give students access to the selected version'>Access</button></li>";
+      str+="<li class='files'><button class='submit-button menuButton files' onclick='closeWindows(); changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Show files'>Files</button></li>";
+      str+="<li class='tests'><button class='submit-button menuButton tests' onclick='closeWindows(); changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Show tests'>Tests</button></li>";
+      str+="<li class='groups'><button class='submit-button menuButton groups' onclick='closeWindows(); changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Student groups page'>Groups</button></li>";
+      str+="<li class='results'><button class='submit-button menuButton results' onclick='closeWindows(); changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Edit student results'>Results</button></li>";
+      str+="</ul>";
+      str+="</div";
+      str+="</nav>";
+      str+="</td>";
 
-			str+="<td id='tdNewVers' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonNewVers'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></div></td>";
-			str+="<td id='tdAccess' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonAccess'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/></div></td>";
-			str+="<td id='tdResults' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonResults'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></div></td>";
-			str+="<td id='tdTests' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonTests'><input type='button' value='Tests' class='submit-button' id='testbutton' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
-			str+="<td id='tdFiles' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonFiles'><input type='button' value='Files' class='submit-button' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
-			str+="<td id='tdAnalysis' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonAnalysis'><input type='button' value='Analysis' class='submit-button' title='Access analysis page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
-			str+="<td id='tdGroups' style='display: inline-block; margin-right:2px; width:112px;'><div style='display: inline-block;' id='buttonGroups'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+      str+="<td style='display: inline-block;'><select class='course-dropdown' onchange='goToVersion(this)'>";
+      if (retdata['versions'].length > 0) {
+          for ( i = 0; i < retdata['versions'].length; i++) {
+              var item = retdata['versions'][i];
+              if (retdata['courseid'] == item['cid']) {
+                  var vvers = item['vers'];
+                  var vname = item['versname'];
+                  str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+                  if(retdata['coursevers']==vvers){
+                      str += "selected";
+                  }
+                  str += ">" + vname + " - " + vvers + "</option>";
+              }
+          }
+      }
+      str+="</select></td>";
+      
+      str+="<td class='editVers menuButton' style='display: inline-block;'><div class='editVers menuButton'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");'></div></td>";	
+			str+="<td class='newVers menuButton' style='display: inline-block;'><div class='newVers menuButton'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></div></td>";
+			str+="<td class='access menuButton' style='display: inline-block;'><div class='access menuButton'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/></div></td>";
+			str+="<td class='results menuButton' style='display: inline-block;'><div class='results menuButton'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></div></td>";
+			str+="<td class='tests menuButton' style='display: inline-block;'><div class='tests menuButton'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+			str+="<td class='files menuButton' style='display: inline-block;'><div class='files menuButton'><input type='button' value='Files' class='submit-button' title='Show files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+			str+="<td class='contribution menuButton' style='display: inline-block;'><div class='contribution menuButton'><input type='button' value='Contribution' class='submit-button' title='Access contribution page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+			str+="<td class='groups menuButton' style='display: inline-block;'><div class='groups menuButton'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
     }else{
 			// No version selector for students
 		}
         if(retdata["writeaccess"]){
             str+="</tr></table>";
-            str += "<input type='button' class='fab' value='+' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>";
+            // str += "<input type='button' class='fab' value='+' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>";
         }else{
             str+="</tr></table>";
         }
@@ -738,14 +710,17 @@ function returnedSection(data)
 
     // Course Name
     // This will ellipsis on the course name, and keep course code and vers always fully expanded
-    str+="<div class='course ellipseBox' style='display: flex;align-items: center;justify-content: center;'>";
-        	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='position:absolute; left:10px; margin-top: 15px; display: flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowCompTop'><img src='../Shared/icons/right_complement.svg' class='arrowRightTop' style='display:none;'>";
-        	str+="<text class='showhidetext' >Show/hide all</text>";
+
+    str+="<div class='course' style='display: flex;align-items: center;justify-content: center;'>";
+        	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 10px; display: flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowCompTop'><img src='../Shared/icons/right_complement.svg' class='arrowRightTop' style='display:none;'>";
         	str+="</div>";
+        	str+="<div class='showhide' id='course-showhide-text' style='position:absolute;  cursor: pointer; left:25px; margin-top: 10px; display: flex;' >";
+        	str+="<text class='showhidetext' >Show/hide all</text>"; 
+        	str+="</div>";
+
         	str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;'>"+data.coursename+"</div>";
-        str+="<div class='nowrap'";
 			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
-			str+="<div id='course-versname' class='thisDateShouldDisappearWhenScreenIsTooSmall' style='margin-right:10px;'>"+versionname+"</div>";
+			str+="<div id='course-versname' class='courseVersionField'>"+versionname+"</div>";
         if(retdata["writeaccess"]){
             str+="<div id='course-newitem' style='display: flex; position: absolute; right:15px;'>";
             str += "<input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
@@ -967,25 +942,25 @@ function returnedSection(data)
 				str+=">";
 
 				// Content of Section Item					
-				if (parseInt(item['kind']) == 0) {						// Header
+				if (parseInt(item['kind']) == 0) {				// Header
 					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
-				}else if (parseInt(item['kind']) == 1) {					// Section
-					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+				}else if (parseInt(item['kind']) == 1) {		// Section
+					str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;'><span class='ellipsis'>"+item['entryname']+"</span></div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 4) {		// Moment
-          var momentsplit = item['entryname'].split(" ");
-          var momentname = momentsplit.splice(0,momentsplit.length-1);
-          var momenthp = momentsplit[momentsplit.length-1];
+          			var momentsplit = item['entryname'].split(" ");
+          			var momentname = momentsplit.splice(0,momentsplit.length-1);
+          			var momenthp = momentsplit[momentsplit.length-1];
 
-          str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;'><span class='ellipsis'>"+momentname+"</span> "+momenthp+"</div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+          			str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;'><span class='ellipsis'>"+momentname+"</span> "+momenthp+"</div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {	
 					if(parseInt(item['rowcolor']) == 1) {
 						str+="<a class='"+blorf+"' style='font-size:14pt;color:white;cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
 					}else{	// Test / Dugga
-          var duggasplit = item['entryname'].split(" ");
-          var dugganame = duggasplit.splice(0,duggasplit.length-1);
-          var dugganumber = duggasplit[duggasplit.length-1];
+          				var duggasplit = item['entryname'].split(" ");
+          				var dugganame = duggasplit.splice(0,duggasplit.length-1);
+          				var dugganumber = duggasplit[duggasplit.length-1];
 
 						str+="<div style='display:flex;'><a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' ><span class='nowrap'><span class='ellipsis'>"+dugganame+"</span> "+dugganumber+"</span></a></div>";
 					}
@@ -1022,24 +997,23 @@ function returnedSection(data)
 					}
 */
 					var dl = deadline.split(" ");
-         str+="<td style='text-align:right;white-space:nowrap;overflow:hidden;width:145px;'>";
 
-         var timeFilterAndFormat = "00:00:00";
-         var yearFormat = "0000-";
-         var dateFormat = "00-00";
+           var timeFilterAndFormat = "00:00:00"; // time to filter away
+           var yearFormat = "0000-";
+           var dateFormat = "00-00";
 
-         str+="<span class='thisDateShouldDisappearWhenScreenIsTooSmall' style='display:"+hiddenInline+";'>";
-
-          // If the deadline is 00:00:00, only show YYYY-MM-DD
-         if(dl[1] == timeFilterAndFormat) {
-          str+=deadline.slice(0, yearFormat.length)+"</span>"+deadline.slice(yearFormat.length, yearFormat.length+dateFormat.length);
-					} else {
-          // If the deadline is set to another time, show the full YYYY-MM-DD HH:MM:SS
-          // If the screen is to narrow, only show the MM-DD HH:MM
-          str+=deadline.slice(0, yearFormat.length)+"</span>"+deadline.slice(yearFormat.length, yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length-3)+"<span class='thisDateShouldDisappearWhenScreenIsTooSmall' style='display:"+hiddenInline+";'>"+deadline.slice(yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length-3, yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length)+"</span>"
-;
-					}
-        str+="</td>";
+           str+="<td style='text-align:right;overflow:hidden;max-width:145px;'><div style='white-space:nowrap;'>";
+           if(dl[1] == timeFilterAndFormat) {
+             str+="<div class='dateField'>";
+             str+=deadline.slice(0, yearFormat.length)
+             str+="</div>";
+             str+=deadline.slice(yearFormat.length, yearFormat.length+dateFormat.length);
+           } else {
+             str+="<span class='dateField'>"+deadline.slice(0, yearFormat.length)+"</span>";
+             str+=deadline.slice(yearFormat.length, yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length-3);
+             str+="<span class='dateField'>"+deadline.slice(yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length-3, yearFormat.length+dateFormat.length+1+timeFilterAndFormat.length)+"</span>";
+           }
+           str+="</div></td>";
        } else {
 					// Do nothing
 				}
@@ -1077,8 +1051,6 @@ function returnedSection(data)
 		str+="</div>";
 		var slist=document.getElementById('Sectionlist');
 		slist.innerHTML=str;	
-    disappearingFields();
-//    toggleMenuButtons();
 		if(resave == true){
 			str="";
 			$("#Sectionlist").find(".item").each(function(i) {
