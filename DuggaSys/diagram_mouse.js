@@ -48,23 +48,32 @@ function zoomOutMode(e) {
 }
 
 function zoomInClick() {
-    var oldZV = zv;
-    zv += 0.1;
-    reWrite();
-    // To be able to use the 10% increase och decrease, we need to use this calcuation.
-    var inScale = ((1 / oldZV) * zv);
-    ctx.scale(inScale, inScale);
-    updategfx();
+    if(zv>=2.0){
+        alert("You can't zoom in more!");
+    }else{
+        var oldZV = zv;
+        zv += 0.1;
+        reWrite();
+        // To be able to use the 10% increase och decrease, we need to use this calcuation.
+        var inScale = ((1 / oldZV) * zv);
+        ctx.scale(inScale, inScale);
+        updategfx();
+    }
 }
 
 function zoomOutClick() {
-    var oldZV = zv;
-    zv -= 0.1;
-    reWrite();
-    // To be able to use the 10% increase och decrease, we need to use this calcuation.
-    var outScale = ((1 / oldZV) * zv);
-    ctx.scale(outScale, outScale);
-    updategfx();
+    if(zv<0.6){
+        alert("You can't zoom out more!");
+    }else{
+        var oldZV = zv;
+        zv -= 0.1;
+        reWrite();
+        // To be able to use the 10% increase och decrease, we need to use this calcuation.
+        var outScale = ((1 / oldZV) * zv);
+        ctx.scale(outScale, outScale);
+        updategfx();
+        drawGrid();
+    }
 }
 
 // Recursive Pos of div in document - should work in most browsers
