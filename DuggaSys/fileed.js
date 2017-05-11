@@ -25,9 +25,9 @@ AJAXService("GET",{cid:querystring['cid']},"FILE");
 
 $(function(){$( "#release" ).datepicker({dateFormat: "yy-mm-dd"});$( "#deadline" ).datepicker({dateFormat: "yy-mm-dd"});});
 
-function closeEditFile()
+function closeAddFile()
 {
-		$("#editFile").css("display","none");
+		$("#addFile").css("display","none");
 		$("#overlay").css("display","none");
 }
 
@@ -52,7 +52,7 @@ $(document).on('click','.last',function(e) {
 function createLink()
 {
 		$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' /></td>");
-		$("#editFile").css("display","block");
+		$("#addFile").css("display","block");
 		$("#filey").css("display","none");
 		$("#linky").css("display","block");
 		$("#selecty").css("display","none");
@@ -89,7 +89,7 @@ function createFile(kind)
 				$("#selecty").css("display","none");				
 		}
 
-		$("#editFile").css("display","block");
+		$("#addFile").css("display","block");
 		$("#filey").css("display","block");
 		$("#linky").css("display","none");
 		$("#overlay").css("display","block");
