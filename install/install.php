@@ -26,8 +26,8 @@
     };
 
     ob_start();
+
     /************* MODAL TO SHOW STEPS BEFORE AND AFTER ****************/
- 
     $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
     echo "
                     <div id='warning' class='modal'>
@@ -89,6 +89,7 @@
     </script>
     <form action="install.php?mode=install" method="post">
         <div id="inputWrapper">
+            <!-- Headings for input -->
             <div class="inputHeading" valign=top>
                 <div class="inputFirst" id="th1"><h2>New/Existing MySQL user and DB</h2></div>
                 <div class="inputNotFirst" id="th2"><h2>MySQL Root Login</h2></div>
@@ -123,6 +124,9 @@
       }
     }
     echo '<div id="contentWrapper">';
+    /* All the different content for input
+     * td1 will be shown at start, the others (td2 - 5) will be shown by clicking arrows.
+     */
     echo '<div class="inputContent" id="td1">';
     echo '<p id="infoText"><b>To start installation please enter a new (or existing) MySQL user. This could, for example, be your student login.
             Next enter a password for this user (new or existing).<br>
@@ -184,6 +188,8 @@
                     <input class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
                 </div>
             </div>
+
+            <!-- Arrows for navigation between input pages -->
             <div class="arrow" id="leftArrow">
                 <svg height="150" width="150">
                     <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
@@ -196,6 +202,8 @@
                     <polygon points="50,30 130,75 50,120" />
                 </svg>
             </div>
+
+            <!-- Javascript functions for arrow functionality-->
             <script>
                 var leftArrow = document.getElementById('leftArrow');
                 var rightArrow = document.getElementById('rightArrow');
@@ -215,8 +223,10 @@
                 }
 
                 function updateInputPage(){
+                    /* Hide current input page */
                     hideInputPage();
 
+                    /* Dont show left arrow on first page and dont show right arrow on last page */
                     if (inputPage == 1) {
                         document.getElementById('leftArrow').style.display = "none";
                     } else {
@@ -230,6 +240,7 @@
                 }
 
                 function hideInputPage(){
+                    /* Slide away the old page from the right direction depending on new page */
                     if (inputPage > previousInputPage) {
                         $('#th' + previousInputPage).hide("slide", {direction: "left" }, 500);
                         $('#td' + previousInputPage).hide("slide", {direction: "left" }, 500);
@@ -237,10 +248,13 @@
                         $('#th' + previousInputPage).hide("slide", {direction: "right" }, 500);
                         $('#td' + previousInputPage).hide("slide", {direction: "right" }, 500);
                     }
+
+                    /* Show the new input page when animation is done */
                     window.setTimeout(showInputPage,500);
                 }
 
                 function showInputPage(){
+                    /* Slide the new page from the right direction depending on previous page */
                     if (inputPage > previousInputPage) {
                         $('#th' + inputPage).show("slide", {direction: "right" }, 500);
                         $('#td' + inputPage).show("slide", {direction: "right" }, 500);
@@ -250,14 +264,21 @@
                     }
                 }
             </script>
+
+            <!-- Empty footer to show a nice border at bottom -->
             <div id="inputFooter"></div>
         </div>
     </form>
+    <!-- END OF INPUT FORM SECTION -->
 
+    <!-- START of install section. When form is submitted mode will be changed to install and this will run
+      -- Flush and ob_flush is used after every output in progress to dynamically show output when something was done.
+      -->
     <?php if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
         $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
         ob_end_clean(); // Remove form and start installation.
 
+        /* Pop-up window when installation is done. Hidden from start. */
         echo "
                     <div id='warning' class='modal'>
                 
@@ -268,6 +289,8 @@
                         </div>
                 
                     </div>";
+
+        /* Javascripts for warning pop-up */
         echo "
             <script>
                 var modalRead = false; // Have the user read info?
@@ -297,9 +320,11 @@
         flush();
         ob_flush();
 
-        /***** START ******/
+        /***** START of installation progress ******/
         $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
-        $totalSteps = 1;
+        $totalSteps = 1; // Variable to hold the total steps to complete.
+
+        /* The following if-block will decide how many steps there are to complete installation. */
         if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
             $totalSteps += 4;
             if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
@@ -318,13 +343,18 @@
                   }
             }
         }
-        $stepsMade = 0;
+
+        /* Header.
+         * Will contain title and progress bar.
+         */
         echo "<div id='header'>
                 <h1>Installation</h1>
                 <svg id='progressBar' height='20px' width='50%'>
                     <rect id='progressRect' width='0' height='20px' />
                 </svg>
             </div>";
+
+        /* Javascripts to calculate length of progressRect. This will show the current progress in progressBar. */
         echo "
             <script>
             var totalSteps = {$totalSteps};
@@ -333,7 +363,10 @@
                 var totalWidth = document.getElementById(\"progressBar\").clientWidth;
                 var stepWidth = totalWidth / totalSteps;
                 
+                /* Calculate length */
                 document.getElementById(\"progressRect\").setAttribute(\"width\",\"\" + (document.getElementById(\"progressRect\").getAttribute(\"width\")-0 + stepWidth) + \"\");
+                
+                /* Decide color depending on how far progress has gone */
                 if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.33){
                     document.getElementById(\"progressRect\").setAttribute(\"fill\", \"rgb(197,81,83)\");
                 } else if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.66){
@@ -548,9 +581,9 @@
         ob_flush();
         echo "</div>";
         echo "<div id='inputFooter'><span id='showHideInstallation'>Show/hide installation progress.</span><br>
-                <span id='errorCount'>Errors: " . $errors . "</span></div>";
+                <span id='errorCount'>Errors: " . $errors . "</span></div>"; # Will show how many errors installation finished with.
 
-        # Collapse progress only if there are no error.
+        # Collapse progress only if there are no errors.
         if ($errors == 0) {
             echo "<script>$('#installationProgressWrap').toggle(500);</script>";
         }
@@ -638,7 +671,7 @@
     ?>
 
     <script>
-        // Show modal
+        /* Show modal */
         modal.style.display = "block";
         var showHideButton = document.getElementById('showHideInstallation');
 
@@ -646,11 +679,14 @@
             toggleInstallationProgress();
         }
 
+        /* Show/Hide installation progress. */
         function toggleInstallationProgress(){
             $('#installationProgressWrap').toggle(500);
         }
 
+        /* Function to select and copy text inside code boxes at end of installation. */
         function selectText(containerid) {
+            /* Get selection inside div. */
             if (document.selection) {
                 var range = document.body.createTextRange();
                 range.moveToElementText(document.getElementById(containerid));
@@ -661,9 +697,15 @@
                 window.getSelection().addRange(range);
             }
 
+            /* Copy selection. */
             document.execCommand("copy");
+
+            /* Remove selection. */
             window.getSelection().removeAllRanges();
 
+            /* Show the 'copied' text to let user know that text was copied to clipboard.
+             * After show animation is done it will call hide function to hide text again.
+             */
             if (containerid == "codeBox1") {
                 $("#copied1").show("slide", {direction: "left" }, 1000);
                 window.setTimeout(function() { hideCopiedAgain("#copied1")}, 2000);
@@ -673,6 +715,7 @@
             }
         }
 
+        /* Hide 'copied' text */
         function hideCopiedAgain(text) {
             $(text).hide("slide", {direction: "right"}, 1000)
         }
