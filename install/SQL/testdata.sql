@@ -242,22 +242,22 @@ INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES 
 
 /* Codeexamples */
 
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'PHP Example 1',"PHP Startup","PHP_Ex1.php",1,2013,'2','1',1,1);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'PHP Example 2',"PHP Startup","PHP_Ex2.php",1,2013,'3','1',1,2);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'PHP Example 3',"PHP Variables","PHP_Ex3.php",1,2013,'4','2',1,3);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'JavaScript Example 1',"Events, DOM access and console.log","JavaScript_Ex1.html",1,2013,'5','3',3,4);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'JavaScript Example 2',"Adding and removing elements in the DOM","JavaScript_Ex2.html",1,2013,'6','4',4,5);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'JavaScript Example 3',"Validating form data","JavaScript_Ex3.html",1,2013,'7','5',3,6);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 1',"Basic canvas graphics","HTML_Ex1.html",1,2013,'8','6',6,7);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 2',"Canvas Gradients and Transformations","HTML_Ex2.html",1,2013,'9','7',2,8);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 3',"Animation and drawing images","HTML_Ex3.html",1,2013,'10','8',2,9);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 4',"Shadows","HTML_Ex4.html",1,2013,'11','9',2,10);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 5',"Reading mouse coordinates","HTML_Ex5.html",1,2013,'12','10',1,11);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 6',"2D Tile Map and Mouse Coordinates","HTML_Ex6.html",1,2013,'13','11',1,12);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 7',"Isometric Tile Map and Mouse Coordinates","HTML_Ex7.html",1,2013,'14','12',1,13);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 8',"Cookies","HTML_Ex8.html",1,2013,'15','13',5,14);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'Shaderprogrammering',"Per Pixel Diffuse Lighting","Shader_Ex1.html",1,2013,'16','14',3,15);
-INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'Shaderprogrammering',"Rim Lighting","Shader_Ex2.html",1,2013,'16','15',3,16);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'PHP Example 1',"PHP Startup","PHP_Ex1.php",1,45656,'2','1',1,1);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'PHP Example 2',"PHP Startup","PHP_Ex2.php",1,45656,'3','1',1,2);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'PHP Example 3',"PHP Variables","PHP_Ex3.php",1,45656,'4','2',1,3);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'JavaScript Example 1',"Events, DOM access and console.log","JavaScript_Ex1.html",1,45656,'5','3',3,4);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'JavaScript Example 2',"Adding and removing elements in the DOM","JavaScript_Ex2.html",1,45656,'6','4',4,5);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'JavaScript Example 3',"Validating form data","JavaScript_Ex3.html",1,45656,'7','5',3,6);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 1',"Basic canvas graphics","HTML_Ex1.html",1,45656,'8','6',6,7);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 2',"Canvas Gradients and Transformations","HTML_Ex2.html",1,45656,'9','7',2,8);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 3',"Animation and drawing images","HTML_Ex3.html",1,45656,'10','8',2,9);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 4',"Shadows","HTML_Ex4.html",1,45656,'11','9',2,10);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 5',"Reading mouse coordinates","HTML_Ex5.html",1,45656,'12','10',1,11);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 6',"2D Tile Map and Mouse Coordinates","HTML_Ex6.html",1,45656,'13','11',1,12);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 7',"Isometric Tile Map and Mouse Coordinates","HTML_Ex7.html",1,45656,'14','12',1,13);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'HTML5 Example 8',"Cookies","HTML_Ex8.html",1,45656,'15','13',5,14);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'Shaderprogrammering',"Per Pixel Diffuse Lighting","Shader_Ex1.html",1,45656,'16','14',3,15);
+INSERT INTO codeexample (cid,sectionname,examplename,runlink,uid,cversion,afterid,beforeid,templateid,exampleid) VALUES (1,'Shaderprogrammering',"Rim Lighting","Shader_Ex2.html",1,45656,'16','15',3,16);
 
 
 /* Boxes for codeexamples */
