@@ -28,7 +28,7 @@ $question = getOP('question');
 $answer = getOP('answer');
 $action = getOP('action');
 $newPassword = getOP('newPassword');
-$hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+$hashedPassword = standardPasswordHash($newPassword);
 $hashedAnswer = standardPasswordHash($answer);
 
 //check if the user is logged in and fetch the password from the db
