@@ -60,7 +60,11 @@ function setup(){
 
   var t = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
   if(t != null) {
-    showTeachers=((t.indexOf("showteachers**true",0)>=0)?true:false);
+  	if((t.indexOf("showteachers**true",0)>=0)){
+  		showTeachers = true;
+	}else{
+  		showTeachers = false;
+	}
   }
 
   window.onscroll = function() {magicHeading()};
@@ -80,11 +84,11 @@ function redrawtable()
   str+="<div id='verthighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
 
   // Redraw Magic heading 
-  str += "<div id='upperDecker' style='position:absolute;left:0px;display:none;'>";
+  str += "<div id='upperDecker' style='position:absolute;left:8px;display:none;'>";
   str += "<table class='markinglist' style='table-layout: fixed;'>";
   str += "<thead>";
   str += "<tr class='markinglist-header'>";
-  str += "<th id='header' class='rowno' ><span>#<span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
+  str += "<th id='header' class='rowno idField' style='width: 28px;'><span>#</span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
   if (momtmp.length > 0){
     // Make first header row!
     //    No such header for magic heading - by design
@@ -97,8 +101,9 @@ function redrawtable()
         str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"													
       }
     }
-    str+="</tr>";
   }		
+  str+="<th style='width: 100%'></th>"; // Padding cell, to make sure the other fields are compressed to a bare minimum
+  str+="</tr>";
   str += "</thead>"
   str += "</table>"
   str += "</div>"
@@ -131,7 +136,7 @@ function redrawtable()
       str+="</tr><tr class='markinglist-header'>";
 
       // Make second header row!
-      str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
+      str+="<th  id='header' class='rowno realIdField'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"	
       for(var j=0;j<momtmp.length;j++){
         if(momtmp[j].kind==3){
           str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"													
@@ -139,15 +144,16 @@ function redrawtable()
           str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"								
         }
       }
-      str+="</tr></thead><tbody>";
     }
 
     // Make second header row if momtmp array is empty
     if (momtmp.length === 0){
       str+="</tr><tr class='markinglist-header'>";
       str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
-      str+="</tr></thead><tbody>";
     }
+
+    str+="<th style='width: 100%'></th>"; // Padding cell, to make sure the other fields are compressed to a bare minimum
+    str+="</tr></thead><tbody>";
 
     // Make result table
     var row=1;
@@ -223,6 +229,11 @@ function redrawtable()
     }
     str+="</tbody></table>";
     document.getElementById("content").innerHTML=str;
+    idField();
+}
+
+function idField() {
+  $(".idField").css("width", $(".realIdField").css("width"));
 }
 
 function cellIn(ev)
@@ -484,6 +495,7 @@ function toggleSortDir(col){
 		localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
     }
     resort();  
+    magicHeading();
 }
 
 function process()
@@ -496,7 +508,7 @@ function process()
 
 		// Create temporary list that complies with dropdown
 		momtmp=new Array;
-		var momname = "tore";
+		var momname = "Moment unavailable";
 		for(var l=0;l<moments.length;l++){
 				if (moments[l].kind===4){
 						momname = moments[l].entryname;
@@ -595,7 +607,11 @@ function process()
                     activeMoment++;
                 } else {
             		var idAddString = "hdr"+lid+"check";
-                    duggaArray[activeMoment-1].push(idAddString);
+                    if(activeMoment>0){
+                        duggaArray[activeMoment-1].push(idAddString);
+                    }else{
+                        duggaArray[activeMoment].push(idAddString);
+                    }
 				}
 
 				if (clist){
@@ -648,12 +664,17 @@ function process()
 		for(var j=0;j<momtmp.length;j++){
 				var lid=moments[j].lid;
 				var name=momtmp[j].entryname;
+				var truncatedname=name;
+				if(truncatedname.length>12){
+                    truncatedname=momtmp[j].entryname.slice(0, 3)+"..."+momtmp[j].entryname.slice(momtmp[j].entryname.length-8);
+				}
+
 
 				dstr+="<div class='checkbox-dugga checknarrow ";				
 				if (moments[j].visible == 0){
-						dstr+="checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol"+(j+1)+"' value='"+(j+1)+"'><label class='headerlabel' for='sortcol"+(j+1)+"' >"+name+"</label></div>";
+						dstr+="checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol"+(j+1)+"' value='"+(j+1)+"'><label class='headerlabel' title='"+name+"' for='sortcol"+(j+1)+"' >"+truncatedname+"</label></div>";
 				}else{
-						dstr+="'><input name='sortcol' type='radio' class='sortradio' id='sortcol"+(j+1)+"' onclick='sorttype(-1)' value='"+(j+1)+"'><label class='headerlabel' for='sortcol"+(j+1)+"' >"+name+"</label></div>";
+						dstr+="'><input name='sortcol' type='radio' class='sortradio' id='sortcol"+(j+1)+"' onclick='sorttype(-1)' value='"+(j+1)+"'><label class='headerlabel' title='"+name+"' for='sortcol"+(j+1)+"' >"+truncatedname+"</label></div>";
 				}
 		}
 		dstr+="</td><td style='vertical-align:top;'>";
@@ -695,6 +716,7 @@ function leavec()
     localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
 
 	if(str!=old || onlyPending==opend) process();
+  magicHeading();
 }
 
 // Function to select and unselect all duggas 
@@ -779,7 +801,8 @@ function leaves()
 	if (!(ocol==col && odir==dir) || typechanged) {
     typechanged=false;
     resort();
-}
+  }
+  magicHeading();
 }
 
 function sorttype(t){
@@ -797,6 +820,7 @@ function sorttype(t){
 				}
 		}
 		typechanged=true;
+    magicHeading();
 }
 
 function magicHeading()

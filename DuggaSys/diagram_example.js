@@ -1,5 +1,8 @@
-// Demo data for testing purposes.
-function makegfx() {
+/* 
+----- THIS FILE IS THE EXAMPLE DATA FOR THE DIAGRAM ----- 
+*/
+
+function generateExampleCode() {
     // Declare three paths
     var pathA = new Path;
     var pathB = new Path;

@@ -1,3 +1,8 @@
+/*
+----- THIS FILE HAS THE FUNCTIONS FOR THE ARRAY -----
+----- DIAGRAM AND HOW IT SHOULD BE USED BY THE SYSTEM -----
+*/
+
 //--------------------------------------------------------------------
 // Symbol - stores a diagram symbol
 //--------------------------------------------------------------------
@@ -8,6 +13,7 @@ function Symbol(kind) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textsize = 14;             // 14 pixels text size is default
+    this.line_width = 2;
     var textscale = 10;
     this.name = "New Class";        // Default name is new class
     this.key_type = "none"          // Defult key tyoe for a class.
@@ -23,7 +29,6 @@ function Symbol(kind) {
     this.connectorRight = [];
 
     //--------------------------------------------------------------------
-    // getquadrant
     // Returns the quadrant for a x,y coordinate in relation to bounding box and box center
     // Quadrant Layout:
     //       0|1     Top = 0     Right = 1
@@ -79,7 +84,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // quadrants
     // Iterates over all relation ends and checks if any need to change quadrants
     //--------------------------------------------------------------------
     this.quadrants = function () {
@@ -162,7 +166,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // adjust
     // Moves midpoint or other fixed point to geometric center of object again
     // Restricts resizing for classes
     //--------------------------------------------------------------------
@@ -189,11 +192,16 @@ function Symbol(kind) {
             if (points[this.topLeft].y > points[this.middleDivider].y) {
                 points[this.topLeft].y = points[this.middleDivider].y;
             }
+        } else if (this.symbolkind == 5){
+            // Static size of relation. Makes resizing of relation impossible.
+            points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
+            points[this.topLeft].y = points[this.middleDivider].y-relationTemplate.height/2;
+            points[this.bottomRight].x = points[this.middleDivider].x+relationTemplate.width/2;
+            points[this.bottomRight].y = points[this.middleDivider].y+relationTemplate.height/2;
         }
     }
 
     //--------------------------------------------------------------------
-    // sortConnector
     // Sorts the connector
     //--------------------------------------------------------------------
     this.sortConnector = function (connector,direction,start,end,otherside) {
@@ -228,7 +236,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // sortAllConnectors
     // Sorts all connectors
     //--------------------------------------------------------------------
     this.sortAllConnectors = function () {
@@ -243,7 +250,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // sortAllConnectors
     // Sorts all connectors
     //--------------------------------------------------------------------
     this.sortAllConnectors = function () {
@@ -258,15 +264,14 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // move
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
-    this.inside = function (xk, yk) {
+    this.inside = function() {
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-        if (xk > x1 && xk < x2 && yk > y1 && yk < y2) {
+        if (x1 < cx && cx < x2 && y1 < cy && cy < y2) {
             return true;
         } else {
             return false;
@@ -274,7 +279,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // linedist
     // Returns line distance to segment object e.g. line objects (currently only relationship markers)
     //--------------------------------------------------------------------
     this.linedist = function (xk, yk) {
@@ -304,7 +308,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // move
     // Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
@@ -331,7 +334,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // emptyConnector
     // Empties every connector of the object
     //--------------------------------------------------------------------
     this.emptyConnectors = function () {
@@ -354,17 +356,53 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // movePoints
     // Moves all relevant points, within the object, off the canvas.
     // IMP!: Should not be moved back on canvas after this function is run.
     //--------------------------------------------------------------------
     this.movePoints = function () {
-        points[this.topLeft] = "";
-        points[this.bottomRight] = "";
-        points[this.centerpoint] = "";
-        points[this.middleDivider] = "";
+        points[this.topLeft] = waldoPoint;
+        points[this.bottomRight] = waldoPoint;
+        points[this.centerpoint] = waldoPoint;
+        points[this.middleDivider] = waldoPoint;
     }
-
+    //--------------------------------------------------------------------
+    // Moves all relevant points, within the object, off the canvas.
+    // IMP!: Should not be moved back on canvas after this function is run.
+    //--------------------------------------------------------------------
+    this.removePointFromConnector = function(point) {
+        var broken = false;
+        for(var i = 0; i < this.connectorTop.length; i++){
+            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
+                this.connectorTop.splice(i,1);
+                broken = true;
+                break;
+            }
+        }
+        if(!broken){
+            for(var i = 0; i < this.connectorBottom.length; i++){
+                if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
+                    this.connectorBottom.splice(i,1);
+                    break;
+                }
+            }
+        }
+        if(!broken){
+            for(var i = 0; i < this.connectorRight.length; i++){
+                if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
+                    this.connectorRight.splice(i,1);
+                    break;
+                }
+            }
+        }
+        if(!broken){
+            for(var i = 0; i < this.connectorLeft.length; i++){
+                if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
+                    this.connectorLeft.splice(i,1);
+                    break;
+                }
+            }
+        }
+    }
     this.getPoints = function() {
         var private_points = [];
         if(this.symbolkind==3){
@@ -409,7 +447,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // getLines
     // Returns all the lines connected to the object
     //--------------------------------------------------------------------
     this.getLines = function() {
@@ -432,7 +469,6 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // draw
     // Redraws graphics
     //--------------------------------------------------------------------
     //     beginpath - moveto - lineto
@@ -441,7 +477,7 @@ function Symbol(kind) {
     //     ctx.setLineDash(segments);
     //--------------------------------------------------------------------
     this.draw = function () {
-        ctx.lineWidth = 2;
+        ctx.lineWidth = this.line_width;
         if (this.sizeOftext == 'Tiny') {
             textsize = 14;
         } else if (this.sizeOftext == 'Small') {
@@ -622,7 +658,7 @@ function Symbol(kind) {
         } else if (this.symbolkind == 4) {
             // ER Attribute relationship is a single line
             if (this.type == "weak") {
-                ctx.lineWidth = ctx.lineWidth * 3;
+                ctx.lineWidth = this.line_width * 3;
                 if (this.sel || this.targeted) {
                     ctx.strokeStyle = "#F82";
                 } else {
@@ -632,7 +668,7 @@ function Symbol(kind) {
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
                 ctx.stroke();
-                ctx.lineWidth = ctx.lineWidth / 3;
+                ctx.lineWidth = this.line_width;
                 ctx.strokeStyle = "#fff";
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);
@@ -658,6 +694,13 @@ function Symbol(kind) {
             var midx = points[this.middleDivider].x;
             var midy = points[this.middleDivider].y;
             ctx.beginPath();
+            if (this.relationType == 'weak') {
+            	ctx.moveTo(midx + 0, y1 + 5);
+                ctx.lineTo(x2 - 5, midy + 0);
+                ctx.lineTo(midx + 0, y2 - 5);
+                ctx.lineTo(x1 + 5, midy + 0);
+                ctx.lineTo(midx + 0, y1 + 5);
+        }
             ctx.moveTo(midx, y1);
             ctx.lineTo(x2, midy);
             ctx.lineTo(midx, y2);

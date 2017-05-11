@@ -65,6 +65,7 @@ html, body {
 body {
   font-family: 'Roboto', sans-serif,"Helvetica Neue",Helvetica,Arial,sans-serif;
   -webkit-font-smoothing: antialiased;
+  overflow-y:scroll;
 }
 
 table {
@@ -585,30 +586,6 @@ header td {
   background:#fff;
 }
 
-#cookiemsg {
-  background-color: #fecc56;
-  z-index: 1000;
-  position: fixed;
-  bottom: 0px;
-  width: 100%;
-  height: 50.4px;
-  padding: 0 20px 0 20px;
-  display: flex;
-  justify-content: center;
-}
-
-#cookiemsg p {
-  margin: 0px;
-  margin-right: 20px;
-  display: inline;
-  align-self: center;
-  color: #614875;
-}
-
-#cookiemsg input {
-  float: none;
-  align-self: center;
-}
 
 /* --------------================################================-------------- *
  *                                   Dialog Box                                 *
@@ -777,6 +754,13 @@ header td {
 
 input {
   border-radius: 2px;
+  height: 26px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+
+
 }
 
 .loginBox .inputwrapper {
@@ -916,6 +900,7 @@ input {
   font-family: Roboto, Arial Narrow;
   margin-left: -2px;
 }
+
 #loginBoxTitle{
   font-size: 15px;
 }
@@ -1027,7 +1012,46 @@ input.submit-button-newitem {
   transition:1s background-color;
   float:right;
 }
-
+input.diagram-sidebar-buttons {
+   background-color:#7B5A96;
+   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+   border:0px;
+   width:130px;
+   height:30px;
+   color:#fff;
+   cursor:pointer;
+   margin-top:6px;
+   margin-bottom:2px;
+   margin-left:4px;
+   font-size:14px;
+   transition:1s background-color;
+   float:left;
+   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 10px 0 rgba(0,0,0,0.1);
+ }
+input.diagram-sidebar-buttons:hover {
+  background-color:#33AAFF;
+  border-radius:2px;
+}
+button.diagram-menu-buttons {
+  background-color:#ff8000;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  border:0px;
+  width:130px;
+  height:30px;
+  color:#fff;
+  cursor:pointer;
+  margin-top:6px;
+  margin-bottom:2px;
+  margin-left:4px;
+  font-size:14px;
+  transition:1s background-color;
+  float:left;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 10px 0 rgba(0,0,0,0.1);
+}
+button.diagram-menu-buttons:hover {
+  background-color:#ffcc55;
+  border-radius:2px;
+}
 input.hide-moments-button {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   background-color:rgb(253, 203, 96);
@@ -1059,6 +1083,7 @@ input.submit-button:hover {
   border-radius:2px;
 }
 
+
 input.fileed-button:hover {
     background-color:#91859b;
 }
@@ -1082,6 +1107,55 @@ input.large-button {
   width:160px !important;
   height:48px !important;
   line-height:48px !important;
+}
+
+/* File upload form */
+
+.inputfile {
+	width: 0.1px;
+	height: 0px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label {
+    font-size: 16px;
+    font-weight: 300;
+    padding: 5px;
+    padding-right: 10px;
+    color: white;
+    background-color: #614875;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #7B5A96;
+    transition:1s background-color;
+}
+
+.inputfile:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 5px;
+}
+
+.file-upload-submit{
+    font-size: 16px;
+    font-weight: 300;
+    width: 100px;
+    height: 30px;
+    padding: 5px;
+    margin-bottom: 10px;
+    margin-top: -1;
+    color: white;
+    background-color:#614875;
+    cursor: pointer;
+    border: none;
+    border-radius: 0;
+    display: inline-block;
 }
 
 .list {
@@ -1148,13 +1222,14 @@ input.large-button {
 
 
 .list#testTable td{
-    padding:8px;
+    padding:0px;
     text-align:center;border:none;
 }
 
 .list#testTable th{
     line-height:45px;
     box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);
+    font-size: 16px;
 }
 
 .list#testTable tr:nth-child(odd), .list#testTable tr:nth-child(even){
@@ -1164,6 +1239,7 @@ input.large-button {
 .list#testTable tr{
     line-height:45px;
     border-bottom:1px solid gray;
+    font-size: 14px;
 }
 .list#testTable tr>tr{
     line-height:45px;
@@ -1180,11 +1256,11 @@ input.large-button {
 
 .list#testTable #plorf, .list#testTable #dorf {
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
-    padding:10px;
+    padding:4px;
 }
 
 .list#testTable input, .list#testTable select, .list#testTable label {
-    padding:5px;
+    padding:0px;
 }
 
 .selectedtr {
@@ -1192,7 +1268,7 @@ input.large-button {
 }
 
 .list#testTable input {
-    border-width: 2px !important;
+    border-width: 1px !important;
     border-style: inset !important;
 }
 
@@ -1209,14 +1285,18 @@ input.large-button {
 }
 
 span.arrow {
-    padding:10px;
+    padding:4px;
     cursor:pointer;
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
 }
 
 .list#testTable input {
-  border-width: 2px !important;
+  border-width: 1px !important;
   border-style: inset !important;
+  border-radius: 0px;
+  font-size:14px;
+  height:17px;
+  color:black;
 }
 
 #testinnertable {
@@ -1474,25 +1554,28 @@ span.arrow {
   border-bottom-right-radius: 10px;
 }
 
-.fab {
-  position:fixed;
-  width:50px;
-  height:50px;
-  border-radius:25px;
-  box-shadow:0px 0px 15px #888;
-  bottom:55px;
-  right:50px;
-  font-size:24px;
-  text-align:center;
-  background-color:#fecc56;
-  color:#614875;
-  z-index:4000;
-  border:0;
-  outline: none;
-  cursor: pointer;
-  padding-left: 7px;
-  padding-top: 1px;
-}
+/* .fab { */
+  /* position:fixed; */
+  /* width:50px; */
+  /* height:50px; */
+  /* border-radius:25px; */
+  /* box-shadow:0px 0px 15px #888; */
+  /* bottom:35px; */
+  /* right:50px; */
+  /* font-size:24px; */
+  /* text-align:center; */
+  /* background-color:#fecc56; */
+  /* color:#614875; */
+  /* z-index:4000; */
+  /* border:0; */
+  /* outline: none; */
+  /* cursor: pointer; */
+  /* padding-left: 7px; */
+  /* padding-top: 1px; */
+/* } */
+/* .fab:hover { */
+  /* transform:scale(1.1); */
+/* } */
 
 .dugga-pass {
 	border-left: 2px solid rgb(219, 208, 216);
@@ -1886,10 +1969,11 @@ table {
 /* Modal Content/Box */
 .SwimContentWrap {
   position: absolute;
-  left: 4%;
+  left: 1%;
   top: 62px;
   overflow: auto;
   padding: 0;
+  margin: auto;
 }
 
 /* The Close Button */
@@ -1914,15 +1998,47 @@ table {
 
 .swimlaneOverlay {
   display: none; /* Hidden by default */
-  position: absolute; /* Stay in place */
+  position: fixed; /* Stay in place */
   z-index: 10000; /* Sit on top */
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+}
+
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+#cookiemsg {
+  background-color: #fecc56;
+  z-index: 1000;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  height: 60px;
+  padding: 0 20px 0 0px;
+  display: flex;
+  justify-content: center;
+}
+
+#cookiemsg p {
+  margin: 0px;
+  margin-left: 5px;
+  display: inline;
+  align-self: center;
+  color: #614875;
+}
+
+#cookiemsg input {
+  float: none;
+  align-self: center;
+  margin-right: 5px;
+}
 }
 
 .nowrap {
@@ -1937,10 +2053,234 @@ table {
 
 .showhidetext {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   color: white;
 }
 
+/* Section editor menu buttons */
+
+/* The original state of the buttons */
+table.navheader td.menuButton {
+  margin-right: 2px;
+  width: 112px;
+  transition: 0.5s;
+  -webkit-transition: 0.5s;
+  -moz-transition: 0.5s;
+  -o-transition: 0.5s;
+}
+
+table.navheader div.menuButton {
+  pointer-events: auto;
+  display: inline-block;
+  opacity: 1.0;
+  transition:  opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+}
+
+/* Hamburger menu, hidden as default state */
+table.navheader td.hamburger {
+  pointer-events: none;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 0px;
+  width: 0px;
+  opacity: 0.0;
+  transition: width 0.5s, opacity 0.5s, margin 0.5s;
+  -webkit-transition: width 0.5s, opacity 0.5s, margin 0.5s;
+  -moz-transition: width 0.5s, opacity 0.5s, margin 0.5s;
+  -o-transition: width 0.5s, opacity 0.5s, margin 0.5s;
+}
+
+table.navheader nav.package {
+  margin-left: 0px;
+  widht: 100%;
+}
+
+table.navheader div.hamburgerMenu {
+  padding: 2px 2px 2px 2px;
+  pointer-events: none;
+  position: absolute;
+  margin-top: 50px;
+  margin-left: 50px;
+  z-index: 1;
+  background-color: #ccc;
+  border: 2px solid #999;
+  display: none;
+  overflow-x: hidden;
+}
+
+table.navheader input.hamburger {
+  width: 30px;
+  margin: 6px 0px 2px 0px;
+  padding: 1px 6px 1px 6px;
+}
+
+ul.hamburgerList {
+  list-style-type: none;
+  margin: 2px 2px 2px 2px;
+  padding: 0px 0px 0px 0px;
+}
+
+ul.hamburgerList li {
+  margin: 2px 2px 2px 2px;
+  padding: 0px 0px 0px 0px;
+  pointer-events: none;
+  display: none;
+  height: 0px;
+  opacity: 0;
+}
+
+ul.hamburgerList button.menuButton {
+  margin: 2px 2px 2px 2px;
+  padding: 0px 0px 0px 0px;
+}
+
+/* moment date and course version */
+
+.dateField {
+  display: inline-block;
+  opacity: 1.0;
+  max-width: 1000px; /* Cannot animate to auto width, 1000px should be enough for anyone */
+  pointer-events: auto;
+  transition: opacity 300ms, width 300ms;
+  -webkit-transition: opacity 300ms, width 300ms;
+  -moz-transition: opacity 300ms, width 300ms;
+  -o-transition: opacity 300ms, width 300ms;
+}
+
+.courseVersionField {
+  display: inline-block;
+  margin-right: 10px;
+  opacity: 1.0;
+  max-width: 1000px; /* Cannot animate to auto width, 1000px should be enough for anyone */
+  pointer-events: auto;
+  transition: opacity 300ms, width 300ms, margin 300ms;
+  -webkit-transition: opacity 300ms, width 300ms, margin 300ms;
+  -moz-transition: opacity 300ms, width 300ms, margin 300ms;
+  -o-transition: opacity 300ms, width 300ms, margin 300ms;
+}
+
+@media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
+  table.navheader td.editVers,
+  table.navheader td.contribution,
+  table.navheader td.newVers {
+    margin-right: 0px;
+    width: 0px;
+    -webkit-transition: margin-right 0.5s, width 0.5s;
+    -moz-transition: margin-right 0.5s, width 0.5s;
+    -o-transition: margin-right 0.5s, width 0.5s;
+  }
+
+  table.navheader div.editVers,
+  table.navheader div.contribution,
+  table.navheader div.newVers {
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+  }
+
+  table.navheader td.hamburger {
+    pointer-events: auto;
+    width: 32px;
+    opacity: 1.0;
+    margin-right: 4px;
+    -webkit-transition: opacity 0.5s, width 0.5s, margin 0.5s;
+    -moz-transition: opacity 0.5s, width 0.5s, margin 0.5s;
+    -o-transition: opacity 0.5s, width 0.5s, margin 0.5s;
+  }
+
+  ul.hamburgerList li.newVers,
+  ul.hamburgerList li.editVers,
+  ul.hamburgerList li.contribution {
+    pointer-events: auto;
+    display: block;
+    height: 26px;
+    opacity: 1.0;
+  }
+
+  /* moment date and course version */
+  .dateField {
+    opacity: 0.0;
+    max-width: 0px;
+    pointer-events: none;
+    transition: opacity 300ms, width 300ms;
+    -webkit-transition: opacity 300ms, width 300ms;
+    -moz-transition: opacity 300ms, width 300ms;
+    -o-transition: opacity 300ms, width 300ms;
+  }
+
+  .courseVersionField {
+    margin-right: 0px;
+    opacity: 0.0;
+    max-width: 0px;
+    pointer-events: none;
+    transition: opacity 300ms, width 300ms, margin 300ms;
+    -webkit-transition: opacity 300ms, width 300ms, margin 300ms;
+    -moz-transition: opacity 300ms, width 300ms, margin 300ms;
+    -o-transition: opacity 300ms, width 300ms, margin 300ms;
+  }
+}
+
+@media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
+  table.navheader td.access,
+  table.navheader td.groups {
+    margin-right: 0px;
+    width: 0px;
+    -webkit-transition: margin-right 0.5s, width 0.5s;
+    -moz-transition: margin-right 0.5s, width 0.5s;
+    -o-transition: margin-right 0.5s, width 0.5s;
+  }
+
+  table.navheader div.access,
+  table.navheader div.groups {
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s,;
+  }
+
+  ul.hamburgerList li.access,
+  ul.hamburgerList li.groups {
+    pointer-events: auto;
+    display: block;
+    height: 26px;
+    opacity: 1.0;
+  }
+}
+
+@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
+  table.navheader td.tests,
+  table.navheader td.files {
+    margin-right: 0px;
+    width: 0px;
+    -webkit-transition: margin-right 0.5s, width 0.5s;
+    -moz-transition: margin-right 0.5s, width 0.5s;
+    -o-transition: margin-right 0.5s, width 0.5s;
+  }
+
+  table.navheader div.tests,
+  table.navheader div.files {
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+  }
+
+  ul.hamburgerList li.tests,
+  ul.hamburgerList li.files {
+    pointer-events: auto;
+    display: block;
+    height: 26px;
+    opacity: 1.0;
+  }
+}
 /* Title for the subpages of the section-editor */
 .titles{
   width:100%;
@@ -1951,3 +2291,4 @@ table {
 .titles h1{
   color: #614875;
 }
+

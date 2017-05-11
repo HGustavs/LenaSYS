@@ -35,3 +35,288 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+body {
+    font-family: 'Roboto', sans-serif,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    margin: 0;
+    min-width: 550px;
+}
+
+#header h1 {
+    color: white;
+    margin-left: 10px;
+}
+
+#contentWrapper {
+    height:400px;
+}
+
+#inputWrapper {
+    width: 100%;
+    margin: auto;
+    background-color: rgb(250,250,250);
+    min-width: 550px;
+}
+
+.inputHeading {
+    background-color: rgb(146, 124, 157);
+    width: 100%;
+    height: 75px;
+    margin: 0;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    display:block;
+}
+
+.inputHeading h2 {
+    color: white;
+}
+
+.inputFirst {
+    display: block;
+    height:50px;
+}
+
+.inputNotFirst {
+    display: none;
+    height:50px;
+}
+
+.inputContent {
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    padding: 10px 0;
+    height: 400px;
+    background-color: rgb(240,240,240);
+    display: none;
+}
+
+#td1 {
+    display: block;
+}
+
+#inputFooter {
+    background-color: rgb(146, 124, 157);
+    width: 100%;
+    height: 50px;
+    margin: 0;
+    position: relative;
+    bottom: 0;
+}
+
+
+#header {
+    background-color: rgb(97,73,116);
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#showModalBtn {
+    background-color: rgb(253,203,96);
+    position: absolute;
+    right: 0px;
+    top: 20px;
+    color: black;
+    padding: 5px 10px 5px 5px;
+}
+
+#showModalBtn:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.arrow {
+    position: relative;
+    bottom: 200px;
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+}
+
+.arrow:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+#leftArrow {
+    left: 10px;
+    float: left;
+    display:none;
+}
+
+#rightArrow {
+    right: 10px;
+    float: right;
+}
+
+#infoText {
+    text-align: left;
+    margin: 5px;
+}
+
+#checkboxContainer {
+    width: 105px;
+    margin: auto;
+    text-align: left
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    width: 30%;
+    height: 100px;
+    margin-top: 50px;
+}
+
+.button:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.button2 {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    height: 30px;
+    margin-top: 10px;
+}
+
+.button2:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+#doThisWrapper {
+    width: 75%;
+    background-color: rgb(250,250,250);
+    margin: auto;
+    text-align: center;
+}
+
+.codeBox {
+    text-align: left;
+    word-wrap: break-word;
+    background-color: #cccccc;
+    min-width: 300px;
+    max-width: 80%;
+    margin: auto;
+    padding: 5px;
+    border-style: solid;
+    border-width: 2px;
+}
+
+.codeBox:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.errorCodeBox {
+    word-wrap: break-word;
+    background-color: #cccccc;
+    min-width: 300px;
+    max-width: 80%;
+    margin: auto;
+    padding: 5px;
+    border-style: solid;
+    border-width: 2px;
+}
+
+#installationProgressWrap {
+    display: block;
+}
+
+#showHideInstallation {
+    color: black;
+    margin-top: 10px;
+    background-color: rgb(253,203,96);
+}
+
+#showHideInstallation:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#warningH1 {
+    color: white;
+    background-color: rgb(197,81,83);
+}
+
+.returnButton {
+    background-color: rgb(197,81,83);
+    border: none;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 15px;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.returnButton:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+#successText {
+    color: green;
+}
+
+#failText {
+    color: red;
+}
+
+#dialogText h1 {
+    text-align: center;
+    color: red;
+}
+
+#dialogText h2 {
+    text-align: center;
+}
+
+#dialogText div {
+    background-image: url(../../Shared/icons/warningTriangle.png);
+    background-size: 10%;
+    background-repeat: no-repeat;
+}
+
+#dialogText p {
+    text-align: center;
+}
+
+polygon {
+    fill:rgb(255,233,126);
+}
+
+#errorCount {
+    color: white;
+    font-size:24px;
+}
+
+#copied1 {
+    display: none;
+}
+
+#copied2 {
+    display: none;
+}
+
+#progressBar {
+    border: 1px solid white;
+    margin-left: 10px;
+}

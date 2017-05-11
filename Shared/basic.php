@@ -352,8 +352,28 @@ function getBrowser() {
         if (preg_match($regex, $userAgent)) {
 			$browser = $value;
 		}
-	}
+	} 
 	return $browser;
+}
+
+function formatted_debug($item, $desc = null) {
+	echo "<hr>";
+	if(isset($desc)) {
+		echo "<h3 style='color: tomato'>".$desc."</h3>";
+	}
+	echo "<pre'>";
+	echo var_dump($item);
+	echo "</pre>";
+	echo "<hr>";
+}
+
+function debug_to_console($data) {
+	$out = $data;
+	if(is_array(($out))) {
+		$out = implode(',', $out);
+	}
+
+	echo "<script>console.log('Debug php array: " . $out . "');</script>";
 }
 
 ?>
