@@ -45,11 +45,20 @@
 	<!-- Create Group Dialog START -->
 	<div id='groupSection' class='loginBox' style='width:285px;display:none;'>
 		<div class='loginBoxheader'>
-			<h3>Create Group</h3>
+			<h3>Manage Groups</h3>
 			<div onclick='closeWindows();'>x</div>
 		</div>
 		<div style='padding:5px;'>
-			<div id='inputwrapper-name' class='inputwrapper'><span>Name:</span><input style='float:none; margin-left: 5px;' type='text' class='textinput' id='name' placeholder='Name' /></div>
+			<div id='inputwrapper-name' class='inputwrapper' style='display:inline-block;'>
+				<select id='selectMoment' style='float:none; width:100%; margin: 8px 0px;'>
+				</select><br/>
+				<select style='float:none; width:100%;'>
+					<option value="a">a-z</option>
+					<option value="1">1-</option>
+				</select><br/>
+				<input type="number" placeholder="  Amount of groups" style='float:none; width:271px; height:24px; margin: 8px 0px;'/><br/>
+				<!-- <span>Name:</span><input style='float:none; margin-left: 5px;' type='text' class='textinput' id='name' placeholder='Name' /> -->
+			</div>
 		</div>
 		<p style="display:none; color:red;" id="groupNameError">Du måste ange ett namn för att skapa en grupp.</p>
 		<div style='padding:5px;'>

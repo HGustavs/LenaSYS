@@ -23,7 +23,6 @@
 	
 	<?php 
 		$noup=true;
-		$loginvar="ACCESS"; 
 		include '../Shared/navheader.php';
 	?>
 		

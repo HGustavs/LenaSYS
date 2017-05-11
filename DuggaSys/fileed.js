@@ -38,12 +38,67 @@ function deleteFile(fileid,filename){
 			window.location.reload(true);
 }
 
-// Function to toggle the content (tbody) under each header
-$(document).on('click','thead',function(){
-	$(this).closest('table').find('tbody').fadeToggle();
-	$('.arrowRight', this).slideToggle();
-	$('.arrowComp', this).slideToggle();
-});
+//----------------------------------------
+// makeSortable(table) <- Makes a table sortable and also allows the table to collapse when
+// 						user double clicks on table head.
+//----------------------------------------
+function makeSortable(table) {
+	var DELAY = 200;
+	var clicks = 0;
+	var timer = null;
+	var th = table.tHead, i;
+	th && (th = th.rows[0]) && (th = th.cells);
+	if (th) i = th.length;
+	else return; // if no `<thead>` then do nothing
+	while (--i >= 0) (function (i) {
+		var dir = 1;
+		th[i].addEventListener('click', function (e) {
+			clicks++;
+			if(clicks === 1) {
+				timer = setTimeout(function () {
+					sortTable(table, i, (dir = 1 - dir));
+					clicks = 0;
+                }, DELAY);
+            } else {
+                clearTimeout(timer);
+                $(this).closest('table').find('tbody').fadeToggle();
+                $('.arrowRight', this).slideToggle();
+                $('.arrowComp', this).slideToggle();  //perform double-click action
+                clicks = 0;             //after action performed, reset counter
+            }
+        });
+        th[i].addEventListener('dblclick', function (e) {
+            e.preventDefault();
+        })
+    }(i));
+}
+
+//----------------------------------------
+// makeAllSortable(parent) <- Makes all tables within given scope sortable.
+//----------------------------------------
+function makeAllSortable(parent) {
+	parent = parent || document.body;
+	var t = parent.getElementsByTagName('table'), i = t.length;
+	while (--i >= 0) makeSortable(t[i]);
+}
+
+//----------------------------------------
+// sortTable(table, col, reverse) <- Sorts table based on given column and whether or not to
+//									reverse the sorting.
+//----------------------------------------
+function sortTable(table, col, reverse) {
+    var tb = table.tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
+        tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
+        i;
+    reverse = -((+reverse) || -1);
+    tr = tr.sort(function (a, b) { // sort rows
+		return reverse // `-1 *` if want opposite order
+		 * (a.cells[col].textContent.trim() // using `.textContent.trim()` for test
+                    .localeCompare(b.cells[col].textContent.trim())
+            );
+    });
+    for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
+}
 
 $(document).on('click','.last',function(e) {
      e.stopPropagation();
@@ -326,6 +381,7 @@ function returnedFile(data)
 	//if there was an error in the php file while fetching, an alert goes off here
 	//-------------------------------------------------------------------------------------
 	if(data['debug']!="NONE!") alert(data['debug']);
+	makeAllSortable();
 }
 
 function getFileInformation(name, getExt) {

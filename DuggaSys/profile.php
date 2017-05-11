@@ -24,17 +24,22 @@ pdoConnect();
 
 	<script src="pushnotifications.js"></script>
 </head>
-<body>
+<body onload="checkConnection();">
 
 	<?php
 		$noup="PROFILE";
 		include '../Shared/navheader.php';
 		include '../Shared/loginbox.php';
 	?>
-
-	if(checklogin){
+	
+	<?php
+	if(checklogin()){
+	?>
 		<div id="content" style="display:flex">
 			<div style="display:inline-flex;flex-wrap:wrap;margin:0 auto 0 auto;">
+				<div style='width:100%;height:50px;'>
+					<h1 style='text-align:center;color:#614875;'>Profile</h1>
+				</div>
 				<div id="changeChallengeQuestion" style="margin-right:60px">
 					<h3>Change challenge question</h3>
 					<form method="post">
@@ -43,12 +48,15 @@ pdoConnect();
 						<label for="challengeQuestion">Challenge question</label><br/>
 						<label id="securityQuestionError"></label>
 						<form action="/action_page.php">
-						  <select id="securityQuestion" class="form-control textinput"name="securityQuestions">
-							<option value="What's your mother's name?" selected>What is your mother's name?</option>
-							<option value="In what year was your father born?">In what year was your father born?</option>
-							<option value="What is your pet’s name?">What is your pet’s name?</option>
-							<option value="Who was your childhood hero?">Who was your childhood hero?</option>
-						  </select>
+				            <select id="securityQuestion" class="form-control textinput"name="securityQuestions">
+                                <option value="What was the name of your first pet?">What was the name of your first pet?</option>
+                                <option value="What is your favourite sports/e-sports team?">What is your favourite sports/e-sports team?</option>
+                                <option value="What was the best birthday present you ever got?">What was the best birthday present you ever got?</option>
+                                <option value="What is the first name of your favorite childhood friend?">What is the first name of your favorite childhood friend?</option>
+                                <option value="What is the first name of the person you had your second kiss with?">What is the first name of the person you had your second kiss with?</option>
+                                <option value="What was your favorite place to visit as a child?">What was your favorite place to visit as a child?</option>
+                                <option value="Where did you go on your first vacation?">Where did you go on your first vacation?</option>
+				            </select>
 						  <br><br>
 						</form>
 						<!--<?php echo "<textarea id='challengeQuestion' value='' onkeyup='checkScroll(this)' style='height:1.25em; max-height:110px; width:16em; overflow:auto; font-family:sans-serif;'></textarea><br/>" ?>
@@ -62,16 +70,18 @@ pdoConnect();
 			
 				<div id="changePassword" style="margin-right:60px;">
 					<h3>Change password</h3>
-					<p style="max-width:165px">(max 72 characters)</p>
-					<form method="post">
-						<label for="currentPassword2">Current password</label><br/>
-						<input type="password" id="currentPassword2" placeholder="Current password" maxlength="72"/><br/><br/>
-						<label for="newPassword">New password</label><br/>
-						<input type="password" id="newPassword" placeholder="New password" maxlength="72"/><br/>
-						<label for="newPassword2">New password again</label><br/>
-						<input type="password" id="newPassword2" placeholder="New password again" maxlength="72"/><br/><br/>
-						<button type="button" onClick="saveChallenge()" id="savePassword">Save</button><br/><br/>
-					</form>
+                    <div id="passForm">
+                        <form method="post" name="passwordForm">
+                            <label for="currentPassword2">Current password</label><br/>
+                            <input type="password" class="form-control textinput" id="currentPassword2" placeholder="Current password" maxlength="72"     onkeydown="formEventHandler(event)"/><br/><br/>
+                            <label for="newPassword">New password (8 Characters minimum. Must contain a number,<br/> an uppercase and a lowercase letter.)</label><br/>
+                            <input type="password" class="form-control textinput" id="newPassword" placeholder="Max 72 characters" maxlength="72"         onkeydown="formEventHandler(event)"/><br/>
+                            <label for="newPassword2">Confirm new password</label><br/>
+                            <input type="password" class="form-control textinput" id="newPassword2" placeholder="New password again" maxlength="72"       onkeydown="formEventHandler(event)"/><br/><br/>
+                            <button type="button" id="passwordButton" onclick="validatePassword();">Update password</button><br/><br/>
+                        </form>
+                    </div>
+                    <div id="passwordMessage"></div>
 				</div>
 			
 				<div id="notificationsOnOff">
@@ -93,11 +103,11 @@ pdoConnect();
 				</div>
 			</div>
 		</div>
+	<?php
+	} else {
+		showLoginPopup();
 	}
-
-	<script type="text/javascript">
-		checkUserLogin('<?PHP echo json_encode(checklogin()) ?>');
-	</script>
+	?>
 	
 </body>
 </html>

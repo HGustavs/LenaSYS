@@ -6,8 +6,6 @@ include_once "../Shared/basic.php";
 //pdoConnect();
 /*
 $noup="NONE";
-//$loginvar="COURSE";
-//setcookie("loginvar", $loginvar);
 */
 ?>
 <!DOCTYPE html>
