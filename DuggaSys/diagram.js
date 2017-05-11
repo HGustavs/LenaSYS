@@ -1196,11 +1196,21 @@ function loadForm(dir){
 
 }
 
-//change the font on all entities to the same font. 
+//change the font color on all entities to the same color. 
 function globalFontColor(){
     for(var i = 0; i < diagram.length; i++){
         if(diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5){
             diagram[i].fontColor = document.getElementById('fontColor').value;
+            updategfx();
+        }
+    }
+}
+
+//change the text size on all entities to the same size. 
+function globalTextSize(){
+    for(var i = 0; i < diagram.length; i++){
+        if(diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5){
+            diagram[i].sizeOftext = document.getElementById('TextSize').value;
             updategfx();
         }
     }
