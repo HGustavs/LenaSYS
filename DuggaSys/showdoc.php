@@ -492,9 +492,7 @@
 					
 				}else if($readfile == false){
 					$noup="SECTION";
-					$loginvar="LINK"; 
 					include '../Shared/navheader.php';
-					setcookie("loginvar", $loginvar); 
 				}
 								
 				if($hdrs!="none") echo "<div id='content'>";
