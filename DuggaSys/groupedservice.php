@@ -77,6 +77,9 @@ if(strcmp($opt,"GET")==0){
 			$lids[] = $heading['lid'];
 		}
 		
+		// Take a copy of the lids
+		$allLids = $lids;
+		
 		// Make it a array of keys with false as standard value 
 		$lids = array_fill_keys($lids, false);
 	
@@ -108,7 +111,7 @@ if(strcmp($opt,"GET")==0){
 		$groupData = $query->fetchAll(PDO::FETCH_ASSOC);
 	
 		// Fourth query: Select all available groups
-		$query = $pdo->prepare("SELECT ugid, name FROM usergroup"); // Query to get all existing groups 
+		$query = $pdo->prepare("SELECT lid, ugid, name FROM usergroup"); // Query to get all existing groups 
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -132,14 +135,21 @@ if(strcmp($opt,"GET")==0){
 			array_push($tableContent, $studentRow);
 		}
 		
-		$groups = [];
-		foreach($allGroups as $group) {
-			$groups[$group['ugid']] = $group['name'];
+		// Create a array with lids as keys to contain the available groups per lid
+		$groupsPerLids = array_flip($allLids);
+	
+		// Iterate groups and place per lid
+		foreach($groupsPerLids as $lid => &$val) { // [2001] => 0, [2013] => 1
+			foreach($allGroups as $group) {
+				if($lid == $group['lid']) {
+					$groupsPerLids[$lid] = array($group['ugid'] => $group['name']);
+				}
+			}
 		}
 		
 		// Place the data in the output data array
 		$data['tablecontent'] = $tableContent;
-		$data['availablegroups'] = $groups;
+		$data['availablegroups'] = $groupsPerLids;
  	}
 }
 else if(strcmp($opt,"NEWGROUP")==0){
