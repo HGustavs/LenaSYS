@@ -266,12 +266,12 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
-    this.inside = function (xk, yk) {
+    this.inside = function() {
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-        if (xk > x1 && xk < x2 && yk > y1 && yk < y2) {
+        if (x1 < cx && cx < x2 && y1 < cy && cy < y2) {
             return true;
         } else {
             return false;

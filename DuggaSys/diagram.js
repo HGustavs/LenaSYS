@@ -280,27 +280,6 @@ diagram.insides = function (ex, ey, sx, sy) {
         sy = tempEndY;
     }
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind != 1) {
-            var tempTopLeftX = points[this[i].topLeft].x;
-            var tempTopLeftY = points[this[i].topLeft].y;
-            var tempBottomRightX = points[this[i].bottomRight].x;
-            var tempBottomRightY = points[this[i].bottomRight].y;
-            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
-                tempTopLeftX = tempBottomRightX - minEntityX;
-            }
-            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
-                tempTopLeftY = tempBottomRightY - minEntityY;
-            }
-            if (sx < tempTopLeftX && ex > tempTopLeftX &&
-                sy < tempTopLeftY && ey > tempTopLeftY &&
-                sx < tempBottomRightX && ex > tempBottomRightX &&
-                sy < tempBottomRightY && ey > tempBottomRightY) {
-                this[i].targeted = true;
-                // return i;
-            } else {
-                this[i].targeted = false;
-            }
-        }
         if (this[i].kind == 1) {
             var tempPoints = [];
             for (var j = 0; j < this[i].segments.length; j++) {
@@ -318,6 +297,25 @@ diagram.insides = function (ex, ey, sx, sy) {
             } else {
                 this[i].targeted = false;
             }
+        } else {
+            var tempTopLeftX = points[this[i].topLeft].x;
+            var tempTopLeftY = points[this[i].topLeft].y;
+            var tempBottomRightX = points[this[i].bottomRight].x;
+            var tempBottomRightY = points[this[i].bottomRight].y;
+            if (tempTopLeftX > tempBottomRightX || tempTopLeftX > tempBottomRightX - minEntityX) {
+                tempTopLeftX = tempBottomRightX - minEntityX;
+            }
+            if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
+                tempTopLeftY = tempBottomRightY - minEntityY;
+            }
+            if (sx < tempTopLeftX && ex > tempTopLeftX &&
+                sy < tempTopLeftY && ey > tempTopLeftY &&
+                sx < tempBottomRightX && ex > tempBottomRightX &&
+                sy < tempBottomRightY && ey > tempBottomRightY) {
+                this[i].targeted = true;
+            } else {
+                this[i].targeted = false;
+            }
         }
     }
     return -1;
@@ -326,12 +324,10 @@ diagram.insides = function (ex, ey, sx, sy) {
 //--------------------------------------------------------------------
 // inside - executes inside methond in all diagram objects (currently of kind==2)
 //--------------------------------------------------------------------
-diagram.inside = function (xk, yk) {
+diagram.inside = function() {
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 2) {
-            if (this[i].inside(xk, yk) == true) {
-                return i;
-            }
+        if (this[i].inside() == true) {
+            return i;
         }
     }
     return -1;
@@ -438,7 +434,7 @@ function initcanvas() {
     setInterval(hashcurrent, hash_timer);
     setInterval(hashfunction, hash_timer + 500);
     widthWindow = (window.innerWidth - 20);
-    heightWindow = (window.innerHeight - 220);
+    heightWindow = (window.innerHeight - 80);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zv) + "' height='" + (heightWindow * zv) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
     document.getElementById("valuesCanvas").innerHTML = "<p>Zoom: " + Math.round((zv * 100)) + "% | Coordinates: X=" + startX + " & Y=" + startY + "</p>";
     var canvas = document.getElementById("myCanvas");
@@ -488,7 +484,7 @@ function getUploads() {
 // Making the page more responsive
 function canvassize() {
     widthWindow = (window.innerWidth - 20);
-    heightWindow = (window.innerHeight - 244);
+    heightWindow = (window.innerHeight - 144);
     document.getElementById("myCanvas").setAttribute("width", widthWindow);
     document.getElementById("myCanvas").setAttribute("height", heightWindow);
     ctx.clearRect(startX, startY, widthWindow, heightWindow);
@@ -638,6 +634,41 @@ function setType(form) {
     updategfx();
 }
 
+/*
+ * Closes the dialog menu for appearance.
+ */
+function closeAppearanceDialogMenu() {
+    $("#appearance").hide();
+    dimDialogMenu(false);
+    document.removeEventListener("click", clickOutsideDialogMenu);
+}
+
+/*
+ * Closes the dialog menu when click is done outside box.
+ */
+function clickOutsideDialogMenu(ev) {
+    $(document).mousedown(function (ev) {
+        var container = $("#appearance");
+        if (!container.is(ev.target) && container.has(ev.target).length === 0) {
+            container.hide();
+            dimDialogMenu(false);
+            document.removeEventListener("click", clickOutsideDialogMenu);
+        }
+    });
+}
+
+function dimDialogMenu(dim) {
+    if (dim == true) {
+        $("#appearance").css("display", "block");
+        $("#overlay").css("display", "block");
+    } else {
+        $("#appearance").css("display", "none");
+        $("#overlay").css("display", "none");
+    }
+}
+/*
+
+THIS FUNCTION IS NOT USED RIGHT NOW! MIGHT BE USED AT A LATER STAGE
 
 function Consolemode(action) {
     if(action == 1) {
@@ -661,7 +692,7 @@ function Consolemode(action) {
         updategfx();
     }
 }
-
+*/
 function connectedObjects(line) {
     var private_objects = [];
     for (var i = 0; i < diagram.length; i++) {
@@ -777,14 +808,14 @@ function debugMode() {
         crossStrokeStyle1 = "#f64";
         crossfillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
-        ghostingcrosses = false
-        Consolemode(2)
+        ghostingcrosses = false;
+        updategfx();
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossfillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-        ghostingcrosses = true
-        Consolemode(1)
+        ghostingcrosses = true;
+        updategfx();
     }
 }
 
@@ -975,6 +1006,23 @@ function globalFont(){
     for(var i = 0; i < diagram.length; i++){
         if(diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1 || diagram[i].symbolkind == 5){
             diagram[i].font = document.getElementById('font').value;
+        }
+    }
+}
+//change the font color on all entities to the same color. 
+function globalFontColor(){
+    for(var i = 0; i < diagram.length; i++){
+        if(diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5){
+            diagram[i].fontColor = document.getElementById('fontColor').value;
+        }
+    }
+}
+
+//change the text size on all entities to the same size. 
+function globalTextSize(){
+    for(var i = 0; i < diagram.length; i++){
+        if(diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5){
+            diagram[i].sizeOftext = document.getElementById('TextSize').value;
         }
     }
 }

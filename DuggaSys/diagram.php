@@ -28,7 +28,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updategfx() must be last -->
-<body onload="initcanvas(); Symbol(); canvassize(); updategfx(); loadDiagram();">
+<body onload="initcanvas(); Symbol(); canvassize(); updategfx(); loadDiagram(); debugMode();">
     <?php
         $noup = "COURSE";
         include '../Shared/navheader.php';
@@ -67,10 +67,10 @@
         </div>
         <div id="canvasDiv"></div>
         <div id="consoleDiv">
-            <div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>
-            <div id='valuesCanvas' style='position: fixed; left: 10px; bottom: 130px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'></div>
-            <input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
-            <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />
+            <!--<div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>-->
+            <div id='valuesCanvas' style='position: absolute; left: 10px; bottom: 5px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'></div>
+            <!--<input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
+            <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />-->
         </div>
     </div>
     <!-- The Appearance menu. Default state is display: none; -->

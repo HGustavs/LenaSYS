@@ -48,23 +48,32 @@ function zoomOutMode(e) {
 }
 
 function zoomInClick() {
-    var oldZV = zv;
-    zv += 0.1;
-    reWrite();
-    // To be able to use the 10% increase och decrease, we need to use this calcuation.
-    var inScale = ((1 / oldZV) * zv);
-    ctx.scale(inScale, inScale);
-    updategfx();
+    if(zv>=2.0){
+        alert("You can't zoom in more!");
+    }else{
+        var oldZV = zv;
+        zv += 0.1;
+        reWrite();
+        // To be able to use the 10% increase och decrease, we need to use this calcuation.
+        var inScale = ((1 / oldZV) * zv);
+        ctx.scale(inScale, inScale);
+        updategfx();
+    }
 }
 
 function zoomOutClick() {
-    var oldZV = zv;
-    zv -= 0.1;
-    reWrite();
-    // To be able to use the 10% increase och decrease, we need to use this calcuation.
-    var outScale = ((1 / oldZV) * zv);
-    ctx.scale(outScale, outScale);
-    updategfx();
+    if(zv<0.6){
+        alert("You can't zoom out more!");
+    }else{
+        var oldZV = zv;
+        zv -= 0.1;
+        reWrite();
+        // To be able to use the 10% increase och decrease, we need to use this calcuation.
+        var outScale = ((1 / oldZV) * zv);
+        ctx.scale(outScale, outScale);
+        updategfx();
+        drawGrid();
+    }
 }
 
 // Recursive Pos of div in document - should work in most browsers
@@ -102,7 +111,7 @@ function mousemoveevt(ev, t) {
     yPos = ev.clientY;
     mox = cx;
     moy = cy;
-    hovobj = diagram.inside(cx, cy);
+    hovobj = diagram.inside();
     if (ev.pageX || ev.pageY == 0) { // Chrome
         cx = (((ev.pageX - acanvas.offsetLeft) * (1/zv)) + (startX*(1/zv)));
         cy = (((ev.pageY - acanvas.offsetTop) * (1/zv)) + (startY*(1/zv)));
@@ -124,30 +133,47 @@ function mousemoveevt(ev, t) {
         sel = points.distance(cx, cy);
         // If mouse is not pressed highlight closest point
         points.clearsel();
-        movobj = diagram.inside(cx, cy);
+        movobj = diagram.inside();
         updateActivePoint();
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
         // If mouse is pressed down and at a point in selected object - move that point
-        points[sel.ind].x = cx;
-        points[sel.ind].y = cy;
+        if (diagram[selobj].targeted == true) {
+            if (diagram[selobj].kind == 1) {
+                for (var i = 0; i < diagram[selobj].segments.length; i++) {
+                    if (diagram[selobj].segments[i].pa == sel.ind) {
+                        points[diagram[selobj].segments[i].pa].x = cx;
+                        points[diagram[selobj].segments[i].pa].y = cy;
+                    }
+                }
+            } else {
+                if (diagram[selobj].bottomRight == sel.ind && diagram[selobj].symbolkind != 5) {
+                    points[diagram[selobj].bottomRight].x = cx;
+                    points[diagram[selobj].bottomRight].y = cy;
+                } else if (diagram[selobj].topLeft == sel.ind && diagram[selobj].symbolkind != 5) {
+                    points[diagram[selobj].topLeft].x = cx;
+                    points[diagram[selobj].topLeft].y = cy;
+                }
+            }
+        }
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1) {
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
                     if (snapToGrid) {
-                        var obj_topLeft = points[diagram[i].topLeft];
-                        var tlx = (Math.round(obj_topLeft.x / gridSize) * gridSize);
-                        var tly = (Math.round(obj_topLeft.y / gridSize) * gridSize);
-
-                        var deltatlx = obj_topLeft.x - tlx;
-                        var deltatly = obj_topLeft.y - tly;
-
+                        if (diagram[i].kind == 1) {
+                            var firstPoint = points[diagram[i].segments[0].pa];
+                        } else {
+                            var firstPoint = points[diagram[i].topLeft];
+                        }
+                        var tlx = (Math.round(firstPoint.x / gridSize) * gridSize);
+                        var tly = (Math.round(firstPoint.y / gridSize) * gridSize);
+                        var deltatlx = firstPoint.x - tlx;
+                        var deltatly = firstPoint.y - tly;
                         cx = Math.round(cx / gridSize) * gridSize;
                         cy = Math.round(cy / gridSize) * gridSize;
-
                         cx -= deltatlx;
                         cy -= deltatly;
                     }
@@ -202,7 +228,6 @@ function mousedownevt(ev) {
             } else {
                 p1 = points.addpoint(cx, cy, false);
             }
-            //p1=diagram[hovobj].centerpoint;
         }
     } else if (uimode != "CreateFigure" && sel.dist < tolerance) {
         md = 2;
@@ -219,6 +244,9 @@ function mousedownevt(ev) {
         md = 4;            // Box select or Create mode.
         sx = cx;
         sy = cy;
+    }
+    if (selobj >= 0) {
+        diagram[selobj].targeted = true;
     }
 }
 
