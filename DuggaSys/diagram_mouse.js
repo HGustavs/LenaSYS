@@ -212,7 +212,6 @@ function mousemoveevt(ev, t) {
                 crossfillStyle = "rgba(255, 102, 68, 0.0)";
             }
         } else if(uimode == "CreateERAttr"){
-            console.log("Attr")
             drawOval(sx, sy, cx, cy);
             ctx.setLineDash([3, 3]);
             ctx.strokeStyle = "#d51";
