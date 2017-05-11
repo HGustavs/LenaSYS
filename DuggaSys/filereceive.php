@@ -120,6 +120,7 @@ $allowedExtensions = [
 	"js"		=> ["text/plain", "application/javascript"],
 	"css"		=> ["text/plain", "text/css"],
 	"php"		=> ["text/x-php"],
+	"sr"		=> ["text/plain"],
 	"md"		=> ["text/plain", "text/markdown"],
 	"svg"		=> ["image/svg+xml"],
 	"sql"		=> ["text/plain", "application/sql"],
@@ -138,10 +139,11 @@ $allowedExtensions = [
 				$swizzled = swizzleArray($_FILES['uploadedfile']);
 				
 				echo "<pre>";
+				// Uncomment for debug printing
 				print_r($swizzled);
 		
 				foreach ($swizzled as $key => $filea){
-					
+					// Uncomment for debug printing
 						print_r($filea)."<br />";
 						
 						if($selectedfile!="NONE"&&($kind=="GFILE"||$kind=="MFILE")){
@@ -184,7 +186,7 @@ $allowedExtensions = [
 								$extension = end($temp); //stores the file type
 								// Determine file MIME-type
 								$filetype = mime_content_type($filea["tmp_name"]);
-								if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension])){
+								if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension], True)){
 										//  if file type is allowed, continue the uploading process.
 				
 										$fname=$filea['name'];
@@ -242,8 +244,8 @@ $allowedExtensions = [
 
 								}else{ 
 									//if the file extension is not allowed
-									if(!array_key_exists($extension, $allowedExtensions)) echo "Extension ".$extension." not allowed.\n";
-								 	else echo "Type $filetype not valid for file extension: $extension" . "\n";
+									if(!array_key_exists($extension, $allowedExtensions)) echo "Extension \"".$extension."\" not allowed.\n";
+								 	else echo "Type \"$filetype\" not valid for file extension: \"$extension\"" . "\n";
 									$error=true;
 								}
 						}
