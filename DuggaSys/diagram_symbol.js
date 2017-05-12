@@ -697,9 +697,9 @@ function Symbol(kind) {
             ctx.beginPath();
             if (this.key_type == 'Weak') {
                 ctx.moveTo(midx, y1 + 5);
-                ctx.lineTo(x2 - 10, midy + 0);
+                ctx.lineTo(x2 - 7, midy + 0);
                 ctx.lineTo(midx + 0, y2 - 5);
-                ctx.lineTo(x1 + 10, midy + 0);
+                ctx.lineTo(x1 + 7, midy + 0);
                 ctx.lineTo(midx + 0, y1 + 5);
             }
             ctx.moveTo(midx, y1);
