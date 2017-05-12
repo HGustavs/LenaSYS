@@ -2,8 +2,8 @@ Entity name: </br>
 <input onkeyup="changeObjectAppearance('entityType');" id='nametext' type='text'></br>
 Entity type: </br>
 <select onclick="changeObjectAppearance('entityType');" id='object_type'>
-    <option value='weak'>weak</option>
-    <option value='strong' selected>strong</option>
+    <option value='Weak'>Weak</option>
+    <option value='Strong' selected>Strong</option>
 </select></br>
 Background color:<br>
 <select onclick="changeObjectAppearance('entityType');" id ='symbolColor'>

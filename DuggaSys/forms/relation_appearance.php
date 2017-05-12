@@ -2,8 +2,8 @@ Relation name:</br>
 <input onkeyup="changeObjectAppearance('relationType');" id='nametext' type='text'></br>
 Relation type: </br>
 <select onclick="changeObjectAppearance('relationType');" id='object_type'>
-    <option value='weak'>weak</option>
-    <option value='strong' selected>strong</option>
+    <option value='Weak'>Weak</option>
+    <option value='Strong' selected>Strong</option>
 </select></br>
 Background color:<br>
 <select onclick="changeObjectAppearance('relationType');" id='symbolColor'>
