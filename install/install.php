@@ -177,10 +177,12 @@
                         <br>If you only entered an existing database for a new user only check the box for database overwrite.
                         <br>If both are existing both boxes should be checked.
                         <br>If it's a completely new database and user no box has to be checked.</b></p><hr>
-                    <input type="checkbox" name="writeOverDB" value="Yes" />
-                    Yes I want to write over an existing database.<br>
-                    <input type="checkbox" name="writeOverUSR" value="Yes" />
-                    Yes I want to write over an existing user.<br>
+                    <div id="checkboxContainer2">
+                        <input type="checkbox" name="writeOverDB" value="Yes" />
+                        Yes I want to write over an existing database.<br>
+                        <input type="checkbox" name="writeOverUSR" value="Yes" />
+                        Yes I want to write over an existing user.<br>
+                    </div>
                         <span id='failText'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
                 </div>
                 <div class="inputContent" id="td5" bgcolor="#EEEEEE">

@@ -163,6 +163,12 @@ body {
     text-align: left
 }
 
+#checkboxContainer2 {
+    width: 350px;
+    margin: auto;
+    text-align: left
+}
+
 .button {
     background-color: #4CAF50; /* Green */
     border: none;
