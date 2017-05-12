@@ -185,7 +185,7 @@
                     <p id="infoText"><b>If all fields are filled out correctly the only thing remaining is to smack the 'Install' button below.
                         Progress of installation will be shown. If any errors occurs please try again and check that your data is correct.
                         If you still get errors please read installation guidelines on LenaSYS github page or in 'README.md'. </b></p><hr>
-                    <input class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
+                    <input id="submitInput" class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
                 </div>
             </div>
 
@@ -207,6 +207,7 @@
             <script>
                 var leftArrow = document.getElementById('leftArrow');
                 var rightArrow = document.getElementById('rightArrow');
+                var submitButton = document.getElementById('submitInput');
                 var inputPage = 1;
                 var previousInputPage = 0;
 
@@ -214,25 +215,38 @@
                     previousInputPage = inputPage;
                     if(inputPage > 1) inputPage--;
                     updateInputPage();
-                }
+                };
 
                 rightArrow.onclick = function() {
                     previousInputPage = inputPage;
                     if (inputPage < 5) inputPage++;
                     updateInputPage();
-                }
+                };
+
+                /* You want to be able to press enter to continue, this function fixes this. */
+                document.addEventListener("keydown", function(e) {
+                    if(e.keyCode === 13){
+                        previousInputPage = inputPage;
+                        if (inputPage < 5) {
+                            inputPage++;
+                            updateInputPage();
+                        } else if (inputPage === 5){
+                            submitButton.click();
+                        }
+                    }
+                });
 
                 function updateInputPage(){
                     /* Hide current input page */
                     hideInputPage();
 
                     /* Dont show left arrow on first page and dont show right arrow on last page */
-                    if (inputPage == 1) {
+                    if (inputPage === 1) {
                         document.getElementById('leftArrow').style.display = "none";
                     } else {
                         document.getElementById('leftArrow').style.display = "block";
                     }
-                    if (inputPage == 5) {
+                    if (inputPage === 5) {
                         document.getElementById('rightArrow').style.display = "none";
                     } else {
                         document.getElementById('rightArrow').style.display = "block";
