@@ -425,7 +425,9 @@
                 echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
             } catch (PDOException $e) {
                 $errors++;
-                echo "<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>";
+                exit ("<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>
+                        You may have entered a invalid password or an invalid user.<br>
+                        <a href='install.php' class='returnButton'>Try again.</a>");
             }
             echo "<script>updateProgressBar();</script>";
             flush();
