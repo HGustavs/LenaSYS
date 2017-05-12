@@ -158,6 +158,8 @@
                     Create new database. <br><hr>
                     <input type="checkbox" name="fillDB" value="Yes" checked/>
                     Include test data. <br><br>
+                    <input type="checkbox" name="mdSupport" value="Yes" checked/>
+                    Include markdown. (Files located in /Install/md) <br><br>
                     <b>Language keyword highlighting support.<br></b>
                     <i>Choose which languages you wish to support in codeviewer. (You need to check 'Include test data' to be able to include these.</i><br>
                     <div id="checkboxContainer">
@@ -349,6 +351,9 @@
             }
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
                 $totalSteps += 4;
+                if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
+                    $totalSteps++;
+                }
                   $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
                   foreach ($checkBoxes AS $boxName) { //Loop trough each field
                     if (isset($_POST[$boxName]) || !empty($_POST[$boxName])) {
@@ -563,6 +568,13 @@
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
                 addTestData("testdata", $connection);
 
+                # Copy md files to the right place.
+                if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
+                    copyTestFiles("{$putFileHere}/install/md/", "{$putFileHere}/DuggaSys/templates/");
+                } else {
+                    echo "Skipped adding markdown files<br>";
+                }
+
                 # Check which languages to add from checkboxes.
                 $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
                 foreach ($checkBoxes AS $boxName) { //Loop trough each field
@@ -681,8 +693,10 @@
             }
         }
         closedir($dir);
-        echo "<span id='successText' />Successfully filled {$destDir} with example files.</span><br>";
+        echo "<span id='successText' />Successfully filled {$destDir} with files from {$fromDir}.</span><br>";
         echo "<script>updateProgressBar();</script>";
+        flush();
+        ob_flush();
     }
     ?>
 
