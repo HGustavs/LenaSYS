@@ -695,13 +695,13 @@ function Symbol(kind) {
             var midx = points[this.middleDivider].x;
             var midy = points[this.middleDivider].y;
             ctx.beginPath();
-            if (this.relationType == 'weak') {
-            	ctx.moveTo(midx + 0, y1 + 5);
-                ctx.lineTo(x2 - 5, midy + 0);
+            if (this.key_type == 'Weak') {
+                ctx.moveTo(midx, y1 + 5);
+                ctx.lineTo(x2 - 10, midy + 0);
                 ctx.lineTo(midx + 0, y2 - 5);
-                ctx.lineTo(x1 + 5, midy + 0);
+                ctx.lineTo(x1 + 10, midy + 0);
                 ctx.lineTo(midx + 0, y1 + 5);
-        }
+            }
             ctx.moveTo(midx, y1);
             ctx.lineTo(x2, midy);
             ctx.lineTo(midx, y2);
