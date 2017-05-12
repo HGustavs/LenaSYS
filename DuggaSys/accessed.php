@@ -23,7 +23,6 @@
 	
 	<?php 
 		$noup=true;
-		$loginvar="ACCESS"; 
 		include '../Shared/navheader.php';
 	?>
 		
@@ -49,7 +48,7 @@
 		include '../Shared/loginbox.php';
 	?>
 	
-	<!-- Add Users Dialog START -->
+	<!-- Import Users Dialog START -->
 	<div id='importUsers' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'> 
 			<h3>Import users</h3>
@@ -68,7 +67,7 @@
 			<input class='submit-button' type='button' value='Import' onclick='importUsers();' />
 		</div>
 	</div>
-	<!-- Add Users Dialog END -->
+	<!-- Import Users Dialog END -->
 
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBox' style='width:464px;display:none;'>
