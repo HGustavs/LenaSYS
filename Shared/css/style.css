@@ -1267,11 +1267,6 @@ input.large-button {
     border-bottom:none !important;
 }
 
-.list#testTable input {
-    border-width: 1px !important;
-    border-style: inset !important;
-}
-
 #testinnertable {
     background:#fff;
     box-shadow:none;
