@@ -8,6 +8,15 @@ Attribute type: </br>
     "<option value='Composite' selected>Composite</option>
     "<option value='Drive' selected>Derive</option>
 </select></br>
+Background color:<br>
+<select onclick="changeObjectAppearance('attributeType');" id='symbolColor'>
+    "<option value='#add8e6'>Blue</option>" +
+    "<option value='#dfe'>Green</option>" +
+    "<option value='#dadada'>Grey</option>" +
+    "<option value='#ea5b5b'>Red</option>" +
+    "<option value='#f0f09e'>Yellow</option>" +
+    "<option value='#ffffff'>White</option>" +
+</select><br>
 Font family:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='font'>
     "<option value='arial' selected>Arial</option>
