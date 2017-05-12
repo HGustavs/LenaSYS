@@ -36,7 +36,7 @@ pdoConnect();
 	if(checklogin()){
 	?>
 		<div id="content">
-			<div style='width:100%;height:50px;'>
+			<div style='width:100%;height:50px; border-bottom: 2px dotted #775886; '>
 				<h1 style='text-align:center;color:#614875;'>Profile</h1>
 			</div>
 			<div style="display:flex; flex-wrap:wrap;">
@@ -61,7 +61,7 @@ pdoConnect();
 						</form>
 						<label for="challengeAnswer">Challenge answer</label><br/>
 						<input type="password" id="challengeAnswer" class="form-control textinput" placeholder="Answer to question" style="width: 300px;"><br><br>
-						<button type="button" onClick="saveChallenge()" id="saveChallenge">Save Challenge</button>
+						<button type="button" onClick="saveChallenge()" id="saveChallenge" class="submit-button" style="float: none; margin-left: 0;">Save Challenge</button>
 					</form>
                     <div id="challengeMessage"></div>
 				</div>
@@ -78,7 +78,7 @@ pdoConnect();
 							Password must contain a number, an uppercase and a lowercase letter.<br><br>
 							<label for="newPassword2">Confirm new password</label><br>
 							<input type="password" class="form-control textinput" id="newPassword2" placeholder="New password again" maxlength="72" onkeydown="formEventHandler(event)"><br><br>
-							<button type="button" id="passwordButton" onclick="validatePassword();">Update password</button><br/><br/>
+							<button type="button" id="passwordButton" onclick="validatePassword();" class="submit-button" style="float: none; margin-left: 0;">Update password</button><br/><br/>
                         </form>
                     </div>
                     <div id="passwordMessage"></div>
@@ -90,7 +90,7 @@ pdoConnect();
 					if (defined('PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY')) {
 					?>
 					<p id="notificationsText">Checking for push notification subscription...</p>
-					<button type="button" class="profile-element" id="notificationsToggle" disabled>Please wait...</button>
+					<button type="button" id="notificationsToggle" disabled class="submit-button" style="float: none; margin-left: 0;">Please wait...</button>
 					<script>
 						var push_notifications_vapid_public_key = "<?php echo PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY; ?>";
 					</script>
