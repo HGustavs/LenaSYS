@@ -39,7 +39,7 @@ pdoConnect();
 			<div style='width:100%;height:50px;'>
 				<h1 style='text-align:center;color:#614875;'>Profile</h1>
 			</div>
-			<div style="display:inline-flex;flex-wrap:wrap;margin:0 auto 0 auto;">
+			<div style="display:flex; flex-wrap:wrap;">
 				<div id="changeChallengeQuestion" style="flex-grow: 1; border-radius: 2px; margin: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23); padding: 20px;">
 					<h3>Change challenge question</h3>
 					<form method="post">
