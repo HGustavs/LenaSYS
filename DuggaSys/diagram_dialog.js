@@ -21,7 +21,6 @@ function closeAppearanceDialogMenu() {
     /*
      * Closes the dialog menu for appearance.
      */
-
     hashfunction();
     $("#appearance").hide();
     dimDialogMenu(false);
@@ -87,6 +86,9 @@ function objectAppearanceMenu(form) {
     if (diagram[selobj].symbolkind == 3) {
         loadFormIntoElement(form, 'forms/entity_appearance.php');
     }
+    if (diagram[selobj].symbolkind == 4) {
+        loadFormIntoElement(form, 'forms/line_appearance.php');
+    }
     if (diagram[selobj].symbolkind == 5) {
         loadFormIntoElement(form, 'forms/relation_appearance.php');
     }
@@ -95,11 +97,15 @@ function changeObjectAppearance(object_type){
     /*
      * USES DIALOG TO CHANGE OBJECT APPEARANCE
      */
-    diagram[selobj].name = document.getElementById('nametext').value;
-    diagram[selobj].symbolColor = document.getElementById('symbolColor').value;
-    diagram[selobj].fontColor = document.getElementById('fontColor').value;
-    diagram[selobj].font = document.getElementById('font').value;
-    diagram[selobj].sizeOftext = document.getElementById('TextSize').value;
-    diagram[selobj].key_type = document.getElementById('object_type').value;
+
+    if (diagram[selobj].symbolkind == 4) {
+        diagram[selobj].key_type = document.getElementById('object_type').value;
+    } else {
+        diagram[selobj].name = document.getElementById('nametext').value;
+        diagram[selobj].fontColor = document.getElementById('fontColor').value;
+        diagram[selobj].font = document.getElementById('font').value;
+        diagram[selobj].sizeOftext = document.getElementById('TextSize').value;
+        diagram[selobj].key_type = document.getElementById('object_type').value;
+    }
     updategfx();
 }

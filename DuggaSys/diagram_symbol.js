@@ -633,7 +633,7 @@ function Symbol(kind) {
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.beginPath();
-            if (this.type == "weak") {
+            if (this.key_type == "Weak") {
                 ctx.moveTo(x1 - 5, y1 - 5);
                 ctx.lineTo(x2 + 5, y1 - 5);
                 ctx.lineTo(x2 + 5, y2 + 5);
@@ -658,7 +658,7 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         } else if (this.symbolkind == 4) {
             // ER Attribute relationship is a single line
-            if (this.type == "weak") {
+            if (this.key_type == "Weak") {
                 ctx.lineWidth = this.line_width * 3;
                 if (this.sel || this.targeted) {
                     ctx.strokeStyle = "#F82";
