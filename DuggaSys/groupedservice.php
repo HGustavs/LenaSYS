@@ -150,6 +150,9 @@ if(strcmp($opt,"GET")==0){
 		// Place the data in the output data array
 		$data['tablecontent'] = $tableContent;
 		$data['availablegroups'] = $groupsPerLids;
+
+		echo json_encode($data);
+
  	}
 } else if(strcmp($opt,"NEWGROUP")==0){
 	$query = $pdo->prepare("INSERT INTO `usergroup` (`ugid`, `name`, `created`, `lastupdated`) VALUES (DEFAULT, :name, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"); 
@@ -172,37 +175,39 @@ if(strcmp($opt,"GET")==0){
 		}
 	}
 } else if(strcmp($opt, "UPDATEGROUP") == 0) {
-	$uid = getOP('uid');
-	$lid = getOP('lid');
-	$ugid = getOP('ugid');
+
+	// Get params from the query string 
+	$uid = getOP('uid'); // User id
+	$lid = getOP('lid'); // Listentry id
+	$newUgid = getOP('newUgid'); // The new ugid, used when using REPLACE INTO
+	$oldUgid = getOP('oldUgid'); // The old ugid, used when using DELETE FROM
 	
-	if($ugid > 0) { // User wants to assign to a group
-		$query = $pdo->prepare("REPLACE INTO user_usergroup (uid, ugid) VALUES (:uid, :ugid)");
+	if($newUgid > 0) { // User wants to assign to a group 
+		$query = $pdo->prepare("REPLACE INTO user_usergroup (uid, ugid) VALUES (:uid, :newUgid)");
 		$query->bindParam(":uid", $uid);
-		$query->bindParam(":ugid", $ugid);
+		$query->bindParam(":newUgid", $newUgid);
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error inserting/updating uid/ugid mapping. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
 		}
-	} else { // User wants to unassign from a group
-		$query = $pdo->prepare("DELETE FROM user_usergroup WHERE uid = :uid AND ugid = :ugid"); // Remove where there is the combination of uid and ugid
+	} else { // User wants to unassign from a group 
+		$query = $pdo->prepare("DELETE FROM user_usergroup WHERE uid = :uid AND ugid = :oldUgid");
 		$query->bindParam(":uid", $uid);
-		$query->bindParam(":ugid", $ugid);
+		$query->bindParam(":oldUgid", $oldUgid);
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error deleting uid/ugid mapping. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
 		}
 	}
-	
 }
 
-if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
-		$serviceTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];	
-		$benchmark =  array('totalServiceTime' => $serviceTime);
-}else{
-		$benchmark="-1";
+if(isset($_SERVER["REQUEST_TIME_FLOAT"])) {
+	$serviceTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];	
+	$benchmark = array('totalServiceTime' => $serviceTime);
+} else {
+	$benchmark="-1";
 }
 
 // This is possibly needed later, for debugging and benchmarking and such.
@@ -215,7 +220,6 @@ $array = array(
 	'benchmark' => $benchmark */
 );
 
-// Print only the $data contents array as JSON for now. 
-echo json_encode($data);
-// logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php",$userid,$info);
+// For logging the elapsed time of the service
+// logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "groupedservice.php",$userid,$info);
 ?>
