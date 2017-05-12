@@ -7,13 +7,26 @@ function saveChallenge(){
     var password = curPassword.val();
     var question = secQuestion.val();
     var answer = chaAnswer.val();
+    var utf8 = /[A-zÀ-ÖØ-öø-ÿ' ]+$/;
+    var length = chaAnswer.length;
+    
+    console.log(answer);
     
     if(password != "" && question != "" && answer != ""){
-        processChallenge(password, question, answer);
+        if(answer.match(utf8)){
+            processChallenge(password, question, answer);
+            message.html("Challenge has been updated!!");
+            clearField(curPassword);
+            clearField(secQuestion);
+        } else {
+             message.html("Enter valid characters!");
+        }
     } else {
         message.html("Fill out all the fields");
         updateField(chaAnswer);
         updateField(curPassword);
+        
+        
     }
 }
 
@@ -194,7 +207,7 @@ function changePassword(){
 
 
 $(function() {
-	if (!checkHTTPS()){
+    if (!checkHTTPS()){
 		$("#content").html("Profile settings can only be changed on a secure HTTPS connection.");
 	}
 });
