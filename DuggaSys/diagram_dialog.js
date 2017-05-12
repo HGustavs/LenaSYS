@@ -96,6 +96,7 @@ function changeObjectAppearance(object_type){
      * USES DIALOG TO CHANGE OBJECT APPEARANCE
      */
     diagram[selobj].name = document.getElementById('nametext').value;
+    diagram[selobj].symbolColor = document.getElementById('symbolColor').value;
     diagram[selobj].fontColor = document.getElementById('fontColor').value;
     diagram[selobj].font = document.getElementById('font').value;
     diagram[selobj].sizeOftext = document.getElementById('TextSize').value;

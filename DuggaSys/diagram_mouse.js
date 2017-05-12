@@ -381,6 +381,7 @@ function doubleclick(ev) {
         openAppearanceDialogMenu();
         console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
         document.getElementById('nametext').value = diagram[selobj].name;
+        document.getElementById('symbolColor').value = diagram[selobj].symbolColor;
         document.getElementById('fontColor').value = diagram[selobj].fontColor;
         document.getElementById('font').value = diagram[selobj].font;
         document.getElementById('TextSize').value = diagram[selobj].sizeOftext;

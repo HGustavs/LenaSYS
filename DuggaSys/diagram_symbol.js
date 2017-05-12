@@ -13,6 +13,7 @@ function Symbol(kind) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textsize = 14;             // 14 pixels text size is default
+    this.symbolColor = '#dfe';
     this.line_width = 2;
     var textscale = 10;
     this.name = "New Class";        // Default name is new class
@@ -570,7 +571,7 @@ function Symbol(kind) {
             //drawing a multivalue attribute
             if (this.key_type == 'Multivalue') {
                 drawOval(x1 - 10, y1 - 10, x2 + 10, y2 + 10);
-                ctx.fillStyle = "#dfe";
+                ctx.fillStyle = this.symbolColor;
                 ctx.fill();
                 if (this.targeted) {
                     ctx.strokeStyle = "#F82";
@@ -583,7 +584,7 @@ function Symbol(kind) {
             //drawing an derived attribute
             if (this.key_type == 'Drive') {
                 drawOval(x1 - 10, y1 - 10);
-                ctx.fillStyle = "#dfe";
+                ctx.fillStyle = this.symbolColor;
                 ctx.fill();
                 if (this.targeted) {
                     ctx.strokeStyle = "#F82";
@@ -598,7 +599,7 @@ function Symbol(kind) {
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             drawOval(x1, y1, x2, y2);
-            ctx.fillStyle = "#dfe";
+            ctx.fillStyle = this.symbolColor;
             ctx.fill();
             if (this.targeted) {
                 ctx.strokeStyle = "#F82";
@@ -644,7 +645,7 @@ function Symbol(kind) {
             ctx.lineTo(x2, y2);
             ctx.lineTo(x1, y2);
             ctx.lineTo(x1, y1);
-            ctx.fillStyle = "#dfe";
+            ctx.fillStyle = this.symbolColor;
             ctx.fill();
             if (this.targeted) {
                 ctx.strokeStyle = "#F82";
@@ -706,7 +707,7 @@ function Symbol(kind) {
             ctx.lineTo(midx, y2);
             ctx.lineTo(x1, midy);
             ctx.lineTo(midx, y1);
-            ctx.fillStyle = "#dfe";
+            ctx.fillStyle = this.symbolColor;
             ctx.fill();
             if (this.targeted) {
                 ctx.strokeStyle = "#F82";

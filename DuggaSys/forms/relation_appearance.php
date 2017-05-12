@@ -5,6 +5,15 @@ Relation type: </br>
     <option value='weak'>weak</option>
     <option value='strong' selected>strong</option>
 </select></br>
+Background color:<br>
+<select onclick="changeObjectAppearance('relationType');" id='symbolColor'>
+    "<option value='#add8e6'>Blue</option>" +
+    "<option value='#dfe'>Green</option>" +
+    "<option value='#dadada'>Grey</option>" +
+    "<option value='#ea5b5b'>Red</option>" +
+    "<option value='#f0f09e'>Yellow</option>" +
+    "<option value='#ffffff'>White</option>" +
+</select><br>
 Font family:<br>
 <select onclick="changeObjectAppearance('relationType');" id='font'>
     <option value='arial' selected>Arial</option>
