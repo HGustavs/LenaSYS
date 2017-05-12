@@ -15,7 +15,7 @@ function setup(){
 	var filt = "";
 	filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverFunnel();'>";
 	filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-	filt+="<div id='dropdownc' class='dropdown-list-container'>";
+	filt+="<div id='dropdownFunnel' class='dropdown-list-container'>";
 	filt+="</div>";
 	filt+="</span></td>";
   
@@ -80,30 +80,24 @@ function toggleAll() {
 function hoverFunnel()
 {
 	toggleAll(); // Check toggle all if there are any elements checked
-    $('#dropdowns').css('display','none');
-  	$('#dropdownc').css('display','block');
+    $('#dropdownFilter').css('display','none');
+  	$('#dropdownFunnel').css('display','block');
 }
 
 function leaveFunnel()
 {
-	$('#dropdownc').css('display','none');   
+	$('#dropdownFunnel').css('display','none');   
 	
 	// Update columns only now
 	var str="";
-	$(".headercheck").each(function(){
+	$(".tableheadercheck").each(function(){
 			str+=$(this).attr("id")+"**"+$(this).is(':checked')+"**";
 	});
-  
-  showTeachers=$('#showteachers').is(":checked");
-  	old=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
-  	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
+	
+	old=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+  	localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
 
-  onlyPending=$('#pending').is(":checked");
-    var opend=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending");
-    localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
-
-	if(str!=old || onlyPending==opend) process();
-  
+	process();
 }
 
 function checkMomentParts(pos, id) {
@@ -115,7 +109,7 @@ function checkMomentParts(pos, id) {
 
 function hoverFilter()
 {
-	$('#dropdownc').css('display','none');
+	$('#dropdownFunnel').css('display','none');
   	$('#dropdownFilter').css('display','block');
 }
 
@@ -125,15 +119,15 @@ function leaveFilter()
 	var col=0;
 	var dir=1;
 
-	var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
-	var odir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir"); 
+	var ocol=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
+	var odir=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir"); 
 
 		
 	$("input[name='sortcol']:checked").each(function() {col=this.value;});
 	$("input[name='sortdir']:checked").each(function() {dir=this.value;});
 	
-	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);
-	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
+	localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);
+	localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
 
 
 	if (!(ocol==col && odir==dir) || typechanged) {
@@ -145,14 +139,14 @@ function leaveFilter()
 function sorttype(t){
 		var c=$("input[name='sortcol']:checked").val();
 		if (c == 0){
-				localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1", t);		
+				localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1", t);		
 				$("input[name='sorttype']").prop("checked", false);
 		} else {
 				if (t == -1){
-						t = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
+						t = localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
 						$("#sorttype"+t).prop("checked", true);											
 				} else {
-						localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
+						localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
 						$("#sorttype"+t).prop("checked", true);					
 				}
 		}
@@ -160,13 +154,13 @@ function sorttype(t){
 }
 
 function process()
-{			
+{		
 		// Read dropdown from local storage
-		clist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+		clist=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+		
 		if (clist){	
 				clist=clist.split("**"); 
 		} 
-
 		// Create temporary list that complies with dropdown
 		momtmp=new Array;
 		var momname = "tore";
@@ -199,7 +193,7 @@ function process()
 			// Update dropdown list
 		var dstr="";
 
-    	dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+    	dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='tableheadercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 
     	var activeMoment = 0;
     	for(var j=0;j<moments.length;j++){
@@ -211,7 +205,7 @@ function process()
 				
 				if (moments[j].kind == 4) {dstr +=" checkmoment";}
 				
-				dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
+				dstr+="'><input name='selectdugga' type='checkbox' class='tableheadercheck' id='hdr"+lid+"check'";
             	if (moments[j].kind == 4) {
                     duggaArray.push( [] );
                     var idAddString = "hdr"+lid+"check";
@@ -237,7 +231,7 @@ function process()
 		}
 		dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaveFunnel()'>Filter</button></div>";
  
-	document.getElementById("dropdownc").innerHTML=dstr;
+	document.getElementById("dropdownFunnel").innerHTML=dstr;
 	var dstr="";
 
 	// Sorting
@@ -248,6 +242,8 @@ function process()
 	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >SSN</label></div>";		
 	dstr+="<div style='display:flex;justify-content:flex-end;'><button onclick='leaveFilter()'>Sort</button></div>"
 	document.getElementById("dropdownFilter").innerHTML=dstr;
+	
+	resort();
 }
 
 function drawtable(){
@@ -271,11 +267,9 @@ function drawtable(){
 
 
 	// Itererate the headings, that are dependent on the cid and coursevers. 
-	if(moments){
-		for(var i = 0; i < moments.length; i++) {
-
+	for(var i = 0; i < momtmp.length; i++) {
+		if(moments){
 			str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+moments[i].lid+"' class='grouped-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+moments[i].entryname+"</th>";	
-
 		}
 	}
 	str+="</thead>";
@@ -372,7 +366,7 @@ function returnedGroup(data)
 	results=data.results;*/
 	
 	// Read dropdown from local storage (??)
-	courselist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+	courselist=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
 	if (courselist){	
 		courselist=courselist.split("**"); 
 	} 
@@ -386,7 +380,7 @@ function returnedGroup(data)
 		});
 	});
 	$(document).ready(function () {
-						$("#dropdownc").mouseleave(function () {
+						$("#dropdownFunnel").mouseleave(function () {
 								leaveFunnel();
 						});
 		});
@@ -434,16 +428,17 @@ function changegroup(changedElement) {
 function resort()
 {
 	// Read sorting config from localStorage to get the right order in table	
-	var sortdir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
+	var sortdir=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
 	if (sortdir === null || sortdir === undefined){dir=1;}
 	$("#sortdir"+sortdir).prop("checked", true);
-	var columno=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
+	var columno=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
 	if (columno === null || columno === undefined ){columno=0;}
-	var colkind=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1");
+	var colkind=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1");
 	if (colkind == null || colkind == undefined){colkind=0;}
 	
 	if (tablecontent.length > 0) {
-		if(columno < tablecontent.length){
+		if(columno < momtmp.length+1){
+			
 			// Each if case checks what to sort after and then sorts appropiatle depending on ASC or DESC
 			if(columno==0){
 				if(colkind==0){	
@@ -549,25 +544,25 @@ function resort()
 
 // If col and current col are equal we flip sort order 
 function toggleSortDir(col){
-    var dir = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
-    var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
+    var dir = localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
+    var ocol=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
   	if (col != ocol){
 		$("input[name='sortcol']:checked").prop({"checked":false});
         $("input[name='sorttype']:checked").prop({"checked":false});
         if (col == 0){
-            localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1",1);
+            localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1",1);
         }else{
             $("#sortcol"+col).prop({"checked":true});          
             $("#sorttype0").prop({"checked":true});                      
-            localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", 0);          
+            localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", 0);          
         }
         dir=-1;
-        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);          
-        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);                
+        localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);          
+        localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);                
     }else{
 		dir=dir*-1;
 		$("input[name='sortdir']:checked").val(dir);
-		localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
+		localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
     }
     resort();  
 }
