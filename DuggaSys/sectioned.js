@@ -711,9 +711,15 @@ function returnedSection(data)
     // Course Name
     // This will ellipsis on the course name, and keep course code and vers always fully expanded
     str+="<div class='course' style='display: flex;align-items: center;justify-content: center;'>";
-        	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 10px; display: flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowCompTop'><img src='../Shared/icons/right_complement.svg' class='arrowRightTop' style='display:none;'>";
+        	str+="<div class='hideAll' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 10px; display: flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowCompTop'>";
         	str+="</div>";
-        	str+="<div class='showhide' id='course-showhide-text' style='position:absolute;  cursor: pointer; left:25px; margin-top: 10px; display: flex;' >";
+        	str+="<div class='hideAll' id='course-showhide-text' style='position:absolute;  cursor: pointer; left:25px; margin-top: 10px; display: flex;' >";
+        	str+="<text class='showhidetext' >Show/hide all</text>";
+        	str+="</div>";
+
+        	str+="<div class='showAll' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRightTop'>";
+        	str+="</div>";
+        	str+="<div class='showAll' id='course-showhide-text' style='display:none; position:absolute;  cursor: pointer; left:25px; margin-top: 10px;' >";
         	str+="<text class='showhidetext' >Show/hide all</text>";
         	str+="</div>";
 
@@ -1167,20 +1173,40 @@ $(document).on('click', '.section', function () {
 	$(this).children('.arrowComp').slideToggle();
 });
 
-// Function for toggling content for all moments
-$(document).on('click', '.showhide', function () {
-    $('.moment').nextUntil('.moment').slideToggle();
+// Function for hiding content for all moments
+$(document).on('click', '.hideAll', function () {
+    $('.moment').nextUntil('.moment').hide(400);
     $('.moment').children('.arrowRight').slideToggle();
     $('.moment').children('.arrowComp').slideToggle();
+    $('.hideAll').hide();
+    $('.showAll').show().css('display', 'flex');
 });
 
-// Function for toggling content for all sections
-$(document).on('click', '.showhide', function () {
-    $('.showhide').children('.arrowRightTop').slideToggle();
-    $('.showhide').children('.arrowCompTop').slideToggle();
-    $('.section').nextUntil('.section').slideToggle();
+// Function for hiding content for all sections
+$(document).on('click', '.hideAll', function () {
+    $('.section').nextUntil('.section').hide(400);
     $('.section').children('.arrowRight').slideToggle();
     $('.section').children('.arrowComp').slideToggle();
+    $('.hideAll').hide();
+    $('.showAll').show().css('display', 'flex');
+});
+
+// Function for showing content for all moments
+$(document).on('click', '.showAll', function () {
+    $('.moment').nextUntil('.moment').show(400);
+    $('.moment').children('.arrowRight').slideToggle();
+    $('.moment').children('.arrowComp').slideToggle();
+    $('.hideAll').show();
+    $('.showAll').hide();
+});
+
+// Function for showing content for all sections
+$(document).on('click', '.showAll', function () {
+    $('.section').nextUntil('.section').show(400);
+    $('.section').children('.arrowRight').slideToggle();
+    $('.section').children('.arrowComp').slideToggle();
+    $('.hideAll').show();
+    $('.showAll').hide();
 });
 
 // Function to prevent collapsing when clicking icons
