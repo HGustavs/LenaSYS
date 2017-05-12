@@ -589,14 +589,9 @@ function addSecurityQuestionProfile(username) {
 	});
 }
 
-function checkHTTPS(safeConnection) { 
-    //Checks if the user is using a secure https connection
-    if (location.protocol == 'https:') { 
-        safeConnection = true;
-    } 
-    else{
-        safeConnection = false;    
-    }
+// Checks if the page is using https
+function checkHTTPS() { 
+	return (location.protocol == 'https:');
 } 
 
 function processResetPasswordCheckUsername() {
