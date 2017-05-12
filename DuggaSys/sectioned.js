@@ -711,6 +711,7 @@ function returnedSection(data)
     // Course Name
     // This will ellipsis on the course name, and keep course code and vers always fully expanded
     str+="<div class='course' style='display: flex;align-items: center;justify-content: center;'>";
+     		/*Adds the Show/hide all arrow and text to the section editor*/
         	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 10px; display: flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowCompTop'><img src='../Shared/icons/right_complement.svg' class='arrowRightTop' style='display:none;'>";
         	str+="</div>";
         	str+="<div class='showhide' id='course-showhide-text' style='position:absolute;  cursor: pointer; left:25px; margin-top: 10px; display: flex;' >";
@@ -720,6 +721,7 @@ function returnedSection(data)
         	str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;'>"+data.coursename+"</div>";
 			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
 			str+="<div id='course-versname' class='courseVersionField'>"+versionname+"</div>";
+		/*If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign */
         if(retdata["writeaccess"]){
             str+="<div id='course-newitem' style='display: flex; position: absolute; right:15px;'>";
             str += "<input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
