@@ -882,17 +882,25 @@ input {
 
 }
 
-.buttonLoginBox{
-  background-color: #614875;
+.buttonLoginBox {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  width: 260px;
-  height: 40px;
-  color: #fff;
-  cursor: pointer;
-  font-size: 14px;
+  background-color:#614875;
   border: none;
-  border-radius: 0px;
-  margin-top: 30px;
+  width:260px;
+  height:40px;
+  color:#fff;
+  cursor:pointer;
+  margin-top:20px;
+  margin-bottom:2px;
+  font-size:14px;
+  transition:1s background-color;
+  text-align: center;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 10px 0 rgba(0,0,0,0.1);
+}
+
+.buttonLoginBox:hover {
+  background-color:#7B5A96;
+  border-radius:2px;
 }
 
 .loginBoxTable{
