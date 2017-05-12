@@ -1,4 +1,4 @@
-	<header>
+    <header>
 		<?php	
 			echo "<table class='navheader'><tr>";
 
@@ -29,9 +29,7 @@
                     $coursevers=getOPG('coursevers');
                     if($coursevers=="UNK") $coursevers=getOPG('cvers');
 					echo "<td class='navButt' id='swimlane' title='swimlane'>";
-					echo "<script src='swimlane.js'></script>";
-					$path = getcwd() . "../DuggaSys/swimlane.php?courseid=" . $cid . "&coursevers=" . $coursevers;
-                    echo "<a class ='linkSwimlane' onclick='swimlaneSetup();' href='#'><img src='../Shared/icons/swimlane.svg'></a></td>";
+          echo "<a class ='linkSwimlane' href='#'><img src='../Shared/icons/swimlane.svg'></a></td>";
 
 			}
 			
@@ -73,87 +71,10 @@
 	?>
 </header>
     <body>
-    <div class="swimlaneOverlay" id="swimlaneOverlay">
-        <!-- the external content of swimlane is loaded into this div -->
-        <div class="SwimContentWrap" id ="SwimContentWrap">
-            <div class="SwimContent" id="SwimContent">
-
-            </div>
-            <div class="SwimClose">
-                <span>&times;</span>
-            </div>
-        </div>
-    </div>
-        <script>
-            var swimBox = document.getElementById('swimlaneOverlay');
-            var path = location.protocol + '//' + location.host + location.pathname;
-
-            $(document).ready(function(){
-                $("a.linkSwimlane").click(function(){ loadSwimlane(); });
-            });
-
-            function loadSwimlane() {
-                $('.SwimContent').load(path + "/../../DuggaSys/swimlane.php?courseid=" +
-                  <?php if(isset($cid)){Print($cid);}else{Print(0);}?> +
-                        "&coursevers=" +
-                  <?php if(isset($coursevers)){Print($coursevers);}else{Print(0);} ?>);
-                swimBox.style.display = "block";
-            }
-
-            var circlePosX;
-            var circlePosY;
-            var mouseX;
-            var mouseY;
-
-            /* Get mouse position. */
-            $(document).mousemove(function (e) {
-                mouseX = e.pageX;
-                mouseY = e.pageY;
-            });
-
-            /* Move left column with side scroll. */
-            $(window).scroll(function () {
-                $('#weeks').css({
-                    'left': $(this).scrollLeft()
-                });
-            });
-
-            function mouseOverCircle(circle, text) {
-                circle.setAttribute("r", 15);
-                circlePosY = parseInt(circle.getAttribute('cy')) - 70;
-                circlePosX = parseInt(circle.getAttribute('cx')) + 20;
-                document.getElementById("duggaInfoText").innerHTML = text;
-                $('#duggainfo').css({'top': circlePosY, 'left': circlePosX}).fadeIn('fast');
-            }
-
-            function mouseGoneFromCircle(circle) {
-                circle.setAttribute("r", 10);
-                $('#duggainfo').fadeOut('fast');
-            }
-
-            function mouseOverLine(text) {
-                document.getElementById("currentDateText").innerHTML = text;
-                $('#currentDate').css({'top': mouseY, 'left': mouseX}).fadeIn('fast');
-            }
-
-            function mouseGoneFromLine() {
-                $('#currentDate').fadeOut('fast');
-            }
-
-            var exitButton = document.getElementsByClassName("SwimClose")[0]; /* Get the button that opens the modal */
-
-            /* When the user clicks on <span> (x), close the modal */
-            exitButton.onclick = function() {
-                swimBox.style.display = "none";
-            }
-
-            /* When the user clicks anywhere outside of the modal, close it */
-            window.onclick = function(event) {
-                if (event.target == swimBox) {
-                    swimBox.style.display = "none";
-                }
-            }
-        </script>
+<?php
+// The below swimlane stuff should be moved to swimlane.php, and included here.
+	include_once("swimlane.php");
+?>
     </body>
 <script type="text/javascript">
 		if(localStorage.getItem("cookieMessage")=="off"){
