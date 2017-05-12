@@ -97,6 +97,7 @@ function changeObjectAppearance(object_type){
     /*
      * USES DIALOG TO CHANGE OBJECT APPEARANCE
      */
+
     if (diagram[selobj].symbolkind == 4) {
         diagram[selobj].key_type = document.getElementById('object_type').value;
     } else {
