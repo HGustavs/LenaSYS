@@ -108,15 +108,40 @@ try {
 
 foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
   if($row['kind'] == 3) {
+// !!!!!!!!!!!!!!!!!!!!!!!!!!
+    $sqlDeadline = $row['deadline'];
+    $sqlQrelease = $row['qrelease'];
+
+    $deadlinedate = new DateTime($sqlDeadline);
+    $startdate = new DateTime($sqlQrelease);
+    $deadlineweek = $deadlinedate->format('W') - $information['versstartweek'] + 1;
+    $startweek = $startdate->format('W') - $information['versstartweek'] + 1;
+    if ($k == 0) {
+      $oldWeek = $deadlineweek;
+    }
+
+    $tempDateArray = explode(' ', $startString);
+    if ($tempDateArray[1] == '00:00:00') {
+      $sqlQrelease = $tempDateArray[0];
+    }
+    $tempDateArray = explode(' ', $sqlDeadline);
+    if ($tempDateArray[1] == '00:00:00') {
+      $sqlDeadline = $tempDateArray[0];
+    }
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!
     $moments[] = array(
 			'kind' => $row['kind'],
       'entryname' => $row['entryname'],
-      'deadline' => $row['deadline'],
-      'qrelease' => $row['qrelease']
+      'deadline' => $sqlDeadline,
+      'qrelease' => $sqlQrelease,
+      'startweek' => $startweek,
+      'deadlineweek' => $deadlineweek,
+      'oldweek' => $oldweek
     );
   } else if($row['kind'] == 4) {
     $moments[] = array(
-			'kind' => $row['kind'],
+      'kind' => $row['kind'],
       'entryname' => $row['entryname']
     );
   }
