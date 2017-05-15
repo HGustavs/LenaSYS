@@ -473,7 +473,6 @@ function Symbol(kind) {
             textsize = 50;
         } else {
             textsize = 14;
-            canvasContext.setLineDash([5, 0]);
         }
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
@@ -559,7 +558,6 @@ function Symbol(kind) {
                 canvasContext.fill();
                 if (this.targeted) {
                     canvasContext.strokeStyle = "#F82";
-                    canvasContext.setLineDash([5, 0]);
                 } else {
                     canvasContext.strokeStyle = "#253";
                 }
@@ -567,13 +565,13 @@ function Symbol(kind) {
             }
             //drawing an derived attribute
             if (this.key_type == 'Drive') {
+                canvasContext.setLineDash([5, 4]);
                 drawOval(x1 - 10, y1 - 10);
                 canvasContext.fillStyle = this.symbolColor;
                 canvasContext.fill();
                 if (this.targeted) {
                     canvasContext.strokeStyle = "#F82";
                 } else {
-                    canvasContext.setLineDash([5, 4]);
                     canvasContext.strokeStyle = "#253";
                 }
             }
@@ -587,7 +585,6 @@ function Symbol(kind) {
             canvasContext.fill();
             if (this.targeted) {
                 canvasContext.strokeStyle = "#F82";
-                canvasContext.setLineDash([5, 0]);
             } else {
                 canvasContext.strokeStyle = "#253";
             }
@@ -705,5 +702,6 @@ function Symbol(kind) {
             canvasContext.fillStyle = this.fontColor;
             canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
+        canvasContext.setLineDash([]);
     }
 }
