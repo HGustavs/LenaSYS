@@ -364,6 +364,7 @@ function doubleclick(ev) {
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
         console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
+
        if (diagram[lastSelectedObject].kind == 1){
            /*
            document.getElementById('figureFillColor').value = diagram[lastSelectedObject].fillColor;
