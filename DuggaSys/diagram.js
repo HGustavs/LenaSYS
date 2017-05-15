@@ -208,21 +208,21 @@ var diagram = [];
 //--------------------------------------------------------------------
 diagram.draw = function() {
     this.adjustPoints();
-    // Render figures 
+    // Render figures
     for (var i = 0; i < this.length; i++) {
         if (this[i].kind == 1) {
             this[i].draw(1, 1);
-        } 
-    } 
-    // Render Lines 
-    for (var i = 0; i < this.length; i++) { 
-        if (this[i].symbolkind == 4) { 
-            this[i].draw(); 
-        } 
-    } 
-    for (var i = 0; i < this.length; i++) { 
-        if (this[i].kind == 2 && !(this[i].symbolkind == 4)) { 
-            this[i].draw(); 
+        }
+    }
+    // Render Lines
+    for (var i = 0; i < this.length; i++) {
+        if (this[i].symbolkind == 4) {
+            this[i].draw();
+        }
+    }
+    for (var i = 0; i < this.length; i++) {
+        if (this[i].kind == 2 && !(this[i].symbolkind == 4)) {
+            this[i].draw();
        }
     }
 }
@@ -687,7 +687,6 @@ function cross(xCoordinate, yCoordinate) {
 function drawGrid() {
     canvasContext.lineWidth = 1;
     canvasContext.strokeStyle = "rgb(238, 238, 250)";
-    canvasContext.setLineDash([5, 0]);
     var quadrantX;
     var quadrantY;
     if (startX < 0) {
@@ -963,7 +962,7 @@ function globalFont() {
         }
     }
 }
-//change the font color on all entities to the same color. 
+//change the font color on all entities to the same color.
 function globalFontColor() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5) {
@@ -972,7 +971,7 @@ function globalFontColor() {
     }
 }
 
-//change the text size on all entities to the same size. 
+//change the text size on all entities to the same size.
 function globalTextSize() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5) {
