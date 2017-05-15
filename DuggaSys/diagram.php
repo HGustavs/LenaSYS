@@ -27,8 +27,8 @@
     <script src="diagram_dialog.js"></script>
 </head>
 <!-- Reads the content from the js-files -->
-<!-- updategfx() must be last -->
-<body onload="initcanvas(); Symbol(); canvassize(); updategfx(); loadDiagram(); debugMode();">
+<!-- updateGraphics() must be last -->
+<body onload="initializeCanvas(); Symbol(); canvasSize(); updateGraphics(); loadDiagram(); debugMode();">
     <?php
         $noup = "COURSE";
         include '../Shared/navheader.php';
@@ -36,11 +36,11 @@
     <!-- content START -->
     <div id="content">
         <div id="buttonDiv">
-            <button onclick='attrmode();'>Create Attribute</button>
-            <button onclick='linemode();'>Create Line</button>
-            <button onclick='entitymode();'>Create Entity</button>
-            <button onclick='relationmode();'>Create Relation</button>
-            <select id='selectFigure' onchange='figuremode()'>
+            <button onclick='attrMode();'>Create Attribute</button>
+            <button onclick='lineMode();'>Create Line</button>
+            <button onclick='entityMode();'>Create Entity</button>
+            <button onclick='relationMode();'>Create Relation</button>
+            <select id='selectFigure' onchange='figureMode()'>
                 <option selected='selected' disabled>Create Figure</option>
                 <option value='Square'>Square</option>
                 <option value='Free'>Free-Draw</option>
@@ -48,9 +48,9 @@
             <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
             <button onclick='globalAppearanceMenu();'>Global Appearance</button>
             <button onclick='debugMode();'>Debug</button>
-            <button onclick='clearCanvas(); removeLocal();'>Removed Hashed Diagram</button>
+            <button onclick='clearCanvas(); removeLocalStorage();'>Removed Hashed Diagram</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
-            <button onclick='clearCanvas(); removeLocal();'>Delete All</button>
+            <button onclick='clearCanvas(); removeLocalStorage();'>Delete All</button>
             <select id='download' onchange='downloadMode(this)'>
                 <option selected='selected' disabled>State</option>
                 <option value='getImage'>getImage</option>
@@ -60,7 +60,7 @@
             <button><a onclick='SaveFile(this);' class='btn'><i class='icon-download'></i>Export</a></button>
             <input id='fileid' type='file' name='file_name' hidden multiple/>
             <input id='buttonid' type='button' value='Import' />
-            Snap to grid:<input type="checkbox" onClick="enableGrid(this)" checked>
+            Snap to grid:<input type="checkbox" onClick="toggleGrid(this)" checked>
             <button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>
         </div>
         <div id="canvasDiv"></div>
