@@ -341,6 +341,7 @@
         /***** START of installation progress ******/
         $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
         $totalSteps = 1; // Variable to hold the total steps to complete.
+        $completedSteps = 0; // Variable to hold the current completed steps.
 
         /* The following if-block will decide how many steps there are to complete installation. */
         if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
@@ -370,7 +371,7 @@
          */
         echo "<div id='header'>
                 <h1>Installation</h1>
-                <svg id='progressBar' height='20px' width='50%'>
+                <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1)'>
                     <rect id='progressRect' width='0' height='20px' />
                 </svg>
             </div>";
@@ -379,13 +380,25 @@
         echo "
             <script>
             var totalSteps = {$totalSteps};
+            var completedStepsLatest = 0; // This variable is used on window resize.
             
-            function updateProgressBar(){
+            function updateProgressBar(completedSteps){
                 var totalWidth = document.getElementById(\"progressBar\").clientWidth;
                 var stepWidth = totalWidth / totalSteps;
+                var completedWidth;
+                
+                /* if window was resized (completedsteps = -1) take latest copleted steps. 
+                 * Else update to new completed step. 
+                 */
+                if (completedSteps === -1) {
+                    completedWidth = stepWidth * completedStepsLatest;
+                } else {
+                    completedStepsLatest = completedSteps;
+                    completedWidth = stepWidth * completedSteps;
+                }
                 
                 /* Calculate length */
-                document.getElementById(\"progressRect\").setAttribute(\"width\",\"\" + (document.getElementById(\"progressRect\").getAttribute(\"width\")-0 + stepWidth) + \"\");
+                document.getElementById(\"progressRect\").setAttribute(\"width\", \"\" + completedWidth + \"\");
                 
                 /* Decide color depending on how far progress has gone */
                 if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.33){
@@ -415,7 +428,8 @@
                 echo "<span id='successText' />Permissions on {$putFileHere} set correctly.</span><br>";
             }
         }
-        echo "<script>updateProgressBar();</script>";
+        $completedSteps++;
+        echo "<script>updateProgressBar({$completedSteps});</script>";
 
         # Check if all fields are filled.
         $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
@@ -450,7 +464,8 @@
                         You may have entered a invalid password or an invalid user.<br>
                         <a href='install.php' class='returnButton'>Try again.</a>");
             }
-            echo "<script>updateProgressBar();</script>";
+            $completedSteps++;
+            echo "<script>updateProgressBar({$completedSteps});</script>";
             flush();
             ob_flush();
 
@@ -465,7 +480,8 @@
                 echo "<span id='failText' />User with name {$username} 
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
-                echo "<script>updateProgressBar();</script>";
+                $completedSteps++;
+                echo "<script>updateProgressBar({$completedSteps});</script>";
                 flush();
                 ob_flush();
             }
@@ -479,7 +495,8 @@
                     echo "<span id='failText' />Database with name {$databaseName} 
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
-                echo "<script>updateProgressBar();</script>";
+                $completedSteps++;
+                echo "<script>updateProgressBar({$completedSteps});</script>";
                 flush();
                 ob_flush();
             }
@@ -492,7 +509,8 @@
                 $errors++;
                 echo "<span id='failText' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
             }
-            echo "<script>updateProgressBar();</script>";
+            $completedSteps++;
+            echo "<script>updateProgressBar({$completedSteps});</script>";
             flush();
             ob_flush();
 
@@ -507,7 +525,8 @@
                 $errors++;
                 echo "<span id='failText' />Could not create user with name {$username}, maybe it already exists...</span><br>";
             }
-            echo "<script>updateProgressBar();</script>";
+            $completedSteps++;
+            echo "<script>updateProgressBar({$completedSteps});</script>";
             flush();
             ob_flush();
 
@@ -562,7 +581,8 @@
                 echo "<span id='failText' />Failed initialization of database because of query (in init_db.sql): </span><br>";
                 echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
             }
-            echo "<script>updateProgressBar();</script>";
+            $completedSteps++;
+            echo "<script>updateProgressBar({$completedSteps});</script>";
             flush();
             ob_flush();
 
@@ -604,7 +624,8 @@
         } else {
             echo "Skipped creating database.<br>";
         }
-        echo "<script>updateProgressBar();</script>";
+        $completedSteps++;
+        echo "<script>updateProgressBar({$completedSteps});</script>";
 
         echo "<b>Installation finished.</b><br>";
         flush();
@@ -658,6 +679,7 @@
     # Function to add testdata from specified file. Parameter file = sql file name without .sql.
     function addTestData($file, $connection){
         global $errors;
+        global $completedSteps;
         $testDataQuery = @file_get_contents("SQL/{$file}.sql");
 
         if ($testDataQuery === FALSE) {
@@ -680,13 +702,15 @@
                 echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
             }
         }
-        echo "<script>updateProgressBar();</script>";
+        $completedSteps++;
+        echo "<script>updateProgressBar({$completedSteps});</script>";
         flush();
         ob_flush();
     }
 
     # Function to copy test files
     function copyTestFiles($fromDir,$destDir) {
+        global $completedSteps;
         $dir = opendir($fromDir);
         @mkdir($destDir);
         while (false !== ($copyThis = readdir($dir))) {
@@ -696,7 +720,8 @@
         }
         closedir($dir);
         echo "<span id='successText' />Successfully filled {$destDir} with files from {$fromDir}.</span><br>";
-        echo "<script>updateProgressBar();</script>";
+        $completedSteps++;
+        echo "<script>updateProgressBar({$completedSteps});</script>";
         flush();
         ob_flush();
     }

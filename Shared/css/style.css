@@ -2272,7 +2272,7 @@ ul.hamburgerList button.menuButton {
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
   table.navheader td.tests,
-  table.navheader td.files {
+  table.navheader td.files{
     margin-right: 0px;
     width: 0px;
     -webkit-transition: margin-right 0.5s, width 0.5s;
@@ -2296,6 +2296,7 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
+
   .hideAll,
   .showAll{
     -webkit-transform: scale(0.6, 0.6);

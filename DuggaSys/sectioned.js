@@ -707,7 +707,7 @@ function returnedSection(data)
         showInline = true;
         hiddenInline = "inline";
       }
-
+	var showhideall = "Show/hide all";
     // Course Name
     // This will ellipsis on the course name, and keep course code and vers always fully expanded
     str+="<div class='course' style='display: flex;align-items: center;justify-content: center;'>";
@@ -716,14 +716,17 @@ function returnedSection(data)
         	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 10px; display: flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowCompTop'><img src='../Shared/icons/right_complement.svg' class='arrowRightTop' style='display:none;'>";
 
         	str+="</div>";
-        	str+="<div class='hideAll' id='course-showhide-text' style='position:absolute;  cursor: pointer; margin-top: 10px; display: flex;' >";
-        	str+="<text class='showhidetext' >Show/hide all</text>";
+
+        	str+="<div class='hideAll' id='course-showhide-text' style='position:absolute; cursor: pointer; left:25px; margin-top: 10px; display: flex;' >";
+			str+="<text class='showhidetext' >"+showhideall+"</text>";
         	str+="</div>";
 
         	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRightTop'>";
         	str+="</div>";
-        	str+="<div class='showAll' id='course-showhide-text' style='display:none; position:absolute;  cursor: pointer; margin-top: 10px;' >";
-        	str+="<text class='showhidetext' >Show/hide all</text>";
+
+        	str+="<div class='showAll' id='course-showhide-text' style='display:none; position:absolute;  cursor: pointer; left:25px; margin-top: 10px;' >";
+        	str+="<text class='showhidetext' >"+showhideall+"</text>";
+
         	str+="</div>";
 
         	str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;'>"+data.coursename+"</div>";
