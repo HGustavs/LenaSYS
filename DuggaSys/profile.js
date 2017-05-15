@@ -7,8 +7,10 @@ function saveChallenge(){
     var password = curPassword.val();
     var question = secQuestion.val();
     var answer = chaAnswer.val();
-    
+    var chars = "^[a-zåäöéA-ZÅÄÖÈ 0-9\-\_\"\'\’\.\,\´]*$";
+       
     if(password != "" && question != "" && answer != ""){
+        if(answer.match(chars)){
             processChallenge(password, question, answer);
             message.html("Challenge has been updated!!");
             clearField(curPassword);
