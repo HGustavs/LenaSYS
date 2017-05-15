@@ -102,6 +102,9 @@ function objectAppearanceMenu(form) {
     if (diagram[lastSelectedObject].symbolkind == 5) {
         loadFormIntoElement(form, 'forms/relation_appearance.php');
     }
+    if (diagram[lastSelectedObject].kind == 1) {
+        loadFormIntoElement(form, 'forms/figure_appearance.php');
+    }
 }
 function changeObjectAppearance(object_type){
     /*
@@ -110,6 +113,9 @@ function changeObjectAppearance(object_type){
 
     if (diagram[lastSelectedObject].symbolkind == 4) {
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
+    } else if (diagram[lastSelectedObject].kind == 1){
+        diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
+        diagram[lastSelectedObject].strokeColor = document.getElementById('figureLineColor').value;
     } else {
         diagram[lastSelectedObject].symbolColor = document.getElementById('symbolColor').value;
         diagram[lastSelectedObject].name = document.getElementById('nametext').value;
