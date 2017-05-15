@@ -1,34 +1,73 @@
-/* The Modal (background) */
+/* Same fonts as rest of lenasys */
+body {
+    font-family: 'Roboto', sans-serif,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    margin: 0;
+    min-width: 640px;
+}
+
+/* The Modal containing warning texts (background) */
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
+    width: 100%;
+    height: 100%;
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    background-color: rgb(0,0,0); /* Fallback color black */
+    background-color: rgba(0,0,0,0.4); /* Black with opacity */
 }
 
 /* Modal Content/Box */
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    background-color: #fefefe; /* White/gray */
+    margin: 15% auto;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 80%;
 }
 
-/* The Close Button */
+/* A bit bigger checkboxes */
+input[type="checkbox"] {
+    height: 16px;
+    width: 16px;
+    padding: 0;
+    margin: 0;
+}
+
+/* Using same style on textboxes as the rest of lenasys */
+input[type="text"], input[type="password"] {
+    width: 216px;
+    height: 30px;
+    line-height: 18px;
+    color: #202020;
+    background-color: #ffffff;
+    border: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    padding: 5px;
+    font-size: 14px;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0;
+    text-shadow: none;
+    display: inline-block;
+    text-align: start;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+}
+
+/* The Close Button on modal */
 .close {
-    color: #aaa;
+    color: #aaaaaa; /* Grey */
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
-
+/* Mouse-over effect on close button */
 .close:hover,
 .close:focus {
     color: black;
@@ -36,30 +75,47 @@
     cursor: pointer;
 }
 
-body {
-    font-family: 'Roboto', sans-serif,"Helvetica Neue",Helvetica,Arial,sans-serif;
-    margin: 0;
-    min-width: 550px;
+/* Header containing page title */
+#header {
+    background-color: rgb(97,73,116); /* Dark purple */
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
+/* Title inside header */
 #header h1 {
     color: white;
     margin-left: 10px;
 }
 
-#contentWrapper {
-    height:400px;
-}
-
+/* Whole page while input mode is active */
 #inputWrapper {
     width: 100%;
     margin: auto;
-    background-color: rgb(250,250,250);
+    background-color: rgb(250,250,250); /* Light gray */
     min-width: 550px;
 }
 
+/* Whole area between header and footer */
+#contentWrapper {
+    height:400px; /* Must hold same height between input page shifting */
+}
+/* Wrapper will get taller on smaller screens to show all text. */
+@media screen and (max-width: 1384px) {
+    #contentWrapper {
+        height: 450px;
+    }
+}
+@media screen and (max-width: 800px) {
+    #contentWrapper {
+        height: 500px;
+    }
+}
+
+/* Heading with titles for current input page */
 .inputHeading {
-    background-color: rgb(146, 124, 157);
+    background-color: rgb(146, 124, 157); /* Light purple */
     width: 100%;
     height: 75px;
     margin: 0;
@@ -69,45 +125,53 @@ body {
     display:block;
 }
 
+/* The title for input page */
 .inputHeading h2 {
     color: white;
 }
 
+/* The first header to be displayed */
 .inputFirst {
-    display: block;
+    display: block; /* Display it on load */
     height:50px;
 }
 
+/* Other headers for input pages (hidden at start) */
 .inputNotFirst {
-    display: none;
+    display: none; /* Hide on load */
     height:50px;
 }
 
+/* The input content that gets switched out */
 .inputContent {
     width: 50%;
     margin: auto;
     text-align: center;
     padding: 10px 0;
     height: 400px;
-    background-color: rgb(240,240,240);
+    background-color: rgb(240,240,240); /* Light gray */
     display: none;
 }
-
-@media screen and (max-width: 1024px) {
-    #contentWrapper {
-        height:600px;
-    }
+/* This content should grow on smaller screens. */
+@media screen and (max-width: 1384px) {
     .inputContent {
-        height: 600px;
+        height: 450px;
+    }
+}
+@media screen and (max-width: 800px) {
+    .inputContent {
+        height: 500px;
     }
 }
 
+/* Show the first input page at start */
 #td1 {
     display: block;
 }
 
+/* Styles for the footer */
 #inputFooter {
-    background-color: rgb(146, 124, 157);
+    background-color: rgb(146, 124, 157); /* Light purple */
     width: 100%;
     height: 50px;
     margin: 0;
@@ -115,81 +179,94 @@ body {
     bottom: 0;
 }
 
-
-#header {
-    background-color: rgb(97,73,116);
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
+/* Styles for the button to toggle the warning modal (which is automatically shown at start)*/
 #showModalBtn {
-    background-color: rgb(253,203,96);
+    background-color: rgb(253,203,96); /* Yellow */
     position: absolute;
-    right: 0px;
+    right: 0;
     top: 20px;
     color: black;
     padding: 5px 10px 5px 5px;
 }
-
-#showModalBtn:hover {
+/* Mouse-over effect */
+#showModalBtn:hover,
+#showModalBtn:focus {
     opacity: 0.7;
     cursor: pointer;
 }
 
+/* Class for both navigation arrows (same styles for both) */
 .arrow {
     position: relative;
     bottom: 200px;
+    /* Disable text selection when clicking the navigation arrows. */
     -webkit-user-select: none; /* Chrome/Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+ */
 }
-
-@media screen and (max-width: 1024px) {
+/* Move up arrows on smaller screen when page grows in height */
+@media screen and (max-width: 1384px) {
     .arrow {
-        bottom: 400px;
+        bottom: 250px;
     }
 }
-
-.arrow:hover {
+@media screen and (max-width: 800px) {
+    .arrow {
+        bottom: 300px;
+    }
+}
+/* Mouse-over effect on arrows */
+.arrow:hover,
+.arrow:focus {
     opacity: 0.7;
     cursor: pointer;
 }
 
+/* Special styles for the left navigation arrow */
 #leftArrow {
     left: 10px;
     float: left;
     display:none;
 }
 
+/* Style for polygon in arrow */
+polygon {
+    fill:rgb(255,233,126) /* Light yellow */
+}
+
+/* Special styles for the right navigation arrow */
 #rightArrow {
     right: 10px;
     float: right;
 }
 
+/* The text on each input page which tells the user what to do. */
 #infoText {
     text-align: left;
     margin: 5px;
 }
 
+/* Divs containing checkboxes */
 #checkboxContainer {
     width: 105px;
     margin: auto;
-    text-align: left
+    text-align: left /* Align checkboxes then page is centered */
 }
 
+/* Another type of checkbox container ( a bit wider ) */
 #checkboxContainer2 {
     width: 350px;
     margin: auto;
     text-align: left
 }
-
+/* Make the secont type of checkbox container smaller on smaller screens */
 @media screen and (max-width: 700px) {
     #checkboxContainer2 {
         width: 200px;
     }
 }
 
+/* Button style for 'install'-button */
 .button {
     background-color: #4CAF50; /* Green */
     border: none;
@@ -202,12 +279,19 @@ body {
     height: 100px;
     margin-top: 50px;
 }
-
-.button:hover {
+@media screen and (max-width: 800px) {
+    .button {
+        width: 50%;
+    }
+}
+/* Mouse-over effect on button */
+.button:hover,
+.button:focus {
     cursor: pointer;
     opacity: 0.7;
 }
 
+/* Button style for button at end of installation. Not as big as install-button */
 .button2 {
     background-color: #4CAF50; /* Green */
     border: none;
@@ -219,23 +303,26 @@ body {
     height: 30px;
     margin-top: 10px;
 }
-
-.button2:hover {
+/* Mouse-over effect on button2*/
+.button2:hover,
+.button2:focus {
     cursor: pointer;
     opacity: 0.7;
 }
 
+/* Wrapper around important text at end of installation */
 #doThisWrapper {
     width: 75%;
-    background-color: rgb(250,250,250);
+    background-color: rgb(250,250,250); /* Light gray */
     margin: auto;
     text-align: center;
 }
 
+/* Box containing code snippets */
 .codeBox {
     text-align: left;
     word-wrap: break-word;
-    background-color: #cccccc;
+    background-color: #cccccc; /* Grey */
     min-width: 300px;
     max-width: 80%;
     margin: auto;
@@ -243,15 +330,16 @@ body {
     border-style: solid;
     border-width: 2px;
 }
-
-.codeBox:hover {
+/* Mouse-over effest on code boxes */
+.codeBox:hover,
+.codeBox:focus {
     opacity: 0.7;
     cursor: pointer;
 }
-
+/* Other code box for error messages during installation */
 .errorCodeBox {
     word-wrap: break-word;
-    background-color: #cccccc;
+    background-color: #cccccc; /* Grey */
     min-width: 300px;
     max-width: 80%;
     margin: auto;
@@ -260,28 +348,32 @@ body {
     border-width: 2px;
 }
 
+/* Wrap around installation progress messages */
 #installationProgressWrap {
     display: block;
 }
 
+/* Style for button to toggle installation progress */
 #showHideInstallation {
     color: black;
     margin-top: 10px;
-    background-color: rgb(253,203,96);
+    background-color: rgb(253,203,96); /* Yellow */
 }
-
-#showHideInstallation:hover {
+/* Mouse-over effect for installation progress toggle button*/
+#showHideInstallation:hover,
+#showHideInstallation:focus {
     cursor: pointer;
     text-decoration: underline;
 }
 
+/* Warning text below installation progress */
 #warningH1 {
     color: white;
-    background-color: rgb(197,81,83);
+    background-color: rgb(197,81,83); /* Red */
 }
-
+ /* Button when installation fails which takes you back to start */
 .returnButton {
-    background-color: rgb(197,81,83);
+    background-color: rgb(197,81,83); /* Red */
     border: none;
     color: white;
     text-align: center;
@@ -293,57 +385,59 @@ body {
     padding: 10px;
     text-decoration: none;
 }
-
-.returnButton:hover {
+/* Mouse-over for return-button */
+.returnButton:hover,
+.returnButton:focus {
     cursor: pointer;
     opacity: 0.7;
 }
 
+/* Text for successful messages in installation progress */
 #successText {
     color: green;
 }
 
+/* Text for failure messages in installation progress */
 #failText {
     color: red;
 }
 
+/* Title in second modal (when installation is finished) */
 #dialogText h1 {
     text-align: center;
     color: red;
 }
 
+/* Text in second modal */
 #dialogText h2 {
     text-align: center;
 }
 
+/* The background div in modal*/
 #dialogText div {
     background-image: url(../../Shared/icons/warningTriangle.png);
     background-size: 10%;
     background-repeat: no-repeat;
 }
 
+/* Text in modals */
 #dialogText p {
     text-align: center;
 }
 
-polygon {
-    fill:rgb(255,233,126);
-}
-
+/* Text under installation progress (shows number of errors when finished) */
 #errorCount {
     color: white;
     font-size:24px;
 }
 
-#copied1 {
+/* Text which is showed when code is copied from code boxes after installation*/
+#copied1, #copied2 {
     display: none;
 }
 
-#copied2 {
-    display: none;
-}
-
+/* The container for progress bar */
 #progressBar {
-    border: 1px solid white;
+    border: 1px solid white; /* White border */
     margin-left: 10px;
 }
