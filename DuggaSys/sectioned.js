@@ -1016,6 +1016,13 @@ function returnedSection(data)
        } else {
 					// Do nothing
 				}
+        
+        //For the person logged in - write out group
+        if(parseInt(item['kind']) === 4){
+          if(parseInt(item['grouptype']) === 1 || parseInt(item['grouptype']) === 3){
+            str+="<td class='moment' style='text-align:right;padding-right:7px;'>("+/*Groupname*/+")</td>";
+          }
+        }
 
 				// Cog Wheel
 				if(data['writeaccess']){
