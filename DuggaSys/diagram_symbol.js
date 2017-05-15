@@ -489,7 +489,9 @@ function Symbol(kind) {
             textsize = 50;
         } else {
             textsize = 14;
-            ctx.setLineDash([5, 0]);
+        }
+        if(this.key_type == 'Drive'){
+            ctx.setLineDash([5, 4]);
         }
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
@@ -575,7 +577,6 @@ function Symbol(kind) {
                 ctx.fill();
                 if (this.targeted) {
                     ctx.strokeStyle = "#F82";
-                    ctx.setLineDash([5, 0]);
                 } else {
                     ctx.strokeStyle = "#253";
                 }
@@ -589,9 +590,9 @@ function Symbol(kind) {
                 if (this.targeted) {
                     ctx.strokeStyle = "#F82";
                 } else {
-                    ctx.setLineDash([5, 4]);
                     ctx.strokeStyle = "#253";
                 }
+
             }
             //scale the text
             ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
@@ -603,7 +604,6 @@ function Symbol(kind) {
             ctx.fill();
             if (this.targeted) {
                 ctx.strokeStyle = "#F82";
-                ctx.setLineDash([5, 0]);
             } else {
                 ctx.strokeStyle = "#253";
             }
@@ -720,4 +720,6 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
+
+    ctx.setLineDash([]);
 }
