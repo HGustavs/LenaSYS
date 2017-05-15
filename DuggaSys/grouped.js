@@ -268,9 +268,7 @@ function drawtable(){
 
 	// Itererate the headings, that are dependent on the cid and coursevers. 
 	for(var i = 0; i < momtmp.length; i++) {
-		if(moments){
-			str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+moments[i].lid+"' class='grouped-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+moments[i].entryname+"</th>";	
-		}
+		str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+momtmp[i].lid+"' class='grouped-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+momtmp[i].entryname+"</th>";	
 	}
 	str+="</thead>";
 	str += "<tbody>";
@@ -284,36 +282,24 @@ function drawtable(){
 		str+="<div class='dugga-result-div'>"+tablecontent[i].ssn+"</div>";
 		str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
 		for(var lid in tablecontent[i].lidstogroup) { // Iterate the data per list entry column
-			str+="<td style='padding-left:5px;'>";
-			str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+" class='test' onchange=changegroup()>";
-			str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
-			for(var level2lid in availablegroups) {
-				// Iterate the groups in each lid, example: 
-				/*
-				"availablegroups": {
-					"2001": { // Lid to iterate
-						"1": "Festargruppen" // Available groups with ugid as key, name as value
-					},
-					"2013": {
-						"2": "Coola gurppen"
+			for(var j = 0; j < momtmp.length; j++) {
+				if(momtmp[j].lid == lid){
+					str+="<td style='padding-left:5px;'>";
+					str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+" class='test' onchange=changegroup()>";
+					str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
+					for(var level2lid in availablegroups) {
+						if(level2lid == lid) { // If the group belongs to the current column, lid, iterate all the available groups and create options for them
+							for(var ugid in availablegroups[level2lid]) {
+								var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
+								str+="<option value="+ugid+selected+">"+availablegroups[level2lid][ugid]+"</option>";
+							}
+						}
 					}
-				}
-				*/
-				if(level2lid == lid) { // If the group belongs to the current column, lid, iterate all the available groups and create options for them
-					for(var ugid in availablegroups[level2lid]) {
-						// Iterate one level below like: 
-						/*
-						"2001":
-							"1": "Festargruppen" // Available groups with ugid as key, name as value
-						},
-						*/
-						var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
-						str+="<option value="+ugid+selected+">"+availablegroups[level2lid][ugid]+"</option>";
-					}
+					str+="</select><div class='groupStar'>*</div>";
+					str+="</td>";
 				}
 			}
-			str+="</select><div class='groupStar'>*</div>";
-			str+="</td>";
+			
 		}
 		str+="</tr>";
 	}
