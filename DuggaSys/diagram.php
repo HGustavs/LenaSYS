@@ -28,7 +28,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); Symbol(); canvasSize(); updateGraphics(); loadDiagram(); debugMode();">
+<body onload="initializeCanvas(); Symbol(); canvasSize(); loadDiagram(); debugMode(); updateGraphics();">
     <?php
         $noup = "COURSE";
         include '../Shared/navheader.php';
