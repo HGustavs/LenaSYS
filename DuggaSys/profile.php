@@ -62,7 +62,7 @@ pdoConnect();
 						<!--<?php echo "<textarea id='challengeQuestion' value='' onkeyup='checkScroll(this)' style='height:1.25em; max-height:110px; width:16em; overflow:auto; font-family:sans-serif;'></textarea><br/>" ?>
 						<script>addSecurityQuestionProfile('<?php echo $_SESSION['loginname'] ?>')</script>-->
 						<label for="challengeAnswer">Challenge answer</label><br/>
-						<input type="password" id="challengeAnswer" class="form-control textinput" placeholder="Answer to question" /><br/><br/>
+						<input type="text" id="challengeAnswer" class="form-control textinput" placeholder="Answer to question" /><br/><br/>
 						<button type="button" onClick="saveChallenge()" id="saveChallenge">Save Challenge</button><br/><br/>
 					</form>
                     <div id="challengeMessage"></div>
