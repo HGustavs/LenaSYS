@@ -110,8 +110,8 @@
 		    global $openedSublists;
             $markdown = "";
             $value = "";
-            $currentLineIndentation = substr_count($currentLine, '/^\s*/');
-            $nextLineIndentation = substr_count($nextLine, '/^\s*/');
+            $currentLineIndentation = substr_count($currentLine, ' ');
+            $nextLineIndentation = substr_count($nextLine, ' ');
             // decide value
             if(isOrderdList($currentLine)) $value = preg_replace('/^\s*\d*\.\s*/','',$currentLine);
             if(isUnorderdList($currentLine)) $value = preg_replace('/^\s*[\-\*]\s*/','',$currentLine);
@@ -125,10 +125,11 @@
                 // begin open sublist
                 if(isOrderdList($nextLine)) {
                     $markdown .= "<ol>";
-                    $openedSublists.push(0);
+                    array_push($openedSublists,0);
                 } else {
                     $markdown .= "<ul>";
-                    $openedSublists.push(1);
+                    array_push($openedSublists,1);
+                    debug_to_console($openedSublists);
                 }
             }
             // Stay in current list or sublist
@@ -140,12 +141,11 @@
             // Close sublists
             if($currentLineIndentation > $nextLineIndentation) {
                 $markdown .= "<li>";
-                $markdown .=  value;
+                $markdown .=  $value;
                 $markdown .= "</li>";
                 $sublistsToClose = ($currentLineIndentation - $nextLineIndentation) / 2;
                 for($i = 0; $i < $sublistsToClose; $i++) {
-                    $whatSublistToClose = $openedSublists[$openedSublists.length - 1];
-                    $openedSublists.pop();
+                    $whatSublistToClose = array_pop($openedSublists);
 
                     if($whatSublistToClose === 0) { // close ordered list
                         $markdown .= "</ol>";
