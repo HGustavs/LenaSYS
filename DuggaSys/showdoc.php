@@ -129,7 +129,6 @@
                 } else {
                     $markdown .= "<ul>";
                     array_push($openedSublists,1);
-                    debug_to_console($openedSublists);
                 }
             }
             // Stay in current list or sublist
@@ -160,96 +159,17 @@
             if(!isUnorderdList($nextLine) && isUnorderdList($currentLine) && !isOrderdList($nextLine)) $markdown .= "</ul>"; // Close unordered list
             return $markdown;
         }
-        // The creation and destruction of ordered lists
-        function handleOrderedList($currentLine, $prevLine, $nextLine) {
-            $markdown = "";
-            $value = preg_replace('/^\s*\d*\.\s*/','',$currentLine);
-            $currentLineIndentation = substr_count($currentLine, ' ');
-            $nextLineIndentation = substr_count($nextLine, ' ');
-            //Open a new ordered list
-            if(!isOrderdList($prevLine)) {
-                $markdown .= "<ol>";
-            }
-            // Open a new sublist
-            if($currentLineIndentation < $nextLineIndentation) {
-                $markdown .= "<li>";
-                $markdown .=  $value;
-                // open sublist
-                $markdown .= "<ol>";
-            }
-            // Close sublists
-            else if($currentLineIndentation > $nextLineIndentation) {
-                $markdown .= "<li>";
-                $markdown .=  $value;
-                $markdown .= "</li>";
-                $sublistsToClose = ($currentLineIndentation - $nextLineIndentation) / 2;
-                for($i = 0; $i < $sublistsToClose; $i++) {
-                    $markdown .= "</ol></li>";
-                }
-            }
-            // Stay in current list or sublist
-            else {
-                $markdown .= "<li>";
-                $markdown .=  $value;
-                $markdown .= "</li>";
-            }
-            // Close the ordered list
-            if(!isOrderdList($nextLine)) {
-                $markdown .= "</ol>";
-            }
-            return $markdown;
-        }
-        function handleUnorderedList($currentLine, $prevLine, $nextLine) {
-            $markdown = "";
-            $value = preg_replace('/^\s*[\-\*]\s*/','',$currentLine);
-            $currentLineIndentation = substr_count($currentLine, ' ');
-            $nextLineIndentation = substr_count($nextLine, ' ');
-            //Open a new unordered list
-            if(!isUnorderdList($prevLine)) {
-                $markdown .= "<ul>";
-            }
-            // Open a new sublist
-            if($currentLineIndentation < $nextLineIndentation) {
-                $markdown .= "<li>";
-                $markdown .=  $value;
-                // open sublist
-                $markdown .= "<ul>";
-            }
-            // Close sublists
-            else if($currentLineIndentation > $nextLineIndentation) {
-                $markdown .= "<li>";
-                $markdown .=  $value;
-                $markdown .= "</li>";
-                $sublistsToClose = ($currentLineIndentation - $nextLineIndentation) / 2;
-                for($i = 0; $i < $sublistsToClose; $i++) {
-                    $markdown .= "</ul></li>";
-                }
-            }
-            // Stay in current list or sublist
-            else {
-                $markdown .= "<li>";
-                $markdown .=  $value;
-                $markdown .= "</li>";
-            }
-            // Close the unordered list
-            if(!isUnorderdList($nextLine)) {
-                $markdown .= "</ul>";
-            }
-            return $markdown;
-        }
+        // Function for Tables
         function handleTable($currentLine, $prevLine, $nextLine) {
             global $tableAlignmentConf;
             $markdown = "";
-
             $columns = array_values(array_map("trim", array_filter(explode('|', $currentLine), function($k) {
                 return $k !== '';
             })));
-
             // open table
             if(!isTable($prevLine)) {
                 $markdown .= "<table class='markdown-table'>";
             }
-
             // create thead
             if(!isTable($prevLine) && preg_match('/^\s*\|\s*[:]?[-]*[:]?\s*\|/', $nextLine)) {
                 $markdown .= "<thead>";
@@ -276,7 +196,6 @@
                 // handle table row
                 else {
                     $markdown .= "<tr style=''>";
-
                     for($i = 0; $i < count($columns); $i++) {
                         $alignment = "";
 
@@ -294,7 +213,6 @@
             if(!isTable($nextLine)) {
                 $markdown .= "</tbody></table>";
             }
-            
             return $markdown;
         }
 		function markdownBlock($instring)
