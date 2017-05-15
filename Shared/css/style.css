@@ -2264,9 +2264,9 @@ ul.hamburgerList button.menuButton {
   }
   .hideAll,
   .showAll{
-    -webkit-transform: scale(0.8, 0.8);
-    transform: scale(0.8, 0.8);
-    left: 15px;
+    -webkit-transform: scale(0.7, 0.7);
+    transform: scale(0.7, 0.7);
+    left: 10px;
   }
 }
 
@@ -2300,7 +2300,7 @@ ul.hamburgerList button.menuButton {
   .showAll{
     -webkit-transform: scale(0.6, 0.6);
     transform: scale(0.6, 0.6);
-    left: 8px;
+    left: 4px;
   }
 }
 
