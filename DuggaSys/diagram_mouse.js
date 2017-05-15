@@ -75,24 +75,8 @@ function mousemoveevt(ev, t) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
         // If mouse is pressed down and at a point in selected object - move that point
-        if (diagram[lastSelectedObject].targeted == true) {
-            if (diagram[lastSelectedObject].kind == 1) {
-                for (var i = 0; i < diagram[lastSelectedObject].segments.length; i++) {
-                    if (diagram[lastSelectedObject].segments[i].pa == sel.index) {
-                        points[diagram[lastSelectedObject].segments[i].pa].x = currentMouseCoordinateX;
-                        points[diagram[lastSelectedObject].segments[i].pa].y = currentMouseCoordinateY;
-                    }
-                }
-            } else {
-                if (diagram[lastSelectedObject].bottomRight == sel.index && diagram[lastSelectedObject].symbolkind != 5) {
-                    points[diagram[lastSelectedObject].bottomRight].x = currentMouseCoordinateX;
-                    points[diagram[lastSelectedObject].bottomRight].y = currentMouseCoordinateY;
-                } else if (diagram[lastSelectedObject].topLeft == sel.index && diagram[lastSelectedObject].symbolkind != 5) {
-                    points[diagram[lastSelectedObject].topLeft].x = currentMouseCoordinateX;
-                    points[diagram[lastSelectedObject].topLeft].y = currentMouseCoordinateY;
-                }
-            }
-        }
+        points[sel.index].x = currentMouseCoordinateX;
+        points[sel.index].y = currentMouseCoordinateY;
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1) {
