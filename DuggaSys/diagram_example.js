@@ -1,6 +1,7 @@
 /* 
 ----- THIS FILE IS THE EXAMPLE DATA FOR THE DIAGRAM ----- 
 */
+var erEntityA;
 
 function generateExampleCode() {
     // Declare three paths
@@ -39,32 +40,32 @@ function generateExampleCode() {
     erAttributeA.name = "SSN";
     erAttributeA.topLeft = 19;
     erAttributeA.bottomRight = 20;
-    erAttributeA.centerpoint = 21;
+    erAttributeA.centerPoint = 21;
     erAttributeB = new Symbol(2);
     erAttributeB.name = "Name";
     erAttributeB.topLeft = 22;
     erAttributeB.bottomRight = 23;
-    erAttributeB.centerpoint = 24;
+    erAttributeB.centerPoint = 24;
     erAttributeC = new Symbol(2);
     erAttributeC.name = "Smell";
     erAttributeC.topLeft = 30;
     erAttributeC.bottomRight = 31;
-    erAttributeC.centerpoint = 32;
+    erAttributeC.centerPoint = 32;
     erAttributeD = new Symbol(2);
     erAttributeD.name = "Stink";
     erAttributeD.topLeft = 33;
     erAttributeD.bottomRight = 34;
-    erAttributeD.centerpoint = 35;
+    erAttributeD.centerPoint = 35;
     erAttributeE = new Symbol(2);
     erAttributeE.name = "Verisimilitude";
     erAttributeE.topLeft = 36;
     erAttributeE.bottomRight = 37;
-    erAttributeE.centerpoint = 38;
+    erAttributeE.centerPoint = 38;
     erEntityA = new Symbol(3);
     erEntityA.name = "Person";
     erEntityA.topLeft = 25;
     erEntityA.bottomRight = 26;
-    erEntityA.centerpoint = 27;
+    erEntityA.centerPoint = 27;
     erattributeRelA = new Symbol(4);
     erattributeRelA.topLeft = 28;
     erattributeRelA.bottomRight = 24;
