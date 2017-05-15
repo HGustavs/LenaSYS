@@ -132,7 +132,7 @@ function swimlaneDrawLanes() {
         white = !white;
       } else {
         str += '230,230,230';
-        white = white;
+        white = !white;
       }
       str += ")' />";
       j++;
