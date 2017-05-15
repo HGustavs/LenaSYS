@@ -716,13 +716,13 @@ function returnedSection(data)
         	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 10px; display: flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowCompTop'><img src='../Shared/icons/right_complement.svg' class='arrowRightTop' style='display:none;'>";
 
         	str+="</div>";
-        	str+="<div class='hideAll' id='course-showhide-text' style='position:absolute;  cursor: pointer; left:25px; margin-top: 10px; display: flex;' >";
+        	str+="<div class='hideAll' id='course-showhide-text' style='position:absolute;  cursor: pointer; margin-top: 10px; display: flex;' >";
         	str+="<text class='showhidetext' >Show/hide all</text>";
         	str+="</div>";
 
-        	str+="<div class='showAll' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRightTop'>";
+        	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRightTop'>";
         	str+="</div>";
-        	str+="<div class='showAll' id='course-showhide-text' style='display:none; position:absolute;  cursor: pointer; left:25px; margin-top: 10px;' >";
+        	str+="<div class='showAll' id='course-showhide-text' style='display:none; position:absolute;  cursor: pointer; margin-top: 10px;' >";
         	str+="<text class='showhidetext' >Show/hide all</text>";
         	str+="</div>";
 

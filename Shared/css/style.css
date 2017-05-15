@@ -2055,6 +2055,16 @@ and (max-device-width : 480px) {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 18px;
   color: white;
+  -webkit-transform: none;
+  transform: none;
+}
+
+.hideAll{
+  left:25px;
+}
+
+.showAll{
+  left:25px;
 }
 
 /* Section editor menu buttons */
@@ -2252,6 +2262,12 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
+  .hideAll,
+  .showAll{
+    -webkit-transform: scale(0.8, 0.8);
+    transform: scale(0.8, 0.8);
+    left: 15px;
+  }
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
@@ -2280,7 +2296,14 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
+  .hideAll,
+  .showAll{
+    -webkit-transform: scale(0.6, 0.6);
+    transform: scale(0.6, 0.6);
+    left: 8px;
+  }
 }
+
 /* Title for the subpages of the section-editor */
 .titles{
   width:100%;
