@@ -680,10 +680,11 @@ function Symbol(kind) {
             var midy = points[this.middleDivider].y;
             canvasContext.beginPath();
             if (this.key_type == 'Weak') {
+
                 canvasContext.moveTo(midx, y1 + 5);
-                canvasContext.lineTo(x2 - 7, midy + 0);
+                canvasContext.lineTo(x2 - 9, midy + 0);
                 canvasContext.lineTo(midx + 0, y2 - 5);
-                canvasContext.lineTo(x1 + 7, midy + 0);
+                canvasContext.lineTo(x1 + 9, midy + 0);
                 canvasContext.lineTo(midx + 0, y1 + 5);
             }
             canvasContext.moveTo(midx, y1);
@@ -693,6 +694,7 @@ function Symbol(kind) {
             canvasContext.lineTo(midx, y1);
             canvasContext.fillStyle = this.symbolColor;
             canvasContext.fill();
+
             if (this.targeted) {
                 canvasContext.strokeStyle = "#F82";
             } else {
