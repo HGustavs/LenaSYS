@@ -2,7 +2,7 @@
 body {
     font-family: 'Roboto', sans-serif,"Helvetica Neue",Helvetica,Arial,sans-serif;
     margin: 0;
-    min-width: 550px;
+    min-width: 640px;
 }
 
 /* The Modal containing warning texts (background) */
@@ -104,7 +104,12 @@ input[type="text"], input[type="password"] {
 /* Wrapper will get taller on smaller screens to show all text. */
 @media screen and (max-width: 1384px) {
     #contentWrapper {
-        height: 600px;
+        height: 450px;
+    }
+}
+@media screen and (max-width: 800px) {
+    #contentWrapper {
+        height: 500px;
     }
 }
 
@@ -150,7 +155,12 @@ input[type="text"], input[type="password"] {
 /* This content should grow on smaller screens. */
 @media screen and (max-width: 1384px) {
     .inputContent {
-        height: 600px;
+        height: 450px;
+    }
+}
+@media screen and (max-width: 800px) {
+    .inputContent {
+        height: 500px;
     }
 }
 
@@ -197,7 +207,12 @@ input[type="text"], input[type="password"] {
 /* Move up arrows on smaller screen when page grows in height */
 @media screen and (max-width: 1384px) {
     .arrow {
-        bottom: 400px;
+        bottom: 250px;
+    }
+}
+@media screen and (max-width: 800px) {
+    .arrow {
+        bottom: 300px;
     }
 }
 /* Mouse-over effect on arrows */
