@@ -279,6 +279,11 @@ polygon {
     height: 100px;
     margin-top: 50px;
 }
+@media screen and (max-width: 800px) {
+    .button {
+        width: 50%;
+    }
+}
 /* Mouse-over effect on button */
 .button:hover,
 .button:focus {
