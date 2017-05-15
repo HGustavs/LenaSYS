@@ -9,9 +9,16 @@ var courselist;
 var students=new Array;
 var tablecontent=new Array;
 var typechanged=false;
+var duggaArray = [[]];
 function setup(){
 	
 	var filt = "";
+	filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverFunnel();'>";
+	filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
+	filt+="<div id='dropdownc' class='dropdown-list-container'>";
+	filt+="</div>";
+	filt+="</span></td>";
+  
 	filt+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hoverFilter();'>";
 	filt+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
 	filt+="<div id='dropdownFilter' class='dropdown-list-container'>";
@@ -23,8 +30,92 @@ function setup(){
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "GROUP");
 }
 
+function checkedAll() {
+  // Current state
+  var duggaElements = document.getElementsByName("selectdugga");
+  var selectToggle = document.getElementById('selectdugga');
+
+  // Are there any elements checked?
+  var anyChecked = false;
+
+  for (var i =0; i < duggaElements.length; i++) {
+    if(duggaElements[i].checked) {
+      anyChecked = true;
+      break;
+    }
+  }
+
+  // Yes, there is at lease one element checked, so default is clear
+  if(anyChecked) {
+    selectToggle.checked = false;
+    for (var i =0; i < duggaElements.length; i++) {
+      duggaElements[i].checked = false;    
+    }
+  } else { // There are no element(s) checked, so set all
+    selectToggle.checked = true;
+    for (var i =0; i < duggaElements.length; i++) {
+      duggaElements[i].checked = true;    
+    }
+  }
+}
+
+function toggleAll() {
+  // Current state
+  var duggaElements = document.getElementsByName("selectdugga");
+  var selectToggle = document.getElementById('selectdugga');
+
+  // Are there any elements checked?
+  var anyChecked = false;
+
+  for (var i =0; i < duggaElements.length; i++) {
+    if(duggaElements[i].checked) {
+      anyChecked = true;
+      break;
+    }
+  }
+
+  selectToggle.checked = anyChecked;
+}
+
+function hoverFunnel()
+{
+	toggleAll(); // Check toggle all if there are any elements checked
+    $('#dropdowns').css('display','none');
+  	$('#dropdownc').css('display','block');
+}
+
+function leaveFunnel()
+{
+	$('#dropdownc').css('display','none');   
+	
+	// Update columns only now
+	var str="";
+	$(".headercheck").each(function(){
+			str+=$(this).attr("id")+"**"+$(this).is(':checked')+"**";
+	});
+  
+  showTeachers=$('#showteachers').is(":checked");
+  	old=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+  	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
+
+  onlyPending=$('#pending').is(":checked");
+    var opend=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending");
+    localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
+
+	if(str!=old || onlyPending==opend) process();
+  
+}
+
+function checkMomentParts(pos, id) {
+	for (var i = 0; i < duggaArray[pos].length; i++) {
+		var setThis = document.getElementById(duggaArray[pos][i]);
+		setThis.checked = document.getElementById(id).checked;
+	}
+}
+
 function hoverFilter()
 {
+	$('#dropdownc').css('display','none');
   	$('#dropdownFilter').css('display','block');
 }
 
@@ -104,7 +195,50 @@ function process()
 		for(i=0;i<availablegroups.length;i++){
 			var uid=availablegroups[i].uid;
 		}
+		
+			// Update dropdown list
 		var dstr="";
+
+    	dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+
+    	var activeMoment = 0;
+    	for(var j=0;j<moments.length;j++){
+
+				var lid=moments[j].lid;
+				var name=moments[j].entryname;
+				dstr+="<div class='checkbox-dugga";				
+				if (moments[j].visible == 0) {dstr +=" checkhidden";}
+				
+				if (moments[j].kind == 4) {dstr +=" checkmoment";}
+				
+				dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
+            	if (moments[j].kind == 4) {
+                    duggaArray.push( [] );
+                    var idAddString = "hdr"+lid+"check";
+                	dstr+=" onclick='checkMomentParts(" + activeMoment + ", \"" + idAddString + "\"); toggleAll();'";
+                    activeMoment++;
+                }
+
+				if (clist){
+						index=clist.indexOf("hdr"+lid+"check");
+						if(index>-1){
+								if(clist[index+1]=="true"){
+										dstr+=" checked ";
+								}
+						}										
+				}	else {
+						/* default to check every visible dugga/moment */
+						if (moments[j].visible != 0) dstr+=" checked ";
+				}			
+				dstr+=">";
+				dstr+= "<label class='headerlabel' id='hdr"+lid;
+				dstr+="' for='hdr"+lid+"check' ";
+				dstr+=">"+name+"</label></div>";
+		}
+		dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaveFunnel()'>Filter</button></div>";
+ 
+	document.getElementById("dropdownc").innerHTML=dstr;
+	var dstr="";
 
 	// Sorting
     dstr+="<div class='checkbox-dugga'><label class='headerlabel' for='sortdir1'>Sort students by:</label></div>";
@@ -157,7 +291,8 @@ function drawtable(){
 		str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
 		for(var lid in tablecontent[i].lidstogroup) { // Iterate the data per list entry column
 			str+="<td style='padding-left:5px;'>";
-			str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+" class='test' onchange=changegroup()>";
+			var oldUgid = tablecontent[i].lidstogroup[lid] != false ? "_"+tablecontent[i].lidstogroup[lid] : "";
+			str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+oldUgid+" class='test' onchange=changegroup(this)>";
 			str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
 			for(var level2lid in availablegroups) {
 				// Iterate the groups in each lid, example: 
@@ -251,6 +386,11 @@ function returnedGroup(data)
 				leaveFilter();
 		});
 	});
+	$(document).ready(function () {
+						$("#dropdownc").mouseleave(function () {
+								leaveFunnel();
+						});
+		});
 	
 	allData = data; // used by dugga.js (for what??)
 	process();
@@ -266,30 +406,24 @@ function returnedGroup(data)
  * @param changedElement - the DOM object of the changed element. 
  */
 function changegroup(changedElement) {
-	var elementId = changedElement.id; // contains uid_lid
-	var value = changedElement.value; // the new ugid
+	var elementId = changedElement.id; // contains uid_lid_oldUgid (oldUgid if applicable)
+	var value = changedElement.value; // the new ugid (the value of the selected option)
 	
 	var arr = elementId.split("_");
 	var uid = arr[0];
 	var lid = arr[1];
+	var oldUgid = arr[2];
 	
 	// Create JSON object that is to be sent to the AJAXRequest
 	data = {
 		'uid':uid,
 		'lid':lid,
-		'ugid':value
+		'newUgid':value,
+		'oldUgid':oldUgid
 	};
 	
-	// Placeholder
-	// 				 "UPDATE", data, "GROUP" ?
-	// AJAXRequest(<action>, <data>, <domain>);
-	
-	// Must make a query in AJAXRequest to insert mappings: 
-	// uid to ugid in user_usergroup
-	// ugid to lid in usergroup_listentries
-	
-	// Debugger, needed for now
-	console.log('You have tried to change a group');
+	// This AJAXService will map uid to ugid in user_usergroup
+	AJAXService("UPDATEGROUP", data, "GROUP");
 }
 
 function resort()
