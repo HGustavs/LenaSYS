@@ -102,7 +102,7 @@ function setExpireCookie(){
 //----------------------------------------------------------------------------------
 function setExpireCookieLogOut(){
 	var expireDate = new Date();
-	expireDate.setTime(expireDate.getTime() + (1 * 2 * 9000000));
+	expireDate.setTime(expireDate.getTime() + (1 * 2 * 5000));
 
 	document.cookie = "sessionEndTimeLogOut=expireC; expires="+ expireDate.toGMTString() +"; path=/";
 }
@@ -924,7 +924,7 @@ function sessionExpireLogOut() {
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
 			$(".endsessionmessagebox").css("display","block");
-			processLogout();
+			//processLogout();
 			clearInterval(intervalId);
 		}
 
