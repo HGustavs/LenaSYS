@@ -60,15 +60,15 @@ var refresh_timer = setRefreshTime();              //  set how often the diagram
 var refresh_lock = false;               // used to set if the digram should stop refreshing or not.
 var attributeTemplate = {           // Defines entity/attribute/relations predefined sizes
   width: 7 * gridSize,
-  height: 5 * gridSize
+  height: 4 * gridSize
 };
 var entityTemplate = {
   width: 7 * gridSize,
-  height: 5 * gridSize
+  height: 4 * gridSize
 };
 var relationTemplate = {
   width: 7 * gridSize,
-  height: 5 * gridSize
+  height: 4 * gridSize
 };
 var classTemplate = {
   width: 7 * gridSize,
