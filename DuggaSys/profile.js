@@ -198,7 +198,9 @@ function changePassword(){
     });
 }
 
+
 $(function() {
-    if (!checkHTTPS()){
+	if (!checkHTTPS()){
 		$("#content").html("Profile settings can only be changed on a secure HTTPS connection.");
 	}
+});
