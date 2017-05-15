@@ -138,7 +138,13 @@ function leaveFilter()
 
 	if (!(ocol==col && odir==dir) || typechanged) {
 		typechanged=false;
-		resort();
+		
+		var a=document.forms["sortingForm"]["sortcol"].value;
+		
+		if (a==0 && a!=""){
+			resort();
+		}
+		
 	}
 }
 
@@ -242,10 +248,12 @@ function process()
 
 	// Sorting
     dstr+="<div class='checkbox-dugga'><label class='headerlabel' for='sortdir1'>Sort students by:</label></div>";
+	dstr+="<form name='sortingForm'>";
 	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Username</label></div>";
 	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Firstname</label></div>";
 	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >Lastname</label></div>";
 	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >SSN</label></div>";		
+	dstr+="</form>";
 	dstr+="<div style='display:flex;justify-content:flex-end;'><button onclick='leaveFilter()'>Sort</button></div>"
 	document.getElementById("dropdownFilter").innerHTML=dstr;
 }
