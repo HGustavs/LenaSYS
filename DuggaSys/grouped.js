@@ -291,7 +291,8 @@ function drawtable(){
 		str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
 		for(var lid in tablecontent[i].lidstogroup) { // Iterate the data per list entry column
 			str+="<td style='padding-left:5px;'>";
-			str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+" class='test' onchange=changegroup()>";
+			var oldUgid = tablecontent[i].lidstogroup[lid] != false ? "_"+tablecontent[i].lidstogroup[lid] : "";
+			str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+oldUgid+" class='test' onchange=changegroup(this)>";
 			str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
 			for(var level2lid in availablegroups) {
 				// Iterate the groups in each lid, example: 
@@ -405,30 +406,24 @@ function returnedGroup(data)
  * @param changedElement - the DOM object of the changed element. 
  */
 function changegroup(changedElement) {
-	var elementId = changedElement.id; // contains uid_lid
-	var value = changedElement.value; // the new ugid
+	var elementId = changedElement.id; // contains uid_lid_oldUgid (oldUgid if applicable)
+	var value = changedElement.value; // the new ugid (the value of the selected option)
 	
 	var arr = elementId.split("_");
 	var uid = arr[0];
 	var lid = arr[1];
+	var oldUgid = arr[2];
 	
 	// Create JSON object that is to be sent to the AJAXRequest
 	data = {
 		'uid':uid,
 		'lid':lid,
-		'ugid':value
+		'newUgid':value,
+		'oldUgid':oldUgid
 	};
 	
-	// Placeholder
-	// 				 "UPDATE", data, "GROUP" ?
-	// AJAXRequest(<action>, <data>, <domain>);
-	
-	// Must make a query in AJAXRequest to insert mappings: 
-	// uid to ugid in user_usergroup
-	// ugid to lid in usergroup_listentries
-	
-	// Debugger, needed for now
-	console.log('You have tried to change a group');
+	// This AJAXService will map uid to ugid in user_usergroup
+	AJAXService("UPDATEGROUP", data, "GROUP");
 }
 
 function resort()
