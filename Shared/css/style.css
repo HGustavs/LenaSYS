@@ -2055,6 +2055,14 @@ and (max-device-width : 480px) {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 18px;
   color: white;
+  display: inline-block;
+  opacity: 1.0;
+  max-width: 1000px; /* Cannot animate to auto width, 1000px should be enough for anyone */
+  pointer-events: auto;
+  transition: opacity 300ms, width 300ms;
+  -webkit-transition: opacity 300ms, width 300ms;
+  -moz-transition: opacity 300ms, width 300ms;
+  -o-transition: opacity 300ms, width 300ms;
 }
 
 /* Section editor menu buttons */
@@ -2252,11 +2260,24 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
+
+  .showhidetext {
+    font-size: 12px;
+    display: inline-block;
+    opacity: 1.0;
+    max-width: 1000px; /* Cannot animate to auto width, 1000px should be enough for anyone */
+    pointer-events: auto;
+    transition: opacity 300ms, width 300ms;
+    -webkit-transition: opacity 300ms, width 300ms;
+    -moz-transition: opacity 300ms, width 300ms;
+    -o-transition: opacity 300ms, width 300ms;
+  }
+
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
   table.navheader td.tests,
-  table.navheader td.files {
+  table.navheader td.files{
     margin-right: 0px;
     width: 0px;
     -webkit-transition: margin-right 0.5s, width 0.5s;
@@ -2280,6 +2301,7 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
+
 }
 /* Title for the subpages of the section-editor */
 .titles{
