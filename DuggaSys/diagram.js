@@ -983,7 +983,7 @@ function globalTextSize() {
     }
 }
 
-//change the text size on all entities to the same size.
+//change the fillcolor on all entities to the same size.
 function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5) {
@@ -993,3 +993,9 @@ function globalFillColor() {
 }
 
 
+//change the strokecolor on all entities to the same size.
+function globalStrokeColor() {
+    for (var i = 0; i < diagram.length; i++) {
+            diagram[i].strokeColor = document.getElementById('StrokeColor').value;
+    }
+}

@@ -13,7 +13,8 @@ function Symbol(kind) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textsize = 14;             // 14 pixels text size is default
-    this.symbolColor = '#dfe';
+    this.symbolColor = '#dfe';      // change background colors on entities
+    this.strokeColor = '#253';          // change standard line color
     this.lineWidth = 2;
     var textscale = 10;
     this.name = "New Class";        // Default name is new class
@@ -488,7 +489,7 @@ function Symbol(kind) {
             if (this.targeted) {
                 canvasContext.strokeStyle = "#F82";
             } else {
-                canvasContext.strokeStyle = "#253";
+                canvasContext.strokeStyle = this.strokeColor;
             }
             // Write Class Name
             canvasContext.textAlign = "center";
@@ -501,7 +502,7 @@ function Symbol(kind) {
                 canvasContext.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
                 canvasContext.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
                 canvasContext.lineTo(x1 + ((x2 - x1) * 0.5) + linelenght, y1 + (0.85 * this.textsize) + 10);
-                canvasContext.strokeStyle = "#000";
+                canvasContext.strokeStyle = this.strokeColor;
                 canvasContext.stroke();
             }
             // Change Alignment and Font
@@ -559,7 +560,7 @@ function Symbol(kind) {
                 if (this.targeted) {
                     canvasContext.strokeStyle = "#F82";
                 } else {
-                    canvasContext.strokeStyle = "#253";
+                    canvasContext.strokeStyle = this.strokeColor;
                 }
                 canvasContext.stroke();
             }
@@ -572,7 +573,7 @@ function Symbol(kind) {
                 if (this.targeted) {
                     canvasContext.strokeStyle = "#F82";
                 } else {
-                    canvasContext.strokeStyle = "#253";
+                    canvasContext.strokeStyle = this.strokeColor;
                 }
             }
             //scale the text
@@ -586,7 +587,7 @@ function Symbol(kind) {
             if (this.targeted) {
                 canvasContext.strokeStyle = "#F82";
             } else {
-                canvasContext.strokeStyle = "#253";
+                canvasContext.strokeStyle = this.strokeColor;
             }
             canvasContext.stroke();
             canvasContext.fillStyle = "#253";
@@ -598,14 +599,14 @@ function Symbol(kind) {
                 canvasContext.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
                 canvasContext.lineTo(x1 + ((x2 - x1) * 0.5) - (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
                 canvasContext.lineTo(x1 + ((x2 - x1) * 0.5) + (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                canvasContext.strokeStyle = "#000";
+                canvasContext.strokeStyle = this.strokeColor;
                 canvasContext.stroke();
             } else if (this.key_type == 'Normal') {
                 canvasContext.beginPath(1);
                 canvasContext.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
                 canvasContext.lineTo(x1 + ((x2 - x1) * 0.5) - (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
                 canvasContext.lineTo(x1 + ((x2 - x1) * 0.5) + (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                canvasContext.strokeStyle = "#000";
+                canvasContext.strokeStyle = this.strokeColor;
             }
         } else if (this.symbolkind == 3) {
             //scale the text
@@ -631,7 +632,7 @@ function Symbol(kind) {
             if (this.targeted) {
                 canvasContext.strokeStyle = "#F82";
             } else {
-                canvasContext.strokeStyle = "#253";
+                canvasContext.strokeStyle = this.strokeColor;
             }
             canvasContext.stroke();
             canvasContext.fillStyle = "#253";
@@ -644,7 +645,7 @@ function Symbol(kind) {
                 if (this.isHovered || this.targeted) {
                     canvasContext.strokeStyle = "#F82";
                 } else {
-                    canvasContext.strokeStyle = "#000";
+                    canvasContext.strokeStyle = this.strokeColor;
                 }
              
                 canvasContext.beginPath();
@@ -652,37 +653,37 @@ function Symbol(kind) {
                 canvasContext.lineTo(x2, y2);
                 canvasContext.stroke();
                 canvasContext.lineWidth = this.lineWidth;
-                canvasContext.strokeStyle = "#fff";
+                canvasContext.strokeStyle = this.strokeColor;
                 canvasContext.beginPath();
                 canvasContext.moveTo(x1, y1);
                 canvasContext.lineTo(x2, y2);
                 canvasContext.stroke();
-                canvasContext.strokeStyle = "#000";
+                canvasContext.strokeStyle = this.strokeColor;
             } 
             else if (this.key_type == "Forced") {
                 if (this.isHovered || this.targeted) {
                     canvasContext.strokeStyle = "#F82";
                 } else {
-                    canvasContext.strokeStyle = "#000";
+                    canvasContext.strokeStyle = this.strokeColor;
                 }
                 canvasContext.setLineDash([5, 4]);
                 canvasContext.beginPath();
                 canvasContext.moveTo(x1, y1);
                 canvasContext.lineTo(x2, y2);
                 canvasContext.stroke();
-                canvasContext.strokeStyle = "#000";
+                canvasContext.strokeStyle = this.strokeColor;
             }
             else {
                 if (this.isHovered || this.targeted) {
                     canvasContext.strokeStyle = "#F82";
                 } else {
-                    canvasContext.strokeStyle = "#000";
+                    canvasContext.strokeStyle = this.strokeColor;
                 }
                 canvasContext.beginPath();
                 canvasContext.moveTo(x1, y1);
                 canvasContext.lineTo(x2, y2);
                 canvasContext.stroke();
-                canvasContext.strokeStyle = "#000";
+                canvasContext.strokeStyle = this.strokeColor;
             }
         } else if (this.symbolkind == 5) {
             canvasContext.font = "bold " + parseInt(textsize) + "px " + this.font;
@@ -710,7 +711,7 @@ function Symbol(kind) {
             if (this.targeted) {
                 canvasContext.strokeStyle = "#F82";
             } else {
-                canvasContext.strokeStyle = "#253";
+                canvasContext.strokeStyle = this.strokeColor;
             }
             canvasContext.stroke();
             canvasContext.fillStyle = "#253";
