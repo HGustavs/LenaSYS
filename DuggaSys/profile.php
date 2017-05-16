@@ -77,7 +77,7 @@ pdoConnect();
 							Password must be 8 Characters minimum.<br>
 							Password must contain a number, an uppercase and a lowercase letter.<br><br>
 							<label for="newPassword2">Confirm new password</label><br>
-							<input type="password" class="form-control textinput" id="newPassword2" placeholder="New password again" maxlength="72" onkeydown="formEventHandler(event)"><br><br>
+							<input type="text" class="form-control textinput" id="newPassword2" placeholder="New password again" maxlength="72" onkeydown="formEventHandler(event)"><br><br>
 							<button type="button" id="passwordButton" onclick="validatePassword();" class="submit-button" style="float: none; margin-left: 0;">Update password</button><br/><br/>
                         </form>
                     </div>
