@@ -640,14 +640,13 @@ function Symbol(kind) {
             canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         } else if (this.symbolkind == 4) {
             // ER Attribute relationship is a single line
-            if (this.key_type == "Weak") {
+            if (this.key_type == "Forced") {
                 canvasContext.lineWidth = this.lineWidth * 3;
                 if (this.isHovered || this.targeted) {
                     canvasContext.strokeStyle = "#F82";
                 } else {
                     canvasContext.strokeStyle = this.strokeColor;
                 }
-             
                 canvasContext.beginPath();
                 canvasContext.moveTo(x1, y1);
                 canvasContext.lineTo(x2, y2);
@@ -659,8 +658,7 @@ function Symbol(kind) {
                 canvasContext.lineTo(x2, y2);
                 canvasContext.stroke();
                 canvasContext.strokeStyle = this.strokeColor;
-            } 
-            else if (this.key_type == "Forced") {
+            } else if (this.key_type == "Derived") {
                 if (this.isHovered || this.targeted) {
                     canvasContext.strokeStyle = "#F82";
                 } else {
