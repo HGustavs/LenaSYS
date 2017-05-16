@@ -713,7 +713,7 @@ function returnedSection(data)
     str+="<div class='course' style='display: flex;align-items: center;justify-content: center;'>";
 
      		/*Adds the Show/hide all arrow and text to the section editor*/
-        	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 10px; display: flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowCompTop'><img src='../Shared/icons/right_complement.svg' class='arrowRightTop' style='display:none;'>";
+        	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 12px; display:flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 
         	str+="</div>";
 
@@ -721,7 +721,7 @@ function returnedSection(data)
 			str+="<text class='showhidetext' >"+showhideall+"</text>";
         	str+="</div>";
 
-        	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRightTop'>";
+        	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRight'><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:none'>";
         	str+="</div>";
 
         	str+="<div class='showAll' id='course-showhide-text' style='display:none; position:absolute;  cursor: pointer; left:25px; margin-top: 10px;' >";
