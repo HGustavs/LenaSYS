@@ -7,9 +7,17 @@ function saveChallenge(){
     var password = curPassword.val();
     var question = secQuestion.val();
     var answer = chaAnswer.val();
-    
+    var chars = "^[a-zåäöéA-ZÅÄÖÉ 0-9\-\_\']*$";
+       
     if(password != "" && question != "" && answer != ""){
-        processChallenge(password, question, answer);
+        if(answer.match(chars)){
+            processChallenge(password, question, answer);
+            message.html("Challenge has been updated!!");
+            clearField(curPassword);
+            clearField(secQuestion);
+        } else {
+             message.html("Enter valid characters (a-ö, space, 0-9, -_')");
+        }
     } else {
         message.html("Fill out all the fields");
         updateField(chaAnswer);

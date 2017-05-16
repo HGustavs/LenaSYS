@@ -132,7 +132,13 @@ function leaveFilter()
 
 	if (!(ocol==col && odir==dir) || typechanged) {
 		typechanged=false;
-		resort();
+		
+		var a=document.forms["sortingForm"]["sortcol"].value;
+		
+		if (a==0 && a!=""){
+			resort();
+		}
+		
 	}
 }
 
@@ -236,10 +242,12 @@ function process()
 
 	// Sorting
     dstr+="<div class='checkbox-dugga'><label class='headerlabel' for='sortdir1'>Sort students by:</label></div>";
+	dstr+="<form name='sortingForm'>";
 	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Username</label></div>";
 	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Firstname</label></div>";
 	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >Lastname</label></div>";
 	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >SSN</label></div>";		
+	dstr+="</form>";
 	dstr+="<div style='display:flex;justify-content:flex-end;'><button onclick='leaveFilter()'>Sort</button></div>"
 	document.getElementById("dropdownFilter").innerHTML=dstr;
 	
@@ -285,11 +293,29 @@ function drawtable(){
 			for(var j = 0; j < momtmp.length; j++) {
 				if(momtmp[j].lid == lid){
 					str+="<td style='padding-left:5px;'>";
-					str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+" class='test' onchange=changegroup()>";
+					var oldUgid = tablecontent[i].lidstogroup[lid] != false ? "_"+tablecontent[i].lidstogroup[lid] : "";
+					str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+oldUgid+" class='test' onchange=changegroup(this)>";
 					str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
 					for(var level2lid in availablegroups) {
+						// Iterate the groups in each lid, example: 
+						/*
+						"availablegroups": {
+							"2001": { // Lid to iterate
+								"1": "Festargruppen" // Available groups with ugid as key, name as value
+							},
+							"2013": {
+								"2": "Coola gurppen"
+							}
+						}
+						*/
 						if(level2lid == lid) { // If the group belongs to the current column, lid, iterate all the available groups and create options for them
 							for(var ugid in availablegroups[level2lid]) {
+								// Iterate one level below like: 
+								/*
+								"2001":
+									"1": "Festargruppen" // Available groups with ugid as key, name as value
+								},
+								*/
 								var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
 								str+="<option value="+ugid+selected+">"+availablegroups[level2lid][ugid]+"</option>";
 							}
@@ -385,30 +411,24 @@ function returnedGroup(data)
  * @param changedElement - the DOM object of the changed element. 
  */
 function changegroup(changedElement) {
-	var elementId = changedElement.id; // contains uid_lid
-	var value = changedElement.value; // the new ugid
+	var elementId = changedElement.id; // contains uid_lid_oldUgid (oldUgid if applicable)
+	var value = changedElement.value; // the new ugid (the value of the selected option)
 	
 	var arr = elementId.split("_");
 	var uid = arr[0];
 	var lid = arr[1];
+	var oldUgid = arr[2];
 	
 	// Create JSON object that is to be sent to the AJAXRequest
 	data = {
 		'uid':uid,
 		'lid':lid,
-		'ugid':value
+		'newUgid':value,
+		'oldUgid':oldUgid
 	};
 	
-	// Placeholder
-	// 				 "UPDATE", data, "GROUP" ?
-	// AJAXRequest(<action>, <data>, <domain>);
-	
-	// Must make a query in AJAXRequest to insert mappings: 
-	// uid to ugid in user_usergroup
-	// ugid to lid in usergroup_listentries
-	
-	// Debugger, needed for now
-	console.log('You have tried to change a group');
+	// This AJAXService will map uid to ugid in user_usergroup
+	AJAXService("UPDATEGROUP", data, "GROUP");
 }
 
 function resort()
