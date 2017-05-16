@@ -363,12 +363,11 @@ function mouseupevt(ev) {
 }
 
 function doubleclick(ev) {
-    doubleClickValue = 1;
     var posistionX = (startX + xPos);
     var posistionY = (startY + yPos);
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
-        console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
+        //console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
     }
 }
 
