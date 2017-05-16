@@ -93,17 +93,17 @@
         // Check if its an ordered list
 		function isOrderdList($item) {
 			// return 1 if ordered list
-			return preg_match('/\s*\d+\.\s(.*)/', $item);
+			return preg_match('/^\s*\d+\.\s(.*)/', $item);
 		}
 		// Check if its an unordered list
 		function isUnorderdList($item) {
 			// return 1 if unordered list
-			return preg_match('/(\-|\*)\s+[^|]/', $item); // doesn't support dash like markdown!
+			return preg_match('/^(\-|\*)\s+[^|]/', $item); // doesn't support dash like markdown!
 		}
-		// CHeck if its a table
+		// Check if its a table
 		function isTable($item) {
 			// return 1 if space followed by a pipe-character and have closing pipe-character
-			return preg_match('/\s*\|\s*(.*)\|/', $item);
+			return preg_match('/^\s*\|\s*(.*)\|/', $item);
 		}
         // The creation and destruction of lists
         function handleLists($currentLine, $prevLine, $nextLine) {
