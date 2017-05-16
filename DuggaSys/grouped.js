@@ -261,7 +261,7 @@ function drawtable(){
 	
 	str+="<div class='titles' style='padding-bottom:10px;'>";
 	str+="<h1 style='flex:10;text-align:center;'>Groups</h1>";
-	str+="<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='New Group' onclick='selectGroup();'/>";
+	str+="<input style='float:none;flex:1;max-width:125px;' class='submit-button' type='button' value='Manage Groups' onclick='selectGroup();'/>";
 	str+="</div>";
 
 	// Create the table headers. 
@@ -339,7 +339,7 @@ function selectGroup()
 {
 	var inp = "";
 	for(i=0; i<moments.length; i++){
-		inp+="<option value='i'>"+moments[i].entryname+"</option>";
+		inp+="<option value="+moments[i].lid+">"+moments[i].entryname+"</option>";
 	}
 	document.getElementById("selectMoment").innerHTML=inp;
 	
@@ -350,17 +350,32 @@ function selectGroup()
 
 function createGroup()
 {
-	name=$("#name").val(); 
-	if(name){
-		AJAXService("NEWGROUP",{name:name},"GROUP"); 
+	var chosenMoment=$("#selectMoment").val();
+	var nameType=$("#nameType").val(); 
+	var numberOfGroups=$("#numberOfGroups").val(); 
+		
+	if(numberOfGroups > 0){
+		if(nameType == "a"){
+			//lägg till möjlighet att lägga in bokstäver istället för siffror i databasen
+			alert("Work in progress");
+		}
+		else{
+			for(var groupName=1;groupName<= numberOfGroups;groupName++){
+				data = {
+					'chosenMoment':chosenMoment,
+					'groupName':groupName
+				};
+				AJAXService("NEWGROUP",data,"GROUP");
+			}
+		}		
 		$("#groupSection").css("display","none");
-		$("#groupNameError").css("display","none");
+		$("#numberOfGroupsError").css("display","none");
 		$("#overlay").css("display","none");
-		$("#name").val('');
-		window.location.reload();	
+		//$("#name").val('');
+		window.location.reload();
 	}
 	else{
-		$("#groupNameError").css("display","block");
+		$("#numberOfGroupsError").css("display","block");
 	}
 }
 

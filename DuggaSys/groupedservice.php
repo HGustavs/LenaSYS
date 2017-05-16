@@ -29,7 +29,8 @@ $cid = getOP('cid'); // Course id
 $vers = getOP('vers'); // Course version
 
 // When using opt NEWGROUP
-$name=getOP("name"); // Name (when creating a new group)
+$chosenMoment=getOP("chosenMoment"); // Moment (when creating new  groups, lid needs to be connected)
+$groupName=getOP("groupName"); // Name on group (when creating new groups, a name is needed)
 
 // When using opt UPDATEGROUP
 $uid = getOP('uid'); // User id
@@ -45,7 +46,7 @@ $debug="NONE!";
 
 // Create arguments for log
 $log_uuid = getOP('log_uuid'); // Cookie id or something.. 
-$info=$opt." ".$cid." ".$vers." ".$name." ".$uid." ".$lid." ".$oldUgid." ".$newUgid;
+$info=$opt." ".$cid." ".$vers." ".$groupName." ".$uid." ".$lid." ".$oldUgid." ".$newUgid;
 
 // Log the start event of this service query. This is logged in log.db (not MySQL)
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, __FILE__, $userid, $info);
@@ -168,8 +169,9 @@ if(strcmp($opt,"GET")==0){
 
  	}
 } else if(strcmp($opt,"NEWGROUP")==0){
-	$query = $pdo->prepare("INSERT INTO `usergroup` (`ugid`, `name`, `created`, `lastupdated`) VALUES (DEFAULT, :name, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"); 
-	$query->bindParam(':name', $name);
+	$query = $pdo->prepare("INSERT INTO usergroup (ugid,name,lid,created,lastupdated) VALUES (DEFAULT, :groupName,:chosenMoment,CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"); 
+	$query->bindParam(':chosenMoment', $chosenMoment);
+	$query->bindParam(':groupName', $groupName);
 
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -180,8 +182,9 @@ if(strcmp($opt,"GET")==0){
 				$codeexamples,
 				array(
 					'ugid' => (int)$row['ugid'],
-					'name' => $row['name'],
+					'name' => $row['groupName'],
 					'created' => $row['created'],
+					'lid' => (int)$row['chosenMoment'],
 					'lastupdated' => $row['lastupdated']
 				)
 			);
