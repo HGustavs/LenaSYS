@@ -652,7 +652,7 @@ function Symbol(kind) {
                 canvasContext.lineTo(x2, y2);
                 canvasContext.stroke();
                 canvasContext.lineWidth = this.lineWidth;
-                canvasContext.strokeStyle = this.strokeColor;
+                canvasContext.strokeStyle = "#FFF";
                 canvasContext.beginPath();
                 canvasContext.moveTo(x1, y1);
                 canvasContext.lineTo(x2, y2);
