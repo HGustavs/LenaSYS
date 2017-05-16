@@ -59,7 +59,7 @@ pdoConnect();
 						<br><br>
 						<label for="challengeAnswer">Challenge answer</label><br>
 						<input type="text" id="challengeAnswer" class="form-control textinput" placeholder="Answer to question" style="width: 300px;"><br><br>
-						<button type="button" onClick="saveChallenge()" id="saveChallenge" class="submit-button" style="float: none; margin-left: 0;">Save Challenge</button>
+						<button type="button" onClick="saveChallenge()" id="saveChallenge" class="submit-button" style="float: none; margin-left: 0; width: 150px;">Save Challenge</button>
 					</form>
 					<div id="challengeMessage"></div>
 				</div>
@@ -69,14 +69,14 @@ pdoConnect();
 					<div id="passForm">
 						<form method="post" name="passwordForm">
 							<label for="currentPassword2">Current password</label><br>
-							<input type="password" class="form-control textinput" id="currentPassword2" placeholder="Current password" maxlength="72" onkeydown="formEventHandler(event)"><br><br>
+							<input type="password" class="form-control textinput" id="currentPassword2" placeholder="Current password" maxlength="72" onkeydown="formEventHandler(event)" style="width: 300px;"><br><br>
 							<label for="newPassword">New password</label><br>
-							<input type="password" class="form-control textinput" id="newPassword" placeholder="Max 72 characters" maxlength="72" onkeydown="formEventHandler(event)"><br>
+							<input type="password" class="form-control textinput" id="newPassword" placeholder="Max 72 characters" maxlength="72" onkeydown="formEventHandler(event)" style="width: 300px;"><br>
 							Password must be 8 Characters minimum.<br>
 							Password must contain a number, an uppercase and a lowercase letter.<br><br>
 							<label for="newPassword2">Confirm new password</label><br>
-							<input type="password" class="form-control textinput" id="newPassword2" placeholder="New password again" maxlength="72" onkeydown="formEventHandler(event)"><br><br>
-							<button type="button" id="passwordButton" onclick="validatePassword();" class="submit-button" style="float: none; margin-left: 0;">Update password</button><br><br>
+							<input type="password" class="form-control textinput" id="newPassword2" placeholder="New password again" maxlength="72" onkeydown="formEventHandler(event)" style="width: 300px;"><br><br>
+							<button type="button" id="passwordButton" onclick="validatePassword();" class="submit-button" style="float: none; margin-left: 0; width: 150px;">Update password</button><br><br>
 						</form>
 					</div>
 					<div id="passwordMessage"></div>
@@ -88,7 +88,7 @@ pdoConnect();
 					if (defined('PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY')) {
 					?>
 					<p id="notificationsText">Checking for push notification subscription...</p>
-					<button type="button" id="notificationsToggle" disabled class="submit-button" style="float: none; margin-left: 0;">Please wait...</button>
+					<button type="button" id="notificationsToggle" disabled class="submit-button" style="float: none; margin-left: 0; width: 230px;">Please wait...</button>
 					<script>
 						var push_notifications_vapid_public_key = "<?php echo PUSH_NOTIFICATIONS_VAPID_PUBLIC_KEY; ?>";
 					</script>
