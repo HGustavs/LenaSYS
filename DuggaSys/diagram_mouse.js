@@ -329,6 +329,10 @@ function mouseupevt(ev) {
         erLineA.bottomRight = p2;
         erLineA.centerPoint = p3;
         diagram.push(erLineA);
+        //selecting the newly created enitity and open the dialogmenu.
+        lastSelectedObject = diagram.length -1;
+        diagram[lastSelectedObject].targeted = true;
+        openAppearanceDialogMenu();
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5);
         erRelationA.name = "Relation" + diagram.length;
