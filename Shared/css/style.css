@@ -2360,6 +2360,96 @@ ul.hamburgerList button.menuButton {
 .titles h1{
   color: #614875;
 }
+
 #nametext {
   padding: 2px 0px 2px 10px;
+}
+
+/* Is used to style a Select-box in diagram.php. */
+#selectDiv {
+  border-radius: 6px;
+  border: 2px solid #d4d4d4;
+  height: 34px;
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  -webkit-box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
+  -moz-box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
+  box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
+}
+
+#selectDiv select {
+  height: 34px;
+  padding-left: 10px;
+  padding-right: 40px;
+  font-size: 14px;
+  border: 0; 
+  -webkit-appearance: none;  /*Removes default chrome and safari style*/
+  -moz-appearance: none;  /*Removes default style Firefox*/
+  background: white;
+  text-overflow: "";
+  transition: 0.2s;
+}
+
+#selectDiv select::-ms-expand {
+  display: none;
+}
+
+#selectDiv select::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+#selectDiv .ikonPil {
+  display: block;
+  background: url("../icons/arrow.svg") no-repeat;
+  position: absolute;
+  right: 12px;
+  top: 14px;
+  width: 12px;
+  height: 15px;
+}
+
+#selectDiv .ikonPilRotation {
+  top: 8px;
+  animation-name: roteraPil;
+  animation-duration: .2s;
+  animation-fill-mode: forwards;
+}
+
+/* Used to rotate the picture that is used as a arrow */ 
+@keyframes roteraPil {
+  0% {
+    -ms-transform: rotate(0deg); /* IE 9 */
+    -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+    transform: rotate(0deg);
+  }
+  100% {
+    -ms-transform: rotate(180deg); /* IE 9 */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
+  }  
+}
+/* Style for the div that presents the coordinants and zoomvalue in diagram */ 
+#valuesCanvas {
+  -webkit-box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
+  -moz-box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
+  box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 6px;
+  background: white;
+  border: 2px solid #d4d4d4;
+  font-size: 14px;
+  bottom: 6px;
+  position: absolute; 
+  left: 2px;
+  cursor: default;
+  /* Removes the possibility to copy the text in this element */
+  webkit-touch-callout: none; 
+   -webkit-user-select: none; 
+    -khtml-user-select: none; 
+      -moz-user-select: none; 
+       -ms-user-select: none; 
+           user-select: none; 
 }
