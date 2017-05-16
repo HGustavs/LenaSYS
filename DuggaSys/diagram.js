@@ -418,7 +418,7 @@ function initializeCanvas() {
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 80);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p>Zoom: " + Math.round((zoomValue * 100)) + "% | Coordinates: X=" + startX + " & Y=" + startY + "</p>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + startX + " & Y=" + startY + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         canvasContext = canvas.getContext("2d");
@@ -889,7 +889,7 @@ function removeLocalStorage() {
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 function reWrite() {
-    document.getElementById("valuesCanvas").innerHTML = "<p>Zoom: " + Math.round((zoomValue * 100)) + "% | Coordinates: X=" + startX + " & Y=" + startY + "</p>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + startX + " & Y=" + startY + "</p>";
 }
 
 //----------------------------------------
