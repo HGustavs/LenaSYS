@@ -259,10 +259,37 @@
                 /* You want to be able to press enter to continue, this function fixes this. */
                 document.addEventListener("keydown", function(e) {
                     if(e.keyCode === 13){
-                        previousInputPage = inputPage;
                         if (inputPage < 5) {
-                            inputPage++;
-                            updateInputPage();
+                            /* Only continue if all fields on current page are filled out */
+                            if (inputPage === 1 || inputPage === 2) {
+                                var fields = document.getElementsByClassName("page" + inputPage + "input");
+                                var found = false; /* Is an empty field found? */
+                                for (var i = 0; i < fields.length; i++) {
+                                    if (fields[i].value === ''){
+                                        found = true; /* Empty field found */
+                                        /* Set background of text field to light red */
+                                        fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
+                                    }
+                                }
+                                if (!found){
+                                    /* If no empty field was found - proceed and reset values of text fields and hide warning text */
+                                    document.getElementById("enterFields" + inputPage).style.display = "none";
+                                    previousInputPage = inputPage;
+                                    inputPage++;
+                                    for (var i = 0; i < fields.length; i++) {
+                                        fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
+                                    }
+                                    updateInputPage();
+                                } else {
+                                    /* Show the warning text if empty field was found */
+                                    document.getElementById("enterFields" + inputPage).style.display = "inline-block";
+                                }
+                            } else {
+                                /* Only page 1 and 2 has text fields so the rest have no rules */
+                                previousInputPage = inputPage;
+                                inputPage++;
+                                updateInputPage();
+                            }
                         } else if (inputPage === 5){
                             submitButton.click();
                         }
