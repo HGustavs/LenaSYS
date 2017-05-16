@@ -2360,6 +2360,68 @@ ul.hamburgerList button.menuButton {
 .titles h1{
   color: #614875;
 }
+
 #nametext {
   padding: 2px 0px 2px 10px;
+}
+
+#selectDiv {
+  border-radius: 6px;
+  border: 2px solid #d4d4d4;
+  height: 34px;
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+}
+
+#selectDiv select {
+  height: 34px;
+  padding-left: 10px;
+  padding-right: 40px;
+  font-size: 14px;
+  border: 0;  /*Removes border*/
+  -webkit-appearance: none;  /*Removes default chrome and safari style*/
+  -moz-appearance: none;  /*Removes default style Firefox*/
+  background: white;
+  text-overflow: "";
+  transition: 0.2s;
+}
+
+#selectDiv select::-ms-expand {
+  display: none;
+}
+
+#selectDiv select::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+#selectDiv .ikonPil {
+  display: block;
+  background: url("../icons/arrow.svg") no-repeat;
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  width: 12px;
+  height: 15px;
+}
+
+#selectDiv .ikonPilRotation {
+  top: 7px;
+  animation-name: roteraPil;
+  animation-duration: .2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes roteraPil {
+  0% {
+    -ms-transform: rotate(0deg); /* IE 9 */
+    -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+    transform: rotate(0deg);
+  }
+  100% {
+    -ms-transform: rotate(180deg); /* IE 9 */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
+  }  
 }

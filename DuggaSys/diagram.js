@@ -431,6 +431,9 @@ function initializeCanvas() {
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
+    $("#ZoomSelect").click(function() {
+        $(this).parent().find(".ikonPil").toggleClass("ikonPilRotation");
+    });
 }
 
 // Function to enable and disable the grid, functionality is related to currentMouseCoordinateX and currentMouseCoordinateY
