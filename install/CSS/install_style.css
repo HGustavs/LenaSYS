@@ -441,3 +441,9 @@ polygon {
     border: 1px solid white; /* White border */
     margin-left: 10px;
 }
+
+/* The text which pops up when a field needs to be filled */
+.enterAllFields {
+    color: rgb(197,81,83); /* Red */
+    display: none;
+}
