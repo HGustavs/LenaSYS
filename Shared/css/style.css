@@ -375,11 +375,11 @@ p {
 }
 
 .hi {
-  background-color:#dad8db;
+  background-color:#dad8db !important;
 }
 
 .lo {
-	background-color:#eae8eb;
+	background-color:#eae8eb !important;
 }
 
 .LightBox {
@@ -1645,7 +1645,6 @@ span.arrow {
 
 .dugga-unassigned {
 	border-left: 2px solid rgb(219, 208, 216);
-	background-color: rgb(255, 255, 255);
 }
 
 .dugga-unassigned-highlighted {
