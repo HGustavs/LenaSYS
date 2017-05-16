@@ -61,12 +61,17 @@ function loadFormIntoElement(element, dir){
 }
 
 function loadFromDiagram() {
-    document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-    document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
-    document.getElementById('symbolColor').value = diagram[lastSelectedObject].symbolColor;
-    document.getElementById('font').value = diagram[lastSelectedObject].font;
-    document.getElementById('fontColor').value = diagram[lastSelectedObject].fontColor;
-    document.getElementById('TextSize').value = diagram[lastSelectedObject].sizeOftext;
+    if (doubleClickValue == 1){
+        doubleClickValue = 0;
+        document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+        document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
+        document.getElementById('symbolColor').value = diagram[lastSelectedObject].symbolColor;
+        document.getElementById('font').value = diagram[lastSelectedObject].font;
+        document.getElementById('fontColor').value = diagram[lastSelectedObject].fontColor;
+        document.getElementById('TextSize').value = diagram[lastSelectedObject].sizeOftext;
+    } else {
+        console.log("HEJ");
+    }
 }
 
 //--------------------------------------------------------------------

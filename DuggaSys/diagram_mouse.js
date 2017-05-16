@@ -363,27 +363,12 @@ function mouseupevt(ev) {
 }
 
 function doubleclick(ev) {
+    doubleClickValue = 1;
     var posistionX = (startX + xPos);
     var posistionY = (startY + yPos);
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
         console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
-
-       if (diagram[lastSelectedObject].kind == 1){
-           /*
-           document.getElementById('figureFillColor').value = diagram[lastSelectedObject].fillColor;
-           document.getElementById('figureLineColor').value = diagram[lastSelectedObject].strokeColor;
-           */
-       }else {
-           document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-           document.getElementById('symbolColor').value = diagram[lastSelectedObject].symbolColor;
-           document.getElementById('fontColor').value = diagram[lastSelectedObject].fontColor;
-           document.getElementById('font').value = diagram[lastSelectedObject].font;
-           document.getElementById('TextSize').value = diagram[lastSelectedObject].sizeOftext;
-           if (document.getElementById('object_type') != null) {
-               document.getElementById('object_type').value = diagram[lastSelectedObject].object_type;
-           }
-       }
     }
 }
 
