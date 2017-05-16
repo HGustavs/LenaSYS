@@ -133,22 +133,24 @@
             After this enter a database to use. This could also be either an existing or a new database.<br>
             Finally enter the host. Is installation is running from webserver localhost should be used.</b></p><hr>';
     echo 'Enter new MySQL user. <br>';
-    echo '<input type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
+    echo '<input class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
     echo 'Enter password for MySQL user. <br>';
-    echo '<input type="password" name="password" placeholder="Password" /> <br>';
+    echo '<input class="page1input" type="password" name="password" placeholder="Password" /> <br>';
     echo 'Enter new database name. <br>';
-    echo '<input type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
+    echo '<input class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
     echo 'Enter hostname (e.g localhost). <br>';
-    echo '<input type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
+    echo '<input class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
+    echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
     echo '</div>';
 ?>
                 <div class="inputContent" id="td2" valign=top>
                     <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
                         Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
                     Enter MySQL root user. <br>
-                    <input type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
+                    <input class="page2input" type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
                     Enter password for MySQL root user. <br>
-                    <input type="password" name="rootPwd" placeholder="Root Password" /> <br>
+                    <input class="page2input" type="password" name="rootPwd" placeholder="Root Password" /> <br>
+                    <span class="enterAllFields" id="enterFields2">Please fill all fields before continuing.</span>
                 </div>
                 <div class="inputContent" id="td3" valign=top>
                     <p id="infoText"><b>If you wish to create a new, empty database check the box 'Create new database'. If you want to fill this
@@ -222,9 +224,31 @@
                 };
 
                 rightArrow.onclick = function() {
-                    previousInputPage = inputPage;
-                    if (inputPage < 5) inputPage++;
-                    updateInputPage();
+                    if (inputPage === 1 || inputPage === 2) {
+                        var fields = document.getElementsByClassName("page" + inputPage + "input");
+                        var found = false;
+                        for (var i = 0; i < fields.length; i++) {
+                            if (fields[i].value === ''){
+                                found = true;
+                                fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
+                            }
+                        }
+                        if (!found){
+                            document.getElementById("enterFields" + inputPage).style.display = "none";
+                            previousInputPage = inputPage;
+                            if (inputPage < 5) inputPage++;
+                            for (var i = 0; i < fields.length; i++) {
+                                fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
+                            }
+                            updateInputPage();
+                        } else {
+                            document.getElementById("enterFields" + inputPage).style.display = "inline-block";
+                        }
+                    } else {
+                        previousInputPage = inputPage;
+                        if (inputPage < 5) inputPage++;
+                        updateInputPage();
+                    }
                 };
 
                 /* You want to be able to press enter to continue, this function fixes this. */
