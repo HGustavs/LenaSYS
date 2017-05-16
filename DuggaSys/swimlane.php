@@ -1,5 +1,5 @@
 <div class="swimlaneOverlay" id="swimlaneOverlay">
-  <!-- the external content of swimlane is loaded into this div -->
+  <!-- The box which will be display: "block" or "none" -->
   <div class="SwimContentWrap" id="SwimContentWrap">
     <div class="SwimContent" id="SwimContent">
       <!-- Here be swimlane content -->
@@ -9,4 +9,5 @@
     </div>
   </div>
 </div>
+<!-- Load the script after all the needed divs have been created -->
 <script src='swimlane.js'></script>
