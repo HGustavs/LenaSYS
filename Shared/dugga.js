@@ -924,7 +924,7 @@ function sessionExpireLogOut() {
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
 			$(".endsessionmessagebox").css("display","block");
-			processLogout();
+			//processLogout();
 			clearInterval(intervalId);
 		}
 
