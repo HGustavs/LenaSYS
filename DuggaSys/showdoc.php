@@ -98,7 +98,7 @@
 		// Check if its an unordered list
 		function isUnorderdList($item) {
 			// return 1 if unordered list
-			return preg_match('/^(\-|\*)\s+[^|]/', $item); // doesn't support dash like markdown!
+			return preg_match('/^\s*(\-|\*)\s+[^|]/', $item); // doesn't support dash like markdown!
 		}
 		// Check if its a table
 		function isTable($item) {
