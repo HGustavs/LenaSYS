@@ -646,6 +646,7 @@ function Symbol(kind) {
                 } else {
                     canvasContext.strokeStyle = "#000";
                 }
+             
                 canvasContext.beginPath();
                 canvasContext.moveTo(x1, y1);
                 canvasContext.lineTo(x2, y2);
@@ -657,7 +658,21 @@ function Symbol(kind) {
                 canvasContext.lineTo(x2, y2);
                 canvasContext.stroke();
                 canvasContext.strokeStyle = "#000";
-            } else {
+            } 
+            else if (this.key_type == "Forced") {
+                if (this.isHovered || this.targeted) {
+                    canvasContext.strokeStyle = "#F82";
+                } else {
+                    canvasContext.strokeStyle = "#000";
+                }
+                canvasContext.setLineDash([5, 4]);
+                canvasContext.beginPath();
+                canvasContext.moveTo(x1, y1);
+                canvasContext.lineTo(x2, y2);
+                canvasContext.stroke();
+                canvasContext.strokeStyle = "#000";
+            }
+            else {
                 if (this.isHovered || this.targeted) {
                     canvasContext.strokeStyle = "#F82";
                 } else {
