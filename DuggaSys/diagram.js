@@ -83,6 +83,7 @@ var mousemoveX = 0, mousemoveY = 0;    // Is used to save the exact coordinants 
 var mouseDiffX = 0, mouseDiffY = 0;    // Saves to diff between mousedown and mousemove to know how much to translate the diagram
 var xPos = 0;
 var yPos = 0;
+var doubleClickValue = 0;               // Value used in diagram_dialog and diagram_mouse. If you have doubleclicked or not.
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler, false);
