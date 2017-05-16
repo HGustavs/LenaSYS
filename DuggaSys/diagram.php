@@ -36,6 +36,52 @@
     <!-- content START -->
     <div id="content">
         <div id="buttonDiv">
+            <div class="document-settings">
+                <div class="menu-drop-down">
+                    <span class="label">File</span>
+                    <div class="drop-down">
+                        <div class="drop-down-item">
+                            <a href="#" value='Save'>Save</a>
+
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#">Load</a>
+                        </div>
+                        <div class="drop-down-divider">
+
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" id="buttonid" value='getImage'>Import</a>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" id="fileid" onclick='SaveFile(this);'>Export</a>
+                        </div>
+                        <div class="drop-down-divider">
+
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="menu-drop-down">
+                    <span class="label">Edit</span>
+                </div>
+                <div class="menu-drop-down">
+                    <span class="label">View</span>
+                    <div class="drop-down">
+                        <div class="drop-down-item">
+                            <a href="#" onclick='debugMode();'>Developer mode</a>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="toggleGrid(this)">Snap to grid</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </br>
+            </br>
+
             <button onclick='attrMode();'>Create Attribute</button>
             <button onclick='lineMode();'>Create Line</button>
             <button onclick='entityMode();'>Create Entity</button>
@@ -47,20 +93,19 @@
             </select>
             <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
             <button onclick='globalAppearanceMenu();'>Global Appearance</button>
-            <button onclick='debugMode();'>Debug</button>
-            <button onclick='clearCanvas(); removeLocalStorage();'>Removed Hashed Diagram</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
-            <button onclick='clearCanvas(); removeLocalStorage();'>Delete All</button>
-            <select id='download' onchange='downloadMode(this)'>
-                <option selected='selected' disabled>State</option>
-                <option value='getImage'>getImage</option>
-                <option value='Save'>Save</option>
-                <option value='Load'>Load</option>
-            </select>
-            <button><a onclick='SaveFile(this);' class='btn'><i class='icon-download'></i>Export</a></button>
-            <input id='fileid' type='file' name='file_name' hidden multiple/>
-            <input id='buttonid' type='button' value='Import' />
-            Snap to grid:<input type="checkbox" onClick="toggleGrid(this)" checked>
+            <!--
+                Needs to be implemented in the new navbar
+
+               <select id='download' onchange='downloadMode(this)'>
+                    <option selected='selected' disabled>State</option>
+                    <option value='getImage'>getImage</option>
+                    <option value='Save'>Save</option>
+                    <option value='Load'>Load</option>
+                </select>
+
+                <input id='fileid' type='file' name='file_name' hidden multiple/>
+            -->
             <button id='moveButton' class='unpressed' style='right: 0; position: fixed; margin-right: 10px;'>Start Moving</button><br>
         </div>
         <div id="canvasDiv"></div>

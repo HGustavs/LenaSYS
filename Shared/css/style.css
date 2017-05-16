@@ -921,6 +921,75 @@ input {
 }
 
 /* --------------================################================-------------- *
+ *                        TOOLBAR/DROPDOWN/APPLICATION                          *
+ * --------------================################================-------------- */
+/*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
+ .document-settings{
+     font-size:14px;
+ }
+ .document-settings > .menu-item, .document-settings > .menu-drop-down{
+     float:left;
+ }
+ .document-settings span.label{
+     display:block;
+     height:22px;
+     line-height:22px;
+     padding: 0px 6px;
+ }
+ .document-settings span.label:hover{
+     cursor:pointer;
+     background-color:rgb(240,240,240);
+ }
+ .document-settings > .menu-drop-down:hover > .drop-down{
+     display:inline-block;
+ }
+ .drop-down{
+     position:absolute;
+     outline:1px solid rgb(240,240,240);
+     border:1px solid rgb(200,200,200);
+     display:none;
+     width:260px;
+     background-color:rgb(255,255,255);
+ }
+ .menu-drop-drown{
+     display:relative;
+     top:22px;
+ }
+ .drop-down-divider{
+     display:block;
+     width:100%;
+     height:6px;
+     border-bottom:1px solid rgb(240,240,240);
+     margin-bottom:6px;
+ }
+ .drop-down-item > a{
+     color:rgb(0,0,0);
+     text-decoration:none;
+
+     display:inline-block;
+     width:252px;
+     height:16px;
+     line-height:16px;
+     padding: 8px 0px 8px 8px;
+ }
+
+ .drop-down-item > a::before{
+     /*PLACEHOLDER FOR ICON*/
+     display:inline-block;
+     width:16px;
+     height:16px;
+     content:"I";
+ }
+ .drop-down-item:hover{
+     background-color:rgb(240,240,240);
+ }
+
+ /* --------------================################================-------------- *
+  *                       END TOOLBAR/DROPDOWN/APPLICATION                       *
+  * --------------================################================-------------- */
+
+
+/* --------------================################================-------------- *
  *                                 Form Controls                                *
  * --------------================################================-------------- */
 
@@ -2291,4 +2360,3 @@ ul.hamburgerList button.menuButton {
 .titles h1{
   color: #614875;
 }
-
