@@ -2360,3 +2360,6 @@ ul.hamburgerList button.menuButton {
 .titles h1{
   color: #614875;
 }
+#nametext {
+  padding: 2px 0px 2px 10px;
+}

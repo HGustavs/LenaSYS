@@ -55,8 +55,18 @@ function loadFormIntoElement(element, dir){
     file.open('GET', dir);
     file.onreadystatechange = function(){
         element.innerHTML = file.responseText;
+        loadFromDiagram();
     }
     file.send();
+}
+
+function loadFromDiagram() {
+    document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+    document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
+    document.getElementById('symbolColor').value = diagram[lastSelectedObject].symbolColor;
+    document.getElementById('font').value = diagram[lastSelectedObject].font;
+    document.getElementById('fontColor').value = diagram[lastSelectedObject].fontColor;
+    document.getElementById('TextSize').value = diagram[lastSelectedObject].sizeOftext;
 }
 
 //--------------------------------------------------------------------
@@ -92,6 +102,9 @@ function objectAppearanceMenu(form) {
     if (diagram[lastSelectedObject].symbolkind == 5) {
         loadFormIntoElement(form, 'forms/relation_appearance.php');
     }
+    if (diagram[lastSelectedObject].kind == 1) {
+        loadFormIntoElement(form, 'forms/figure_appearance.php');
+    }
 }
 function changeObjectAppearance(object_type){
     /*
@@ -100,7 +113,11 @@ function changeObjectAppearance(object_type){
 
     if (diagram[lastSelectedObject].symbolkind == 4) {
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
+    } else if (diagram[lastSelectedObject].kind == 1){
+        diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
+        diagram[lastSelectedObject].strokeColor = document.getElementById('figureLineColor').value;
     } else {
+        diagram[lastSelectedObject].symbolColor = document.getElementById('symbolColor').value;
         diagram[lastSelectedObject].name = document.getElementById('nametext').value;
         diagram[lastSelectedObject].fontColor = document.getElementById('fontColor').value;
         diagram[lastSelectedObject].font = document.getElementById('font').value;
