@@ -1,17 +1,20 @@
-var querystring = parseGet();
-var swimlaneInformation;
-var swimBox;
-var swimContent;
+var querystring = parseGet(); // Get the current courseid and coursevers
 var courseId = querystring['courseid'];
 var courseVers = querystring['coursevers'];
+var swimlaneInformation; // The container for returnData
+var swimBox; // This is the box that gets toggled (display: block/none)
+var swimContent; // Here be the content of the swimlane
 
+// Will activate the swimlane when clicking the swimmer icon
 $("a.linkSwimlane").click(function () {
   swimlaneSetup();
 });
 
+// Initialize swim-content, and fetching data from the database
 function swimlaneSetup() {
   swimBox = document.getElementById('swimlaneOverlay');
   swimContent = document.getElementById('SwimContent');
+  // Since the box is filled when clicking the swimmer icon, this is activated on initialization
   swimBox.style.display = "block";
   AJAXService("GET", {cid: courseId, vers: courseVers}, "SWIMLANE");
 }
@@ -34,6 +37,7 @@ $(window).scroll(function () {
   });
 });
 
+// Display information about the deadline when hoovering over the deadline circle
 function mouseOverCircle(circle, text) {
   circle.setAttribute("r", '15');
   circlePosY = parseInt(circle.getAttribute('cy')) - 70;
@@ -47,6 +51,7 @@ function mouseGoneFromCircle(circle) {
   $('#duggainfo').fadeOut('fast');
 }
 
+// Display the current date when hoovering over the line which represents the current date
 function mouseOverLine(text) {
   document.getElementById("currentDateText").innerHTML = text;
   $('#currentDate').css({'top': mouseY, 'left': mouseX}).fadeIn('fast');
@@ -56,10 +61,10 @@ function mouseGoneFromLine() {
   $('#currentDate').fadeOut('fast');
 }
 
+// Get the button that opens the modal
 var exitButton = document.getElementsByClassName("SwimClose")[0];
-/* Get the button that opens the modal */
 
-/* When the user clicks on <span> (x), close the modal */
+// When the user clicks on <span> (x), close the modal
 exitButton.onclick = function () {
   swimBox.style.display = "none";
 }
@@ -75,29 +80,32 @@ window.onclick = function (event) {
 // Renderer
 // -------------
 
+// Draw the content of the SwimContent container
 function swimlaneDrawLanes() {
   var info = swimlaneInformation['information'];
   var moments = swimlaneInformation['moments'];
   var str = "";
   str += "<div id='swimlanebox' class='swimlanebox'>";
   str += "<div id='weeks' style='position:absolute; background: white;'>";
-  // Course information.
+  // Course information
   str += "<svg width='250' height='" + (70 + (70 * info['verslength'] ) ) + "'>";
   str += "<rect y='0' x='0' width='250' height='70' style='fill:rgb(97,73,116)' />";
   str += "<text y='20' x='8' font-weight='bold' fill='white'>" + info['coursecode'] + "</text>";
   str += "<text y='40' x='8' fill='white'>" + info['coursename'] + "</text>";
   str += "<text y='60' x='8' fill='white'>Version: " + courseVers + "</text>";
 
-  // Add right amount of weeks to left column.
-  var markRow = false;
+  // The 'Week' column
+  var oddRow = false;
   for (var i = 1; i <= info['verslength']; i++) {
-    if (markRow) {
-      str += "<rect x='0' y='" + (i * 70) + "' width='250' height='70' fill-opacity='0.3' style='fill:rgb(146,125,156)' />";
-      markRow = false;
+    // each second row alternated color
+    var weekColor;
+    if (oddRow) {
+      weekColor = "fill-opacity='0.3' style='fill:rgb(146,125,156)'";
     } else {
-      str += "<rect x='0' y='" + (i * 70) + "' width='250' height='70' style='fill:rgb(255,255,255)' />";
-      markRow = true;
+      weekColor = "style='fill:rgb(255,255,255)'";
     }
+    oddRow = !oddRow;
+    str += "<rect x='0' y='" + (i * 70) + "' width='250' height='70' " + weekColor + " />";
     str += "<text x='95' y='" + (40 + (i * 70)) + "' font-weight='bold' fill='black'>Week " + i + "</text>";
   }
   str += "</svg>";
@@ -109,8 +117,9 @@ function swimlaneDrawLanes() {
   str += "<svg width='" + (200 * (info['numberofparts'] + 1) + 50) + "' height='" + (70 + (70 * info['verslength'])) + "'>";
   str += "<rect y='0' x='0' width='" + (200 * (info['numberofparts'] + 1) + 50) + "' height='70' style='fill:rgb(146,124,157)' />";
 
-  // Add all columns (parts) and duggas inside these
-  var white = true; // each second row
+  // Add all columns (parts) and duggas
+  var oddColumn = true;
+  var clearRow;
   var j = 0;
   var k = 0;
   var pos = 250;
@@ -121,40 +130,40 @@ function swimlaneDrawLanes() {
   // i = each moment
   for (i = 0; i < moments.length; i++) {
     var moment = moments[i];
-    if (moment['kind'] == 4) {
+    if (moment['kind'] == 4) { // It's a course part
       hasCoursePart = true;
       k = 0;
       pos = ((j * 200) + 250);
       str += "<text y='50' x='" + (pos + 10) + "' font-weight='bold' fill='white'>" + moment['entryname'] + "</text>";
-      str += "<rect y='70' x='" + pos + "' width='200' height='" + (70 * info['verslength']) + "' style='fill:rgb(";
-      if (white) {
-        str += '250,250,250';
-        white = !white;
+      // Dim each second column
+      var duggaColor;
+      if (oddColumn) {
+        duggaColor = "fill:rgb(250,250,250)";
       } else {
-        str += '230,230,230';
-        white = !white;
+        duggaColor = "fill:rgb(230,230,230)";
       }
-      str += ")' />";
+      oddColumn = !oddColumn;
+      str += "<rect y='70' x='" + pos + "' width='200' height='" + (70 * info['verslength']) + "' style='" + duggaColor + "' />";
       j++;
 
       // Add more clear rows into the view
-      markRow = false;
+      clearRow = false;
       for (var l = 1; l <= info['verslength']; l++) {
-        if (markRow) {
+        if (clearRow) {
           str += "<rect x='" + (pos) + "' y='" + (l * 70) + "' width='200' height='70' fill-opacity='0.1' style='fill:rgb(146,125,156);' />";
-          markRow = !markRow;
-        } else {
-          markRow = !markRow;
         }
+        clearRow = !clearRow;
       }
-    } else if (moment['kind'] == 3) {
+    } else if (moment['kind'] == 3) { // It's a part of a course part(!)
       if (j == 0) {
         oldWeek = info['deadline'];
       }
+      // If there are no course parts, just say so
       if (!hasCoursePart) {
         str += "<text y='50¨' x='" + (pos + 10) + "' fill='white'>No course part</text>";
       }
 
+      // Dugga information
       duggaInfoArray.push("<b>" + moment['entryname'] + "</b><br> Release date: " + moment['qrelease'] + "<br> Deadline: " + moment['deadline']);
       // The ---- that marks the release of a dugga
       str += "<line x1='" + (pos + k + 10) + "' y1='" + (100 + (moment['startweek'] - 1) * 70) + "' x2='" + (pos + k + 30) + "' y2='" + (100 + (moment['startweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
@@ -187,7 +196,11 @@ function swimlaneDrawLanes() {
   swimContent.innerHTML = str;
 }
 
+// Gather the fetched data from the database and execute the swimming
 function returnedSwimlane(swimlaneData) {
   swimlaneInformation = swimlaneData;
-  swimlaneDrawLanes();
+  console.log(swimlaneInformation['returnvalue']);
+  if (swimlaneInformation['returnvalue']) {
+    swimlaneDrawLanes();
+  }
 }
