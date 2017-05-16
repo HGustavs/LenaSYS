@@ -788,8 +788,10 @@
         modal.style.display = "block";
         var showHideButton = document.getElementById('showHideInstallation');
 
-        showHideButton.onclick = function(){
-            toggleInstallationProgress();
+        if (showHideButton != null){
+            showHideButton.onclick = function(){
+                toggleInstallationProgress();
+            }
         }
 
         /* Show/Hide installation progress. */
