@@ -256,6 +256,15 @@
                     }
                 };
 
+                $(document).ready(function() {
+                    $(window).keydown(function(event){
+                        if(event.keyCode === 13) {
+                            event.preventDefault();
+                            return false;
+                        }
+                    });
+                });
+
                 /* You want to be able to press enter to continue, this function fixes this. */
                 document.addEventListener("keydown", function(e) {
                     if(e.keyCode === 13){
