@@ -151,7 +151,7 @@ function parseLineByLine(inString) {
         currentLineFeed = str.indexOf("\n");
 	}
     markdown = identifier(prevLine, remainingLines, markdown, nextLine);
-	return markdown;
+	return "<div id='markdown'>"+markdown+"</div>";
 }
 // This function detect the text type
 function identifier(prevLine, currentLine, markdown, nextLine){
