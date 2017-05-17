@@ -1023,6 +1023,9 @@ function returnedSection(data)
             if('group' in item){
               str+="<td class='moment' style='text-align:right;padding-right:7px;'>("+item['group']['name']+")</td>";
             }
+            else{
+              str+="<td class='moment' style='text-align:right;padding-right:7px;'><span class='tooltip'><span class='tooltiptext'>Contact your teacher</span>(No group)</span></td>";
+            }
           }
         }
         
