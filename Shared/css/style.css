@@ -444,6 +444,24 @@ p {
   width: 49%;
 }
 
+.tooltip{
+  line-height: 32px;
+}
+
+.tooltiptext{
+  display: none;
+  width: 160px;
+  background-color: #614875;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  margin: 0 5px;
+}
+
+.tooltip:hover .tooltiptext {
+  display: inline-block;
+}
+
 /* --------------================################================-------------- *
  *                                    Header                                    *
  * --------------================################================-------------- */
