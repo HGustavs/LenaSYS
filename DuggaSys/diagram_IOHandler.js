@@ -196,10 +196,9 @@ $(document).ready(function(){
     function downloadCanvas(link, canvasId, filename) {
         link.href = document.getElementById(canvasId).toDataURL();
         link.download = filename;
-        console.log(link);
     }
 
     document.getElementById('picid').addEventListener('click', function(){
-        downloadCanvas(this, 'myCanvas', 'picture.svg');
+        downloadCanvas(this, 'myCanvas', 'picture.jpg');
     }, false);
 });
