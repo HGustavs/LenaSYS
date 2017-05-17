@@ -948,7 +948,80 @@ function setRefreshTime() {
     }
 }
 
+function align(mode){
+    var selected_objects = [];
 
+    for(var i = 0; i < diagram.length; i++){
+        if(diagram[i].targeted == true){
+            selected_objects.push(diagram[i]);
+        }
+    }
+    switch(mode){
+        case 'top':
+            alignTop(selected_objects);
+        break;
+        case 'left':
+            alignLeft(selected_objects);
+        break;
+        case 'bottom':
+            alignBottom(selected_objects);
+        break;
+        case 'right':
+            alignRight(selected_objects);
+        break;
+    }
+    updateGraphics();
+    hashFunction();
+}
+function alignLeft(selected_objects){
+    var lowest_x = 99999;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[diagram[i].topLeft].x < lowest_x){
+            lowest_x = points[diagram[i].topLeft].x;
+        }
+    }
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
+    }
+}
+
+function alignTop(selected_objects){
+    var lowest_y = 99999;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[diagram[i].topLeft].y < lowest_y){
+            lowest_y = points[diagram[i].topLeft].y;
+        }
+    }
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
+    }
+}
+
+function alignRight(selected_objects){
+    var highest_x = 0;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[diagram[i].bottomRight].x > highest_x){
+            highest_x = points[diagram[i].bottomRight].x;
+        }
+    }
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
+    }
+}
+
+function alignBottom(selected_objects){
+    var highest_y = 0;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[diagram[i].bottomRight].y > highest_y){
+            highest_y = points[diagram[i].bottomRight].y;
+        }
+    }
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
+    }
+}
+
+//Do we really need 5 functions that more or less do the same thing
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1 || diagram[i].symbolkind == 5) {

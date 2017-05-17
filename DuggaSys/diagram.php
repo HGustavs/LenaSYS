@@ -111,6 +111,10 @@
             <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
             <button onclick='globalAppearanceMenu();'>Global Appearance</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
+            <button type="button" name="button" onclick="align('top');">Align top</button>
+            <button type="button" name="button" onclick="align('right');">Align right</button>
+            <button type="button" name="button" onclick="align('bottom');">Align bottom</button>
+            <button type="button" name="button" onclick="align('left');">Align left</button>
             <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
             <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
 
