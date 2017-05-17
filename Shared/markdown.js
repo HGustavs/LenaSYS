@@ -161,13 +161,16 @@ function identifier(prevLine, currentLine, markdown, nextLine){
     }
     // handle tables
     else if(isTable(currentLine)) {
-    	markdown += handleTable(currentLine, prevLine, nextLine);
+        markdown += handleTable(currentLine, prevLine, nextLine);
     }
     // If its ordinary text then show it directly
     else {
         markdown += markdownBlock(currentLine);
     }
-
+    // close table
+    if(!isTable(currentLine) && !isTable(nextLine)){
+        markdown += "</tbody></table>";
+    }
     return markdown;
 }
 // Check if its an unordered list
@@ -235,8 +238,8 @@ function handleLists(currentLine, prevLine, nextLine) {
         }
     }
     // Close list
-    if(!isOrderdList(nextLine) && isOrderdList(currentLine) && !isUnorderdList(nextLine)) markdown += "</ol>"; // Close ordered list
-    if(!isUnorderdList(nextLine) && isUnorderdList(currentLine) && !isOrderdList(nextLine)) markdown += "</ul>"; // Close unordered list
+    if(!isOrderdList(nextLine) && isOrderdList(currentLine) && !isUnorderdList(nextLine) && !isTable(nextLine)) markdown += "</ol>"; // Close ordered list
+    if(!isUnorderdList(nextLine) && isUnorderdList(currentLine) && !isOrderdList(nextLine) && !isTable(nextLine)) markdown += "</ul>"; // Close unordered list
     return markdown;
 }
 function handleTable(currentLine, prevLine, nextLine) {
@@ -290,10 +293,6 @@ function handleTable(currentLine, prevLine, nextLine) {
                 markdown += "</thead><tbody>";
             }
         }
-    }
-    // close table
-    if(!isTable(nextLine)) {
-        markdown += "</tbody></table>";
     }
     return markdown;
 }

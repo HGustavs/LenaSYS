@@ -88,6 +88,10 @@
                     $markdown .= "<br>";
                 }
             }
+            // close table
+            if(!isTable($currentLine) && !isTable($nextLine)){
+                $markdown .= "</tbody></table>";
+            }
 			return $markdown;
 		}
         // Check if its an ordered list
@@ -207,11 +211,6 @@
                     }
                     $markdown .= "</tr>";
                 }
-            }
-
-            // close table
-            if(!isTable($nextLine)) {
-                $markdown .= "</tbody></table>";
             }
             return $markdown;
         }
