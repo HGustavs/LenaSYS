@@ -1185,8 +1185,8 @@ $(document).on('click', '.hideAll', function () {
     $('.moment').nextUntil('.moment').slideUp();
     $('.hideAll').hide();
     $('.showAll').show().css('display', 'flex');
-    $('.arrowRight').show(400);
-    $('.arrowComp').hide();
+    $('.arrowRight').slideDown();
+    $('.arrowComp').slideUp();
 });
 
 // Function for hiding content for all sections
@@ -1194,7 +1194,7 @@ $(document).on('click', '.hideAll', function () {
     $('.section').nextUntil('.section').slideUp();
     $('.hideAll').hide();
     $('.showAll').show().css('display', 'flex');
-    $('.arrowRight').show(400);
+    $('.arrowRight').show();
     $('.arrowComp').hide();
 });
 
@@ -1203,8 +1203,8 @@ $(document).on('click', '.showAll', function () {
     $('.moment').nextUntil('.moment').slideDown();
     $('.hideAll').show();
     $('.showAll').hide();
-    $('.arrowRight').hide(400);
-    $('.arrowComp').show();
+    $('.arrowRight').slideUp();
+    $('.arrowComp').slideDown();
 });
 
 // Function for showing content for all sections
@@ -1213,7 +1213,7 @@ $(document).on('click', '.showAll', function () {
     $('.hideAll').show();
     $('.showAll').hide();
     $('.arrowRight').hide();
-    $('.arrowComp').show(400);
+    $('.arrowComp').show();
 });
 
 // Function to prevent collapsing when clicking icons
