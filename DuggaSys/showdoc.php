@@ -38,7 +38,7 @@
 						
 				}
 
-				return $str;
+				return "<div id='markdown'>".$str."</div>";
 		}
 
 		function parseLineByLine($inString) {
