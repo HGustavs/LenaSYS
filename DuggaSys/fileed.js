@@ -546,7 +546,10 @@ function searchcontent(){
 	    $rows.show().filter(function() {
 	        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
 	        return !~text.indexOf(val);
+	    	
 	    }).hide();
+	    $rows.filter(":visible:odd").css('background','#ccc');
+	    $rows.filter(":visible:even").css('background','#eae8eb');
 	});
 }  
 
@@ -560,6 +563,8 @@ function keyUpSearch() {
 	        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
 	        return !~text.indexOf(val);
 	    }).hide();
+	    $rows2.filter(":visible:odd").css('background','#ccc');
+	    $rows2.filter(":visible:even").css('background','#eae8eb');
 	});
 }
 
