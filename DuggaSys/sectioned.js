@@ -1182,7 +1182,7 @@ $(document).on('click', '.section', function () {
 
 // Function for hiding content for all moments
 $(document).on('click', '.hideAll', function () {
-    $('.moment').nextUntil('.moment').hide(400);
+    $('.moment').nextUntil('.moment').slideUp();
     $('.hideAll').hide();
     $('.showAll').show().css('display', 'flex');
     $('.arrowRight').show(400);
@@ -1191,7 +1191,7 @@ $(document).on('click', '.hideAll', function () {
 
 // Function for hiding content for all sections
 $(document).on('click', '.hideAll', function () {
-    $('.section').nextUntil('.section').hide(400);
+    $('.section').nextUntil('.section').slideUp();
     $('.hideAll').hide();
     $('.showAll').show().css('display', 'flex');
     $('.arrowRight').show(400);
@@ -1200,7 +1200,7 @@ $(document).on('click', '.hideAll', function () {
 
 // Function for showing content for all moments
 $(document).on('click', '.showAll', function () {
-    $('.moment').nextUntil('.moment').show(400);
+    $('.moment').nextUntil('.moment').slideDown();
     $('.hideAll').show();
     $('.showAll').hide();
     $('.arrowRight').hide(400);
@@ -1209,7 +1209,7 @@ $(document).on('click', '.showAll', function () {
 
 // Function for showing content for all sections
 $(document).on('click', '.showAll', function () {
-    $('.section').nextUntil('.section').show(400);
+    $('.section').nextUntil('.section').slideDown();
     $('.hideAll').show();
     $('.showAll').hide();
     $('.arrowRight').hide();
