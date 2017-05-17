@@ -559,11 +559,10 @@ function lineMode() {
     uimode = "CreateLine";
 }
 
-function figureMode() {
+function figureMode(mode) {
     canvas.style.cursor = "default";
     uimode = "CreateFigure";
-    var selectBox = document.getElementById("selectFigure");
-    figureType = selectBox.options[selectBox.selectedIndex].value;
+    figureType = mode;
 }
 
 function relationMode() {
