@@ -1,4 +1,4 @@
-function saveChallenge(){
+function validateChallenge(){
     var message = $("#challengeMessage");
     var curPassword = $("#currentPassword");
     var secQuestion = $("#securityQuestion");
@@ -12,9 +12,6 @@ function saveChallenge(){
     if(password != "" && question != "" && answer != ""){
         if(answer.match(chars)){
             processChallenge(password, question, answer);
-            message.html("Challenge has been updated!!");
-            clearField(curPassword);
-            clearField(secQuestion);
         } else {
              message.html("Enter valid characters (a-ö, space, 0-9, -_')");
         }
@@ -32,39 +29,45 @@ function processChallenge(password, question, answer){
     var chaAnswer = $("#challengeAnswer");
     
     $.ajax({
-			type:"POST",
-			url: "profileservice.php",
-			data: {
-				password: password,
-				question:question,
-				answer: answer,
-                action: "challenge"
-			},
-			success:function(data) {
-				var result=data;
-                if(data=="updated"){
-                    message.html("Challenge has been updated!!");
-                    clearField(curPassword);
-                    clearField(secQuestion);
-                    clearField(chaAnswer);
-                }
-                else if(data=="teacher"){
-                    message.html("Teachers are not allowed to change password!");
-                    clearField(curPassword);
-                    updateField(secQuestion);
-                    updateField(chaAnswer);
-                }
-                else{
-                    message.html("Incorrect password!");
-                    clearField(secQuestion);
-                    clearField(chaAnswer);
-                    updateField(curPassword);
-                }
-			},
-			error:function() {
-                message.html("Error");
+		type: "POST",
+		url: "profileservice.php",
+		data: {
+			password: password,
+			question:question,
+			answer: answer,
+			action: "challenge"
+		},
+		dataType: "json",
+		success:function(data) {
+			console.log(data);
+			if (data.success) {
+				message.html("Challenge has been updated!!");
+				clearField(curPassword);
+				clearField(secQuestion);
+				clearField(chaAnswer);
+			} else {
+				if(data.status == "teacher") {
+					message.html("Teachers are not allowed to change challenge question!");
+					updateField(curPassword);
+					updateField(secQuestion);
+					updateField(chaAnswer);
+				} else if (data.status == "wrongpassword") {
+					message.html("Incorrect password!");
+					clearField(secQuestion);
+					clearField(chaAnswer);
+					updateField(curPassword);
+				} else {
+					message.html("Unknown error.");
+					clearField(curPassword);
+					updateField(secQuestion);
+					updateField(chaAnswer);
+				}
 			}
-		});
+		},
+		error:function() {
+			message.html("Error: Could not communicate with server");
+		}
+	});
 }
 
 //A function that validates the form used for changing password
@@ -122,7 +125,7 @@ function validatePassword(){
        }
     else{
         updateField(newField);
-        message.html("Password must follow the specified rules above.");
+        message.html("New password must follow the specified rules above.");
         return;
     }
     
@@ -148,15 +151,6 @@ function clearField(field){
     field.css("background-color", "white");
 }
 
-//Handles key presses which allows return button to be used for submitting form
-function formEventHandler(e){
-    if(e.which == 13 || e.keyCode == 13){
-        validatePassword();
-        return false;
-    }
-    return true;
-}
-
 //Sends data from form to profileservice.php
 function changePassword(){
     //Form inputs
@@ -176,32 +170,47 @@ function changePassword(){
             newPassword: newPassword,
             action: "password"
         },
+		dataType: "json",
         success:function(data){
-            //When the query has successfully updates password
-            var result = data;
-            if(result == "updatedPassword"){
+			console.log(data);
+			if(data.success){
                 //Resets form
                 clearField(currentField);
                 clearField(newField);
                 clearField(confirmField);
-                document.forms.passwordForm.reset();
-                message.html("Password successfully updated!");
-            }
-            //If current password is not verified in the file 
-            if(result == "error"){
-                message.html("Current password is not correct.");
-                currentField.css("background-color", "rgba(255, 0, 6, 0.2)");
-                return;
-            }
-        },
-        error:function() {
-            alert("Something went wrong");
-        }
-    });
+				$("#passwordForm").trigger("reset");
+				message.html("Password successfully updated!");
+			} else {
+				if (data.status == "teacher") {
+					message.html("Teachers can't change password.");
+					updateField(currentField);
+					updateField(newField);
+					updateField(confirmField);
+				} else if (data.status == "wrongpassword") {
+					message.html("Current password is not correct.");
+					updateField(currentField);
+				} else {
+					message.html("Unknown error.")
+				}
+			}
+		},
+		error:function() {
+			message.html("Error: Could not communicate with server");
+		}
+	});
 }
 
 
 $(function() {
+	$("#passwordForm").submit(function(event) {
+		event.preventDefault();
+		validatePassword();
+	});
+	$("#challengeForm").submit(function(event) {
+		event.preventDefault();
+		validateChallenge();
+	});
+
 	if (!checkHTTPS()){
 		$("#content").html("Profile settings can only be changed on a secure HTTPS connection.");
 	}
