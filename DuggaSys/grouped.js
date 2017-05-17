@@ -294,14 +294,16 @@ function drawtable(){
 				if(momtmp[j].lid == lid){
 					str+="<td style='padding-left:5px;'>";
 					var oldUgid = tablecontent[i].lidstogroup[lid] != false ? "_"+tablecontent[i].lidstogroup[lid] : "";
-					str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+oldUgid+" class='test' onchange=changegroup(this)>";
+					str+="<div class='groupStar'>*</div>";
+					str+="<select id="+tablecontent[i].uid+"_"+lid+oldUgid+" class='test' onchange=changegroup(this)>";
 					str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
 					for(var level2lid in availablegroups) {
 						// Iterate the groups in each lid, example: 
 						/*
 						"availablegroups": {
-							"2001": { // Lid to iterate
-								"1": "Festargruppen" // Available groups with ugid as key, name as value
+							"2001": { // (level2lid)
+								"1": "Festargruppen" // (group /w key (ugid) => value (name))
+								"4": "Dudegruppen" // There can be more than one group per lid
 							},
 							"2013": {
 								"2": "Coola gurppen"
@@ -309,15 +311,11 @@ function drawtable(){
 						}
 						*/
 						if(level2lid == lid) { // If the group belongs to the current column, lid, iterate all the available groups and create options for them
-							for(var ugid in availablegroups[level2lid]) {
-								// Iterate one level below like: 
-								/*
-								"2001":
-									"1": "Festargruppen" // Available groups with ugid as key, name as value
-								},
-								*/
-								var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
-								str+="<option value="+ugid+selected+">"+availablegroups[level2lid][ugid]+"</option>";
+							for(var group in availablegroups[level2lid]) { // availablegroups[level2lid] contains an array of groups, iterate them
+								for(var ugid in availablegroups[level2lid][group]) { // Iterate the key => value pairs of each group
+									var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
+									str+="<option value="+ugid+selected+">"+availablegroups[level2lid][group][ugid]+"</option>";
+								}
 							}
 						}
 					}

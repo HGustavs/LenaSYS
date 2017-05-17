@@ -154,9 +154,12 @@ if(strcmp($opt,"GET")==0){
 	
 		// Iterate groups and place per lid
 		foreach($groupsPerLids as $lid => &$val) { // [2001] => 0, [2013] => 1
+			$val = array(); // Make the value an array (else php makes it a scalar error)
 			foreach($allGroups as $group) {
 				if($lid == $group['lid']) {
-					$groupsPerLids[$lid] = array($group['ugid'] => $group['name']);
+					// If there is a lid match, insert the group as available for the lid
+					$arr = array($group['ugid'] => $group['name']);
+					array_push($val, $arr);
 				}
 			}
 		}

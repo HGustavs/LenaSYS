@@ -375,11 +375,11 @@ p {
 }
 
 .hi {
-  background-color:#dad8db;
+  background-color:#dad8db !important;
 }
 
 .lo {
-	background-color:#eae8eb;
+	background-color:#eae8eb !important;
 }
 
 .LightBox {
@@ -1406,12 +1406,31 @@ span.arrow {
 /* DuggaSys Sectioneed*/
 
 
-/* select element */
-.course-dropdown {
-	height: 30px;
-	margin-top: 6px;
-    float:right;
+/* Course version dropdown div */
+.course-dropdown-div {
+    border: 1px solid #ccc;
+    height: 25px;
+    width: 120px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
 }
+/* Course version dropdown */
+.course-dropdown {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    border: none;
+    width: 120px;
+    height: 25px;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    vertical-align: text-top;
+}
+
+
 
 /* End DuggaSys Sectioneed*/
 /**************************/
@@ -1645,7 +1664,6 @@ span.arrow {
 
 .dugga-unassigned {
 	border-left: 2px solid rgb(219, 208, 216);
-	background-color: rgb(255, 255, 255);
 }
 
 .dugga-unassigned-highlighted {
