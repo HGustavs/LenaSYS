@@ -439,11 +439,17 @@
                 <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1)'>
                     <rect id='progressRect' width='0' height='20px' />
                 </svg>
+                <span id='percentageText'></span>
             </div>";
 
         /* Javascripts to calculate length of progressRect. This will show the current progress in progressBar. */
         echo "
             <script>
+            /* Function to remove decimals from percentage text */
+            truncateDecimals = function (number) {
+                return Math[number < 0 ? 'ceil' : 'floor'](number);
+            };
+            
             var totalSteps = {$totalSteps};
             var completedStepsLatest = 0; // This variable is used on window resize.
             
@@ -464,6 +470,11 @@
                 
                 /* Calculate length */
                 document.getElementById(\"progressRect\").setAttribute(\"width\", \"\" + completedWidth + \"\");
+                
+                /* Update percentage text */
+                document.getElementById(\"percentageText\").innerHTML = \"\" + 
+                truncateDecimals((document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth) * 100) + 
+                \"%\";
                 
                 /* Decide color depending on how far progress has gone */
                 if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.33){

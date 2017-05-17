@@ -440,10 +440,16 @@ polygon {
 #progressBar {
     border: 1px solid white; /* White border */
     margin-left: 10px;
+    margin-bottom:0;
 }
 
 /* The text which pops up when a field needs to be filled */
 .enterAllFields {
     color: rgb(197,81,83); /* Red */
     display: none;
+}
+
+#percentageText {
+    color: white;
+    font-size: 30px;
 }
