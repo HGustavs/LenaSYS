@@ -119,6 +119,7 @@ function changeObjectAppearance(object_type){
         diagram[lastSelectedObject].font = document.getElementById('font').value;
         diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
+        diagram[lastSelectedObject].strokeColor = document.getElementById('AttributeLineColor').value;
     }
     updateGraphics();
 }
