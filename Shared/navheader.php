@@ -28,7 +28,7 @@
                     if($cid=="UNK") $cid=getOPG('courseid');
                     $coursevers=getOPG('coursevers');
                     if($coursevers=="UNK") $coursevers=getOPG('cvers');
-					echo "<td class='navButt' id='swimlane' title='swimlane'>";
+					echo "<td class='navButt' id='swimlane' title='Visual representation of course moment releases and deadlines'>";
           echo "<a class ='linkSwimlane' href='#'><img src='../Shared/icons/swimlane.svg'></a></td>";
 
 			}
@@ -55,11 +55,11 @@
 
 
 			if(checklogin()) {
-					echo "<td class='navName'><a id='userName' href='profile.php'>".$_SESSION['loginname']."</a></td>";
-					echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' /></td>";
+					echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
+					echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' title='Logout'/></td>";
 			}else{
-					echo "<td class='navName'><label id='userName'>Guest</label></td>";
-					echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' /></td>";
+					echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
+					echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' title='Login'/></td>";
 			}
 
 
