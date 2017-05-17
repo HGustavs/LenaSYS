@@ -259,7 +259,7 @@ function cellIn(ev)
         $("#verthighlight").addClass("vhighlight-border-color");
     }
     $("#verthighlight").css("left",offsetH+"px");
-		$("#verthighlight").css("top",greger.offsetHeight+47+"px");
+		$("#verthighlight").css("top",greger.offsetHeight+104+"px");
 
 		$("#verthighlight").css("width",greger.offsetWidth-8+"px");
 		$("#verthighlight").css("height",$("#markinglist > tbody").outerHeight()+6+"px");
