@@ -54,25 +54,11 @@
             "To do this run the command:<br>" +
             "sudo chgrp -R www-data " + filePath + "</h2><br>" +
             "<br>" +
-            "<input onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1'>" +
+            "<input onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
             "<i>I promise i have done this and will not complain that it's not working</i></div>";
 
         function haveRead(isTrue) {
             modalRead = isTrue;
-        }
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            if (modalRead) {
-                modal.style.display = "none";
-            }
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal && modalRead) {
-                modal.style.display = "none";
-            }
         }
     </script>
 
@@ -135,7 +121,7 @@
     echo 'Enter new MySQL user. <br>';
     echo '<input class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
     echo 'Enter password for MySQL user. <br>';
-    echo '<input class="page1input" type="password" name="password" placeholder="Password" /> <br>';
+    echo '<input class="page1input" type="password" name="password" placeholder="Password"/> <br>';
     echo 'Enter new database name. <br>';
     echo '<input class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
     echo 'Enter hostname (e.g localhost). <br>';
@@ -180,9 +166,9 @@
                         <br>If both are existing both boxes should be checked.
                         <br>If it's a completely new database and user no box has to be checked.</b></p><hr>
                     <div id="checkboxContainer2">
-                        <input type="checkbox" name="writeOverDB" value="Yes" />
+                        <input id="writeOver1" type="checkbox" name="writeOverDB" value="Yes" />
                         Yes I want to write over an existing database.<br>
-                        <input type="checkbox" name="writeOverUSR" value="Yes" />
+                        <input id="writeOver2" type="checkbox" name="writeOverUSR" value="Yes" />
                         Yes I want to write over an existing user.<br>
                     </div>
                         <span id='failText'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
@@ -208,7 +194,6 @@
                     <polygon points="50,30 130,75 50,120" />
                 </svg>
             </div>
-
             <!-- Javascript functions for arrow functionality-->
             <script>
                 var leftArrow = document.getElementById('leftArrow');
@@ -217,10 +202,30 @@
                 var inputPage = 1;
                 var previousInputPage = 0;
 
+                /* Function to focus the right box on the page */
+                function focusTheRightBox() {
+                    if (inputPage === 1 || inputPage === 2) {
+                        var fields = document.getElementsByClassName("page" + inputPage + "input");
+                        for (var i = 0; i < fields.length; i++) {
+                            if (fields[i].value === ''){
+                                fields[i].focus();
+                                break;
+                            }
+                        }
+                    } else if (inputPage === 4) {
+                        if (document.getElementById("writeOver1").checked) {
+                            document.getElementById("writeOver2").focus();
+                        } else {
+                            document.getElementById("writeOver1").focus();
+                        }
+                    }
+                }
+
                 leftArrow.onclick = function() {
                     previousInputPage = inputPage;
                     if(inputPage > 1) inputPage--;
                     updateInputPage();
+                    focusTheRightBox();
                 };
 
                 rightArrow.onclick = function() {
@@ -256,6 +261,7 @@
                     }
                 };
 
+                /* Remove default behaviour (click submit button) when pressing enter */
                 $(document).ready(function() {
                     $(window).keydown(function(event){
                         if(event.keyCode === 13) {
@@ -268,39 +274,41 @@
                 /* You want to be able to press enter to continue, this function fixes this. */
                 document.addEventListener("keydown", function(e) {
                     if(e.keyCode === 13){
-                        if (inputPage < 5) {
-                            /* Only continue if all fields on current page are filled out */
-                            if (inputPage === 1 || inputPage === 2) {
-                                var fields = document.getElementsByClassName("page" + inputPage + "input");
-                                var found = false; /* Is an empty field found? */
-                                for (var i = 0; i < fields.length; i++) {
-                                    if (fields[i].value === ''){
-                                        found = true; /* Empty field found */
-                                        /* Set background of text field to light red */
-                                        fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
+                        if (modal.style.display === "none"){
+                            if (inputPage < 5) {
+                                /* Only continue if all fields on current page are filled out */
+                                if (inputPage === 1 || inputPage === 2) {
+                                    var fields = document.getElementsByClassName("page" + inputPage + "input");
+                                    var found = false; /* Is an empty field found? */
+                                    for (var i = 0; i < fields.length; i++) {
+                                        if (fields[i].value === ''){
+                                            found = true; /* Empty field found */
+                                            /* Set background of text field to light red */
+                                            fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
+                                        }
                                     }
-                                }
-                                if (!found){
-                                    /* If no empty field was found - proceed and reset values of text fields and hide warning text */
-                                    document.getElementById("enterFields" + inputPage).style.display = "none";
+                                    if (!found){
+                                        /* If no empty field was found - proceed and reset values of text fields and hide warning text */
+                                        document.getElementById("enterFields" + inputPage).style.display = "none";
+                                        previousInputPage = inputPage;
+                                        inputPage++;
+                                        for (var i = 0; i < fields.length; i++) {
+                                            fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
+                                        }
+                                        updateInputPage();
+                                    } else {
+                                        /* Show the warning text if empty field was found */
+                                        document.getElementById("enterFields" + inputPage).style.display = "inline-block";
+                                    }
+                                } else {
+                                    /* Only page 1 and 2 has text fields so the rest have no rules */
                                     previousInputPage = inputPage;
                                     inputPage++;
-                                    for (var i = 0; i < fields.length; i++) {
-                                        fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
-                                    }
                                     updateInputPage();
-                                } else {
-                                    /* Show the warning text if empty field was found */
-                                    document.getElementById("enterFields" + inputPage).style.display = "inline-block";
                                 }
-                            } else {
-                                /* Only page 1 and 2 has text fields so the rest have no rules */
-                                previousInputPage = inputPage;
-                                inputPage++;
-                                updateInputPage();
+                            } else if (inputPage === 5){
+                                submitButton.click();
                             }
-                        } else if (inputPage === 5){
-                            submitButton.click();
                         }
                     }
                 });
@@ -308,6 +316,8 @@
                 function updateInputPage(){
                     /* Hide current input page */
                     hideInputPage();
+                    /* Show the new input page when animation is done */
+                    window.setTimeout(showInputPage,500);
 
                     /* Dont show left arrow on first page and dont show right arrow on last page */
                     if (inputPage === 1) {
@@ -331,9 +341,6 @@
                         $('#th' + previousInputPage).hide("slide", {direction: "right" }, 500);
                         $('#td' + previousInputPage).hide("slide", {direction: "right" }, 500);
                     }
-
-                    /* Show the new input page when animation is done */
-                    window.setTimeout(showInputPage,500);
                 }
 
                 function showInputPage(){
@@ -345,6 +352,31 @@
                         $('#th' + inputPage).show("slide", {direction: "left" }, 500);
                         $('#td' + inputPage).show("slide", {direction: "left" }, 500);
                     }
+                    window.setTimeout(focusTheRightBox,500);
+                }
+            </script>
+
+            <!-- Javascript to focus the right input box after modal is closed -->
+            <script>
+                /* When the user clicks on <span> (x), close the modal */
+                span.onclick = function() {
+                    if (modalRead) {
+                        modal.style.display = "none";
+                        focusTheRightBox();
+                    }
+                }
+
+                /* When the user clicks anywhere outside of the modal, close it */
+                window.onclick = function(event) {
+                    if (event.target == modal && modalRead) {
+                        modal.style.display = "none";
+                        focusTheRightBox();
+                    }
+                }
+
+                var writeOver1 = document.getElementById('writeOver1');
+                writeOver1.onclick = function() {
+                    focusTheRightBox();
                 }
             </script>
 

@@ -449,6 +449,7 @@ polygon {
     display: none;
 }
 
+/* The percentage text for installation progress */
 #percentageText {
     color: white;
     font-size: 30px;
