@@ -130,9 +130,9 @@ function mousemoveevt(ev, t) {
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
         } else if(uimode == "CreateERRelation"){
+            canvasContext.setLineDash([3, 3]);
             var midx = startMouseCoordinateX+((currentMouseCoordinateX-startMouseCoordinateX)/2);
             var midy = startMouseCoordinateY+((currentMouseCoordinateY-startMouseCoordinateY)/2);
-            canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath(1);
             canvasContext.moveTo(midx, startMouseCoordinateY);
             canvasContext.lineTo(currentMouseCoordinateX, midy);
@@ -149,22 +149,24 @@ function mousemoveevt(ev, t) {
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
         } else if(uimode == "CreateERAttr"){
-            drawOval(startMouseCoordinateX, startMouseCoordinateY, currentMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.setLineDash([3, 3]);
+            drawOval(startMouseCoordinateX, startMouseCoordinateY, currentMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.strokeStyle = "#d51";
             canvasContext.stroke();
+            canvasContext.setLineDash([]);
             if (ghostingCrosses == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
         } else if(uimode == "CreateLine") {
+            canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath();
             canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
             canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
-            canvasContext.setLineDash([3, 3]);
             canvasContext.strokeStyle = "#d51";
             canvasContext.stroke();
+            canvasContext.setLineDash([]);
             if (ghostingCrosses == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
