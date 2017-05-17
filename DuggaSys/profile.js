@@ -39,7 +39,6 @@ function processChallenge(password, question, answer){
 		},
 		dataType: "json",
 		success:function(data) {
-			console.log(data);
 			if (data.success) {
 				message.html("Challenge has been updated!!");
 				clearField(curPassword);
@@ -172,7 +171,6 @@ function changePassword(){
         },
 		dataType: "json",
         success:function(data){
-			console.log(data);
 			if(data.success){
                 //Resets form
                 clearField(currentField);
