@@ -25,10 +25,11 @@
     <script src="diagram_example.js"></script>
     <script src="diagram_IOHandler.js"></script>
     <script src="diagram_dialog.js"></script>
+    <script src="diagram_toolbox.js"></script>
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); Symbol(); canvasSize(); loadDiagram(); debugMode(); updateGraphics();">
+<body onload="initializeCanvas(); Symbol(); canvasSize(); loadDiagram(); debugMode(); updateGraphics(); initToolbox();">
     <?php
         $noup = "COURSE";
         include '../Shared/navheader.php';
@@ -64,6 +65,29 @@
                         </div>
                     </div>
                 </div>
+                <div id="diagram-toolbar" class="application-toolbar-wrap">
+                    <h3 class="application-header">Toolbar</h3>
+                    <div class='application-toolbar'>
+
+                        <h4 class="label">Tools</h4>
+                        <div class="toolbar-drawer">
+                            <button onclick='lineMode();'>Line</button>
+                        </div>
+                        <h4 class="label">Create</h4>
+                        <div class="toolbar-drawer">
+                            <button onclick='attrMode();'>Attribute</button>
+                            <button onclick='entityMode();'>Entity</button>
+                            <button onclick='relationMode();'>Relation</button>
+                        </div>
+                        <h4 class="label">Draw</h4>
+                        <div class="toolbar-drawer">
+                            <button onclick="figureMode('Square');">Square</button>
+                            <button onclick="figureMode('Free');">Free</button>
+                        </div>
+
+                        </select>
+                    </div>
+                </div>
                 <div class="menu-drop-down">
                     <span class="label">Edit</span>
                 </div>
@@ -82,18 +106,14 @@
             </br>
             </br>
 
-            <button onclick='attrMode();'>Create Attribute</button>
-            <button onclick='lineMode();'>Create Line</button>
-            <button onclick='entityMode();'>Create Entity</button>
-            <button onclick='relationMode();'>Create Relation</button>
-            <select id='selectFigure' onchange='figureMode()'>
-                <option selected='selected' disabled>Create Figure</option>
-                <option value='Square'>Square</option>
-                <option value='Free'>Free-Draw</option>
-            </select>
+            <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
+            <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
             <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
             <button onclick='globalAppearanceMenu();'>Global Appearance</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
+            <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
+            <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
+
             <!--
                 Needs to be implemented in the new navbar
 

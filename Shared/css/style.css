@@ -921,8 +921,60 @@ input {
 }
 
 /* --------------================################================-------------- *
- *                        TOOLBAR/DROPDOWN/APPLICATION                          *
+ *                              TOOLBOX/APPLICATION                             *
  * --------------================################================-------------- */
+ /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
+
+#diagram-toolbar{
+    height:400px;
+    width:125px;
+}
+.application-toolbar-wrap{
+    position:fixed;
+    z-index:1000;
+    display:block;
+
+    border:1px solid rgb(200,200,200);
+    outline:1px solid rgb(240,240,240);
+    background-color:#fff;
+}
+.application-header{
+    height: 25px;
+    background-color: #614875;
+    color:#fff;
+    vertical-align: bottom;
+    padding-left: 10px;
+    cursor: move;
+    display: flex;
+    justify-content: space-around;
+    margin:0px;
+}
+
+.application-toolbar{
+    padding-top:16px;
+}
+.application-toolbar > input[type='button']{
+    background-color:black;
+}
+
+.toolbar-drawer{
+    padding:8px 8px;
+    border-top:1px solid rgb(240,240,240);
+}
+.application-toolbar h4.label{
+    font-size:11px;
+    font-weight:none;
+    margin-top:8px;
+    margin-bottom:0px;
+    padding:0px 4px 0px 4px;
+}
+
+/* --------------================################================-------------- *
+ *                            END TOOLBOX/APPLICATION                           *
+ * --------------================################================-------------- */
+ /* --------------================################================-------------- *
+  *                        TOOLBAR/DROPDOWN/APPLICATION                          *
+  * --------------================################================-------------- */
 /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
  .document-settings{
      font-size:14px;
@@ -945,6 +997,7 @@ input {
  }
  .drop-down{
      position:absolute;
+     z-index:2000;
      outline:1px solid rgb(240,240,240);
      border:1px solid rgb(200,200,200);
      display:none;
@@ -2383,7 +2436,7 @@ ul.hamburgerList button.menuButton {
   padding-left: 10px;
   padding-right: 40px;
   font-size: 14px;
-  border: 0; 
+  border: 0;
   -webkit-appearance: none;  /*Removes default chrome and safari style*/
   -moz-appearance: none;  /*Removes default style Firefox*/
   background: white;
@@ -2417,7 +2470,7 @@ ul.hamburgerList button.menuButton {
   animation-fill-mode: forwards;
 }
 
-/* Used to rotate the picture that is used as a arrow */ 
+/* Used to rotate the picture that is used as a arrow */
 @keyframes roteraPil {
   0% {
     -ms-transform: rotate(0deg); /* IE 9 */
@@ -2428,9 +2481,9 @@ ul.hamburgerList button.menuButton {
     -ms-transform: rotate(180deg); /* IE 9 */
     -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
     transform: rotate(180deg);
-  }  
+  }
 }
-/* Style for the div that presents the coordinants and zoomvalue in diagram */ 
+/* Style for the div that presents the coordinants and zoomvalue in diagram */
 #valuesCanvas {
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
@@ -2442,14 +2495,14 @@ ul.hamburgerList button.menuButton {
   border: 2px solid #d4d4d4;
   font-size: 14px;
   bottom: 6px;
-  position: absolute; 
+  position: absolute;
   left: 2px;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
-  webkit-touch-callout: none; 
-   -webkit-user-select: none; 
-    -khtml-user-select: none; 
-      -moz-user-select: none; 
-       -ms-user-select: none; 
-           user-select: none; 
+  webkit-touch-callout: none;
+   -webkit-user-select: none;
+    -khtml-user-select: none;
+      -moz-user-select: none;
+       -ms-user-select: none;
+           user-select: none;
 }
