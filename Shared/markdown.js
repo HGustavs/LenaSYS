@@ -118,7 +118,7 @@ function parseMarkdown(inString)
 			str+=workstr;
 	}
 
-	return str;
+	return "<div id='markdown'>"+str+"</div>";
 }
 
 //----------------------------------------------------------------------------------
@@ -166,10 +166,6 @@ function identifier(prevLine, currentLine, markdown, nextLine){
     // If its ordinary text then show it directly
     else {
         markdown += markdownBlock(currentLine);
-        if(currentLine.match(/\br*/)){
-            markdown += "<br>";
-        }
-
     }
 
     return markdown;
@@ -307,16 +303,7 @@ function handleTable(currentLine, prevLine, nextLine) {
 //          
 //----------------------------------------------------------------------------------
 function markdownBlock(inString)
-{	
-
-/* OLD SHIT, only for reference
-	//Regular expressions for lists
-		inString = inString.replace(/^\s*\d*\.\s(.*)/gm, '<ol><li>$1</li></ol>');
-		inString = inString.replace(/^\s*[\-\*]\s(.*)/gm, '<ul><li>$1</li></ul>');
-	// Fix for superflous ul tags
-		inString = inString.replace(/\<\/ol\>(\r\n|\n|\r)\<ol\>/gm,"");
-		inString = inString.replace(/\<\/ul\>(\r\n|\n|\r)\<ul\>/gm,"");		
-*/
+{
 
 	//Regular expressions for italics and bold formatting
 	inString = inString.replace(/\*{4}(.*?\S)\*{4}/g, '<strong><em>$1</em></strong>');	
@@ -342,17 +329,12 @@ function markdownBlock(inString)
 	// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
 	inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
 
-	// If not ||| we can now modify |TABLE|TABLE| using two steps? One for <tr></tr> and another for <td></td>
-	inString = inString.replace(/\|(.*)\|/g, '<tr>|$1|</tr>');
-	inString = inString.replace(/\|(.*?)\|/g,'<td>$1</td>');
-
 	// Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
-	inString = inString.replace(/(\r\n){3}/gm,"<br><br>");
+	// markdown below doesnt seem to work?????
+    inString = inString.replace(/(\r\n){3}/gm,"<br><br>");
 	inString = inString.replace(/(\r\n){2}/gm,"<br>");
-	
 	inString = inString.replace(/(\n){3}/gm,"<br><br>");
 	inString = inString.replace(/(\n){2}/gm,"<br>");
-	
 	inString = inString.replace(/(\r){3}/gm,"<br><br>");
 	inString = inString.replace(/(\r){2}/gm,"<br>");
 	
