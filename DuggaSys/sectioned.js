@@ -662,23 +662,6 @@ function returnedSection(data)
       str+="</div";
       str+="</nav>";
       str+="</td>";
-
-      str+="<td style='display: inline-block;'><select class='course-dropdown' onchange='goToVersion(this)'>";
-      if (retdata['versions'].length > 0) {
-          for ( i = 0; i < retdata['versions'].length; i++) {
-              var item = retdata['versions'][i];
-              if (retdata['courseid'] == item['cid']) {
-                  var vvers = item['vers'];
-                  var vname = item['versname'];
-                  str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
-                  if(retdata['coursevers']==vvers){
-                      str += "selected";
-                  }
-                  str += ">" + vname + " - " + vvers + "</option>";
-              }
-          }
-      }
-      str+="</select></td>";
       
       str+="<td class='editVers menuButton' style='display: inline-block;'><div class='editVers menuButton'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");'></div></td>";	
 			str+="<td class='newVers menuButton' style='display: inline-block;'><div class='newVers menuButton'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></div></td>";
@@ -725,6 +708,23 @@ function returnedSection(data)
             str += "<input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
            	str+="</div>";
         }
+        
+        str+="<td style='display: inline-block;'><div class='course-dropdown-div'><select class='course-dropdown' onchange='goToVersion(this)'>";
+        if (retdata['versions'].length > 0) {
+            for ( i = 0; i < retdata['versions'].length; i++) {
+                var item = retdata['versions'][i];
+                if (retdata['courseid'] == item['cid']) {
+                    var vvers = item['vers'];
+                    var vname = item['versname'];
+                    str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+                    if(retdata['coursevers']==vvers){
+                        str += "selected";
+                    }
+                    str += ">" + vname + " - " + vvers + "</option>";
+                }
+             }
+        }
+      str+="</select></div></td>";
       str+="<div style='width: 50px;'></div>";
       str+='</div>';
 			str+="<div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div>";
@@ -1022,6 +1022,9 @@ function returnedSection(data)
           if(parseInt(item['grouptype']) === 1 || parseInt(item['grouptype']) === 3){
             if('group' in item){
               str+="<td class='moment' style='text-align:right;padding-right:7px;'>("+item['group']['name']+")</td>";
+            }
+            else{
+              str+="<td class='moment' style='text-align:right;padding-right:7px;'><span class='tooltip'><span class='tooltiptext'>Contact your teacher</span>(No group)</span></td>";
             }
           }
         }
