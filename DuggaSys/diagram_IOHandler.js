@@ -97,7 +97,7 @@ function loadExample(){
 
 }
 function getImage() {
-    window.open(canvas.toDataURL("image/png"), 'Image');
+    //window.open(canvas.toDataURL("image/png"), 'Image');
 }
 
 function Save() {
@@ -191,3 +191,14 @@ function Load() {
     //Redrawn old state.
     updateGraphics();
 }
+
+$(document).ready(function(){
+    function downloadCanvas(link, canvasId, filename) {
+        link.href = document.getElementById(canvasId).toDataURL();
+        link.download = filename;
+    }
+
+    document.getElementById('picid').addEventListener('click', function(){
+        downloadCanvas(this, 'myCanvas', 'picture.jpg');
+    }, false);
+});

@@ -55,7 +55,10 @@
                             <a href="#" id="buttonid" value='getImage'>Import</a>
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" id="fileid" onclick='SaveFile(this);'>Export</a>
+                            <a href="#" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
+                        </div>
+                        <div class="drop-down-item"> 
+                            <a href="#" id="picid">Export Picture</a> 
                         </div>
                         <div class="drop-down-divider">
 
