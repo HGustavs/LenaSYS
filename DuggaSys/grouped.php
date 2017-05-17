@@ -53,10 +53,10 @@
 				<select id='selectMoment' style='float:none; width:100%; margin: 8px 0px;'>
 				</select><br/>
 				<select id="nameType" style='float:none; width:100%;'>
-					<option value="a">a-z</option>
-					<option value="1">1-</option>
+					<option value="a">Letters (a,b,c,...)</option>
+					<option value="1">Numbers (1,2,3,...)</option>
 				</select><br/>
-				<input id="numberOfGroups" type="number" placeholder="  Amount of groups" style='float:none; width:271px; height:24px; margin: 8px 0px;' min="0"/><br/>
+				<input id="numberOfGroups" type="number" placeholder="  Amount of groups" style='float:none; width:271px; height:24px; margin: 8px 0px;' min="0" max="26"/><br/>
 				<!-- <span>Name:</span><input style='float:none; margin-left: 5px;' type='text' class='textinput' id='name' placeholder='Name' /> -->
 			</div>
 		</div>

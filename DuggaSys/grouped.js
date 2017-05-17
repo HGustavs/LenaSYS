@@ -353,11 +353,19 @@ function createGroup()
 	var chosenMoment=$("#selectMoment").val();
 	var nameType=$("#nameType").val(); 
 	var numberOfGroups=$("#numberOfGroups").val(); 
-		
+	var beginOfLettersUnicode = 65;
+	
 	if(numberOfGroups > 0){
 		if(nameType == "a"){
-			//lägg till möjlighet att lägga in bokstäver istället för siffror i databasen
-			alert("Work in progress");
+			var numbersOfLetters = +numberOfGroups+beginOfLettersUnicode;
+			for(var i=65;i<numbersOfLetters; i++){
+				var groupLetter = String.fromCharCode(i);
+				data = {
+					'chosenMoment':chosenMoment,
+					'groupName':groupLetter
+				};
+				AJAXService("NEWGROUP",data,"GROUP");
+			}
 		}
 		else{
 			for(var groupName=1;groupName<= numberOfGroups;groupName++){
