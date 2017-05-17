@@ -351,13 +351,26 @@ function createGroup()
 	var chosenMoment=$("#selectMoment").val();
 	var nameType=$("#nameType").val(); 
 	var numberOfGroups=$("#numberOfGroups").val(); 
-	var beginOfLettersUnicode = 65;
+	var offsetLetter=0;
 	
 	if(numberOfGroups > 0){
 		if(nameType == "a"){
-			var numbersOfLetters = +numberOfGroups+beginOfLettersUnicode;
-			for(var i=65;i<numbersOfLetters; i++){
-				var groupLetter = String.fromCharCode(i);
+			for(var lidGroup in availablegroups) {	//get lid of each group
+				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
+					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
+						for(var a=65;a<90; a++){  //loop through capital letters
+							var groupLetter = String.fromCharCode(a);
+							if(availablegroups[lidGroup][groupArray][groupNames] == groupLetter && lidGroup==chosenMoment){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
+								offsetLetter++;
+							}
+						}
+					}
+				}
+			}
+			var startLetter = +offsetLetter+65;
+			var numbersOfLetters = +numberOfGroups+startLetter;
+			for(startLetter;startLetter<numbersOfLetters; startLetter++){
+				var groupLetter = String.fromCharCode(startLetter);
 				data = {
 					'chosenMoment':chosenMoment,
 					'groupName':groupLetter
@@ -377,7 +390,6 @@ function createGroup()
 		$("#groupSection").css("display","none");
 		$("#numberOfGroupsError").css("display","none");
 		$("#overlay").css("display","none");
-		//$("#name").val('');
 		window.location.reload();
 	}
 	else{
