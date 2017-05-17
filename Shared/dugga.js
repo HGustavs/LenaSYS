@@ -1034,9 +1034,9 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							tab+="</td>";
 							tab+="<td style='padding:4px;'>";
                             if (ctype == "link"){
-                                    tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>"+filez[i].content+"</span>";
+                                    tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>"+filez[i].content+"</span>";
 							} else {
-                                    tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>"+filez[i].filename+"."+filez[i].extension+"</span>";
+                                    tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>"+filez[i].filename+"."+filez[i].extension+"</span>";
 							}
 							tab+="</td><td style='padding:4px;'>";
 							tab+=filez[i].updtime;+"</td>";
