@@ -256,6 +256,15 @@
                     }
                 };
 
+                $(document).ready(function() {
+                    $(window).keydown(function(event){
+                        if(event.keyCode === 13) {
+                            event.preventDefault();
+                            return false;
+                        }
+                    });
+                });
+
                 /* You want to be able to press enter to continue, this function fixes this. */
                 document.addEventListener("keydown", function(e) {
                     if(e.keyCode === 13){
@@ -788,7 +797,7 @@
         modal.style.display = "block";
         var showHideButton = document.getElementById('showHideInstallation');
 
-        if (showHideButton != null){
+        if (showHideButton !== null){
             showHideButton.onclick = function(){
                 toggleInstallationProgress();
             }
@@ -802,14 +811,17 @@
         /* Function to select and copy text inside code boxes at end of installation. */
         function selectText(containerid) {
             /* Get selection inside div. */
-            if (document.selection) {
+            var text = document.getElementById(containerid);
+            if (document.body.createTextRange) {
                 var range = document.body.createTextRange();
-                range.moveToElementText(document.getElementById(containerid));
+                range.moveToElementText(text);
                 range.select();
-            } else if (window.getSelection) {
+            } else {
+                var selection = window.getSelection();
                 var range = document.createRange();
-                range.selectNode(document.getElementById(containerid));
-                window.getSelection().addRange(range);
+                range.selectNodeContents(text);
+                selection.removeAllRanges();
+                selection.addRange(range);
             }
 
             /* Copy selection. */
@@ -821,10 +833,10 @@
             /* Show the 'copied' text to let user know that text was copied to clipboard.
              * After show animation is done it will call hide function to hide text again.
              */
-            if (containerid == "codeBox1") {
+            if (containerid === "codeBox1") {
                 $("#copied1").show("slide", {direction: "left" }, 1000);
                 window.setTimeout(function() { hideCopiedAgain("#copied1")}, 2000);
-            } else if (containerid == "codeBox2") {
+            } else if (containerid === "codeBox2") {
                 $("#copied2").show("slide", {direction: "left" }, 1000);
                 window.setTimeout(function() { hideCopiedAgain("#copied2")}, 2000);
             }
