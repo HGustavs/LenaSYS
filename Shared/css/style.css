@@ -375,11 +375,11 @@ p {
 }
 
 .hi {
-  background-color:#dad8db;
+  background-color:#dad8db !important;
 }
 
 .lo {
-	background-color:#eae8eb;
+	background-color:#eae8eb !important;
 }
 
 .LightBox {
@@ -442,6 +442,24 @@ p {
 /* Instruction and submission of dugga */
 #leftDivDialog, #rightDivDialog{
   width: 49%;
+}
+
+.tooltip{
+  line-height: 32px;
+}
+
+.tooltiptext{
+  display: none;
+  width: 160px;
+  background-color: #614875;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  margin: 0 5px;
+}
+
+.tooltip:hover .tooltiptext {
+  display: inline-block;
 }
 
 /* --------------================################================-------------- *
@@ -1406,12 +1424,31 @@ span.arrow {
 /* DuggaSys Sectioneed*/
 
 
-/* select element */
-.course-dropdown {
-	height: 30px;
-	margin-top: 6px;
-    float:right;
+/* Course version dropdown div */
+.course-dropdown-div {
+    border: 1px solid #ccc;
+    height: 25px;
+    width: 120px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
 }
+/* Course version dropdown */
+.course-dropdown {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    border: none;
+    width: 120px;
+    height: 25px;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    vertical-align: text-top;
+}
+
+
 
 /* End DuggaSys Sectioneed*/
 /**************************/
@@ -1645,7 +1682,6 @@ span.arrow {
 
 .dugga-unassigned {
 	border-left: 2px solid rgb(219, 208, 216);
-	background-color: rgb(255, 255, 255);
 }
 
 .dugga-unassigned-highlighted {
@@ -2109,6 +2145,22 @@ table.navheader div.menuButton {
   -moz-transition: opacity 0.5s;
   -o-transition: opacity 0.5s;
 }
+
+/* Simple material design boxes */
+.material-box {
+   border-radius: 2px;
+   margin: 10px;
+   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+   padding: 20px;
+}
+.material-box h3 {
+  margin: -20px -20px 10px -20px;
+  border-radius: 2px 2px 0 0;
+  background: #614875;
+  color: #fff;
+  padding: 10px 20px;
+}
+
 
 /* Hamburger menu, hidden as default state */
 table.navheader td.hamburger {

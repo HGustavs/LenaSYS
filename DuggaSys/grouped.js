@@ -15,7 +15,7 @@ function setup(){
 	var filt = "";
 	filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverFunnel();'>";
 	filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-	filt+="<div id='dropdownc' class='dropdown-list-container'>";
+	filt+="<div id='dropdownFunnel' class='dropdown-list-container'>";
 	filt+="</div>";
 	filt+="</span></td>";
   
@@ -80,30 +80,24 @@ function toggleAll() {
 function hoverFunnel()
 {
 	toggleAll(); // Check toggle all if there are any elements checked
-    $('#dropdowns').css('display','none');
-  	$('#dropdownc').css('display','block');
+    $('#dropdownFilter').css('display','none');
+  	$('#dropdownFunnel').css('display','block');
 }
 
 function leaveFunnel()
 {
-	$('#dropdownc').css('display','none');   
+	$('#dropdownFunnel').css('display','none');   
 	
 	// Update columns only now
 	var str="";
-	$(".headercheck").each(function(){
+	$(".tableheadercheck").each(function(){
 			str+=$(this).attr("id")+"**"+$(this).is(':checked')+"**";
 	});
-  
-  showTeachers=$('#showteachers').is(":checked");
-  	old=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
-  	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
+	
+	old=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+  	localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
 
-  onlyPending=$('#pending').is(":checked");
-    var opend=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending");
-    localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
-
-	if(str!=old || onlyPending==opend) process();
-  
+	process();
 }
 
 function checkMomentParts(pos, id) {
@@ -115,7 +109,7 @@ function checkMomentParts(pos, id) {
 
 function hoverFilter()
 {
-	$('#dropdownc').css('display','none');
+	$('#dropdownFunnel').css('display','none');
   	$('#dropdownFilter').css('display','block');
 }
 
@@ -125,15 +119,15 @@ function leaveFilter()
 	var col=0;
 	var dir=1;
 
-	var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
-	var odir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir"); 
+	var ocol=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
+	var odir=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir"); 
 
 		
 	$("input[name='sortcol']:checked").each(function() {col=this.value;});
 	$("input[name='sortdir']:checked").each(function() {dir=this.value;});
 	
-	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);
-	localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
+	localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);
+	localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
 
 
 	if (!(ocol==col && odir==dir) || typechanged) {
@@ -151,14 +145,14 @@ function leaveFilter()
 function sorttype(t){
 		var c=$("input[name='sortcol']:checked").val();
 		if (c == 0){
-				localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1", t);		
+				localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1", t);		
 				$("input[name='sorttype']").prop("checked", false);
 		} else {
 				if (t == -1){
-						t = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
+						t = localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
 						$("#sorttype"+t).prop("checked", true);											
 				} else {
-						localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
+						localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
 						$("#sorttype"+t).prop("checked", true);					
 				}
 		}
@@ -166,13 +160,13 @@ function sorttype(t){
 }
 
 function process()
-{			
+{		
 		// Read dropdown from local storage
-		clist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+		clist=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+		
 		if (clist){	
 				clist=clist.split("**"); 
 		} 
-
 		// Create temporary list that complies with dropdown
 		momtmp=new Array;
 		var momname = "tore";
@@ -205,7 +199,7 @@ function process()
 			// Update dropdown list
 		var dstr="";
 
-    	dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+    	dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='tableheadercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 
     	var activeMoment = 0;
     	for(var j=0;j<moments.length;j++){
@@ -217,7 +211,7 @@ function process()
 				
 				if (moments[j].kind == 4) {dstr +=" checkmoment";}
 				
-				dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
+				dstr+="'><input name='selectdugga' type='checkbox' class='tableheadercheck' id='hdr"+lid+"check'";
             	if (moments[j].kind == 4) {
                     duggaArray.push( [] );
                     var idAddString = "hdr"+lid+"check";
@@ -243,7 +237,7 @@ function process()
 		}
 		dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaveFunnel()'>Filter</button></div>";
  
-	document.getElementById("dropdownc").innerHTML=dstr;
+	document.getElementById("dropdownFunnel").innerHTML=dstr;
 	var dstr="";
 
 	// Sorting
@@ -256,6 +250,8 @@ function process()
 	dstr+="</form>";
 	dstr+="<div style='display:flex;justify-content:flex-end;'><button onclick='leaveFilter()'>Sort</button></div>"
 	document.getElementById("dropdownFilter").innerHTML=dstr;
+	
+	resort();
 }
 
 function drawtable(){
@@ -279,12 +275,8 @@ function drawtable(){
 
 
 	// Itererate the headings, that are dependent on the cid and coursevers. 
-	if(moments){
-		for(var i = 0; i < moments.length; i++) {
-
-			str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+moments[i].lid+"' class='grouped-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+moments[i].entryname+"</th>";	
-
-		}
+	for(var i = 0; i < momtmp.length; i++) {
+		str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+momtmp[i].lid+"' class='grouped-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+momtmp[i].entryname+"</th>";	
 	}
 	str+="</thead>";
 	str += "<tbody>";
@@ -298,37 +290,40 @@ function drawtable(){
 		str+="<div class='dugga-result-div'>"+tablecontent[i].ssn+"</div>";
 		str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
 		for(var lid in tablecontent[i].lidstogroup) { // Iterate the data per list entry column
-			str+="<td style='padding-left:5px;'>";
-			var oldUgid = tablecontent[i].lidstogroup[lid] != false ? "_"+tablecontent[i].lidstogroup[lid] : "";
-			str+="<div class='groupStar'>*</div><select id="+tablecontent[i].uid+"_"+lid+oldUgid+" class='test' onchange=changegroup(this)>";
-			str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
-			for(var level2lid in availablegroups) {
-				// Iterate the groups in each lid, example: 
-				/*
-				"availablegroups": {
-					"2001": { // Lid to iterate
-						"1": "Festargruppen" // Available groups with ugid as key, name as value
-					},
-					"2013": {
-						"2": "Coola gurppen"
-					}
-				}
-				*/
-				if(level2lid == lid) { // If the group belongs to the current column, lid, iterate all the available groups and create options for them
-					for(var ugid in availablegroups[level2lid]) {
-						// Iterate one level below like: 
+			for(var j = 0; j < momtmp.length; j++) {
+				if(momtmp[j].lid == lid){
+					str+="<td style='padding-left:5px;'>";
+					var oldUgid = tablecontent[i].lidstogroup[lid] != false ? "_"+tablecontent[i].lidstogroup[lid] : "";
+					str+="<div class='groupStar'>*</div>";
+					str+="<select id="+tablecontent[i].uid+"_"+lid+oldUgid+" class='test' onchange=changegroup(this)>";
+					str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
+					for(var level2lid in availablegroups) {
+						// Iterate the groups in each lid, example: 
 						/*
-						"2001":
-							"1": "Festargruppen" // Available groups with ugid as key, name as value
-						},
+						"availablegroups": {
+							"2001": { // (level2lid)
+								"1": "Festargruppen" // (group /w key (ugid) => value (name))
+								"4": "Dudegruppen" // There can be more than one group per lid
+							},
+							"2013": {
+								"2": "Coola gurppen"
+							}
+						}
 						*/
-						var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
-						str+="<option value="+ugid+selected+">"+availablegroups[level2lid][ugid]+"</option>";
+						if(level2lid == lid) { // If the group belongs to the current column, lid, iterate all the available groups and create options for them
+							for(var group in availablegroups[level2lid]) { // availablegroups[level2lid] contains an array of groups, iterate them
+								for(var ugid in availablegroups[level2lid][group]) { // Iterate the key => value pairs of each group
+									var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
+									str+="<option value="+ugid+selected+">"+availablegroups[level2lid][group][ugid]+"</option>";
+								}
+							}
+						}
 					}
+					str+="</select><div class='groupStar'>*</div>";
+					str+="</td>";
 				}
 			}
-			str+="</select><div class='groupStar'>*</div>";
-			str+="</td>";
+			
 		}
 		str+="</tr>";
 	}
@@ -381,7 +376,7 @@ function returnedGroup(data)
 	results=data.results;*/
 	
 	// Read dropdown from local storage (??)
-	courselist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+	courselist=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
 	if (courselist){	
 		courselist=courselist.split("**"); 
 	} 
@@ -395,7 +390,7 @@ function returnedGroup(data)
 		});
 	});
 	$(document).ready(function () {
-						$("#dropdownc").mouseleave(function () {
+						$("#dropdownFunnel").mouseleave(function () {
 								leaveFunnel();
 						});
 		});
@@ -437,16 +432,17 @@ function changegroup(changedElement) {
 function resort()
 {
 	// Read sorting config from localStorage to get the right order in table	
-	var sortdir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
+	var sortdir=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
 	if (sortdir === null || sortdir === undefined){dir=1;}
 	$("#sortdir"+sortdir).prop("checked", true);
-	var columno=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
+	var columno=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
 	if (columno === null || columno === undefined ){columno=0;}
-	var colkind=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1");
+	var colkind=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1");
 	if (colkind == null || colkind == undefined){colkind=0;}
 	
 	if (tablecontent.length > 0) {
-		if(columno < tablecontent.length){
+		if(columno < momtmp.length+1){
+			
 			// Each if case checks what to sort after and then sorts appropiatle depending on ASC or DESC
 			if(columno==0){
 				if(colkind==0){	
@@ -552,25 +548,25 @@ function resort()
 
 // If col and current col are equal we flip sort order 
 function toggleSortDir(col){
-    var dir = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
-    var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
+    var dir = localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
+    var ocol=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
   	if (col != ocol){
 		$("input[name='sortcol']:checked").prop({"checked":false});
         $("input[name='sorttype']:checked").prop({"checked":false});
         if (col == 0){
-            localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1",1);
+            localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1",1);
         }else{
             $("#sortcol"+col).prop({"checked":true});          
             $("#sorttype0").prop({"checked":true});                      
-            localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", 0);          
+            localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", 0);          
         }
         dir=-1;
-        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);          
-        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);                
+        localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);          
+        localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);                
     }else{
 		dir=dir*-1;
 		$("input[name='sortdir']:checked").val(dir);
-		localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
+		localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
     }
     resort();  
 }
