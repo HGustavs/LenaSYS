@@ -118,7 +118,7 @@ function parseMarkdown(inString)
 			str+=workstr;
 	}
 
-	return str;
+	return "<div id='markdown>'"+str+"</div>";
 }
 
 //----------------------------------------------------------------------------------
@@ -151,7 +151,7 @@ function parseLineByLine(inString) {
         currentLineFeed = str.indexOf("\n");
 	}
     markdown = identifier(prevLine, remainingLines, markdown, nextLine);
-	return "<div id='markdown'>"+markdown+"</div>";
+	return markdown;
 }
 // This function detect the text type
 function identifier(prevLine, currentLine, markdown, nextLine){
