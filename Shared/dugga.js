@@ -1025,15 +1025,18 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							tab+="<tr'>"
 
 							tab+="<td style='padding:4px'>";
-							// Button for making / viewing feedback - note - only button for given feedback to students.
-							tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>P</button>";
-							tab+="</td>";
-
-							tab+="<td style='padding:4px;'>";
+							// Button for making / viewing feedback - note - only button for given feedback to students.			
 							if (ctype == "link"){
-									tab+="<a href='"+filez[i].content+"' >"+filez[i].content+"</a>";
+									tab+="<a href='"+filez[i].content+"' ><button>P</button></a>";
 							} else {
-									tab+="<a href='"+filelink+"' >"+filez[i].filename+"."+filez[i].extension+"</a>";
+									tab+="<a href='"+filelink+"' ><button>P</button></a>";
+							}
+							tab+="</td>";
+							tab+="<td style='padding:4px;'>";
+                            if (ctype == "link"){
+                                    tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>"+filez[i].content+"</span>";
+							} else {
+                                    tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>"+filez[i].filename+"."+filez[i].extension+"</span>";
 							}
 							tab+="</td><td style='padding:4px;'>";
 							tab+=filez[i].updtime;+"</td>";
