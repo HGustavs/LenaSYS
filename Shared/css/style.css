@@ -678,7 +678,7 @@ header td {
   padding:4px;
   background-color: #ccc;
   border: 2px solid #999;
-  width: 295px !important;
+  width: 295px;
   min-height: 100px;
   z-index: 9000;
   position: absolute;
