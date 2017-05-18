@@ -261,7 +261,7 @@ function drawtable(){
 	
 	str+="<div class='titles' style='padding-bottom:10px;'>";
 	str+="<h1 style='flex:10;text-align:center;'>Groups</h1>";
-	str+="<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='New Group' onclick='selectGroup();'/>";
+	str+="<input style='float:none;flex:1;max-width:125px;' class='submit-button' type='button' value='Manage Groups' onclick='selectGroup();'/>";
 	str+="</div>";
 
 	// Create the table headers. 
@@ -337,7 +337,7 @@ function selectGroup()
 {
 	var inp = "";
 	for(i=0; i<moments.length; i++){
-		inp+="<option value='i'>"+moments[i].entryname+"</option>";
+		inp+="<option value="+moments[i].lid+">"+moments[i].entryname+"</option>";
 	}
 	document.getElementById("selectMoment").innerHTML=inp;
 	
@@ -348,20 +348,75 @@ function selectGroup()
 
 function createGroup()
 {
-	name=$("#name").val(); 
-	if(name){
-		AJAXService("NEWGROUP",{name:name},"GROUP"); 
+	var chosenMoment=$("#selectMoment").val();
+	var nameType=$("#nameType").val(); 
+	var numberOfGroups=$("#numberOfGroups").val(); 
+	var offsetLetter=0;
+	var offsetNumber = 1;
+	
+	if(numberOfGroups > 0){
+		if(nameType == "a"){
+			for(var lidGroup in availablegroups) {	//get lid of each group
+				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
+					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
+						for(var a=65;a<90; a++){  //loop through capital letters
+							var groupLetter = String.fromCharCode(a);
+							if(availablegroups[lidGroup][groupArray][groupNames] == groupLetter && lidGroup==chosenMoment){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
+								offsetLetter++;
+							}
+						}
+					}
+				}
+			}
+			var startLetter = +offsetLetter+65;
+			var numbersOfLetters = +numberOfGroups+startLetter;
+			for(startLetter;startLetter<numbersOfLetters; startLetter++){
+				var groupLetter = String.fromCharCode(startLetter);
+				data = {
+					'chosenMoment':chosenMoment,
+					'groupName':groupLetter
+				};
+				AJAXService("NEWGROUP",data,"GROUP");
+			}
+		}
+		else{
+			for(var lidGroup in availablegroups) {	//get lid of each group
+				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
+					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
+						for(var a=0;a<groupNames; a++){  //loop through capital letters
+							if(availablegroups[lidGroup][groupArray][groupNames] == a && lidGroup==chosenMoment){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
+								offsetNumber++;
+							}
+						}
+					}
+				}
+			}
+			var totalNumberOfGroups = parseInt(offsetNumber)+parseInt(numberOfGroups);
+			for(offsetNumber;offsetNumber< totalNumberOfGroups;offsetNumber++){
+				data = {
+					'chosenMoment':chosenMoment,
+					'groupName':offsetNumber
+				};
+				AJAXService("NEWGROUP",data,"GROUP");
+			}
+		}		
+		$("#numberOfGroups").val('');
 		$("#groupSection").css("display","none");
-		$("#groupNameError").css("display","none");
+		$("#numberOfGroupsError").css("display","none");
 		$("#overlay").css("display","none");
-		$("#name").val('');
-		window.location.reload();	
+		window.location.reload();
 	}
 	else{
-		$("#groupNameError").css("display","block");
+		$("#numberOfGroupsError").css("display","block");
 	}
 }
-
+function clearGroupWindow(){
+	$("#numberOfGroups").val('');
+	$("#nameType").val('a');
+	$("#selectMoment").val(0);
+	$("#numberOfGroupsError").css("display","none");
+	
+}
 function returnedGroup(data)
 {
 	var headings = data.headings;
