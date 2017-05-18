@@ -31,65 +31,92 @@ $newPassword = getOP('newPassword');
 $hashedPassword = standardPasswordHash($newPassword);
 $hashedAnswer = standardPasswordHash($answer);
 
-//check if the user is logged in and fetch the password from the db
-if(checklogin() || isSuperUser($userid)){
-    $querystring="SELECT password FROM user WHERE uid=:userid LIMIT 1";	
-    $stmt = $pdo->prepare($querystring);
-    $stmt->bindParam(':userid', $userid);
-    
-    if(!$stmt->execute()) {
-        $error=$stmt->errorInfo(); 
-    } 
-    else{
-        $result = $stmt->fetch(PDO::FETCH_OBJ);
-        $passwordz = $result->password;
-        
-        //If password matches update user security question
-        if(password_verify($password, $passwordz)){           
-            //Query that selects the user row if it is a superuser or a teacher
-            $accessString = "SELECT user.superuser, user_course.access FROM user LEFT JOIN user_course ON user_course.uid=user.uid WHERE  user.uid=:userid AND (user.superuser='1' OR user_course.access='W') LIMIT 1";
-            $query = $pdo->prepare($accessString);
-            $query->bindParam('userid', $userid);
-            $query->execute();
-    
-            if($query->rowCount() > 0) {
-                 //If a row matches query, the user is a teacher/superuser and cannot change password/security questions
-                  echo "teacher";
-             }
-             else{  
-                 //Action determines which form is being used
-                 if($action == "challenge"){   
-                        //Update challenge question
-                        $querystringz = "UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:userid";
-                        $stmt = $pdo->prepare($querystringz);
-                        $stmt->bindParam(':userid', $userid);
-                        $stmt->bindParam(':SQ', $question);
-                        $stmt->bindParam(':answer', $hashedAnswer);
+$success = false;
+$status = "";
+$debug = "NONE!";
 
-                        if(!$stmt->execute()) {
-                            $error=$stmt->errorInfo(); 
-                        }
-                        else{
-                            echo "updated";
-                        }
-                    }
-                else if($action == "password"){
-                    //Update password
-                    $passwordquery = "UPDATE user SET password=:PW WHERE uid=:userid";
-                    $stmt = $pdo->prepare($passwordquery);
-                    $stmt->bindParam(':userid', $userid);
-                    $stmt->bindParam(':PW', $hashedPassword);
+// Create arguments for log
+$log_uuid = getOP('log_uuid'); // Cookie id or something.. 
+$info=$action." ".$userid;
 
-                    if(!$stmt->execute()) {
-                        $error=$stmt->errorInfo(); 
-                    }
-                    else{
-                        echo "updatedPassword";
-                    }
-                }
-            }     
-        }
-    }
+// Log the start event of this service query. This is logged in log.db (not MySQL)
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, __FILE__, $userid, $info);
+
+// Check if the user is logged in and block access if it is a super user
+if(checklogin()) {
+	if (isSuperUser($userid)) {
+		$status = "teacher";
+	} else if ($action === "challenge" || $action === "password") {
+		// and fetch the password from the db
+		$querystring="SELECT password FROM user WHERE uid=:userid LIMIT 1";	
+		$stmt = $pdo->prepare($querystring);
+		$stmt->bindParam(':userid', $userid);
+		
+		if(!$stmt->execute()) {
+			$error = $stmt->errorInfo(); 
+			$debug = "Error finding user ".$error[2];
+		} else {
+			$result = $stmt->fetch(PDO::FETCH_OBJ);
+			
+			// Check that the password matches
+			if(password_verify($password, $result->password)) {
+				//Query that selects the user row if it is a superuser or a teacher
+				$accessString = "SELECT access FROM user_course WHERE uid=:userid AND access='W' LIMIT 1";
+				$query = $pdo->prepare($accessString);
+				$query->bindParam('userid', $userid);
+				
+				
+				if(!$query->execute()) {
+					$error = $stmt->errorInfo();
+					$debug = "Error checking if user is teacher ".$error[2];
+				} else {
+					if($query->rowCount() > 0) {
+						//If a row matches query, the user is a teacher/superuser and cannot change password/security questions
+						$status = "teacher";
+					} else {
+						//Action determines which form is being used
+						if($action == "challenge"){
+								//Update challenge question
+								$querystringz = "UPDATE user SET securityquestion=:SQ, securityquestionanswer=:answer WHERE uid=:userid";
+								$stmt = $pdo->prepare($querystringz);
+								$stmt->bindParam(':userid', $userid);
+								$stmt->bindParam(':SQ', $question);
+								$stmt->bindParam(':answer', $hashedAnswer);
+
+								if(!$stmt->execute()) {
+									$error=$stmt->errorInfo(); 
+								} else {
+									$success = true;
+								}
+						} else if($action == "password"){
+							//Update password
+							$passwordquery = "UPDATE user SET password=:PW WHERE uid=:userid";
+							$stmt = $pdo->prepare($passwordquery);
+							$stmt->bindParam(':userid', $userid);
+							$stmt->bindParam(':PW', $hashedPassword);
+
+							if(!$stmt->execute()) {
+								$error=$stmt->errorInfo(); 
+							} else {
+								$success = true;
+							}
+						}
+					}
+				}
+			} else {
+				$status = "wrongpassword";
+			}
+		}
+	}
 }
+
+echo json_encode(array(
+	"success" => $success,
+	"status" => $status,
+	"debug" => $debug
+));
+
+// Log the end event of this service query.
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, __FILE__, $userid, $info);
 
 ?>
