@@ -799,9 +799,6 @@ input {
   border: 2px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  background-color: white;
-
-
 }
 
 .loginBox .inputwrapper {
@@ -1902,6 +1899,18 @@ span.arrow {
   line-height: 47px;
 }
 
+.rownoMagic { 
+  width: 25px; 
+}
+
+.rownoMagic > div {
+  text-align: right;
+  font-size: 20px;
+  color:#614875 !important;
+  min-height: 47px;
+  line-height: 47px;
+}
+
 .grouprow > div {
   text-align: center;
   font-size: 20px;
@@ -2116,6 +2125,16 @@ table {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 18px;
   color: white;
+  -webkit-transform: none;
+  transform: none;
+}
+
+.hideAll{
+  left:25px;
+}
+
+.showAll{
+  left:25px;
 }
 
 /* Section editor menu buttons */
@@ -2329,6 +2348,13 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
+
+  .hideAll,
+  .showAll{
+    -webkit-transform: scale(0.7, 0.7);
+    transform: scale(0.7, 0.7);
+    left: 10px;
+  }
   
   #cookiemsg {
 	background-color: #fecc56;
@@ -2345,7 +2371,7 @@ ul.hamburgerList button.menuButton {
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
   table.navheader td.tests,
-  table.navheader td.files {
+  table.navheader td.files{
     margin-right: 0px;
     width: 0px;
     -webkit-transition: margin-right 0.5s, width 0.5s;
@@ -2370,6 +2396,12 @@ ul.hamburgerList button.menuButton {
     opacity: 1.0;
   }
 
+  .hideAll,
+  .showAll{
+    -webkit-transform: scale(0.6, 0.6);
+    transform: scale(0.6, 0.6);
+    left: 4px;
+
   .loginBox{
   top: 8%;
   left: 10%;
@@ -2386,6 +2418,7 @@ ul.hamburgerList button.menuButton {
   text-align: center;
   }
 }
+
 /* Title for the subpages of the section-editor */
 .titles{
   width:100%;

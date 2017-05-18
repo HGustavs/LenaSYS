@@ -463,6 +463,14 @@ function AJAXService(opt,apara,kind)
 				dataType: "json",
 				success: returnedSection
 			});
+    }else if(kind=="SWIMLANE"){
+  			$.ajax({
+  				url: "swimlaneservice.php",
+  				type: "POST",
+  				data: "courseid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+  				dataType: "json",
+  				success: returnedSwimlane
+  			});
 	}else if(kind=="CONTRIBUTION"){
 			$.ajax({
 				url: "contributionservice.php",

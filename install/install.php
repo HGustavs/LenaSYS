@@ -54,25 +54,11 @@
             "To do this run the command:<br>" +
             "sudo chgrp -R www-data " + filePath + "</h2><br>" +
             "<br>" +
-            "<input onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1'>" +
+            "<input onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
             "<i>I promise i have done this and will not complain that it's not working</i></div>";
 
         function haveRead(isTrue) {
             modalRead = isTrue;
-        }
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-            if (modalRead) {
-                modal.style.display = "none";
-            }
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal && modalRead) {
-                modal.style.display = "none";
-            }
         }
     </script>
 
@@ -133,22 +119,24 @@
             After this enter a database to use. This could also be either an existing or a new database.<br>
             Finally enter the host. Is installation is running from webserver localhost should be used.</b></p><hr>';
     echo 'Enter new MySQL user. <br>';
-    echo '<input type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
+    echo '<input class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
     echo 'Enter password for MySQL user. <br>';
-    echo '<input type="password" name="password" placeholder="Password" /> <br>';
+    echo '<input class="page1input" type="password" name="password" placeholder="Password"/> <br>';
     echo 'Enter new database name. <br>';
-    echo '<input type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
+    echo '<input class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
     echo 'Enter hostname (e.g localhost). <br>';
-    echo '<input type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
+    echo '<input class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
+    echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
     echo '</div>';
 ?>
                 <div class="inputContent" id="td2" valign=top>
                     <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
                         Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
                     Enter MySQL root user. <br>
-                    <input type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
+                    <input class="page2input" type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
                     Enter password for MySQL root user. <br>
-                    <input type="password" name="rootPwd" placeholder="Root Password" /> <br>
+                    <input class="page2input" type="password" name="rootPwd" placeholder="Root Password" /> <br>
+                    <span class="enterAllFields" id="enterFields2">Please fill all fields before continuing.</span>
                 </div>
                 <div class="inputContent" id="td3" valign=top>
                     <p id="infoText"><b>If you wish to create a new, empty database check the box 'Create new database'. If you want to fill this
@@ -158,6 +146,8 @@
                     Create new database. <br><hr>
                     <input type="checkbox" name="fillDB" value="Yes" checked/>
                     Include test data. <br><br>
+                    <input type="checkbox" name="mdSupport" value="Yes" checked/>
+                    Include markdown. (Files located in /Install/md) <br><br>
                     <b>Language keyword highlighting support.<br></b>
                     <i>Choose which languages you wish to support in codeviewer. (You need to check 'Include test data' to be able to include these.</i><br>
                     <div id="checkboxContainer">
@@ -175,17 +165,19 @@
                         <br>If you only entered an existing database for a new user only check the box for database overwrite.
                         <br>If both are existing both boxes should be checked.
                         <br>If it's a completely new database and user no box has to be checked.</b></p><hr>
-                    <input type="checkbox" name="writeOverDB" value="Yes" />
-                    Yes I want to write over an existing database.<br>
-                    <input type="checkbox" name="writeOverUSR" value="Yes" />
-                    Yes I want to write over an existing user.<br>
+                    <div id="checkboxContainer2">
+                        <input id="writeOver1" type="checkbox" name="writeOverDB" value="Yes" />
+                        Yes I want to write over an existing database.<br>
+                        <input id="writeOver2" type="checkbox" name="writeOverUSR" value="Yes" />
+                        Yes I want to write over an existing user.<br>
+                    </div>
                         <span id='failText'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
                 </div>
                 <div class="inputContent" id="td5" bgcolor="#EEEEEE">
                     <p id="infoText"><b>If all fields are filled out correctly the only thing remaining is to smack the 'Install' button below.
                         Progress of installation will be shown. If any errors occurs please try again and check that your data is correct.
                         If you still get errors please read installation guidelines on LenaSYS github page or in 'README.md'. </b></p><hr>
-                    <input class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
+                    <input id="submitInput" class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
                 </div>
             </div>
 
@@ -202,37 +194,138 @@
                     <polygon points="50,30 130,75 50,120" />
                 </svg>
             </div>
-
             <!-- Javascript functions for arrow functionality-->
             <script>
                 var leftArrow = document.getElementById('leftArrow');
                 var rightArrow = document.getElementById('rightArrow');
+                var submitButton = document.getElementById('submitInput');
                 var inputPage = 1;
                 var previousInputPage = 0;
+
+                /* Function to focus the right box on the page */
+                function focusTheRightBox() {
+                    if (inputPage === 1 || inputPage === 2) {
+                        var fields = document.getElementsByClassName("page" + inputPage + "input");
+                        for (var i = 0; i < fields.length; i++) {
+                            if (fields[i].value === ''){
+                                fields[i].focus();
+                                break;
+                            }
+                        }
+                    } else if (inputPage === 4) {
+                        if (document.getElementById("writeOver1").checked) {
+                            document.getElementById("writeOver2").focus();
+                        } else {
+                            document.getElementById("writeOver1").focus();
+                        }
+                    }
+                }
 
                 leftArrow.onclick = function() {
                     previousInputPage = inputPage;
                     if(inputPage > 1) inputPage--;
                     updateInputPage();
-                }
+                    focusTheRightBox();
+                };
 
                 rightArrow.onclick = function() {
-                    previousInputPage = inputPage;
-                    if (inputPage < 5) inputPage++;
-                    updateInputPage();
-                }
+                    /* Only continue if all fields on current page are filled out */
+                    if (inputPage === 1 || inputPage === 2) {
+                        var fields = document.getElementsByClassName("page" + inputPage + "input");
+                        var found = false; /* Is an empty field found? */
+                        for (var i = 0; i < fields.length; i++) {
+                            if (fields[i].value === ''){
+                                found = true; /* Empty field found */
+                                /* Set background of text field to light red */
+                                fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
+                            }
+                        }
+                        if (!found){
+                            /* If no empty field was found - proceed and reset values of text fields and hide warning text */
+                            document.getElementById("enterFields" + inputPage).style.display = "none";
+                            previousInputPage = inputPage;
+                            if (inputPage < 5) inputPage++;
+                            for (var i = 0; i < fields.length; i++) {
+                                fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
+                            }
+                            updateInputPage();
+                        } else {
+                            /* Show the warning text if empty field was found */
+                            document.getElementById("enterFields" + inputPage).style.display = "inline-block";
+                        }
+                    } else {
+                        /* Only page 1 and 2 has text fields so the rest have no rules */
+                        previousInputPage = inputPage;
+                        if (inputPage < 5) inputPage++;
+                        updateInputPage();
+                    }
+                };
+
+                /* Remove default behaviour (click submit button) when pressing enter */
+                $(document).ready(function() {
+                    $(window).keydown(function(event){
+                        if(event.keyCode === 13) {
+                            event.preventDefault();
+                            return false;
+                        }
+                    });
+                });
+
+                /* You want to be able to press enter to continue, this function fixes this. */
+                document.addEventListener("keydown", function(e) {
+                    if(e.keyCode === 13){
+                        if (modal.style.display === "none"){
+                            if (inputPage < 5) {
+                                /* Only continue if all fields on current page are filled out */
+                                if (inputPage === 1 || inputPage === 2) {
+                                    var fields = document.getElementsByClassName("page" + inputPage + "input");
+                                    var found = false; /* Is an empty field found? */
+                                    for (var i = 0; i < fields.length; i++) {
+                                        if (fields[i].value === ''){
+                                            found = true; /* Empty field found */
+                                            /* Set background of text field to light red */
+                                            fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
+                                        }
+                                    }
+                                    if (!found){
+                                        /* If no empty field was found - proceed and reset values of text fields and hide warning text */
+                                        document.getElementById("enterFields" + inputPage).style.display = "none";
+                                        previousInputPage = inputPage;
+                                        inputPage++;
+                                        for (var i = 0; i < fields.length; i++) {
+                                            fields[i].setAttribute("style", "background-color:rgb(255,255,255)");
+                                        }
+                                        updateInputPage();
+                                    } else {
+                                        /* Show the warning text if empty field was found */
+                                        document.getElementById("enterFields" + inputPage).style.display = "inline-block";
+                                    }
+                                } else {
+                                    /* Only page 1 and 2 has text fields so the rest have no rules */
+                                    previousInputPage = inputPage;
+                                    inputPage++;
+                                    updateInputPage();
+                                }
+                            } else if (inputPage === 5){
+                                submitButton.click();
+                            }
+                        }
+                    }
+                });
 
                 function updateInputPage(){
                     /* Hide current input page */
                     hideInputPage();
+                    /* Show the new input page when animation is done */
+                    window.setTimeout(showInputPage,500);
 
                     /* Dont show left arrow on first page and dont show right arrow on last page */
-                    if (inputPage == 1) {
+                    if (inputPage === 1) {
                         document.getElementById('leftArrow').style.display = "none";
                     } else {
                         document.getElementById('leftArrow').style.display = "block";
                     }
-                    if (inputPage == 5) {
+                    if (inputPage === 5) {
                         document.getElementById('rightArrow').style.display = "none";
                     } else {
                         document.getElementById('rightArrow').style.display = "block";
@@ -248,9 +341,6 @@
                         $('#th' + previousInputPage).hide("slide", {direction: "right" }, 500);
                         $('#td' + previousInputPage).hide("slide", {direction: "right" }, 500);
                     }
-
-                    /* Show the new input page when animation is done */
-                    window.setTimeout(showInputPage,500);
                 }
 
                 function showInputPage(){
@@ -262,6 +352,31 @@
                         $('#th' + inputPage).show("slide", {direction: "left" }, 500);
                         $('#td' + inputPage).show("slide", {direction: "left" }, 500);
                     }
+                    window.setTimeout(focusTheRightBox,500);
+                }
+            </script>
+
+            <!-- Javascript to focus the right input box after modal is closed -->
+            <script>
+                /* When the user clicks on <span> (x), close the modal */
+                span.onclick = function() {
+                    if (modalRead) {
+                        modal.style.display = "none";
+                        focusTheRightBox();
+                    }
+                }
+
+                /* When the user clicks anywhere outside of the modal, close it */
+                window.onclick = function(event) {
+                    if (event.target == modal && modalRead) {
+                        modal.style.display = "none";
+                        focusTheRightBox();
+                    }
+                }
+
+                var writeOver1 = document.getElementById('writeOver1');
+                writeOver1.onclick = function() {
+                    focusTheRightBox();
                 }
             </script>
 
@@ -323,6 +438,7 @@
         /***** START of installation progress ******/
         $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
         $totalSteps = 1; // Variable to hold the total steps to complete.
+        $completedSteps = 0; // Variable to hold the current completed steps.
 
         /* The following if-block will decide how many steps there are to complete installation. */
         if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
@@ -335,6 +451,9 @@
             }
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes') {
                 $totalSteps += 4;
+                if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
+                    $totalSteps++;
+                }
                   $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
                   foreach ($checkBoxes AS $boxName) { //Loop trough each field
                     if (isset($_POST[$boxName]) || !empty($_POST[$boxName])) {
@@ -349,22 +468,46 @@
          */
         echo "<div id='header'>
                 <h1>Installation</h1>
-                <svg id='progressBar' height='20px' width='50%'>
+                <svg id='progressBar' height='20px' width='50%' onresize='updateProgressBar(-1)'>
                     <rect id='progressRect' width='0' height='20px' />
                 </svg>
+                <span id='percentageText'></span>
+                <a href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
             </div>";
 
         /* Javascripts to calculate length of progressRect. This will show the current progress in progressBar. */
         echo "
             <script>
-            var totalSteps = {$totalSteps};
+            /* Function to remove decimals from percentage text */
+            truncateDecimals = function (number) {
+                return Math[number < 0 ? 'ceil' : 'floor'](number);
+            };
             
-            function updateProgressBar(){
+            var totalSteps = {$totalSteps};
+            var completedStepsLatest = 0; // This variable is used on window resize.
+            
+            function updateProgressBar(completedSteps){
                 var totalWidth = document.getElementById(\"progressBar\").clientWidth;
                 var stepWidth = totalWidth / totalSteps;
+                var completedWidth;
+                
+                /* if window was resized (completedsteps = -1) take latest copleted steps. 
+                 * Else update to new completed step. 
+                 */
+                if (completedSteps === -1) {
+                    completedWidth = stepWidth * completedStepsLatest;
+                } else {
+                    completedStepsLatest = completedSteps;
+                    completedWidth = stepWidth * completedSteps;
+                }
                 
                 /* Calculate length */
-                document.getElementById(\"progressRect\").setAttribute(\"width\",\"\" + (document.getElementById(\"progressRect\").getAttribute(\"width\")-0 + stepWidth) + \"\");
+                document.getElementById(\"progressRect\").setAttribute(\"width\", \"\" + completedWidth + \"\");
+                
+                /* Update percentage text */
+                document.getElementById(\"percentageText\").innerHTML = \"\" + 
+                truncateDecimals((document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth) * 100) + 
+                \"%\";
                 
                 /* Decide color depending on how far progress has gone */
                 if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.33){
@@ -394,7 +537,8 @@
                 echo "<span id='successText' />Permissions on {$putFileHere} set correctly.</span><br>";
             }
         }
-        echo "<script>updateProgressBar();</script>";
+        $completedSteps++;
+        echo "<script>updateProgressBar({$completedSteps});</script>";
 
         # Check if all fields are filled.
         $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
@@ -425,9 +569,12 @@
                 echo "<span id='successText' />Connected successfully to {$serverName}.</span><br>";
             } catch (PDOException $e) {
                 $errors++;
-                echo "<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>";
+                exit ("<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>
+                        You may have entered a invalid password or an invalid user.<br>
+                        <a href='install.php' class='returnButton'>Try again.</a>");
             }
-            echo "<script>updateProgressBar();</script>";
+            $completedSteps++;
+            echo "<script>updateProgressBar({$completedSteps});</script>";
             flush();
             ob_flush();
 
@@ -442,7 +589,8 @@
                 echo "<span id='failText' />User with name {$username} 
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
-                echo "<script>updateProgressBar();</script>";
+                $completedSteps++;
+                echo "<script>updateProgressBar({$completedSteps});</script>";
                 flush();
                 ob_flush();
             }
@@ -456,7 +604,8 @@
                     echo "<span id='failText' />Database with name {$databaseName} 
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
-                echo "<script>updateProgressBar();</script>";
+                $completedSteps++;
+                echo "<script>updateProgressBar({$completedSteps});</script>";
                 flush();
                 ob_flush();
             }
@@ -469,7 +618,8 @@
                 $errors++;
                 echo "<span id='failText' />Database with name {$databaseName} could not be created. Maybe it already exists...</span><br>";
             }
-            echo "<script>updateProgressBar();</script>";
+            $completedSteps++;
+            echo "<script>updateProgressBar({$completedSteps});</script>";
             flush();
             ob_flush();
 
@@ -484,7 +634,8 @@
                 $errors++;
                 echo "<span id='failText' />Could not create user with name {$username}, maybe it already exists...</span><br>";
             }
-            echo "<script>updateProgressBar();</script>";
+            $completedSteps++;
+            echo "<script>updateProgressBar({$completedSteps});</script>";
             flush();
             ob_flush();
 
@@ -539,13 +690,21 @@
                 echo "<span id='failText' />Failed initialization of database because of query (in init_db.sql): </span><br>";
                 echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
             }
-            echo "<script>updateProgressBar();</script>";
+            $completedSteps++;
+            echo "<script>updateProgressBar({$completedSteps});</script>";
             flush();
             ob_flush();
 
             /*************** Fill database with test data if this was checked. ****************/
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
                 addTestData("testdata", $connection);
+
+                # Copy md files to the right place.
+                if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
+                    copyTestFiles("{$putFileHere}/install/md/", "{$putFileHere}/DuggaSys/templates/");
+                } else {
+                    echo "Skipped adding markdown files<br>";
+                }
 
                 # Check which languages to add from checkboxes.
                 $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
@@ -574,7 +733,8 @@
         } else {
             echo "Skipped creating database.<br>";
         }
-        echo "<script>updateProgressBar();</script>";
+        $completedSteps++;
+        echo "<script>updateProgressBar({$completedSteps});</script>";
 
         echo "<b>Installation finished.</b><br>";
         flush();
@@ -628,6 +788,7 @@
     # Function to add testdata from specified file. Parameter file = sql file name without .sql.
     function addTestData($file, $connection){
         global $errors;
+        global $completedSteps;
         $testDataQuery = @file_get_contents("SQL/{$file}.sql");
 
         if ($testDataQuery === FALSE) {
@@ -650,13 +811,15 @@
                 echo "<div class='errorCodeBox'><code>{$completeQuery}</code></div><br><br>";
             }
         }
-        echo "<script>updateProgressBar();</script>";
+        $completedSteps++;
+        echo "<script>updateProgressBar({$completedSteps});</script>";
         flush();
         ob_flush();
     }
 
     # Function to copy test files
     function copyTestFiles($fromDir,$destDir) {
+        global $completedSteps;
         $dir = opendir($fromDir);
         @mkdir($destDir);
         while (false !== ($copyThis = readdir($dir))) {
@@ -665,8 +828,11 @@
             }
         }
         closedir($dir);
-        echo "<span id='successText' />Successfully filled {$destDir} with example files.</span><br>";
-        echo "<script>updateProgressBar();</script>";
+        echo "<span id='successText' />Successfully filled {$destDir} with files from {$fromDir}.</span><br>";
+        $completedSteps++;
+        echo "<script>updateProgressBar({$completedSteps});</script>";
+        flush();
+        ob_flush();
     }
     ?>
 
@@ -675,8 +841,10 @@
         modal.style.display = "block";
         var showHideButton = document.getElementById('showHideInstallation');
 
-        showHideButton.onclick = function(){
-            toggleInstallationProgress();
+        if (showHideButton !== null){
+            showHideButton.onclick = function(){
+                toggleInstallationProgress();
+            }
         }
 
         /* Show/Hide installation progress. */
@@ -687,14 +855,17 @@
         /* Function to select and copy text inside code boxes at end of installation. */
         function selectText(containerid) {
             /* Get selection inside div. */
-            if (document.selection) {
+            var text = document.getElementById(containerid);
+            if (document.body.createTextRange) {
                 var range = document.body.createTextRange();
-                range.moveToElementText(document.getElementById(containerid));
+                range.moveToElementText(text);
                 range.select();
-            } else if (window.getSelection) {
+            } else {
+                var selection = window.getSelection();
                 var range = document.createRange();
-                range.selectNode(document.getElementById(containerid));
-                window.getSelection().addRange(range);
+                range.selectNodeContents(text);
+                selection.removeAllRanges();
+                selection.addRange(range);
             }
 
             /* Copy selection. */
@@ -706,10 +877,10 @@
             /* Show the 'copied' text to let user know that text was copied to clipboard.
              * After show animation is done it will call hide function to hide text again.
              */
-            if (containerid == "codeBox1") {
+            if (containerid === "codeBox1") {
                 $("#copied1").show("slide", {direction: "left" }, 1000);
                 window.setTimeout(function() { hideCopiedAgain("#copied1")}, 2000);
-            } else if (containerid == "codeBox2") {
+            } else if (containerid === "codeBox2") {
                 $("#copied2").show("slide", {direction: "left" }, 1000);
                 window.setTimeout(function() { hideCopiedAgain("#copied2")}, 2000);
             }
