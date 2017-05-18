@@ -352,6 +352,7 @@ function createGroup()
 	var nameType=$("#nameType").val(); 
 	var numberOfGroups=$("#numberOfGroups").val(); 
 	var offsetLetter=0;
+	var offsetNumber = 1;
 	
 	if(numberOfGroups > 0){
 		if(nameType == "a"){
@@ -379,10 +380,23 @@ function createGroup()
 			}
 		}
 		else{
-			for(var groupName=1;groupName<= numberOfGroups;groupName++){
+			for(var lidGroup in availablegroups) {	//get lid of each group
+				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
+					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
+						//console.log(availablegroups[lidGroup][groupArray].length);
+						for(var a=0;a<groupNames; a++){  //loop through capital letters
+							if(availablegroups[lidGroup][groupArray][groupNames] == a && lidGroup==chosenMoment){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
+								offsetNumber++;
+							}
+						}
+					}
+				}
+			}
+			var totalNumberOfGroups = parseInt(offsetNumber)+parseInt(numberOfGroups);
+			for(offsetNumber;offsetNumber< totalNumberOfGroups;offsetNumber++){
 				data = {
 					'chosenMoment':chosenMoment,
-					'groupName':groupName
+					'groupName':offsetNumber
 				};
 				AJAXService("NEWGROUP",data,"GROUP");
 			}
