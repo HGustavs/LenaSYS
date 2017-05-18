@@ -38,6 +38,29 @@
     <div id="content">
         <div id="buttonDiv">
             <div class="document-settings">
+                <div id="diagram-toolbar" class="application-toolbar-wrap">
+                    <h3 class="application-header">Toolbar</h3>
+                    <div class='application-toolbar'>
+
+                        <h4 class="label">Tools</h4>
+                        <div class="toolbar-drawer">
+                            <button onclick='lineMode();'>Line</button>
+                        </div>
+                        <h4 class="label">Create</h4>
+                        <div class="toolbar-drawer">
+                            <button onclick='attrMode();'>Attribute</button>
+                            <button onclick='entityMode();'>Entity</button>
+                            <button onclick='relationMode();'>Relation</button>
+                        </div>
+                        <h4 class="label">Draw</h4>
+                        <div class="toolbar-drawer">
+                            <button onclick="figureMode('Square');">Square</button>
+                            <button onclick="figureMode('Free');">Free</button>
+                        </div>
+
+                        </select>
+                    </div>
+                </div>
                 <div class="menu-drop-down">
                     <span class="label">File</span>
                     <div class="drop-down">
@@ -68,31 +91,13 @@
                         </div>
                     </div>
                 </div>
-                <div id="diagram-toolbar" class="application-toolbar-wrap">
-                    <h3 class="application-header">Toolbar</h3>
-                    <div class='application-toolbar'>
-
-                        <h4 class="label">Tools</h4>
-                        <div class="toolbar-drawer">
-                            <button onclick='lineMode();'>Line</button>
-                        </div>
-                        <h4 class="label">Create</h4>
-                        <div class="toolbar-drawer">
-                            <button onclick='attrMode();'>Attribute</button>
-                            <button onclick='entityMode();'>Entity</button>
-                            <button onclick='relationMode();'>Relation</button>
-                        </div>
-                        <h4 class="label">Draw</h4>
-                        <div class="toolbar-drawer">
-                            <button onclick="figureMode('Square');">Square</button>
-                            <button onclick="figureMode('Free');">Free</button>
-                        </div>
-
-                        </select>
-                    </div>
-                </div>
                 <div class="menu-drop-down">
                     <span class="label">Edit</span>
+                    <div class="drop-down">
+                        <div class="drop-down-item">
+                            <a href="#" onclick='globalAppearanceMenu();'>Global Appearance</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="menu-drop-down">
                     <span class="label">View</span>
@@ -105,6 +110,33 @@
                         </div>
                     </div>
                 </div>
+                <div class="menu-drop-down">
+                    <span class="label">Align</span>
+                    <div class="drop-down">
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('top');">Top</a>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('right');">Right</a>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('bottom');">Bottom</a>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('left');">Left</a>
+                        </div>
+                        <div class="drop-down-divider">
+
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('verticalCenter');">Vertical center</a>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('horizontalCenter');">Horizontal center</a>
+                        </div>
+
+                    </div>
+                </div>
             </div>
             </br>
             </br>
@@ -112,7 +144,6 @@
             <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
             <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
             <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
-            <button onclick='globalAppearanceMenu();'>Global Appearance</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
             <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
             <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
