@@ -966,6 +966,128 @@ input {
 }
 
 /* --------------================################================-------------- *
+ *                              TOOLBOX/APPLICATION                             *
+ * --------------================################================-------------- */
+ /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
+
+#diagram-toolbar{
+    height:400px;
+    width:125px;
+}
+.application-toolbar-wrap{
+    position:fixed;
+    z-index:1000;
+    display:block;
+
+    border:1px solid rgb(200,200,200);
+    outline:1px solid rgb(240,240,240);
+    background-color:#fff;
+}
+.application-header{
+    height: 25px;
+    background-color: #614875;
+    color:#fff;
+    vertical-align: bottom;
+    padding-left: 10px;
+    cursor: move;
+    display: flex;
+    justify-content: space-around;
+    margin:0px;
+}
+
+.application-toolbar{
+    padding-top:16px;
+}
+.application-toolbar > input[type='button']{
+    background-color:black;
+}
+
+.toolbar-drawer{
+    padding:8px 8px;
+    border-top:1px solid rgb(240,240,240);
+}
+.application-toolbar h4.label{
+    font-size:11px;
+    font-weight:none;
+    margin-top:8px;
+    margin-bottom:0px;
+    padding:0px 4px 0px 4px;
+}
+
+/* --------------================################================-------------- *
+ *                            END TOOLBOX/APPLICATION                           *
+ * --------------================################================-------------- */
+ /* --------------================################================-------------- *
+  *                        TOOLBAR/DROPDOWN/APPLICATION                          *
+  * --------------================################================-------------- */
+/*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
+ .document-settings{
+     font-size:14px;
+ }
+ .document-settings > .menu-item, .document-settings > .menu-drop-down{
+     float:left;
+ }
+ .document-settings span.label{
+     display:block;
+     height:22px;
+     line-height:22px;
+     padding: 0px 6px;
+ }
+ .document-settings span.label:hover{
+     cursor:pointer;
+     background-color:rgb(240,240,240);
+ }
+ .document-settings > .menu-drop-down:hover > .drop-down{
+     display:inline-block;
+ }
+ .drop-down{
+     position:absolute;
+     z-index:2000;
+     outline:1px solid rgb(240,240,240);
+     border:1px solid rgb(200,200,200);
+     display:none;
+     width:260px;
+     background-color:rgb(255,255,255);
+ }
+ .menu-drop-drown{
+     display:relative;
+     top:22px;
+ }
+ .drop-down-divider{
+     display:block;
+     width:100%;
+     height:6px;
+     border-bottom:1px solid rgb(240,240,240);
+     margin-bottom:6px;
+ }
+ .drop-down-item > a{
+     color:rgb(0,0,0);
+     text-decoration:none;
+
+     display:inline-block;
+     width:252px;
+     height:16px;
+     line-height:16px;
+     padding: 8px 0px 8px 8px;
+ }
+
+ .drop-down-item > a::before{
+     /*PLACEHOLDER FOR ICON*/
+     display:inline-block;
+     width:16px;
+     height:16px;
+     content:"I";
+ }
+ .drop-down-item:hover{
+     background-color:rgb(240,240,240);
+ }
+
+ /* --------------================################================-------------- *
+  *                       END TOOLBAR/DROPDOWN/APPLICATION                       *
+  * --------------================################================-------------- */
+
+
+/* --------------================################================-------------- *
  *                                 Form Controls                                *
  * --------------================################================-------------- */
 
@@ -2430,3 +2552,95 @@ ul.hamburgerList button.menuButton {
   color: #614875;
 }
 
+#nametext {
+  padding: 2px 0px 2px 10px;
+}
+
+/* Is used to style a Select-box in diagram.php. */
+#selectDiv {
+  border-radius: 6px;
+  border: 2px solid #d4d4d4;
+  height: 34px;
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  -webkit-box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
+  -moz-box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
+  box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
+}
+
+#selectDiv select {
+  height: 34px;
+  padding-left: 10px;
+  padding-right: 40px;
+  font-size: 14px;
+  border: 0;
+  -webkit-appearance: none;  /*Removes default chrome and safari style*/
+  -moz-appearance: none;  /*Removes default style Firefox*/
+  background: white;
+  text-overflow: "";
+  transition: 0.2s;
+}
+
+#selectDiv select::-ms-expand {
+  display: none;
+}
+
+#selectDiv select::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+#selectDiv .ikonPil {
+  display: block;
+  background: url("../icons/arrow.svg") no-repeat;
+  position: absolute;
+  right: 12px;
+  top: 14px;
+  width: 12px;
+  height: 15px;
+}
+
+#selectDiv .ikonPilRotation {
+  top: 8px;
+  animation-name: roteraPil;
+  animation-duration: .2s;
+  animation-fill-mode: forwards;
+}
+
+/* Used to rotate the picture that is used as a arrow */
+@keyframes roteraPil {
+  0% {
+    -ms-transform: rotate(0deg); /* IE 9 */
+    -webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+    transform: rotate(0deg);
+  }
+  100% {
+    -ms-transform: rotate(180deg); /* IE 9 */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
+  }
+}
+/* Style for the div that presents the coordinants and zoomvalue in diagram */
+#valuesCanvas {
+  -webkit-box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
+  -moz-box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
+  box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 6px;
+  background: white;
+  border: 2px solid #d4d4d4;
+  font-size: 14px;
+  bottom: 6px;
+  position: absolute;
+  left: 2px;
+  cursor: default;
+  /* Removes the possibility to copy the text in this element */
+  webkit-touch-callout: none;
+   -webkit-user-select: none;
+    -khtml-user-select: none;
+      -moz-user-select: none;
+       -ms-user-select: none;
+           user-select: none;
+}

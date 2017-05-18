@@ -84,46 +84,46 @@ function Path() {
         }
         if (this.segments.length > 0) {
             // Assign stroke style, color, transparency etc
-            ctx.strokeStyle = this.strokeColor;
-            ctx.fillStyle = this.fillColor;
-            ctx.globalAlpha = this.Opacity;
-            ctx.lineWidth = this.linewidth;
-            ctx.beginPath();
+            canvasContext.strokeStyle = this.strokeColor;
+            canvasContext.fillStyle = this.fillColor;
+            canvasContext.globalAlpha = this.Opacity;
+            canvasContext.lineWidth = this.linewidth;
+            canvasContext.beginPath();
             var pseg = this.segments[0];
-            ctx.moveTo(points[pseg.pa].x, points[pseg.pa].y);
+            canvasContext.moveTo(points[pseg.pa].x, points[pseg.pa].y);
             for (var i = 0; i < this.segments.length; i++) {
                 var seg = this.segments[i];
                 // If we start over on another sub-path, we must start with a moveto
                 if (seg.pa != pseg.pb) {
-                    ctx.moveTo(points[seg.pa].x, points[seg.pa].y);
+                    canvasContext.moveTo(points[seg.pa].x, points[seg.pa].y);
                 }
                 // Draw current line
-                ctx.lineTo(points[seg.pb].x, points[seg.pb].y);
+                canvasContext.lineTo(points[seg.pb].x, points[seg.pb].y);
                 // Remember previous segment
                 pseg = seg;
             }
             // Make either stroke or fill or both -- stroke always after fill
             if (fillstate) {
-                ctx.fill();
+                canvasContext.fill();
             }
             if (strokestate) {
-                ctx.stroke();
+                canvasContext.stroke();
             }
             // Reset opacity so that following draw operations are unaffected
-            ctx.globalAlpha = 1.0;
+            canvasContext.globalAlpha = 1.0;
         }
     }
 
     //--------------------------------------------------------------------
     // Returns true if coordinate xk, yk falls inside the bounding box of the symbol
     //--------------------------------------------------------------------
-    this.inside = function() {
+    this.isClicked = function(xCoordinate, yCoordinate) {
         var intersections = 0;
-        if (cx > this.minX && cx < this.maxX && cy > this.minY && cy < this.maxY) {
+        if (xCoordinate > this.minX && xCoordinate < this.maxX && yCoordinate > this.minY && yCoordinate < this.maxY) {
             for (var j = 0; j < this.segments.length; j++) {
                 var pointA = points[this.segments[j].pa];
                 var pointB = points[this.segments[j].pb];
-                if ((pointA.x <= cx && pointB.x >= cx) || (pointA.x >= cx && pointB.x <= cx)) {
+                if ((pointA.x <= xCoordinate && pointB.x >= xCoordinate) || (pointA.x >= xCoordinate && pointB.x <= xCoordinate)) {
                     var deltaX = pointB.x - pointA.x;
                     var deltaY = pointB.y - pointA.y;
                     var k = deltaY / deltaX;
@@ -132,9 +132,9 @@ function Path() {
                         pointA = pointB;
                         pointB = pointA;
                     }
-                    var x = cx - pointA.x;
+                    var x = xCoordinate - pointA.x;
                     var y = (k * x) + pointA.y;
-                    if (y < cy) {
+                    if (y < yCoordinate) {
                         intersections++;
                     }
                 }
@@ -268,7 +268,7 @@ function Path() {
     // Line to line intersection
     // Does not detect intersections on end points (we do not want end points to be part of intersection set)
     //--------------------------------------------------------------------
-    this.boolOp = function (otherpath) {
+    this.boolOp = function(otherpath) {
         // Clear temporary lists used for merging paths
         this.tmplist = [];
         this.auxlist = [];
@@ -286,7 +286,7 @@ function Path() {
             var p2 = points[item.pb];
             var xk = (p1.x + p2.x) * 0.5;
             var yk = (p1.y + p2.y) * 0.5;
-            if (this.inside(xk, yk, otherpath)) {
+            if (this.isClicked(xk, yk, otherpath)) {
                 if (!this.existsline(item.pa, item.pb, this.auxlist)) {
                     this.auxlist.push(item);
                 }
@@ -320,16 +320,16 @@ function Path() {
     //--------------------------------------------------------------------
     this.drawsegments = function (segmentlist, color) {
         // Draw aux set
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = "#46f";
+        canvasContext.lineWidth = 1;
+        canvasContext.strokeStyle = "#46f";
         for (var i = 0; i < segmentlist.length; i++) {
             var line = segmentlist[i];
             // If line is a straight line
             if (line.kind == 1) {
-                ctx.beginPath();
-                ctx.moveTo(points[line.pa].x, points[line.pa].y);
-                ctx.lineTo(points[line.pb].x, points[line.pb].y);
-                ctx.stroke();
+                canvasContext.beginPath();
+                canvasContext.moveTo(points[line.pa].x, points[line.pa].y);
+                canvasContext.lineTo(points[line.pb].x, points[line.pb].y);
+                canvasContext.stroke();
             }
         }
     }
@@ -354,9 +354,9 @@ var numberOfPointsInFigure = 0;
 
 function createFigure() {
     if (uimode == "CreateFigure" && md == 4) {
-        if (figureMode == "Free") {
+        if (figureType == "Free") {
             figureFreeDraw();
-        } else if (figureMode == "Square") {
+        } else if (figureType == "Square") {
             figureSquare();
         }
     }
@@ -368,7 +368,7 @@ function createFigure() {
 function figureFreeDraw() {
     p1 = null;
     if (isFirstPoint) {
-        p2 = points.addpoint(cx, cy, false);
+        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         startPosition = p2;
         isFirstPoint = false;
     } else {
@@ -377,7 +377,7 @@ function figureFreeDraw() {
         if (activePoint != null) {
             p2 = activePoint;
         } else {
-            p2 = points.addpoint(cx, cy, false);
+            p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         }
         // Check if the new point is the starting point
         if (points[startPosition].x == points[p2].x &&
@@ -390,6 +390,7 @@ function figureFreeDraw() {
             figurePath.addsegment(1, p1, p2);
             diagram.push(figurePath);
             cleanUp();
+            openInitialDialog();
         } else {
             // Temporary store the new line and then render it
             var tempPath = new Path;
@@ -407,18 +408,19 @@ function figureFreeDraw() {
 //--------------------------------------------------------------------
 function figureSquare() {
     if (isFirstPoint) {
-        p1 = points.addpoint(cx, cy, false);
+        p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         isFirstPoint = false;
     } else {
-        p3 = points.addpoint(cx, cy, false);
-        p2 = points.addpoint(points[p1].x, points[p3].y, false);
-        p4 = points.addpoint(points[p3].x, points[p1].y, false);
+        p3 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+        p2 = points.addPoint(points[p1].x, points[p3].y, false);
+        p4 = points.addPoint(points[p3].x, points[p1].y, false);
         figurePath.addsegment(1, p1, p2);
         figurePath.addsegment(1, p2, p3);
         figurePath.addsegment(1, p3, p4);
         figurePath.addsegment(1, p4, p1);
         diagram.push(figurePath);
         cleanUp();
+        openInitialDialog();
     }
 }
 
@@ -429,8 +431,14 @@ function cleanUp() {
     figurePath = new Path;
     startPosition = null;
     uimode = null;
-    figureMode = null;
+    figureType = null;
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
     resetSelectionCreateFigure();
+}
+
+function openInitialDialog() {
+    lastSelectedObject = diagram.length -1;
+    diagram[lastSelectedObject].targeted = true;
+    openAppearanceDialogMenu();
 }
