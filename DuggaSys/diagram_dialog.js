@@ -3,11 +3,11 @@
 // The building blocks for creating the menu
 //--------------------------------------------------------------------
 function showMenu(){
-    document.getElementById("myCanvas").style.cursor = "default";
+    canvas.style.cursor = "default";
     $("#appearance").show();
     $("#appearance").width("auto");
     dimDialogMenu(true);
-    hashcurrent();
+    hashCurrent();
     return document.getElementById("f01");
 }
 function openAppearanceDialogMenu() {
@@ -21,8 +21,7 @@ function closeAppearanceDialogMenu() {
     /*
      * Closes the dialog menu for appearance.
      */
-
-    hashfunction();
+    hashFunction();
     $("#appearance").hide();
     dimDialogMenu(false);
     document.removeEventListener("click", clickOutsideDialogMenu);
@@ -56,6 +55,12 @@ function loadFormIntoElement(element, dir){
     file.open('GET', dir);
     file.onreadystatechange = function(){
         element.innerHTML = file.responseText;
+        document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+        document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
+        document.getElementById('symbolColor').value = diagram[lastSelectedObject].symbolColor;
+        document.getElementById('font').value = diagram[lastSelectedObject].font;
+        document.getElementById('fontColor').value = diagram[lastSelectedObject].fontColor;
+        document.getElementById('TextSize').value = diagram[lastSelectedObject].sizeOftext;
     }
     file.send();
 }
@@ -78,27 +83,43 @@ function objectAppearanceMenu(form) {
     */
 
     form.innerHTML = "No item selected<type='text'>";
-    if (diagram[selobj].symbolkind == 1) {
+    if (diagram[lastSelectedObject].symbolkind == 1) {
         loadFormIntoElement(form, 'forms/class_appearance.php');
     }
-    if (diagram[selobj].symbolkind == 2) {
+    if (diagram[lastSelectedObject].symbolkind == 2) {
         loadFormIntoElement(form, 'forms/attribute_appearance.php');
     }
-    if (diagram[selobj].symbolkind == 3) {
+    if (diagram[lastSelectedObject].symbolkind == 3) {
         loadFormIntoElement(form, 'forms/entity_appearance.php');
     }
-    if (diagram[selobj].symbolkind == 5) {
+    if (diagram[lastSelectedObject].symbolkind == 4) {
+        loadFormIntoElement(form, 'forms/line_appearance.php');
+    }
+    if (diagram[lastSelectedObject].symbolkind == 5) {
         loadFormIntoElement(form, 'forms/relation_appearance.php');
+    }
+    if (diagram[lastSelectedObject].kind == 1) {
+        loadFormIntoElement(form, 'forms/figure_appearance.php');
     }
 }
 function changeObjectAppearance(object_type){
     /*
      * USES DIALOG TO CHANGE OBJECT APPEARANCE
      */
-    diagram[selobj].name = document.getElementById('nametext').value;
-    diagram[selobj].fontColor = document.getElementById('fontColor').value;
-    diagram[selobj].font = document.getElementById('font').value;
-    diagram[selobj].sizeOftext = document.getElementById('TextSize').value;
-    diagram[selobj].key_type = document.getElementById('object_type').value;
-    updategfx();
+
+    if (diagram[lastSelectedObject].symbolkind == 4) {
+        diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
+    } else if (diagram[lastSelectedObject].kind == 1){
+        diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
+        diagram[lastSelectedObject].strokeColor = document.getElementById('figureLineColor').value;
+    } else {
+        diagram[lastSelectedObject].symbolColor = document.getElementById('symbolColor').value;
+        diagram[lastSelectedObject].name = document.getElementById('nametext').value;
+        diagram[lastSelectedObject].fontColor = document.getElementById('fontColor').value;
+        diagram[lastSelectedObject].font = document.getElementById('font').value;
+        diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
+        diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
+        diagram[lastSelectedObject].strokeColor = document.getElementById('AttributeLineColor').value;
+    }
+    updateGraphics();
 }

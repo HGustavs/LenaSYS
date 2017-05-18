@@ -29,7 +29,8 @@ $cid = getOP('cid'); // Course id
 $vers = getOP('vers'); // Course version
 
 // When using opt NEWGROUP
-$name=getOP("name"); // Name (when creating a new group)
+$chosenMoment=getOP("chosenMoment"); // Moment (when creating new  groups, lid needs to be connected)
+$groupName=getOP("groupName"); // Name on group (when creating new groups, a name is needed)
 
 // When using opt UPDATEGROUP
 $uid = getOP('uid'); // User id
@@ -45,7 +46,7 @@ $debug="NONE!";
 
 // Create arguments for log
 $log_uuid = getOP('log_uuid'); // Cookie id or something.. 
-$info=$opt." ".$cid." ".$vers." ".$name." ".$uid." ".$lid." ".$oldUgid." ".$newUgid;
+$info=$opt." ".$cid." ".$vers." ".$groupName." ".$uid." ".$lid." ".$oldUgid." ".$newUgid;
 
 // Log the start event of this service query. This is logged in log.db (not MySQL)
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, __FILE__, $userid, $info);
@@ -124,7 +125,7 @@ if(strcmp($opt,"GET")==0){
 		$groupData = $query->fetchAll(PDO::FETCH_ASSOC);
 	
 		// Fourth query: Select all available groups
-		$query = $pdo->prepare("SELECT lid, ugid, name FROM usergroup"); // Query to get all existing groups 
+		$query = $pdo->prepare("SELECT lid, ugid, name FROM usergroup ORDER BY name"); // Query to get all existing groups 
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -153,9 +154,12 @@ if(strcmp($opt,"GET")==0){
 	
 		// Iterate groups and place per lid
 		foreach($groupsPerLids as $lid => &$val) { // [2001] => 0, [2013] => 1
+			$val = array(); // Make the value an array (else php makes it a scalar error)
 			foreach($allGroups as $group) {
 				if($lid == $group['lid']) {
-					$groupsPerLids[$lid] = array($group['ugid'] => $group['name']);
+					// If there is a lid match, insert the group as available for the lid
+					$arr = array($group['ugid'] => $group['name']);
+					array_push($val, $arr);
 				}
 			}
 		}
@@ -168,8 +172,9 @@ if(strcmp($opt,"GET")==0){
 
  	}
 } else if(strcmp($opt,"NEWGROUP")==0){
-	$query = $pdo->prepare("INSERT INTO `usergroup` (`ugid`, `name`, `created`, `lastupdated`) VALUES (DEFAULT, :name, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"); 
-	$query->bindParam(':name', $name);
+	$query = $pdo->prepare("INSERT INTO usergroup (ugid,name,lid,created,lastupdated) VALUES (DEFAULT, :groupName,:chosenMoment,CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)"); 
+	$query->bindParam(':chosenMoment', $chosenMoment);
+	$query->bindParam(':groupName', $groupName);
 
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -180,8 +185,9 @@ if(strcmp($opt,"GET")==0){
 				$codeexamples,
 				array(
 					'ugid' => (int)$row['ugid'],
-					'name' => $row['name'],
+					'name' => $row['groupName'],
 					'created' => $row['created'],
+					'lid' => (int)$row['chosenMoment'],
 					'lastupdated' => $row['lastupdated']
 				)
 			);
@@ -190,14 +196,38 @@ if(strcmp($opt,"GET")==0){
 } else if(strcmp($opt, "UPDATEGROUP") == 0) {
 	
 	if($newUgid > 0) { // User wants to assign to a group 
-		$query = $pdo->prepare("REPLACE INTO user_usergroup (uid, ugid) VALUES (:uid, :newUgid)");
-		$query->bindParam(":uid", $uid);
-		$query->bindParam(":newUgid", $newUgid);
+		
+		// Check if the user is in the database together with the oldUgid
+		$query = $pdo->prepare("SELECT COUNT(*) FROM user_usergroup WHERE uid = :uid AND ugid = :oldUgid");
+		$query->bindParam(':uid', $uid);
+		$query->bindParam(':oldUgid', $oldUgid);
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error inserting/updating uid/ugid mapping. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			$debug="Failed to check if this user is assigned to a group. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
 		}
+		
+		if($query->fetchColumn() > 0) { // If the user is in the database together with the oldUgid, update to the new one 
+			$query = $pdo->prepare("UPDATE user_usergroup SET ugid = :newUgid WHERE uid = :uid AND ugid = :oldUgid");
+			$query->bindParam(':uid', $uid);
+			$query->bindParam(':newUgid', $newUgid);
+			$query->bindParam(':oldUgid', $oldUgid);
+			
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Failed to update a user/group assignment. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			}
+		} else { // Else, insert a new row for the user 
+			$query = $pdo->prepare("INSERT INTO user_usergroup (uid, ugid) VALUES (:uid, :newUgid)");
+			$query->bindParam(':uid', $uid);
+			$query->bindParam(':newUgid', $newUgid);
+			
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Failed to insert a user/group assignment. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			}
+		}
+		
 	} else { // User wants to unassign from a group 
 		$query = $pdo->prepare("DELETE FROM user_usergroup WHERE uid = :uid AND ugid = :oldUgid");
 		$query->bindParam(":uid", $uid);

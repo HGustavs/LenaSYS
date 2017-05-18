@@ -361,7 +361,7 @@ function formatted_debug($item, $desc = null) {
 	if(isset($desc)) {
 		echo "<h3 style='color: tomato'>".$desc."</h3>";
 	}
-	echo "<pre'>";
+	echo "<pre>";
 	echo var_dump($item);
 	echo "</pre>";
 	echo "<hr>";

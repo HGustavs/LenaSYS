@@ -77,3 +77,7 @@ Added rows to 'vers' to have a start date and end date to a version of a course
 /* Updated courseexample to match the current version of the course */
 INSERT INTO codeexample ... (1,'PHP Example 1',"PHP Startup","PHP_Ex1.php",1,2013,'2','1',1,1); # Old version
 INSERT INTO codeexample ... (1,'PHP Example 1',"PHP Startup","PHP_Ex1.php",1,45656,'2','1',1,1); # New version
+
+Made ´name´ in usergroup not unique
+	´name´ varchar(255) NOT NULL UNIQUE #Old version
+	´name´ varchar(255) NOT NULL #New version

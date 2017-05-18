@@ -1,0 +1,76 @@
+/*p{font-family: Calibri,sans-serif;font-size:0.95em; color: #000; line-height: 1.3em; }
+h1{font-family: Calibri,sans-serif;font-size:1.8em; color: #000;}
+h2{font-family: Calibri,sans-serif;font-size:1.5em; color: #000;}
+h3{font-family: Calibri,sans-serif;font-size:1.3em; color: #000;}
+h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
+*/
+
+h1{color: #000;}
+
+strong {font-weight: bold;}
+
+.outertd{
+	/*font-family:calibri;*/
+	padding:4px;
+	font-size:20px;
+}
+
+.outer{
+	border-collapse: collapse;
+}
+
+.noll { 
+	text-align:center;
+	vertical-align:middle;
+	background:#523;
+	color:#fff;
+	box-shadow:2px 2px 3px #646;
+	padding:4px;
+	border-radius:6px;
+	cursor:pointer;
+}
+
+.ett { 
+	text-align:center;
+	vertical-align:middle;
+	background:#c9a;
+	color:#000;
+	box-shadow:2px 2px 3px #646;
+	padding:4px;
+	border-radius:6px;
+	cursor:pointer;
+}
+
+.hexo { 
+	text-align:center;
+	vertical-align:middle;
+	background:#c9a;
+	color:#000;
+	box-shadow:2px 2px 3px #646;
+	padding:4px;
+	border-radius:6px;
+	cursor:pointer;
+}
+
+.hexbutt { 
+	text-align:center;
+	vertical-align:middle;
+	background:#b89;
+	color:#000;
+	box-shadow:2px 2px 3px #646;
+	padding:4px;
+	border-radius:6px;
+	cursor:pointer;
+}
+
+.popover {
+	margin: 2px;
+	position: relative;
+	box-sizing: border-box;
+	width: 400px;
+	padding: 8px;
+	background-color:#523;
+	/* border: 2px outset #000; */
+	background: linear-gradient(to bottom, #fff 10px, #fde 90%); 
+	border-radius:8px;
+}
