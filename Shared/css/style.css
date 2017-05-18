@@ -1315,11 +1315,6 @@ input.large-button {
     border-bottom:none !important;
 }
 
-.list#testTable input {
-    border-width: 1px !important;
-    border-style: inset !important;
-}
-
 #testinnertable {
     background:#fff;
     box-shadow:none;
@@ -2077,24 +2072,24 @@ table {
 
 
 /* Smartphones (portrait and landscape) ----------- */
-@media only screen
-and (min-device-width : 320px)
-and (max-device-width : 480px) {
+/* @media only screen */
+/* and (min-device-width : 320px) */
+/* and (max-device-width : 480px) { */
 #cookiemsg {
   background-color: #fecc56;
   z-index: 1000;
   position: fixed;
   bottom: 0px;
   width: 100%;
-  height: 60px;
+  height: 40px;
   padding: 0 20px 0 0px;
   display: flex;
-  justify-content: center;
+  text-align: center;
 }
 
 #cookiemsg p {
-  margin: 0px;
-  margin-left: 5px;
+  /* margin: 0px; */
+  /* margin-left: 5px; */
   display: inline;
   align-self: center;
   color: #614875;
@@ -2105,7 +2100,7 @@ and (max-device-width : 480px) {
   align-self: center;
   margin-right: 5px;
 }
-}
+/* } */
 
 .nowrap {
   white-space: nowrap;
@@ -2334,6 +2329,18 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
+  
+  #cookiemsg {
+	background-color: #fecc56;
+	z-index: 1000;
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	height: 60px;
+	padding: 0 20px 0 0px;
+	display: flex;
+	text-align: center;
+	}
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
@@ -2362,9 +2369,21 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
+
   .loginBox{
   top: 8%;
   left: 10%;
+
+    #cookiemsg {
+  background-color: #fecc56;
+  z-index: 1000;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  height: 60px;
+  padding: 0 20px 0 0px;
+  display: flex;
+  text-align: center;
   }
 }
 /* Title for the subpages of the section-editor */
