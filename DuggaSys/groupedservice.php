@@ -193,14 +193,38 @@ if(strcmp($opt,"GET")==0){
 } else if(strcmp($opt, "UPDATEGROUP") == 0) {
 	
 	if($newUgid > 0) { // User wants to assign to a group 
-		$query = $pdo->prepare("REPLACE INTO user_usergroup (uid, ugid) VALUES (:uid, :newUgid)");
-		$query->bindParam(":uid", $uid);
-		$query->bindParam(":newUgid", $newUgid);
+		
+		// Check if the user is in the database together with the oldUgid
+		$query = $pdo->prepare("SELECT COUNT(*) FROM user_usergroup WHERE uid = :uid AND ugid = :oldUgid");
+		$query->bindParam('uid', $uid);
+		$query->bindParam('oldUgid', $oldUgid);
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error inserting/updating uid/ugid mapping. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			$debug="Failed to check if this user is assigned to a group. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
 		}
+		
+		if($query->fetchColumn() > 0) { // If the user is in the database together with the oldUgid, update to the new one 
+			$query = $pdo->prepare("UPDATE user_usergroup SET ugid = :newUgid WHERE uid = :uid AND ugid = :oldUgid");
+			$query->bindParam(':uid', $uid);
+			$query->bindParam(':newUgid', $newUgid);
+			$query->bindParam(':oldUgid', $oldUgid);
+			
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Failed to update a user/group assignment. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			}
+		} else { // Else, insert a new row for the user 
+			$query = $pdo->prepare("INSERT INTO user_usergroup (uid, ugid) VALUES (:uid, :newUgid)");
+			$query->bindParam(':uid', $uid);
+			$query->bindParam(':newUgid', $newUgid);
+			
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Failed to insert a user/group assignment. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			}
+		}
+		
 	} else { // User wants to unassign from a group 
 		$query = $pdo->prepare("DELETE FROM user_usergroup WHERE uid = :uid AND ugid = :oldUgid");
 		$query->bindParam(":uid", $uid);
