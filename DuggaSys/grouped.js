@@ -427,6 +427,9 @@ function changegroup(changedElement) {
 	
 	// This AJAXService will map uid to ugid in user_usergroup
 	AJAXService("UPDATEGROUP", data, "GROUP");
+
+	// Update the ID of the element 
+	changedElement.id = (value > 0) ? uid+"_"+lid+"_"+value : uid+"_"+lid; 
 }
 
 function resort()
