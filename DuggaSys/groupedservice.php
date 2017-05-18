@@ -196,8 +196,8 @@ if(strcmp($opt,"GET")==0){
 		
 		// Check if the user is in the database together with the oldUgid
 		$query = $pdo->prepare("SELECT COUNT(*) FROM user_usergroup WHERE uid = :uid AND ugid = :oldUgid");
-		$query->bindParam('uid', $uid);
-		$query->bindParam('oldUgid', $oldUgid);
+		$query->bindParam(':uid', $uid);
+		$query->bindParam(':oldUgid', $oldUgid);
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
