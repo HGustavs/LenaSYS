@@ -124,7 +124,7 @@ if(strcmp($opt,"GET")==0){
 		$groupData = $query->fetchAll(PDO::FETCH_ASSOC);
 	
 		// Fourth query: Select all available groups
-		$query = $pdo->prepare("SELECT lid, ugid, name FROM usergroup"); // Query to get all existing groups 
+		$query = $pdo->prepare("SELECT lid, ugid, name FROM usergroup ORDER BY name"); // Query to get all existing groups 
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
