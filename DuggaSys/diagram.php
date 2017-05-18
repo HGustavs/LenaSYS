@@ -129,7 +129,7 @@
                             <a href="#" onclick="align('verticalCenter');">Vertical center</a>
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick="align('horizontalCenter');">HorizontalCenter</a>
+                            <a href="#" onclick="align('horizontalCenter');">Horizontal center</a>
                         </div>
 
                     </div>
