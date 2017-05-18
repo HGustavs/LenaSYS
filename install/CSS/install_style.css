@@ -454,3 +454,20 @@ polygon {
     color: white;
     font-size: 30px;
 }
+
+/* Styles for the button to go back to start */
+#goBackBtn {
+    background-color: rgb(253,203,96); /* Yellow */
+    position: absolute;
+    right: 0;
+    top: 20px;
+    color: black;
+    padding: 5px 10px 5px 5px;
+    text-decoration: none;
+}
+/* Mouse-over effect */
+#goBackBtn:hover,
+#goBackBtn:focus {
+    opacity: 0.7;
+    cursor: pointer;
+}

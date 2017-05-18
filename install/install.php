@@ -472,6 +472,7 @@
                     <rect id='progressRect' width='0' height='20px' />
                 </svg>
                 <span id='percentageText'></span>
+                <a href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
             </div>";
 
         /* Javascripts to calculate length of progressRect. This will show the current progress in progressBar. */
