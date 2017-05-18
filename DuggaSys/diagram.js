@@ -969,6 +969,12 @@ function align(mode){
         case 'right':
             alignRight(selected_objects);
         break;
+        case 'verticalCenter':
+            alignVerticalCenter(selected_objects);
+        break;
+        case 'horizontalCenter':
+            alignHorizontalCenter(selected_objects);
+        break;
     }
     updateGraphics();
     hashFunction();
@@ -1010,14 +1016,46 @@ function alignRight(selected_objects){
 }
 
 function alignBottom(selected_objects){
-    var highest_y = 0;
+    var highest_x = 0;
     for(var i = 0; i < selected_objects.length; i++){
-        if(points[diagram[i].bottomRight].y > highest_y){
-            highest_y = points[diagram[i].bottomRight].y;
+        if(points[diagram[i].bottomRight].y > highest_x){
+            highest_x = points[diagram[i].bottomRight].y;
         }
     }
     for(var i = 0; i < selected_objects.length; i++){
-        selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
+        selected_objects[i].move(0, highest_x-points[selected_objects[i].bottomRight].y);
+    }
+}
+function alignVerticalCenter(selected_objects){
+    var highest_x = 0, lowest_y = 99999, selected_center_y = 0;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[diagram[i].bottomRight].y > highest_x){
+            highest_x = points[diagram[i].bottomRight].y;
+        }
+        if(points[diagram[i].topLeft].y < lowest_y){
+            lowest_y = points[diagram[i].topLeft].y;
+        }
+    }
+    selected_center_y = (highest_x-lowest_y)/2;
+    for(var i = 0; i < selected_objects.length; i++){
+        var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
+        selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
+    }
+}
+function alignHorizontalCenter(selected_objects){
+    var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[diagram[i].topLeft].x > highest_x){
+            highest_x = points[diagram[i].bottomRight].x;
+        }
+        if(points[diagram[i].bottomRight].x < lowest_x){
+            lowest_x = points[diagram[i].topLeft].x;
+        }
+    }
+    selected_center_x = (highest_x-lowest_x)/2;
+    for(var i = 0; i < selected_objects.length; i++){
+        var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
+        selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
 }
 
