@@ -146,9 +146,9 @@ function checkAnswer($username, $securityquestionanswer)
 		$securityquestionanswer = strtolower($securityquestionanswer);
 
 		if (password_verify($securityquestionanswer, $row['securityquestionanswer'])){
-			if (standardPasswordNeedsRehash($row['securityquestionanswer'], PASSWORD_BCRYPT)) {
+			if (standardPasswordNeedsRehash($row['securityquestionanswer'])) {
  			// The php password is not up to date, update it to be even safer (the cost may have changed, or another algoritm than bcrypt is used)
- 				$row['securityquestionanswer'] = password_hash($securityquestionanswer, PASSWORD_BCRYPT);
+ 				$row['securityquestionanswer'] = standardPasswordHash($securityquestionanswer);
  				$query = $pdo->prepare("UPDATE user SET securityquestionanswer = :sqa WHERE uid=:uid");
  				$query->bindParam(':uid', $row['uid']);
  				$query->bindParam(':sqa', $row['securityquestionanswer']);
@@ -240,7 +240,7 @@ function login($username, $password, $savelogin)
 			$query->execute();
 		} else if (password_verify($password, $row['password'])) {
 			// User has a php password
-			if (standardPasswordNeedsRehash($row['password'], PASSWORD_BCRYPT)) {
+			if (standardPasswordNeedsRehash($row['password'])) {
 				// The php password is not up to date, update it to be even safer (the cost may have changed, or another algoritm than bcrypt is used)
 				$row['password'] = standardPasswordHash($password);
 				$query = $pdo->prepare("UPDATE user SET password = :pwd WHERE uid=:uid");

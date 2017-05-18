@@ -91,20 +91,23 @@ function resetFields(){
 //----------------------------------------------------------------------------------
 
 function setExpireCookie(){
-	var expireDate = new Date();
-	expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));////8100000, denotes time in milliseconds
-  
-	document.cookie = "sessionEndTime=expireC; expires="+ expireDate.toGMTString() +"; path=/";
+    if(localStorage.getItem("securityquestion") === "set") {
+        var expireDate = new Date();
+        expireDate.setTime(expireDate.getTime() + (1 * 2 * 8100000));////8100000, denotes time in milliseconds
+
+        document.cookie = "sessionEndTime=expireC; expires=" + expireDate.toGMTString() + "; path=/";
+    }
 }
 
 //----------------------------------------------------------------------------------
 // Sets a cookie that expires at the same time as the user is logged out (when the session ends)
 //----------------------------------------------------------------------------------
-function setExpireCookieLogOut(){
-	var expireDate = new Date();
-	expireDate.setTime(expireDate.getTime() + (1 * 2 * 9000000));
-
-	document.cookie = "sessionEndTimeLogOut=expireC; expires="+ expireDate.toGMTString() +"; path=/";
+function setExpireCookieLogOut() {
+    if (localStorage.getItem("securityquestion") === "set") {
+        var expireDate = new Date();
+        expireDate.setTime(expireDate.getTime() + (1 * 2 * 9000000));
+        document.cookie = "sessionEndTimeLogOut=expireC; expires=" + expireDate.toGMTString() + "; path=/";
+    }
 }
 //----------------------------------------------------------------------------------
 function closeWindows(){
@@ -597,14 +600,9 @@ function addSecurityQuestionProfile(username) {
 	});
 }
 
-function checkHTTPS(safeConnection) { 
-    //Checks if the user is using a secure https connection
-    if (location.protocol == 'https:') { 
-        safeConnection = true;
-    } 
-    else{
-        safeConnection = false;    
-    }
+// Checks if the page is using https
+function checkHTTPS() { 
+	return (location.protocol == 'https:');
 } 
 
 function processResetPasswordCheckUsername() {
@@ -937,7 +935,7 @@ function sessionExpireLogOut() {
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
 			$(".endsessionmessagebox").css("display","block");
-			processLogout();
+			//processLogout();
 			clearInterval(intervalId);
 		}
 
@@ -1030,15 +1028,18 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							tab+="<tr'>"
 
 							tab+="<td style='padding:4px'>";
-							// Button for making / viewing feedback - note - only button for given feedback to students.
-							tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>P</button>";
-							tab+="</td>";
-
-							tab+="<td style='padding:4px;'>";
+							// Button for making / viewing feedback - note - only button for given feedback to students.			
 							if (ctype == "link"){
-									tab+="<a href='"+filez[i].content+"' >"+filez[i].content+"</a>";
+									tab+="<a href='"+filez[i].content+"' ><button>P</button></a>";
 							} else {
-									tab+="<a href='"+filelink+"' >"+filez[i].filename+"."+filez[i].extension+"</a>";
+									tab+="<a href='"+filelink+"' ><button>P</button></a>";
+							}
+							tab+="</td>";
+							tab+="<td style='padding:4px;'>";
+                            if (ctype == "link"){
+                                    tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>"+filez[i].content+"</span>";
+							} else {
+                                    tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>"+filez[i].filename+"."+filez[i].extension+"</span>";
 							}
 							tab+="</td><td style='padding:4px;'>";
 							tab+=filez[i].updtime;+"</td>";

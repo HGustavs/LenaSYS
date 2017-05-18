@@ -3,7 +3,7 @@
   <div id="overlay" style="display:none"></div>
   
 	<!-- Login Box Start! -->
-  <div id='loginBox' class="loginBox" style="display:none; width: 295px;">
+  <div id='loginBox' class="loginBox" style="display:none;">
 		<div id='login'>
 			<div class='loginBoxheader'>
 				<h3>Login</h3>
@@ -160,7 +160,7 @@
       <div class='cursorPointer' onclick="closeWindows()">x</div>
     </div>
     <p id="expiremessage">Your session will expire in about 30 minutes. Refresh session ?</p>
-    <input type="button" class="submit-button" onclick="closeWindows(); refreshUserSession()" value="Refresh">
+    <input type="button" id="expiremessagebutton" class="submit-button" onclick="closeWindows(); refreshUserSession()" value="Refresh">
   </div>
 
   <div class="endsessionmessagebox" style="display:none">
@@ -169,5 +169,6 @@
       <div onclick="closeWindows(); reloadPage()">x</div>
     </div>
     <p id="endsessionmessage">Your session has timed out.</p>
+    <input type="button" id="endsessionboxbutton" onclick="closeWindows(); processLogout();" value="OK">
   </div>
   <!-- Session expire message END -->

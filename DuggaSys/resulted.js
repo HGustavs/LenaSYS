@@ -206,8 +206,8 @@ function redrawtable()
         show=true;
       }
       var strt="";
-      strt+="<tr class='fumo'>"
-      strt+="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>"
+      strt+="<tr class='fumo "+ (row % 2 == 1 ? 'hi' : 'lo') + "'>";
+      strt+="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>";
       var student=students[i];
       for(var j=0;j<student.length;j++){
         if(student[j].access == "W") { // Member is a teacher
