@@ -46,7 +46,7 @@
 	<div id='groupSection' class='loginBox' style='width:285px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Manage Groups</h3>
-			<div onclick='closeWindows();'>x</div>
+			<div onclick='closeWindows();clearGroupWindow();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<div id='inputwrapper-name' class='inputwrapper' style='display:inline-block;'>
