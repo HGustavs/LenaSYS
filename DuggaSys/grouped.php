@@ -62,7 +62,7 @@
 		</div>
 		<p style="display:none; color:red;" id="numberOfGroupsError">You have to assign how many groups should be created.</p> 
 		<div style='padding:5px;'>
-			<input style='float:none; display: inline-block;' class='submit-button ' type='button' value='Cancel' onclick='closeWindows();' /> 
+			<input style='float:none; display: inline-block;' class='submit-button ' type='button' value='Cancel' onclick='closeWindows();clearGroupWindow();' /> 
 			<input style='margin-left: 40px; float:none; display: inline-block;' class='submit-button' type='button' value='Submit' onclick='createGroup();' /> 
 		</div>
 	</div>
