@@ -11,8 +11,6 @@ session_start();
 if (isset($argc) && $argc == 2) {
 	if ($argv[1] == "quizreminders") {
 		set_time_limit(0);
-		//$querystring = "SELECT listentries.entryname, listentries.kind, quiz.qrelease, quiz.deadline 
-		//								FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id";
 		$querystring = "SELECT course.coursecode, course.coursename, course.cid, course.activeversion, listentries.entryname, quiz.qname, quiz.deadline, user_course.uid
 										FROM course, listentries, quiz, user_course
 										WHERE course.cid = listentries.cid
@@ -28,11 +26,15 @@ if (isset($argc) && $argc == 2) {
 		$query->bindParam(':deadline', $todaysDate);
 		if(!$query->execute()) {
 			$error = $query->errorInfo();
-			$debug = "Error finding duggas ".$error[2];
+			$debug = "Error finding quizzes ".$error[2];
+			echo $debug;
 		} else {
 			$rows = $query->fetchAll(PDO::FETCH_ASSOC);
+			include_once "../Shared/pushnotificationshelper.php";
 			foreach($rows as $row) {
-				echo "Send to user ".$row['uid'].": Deadline at ".$row['deadline']." for ".$row['entryname']." in course [".$row['coursecode']."] ".$row['coursename']."\n";
+				$results = sendPushNotification($row['uid'], "Upcoming deadline at ".$row['deadline']." for ".$row['entryname']." in course [".$row['coursecode']."] ".$row['coursename']);
+				// Ignore results of whether the push notification was sent or not, as this notification is only for user convenience
+				echo "Sent to user ".$row['uid']."\n";
 			}
 		}
 	} else {
@@ -41,7 +43,7 @@ if (isset($argc) && $argc == 2) {
 } else {
 	echo "Usage: php cronjob.php JOB\n";
 	echo "JOB can be any of following:\n";
-	echo "  quizreminders - This will send reminders about deadlines for quizes expiring next day\n";
+	echo "  quizreminders - This will send reminders about deadlines for quizes expiring next day - Run this in the morning, not nighttime\n";
 }
 
 ?>
