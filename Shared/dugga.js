@@ -592,14 +592,9 @@ function addSecurityQuestionProfile(username) {
 	});
 }
 
-function checkHTTPS(safeConnection) { 
-    //Checks if the user is using a secure https connection
-    if (location.protocol == 'https:') { 
-        safeConnection = true;
-    } 
-    else{
-        safeConnection = false;    
-    }
+// Checks if the page is using https
+function checkHTTPS() { 
+	return (location.protocol == 'https:');
 } 
 
 function processResetPasswordCheckUsername() {
@@ -932,7 +927,7 @@ function sessionExpireLogOut() {
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
 			$(".endsessionmessagebox").css("display","block");
-			processLogout();
+			//processLogout();
 			clearInterval(intervalId);
 		}
 

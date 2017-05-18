@@ -375,11 +375,11 @@ p {
 }
 
 .hi {
-  background-color:#dad8db;
+  background-color:#dad8db !important;
 }
 
 .lo {
-	background-color:#eae8eb;
+	background-color:#eae8eb !important;
 }
 
 .LightBox {
@@ -442,6 +442,24 @@ p {
 /* Instruction and submission of dugga */
 #leftDivDialog, #rightDivDialog{
   width: 49%;
+}
+
+.tooltip{
+  line-height: 32px;
+}
+
+.tooltiptext{
+  display: none;
+  width: 160px;
+  background-color: #614875;
+  color: white;
+  text-align: center;
+  border-radius: 6px;
+  margin: 0 5px;
+}
+
+.tooltip:hover .tooltiptext {
+  display: inline-block;
 }
 
 /* --------------================################================-------------- *
@@ -660,15 +678,38 @@ header td {
   padding:4px;
   background-color: #ccc;
   border: 2px solid #999;
-  width: 350px;
+  width: 295px;
   min-height: 100px;
   z-index: 9000;
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  margin-left: -178px;
+  position: absolute;
+  top: 20%;
+  left: 40%;
+  
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
+
+#endsessionboxbutton {
+  background-color:#614875;
+  border:0px;
+  width:110px;
+  height:30px;
+  color:#fff;
+  cursor:pointer;
+  margin-top:6px;
+  margin-bottom:2px;
+  margin-left:120px;
+  font-size:14px;
+  transition:1s background-color;
+  line-height: 30px;
+  text-align: center;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 10px 0 rgba(0,0,0,0.1);
+}
+
+#endsessionboxbutton:hover {
+  background-color:#7B5A96;
+  border-radius:2px;
+}
+
 #editSection {
   top: 50%;
   left: 50%;
@@ -807,7 +848,6 @@ input {
   cursor:move;
   display:flex;
   justify-content: space-around;
-  /*  padding-top: 15px; */
 }
 
 .loginBoxheader h3 {
@@ -882,17 +922,25 @@ input {
 
 }
 
-.buttonLoginBox{
-  background-color: #614875;
+.buttonLoginBox {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  width: 260px;
-  height: 40px;
-  color: #fff;
-  cursor: pointer;
-  font-size: 14px;
+  background-color:#614875;
   border: none;
-  border-radius: 0px;
-  margin-top: 30px;
+  width:260px;
+  height:40px;
+  color:#fff;
+  cursor:pointer;
+  margin-top:20px;
+  margin-bottom:2px;
+  font-size:14px;
+  transition:1s background-color;
+  text-align: center;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 10px 0 rgba(0,0,0,0.1);
+}
+
+.buttonLoginBox:hover {
+  background-color:#7B5A96;
+  border-radius:2px;
 }
 
 .loginBoxTable{
@@ -1370,12 +1418,31 @@ span.arrow {
 /* DuggaSys Sectioneed*/
 
 
-/* select element */
-.course-dropdown {
-	height: 30px;
-	margin-top: 6px;
-    float:right;
+/* Course version dropdown div */
+.course-dropdown-div {
+    border: 1px solid #ccc;
+    height: 25px;
+    width: 120px;
+    border-radius: 3px;
+    overflow: hidden;
+    background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
 }
+/* Course version dropdown */
+.course-dropdown {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: bold;
+    border: none;
+    width: 120px;
+    height: 25px;
+    box-shadow: none;
+    background: transparent;
+    background-image: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    vertical-align: text-top;
+}
+
+
 
 /* End DuggaSys Sectioneed*/
 /**************************/
@@ -1609,7 +1676,6 @@ span.arrow {
 
 .dugga-unassigned {
 	border-left: 2px solid rgb(219, 208, 216);
-	background-color: rgb(255, 255, 255);
 }
 
 .dugga-unassigned-highlighted {
@@ -2074,6 +2140,22 @@ table.navheader div.menuButton {
   -o-transition: opacity 0.5s;
 }
 
+/* Simple material design boxes */
+.material-box {
+   border-radius: 2px;
+   margin: 10px;
+   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+   padding: 20px;
+}
+.material-box h3 {
+  margin: -20px -20px 10px -20px;
+  border-radius: 2px 2px 0 0;
+  background: #614875;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+
 /* Hamburger menu, hidden as default state */
 table.navheader td.hamburger {
   pointer-events: none;
@@ -2287,6 +2369,11 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
+
+  .loginBox{
+  top: 8%;
+  left: 10%;
+
     #cookiemsg {
   background-color: #fecc56;
   z-index: 1000;
