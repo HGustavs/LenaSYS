@@ -678,13 +678,13 @@ header td {
   padding:4px;
   background-color: #ccc;
   border: 2px solid #999;
-  width: 350px;
+  width: 295px;
   min-height: 100px;
   z-index: 9000;
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  margin-left: -178px;
+  position: absolute;
+  top: 20%;
+  left: 40%;
+  
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 
@@ -848,7 +848,6 @@ input {
   cursor:move;
   display:flex;
   justify-content: space-around;
-  /*  padding-top: 15px; */
 }
 
 .loginBoxheader h3 {
@@ -2362,6 +2361,10 @@ ul.hamburgerList button.menuButton {
     display: block;
     height: 26px;
     opacity: 1.0;
+  }
+  .loginBox{
+  top: 8%;
+  left: 10%;
   }
 }
 /* Title for the subpages of the section-editor */
