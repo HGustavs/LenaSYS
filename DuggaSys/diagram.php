@@ -30,11 +30,11 @@
     /*/this script fix so that the drop down menus close after you have clicked on something on them./*/
     <script>
         $(document).ready(function(){
-    $(".drop-down-item").click(function(){
-    $("a").slideUp(); });
+        $(".drop-down-item").click(function(){
+        $("a").slideUp(); });
 
-    $(".drop-down-item").click(function(){
-    $("a").slideDown(); });
+        $(".drop-down-item").click(function(){
+        $("a").slideDown(); });
     });
     </script>
 
@@ -176,10 +176,13 @@
         </div>
         <div id="canvasDiv"></div>
         <div id="consoleDiv">
-            <!--<div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>-->
+            <!--
+                Can be used for a later date. Not needed now.
+            <div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>
+            <input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
+            <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />
+            -->
             <div id='valuesCanvas'></div>
-            <!--<input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
-            <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />-->
             <div id="selectDiv">
                 <select name="Zoom" id="ZoomSelect" onchange="zoomInMode();">
                     <option selected='selected' disabled>Choose zoom</option>
@@ -221,35 +224,31 @@
         if(isset($_POST['id'])){
 
         }
-    ?>
-    <?php
-         //if(!isset($_POST['StringDiagram']) ){
-         //   mkdir("Save", 0777,true);
-         //   $getID = fopen("Save/id.txt", "r");
-         //   $a = intval(fread($getID,filesize("Save/id.txt")));
-         //   $a += 1;
-         //   $overwriteID = fopen("Save/id.txt", "w");
-         //   mkdir ("Save/$a", 0777, true);
-         //   fwrite($overwriteID,$a);
-//
-         //}
-    ?>
-
-    <?php
-    if(isset($_POST['StringDiagram'])) {
+        /*
+        if(!isset($_POST['StringDiagram']) ){
+           mkdir("Save", 0777,true);
+           $getID = fopen("Save/id.txt", "r");
+           $a = intval(fread($getID,filesize("Save/id.txt")));
+           $a += 1;
+           $overwriteID = fopen("Save/id.txt", "w");
+           mkdir ("Save/$a", 0777, true);
+           fwrite($overwriteID,$a);
+        }
+        */
+        if(isset($_POST['StringDiagram'])) {
             $str = $_POST['StringDiagram'];
             $hash = $_POST['Hash'];
             save($str,$hash);
         }
-    function save($data, $hash) {
-        $getID = fopen("Save/id.txt", "r");
-        $a = intval(fread($getID,filesize("Save/id.txt")));
-        $myfile = fopen("Save/$a/$hash.txt", "w");
-        fwrite($myfile, $data);
-        //<script type="text/javascript">var c_id = "<?= $a
-        //?//>";</script>
-        //<script type="text/javascript" src="diagram_IOHandler.js"></script>
-    }
+        function save($data, $hash) {
+            $getID = fopen("Save/id.txt", "r");
+            $a = intval(fread($getID,filesize("Save/id.txt")));
+            $myfile = fopen("Save/$a/$hash.txt", "w");
+            fwrite($myfile, $data);
+            //<script type="text/javascript">var c_id = "<?= $a
+            //?//>";</script>
+            //<script type="text/javascript" src="diagram_IOHandler.js"></script>
+        }
 
     
     ?>
