@@ -63,12 +63,15 @@ function makeSortable(table) {
             } else {
                 clearTimeout(timer);
                 $(this).closest('table').find('tbody').fadeToggle(500,'linear'); //perform double-click action
-                if($('.arrowRight', this).css('display') == 'none'){
-                	$('.arrowRight', this).delay(200).slideToggle(300,'linear');
-    	            $('.arrowComp', this).slideToggle(300,'linear');	
-				}else{
-					$('.arrowRight', this).slideToggle(300,'linear');
-                	$('.arrowComp', this).delay(200).slideToggle(300,'linear');
+                if($(this).closest('tr').find('.arrowRight').css('display') == 'none'){
+    	            $(this).closest('tr').find('.arrowRight').delay(200).slideToggle(300,'linear');
+    	            $(this).closest('tr').find('.arrowComp').slideToggle(300,'linear');
+				} else if ($(this).closest('tr').find('.arrowComp').css('display') == 'none'){
+					$(this).closest('tr').find('.arrowRight').slideToggle(300,'linear');
+    	            $(this).closest('tr').find('.arrowComp').delay(200).slideToggle(300,'linear');
+				} else {
+					$(this).closest('tr').find('.arrowRight').slideToggle(300,'linear'); 
+					$(this).closest('tr').find('.arrowComp').slideToggle(300,'linear');
 				}
                 clicks = 0;             //after action performed, reset counter
             }
