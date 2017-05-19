@@ -297,7 +297,7 @@ function returnedCourse(data)
 
 	if (data['writeaccess']) {
 		str += "<div style='float:right;'>";
-		str += "<input class='submit-button' type='button' value='Add new course' onclick='newCourse();'/>";
+		str += "<input class='submit-button' type='button' value='Add new course' onclick='newCourse();' title='Create new course' />";
 		str += "</div>";
 	}
 
@@ -306,7 +306,7 @@ function returnedCourse(data)
 	str += "<div id='Courselistc'>";
   
 // Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
-  str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;'><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div class='ellipsis'> Course Organization System</div></div>";
+  str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;'><a href='https://github.com/HGustavs/LenaSYS_2014' title='Go to LenaSYS on GitHub.com'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div class='ellipsis'> Course Organization System</div></div>";
 
 	// For now we only have two kinds of sections
 	if (data['entries'].length > 0) {
@@ -338,17 +338,17 @@ function returnedCourse(data)
       }
 
 			if (data['writeaccess']) {
-        str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "'>" + courseBegin + courseEnd + "</a></div>";
-				str += "<span style='margin-right:15px;'><img id='dorf' src='../Shared/icons/PenV.svg' onclick='editVersion("+item['cid']+",\""+htmlFix(item['coursename'])+"\",\""+item['coursecode']+"\")'></span>";
+        str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Course coordinator]'>" + courseBegin + courseEnd + "</a></div>";
+				str += "<span style='margin-right:15px;'><img id='dorf' src='../Shared/icons/PenV.svg' onclick='editVersion("+item['cid']+",\""+htmlFix(item['coursename'])+"\",\""+item['coursecode']+"\")' title='Create new version of \"" + item['coursename'] + "\"'></span>";
         str += "<span style='margin-bottom: 15px'>";
-				str += "<span><img id='dorf' style='position: absolute; right: 15px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");'></span>";
+				str += "<span><img id='dorf' style='position: absolute; right: 15px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" [" + item['activeversion'] + "]'></span>";
         str += "</span>";
       } else {
         str += "<div class='ellipsis' style='margin-right:15px;'>";
 				if(item['registered'] == true) {
-          str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
+          str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Registered]'>" + item['coursename'] + "</a></span>";
         }else{
-          str += "<span style='margin-right:15px;opacity:0.3'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
+          str += "<span style='margin-right:15px;opacity:0.3'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Not registered]'>" + item['coursename'] + "</a></span>";
         }
         str += "</div>";
 			}

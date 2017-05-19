@@ -3,7 +3,7 @@
   <div id="overlay" style="display:none"></div>
   
 	<!-- Login Box Start! -->
-  <div id='loginBox' class="loginBox" style="display:none; width: 295px;">
+  <div id='loginBox' class="loginBox" style="display:none;">
 		<div id='login'>
 			<div class='loginBoxheader'>
 				<h3>Login</h3>

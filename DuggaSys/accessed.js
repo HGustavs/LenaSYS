@@ -9,29 +9,59 @@ AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},
 // Commands:
 //----------------------------------------
 
-function addUsers()
+function importUsers()
 {
-		var newUsersArr = new Array();
-		newusers=$("#import").val();
-		var myArr=newusers.split("\n");
-		for (var i=0; i<myArr.length; i++){
-				newUsersArr.push(myArr[i].split("\t"));
-		}
-		var newUserJSON = JSON.stringify(newUsersArr);	
-		AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
-		$("#createUsers").css("display","none");
-		$("#overlay").css("display","none");
+	var newUsersArr = new Array();
+	newusers=$("#import").val();
+	var myArr=newusers.split("\n");
+	for (var i=0; i<myArr.length; i++){
+			newUsersArr.push(myArr[i].split("\t"));
+	}
+	var newUserJSON = JSON.stringify(newUsersArr);	
+
+	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
+	hideImportUsersPopup();
 }
 
-function showCreateUsersPopup()
+function addSingleUser() 
 {
-	$("#createUsers").css("display","block");
+	var newUser = new Array();
+	newUser.push($("#addSsn").val());
+	newUser.push($("#addLastname").val() + ", " + $("#addFirstname").val());
+	newUser.push($("#addCid").val());
+	newUser.push($("#addNy").val());
+	newUser.push($("#addPid").val() + ', ' + $("#addTerm").val());
+	newUser.push($("#addEmail").val());
+
+	var outerArr = new Array();
+	outerArr.push(newUser);
+
+	var newUserJSON = JSON.stringify(outerArr);
+	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
+	hideCreateUserPopup();
+}
+
+function showCreateUserPopup()
+{
+	$("#createUser").css("display","block");
 	$("#overlay").css("display","block");
 }
 
-function hideCreateUsersPopup()
+function showImportUsersPopup()
 {
-	$("#createUsers").css("display","none");
+	$("#importUsers").css("display", "block");
+	$("#overlay").css("display", "block");
+}
+
+function hideCreateUserPopup()
+{
+	$("#createUser").css("display","none");
+	$("#overlay").css("display","none");
+}
+
+function hideImportUsersPopup()
+{
+	$("#importUsers").css("display","none");
 	$("#overlay").css("display","none");
 }
 
