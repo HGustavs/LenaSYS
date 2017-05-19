@@ -66,6 +66,19 @@ CREATE TABLE `user_usergroup` (
   CONSTRAINT `userid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
+/* Create table opponents. This table saves opponents for presenters in seminars.*/
+CREATE TABLE opponents (
+	presenter			INT UNSIGNED NOT NULL,
+	lid 					INT UNSIGNED NOT NULL,
+	opponent1			INT UNSIGNED DEFAULT NULL,
+	opponent2			INT UNSIGNED DEFAULT NULL,
+	PRIMARY KEY(presenter, lid),
+	FOREIGN KEY(presenter) REFERENCES user(uid),
+	FOREIGN KEY(lid) REFERENCES listentries(lid),
+	FOREIGN KEY(opponent1) REFERENCES user(uid),
+	FOREIGN KEY(opponent2) REFERENCES user(uid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
 /* -----------------------------*/
 /* ------- COURSE DATES --------*/
 /* -----------------------------*/
