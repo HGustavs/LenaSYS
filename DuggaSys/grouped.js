@@ -353,13 +353,14 @@ function createGroup()
 	var numberOfGroups=$("#numberOfGroups").val(); 
 	var offsetLetter=0;
 	var offsetNumber = 1;
+	var groupError = false;
 	
 	if(numberOfGroups > 0){
 		if(nameType == "a"){
 			for(var lidGroup in availablegroups) {	//get lid of each group
 				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
 					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
-						for(var a=65;a<90; a++){  //loop through capital letters
+						for(var a=65;a<=90; a++){  //loop through capital letters
 							var groupLetter = String.fromCharCode(a);
 							if(availablegroups[lidGroup][groupArray][groupNames] == groupLetter && lidGroup==chosenMoment){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
 								offsetLetter++;
@@ -371,12 +372,18 @@ function createGroup()
 			var startLetter = +offsetLetter+65;
 			var numbersOfLetters = +numberOfGroups+startLetter;
 			for(startLetter;startLetter<numbersOfLetters; startLetter++){
-				var groupLetter = String.fromCharCode(startLetter);
-				data = {
-					'chosenMoment':chosenMoment,
-					'groupName':groupLetter
-				};
-				AJAXService("NEWGROUP",data,"GROUP");
+				if(startLetter<= 90){
+					var groupLetter = String.fromCharCode(startLetter);
+					data = {
+						'chosenMoment':chosenMoment,
+						'groupName':groupLetter
+					};
+					AJAXService("NEWGROUP",data,"GROUP");
+					groupError=false;
+				}
+				else{
+					groupError=true;
+				}
 			}
 		}
 		else{
@@ -403,8 +410,15 @@ function createGroup()
 		$("#numberOfGroups").val('');
 		$("#groupSection").css("display","none");
 		$("#numberOfGroupsError").css("display","none");
+		$("#toManyCreatedGroups").css("display","none");
 		$("#overlay").css("display","none");
-		window.location.reload();
+		if(groupError == true){
+			$("#toManyCreatedGroups").css("display","inline-block");
+			$("#overlay").css("display","block");
+		}
+		else{
+			window.location.reload();
+		}
 	}
 	else{
 		$("#numberOfGroupsError").css("display","block");
@@ -415,7 +429,12 @@ function clearGroupWindow(){
 	$("#nameType").val('a');
 	$("#selectMoment").val(0);
 	$("#numberOfGroupsError").css("display","none");
-	
+}
+
+function closeGroupLimit(){
+	$("#toManyCreatedGroups").css("display","none");
+	$("#overlay").css("display","none");
+	window.location.reload();
 }
 function returnedGroup(data)
 {
