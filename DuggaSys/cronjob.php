@@ -22,7 +22,6 @@ if (isset($argc) && $argc == 2) {
 											AND quiz.deadline < (:deadline + INTERVAL 2 DAY)";
 		$query = $pdo->prepare($querystring);
 		$todaysDate = date("Y-m-d");
-		$todaysDate = "2015-01-29"; // Test value
 		$query->bindParam(':deadline', $todaysDate);
 		if(!$query->execute()) {
 			$error = $query->errorInfo();
@@ -34,7 +33,6 @@ if (isset($argc) && $argc == 2) {
 			foreach($rows as $row) {
 				$results = sendPushNotification($row['uid'], "Upcoming deadline at ".$row['deadline']." for ".$row['entryname']." in course [".$row['coursecode']."] ".$row['coursename']);
 				// Ignore results of whether the push notification was sent or not, as this notification is only for user convenience
-				echo "Sent to user ".$row['uid']."\n";
 			}
 		}
 	} else {
