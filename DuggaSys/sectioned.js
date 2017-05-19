@@ -1185,19 +1185,18 @@ $(document).on('click', '.moment, .section', function () {
 	$(this).nextUntil('.moment, .section').slideToggle(300);
 	$(this).children('.arrowRight').toggle();
 	$(this).children('.arrowComp').toggle();
+  if(hasUnfoldedArrows()) {
+    $('.hideAllArrow').hide();
+    $('.showAllArrow').show();
+  } else {
+    $('.hideAllArrow').show();
+    $('.showAllArrow').hide();
+  }
 });
 
 // Function for hiding content for all moments
 $(document).on('click', '.showHideMetaButton', function () {
-	var fold = false;
-  $('.moment, .section').each(function(index) {
-    console.log("index: " + $(index).is(":visible"));
-//    if(fold) {
-//  		fold = $(index).is(":visible");
-//    }
-	});
-
-	if(fold) {
+	if(hasUnfoldedParts()) {
     $('.moment, .section').nextUntil('.moment, .section').slideUp(300);
     $('.hideAll').hide();
     $('.showAll').show();
@@ -1215,18 +1214,59 @@ $(document).on('click', '.showHideMetaButton', function () {
     $('.arrowComp').show();
 	}
 });
+
+// Chevk visibility status
+function hasUnfoldedParts(){
+  var fold = false;
+  $('div.moment, div.section').each(function(i) {
+    $('.moment, .section').nextUntil('.moment, .section').each(function(j) {
+      if($(this).is(":visible")) {
+        fold = true;
+        return(!fold);
+      }
+    });
+    return(!fold);
+  });
+  return fold;
+}
+// check arrow status (might not work with visible..)
+function hasUnfoldedArrows(){
+  var fold = false;
+  $('div.moment, div.section').each(function(i) {
+    console.log("A" + i + ": " + $(this).children('img.arrowComp').is(':visible'));
+    if($(this).children('.arrowComp').is(':visible')) {
+      fold = true;
+//      return(!fold);
+    }
+  });
+  return fold;
+}
+
 /*
+// Function for hiding content for all moments
+$(document).on('click', '.hideMetaButton', function () {
+  $('.moment, .section').nextUntil('.moment, .section').slideUp();
+  $('.hideAll').hide();
+  $('.showAll').show().css('display', 'inline-block');
+  $('.hideAllArrow').hide();
+  $('.showAllArrow').show().css('display', 'inline-block');
+  $('.arrowRight').show();
+  $('.arrowComp').hide();
+});
+
+
 // Function for showing content for all moments
 $(document).on('click', '.showMetaButton', function () {
-	$('.moment, .section').nextUntil('.moment, .section').slideDown(300);
-	$('.hideAll').show();
-	$('.showAll').hide();
-	$('.hideAllArrow').show();
-	$('.showAllArrow').hide();
-	$('.arrowRight').hide();
-	$('.arrowComp').show();
+  $('.moment, .section').nextUntil('.moment, .section').slideDown();
+  $('.hideAll').show();
+  $('.showAll').hide();
+  $('.hideAllArrow').show();
+  $('.showAllArrow').hide();
+  $('.arrowRight').hide();
+  $('.arrowComp').show();
 });
 */
+
 // Function to prevent collapsing when clicking icons
 $(document).ready(function(){
 	$(document).on('click','#corf',function(e) {
