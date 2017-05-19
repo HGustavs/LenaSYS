@@ -1424,10 +1424,10 @@ input.large-button {
 }
 
 .evenfumo {
- background: tomato;
+  background: #ccc;
 }
 .oddfumo {
-  background: pink;
+  background: #eae8eb;
 }
 
 .selectedtr {

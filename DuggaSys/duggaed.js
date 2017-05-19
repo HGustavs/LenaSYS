@@ -548,6 +548,7 @@ function returnedDugga(data)
 
 			var item=data['entries'][i];
 
+			// check if even or odd fumo row
 			if(i % 2 === 0) {
                 oddevenfumo = "evenfumo";
 			} else {
