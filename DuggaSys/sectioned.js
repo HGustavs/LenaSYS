@@ -698,18 +698,18 @@ function returnedSection(data)
     str+="<div class='course' style='display: flex;align-items: center;justify-content: center;'>";
 
      		/*Adds the Show/hide all arrow and text to the section editor*/
-        	str+="<div class='hideAllArrow hideMetaButton' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 12px; display:inline-block;' ><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+        	str+="<div class='hideAllArrow showHideMetaButton' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 12px; display:inline-block;' ><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 
         	str+="</div>";
 
-        	str+="<div class='hideAll hideMetaButton' id='course-showhide-text' style='position:absolute; cursor: pointer; margin-top: 8px; display: inline-block; vertical-align: baseline;' >";
+        	str+="<div class='hideAll showHideMetaButton' id='course-showhide-text' style='position:absolute; cursor: pointer; margin-top: 8px; display: inline-block; vertical-align: baseline;' >";
 			str+="<text class='showhidetext' >"+showhideall+"</text>";
         	str+="</div>";
 
-        	str+="<div class='showAllArrow showMetaButton' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRight'><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:none'>";
+        	str+="<div class='showAllArrow showHideMetaButton' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRight'><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:none'>";
         	str+="</div>";
 
-        	str+="<div class='showAll showMetaButton' id='course-showhide-text' style='display:none; position:absolute; cursor: pointer; margin-top: 8px; vertical-align: baseline;' >";
+        	str+="<div class='showAll showHideMetaButton' id='course-showhide-text' style='display:none; position:absolute; cursor: pointer; margin-top: 8px; vertical-align: baseline;' >";
         	str+="<text class='showhidetext' >"+showhideall+"</text>";
 
         	str+="</div>";
@@ -1182,26 +1182,43 @@ function returnedHighscore(data){
 
 // Function for toggling content for each moment
 $(document).on('click', '.moment, .section', function () {
-	$(this).nextUntil('.moment, .section').slideToggle();
+	$(this).nextUntil('.moment, .section').slideToggle(300);
 	$(this).children('.arrowRight').toggle();
 	$(this).children('.arrowComp').toggle();
 });
 
 // Function for hiding content for all moments
-$(document).on('click', '.hideMetaButton', function () {
-	$('.moment, .section').nextUntil('.moment, .section').slideUp();
-	$('.hideAll').hide();
-	$('.showAll').show().css('display', 'inline-block');
-	$('.hideAllArrow').hide();
-	$('.showAllArrow').show().css('display', 'inline-block');
-	$('.arrowRight').show();
-	$('.arrowComp').hide();
+$(document).on('click', '.showHideMetaButton', function () {
+	var fold = false;
+  $('.moment, .section').each(function(index) {
+    console.log("index: " + $(index).is(":visible"));
+//    if(fold) {
+//  		fold = $(index).is(":visible");
+//    }
+	});
+
+	if(fold) {
+    $('.moment, .section').nextUntil('.moment, .section').slideUp(300);
+    $('.hideAll').hide();
+    $('.showAll').show();
+    $('.hideAllArrow').hide();
+    $('.showAllArrow').show();
+    $('.arrowRight').show();
+    $('.arrowComp').hide();
+	} else {
+    $('.moment, .section').nextUntil('.moment, .section').slideDown(300);
+    $('.hideAll').show();
+    $('.showAll').hide();
+    $('.hideAllArrow').show();
+    $('.showAllArrow').hide();
+    $('.arrowRight').hide();
+    $('.arrowComp').show();
+	}
 });
-
-
+/*
 // Function for showing content for all moments
 $(document).on('click', '.showMetaButton', function () {
-	$('.moment, .section').nextUntil('.moment, .section').slideDown();
+	$('.moment, .section').nextUntil('.moment, .section').slideDown(300);
 	$('.hideAll').show();
 	$('.showAll').hide();
 	$('.hideAllArrow').show();
@@ -1209,7 +1226,7 @@ $(document).on('click', '.showMetaButton', function () {
 	$('.arrowRight').hide();
 	$('.arrowComp').show();
 });
-
+*/
 // Function to prevent collapsing when clicking icons
 $(document).ready(function(){
 	$(document).on('click','#corf',function(e) {
