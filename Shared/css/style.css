@@ -1386,7 +1386,8 @@ input.large-button {
 
 .list#testTable td{
     padding:0px;
-    text-align:center;border:none;
+    text-align:center;
+    border:none;
 }
 
 .list#testTable th{
@@ -1422,8 +1423,11 @@ input.large-button {
     padding:0px;
 }
 
-.list#testTable tbody tr[style*="display: table-row;"] {
-  background: tomato !important;
+.evenfumo {
+ background: tomato;
+}
+.oddfumo {
+  background: pink;
 }
 
 .selectedtr {
