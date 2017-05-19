@@ -498,7 +498,7 @@ function resort()
 	var colkind=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1");
 	if (colkind == null || colkind == undefined){colkind=0;}
 	
-	if (tablecontent.length > 0) {
+	if (momtmp.length > 0) {
 		if(columno < momtmp.length+1){
 			
 			// Each if case checks what to sort after and then sorts appropiatle depending on ASC or DESC
@@ -552,14 +552,14 @@ function resort()
 				// 0. no group/groups
 				if(columno > 0){
 					tablecontent.sort(function compare(a,b){
-						if(a.lidstogroup[moments[columno-1].lid]!=false && b.lidstogroup[moments[columno-1].lid]==false ){
+						if(a.lidstogroup[momtmp[columno-1].lid]!=false && b.lidstogroup[momtmp[columno-1].lid]==false ){
 								return -sortdir;
-						} else if(a.lidstogroup[moments[columno-1].lid]==false  && b.lidstogroup[moments[columno-1].lid]!=false ){
+						} else if(a.lidstogroup[momtmp[columno-1].lid]==false  && b.lidstogroup[momtmp[columno-1].lid]!=false ){
 								return sortdir;
 						}else{	
-							if(a.lidstogroup[moments[columno-1].lid]>b.lidstogroup[moments[columno-1].lid]){		  				
+							if(a.lidstogroup[momtmp[columno-1].lid]>b.lidstogroup[momtmp[columno-1].lid]){		  				
 									return sortdir;
-							}else if(a.lidstogroup[moments[columno-1].lid]<b.lidstogroup[moments[columno-1].lid]){
+							}else if(a.lidstogroup[momtmp[columno-1].lid]<b.lidstogroup[momtmp[columno-1].lid]){
 									return -sortdir;
 							}else{
 									return 0;
@@ -573,35 +573,14 @@ function resort()
 		
 	drawtable();
 	//Highlights the header that has been clicked and shows ASC or DESC icon
-	for(var m=0;m<=columno;m++){
-		$("#tableheader"+columno).removeClass("result-header-inverse");
-	}	
-	if(columno == 0){
-		$("#tableheader0").addClass("result-header-inverse"); 
-	}else{
-		$("#tableheader"+columno).addClass("result-header-inverse"); 
-	}
-    if (sortdir<0){
-		if(columno == 0){
-			$("#tableheader"+columno).empty();
-			$("#tableheader"+columno).append("Studenter");
-			$("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
-		}else{
-			$("#tableheader"+columno).empty();
-			$("#tableheader"+columno).append(moments[columno-1].entryname);
-			$("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
-		}
-    }else{
-		if(columno == 0){
-			$("#tableheader"+columno).empty();
-			$("#tableheader"+columno).append("Studenter");
-			$("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
-		}else{		
-			 $("#tableheader"+columno).empty();
-			 $("#tableheader"+columno).append(moments[columno-1].entryname);
-			 $("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>"); 
-		}  
-	}
+	 $("#tableheader"+columno).addClass("result-header-inverse");
+   if (sortdir<0){
+     $("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
+
+   } else {
+     $("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>"); 
+    
+   }
 }
 
 // If col and current col are equal we flip sort order 
