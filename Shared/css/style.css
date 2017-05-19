@@ -1423,11 +1423,17 @@ input.large-button {
     padding:0px;
 }
 
+.list tbody tr:nth-child(odd) {
+    background-color: #ccc;
+}
+.list#testTable tr:nth-child(odd), .list#testTable tr:nth-child(even){
+    background-color:#eae8eb;
+}
 .evenfumo {
-  background: #ccc;
+  background: #ccc !important;
 }
 .oddfumo {
-  background: #eae8eb;
+  background: #eae8eb !important;
 }
 
 .selectedtr {
@@ -1597,6 +1603,7 @@ span.arrow {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+    background-color: #eae8eb;
 }
 
 
