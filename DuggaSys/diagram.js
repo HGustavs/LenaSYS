@@ -78,11 +78,12 @@ var classTemplate = {
   height: 7 * gridSize
 };
 var a = [], b = [], c = [];
-var mousedownX = 0, mousedownY = 0;    // Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
-var mousemoveX = 0, mousemoveY = 0;    // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
-var mouseDiffX = 0, mouseDiffY = 0;    // Saves to diff between mousedown and mousemove to know how much to translate the diagram
+var mousedownX = 0, mousedownY = 0;     // Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
+var mousemoveX = 0, mousemoveY = 0;     // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
+var mouseDiffX = 0, mouseDiffY = 0;     // Saves to diff between mousedown and mousemove to know how much to translate the diagram
 var xPos = 0;
 var yPos = 0;
+var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not. This is used in diagram_dialog.js
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler, false);
