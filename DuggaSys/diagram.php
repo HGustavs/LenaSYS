@@ -163,7 +163,7 @@
             <button id='moveButton' class='unpressed' style='right: 0; position: absolute; margin-right: 2px;'>Start Moving</button><br>
         </div>
         <div id="canvasDiv"></div>
-        <div id="consoleDiv" style='position: relative;'>
+        <div id="consoleDiv">
             <!--<div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>-->
             <div id='valuesCanvas'></div>
             <!--<input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
@@ -206,15 +206,10 @@
     <!-- content END -->
     <?php
         include '../Shared/loginbox.php';
-    ?>
-
-    <?php
         if(isset($_POST['id'])){
 
         }
     ?>
-
-
     <?php
          //if(!isset($_POST['StringDiagram']) ){
          //   mkdir("Save", 0777,true);
@@ -244,8 +239,5 @@
         //<script type="text/javascript" src="diagram_IOHandler.js"></script>
     }
     ?>
-
-
-
 </body>
 </html>
