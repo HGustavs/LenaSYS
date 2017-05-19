@@ -698,18 +698,18 @@ function returnedSection(data)
     str+="<div class='course' style='display: flex;align-items: center;justify-content: center;'>";
 
      		/*Adds the Show/hide all arrow and text to the section editor*/
-        	str+="<div class='hideAllArrow' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 12px; display:flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+        	str+="<div class='hideAllArrow hideMetaButton' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 12px; display:inline-block;' ><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 
         	str+="</div>";
 
-        	str+="<div class='hideAll' id='course-showhide-text' style='position:absolute; cursor: pointer; margin-top: 10px; display: flex;' >";
+        	str+="<div class='hideAll hideMetaButton' id='course-showhide-text' style='position:absolute; cursor: pointer; margin-top: 8px; display: inline-block; vertical-align: baseline;' >";
 			str+="<text class='showhidetext' >"+showhideall+"</text>";
         	str+="</div>";
 
-        	str+="<div class='showAllArrow' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRight'><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:none'>";
+        	str+="<div class='showAllArrow showMetaButton' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRight'><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:none'>";
         	str+="</div>";
 
-        	str+="<div class='showAll' id='course-showhide-text' style='display:none; position:absolute;  cursor: pointer; margin-top: 10px;' >";
+        	str+="<div class='showAll showMetaButton' id='course-showhide-text' style='display:none; position:absolute; cursor: pointer; margin-top: 8px; vertical-align: baseline;' >";
         	str+="<text class='showhidetext' >"+showhideall+"</text>";
 
         	str+="</div>";
@@ -1181,89 +1181,33 @@ function returnedHighscore(data){
 }
 
 // Function for toggling content for each moment
-$(document).on('click', '.moment', function () {
-	$(this).nextUntil('.moment').slideToggle();
-    $(this).children('.arrowRight').slideToggle();
-    $(this).children('.arrowComp').slideToggle();
-});
-
-// Function for toggling content for each section
-$(document).on('click', '.section', function () {
-	$(this).nextUntil('.section').slideToggle();
-	$(this).children('.arrowRight').slideToggle();
-	$(this).children('.arrowComp').slideToggle();
+$(document).on('click', '.moment, .section', function () {
+	$(this).nextUntil('.moment, .section').slideToggle();
+	$(this).children('.arrowRight').toggle();
+	$(this).children('.arrowComp').toggle();
 });
 
 // Function for hiding content for all moments
-$(document).on('click', '.hideAll', function () {
-    $('.moment').nextUntil('.moment').slideUp();
-    $('.hideAll').hide();
-    $('.showAll').show().css('display', 'flex');
-    $('.arrowRight').slideDown();
-    $('.arrowComp').slideUp();
+$(document).on('click', '.hideMetaButton', function () {
+	$('.moment, .section').nextUntil('.moment, .section').slideUp();
+	$('.hideAll').hide();
+	$('.showAll').show().css('display', 'inline-block');
+	$('.hideAllArrow').hide();
+	$('.showAllArrow').show().css('display', 'inline-block');
+	$('.arrowRight').show();
+	$('.arrowComp').hide();
 });
 
-// Function for hiding content for all moments using Show/hide all-arrow
-$(document).on('click', '.hideAllArrow', function () {
-    $('.moment').nextUntil('.moment').hide(400);
-    $('.hideAllArrow').hide();
-    $('.showAllArrow').show().css('display', 'flex');
-    $('.arrowRight').show(400);
-    $('.arrowComp').hide();
-});
-
-// Function for hiding content for all sections
-$(document).on('click', '.hideAll', function () {
-    $('.section').nextUntil('.section').slideUp();
-    $('.hideAll').hide();
-    $('.showAll').show().css('display', 'flex');
-    $('.arrowRight').show();
-    $('.arrowComp').hide();
-});
-
-// Function for hiding content for all sections using Show/hide all-arrow
-$(document).on('click', '.hideAllArrow', function () {
-    $('.section').nextUntil('.section').hide(400);
-    $('.hideAllArrow').hide();
-    $('.showAllArrow').show().css('display', 'flex');
-    $('.arrowRight').show(400);
-    $('.arrowComp').hide();
-});
 
 // Function for showing content for all moments
-$(document).on('click', '.showAll', function () {
-    $('.moment').nextUntil('.moment').slideDown();
-    $('.hideAll').show();
-    $('.showAll').hide();
-    $('.arrowRight').slideUp();
-    $('.arrowComp').slideDown();
-});
-
-// Function for showing content for all moments using Show/hide all-arrow
-$(document).on('click', '.showAllArrow', function () {
-    $('.moment').nextUntil('.moment').show(400);
-    $('.hideAllArrow').show();
-    $('.showAllArrow').hide();
-    $('.arrowRight').hide(400);
-    $('.arrowComp').show();
-});
-
-// Function for showing content for all sections
-$(document).on('click', '.showAll', function () {
-    $('.section').nextUntil('.section').slideDown();
-    $('.hideAll').show();
-    $('.showAll').hide();
-    $('.arrowRight').hide();
-    $('.arrowComp').show();
-});
-
-// Function for showing content for all sections using Show/hide all-arrow
-$(document).on('click', '.showAllArrow', function () {
-    $('.section').nextUntil('.section').show(400);
-    $('.hideAllArrow').show();
-    $('.showAllArrow').hide();
-    $('.arrowRight').hide();
-    $('.arrowComp').show(400);
+$(document).on('click', '.showMetaButton', function () {
+	$('.moment, .section').nextUntil('.moment, .section').slideDown();
+	$('.hideAll').show();
+	$('.showAll').hide();
+	$('.hideAllArrow').show();
+	$('.showAllArrow').hide();
+	$('.arrowRight').hide();
+	$('.arrowComp').show();
 });
 
 // Function to prevent collapsing when clicking icons
