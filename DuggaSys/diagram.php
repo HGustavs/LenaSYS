@@ -26,6 +26,18 @@
     <script src="diagram_IOHandler.js"></script>
     <script src="diagram_dialog.js"></script>
     <script src="diagram_toolbox.js"></script>
+
+    /*/this script fix so that the drop down menus close after you have clicked on something on them./*/
+    <script>
+        $(document).ready(function(){
+    $(".drop-down-item").click(function(){
+    $("a").slideUp(); });
+
+    $(".drop-down-item").click(function(){
+    $("a").slideDown(); });
+    });
+    </script>
+
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
@@ -243,6 +255,8 @@
         //?//>";</script>
         //<script type="text/javascript" src="diagram_IOHandler.js"></script>
     }
+
+    
     ?>
 
 
