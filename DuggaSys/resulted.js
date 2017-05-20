@@ -98,7 +98,7 @@ function redrawtable()
         show=true;
       }
       var strx = "";
-      strx +="<tr class='fumo'>"
+      strx+="<tr class='fumo "+ (row % 2 == 1 ? 'hi' : 'lo') + "'>";
       strx +="<td id='row"+row+"' class='rownoMagic'><div>"+row+"</div></td>"
       var student=students[i];
       for(var j=0;j<student.length;j++){
