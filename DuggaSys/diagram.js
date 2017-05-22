@@ -966,7 +966,7 @@ function align(mode){
        alignBottom(selected_objects);
     }
     else if(mode == 'right'){
-       alignRight(selected_objects); 
+       alignRight(selected_objects);
     }
     else if(mode == 'verticalCenter'){
        alignVerticalCenter(selected_objects);
@@ -974,7 +974,7 @@ function align(mode){
     else if(mode == 'horizontalCenter'){
        alignHorizontalCenter(selected_objects);
     }
-  
+
     updateGraphics();
     hashFunction();
 }
@@ -1134,10 +1134,10 @@ function distribute(axis){
         }
     }
 
-    if(axis=='vertically){
+    if(axis=='vertically'){
         distributeVertically(selected_objects, spacing);
-    }else if(){
-        distributeHorizontally(selected_objects, spacing);  
+    }else if(axis=='horizontally'){
+        distributeHorizontally(selected_objects, spacing);
     }
     /*
         There is a posibility for more types
