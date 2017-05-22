@@ -956,26 +956,25 @@ function align(mode){
             selected_objects.push(diagram[i]);
         }
     }
-    switch(mode){
-        case 'top':
-            alignTop(selected_objects);
-        break;
-        case 'left':
-            alignLeft(selected_objects);
-        break;
-        case 'bottom':
-            alignBottom(selected_objects);
-        break;
-        case 'right':
-            alignRight(selected_objects);
-        break;
-        case 'verticalCenter':
-            alignVerticalCenter(selected_objects);
-        break;
-        case 'horizontalCenter':
-            alignHorizontalCenter(selected_objects);
-        break;
+    if(mode == 'top'){
+       alignTop(selected_objects);
     }
+    else if(mode == 'left'){
+       alignLeft(selected_objects);
+    }
+    else if(mode == 'bottom'){
+       alignBottom(selected_objects);
+    }
+    else if(mode == 'right'){
+       alignRight(selected_objects); 
+    }
+    else if(mode == 'verticalCenter'){
+       alignVerticalCenter(selected_objects);
+    }
+    else if(mode == 'horizontalCenter'){
+       alignHorizontalCenter(selected_objects);
+    }
+  
     updateGraphics();
     hashFunction();
 }
@@ -1087,43 +1086,40 @@ function bubbleSort(values, rising){
 function sortObjects(selected_objects, mode, rising){
     //Sorts objects by X or Y position
     var position = [];
-    switch(mode){
-        case 'vertically':
-            for(var i = 0; i < selected_objects.length; i++){
-                position.push(points[selected_objects[i].topLeft].y);
-            }
-            position = bubbleSort(position, rising);
+    if(mode=='vertically'){
+        for(var i = 0; i < selected_objects.length; i++){
+            position.push(points[selected_objects[i].topLeft].y);
+        }
+        position = bubbleSort(position, rising);
 
-            var private_objects = selected_objects.splice([]);
-            var swap = null;
-            for(var i = 0; i < private_objects.length; i++){
-                for(var j = 0; j < position.length; j++){
-                    if(points[private_objects[i].topLeft].y == position[j] && i != j){
-                        swap = private_objects[i];
-                        private_objects[i] = private_objects[j];
-                        private_objects[j] = swap;
-                    }
+        var private_objects = selected_objects.splice([]);
+        var swap = null;
+        for(var i = 0; i < private_objects.length; i++){
+            for(var j = 0; j < position.length; j++){
+                if(points[private_objects[i].topLeft].y == position[j] && i != j){
+                    swap = private_objects[i];
+                    private_objects[i] = private_objects[j];
+                    private_objects[j] = swap;
                 }
             }
-        break;
-        case 'horizontally':
-            for(var i = 0; i < selected_objects.length; i++){
-                position.push(points[selected_objects[i].topLeft].x);
-            }
-            position = bubbleSort(position, rising);
+        }
+    }else if(mode=='horizontally'){
+        for(var i = 0; i < selected_objects.length; i++){
+            position.push(points[selected_objects[i].topLeft].x);
+        }
+        position = bubbleSort(position, rising);
 
-            var private_objects = selected_objects.splice([]);
-            var swap = null;
-            for(var i = 0; i < private_objects.length; i++){
-                for(var j = 0; j < position.length; j++){
-                    if(points[private_objects[i].topLeft].x == position[j] && i != j){
-                        swap = private_objects[i];
-                        private_objects[i] = private_objects[j];
-                        private_objects[j] = swap;
-                    }
+        var private_objects = selected_objects.splice([]);
+        var swap = null;
+        for(var i = 0; i < private_objects.length; i++){
+            for(var j = 0; j < position.length; j++){
+                if(points[private_objects[i].topLeft].x == position[j] && i != j){
+                    swap = private_objects[i];
+                    private_objects[i] = private_objects[j];
+                    private_objects[j] = swap;
                 }
             }
-        break;
+        }
     }
 
     return private_objects;
@@ -1138,20 +1134,14 @@ function distribute(axis){
         }
     }
 
-    switch(axis){
-        case 'x':
-        break;
-        case 'vertically':
-            distributeVertically(selected_objects, spacing);
-        break;
-        case 'horizontally':
-            distributeHorizontally(selected_objects, spacing);
-        break;
-
-        /*
-            There is a posibility for more types
-        */
+    if(axis=='vertically){
+        distributeVertically(selected_objects, spacing);
+    }else if(){
+        distributeHorizontally(selected_objects, spacing);  
     }
+    /*
+        There is a posibility for more types
+    */
     updateGraphics();
     hashFunction();
 }
