@@ -1087,43 +1087,40 @@ function bubbleSort(values, rising){
 function sortObjects(selected_objects, mode, rising){
     //Sorts objects by X or Y position
     var position = [];
-    switch(mode){
-        case 'vertically':
-            for(var i = 0; i < selected_objects.length; i++){
-                position.push(points[selected_objects[i].topLeft].y);
-            }
-            position = bubbleSort(position, rising);
+    if(mode == 'vertically'){
+        for(var i = 0; i < selected_objects.length; i++){
+            position.push(points[selected_objects[i].topLeft].y);
+        }
+        position = bubbleSort(position, rising);
 
-            var private_objects = selected_objects.splice([]);
-            var swap = null;
-            for(var i = 0; i < private_objects.length; i++){
-                for(var j = 0; j < position.length; j++){
-                    if(points[private_objects[i].topLeft].y == position[j] && i != j){
-                        swap = private_objects[i];
-                        private_objects[i] = private_objects[j];
-                        private_objects[j] = swap;
-                    }
+        var private_objects = selected_objects.splice([]);
+        var swap = null;
+        for(var i = 0; i < private_objects.length; i++){
+            for(var j = 0; j < position.length; j++){
+                if(points[private_objects[i].topLeft].y == position[j] && i != j){
+                    swap = private_objects[i];
+                    private_objects[i] = private_objects[j];
+                    private_objects[j] = swap;
                 }
             }
-        break;
-        case 'horizontally':
-            for(var i = 0; i < selected_objects.length; i++){
-                position.push(points[selected_objects[i].topLeft].x);
-            }
-            position = bubbleSort(position, rising);
+        }
+    }else if(mode == 'horizontally'){
+        for(var i = 0; i < selected_objects.length; i++){
+            position.push(points[selected_objects[i].topLeft].x);
+        }
+        position = bubbleSort(position, rising);
 
-            var private_objects = selected_objects.splice([]);
-            var swap = null;
-            for(var i = 0; i < private_objects.length; i++){
-                for(var j = 0; j < position.length; j++){
-                    if(points[private_objects[i].topLeft].x == position[j] && i != j){
-                        swap = private_objects[i];
-                        private_objects[i] = private_objects[j];
-                        private_objects[j] = swap;
-                    }
+        var private_objects = selected_objects.splice([]);
+        var swap = null;
+        for(var i = 0; i < private_objects.length; i++){
+            for(var j = 0; j < position.length; j++){
+                if(points[private_objects[i].topLeft].x == position[j] && i != j){
+                    swap = private_objects[i];
+                    private_objects[i] = private_objects[j];
+                    private_objects[j] = swap;
                 }
             }
-        break;
+        }
     }
 
     return private_objects;
@@ -1138,20 +1135,16 @@ function distribute(axis){
         }
     }
 
-    switch(axis){
-        case 'x':
-        break;
-        case 'vertically':
-            distributeVertically(selected_objects, spacing);
-        break;
-        case 'horizontally':
-            distributeHorizontally(selected_objects, spacing);
-        break;
+    if(axis=='horizontally'){
+        distributeHorizontally(selected_objects, spacing);
 
-        /*
-            There is a posibility for more types
-        */
+    }else if(axis=='vertically'){
+
+        distributeVertically(selected_objects, spacing);
     }
+    /*
+        There is a posibility for more types
+    */
     updateGraphics();
     hashFunction();
 }
