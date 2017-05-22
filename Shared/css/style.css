@@ -2565,7 +2565,7 @@ ul.hamburgerList button.menuButton {
   height: 34px;
   position: absolute;
   right: 0;
-  bottom: 10px;
+  bottom: 25px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
   box-shadow: 0px 2px 10px 1px rgba(219,219,219,1);
@@ -2634,9 +2634,8 @@ ul.hamburgerList button.menuButton {
   background: white;
   border: 2px solid #d4d4d4;
   font-size: 14px;
-  bottom: 6px;
+  bottom: 25px;
   position: absolute;
-  left: 10px;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
   webkit-touch-callout: none;
