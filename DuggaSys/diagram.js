@@ -545,7 +545,7 @@ function classMode() {
     uimode = "CreateClass";
 }
 
-function classbutton_selected()
+/*function classbutton_selected()
 {
 	var button = document.getElementById("classbutton").className;
 	var buttonStyle = document.getElementById("classbutton");
@@ -554,7 +554,7 @@ function classbutton_selected()
 	document.getElementById("relationbutton").className="unpressed";
 	document.getElementById("entitybutton").className="unpressed";
 		buttonStyle.className="pressed";
-}
+}*/
 
 function attrMode() {
     canvas.style.cursor = "default";
