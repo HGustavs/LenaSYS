@@ -8,7 +8,6 @@
 function Path() {
     this.kind = 1;                  // Path kind
     this.segments = Array();        // Segments
-    this.sel;                       // Selected object info
     this.intarr = Array();          // Intersection list (one list per segment)
     this.tmplist = Array();         // Temporary list for testing of intersections
     this.auxlist = Array();         // Auxillary temp list for testing of intersections
@@ -434,7 +433,6 @@ function cleanUp() {
     figureType = null;
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
-    resetSelectionCreateFigure();
 }
 
 function openInitialDialog() {
