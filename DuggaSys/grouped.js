@@ -8,6 +8,7 @@ var versions;
 var courselist;
 var students=new Array;
 var tablecontent=new Array;
+var feedback=null;
 var typechanged=false;
 var duggaArray = [[]];
 function setup(){
@@ -255,81 +256,87 @@ function process()
 }
 
 function drawtable(){
-	// Init the table string. 
+	
 	str="";
-	
-	
 	str+="<div class='titles' style='padding-bottom:10px;'>";
-	str+="<h1 style='flex:10;text-align:center;'>Groups</h1>";
-	str+="<input style='float:none;flex:1;max-width:125px;' class='submit-button' type='button' value='Manage Groups' onclick='selectGroup();'/>";
+	str+="<h1 style='flex:10;text-align:center;'>Groups</h1>";	
 	str+="</div>";
 
-	// Create the table headers. 
-	str+="<table class='markinglist' id='markinglist'>";
-	str+="<thead>";
-	str+="<tr class='markinglist-header'>";
-	
-	str+="<th id='header' class='grouprow' style='width:40px'><span>#<span></th>";
+	if(tablecontent != null) {
+		str+="<div class='titles' style='padding-bottom:10px;'>";
+		str+="<input style='float:none;flex:1;max-width:125px;' class='submit-button' type='button' value='Manage Groups' onclick='selectGroup();'/>";
+		str+="</div>";
+		// Init the table string. 
+		// Create the table headers. 
+		str+="<table class='markinglist' id='markinglist'>";
+		str+="<thead>";
+		str+="<tr class='markinglist-header'>";
+		
+		str+="<th id='header' class='grouprow' style='width:40px'><span>#<span></th>";
 
-	str+="<th id=tableheader"+(subheading)+" class='grouped-header' onclick='toggleSortDir(0);' style='width:140px;'>Studenter</th>";
+		str+="<th id=tableheader"+(subheading)+" class='grouped-header' onclick='toggleSortDir(0);' style='width:140px;'>Studenter</th>";
 
 
-	// Itererate the headings, that are dependent on the cid and coursevers. 
-	for(var i = 0; i < momtmp.length; i++) {
-		str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+momtmp[i].lid+"' class='grouped-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+momtmp[i].entryname+"</th>";	
-	}
-	str+="</thead>";
-	str += "<tbody>";
-	var row=0;
-	for(var i = 0; i < tablecontent.length; i++) { // Iterate table content, beginning with the row number and user data. 
-		row++;
-		// Apply class to every other row for easier browsing using ternary operator
-		str+="<tr class='"+ (row % 2 == 1 ? 'hi' : 'lo') + "'>";
-		str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
-		str+="<td style='padding-left:3px;' title="+tablecontent[i].uid+"><div class='dugga-result-div'>"+tablecontent[i].firstname+" "+tablecontent[i].lastname+"</div>";
-		str+="<div class='dugga-result-div'>"+tablecontent[i].ssn+"</div>";
-		str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
-		for(var lid in tablecontent[i].lidstogroup) { // Iterate the data per list entry column
-			for(var j = 0; j < momtmp.length; j++) {
-				if(momtmp[j].lid == lid){
-					str+="<td style='padding-left:5px;'>";
-					var oldUgid = tablecontent[i].lidstogroup[lid] != false ? "_"+tablecontent[i].lidstogroup[lid] : "";
-					str+="<div class='groupStar'>*</div>";
-					str+="<select id="+tablecontent[i].uid+"_"+lid+oldUgid+" class='test' onchange=changegroup(this)>";
-					str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
-					for(var level2lid in availablegroups) {
-						// Iterate the groups in each lid, example: 
-						/*
-						"availablegroups": {
-							"2001": { // (level2lid)
-								"1": "Festargruppen" // (group /w key (ugid) => value (name))
-								"4": "Dudegruppen" // There can be more than one group per lid
-							},
-							"2013": {
-								"2": "Coola gurppen"
+		// Itererate the headings, that are dependent on the cid and coursevers. 
+		for(var i = 0; i < momtmp.length; i++) {
+			str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+momtmp[i].lid+"' class='grouped-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+momtmp[i].entryname+"</th>";	
+		}
+		str+="</thead>";
+		str += "<tbody>";
+		var row=0;
+		for(var i = 0; i < tablecontent.length; i++) { // Iterate table content, beginning with the row number and user data. 
+			row++;
+			// Apply class to every other row for easier browsing using ternary operator
+			str+="<tr class='"+ (row % 2 == 1 ? 'hi' : 'lo') + "'>";
+			str+="<td id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
+			str+="<td style='padding-left:3px;' title="+tablecontent[i].uid+"><div class='dugga-result-div'>"+tablecontent[i].firstname+" "+tablecontent[i].lastname+"</div>";
+			str+="<div class='dugga-result-div'>"+tablecontent[i].ssn+"</div>";
+			str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
+			for(var lid in tablecontent[i].lidstogroup) { // Iterate the data per list entry column
+				for(var j = 0; j < momtmp.length; j++) {
+					if(momtmp[j].lid == lid){
+						str+="<td style='padding-left:5px;'>";
+						var oldUgid = tablecontent[i].lidstogroup[lid] != false ? "_"+tablecontent[i].lidstogroup[lid] : "";
+						str+="<div class='groupStar'>*</div>";
+						str+="<select id="+tablecontent[i].uid+"_"+lid+oldUgid+" class='test' onchange=changegroup(this)>";
+						str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
+						for(var level2lid in availablegroups) {
+							// Iterate the groups in each lid, example: 
+							/*
+							"availablegroups": {
+								"2001": { // (level2lid)
+									"1": "Festargruppen" // (group /w key (ugid) => value (name))
+									"4": "Dudegruppen" // There can be more than one group per lid
+								},
+								"2013": {
+									"2": "Coola gurppen"
+								}
 							}
-						}
-						*/
-						if(level2lid == lid) { // If the group belongs to the current column, lid, iterate all the available groups and create options for them
-							for(var group in availablegroups[level2lid]) { // availablegroups[level2lid] contains an array of groups, iterate them
-								for(var ugid in availablegroups[level2lid][group]) { // Iterate the key => value pairs of each group
-									var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
-									str+="<option value="+ugid+selected+">"+availablegroups[level2lid][group][ugid]+"</option>";
+							*/
+							if(level2lid == lid) { // If the group belongs to the current column, lid, iterate all the available groups and create options for them
+								for(var group in availablegroups[level2lid]) { // availablegroups[level2lid] contains an array of groups, iterate them
+									for(var ugid in availablegroups[level2lid][group]) { // Iterate the key => value pairs of each group
+										var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
+										str+="<option value="+ugid+selected+">"+availablegroups[level2lid][group][ugid]+"</option>";
+									}
 								}
 							}
 						}
+						str+="</select><div class='groupStar'>*</div>";
+						str+="</td>";
 					}
-					str+="</select><div class='groupStar'>*</div>";
-					str+="</td>";
 				}
+				
 			}
-			
+			str+="</tr>";
 		}
-		str+="</tr>";
+		str += "</tbody>";
+		str+="</table>";
+	} else { // The database have not generated any content; apply the feedback string and place it in a div
+		str += '<div style="max-width: 900px; margin: 0 auto;">'+feedback+'</div>';
 	}
-	str += "</tbody>";
-	str+="</table>";
 	
+	// Apply the page contents to the content div
 	document.getElementById("content").innerHTML=str;
 }
 
@@ -436,18 +443,13 @@ function closeGroupLimit(){
 	$("#overlay").css("display","none");
 	window.location.reload();
 }
-function returnedGroup(data)
-{
+function returnedGroup(data) {
+
 	var headings = data.headings;
 	moments=data.moments;
 	tablecontent = data.tablecontent;
 	availablegroups = data.availablegroups; // The available groups to put users in
-	
-	
-	/* availablegroups=data.availablegroups;
-	moments=data.moments;
-	versions=data.versions;
-	results=data.results;*/
+	feedback = data.feedback;
 	
 	// Read dropdown from local storage (??)
 	courselist=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
@@ -460,27 +462,30 @@ function returnedGroup(data)
 	
 	$(document).ready(function () {
 		$("#filter").mouseleave(function () {
-				leaveFilter();
+			leaveFilter();
 		});
 	});
 	$(document).ready(function () {
-						$("#dropdownFunnel").mouseleave(function () {
-								leaveFunnel();
-						});
+		$("#dropdownFunnel").mouseleave(function () {
+			leaveFunnel();
 		});
+	});
 	
 	allData = data; // used by dugga.js (for what??)
-	process();
-	
-	
-		
+
+	if(tablecontent != null) {
+		process();	
+	} else {
+		$('#select').css('display', 'none');
+		$('#filter').css('display', 'none');
+	}
+
 }
 
 /**
- * @WIP
- * Function to make a AJAXRequest to update the group of a student. 
- * Is called when a dropdown menu is changed.
- * @param changedElement - the DOM object of the changed element. 
+ * Function to make a AJAXService to update the group of a student. 
+ * Is called upon the onchange event of a select element on the page.
+ * @param changedElement - the select element that was changed
  */
 function changegroup(changedElement) {
 	var elementId = changedElement.id; // contains uid_lid_oldUgid (oldUgid if applicable)
@@ -495,8 +500,8 @@ function changegroup(changedElement) {
 	data = {
 		'uid':uid,
 		'lid':lid,
-		'newUgid':value,
-		'oldUgid':oldUgid
+		'newUgid':value, // The new value of the select element
+		'oldUgid':oldUgid // The old value of the select element, stored in the id of the element
 	};
 	
 	// This AJAXService will map uid to ugid in user_usergroup
