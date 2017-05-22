@@ -1182,10 +1182,22 @@ function returnedHighscore(data){
 
 // Toggle content for each moment
 $(document).on('click', '.moment, .section', function () {
-	$(this).nextUntil('.moment, .section').slideToggle('fast', setGlobalArrow());
+	$(this).nextUntil('.moment, .section').slideToggle('fast', setGlobalArrowWhenSingleMomentIsActivated());
 	$(this).children('.arrowRight').toggle();
 	$(this).children('.arrowComp').toggle();
 });
+
+// This part should check if there are any un/folded section when a moment has been clicked 
+// Sets the show/hide All arrow to a correct state
+function setGlobalArrowWhenSingleMomentIsActivated() {
+  if(!hasUnfoldedParts()) {
+    $('.arrowRightMeta').show();
+    $('.arrowCompMeta').hide();
+  } else {
+    $('.arrowRightMeta').hide();
+    $('.arrowCompMeta').show();
+  }
+}
 
 // Sets the show/hide All arrow to a correct state
 function setGlobalArrow() {
@@ -1196,7 +1208,7 @@ function setGlobalArrow() {
     $('.arrowRightMeta').hide();
     $('.arrowCompMeta').show();
   }
-};
+}
 
 // Toggle content for all moments
 $(document).on('click', '.showHideMetaButton', function () {
