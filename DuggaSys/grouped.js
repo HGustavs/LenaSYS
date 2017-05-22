@@ -353,13 +353,14 @@ function createGroup()
 	var numberOfGroups=$("#numberOfGroups").val(); 
 	var offsetLetter=0;
 	var offsetNumber = 1;
+	var groupError = false;
 	
 	if(numberOfGroups > 0){
 		if(nameType == "a"){
 			for(var lidGroup in availablegroups) {	//get lid of each group
 				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
 					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
-						for(var a=65;a<90; a++){  //loop through capital letters
+						for(var a=65;a<=90; a++){  //loop through capital letters
 							var groupLetter = String.fromCharCode(a);
 							if(availablegroups[lidGroup][groupArray][groupNames] == groupLetter && lidGroup==chosenMoment){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
 								offsetLetter++;
@@ -371,12 +372,18 @@ function createGroup()
 			var startLetter = +offsetLetter+65;
 			var numbersOfLetters = +numberOfGroups+startLetter;
 			for(startLetter;startLetter<numbersOfLetters; startLetter++){
-				var groupLetter = String.fromCharCode(startLetter);
-				data = {
-					'chosenMoment':chosenMoment,
-					'groupName':groupLetter
-				};
-				AJAXService("NEWGROUP",data,"GROUP");
+				if(startLetter<= 90){
+					var groupLetter = String.fromCharCode(startLetter);
+					data = {
+						'chosenMoment':chosenMoment,
+						'groupName':groupLetter
+					};
+					AJAXService("NEWGROUP",data,"GROUP");
+					groupError=false;
+				}
+				else{
+					groupError=true;
+				}
 			}
 		}
 		else{
@@ -403,8 +410,15 @@ function createGroup()
 		$("#numberOfGroups").val('');
 		$("#groupSection").css("display","none");
 		$("#numberOfGroupsError").css("display","none");
+		$("#toManyCreatedGroups").css("display","none");
 		$("#overlay").css("display","none");
-		window.location.reload();
+		if(groupError == true){
+			$("#toManyCreatedGroups").css("display","inline-block");
+			$("#overlay").css("display","block");
+		}
+		else{
+			window.location.reload();
+		}
 	}
 	else{
 		$("#numberOfGroupsError").css("display","block");
@@ -415,7 +429,12 @@ function clearGroupWindow(){
 	$("#nameType").val('a');
 	$("#selectMoment").val(0);
 	$("#numberOfGroupsError").css("display","none");
-	
+}
+
+function closeGroupLimit(){
+	$("#toManyCreatedGroups").css("display","none");
+	$("#overlay").css("display","none");
+	window.location.reload();
 }
 function returnedGroup(data)
 {
@@ -498,7 +517,7 @@ function resort()
 	var colkind=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1");
 	if (colkind == null || colkind == undefined){colkind=0;}
 	
-	if (tablecontent.length > 0) {
+	if (momtmp.length > 0) {
 		if(columno < momtmp.length+1){
 			
 			// Each if case checks what to sort after and then sorts appropiatle depending on ASC or DESC
@@ -552,14 +571,14 @@ function resort()
 				// 0. no group/groups
 				if(columno > 0){
 					tablecontent.sort(function compare(a,b){
-						if(a.lidstogroup[moments[columno-1].lid]!=false && b.lidstogroup[moments[columno-1].lid]==false ){
+						if(a.lidstogroup[momtmp[columno-1].lid]!=false && b.lidstogroup[momtmp[columno-1].lid]==false ){
 								return -sortdir;
-						} else if(a.lidstogroup[moments[columno-1].lid]==false  && b.lidstogroup[moments[columno-1].lid]!=false ){
+						} else if(a.lidstogroup[momtmp[columno-1].lid]==false  && b.lidstogroup[momtmp[columno-1].lid]!=false ){
 								return sortdir;
 						}else{	
-							if(a.lidstogroup[moments[columno-1].lid]>b.lidstogroup[moments[columno-1].lid]){		  				
+							if(a.lidstogroup[momtmp[columno-1].lid]>b.lidstogroup[momtmp[columno-1].lid]){		  				
 									return sortdir;
-							}else if(a.lidstogroup[moments[columno-1].lid]<b.lidstogroup[moments[columno-1].lid]){
+							}else if(a.lidstogroup[momtmp[columno-1].lid]<b.lidstogroup[momtmp[columno-1].lid]){
 									return -sortdir;
 							}else{
 									return 0;
@@ -573,35 +592,14 @@ function resort()
 		
 	drawtable();
 	//Highlights the header that has been clicked and shows ASC or DESC icon
-	for(var m=0;m<=columno;m++){
-		$("#tableheader"+columno).removeClass("result-header-inverse");
-	}	
-	if(columno == 0){
-		$("#tableheader0").addClass("result-header-inverse"); 
-	}else{
-		$("#tableheader"+columno).addClass("result-header-inverse"); 
-	}
-    if (sortdir<0){
-		if(columno == 0){
-			$("#tableheader"+columno).empty();
-			$("#tableheader"+columno).append("Studenter");
-			$("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
-		}else{
-			$("#tableheader"+columno).empty();
-			$("#tableheader"+columno).append(moments[columno-1].entryname);
-			$("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
-		}
-    }else{
-		if(columno == 0){
-			$("#tableheader"+columno).empty();
-			$("#tableheader"+columno).append("Studenter");
-			$("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
-		}else{		
-			 $("#tableheader"+columno).empty();
-			 $("#tableheader"+columno).append(moments[columno-1].entryname);
-			 $("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>"); 
-		}  
-	}
+	 $("#tableheader"+columno).addClass("result-header-inverse");
+   if (sortdir<0){
+     $("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
+
+   } else {
+     $("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>"); 
+    
+   }
 }
 
 // If col and current col are equal we flip sort order 
