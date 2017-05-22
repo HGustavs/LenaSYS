@@ -112,6 +112,10 @@ function mousemoveevt(ev, t) {
     }
     // Draw select or create dotted box
     if (md == 4) {
+		
+		var button = document.getElementById("classbutton").className;
+		var buttonStyle = document.getElementById("classbutton");
+		
         if (uimode == "CreateEREntity"){
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath(1);
@@ -233,6 +237,10 @@ function mousedownevt(ev) {
 }
 
 function mouseupevt(ev) {
+	
+		var button = document.getElementById("classbutton").className;
+		var buttonStyle = document.getElementById("classbutton");
+	
     if (snapToGrid) {
         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
@@ -428,8 +436,10 @@ function resize() {
 //---------------------------------------
 function movemode(e, t) {
     uimode = "MoveAround";
+	
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
+	
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
         buttonStyle.className = "pressed";
