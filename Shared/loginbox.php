@@ -166,8 +166,9 @@
   <div class="endsessionmessagebox" style="display:none">
     <div class='loginBoxheader'>
       <h3>Alert</h3>
-      <div onclick="closeWindows(); reloadPage()">x</div>
+      <div onclick="closeWindows(); reloadPage(); processLogout()">x</div>
     </div>
     <p id="endsessionmessage">Your session has timed out.</p>
+    <input type="button" id="endsessionmessagebutton" onclick="closeWindows(); processLogout()" value="OK">
   </div>
   <!-- Session expire message END -->
