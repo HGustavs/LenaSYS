@@ -147,12 +147,23 @@
 
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick="align('verticalCenter');">Vertical center</a>
-                        </div>
-                        <div class="drop-down-item">
                             <a href="#" onclick="align('horizontalCenter');">Horizontal center</a>
                         </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('verticalCenter');">Vertical center</a>
+                        </div>
 
+                    </div>
+                </div>
+                <div class="menu-drop-down">
+                    <span class="label">Distribute</span>
+                    <div class="drop-down">
+                        <div class="drop-down-item">
+                            <a href="#" onclick="distribute('horizontally');">Horizontal</a>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="distribute('vertically');">Vertical</a>
+                        </div>
                     </div>
                 </div>
             </div>
