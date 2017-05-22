@@ -748,32 +748,6 @@ header td {
 /* --------------================################================-------------- *
  *                       		  Pop-up BOX        				   *
  * --------------================################================-------------- */
-/* Tooltip here used for diagram.php icon buttons. They're getting a hoover effect. */
- .tooltip {
-	 position: static;
-    display: inline-block; 
- }
- 
- .tooltip .tooltiptext {
-    visibility: hidden;
-	position: relative;
-	left: 65px;
-    width: 57px;
-    color: #000000;
-    text-align: center;
-    padding-top: 40px;
-	font-weight: bold;
-	position: absolute;
-    z-index: 5;
-}
-
- .tooltip:hover .tooltiptext {
-    visibility: visible;
-} 
-
-.diagram_option_button {
-background-color#7B68EE
-}
 
 #playlink {
   width: 216px;
@@ -1285,12 +1259,9 @@ input.submit-button:disabled {
   opacity: 0.3;
 }
 
-.unpressed{
-  background:#483D8B; 
-  z-index: 2;
-}
 .pressed{
-  background:#FFA500; 
+  background: grey;
+  color: white;
 }
 
 .button-row {

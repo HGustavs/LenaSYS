@@ -550,44 +550,14 @@ function attrMode() {
     uimode = "CreateERAttr";
 }
 
-function attributebutton_selected()
-{
-	var button = document.getElementById("attributebutton").className;
-	var buttonStyle = document.getElementById("attributebutton");
-	document.getElementById("linebutton").className="unpressed";
-	document.getElementById("relationbutton").className="unpressed";
-	document.getElementById("entitybutton").className="unpressed";
-		buttonStyle.className="pressed";
-}
-
 function entityMode() {
     canvas.style.cursor = "default";
     uimode = "CreateEREntity";
 }
 
-function entitybutton_selected()
-{	
-	var button = document.getElementById("entitybutton").className;
-	var buttonStyle = document.getElementById("entitybutton");	
-	document.getElementById("linebutton").className="unpressed";
-	document.getElementById("attributebutton").className="unpressed";
-	document.getElementById("relationbutton").className="unpressed";
-	buttonStyle.className="pressed";
-}
-
 function lineMode() {
     canvas.style.cursor = "default";
     uimode = "CreateLine";
-}
-
-function linebutton_selected()
-{
-	var button = document.getElementById("linebutton").className;
-	var buttonStyle = document.getElementById("linebutton");
-	document.getElementById("attributebutton").className="unpressed";
-	document.getElementById("relationbutton").className="unpressed";
-	document.getElementById("entitybutton").className="unpressed";
-		buttonStyle.className="pressed";
 }
 
 function figureMode(mode) {
@@ -599,16 +569,6 @@ function figureMode(mode) {
 function relationMode() {
     canvas.style.cursor = "default";
     uimode = "CreateERRelation";
-}
-
-function relationbutton_selected()
-{
-	var button = document.getElementById("relationbutton").className;
-	var buttonStyle = document.getElementById("relationbutton");
-	document.getElementById("linebutton").className="unpressed";
-	document.getElementById("attributebutton").className="unpressed";
-	document.getElementById("entitybutton").className="unpressed";
-		buttonStyle.className="pressed";
 }
 
 function setTextSizeEntity() {

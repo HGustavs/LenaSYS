@@ -56,20 +56,13 @@
 
                         <h4 class="label">Tools</h4>
                         <div class="toolbar-drawer">
-                            <div class="tooltip"><button id='linebutton' onclick='lineMode(), linebutton_selected();' class='diagram_option_button, unpressed'>
-						<span class="tooltiptext">Create Line</span><img src="../Shared/icons/diagram_create_line.svg" height="30" width="40"></button></div>
+                            <button onclick='lineMode();'>Line</button>
                         </div>
                         <h4 class="label">Create</h4>
                         <div class="toolbar-drawer">
-                           <div class="tooltip"><button id='attributebutton' onclick='attrMode(), attributebutton_selected();' class='diagram_option_button, unpressed'>
-						<span class="tooltiptext">Create Attribute</span><img src="../Shared/icons/diagram_create_attribute.svg" height="30" width="40"></button></div>
-			
-						<div class="tooltip"><button id='entitybutton' onclick='entityMode(), entitybutton_selected();' class='diagram_option_button, unpressed'>
-						<span class="tooltiptext">Create Entity</span><img src="../Shared/icons/diagram_create_entity.svg" height="30" width="40"></button></div>
-			
-						<div class="tooltip"><button id='relationbutton' onclick='relationMode(), relationbutton_selected();' class='diagram_option_button, unpressed'>
-						<span class="tooltiptext">Create Relation</span><img src="../Shared/icons/diagram_create_relation.svg" height="30" width="40"></button></div>
-
+                            <button onclick='attrMode();'>Attribute</button>
+                            <button onclick='entityMode();'>Entity</button>
+                            <button onclick='relationMode();'>Relation</button>
                         </div>
                         <h4 class="label">Draw</h4>
                         <div class="toolbar-drawer">
@@ -179,10 +172,8 @@
 
                 <input id='fileid' type='file' name='file_name' hidden multiple/>
             -->
-			  <div class="tooltip"><button id='moveButton' class='diagram_option_button, unpressed'  style='right: 0; position: fixed; margin-right: 30px; margin-top:-10px'>
-			<span class="tooltiptext">Start Moving</span><img src="../Shared/icons/diagram_move_arrows.svg" height="20" width="20"></button><br></div>
-			
-              </div>
+            <button id='moveButton' class='unpressed' style='right: 0; position: absolute; margin-right: 2px;'>Start Moving</button><br>
+        </div>
         <div id="canvasDiv"></div>
         <div id="consoleDiv">
             <!--
