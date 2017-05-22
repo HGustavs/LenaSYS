@@ -47,7 +47,7 @@
         include '../Shared/navheader.php';
     ?>
     <!-- content START -->
-    <div id="content">
+    <div id="content" style="padding-top: 40px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
         <div id="buttonDiv">
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap">
@@ -69,8 +69,14 @@
                             <button onclick="figureMode('Square');">Square</button>
                             <button onclick="figureMode('Free');">Free</button>
                         </div>
-
-                        </select>
+                        <!--
+                        IS NOT IN USE YET
+                        <h4 class="label">Undo/Redo</h4>
+                        <div class="toolbar-drawer">
+                            <button onclick='undoDiagram()'>Undo</button>
+                            <button onclick='redoDiagram()'>Redo</button>
+                        </div>
+                        -->
                     </div>
                 </div>
                 <div class="menu-drop-down">
