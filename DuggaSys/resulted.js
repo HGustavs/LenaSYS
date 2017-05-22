@@ -866,7 +866,7 @@ function sorttype(t){
 function magicHeading()
 {
     // Display Magic Headings when scrolling
-    if(window.pageYOffset-10>$("#subheading").offset().top){
+    if(window.pageYOffset+15>$("#subheading").offset().top){
         $("#upperDecker").css("display","block");
     }else{
         $("#upperDecker").css("display","none");            
