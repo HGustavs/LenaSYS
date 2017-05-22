@@ -397,8 +397,15 @@ function changedType()
 
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
+
 		for(var ii=0;ii<retdata['links'].length;ii++){
+
 			var iitem=retdata['links'][ii];
+
+			// filter file extension
+			var ext = iitem.filename.split('.').pop().toLowerCase();
+
+
 			if(xelink==iitem['filename']){
 				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
 			}else{
