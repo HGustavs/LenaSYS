@@ -697,24 +697,24 @@ function returnedSection(data)
     // This will ellipsis on the course name, and keep course code and vers always fully expanded
     str+="<div class='course' style='display: flex;align-items: center;justify-content: center;'>";
 
-     		/*Adds the Show/hide all arrow and text to the section editor*/
-        	str+="<div class='hideAllArrow showHideMetaButton' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 12px; display:inline-block;' ><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+		/*Adds the Show/hide all arrow and text to the section editor*/
+//			str+="<div class='hideAllArrow showHideMetaButton' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 12px; display:inline-block;' >";
+//			str+="<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+//			str+="</div>";
 
-        	str+="</div>";
+//			str+="<div class='hideAll showHideMetaButton' id='course-showhide-text' style='position:absolute; cursor: pointer; margin-top: 8px; display: inline-block; vertical-align: baseline;' >";
+//			str+="<text class='showhidetext' >"+showhideall+"</text>";
+//			str+="</div>";
 
-        	str+="<div class='hideAll showHideMetaButton' id='course-showhide-text' style='position:absolute; cursor: pointer; margin-top: 8px; display: inline-block; vertical-align: baseline;' >";
+			str+="<div class='showAllArrow showHideMetaButton' id='course-showhide' value='Show/Hide all' style='display:inline; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' >";
+			str+="<img src='../Shared/icons/right_complement.svg' class='arrowRightMeta' style='display:none'><img src='../Shared/icons/desc_complement.svg' class='arrowCompMeta'>";
+			str+="</div>";
+
+			str+="<div class='showAll showHideMetaButton' id='course-showhide-text' style='display:inline; position:absolute; cursor: pointer; margin-top: 8px; vertical-align: baseline;' >";
 			str+="<text class='showhidetext' >"+showhideall+"</text>";
-        	str+="</div>";
+			str+="</div>";
 
-        	str+="<div class='showAllArrow showHideMetaButton' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRight'><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:none'>";
-        	str+="</div>";
-
-        	str+="<div class='showAll showHideMetaButton' id='course-showhide-text' style='display:none; position:absolute; cursor: pointer; margin-top: 8px; vertical-align: baseline;' >";
-        	str+="<text class='showhidetext' >"+showhideall+"</text>";
-
-        	str+="</div>";
-
-        	str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>"+data.coursename+"</div>";
+			str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>"+data.coursename+"</div>";
 			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
 			str+="<div id='course-versname' class='courseVersionField'>"+versionname+"</div>";
 		/*If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign */
@@ -1180,92 +1180,51 @@ function returnedHighscore(data){
 	$("#HighscoreBox").css("display", "block");
 }
 
-// Function for toggling content for each moment
+// Toggle content for each moment
 $(document).on('click', '.moment, .section', function () {
-	$(this).nextUntil('.moment, .section').slideToggle(300);
+	$(this).nextUntil('.moment, .section').slideToggle('fast', setGlobalArrow());
 	$(this).children('.arrowRight').toggle();
 	$(this).children('.arrowComp').toggle();
-  if(hasUnfoldedArrows()) {
-    $('.hideAllArrow').hide();
-    $('.showAllArrow').show();
-  } else {
-    $('.hideAllArrow').show();
-    $('.showAllArrow').hide();
-  }
 });
 
-// Function for hiding content for all moments
+// Sets the show/hide All arrow to a correct state
+function setGlobalArrow() {
+  if(hasUnfoldedParts()) {
+    $('.arrowRightMeta').show();
+    $('.arrowCompMeta').hide();
+  } else {
+    $('.arrowRightMeta').hide();
+    $('.arrowCompMeta').show();
+  }
+};
+
+// Toggle content for all moments
 $(document).on('click', '.showHideMetaButton', function () {
 	if(hasUnfoldedParts()) {
-    $('.moment, .section').nextUntil('.moment, .section').slideUp(300);
-    $('.hideAll').hide();
-    $('.showAll').show();
-    $('.hideAllArrow').hide();
-    $('.showAllArrow').show();
+    $('.moment, .section').nextUntil('.moment, .section').slideUp('fast', setGlobalArrow());
     $('.arrowRight').show();
     $('.arrowComp').hide();
 	} else {
-    $('.moment, .section').nextUntil('.moment, .section').slideDown(300);
-    $('.hideAll').show();
-    $('.showAll').hide();
-    $('.hideAllArrow').show();
-    $('.showAllArrow').hide();
+    $('.moment, .section').nextUntil('.moment, .section').slideDown('fast', setGlobalArrow());
     $('.arrowRight').hide();
     $('.arrowComp').show();
 	}
 });
 
-// Chevk visibility status
+// Check visibility status of all the sub moments, used to see if there are any open sections
 function hasUnfoldedParts(){
   var fold = false;
   $('div.moment, div.section').each(function(i) {
     $('.moment, .section').nextUntil('.moment, .section').each(function(j) {
       if($(this).is(":visible")) {
         fold = true;
-        return(!fold);
+        return(!fold); // Don't break if still false
       }
     });
     return(!fold);
   });
   return fold;
 }
-// check arrow status (might not work with visible..)
-function hasUnfoldedArrows(){
-  var fold = false;
-  $('div.moment, div.section').each(function(i) {
-    console.log("A" + i + ": " + $(this).children('img.arrowComp').is(':visible'));
-    if($(this).children('.arrowComp').is(':visible')) {
-      fold = true;
-//      return(!fold);
-    }
-  });
-  return fold;
-}
-
-/*
-// Function for hiding content for all moments
-$(document).on('click', '.hideMetaButton', function () {
-  $('.moment, .section').nextUntil('.moment, .section').slideUp();
-  $('.hideAll').hide();
-  $('.showAll').show().css('display', 'inline-block');
-  $('.hideAllArrow').hide();
-  $('.showAllArrow').show().css('display', 'inline-block');
-  $('.arrowRight').show();
-  $('.arrowComp').hide();
-});
-
-
-// Function for showing content for all moments
-$(document).on('click', '.showMetaButton', function () {
-  $('.moment, .section').nextUntil('.moment, .section').slideDown();
-  $('.hideAll').show();
-  $('.showAll').hide();
-  $('.hideAllArrow').show();
-  $('.showAllArrow').hide();
-  $('.arrowRight').hide();
-  $('.arrowComp').show();
-});
-*/
 
 // Function to prevent collapsing when clicking icons
 $(document).ready(function(){
