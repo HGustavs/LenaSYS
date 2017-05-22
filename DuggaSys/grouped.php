@@ -61,12 +61,24 @@
 			</div>
 		</div>
 		<p style="display:none; color:red;" id="numberOfGroupsError">You have to assign how many groups should be created.</p> 
+		<p style="display:none; color:red;" id="toManyCreatedGroupsError">You have created a maximum amount of groups.</p> 
 		<div style='padding:5px;'>
 			<input style='float:none; display: inline-block;' class='submit-button ' type='button' value='Cancel' onclick='closeWindows();clearGroupWindow();' /> 
 			<input style='margin-left: 40px; float:none; display: inline-block;' class='submit-button' type='button' value='Submit' onclick='createGroup();' /> 
 		</div>
 	</div>
 	<!-- Create Group Dialog END -->
-
+	<!-- Maximum of Groups Dialog START -->
+	<div id='toManyCreatedGroups' class='loginBox' style='width:285px;display:none;'>
+		<div class='loginBoxheader'>
+			<h3>Manage Groups</h3>
+			<div onclick='closeGroupLimit();'>x</div>
+		</div>
+		<p style="display:inline-block; color:red;">You have created a maximum amount of groups.</p> 
+		<div style='padding:5px;'>
+			<input style='margin-left: 40px; float:none; display: inline-block;' class='submit-button' type='button' value='OK' onclick='closeGroupLimit();' /> 
+		</div>
+	</div>
+	<!-- Maximum of Groups Dialog END -->
 </body>
 </html>
