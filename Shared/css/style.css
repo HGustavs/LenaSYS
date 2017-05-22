@@ -688,6 +688,16 @@ header td {
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 
+.newGroups{
+	top: 20%;
+	left: 60%;
+}
+
+.removeGroups{
+	top: 20%;
+	left: 10%;
+}
+
 #endsessionboxbutton {
   background-color:#614875;
   border:0px;

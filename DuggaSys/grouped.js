@@ -11,6 +11,8 @@ var tablecontent=new Array;
 var feedback=null;
 var typechanged=false;
 var duggaArray = [[]];
+var lidOnLetterGroups=new Array;
+var lidOnNumberGroups=new Array;
 function setup(){
 	
 	var filt = "";
@@ -346,18 +348,20 @@ function selectGroup()
 	for(i=0; i<moments.length; i++){
 		inp+="<option value="+moments[i].lid+">"+moments[i].entryname+"</option>";
 	}
-	document.getElementById("selectMoment").innerHTML=inp;
+	document.getElementById("selectMomentCreate").innerHTML=inp;
+	document.getElementById("selectMomentRemove").innerHTML=inp;
 	
 	//Display pop-up
 	$("#groupSection").css("display","block");
+	$("#removeGroup").css("display","block");
 	$("#overlay").css("display","block");
 }
 
 function createGroup()
 {
-	var chosenMoment=$("#selectMoment").val();
-	var nameType=$("#nameType").val(); 
-	var numberOfGroups=$("#numberOfGroups").val(); 
+	var chosenMoment=$("#selectMomentCreate").val();
+	var nameType=$("#nameTypeCreate").val(); 
+	var numberOfGroups=$("#numberOfGroupsCreate").val(); 
 	var offsetLetter=0;
 	var offsetNumber = 1;
 	var groupError = false;
@@ -429,6 +433,80 @@ function createGroup()
 	}
 	else{
 		$("#numberOfGroupsError").css("display","block");
+	}
+}
+
+function removeGroup()
+{
+	var chosenMomentRemove=$("#selectMomentRemove").val();
+	var nameTypeRemove=$("#nameTypeRemove").val(); 
+	var numberOfGroupsRemove=$("#numberOfGroupsRemove").val(); 
+	var offsetLetter=0;
+	var offsetNumber = 1;
+	var groupError = false;
+	lidOnLetterGroups=new Array;
+	lidOnNumberGroups=new Array;
+	if(numberOfGroupsRemove > 0){
+		if(nameTypeRemove == "a"){
+			for(var lidGroup in availablegroups) {	//get lid of each group
+				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
+					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
+						for(var a=90;a>=65; a--){  //loop through capital letters
+							var groupLetter = String.fromCharCode(a);
+							if(availablegroups[lidGroup][groupArray][groupNames] == groupLetter && lidGroup==chosenMomentRemove){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
+								offsetLetter++;
+								lidOnLetterGroups.push(groupNames);
+							}
+							
+						} 
+					}
+				} 
+			}
+			var tmpLetterGroup = lidOnLetterGroups.length-numberOfGroupsRemove;
+			for(tmpLetterGroup;tmpLetterGroup<lidOnLetterGroups.length; tmpLetterGroup++){
+				data = {
+					'chosenMomentRemove':chosenMomentRemove,
+					'ugidGroup':lidOnLetterGroups[tmpLetterGroup]
+				};
+				AJAXService("DELGROUP",data,"GROUP");
+			}	 
+		}
+	
+	else if(nameTypeRemove == "1"){
+			console.log("1");
+			 for(var lidGroup in availablegroups) {	//get lid of each group
+				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
+					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
+						for(var a=0;a<groupNames; a++){  //loop through capital letters
+							if(availablegroups[lidGroup][groupArray][groupNames] == a && lidGroup==chosenMomentRemove){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
+								offsetNumber++;
+								lidOnNumberGroups.push(groupNames);
+							}
+						}
+					}
+				}
+			}
+			var tmpNumberGroup = lidOnNumberGroups.length-numberOfGroupsRemove;
+			for(tmpNumberGroup;tmpNumberGroup<lidOnNumberGroups.length; tmpNumberGroup++){
+				data = {
+					'chosenMomentRemove':chosenMomentRemove,
+					'ugidGroup':lidOnNumberGroups[tmpNumberGroup]
+				};
+				AJAXService("DELGROUP",data,"GROUP");
+			}
+		}		
+		$("#numberOfGroups").val('');
+		$("#groupSection").css("display","none");
+		$("#numberOfGroupsError").css("display","none");
+		$("#toManyCreatedGroups").css("display","none");
+		$("#overlay").css("display","none");
+		if(groupError == true){
+			$("#toManyCreatedGroups").css("display","inline-block");
+			$("#overlay").css("display","block");
+		}
+		else{
+			window.location.reload();
+		}
 	}
 }
 function clearGroupWindow(){

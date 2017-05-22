@@ -32,6 +32,10 @@ $vers = getOP('vers'); // Course version
 $chosenMoment=getOP("chosenMoment"); // Moment (when creating new  groups, lid needs to be connected)
 $groupName=getOP("groupName"); // Name on group (when creating new groups, a name is needed)
 
+// When using opt DELGROUP
+$chosenMomentRemove=getOP("chosenMomentRemove"); // Moment (when creating new  groups, lid needs to be connected)
+$ugidGroup=getOP("ugidGroup"); // Name on group (when creating new groups, a name is needed)
+
 // When using opt UPDATEGROUP
 $uid = getOP('uid'); // User id
 $lid = getOP('lid');
@@ -213,6 +217,15 @@ if(strcmp($opt,"GET")==0){
 				)
 			);
 		}
+	}
+} else if(strcmp($opt,"DELGROUP")==0){
+	$query = $pdo->prepare("DELETE FROM usergroup WHERE ugid = :ugidGroup AND lid = :chosenMomentRemove"); 
+	$query->bindParam(':ugidGroup', $ugidGroup);
+	$query->bindParam(':chosenMomentRemove', $chosenMomentRemove);
+
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error updating entries".$error[2];
 	}
 } else if(strcmp($opt, "UPDATEGROUP") == 0) {
 	
