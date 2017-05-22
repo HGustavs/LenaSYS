@@ -57,9 +57,9 @@
                         <h4 class="label">Tools</h4>
                         <div class="toolbar-drawer">
 						
-						<div class="tooltipdialog"><button id='linebutton' onclick='lineMode(), linebutton_selected();' class='diagram_option_button, unpressed'>
+						<!--<div class="tooltipdialog"><button id='linebutton' onclick='lineMode(), linebutton_selected();' class='diagram_option_button, unpressed'>
 						<span class="tooltiptextdialog">Create Line</span><img src="../Shared/icons/diagram_create_line.svg" height="30" width="40"></button></div>
-
+-->
                         </div>
                         <h4 class="label">Create</h4>
                         <div class="toolbar-drawer">
