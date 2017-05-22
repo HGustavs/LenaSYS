@@ -592,7 +592,11 @@ function Symbol(kind) {
             canvasContext.stroke();
             canvasContext.fillStyle = "#253";
             canvasContext.fillStyle = this.fontColor;
+            canvasContext.closePath();
+            canvasContext.save();
+            canvasContext.clip();
             canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+            canvasContext.restore();
             if (this.key_type == 'Primary key') {
                 var linelenght = canvasContext.measureText(this.name).width;
                 canvasContext.beginPath(1);
@@ -601,6 +605,7 @@ function Symbol(kind) {
                 canvasContext.lineTo(x1 + ((x2 - x1) * 0.5) + (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
                 canvasContext.strokeStyle = this.strokeColor;
                 canvasContext.stroke();
+
             } else if (this.key_type == 'Normal') {
                 canvasContext.beginPath(1);
                 canvasContext.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
@@ -627,6 +632,9 @@ function Symbol(kind) {
             canvasContext.lineTo(x2, y2);
             canvasContext.lineTo(x1, y2);
             canvasContext.lineTo(x1, y1);
+            canvasContext.closePath();
+            canvasContext.save();
+            canvasContext.clip();
             canvasContext.fillStyle = this.symbolColor;
             canvasContext.fill();
             if (this.targeted) {
@@ -638,6 +646,7 @@ function Symbol(kind) {
             canvasContext.fillStyle = "#253";
             canvasContext.fillStyle = this.fontColor;
             canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+            canvasContext.restore();
         } else if (this.symbolkind == 4) {
             // ER Attribute relationship is a single line
             if (this.key_type == "Forced") {
@@ -705,6 +714,9 @@ function Symbol(kind) {
             canvasContext.lineTo(midx, y1);
             canvasContext.fillStyle = this.symbolColor;
             canvasContext.fill();
+            canvasContext.closePath();
+            canvasContext.save();
+            canvasContext.clip();
 
             if (this.targeted) {
                 canvasContext.strokeStyle = "#F82";
@@ -715,6 +727,7 @@ function Symbol(kind) {
             canvasContext.fillStyle = "#253";
             canvasContext.fillStyle = this.fontColor;
             canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+            canvasContext.restore();
         }
         canvasContext.setLineDash([]);
     }

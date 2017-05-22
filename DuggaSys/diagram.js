@@ -78,11 +78,16 @@ var classTemplate = {
   height: 7 * gridSize
 };
 var a = [], b = [], c = [];
-var mousedownX = 0, mousedownY = 0;    // Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
-var mousemoveX = 0, mousemoveY = 0;    // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
-var mouseDiffX = 0, mouseDiffY = 0;    // Saves to diff between mousedown and mousemove to know how much to translate the diagram
+var mousedownX = 0, mousedownY = 0;     // Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
+var mousemoveX = 0, mousemoveY = 0;     // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
+var mouseDiffX = 0, mouseDiffY = 0;     // Saves to diff between mousedown and mousemove to know how much to translate the diagram
 var xPos = 0;
 var yPos = 0;
+var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not. This is used in diagram_dialog.js
+var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
+var diagramNumberUndo = 0;              // Is used for localStorage and undo
+var diagramNumberRedo = 0;              // Is used for localStorage and redo
+var diagramCode = "";                   // Is used to stringfy the diagram-array
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler, false);
@@ -431,6 +436,7 @@ function initializeCanvas() {
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
+    //canvas.addEventListener('mouseup', saveLocalStorage, false);
     $("#ZoomSelect").click(function() {
         $(this).parent().find(".ikonPil").toggleClass("ikonPilRotation");
     });
@@ -568,13 +574,6 @@ function figureMode(mode) {
 function relationMode() {
     canvas.style.cursor = "default";
     uimode = "CreateERRelation";
-}
-
-/**
- * Resets the select box to its default value (Create Figure)
- */
-function resetSelectionCreateFigure() {
-    document.getElementById("selectFigure").selectedIndex = 0;
 }
 
 function setTextSizeEntity() {
@@ -948,7 +947,118 @@ function setRefreshTime() {
     }
 }
 
+function align(mode){
+    var selected_objects = [];
 
+    for(var i = 0; i < diagram.length; i++){
+        if(diagram[i].targeted == true){
+            selected_objects.push(diagram[i]);
+        }
+    }
+    switch(mode){
+        case 'top':
+            alignTop(selected_objects);
+        break;
+        case 'left':
+            alignLeft(selected_objects);
+        break;
+        case 'bottom':
+            alignBottom(selected_objects);
+        break;
+        case 'right':
+            alignRight(selected_objects);
+        break;
+        case 'verticalCenter':
+            alignVerticalCenter(selected_objects);
+        break;
+        case 'horizontalCenter':
+            alignHorizontalCenter(selected_objects);
+        break;
+    }
+    updateGraphics();
+    hashFunction();
+}
+function alignLeft(selected_objects){
+    var lowest_x = 99999;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[diagram[i].topLeft].x < lowest_x){
+            lowest_x = points[diagram[i].topLeft].x;
+        }
+    }
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
+    }
+}
+
+function alignTop(selected_objects){
+    var lowest_y = 99999;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[diagram[i].topLeft].y < lowest_y){
+            lowest_y = points[diagram[i].topLeft].y;
+        }
+    }
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
+    }
+}
+
+function alignRight(selected_objects){
+    var highest_x = 0;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[diagram[i].bottomRight].x > highest_x){
+            highest_x = points[diagram[i].bottomRight].x;
+        }
+    }
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
+    }
+}
+
+function alignBottom(selected_objects){
+    var highest_x = 0;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[diagram[i].bottomRight].y > highest_x){
+            highest_x = points[diagram[i].bottomRight].y;
+        }
+    }
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].move(0, highest_x-points[selected_objects[i].bottomRight].y);
+    }
+}
+function alignVerticalCenter(selected_objects){
+    var highest_x = 0, lowest_y = 99999, selected_center_y = 0;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[diagram[i].bottomRight].y > highest_x){
+            highest_x = points[diagram[i].bottomRight].y;
+        }
+        if(points[diagram[i].topLeft].y < lowest_y){
+            lowest_y = points[diagram[i].topLeft].y;
+        }
+    }
+    selected_center_y = (highest_x-lowest_y)/2;
+    for(var i = 0; i < selected_objects.length; i++){
+        var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
+        selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
+    }
+}
+function alignHorizontalCenter(selected_objects){
+    var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[diagram[i].topLeft].x > highest_x){
+            highest_x = points[diagram[i].bottomRight].x;
+        }
+        if(points[diagram[i].bottomRight].x < lowest_x){
+            lowest_x = points[diagram[i].topLeft].x;
+        }
+    }
+    selected_center_x = (highest_x-lowest_x)/2;
+    for(var i = 0; i < selected_objects.length; i++){
+        var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
+        selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
+    }
+}
+
+//Do we really need 5 functions that more or less do the same thing
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1 || diagram[i].symbolkind == 5) {
@@ -998,3 +1108,50 @@ function globalStrokeColor() {
             diagram[i].strokeColor = document.getElementById('StrokeColor').value;
     }
 }
+
+/*
+
+THIS FUNCTION SAVES EVERYTHING CORRECTLY. THE PROBLEM IS THAT IT DOES'T
+REWRITE THE DIAGRAM AS IT SHOULD. IF THAT GETS FIXED, THE REDO AND UNDO
+SHOULD WORK!
+
+function diagramLocalStorage(){
+    var diagramNumberStorage = localStorage.getItem("diagramNumber");
+    diagramNumberStorage++;
+    for(var i = 0; i < diagramNumberStorage; i++){
+        localStorage.removeItem("diagram"+i);
+    }
+    diagramCode = localStorage.getItem("localdiagram");
+    localStorage.setItem("diagram"+diagramNumber, diagramCode);
+}
+
+function saveLocalStorage(e){
+    var oldDiagram = localStorage.getItem("diagram"+diagramNumber);
+    diagramCode = localStorage.getItem("localdiagram");
+    diagramNumber++;
+    diagramNumberUndo = diagramNumber;
+    diagramNumberRedo = diagramNumber;
+    localStorage.setItem("diagramNumber", diagramNumber);
+    localStorage.setItem("diagram"+diagramNumber, diagramCode);
+}
+
+function undoDiagram(){
+    diagramNumberUndo--;
+    if (diagramNumberUndo > 0) {
+        var diagramUndo = localStorage.getItem("diagram"+diagramNumberUndo);
+        localStorage.setItem("localdiagram", diagramUndo);
+        loadDiagram();
+    }
+}
+
+function redoDiagram(){
+    var a = [], b = [], c = [];
+    diagramNumberRedo++;
+    if (diagramNumberRedo<diagramNumber) {
+        var diagramRedo = localStorage.getItem("diagram"+diagramNumberRedo);
+        localStorage.setItem("localdiagram", diagramUndo);
+        loadDiagram();
+    }
+}
+
+*/

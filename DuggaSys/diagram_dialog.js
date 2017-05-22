@@ -21,6 +21,7 @@ function closeAppearanceDialogMenu() {
     /*
      * Closes the dialog menu for appearance.
      */
+    globalAppearanceValue = 0;
     hashFunction();
     $("#appearance").hide();
     dimDialogMenu(false);
@@ -34,6 +35,7 @@ function clickOutsideDialogMenu(ev) {
     $(document).mousedown(function (ev) {
         var container = $("#appearance");
         if (!container.is(ev.target) && container.has(ev.target).length === 0) {
+            globalAppearanceValue = 0;
             closeAppearanceDialogMenu();
         }
     });
@@ -55,12 +57,14 @@ function loadFormIntoElement(element, dir){
     file.open('GET', dir);
     file.onreadystatechange = function(){
         element.innerHTML = file.responseText;
-        document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-        document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
-        document.getElementById('symbolColor').value = diagram[lastSelectedObject].symbolColor;
-        document.getElementById('font').value = diagram[lastSelectedObject].font;
-        document.getElementById('fontColor').value = diagram[lastSelectedObject].fontColor;
-        document.getElementById('TextSize').value = diagram[lastSelectedObject].sizeOftext;
+        if(globalAppearanceValue == 0){
+            document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+            document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
+            document.getElementById('symbolColor').value = diagram[lastSelectedObject].symbolColor;
+            document.getElementById('font').value = diagram[lastSelectedObject].font;
+            document.getElementById('fontColor').value = diagram[lastSelectedObject].fontColor;
+            document.getElementById('TextSize').value = diagram[lastSelectedObject].sizeOftext;
+        }
     }
     file.send();
 }
@@ -71,6 +75,7 @@ function loadFormIntoElement(element, dir){
 //--------------------------------------------------------------------
 
 function globalAppearanceMenu(){
+    globalAppearanceValue = 1;
     //open a menu to change appearance on all entities.
     var form = showMenu();
     //AJAX
