@@ -405,14 +405,13 @@ function changedType()
 			// filter file extension
 			var ext = iitem.filename.split('.').pop().toLowerCase();
 			var validExts = ['js', 'md', 'php', 'html', 'css', 'htm', 'html', 'pdf', 'png', 'jpg', 'txt'];
-			if(validExts.indexOf(ext) !== -1){
-                console.log(ext);
-			}
-
-			if(xelink==iitem['filename']){
-				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-			}else{
-				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
+			if(validExts.indexOf(ext) !== -1 || iitem.filename === '---===######===---'){
+				// output list
+                if(xelink==iitem['filename']){
+                    iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";
+                }else{
+                    iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";
+                }
 			}
 		}
 		$("#link").html(iistr);
