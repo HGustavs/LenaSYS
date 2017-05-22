@@ -397,12 +397,21 @@ function changedType()
 
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
+
 		for(var ii=0;ii<retdata['links'].length;ii++){
+
 			var iitem=retdata['links'][ii];
-			if(xelink==iitem['filename']){
-				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-			}else{
-				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
+
+			// filter file extension
+			var ext = iitem.filename.split('.').pop().toLowerCase();
+			var validExts = ['js', 'md', 'php', 'html', 'css', 'htm', 'html', 'pdf', 'png', 'jpg', 'txt'];
+			if(validExts.indexOf(ext) !== -1 || iitem.filename === '---===######===---'){
+				// output list
+                if(xelink==iitem['filename']){
+                    iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";
+                }else{
+                    iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";
+                }
 			}
 		}
 		$("#link").html(iistr);
