@@ -982,8 +982,8 @@ function align(mode){
 function alignLeft(selected_objects){
     var lowest_x = 99999;
     for(var i = 0; i < selected_objects.length; i++){
-        if(points[diagram[i].topLeft].x < lowest_x){
-            lowest_x = points[diagram[i].topLeft].x;
+        if(points[selected_objects[i].topLeft].x < lowest_x){
+            lowest_x = points[selected_objects[i].topLeft].x;
         }
     }
     for(var i = 0; i < selected_objects.length; i++){
@@ -994,8 +994,8 @@ function alignLeft(selected_objects){
 function alignTop(selected_objects){
     var lowest_y = 99999;
     for(var i = 0; i < selected_objects.length; i++){
-        if(points[diagram[i].topLeft].y < lowest_y){
-            lowest_y = points[diagram[i].topLeft].y;
+        if(points[selected_objects[i].topLeft].y < lowest_y){
+            lowest_y = points[selected_objects[i].topLeft].y;
         }
     }
     for(var i = 0; i < selected_objects.length; i++){
@@ -1006,8 +1006,8 @@ function alignTop(selected_objects){
 function alignRight(selected_objects){
     var highest_x = 0;
     for(var i = 0; i < selected_objects.length; i++){
-        if(points[diagram[i].bottomRight].x > highest_x){
-            highest_x = points[diagram[i].bottomRight].x;
+        if(points[selected_objects[i].bottomRight].x > highest_x){
+            highest_x = points[selected_objects[i].bottomRight].x;
         }
     }
     for(var i = 0; i < selected_objects.length; i++){
@@ -1016,27 +1016,27 @@ function alignRight(selected_objects){
 }
 
 function alignBottom(selected_objects){
-    var highest_x = 0;
+    var highest_y = 0;
     for(var i = 0; i < selected_objects.length; i++){
-        if(points[diagram[i].bottomRight].y > highest_x){
-            highest_x = points[diagram[i].bottomRight].y;
+        if(points[selected_objects[i].bottomRight].y > highest_y){
+            highest_y = points[selected_objects[i].bottomRight].y;
         }
     }
     for(var i = 0; i < selected_objects.length; i++){
-        selected_objects[i].move(0, highest_x-points[selected_objects[i].bottomRight].y);
+        selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
     }
 }
 function alignVerticalCenter(selected_objects){
-    var highest_x = 0, lowest_y = 99999, selected_center_y = 0;
+    var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
     for(var i = 0; i < selected_objects.length; i++){
-        if(points[diagram[i].bottomRight].y > highest_x){
-            highest_x = points[diagram[i].bottomRight].y;
+        if(points[selected_objects[i].bottomRight].y > highest_y){
+            highest_y = points[selected_objects[i].bottomRight].y;
         }
-        if(points[diagram[i].topLeft].y < lowest_y){
-            lowest_y = points[diagram[i].topLeft].y;
+        if(points[selected_objects[i].topLeft].y < lowest_y){
+            lowest_y = points[selected_objects[i].topLeft].y;
         }
     }
-    selected_center_y = (highest_x-lowest_y)/2;
+    selected_center_y = (highest_y-lowest_y)/2;
     for(var i = 0; i < selected_objects.length; i++){
         var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
         selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
@@ -1045,11 +1045,11 @@ function alignVerticalCenter(selected_objects){
 function alignHorizontalCenter(selected_objects){
     var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
     for(var i = 0; i < selected_objects.length; i++){
-        if(points[diagram[i].topLeft].x > highest_x){
-            highest_x = points[diagram[i].bottomRight].x;
+        if(points[selected_objects[i].topLeft].x > highest_x){
+            highest_x = points[selected_objects[i].bottomRight].x;
         }
-        if(points[diagram[i].bottomRight].x < lowest_x){
-            lowest_x = points[diagram[i].topLeft].x;
+        if(points[selected_objects[i].bottomRight].x < lowest_x){
+            lowest_x = points[selected_objects[i].topLeft].x;
         }
     }
     selected_center_x = (highest_x-lowest_x)/2;
@@ -1058,8 +1058,125 @@ function alignHorizontalCenter(selected_objects){
         selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
 }
+function bubbleSort(values, rising){
+    //Setting rising to true will sort low - high
+    var swap = null;
+    if(rising){
+        for(var i = 0; i < values.length; i++){
+            for(var j = 0; j < values.length; j++){
+                if(values[i] < values[j] && i != j){
+                    swap = values[i];
+                    values[i] = values[j];
+                    values[j] = swap;
+                }
+            }
+        }
+    }else{
+        for(var i = 0; i < values.length; i++){
+            for(var j = 0; j < values.length; j++){
+                if(values[i] > values[j] && i != j){
+                    swap = values[i];
+                    values[i] = values[j];
+                    values[i] = swap;
+                }
+            }
+        }
+    }
+    return values;
+}
+function sortObjects(selected_objects, mode, rising){
+    //Sorts objects by X or Y position
+    var position = [];
+    switch(mode){
+        case 'vertically':
+            for(var i = 0; i < selected_objects.length; i++){
+                position.push(points[selected_objects[i].topLeft].y);
+            }
+            position = bubbleSort(position, rising);
 
-//Do we really need 5 functions that more or less do the same thing
+            var private_objects = selected_objects.splice([]);
+            var swap = null;
+            for(var i = 0; i < private_objects.length; i++){
+                for(var j = 0; j < position.length; j++){
+                    if(points[private_objects[i].topLeft].y == position[j] && i != j){
+                        swap = private_objects[i];
+                        private_objects[i] = private_objects[j];
+                        private_objects[j] = swap;
+                    }
+                }
+            }
+        break;
+        case 'horizontally':
+            for(var i = 0; i < selected_objects.length; i++){
+                position.push(points[selected_objects[i].topLeft].x);
+            }
+            position = bubbleSort(position, rising);
+
+            var private_objects = selected_objects.splice([]);
+            var swap = null;
+            for(var i = 0; i < private_objects.length; i++){
+                for(var j = 0; j < position.length; j++){
+                    if(points[private_objects[i].topLeft].x == position[j] && i != j){
+                        swap = private_objects[i];
+                        private_objects[i] = private_objects[j];
+                        private_objects[j] = swap;
+                    }
+                }
+            }
+        break;
+    }
+
+    return private_objects;
+}
+function distribute(axis){
+    var spacing = 32;
+    var selected_objects = [];
+
+    for(var i = 0; i < diagram.length; i++){
+        if(diagram[i].targeted == true){
+            selected_objects.push(diagram[i]);
+        }
+    }
+
+    switch(axis){
+        case 'x':
+        break;
+        case 'vertically':
+            distributeVertically(selected_objects, spacing);
+        break;
+        case 'horizontally':
+            distributeHorizontally(selected_objects, spacing);
+        break;
+
+        /*
+            There is a posibility for more types
+        */
+    }
+    updateGraphics();
+    hashFunction();
+}
+function distributeVertically(selected_objects, spacing){
+    selected_objects = sortObjects(selected_objects, 'vertically', true);
+
+    for(var i = 1; i < selected_objects.length; i++){
+        var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
+
+        var newy = ((points[selected_objects[i-1].topLeft].y)-(points[selected_objects[i].topLeft].y));
+        selected_objects[i].move(0, newy+object_height+spacing);
+    }
+}
+function distributeHorizontally(selected_objects, spacing){
+    selected_objects = sortObjects(selected_objects, 'horizontally', true);
+
+    for(var i = 1; i < selected_objects.length; i++){
+        var object_width = (points[selected_objects[i].bottomRight].x - points[selected_objects[i].topLeft].x);
+
+        var newx = ((points[selected_objects[i-1].topLeft].x)-(points[selected_objects[i].topLeft].x));
+        selected_objects[i].move(newx+object_width+spacing, 0);
+    }
+}
+
+//Do we really need 5 functions that essentially do the same thing, just a minor difference.
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1 || diagram[i].symbolkind == 5) {
