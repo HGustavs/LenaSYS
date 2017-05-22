@@ -1730,7 +1730,13 @@ function Play(event)
                 else{
 					urlText = retData['courseid'] + "/" + retData['playlink'];
 				}
-            	navigateTo("/../courses/", urlText);
+				//current url for the page
+				surl=window.location.href;
+				//relative path
+				var prefix = "/../courses/";
+				surl= surl.substring(0 ,surl.lastIndexOf("/"));
+				var win = window.open(surl + prefix + urlText, '_blank');
+				win.focus();
 
         }
 	}
