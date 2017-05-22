@@ -320,6 +320,17 @@ function drawtable(){
 						}
 					}
 					str+="</select><div class='groupStar'>*</div>";
+					
+					//If it is a seminar - be able to pick opponents
+					if(moments[j]['grouptype']==3){
+						for(k=0; k<2; k++){
+							str+="<select style='margin-left:5px;'>";
+							str+="<option>Pick opponent</option>";
+							//Add students here
+							str+="</select>";
+						}
+					}
+					
 					str+="</td>";
 				}
 			}
@@ -442,6 +453,7 @@ function returnedGroup(data)
 	moments=data.moments;
 	tablecontent = data.tablecontent;
 	availablegroups = data.availablegroups; // The available groups to put users in
+	groupbelongings = data.groupbelongings;
 	
 	
 	/* availablegroups=data.availablegroups;

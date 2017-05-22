@@ -77,7 +77,8 @@ if(strcmp($opt,"GET")==0){
 					'lid' => (int)$row['lid'],
 					'kind' => (int)$row['kind'],
 					'moment' => (int)$row['moment'],
-					'visible'=> (int)$row['visible']
+					'visible'=> (int)$row['visible'],
+					'grouptype' => (int)$row['grouptype']
 				)
 			);
 		}
@@ -164,9 +165,39 @@ if(strcmp($opt,"GET")==0){
 			}
 		}
 		
+		
+		// Fourth query: Select all users and their group belongings 
+		$query = $pdo->prepare("SELECT uug.uid, ug.lid, uug.ugid, ug.name, user.username, user.firstname, user.lastname FROM user_usergroup AS uug, usergroup AS ug, listentries AS l, user WHERE uug.ugid = ug.ugid AND ug.lid = l.lid AND l.cid = :cid AND l.vers = :vers AND l.kind = 4 AND (l.grouptype = 1 OR l.grouptype = 3) AND user.uid=uug.uid ORDER BY uug.uid;");
+		$query->bindParam(':cid', $cid);
+		$query->bindParam(':vers', $vers);
+		
+		$groupbelongings = [];
+		
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error retreiving students and groups. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+		}
+		
+		// Save the students and the groups they are in 
+		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			array_push(
+				$groupbelongings,
+				array(
+					'uid' => $row['uid'],
+					'lid' => $row['lid'],
+					'ugid' => $row['ugid'],
+					'name' => $row['name'],
+					'username' => $row['username'],
+					'firstname' => $row['firstname'],
+					'lastname' => $row['lastname']
+				)
+			);
+		}
+
 		// Place the data in the output data array
 		$data['tablecontent'] = $tableContent;
 		$data['availablegroups'] = $groupsPerLids;
+		$data['groupbelongings'] = $groupbelongings;
 
 		echo json_encode($data);
 
