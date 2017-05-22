@@ -571,13 +571,6 @@ function relationMode() {
     uimode = "CreateERRelation";
 }
 
-/**
- * Resets the select box to its default value (Create Figure)
- */
-function resetSelectionCreateFigure() {
-    document.getElementById("selectFigure").selectedIndex = 0;
-}
-
 function setTextSizeEntity() {
     diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
 }
