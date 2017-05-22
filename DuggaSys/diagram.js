@@ -956,26 +956,25 @@ function align(mode){
             selected_objects.push(diagram[i]);
         }
     }
-    switch(mode){
-        case 'top':
-            alignTop(selected_objects);
-        break;
-        case 'left':
-            alignLeft(selected_objects);
-        break;
-        case 'bottom':
-            alignBottom(selected_objects);
-        break;
-        case 'right':
-            alignRight(selected_objects);
-        break;
-        case 'verticalCenter':
-            alignVerticalCenter(selected_objects);
-        break;
-        case 'horizontalCenter':
-            alignHorizontalCenter(selected_objects);
-        break;
+    if(mode == 'top'){
+       alignTop(selected_objects);
     }
+    else if(mode == 'left'){
+       alignLeft(selected_objects);
+    }
+    else if(mode == 'bottom'){
+       alignBottom(selected_objects);
+    }
+    else if(mode == 'right'){
+       alignRight(selected_objects); 
+    }
+    else if(mode == 'verticalCenter'){
+       alignVerticalCenter(selected_objects);
+    }
+    else if(mode == 'horizontalCenter'){
+       alignHorizontalCenter(selected_objects);
+    }
+  
     updateGraphics();
     hashFunction();
 }
@@ -1087,7 +1086,7 @@ function bubbleSort(values, rising){
 function sortObjects(selected_objects, mode, rising){
     //Sorts objects by X or Y position
     var position = [];
-    if(mode == 'vertically'){
+    if(mode=='vertically'){
         for(var i = 0; i < selected_objects.length; i++){
             position.push(points[selected_objects[i].topLeft].y);
         }
@@ -1104,7 +1103,7 @@ function sortObjects(selected_objects, mode, rising){
                 }
             }
         }
-    }else if(mode == 'horizontally'){
+    }else if(mode=='horizontally'){
         for(var i = 0; i < selected_objects.length; i++){
             position.push(points[selected_objects[i].topLeft].x);
         }
@@ -1135,12 +1134,10 @@ function distribute(axis){
         }
     }
 
-    if(axis=='horizontally'){
-        distributeHorizontally(selected_objects, spacing);
-
-    }else if(axis=='vertically'){
-
+    if(axis=='vertically){
         distributeVertically(selected_objects, spacing);
+    }else if(){
+        distributeHorizontally(selected_objects, spacing);  
     }
     /*
         There is a posibility for more types
