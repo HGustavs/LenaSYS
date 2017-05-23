@@ -167,6 +167,87 @@ function Symbol(kind) {
         }
     }
 
+    this.updateArityPosition = function() {
+        for (var i = 0; i < this.arity.length; i++) {
+            for (var j = 0; j < this.connectorTop.length; j++) {
+                if (this.connectorTop[j].from == this.arity[i][0].connectionPoint) {
+                    this.setArityToTop(i);
+                }
+            }
+            for (var j = 0; j < this.connectorBottom.length; j++) {
+                if (this.connectorBottom[j].from == this.arity[i][0].connectionPoint) {
+                    this.setArityToBottom(i);
+                }
+            }
+            for (var j = 0; j < this.connectorRight.length; j++) {
+                if (this.connectorRight[j].from == this.arity[i][0].connectionPoint) {
+                    this.setArityToRight(i);
+                }
+            }
+            for (var j = 0; j < this.connectorLeft.length; j++) {
+                if (this.connectorLeft[j].from == this.arity[i][0].connectionPoint) {
+                    this.setArityToLeft(i);
+                }
+            }
+        }
+    }
+
+    this.setArityToTop = function(index) {
+        var arity0 = this.arity[index][0];
+        var arity1 = this.arity[index][1];
+        var point = points[arity0.connectionPoint];
+        arity0.x = point.x - arityBuffer;
+        arity0.y = point.y - arityBuffer;
+        arity0.align = "end";
+        arity0.baseLine = "bottom";
+        arity1.x = point.x + arityBuffer;
+        arity1.y = point.y - arityBuffer;
+        arity1.align = "start";
+        arity1.baseLine = "bottom";
+    }
+
+    this.setArityToBottom = function(index) {
+        var arity0 = this.arity[index][0];
+        var arity1 = this.arity[index][1];
+        var point = points[arity0.connectionPoint];
+        arity0.x = point.x - arityBuffer;
+        arity0.y = point.y + arityBuffer;
+        arity0.align = "end";
+        arity0.baseLine = "top";
+        arity1.x = point.x + arityBuffer;
+        arity1.y = point.y + arityBuffer;
+        arity1.align = "start";
+        arity1.baseLine = "top";
+    }
+
+    this.setArityToRight = function(index) {
+        var arity0 = this.arity[index][0];
+        var arity1 = this.arity[index][1];
+        var point = points[arity0.connectionPoint];
+        arity0.x = point.x + arityBuffer;
+        arity0.y = point.y - arityBuffer;
+        arity0.align = "start";
+        arity0.baseLine = "bottom";
+        arity1.x = point.x + arityBuffer;
+        arity1.y = point.y + arityBuffer;
+        arity1.align = "start";
+        arity1.baseLine = "top";
+    }
+
+    this.setArityToLeft = function(index) {
+        var arity0 = this.arity[index][0];
+        var arity1 = this.arity[index][1];
+        var point = points[arity0.connectionPoint];
+        arity0.x = point.x - arityBuffer;
+        arity0.y = point.y - arityBuffer;
+        arity0.align = "end";
+        arity0.baseLine = "bottom";
+        arity1.x = point.x - arityBuffer;
+        arity1.y = point.y + arityBuffer;
+        arity1.align = "end";
+        arity1.baseLine = "top";
+    }
+
     //--------------------------------------------------------------------
     // Moves midpoint or other fixed point to geometric center of object again
     // Restricts resizing for classes
@@ -307,6 +388,13 @@ function Symbol(kind) {
         } else if (this.symbolkind == 2) {
             points[this.centerPoint].x += movex;
             points[this.centerPoint].y += movey;
+        } else if (this.symbolkind == 3) {
+            for (var i = 0; i < this.arity.length; i++) {
+                for (var j = 0; j < this.arity[i].length; j++) {
+                    this.arity[i][j].x += movex;
+                    this.arity[i][j].y += movey;
+                }
+            }
         }
     }
 
@@ -614,9 +702,7 @@ function Symbol(kind) {
                 canvasContext.strokeStyle = this.strokeColor;
             }
         } else if (this.symbolkind == 3) {
-            //scale the text
             canvasContext.font = "bold " + parseInt(textsize) + "px " + this.font;
-            // Write Attribute Name
             canvasContext.textAlign = "center";
             canvasContext.textBaseline = "middle";
             canvasContext.beginPath();
@@ -646,6 +732,17 @@ function Symbol(kind) {
             canvasContext.fillStyle = "#253";
             canvasContext.fillStyle = this.fontColor;
             canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+            canvasContext.restore();
+            canvasContext.font = parseInt(textsize) + "px " + this.font;
+            canvasContext.fillStyle = "#000";
+            for (var i = 0; i < this.arity.length; i++) {
+                for (var j = 0; j < this.arity[i].length; j++) {
+                    var arity = this.arity[i][j];
+                    canvasContext.textAlign = arity.align;
+                    canvasContext.textBaseline = arity.baseLine;
+                    canvasContext.fillText(arity.text, arity.x, arity.y);
+                }
+            }
             canvasContext.restore();
         } else if (this.symbolkind == 4) {
             // ER Attribute relationship is a single line

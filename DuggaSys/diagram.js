@@ -21,6 +21,7 @@ AJAXService("get", {}, "DIAGRAM");
 
 // Global settings
 var gridSize = 16;
+var arityBuffer = gridSize / 2;
 var crossSize = 4.0;                // Size of point cross
 var tolerance = 8;                  // Size of tolerance area around the point
 var canvasContext;                  // Canvas context
@@ -371,6 +372,19 @@ diagram.eraseLines = function(privateLines) {
 }
 
 //--------------------------------------------------------------------
+// getEntityObjects - Returns a list of all entities
+//--------------------------------------------------------------------
+diagram.getEntityObjects = function() {
+    var entities = [];
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].symbolkind == 3) {
+            entities.push(diagram[i]);
+        }
+    }
+    return entities;
+}
+
+//--------------------------------------------------------------------
 // getLineObjects - Returns a list of all lines
 //--------------------------------------------------------------------
 diagram.getLineObjects = function() {
@@ -381,6 +395,108 @@ diagram.getLineObjects = function() {
         }
     }
     return lines;
+}
+
+//--------------------------------------------------------------------
+// getRelationObjects - Returns a list of all relations
+//--------------------------------------------------------------------
+diagram.getRelationObjects = function() {
+    var relations = [];
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].symbolkind == 5) {
+            relations.push(diagram[i]);
+        }
+    }
+    return relations;
+}
+
+//--------------------------------------------------------------------
+// Creates an arity symbol for the line specified.
+// An arity symbol includes a line of text on both sides of the line.
+//--------------------------------------------------------------------
+diagram.createAritySymbols = function(line) {
+    var relations = diagram.getRelationObjects();
+    var entities = diagram.getEntityObjects();
+    for (var i = 0; i < relations.length; i++) {
+        for (var j = 0; j < entities.length; j++) {
+            for (var k = 0; k < relations[i].connectorTop.length; k++) {
+                var relationsFrom = relations[i].connectorTop[k].from;
+                var relationsTo = relations[i].connectorTop[k].to;
+                for (var l = 0; l < entities[j].connectorTop.length; l++) {
+                    if (relationsTo == entities[j].connectorTop[l].from &&
+                        relationsFrom == entities[j].connectorTop[l].to) {
+                        if ((relationsTo == line.topLeft &&
+                            relationsFrom == line.bottomRight) ||
+                            (relationsTo == line.bottomRight &&
+                            relationsFrom == line.topLeft)) {
+                            var point = points[relationsTo];
+                            entities[j].arity.push([
+                                {text:"1", x:point.x - arityBuffer, y:point.y - arityBuffer, connectionPoint:relationsTo, align:"end", baseLine:"bottom"},
+                                {text:"-", x:point.x + arityBuffer, y:point.y - arityBuffer, connectionPoint:relationsTo, align:"start", baseLine:"bottom"}
+                            ]);
+                            return;
+                        }
+                    }
+                }
+                for (var l = 0; l < entities[j].connectorBottom.length; l++) {
+                    if (relationsTo == entities[j].connectorBottom[l].from &&
+                        relationsFrom == entities[j].connectorBottom[l].to) {
+                        if ((relationsTo == line.topLeft &&
+                            relationsFrom == line.bottomRight) ||
+                            (relationsTo == line.bottomRight &&
+                            relationsFrom == line.topLeft)) {
+                            var point = points[relationsTo];
+                            entities[j].arity.push([
+                                {text:"1", x:point.x - arityBuffer, y:point.y + arityBuffer, connectionPoint:relationsTo, align:"end", baseLine:"top"},
+                                {text:"-", x:point.x + arityBuffer, y:point.y + arityBuffer, connectionPoint:relationsTo, align:"start", baseLine:"top"}
+                            ]);
+                            return;
+                        }
+                    }
+                }
+                for (var l = 0; l < entities[j].connectorRight.length; l++) {
+                    if (relationsTo == entities[j].connectorRight[l].from &&
+                        relationsFrom == entities[j].connectorRight[l].to) {
+                        if ((relationsTo == line.topLeft &&
+                            relationsFrom == line.bottomRight) ||
+                            (relationsTo == line.bottomRight &&
+                            relationsFrom == line.topLeft)) {
+                            var point = points[relationsTo];
+                            entities[j].arity.push([
+                                {text:"1", x:point.x + arityBuffer, y:point.y - arityBuffer, connectionPoint:relationsTo, align:"start", baseLine:"bottom"},
+                                {text:"-", x:point.x + arityBuffer, y:point.y + arityBuffer, connectionPoint:relationsTo, align:"start", baseLine:"top"}
+                            ]);
+                            return;
+                        }
+                    }
+                }
+                for (var l = 0; l < entities[j].connectorLeft.length; l++) {
+                    if (relationsTo == entities[j].connectorLeft[l].from &&
+                        relationsFrom == entities[j].connectorLeft[l].to) {
+                        if ((relationsTo == line.topLeft &&
+                            relationsFrom == line.bottomRight) ||
+                            (relationsTo == line.bottomRight &&
+                            relationsFrom == line.topLeft)) {
+                            var point = points[relationsTo];
+                            entities[j].arity.push([
+                                {text:"1", x:point.x - arityBuffer, y:point.y - arityBuffer, connectionPoint:relationsTo, align:"end", baseLine:"bottom"},
+                                {text:"-", x:point.x - arityBuffer, y:point.y + arityBuffer, connectionPoint:relationsTo, align:"end", baseLine:"top"}
+                            ]);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+diagram.updateArity = function() {
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].symbolkind == 3 && diagram[i].arity.length > 0) {
+            diagram[i].updateArityPosition();
+        }
+    }
 }
 
 //--------------------------------------------------------------------
@@ -409,6 +525,17 @@ diagram.sortConnectors = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == 3) {
             diagram[i].sortAllConnectors();
+        }
+    }
+}
+
+//--------------------------------------------------------------------
+// Updates all lines connected to an entity.
+//--------------------------------------------------------------------
+diagram.updateQuadrants = function() {
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].symbolkind == 3) {
+            diagram[i].quadrants();
         }
     }
 }
@@ -491,6 +618,8 @@ function updateGraphics() {
         canvasContext.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
     }
+    diagram.updateQuadrants();
+    diagram.updateArity();
     drawGrid();
     diagram.sortConnectors();
     diagram.draw();

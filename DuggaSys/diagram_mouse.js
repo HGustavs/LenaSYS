@@ -104,12 +104,6 @@ function mousemoveevt(ev, t) {
     }
     diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     updateGraphics();
-    // Update quadrants -- This for-loop needs to be moved to a diagram method, just like updateGraphics or even inside updateGraphics
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3) {
-            diagram[i].quadrants();
-        }
-    }
     // Draw select or create dotted box
     if (md == 4) {
         if (uimode == "CreateEREntity"){
@@ -312,7 +306,7 @@ function mouseupevt(ev) {
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
-
+        erEnityA.arity = [];
         erEnityA.object_type = "";
         erEnityA.fontColor = "#253";
         erEnityA.font = "Arial";
@@ -334,6 +328,8 @@ function mouseupevt(ev) {
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
+        updateGraphics();
+        diagram.createAritySymbols(diagram[lastSelectedObject]);
         openAppearanceDialogMenu();
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5);
