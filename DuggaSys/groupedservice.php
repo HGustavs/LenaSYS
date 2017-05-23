@@ -32,11 +32,16 @@ $vers = getOP('vers'); // Course version
 $chosenMoment=getOP("chosenMoment"); // Moment (when creating new  groups, lid needs to be connected)
 $groupName=getOP("groupName"); // Name on group (when creating new groups, a name is needed)
 
-// When using opt UPDATEGROUP
+// When using opt UPDATEGROUP AND UPDATEOPPONENT
 $uid = getOP('uid'); // User id
+
+// When using opt UPDATEGROUP
 $lid = getOP('lid');
 $newUgid = getOP('newUgid'); // The new ugid, used when using REPLACE INTO
 $oldUgid = getOP('oldUgid'); // The old ugid, used when using DELETE FROM
+
+// When using opt UPDATEOPPONENT
+$newOpp = getOP('newOpp');
 
 $headings=array();
 
@@ -276,49 +281,45 @@ if(strcmp($opt,"GET")==0){
 	
 		// Check if the user is in the database with an opponent
 		$query = $pdo->prepare("SELECT COUNT(*) FROM opponents WHERE presenter = :uid AND lid = :lid");
-		$query->bindParam(':presenter', $presenter);
+		$query->bindParam(':uid', $uid);
 		$query->bindParam(':lid', $lid);
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Failed to check if this user has opponents. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
 		}
-		echo "första if";
 		
 		if($query->fetchColumn() > 0) { // If the user is in the database together with an opponent, update the table 
-				$query = $pdo->prepare("UPDATE opponents SET opponent1 = :newOpp WHERE presenter = :presenter AND lid = :lid");
-				$query->bindParam(':presenter', $presenter);
-				$query->bindParam(':newOpp', $newOpp);
-				$query->bindParam(':lid', $lid);
-				
-				if(!$query->execute()) {
-					$error=$query->errorInfo();
-					$debug="Failed to update opponent1. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
-				}
-				echo "uppdaterad";
+			$query = $pdo->prepare("UPDATE opponents SET opponent1 = :newOpp WHERE presenter = :uid AND lid = :lid");
+			$query->bindParam(':uid', $uid);
+			$query->bindParam(':newOpp', $newOpp);
+			$query->bindParam(':lid', $lid);
+			
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Failed to update opponent1. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			}
 		} else { // Else, insert a new row for the user 
-				$query = $pdo->prepare("INSERT INTO opponents (presenter, lid, opponent1) VALUES (:presenter, :lid, :newOpp)");
-				$query->bindParam(':presenter', $presenter);
-				$query->bindParam(':lid', $lid);
-				$query->bindParam(':newOpp', $newOpp);
-				
-				if(!$query->execute()) {
-					$error=$query->errorInfo();
-					$debug="Failed to insert opponent. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
-				}
-				echo "Inlagd";
+			$query = $pdo->prepare("INSERT INTO opponents (presenter, lid, opponent1) VALUES (:uid, :lid, :newOpp)");
+			$query->bindParam(':uid', $uid);
+			$query->bindParam(':lid', $lid);
+			$query->bindParam(':newOpp', $newOpp);
+			
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Failed to insert opponent. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			}
 		}
 			
 	} else { // User wants to unassign opponent
-		$query = $pdo->prepare("DELETE FROM opponents WHERE presenter = :presenter AND lid = :lid");
-		$query->bindParam(":presenter", $presenter);
+		$query = $pdo->prepare("DELETE FROM opponents WHERE presenter = :uid AND lid = :lid");
+		$query->bindParam(":uid", $uid);
 		$query->bindParam(":lid", $lid);
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
 			$debug="Error deleting user with opponents. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
 		}
-		echo "delete";
 	}
 }
 

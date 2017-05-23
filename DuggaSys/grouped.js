@@ -335,7 +335,7 @@ function drawtable(){
 									if(studentline == groupbelongings[l]['uid']){
 									}
 									else{
-										str+="<option>"+groupbelongings[l]['username']+"</option>";
+										str+="<option value="+groupbelongings[l]['uid']+">"+groupbelongings[l]['username']+"</option>";
 									}
 								}
 							}
@@ -534,12 +534,12 @@ function changeopponent(changedElement) {
 	var value = changedElement.value; //Opponent uid
 	
 	var arr = elementId.split("_");
-	var presenter = arr[0];
+	var uid = arr[0];
 	var lid = arr[1];
 	
 	// Create JSON object that is to be sent to the AJAXRequest
 	data = {
-		'presenter':presenter,
+		'uid':uid,
 		'lid':lid,
 		'newOpp':value
 	};
