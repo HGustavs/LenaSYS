@@ -325,12 +325,10 @@ function drawtable(){
 					}
 					str+="</select><div class='groupStar'>*</div>";
 					
-					//If it is a seminar - be able to pick opponents
+					//If it is a seminar - be able to pick opponent
 					if(moments[j]['grouptype']==3){
-						//For two opponents
-						for(k=0; k<2; k++){
-							str+="<select style='margin-left:5px;'>";
-							str+="<option>Pick opponent</option>";
+							str+="<select id='"+studentline+"_"+lid+"' style='margin-left:5px;' onchange=changeopponent(this)>";
+							str+="<option value='-1'>Pick opponent</option>";
 							//Print out the usernames of students in the same group (but not the person on that line)
 							for(l=0; l<groupbelongings.length; l++){
 								if(chosengroup == groupbelongings[l]['name']){
@@ -342,7 +340,6 @@ function drawtable(){
 								}
 							}
 							str+="</select>";
-						}
 					}
 					
 					str+="</td>";
@@ -530,6 +527,24 @@ function changegroup(changedElement) {
 
 	// Update the ID of the element 
 	changedElement.id = (value > 0) ? uid+"_"+lid+"_"+value : uid+"_"+lid; 
+}
+
+function changeopponent(changedElement) {
+	var elementId = changedElement.id; //ID includes uid, lid and field 0 or 1
+	var value = changedElement.value; //Opponent uid
+	
+	var arr = elementId.split("_");
+	var presenter = arr[0];
+	var lid = arr[1];
+	
+	// Create JSON object that is to be sent to the AJAXRequest
+	data = {
+		'presenter':presenter,
+		'lid':lid,
+		'newOpp':value
+	};
+	
+	AJAXService("UPDATEOPPONENT", data, "GROUP");
 }
 
 function resort()
