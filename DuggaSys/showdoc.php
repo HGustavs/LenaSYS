@@ -206,8 +206,15 @@
                         if($tableAlignmentConf[$i] === 1) $alignment = "center";
                         else if($tableAlignmentConf[$i] === 2) $alignment = "right";
                         else $alignment = "left";
-
-                        $markdown .= "<td style='text-align: " . $alignment . ";'>" . $columns[$i] . "</td>";
+                        if(preg_match('/^[*].{1}\s*(.*)[*].{1}/',$columns[$i])){
+                            $markdown .= "<td style='text-align: " . $alignment . ";font-weight:bold;'>" . preg_replace('/[*].{1}/', '', $columns[$i]) . "</td>";
+						}else if(preg_match('/^[*].{0}\s*(.*)[*].{0}/',$columns[$i])){
+                            $markdown .= "<td style='text-align: " . $alignment . ";font-style:italic'>" . preg_replace('/[*].{0}/', '', $columns[$i]) . "</td>";
+                		}else if(preg_match('/^[`].{0}\s*(.*)[`].{0}/',$columns[$i])){
+                            $markdown .= "<td style='text-align: " . $alignment . ";'><code style='border-radius: 3px; display: inline-block; color: white; background: darkgray; padding: 2px;''>" . preg_replace('/[`].{0}/', '', $columns[$i]) . "</code></td>";
+                		}else{
+                    		$markdown .= "<td style='text-align: " . $alignment . ";'>" . $columns[$i] . "</td>";
+               			}
                     }
                     $markdown .= "</tr>";
                 }
