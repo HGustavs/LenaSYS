@@ -516,6 +516,14 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returned
 		});
+	}else if(kind=="BOXTITLE"){
+		$.ajax({
+			url: "codeviewerService.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedTitle
+		});
 	}else if(kind=="UMVSTUDENT") {
 			$.ajax({
 				url: "usermanagementviewservice.php",
@@ -581,10 +589,9 @@ function addSecurityQuestionProfile(username) {
 	});
 }
 
+// Checks if the page is using https
 function checkHTTPS() { 
-  if (location.protocol != 'https:') { 
-    //Do something
-  } 
+	return (location.protocol == 'https:');
 } 
 
 function processResetPasswordCheckUsername() {
@@ -609,7 +616,7 @@ function processResetPasswordCheckUsername() {
 				if(typeof result.reason != "undefined") {
 					$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
 				} else {
-					$("#newpassword #message2").html("<div class='alert danger'>" + result['getname']  + "</div>");
+					$("#newpassword #message2").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>" + result['getname']  + "</div>");
 				}
 				$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
@@ -657,7 +664,7 @@ function processResetPasswordCheckSecurityAnswer() {
 					if(typeof result.reason != "undefined") {
 						$("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
-						$("#showsecurityquestion #message3").html("<div class='alert danger'>Wrong answer</div>");
+						$("#showsecurityquestion #message3").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong answer</div>");
 					}
 					$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
@@ -669,13 +676,18 @@ function processLogin() {
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
+		if (saveuserlogin==1){
+        	saveuserlogin = 'on';
+    	}else{
+        	saveuserlogin = 'off';
+    	}
 
 		$.ajax({
 			type:"POST",
 			url: "../Shared/loginlogout.php",
 			data: {
 				username: username,
-				saveuserlogin: saveuserlogin == 1 ? 'on' : 'off',
+				saveuserlogin: saveuserlogin,
 				password: password,
 				opt: "LOGIN"
 			},
@@ -768,18 +780,6 @@ function setupLoginLogoutButton(isLoggedIn){
 	else{
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){showLoginPopup();});
-	}
-}
-
-//----------------------------------------------------------------------------------
-// Checks if a user is logged in or not. If not, the content in profile.php is hidden
-//----------------------------------------------------------------------------------
-function checkUserLogin(isLoggedIn){
-	
-	if(isLoggedIn === "true"){
-		$("#content").css("display","block");
-	}else{
-		$("#content").css("display","none");
 	}
 }
 
@@ -925,7 +925,7 @@ function sessionExpireLogOut() {
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
 			$(".endsessionmessagebox").css("display","block");
-			//processLogout();
+			processLogout();
 			clearInterval(intervalId);
 		}
 
