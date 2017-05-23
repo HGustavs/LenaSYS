@@ -19,7 +19,7 @@
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			//---------------------------------------------------------------------
-			echo "<td class='navButt' id='back' title='Back' onclick='window.history.back()'>";
+			echo "<td class='navButt' id='back' title='Back' onmouseover='hoverBack();' onclick='window.history.back()'>";
 
             echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			
@@ -88,5 +88,8 @@
 	function cookieMessage(){
 		localStorage.setItem("cookieMessage", "off");
 		$("#cookiemsg").css("display", "none");
+	}
+	function hoverBack(){
+		$(".dropdown-list-container").css("display", "none");
 	}
 </script>
