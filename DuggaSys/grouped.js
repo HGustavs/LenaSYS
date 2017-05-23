@@ -315,6 +315,10 @@ function drawtable(){
 								for(var ugid in availablegroups[level2lid][group]) { // Iterate the key => value pairs of each group
 									var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
 									str+="<option value="+ugid+selected+">"+availablegroups[level2lid][group][ugid]+"</option>";
+									if(selected){
+										var chosengroup = availablegroups[level2lid][group][ugid];
+										var studentline = tablecontent[i]['uid'];
+									}
 								}
 							}
 						}
@@ -323,10 +327,20 @@ function drawtable(){
 					
 					//If it is a seminar - be able to pick opponents
 					if(moments[j]['grouptype']==3){
+						//For two opponents
 						for(k=0; k<2; k++){
 							str+="<select style='margin-left:5px;'>";
 							str+="<option>Pick opponent</option>";
-							//Add students here
+							//Print out the usernames of students in the same group (but not the person on that line)
+							for(l=0; l<groupbelongings.length; l++){
+								if(chosengroup == groupbelongings[l]['name']){
+									if(studentline == groupbelongings[l]['uid']){
+									}
+									else{
+										str+="<option>"+groupbelongings[l]['username']+"</option>";
+									}
+								}
+							}
 							str+="</select>";
 						}
 					}
