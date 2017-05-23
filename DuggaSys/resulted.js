@@ -92,7 +92,13 @@ function redrawtable()
     for(var i=0;i<students.length;i++){
       var isTeacher = false; // Will be true if a member of the course has "W" access
       var strx = "";
-      strx+="<tr class='fumo "+ (row % 2 == 1 ? 'hi' : 'lo') + "'>";
+      // Check if row is even/uneven and add corresponding class, this creates the "striped" pattern in the table
+      if(row % 2 == 1){
+        strx+="<tr class='fumo hi'>";
+      }
+      else{
+        strx+="<tr class='fumo lo'>";
+      }
       strx +="<td id='row"+row+"' class='rownoMagic'><div>"+row+"</div></td>"
       var student=students[i];
       for(var j=0;j<student.length;j++){
@@ -194,7 +200,13 @@ function redrawtable()
     for(var i=0;i<students.length;i++){
       var isTeacher = false; // Will be true if a member of the course has "W" access
       var strt="";
-      strt+="<tr class='fumo "+ (row % 2 == 1 ? 'hi' : 'lo') + "'>";
+      // Check if row is even/uneven and add corresponding class, this creates the "striped" pattern in the table
+      if(row % 2 == 1){
+        strt+="<tr class='fumo hi'>";
+      }
+      else{
+        strt+="<tr class='fumo lo'>";
+      }
       strt+="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>";
       var student=students[i];
       for(var j=0;j<student.length;j++){
