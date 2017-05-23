@@ -324,10 +324,10 @@ function drawtable(){
 						}
 					}
 					str+="</select><div class='groupStar'>*</div>";
-					
+
 					//If it is a seminar - be able to pick opponent
 					if(moments[j]['grouptype']==3){
-							str+="<select id='"+studentline+"_"+lid+"' style='margin-left:5px;' onchange=changeopponent(this)>";
+							str+="<select id='"+studentline+"_"+lid+"_opp"+"' style='margin-left:5px;' onchange=changeopponent(this)>";
 							str+="<option value='-1'>Pick opponent</option>";
 							//Print out the usernames of students in the same group (but not the person on that line)
 							for(l=0; l<groupbelongings.length; l++){
