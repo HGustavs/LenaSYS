@@ -56,7 +56,7 @@
                         <h4 class="label">Tools</h4>
                         <div class="toolbar-drawer">
                             <div class="tooltipdialog">
-                                <button id='linebutton' onclick='lineMode(), linebutton_selected();' class='buttonsStyle unpressed' data="Create Line">
+                                <button id='linebutton' onclick='lineMode();' class='buttonsStyle unpressed' data="Create Line">
                                     <img src="../Shared/icons/diagram_create_line.svg">
                                 </button>
                             </div>
@@ -64,17 +64,17 @@
                         <h4 class="label">Create</h4>
                         <div class="toolbar-drawer">
                             <div class="tooltipdialog">
-                                <button id='attributebutton' onclick='attrMode(), attributebutton_selected();' class='buttonsStyle unpressed' data="Create Attribute">
+                                <button id='attributebutton' onclick='attrMode();' class='buttonsStyle unpressed' data="Create Attribute">
                                     <img src="../Shared/icons/diagram_create_attribute.svg">
                                 </button>
                             </div><br>
                             <div class="tooltipdialog">
-                                <button id='entitybutton' onclick='entityMode(), entitybutton_selected();' class='buttonsStyle unpressed' data="Create Entity">
+                                <button id='entitybutton' onclick='entityMode();' class='buttonsStyle unpressed' data="Create Entity">
                                     <img src="../Shared/icons/diagram_create_entity.svg">
                                 </button>
                             </div><br>
                             <div class="tooltipdialog">
-                                <button id='relationbutton' onclick='relationMode(), relationbutton_selected();' class='buttonsStyle unpressed' data="Create Relation">
+                                <button id='relationbutton' onclick='relationMode();' class='buttonsStyle unpressed' data="Create Relation">
                                     <img src="../Shared/icons/diagram_create_relation.svg">
                                 </button>
                             </div>
@@ -190,7 +190,7 @@
             <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
             <div class="tooltipdialog">
-                <button id='moveButton' class='buttonsStyle unpressed'>
+                <button id='moveButton' class='buttonsStyle unpressed' title="Move Around">
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button>
             </div>
