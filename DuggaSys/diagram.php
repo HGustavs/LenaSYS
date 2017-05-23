@@ -81,8 +81,12 @@
                         </div>
                         <h4 class="label">Draw</h4>
                         <div class="toolbar-drawer">
-                            <button onclick="figureMode('Square');">Square</button>
-                            <button onclick="figureMode('Free');">Free</button>
+                            <button id='squarebutton' onclick="figureMode('Square');" class='buttonsStyle unpressed' data="Draw Square">
+                                <img src="../Shared/icons/diagram_draw_square.svg">
+                            </button><br>
+                            <button id='drawfreebutton' onclick="figureMode('Free');" class='buttonsStyle unpressed' data="Draw Free">
+                                <img src="../Shared/icons/diagram_draw_free.svg">
+                            </button>
                         </div>
                         <!--
                         IS NOT IN USE YET

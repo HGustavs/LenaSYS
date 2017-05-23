@@ -706,14 +706,12 @@ function relationMode() {
 }
 
 $(document).ready(function(){
-    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #moveButton").click(function(){
+    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #moveButton, #squarebutton, #drawfreebutton").click(function(){
         if ($(this).hasClass("pressed")){
-            $(this).removeClass("pressed");
-            $(this).addClass("unpressed");
-        } else if ($(this).hasClass("unpressed")) {
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
-            $(this).removeClass("unpressed");
-            $(this).addClass("pressed");
+        } else {
+            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            $(this).removeClass("unpressed").addClass("pressed");
         }
     });
 });

@@ -967,7 +967,7 @@ input {
  /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
 
 #diagram-toolbar{
-    height:400px;
+    height:600px;
     width:125px;
 }
 .application-toolbar-wrap{
@@ -1267,14 +1267,6 @@ input.submit-button:disabled {
   height: 40px;
 }
 
-.unpressed{
-  background:#614875;
-}
-
-.pressed{
-  background:#FFA500; 
-}
-
 .buttonsStyle[data]:hover:after {
   content: attr(data);
   padding: 4px 8px;
@@ -1299,6 +1291,14 @@ input.submit-button:disabled {
   height: 30px;
   width: 30px;
   padding: 2px;
+}
+
+.unpressed{
+  background:#614875;
+}
+
+.pressed{
+  background:#FFA500; 
 }
 
 .button-row {
