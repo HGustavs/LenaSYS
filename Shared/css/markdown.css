@@ -193,3 +193,12 @@
 	border-top: 1px solid #ddd;
 	border: 1px solid #ddd;
 }
+
+#markdown h4, #markdown h5, #markdown h6 {
+	margin-top: 25px !important;
+}
+
+#markdown h3, #markdown h2 #markdown h1 {
+    margin-top: 35px !important;
+}
+

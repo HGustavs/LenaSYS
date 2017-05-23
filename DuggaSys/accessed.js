@@ -9,29 +9,59 @@ AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},
 // Commands:
 //----------------------------------------
 
-function addUsers()
+function importUsers()
 {
-		var newUsersArr = new Array();
-		newusers=$("#import").val();
-		var myArr=newusers.split("\n");
-		for (var i=0; i<myArr.length; i++){
-				newUsersArr.push(myArr[i].split("\t"));
-		}
-		var newUserJSON = JSON.stringify(newUsersArr);	
-		AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
-		$("#createUsers").css("display","none");
-		$("#overlay").css("display","none");
+	var newUsersArr = new Array();
+	newusers=$("#import").val();
+	var myArr=newusers.split("\n");
+	for (var i=0; i<myArr.length; i++){
+			newUsersArr.push(myArr[i].split("\t"));
+	}
+	var newUserJSON = JSON.stringify(newUsersArr);	
+
+	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
+	hideImportUsersPopup();
 }
 
-function showCreateUsersPopup()
+function addSingleUser() 
 {
-	$("#createUsers").css("display","block");
+	var newUser = new Array();
+	newUser.push($("#addSsn").val());
+	newUser.push($("#addLastname").val() + ", " + $("#addFirstname").val());
+	newUser.push($("#addCid").val());
+	newUser.push($("#addNy").val());
+	newUser.push($("#addPid").val() + ', ' + $("#addTerm").val());
+	newUser.push($("#addEmail").val());
+
+	var outerArr = new Array();
+	outerArr.push(newUser);
+
+	var newUserJSON = JSON.stringify(outerArr);
+	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
+	hideCreateUserPopup();
+}
+
+function showCreateUserPopup()
+{
+	$("#createUser").css("display","block");
 	$("#overlay").css("display","block");
 }
 
-function hideCreateUsersPopup()
+function showImportUsersPopup()
 {
-	$("#createUsers").css("display","none");
+	$("#importUsers").css("display", "block");
+	$("#overlay").css("display", "block");
+}
+
+function hideCreateUserPopup()
+{
+	$("#createUser").css("display","none");
+	$("#overlay").css("display","none");
+}
+
+function hideImportUsersPopup()
+{
+	$("#importUsers").css("display","none");
 	$("#overlay").css("display","none");
 }
 
@@ -189,8 +219,7 @@ function returnedAccess(data)
 	// Fill section list with information
 	str="";
 	if (data['entries'].length > 0) {
-		str="<input id='searchinput' type='text' name='search' placeholder='Search..' onkeypress='return searchKeyPress(event);' >";
-		str+="<button id='searchbutton' class='switchContent' onclick='keyUpSearch();' type='button'>Search</button>";
+		keyUpSearch();
 		str+="<table class='list'>";
       str+="<tr><th class='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:140px; cursor: pointer;'>Username</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>SSN</th>" +
@@ -286,26 +315,11 @@ function returnedAccess(data)
 
 //excuted onclick button for quick searching in table
 function keyUpSearch() {
-	var $rows = $('#accesstable_body tr');
 	$('#searchinput').keyup(function() {
 	    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
-	    
-	    $rows.show().filter(function() {
+	    $('#accesstable_body tr').show().filter(function() {
 	        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
 	        return !~text.indexOf(val);
 	    }).hide();
 	});
-}
-
-//waiting for enter key to be pressed when typing to searchinput
-function searchKeyPress(e)
-{
-    // look for window.event in case event isn't passed in
-    e = e || window.event;
-    if (e.keyCode == 13)
-    {
-        document.getElementById('searchbutton').click();
-        return false;
-    }
-    return true;
 }

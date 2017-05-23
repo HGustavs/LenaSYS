@@ -23,8 +23,10 @@ function bigMac() {
 function bigMacSymbol() {
   if($(".hamburgerMenu").css('display') == 'block') {
     $("#hamburgerIcon").val("⨯"); 
+		document.getElementById("hamburgerIcon").title = "Close hamburger menu";
   } else {
-    $("#hamburgerIcon").val("≡"); 
+    $("#hamburgerIcon").val("≡");
+    document.getElementById("hamburgerIcon").title = "Open hamburger menu";
   }
 }
 
@@ -647,7 +649,7 @@ function returnedSection(data)
       }
 
       str+="<td class='hamburger'>";
-      str+="<nav tabindex='0' class='package'><input id='hamburgerIcon' type='button' value='&equiv;' class='submit-button hamburger' title='Hamburger'  onClick='bigMac(); bigMacSymbol();'></nav>";
+      str+="<nav tabindex='0' class='package'><input id='hamburgerIcon' type='button' value='&equiv;' class='submit-button hamburger' title='Open hamburger menu'  onClick='bigMac(); bigMacSymbol();'></nav>";
       str+="<div class='hamburgerMenu'>";
       str+="<ul class='hamburgerList'>";
       str+="<li class='editVers'><button class='submit-button menuButton editVers ' onclick='closeWindows(); bigMacSymbol(); showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");' title='Edit the selected version'>Edit Version</button></li>";
@@ -662,23 +664,6 @@ function returnedSection(data)
       str+="</div";
       str+="</nav>";
       str+="</td>";
-
-      str+="<td style='display: inline-block;'><select class='course-dropdown' onchange='goToVersion(this)'>";
-      if (retdata['versions'].length > 0) {
-          for ( i = 0; i < retdata['versions'].length; i++) {
-              var item = retdata['versions'][i];
-              if (retdata['courseid'] == item['cid']) {
-                  var vvers = item['vers'];
-                  var vname = item['versname'];
-                  str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
-                  if(retdata['coursevers']==vvers){
-                      str += "selected";
-                  }
-                  str += ">" + vname + " - " + vvers + "</option>";
-              }
-          }
-      }
-      str+="</select></td>";
       
       str+="<td class='editVers menuButton' style='display: inline-block;'><div class='editVers menuButton'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");'></div></td>";	
 			str+="<td class='newVers menuButton' style='display: inline-block;'><div class='newVers menuButton'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></div></td>";
@@ -707,24 +692,54 @@ function returnedSection(data)
         showInline = true;
         hiddenInline = "inline";
       }
-
+	var showhideall = "Show/hide all";
     // Course Name
     // This will ellipsis on the course name, and keep course code and vers always fully expanded
     str+="<div class='course' style='display: flex;align-items: center;justify-content: center;'>";
-        	str+="<div class='showhide' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 10px; display: flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowCompTop'><img src='../Shared/icons/right_complement.svg' class='arrowRightTop' style='display:none;'>";
-        	str+="</div>";
-        	str+="<div class='showhide' id='course-showhide-text' style='position:absolute;  cursor: pointer; left:25px; margin-top: 10px; display: flex;' >";
-        	str+="<text class='showhidetext' >Show/hide all</text>";
+
+     		/*Adds the Show/hide all arrow and text to the section editor*/
+        	str+="<div class='hideAllArrow' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 12px; display:flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+
         	str+="</div>";
 
-        	str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;'>"+data.coursename+"</div>";
+        	str+="<div class='hideAll' id='course-showhide-text' style='position:absolute; cursor: pointer; margin-top: 10px; display: flex;' >";
+			str+="<text class='showhidetext' >"+showhideall+"</text>";
+        	str+="</div>";
+
+        	str+="<div class='showAllArrow' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRight'><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:none'>";
+        	str+="</div>";
+
+        	str+="<div class='showAll' id='course-showhide-text' style='display:none; position:absolute;  cursor: pointer; margin-top: 10px;' >";
+        	str+="<text class='showhidetext' >"+showhideall+"</text>";
+
+        	str+="</div>";
+
+        	str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>"+data.coursename+"</div>";
 			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
 			str+="<div id='course-versname' class='courseVersionField'>"+versionname+"</div>";
+		/*If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign */
         if(retdata["writeaccess"]){
             str+="<div id='course-newitem' style='display: flex; position: absolute; right:15px;'>";
             str += "<input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
            	str+="</div>";
         }
+        
+        str+="<td style='display: inline-block;'><div class='course-dropdown-div'><select class='course-dropdown' onchange='goToVersion(this)'>";
+        if (retdata['versions'].length > 0) {
+            for ( i = 0; i < retdata['versions'].length; i++) {
+                var item = retdata['versions'][i];
+                if (retdata['courseid'] == item['cid']) {
+                    var vvers = item['vers'];
+                    var vname = item['versname'];
+                    str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+                    if(retdata['coursevers']==vvers){
+                        str += "selected";
+                    }
+                    str += ">" + vname + " - " + vvers + "</option>";
+                }
+             }
+        }
+      str+="</select></div></td>";
       str+="<div style='width: 50px;'></div>";
       str+='</div>';
 			str+="<div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div>";
@@ -942,26 +957,26 @@ function returnedSection(data)
 
 				// Content of Section Item					
 				if (parseInt(item['kind']) == 0) {				// Header
-					str+="<span style='padding-left:5px;'>"+item['entryname']+"</span>";
+					str+="<span style='padding-left:5px;' title='"+item['entryname']+"'>"+item['entryname']+"</span>";
 				}else if (parseInt(item['kind']) == 1) {		// Section
-					str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;'><span class='ellipsis'>"+item['entryname']+"</span></div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+					str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span class='ellipsis'>"+item['entryname']+"</span></div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 4) {		// Moment
           			var momentsplit = item['entryname'].split(" ");
           			var momentname = momentsplit.splice(0,momentsplit.length-1);
           			var momenthp = momentsplit[momentsplit.length-1];
 
-          			str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;'><span class='ellipsis'>"+momentname+"</span> "+momenthp+"</div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+          			str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;' title='"+momentname+" "+momenthp+"'><span class='ellipsis'>"+momentname+"</span> "+momenthp+"</div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
-					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"'>"+item['entryname']+"</a></span>";
+					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"' title='"+item['entryname']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {	
 					if(parseInt(item['rowcolor']) == 1) {
-						str+="<a class='"+blorf+"' style='font-size:14pt;color:white;cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' >"+item['entryname']+"</a>";
+						str+="<a class='"+blorf+"' style='font-size:14pt;color:white;cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' title='Hightscore for "+item['entryname']+"'>"+item['entryname']+"</a>";
 					}else{	// Test / Dugga
           				var duggasplit = item['entryname'].split(" ");
           				var dugganame = duggasplit.splice(0,duggasplit.length-1);
           				var dugganumber = duggasplit[duggasplit.length-1];
 
-						str+="<div style='display:flex;'><a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' ><span class='nowrap'><span class='ellipsis'>"+dugganame+"</span> "+dugganumber+"</span></a></div>";
+						str+="<div style='display:flex;'><a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' title='"+item['entryname']+"'><span class='nowrap'><span class='ellipsis'>"+dugganame+"</span> "+dugganumber+"</span></a></div>";
 					}
 				}else if(parseInt(item['kind']) == 5){			// Link
 					if(item['link'].substring(0,4) === "http"){
@@ -1016,7 +1031,19 @@ function returnedSection(data)
        } else {
 					// Do nothing
 				}
-
+        
+        //For the person logged in - write out group (if in a group)
+        if(parseInt(item['kind']) === 4){
+          if(parseInt(item['grouptype']) === 1 || parseInt(item['grouptype']) === 3){
+            if('group' in item){
+              str+="<td class='moment' style='text-align:right;padding-right:7px;'>("+item['group']['name']+")</td>";
+            }
+            else{
+              str+="<td class='moment' style='text-align:right;padding-right:7px;'><span class='tooltip'><span class='tooltiptext'>Contact your teacher</span>(No group)</span></td>";
+            }
+          }
+        }
+        
 				// Cog Wheel
 				if(data['writeaccess']){
 						str+="<td style='width:24" +
@@ -1024,13 +1051,13 @@ function returnedSection(data)
 						
 					
 						if(parseInt(item['kind']) === 0){
-								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' /></td>";
+								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' title='Edit "+item['entryname']+"' /></td>";
 						}else if(parseInt(item['kind']) === 1){
-								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' /></td>";											
+								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' title='Edit "+item['entryname']+"' /></td>";
 						}else if(parseInt(item['kind']) === 4){
-								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' /></td>";											
+								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' title='Edit "+item['entryname']+"' /></td>";
 						}else{
-								str+="' ><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' /></td>";																	
+								str+="' ><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\",\""+item['rowcolor']+"\",\""+item['grouptype']+"\");' title='Edit "+item['entryname']+"'  /></td>";
 						}
 				}
 
@@ -1167,20 +1194,76 @@ $(document).on('click', '.section', function () {
 	$(this).children('.arrowComp').slideToggle();
 });
 
-// Function for toggling content for all moments
-$(document).on('click', '.showhide', function () {
-    $('.moment').nextUntil('.moment').slideToggle();
-    $('.moment').children('.arrowRight').slideToggle();
-    $('.moment').children('.arrowComp').slideToggle();
+// Function for hiding content for all moments
+$(document).on('click', '.hideAll', function () {
+    $('.moment').nextUntil('.moment').slideUp();
+    $('.hideAll').hide();
+    $('.showAll').show().css('display', 'flex');
+    $('.arrowRight').slideDown();
+    $('.arrowComp').slideUp();
 });
 
-// Function for toggling content for all sections
-$(document).on('click', '.showhide', function () {
-    $('.showhide').children('.arrowRightTop').slideToggle();
-    $('.showhide').children('.arrowCompTop').slideToggle();
-    $('.section').nextUntil('.section').slideToggle();
-    $('.section').children('.arrowRight').slideToggle();
-    $('.section').children('.arrowComp').slideToggle();
+// Function for hiding content for all moments using Show/hide all-arrow
+$(document).on('click', '.hideAllArrow', function () {
+    $('.moment').nextUntil('.moment').hide(400);
+    $('.hideAllArrow').hide();
+    $('.showAllArrow').show().css('display', 'flex');
+    $('.arrowRight').show(400);
+    $('.arrowComp').hide();
+});
+
+// Function for hiding content for all sections
+$(document).on('click', '.hideAll', function () {
+    $('.section').nextUntil('.section').slideUp();
+    $('.hideAll').hide();
+    $('.showAll').show().css('display', 'flex');
+    $('.arrowRight').show();
+    $('.arrowComp').hide();
+});
+
+// Function for hiding content for all sections using Show/hide all-arrow
+$(document).on('click', '.hideAllArrow', function () {
+    $('.section').nextUntil('.section').hide(400);
+    $('.hideAllArrow').hide();
+    $('.showAllArrow').show().css('display', 'flex');
+    $('.arrowRight').show(400);
+    $('.arrowComp').hide();
+});
+
+// Function for showing content for all moments
+$(document).on('click', '.showAll', function () {
+    $('.moment').nextUntil('.moment').slideDown();
+    $('.hideAll').show();
+    $('.showAll').hide();
+    $('.arrowRight').slideUp();
+    $('.arrowComp').slideDown();
+});
+
+// Function for showing content for all moments using Show/hide all-arrow
+$(document).on('click', '.showAllArrow', function () {
+    $('.moment').nextUntil('.moment').show(400);
+    $('.hideAllArrow').show();
+    $('.showAllArrow').hide();
+    $('.arrowRight').hide(400);
+    $('.arrowComp').show();
+});
+
+// Function for showing content for all sections
+$(document).on('click', '.showAll', function () {
+    $('.section').nextUntil('.section').slideDown();
+    $('.hideAll').show();
+    $('.showAll').hide();
+    $('.arrowRight').hide();
+    $('.arrowComp').show();
+});
+
+// Function for showing content for all sections using Show/hide all-arrow
+$(document).on('click', '.showAllArrow', function () {
+    $('.section').nextUntil('.section').show(400);
+    $('.hideAllArrow').show();
+    $('.showAllArrow').hide();
+    $('.arrowRight').hide();
+    $('.arrowComp').show(400);
 });
 
 // Function to prevent collapsing when clicking icons

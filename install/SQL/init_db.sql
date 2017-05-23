@@ -490,7 +490,7 @@ CREATE TABLE user_push_registration (
 CREATE TABLE `usergroup` (
   `ugid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `lid` int(10) UNSIGNED NOT NULL,
-  `name` varchar(255) NOT NULL UNIQUE,
+  `name` varchar(255) NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `lastupdated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ugid`,`lid`),
@@ -522,6 +522,20 @@ CREATE TABLE user_participant (
   PRIMARY KEY (id),
   FOREIGN KEY (lid) REFERENCES listentries (lid),
   FOREIGN KEY (uid) REFERENCES user (uid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+
+/* Opponents table used to save opponents for seminars */
+CREATE TABLE opponents (
+	presenter			INT UNSIGNED NOT NULL,
+	lid 					INT UNSIGNED NOT NULL,
+	opponent1			INT UNSIGNED DEFAULT NULL,
+	opponent2			INT UNSIGNED DEFAULT NULL,
+	PRIMARY KEY(presenter, lid),
+	FOREIGN KEY(presenter) REFERENCES user(uid),
+	FOREIGN KEY(lid) REFERENCES listentries(lid),
+	FOREIGN KEY(opponent1) REFERENCES user(uid),
+	FOREIGN KEY(opponent2) REFERENCES user(uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /*

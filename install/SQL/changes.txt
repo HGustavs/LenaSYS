@@ -66,6 +66,19 @@ CREATE TABLE `user_usergroup` (
   CONSTRAINT `userid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
+/* Create table opponents. This table saves opponents for presenters in seminars.*/
+CREATE TABLE opponents (
+	presenter			INT UNSIGNED NOT NULL,
+	lid 					INT UNSIGNED NOT NULL,
+	opponent1			INT UNSIGNED DEFAULT NULL,
+	opponent2			INT UNSIGNED DEFAULT NULL,
+	PRIMARY KEY(presenter, lid),
+	FOREIGN KEY(presenter) REFERENCES user(uid),
+	FOREIGN KEY(lid) REFERENCES listentries(lid),
+	FOREIGN KEY(opponent1) REFERENCES user(uid),
+	FOREIGN KEY(opponent2) REFERENCES user(uid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
 /* -----------------------------*/
 /* ------- COURSE DATES --------*/
 /* -----------------------------*/
@@ -77,3 +90,7 @@ Added rows to 'vers' to have a start date and end date to a version of a course
 /* Updated courseexample to match the current version of the course */
 INSERT INTO codeexample ... (1,'PHP Example 1',"PHP Startup","PHP_Ex1.php",1,2013,'2','1',1,1); # Old version
 INSERT INTO codeexample ... (1,'PHP Example 1',"PHP Startup","PHP_Ex1.php",1,45656,'2','1',1,1); # New version
+
+Made ´name´ in usergroup not unique
+	´name´ varchar(255) NOT NULL UNIQUE #Old version
+	´name´ varchar(255) NOT NULL #New version

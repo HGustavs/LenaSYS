@@ -31,7 +31,7 @@ function saveToServer(dia) {
     $.ajax({
         url: 'diagram.php',
         type: 'POST', // GET or POST
-        data: {StringDiagram : dia, Hash: hashfunction()}
+        data: {StringDiagram : dia, Hash: hashFunction()}
 
     });
 
@@ -97,7 +97,7 @@ function loadExample(){
 
 }
 function getImage() {
-    window.open(document.getElementById("myCanvas").toDataURL("image/png"), 'Image');
+    //window.open(canvas.toDataURL("image/png"), 'Image');
 }
 
 function Save() {
@@ -105,7 +105,7 @@ function Save() {
         c[i] = diagram[i].constructor.name;
         c[i] = c[i].replace(/"/g,"");
     }
-    var obj = {diagram:diagram, points:points, diagram_names:c};
+    var obj = {diagram:diagram, points:points, diagramNames:c};
     a = JSON.stringify(obj);
    // saveToServer(a);
     console.log("State is saved");
@@ -117,7 +117,7 @@ function SaveFile(el) {
     el.setAttribute("class", 'icon-download');
     el.setAttribute("href", "data:" + data);
     el.setAttribute("download", "diagram.txt");
-    updategfx();
+    updateGraphics();
 }
 
 function LoadFile() {
@@ -125,9 +125,9 @@ function LoadFile() {
     b = pp;
     //diagram fix
     for (var i = 0; i < b.diagram.length; i++) {
-        if (b.diagram_names[i] == "Symbol") {
+        if (b.diagramNames[i] == "Symbol") {
             b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
-        } else if (b.diagram_names[i] == "Path") {
+        } else if (b.diagramNames[i] == "Path") {
             b.diagram[i] = Object.assign(new Path, b.diagram[i]);
         }
     }
@@ -145,7 +145,7 @@ function LoadFile() {
     }
     console.log("State is loaded");
     //Redrawn old state.
-    updategfx();
+    updateGraphics();
 }
 function getUpload() {
     document.getElementById('buttonids').addEventListener('click', openDialog);
@@ -169,9 +169,9 @@ function Load() {
     var dia = JSON.parse(a);
     b = dia;
     for (var i = 0; i < b.diagram.length; i++) {
-        if (b.diagram_names[i] == "Symbol") {
+        if (b.diagramNames[i] == "Symbol") {
             b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
-        } else if (b.diagram_names[i] == "Path") {
+        } else if (b.diagramNames[i] == "Path") {
             b.diagram[i] = Object.assign(new Path, b.diagram[i]);
         }
     }
@@ -189,5 +189,16 @@ function Load() {
     }
     console.log("State is loaded");
     //Redrawn old state.
-    updategfx();
+    updateGraphics();
 }
+
+$(document).ready(function(){
+    function downloadCanvas(link, canvasId, filename) {
+        link.href = document.getElementById(canvasId).toDataURL();
+        link.download = filename;
+    }
+
+    document.getElementById('picid').addEventListener('click', function(){
+        downloadCanvas(this, 'myCanvas', 'picture.jpg');
+    }, false);
+});
