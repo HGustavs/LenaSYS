@@ -2676,3 +2676,8 @@ ul.hamburgerList button.menuButton {
        -ms-user-select: none;
            user-select: none;
 }
+
+#OverCanvas {
+  position: relative;
+  overflow: hidden;
+}

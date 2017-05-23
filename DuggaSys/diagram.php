@@ -199,10 +199,15 @@
 
                 <input id='fileid' type='file' name='file_name' hidden multiple/>
             -->
-          <div class="tooltipdialog"><button id='moveButton' class='diagram_option_button, unpressed'  style='right: 0; position: fixed; margin-right: 30px; margin-top:-10px'>
-			<span class="tooltiptextdialog">Start Moving</span><img src="../Shared/icons/diagram_move_arrows.svg" height="20" width="20"></button><br></div>
+          
 		  </div>
-        <div id="canvasDiv"></div>
+         <div id="OverCanvas">
+        <div id="canvasDiv">
+			</div>
+			<div class="tooltipdialog"><button id='moveButton' class='diagram_option_button, unpressed'  style='right: 0; top: 0px; z-index: 2; position: absolute; margin-right: 30px; margin-top:10px'>
+			<span class="tooltiptextdialog">Start Moving</span><img src="../Shared/icons/diagram_move_arrows.svg" height="20" width="20"></button><br></div>
+          
+			</div>
         <div id="consoleDiv">
             <!--
                 Can be used for a later date. Not needed now.
