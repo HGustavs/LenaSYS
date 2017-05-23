@@ -967,7 +967,7 @@ input {
  /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
 
 #diagram-toolbar{
-    height:600px;
+    height:500px;
     width:125px;
 }
 .application-toolbar-wrap{
@@ -1260,6 +1260,7 @@ input.submit-button:disabled {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 8px;
 }
 
 .buttonsStyle img {
@@ -1285,6 +1286,7 @@ input.submit-button:disabled {
   top: 100;
   z-index: 2;
   position: absolute;
+  border-radius: 0px;
 }
 
 #moveButton img {
