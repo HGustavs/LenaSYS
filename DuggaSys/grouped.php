@@ -43,7 +43,7 @@
 	<!-- Login Dialog END -->
 	
 	<!-- Create Group Dialog START -->
-	<div id='groupSection' class='loginBox newGroups' style='width:285px;display:none;'>
+	<div id='groupSection' class='loginBox' style='width:285px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Create Groups</h3>
 			<div onclick='closeWindows();clearGroupWindow();'>x</div>
@@ -70,10 +70,10 @@
 	<!-- Create Group Dialog END -->
 	
 	<!-- Remove Group Dialog START -->
-	<div id='removeGroup' class='loginBox removeGroups' style='width:285px;display:none;'>
+	<div id='removeGroup' class='loginBox' style='width:285px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Remove Groups</h3>
-			<div onclick='closeWindows();clearGroupWindow();'>x</div>
+			<div onclick='closeWindows();clearGroupRemoveWindow();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<div id='inputwrapper-name' class='inputwrapper' style='display:inline-block;'>
@@ -87,10 +87,10 @@
 			
 			</div>
 		</div>
-		<p style="display:none; color:red;" id="numberOfGroupsError">You have to assign how many groups should be created.</p> 
-		<p style="display:none; color:red;" id="toManyCreatedGroupsError">You have created a maximum amount of groups.</p> 
+		<p style="display:none; color:red;" id="numberOfGroupsToRemoveError">You have to assign how many groups should be removed.</p> 
+		<p style="display:none; color:red;" id="numberOfDeletedGroupsError">You have tried to remove to many groups</p> 
 		<div style='padding:5px;'>
-			<input style='float:none; display: inline-block;' class='submit-button ' type='button' value='Cancel' onclick='closeWindows();clearGroupWindow();' /> 
+			<input style='float:none; display: inline-block;' class='submit-button' type='button' value='Cancel' onclick='closeWindows();clearGroupRemoveWindow();' /> 
 			<input style='margin-left: 40px; float:none; display: inline-block;' class='submit-button' type='button' value='Remove' onclick='removeGroup();' /> 
 		</div>
 	</div>
