@@ -84,6 +84,10 @@ var mouseDiffX = 0, mouseDiffY = 0;     // Saves to diff between mousedown and m
 var xPos = 0;
 var yPos = 0;
 var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not. This is used in diagram_dialog.js
+var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
+var diagramNumberUndo = 0;              // Is used for localStorage and undo
+var diagramNumberRedo = 0;              // Is used for localStorage and redo
+var diagramCode = "";                   // Is used to stringfy the diagram-array
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler, false);
@@ -432,6 +436,7 @@ function initializeCanvas() {
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
+    //canvas.addEventListener('mouseup', saveLocalStorage, false);
     $("#ZoomSelect").click(function() {
         $(this).parent().find(".ikonPil").toggleClass("ikonPilRotation");
     });
@@ -1143,3 +1148,50 @@ function globalStrokeColor() {
             diagram[i].strokeColor = document.getElementById('StrokeColor').value;
     }
 }
+
+/*
+
+THIS FUNCTION SAVES EVERYTHING CORRECTLY. THE PROBLEM IS THAT IT DOES'T
+REWRITE THE DIAGRAM AS IT SHOULD. IF THAT GETS FIXED, THE REDO AND UNDO
+SHOULD WORK!
+
+function diagramLocalStorage(){
+    var diagramNumberStorage = localStorage.getItem("diagramNumber");
+    diagramNumberStorage++;
+    for(var i = 0; i < diagramNumberStorage; i++){
+        localStorage.removeItem("diagram"+i);
+    }
+    diagramCode = localStorage.getItem("localdiagram");
+    localStorage.setItem("diagram"+diagramNumber, diagramCode);
+}
+
+function saveLocalStorage(e){
+    var oldDiagram = localStorage.getItem("diagram"+diagramNumber);
+    diagramCode = localStorage.getItem("localdiagram");
+    diagramNumber++;
+    diagramNumberUndo = diagramNumber;
+    diagramNumberRedo = diagramNumber;
+    localStorage.setItem("diagramNumber", diagramNumber);
+    localStorage.setItem("diagram"+diagramNumber, diagramCode);
+}
+
+function undoDiagram(){
+    diagramNumberUndo--;
+    if (diagramNumberUndo > 0) {
+        var diagramUndo = localStorage.getItem("diagram"+diagramNumberUndo);
+        localStorage.setItem("localdiagram", diagramUndo);
+        loadDiagram();
+    }
+}
+
+function redoDiagram(){
+    var a = [], b = [], c = [];
+    diagramNumberRedo++;
+    if (diagramNumberRedo<diagramNumber) {
+        var diagramRedo = localStorage.getItem("diagram"+diagramNumberRedo);
+        localStorage.setItem("localdiagram", diagramUndo);
+        loadDiagram();
+    }
+}
+
+*/
