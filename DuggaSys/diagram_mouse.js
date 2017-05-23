@@ -426,14 +426,17 @@ function resize() {
 //---------------------------------------
 function movemode(e, t) {
     uimode = "MoveAround";
-	var button = document.getElementById("moveButton").className;
+	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+    var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
+		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
         canvas.addEventListener('mousedown', getMousePos, false);
         canvas.addEventListener('mouseup', mouseupcanvas, false);
     } else {
+		buttonStyle.className = "unpressed";
         canvas.addEventListener('dblclick', doubleclick, false);
         mousedownX = 0; mousedownY = 0;
         mousemoveX = 0; mousemoveY = 0;
