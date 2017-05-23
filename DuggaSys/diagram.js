@@ -706,7 +706,7 @@ function relationMode() {
 }
 
 $(document).ready(function(){
-    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #moveButton, #squarebutton, #drawfreebutton").click(function(){
+    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton").click(function(){
         if ($(this).hasClass("pressed")){
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
         } else {
