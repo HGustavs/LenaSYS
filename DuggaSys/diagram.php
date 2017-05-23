@@ -41,7 +41,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); Symbol(); canvasSize(); loadDiagram(); debugMode(); updateGraphics(); initToolbox();">
+<body onload="initializeCanvas(); Symbol(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();">
     <?php
         $noup = "COURSE";
         include '../Shared/navheader.php';
@@ -53,26 +53,31 @@
                 <div id="diagram-toolbar" class="application-toolbar-wrap">
                     <h3 class="application-header">Toolbar</h3>
                     <div class='application-toolbar'>
-
                         <h4 class="label">Tools</h4>
                         <div class="toolbar-drawer">
-						
-						<div class="tooltipdialog"><button id='linebutton' onclick='lineMode(), linebutton_selected();' class='diagram_option_button, unpressed'>
-						<span class="tooltiptextdialog">Create Line</span><img src="../Shared/icons/diagram_create_line.svg" height="30" width="40"></button></div>
-
+                            <div class="tooltipdialog">
+                                <button id='linebutton' onclick='lineMode(), linebutton_selected();' class='buttonsStyle unpressed' data="Create Line">
+                                    <img src="../Shared/icons/diagram_create_line.svg">
+                                </button>
+                            </div>
                         </div>
                         <h4 class="label">Create</h4>
                         <div class="toolbar-drawer">
- 
-                        <div class="tooltipdialog"><button id='attributebutton' onclick='attrMode(), attributebutton_selected();' class='diagram_option_button, unpressed'>
-						<span class="tooltiptextdialog">Create Attribute</span><img src="../Shared/icons/diagram_create_attribute.svg" height="30" width="40"></button></div>
-			
-						<div class="tooltipdialog"><button id='entitybutton' onclick='entityMode(), entitybutton_selected();' class='diagram_option_button, unpressed'>
-						<span class="tooltiptextdialog">Create Entity</span><img src="../Shared/icons/diagram_create_entity.svg" height="30" width="40"></button></div>
-			
-						<div class="tooltipdialog"><button id='relationbutton' onclick='relationMode(), relationbutton_selected();' class='diagram_option_button, unpressed'>
-						<span class="tooltiptextdialog">Create Relation</span><img src="../Shared/icons/diagram_create_relation.svg" height="30" width="40"></button></div>
-
+                            <div class="tooltipdialog">
+                                <button id='attributebutton' onclick='attrMode(), attributebutton_selected();' class='buttonsStyle unpressed' data="Create Attribute">
+                                    <img src="../Shared/icons/diagram_create_attribute.svg">
+                                </button>
+                            </div><br>
+                            <div class="tooltipdialog">
+                                <button id='entitybutton' onclick='entityMode(), entitybutton_selected();' class='buttonsStyle unpressed' data="Create Entity">
+                                    <img src="../Shared/icons/diagram_create_entity.svg">
+                                </button>
+                            </div><br>
+                            <div class="tooltipdialog">
+                                <button id='relationbutton' onclick='relationMode(), relationbutton_selected();' class='buttonsStyle unpressed' data="Create Relation">
+                                    <img src="../Shared/icons/diagram_create_relation.svg">
+                                </button>
+                            </div>
                         </div>
                         <h4 class="label">Draw</h4>
                         <div class="toolbar-drawer">
@@ -184,6 +189,11 @@
             <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
             <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
+            <div class="tooltipdialog">
+                <button id='moveButton' class='buttonsStyle unpressed'>
+                    <img src="../Shared/icons/diagram_move_arrows.svg">
+                </button>
+            </div>
             <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
             <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
 
@@ -199,11 +209,10 @@
 
                 <input id='fileid' type='file' name='file_name' hidden multiple/>
             -->
-          <div class="tooltipdialog"><button id='moveButton' class='diagram_option_button, unpressed'  style='right: 0; position: fixed; margin-right: 30px; margin-top:-10px'>
-			<span class="tooltiptextdialog">Start Moving</span><img src="../Shared/icons/diagram_move_arrows.svg" height="20" width="20"></button><br></div>
-		  </div>
-        <div id="canvasDiv"></div>
-        <div id="consoleDiv">
+
+            </div>
+            <div id="canvasDiv"></div>
+            <div id="consoleDiv">
             <!--
                 Can be used for a later date. Not needed now.
             <div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>
