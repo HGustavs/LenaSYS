@@ -11,6 +11,8 @@ var tablecontent=new Array;
 var feedback=null;
 var typechanged=false;
 var duggaArray = [[]];
+var lidOfGroupsWithLettersAsNames=new Array;
+var lidOfGroupsWithNumbersAsNames=new Array;
 function setup(){
 	
 	var filt = "";
@@ -264,7 +266,8 @@ function drawtable(){
 
 	if(tablecontent != null) {
 		str+="<div class='titles' style='padding-bottom:10px;'>";
-		str+="<input style='float:none;flex:1;max-width:125px;' class='submit-button' type='button' value='Manage Groups' onclick='selectGroup();'/>";
+		str+="<input style='float:none;flex:1;max-width:125px;' class='submit-button' type='button' value='New Groups' onclick='showCreateGroupView();'/>";
+		str+="<input style='float:none;flex:1;max-width:125px;' class='submit-button' type='button' value='Remove Groups' onclick='showRemoveGroupView();'/>";
 		str+="</div>";
 		// Init the table string. 
 		// Create the table headers. 
@@ -340,24 +343,37 @@ function drawtable(){
 	document.getElementById("content").innerHTML=str;
 }
 
-function selectGroup()
+function showCreateGroupView()
 {
 	var inp = "";
 	for(i=0; i<moments.length; i++){
 		inp+="<option value="+moments[i].lid+">"+moments[i].entryname+"</option>";
 	}
-	document.getElementById("selectMoment").innerHTML=inp;
+	document.getElementById("selectMomentCreate").innerHTML=inp;
 	
 	//Display pop-up
 	$("#groupSection").css("display","block");
 	$("#overlay").css("display","block");
 }
 
+function showRemoveGroupView()
+{
+	var inp = "";
+	for(i=0; i<moments.length; i++){
+		inp+="<option value="+moments[i].lid+">"+moments[i].entryname+"</option>";
+	}
+	document.getElementById("selectMomentRemove").innerHTML=inp;
+	
+	//Display pop-up
+	$("#removeGroup").css("display","block");
+	$("#overlay").css("display","block");
+}
+
 function createGroup()
 {
-	var chosenMoment=$("#selectMoment").val();
-	var nameType=$("#nameType").val(); 
-	var numberOfGroups=$("#numberOfGroups").val(); 
+	var chosenMoment=$("#selectMomentCreate").val();
+	var nameType=$("#nameTypeCreate").val(); 
+	var numberOfGroups=$("#numberOfGroupsCreate").val(); 
 	var offsetLetter=0;
 	var offsetNumber = 1;
 	var groupError = false;
@@ -414,13 +430,16 @@ function createGroup()
 				AJAXService("NEWGROUP",data,"GROUP");
 			}
 		}		
-		$("#numberOfGroups").val('');
 		$("#groupSection").css("display","none");
 		$("#numberOfGroupsError").css("display","none");
 		$("#toManyCreatedGroups").css("display","none");
 		$("#overlay").css("display","none");
 		if(groupError == true){
 			$("#toManyCreatedGroups").css("display","inline-block");
+			$("#overlay").css("display","block");
+		}
+		else if(numberOfGroups == ''){
+			$("#numberOfGroupsError").css("display","block");
 			$("#overlay").css("display","block");
 		}
 		else{
@@ -431,11 +450,108 @@ function createGroup()
 		$("#numberOfGroupsError").css("display","block");
 	}
 }
+
+function removeGroup()
+{
+	var chosenMomentRemove=$("#selectMomentRemove").val();
+	var nameTypeRemove=$("#nameTypeRemove").val(); 
+	var numberOfGroupsRemove=$("#numberOfGroupsRemove").val(); 
+	var offsetLetter=0;
+	var offsetNumber = 1;
+	var toManyRemovedGroups = false;
+	lidOfGroupsWithLettersAsNames=new Array; //saves lid of groups with letters as names
+	lidOfGroupsWithNumbersAsNames=new Array; //saves lid of groups with numbers as names
+	if(numberOfGroupsRemove > 0){
+		if(nameTypeRemove == "a"){
+			for(var lidGroup in availablegroups) {	//get lid of each group
+				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
+					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
+						for(var a=90;a>=65; a--){  //loop through capital letters backwards to be able to remove letters backwards (from Z to A)
+							var groupLetter = String.fromCharCode(a);
+							if(availablegroups[lidGroup][groupArray][groupNames] == groupLetter && lidGroup==chosenMomentRemove){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
+								offsetLetter++; //count on how many groups there are
+								lidOfGroupsWithLettersAsNames.push(groupNames);
+							}
+							
+						} 
+					}
+				} 
+			}
+			var controlsRemoveGroupsWithLetters = lidOfGroupsWithLettersAsNames.length-numberOfGroupsRemove;
+			if(controlsRemoveGroupsWithLetters >= 0){
+				for(controlsRemoveGroupsWithLetters;controlsRemoveGroupsWithLetters<lidOfGroupsWithLettersAsNames.length; controlsRemoveGroupsWithLetters++){
+					data = {
+						'chosenMomentRemove':chosenMomentRemove,
+						'ugidGroup':lidOfGroupsWithLettersAsNames[controlsRemoveGroupsWithLetters]
+					};
+					AJAXService("DELGROUP",data,"GROUP");
+				}
+			}
+			else{
+				toManyRemovedGroups = true;
+			}
+		}
+	
+		else if(nameTypeRemove == "1"){
+			 for(var lidGroup in availablegroups) {	//get lid of each group
+				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
+					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
+						for(var a=0;a<groupNames; a++){  //loop through capital letters
+							if(availablegroups[lidGroup][groupArray][groupNames] == a && lidGroup==chosenMomentRemove){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
+								offsetNumber++;
+								lidOfGroupsWithNumbersAsNames.push(groupNames);
+							}
+						}
+					}
+				}
+			}
+			var controlsRemoveGroupsWithNumbers = lidOfGroupsWithNumbersAsNames.length-numberOfGroupsRemove;
+			if(controlsRemoveGroupsWithNumbers >= 0){
+				for(controlsRemoveGroupsWithNumbers;controlsRemoveGroupsWithNumbers<lidOfGroupsWithNumbersAsNames.length; controlsRemoveGroupsWithNumbers++){
+					data = {
+						'chosenMomentRemove':chosenMomentRemove,
+						'ugidGroup':lidOfGroupsWithNumbersAsNames[controlsRemoveGroupsWithNumbers]
+					};
+					AJAXService("DELGROUP",data,"GROUP");
+				}
+			}
+			else{
+				toManyRemovedGroups = true;
+				
+			}
+		}		
+		$("#numberOfGroups").val('');
+		$("#groupSection").css("display","none");
+		$("#numberOfGroupsError").css("display","none");
+		$("#toManyCreatedGroups").css("display","none");
+		$("#numberOfDeletedGroupsError").css("display","none");
+		$("#overlay").css("display","none");
+		if(toManyRemovedGroups == true){
+			$("#numberOfDeletedGroupsError").css("display","block");
+			$("#overlay").css("display","block");
+		}
+		else{
+			window.location.reload();
+		}
+	}
+	else if(numberOfGroupsRemove == ''){
+		$("#numberOfGroupsToRemoveError").css("display","inline-block");
+		$("#overlay").css("display","block");
+	}
+}
 function clearGroupWindow(){
-	$("#numberOfGroups").val('');
-	$("#nameType").val('a');
-	$("#selectMoment").val(0);
+	$("#numberOfGroupsCreate").val('');
+	$("#nameTypeCreate").val('a');
+	$("#selectMomentCreate").val(0);
 	$("#numberOfGroupsError").css("display","none");
+}
+
+function clearGroupRemoveWindow(){
+	$("#numberOfGroupsRemove").val('');
+	$("#nameTypeRemove").val('a');
+	$("#selectMomentRemove").val(0);
+	$("#numberOfGroupsError").css("display","none");
+	$("#numberOfGroupsToRemoveError").css("display","none");
 }
 
 function closeGroupLimit(){
@@ -490,7 +606,6 @@ function returnedGroup(data) {
 function changegroup(changedElement) {
 	var elementId = changedElement.id; // contains uid_lid_oldUgid (oldUgid if applicable)
 	var value = changedElement.value; // the new ugid (the value of the selected option)
-	
 	var arr = elementId.split("_");
 	var uid = arr[0];
 	var lid = arr[1];
