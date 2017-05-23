@@ -10,12 +10,19 @@ Attribute type: </br>
 </select></br>
 Background color:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='symbolColor'>
-    "<option value='#add8e6'>Blue</option>" +
-    "<option value='#dfe'>Green</option>" +
-    "<option value='#dadada'>Grey</option>" +
-    "<option value='#ea5b5b'>Red</option>" +
-    "<option value='#f0f09e'>Yellow</option>" +
-    "<option value='#ffffff'>White</option>" +
+    <option value='#4488BB'>Blue</option>
+    <option value='#3399ff'>Light Blue</option>
+    <option value='#2CA633'>Green</option>
+    <option value='#00ff00'>Light Green</option>
+    <option value='#dadada'>Grey</option>
+    <option value='#ea5b5b'>Red</option>
+    <option value='#f0f09e'>Yellow</option>
+    <option value='#ff6600'>Orange</option>
+    <option value='#993399'>Purple</option>
+    <option value='#4b0082'>Indigo</option>
+    <option value='#fa8072'>Salmon</option>
+    <option value='#ffffff'>White</option>
+    <option value='#000000'>Black</option>
 </select><br>
 Font family:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='font'>
@@ -26,12 +33,19 @@ Font family:<br>
 </select><br>
 Font color:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='fontColor'>
-    "<option value='black' selected>Black</option>
-    "<option value='blue'>Blue</option>
-    "<option value='Green'>Green</option>
-    "<option value='grey'>Grey</option>
-    "<option value='red'>Red</option>
-    "<option value='yellow'>Yellow</option>
+    <option value='#4488BB'>Blue</option>
+    <option value='#3399ff'>Light Blue</option>
+    <option value='#2CA633'>Green</option>
+    <option value='#00ff00'>Light Green</option>
+    <option value='#dadada'>Grey</option>
+    <option value='#ea5b5b'>Red</option>
+    <option value='#f0f09e'>Yellow</option>
+    <option value='#ff6600'>Orange</option>
+    <option value='#993399'>Purple</option>
+    <option value='#4b0082'>Indigo</option>
+    <option value='#fa8072'>Salmon</option>
+    <option value='#ffffff'>White</option>
+    <option value='#000000'>Black</option>
 </select><br>
 Text size:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='TextSize'>
@@ -42,12 +56,18 @@ Text size:<br>
 </select><br>
 Line colors:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='AttributeLineColor'>
-    "<option value='#4488BB'>Blue</option>" 
-    "<option value='#2CA633'>Green</option>" 
-    "<option value='#dadada'>Grey</option>" 
-    "<option value='#ea5b5b'>Red</option>" 
-    "<option value='#f0f09e'>Yellow</option>"
-    "<option value='#ffffff'>White</option>" 
-    "<option value='#000000'>Black</option>" 
+    <option value='#4488BB'>Blue</option>
+    <option value='#3399ff'>Light Blue</option>
+    <option value='#2CA633'>Green</option>
+    <option value='#00ff00'>Light Green</option>
+    <option value='#dadada'>Grey</option>
+    <option value='#ea5b5b'>Red</option>
+    <option value='#f0f09e'>Yellow</option>
+    <option value='#ff6600'>Orange</option>
+    <option value='#993399'>Purple</option>
+    <option value='#4b0082'>Indigo</option>
+    <option value='#fa8072'>Salmon</option>
+    <option value='#ffffff'>White</option>
+    <option value='#000000'>Black</option>
 </select><br>
 <button type='submit' class='submit-button' onclick="changeObjectAppearance('attributeType'); setType(); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>OK</button>
