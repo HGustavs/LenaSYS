@@ -28,6 +28,7 @@ function setup(){
 	$("#menuHook").before(filt);
 		
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "GROUP");
+    window.onscroll = function() {magicHeading()};
 }
 
 function checkedAll() {
@@ -98,6 +99,7 @@ function leaveFunnel()
   	localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
 
 	process();
+    magicHeading();
 }
 
 function checkMomentParts(pos, id) {
@@ -140,6 +142,7 @@ function leaveFilter()
 		}
 		
 	}
+    magicHeading();
 }
 
 function sorttype(t){
@@ -263,20 +266,59 @@ function drawtable(){
 	str+="<h1 style='flex:10;text-align:center;'>Groups</h1>";
 	str+="<input style='float:none;flex:1;max-width:125px;' class='submit-button' type='button' value='Manage Groups' onclick='selectGroup();'/>";
 	str+="</div>";
+    
+    
+    str += "<div id='sideDecker' style='position:absolute;left:50px;margin-top:22px;display:none;width:175px;'>";
+    str += "<table class='markinglist' style='table-layout: fixed;'>";
+    str += "<tbody>";
+    var row=0;
+    for(var i = 0; i < tablecontent.length; i++) { // Iterate table content, beginning with the row number and user data. 
+		row++;
+		// Apply class to every other row for easier browsing using ternary operator
+		str+="<tr class='"+ (row % 2 == 1 ? 'hi' : 'lo') + "'>";
+		str+="<td style='width:40px;' id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
+		str+="<td style='padding-left:3px;' title="+tablecontent[i].uid+">"+tablecontent[i].firstname+" "+tablecontent[i].lastname;
+        str+="<div class='dugga-result-div'>"+tablecontent[i].ssn+"</div>";
+		str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
+    }
+    str += "</tbody>";
+    str += "</table>";
+    str += "</div>";
+    
+    
+    str += "<div id='upperDecker' style='position:absolute;left:8px;display:none;'>";
+    str += "<table class='markinglist' style='table-layout: fixed;'>";
+    str += "<thead>";
+    str += "<tr class='markinglist-header'>";
+    str += "<th id='header' class='rowno idField' style='min-width: 20px; max-width:30px;'><span>#</span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic' style='width:140px;'>Studenter</th>"
+    if (momtmp.length > 0){
+        // Make first header row!
+        //    No such header for magic heading - by design
+
+        // Make second header row!
+        for(var j=0;j<momtmp.length;j++){
+            str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px; cursor:pointer;'>"+momtmp[j].entryname+"</th>"                         
+        }
+    }   
+    str+="</tr>";
+    str += "</thead>";
+    str += "</table>";
+    str += "</div>";
+    
 
 	// Create the table headers. 
 	str+="<table class='markinglist' id='markinglist'>";
 	str+="<thead>";
 	str+="<tr class='markinglist-header'>";
 	
-	str+="<th id='header' class='grouprow' style='width:40px'><span>#<span></th>";
+	str+="<th id='header' class='grouprow' style='width:40px;'><span>#<span></th>";
 
-	str+="<th id=tableheader"+(subheading)+" class='grouped-header' onclick='toggleSortDir(0);' style='width:140px;'>Studenter</th>";
+	str+="<th id=tableheader"+(subheading)+" class='grouped-header dugga-result-subheader' onclick='toggleSortDir(0);' style='width:140px;'>Studenter</th>";
 
 
 	// Itererate the headings, that are dependent on the cid and coursevers. 
 	for(var i = 0; i < momtmp.length; i++) {
-		str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+momtmp[i].lid+"' class='grouped-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+momtmp[i].entryname+"</th>";	
+		str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+momtmp[i].lid+"' class='grouped-header dugga-result-subheader' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+momtmp[i].entryname+"</th>";	
 	}
 	str+="</thead>";
 	str += "<tbody>";
@@ -346,11 +388,75 @@ function selectGroup()
 	$("#overlay").css("display","block");
 }
 
+function magicHeading()
+{
+    
+    // Display Magic Headings when scrolling
+    if(window.pageYOffset+20>$("#markinglist").offset().top){
+        $("#upperDecker").css("display","block");
+    }else{
+        $("#upperDecker").css("display","none");            
+    }
+    
+    $("#upperDecker").css("width",$("#markinglist").outerWidth()+"px");
+    
+    
+    if(window.pageXOffset>$("#tableheader0").offset().left){
+        $("#sideDecker").css("display","block");
+    }else{
+        $("#sideDecker").css("display","none");      
+    }
+    
+   //Addr Remove the inverse class depending on sorting
+    $(".dugga-result-subheader").each(function(){
+        var arrowdir=$("#sortdiricon").attr('src');
+        var elemid=$(this).attr('id');
+        var eles=elemid.replace("tableheader", "");
+        var magicheaderid="#header"+eles+"magic";
+        var elemwidth=$(this).width();
+        
+       $("#header"+eles+"magic").css("width",elemwidth+"px");
+        if($(this).hasClass("result-header-inverse")){
+             $(magicheaderid).addClass("result-header-inverse");
+            if($(magicheaderid).find('img').length > 0) {
+                // Image found on container with id "container_id"
+            } else {
+                $(magicheaderid).append("<img id='sortdiricon' src='"+arrowdir+"'/>");
+            }
+        } else {
+            $("#"+elemid+"magic").removeClass("result-header-inverse"); 
+        }
+    });
+    
+     // Add or Remove the inverse class depending on sorting
+    $(".dugga-result-subheader").each(function(){
+        var elemid=$(this).attr('id');
+        var elemwidth=$(this).width();
+        $("#"+elemid+"magic").css("width",elemwidth+"px");
+        if($(this).hasClass("result-header-inverse")){
+            $("#"+elemid+"magic").addClass("result-header-inverse");
+        } else {
+            $("#"+elemid+"magic").removeClass("result-header-inverse"); 
+        }
+    });
+
+    // Position Magic Headings
+    $("#upperDecker").css("top",(window.pageYOffset+51)+"px");
+    $("#sideDecker").css("left",(window.pageXOffset)+"px");
+}
+
+$(function()
+{
+  $("#release").datepicker({ dateFormat : "yy-mm-dd" });
+  $("#deadline").datepicker({ dateFormat : "yy-mm-dd" });
+});
+
 function createGroup()
 {
 	var chosenMoment=$("#selectMoment").val();
 	var nameType=$("#nameType").val(); 
-	var numberOfGroups=$("#numberOfGroups").val(); 
+	var nuFmberOfGroups=$("#numberOfGroups").val(); 
+	var nuFmberOfGroups=$("#numberOfGroups").val(); 
 	var offsetLetter=0;
 	var offsetNumber = 1;
 	
@@ -569,7 +675,7 @@ function resort()
 				}
 			}					 
 		}
-	}
+    }
 		
 	drawtable();
 	//Highlights the header that has been clicked and shows ASC or DESC icon
@@ -626,6 +732,7 @@ function toggleSortDir(col){
 		$("input[name='sortdir']:checked").val(dir);
 		localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
     }
-    resort();  
+    resort();
+    magicHeading();
 }
 
