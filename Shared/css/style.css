@@ -1263,7 +1263,8 @@ input.submit-button:disabled {
   border-radius: 8px;
 }
 
-.buttonsStyle img {
+.buttonsStyle img,
+#moveButton img {
   width: 50px;
   height: 40px;
 }
