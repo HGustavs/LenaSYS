@@ -706,12 +706,12 @@ function returnedSection(data)
 //			str+="<text class='showhidetext' >"+showhideall+"</text>";
 //			str+="</div>";
 
-			str+="<div class='showAllArrow showHideMetaButton' id='course-showhide' value='Show/Hide all' style='display:inline; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' >";
+			str+="<div class='showAllArrow showHideMetaButton' title='Click to show/hide all moments' id='course-showhide' value='Show/Hide all' style='display:inline; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' >";
 			str+="<img src='../Shared/icons/right_complement.svg' class='arrowRightMeta' style='display:none'><img src='../Shared/icons/desc_complement.svg' class='arrowCompMeta'>";
 			str+="</div>";
 
 			str+="<div class='showAll showHideMetaButton' id='course-showhide-text' style='display:inline; position:absolute; cursor: pointer; margin-top: 8px; vertical-align: baseline;' >";
-			str+="<text class='showhidetext' >"+showhideall+"</text>";
+			str+="<text class='showhidetext' title='Click to show/hide all moments' >"+showhideall+"</text>";
 			str+="</div>";
 
 			str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>"+data.coursename+"</div>";
