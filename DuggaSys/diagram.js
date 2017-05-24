@@ -1325,7 +1325,7 @@ function distributeHorizontally(selected_objects, spacing){
 //Do we really need 5 functions that more or less do the same thing
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1 || diagram[i].symbolkind == 5) {
+        if (diagram[i].kind == 2) {
             diagram[i].lineWidth = document.getElementById('line-thickness').value;
         }
     }
@@ -1333,7 +1333,7 @@ function globalLineThickness() {
 //change the font on all entities to the same font.
 function globalFont() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1 || diagram[i].symbolkind == 5) {
+        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 1 || diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
             diagram[i].font = document.getElementById('font').value;
         }
     }
@@ -1341,7 +1341,7 @@ function globalFont() {
 //change the font color on all entities to the same color.
 function globalFontColor() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5) {
+        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
             diagram[i].fontColor = document.getElementById('fontColor').value;
         }
     }
@@ -1350,7 +1350,7 @@ function globalFontColor() {
 //change the text size on all entities to the same size.
 function globalTextSize() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5) {
+        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
             diagram[i].sizeOftext = document.getElementById('TextSize').value;
         }
     }
@@ -1359,7 +1359,7 @@ function globalTextSize() {
 //change the fillcolor on all entities to the same size.
 function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5) {
+        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
             diagram[i].symbolColor = document.getElementById('FillColor').value;
         } else { diagram[i].fillColor = document.getElementById('FillColor').value;}
     }

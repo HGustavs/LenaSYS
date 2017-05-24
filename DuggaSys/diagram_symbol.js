@@ -641,6 +641,7 @@ function Symbol(kind) {
             canvasContext.stroke();
         } else if (this.symbolkind == 2) {
             //drawing a multivalue attribute
+            canvasContext.lineWidth = this.lineWidth/2;
             if (this.key_type == 'Multivalue') {
                 drawOval(x1 - 10, y1 - 10, x2 + 10, y2 + 10);
                 canvasContext.fillStyle = this.symbolColor;
@@ -747,7 +748,7 @@ function Symbol(kind) {
         } else if (this.symbolkind == 4) {
             // ER Attribute relationship is a single line
             if (this.key_type == "Forced") {
-                canvasContext.lineWidth = this.lineWidth * 4;
+                canvasContext.lineWidth = this.lineWidth * 3;
                 if (this.isHovered || this.targeted) {
                     canvasContext.strokeStyle = "#F82";
                 } else {
@@ -757,7 +758,7 @@ function Symbol(kind) {
                 canvasContext.moveTo(x1, y1);
                 canvasContext.lineTo(x2, y2);
                 canvasContext.stroke();
-                canvasContext.lineWidth = this.lineWidth * 2;
+                canvasContext.lineWidth = this.lineWidth;
                 canvasContext.strokeStyle = "#FFF";
                 canvasContext.beginPath();
                 canvasContext.moveTo(x1, y1);
@@ -832,7 +833,6 @@ function Symbol(kind) {
 }
 
 this.drawOval = function (x1, y1, x2, y2) {
-    canvasContext.lineWidth = this.lineWidth;
     var middleX = x1 + ((x2 - x1) * 0.5);
     var middleY = y1 + ((y2 - y1) * 0.5);
     canvasContext.beginPath();
