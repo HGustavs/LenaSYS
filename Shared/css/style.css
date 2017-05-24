@@ -278,7 +278,7 @@ p {
 #Sectionlist .section {
   color:#fff;
   background-color: #927b9e;
-  box-shadow: 0px 3px 2px #aaa;
+  box-shadow: 0px 3px 0px #aaa;
   margin-bottom: 3px;
 }
 
@@ -292,7 +292,7 @@ p {
     color:#ffffff;
     background-color: #927b9e;
 	  cursor: pointer;
-    box-shadow: 0px 3px 2px #aaa;
+    box-shadow: 0px 3px 0px #aaa;
     margin-bottom: 3px;
 }
 
@@ -799,7 +799,6 @@ header td {
 
 input {
   border-radius: 2px;
-  height: 26px;
   border: 2px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
@@ -1544,6 +1543,20 @@ span.arrow {
   zoom: 1; /* ie 6/7 */
 }
 
+.arrowComp {
+  vertical-align: text-top;
+  position: relative;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.arrowRight {
+  vertical-align: text-top;
+  position: relative;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
 /* DuggaSys Sectioneed*/
 
 
@@ -1555,11 +1568,13 @@ span.arrow {
     border-radius: 3px;
     overflow: hidden;
     background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
+    background-position: right;
 }
 /* Course version dropdown */
 .course-dropdown {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: bold;
+    padding: 3px;
     border: none;
     width: 120px;
     height: 25px;
@@ -2258,7 +2273,7 @@ table {
 
 .showhidetext {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   color: white;
   -webkit-transform: none;
   transform: none;
