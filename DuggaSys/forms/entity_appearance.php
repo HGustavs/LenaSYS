@@ -7,19 +7,16 @@ Entity type: </br>
 </select></br>
 Background color:<br>
 <select onclick="changeObjectAppearance('entityType');" id ='symbolColor'>
-    <option value='#4488BB'>Blue</option>
-    <option value='#3399ff'>Light Blue</option>
-    <option value='#2CA633'>Green</option>
-    <option value='#00ff00'>Light Green</option>
-    <option value='#dadada'>Grey</option>
-    <option value='#ea5b5b'>Red</option>
-    <option value='#f0f09e'>Yellow</option>
-    <option value='#ff6600'>Orange</option>
-    <option value='#993399'>Purple</option>
-    <option value='#4b0082'>Indigo</option>
-    <option value='#fa8072'>Salmon</option>
+    <option value='#ccefff'>Blue</option>
+    <option value='#ddffee'>Green</option>
+    <option value='#e6e6e6'>Grey</option>
+    <option value='#ff9999'>Red</option>
+    <option value='#ffffcc'>Yellow</option>
+    <option value='#ffe0cc'>Orange</option>
+    <option value='#ffccff'>Purple</option>
     <option value='#ffffff'>White</option>
-    <option value='#000000'>Black</option></select><br>
+    <option value='#000000'>Black</option>
+</select><br>
 Font family:<br>
 <select onclick="changeObjectAppearance('entityType');" id ='font'>
     <option value='arial' selected>Arial</option>
@@ -29,19 +26,16 @@ Font family:<br>
 </select><br>
 Font color:<br>
 <select onclick="changeObjectAppearance('entityType');" id ='fontColor'>
-    <option value='#4488BB'>Blue</option>
-    <option value='#3399ff'>Light Blue</option>
-    <option value='#2CA633'>Green</option>
-    <option value='#00ff00'>Light Green</option>
-    <option value='#dadada'>Grey</option>
-    <option value='#ea5b5b'>Red</option>
-    <option value='#f0f09e'>Yellow</option>
-    <option value='#ff6600'>Orange</option>
-    <option value='#993399'>Purple</option>
-    <option value='#4b0082'>Indigo</option>
-    <option value='#fa8072'>Salmon</option>
+    <option value='#ccefff'>Blue</option>
+    <option value='#ddffee'>Green</option>
+    <option value='#e6e6e6'>Grey</option>
+    <option value='#ff9999'>Red</option>
+    <option value='#ffffcc'>Yellow</option>
+    <option value='#ffe0cc'>Orange</option>
+    <option value='#ffccff'>Purple</option>
     <option value='#ffffff'>White</option>
-    <option value='#000000'>Black</option></select><br>
+    <option value='#000000'>Black</option>
+</select><br>
 Text size:<br>
 <select onclick="changeObjectAppearance('entityType');" id ='TextSize'>
     <option value='Tiny' selected>Tiny</option>
@@ -51,18 +45,14 @@ Text size:<br>
 </select><br>
 Line colors:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='AttributeLineColor'>
-<option value='#4488BB'>Blue</option>
-    <option value='#3399ff'>Light Blue</option>
-    <option value='#2CA633'>Green</option>
-    <option value='#00ff00'>Light Green</option>
-    <option value='#dadada'>Grey</option>
-    <option value='#ea5b5b'>Red</option>
-    <option value='#f0f09e'>Yellow</option>
-    <option value='#ff6600'>Orange</option>
-    <option value='#993399'>Purple</option>
-    <option value='#4b0082'>Indigo</option>
-    <option value='#fa8072'>Salmon</option>
+    <option value='#ccefff'>Blue</option>
+    <option value='#ddffee'>Green</option>
+    <option value='#e6e6e6'>Grey</option>
+    <option value='#ff9999'>Red</option>
+    <option value='#ffffcc'>Yellow</option>
+    <option value='#ffe0cc'>Orange</option>
+    <option value='#ffccff'>Purple</option>
     <option value='#ffffff'>White</option>
-    <option value='#000000'>Black</option> 
+    <option value='#000000'>Black</option>
 </select><br>
 <button type='submit' class='submit-button' onclick="changeObjectAppearance('entityType'); setType(); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>OK</button>
