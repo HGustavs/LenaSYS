@@ -541,13 +541,21 @@ function returnedDugga(data)
 		str+="</div>";
 		
 		str+="<table class='list' id='testTable'>";
-		str+="<tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Release</th><th>Deadline</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr>";
+		str+="<thead><tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Release</th><th>Deadline</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr></thead>";
 
+		var oddevenfumo = "";
 		for(i=0;i<data['entries'].length;i++){
 
 			var item=data['entries'][i];
+
+			// check if even or odd fumo row
+			if(i % 2 === 0) {
+                oddevenfumo = "evenfumo";
+			} else {
+				oddevenfumo = "oddfumo";
+			}
       
-			str+="<tr class='fumo' id='dugga" +i+ "'>";
+			str+="<tr class='fumo "+oddevenfumo+"' id='dugga" +i+ "'>";
 
 			result++;
             str+="<td id='arrowz' onClick='showVariant("+i+")'><span class='arrow' id='arrow"+i+"'>&#9658;</span></td>";
@@ -706,8 +714,7 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 
 function displayfield(res)
 {
-
-$("#autogradeselect"+res).css("display","block");
+	$("#autogradeselect"+res).css("display","block");
 }
 
 function changename(didd,num)
@@ -817,3 +824,7 @@ $(document).ready(function(){
 		$('#parameter').val(createJSONString($('#jsonform').serializeArray()));
 	});
 });
+
+
+
+

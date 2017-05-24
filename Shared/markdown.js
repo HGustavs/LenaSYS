@@ -283,8 +283,16 @@ function handleTable(currentLine, prevLine, nextLine) {
                 if(tableAlignmentConf[i] === 1) alignment = "center";
                 else if(tableAlignmentConf[i] === 2) alignment = "right";
                 else alignment = "left";
+				if(columns[i].trim().match(/^[*].{1}\s*(.*)[*].{1}/gm)){
+                    markdown += "<td style='text-align: " + alignment + ";font-weight:bold;'>" + columns[i].trim().replace(/[*].{1}/gm, '') + "</td>";
+				}else if(columns[i].trim().match(/^[*].{0}\s*(.*)[*].{0}/gm)){
+                    markdown += "<td style='text-align: " + alignment + ";font-style:italic'>" + columns[i].trim().replace(/[*].{0}/gm, '') + "</td>";
+                }else if(columns[i].trim().match(/^[`].{0}\s*(.*)[`].{0}/gm)){
+                    markdown += "<td style='text-align: " + alignment + ";'><code style='border-radius: 3px; display: inline-block; color: white; background: darkgray; padding: 2px;''>" + columns[i].trim().replace(/[`].{0}/gm, '') + "</code></td>";
+                } else{
+                    markdown += "<td style='text-align: " + alignment + ";'>" + columns[i].trim() + "</td>";
+                }
 
-                markdown += "<td style='text-align: " + alignment + ";'>" + columns[i].trim() + "</td>";
             }
             markdown += "</tr>";
 
