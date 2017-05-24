@@ -911,17 +911,6 @@ function drawGrid() {
     }
 }
 
-function drawOval(x1, y1, x2, y2) {
-    var middleX = x1 + ((x2 - x1) * 0.5);
-    var middleY = y1 + ((y2 - y1) * 0.5);
-    canvasContext.beginPath();
-    canvasContext.moveTo(x1, middleY);
-    canvasContext.quadraticCurveTo(x1, y1, middleX, y1);
-    canvasContext.quadraticCurveTo(x2, y1, x2, middleY);
-    canvasContext.quadraticCurveTo(x2, y2, middleX, y2);
-    canvasContext.quadraticCurveTo(x1, y2, x1, middleY);
-}
-
 //remove all elements in the diagram array. it hides the points by placing them beyond the users view.
 function clearCanvas() {
     while (diagram.length > 0) {
