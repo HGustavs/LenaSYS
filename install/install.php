@@ -420,7 +420,7 @@
                 
                         <!-- Modal content -->
                         <div class='modal-content'>
-                            <span class='close''>&times;</span>
+                            <span title='Close pop-up' class='close''>&times;</span>
                                 <span id='dialogText'></span>
                         </div>
                 
@@ -493,7 +493,7 @@
                     <rect id='progressRect' width='0' height='20px' />
                 </svg>
                 <span id='percentageText'></span>
-                <a href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
+                <a title='Restart installation.' href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
             </div>";
 
         /* Javascripts to calculate length of progressRect. This will show the current progress in progressBar. */
@@ -548,12 +548,12 @@
         if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0777)) {
             $errors++;
             exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
-                    <a href='install.php' class='returnButton'>Try again.</a>");
+                    <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
         } else {
             if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
                 $errors++;
                 exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
-                    <a href='install.php' class='returnButton'>Try again.</a>");
+                    <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
             } else {
                 echo "<span id='successText' />Permissions on {$putFileHere} set correctly.</span><br>";
             }
@@ -567,7 +567,7 @@
             if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname])) {
                 $errors++;
                 exit ("<span id='failText' />Please fill all fields.</span><br>
-                    <a href='install.php' class='returnButton'>Try again.</a>");
+                    <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
             }
         }
 
@@ -592,7 +592,7 @@
                 $errors++;
                 exit ("<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>
                         You may have entered a invalid password or an invalid user.<br>
-                        <a href='install.php' class='returnButton'>Try again.</a>");
+                        <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
             }
             $completedSteps++;
             echo "<script>updateProgressBar({$completedSteps});</script>";
@@ -761,7 +761,7 @@
         flush();
         ob_flush();
         echo "</div>";
-        echo "<div id='inputFooter'><span id='showHideInstallation'>Show/hide installation progress.</span><br>
+        echo "<div id='inputFooter'><span title='Show or hide progress.'  id='showHideInstallation'>Show/hide installation progress.</span><br>
                 <span id='errorCount'>Errors: " . $errors . "</span></div>"; # Will show how many errors installation finished with.
 
         # Collapse progress only if there are no errors.
@@ -777,7 +777,7 @@
             file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
         echo "<b>Bash command to complete all this (Copy all code below/just click the box and paste it into bash shell as one statement):</b><br>";
-        echo "<div class='codeBox' onclick='selectText(\"codeBox1\")'><code id='codeBox1'>";
+        echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox1\")'><code id='codeBox1'>";
         echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
         echo 'define(\"DB_USER\",\"' . $username . '\");\n';
         echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
@@ -791,7 +791,7 @@
         echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br> 
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
                 (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
-        echo "<div class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
+        echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
         echo "mkdir " . $putFileHere . "/log && ";
         echo "chmod 777 " . $putFileHere . "/log && ";
         echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
@@ -801,7 +801,7 @@
 
         $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
         echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
-        echo "<br><input class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
+        echo "<br><input title='Go to LenaSYS' class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
         echo "</form>";
         echo "</div>";
     }
