@@ -882,17 +882,6 @@ function drawGrid() {
     }
 }
 
-function drawOval(x1, y1, x2, y2) {
-    var middleX = x1 + ((x2 - x1) * 0.5);
-    var middleY = y1 + ((y2 - y1) * 0.5);
-    canvasContext.beginPath();
-    canvasContext.moveTo(x1, middleY);
-    canvasContext.quadraticCurveTo(x1, y1, middleX, y1);
-    canvasContext.quadraticCurveTo(x2, y1, x2, middleY);
-    canvasContext.quadraticCurveTo(x2, y2, middleX, y2);
-    canvasContext.quadraticCurveTo(x1, y2, x1, middleY);
-}
-
 //remove all elements in the diagram array. it hides the points by placing them beyond the users view.
 function clearCanvas() {
     while (diagram.length > 0) {
@@ -1307,7 +1296,7 @@ function distributeHorizontally(selected_objects, spacing){
 //Do we really need 5 functions that more or less do the same thing
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1 || diagram[i].symbolkind == 5) {
+        if (diagram[i].kind == 2) {
             diagram[i].lineWidth = document.getElementById('line-thickness').value;
         }
     }
@@ -1315,7 +1304,7 @@ function globalLineThickness() {
 //change the font on all entities to the same font.
 function globalFont() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1 || diagram[i].symbolkind == 5) {
+        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 1 || diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
             diagram[i].font = document.getElementById('font').value;
         }
     }
@@ -1323,7 +1312,7 @@ function globalFont() {
 //change the font color on all entities to the same color.
 function globalFontColor() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5) {
+        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
             diagram[i].fontColor = document.getElementById('fontColor').value;
         }
     }
@@ -1332,7 +1321,7 @@ function globalFontColor() {
 //change the text size on all entities to the same size.
 function globalTextSize() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5) {
+        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
             diagram[i].sizeOftext = document.getElementById('TextSize').value;
         }
     }
@@ -1341,7 +1330,7 @@ function globalTextSize() {
 //change the fillcolor on all entities to the same size.
 function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5) {
+        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
             diagram[i].symbolColor = document.getElementById('FillColor').value;
         } else { diagram[i].fillColor = document.getElementById('FillColor').value;}
     }
