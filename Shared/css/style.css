@@ -744,37 +744,6 @@ header td {
 .loginBox .cursorPointer {
   cursor: pointer;
 }
-
-/* --------------================################================-------------- *
- *                       		  Pop-up BOX        				   *
- * --------------================################================-------------- */
- /* Tooltip here used for diagram.php icon buttons. They're getting a hoover effect. */
- .tooltipdialog {
-	 position: static;
-    display: inline-block; 
- }
- 
- .tooltipdialog .tooltiptextdialog {
-    visibility: hidden;
-	position: relative;
-	left: 65px;
-    width: 57px;
-    color: #000000;
-    text-align: center;
-    padding-top: 40px;
-	font-weight: bold;
-	position: absolute;
-    z-index: 5;
-}
-
- .tooltipdialog:hover .tooltiptextdialog {
-    visibility: visible;
-} 
-
- 
- .diagram_option_button {
-background-color#7B68EE
-}
  
 #playlink {
   width: 216px;
@@ -998,7 +967,7 @@ input {
  /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
 
 #diagram-toolbar{
-    height:400px;
+    height:500px;
     width:125px;
 }
 .application-toolbar-wrap{
@@ -1286,9 +1255,49 @@ input.submit-button:disabled {
   opacity: 0.3;
 }
 
-.unpressed{
-  background:#483D8B; 
+.buttonsStyle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.buttonsStyle img,
+#moveButton img {
+  width: 50px;
+  height: 40px;
+}
+
+.buttonsStyle[data]:hover:after {
+  content: attr(data);
+  padding: 4px 8px;
+  color: #fff;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  white-space: nowrap;
+  z-index: 10;
+  border-radius: 5px;
+  background: #614875;
+}
+
+#moveButton {
+  right: 2px;
+  top: 100;
   z-index: 2;
+  position: absolute;
+  border-radius: 0px;
+}
+
+#moveButton img {
+  height: 30px;
+  width: 30px;
+  padding: 2px;
+}
+
+.unpressed{
+  background:#614875;
 }
 
 .pressed{
