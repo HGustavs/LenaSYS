@@ -91,14 +91,14 @@ function redrawtable()
     var row=1;
     for(var i=0;i<students.length;i++){
       var isTeacher = false; // Will be true if a member of the course has "W" access
-      var show;
-      if (onlyPending){
-        show=false;
-      } else {
-        show=true;
-      }
       var strx = "";
-      strx +="<tr class='fumo'>"
+      // Check if row is even/uneven and add corresponding class, this creates the "striped" pattern in the table
+      if(row % 2 == 1){
+        strx+="<tr class='fumo hi'>";
+      }
+      else{
+        strx+="<tr class='fumo lo'>";
+      }
       strx +="<td id='row"+row+"' class='rownoMagic'><div>"+row+"</div></td>"
       var student=students[i];
       for(var j=0;j<student.length;j++){
@@ -114,7 +114,7 @@ function redrawtable()
         }
       }
       strx +="</tr>"
-      if(show && (showTeachers || (!showTeachers && !isTeacher))) {
+      if(!onlyPending && (showTeachers || (!showTeachers && !isTeacher))) {
         str+=strx;
         row++;
       }
@@ -199,14 +199,14 @@ function redrawtable()
     var row=1;
     for(var i=0;i<students.length;i++){
       var isTeacher = false; // Will be true if a member of the course has "W" access
-      var show;
-      if (onlyPending){
-        show=false;
-      } else {
-        show=true;
-      }
       var strt="";
-      strt+="<tr class='fumo "+ (row % 2 == 1 ? 'hi' : 'lo') + "'>";
+      // Check if row is even/uneven and add corresponding class, this creates the "striped" pattern in the table
+      if(row % 2 == 1){
+        strt+="<tr class='fumo hi'>";
+      }
+      else{
+        strt+="<tr class='fumo lo'>";
+      }
       strt+="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>";
       var student=students[i];
       for(var j=0;j<student.length;j++){
@@ -224,7 +224,7 @@ function redrawtable()
           // color based on pass,fail,pending,assigned,unassigned
           if (student[j].grade === 1 && student[j].needMarking === false) {strt += " dugga-fail";}
           else if (student[j].grade > 1) {strt += " dugga-pass";}
-          else if (student[j].needMarking === true) {strt+= " dugga-pending"; show=true;}
+          else if (student[j].needMarking === true) {strt+= " dugga-pending"; onlyPending=false;}
           else if (student[j].grade === 0 ) {strt += " dugga-assigned";}
           else {strt += " dugga-unassigned";}
           strt += "'>";
@@ -262,7 +262,7 @@ function redrawtable()
       }
       strt+="</tr>"
       // Only show teachers if the showTeacher variable is set (should be off by default)
-      if(show && (showTeachers || (!showTeachers && !isTeacher))) {
+      if(!onlyPending && (showTeachers || (!showTeachers && !isTeacher))) {
         str+=strt; 
         row++;
       }
@@ -866,7 +866,7 @@ function sorttype(t){
 function magicHeading()
 {
     // Display Magic Headings when scrolling
-    if(window.pageYOffset-10>$("#subheading").offset().top){
+    if(window.pageYOffset+15>$("#subheading").offset().top){
         $("#upperDecker").css("display","block");
     }else{
         $("#upperDecker").css("display","none");            

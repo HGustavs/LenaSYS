@@ -397,12 +397,21 @@ function changedType()
 
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
+
 		for(var ii=0;ii<retdata['links'].length;ii++){
+
 			var iitem=retdata['links'][ii];
-			if(xelink==iitem['filename']){
-				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
-			}else{
-				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
+
+			// filter file extension
+			var ext = iitem.filename.split('.').pop().toLowerCase();
+			var validExts = ['js', 'md', 'php', 'html', 'css', 'htm', 'html', 'pdf', 'png', 'jpg', 'txt'];
+			if(validExts.indexOf(ext) !== -1 || iitem.filename === '---===######===---'){
+				// output list
+                if(xelink==iitem['filename']){
+                    iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";
+                }else{
+                    iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";
+                }
 			}
 		}
 		$("#link").html(iistr);
@@ -418,6 +427,7 @@ function changedType()
 
 function deleteItem()
 {
+	confirm("Are you sure you want to delete this item?");
 	lid=$("#lid").val();
 	AJAXService("DEL",{lid:lid},"SECTION");
 	$("#editSection").css("display","none");
@@ -719,24 +729,24 @@ function returnedSection(data)
     // This will ellipsis on the course name, and keep course code and vers always fully expanded
     str+="<div class='course' style='display: flex;align-items: center;justify-content: center;'>";
 
-     		/*Adds the Show/hide all arrow and text to the section editor*/
-        	str+="<div class='hideAllArrow' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 12px; display:flex;' ><img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+		/*Adds the Show/hide all arrow and text to the section editor*/
+//			str+="<div class='hideAllArrow showHideMetaButton' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 12px; display:inline-block;' >";
+//			str+="<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+//			str+="</div>";
 
-        	str+="</div>";
+//			str+="<div class='hideAll showHideMetaButton' id='course-showhide-text' style='position:absolute; cursor: pointer; margin-top: 8px; display: inline-block; vertical-align: baseline;' >";
+//			str+="<text class='showhidetext' >"+showhideall+"</text>";
+//			str+="</div>";
 
-        	str+="<div class='hideAll' id='course-showhide-text' style='position:absolute; cursor: pointer; margin-top: 10px; display: flex;' >";
-			str+="<text class='showhidetext' >"+showhideall+"</text>";
-        	str+="</div>";
+			str+="<div class='showAllArrow showHideMetaButton' title='Click to show/hide all moments' id='course-showhide' value='Show/Hide all' style='display:inline; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' >";
+			str+="<img src='../Shared/icons/right_complement.svg' class='arrowRightMeta' style='display:none'><img src='../Shared/icons/desc_complement.svg' class='arrowCompMeta'>";
+			str+="</div>";
 
-        	str+="<div class='showAllArrow' id='course-showhide' value='Show/Hide all' style='display:none; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' ><img src='../Shared/icons/right_complement.svg' class='arrowRight'><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:none'>";
-        	str+="</div>";
+			str+="<div class='showAll showHideMetaButton' id='course-showhide-text' style='display:inline; position:absolute; cursor: pointer; margin-top: 8px; vertical-align: baseline;' >";
+			str+="<text class='showhidetext' title='Click to show/hide all moments' >"+showhideall+"</text>";
+			str+="</div>";
 
-        	str+="<div class='showAll' id='course-showhide-text' style='display:none; position:absolute;  cursor: pointer; margin-top: 10px;' >";
-        	str+="<text class='showhidetext' >"+showhideall+"</text>";
-
-        	str+="</div>";
-
-        	str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>"+data.coursename+"</div>";
+			str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>"+data.coursename+"</div>";
 			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
 			str+="<div id='course-versname' class='courseVersionField'>"+versionname+"</div>";
 		/*If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign */
@@ -1067,6 +1077,22 @@ function returnedSection(data)
 						}
 				}
 
+		// trashcan
+				if(data['writeaccess']){
+						str+="<td style='width:24" +
+							"px;";
+						
+					
+						if(parseInt(item['kind']) === 0){
+								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+						}else if(parseInt(item['kind']) === 1){
+								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+						}else if(parseInt(item['kind']) === 4){
+								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+						}else{
+								str+="' ><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+						}
+				}
 
                 str += "</tr>";
 				
@@ -1186,91 +1212,63 @@ function returnedHighscore(data){
 	$("#HighscoreBox").css("display", "block");
 }
 
-// Function for toggling content for each moment
-$(document).on('click', '.moment', function () {
-	$(this).nextUntil('.moment').slideToggle();
-    $(this).children('.arrowRight').slideToggle();
-    $(this).children('.arrowComp').slideToggle();
+// Toggle content for each moment
+$(document).on('click', '.moment, .section', function () {
+	$(this).nextUntil('.moment, .section').slideToggle('fast', setGlobalArrowWhenSingleMomentIsActivated());
+	$(this).children('.arrowRight').toggle();
+	$(this).children('.arrowComp').toggle();
 });
 
-// Function for toggling content for each section
-$(document).on('click', '.section', function () {
-	$(this).nextUntil('.section').slideToggle();
-	$(this).children('.arrowRight').slideToggle();
-	$(this).children('.arrowComp').slideToggle();
-});
+// This part should check if there are any un/folded section when a moment has been clicked 
+// Sets the show/hide All arrow to a correct state
+function setGlobalArrowWhenSingleMomentIsActivated() {
+  if(!hasUnfoldedParts()) {
+    $('.arrowRightMeta').show();
+    $('.arrowCompMeta').hide();
+  } else {
+    $('.arrowRightMeta').hide();
+    $('.arrowCompMeta').show();
+  }
+}
 
-// Function for hiding content for all moments
-$(document).on('click', '.hideAll', function () {
-    $('.moment').nextUntil('.moment').slideUp();
-    $('.hideAll').hide();
-    $('.showAll').show().css('display', 'flex');
-    $('.arrowRight').slideDown();
-    $('.arrowComp').slideUp();
-});
+// Sets the show/hide All arrow to a correct state
+function setGlobalArrow() {
+  if(hasUnfoldedParts()) {
+    $('.arrowRightMeta').show();
+    $('.arrowCompMeta').hide();
+  } else {
+    $('.arrowRightMeta').hide();
+    $('.arrowCompMeta').show();
+  }
+}
 
-// Function for hiding content for all moments using Show/hide all-arrow
-$(document).on('click', '.hideAllArrow', function () {
-    $('.moment').nextUntil('.moment').hide(400);
-    $('.hideAllArrow').hide();
-    $('.showAllArrow').show().css('display', 'flex');
-    $('.arrowRight').show(400);
-    $('.arrowComp').hide();
-});
-
-// Function for hiding content for all sections
-$(document).on('click', '.hideAll', function () {
-    $('.section').nextUntil('.section').slideUp();
-    $('.hideAll').hide();
-    $('.showAll').show().css('display', 'flex');
+// Toggle content for all moments
+$(document).on('click', '.showHideMetaButton', function () {
+	if(hasUnfoldedParts()) {
+    $('.moment, .section').nextUntil('.moment, .section').slideUp('fast', setGlobalArrow());
     $('.arrowRight').show();
     $('.arrowComp').hide();
-});
-
-// Function for hiding content for all sections using Show/hide all-arrow
-$(document).on('click', '.hideAllArrow', function () {
-    $('.section').nextUntil('.section').hide(400);
-    $('.hideAllArrow').hide();
-    $('.showAllArrow').show().css('display', 'flex');
-    $('.arrowRight').show(400);
-    $('.arrowComp').hide();
-});
-
-// Function for showing content for all moments
-$(document).on('click', '.showAll', function () {
-    $('.moment').nextUntil('.moment').slideDown();
-    $('.hideAll').show();
-    $('.showAll').hide();
-    $('.arrowRight').slideUp();
-    $('.arrowComp').slideDown();
-});
-
-// Function for showing content for all moments using Show/hide all-arrow
-$(document).on('click', '.showAllArrow', function () {
-    $('.moment').nextUntil('.moment').show(400);
-    $('.hideAllArrow').show();
-    $('.showAllArrow').hide();
-    $('.arrowRight').hide(400);
-    $('.arrowComp').show();
-});
-
-// Function for showing content for all sections
-$(document).on('click', '.showAll', function () {
-    $('.section').nextUntil('.section').slideDown();
-    $('.hideAll').show();
-    $('.showAll').hide();
+	} else {
+    $('.moment, .section').nextUntil('.moment, .section').slideDown('fast', setGlobalArrow());
     $('.arrowRight').hide();
     $('.arrowComp').show();
+	}
 });
 
-// Function for showing content for all sections using Show/hide all-arrow
-$(document).on('click', '.showAllArrow', function () {
-    $('.section').nextUntil('.section').show(400);
-    $('.hideAllArrow').show();
-    $('.showAllArrow').hide();
-    $('.arrowRight').hide();
-    $('.arrowComp').show(400);
-});
+// Check visibility status of all the sub moments, used to see if there are any open sections
+function hasUnfoldedParts(){
+  var fold = false;
+  $('div.moment, div.section').each(function(i) {
+    $('.moment, .section').nextUntil('.moment, .section').each(function(j) {
+      if($(this).is(":visible")) {
+        fold = true;
+        return(!fold); // Don't break if still false
+      }
+    });
+    return(!fold);
+  });
+  return fold;
+}
 
 // Function to prevent collapsing when clicking icons
 $(document).ready(function(){

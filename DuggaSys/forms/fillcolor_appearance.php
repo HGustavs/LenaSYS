@@ -1,9 +1,12 @@
 Fill color:<br>
 <select onclick="globalFillColor(); hashfunction(); updategfx();" id='FillColor'>
-    "<option value='#4488BB'>Blue</option>" +
-    "<option value='#ddffee'>Green</option>" +
-    "<option value='#dadada'>Grey</option>" +
-    "<option value='#ea5b5b'>Red</option>" +
-    "<option value='#f0f09e'>Yellow</option>" +
-    "<option value='#ffffff'>White</option>" +
+    <option value='#ccefff'>Blue</option>
+    <option value='#ddffee'>Green</option>
+    <option value='#e6e6e6'>Grey</option>
+    <option value='#ff9999'>Red</option>
+    <option value='#ffffcc'>Yellow</option>
+    <option value='#ffe0cc'>Orange</option>
+    <option value='#ffccff'>Purple</option>
+    <option value='#ffffff'>White</option>
+    <option value='#000000'>Black</option>
 </select><br>

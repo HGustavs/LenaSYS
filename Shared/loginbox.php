@@ -7,7 +7,7 @@
 		<div id='login'>
 			<div class='loginBoxheader'>
 				<h3>Login</h3>
-				<div class="cursorPointer" onclick="closeWindows()">x</div>
+				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
 			</div>
 			<form action="" id="loginForm" method="post">
 				<table class="loginBoxTable">			
@@ -28,12 +28,12 @@
 					</tr>
 					<tr>
 						<td class="nowrap">
-							<label class='text forgotPw' onclick='toggleloginnewpass();'>Forgot Password?</label>
+							<label class='text forgotPw' onclick='toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login'>
+							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login' title='Login'>
 						</td>
 					</tr>
 					<tr>
@@ -46,7 +46,7 @@
 		<div id='newpassword' style="display:none">
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
-				<div class="cursorPointer" onclick="closeWindows()">x</div>
+				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
 				<table class="loginBoxTable">			
@@ -62,7 +62,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckUsername();" value='Continue' style='margin-top: 10px;'>
+							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckUsername();" value='Continue' style='margin-top: 10px;' title='Continue'>
 						</td>
 					</tr>
 					<tr>
@@ -80,7 +80,7 @@
 		<div id='showsecurityquestion' style="display:none">
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
-				<div class="cursorPointer" onclick="closeWindows()">x</div>
+				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
 				<table class="loginBoxTable">			
@@ -102,7 +102,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckSecurityAnswer();" value='Check answer' style='margin-top: 10px;'>
+							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckSecurityAnswer();" value='Check answer' style='margin-top: 10px;' title='Check answer'>
 						</td>
 					</tr>
 					
@@ -122,7 +122,7 @@
 		<div id='resetcomplete' style="display:none">
 			<div class='loginBoxheader' id="completeid">
 				<h3>Request complete</h3>
-				<div class='cursorPointer' onclick="closeWindows()">x</div>
+				<div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
 				<table class="loginBoxTable">	
@@ -134,7 +134,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='buttonLoginBox' onclick="closeWindows();" value='Ok!' style='margin-top: 10px;'>
+							<input type='button' class='buttonLoginBox' onclick="closeWindows();" value='Ok!' style='margin-top: 10px;' title='Ok!'>
 						</td>
 					</tr>
 				</table>
@@ -147,7 +147,7 @@
     <div class="loginBox" id="securitynotification" style="display:none;">
          <div class='loginBoxheader'>
           <h3>Choose a challenge question</h3>
-          <div class='cursorPointer' onclick="closeWindows(); setSecurityNotifaction('off');">x</div>
+          <div class='cursorPointer' onclick="closeWindows(); setSecurityNotifaction('off');" title="Close window">x</div>
         </div>  
         <p id="securitynotificationmessage">You need to choose a challenge question. You can do this by visiting your profile page (clicking your username) or by clicking <a onclick="closeWindows(); setSecurityNotifaction('off');" href='profile.php'>here</a> </p>
     </div>
@@ -157,7 +157,7 @@
   <div class="expiremessagebox" style="display:none">
     <div class='loginBoxheader'>
       <h3>Alert</h3>
-      <div class='cursorPointer' onclick="closeWindows()">x</div>
+      <div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
     </div>
     <p id="expiremessage">Your session will expire in about 30 minutes. Refresh session ?</p>
     <input type="button" id="expiremessagebutton" class="submit-button" onclick="closeWindows(); refreshUserSession()" value="Refresh">

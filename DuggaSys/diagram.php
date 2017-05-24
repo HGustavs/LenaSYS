@@ -26,18 +26,78 @@
     <script src="diagram_IOHandler.js"></script>
     <script src="diagram_dialog.js"></script>
     <script src="diagram_toolbox.js"></script>
+
+    /*/this script fix so that the drop down menus close after you have clicked on something on them./*/
+    <script>
+        $(document).ready(function(){
+        $(".drop-down-item").click(function(){
+        $("a").slideUp(); });
+
+        $(".drop-down-item").click(function(){
+        $("a").slideDown(); });
+    });
+    </script>
+
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); Symbol(); canvasSize(); loadDiagram(); debugMode(); updateGraphics(); initToolbox();">
+<body onload="initializeCanvas(); Symbol(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();">
     <?php
         $noup = "COURSE";
         include '../Shared/navheader.php';
     ?>
     <!-- content START -->
-    <div id="content">
+    <div id="content" style="padding-top: 40px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
         <div id="buttonDiv">
             <div class="document-settings">
+                <div id="diagram-toolbar" class="application-toolbar-wrap">
+                    <h3 class="application-header">Toolbar</h3>
+                    <div class='application-toolbar'>
+                        <h4 class="label">Tools</h4>
+                        <div class="toolbar-drawer">
+                            <div class="tooltipdialog">
+                                <button id='linebutton' onclick='lineMode();' class='buttonsStyle unpressed' data="Create Line">
+                                    <img src="../Shared/icons/diagram_create_line.svg">
+                                </button>
+                            </div>
+                        </div>
+                        <h4 class="label">Create</h4>
+                        <div class="toolbar-drawer">
+                            <div class="tooltipdialog">
+                                <button id='attributebutton' onclick='attrMode();' class='buttonsStyle unpressed' data="Create Attribute">
+                                    <img src="../Shared/icons/diagram_create_attribute.svg">
+                                </button>
+                            </div><br>
+                            <div class="tooltipdialog">
+                                <button id='entitybutton' onclick='entityMode();' class='buttonsStyle unpressed' data="Create Entity">
+                                    <img src="../Shared/icons/diagram_create_entity.svg">
+                                </button>
+                            </div><br>
+                            <div class="tooltipdialog">
+                                <button id='relationbutton' onclick='relationMode();' class='buttonsStyle unpressed' data="Create Relation">
+                                    <img src="../Shared/icons/diagram_create_relation.svg">
+                                </button>
+                            </div>
+                        </div>
+                        <h4 class="label">Draw</h4>
+                        <div class="toolbar-drawer">
+                            <button id='squarebutton' onclick="figureMode('Square');" class='buttonsStyle unpressed' data="Draw Square">
+                                <img src="../Shared/icons/diagram_draw_square.svg">
+                            </button><br>
+                            <button id='drawfreebutton' onclick="figureMode('Free');" class='buttonsStyle unpressed' data="Draw Free">
+                                <img src="../Shared/icons/diagram_draw_free.svg">
+                            </button>
+                        </div>
+                        <!--
+                        IS NOT IN USE YET
+                        <h4 class="label">Undo/Redo</h4>
+                        <div class="toolbar-drawer">
+                            <button onclick='undoDiagram()'>Undo</button>
+                            <button onclick='redoDiagram()'>Redo</button>
+                        </div>
+                        -->
+                    </div>
+                </div>
                 <div class="menu-drop-down">
                     <span class="label">File</span>
                     <div class="drop-down">
@@ -68,31 +128,13 @@
                         </div>
                     </div>
                 </div>
-                <div id="diagram-toolbar" class="application-toolbar-wrap">
-                    <h3 class="application-header">Toolbar</h3>
-                    <div class='application-toolbar'>
-
-                        <h4 class="label">Tools</h4>
-                        <div class="toolbar-drawer">
-                            <button onclick='lineMode();'>Line</button>
-                        </div>
-                        <h4 class="label">Create</h4>
-                        <div class="toolbar-drawer">
-                            <button onclick='attrMode();'>Attribute</button>
-                            <button onclick='entityMode();'>Entity</button>
-                            <button onclick='relationMode();'>Relation</button>
-                        </div>
-                        <h4 class="label">Draw</h4>
-                        <div class="toolbar-drawer">
-                            <button onclick="figureMode('Square');">Square</button>
-                            <button onclick="figureMode('Free');">Free</button>
-                        </div>
-
-                        </select>
-                    </div>
-                </div>
                 <div class="menu-drop-down">
                     <span class="label">Edit</span>
+                    <div class="drop-down">
+                        <div class="drop-down-item">
+                            <a href="#" onclick='globalAppearanceMenu();'>Global Appearance</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="menu-drop-down">
                     <span class="label">View</span>
@@ -105,6 +147,44 @@
                         </div>
                     </div>
                 </div>
+                <div class="menu-drop-down">
+                    <span class="label">Align</span>
+                    <div class="drop-down">
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('top');">Top</a>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('right');">Right</a>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('bottom');">Bottom</a>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('left');">Left</a>
+                        </div>
+                        <div class="drop-down-divider">
+
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('horizontalCenter');">Horizontal center</a>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="align('verticalCenter');">Vertical center</a>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="menu-drop-down">
+                    <span class="label">Distribute</span>
+                    <div class="drop-down">
+                        <div class="drop-down-item">
+                            <a href="#" onclick="distribute('horizontally');">Horizontal</a>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="distribute('vertically');">Vertical</a>
+                        </div>
+                    </div>
+                </div>
             </div>
             </br>
             </br>
@@ -112,8 +192,12 @@
             <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
             <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
             <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
-            <button onclick='globalAppearanceMenu();'>Global Appearance</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
+            <div class="tooltipdialog">
+                <button id='moveButton' class='unpressed' title="Move Around">
+                    <img src="../Shared/icons/diagram_move_arrows.svg">
+                </button>
+            </div>
             <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
             <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
 
@@ -129,14 +213,17 @@
 
                 <input id='fileid' type='file' name='file_name' hidden multiple/>
             -->
-            <button id='moveButton' class='unpressed' style='right: 0; position: absolute; margin-right: 2px;'>Start Moving</button><br>
-        </div>
-        <div id="canvasDiv"></div>
-        <div id="consoleDiv" style='position: relative;'>
-            <!--<div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>-->
+
+            </div>
+            <div id="canvasDiv"></div>
+            <div id="consoleDiv">
+            <!--
+                Can be used for a later date. Not needed now.
+            <div id='consloe' style='position: fixed; left: 0px; right: 0px; bottom: 0px; height: 133px; background: #dfe; border: 1px solid #284; z-index: 5000; overflow: scroll; color: #4A6; font-family:lucida console; font-size: 13px; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default;'>Application console</div>
+            <input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
+            <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />
+            -->
             <div id='valuesCanvas'></div>
-            <!--<input id='Hide Console' style='position: fixed; right: 0; bottom: 133px;' type='button' value='Hide Console' onclick='Consolemode(1);' />
-            <input id='Show Console' style='display: none; position: fixed; right: 0; bottom: 133px;' type='button' value='Show Console' onclick='Consolemode(2);' />-->
             <div id="selectDiv">
                 <select name="Zoom" id="ZoomSelect" onchange="zoomInMode();">
                     <option selected='selected' disabled>Choose zoom</option>
@@ -175,46 +262,36 @@
     <!-- content END -->
     <?php
         include '../Shared/loginbox.php';
-    ?>
-
-    <?php
         if(isset($_POST['id'])){
 
         }
-    ?>
-
-
-    <?php
-         //if(!isset($_POST['StringDiagram']) ){
-         //   mkdir("Save", 0777,true);
-         //   $getID = fopen("Save/id.txt", "r");
-         //   $a = intval(fread($getID,filesize("Save/id.txt")));
-         //   $a += 1;
-         //   $overwriteID = fopen("Save/id.txt", "w");
-         //   mkdir ("Save/$a", 0777, true);
-         //   fwrite($overwriteID,$a);
-//
-         //}
-    ?>
-
-    <?php
-    if(isset($_POST['StringDiagram'])) {
+        /*
+        if(!isset($_POST['StringDiagram']) ){
+           mkdir("Save", 0777,true);
+           $getID = fopen("Save/id.txt", "r");
+           $a = intval(fread($getID,filesize("Save/id.txt")));
+           $a += 1;
+           $overwriteID = fopen("Save/id.txt", "w");
+           mkdir ("Save/$a", 0777, true);
+           fwrite($overwriteID,$a);
+        }
+        */
+        if(isset($_POST['StringDiagram'])) {
             $str = $_POST['StringDiagram'];
             $hash = $_POST['Hash'];
             save($str,$hash);
         }
-    function save($data, $hash) {
-        $getID = fopen("Save/id.txt", "r");
-        $a = intval(fread($getID,filesize("Save/id.txt")));
-        $myfile = fopen("Save/$a/$hash.txt", "w");
-        fwrite($myfile, $data);
-        //<script type="text/javascript">var c_id = "<?= $a
-        //?//>";</script>
-        //<script type="text/javascript" src="diagram_IOHandler.js"></script>
-    }
+        function save($data, $hash) {
+            $getID = fopen("Save/id.txt", "r");
+            $a = intval(fread($getID,filesize("Save/id.txt")));
+            $myfile = fopen("Save/$a/$hash.txt", "w");
+            fwrite($myfile, $data);
+            //<script type="text/javascript">var c_id = "<?= $a
+            //?//>";</script>
+            //<script type="text/javascript" src="diagram_IOHandler.js"></script>
+        }
+
+    
     ?>
-
-
-
 </body>
 </html>

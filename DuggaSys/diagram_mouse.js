@@ -104,14 +104,9 @@ function mousemoveevt(ev, t) {
     }
     diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     updateGraphics();
-    // Update quadrants -- This for-loop needs to be moved to a diagram method, just like updateGraphics or even inside updateGraphics
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3) {
-            diagram[i].quadrants();
-        }
-    }
     // Draw select or create dotted box
     if (md == 4) {
+		
         if (uimode == "CreateEREntity"){
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath(1);
@@ -233,6 +228,7 @@ function mousedownevt(ev) {
 }
 
 function mouseupevt(ev) {
+
     if (snapToGrid) {
         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
@@ -312,7 +308,7 @@ function mouseupevt(ev) {
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
         erEnityA.centerPoint = p3;
-
+        erEnityA.arity = [];
         erEnityA.object_type = "";
         erEnityA.fontColor = "#253";
         erEnityA.font = "Arial";
@@ -334,6 +330,8 @@ function mouseupevt(ev) {
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
+        updateGraphics();
+        diagram.createAritySymbols(diagram[lastSelectedObject]);
         openAppearanceDialogMenu();
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5);
@@ -428,17 +426,18 @@ function resize() {
 //---------------------------------------
 function movemode(e, t) {
     uimode = "MoveAround";
+	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
-        buttonStyle.className = "pressed";
+		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
         canvas.addEventListener('mousedown', getMousePos, false);
         canvas.addEventListener('mouseup', mouseupcanvas, false);
     } else {
+		buttonStyle.className = "unpressed";
         canvas.addEventListener('dblclick', doubleclick, false);
-        buttonStyle.className = "unpressed";
         mousedownX = 0; mousedownY = 0;
         mousemoveX = 0; mousemoveY = 0;
         mouseDiffX = 0; mouseDiffY = 0;
