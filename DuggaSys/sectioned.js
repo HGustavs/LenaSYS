@@ -427,7 +427,7 @@ function changedType()
 
 function deleteItem()
 {
-	alert("Are you sure you want to delete this item?");
+	confirm("Are you sure you want to delete this item?");
 	lid=$("#lid").val();
 	AJAXService("DEL",{lid:lid},"SECTION");
 	$("#editSection").css("display","none");
