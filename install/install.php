@@ -34,7 +34,7 @@
                 
                         <!-- Modal content -->
                         <div class='modal-content'>
-                            <span class='close''>&times;</span>
+                            <span title='Close pop-up' class='close''>&times;</span>
                                 <span id='dialogText'></span>
                         </div>
                 
@@ -54,7 +54,7 @@
             "To do this run the command:<br>" +
             "sudo chgrp -R www-data " + filePath + "</h2><br>" +
             "<br>" +
-            "<input onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
+            "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
             "<i>I promise i have done this and will not complain that it's not working</i></div>";
 
         function haveRead(isTrue) {
@@ -64,7 +64,7 @@
 
     <div id="header">
         <h1>LenaSYS Installer</h1>
-        <span id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
+        <span title="Open start-dialog" id="showModalBtn"><b>Open start-dialog again.</b><br> (To see what permissions to set)</span>
     </div>
     <script>
         var btn = document.getElementById("showModalBtn"); // Get the button that opens the modal
@@ -119,13 +119,13 @@
             After this enter a database to use. This could also be either an existing or a new database.<br>
             Finally enter the host. Is installation is running from webserver localhost should be used.</b></p><hr>';
     echo 'Enter new MySQL user. <br>';
-    echo '<input class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
+    echo '<input title="Enter new MySQL user." class="page1input" type="text" name="newUser" placeholder="Username" value="'.$dbUsername.'" /> <br>';
     echo 'Enter password for MySQL user. <br>';
-    echo '<input class="page1input" type="password" name="password" placeholder="Password"/> <br>';
+    echo '<input title="Enter password for MySQL user." class="page1input" type="password" name="password" placeholder="Password"/> <br>';
     echo 'Enter new database name. <br>';
-    echo '<input class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
+    echo '<input title="Enter new database name." class="page1input" type="text" name="DBName" placeholder="Database name" value="'.$dbName.'" /> <br>';
     echo 'Enter hostname (e.g localhost). <br>';
-    echo '<input class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
+    echo '<input title="Enter hostname." class="page1input" type="text" name="hostname" placeholder="Hostname" value="'.$dbHostname.'" /> <br>';
     echo '<span class="enterAllFields" id="enterFields1">Please fill all fields before continuing.</span>';
     echo '</div>';
 ?>
@@ -133,32 +133,32 @@
                     <p id="infoText"><b>Enter root log-in credentials for the database you want to use.<br>
                         Default user has name 'root'. If password for root user is unknown ask a teacher or someone who knows.</b></p><hr>
                     Enter MySQL root user. <br>
-                    <input class="page2input" type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
+                    <input title="Enter MySQL root user." class="page2input" type="text" name="mysqlRoot" placeholder="Root" value="root"/> <br>
                     Enter password for MySQL root user. <br>
-                    <input class="page2input" type="password" name="rootPwd" placeholder="Root Password" /> <br>
+                    <input title="Enter password for MySQL root user." class="page2input" type="password" name="rootPwd" placeholder="Root Password" /> <br>
                     <span class="enterAllFields" id="enterFields2">Please fill all fields before continuing.</span>
                 </div>
                 <div class="inputContent" id="td3" valign=top>
                     <p id="infoText"><b>If you wish to create a new, empty database check the box 'Create new database'. If you want to fill this
                         database with testdata (located in install/SQL/testdata.sql) you should check the box for this too. If you
                         are using an existing database and wishes to re-write it you will be able to make this choice on the next page.</b></p><hr>
-                    <input type="checkbox" name="createDB" value="Yes" onchange="createDBchange(this)" checked/>
+                    <input title="Create new database." type="checkbox" name="createDB" value="Yes" onchange="createDBchange(this)" checked/>
                     Create new database. <br><hr>
                     <div id="DBboxes">
-                        <input type="checkbox" name="fillDB" value="Yes" onchange="fillDBchange(this)" checked/>
+                        <input title="Include test data." type="checkbox" name="fillDB" value="Yes" onchange="fillDBchange(this)" checked/>
                         Include test data. <br><br>
                         <div id="testdataBoxes">
-                            <input type="checkbox" name="mdSupport" value="Yes" checked/>
+                            <input title="Include markdown." type="checkbox" name="mdSupport" value="Yes" checked/>
                             Include markdown. (Files located in /Install/md) <br><br>
                             <b>Language keyword highlighting support.<br></b>
                             <i>Choose which languages you wish to support in codeviewer. (You need to check 'Include test data' to be able to include these.</i><br>
                             <div id="checkboxContainer">
-                                <input type="checkbox" name="html" value="Yes" checked/> HTML <br>
-                                <input type="checkbox" name="java" value="Yes" checked/> Java <br>
-                                <input type="checkbox" name="php" value="Yes" checked/> PHP <br>
-                                <input type="checkbox" name="plain" value="Yes" checked/> Plain Text <br>
-                                <input type="checkbox" name="sql" value="Yes" checked/> SQL <br>
-                                <input type="checkbox" name="sr" value="Yes" checked/> SR <br>
+                                <input title="HTML" type="checkbox" name="html" value="Yes" checked/> HTML <br>
+                                <input title="Java" type="checkbox" name="java" value="Yes" checked/> Java <br>
+                                <input title="PHP" type="checkbox" name="php" value="Yes" checked/> PHP <br>
+                                <input title="Plain Text" type="checkbox" name="plain" value="Yes" checked/> Plain Text <br>
+                                <input title="SQL" type="checkbox" name="sql" value="Yes" checked/> SQL <br>
+                                <input title="SR" type="checkbox" name="sr" value="Yes" checked/> SR <br>
                             </div>
                         </div>
                     </div>
@@ -170,9 +170,9 @@
                         <br>If both are existing both boxes should be checked.
                         <br>If it's a completely new database and user no box has to be checked.</b></p><hr>
                     <div id="checkboxContainer2">
-                        <input id="writeOver1" type="checkbox" name="writeOverDB" value="Yes" />
+                        <input title="Write over existing database." id="writeOver1" type="checkbox" name="writeOverDB" value="Yes" />
                         Yes I want to write over an existing database.<br>
-                        <input id="writeOver2" type="checkbox" name="writeOverUSR" value="Yes" />
+                        <input title="Write over existing user." id="writeOver2" type="checkbox" name="writeOverUSR" value="Yes" />
                         Yes I want to write over an existing user.<br>
                     </div>
                         <span id='failText'>(WARNING: THIS WILL REMOVE ALL DATA IN PREVIOUS DATABASE AND/OR USER)</span></b><br>
@@ -181,18 +181,18 @@
                     <p id="infoText"><b>If all fields are filled out correctly the only thing remaining is to smack the 'Install' button below.
                         Progress of installation will be shown. If any errors occurs please try again and check that your data is correct.
                         If you still get errors please read installation guidelines on LenaSYS github page or in 'README.md'. </b></p><hr>
-                    <input id="submitInput" class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
+                    <input title="Install LenaSYS!" id="submitInput" class="button" type="submit" name="submitButton" value="Install!" onclick="resetWindow()"/>
                 </div>
             </div>
 
             <!-- Arrows for navigation between input pages -->
-            <div class="arrow" id="leftArrow">
+            <div title="Go back" class="arrow" id="leftArrow">
                 <svg height="150" width="150">
                     <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
                     <polygon points="100,30 20,75 100,120" />
                 </svg>
             </div>
-            <div class="arrow" id="rightArrow">
+            <div title="Continue installation" class="arrow" id="rightArrow">
                 <svg height="150" width="150">
                     <circle cx="75" cy="75" r="70" fill="rgb(253,203,96)" />
                     <polygon points="50,30 130,75 50,120" />
@@ -420,7 +420,7 @@
                 
                         <!-- Modal content -->
                         <div class='modal-content'>
-                            <span class='close''>&times;</span>
+                            <span title='Close pop-up' class='close''>&times;</span>
                                 <span id='dialogText'></span>
                         </div>
                 
@@ -493,7 +493,7 @@
                     <rect id='progressRect' width='0' height='20px' />
                 </svg>
                 <span id='percentageText'></span>
-                <a href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
+                <a title='Restart installation.' href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
             </div>";
 
         /* Javascripts to calculate length of progressRect. This will show the current progress in progressBar. */
@@ -548,12 +548,12 @@
         if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0777)) {
             $errors++;
             exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
-                    <a href='install.php' class='returnButton'>Try again.</a>");
+                    <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
         } else {
             if (!rmdir("{$putFileHere}/testPermissionsForInstallationToStartDir")) {
                 $errors++;
                 exit ("<span id='failText' />Permissions on {$putFileHere} not set correctly, please restart the installation.</span><br>
-                    <a href='install.php' class='returnButton'>Try again.</a>");
+                    <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
             } else {
                 echo "<span id='successText' />Permissions on {$putFileHere} set correctly.</span><br>";
             }
@@ -567,7 +567,7 @@
             if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname])) {
                 $errors++;
                 exit ("<span id='failText' />Please fill all fields.</span><br>
-                    <a href='install.php' class='returnButton'>Try again.</a>");
+                    <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
             }
         }
 
@@ -592,7 +592,7 @@
                 $errors++;
                 exit ("<span id='failText' />Connection failed: " . $e->getMessage() . "</span><br>
                         You may have entered a invalid password or an invalid user.<br>
-                        <a href='install.php' class='returnButton'>Try again.</a>");
+                        <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
             }
             $completedSteps++;
             echo "<script>updateProgressBar({$completedSteps});</script>";
@@ -761,7 +761,7 @@
         flush();
         ob_flush();
         echo "</div>";
-        echo "<div id='inputFooter'><span id='showHideInstallation'>Show/hide installation progress.</span><br>
+        echo "<div id='inputFooter'><span title='Show or hide progress.'  id='showHideInstallation'>Show/hide installation progress.</span><br>
                 <span id='errorCount'>Errors: " . $errors . "</span></div>"; # Will show how many errors installation finished with.
 
         # Collapse progress only if there are no errors.
@@ -777,7 +777,7 @@
             file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
         echo "<b>Bash command to complete all this (Copy all code below/just click the box and paste it into bash shell as one statement):</b><br>";
-        echo "<div class='codeBox' onclick='selectText(\"codeBox1\")'><code id='codeBox1'>";
+        echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox1\")'><code id='codeBox1'>";
         echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
         echo 'define(\"DB_USER\",\"' . $username . '\");\n';
         echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
@@ -791,7 +791,7 @@
         echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br> 
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
                 (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
-        echo "<div class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
+        echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
         echo "mkdir " . $putFileHere . "/log && ";
         echo "chmod 777 " . $putFileHere . "/log && ";
         echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
@@ -801,7 +801,7 @@
 
         $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
         echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
-        echo "<br><input class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
+        echo "<br><input title='Go to LenaSYS' class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
         echo "</form>";
         echo "</div>";
     }
