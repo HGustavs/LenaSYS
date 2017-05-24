@@ -1533,6 +1533,20 @@ span.arrow {
   zoom: 1; /* ie 6/7 */
 }
 
+.arrowComp {
+  vertical-align: text-top;
+  position: relative;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.arrowRight {
+  vertical-align: text-top;
+  position: relative;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
 /* DuggaSys Sectioneed*/
 
 
