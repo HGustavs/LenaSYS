@@ -142,21 +142,25 @@
                     <p id="infoText"><b>If you wish to create a new, empty database check the box 'Create new database'. If you want to fill this
                         database with testdata (located in install/SQL/testdata.sql) you should check the box for this too. If you
                         are using an existing database and wishes to re-write it you will be able to make this choice on the next page.</b></p><hr>
-                    <input type="checkbox" name="createDB" value="Yes" checked/>
+                    <input type="checkbox" name="createDB" value="Yes" onchange="createDBchange(this)" checked/>
                     Create new database. <br><hr>
-                    <input type="checkbox" name="fillDB" value="Yes" checked/>
-                    Include test data. <br><br>
-                    <input type="checkbox" name="mdSupport" value="Yes" checked/>
-                    Include markdown. (Files located in /Install/md) <br><br>
-                    <b>Language keyword highlighting support.<br></b>
-                    <i>Choose which languages you wish to support in codeviewer. (You need to check 'Include test data' to be able to include these.</i><br>
-                    <div id="checkboxContainer">
-                        <input type="checkbox" name="html" value="Yes" checked/> HTML <br>
-                        <input type="checkbox" name="java" value="Yes" checked/> Java <br>
-                        <input type="checkbox" name="php" value="Yes" checked/> PHP <br>
-                        <input type="checkbox" name="plain" value="Yes" checked/> Plain Text <br>
-                        <input type="checkbox" name="sql" value="Yes" checked/> SQL <br>
-                        <input type="checkbox" name="sr" value="Yes" checked/> SR <br>
+                    <div id="DBboxes">
+                        <input type="checkbox" name="fillDB" value="Yes" onchange="fillDBchange(this)" checked/>
+                        Include test data. <br><br>
+                        <div id="testdataBoxes">
+                            <input type="checkbox" name="mdSupport" value="Yes" checked/>
+                            Include markdown. (Files located in /Install/md) <br><br>
+                            <b>Language keyword highlighting support.<br></b>
+                            <i>Choose which languages you wish to support in codeviewer. (You need to check 'Include test data' to be able to include these.</i><br>
+                            <div id="checkboxContainer">
+                                <input type="checkbox" name="html" value="Yes" checked/> HTML <br>
+                                <input type="checkbox" name="java" value="Yes" checked/> Java <br>
+                                <input type="checkbox" name="php" value="Yes" checked/> PHP <br>
+                                <input type="checkbox" name="plain" value="Yes" checked/> Plain Text <br>
+                                <input type="checkbox" name="sql" value="Yes" checked/> SQL <br>
+                                <input type="checkbox" name="sr" value="Yes" checked/> SR <br>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="inputContent" id="td4" colspan="3" bgcolor="#FFCCCC">
@@ -356,7 +360,7 @@
                 }
             </script>
 
-            <!-- Javascript to focus the right input box after modal is closed -->
+            <!-- Javascript to focus the right input box after modal is closed and hide boxes -->
             <script>
                 /* When the user clicks on <span> (x), close the modal */
                 span.onclick = function() {
@@ -377,6 +381,23 @@
                 var writeOver1 = document.getElementById('writeOver1');
                 writeOver1.onclick = function() {
                     focusTheRightBox();
+                }
+
+                /* Hide testdata boxes when testdata is un-checked */
+                function fillDBchange(checkbox) {
+                    if (checkbox.checked === true){
+                        $("#testdataBoxes").show("slide", {direction: "left" }, 500);
+                    } else {
+                        $("#testdataBoxes").hide("slide", {direction: "left" }, 500);
+                    }
+                }
+
+                function createDBchange(checkbox) {
+                    if (checkbox.checked === true){
+                        $("#DBboxes").show("slide", {direction: "left" }, 500);
+                    } else {
+                        $("#DBboxes").hide("slide", {direction: "left" }, 500);
+                    }
                 }
             </script>
 
