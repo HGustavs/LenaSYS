@@ -1,6 +1,9 @@
 Changes needed to the live sql database
 
 Table userAnswer:
+	Added gradeExpire TIMESTAMP NULL DEFAULT NULL
+
+Table userAnswer:
 	Added timesGraded INT(11) NOT NULL DEFAULT '0'
 
 Table user:

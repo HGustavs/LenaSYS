@@ -608,15 +608,15 @@ function process()
                   var momentresult=restmp[momtmp[j].lid];   
                   // If moment result does not exist... either make "empty" student result or push mark
                   if(typeof momentresult!='undefined'){             
-                      student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded});
+                      student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire});
                   }else{
-                      student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, userAnswer:"UNK", quizfile:momtmp[j].quizfile});              
+                      student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, userAnswer:"UNK", quizfile:momtmp[j].quizfile, gradeExpire:momentresult.gradeExpire});              
                   }             
               }else{
                   var momentresult=restmp[momtmp[j].lid];
                   // If moment result does not exist... either make "empty" student result or push mark
                   if(typeof momentresult!='undefined'){             
-                      student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant,quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded});
+                      student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant,quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire});
                   }else{
                       student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile});              
                   }   
@@ -907,22 +907,60 @@ $(function()
 // Commands:
 //----------------------------------------
 
-function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid){
+function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire){
 
     closeWindows();
-
+    
+	var uidGrab = uid;
+	var momentGrab = moment;
+    var currentTime = new Date();
+	var currentTimeGetTime = currentTime.getTime();
+    	
     if ($(e.target ).hasClass("Uc")){
         changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
     } else if ($(e.target ).hasClass("Gc")) {
-        changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+        changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
+		location.reload();
     } else if ($(e.target ).hasClass("VGc")){
         changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
     } else if ($(e.target ).hasClass("U")) {
         changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
-    }
+    } else if ($(e.target ).hasClass("Uh")){
+        for(var a=0;a<students.length;a++){
+            var student = students[a];
+            
+            for(var j=0;j<student.length;j++){
+			    var studentObject = student[j];
+				
+				//Lid and uid is used to make sure that only the dugga that is intended to change grade change grade
+				if(studentObject.lid === momentGrab && studentObject.uid === uidGrab){ // && studentObject.gradeExpire!=null
+				
+					var newGradeExpire = new Date(studentObject.gradeExpire);
+					
+					// This variable adds 24h to the current time
+	                var newDateObj = new Date(newGradeExpire.getTime() + 24*60*60000);
+                    var newGradeExpirePlusOneDay = newDateObj.getTime();
+					
+					// Compair the gradeExpire value to the current time
+					if(newGradeExpirePlusOneDay > currentTimeGetTime){
+						//The user must press the ctrl-key to activate if-statement
+						if(event.ctrlKey){
+							changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+						}else{
+							alert("You must press down the ctrl-key to change from grade G to U.");
+						}
+					} else {
+						alert("You can no longer change the grade to U, due to 24 hours has passed since grade G was set.");
+					}
+				}
+            }
+        }
+   }
     else {
       //alert("This grading is not OK!");
     }
+	
+	
 }
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls,qvariant,qid){
@@ -1026,13 +1064,13 @@ function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
     AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid, coursevers : vers }, "RESULT");
 }
 
-function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid)
+function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire)
 {
     var newFeedback = "UNK";
     if (document.getElementById('newFeedback') !== null){
         newFeedback = document.getElementById('newFeedback').value;
     }
-    AJAXService("CHGR", { cid : cid, vers : vers, moment : moment, luid : uid, mark : newMark, ukind : ukind, newFeedback : newFeedback, qvariant : qvariant, quizId : qid }, "RESULT");
+    AJAXService("CHGR", { cid : cid, vers : vers, moment : moment, luid : uid, mark : newMark, ukind : ukind, newFeedback : newFeedback, qvariant : qvariant, quizId : qid, gradeExpire : gradeExpire }, "RESULT");
 }
 
 function moveDist(e)
