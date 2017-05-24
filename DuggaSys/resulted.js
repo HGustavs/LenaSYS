@@ -920,6 +920,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
         changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
     } else if ($(e.target ).hasClass("Gc")) {
         changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
+		location.reload();
     } else if ($(e.target ).hasClass("VGc")){
         changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
     } else if ($(e.target ).hasClass("U")) {
