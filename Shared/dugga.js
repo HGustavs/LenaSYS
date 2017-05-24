@@ -888,11 +888,12 @@ function refreshUserSession(){
 					}
 
 		 });
+     setExpireCookie()
+     setExpireCookieLogOut()
+     sessionExpireMessage()
+     sessionExpireLogOut()
 }
-  setExpireCookie()
-  setExpireCookieLogOut()
-  sessionExpireMessage()
-  sessionExpireLogOut()
+
 //----------------------------------------------------------------------------------
 // Timeout function, gives a prompt if the session is about to expire
 //----------------------------------------------------------------------------------

@@ -45,18 +45,18 @@
 	<!-- Create Group Dialog START -->
 	<div id='groupSection' class='loginBox' style='width:285px;display:none;'>
 		<div class='loginBoxheader'>
-			<h3>Manage Groups</h3>
+			<h3>Create Groups</h3>
 			<div onclick='closeWindows();clearGroupWindow();'>x</div>
 		</div>
 		<div style='padding:5px;'>
 			<div id='inputwrapper-name' class='inputwrapper' style='display:inline-block;'>
-				<select id='selectMoment' style='float:none; width:100%; margin: 8px 0px;'>
+				<select id='selectMomentCreate' style='float:none; width:100%; margin: 8px 0px;'>
 				</select><br/>
-				<select id="nameType" style='float:none; width:100%;'>
+				<select id="nameTypeCreate" style='float:none; width:100%;'>
 					<option value="a">Letters (A,B,C,...)</option>
 					<option value="1">Numbers (1,2,3,...)</option>
 				</select><br/>
-				<input id="numberOfGroups" type="number" placeholder="  Amount of groups" style='float:none; width:271px; height:24px; margin: 8px 0px;' min="0" max="26"/><br/>
+				<input id="numberOfGroupsCreate" type="number" placeholder="  Amount of groups" style='float:none; width:271px; height:24px; margin: 8px 0px;' min="0" max="26"/><br/>
 				<!-- <span>Name:</span><input style='float:none; margin-left: 5px;' type='text' class='textinput' id='name' placeholder='Name' /> -->
 			</div>
 		</div>
@@ -68,6 +68,33 @@
 		</div>
 	</div>
 	<!-- Create Group Dialog END -->
+	
+	<!-- Remove Group Dialog START -->
+	<div id='removeGroup' class='loginBox' style='width:285px;display:none;'>
+		<div class='loginBoxheader'>
+			<h3>Remove Groups</h3>
+			<div onclick='closeWindows();clearGroupRemoveWindow();'>x</div>
+		</div>
+		<div style='padding:5px;'>
+			<div id='inputwrapper-name' class='inputwrapper' style='display:inline-block;'>
+				<select id='selectMomentRemove' style='float:none; width:100%; margin: 8px 0px;'>
+				</select><br/>
+				<select id="nameTypeRemove" style='float:none; width:100%;'>
+					<option value="a">Letters (A,B,C,...)</option>
+					<option value="1">Numbers (1,2,3,...)</option>
+				</select><br/>
+				<input id="numberOfGroupsRemove" type="number" placeholder="  Amount of groups" style='float:none; width:271px; height:24px; margin: 8px 0px;' min="0" max="26"/><br/>
+			
+			</div>
+		</div>
+		<p style="display:none; color:red;" id="numberOfGroupsToRemoveError">You have to assign how many groups should be removed.</p> 
+		<p style="display:none; color:red;" id="numberOfDeletedGroupsError">You have tried to remove to many groups</p> 
+		<div style='padding:5px;'>
+			<input style='float:none; display: inline-block;' class='submit-button' type='button' value='Cancel' onclick='closeWindows();clearGroupRemoveWindow();' /> 
+			<input style='margin-left: 40px; float:none; display: inline-block;' class='submit-button' type='button' value='Remove' onclick='removeGroup();' /> 
+		</div>
+	</div>
+	<!-- Remove Group Dialog END -->
 	<!-- Maximum of Groups Dialog START -->
 	<div id='toManyCreatedGroups' class='loginBox' style='width:285px;display:none;'>
 		<div class='loginBoxheader'>
