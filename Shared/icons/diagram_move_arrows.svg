@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 114.2 114.3" style="enable-background:new 0 0 114.2 114.3;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#2E53A1;stroke:#1E1E1C;stroke-linecap:round;stroke-miterlimit:10;}
-	.st1{fill:#C0C0C0;}
+	.st0{fill:#FFFFFF;stroke:#FFFFFF;stroke-width:4;stroke-linecap:round;stroke-miterlimit:10;}
+	.st1{fill:#FFFFFF;stroke:#FFFFFF;stroke-width:4;stroke-miterlimit:10;}
 </style>
-<path class="st0" d="M83.5,49.5"/>
-<polygon class="st1" points="96.5,43.5 96.5,43.6 90.1,36.8 90.1,52.1 64.8,52.1 64.8,24.4 79.3,24.2 71.2,16.9 71.2,16.9 56.6,2.6 
-	39.8,19 39.8,19 34.4,24.4 48.8,24.4 48.8,52.1 24.8,52.1 24.6,35 17.4,43.3 17.4,43.2 1.4,59.6 17.8,76.4 24.8,83.8 24.8,68.1 
-	48.8,68.1 48.8,90.9 34.2,91 40,96.5 40,96.5 56.7,112.1 72.6,97.2 72.5,97.2 79.2,90.8 64.8,90.8 64.8,68.1 90.2,68.1 90.4,83.4 
-	96.9,76.7 112.9,60.3 "/>
+<path class="st0" d="M78.2,51"/>
+<polygon class="st1" points="89.2,45.6 89.2,45.7 84,40 84,52.8 63.3,52.8 63.3,29.8 75.2,29.5 68.6,23.5 68.6,23.5 56.6,11.6 
+	42.9,25.2 42.9,25.2 38.5,29.8 50.2,29.8 50.2,52.8 30.7,52.8 30.5,38.5 24.6,45.5 24.6,45.4 11.6,59 25,73 30.7,79.2 30.7,66.1 
+	50.2,66.1 50.2,85.1 38.4,85.2 43.1,89.7 43.1,89.7 56.7,102.7 69.7,90.3 69.6,90.3 75.1,85 63.3,85 63.3,66.1 84.1,66.1 84.3,78.8 
+	89.6,73.2 102.6,59.6 "/>
 </svg>
