@@ -293,7 +293,7 @@ function createFileUploadArea(fileuploadfileds){
 		} else if (type === "text"){
 			str += "<h4>Text Submission</h4>";
 			str += "</div>";
-            str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'><span style='font-style:italic;M'>Submission History</span></div>";
+            str +="<div id='"+fieldname+"Prev' style='min-height:100px;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'><span style='font-style:italic;M'>Submission History</span></div>";
 			str += "<div style='padding:10px;'>";
 			str +="<table style='width:100%;'>";
 			str +="<tr>";
@@ -308,7 +308,7 @@ function createFileUploadArea(fileuploadfileds){
 		str += "</div>";
 		str += "<div>";
 		if (type !== "text"){
-            str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'><span style='font-stile:italic;'>Submission History</span></div>";
+            str +="<div id='"+fieldname+"Prev' style='min-height:100px;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'><span style='font-stile:italic;'>Submission History</span></div>";
             str +="<div style='padding:10px;'>";
             str +="<h4>Instructions</h4>";
             str +="<div id='"+fieldname+"Instruction' style='font-style: italic;padding:0px;'></div>"

@@ -688,6 +688,10 @@ header td {
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 
+#expiremessagebutton {
+	margin-left:120px;
+}
+
 #endsessionboxbutton {
   background-color:#614875;
   border:0px;
@@ -1334,10 +1338,6 @@ input.large-button {
   font-size: 16px;
 }
 
-.list tbody tr:nth-child(odd) {
-  background-color: #ccc;
-}
-
 .innertable {
   background:#fff;
   box-shadow:2px 3px 2px #a09098 inset;
@@ -1390,17 +1390,14 @@ input.large-button {
 
 .list#testTable td{
     padding:0px;
-    text-align:center;border:none;
+    text-align:center;
+    border:none;
 }
 
 .list#testTable th{
     line-height:45px;
     box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.21);
     font-size: 16px;
-}
-
-.list#testTable tr:nth-child(odd), .list#testTable tr:nth-child(even){
-    background-color:#eae8eb;
 }
 
 .list#testTable tr{
@@ -1428,6 +1425,19 @@ input.large-button {
 
 .list#testTable input, .list#testTable select, .list#testTable label {
     padding:0px;
+}
+
+.list tbody tr:nth-child(odd) {
+    background-color: #ccc;
+}
+.list#testTable tr:nth-child(odd), .list#testTable tr:nth-child(even){
+    background-color:#eae8eb;
+}
+.evenfumo {
+  background: #ccc !important;
+}
+.oddfumo {
+  background: #eae8eb !important;
 }
 
 .selectedtr {
@@ -1597,8 +1607,11 @@ span.arrow {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-  background-color: #eae8eb;
+    background-color: #eae8eb;
 }
+
+
+
 /* End DuggaSys resulted*/
 /**************************/
 

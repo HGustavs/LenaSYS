@@ -74,7 +74,7 @@ Line break
 
 Arrow
  -> 
-(whitespace before and after) prints arrow with double head: “&rarr;”.
+(whitespace before and after) prints arrow with double head: ï¿½&rarr;ï¿½.
 
 Images
 |||src,thumbnail width in px,full size width in px|||
@@ -84,6 +84,7 @@ Tables
 |tr|
 |td|
 ||td in tr||
+| *This is italic* | **This is bold** | `This is code style` |
 
 Ellipsis
 Three or more dots should always be converted to an ellipsis.
