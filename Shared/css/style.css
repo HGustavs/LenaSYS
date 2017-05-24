@@ -1544,11 +1544,13 @@ span.arrow {
     border-radius: 3px;
     overflow: hidden;
     background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
+    background-position: right;
 }
 /* Course version dropdown */
 .course-dropdown {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight: bold;
+    padding: 3px;
     border: none;
     width: 120px;
     height: 25px;
