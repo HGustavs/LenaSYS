@@ -427,6 +427,7 @@ function changedType()
 
 function deleteItem()
 {
+	alert("Are you sure you want to delete this item?");
 	lid=$("#lid").val();
 	AJAXService("DEL",{lid:lid},"SECTION");
 	$("#editSection").css("display","none");
@@ -1070,6 +1071,22 @@ function returnedSection(data)
 						}
 				}
 
+		// trashcan
+				if(data['writeaccess']){
+						str+="<td style='width:24" +
+							"px;";
+						
+					
+						if(parseInt(item['kind']) === 0){
+								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+						}else if(parseInt(item['kind']) === 1){
+								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+						}else if(parseInt(item['kind']) === 4){
+								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+						}else{
+								str+="' ><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+						}
+				}
 
                 str += "</tr>";
 				
