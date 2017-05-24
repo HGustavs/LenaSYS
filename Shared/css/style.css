@@ -688,12 +688,9 @@ header td {
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 
-#expiremessagebutton {
-	margin-left:120px;
-}
-
-#endsessionboxbutton {
+#endsessionmessagebutton {
   background-color:#614875;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   border:0px;
   width:110px;
   height:30px;
@@ -701,15 +698,12 @@ header td {
   cursor:pointer;
   margin-top:6px;
   margin-bottom:2px;
-  margin-left:120px;
+  margin-left:115px;
   font-size:14px;
-  transition:1s background-color;
-  line-height: 30px;
-  text-align: center;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 10px 0 rgba(0,0,0,0.1);
+  transition:1s background-color;  
 }
 
-#endsessionboxbutton:hover {
+#endsessionmessagebutton:hover {
   background-color:#7B5A96;
   border-radius:2px;
 }
@@ -1599,15 +1593,14 @@ span.arrow {
 
 /* DuggaSys Sectioneed*/
 
-
 /* Course version dropdown div */
 .course-dropdown-div {
     border: 1px solid #ccc;
-    height: 25px;
-    width: 120px;
-    border-radius: 3px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
     overflow: hidden;
     background: #fafafa url("../icons/desc_primary.svg") no-repeat 90% 50%;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.3),0 2px 10px 0 rgba(0,0,0,0.1);
     background-position: right;
 }
 /* Course version dropdown */
@@ -1617,8 +1610,7 @@ span.arrow {
     padding: 3px;
     border: none;
     width: 120px;
-    height: 25px;
-    box-shadow: none;
+    height: 28px;
     background: transparent;
     background-image: none;
     -webkit-appearance: none;
@@ -1712,6 +1704,10 @@ span.arrow {
 .submit-button:hover {
   background-color:#7B5A96;
   border-radius:4px;
+}
+.no-radius:hover{
+    background-color:#7B5A96;
+    border-radius: 0;
 }
 
 #feedbackTable table {
@@ -2400,7 +2396,7 @@ table.navheader div.hamburgerMenu {
 
 table.navheader input.hamburger {
   width: 30px;
-  margin: 6px 0px 2px 0px;
+  margin: 6px 0px 6px 4px;
   padding: 1px 6px 1px 6px;
 }
 

@@ -8,8 +8,11 @@ var versions;
 var courselist;
 var students=new Array;
 var tablecontent=new Array;
+var feedback=null;
 var typechanged=false;
 var duggaArray = [[]];
+var lidOfGroupsWithLettersAsNames=new Array;
+var lidOfGroupsWithNumbersAsNames=new Array;
 function setup(){
 	
 	var filt = "";
@@ -28,6 +31,7 @@ function setup(){
 	$("#menuHook").before(filt);
 		
 	AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "GROUP");
+    window.onscroll = function() {magicHeading()};
 }
 
 function checkedAll() {
@@ -98,6 +102,7 @@ function leaveFunnel()
   	localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
 
 	process();
+    magicHeading();
 }
 
 function checkMomentParts(pos, id) {
@@ -140,6 +145,7 @@ function leaveFilter()
 		}
 		
 	}
+    magicHeading();
 }
 
 function sorttype(t){
@@ -255,28 +261,70 @@ function process()
 }
 
 function drawtable(){
-	// Init the table string. 
+	
 	str="";
-	
-	
 	str+="<div class='titles' style='padding-bottom:10px;'>";
-	str+="<h1 style='flex:10;text-align:center;'>Groups</h1>";
-	str+="<input style='float:none;flex:1;max-width:125px;' class='submit-button' type='button' value='Manage Groups' onclick='selectGroup();'/>";
+	str+="<h1 style='flex:10;text-align:center;'>Groups</h1>";	
 	str+="</div>";
 
-	// Create the table headers. 
+	if(tablecontent != null) {
+		str+="<div class='titles' style='padding-bottom:10px;'>";
+		str+="<input style='float:none;flex:1;max-width:125px;' class='submit-button' type='button' value='New Groups' onclick='showCreateGroupView();'/>";
+		str+="<input style='float:none;flex:1;max-width:125px;' class='submit-button' type='button' value='Remove Groups' onclick='showRemoveGroupView();'/>";
+		str+="</div>";
+		// Init the table string. 
+		// Create the table headers. 
+        
+        str += "<div id='sideDecker' style='position:absolute;left:50px;margin-top:22px;display:none;width:175px;'>";
+        str += "<table class='markinglist' style='table-layout: fixed;'>";
+        str += "<tbody>";
+        var row=0;
+        for(var i = 0; i < tablecontent.length; i++) { // Iterate table content, beginning with the row number and user data. 
+            row++;
+            // Apply class to every other row for easier browsing using ternary operator
+            str+="<tr class='"+ (row % 2 == 1 ? 'hi' : 'lo') + "'>";
+            str+="<td style='width:40px;' id='row"+row+"' class='grouprow'><div>"+row+"</div></td>";
+            str+="<td style='padding-left:3px;' title="+tablecontent[i].uid+">"+tablecontent[i].firstname+" "+tablecontent[i].lastname;
+            str+="<div class='dugga-result-div'>"+tablecontent[i].ssn+"</div>";
+            str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
+        }
+        str += "</tbody>";
+        str += "</table>";
+        str += "</div>";
+
+
+        str += "<div id='upperDecker' style='position:absolute;left:8px;display:none;'>";
+        str += "<table class='markinglist' style='table-layout: fixed;'>";
+        str += "<thead>";
+        str += "<tr class='markinglist-header'>";
+        str += "<th id='header' class='rowno idField' style='min-width: 20px; max-width:30px;'><span>#</span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic' style='width:140px;'>Studenter</th>"
+        if (momtmp.length > 0){
+            // Make first header row!
+            //    No such header for magic heading - by design
+
+            // Make second header row!
+            for(var j=0;j<momtmp.length;j++){
+                str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px; cursor:pointer;'>"+momtmp[j].entryname+"</th>"                         
+            }
+        }   
+        str+="</tr>";
+        str += "</thead>";
+        str += "</table>";
+        str += "</div>";
+        
+		// Create the table headers. 
 	str+="<table class='markinglist' id='markinglist'>";
 	str+="<thead>";
 	str+="<tr class='markinglist-header'>";
 	
-	str+="<th id='header' class='grouprow' style='width:40px'><span>#<span></th>";
+	str+="<th id='header' class='grouprow' style='width:40px;'><span>#<span></th>";
 
-	str+="<th id=tableheader"+(subheading)+" class='grouped-header' onclick='toggleSortDir(0);' style='width:140px;'>Studenter</th>";
+	str+="<th id=tableheader"+(subheading)+" class='grouped-header dugga-result-subheader' onclick='toggleSortDir(0);' style='width:140px;'>Studenter</th>";
 
 
 	// Itererate the headings, that are dependent on the cid and coursevers. 
 	for(var i = 0; i < momtmp.length; i++) {
-		str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+momtmp[i].lid+"' class='grouped-header' colspan='1' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+momtmp[i].entryname+"</th>";	
+		str+="<th id=tableheader"+(i+1)+" title ='Listentry id "+momtmp[i].lid+"' class='grouped-header dugga-result-subheader' style='min-width:140px;padding: 0px 8px 0px 8px;' onclick='toggleSortDir("+(i+1)+");'>"+momtmp[i].entryname+"</th>";	
 	}
 	str+="</thead>";
 	str += "<tbody>";
@@ -289,77 +337,95 @@ function drawtable(){
 		str+="<td style='padding-left:3px;' title="+tablecontent[i].uid+"><div class='dugga-result-div'>"+tablecontent[i].firstname+" "+tablecontent[i].lastname+"</div>";
 		str+="<div class='dugga-result-div'>"+tablecontent[i].ssn+"</div>";
 		str+="<div class='dugga-result-div'>"+tablecontent[i].username+"</div></td>";
-		for(var lid in tablecontent[i].lidstogroup) { // Iterate the data per list entry column
-			for(var j = 0; j < momtmp.length; j++) {
-				if(momtmp[j].lid == lid){
-					str+="<td style='padding-left:5px;'>";
-					var oldUgid = tablecontent[i].lidstogroup[lid] != false ? "_"+tablecontent[i].lidstogroup[lid] : "";
-					str+="<div class='groupStar'>*</div>";
-					str+="<select id="+tablecontent[i].uid+"_"+lid+oldUgid+" class='test' onchange=changegroup(this)>";
-					str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
-					for(var level2lid in availablegroups) {
-						// Iterate the groups in each lid, example: 
-						/*
-						"availablegroups": {
-							"2001": { // (level2lid)
-								"1": "Festargruppen" // (group /w key (ugid) => value (name))
-								"4": "Dudegruppen" // There can be more than one group per lid
-							},
-							"2013": {
-								"2": "Coola gurppen"
+			for(var lid in tablecontent[i].lidstogroup) { // Iterate the data per list entry column
+				for(var j = 0; j < momtmp.length; j++) {
+					if(momtmp[j].lid == lid){
+						str+="<td style='padding-left:5px;'>";
+						var oldUgid = tablecontent[i].lidstogroup[lid] != false ? "_"+tablecontent[i].lidstogroup[lid] : "";
+						str+="<div class='groupStar'>*</div>";
+						str+="<select id="+tablecontent[i].uid+"_"+lid+oldUgid+" class='test' onchange=changegroup(this)>";
+						str+="<option value='-1'>Pick a group</option>"; // Create the first option for each select
+						for(var level2lid in availablegroups) {
+							// Iterate the groups in each lid, example: 
+							/*
+							"availablegroups": {
+								"2001": { // (level2lid)
+									"1": "Festargruppen" // (group /w key (ugid) => value (name))
+									"4": "Dudegruppen" // There can be more than one group per lid
+								},
+								"2013": {
+									"2": "Coola gurppen"
+								}
 							}
-						}
-						*/
-						if(level2lid == lid) { // If the group belongs to the current column, lid, iterate all the available groups and create options for them
-							for(var group in availablegroups[level2lid]) { // availablegroups[level2lid] contains an array of groups, iterate them
-								for(var ugid in availablegroups[level2lid][group]) { // Iterate the key => value pairs of each group
-									var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
-									str+="<option value="+ugid+selected+">"+availablegroups[level2lid][group][ugid]+"</option>";
+							*/
+							if(level2lid == lid) { // If the group belongs to the current column, lid, iterate all the available groups and create options for them
+								for(var group in availablegroups[level2lid]) { // availablegroups[level2lid] contains an array of groups, iterate them
+									for(var ugid in availablegroups[level2lid][group]) { // Iterate the key => value pairs of each group
+										var selected = tablecontent[i].lidstogroup[lid] == ugid ? " selected" : ""; // Create the selected attribute if applicable
+										str+="<option value="+ugid+selected+">"+availablegroups[level2lid][group][ugid]+"</option>";
+									}
 								}
 							}
 						}
+						str+="</select><div class='groupStar'>*</div>";
+						str+="</td>";
 					}
-					str+="</select><div class='groupStar'>*</div>";
-					str+="</td>";
 				}
+				
 			}
-			
+			str+="</tr>";
 		}
-		str+="</tr>";
+		str += "</tbody>";
+		str+="</table>";
+	} else { // The database have not generated any content; apply the feedback string and place it in a div
+		str += '<div style="max-width: 900px; margin: 0 auto;">'+feedback+'</div>';
 	}
-	str += "</tbody>";
-	str+="</table>";
 	
+	// Apply the page contents to the content div
 	document.getElementById("content").innerHTML=str;
 }
 
-function selectGroup()
+function showCreateGroupView()
 {
 	var inp = "";
 	for(i=0; i<moments.length; i++){
 		inp+="<option value="+moments[i].lid+">"+moments[i].entryname+"</option>";
 	}
-	document.getElementById("selectMoment").innerHTML=inp;
+	document.getElementById("selectMomentCreate").innerHTML=inp;
 	
 	//Display pop-up
 	$("#groupSection").css("display","block");
 	$("#overlay").css("display","block");
 }
 
+function showRemoveGroupView()
+{
+	var inp = "";
+	for(i=0; i<moments.length; i++){
+		inp+="<option value="+moments[i].lid+">"+moments[i].entryname+"</option>";
+	}
+	document.getElementById("selectMomentRemove").innerHTML=inp;
+	
+	//Display pop-up
+	$("#removeGroup").css("display","block");
+	$("#overlay").css("display","block");
+}
+
 function createGroup()
 {
-	var chosenMoment=$("#selectMoment").val();
-	var nameType=$("#nameType").val(); 
-	var numberOfGroups=$("#numberOfGroups").val(); 
+	var chosenMoment=$("#selectMomentCreate").val();
+	var nameType=$("#nameTypeCreate").val(); 
+	var numberOfGroups=$("#numberOfGroupsCreate").val(); 
 	var offsetLetter=0;
 	var offsetNumber = 1;
+	var groupError = false;
 	
 	if(numberOfGroups > 0){
 		if(nameType == "a"){
 			for(var lidGroup in availablegroups) {	//get lid of each group
 				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
 					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
-						for(var a=65;a<90; a++){  //loop through capital letters
+						for(var a=65;a<=90; a++){  //loop through capital letters
 							var groupLetter = String.fromCharCode(a);
 							if(availablegroups[lidGroup][groupArray][groupNames] == groupLetter && lidGroup==chosenMoment){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
 								offsetLetter++;
@@ -371,12 +437,18 @@ function createGroup()
 			var startLetter = +offsetLetter+65;
 			var numbersOfLetters = +numberOfGroups+startLetter;
 			for(startLetter;startLetter<numbersOfLetters; startLetter++){
-				var groupLetter = String.fromCharCode(startLetter);
-				data = {
-					'chosenMoment':chosenMoment,
-					'groupName':groupLetter
-				};
-				AJAXService("NEWGROUP",data,"GROUP");
+				if(startLetter<= 90){
+					var groupLetter = String.fromCharCode(startLetter);
+					data = {
+						'chosenMoment':chosenMoment,
+						'groupName':groupLetter
+					};
+					AJAXService("NEWGROUP",data,"GROUP");
+					groupError=false;
+				}
+				else{
+					groupError=true;
+				}
 			}
 		}
 		else{
@@ -400,35 +472,142 @@ function createGroup()
 				AJAXService("NEWGROUP",data,"GROUP");
 			}
 		}		
-		$("#numberOfGroups").val('');
 		$("#groupSection").css("display","none");
 		$("#numberOfGroupsError").css("display","none");
+		$("#toManyCreatedGroups").css("display","none");
 		$("#overlay").css("display","none");
-		window.location.reload();
+		if(groupError == true){
+			$("#toManyCreatedGroups").css("display","inline-block");
+			$("#overlay").css("display","block");
+		}
+		else if(numberOfGroups == ''){
+			$("#numberOfGroupsError").css("display","block");
+			$("#overlay").css("display","block");
+		}
+		else{
+			window.location.reload();
+		}
 	}
 	else{
 		$("#numberOfGroupsError").css("display","block");
 	}
 }
-function clearGroupWindow(){
-	$("#numberOfGroups").val('');
-	$("#nameType").val('a');
-	$("#selectMoment").val(0);
-	$("#numberOfGroupsError").css("display","none");
-	
-}
-function returnedGroup(data)
+
+function removeGroup()
 {
+	var chosenMomentRemove=$("#selectMomentRemove").val();
+	var nameTypeRemove=$("#nameTypeRemove").val(); 
+	var numberOfGroupsRemove=$("#numberOfGroupsRemove").val(); 
+	var offsetLetter=0;
+	var offsetNumber = 1;
+	var toManyRemovedGroups = false;
+	lidOfGroupsWithLettersAsNames=new Array; //saves lid of groups with letters as names
+	lidOfGroupsWithNumbersAsNames=new Array; //saves lid of groups with numbers as names
+	if(numberOfGroupsRemove > 0){
+		if(nameTypeRemove == "a"){
+			for(var lidGroup in availablegroups) {	//get lid of each group
+				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
+					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
+						for(var a=90;a>=65; a--){  //loop through capital letters backwards to be able to remove letters backwards (from Z to A)
+							var groupLetter = String.fromCharCode(a);
+							if(availablegroups[lidGroup][groupArray][groupNames] == groupLetter && lidGroup==chosenMomentRemove){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
+								offsetLetter++; //count on how many groups there are
+								lidOfGroupsWithLettersAsNames.push(groupNames);
+							}
+							
+						} 
+					}
+				} 
+			}
+			var controlsRemoveGroupsWithLetters = lidOfGroupsWithLettersAsNames.length-numberOfGroupsRemove;
+			if(controlsRemoveGroupsWithLetters >= 0){
+				for(controlsRemoveGroupsWithLetters;controlsRemoveGroupsWithLetters<lidOfGroupsWithLettersAsNames.length; controlsRemoveGroupsWithLetters++){
+					data = {
+						'chosenMomentRemove':chosenMomentRemove,
+						'ugidGroup':lidOfGroupsWithLettersAsNames[controlsRemoveGroupsWithLetters]
+					};
+					AJAXService("DELGROUP",data,"GROUP");
+				}
+			}
+			else{
+				toManyRemovedGroups = true;
+			}
+		}
+	
+		else if(nameTypeRemove == "1"){
+			 for(var lidGroup in availablegroups) {	//get lid of each group
+				for(var groupArray in availablegroups[lidGroup]) { // Get each group, both name and ugid 
+					for(var groupNames in availablegroups[lidGroup][groupArray]) { // Get name of each group
+						for(var a=0;a<groupNames; a++){  //loop through capital letters
+							if(availablegroups[lidGroup][groupArray][groupNames] == a && lidGroup==chosenMomentRemove){ //Check if groupname is the same as capital letter and lid is the same as the chosen moment
+								offsetNumber++;
+								lidOfGroupsWithNumbersAsNames.push(groupNames);
+							}
+						}
+					}
+				}
+			}
+			var controlsRemoveGroupsWithNumbers = lidOfGroupsWithNumbersAsNames.length-numberOfGroupsRemove;
+			if(controlsRemoveGroupsWithNumbers >= 0){
+				for(controlsRemoveGroupsWithNumbers;controlsRemoveGroupsWithNumbers<lidOfGroupsWithNumbersAsNames.length; controlsRemoveGroupsWithNumbers++){
+					data = {
+						'chosenMomentRemove':chosenMomentRemove,
+						'ugidGroup':lidOfGroupsWithNumbersAsNames[controlsRemoveGroupsWithNumbers]
+					};
+					AJAXService("DELGROUP",data,"GROUP");
+				}
+			}
+			else{
+				toManyRemovedGroups = true;
+				
+			}
+		}		
+		$("#numberOfGroups").val('');
+		$("#groupSection").css("display","none");
+		$("#numberOfGroupsError").css("display","none");
+		$("#toManyCreatedGroups").css("display","none");
+		$("#numberOfDeletedGroupsError").css("display","none");
+		$("#overlay").css("display","none");
+		if(toManyRemovedGroups == true){
+			$("#numberOfDeletedGroupsError").css("display","block");
+			$("#overlay").css("display","block");
+		}
+		else{
+			window.location.reload();
+		}
+	}
+	else if(numberOfGroupsRemove == ''){
+		$("#numberOfGroupsToRemoveError").css("display","inline-block");
+		$("#overlay").css("display","block");
+	}
+}
+function clearGroupWindow(){
+	$("#numberOfGroupsCreate").val('');
+	$("#nameTypeCreate").val('a');
+	$("#selectMomentCreate").val(0);
+	$("#numberOfGroupsError").css("display","none");
+}
+
+function clearGroupRemoveWindow(){
+	$("#numberOfGroupsRemove").val('');
+	$("#nameTypeRemove").val('a');
+	$("#selectMomentRemove").val(0);
+	$("#numberOfGroupsError").css("display","none");
+	$("#numberOfGroupsToRemoveError").css("display","none");
+}
+
+function closeGroupLimit(){
+	$("#toManyCreatedGroups").css("display","none");
+	$("#overlay").css("display","none");
+	window.location.reload();
+}
+function returnedGroup(data) {
+
 	var headings = data.headings;
 	moments=data.moments;
 	tablecontent = data.tablecontent;
 	availablegroups = data.availablegroups; // The available groups to put users in
-	
-	
-	/* availablegroups=data.availablegroups;
-	moments=data.moments;
-	versions=data.versions;
-	results=data.results;*/
+	feedback = data.feedback;
 	
 	// Read dropdown from local storage (??)
 	courselist=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
@@ -441,32 +620,34 @@ function returnedGroup(data)
 	
 	$(document).ready(function () {
 		$("#filter").mouseleave(function () {
-				leaveFilter();
+			leaveFilter();
 		});
 	});
 	$(document).ready(function () {
-						$("#dropdownFunnel").mouseleave(function () {
-								leaveFunnel();
-						});
+		$("#dropdownFunnel").mouseleave(function () {
+			leaveFunnel();
 		});
+	});
 	
 	allData = data; // used by dugga.js (for what??)
-	process();
-	
-	
-		
+
+	if(tablecontent != null) {
+		process();	
+	} else {
+		$('#select').css('display', 'none');
+		$('#filter').css('display', 'none');
+	}
+
 }
 
 /**
- * @WIP
- * Function to make a AJAXRequest to update the group of a student. 
- * Is called when a dropdown menu is changed.
- * @param changedElement - the DOM object of the changed element. 
+ * Function to make a AJAXService to update the group of a student. 
+ * Is called upon the onchange event of a select element on the page.
+ * @param changedElement - the select element that was changed
  */
 function changegroup(changedElement) {
 	var elementId = changedElement.id; // contains uid_lid_oldUgid (oldUgid if applicable)
 	var value = changedElement.value; // the new ugid (the value of the selected option)
-	
 	var arr = elementId.split("_");
 	var uid = arr[0];
 	var lid = arr[1];
@@ -476,8 +657,8 @@ function changegroup(changedElement) {
 	data = {
 		'uid':uid,
 		'lid':lid,
-		'newUgid':value,
-		'oldUgid':oldUgid
+		'newUgid':value, // The new value of the select element
+		'oldUgid':oldUgid // The old value of the select element, stored in the id of the element
 	};
 	
 	// This AJAXService will map uid to ugid in user_usergroup
@@ -498,7 +679,7 @@ function resort()
 	var colkind=localStorage.getItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1");
 	if (colkind == null || colkind == undefined){colkind=0;}
 	
-	if (tablecontent.length > 0) {
+	if (momtmp.length > 0) {
 		if(columno < momtmp.length+1){
 			
 			// Each if case checks what to sort after and then sorts appropiatle depending on ASC or DESC
@@ -552,14 +733,14 @@ function resort()
 				// 0. no group/groups
 				if(columno > 0){
 					tablecontent.sort(function compare(a,b){
-						if(a.lidstogroup[moments[columno-1].lid]!=false && b.lidstogroup[moments[columno-1].lid]==false ){
+						if(a.lidstogroup[momtmp[columno-1].lid]!=false && b.lidstogroup[momtmp[columno-1].lid]==false ){
 								return -sortdir;
-						} else if(a.lidstogroup[moments[columno-1].lid]==false  && b.lidstogroup[moments[columno-1].lid]!=false ){
+						} else if(a.lidstogroup[momtmp[columno-1].lid]==false  && b.lidstogroup[momtmp[columno-1].lid]!=false ){
 								return sortdir;
 						}else{	
-							if(a.lidstogroup[moments[columno-1].lid]>b.lidstogroup[moments[columno-1].lid]){		  				
+							if(a.lidstogroup[momtmp[columno-1].lid]>b.lidstogroup[momtmp[columno-1].lid]){		  				
 									return sortdir;
-							}else if(a.lidstogroup[moments[columno-1].lid]<b.lidstogroup[moments[columno-1].lid]){
+							}else if(a.lidstogroup[momtmp[columno-1].lid]<b.lidstogroup[momtmp[columno-1].lid]){
 									return -sortdir;
 							}else{
 									return 0;
@@ -573,35 +754,14 @@ function resort()
 		
 	drawtable();
 	//Highlights the header that has been clicked and shows ASC or DESC icon
-	for(var m=0;m<=columno;m++){
-		$("#tableheader"+columno).removeClass("result-header-inverse");
-	}	
-	if(columno == 0){
-		$("#tableheader0").addClass("result-header-inverse"); 
-	}else{
-		$("#tableheader"+columno).addClass("result-header-inverse"); 
-	}
-    if (sortdir<0){
-		if(columno == 0){
-			$("#tableheader"+columno).empty();
-			$("#tableheader"+columno).append("Studenter");
-			$("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
-		}else{
-			$("#tableheader"+columno).empty();
-			$("#tableheader"+columno).append(moments[columno-1].entryname);
-			$("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
-		}
-    }else{
-		if(columno == 0){
-			$("#tableheader"+columno).empty();
-			$("#tableheader"+columno).append("Studenter");
-			$("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
-		}else{		
-			 $("#tableheader"+columno).empty();
-			 $("#tableheader"+columno).append(moments[columno-1].entryname);
-			 $("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>"); 
-		}  
-	}
+	 $("#tableheader"+columno).addClass("result-header-inverse");
+   if (sortdir<0){
+     $("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
+
+   } else {
+     $("#tableheader"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>"); 
+    
+   }
 }
 
 // If col and current col are equal we flip sort order 
@@ -626,6 +786,63 @@ function toggleSortDir(col){
 		$("input[name='sortdir']:checked").val(dir);
 		localStorage.setItem("group_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
     }
-    resort();  
+    resort(); 
+    magicHeading();
 }
 
+function magicHeading()
+{
+    
+    // Display Magic Headings when scrolling
+    if(window.pageYOffset+20>$("#markinglist").offset().top){
+        $("#upperDecker").css("display","block");
+    }else{
+        $("#upperDecker").css("display","none");            
+    }
+    
+    $("#upperDecker").css("width",$("#markinglist").outerWidth()+"px");
+    
+    
+    if(window.pageXOffset>$("#tableheader0").offset().left){
+        $("#sideDecker").css("display","block");
+    }else{
+        $("#sideDecker").css("display","none");      
+    }
+    
+   //Addr Remove the inverse class depending on sorting
+    $(".dugga-result-subheader").each(function(){
+        var arrowdir=$("#sortdiricon").attr('src');
+        var elemid=$(this).attr('id');
+        var eles=elemid.replace("tableheader", "");
+        var magicheaderid="#header"+eles+"magic";
+        var elemwidth=$(this).width();
+        
+       $("#header"+eles+"magic").css("width",elemwidth+"px");
+        if($(this).hasClass("result-header-inverse")){
+             $(magicheaderid).addClass("result-header-inverse");
+            if($(magicheaderid).find('img').length > 0) {
+                // Image found on container with id "container_id"
+            } else {
+                $(magicheaderid).append("<img id='sortdiricon' src='"+arrowdir+"'/>");
+            }
+        } else {
+            $("#"+elemid+"magic").removeClass("result-header-inverse"); 
+        }
+    });
+    
+     // Add or Remove the inverse class depending on sorting
+    $(".dugga-result-subheader").each(function(){
+        var elemid=$(this).attr('id');
+        var elemwidth=$(this).width();
+        $("#"+elemid+"magic").css("width",elemwidth+"px");
+        if($(this).hasClass("result-header-inverse")){
+            $("#"+elemid+"magic").addClass("result-header-inverse");
+        } else {
+            $("#"+elemid+"magic").removeClass("result-header-inverse"); 
+        }
+    });
+
+    // Position Magic Headings
+    $("#upperDecker").css("top",(window.pageYOffset+51)+"px");
+    $("#sideDecker").css("left",(window.pageXOffset)+"px");
+}

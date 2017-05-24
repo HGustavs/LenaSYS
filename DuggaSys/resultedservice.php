@@ -70,7 +70,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 	if(strcmp($opt,"CHGR")==0){
 		if($ukind=="U"){
-			$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1 WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+			$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
 			$query->bindParam(':mark', $mark);
 			$query->bindParam(':cuser', $userid);
 
@@ -361,7 +361,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 
 		// All results from current course and vers?
 		$query = $pdo->prepare("
-      SELECT aid,quiz,variant,userAnswer.moment AS dugga,grade,uid,useranswer,UNIX_TIMESTAMP(submitted) AS submitted,userAnswer.vers,UNIX_TIMESTAMP(marked) AS marked,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,listentries.moment AS moment,if((submitted > marked && !isnull(marked))||(isnull(marked) && !isnull(useranswer)), true, false) AS needMarking,timesGraded
+      SELECT aid,quiz,variant,userAnswer.moment AS dugga,grade,uid,useranswer,UNIX_TIMESTAMP(submitted) AS submitted,userAnswer.vers,UNIX_TIMESTAMP(marked) AS marked,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,listentries.moment AS moment,if((submitted > marked && !isnull(marked))||(isnull(marked) && !isnull(useranswer)), true, false) AS needMarking,timesGraded,gradeExpire
       FROM userAnswer,listentries
       WHERE userAnswer.cid=:cid AND userAnswer.vers=:vers AND userAnswer.moment=listentries.lid;
     ");
@@ -396,7 +396,8 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 					'stepsUsed' => $row['stepsUsed'],
 					'totalStepsUsed' => $row['totalStepsUsed'],
 					'needMarking' => (bool)$row['needMarking'],
-					'timesGraded' => (int)$row['timesGraded']
+					'timesGraded' => (int)$row['timesGraded'],
+					'gradeExpire' => $row['gradeExpire']
 				)
 			);
 		}
