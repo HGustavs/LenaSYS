@@ -1,5 +1,5 @@
     <header>
-		<?php	
+		<?php
 			echo "<table class='navheader'><tr>";
 
 			include_once "../Shared/basic.php";
@@ -22,7 +22,7 @@
 			echo "<td class='navButt' id='back' title='Back' onmouseover='hoverBack();' onclick='window.history.back()'>";
 
             echo "<img src='../Shared/icons/Up.svg'></a></td>";
-			
+
 			if($noup=='COURSE'){
                     $cid=getOPG('cid');
                     if($cid=="UNK") $cid=getOPG('courseid');
@@ -32,7 +32,7 @@
           echo "<a class ='linkSwimlane' href='#'><img src='../Shared/icons/swimlane.svg'></a></td>";
 
 			}
-			
+
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
 					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
@@ -64,10 +64,10 @@
 
 
 		echo "</tr></table>";
-		
+
 		//Cookie message
 		echo "<div id='cookiemsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' onclick='cookieMessage()'/></div>";
-		
+
 	?>
 </header>
     <body>
@@ -77,13 +77,18 @@
 ?>
     </body>
 <script type="text/javascript">
-
-
-
-
-
-
-
+// Alt-a = accessed, Alt-h = home, 
+document.onkeyup=function(e){
+        var e = e || window.event;
+    if(e.altKey && e.which == 72) {
+         window.location.href='http://webblabb.iit.his.se:8080/grupp4/a15perbl/LenaSYS/DuggaSys/courseed.php';
+         return false;
+    }
+    if(e.altKey && e.which == 65 ) {
+         window.location.href='http://webblabb.iit.his.se:8080/grupp4/a15perbl/LenaSYS/DuggaSys/accessed.php?cid=5&coursevers=';
+         return false;
+    }
+}
 		if(localStorage.getItem("cookieMessage")=="off"){
 			$("#cookiemsg").css("display", "none");
 		}
@@ -100,4 +105,3 @@
 		$(".dropdown-list-container").css("display", "none");
 	}
 </script>
-
