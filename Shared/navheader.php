@@ -77,6 +77,13 @@
 ?>
     </body>
 <script type="text/javascript">
+
+
+
+
+
+
+
 		if(localStorage.getItem("cookieMessage")=="off"){
 			$("#cookiemsg").css("display", "none");
 		}
