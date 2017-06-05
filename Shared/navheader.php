@@ -77,6 +77,7 @@
 ?>
     </body>
 <script type="text/javascript">
+// Hotkeys to navigate the website easier
 // Alt-a = accessed, Alt-h = home, 
 document.onkeyup=function(e){
         var e = e || window.event;
