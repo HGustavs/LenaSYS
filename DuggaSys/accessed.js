@@ -265,7 +265,7 @@ function returnedAccess(data)
             str+="<td>"+item['vers']+"</td>";
 
 			// Select box for Access
-			str+="<td class='accessDropDown' valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
+			str+="<td valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
 				if(item['access']=="R"){
 					str+="<option selected='selected' value='R'>Student</option>";
 				}else{
