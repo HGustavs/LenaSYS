@@ -128,12 +128,29 @@ function redrawtable()
   str += "<table class='markinglist' style='table-layout: fixed;'>";
   str += "<thead>";
   str += "<tr class='markinglist-header'>";
-  str += "<th id='header' class='rowno idField' style='width: 28px;'><span>#</span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
-  if (momtmp.length > 0){
-    // Make first header row!
-    //    No such header for magic heading - by design
+
+  str+="<th id='header' class='rowno idField' style='width: 28px;'></th> <th class='result-header dugga-result-subheadermagic'></th>";
+  // Make first header row!
+    var colsp=1;
+    var colpos=1;
+
+    // Only write out this part if momtmp array is not empty
+    if (momtmp.length > 0){
+      var momname=momtmp[0].momname;
+      for(var j=1;j<momtmp.length;j++){
+        if(momtmp[j].momname!==momname){
+          str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"               
+          momname = momtmp[j].momname;
+          colpos=j;
+          colsp=0;
+        }
+        colsp++;
+      }
+      str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"               
+      str+="</tr><tr class='markinglist-header'>";
 
     // Make second header row!
+    str += "<th id='header' class='rowno idField' style='width: 28px;'><span>#</span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
     for(var j=0;j<momtmp.length;j++){
       if(momtmp[j].kind==3){
         str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"                         
@@ -142,7 +159,6 @@ function redrawtable()
       }
     }
   }   
-  str+="<th style='width: 100%'></th>"; // Padding cell, to make sure the other fields are compressed to a bare minimum
   str+="</tr>";
   str += "</thead>"
   str += "</table>"
