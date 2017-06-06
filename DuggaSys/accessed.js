@@ -221,7 +221,7 @@ function returnedAccess(data)
 	if (data['entries'].length > 0) {
 		keyUpSearch();
 		str+="<table class='list'>";
-      str+="<tr><th class='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:140px; cursor: pointer;'>Username</th>" +
+      str+="<thead><tr><th class='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:140px; cursor: pointer;'>Username</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>SSN</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>First Name</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>Last Name</th>" +
@@ -231,7 +231,7 @@ function returnedAccess(data)
           	"<th style='text-align:left; padding-left:8px; width:90px;'>Version</th>" +
 		  	"<th style='text-align:left; padding-left:8px; width:90px;'>Access</th>" +
 			"<th style='text-align:left; padding-left:8px; width:90px;'>Settings</th>" +
-			"<th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr><tbody id='accesstable_body'>";
+			"<th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr></thead><tbody id='accesstable_body'>";
 		for(i=0;i<data['entries'].length;i++){
 			var item=data['entries'][i];
 
@@ -265,7 +265,7 @@ function returnedAccess(data)
             str+="<td>"+item['vers']+"</td>";
 
 			// Select box for Access
-			str+="<td valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
+			str+="<td class='accessDropDown' valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
 				if(item['access']=="R"){
 					str+="<option selected='selected' value='R'>Student</option>";
 				}else{
@@ -318,7 +318,8 @@ function keyUpSearch() {
 	$('#searchinput').keyup(function() {
 	    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 	    $('#accesstable_body tr').show().filter(function() {
-	        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+	    	var tmpHtml = $(this).html().replace(/<option value=.*<\/option>/g, '');
+	        var text = tmpHtml.replace(/\s+/g, ' ').toLowerCase();
 	        return !~text.indexOf(val);
 	    }).hide();
 	});
