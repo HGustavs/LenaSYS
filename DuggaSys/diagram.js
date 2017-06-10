@@ -99,6 +99,9 @@ function keyDownHandler(e){
     if(key == 46){
         eraseSelectedObject();
     }
+    else if (key == 13) {
+        closeAppearanceDialogMenu();
+    }
 }
 
 //--------------------------------------------------------------------
