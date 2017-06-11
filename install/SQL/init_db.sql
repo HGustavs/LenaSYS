@@ -546,11 +546,11 @@ CREATE VIEW studentresultCourse AS
 	WHERE partresult.grade != 'u';
 
 /* updatesd info in user table */
-UPDATE user SET firstname="Toddler", lastname="Kong" WHERE username="Toddler";
-UPDATE user SET firstname="Johan", lastname="Grimling" WHERE username="Grimling";
-UPDATE user SET ssn="810101-5567" WHERE username="Grimling";
-UPDATE user SET ssn="444444-5447" WHERE username="Toddler";
-UPDATE user SET superuser=1 WHERE username="Toddler";
+UPDATE user SET firstname="toddler", lastname="kong" WHERE username="toddler";
+UPDATE user SET firstname="johan", lastname="grimling" WHERE username="grimling";
+UPDATE user SET ssn="810101-5567" WHERE username="grimling";
+UPDATE user SET ssn="444444-5447" WHERE username="toddler";
+UPDATE user SET superuser=1 WHERE username="toddler";
 
 /* Templates for codeexamples */
 
@@ -598,4 +598,3 @@ alter table user_course alter column term set default 1;
 alter table user_course add column vers VARCHAR(8);
 */
 alter table codeexample MODIFY runlink VARCHAR(256);
-

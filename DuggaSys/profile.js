@@ -3,12 +3,12 @@ function validateChallenge(){
     var curPassword = $("#currentPassword");
     var secQuestion = $("#securityQuestion");
     var chaAnswer = $("#challengeAnswer");
-    
+
     var password = curPassword.val();
     var question = secQuestion.val();
     var answer = chaAnswer.val();
-    var chars = "^[a-zåäöéA-ZÅÄÖÉ 0-9\-\_\']*$";
-       
+    var chars = "^[a-zåäöé 0-9\-\_\']*$";
+
     if(password != "" && question != "" && answer != ""){
         if(answer.match(chars)){
             processChallenge(password, question, answer);
@@ -27,7 +27,7 @@ function processChallenge(password, question, answer){
     var curPassword = $("#currentPassword");
     var secQuestion = $("#securityQuestion");
     var chaAnswer = $("#challengeAnswer");
-    
+
     $.ajax({
 		type: "POST",
 		url: "profileservice.php",
@@ -76,13 +76,13 @@ function validatePassword(){
     var newField = $("#newPassword");
     var confirmField = $("#newPassword2");
     var message = $("#passwordMessage");
-    
+
     //Fetching inputs from the password form
     var password = currentField.val();
     var newPassword = newField.val();
     var confirmedPassword = confirmField.val();
-    
-    //Checking for empty inputs 
+
+    //Checking for empty inputs
     if(password === "" || newPassword === "" || confirmedPassword === ""){
         if(password === ""){
             updateField(currentField);
@@ -90,14 +90,14 @@ function validatePassword(){
         else{
             clearField(currentField);
         }
-        
+
         if(newPassword === ""){
             updateField(newField);
         }
         else{
             clearField(newField);
         }
-        
+
         if(confirmedPassword === ""){
             updateField(confirmField);
         }
@@ -107,7 +107,7 @@ function validatePassword(){
         message.html("Missing form data, please enter all fields");
         return;
     }
-    
+
     //Comparing new password with old one
     if(password === newPassword){
         updateField(newField);
@@ -117,9 +117,9 @@ function validatePassword(){
     else{
         clearField(newField);
     }
-    
-    //Checking password rules through regexp    
-    if(newPassword.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,72}$/)){
+
+    //Checking password rules through regexp
+    if(newPassword.match(/^(?=.*\d)(?=.*[a-z])[0-9a-zA-Z]{8,72}$/)){
         clearField(newField);
        }
     else{
@@ -127,7 +127,7 @@ function validatePassword(){
         message.html("New password must follow the specified rules above.");
         return;
     }
-    
+
     //Checks the confirmed password
     if(newPassword !== confirmedPassword){
         updateField(confirmField);
@@ -136,7 +136,7 @@ function validatePassword(){
     }
     else{
         clearField(confirmField);
-    }  
+    }
     //Validation successful, call for function that changes password
     changePassword();
 }
@@ -160,7 +160,7 @@ function changePassword(){
     //Value of form inputs
     var password = currentField.val();
     var newPassword = newField.val();
-    
+
     $.ajax({
         type: "POST",
         url: "profileservice.php",
