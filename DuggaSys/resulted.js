@@ -333,7 +333,7 @@ function resort()
     var columno=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
     if (columno === null || columno === undefined ){columno=0;}
     var colkind=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1");
-    if (colkind == null || colkind == undefined){colkind=0;}
+    if (colkind == null || colkind == undefined){colkind=1;} // Set Last name as default
     var colkind2=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2");
     if (colkind2 == null || colkind2 == undefined){colkind2=0;}     
 
