@@ -1362,6 +1362,23 @@ input.large-button {
     display: inline-block;
 }
 
+.magic {
+  width:100%;
+  padding:1px;
+  border-left:2px solid #dbd0d8;
+  border-bottom:2px solid #dbd0d8;
+  margin-top:20px;
+  font-size: 16px;
+
+}
+
+.magic th {
+  background:#614875;
+  color:#fff;
+  line-height:28px;
+  font-weight: bold;
+}
+
 .list {
   width:100%;
   padding:1px;

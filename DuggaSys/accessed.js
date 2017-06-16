@@ -21,6 +21,7 @@ function importUsers()
 
 	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
 	hideImportUsersPopup();
+
 }
 
 function addSingleUser() 
@@ -220,8 +221,27 @@ function returnedAccess(data)
 	str="";
 	if (data['entries'].length > 0) {
 		keyUpSearch();
-		str+="<table class='list'>";
-      str+="<tr><th class='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:140px; cursor: pointer;'>Username</th>" +
+ 
+	 str += "<div id='upperDecker' style='left:8px;position:absolute;display:none;'>";
+ 	 str += "<table class='magic list'";
+  	str += "<thead>";
+  	str+="<tr><th class='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:125px; cursor: pointer;'>Username</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:-8px; width:130px; cursor: pointer;'>SSN</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:30px; width:80px; cursor: pointer;'>First Name</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:15px; width:100px;cursor: pointer;'>Last Name</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Class</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Teacher</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:100px; cursor: pointer;'>Added</th>" +
+          	"<th style='text-align:left; padding-left:8px; width:90px;'>Version</th>" +
+		  	"<th style='text-align:left; padding-left:8px; width:90px;'>Access</th>" +
+			"<th style='text-align:left; padding-left:8px; width:90px;'>Settings</th>" +
+			"<th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr>";
+  str += "</thead>"
+  str += "</table>"
+  str += "</div>"
+	str+="<table class='list'>";
+
+      str+="<tr><th class='first' id='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:140px; cursor: pointer;'>Username</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>SSN</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>First Name</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>Last Name</th>" +
@@ -232,6 +252,9 @@ function returnedAccess(data)
 		  	"<th style='text-align:left; padding-left:8px; width:90px;'>Access</th>" +
 			"<th style='text-align:left; padding-left:8px; width:90px;'>Settings</th>" +
 			"<th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr><tbody id='accesstable_body'>";
+
+
+
 		for(i=0;i<data['entries'].length;i++){
 			var item=data['entries'][i];
 
@@ -311,6 +334,8 @@ function returnedAccess(data)
 	slist.innerHTML=str;
 	
 	if(data['debug']!="NONE!") alert(data['debug']);
+
+	 window.onscroll = function() {magicHeading()};
 }
 
 //excuted onclick button for quick searching in table
@@ -322,4 +347,17 @@ function keyUpSearch() {
 	        return !~text.indexOf(val);
 	    }).hide();
 	});
+}
+
+function magicHeading()
+{
+    // Display Magic Headings when scrolling
+    if(window.pageYOffset+15>$("#first").offset().top){
+        $("#upperDecker").css("display","block");
+    }else{
+        $("#upperDecker").css("display","none");            
+    }
+
+    // Position Magic Headings
+    $("#upperDecker").css("top",(window.pageYOffset-90)+"px");
 }
