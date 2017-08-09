@@ -169,7 +169,8 @@ if($ha){
 										// check if upload is successful 
 										if(move_uploaded_file($filea["tmp_name"],$movname)){ 
 												if($kind=="LFILE"){
-														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=4;" ); // 1=Link 2=Global 3=Course Local 4=Local
+														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND vers=:vers AND filename=:filename AND kind=4;" ); // 1=Link 2=Global 3=Course Local 4=Local
+														$query->bindParam(':vers', $vers);
 												}else if($kind=="MFILE"){
 														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=3;" ); // 1=Link 2=Global 3=Course Local 4=Local
 												}else{					

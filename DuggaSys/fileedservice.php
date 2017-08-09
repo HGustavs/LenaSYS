@@ -57,8 +57,9 @@ $files=array();
 $lfiles =array();
 $gfiles =array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE (cid=:cid or isGlobal='1') ORDER BY filename;");
+	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE ((cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) OR isGlobal='1') ORDER BY filename;");
 	$query->bindParam(':cid', $cid);
+	$query->bindParam(':vers', $coursevers);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading files ".$error[2];
