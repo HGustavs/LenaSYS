@@ -222,6 +222,7 @@ function closeFacit(){
 function changePane(e) 
 {
   // get pane-body to hide
+  updateVerticeDropdown();
   
   $(e).closest(".pane-header").find(".pane-active").removeClass("pane-active");
   $(e).closest(".pane-header").find(".pane-active").removeClass("pane-active");
