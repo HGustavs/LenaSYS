@@ -239,19 +239,11 @@ function ev_mousedown(ev) {
 
 function ev_mousemove(ev) {
 	var cx, cy = 0;
-	//coord=findPos(canvas);
 	coord = getMousePos(ev);
 
-	// Get the mouse position relative to the canvas element.
-	if (ev.layerX || ev.layerX == 0) {// Firefox
-		cx = ev.layerX;
-		cy = ev.layerY;
-
-	} else if (ev.offsetX || ev.offsetX == 0) {// Opera
-		cx = ev.offsetX;
-		cy = ev.offsetY;
-	}
-
+	cx = coord.x;
+	cy = coord.y;
+	
 	if (debug) {
 		// Firefox
 		document.getElementById('debug').innerHTML = "<p>cx: " + cx + "</p><p> cy: " + cy + "</p>";
@@ -300,7 +292,7 @@ function ev_touchmove(event) {
 // getMousePos: Recursive Pos of div in document - should work in most browsers
 //----------------------------------------------------------------------------------
 
-function getMousePos(evt) {
+function getMousePos(evt) {	
 	var rect = canvas.getBoundingClientRect();
 	return {
 		x : (evt.clientX - rect.left),
