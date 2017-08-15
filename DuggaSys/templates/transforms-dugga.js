@@ -568,9 +568,10 @@ function drawCommand(cstr)
 
 function tick() 
 {
-	v += speed;
-	elapsedTime++;
-
+  if (running){
+    v += speed;
+  	elapsedTime++;  
+  }
 }
 
 function foo() 

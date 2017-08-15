@@ -4,6 +4,8 @@
 //----------------------------------------------------------------------------------
 var score = -1;
 var dataV;
+var tickInterval;
+var timer=0;
 var DEFAULT_CAMERA_POSITION_Z = 1000;
 var	DEFAULT_CAMERA_POSITION_X = 500;
 var	DEFAULT_CAMERA_POSITION_Y = 500;
@@ -35,7 +37,7 @@ var light, light1;
 var highlightCubes = [];
 var acanvas = document.getElementById("container");
 var material, goalMaterial;
-var rotateObjects = false;
+var rotateObjects = true;
 var backsideCulling = false;
 var highlightVerticies = true; // Used to highlight vertices in the geometry
 
@@ -58,6 +60,7 @@ function setup()
 {
 	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
 	.done( function(script) {
+    tickInterval = setInterval("tick();", 50);
 		acanvas = document.getElementById('foo');
 		renderer = new THREE.WebGLRenderer();
 		
@@ -725,21 +728,22 @@ function addColorsToGeometry(geom) {
 }
 
 function rotateAllObjects() {
-	// Actually, move camera
-	var timer = Date.now() * 0.0005;
+	// Actually, move camera	
 
 	camera.position.x = Math.cos( timer ) * 1000;
 	camera.position.z = Math.sin( timer ) * 1000;
-	//camera.position.y = Math.sin( timer ) * 800;
+	camera.position.y = Math.sin( timer ) * 500;
 
 	camera.lookAt( scene.position );
 }
 
 function resetRotationForAllObjects() {
+  /*
 	camera.position.z = DEFAULT_CAMERA_POSITION_Z;
 	camera.position.x = DEFAULT_CAMERA_POSITION_X;
 	camera.position.y = DEFAULT_CAMERA_POSITION_Y;
 	camera.lookAt( scene.position );
+  */
 }
 
 function createTextures(){
@@ -795,11 +799,14 @@ function animate() {
 	fitToContainer();
 	renderId=requestAnimationFrame(animate);
 
+  /*
 	if (rotateObjects) {
 		rotateAllObjects();
 	} else {
 		resetRotationForAllObjects();
 	}
+  */
+  rotateAllObjects();
 
 	renderer.render(scene, camera);
 
@@ -825,4 +832,11 @@ function startDuggaHighScore(){
 		}
 		ClickCounter.showClicker();
 	}
+}
+
+function tick() 
+{
+  if (rotateObjects){
+    timer += 0.05;  
+  }
 }
