@@ -34,8 +34,11 @@
 					echo "<a href='";
 					echo ($cid != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers : "../DuggaSys/courseed.php");
 					echo "'>";
-					echo "<img src='../Shared/icons/Up.svg'></a></td>";
+					echo "<img src='../Shared/icons/Up.svg'></a></td>";          
 			}
+      echo "<td class='navButt' id='swimlane' title='Visual representation of course moment releases and deadlines'>";
+      echo "<a class ='linkSwimlane' href='#' onclick='swimlaneSetup();'><img src='../Shared/icons/swimlane.svg'></a></td>";
+
 
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
@@ -70,6 +73,10 @@
 		echo "</tr></table>";
 	?>
 </header>
+<?php
+// The below swimlane stuff should be moved to swimlane.php, and included here.
+	include_once("swimlane.php");
+?>
 <script type="text/javascript">
 	setupLoginLogoutButton('<?PHP echo json_encode(checklogin()) ?>');
 </script>

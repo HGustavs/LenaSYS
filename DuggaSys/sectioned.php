@@ -79,6 +79,8 @@ pdoConnect();
 			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' /></div>
 			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 			<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
+      <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='startdate' value='None' /></div>
+      <div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='createVersion();' />
@@ -97,6 +99,8 @@ pdoConnect();
 			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name' /></div>
 			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' disabled /></div>
 			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
+      <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='estartdate' value='None' /></div>
+      <div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='eenddate' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateVersion();' />

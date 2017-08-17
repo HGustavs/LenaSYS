@@ -38,6 +38,8 @@ $versname=getOP('versname');
 $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
 $unmarked = 0;
+$startdate=getOP('startdate');
+$enddate=getOP('enddate');
 
 if($gradesys=="UNK") $gradesys=0;
 

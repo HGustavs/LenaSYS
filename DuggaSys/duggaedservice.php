@@ -30,8 +30,9 @@ $name = getOP('nme');
 $autograde = getOP('autograde');
 $gradesys = getOP('gradesys');
 $template = getOP('template');
-$release = getOP('release');
+$qstart = getOP('qstart');
 $deadline = getOP('deadline');
+$release = getOP('release');
 $coursevers = getOP('coursevers');
 
 $debug="NONE!";
@@ -96,18 +97,21 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			$debug="Error updating user".$error[2];
 		}
 	}else if(strcmp($opt,"SAVDUGGA")===0){
-		$query = $pdo->prepare("UPDATE quiz SET qname=:name,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qrelease=:release,deadline=:deadline WHERE id=:qid;");
+		$query = $pdo->prepare("UPDATE quiz SET qname=:name,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qstart=:qstart,deadline=:deadline,qrelease=:release WHERE id=:qid;");
 		$query->bindParam(':qid', $qid);
 		$query->bindParam(':name', $name);
 		$query->bindParam(':autograde', $autograde);
 		$query->bindParam(':gradesys', $gradesys);
 		$query->bindParam(':template', $template);
 
-		if($release=="null") $query->bindValue(':release', null,PDO::PARAM_INT);
-		else $query->bindParam(':release', $release);
+		if($qstart=="null") $query->bindValue(':qstart', null,PDO::PARAM_INT);
+		else $query->bindParam(':qstart', $qstart);
 
 		if($deadline=="null") $query->bindValue(':deadline', null,PDO::PARAM_INT);
 		else $query->bindParam(':deadline', $deadline);
+
+    if($release=="null") $query->bindValue(':release', null,PDO::PARAM_INT);
+		else $query->bindParam(':release', $release);
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -190,7 +194,7 @@ $entries=array();
 $files=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
-	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,vers FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;");
+	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qstart,deadline,qrelease,modified,vers FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;");
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':coursevers', $coursevers);
 	if(!$query->execute()){
@@ -230,8 +234,9 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			'gradesystem' => $row['gradesystem'],
 			'name' => $row['qname'],
 			'template' => $row['quizFile'],
-			'release' => $row['qrelease'],	
+      'qstart' => $row['qstart'],	
 			'deadline' => $row['deadline'],				
+      'release' => $row['qrelease'],	
 			'modified' => $row['modified']				
 			);
 

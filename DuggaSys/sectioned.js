@@ -360,10 +360,12 @@ function createVersion(){
 	}, 1000);
 }
 
-function showEditVersion(versid, versname)
+function showEditVersion(versid, versname, startdate,enddate)
 {
 	$("#eversid").val(versid);
 	$("#eversname").val(versname);
+  $("#estartdate").val(startdate);
+  $("#eenddate").val(enddate);
 	$("#editCourseVersion").css("display", "block");
 }
 
