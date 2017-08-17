@@ -20,6 +20,12 @@ $(document).ready(function(){
 	$(".messagebox").mouseout(function(){
         $("#testbutton").css("background-color", "#614875");
     });
+    $('#estartdate').datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+    $('#eenddate').datepicker({
+      dateFormat: "yy-mm-dd"
+    });
 });
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode)
@@ -46,7 +52,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	
 	if(gradesys==3) str+="<option selected='selected' value='3'>U-3-4-5</option>"
 	else str+="<option value='3'>U-3-4-5</option>";
-
+  
 	$("#gradesys").html(str);
 	
 	// Set Moments
@@ -360,12 +366,13 @@ function createVersion(){
 	}, 1000);
 }
 
-function showEditVersion(versid, versname, startdate,enddate)
+function showEditVersion(versid, versname, startdate, enddate)
 {
 	$("#eversid").val(versid);
 	$("#eversname").val(versname);
   $("#estartdate").val(startdate);
-  $("#eenddate").val(enddate);
+  $("#estartdate").val(enddate);
+
 	$("#editCourseVersion").css("display", "block");
 }
 
