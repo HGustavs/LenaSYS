@@ -26,6 +26,12 @@ $(document).ready(function(){
     $('#eenddate').datepicker({
       dateFormat: "yy-mm-dd"
     });
+    $('#startdate').datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+    $('#enddate').datepicker({
+      dateFormat: "yy-mm-dd"
+    });
 });
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode)
@@ -339,7 +345,9 @@ function createVersion(){
 	var coursename = $("#course-coursename").text();
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
-	
+  var startdate = $("#startdate").val();
+  var enddate = $("#enddate").val();
+  
 	if(coursevers=="null"){
 		makeactive=true;
 	}
@@ -349,7 +357,9 @@ function createVersion(){
 		versid : versid,
 		versname : versname,
 		coursecode : coursecode,
-		coursename : coursename
+		coursename : coursename,
+    startdate : startdate,
+    enddate : enddate        
 	}, "SECTION");
 	
 	if(makeactive){
@@ -371,7 +381,7 @@ function showEditVersion(versid, versname, startdate, enddate)
 	$("#eversid").val(versid);
 	$("#eversname").val(versname);
   $("#estartdate").val(startdate);
-  $("#estartdate").val(enddate);
+  $("#eenddate").val(enddate);
 
 	$("#editCourseVersion").css("display", "block");
 }
@@ -382,12 +392,16 @@ function updateVersion(){
 	var versname = $("#eversname").val();
 	var coursecode = $("#course-coursecode").text();
 	var makeactive = $("#emakeactive").is(':checked');
+  var startdate = $("#estartdate").val();
+  var enddate = $("#eenddate").val();
 
 	AJAXService("UPDATEVRS", {
 		cid : cid,
 		versid : versid,
 		versname : versname,
-		coursecode : coursecode
+		coursecode : coursecode,
+    startdate : startdate,
+    enddate : enddate    
 	}, "SECTION");
 	
 	if(makeactive){
@@ -462,7 +476,7 @@ function returnedSection(data)
 			str+="</select></td>";
 			
 			str+="<td style='width:112px;'><input type='button' value='Edit version' class='submit-button' title='Edit the selected version' onclick='showEditVersion";
-			str+='("'+querystring['coursevers']+'","'+versionname+'")';
+			str+='("'+querystring['coursevers']+'","'+versionname+'","'+retdata['startdate']+'","'+retdata['enddate']+'")';
 			str+=";'></td>";	
 
 			str+="<td style='width:112px;'><input type='button' value='New version' class='submit-button' title='Create a new version of this course' onclick='showCreateVersion();'></td>";
