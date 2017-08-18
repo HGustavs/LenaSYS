@@ -4,7 +4,6 @@
 //----------------------------------------------------------------------------------
 var score = -1;
 var dataV;
-var tickInterval;
 var timer=0;
 var DEFAULT_CAMERA_POSITION_Z = 1000;
 var	DEFAULT_CAMERA_POSITION_X = 500;
@@ -60,7 +59,6 @@ function setup()
 {
 	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
 	.done( function(script) {
-    tickInterval = setInterval("tick();", 50);
 		acanvas = document.getElementById('foo');
 		renderer = new THREE.WebGLRenderer();
 		
@@ -105,7 +103,7 @@ function returnedDugga(data)
 			renderTriangleTable();
 		}
 
-		init();
+  	init();
 		goalObject = data['param'];
 		createGoalObject(goalObject);
 		updateGeometry();
@@ -172,13 +170,12 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
         cancelAnimationFrame(renderId);
         renderId=undefined;
     }
-
-		init();
+    
+  	init();
 		goalObject = param;
-		createGoalObject(goalObject);
+		createGoalObject(goalObject);    
 		updateGeometry();
 		animate();
-		toggleRotate();
 
 		//document.getElementById("vertexPaneNumber").innerHTML=vertexL.length;
 		if (vertexL.length === ans.vertex) {
@@ -797,18 +794,16 @@ function highlightVertices(){
 
 function animate() {
 	fitToContainer();
-	renderId=requestAnimationFrame(animate);
 
-  /*
-	if (rotateObjects) {
-		rotateAllObjects();
-	} else {
-		resetRotationForAllObjects();
-	}
-  */
+  if (rotateObjects){
+    timer += 0.05;  
+  }
+
   rotateAllObjects();
 
 	renderer.render(scene, camera);
+
+  renderId=requestAnimationFrame(animate);
 
 }
 
@@ -834,9 +829,3 @@ function startDuggaHighScore(){
 	}
 }
 
-function tick() 
-{
-  if (rotateObjects){
-    timer += 0.05;  
-  }
-}

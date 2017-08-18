@@ -359,7 +359,7 @@ function createVersion(){
 		coursecode : coursecode,
 		coursename : coursename,
     startdate : startdate,
-    enddate : enddate        
+    enddate : enddate
 	}, "SECTION");
 	
 	if(makeactive){
@@ -390,6 +390,8 @@ function updateVersion(){
 	var cid = $("#cid").val();
 	var versid = $("#eversid").val();
 	var versname = $("#eversname").val();
+  var startdate = $("#estartdate").val();
+  var enddate = $("#eenddate").val();
 	var coursecode = $("#course-coursecode").text();
 	var makeactive = $("#emakeactive").is(':checked');
   var startdate = $("#estartdate").val();
