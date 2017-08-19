@@ -22,11 +22,10 @@ var retdata = null;
 var canvas = null;
 
 var sf = 2.0;
-var speed = 0.1;
+var speed = 0.025;
 var v = 0;
 var pushcount = 0;
 var elapsedTime = 0;
-var tickInterval;
 
 var dataV;
 var operationList = [];
@@ -42,17 +41,14 @@ function setup()
 		context = canvas.getContext("2d");
 		context.clearRect(0, 0, canvas.width, canvas.height);
 
-		tickInterval = setInterval("tick();", 50);
-
 		AJAXService("GETPARAM", { }, "PDUGGA");
 	}
 	canvas.addEventListener('click', function() { 
 			if (running) {
 					running = false;
-					cancelAnimationFrame(renderId);
 			} else {
 					running = true;
-					renderId = requestAnimationFrame(foo);
+					foo();
 			}
 	
 	}, false);
@@ -174,15 +170,6 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
 		$("#duggaStats").css("display","block");
 	}
-	/* reset */
-	sf = 2.0;
-	speed = 0.1;
-	v = 0;
-	pushcount = 0;
-	elapsedTime = 0;
-	if (tickInterval != undefined){
-			clearInterval(tickInterval);
-	}
 	
 	if (renderId != undefined){
 			cancelAnimationFrame(renderId);
@@ -193,8 +180,17 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	canvas = document.getElementById('a');
 	context = canvas.getContext("2d");
 	context.clearRect(0, 0, canvas.width, canvas.height);
-	tickInterval = setInterval("tick();", 50);
-	var studentPreviousAnswer = "";
+  canvas.addEventListener('click', function() { 
+      if (running) {
+          running = false;
+      } else {
+          running = true;
+          foo();
+      }
+  
+  }, false);
+
+  var studentPreviousAnswer = "";
 
 	retdata = jQuery.parseJSON(param);
 	variant = retdata["variant"];
@@ -223,12 +219,14 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		}
 	}
 
+/*
 	if (running) {
 			renderId = requestAnimationFrame(foo);
 	} else {
 			cancelAnimationFrame(renderId);
 	}
-	
+	*/
+  foo();
 	// Teacher feedback
 	var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
 	if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
@@ -247,8 +245,8 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 
 function closeFacit() 
 {
-	clearInterval(tickInterval);
 	running = false;
+  cancelAnimationFrame(renderId);
 }
 
 //--------------------================############================--------------------
@@ -566,18 +564,15 @@ function drawCommand(cstr)
 	}
 }
 
-function tick() 
-{
-  if (running){
-    v += speed;
-  	elapsedTime++;  
-  }
-}
-
 function foo() 
 {
 	fitToContainer();
 	//acanvas.width = acanvas.width;
+
+  if (running){
+    v += speed;
+    elapsedTime++;  
+  }
 
 	context.translate(100 * sf, 100 * sf);
 	context.save();
