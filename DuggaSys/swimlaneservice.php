@@ -16,6 +16,15 @@ $opt = getOP('opt');
 $course = getOP('courseid');
 $vers = getOP('coursevers');
 
+// Returns the number of weeks between two dates
+function datediffInWeeks($date1, $date2)
+{
+    if($date1 > $date2) return datediffInWeeks($date2, $date1);
+    $first = DateTime::createFromFormat('Y-m-d', $date1->format('Y-m-d'));
+    $second = DateTime::createFromFormat('Y-m-d', $date2->format('Y-m-d'));
+    return ceil($first->diff($second)->days/7);
+}
+
 /* If uncommented, this will be default values if there are no valid input to the service
   if ($opt == "UNK") $opt = "olle";
   if ($course == "UNK") $course = 2;
@@ -94,7 +103,8 @@ if ($course != "UNK" && $vers != "UNK") {
 // Get start and end to week number and calculate length in weeks.
   $information['versstartweek'] = intval($versStart->format("W"));
   $information['versendweek'] = intval($versEnd->format("W"));
-  $information['verslength'] = intval($information['versendweek']) - intval($information['versstartweek']) + 1;
+//  $information['verslength'] = intval($information['versendweek']) - intval($information['versstartweek']) + 1;
+  $information['verslength'] = datediffInWeeks($versStart,$versEnd);
   $thisDate = new DateTime(date('Y/m/d'));
   $information['thisweek'] = intval($thisDate->format('W'));
   $information['thisdate'] = $thisDate->format('jS F');
