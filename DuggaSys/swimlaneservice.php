@@ -62,7 +62,7 @@ if ($course != "UNK" && $vers != "UNK") {
   }
 
 // Get amount of course parts.
-  $querystring = "SELECT kind FROM listentries WHERE (kind=4 OR kind=3) AND cid=:cid AND vers=:vers";
+  $querystring = "SELECT kind FROM listentries WHERE (kind=4 OR kind=3) AND cid=:cid AND vers=:vers AND visible=1";
   $stmt = $pdo->prepare($querystring);
   $stmt->bindParam(':cid', $course);
   $stmt->bindParam(':vers', $vers);
@@ -111,7 +111,7 @@ if ($course != "UNK" && $vers != "UNK") {
 
   $moments = array();
 // Get parts and duggas.
-  $querystring = "SELECT listentries.entryname, listentries.kind, quiz.qstart, quiz.deadline FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid = :cid AND listentries.vers = :vers ORDER BY pos;";
+  $querystring = "SELECT listentries.entryname, listentries.kind, quiz.qstart, quiz.deadline FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid = :cid AND listentries.vers = :vers AND visible=1 ORDER BY pos;";
   $stmt = $pdo->prepare($querystring);
   $stmt->bindParam(':cid', $course);
   $stmt->bindParam(':vers', $vers);
