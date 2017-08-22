@@ -116,42 +116,51 @@ function swimlaneDrawLanes() {
   var duggaInfoArray = [];
   var oddRow = false;
   for (var i = 0; i < info['verslength']; i++) {
-    // each second row alternated color
-    var weekColor;
-    if (oddRow) {
-      weekColor = "fill-opacity='1' style='fill:rgb(146,125,156)'";
-    } else {
-      weekColor = "style='fill:rgb(255,255,255)'";
-    }
-    oddRow = !oddRow;
-    str += "<rect x='0' y='" + (i * 70) + "' width='75' height='70' " + weekColor + " />";
-    str += "<text x='5' y='" + (40 + (i * 70)) + "' font-weight='bold' fill='black'>Week " + (i+1) + "</text>";
+      // each second row alternated color
+      var weekColor;
+      if (oddRow) {
+        weekColor = "fill-opacity='1' style='fill:rgb(146,125,156)'";
+      } else {
+        weekColor = "style='fill:rgb(255,255,255)'";
+      }
+      oddRow = !oddRow;
+      str += "<rect x='0' y='" + (i * 70) + "' width='75' height='70' " + weekColor + " />";
+      str += "<text x='5' y='" + (40 + (i * 70)) + "' font-weight='bold' fill='black'>Week " + (i+1) + "</text>";
   }
   str += "</svg></td>";  
   var bgcol="#EEE";
   for (var i=0; i<moments.length; i++) {
-    var moment = moments[i];
-    if (moment['kind']==4){
-        if (bgcol=="#FFF"){
-            bgcol="#EEE";
-        } else {
-            bgcol="#FFF"
-        }
+      var moment = moments[i];
+      if (moment['kind']==4){
+          if (bgcol=="#FFF"){
+              bgcol="#EEE";
+          } else {
+              bgcol="#FFF"
+          }
+      }
+      if (moment['kind']==3){
+          duggaInfoArray.push("<b>" + moment['entryname'] + "</b><br> Start date: " + moment['qrelease'] + "<br> Deadline: " + moment['deadline']);
+          str+="<td style='text-align:center;background-color:"+bgcol+"'><svg style='margin:0 5px 0 5px;' width='30' height='"+(70 * info['verslength'] ) + "'>";
+          // The ---- that marks the release of a dugga
+          str += "<line x1='5' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='25' y2='" + (30 + (moment['startweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
+          // The | that marks the duration of a dugga
+          str += "<line x1='15' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='15' y2='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
+          // The O that marks the deadline of a dugga
+          str += "<circle id='" + id + "' onmouseover='mouseOverCircle(this,\"" + duggaInfoArray[id++] + "\")' onmouseout='mouseGoneFromCircle(this)' cx='15' cy='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' r='10' stroke='rgb(83,166,84)' stroke-width='3' fill='rgb(253,203,96)' />";
+          str+="</svg></td>";
+      }
     }
-    if (moment['kind']==3){
-        duggaInfoArray.push("<b>" + moment['entryname'] + "</b><br> Start date: " + moment['qrelease'] + "<br> Deadline: " + moment['deadline']);
-        str+="<td style='text-align:center;background-color:"+bgcol+"'><svg style='margin:0 5px 0 5px;' width='30' height='"+(70 * info['verslength'] ) + "'>";
-        // The ---- that marks the release of a dugga
-        str += "<line x1='5' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='25' y2='" + (30 + (moment['startweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
-        // The | that marks the duration of a dugga
-        str += "<line x1='15' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='15' y2='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
-        // The O that marks the deadline of a dugga
-        str += "<circle id='" + id + "' onmouseover='mouseOverCircle(this,\"" + duggaInfoArray[id++] + "\")' onmouseout='mouseGoneFromCircle(this)' cx='15' cy='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' r='10' stroke='rgb(83,166,84)' stroke-width='3' fill='rgb(253,203,96)' />";
-        str+="</svg></td>";
-    }
-  }
   
-  str+="</tbody></table></div>";
+    str+="</tbody></table></div>";
+    // Box for dugga info on mouse over
+    str += "<div id='duggainfo' class='duggainfo' style='display:none; position:absolute; background-color:white; border-style:solid; border-color:#3C3C3C; padding:5px;'>";
+    str += "<span id='duggaInfoText'></span>";
+    str += "</div>";
+    // Box for current date info
+    str += "<div id='currentDate' class='currentDate' style='display:none; position:absolute; background-color:white; border-style:solid; border-width:1px; border-color:red; padding:5px;'>";
+    str += "<span id='currentDateText'></span>";
+    str += "</div>";
+  
   swimContent.innerHTML=str;
 }
 function swimlaneDrawLanes2() {

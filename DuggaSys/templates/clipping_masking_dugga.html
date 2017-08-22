@@ -1,0 +1,93 @@
+<div id="container" style="display:flex; justify-content:flex-end;">
+    <div id='duggaInfoBox2' style="inline-block; width:300px;">
+      
+          <div class='loginBoxheader'>
+                <h3>Transformations-dugga</h3>
+          </div>
+                <p style="margin-left: 4px;">Transformationsduggan går ut på att skapa samma animation som ni redan ser framför er. 
+                    Till ert förfogande finns de klassiska transformationerna: transelera (T), rotera (R) och skala (S). För att rita ut planeter så väljer ni draw R/G/B beroende på vilken färg som önskas.</p>
+                <p style="margin-left: 4px;">Lägg till operationer genom att välja en operation och tryck på "Add Op.". Ni kan byta ordning på operationerna med pilarna upp och ner. Ta bort en operation genom att klicka på "X" för önskad operation. Genom att klicka på en befintlig operation så kan man ändra dess innehåll.</p>
+								<p style="margin-left: 4px;">Pausa/starta animationen genom att klicka i animationen.</p>
+                <p style="margin-left: 4px;">Lycka till och glöm inte att spara duggan! En gul lampa betyder att duggan är inlämnad.</p>
+            
+    </div>
+
+    <canvas id='a' style='background-color:#FFFFFF; border:2px solid black; display:block;'></canvas>
+
+    <div id="toolbox" style="min-width:340px;width:340px;display:inline-block;">
+        <div class='loginBoxheader'>
+            <h3>Ritverktyg</h3>
+        </div>
+     	<div style="display:flex;justify-content:center;">
+    			<select id="function" name="function" >
+    			</select>			
+    			
+    			<input id="addOpButton" class='submit-button' type='button' value='Add Op.' onclick="newbutton();" />
+        </div>
+    		<div id="opTableContainer" style="min-height:300px;background-color:#FFF; overflow-y:scroll;">
+            <table id="opTable" style="width:100%;">
+                <caption>Operations</caption>
+                <thead>
+                    <tr><th>Op#</th>
+                        <th>Operation</th>
+                        <th colspan="3">Modify</th>
+                    </tr>
+                </thead>
+                <tbody id="operationList" ></tbody>
+            </table>			
+    		</div>
+    	</div>
+    </div>
+
+</div>
+
+<div id='duggaInfoBox' class="loginBox" style="display:none">
+  <div>
+        <div class='loginBoxheader'>
+            <h3 style="width: 75%;">Dugga 4 - Transformationer</h3>
+            <div onclick="hideDuggaInfoPopup()">x</div>
+        </div>
+          <div class="table-wrap">
+            <table>
+                <tr>
+                    <td>
+                        <p style="margin-left: 4px;">Transformationsduggan går ut på att skapa samma animation som ni redan ser framför er. 
+                            Till ert förfogande finns de klassiska transformationerna: transelera (T), rotera (R) och skala (S). För att rita ut planeter så väljer ni draw R/G/B beroende på vilken färg som önskas.</p>
+                        <p style="margin-left: 4px;">Lycka till!</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type='button' class='submit-button' style="float: right;" onclick="hideDuggaInfoPopup();" value='Stäng'>
+                    </td>
+                </tr>
+            </table>
+          </div>
+    </div>
+</div>
+
+<div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
+    <div class='loginBoxheader'>
+        <h3>Dugga Stats</h3>
+        <div onclick="hideReceiptPopup()">x</div>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <tr><th></th><th>Highscore</th><th>Total</th></tr>
+            <tr><td>Clicks</td><td id="duggaClicks"></td><td id="duggaTotalClicks"></td></tr>
+            <tr><td>Time</td><td id="duggaTime"></td><td id="duggaTotalTime"></td></tr>
+            <tr><td>Submissions</td><td></td><td id="duggaTotalSubmissions"></td></tr>
+        </table>
+    </div>
+</div>
+<div id="feedbackBox" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
+    <div class='loginBoxheader'>
+        <h3>Feedback Log</h3>
+        <div onclick="hideReceiptPopup()">x</div>
+    </div>
+    <div class="table-wrap" id="feedbackTable">
+        <table>
+            <tr><th>Date</th><th>Feedback</th></tr>
+        </table>
+    </div>
+</div>
