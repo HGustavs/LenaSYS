@@ -44,6 +44,7 @@ setcookie("loginvar", $loginvar);
 		<!-- Section List -->
 		<div id='Courselist'>
 		</div>
+    <div id="servermsgcontainer" style="display:flex;position:fixed;bottom:0;left:0;right:0;height:100px;background-color:rgba(0,0,0,0.3);color:#FFF;font-size:42px;text-align:center; justify-content:center; align-items:center;"><div id="servermsg" style="padding-left:100px;">Server Maintenance 2017-08-22 -- 2017-08-24</div><div style='cursor:pointer;background-color:#c75050;height:100px;width:100px;display:flex;align-items:center;justify-content:center;margin-left:auto;' onclick='document.getElementById("servermsgcontainer").style.display="none";'>x</div></div>
 	</div>
 	<!-- version identification -->
 	<div id="version" class='version'>Master hash <br /><?php echo $version ?></div>
