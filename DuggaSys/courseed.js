@@ -8,6 +8,7 @@ var sessionkind = 0;
 var querystring = parseGet();
 var versions;
 var entries;
+var motd;
 
 AJAXService("GET", {}, "COURSE");
 
@@ -219,6 +220,25 @@ function editVersion(cid, cname, ccode) {
 			str+="</select>";
 			document.getElementById('copyvers').innerHTML = str;
 }
+function editSettings(){
+		if(motd!=="UNK") $("#motd").val(motd);
+		document.getElementById('editSettings').style.display = "block";
+		
+}
+
+function updateSettings() {
+			
+		var motd = $("#motd").val();
+		var readonly = 0;
+		if ($("#readonly").val() == "yes"){
+			readonly = 1;
+		} 
+	
+		// Show dialog
+		$("#editSettings").css("display", "none");
+	
+		AJAXService("SETTINGS", {	motd : motd, readonly : readonly}, "COURSE");		
+}
 
 function createVersion(){
 
@@ -293,7 +313,7 @@ function returnedCourse(data)
 
 	// Course Name
 	str += "<div id='Courselistc' >";
-	str += "<div id='lena' class='head'><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a> Course Organization System</div>";
+	str += "<div id='lena' class='head'><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a> Course Organization System<img style='margin-left:15px;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings();'></div>";
 
 	// For now we only have two kinds of sections
 	if (data['entries'].length > 0) {
@@ -342,6 +362,13 @@ function returnedCourse(data)
 
 	if (data['debug'] != "NONE!") {
 		alert(data['debug']);
+	}
+	motd=data["motd"]
+	if(motd!=="UNK"){
+			document.getElementById("servermsg").innerHTML=data["motd"];
+			document.getElementById("servermsgcontainer").style.display="flex";
+	} else {
+			document.getElementById("servermsgcontainer").style.display="none";
 	}
 
 	resetinputs();

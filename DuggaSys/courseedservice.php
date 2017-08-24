@@ -31,6 +31,8 @@ $coursenamealt=getOP('coursenamealt');
 $coursecode=getOP('coursecode');
 $coursename=getOP('coursename');
 $copycourse=getOP('copycourse');
+$motd=getOP('motd');
+$readonly=getOP('readonly');
 
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
@@ -333,7 +335,18 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
+		}else if(strcmp($opt,"SETTINGS")===0){
+		$query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
+
+		$query->bindParam(':motd', $motd);
+		if($readonly == "UNK") {$readonly=0;}
+		$query->bindParam(':readonly', $readonly);
+
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating entries".$error[2];
 		}
+	}
 	}
 }
 //------------------------------------------------------------------------------------------------
@@ -423,11 +436,30 @@ if(!$query->execute()) {
 	}
 }
 
+
+$query=$pdo->prepare("SELECT motd,readonly FROM settings;");
+
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading settings".$error[2];
+}else{
+	$motd="UNK";
+	$readonly=false;		
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$motd=$row["motd"];
+		$readonly=$row["readonly"];				
+	}
+}
+
+
+
 $array = array(
 	'entries' => $entries,
 	'versions' => $versions,
 	"debug" => $debug,
 	'writeaccess' => $ha,
+	'motd' => $motd,
+	'readonly' => $readonly
 	);
 
 echo json_encode($array);
