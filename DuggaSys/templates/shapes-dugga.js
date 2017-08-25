@@ -150,6 +150,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	ctx = canvas.getContext("2d");
 
 	dta = jQuery.parseJSON(param);
+  document.getElementById('helptxt').innerHTML=dta[0].Text;
 	if (uanswer !== "UNK") {
 		var previousAnswer = uanswer.split(' ');
 		bitarray=previousAnswer[3].split(',');
@@ -277,10 +278,12 @@ function redrawgfx()
 		}
 
 	}
-
+  
 	document.getElementById('foo').innerHTML=str;   
 	document.getElementById('foo').setAttribute("height", ctx.height+"px");
 	document.getElementById('foo').setAttribute("width", ctx.width+"px");
+  
+  // Add mouse over effect to highlight base shapes used in boolean operation dugga
   sels = document.getElementsByClassName('shape-legend');
   for(i=0; i<sels.length; i++) {
     sels[i].addEventListener('mouseover', function(e){e.target.setAttribute("opacity",1)}, false);
