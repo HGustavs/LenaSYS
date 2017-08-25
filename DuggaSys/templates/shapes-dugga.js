@@ -223,11 +223,12 @@ function redrawgfx()
 	
 	str="";
 	for(var j=1;j<dta.length;j++){      			
-		ctx.beginPath();
+		//ctx.beginPath();
 		var fig=dta[j];
 		for(var i=0;i<fig.length;i++){
 			var item=fig[i];
 			if(item.kind==0){
+        /*
 				if(j>1){
 					if(bitarray[j]==0&&facitarray[j]==0){
 						str+='" fill="white" ';
@@ -240,26 +241,29 @@ function redrawgfx()
 					}
 					str+=' stroke="blue" stroke-width="1.5px" />';
 				} 
+        */
 				str+='<path onclick="flipbit('+j+');" d="';
-				ctx.moveTo(item.x1,item.y1);
+				//ctx.moveTo(item.x1,item.y1);
 				str+="M "+item.x1+" "+item.y1;
 			}else if(item.kind==1){
-				ctx.lineTo(item.x1,item.y1);
+				//ctx.lineTo(item.x1,item.y1);
 				str+="L "+item.x1+" "+item.y1;
 			}else if(item.kind==2){
-				ctx.quadraticCurveTo(item.x1,item.y1,item.x2,item.y2);
+				//ctx.quadraticCurveTo(item.x1,item.y1,item.x2,item.y2);
 				str+="Q "+item.x1+" "+item.y1+" "+item.x2+" "+item.y2;
 			}else if(item.kind==3){
-				ctx.bezierCurveTo(item.x1,item.y1,item.x2,item.y2,item.x3,item.y3);
+				//ctx.bezierCurveTo(item.x1,item.y1,item.x2,item.y2,item.x3,item.y3);
 				str+="C "+item.x1+" "+item.y1+" "+item.x2+" "+item.y2+" "+item.x3+" "+item.y3;
 			}else if(item.kind==4){
-				str+="<text x='"+item.x1+"' y='"+item.y1+"' fill='black' font-family='Verdana' font-size='32px' fill='blue' >"+item.txt+"</text>";
-			}
+				str+="<text id='"+item.txt+"handle' x='"+item.x1+"' y='"+item.y1+"' fill='black' font-family='Verdana' font-size='32px' fill='blue' >"+item.txt+"</text>";
+			} else if (item.kind==5){
+        str+=item.str;
+      }
 		}
 
-		ctx.stroke();
+		//ctx.stroke();
 
-		if(item.kind!=4){
+		if(item.kind!=4 && item.kind!=5){
 			if(bitarray[j]==0&&facitarray[j]==0){
 				str+='" fill="white" ';
 			}else if(bitarray[j]==1&&facitarray[j]==1){
@@ -274,10 +278,16 @@ function redrawgfx()
 
 	}
 
-
 	document.getElementById('foo').innerHTML=str;   
 	document.getElementById('foo').setAttribute("height", ctx.height+"px");
 	document.getElementById('foo').setAttribute("width", ctx.width+"px");
+  sels = document.getElementsByClassName('shape-legend');
+  for(i=0; i<sels.length; i++) {
+    sels[i].addEventListener('mouseover', function(e){e.target.setAttribute("opacity",1)}, false);
+    sels[i].addEventListener('mouseout', function(e){e.target.setAttribute("opacity",0)}, false);
+  }
+  
+  
 }
 
 
