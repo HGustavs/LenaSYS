@@ -26,6 +26,8 @@
 					echo (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
+          echo "<td class='navButt' id='swimlane' title='Visual representation of course moment releases and deadlines'>";
+          echo "<a class ='linkSwimlane' href='#' onclick='swimlaneSetup();'><img src='../Shared/icons/swimlane.svg'></a></td>";
 			}else if($noup=='SECTION'){
 					$cid=getOPG('cid');
 					if($cid=="UNK") $cid=getOPG('courseid');
@@ -36,8 +38,6 @@
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";          
 			}
-      echo "<td class='navButt' id='swimlane' title='Visual representation of course moment releases and deadlines'>";
-      echo "<a class ='linkSwimlane' href='#' onclick='swimlaneSetup();'><img src='../Shared/icons/swimlane.svg'></a></td>";
 
 
 			// Either generate code viewer specific nav menu or a spacer
