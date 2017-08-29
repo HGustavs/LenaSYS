@@ -39,19 +39,16 @@ function setup()
 	canvas = document.getElementById('a');
 	if (canvas) {
 		context = canvas.getContext("2d");
+    fitToContainer();
+    $( window ).resize(function() {
+        fitToContainer();
+        render();
+    });
 		context.clearRect(0, 0, canvas.width, canvas.height);
 
 		AJAXService("GETPARAM", { }, "PDUGGA");
 	}
-	canvas.addEventListener('click', function() { 
-			if (running) {
-					running = false;
-			} else {
-					running = true;
-					foo();
-			}
-	
-	}, false);
+
 }
 
 function returnedDugga(data) 
@@ -69,6 +66,7 @@ function returnedDugga(data)
 
 			retdata = jQuery.parseJSON(data['param']);
 			variant = retdata["variant"];
+      document.getElementById("target-img").src="showdoc.php?cid=3&fname="+retdata.target;
 
 			if (data["answer"] !== null || data["answer"] !== "UNK") {
 					var previous = data['answer'].split(',');
@@ -91,12 +89,6 @@ function returnedDugga(data)
 									$("#operationList").append(newTableBody);						
 							}
 					}
-			}
-
-			if (running) {
-				renderId = requestAnimationFrame(foo);
-			} else {
-				cancelAnimationFrame(renderId);
 			}
 		}
 	}
@@ -188,6 +180,8 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
   var studentPreviousAnswer = "";
 
 	retdata = jQuery.parseJSON(param);
+  document.getElementById("target-img").src="showdoc.php?cid=3&fname="+retdata.target;
+
   var s="<select id='function' name='function'>"
   for(var j=0;j<retdata.ops.length;j++){
     s+="<option value='"+retdata.ops[j]+"'>"+retdata.ops[j]+"</option>";
@@ -246,8 +240,6 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 
 function closeFacit() 
 {
-	running = false;
-  cancelAnimationFrame(renderId);
 }
 
 //--------------------================############================--------------------
@@ -260,12 +252,22 @@ function fitToContainer()
 	// Make it visually fill the positioned parent
 	divw = $("#content").width();
 	if (divw > 500){ divw -= 248; }
-	if (divw < window.innerHeight) {
-		canvas.width = divw;
-		canvas.height = divw;
+	if (divw < window.innerHeight) {    
+    if(divw>600){
+        canvas.width = 600;
+        canvas.height = 700;            
+    } else {
+        canvas.width = divw;
+    		canvas.height = divw;      
+    }
 	} else {
-		canvas.width = window.innerHeight - 100;
-		canvas.height = canvas.width;
+    if((window.innerHeight - 100)>600){
+      canvas.width = 600;
+      canvas.height = 700;                  
+    } else {
+      canvas.width = window.innerHeight - 100;
+  		canvas.height = canvas.width;      
+    }   
 	}
 
 	document.getElementById("opTableContainer").style.maxHeight=(canvas.height-25-38)+"px";
@@ -466,169 +468,7 @@ function refreshOpNum(){
 	});
 	$("#operationList").find("tr:odd").css('background-color', '#dad8db');
 	$("#operationList").find("tr:even").css('background-color', '#ffffff');
-}
-
-function drawCommand(cstr) 
-{
-	if (cstr == "D1" || cstr == "0") {
-		drawBall(0, 0, 15 * sf, 10 * sf, 5 * sf, "#F84", 45.0, 22.5);
-	} else if (cstr == "D2" || cstr == "1") {
-		drawBall(0, 0, 15 * sf, 10 * sf, 5 * sf, "#8F4", 45.0, 22.5);
-	} else if (cstr == "D3" || cstr == "2") {
-		drawBall(0, 0, 15 * sf, 10 * sf, 5 * sf, "#48F", 45.0, 22.5);
-	} else if (cstr == "T1" || cstr == "3") {
-		context.translate(10 * sf, 0);
-	} else if (cstr == "T2" || cstr == "4") {
-		context.translate(20 * sf, 0);
-	} else if (cstr == "T3" || cstr == "5") {
-		context.translate(30 * sf, 0);
-	} else if (cstr == "T4" || cstr == "6") {
-		context.translate(40 * sf, 0);
-	} else if (cstr == "T5" || cstr == "7") {
-		context.translate(50 * sf, 0);
-	} else if (cstr == "T6" || cstr == "8") {
-		context.translate(60 * sf, 0);
-	} else if (cstr == "T7" || cstr == "9") {
-		context.translate(70 * sf, 0);
-	} else if (cstr == "T8" || cstr == "10") {
-		context.translate(80 * sf, 0);
-	} else if (cstr == "R0" || cstr == "11") {
-		context.rotate(v * 3);
-	} else if (cstr == "R1" || cstr == "12") {
-		context.rotate(v * 2);
-	} else if (cstr == "R2" || cstr == "13") {
-		context.rotate(v * 1);
-	} else if (cstr == "R3" || cstr == "14") {
-		context.rotate(v * 0.3);
-	} else if (cstr == "R4" || cstr == "15") {
-		context.rotate(v * 0.2);
-	} else if (cstr == "R5" || cstr == "16") {
-		context.rotate(v * -0.2);
-	} else if (cstr == "R6" || cstr == "17") {
-		context.rotate(v * -0.3);
-	} else if (cstr == "R7" || cstr == "18") {
-		context.rotate(v * -1);
-	} else if (cstr == "R8" || cstr == "19") {
-		context.rotate(v * -2);
-	} else if (cstr == "R9" || cstr == "20") {
-		context.rotate(v * -3);
-	} else if (cstr == "S0" || cstr == "21") {
-		context.scale(0.2, 0.2);
-	} else if (cstr == "S1" || cstr == "22") {
-		context.scale(0.3, 0.3);
-	} else if (cstr == "S2" || cstr == "23") {
-		context.scale(0.5, 0.5);
-	} else if (cstr == "S3" || cstr == "24") {
-		context.scale(1.0, 1.0);
-	} else if (cstr == "S4" || cstr == "25") {
-		context.scale(1.25, 1.25);
-	} else if (cstr == "PUSH" || cstr == "26") {
-		context.save();
-		pushcount++;
-	} else if (cstr == "POP" || cstr == "27") {
-		if (pushcount > 0) {
-			context.restore();
-		}
-	} else if (cstr == "28") {
-		drawArrowDashcirc(0, 0, 10 * sf, "#888", 11.25, 5.625, 45.0, "L");
-	} else if (cstr == "29") {
-		drawArrowDashcirc(0, 0, 20 * sf, "#888", 11.25, 5.625, 45.0, "L");
-	} else if (cstr == "30") {
-		drawArrowDashcirc(0, 0, 30 * sf, "#888", 11.25, 5.625, 45.0, "L");
-	} else if (cstr == "31") {
-		drawArrowDashcirc(0, 0, 40 * sf, "#888", 11.25, 5.625, 45.0, "L");
-	} else if (cstr == "32") {
-		drawArrowDashcirc(0, 0, 50 * sf, "#888", 11.25, 5.625, 45.0, "L");
-	} else if (cstr == "33") {
-		drawArrowDashcirc(0, 0, 60 * sf, "#888", 11.25, 5.625, 45.0, "L");
-	} else if (cstr == "34") {
-		drawArrowDashcirc(0, 0, 70 * sf, "#888", 11.25, 5.625, 45.0, "L");
-	} else if (cstr == "35") {
-		drawArrowDashcirc(0, 0, 80 * sf, "#888", 11.25, 5.625, 45.0, "L");
-	} else if (cstr == "36") {
-		drawArrowDashcirc(0, 0, 10 * sf, "#888", 11.25, 5.625, 45.0, "R");
-	} else if (cstr == "37") {
-		drawArrowDashcirc(0, 0, 20 * sf, "#888", 11.25, 5.625, 45.0, "R");
-	} else if (cstr == "38") {
-		drawArrowDashcirc(0, 0, 30 * sf, "#888", 11.25, 5.625, 45.0, "R");
-	} else if (cstr == "39") {
-		drawArrowDashcirc(0, 0, 40 * sf, "#888", 11.25, 5.625, 45.0, "R");
-	} else if (cstr == "40") {
-		drawArrowDashcirc(0, 0, 50 * sf, "#888", 11.25, 5.625, 45.0, "R");
-	} else if (cstr == "41") {
-		drawArrowDashcirc(0, 0, 60 * sf, "#888", 11.25, 5.625, 45.0, "R");
-	} else if (cstr == "42") {
-		drawArrowDashcirc(0, 0, 70 * sf, "#888", 11.25, 5.625, 45.0, "R");
-	} else if (cstr == "43") {
-		drawArrowDashcirc(0, 0, 80 * sf, "#888", 11.25, 5.625, 45.0, "R");
-
-	}
-}
-
-function foo() 
-{
-	fitToContainer();
-	//acanvas.width = acanvas.width;
-
-  if (running){
-    v += speed;
-    elapsedTime++;  
-  }
-
-	context.translate(100 * sf, 100 * sf);
-	context.save();
-
-	context.globalAlpha = 0.3;
-
-	variantset = variant.split(" ");
-
-	pushcount = 0;
-
-/*
-	for (var i = 0; i < variantset.length; i++) {
-		drawCommand(variantset[i]);
-	}
-
-	for ( i = 0; i < pushcount; i++) {
-		context.restore();
-	}
-
-	context.restore();
-	context.save();
-
-	pushcount = 0;
-
-	context.globalAlpha = 1.0;
-*/
-	$("*[id*=opCode_]").each(function (){
-			drawCommand(this.innerHTML);
-	});
-
-/*
-	drawCross(0, 0, "#f64", 8);
-
-	for ( i = 0; i < pushcount; i++) {
-		context.restore();
-	}
-
-	context.restore();
-	context.globalAlpha = 0.5;
-	context.rotate(-v * 0.6);
-	drawsun(10 * sf);
-*/
-clipStar(context,200);
-drawStar(context,50);
-context.rect(0, 0, 400, 400);
-context.fillStyle="red";
-context.fill();
-
-
-	if (running) {
-			renderId = requestAnimationFrame(foo);
-	} else {
-			cancelAnimationFrame(renderId);
-	}
-
+  render();
 }
 
 //----------------------------------------------------------------------------------
@@ -653,31 +493,386 @@ function startDuggaHighScore(){
 	}
 }
 
-function drawStar(ctx, r) {
-  ctx.beginPath();
-  ctx.moveTo(r, 0);
+function drawStar(context, r) {
+  context.beginPath();
+  context.moveTo(r, 0);
   for (var i = 0; i < 9; i++) {
-    ctx.rotate(Math.PI / 5);
+    context.rotate(Math.PI / 5);
     if (i % 2 === 0) {
-      ctx.lineTo((r / 0.525731) * 0.200811, 0);
+      context.lineTo((r / 0.525731) * 0.200811, 0);
     } else {
-      ctx.lineTo(r, 0);
+      context.lineTo(r, 0);
     }
   }
-  ctx.closePath();
-  ctx.fillStyle="black";
-  ctx.fill();
+  context.closePath();
+  context.fillStyle="black";
+  context.fill();
 }
-function clipStar(ctx, r) {
-  ctx.beginPath();
-  ctx.moveTo(r, 0);
+function clipStar(context, r) {
+  context.beginPath();
+  context.moveTo(r, 0);
   for (var i = 0; i < 9; i++) {
-    ctx.rotate(Math.PI / 5);
+    context.rotate(Math.PI / 5);
     if (i % 2 === 0) {
-      ctx.lineTo((r / 0.525731) * 0.200811, 0);
+      context.lineTo((r / 0.525731) * 0.200811, 0);
     } else {
-      ctx.lineTo(r, 0);
+      context.lineTo(r, 0);
     }
   }
-  ctx.clip();
+  context.clip();
 }
+
+function newbutton() 
+{
+	//ClickCounter.onClick();
+	var newOp = $('#ops > optgroup > option:selected').text();
+	var newOpCode = $("#ops").val();
+
+	if($("#operationList").find("tr").hasClass("selectedOp")){
+			$(".selectedOp").each(function(){
+				$(this).find("*[id^=op_]").html(newOp);
+				$(this).find("*[id^=opCode_]").html(newOpCode);
+				toggleSelectOperation(this);
+			});
+	} else {
+		var i = 0;
+		$('#operationList tr').each(function (){
+				var tmp = this.id.replace("v","");
+				if (tmp > i) i=tmp;
+		});
+		i++;
+		var newTableBody = "<tr id='v" + i +"'>";
+		newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
+		newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+i+'" style="display:none">'+newOpCode+'</span></td>';
+		newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
+		newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+		newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
+		newTableBody += "</tr>";
+			
+		$("#operationList").append(newTableBody);
+		refreshOpNum();
+	}
+}
+
+function goMofo(txt)
+{
+    if(txt=="Polka"){
+        drawPolka("#f36","#efe");
+    }else if(txt=="Dots"){
+        drawDotted("#6af","#ffe");
+    }else if(txt=="Stars"){
+        drawStars("#6af","#ffe");
+    }else if(txt=="Gradient"){
+        drawGradient("#f36","#3f6");
+    }else if(txt=="Crosses"){
+        drawCrosses("#6af","#ffe");
+    }else if(txt=="Solid"){
+        drawSolid("#8f3");
+    }else if(txt=="Rect1"){
+        clipRect(50,50,100,100);
+    }else if(txt=="Rect2"){
+        clipRect(25,50,100,200);
+    }else if(txt=="Rect3"){
+        clipRect(250,400,350,700);
+    }else if(txt=="Heart"){
+        clipHeart();
+    }else if(txt=="Diamond"){
+        clipDiamond();
+    }else if(txt=="CapsuleH"){
+        clipCapsuleH();
+    }else if(txt=="CapsuleV"){
+        clipCapsuleV();
+    }else if(txt=="Cross"){
+        clipCross();
+    }else if(txt=="Restore"){
+        restore();
+    }
+}
+
+    function drawSymbol(x1,y1,x2,y2)
+    {
+        var hy=(y2-y1)*0.5;
+        var hx=(x2-x1)*0.5;
+
+        context.beginPath();
+
+        context.moveTo(x1,y1+hy);
+        context.lineTo(x1+hx,y1);
+        context.lineTo(x2,y1+hy);
+        context.lineTo(x1+hx,y2);
+        context.closePath();
+
+        context.clip();
+
+    }
+
+    function drawPolka(col1,col2)
+    {
+        context.fillStyle=col2;
+        context.fillRect(0,0,600,700);
+
+        context.fillStyle=col1;
+        for(i=-5;i<12;i+=3){
+            context.beginPath();
+            context.moveTo(i*50,0);
+            context.lineTo((i+1)*50,0);
+            context.lineTo((i+8)*50,700);
+            context.lineTo((i+7)*50,700);
+            context.closePath();
+            context.fill();
+        }
+
+    }
+
+    function drawDotted(col1,col2)
+    {
+        context.fillStyle=col2;
+        context.fillRect(0,0,600,700);
+
+        context.fillStyle=col1;
+        for(var i=-1;i<12;i++){
+            for(var j=-1;j<12;j++){
+                context.beginPath();
+                context.arc(i*75, j*100, 20, 0, 2 * Math.PI, false);
+                context.fill();
+
+                context.beginPath();
+                context.arc((i*75)-25, (j*100)+50, 20, 0, 2 * Math.PI, false);
+                context.fill();
+            }
+        }
+
+    }
+
+    function drawStars(col1,col2)
+    {
+        context.fillStyle=col2;
+        context.fillRect(0,0,600,700);
+
+        context.fillStyle=col1;
+        for(var i=-1;i<12;i++){
+            for(var j=-1;j<12;j++){
+                drawStar(i*75,j*100,10,25,10,col1);
+                drawStar((i*75)-25,(j*100)+50,10,25,10,col1);
+            }
+        }
+
+    }
+
+    function drawCrosses(col1,col2)
+    {
+        context.fillStyle=col2;
+        context.fillRect(0,0,600,700);
+
+        context.fillStyle=col1;
+        for(var i=-1;i<12;i++){
+            for(var j=-1;j<12;j++){
+                drawCross(i*75,j*100,12,10,25,col1);
+                drawCross((i*75)-25,(j*100)+50,12,10,25,col1);
+            }
+        }
+
+    }
+
+    function drawSolid(col1)
+    {
+        context.fillStyle=col1;
+        context.fillRect(0,0,600,700);
+    }
+
+    function drawNgon(xk,yk,edges,radius,col1)
+    {
+
+        var ang=(2.0*Math.PI/edges);
+        var v=0;
+
+        context.fillStyle=col1;
+        context.moveTo(xk+(Math.sin(v)*radius),yk+(Math.cos(v)*radius));
+        for(var i=1;i<edges;i++){
+            v+=ang;
+            context.lineTo(xk+(Math.sin(v)*radius),yk+(Math.cos(v)*radius));
+        }
+        context.fill();
+    }
+
+    function drawCross(xk,yk,edges,radius1,radius2,col1)
+    {
+
+        var ang=(2.0*Math.PI/edges);
+        var v=0;
+
+        context.fillStyle=col1;
+        context.beginPath();
+        context.moveTo(xk+(Math.sin(v)*radius1),yk+(Math.cos(v)*radius1));
+        for(i=1;i<edges;i++){
+            v+=ang;
+            if((i%3)==0){
+                r=radius1;
+            }else{
+                r=radius2;
+            }
+            context.lineTo(xk+(Math.sin(v)*r),yk+(Math.cos(v)*r));
+        }
+        context.fill();
+    }
+
+    function drawStar(xk,yk,edges,radius1,radius2,col1)
+    {
+
+        var ang=(2.0*Math.PI/edges);
+        var v=0;
+
+        context.fillStyle=col1;
+        context.beginPath();
+        context.moveTo(xk+(Math.sin(v)*radius1),yk+(Math.cos(v)*radius1));
+        for(i=1;i<edges;i++){
+            v+=ang;
+            if((i%2)==0){
+                r=radius1;
+            }else{
+                r=radius2;
+            }
+            context.lineTo(xk+(Math.sin(v)*r),yk+(Math.cos(v)*r));
+        }
+        context.fill();
+    }
+
+    function drawGradient(col1,col2)
+    {
+
+        var grd=context.createLinearGradient(0,0,0,700);
+        grd.addColorStop(0,col1);
+        grd.addColorStop(1,col2);
+
+        context.fillStyle=grd;
+        context.fillRect(0,0,600,700);
+
+    }
+
+    function clipRect(x1,y1,x2,y2)
+    {
+        context.save();
+
+        context.beginPath();
+        context.moveTo(x1,y1);
+        context.lineTo(x2,y1);
+        context.lineTo(x2,y2);
+        context.lineTo(x1,y2);
+        context.closePath();
+
+        context.clip();
+    }
+
+    function clipHeart()
+    {
+        context.save();
+
+        context.beginPath();
+        context.moveTo(295,500);
+        context.bezierCurveTo(295,500,4,294,0,175);
+        context.bezierCurveTo(-6,-30,294,-44,295,97);
+        context.lineTo(295,97);
+        context.bezierCurveTo(295,-44,596,-31,590,174);
+        context.bezierCurveTo(586,293,296,499,296,499);
+        context.lineTo(295,500);
+        context.lineTo(295,500);
+        context.globalAlpha = 1.0;
+        context.clip();
+    }
+
+    function clipDiamond()
+    {
+        context.save();
+
+        context.beginPath();
+        context.moveTo(535,249);
+        context.lineTo(298, 486);
+        context.lineTo(60, 249);
+        context.lineTo(298, 12);
+        context.lineTo(535,249);
+        context.clip();
+    }
+
+    function clipCapsuleV()
+    {
+        context.save();
+
+        context.beginPath();
+        context.moveTo(216,245);
+        context.lineTo(217,577);
+        context.bezierCurveTo(217,619,251,653,293,653);
+        context.bezierCurveTo(335,653,369,619,369,577);
+        context.lineTo(369,577);
+        context.lineTo(369,245);
+        context.bezierCurveTo(369,203,335,169,293,169);
+        context.bezierCurveTo(251,169,217,203,217,245);
+        context.lineTo(216,245);
+
+        context.clip();
+    }
+
+    function clipCapsuleH()
+    {
+        context.save();
+
+        context.beginPath();
+        context.moveTo(472,329);
+        context.lineTo(114,329);
+        context.bezierCurveTo(68,329,32,366,32,411);
+        context.bezierCurveTo(32,456,68,493,114,493);
+        context.lineTo(114,494);
+        context.lineTo(472,493);
+        context.bezierCurveTo(517,493,554,456,554,411);
+        context.bezierCurveTo(554,366,517,329,472,329);
+        context.lineTo(472,329);
+        context.lineTo(472,329);
+
+        context.clip();
+    }
+
+    function clipCross()
+    {
+        context.save();
+
+        context.beginPath();
+        context.moveTo(478,320);
+        context.lineTo(409,252);
+        context.lineTo(478,184);
+        context.lineTo(477,183);
+        context.bezierCurveTo(509,151,509,99,477,67);
+        context.bezierCurveTo(445,35,393,35,361,67);
+        context.lineTo(361,67);
+        context.lineTo(293,135);
+        context.lineTo(224,67);
+        context.lineTo(224,67);
+        context.bezierCurveTo(192,35,140,35,108,67);
+        context.bezierCurveTo(76,99,76,151,108,183);
+        context.lineTo(108,184);
+        context.lineTo(176,252);
+        context.lineTo(108,320);
+        context.lineTo(108,320);
+        context.bezierCurveTo(76,352,76,404,108,436);
+        context.bezierCurveTo(140,468,192,468,224,436);
+        context.lineTo(225,437);
+        context.lineTo(293,369);
+        context.lineTo(361,437);
+        context.lineTo(361,436);
+        context.bezierCurveTo(393,468,445,468,477,436);
+        context.bezierCurveTo(509,404,509,353,477,320);
+        context.lineTo(478,320);
+        context.lineTo(478,320);
+        context.clip();
+    }
+
+    function restore()
+    {
+        context.restore();
+    }
+    function render(){
+        canvas.width = canvas.width;
+        context.scale(canvas.width/600,canvas.height/700);      
+        $("*[id*=opCode_]").each(function (){
+            goMofo(this.innerHTML);
+        });
+    }
+    
