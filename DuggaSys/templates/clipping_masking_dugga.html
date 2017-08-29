@@ -1,45 +1,50 @@
-<div id="container" style="display:flex; justify-content:flex-end;">
-    <div id='duggaInfoBox2' style="inline-block; width:300px;margin:0 4px 0 4px;">
+<div id="container" style="display:flex; justify-content:flex-start;">
+    <div id='duggaInfoBox2' style="min-width:120px;width:300px;margin:0 4px 0 4px;">
       
           <div class='loginBoxheader'>
                 <h3>Transformations-dugga</h3>
           </div>
-                <p style="margin-left: 4px;">Klipping-duggan går ut på att producera den bild som ni ser med hjälp av de olika operationerna som finns tillgängliga, Fylla färg/mönster och klippa.</p>
-                <p style="margin-left: 4px;">Lägg till operationer genom att välja en operation och tryck på "Add Op.". Ni kan byta ordning på operationerna med pilarna upp och ner. Ta bort en operation genom att klicka på "X" för önskad operation. Genom att klicka på en befintlig operation så kan man ändra dess innehåll.</p>
+                <p style="margin-left: 4px;">Klipping-duggan går ut på att producera den bild som ni ser med hjälp av de olika operationerna som finns tillgängliga, Fylla färg/mönster, klippa mönster och restore.</p>
+                <p style="margin-left: 4px;">Lägg till operationer genom att välja en operation och tryck på "Add Op.". Ni kan byta ordning på operationerna med pilarna upp och ner för respektive operation. Ta bort en operation genom att klicka på "X" för önskad operation. Genom att klicka på en befintlig operation så kan man ändra dess innehåll.</p>
                 <p style="margin-left: 4px;">Lycka till och glöm inte att spara duggan! En gul lampa betyder att duggan är inlämnad.</p>
             
     </div>
-    <div id='duggaInfoBox2' style="inline-block; width:300px;margin:0 4px 0 4px;">
+    <div id='duggaInfoBox2' style="min-width:120px;width:300px;margin:0 4px 0 4px;">
       
           <div class='loginBoxheader'>
-                <h3>Target image</h3>
+                <h3>Målbild</h3>
           </div>
                 <p style="margin-left: 4px;">Rita följande:</p>
           <img id="target-img" src="showdoc.php?cid=3&fname=clipping_2_1.png" style="width:100%;">
             
     </div>
 
-    <div style="inline-block;margin:0 4px 0 4px;">
+    <div style="margin:0 4px 0 4px;">
       
           <div class='loginBoxheader'>
-                <h3>Draw area</h3>
+                <h3>Rityta</h3>
           </div>
           <canvas id='a' style='background-color:#FFFFFF; border:2px solid black; display:block;'></canvas>
             
     </div>
 
-    <div id="toolbox" style="min-width:340px;width:340px;display:inline-block;margin:0 4px 0 4px;">
+    <div id="toolbox" style="min-width:340px;width:340px;margin:0 4px 0 4px;">
         <div class='loginBoxheader'>
             <h3>Ritverktyg</h3>
         </div>
      	<div style="display:flex;justify-content:center;">
     			<select id="ops" name="function" >
-            <optgroup label="Fill styles">    
+            <optgroup label="Fill color">    
+                <option value="White">White</option>
+                <option value="Pink">Pink</option>
+                <option value="Brown">Brown</option>
+                <option value="Green">Green</option>
+            </optgroup>
+            <optgroup label="Fill pattern">    
                 <option value="Polka">Polka</option>
                 <option value="Dots">Dots</option>
                 <option value="Stars">Stars</option>
                 <option value="Crosses">Crosses</option>
-                <option value="Solid">Solid</option>
                 <option value="Gradient">Gradient</option>
             </optgroup>
             <optgroup label="Clipping styles">    

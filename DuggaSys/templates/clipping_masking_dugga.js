@@ -7,11 +7,7 @@
 Example seed
 ---------------------
 	 Example seed - simple
-	 Param: {*variant*:*40 13 7 20 0*}
-	 Answer: Variant
-	 Example seed - complex
-	 Param: {*variant*:*26 38 33 43 17 5 23 26 30 40 0 17 5 13 22 1 27 11 7 17 22 2 27 26 16 8 13 22 2 27 15 10 19 23 0*}
-	 Answer: Variant 
+	 Param: {"target":"image_uploaded_to_course.png"}
 -------------==============######## Documentation End ###########==============-------------
 */
 
@@ -21,15 +17,10 @@ var running;
 var retdata = null;
 var canvas = null;
 
-var sf = 2.0;
-var speed = 0.025;
-var v = 0;
 var pushcount = 0;
 var elapsedTime = 0;
 
 var dataV;
-var operationList = [];
-var operationsMap = {"D1":"Draw R","D2":"Draw G","D3":"Draw B","T1":"Translate 1","T2":"Translate 2","T3":"Translate 3","T4":"Translate 4","T5":"Translate 5","T6":"Translate 6","T7":"Translate 7","T8":"Translate 8","R0":"Rotate +3","R1":"Rotate +2","R2":"Rotate +1","R3":"Rotate +0.3","R4":"Rotate +0.2","R5":"Rotate -0.2","R6":"Rotate -0.3","R7":"Rotate -1","R8":"Rotate -2","R9":"Rotate -3","S0":"Scale 0.2","S1":"Scale 0.3","S2":"Scale 0.5","S3":"Scale 1.0","S4":"Scale 1.25","PUSH":"Push (remember state)","POP":"Pop (jump back)", "1":"Draw R","2":"Draw G","3":"Draw B","4":"Translate 1","5":"Translate 2","6":"Translate 3","7":"Translate 4","8":"Translate 5","9":"Translate 6","10":"Translate 7","11":"Translate 8","12":"Rotate +3","13":"Rotate +2","14":"Rotate +1","15":"Rotate +0.3","16":"Rotate +0.2","17":"Rotate -0.2","18":"Rotate -0.3","19":"Rotate -1","20":"Rotate -2","21":"Rotate -3","22":"Scale 0.2","23":"Scale 0.3","24":"Scale 0.5","25":"Scale 1.0","26":"Scale 1.25","27":"Push (remember state)","28":"Pop (jump back)"};
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
@@ -249,169 +240,19 @@ function closeFacit()
 
 function fitToContainer() 
 {
-	// Make it visually fill the positioned parent
 	divw = $("#content").width();
 	if (divw > 500){ divw -= 248; }
 	if (divw < window.innerHeight) {    
-    if(divw>600){
-        canvas.width = 600;
-        canvas.height = 700;            
-    } else {
-        canvas.width = divw;
-    		canvas.height = divw;      
-    }
+      canvas.width = divw;
+  		canvas.height = divw;      
 	} else {
-    if((window.innerHeight - 100)>600){
-      canvas.width = 600;
-      canvas.height = 700;                  
-    } else {
-      canvas.width = window.innerHeight - 100;
+      canvas.width = window.innerHeight - 180;
   		canvas.height = canvas.width;      
-    }   
 	}
 
 	document.getElementById("opTableContainer").style.maxHeight=(canvas.height-25-38)+"px";
-	document.getElementById("container").style.height=(canvas.height-50)+"px";
-
-	sf = canvas.width / 200;
 }
 
-function sundial(radius, angle, scale) 
-{
-
-	cosv = Math.cos(angle);
-	sinv = Math.sin(angle);
-
-	yaddx = scale * cosv;
-	yaddy = scale * sinv;
-
-	xaddx = -scale * sinv;
-	xaddy = scale * cosv;
-
-	xk = cosv * radius;
-	yk = sinv * radius;
-
-	context.bezierCurveTo((-1.5 * xaddx) + (yaddx * 1.5) + xk, (-1.5 * xaddy) + (yaddy * 1.5) + yk, xaddx + (yaddx * 2.0) + xk, xaddy + (yaddy * 2.0) + yk, xaddx + (yaddx * 3.0) + xk, xaddy + (yaddy * 3.0) + yk);
-	context.bezierCurveTo(xaddx + yaddx + xk, xaddy + yaddy + yk, (1.5 * xaddx) + yaddx + xk, (1.5 * xaddy) + yaddy + yk, (3.0 * xaddx) + xk, (3.0 * xaddy) + yk);
-}
-
-function drawsun(size) 
-{
-	context.fillStyle = "#fe9";
-	context.strokeStyle = "#d82";
-	context.lineWidth = 1.5;
-
-	context.beginPath();
-	context.moveTo(size, 0);
-	for ( i = 0.0; i < 360.0; i += 22.5) {
-		angle = (i / 360.0) * 2 * Math.PI;
-		sundial(size, angle, 1.5 * sf);
-	}
-	context.stroke();
-	context.fill();
-}
-
-function drawBall(cx, cy, radie, innerradie, ballradie, col1, inangle, inangleadd) 
-{
-
-	angleadd = (inangleadd / 360.0) * 2 * Math.PI;
-
-	context.fillStyle = col1;
-
-	for ( i = 0; i < 360; i += inangle) {
-
-		angle = (i / 360.0) * 2 * Math.PI;
-		angle2 = angle + angleadd;
-		angle3 = angle + (angleadd * 2.0);
-		angle4 = angle - angleadd;
-
-		cosv = Math.cos(angle);
-		sinv = Math.sin(angle);
-
-		cosv2 = Math.cos(angle2);
-		sinv2 = Math.sin(angle2);
-
-		cosv4 = Math.cos(angle4);
-		sinv4 = Math.sin(angle4);
-
-		context.beginPath();
-
-		context.moveTo(cx, cy);
-		context.quadraticCurveTo(cx + (cosv * innerradie), cy + (sinv * innerradie), cx + (cosv2 * radie), cy + (sinv2 * radie));
-		context.arc(cx, cy, radie, angle2, angle, 1.0);
-		context.quadraticCurveTo(cx + (cosv4 * innerradie), cy + (sinv4 * innerradie), cx, cy);
-
-		context.fill();
-
-	}
-
-	context.beginPath();
-	context.arc(cx, cy, radie, 0, Math.PI * 2.0, 1.0);
-	context.stroke();
-
-}
-
-function drawDashcirc(cx, cy, radie, col, inangle, inangle2) 
-{
-	context.lineWidth = 2.5;
-	context.strokeStyle = col;
-	context.beginPath();
-	for ( i = 0; i < 360; i += inangle) {
-		angle = (i / 360.0) * 2 * Math.PI;
-		angle2 = ((inangle2 / 360.0) * 2 * Math.PI) + angle;
-
-		context.moveTo(cx + (Math.cos(angle) * radie), cy + (Math.sin(angle) * radie));
-		context.lineTo(cx + (Math.cos(angle2) * radie), cy + (Math.sin(angle2) * radie));
-	}
-	context.stroke();
-}
-
-function drawArrowcirc(cx, cy, radie, col, inangle, inangle2, inangle3, direction) 
-{
-	context.fillStyle = col;
-
-	context.beginPath();
-
-	angle = ((inangle3 / 360.0) * 2 * Math.PI);
-	if (direction == "R") {
-		angle2 = ((inangle2 / 360.0) * 2 * Math.PI) + angle;
-	} else {
-		angle2 = angle - ((inangle2 / 360.0) * 2 * Math.PI);
-	}
-
-	ca = Math.cos(angle);
-	sa = Math.sin(angle);
-
-	ca2 = Math.cos(angle2);
-	sa2 = Math.sin(angle2);
-
-	context.moveTo(cx + (ca * (radie + (radie * 0.1))), cy + (sa * (radie + (radie * 0.1))));
-	context.lineTo(cx + (ca * (radie - (radie * 0.1))), cy + (sa * (radie - (radie * 0.1))));
-	context.lineTo(cx + (ca2 * radie), cy + (sa2 * radie));
-
-	context.lineTo(cx + (ca * (radie + (radie * 0.1))), cy + (sa * (radie + (radie * 0.1))));
-
-	context.fill();
-}
-
-function drawArrowDashcirc(cx, cy, radie, col, inangle, inangle2, inangle3, arrowsize, direction) 
-{
-	drawArrowcirc(cx, cy, radie, col, inangle, inangle2, inangle3, arrowsize, direction);
-	drawDashcirc(cx, cy, radie, col, inangle, inangle2);
-}
-
-function drawCross(cx, cy, col, size) 
-{
-	context.strikestyle = col;
-	context.lineWidth = 2;
-	context.strokeStyle = col;
-	context.beginPath();
-	context.moveTo(cx - size, cy - size);
-	context.lineTo(cx + size, cy + size);
-	context.moveTo(cx + size, cy - size);
-	context.lineTo(cx - size, cy + size);
-	context.stroke();
-}
 
 function toggleSelectOperation(e){
 		if ($(e).closest("tr").hasClass("selectedOp")){
@@ -493,35 +334,6 @@ function startDuggaHighScore(){
 	}
 }
 
-function drawStar(context, r) {
-  context.beginPath();
-  context.moveTo(r, 0);
-  for (var i = 0; i < 9; i++) {
-    context.rotate(Math.PI / 5);
-    if (i % 2 === 0) {
-      context.lineTo((r / 0.525731) * 0.200811, 0);
-    } else {
-      context.lineTo(r, 0);
-    }
-  }
-  context.closePath();
-  context.fillStyle="black";
-  context.fill();
-}
-function clipStar(context, r) {
-  context.beginPath();
-  context.moveTo(r, 0);
-  for (var i = 0; i < 9; i++) {
-    context.rotate(Math.PI / 5);
-    if (i % 2 === 0) {
-      context.lineTo((r / 0.525731) * 0.200811, 0);
-    } else {
-      context.lineTo(r, 0);
-    }
-  }
-  context.clip();
-}
-
 function newbutton() 
 {
 	//ClickCounter.onClick();
@@ -566,7 +378,13 @@ function goMofo(txt)
         drawGradient("#f36","#3f6");
     }else if(txt=="Crosses"){
         drawCrosses("#6af","#ffe");
-    }else if(txt=="Solid"){
+    }else if(txt=="White"){
+        drawSolid("#FFF");
+    }else if(txt=="Pink"){
+        drawSolid("#FFB6C1");
+    }else if(txt=="Brown"){
+        drawSolid("#D2691E");
+    }else if(txt=="Green"){
         drawSolid("#8f3");
     }else if(txt=="Rect1"){
         clipRect(50,50,100,100);
@@ -608,9 +426,6 @@ function goMofo(txt)
 
     function drawPolka(col1,col2)
     {
-        context.fillStyle=col2;
-        context.fillRect(0,0,600,700);
-
         context.fillStyle=col1;
         for(i=-5;i<12;i+=3){
             context.beginPath();
@@ -621,14 +436,10 @@ function goMofo(txt)
             context.closePath();
             context.fill();
         }
-
     }
 
     function drawDotted(col1,col2)
     {
-        context.fillStyle=col2;
-        context.fillRect(0,0,600,700);
-
         context.fillStyle=col1;
         for(var i=-1;i<12;i++){
             for(var j=-1;j<12;j++){
@@ -641,14 +452,10 @@ function goMofo(txt)
                 context.fill();
             }
         }
-
     }
 
     function drawStars(col1,col2)
     {
-        context.fillStyle=col2;
-        context.fillRect(0,0,600,700);
-
         context.fillStyle=col1;
         for(var i=-1;i<12;i++){
             for(var j=-1;j<12;j++){
@@ -656,14 +463,10 @@ function goMofo(txt)
                 drawStar((i*75)-25,(j*100)+50,10,25,10,col1);
             }
         }
-
     }
 
     function drawCrosses(col1,col2)
     {
-        context.fillStyle=col2;
-        context.fillRect(0,0,600,700);
-
         context.fillStyle=col1;
         for(var i=-1;i<12;i++){
             for(var j=-1;j<12;j++){
@@ -671,7 +474,6 @@ function goMofo(txt)
                 drawCross((i*75)-25,(j*100)+50,12,10,25,col1);
             }
         }
-
     }
 
     function drawSolid(col1)
@@ -682,7 +484,6 @@ function goMofo(txt)
 
     function drawNgon(xk,yk,edges,radius,col1)
     {
-
         var ang=(2.0*Math.PI/edges);
         var v=0;
 
