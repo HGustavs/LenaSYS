@@ -35,8 +35,8 @@ $(window).scroll(function () {
 // Display information about the deadline when hoovering over the deadline circle
 function mouseOverCircle(circle, text) {
   circle.setAttribute("r", '13');
-  circlePosY = parseInt(circle.getAttribute('cy')) - 70;
-  circlePosX = parseInt(circle.getAttribute('cx')) + 20;
+  circlePosY = circle.parentNode.parentNode.offsetTop+parseInt(circle.getAttribute('cy')) - 70;
+  circlePosX = circle.parentNode.parentNode.offsetLeft+parseInt(circle.getAttribute('cx')) + 20;
   document.getElementById("duggaInfoText").innerHTML = text;
   $('#duggainfo').css({'top': circlePosY, 'left': circlePosX}).fadeIn('fast');
 }

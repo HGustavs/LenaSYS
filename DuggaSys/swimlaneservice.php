@@ -127,18 +127,28 @@ if ($course != "UNK" && $vers != "UNK") {
       $sqlDeadline = $row['deadline'];
       $sqlQrelease = $row['qstart'];
 
-      $deadlinedate = new DateTime($sqlDeadline);
-      $startdate = new DateTime($sqlQrelease);
-      $deadlineweek = $deadlinedate->format('W') - $information['versstartweek'] + 1;
-      $startweek = $startdate->format('W') - $information['versstartweek'] + 1;
-
-      $tempDateArray = explode(' ', $sqlQrelease);
-      if ($tempDateArray[1] == '00:00:00') {
-        $sqlQrelease = $tempDateArray[0];
+      if($sqlQrelease == null){
+          $sqlQrelease=$information['versstartweek']; 
+          $startweek=$information['versstartweek'];
+      } else {
+          $startdate = new DateTime($sqlQrelease);
+          $startweek = $startdate->format('W') - $information['versstartweek'] + 1;
+          $tempDateArray = explode(' ', $sqlQrelease);
+          if ($tempDateArray[1] == '00:00:00') {
+            $sqlQrelease = $tempDateArray[0];
+          }        
       }
-      $tempDateArray = explode(' ', $sqlDeadline);
-      if ($tempDateArray[1] == '00:00:00') {
-        $sqlDeadline = $tempDateArray[0];
+      if($sqlDeadline == null){
+          $sqlDeadline=$information['versstartweek']; 
+          $deadlineweek=$information['versstartweek'];
+      } else {
+          $deadlinedate = new DateTime($sqlDeadline);
+          $deadlineweek = $deadlinedate->format('W') - $information['versstartweek'] + 1;
+    
+          $tempDateArray = explode(' ', $sqlDeadline);
+          if ($tempDateArray[1] == '00:00:00') {
+            $sqlDeadline = $tempDateArray[0];
+          }        
       }
 
       $moments[] = array(
