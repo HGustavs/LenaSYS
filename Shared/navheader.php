@@ -19,10 +19,23 @@
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			//---------------------------------------------------------------------
-			echo "<td class='navButt' id='back' title='Back' onmouseover='hoverBack();' onclick='window.history.back()'>";
-
-            echo "<img src='../Shared/icons/Up.svg'></a></td>";
-			
+			echo "<td class='navButt' id='back' title='Back'>";
+			if($noup=='COURSE'){
+					echo "<a class='navButt' href='";
+					echo (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "../DuggaSys/courseed.php");
+					echo "'>";
+					echo "<img src='../Shared/icons/Up.svg'></a></td>";
+			}else if($noup=='SECTION'){
+					$cid=getOPG('cid');
+					if($cid=="UNK") $cid=getOPG('courseid');
+					$coursevers=getOPG('coursevers');
+					if($coursevers=="UNK") $coursevers=getOPG('cvers');
+					echo "<a href='";
+					echo ($cid != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers : "../DuggaSys/courseed.php");
+					echo "'>";
+					echo "<img src='../Shared/icons/Up.svg'></a></td>";
+			}
+        
 			if($noup=='COURSE'){
                     $cid=getOPG('cid');
                     if($cid=="UNK") $cid=getOPG('courseid');
