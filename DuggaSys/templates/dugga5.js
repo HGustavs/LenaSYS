@@ -2,6 +2,7 @@
 //----------------------------------------------------------------------------------
 // Globals
 //----------------------------------------------------------------------------------
+var score = -1;
 var dataV;
 var DEFAULT_CAMERA_POSITION_Z = 1000;
 var	DEFAULT_CAMERA_POSITION_X = 500;
@@ -108,22 +109,38 @@ function returnedDugga(data)
 		animate();
 
 	}
+  // Teacher feedback
+	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
+      // No feedback
+  } else {
+      var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+      var feedbackArr = data["feedback"].split("||");
+      for (var k=feedbackArr.length-1;k>=0;k--){
+        var fb_tmp = feedbackArr[k].split("%%");
+        fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+      } 		
+      fb += "</tbody></table>";
+      document.getElementById('feedbackTable').innerHTML = fb;		
+      document.getElementById('feedbackBox').style.display = "block";
+  }
+  displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
-function showFacit(param, uanswer, danswer, userStats) {
-
+function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
+{
+	if (userStats != null){
+		$("#duggaInfoBox").css("display","none");
+		document.getElementById('duggaTime').innerHTML=userStats[0];
+		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+		document.getElementById('duggaClicks').innerHTML=userStats[2];
+		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+		$("#duggaStats").css("display","block");
+	}
 	createTextures();
 
-	$("#duggaInfoBox").css("display","none");
-	document.getElementById('duggaTime').innerHTML=userStats[0];
-	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-	document.getElementById('duggaClicks').innerHTML=userStats[2];
-	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-	$("#duggaStats").css("display","block");
-
-	ans = JSON.parse(decodeURIComponent(danswer));
-	//console.log(ans.vertex);
-	//console.log(ans.triangle);
+	ans = JSON.parse(danswer);
+	console.log(ans.vertex);
+	console.log(ans.triangle);
 
 	// Setup code
 	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
@@ -134,7 +151,7 @@ function showFacit(param, uanswer, danswer, userStats) {
 
 		// Parse student answer and dugga answer
 		var studentPreviousAnswer = "";
-		var p = jQuery.parseJSON(decodeURIComponent(param));
+		var p = jQuery.parseJSON(param);
 		if (uanswer !== null && uanswer !== "UNK"){
 			var previous = uanswer.split(' ');
 			var prevRaw = previous[3];
@@ -146,8 +163,13 @@ function showFacit(param, uanswer, danswer, userStats) {
 			renderTriangleTable();
 		}
 
+    if (renderId != undefined){
+        cancelAnimationFrame(renderId);
+        renderId=undefined;
+    }
+
 		init();
-		goalObject = decodeURIComponent(param);
+		goalObject = param;
 		createGoalObject(goalObject);
 		updateGeometry();
 		animate();
@@ -175,6 +197,20 @@ function showFacit(param, uanswer, danswer, userStats) {
 	  	console.log(settings);
 	  	console.log(exception);	    
 	});
+
+  // Teacher feedback
+  var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+  if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
+    var feedbackArr = feedback.split("||");
+    for (var k=feedbackArr.length-1;k>=0;k--){
+      var fb_tmp = feedbackArr[k].split("%%");
+      fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+    } 		
+  }
+  fb += "</tbody></table>";
+	if (feedback !== undefined){
+			document.getElementById('teacherFeedbackTable').innerHTML = fb;
+	}
 
 }
 
@@ -744,7 +780,7 @@ function highlightVertices(){
 
 function animate() {
 	fitToContainer();
-	requestAnimationFrame(animate);
+	renderId=requestAnimationFrame(animate);
 
 	if (rotateObjects) {
 		rotateAllObjects();

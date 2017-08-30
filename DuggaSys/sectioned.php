@@ -3,10 +3,6 @@ session_start();
 include_once "../../coursesyspw.php";
 include_once "../Shared/sessions.php";
 pdoConnect();
-
-if(isset($_GET['coursename'])){
-		$_SESSION['coursename'] = $_GET['coursename'];
-}
 ?>
 
 <!DOCTYPE html>
@@ -14,13 +10,13 @@ if(isset($_GET['coursename'])){
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title><?php echo (isset($_SESSION['coursename']) ? $_SESSION['coursename'] : "Unknown course name"); ?></title>
+	<title>Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<!--<link type="text/css" href="../Shared/css/responsive.css" rel="stylesheet">-->
-	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
@@ -31,20 +27,17 @@ if(isset($_GET['coursename'])){
 
 	<?php
 		$noup="COURSE";
-		$loginvar="SECTION"; 
 		include '../Shared/navheader.php';
-		setcookie("loginvar", $loginvar);
 	?>
-	
+
 	<!-- content START -->
 	<div id="content">
-		<div id="coursesForForum"></div>
 		<!-- Section List -->
 		<div id='Sectionlist'></div>
 	</div>
 	<!-- content END -->
 
-	<?php 
+	<?php
 		include '../Shared/loginbox.php';
 	?>
 
@@ -73,44 +66,48 @@ if(isset($_GET['coursename'])){
 		</div>
 	</div>
 	<!-- Edit Section Dialog END -->
-	
+
 	<!-- New Verison Dialog START -->
 	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>New Course Verison</h3>
 			<div onclick='closeWindows();'>x</div>
-		</div>		
+		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />
 			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
 			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' /></div>
 			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 			<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
+      <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='startdate' value='None' /></div>
+      <div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='createVersion();' />
 		</div>
 	</div>
 	<!-- New Verison Dialog END -->
-	
+
 	<!-- Edit Verison Dialog START -->
 	<div id='editCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>Edit Course Verison</h3>
 			<div onclick='closeWindows();'>x</div>
-		</div>		
+		</div>
 		<div style='padding:5px;'>
 			<input type='hidden' id='cid' value='Toddler' />
 			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name' /></div>
 			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' disabled /></div>
 			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
+      <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='estartdate' value='None' /></div>
+      <div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='eenddate' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateVersion();' />
 		</div>
 	</div>
 	<!-- Edit Verison Dialog END -->
-	
+
 	<!-- HighscoreBox START -->
 	<div id='HighscoreBox' class='loginBox' style='width:500px;display:none;'>
 		<div class='loginBoxheader'>
@@ -119,11 +116,11 @@ if(isset($_GET['coursename'])){
 		</div>
 		<table id ='HighscoreTable' width='100%'>
 			<tr>
-				
+
 			</tr>
 		</table>
 	</div>
 	<!-- HighscoreBox END -->
-				
+
 </body>
 </html>

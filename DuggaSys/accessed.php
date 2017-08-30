@@ -30,21 +30,10 @@
 	<!-- content START -->
 	<div id="wrappall">
 		<div id="newbutton">
-			<table style="float:right;">
-				<tr>
-					<td>	
-						<?PHP
-							echo "<div style='float:right;'><input class='submit-button' type='button' value='Create Users' onclick='showCreateUsersPopup();'/></div>";
-							//needs to calculate if the user has access to this button before writing out
-						?>
-					</td>
-					<td>
-						<?PHP
-							echo "<div style='float:right;'><input class='submit-button' type='button' value='Add Users' onclick='showAddUsersPopup();'/></div>";
-							//needs to calculate if the user has access to this button before writing out
-						?>
-					</td>
-				</table>
+			<?PHP
+				echo "<div style='float:right;'><input class='submit-button' type='button' value='Add Users' onclick='showCreateUsersPopup();'/></div>";
+				//needs to calculate if the user has access to this button before writing out
+			?>		
 		</div>
 		<div id="accessedcontent">
 			
@@ -75,24 +64,6 @@
 		</div>
 	</div>
 	
-	<div id='addUsers' class='loginBox' style='width:464px;display:none;'>
-		<div class='loginBoxheader'>
-			<h3>Add Users</h3>
-			<div onclick='closeWindows();'>x</div>
-		</div>
-		<div class='note'>
-			<p>Check the users below to add them to his corse.</p>
-			<br/>
-			<div>
-				<?PHP
-					include_once "findUsers.php";
-				?>
-				<input class='submit-button' type='button' value='Add Users' onclick='addSelectedUsers();' />
-			</div>
-		</div>
-	</div>
-
-	
 	<!-- Edit User Dialog END -->
 	<!-- Add Users Dialog START -->
 	<div id='editUsers' class='loginBox' style='width:464px;display:none;'>
@@ -107,6 +78,7 @@
 			<div class='inputwrapper'><span>SSN:</span><input class='textinput' type='text' id='ussn' value='SSN' /></div>
 			<div class='inputwrapper'><span>First Name:</span><input class='textinput' type='text' id='firstname' value='First Name' /></div>	
 			<div class='inputwrapper'><span>Last Name:</span><input class='textinput' type='text' id='lastname' value='Last Name' /></div>
+			<div class='inputwrapper'><span>Study program, Start year:</span><input class='textinput' type='text' id='class' placeholder='WEBUG, H15' /></div>
 		</div> 
 		<div style='padding:5px;'>
 			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateUser();' />

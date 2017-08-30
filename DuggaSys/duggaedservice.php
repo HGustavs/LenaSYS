@@ -9,12 +9,6 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
-$log_uuid = getOP('log_uuid');
-$log_timestamp = getOP('log_timestamp');
-
-logServiceEvent($log_uuid, EventTypes::ServiceClientStart, "duggaedservice.php", $log_timestamp);
-logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php");
-
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
@@ -36,10 +30,16 @@ $name = getOP('nme');
 $autograde = getOP('autograde');
 $gradesys = getOP('gradesys');
 $template = getOP('template');
-$release = getOP('release');
+$qstart = getOP('qstart');
 $deadline = getOP('deadline');
+$release = getOP('release');
+$coursevers = getOP('coursevers');
 
 $debug="NONE!";
+
+$log_uuid = getOP('log_uuid');
+$info=$opt." ".$cid." ".$qid." ".$vid." ".$param." ".$answer." ".$disabled." ".$uid." ".$name;
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php",$userid,$info);
 
 //------------------------------------------------------------------------------------------------
 // Services
@@ -48,10 +48,11 @@ $debug="NONE!";
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 	if(strcmp($opt,"ADDUGGA")===0){
-		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,creator) VALUES (:cid,1,1,'New Dugga','test.html',:uid)";	
+		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,creator,vers) VALUES (:cid,1,1,'New Dugga','test.html',:uid,:coursevers)";	
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':cid', $cid);
 		$stmt->bindParam(':uid', $userid);
+		$stmt->bindParam(':coursevers', $coursevers);
 		
 		try{
 			$stmt->execute();
@@ -96,18 +97,21 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			$debug="Error updating user".$error[2];
 		}
 	}else if(strcmp($opt,"SAVDUGGA")===0){
-		$query = $pdo->prepare("UPDATE quiz SET qname=:name,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qrelease=:release,deadline=:deadline WHERE id=:qid;");
+		$query = $pdo->prepare("UPDATE quiz SET qname=:name,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qstart=:qstart,deadline=:deadline,qrelease=:release WHERE id=:qid;");
 		$query->bindParam(':qid', $qid);
 		$query->bindParam(':name', $name);
 		$query->bindParam(':autograde', $autograde);
 		$query->bindParam(':gradesys', $gradesys);
 		$query->bindParam(':template', $template);
 
-		if($release=="null") $query->bindValue(':release', null,PDO::PARAM_INT);
-		else $query->bindParam(':release', $release);
+		if($qstart=="null") $query->bindValue(':qstart', null,PDO::PARAM_INT);
+		else $query->bindParam(':qstart', $qstart);
 
 		if($deadline=="null") $query->bindValue(':deadline', null,PDO::PARAM_INT);
 		else $query->bindParam(':deadline', $deadline);
+
+    if($release=="null") $query->bindValue(':release', null,PDO::PARAM_INT);
+		else $query->bindParam(':release', $release);
 		
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -191,8 +195,9 @@ $files=array();
 $duggaPages = array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
-	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified FROM quiz WHERE cid=:cid ORDER BY id;");
+	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qstart,deadline,qrelease,modified,vers FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;");
 	$query->bindParam(':cid', $cid);
+	$query->bindParam(':coursevers', $coursevers);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
 		$debug="Error updating entries".$error[2];
@@ -230,8 +235,9 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			'gradesystem' => $row['gradesystem'],
 			'name' => $row['qname'],
 			'template' => $row['quizFile'],
-			'release' => $row['qrelease'],	
+      'qstart' => $row['qstart'],	
 			'deadline' => $row['deadline'],				
+      'release' => $row['qrelease'],	
 			'modified' => $row['modified']				
 			);
 
@@ -255,14 +261,10 @@ $array = array(
 	'debug' => $debug,
 	'files' => $files,
 	'duggaPages' => $duggaPages
-	);
-/*$t = json_encode($array);
-if (!$t){
-	echo "Failed: ". $t;
-} else {
-	echo "success: ". $t;
-}*/
+);
+
 echo json_encode($array);
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "duggaedservice.php");
+
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "duggaedservice.php",$userid,$info);
 
 ?>

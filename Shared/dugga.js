@@ -2,11 +2,16 @@
 // changeCSS: Changes the CSS and remembers the index of the CSS.
 //            This allows us to set and remove whole CSS files
 //----------------------------------------------------------------------------------
+var renderId; // Used to store active rendering function
+var benchmarkData = performance.timing; // Will be updated after onload event
+
 var status = 0;
 var score;
 var timeUsed;
 var stepsUsed;
+var inParams = "UNK";;
 var MAX_SUBMIT_LENGTH = 5000;
+
 function toggleloginnewpass(){
 
 	if(status == 0){
@@ -22,13 +27,33 @@ function toggleloginnewpass(){
 }
 
 function closeWindows(){
-	//changed .loginBox to #loginBox to stop lockbox from closing when login box is closed
-	$(".loginBox").css("display", "none");
-	$("#overlay").css("display","none");
-	$("#resultpopover").css("display","none");
-	$("#login #username").val("");
-	$("#login #password").val("");
-	
+
+	var index_highest = 0;   
+	var e;
+	// more effective to have a class for the div you want to search and 
+	// pass that to your selector
+	$("*").each(function() {
+	    // always use a radix when using parseInt
+	    var index_current = parseInt($(this).css("zIndex"), 10);
+	    if(index_current > index_highest && this.style.display == "block") {
+	        index_highest = index_current;
+					e=this;
+	    }
+	});
+
+	if (index_highest > 0){
+			e.style.display = "none";
+			/* Overlay is only present for loginbox which 
+			 * has z-index of 9000, so if we closed such a 
+			 * window, hide the overlay and clear any values
+			 * as well.
+			 */
+			if (index_highest < 10000) {
+					$("#overlay").css("display","none");
+					$("#login #username").val("");
+					$("#login #password").val("");
+			}
+	}
 	window.removeEventListener("keypress", loginEventHandler, false);
 }
 
@@ -151,7 +176,7 @@ function navigateExample(exampleno)
 {
 		surl=window.location.href;
 		surl=surl.substring(0,surl.lastIndexOf("/")); 
-		window.location.href = surl+"/EditorV50.php?exampleid="+exampleno+"&courseid="+querystring['courseid']+"&cvers="+querystring['cvers'];
+		window.location.href = surl+"/codeviewer.php?exampleid="+exampleno+"&courseid="+querystring['courseid']+"&cvers="+querystring['cvers'];
 }
 
 //----------------------------------------------------------------------------------
@@ -218,19 +243,15 @@ function htmlEntities(str) {
 
 function AJAXService(opt,apara,kind)
 {
+
+	var tex = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for(var i=0; i<15; i++){
+      tex += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+	apara.log_uuid = tex;
+
 	var para="";
-	var timestamp = Date.now();
-	var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for(var i=0; i<15; i++){
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-	var uuid = text;
-
-	apara.log_uuid = uuid;
-	apara.log_timestamp = timestamp;
-	
 	for (var key in apara) {
 		var old = apara[key];
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {
@@ -278,207 +299,150 @@ function AJAXService(opt,apara,kind)
 		}
 	}
 	
-	var sendConfirmation = function(service) {
-		$.ajax({
-			url: "serviceconfirmation.php",
-			type: "POST",
-			data: "uuid="+uuid+"&timestamp="+timestamp+"&service="+service,
-			dataType: "json"
-		});
-	}
-	
-	switch(kind){
-		case "COURSE":
+	if(kind=="COURSE"){
 			$.ajax({
 				url: "courseedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedCourse(data);
-					sendConfirmation("courseedservice.php");
-				}
+				success: returnedCourse
 			});
-			break;
-		case "VARIANTPDUGGA":
-			$.ajax({
-				url: "showDuggaservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					returnedanswersDugga(data);
-					sendConfirmation("showDuggaservice.php");
-				}
-			});
-			break;
-		case "DUGGA":
+	}else if(kind=="VARIANTPDUGGA"){
+		$.ajax({
+			url: "showDuggaservice.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedanswersDugga
+		});
+	}else if(kind=="DUGGA"){
 			$.ajax({
 				url: "duggaedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedDugga(data);
-					sendConfirmation("duggaedservice.php");
-				}
+				success: returnedDugga
 			});
-			break;
-		case "BDUGGA":
+	}else if(kind=="BDUGGA"){
 			$.ajax({
 				url: "duggaedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedBlankDugga(data);
-					sendConfirmation("duggaedservice.php");
-				}
+				success: returnedBlankDugga
 			});
-			break;
-		case "DUGGAHIGHSCORE":
+	}else if(kind=="DUGGAHIGHSCORE"){
 			$.ajax({
 				url: "highscoreservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedHighscore(data);
-					sendConfirmation("highscoreservice.php");
-				}
+				success: returnedHighscore
 			});
-			break;
-		case "FILE":
+	}else if(kind=="FILE"){
 			$.ajax({
 				url: "fileedservice.php",
 				type: "POST",
 				data: "coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedFile(data);
-					sendConfirmation("fileedservice.php");
-				}
-			});
-			break;
-		case "ACCESS":
+				success: returnedFile
+			})
+	}else if(kind=="ACCESS"){
 			$.ajax({
 				url: "accessedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedAccess(data);
-					sendConfirmation("accessedservice.php");
-				}
+				success: returnedAccess
 			});
-			break;
-		case "SECTION":
+	}else if(kind=="SECTION"){
 			$.ajax({
 				url: "sectionedservice.php",
 				type: "POST",
 				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedSection(data);
-					sendConfirmation("sectionedservice.php");
-				}
+				success: returnedSection
 			});
-			break;
-		case "PDUGGA":
+	}else if(kind=="SWIMLANE"){
+      $.ajax({
+        url: "swimlaneservice.php",
+        type: "POST",
+        data: "courseid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+        dataType: "json",
+        success: returnedSwimlane
+      });
+  }else if(kind=="CONTRIBUTION"){
+			$.ajax({
+				url: "contributionservice.php",
+				type: "POST",
+				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+				dataType: "json",
+				success: returnedSection
+			});
+	}else if(kind=="DIAGRAM"){
+			$.ajax({
+				url: "contributionservice.php",
+				type: "POST",
+				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
+				dataType: "json",
+				success: returnedSection
+			});
+	}else if(kind=="PDUGGA"){
 			$.ajax({
 				url: "showDuggaservice.php",
 				type: "POST",
 				data: "courseid="+querystring['cid']+"&did="+querystring['did']+"&coursevers="+querystring['coursevers']+"&moment="+querystring['moment']+"&segment="+querystring['segment']+"&opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedDugga(data);
-					sendConfirmation("showDuggaservice.php");
-				}
+				success: returnedDugga
 			});
-			break;
-		case "RESULT":
+	}else if(kind=="RESULT"){
 			$.ajax({
 				url: "resultedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedResults(data);
-					sendConfirmation("resultedservice.php");
-				}
+				success: returnedResults
 			});
-			break;
-		case "RESULTLIST":
+	}else if(kind=="RESULTLIST"){
 			$.ajax({
 				url: "resultlistedservice.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returnedResults(data);
-					sendConfirmation("resultlistedservice.php");
-				} 
+				success: returnedResults
 			});
-			break;
-		case "CODEVIEW":
+	}else if(kind=="CODEVIEW"){
 			$.ajax({
-				url: "editorService.php",
+				url: "codeviewerService.php",
 				type: "POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					returned(data);
-					sendConfirmation("editorService.php");
-				}
+				success: returned
 			});
-			break;
-		case "BOXCONTENT":
-			$.ajax({
-				url: "editorService.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					returned(data);
-					sendConfirmation("editorService.php");
-				}
-			});
-			break;
-		case "UMVSTUDENT":
+	}else if(kind=="BOXCONTENT"){
+		$.ajax({
+			url: "codeviewerService.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returned
+		});
+	}else if(kind=="UMVSTUDENT") {
 			$.ajax({
 				url: "usermanagementviewservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					renderStudentView(data);
-					sendConfirmation("usermanagementviewservice.php");
-				}
+				success: renderStudentView
 			});
-			break;
-		case "UMVTEACHER":
+	}else if(kind=="UMVTEACHER") {
 			$.ajax({
 				url: "usermanagementviewservice.php",
 				type:"POST",
 				data: "opt="+opt+para,
 				dataType: "json",
-				success: function(data) {
-					renderTeacherView(data);
-					sendConfirmation("usermanagementviewservice.php");
-				}
+				success: renderTeacherView
 			});
-		case "GETCOURSETHREAD":
-			$.ajax({
-				url: "usermanagementviewservice.php",
-				type:"POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: function(data) {
-					renderTeacherView(data);
-					sendConfirmation("usermanagementviewservice.php");
-				}
-			});
-			break;
 	}
 }
 
@@ -592,44 +556,9 @@ function setupLoginLogoutButton(isLoggedIn){
 		$("#loginbutton").click(function(){processLogout();});	
 	}
 	else{
-		console.log("Setting button to show login prompt");
 		$("#loginbutton").off("click");
 		$("#loginbutton").click(function(){showLoginPopup();});		
 	}
-}
-
-//Function for marking//
-function showMarkingWindow()
-{
-
-	if($("#marking").css("display") == 'block'){
-		hideMarkingWindow();
-	}
-	else{
-		$("#marking").css("display","block");
-	}
-}
-
-function hideMarkingWindow()
-{
-	$("#marking").css("display","none");
-}
-//--------------------//
-
-function showDugga()
-{
-	$("#resultpopover").css("display", "block");
-}
-
-function hideDugga()
-{
-	$("#resultpopover").css("display", "none");
-	$("#duggaStats").css("display", "none");
-}
-
-function hideDuggaStats()
-{
-	$("#duggaStats").css("display","none");
 }
 
 function showReceiptPopup()
@@ -733,6 +662,7 @@ function getCookie(cname) {
 	return "";
 }
 
+// EventListner for when ESC is pressed do a closeWindows()
 $(window).load(function() {
 	//There is an issue with using this code, it generates errors that stop execution
       $(window).keyup(function(event){
@@ -743,10 +673,6 @@ $(window).load(function() {
 $(window).load(function() {
 	$('.loginBox').draggable({ handle:'.loginBoxheader'});
 	$('.loginBox').draggable({ containment: "window"});	//contains the draggable box within window-boundaries
-	//There is an issue with using this code, it generates errors that stop execution
-	$(window).keyup(function(event){
-		if(event.keyCode == 27) closeWindows();
-	});
 });
 
 //----------------------------------------------------------------------------------
@@ -765,56 +691,56 @@ Array.prototype.move = function (old_index, new_index) {
 };
 
 // Latest version of any file in a field - unsure about naming of the function
-function findfilevers(filez, cfield,ctype)
+function findfilevers(filez,cfield,ctype,displaystate)
 {
-
 		// Iterate over elements in files array
 		var foundfile=null;
 		var oldfile="";
 		var tab="<table>";
-		tab+="<thead><tr><th>Filename</th><th>Upload date</th></tr></thead>"
-		tab +="<tbody>"
-		for(var i=0;i<filez.length;i++){
-				if(cfield==filez[i].fieldnme){
-						if(ctype=="zip"||ctype=="pdf"||ctype=="link"||ctype=="text"){
-								foundfile=filez[i];
-								break;							
-						}else{
-								// Each new filename make row in table.
-								if(oldfile!=filez[i].filename){
-										var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;											
-										tab+="<tr'><td style='padding:4px;'>";
-										tab+="<a href='"+filelink+"' >"+filez[i].filename+"."+filez[i].extension+"</a>";
-										tab+="</td><td style='padding:4px;'>";
-										tab+=filez[i].updtime;
-										tab+="</td></tr>";		
-								}
-								oldfile=filez[i].filename;
-						}
-				}
+		tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>"
+		tab +="<tbody>";
+		if (typeof filez !== "undefined"){
+			for (var i=filez.length-1;i>=0;i--){
+					if(cfield==filez[i].fieldnme){
+							var filelink=filez[i].filepath+filez[i].filename+filez[i].seq+"."+filez[i].extension;											
+							tab+="<tr'>"
+
+							tab+="<td>";
+							// Button for making / viewing feedback - note - only button for given feedback to students.
+							tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>P</button>";
+							tab+="</td>";
+
+							tab+="<td style='padding:4px;'>";
+							if (ctype == "link"){
+									tab+="<a href='"+filez[i].content+"' >"+filez[i].content+"</a>";	
+							} else {
+									tab+="<a href='"+filelink+"' >"+filez[i].filename+"."+filez[i].extension+"</a>";	
+							}
+							tab+="</td><td style='padding:4px;'>";
+							tab+=filez[i].updtime;+"</td>";
+
+							tab+="<td>";
+							// Button for making / viewing feedback - note - only button for given feedback to students.
+							if(filez[i].feedback!=="UNK"||displaystate){
+									tab+="<button onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",1);'>Feedback</button>";
+							}
+							tab+="</td>";
+
+							tab+="<td>";
+							if(filez[i].feedback!=="UNK"){
+									tab+=filez[i].feedback.substring(0,64)+"&#8230;";						
+							}else{
+									tab+="&nbsp;";												
+							}
+							tab+="</td>";
+							tab+="</tr>";		
+					}
+			}			
 		}
 		tab+="</tbody>"
 		tab+="</table>"			
 
-		if(foundfile!=null){
-				var filelink=foundfile.filepath+foundfile.filename+foundfile.seq+"."+foundfile.extension;
-				if(ctype=="pdf"){
-						// Copy the file name and generate the preview if we are submitting a .pdf
-						document.getElementById(cfield+"File").innerHTML=foundfile.filename+"."+foundfile.extension;
-						document.getElementById(cfield+"Date").innerHTML=foundfile.updtime;
-						document.getElementById(cfield+"Prev").innerHTML="<embed src='"+filelink+"' width='100%' height='1000px' type='application/pdf'>";
-				}else if(ctype=="zip"){
-						document.getElementById(cfield+"File").innerHTML="<a href='"+filelink+"'>"+foundfile.filename+"."+foundfile.extension;+"</a>";
-						document.getElementById(cfield+"Date").innerHTML=foundfile.updtime;					
-				} else if(ctype=="link"){
-						// Copy the file name and generate the preview if we are submitting a link
-						document.getElementById(cfield+"File").innerHTML=foundfile.filepath;
-						document.getElementById(cfield+"Date").innerHTML=foundfile.updtime;
-						document.getElementById(cfield+"Prev").innerHTML="<iframe src='"+foundfile.filepath+"' width='100%' height='1000px'></iframe>";
-				} 
-		}else if(ctype=="multi"){
-				document.getElementById(cfield+"Prev").innerHTML=tab;
-		}	
+		document.getElementById(cfield+"Prev").innerHTML=tab;
 } 
 	
 
@@ -843,120 +769,82 @@ function makeForm(cfield, ctype){
 //----------------------------------------------------------------------------------
 // show/hide dugga instructions
 //----------------------------------------------------------------------------------
+
 function toggleInstructions(element)
 {
 	$(element).parent().find(".instructions-content").slideToggle("slow");
-}//---------------------------------------------------------------------------------------------------------------
-// Click counter - Used by highscore system implementations in dugga's to count the number of button clicks
-//---------------------------------------------------------------------------------------------------------------
-
-var ClickCounter = {
-	// Used to count clicks
-	score: 0,
-	
-	// Initializes the noClicks variable, called at the start of a dugga
-	initialize: function() {
-		this.score = 0;
-		this.animateClicks();	
-	},
-	
-	// Called whenever a dugga should count a mouse click, e.g., when a user presses a button
-	onClick: function() {
-		// Increments the click counter by one
-		this.score++;
-		
-		// Calls animate clicks to directly update the click counter user interface 
-		this.animateClicks();
-	},
-	
-	//show clicker
-	showClicker: function(){
-		this.animateClicks();
-	},
-	
-	// Updates the click counter user interface in a dugga, uses the same 
-	animateClicks: function() {
-		// Apply some web magic to change the ui counter
-		var str = "<p>";
-		str += this.score;
-		document.getElementById('scoreElement').innerHTML = str;
-	}
 }
-//---------------------------------------------------------------------------------------------------------------
-// Timer - Used in dugga's to count the amount of time spent on a dugga
-//---------------------------------------------------------------------------------------------------------------
 
-var Timer = {	
-	// Determines if the timer should update ui
-	update: 0,
+function disableSave(){
+	document.getElementById("saveDuggaButton").disabled = true;
+}
 
-	// Declare the timer variable, will be accessible from this object in a dugga
-	timer: undefined,
-	
-	// Counts the amount of time spent on a dugga
-	score: 0,
-	
-	// Called at the start of a dugga to initialize the object
-	startTimer: function(){
-		var self = this;
-		
-		// Sets the update interval of the timer, calls animate timer on increment
-		this.timer = setInterval( function(){self.incrementTimer(); self.animateTimer();}, 1000 );
-		
-		// Call animate timer to initialize ui at 00:00:00
-		this.animateTimer();
-	},
-	// Reset the timer.
-	reset: function(){
-		this.score = 0;
+//----------------------------------------------------------------------------------
+// show/hide submission and feedback
+//----------------------------------------------------------------------------------
 
-		// Call animate timer to initialize ui at 00:00:00
-		this.animateTimer();
-	},
-	
-	// Stops the timer from counting, called at the end of a dugga
-	stopTimer: function(){
-		var self = this;
-		clearInterval(self.timer);
+function displayPreview(filepath, filename, fileseq, filetype, fileext, fileindex, displaystate)
+{
+		clickedindex=fileindex;
+		var str ="";
 		
-		// Quick fix
-		this.update = 1;
-	},
-	
-	// Increments the time counter by one
-	incrementTimer: function(){
-		this.score++;
-	},
-	
-	//Show timer
-	showTimer: function(){
-		this.animateTimer();
-	},
-	
-	// Updates the user interface
-	animateTimer: function(){
-		// Calculate hours, minutes and seconds based on timespent
-		var hours = Math.floor(this.score / 3600);
-		var minutes = Math.floor(this.score / 60) % 60;
-		var seconds = this.score % 60;
+		if(displaystate){
+				document.getElementById("markMenuPlaceholderz").style.display="block";		
+		}else{
+				document.getElementById("markMenuPlaceholderz").style.display="none";
+		} 
 
-		// Create a nice looking clock thing with the information we have
-		var str = "<p>";
-		str += hours + ":";
-		
-		if(minutes < 10){
-			str += 0;
+		if (filetype === "text") {
+				str+="<textarea style='width: 100%;height: 100%;box-sizing: border-box;'>"+dataV["files"][inParams["moment"]][fileindex].content+"</textarea>";
+		} else if (filetype === "link"){
+				var filename=dataV["files"][inParams["moment"]][fileindex].content;
+				if(window.location.protocol === "https:"){
+						filename=filename.replace("http://", "https://");
+				}else{
+						filename=filename.replace("https://", "http://");				
+				}
+				str += '<iframe allowtransparency="true" style="background: #FFFFFF;" src="'+filename+'" width="100%" height="100%" />';			
+		} else {
+		 		if (fileext === "pdf"){
+						str += '<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" />'; 			
+		 		} else if (fileext === "zip" || fileext === "rar"){
+		 				str += '<a href="'+filepath+filename+fileseq+'.'+fileext+'"/>'+filename+'.'+fileext+'</a>'; 			
+		 		} else if (fileext === "txt"){
+		 				str+="<pre style='width: 100%;height: 100%;box-sizing: border-box;'>"+dataV["files"][inParams["moment"]][fileindex].content+"</pre>";
+		 		}
 		}
-
-		str += minutes + ":";
-		if(seconds < 10){
-			str += 0;
+		document.getElementById("popPrev").innerHTML=str;
+		if (dataV["files"][inParams["moment"]][clickedindex].feedback !== "UNK"){
+				document.getElementById("responseArea").innerHTML = dataV["files"][inParams["moment"]][clickedindex].feedback;
+		} else {
+				document.getElementById("responseArea").innerHTML = "No feedback given.";
 		}
-		str += seconds;
-
-		// Push new value to ui thing
-		if(this.update == 0) {
-			document.getElementById('scoreElement').innerHTML = str;
+		
+		$("#previewpopover").css("display", "block");
+}
+function displayDuggaStatus(answer,grade,submitted,marked){
+		var str="<div style='display:flex;justify-content:center;align-items:center;'><div class='LightBox'>";
+		// Get proper dates
+		if(submitted!=="UNK") {
+			var t = submitted.split(/[- :]/);
+			submitted=new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
 		}
-	}
-}	
+		if(marked!=="UNK") {
+			var tt = marked.split(/[- :]/);
+			marked=new Date(tt[0], tt[1]-1, tt[2], tt[3], tt[4], tt[5]);
+		}
+		
+		if (answer == "UNK" && (grade == "UNK" || grade <= 1)){
+				str+="<div class='StopLight WhiteLight' style='margin:4px;'></div></div><div>Dugga not yet submitted!</div>";
+		} else if (submitted != "UNK" && answer != "UNK" && marked == "UNK" || ( submitted !== "UNK" && marked !== "UNK" && (submitted.getTime() > marked.getTime()))) {
+				str+="<div class='StopLight YellowLight' style='margin:4px;'></div></div><div>Dugga submitted."+submitted+"</div>";
+		} else if (grade != "UNK" && grade <= 1 && (submitted.getTime() < marked.getTime()) ) {
+				str+="<div class='StopLight RedLight' style='margin:4px;'></div></div><div>Dugga marked as fail: "+marked+"</div>";
+		} else if (grade > 1) {
+				str+="<div class='StopLight GreenLight' style='margin:4px;'></div></div><div>Dugga marked as pass: "+marked+"</div>";
+		}
+		
+		str+="</div>";
+		$("#duggaStatus").remove();
+		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
+}

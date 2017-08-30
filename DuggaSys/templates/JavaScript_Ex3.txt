@@ -1,0 +1,26 @@
+#### **Overview**
+This example demonstrates how user input may be validated.
+
+#### **Was any input given?**
+An example of how this may be checked can be seen in the checkIfEmpty function. The function checks if the value attribute is equal to the empty string to determine if any input was given and displays an alert box informing the user if the input field was empty or not. The function is called when the onclick event is triggered by the click on a button. Another way to do this would be to check the length of the input, if the length of the input is longer than 0 some input was given. 
+
+#### **Is the input a number?**
+An example of this can be seen in the checkIfNumber function. This function checks if the given input is a number by using the isNaN function. isNaN takes a variable as an argument and returns true if the variable doesn't store a number and false if it does store a number. 
+
+#### **Does the input begin with a capital letter?**
+The checkIfBeginsWithCapitalLetter function showcases how the input can be checked to determine if the first letter is a capital letter or not. The function uses the toUpperCase method to determine if the first letter of the given input is equal to the capitalization of the same letter. 
+
+#### **Is the length of the input correct?**
+Sometimes the input has to be of a certain length to be valid. How this may be checked can be seen in the checkLength function. This function is called as the user types text into a textbox. More specifically the function is called when a key is released using the onkeyup event. There is also a onkeydown event. Try editing the code to see the difference in behavior between these two event triggers. 
+
+#### **Does the input contain a specific text?**
+In some cases the input has to contain a specific character or string to be valid, e.g. e-mail addresses. One way to perform this check can be seen in the checkIfContainsString function. This function checks whether the input contains a given string at any position in the given input. In this function the check is done case insensitive by converting the strings to be compared to lower case letters. 
+
+#### **Has a valid option been selected in a selectbox?**
+The checkSelection function showcases how selectbox elements may be checked to make sure that a valid option is selected. All options in a select element are stored in the options array. This array may be traversed as any other array. The index of the option currently selected is stored in selectedIndex. 
+
+#### **How many checkboxes has been selected?**
+Sometimes a user is requiered to make multiple selections amongst several checkboxes. The checkNumberOfCheckboxesSelected function shows how you may check that the correct number of checkboxes has been selected. 
+
+#### **Preventing data to be sent until all input is valid**
+It is useful to be able to prevent the user from sending any data until all input is valid. This can be done in several different ways. One way this may be done is making the button performing the data transaction disabled until all input is valid. An example of this can be seen in the validateInput function. Another way is to make this check when the button is clicked but not sending any data until all input is valid.

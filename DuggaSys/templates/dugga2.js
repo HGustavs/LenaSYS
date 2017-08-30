@@ -19,6 +19,7 @@ Example seed
 
 var dw,dpos,dwid,dhei,bw,lpos,popclass;
 var hc=null;
+var score = -1;
 
 //----------------------------------------------------------------------------------
 // Setup
@@ -77,6 +78,21 @@ function returnedDugga(data)
 			}
 		}			
 	}	  
+	// Teacher feedback
+		if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
+			// No feedback
+	} else {
+			var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+			var feedbackArr = data["feedback"].split("||");
+			for (var k=feedbackArr.length-1;k>=0;k--){
+				var fb_tmp = feedbackArr[k].split("%%");
+				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+			} 		
+			fb += "</tbody></table>";
+			document.getElementById('feedbackTable').innerHTML = fb;		
+			document.getElementById('feedbackBox').style.display = "block";
+	}
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
 //----------------------------------------------------------------------------------
@@ -131,16 +147,17 @@ function reset()
 	document.getElementById('H5').innerHTML="0";
 }
 
-function showFacit(param, uanswer, danswer, userStats)
+function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
-	document.getElementById('duggaTime').innerHTML=userStats[0];
-	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-	document.getElementById('duggaClicks').innerHTML=userStats[2];
-	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-	$("#duggaStats").css("display","block");
-	
-	var p = JSON.parse(decodeURIComponent(param));
-		
+	if (userStats != null){
+		document.getElementById('duggaTime').innerHTML=userStats[0];
+		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+		document.getElementById('duggaClicks').innerHTML=userStats[2];
+		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+		$("#duggaStats").css("display","block");
+	}
+	$("#feedbackBox").css("display","none");
+	var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
 	$("#fargnamn").html(p['colorname']);
 	$("#fargen").attr("src", "templates/color_"+p['color']+".png");
 	
@@ -156,6 +173,20 @@ function showFacit(param, uanswer, danswer, userStats)
 			document.getElementById('H5').innerHTML=previous[9];
 		}
 	}			
+	
+	// Teacher feedback
+	var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+	if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
+		var feedbackArr = feedback.split("||");
+		for (var k=feedbackArr.length-1;k>=0;k--){
+			var fb_tmp = feedbackArr[k].split("%%");
+			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+		} 		
+	}
+	fb += "</tbody></table>";
+	if (feedback !== undefined){
+			document.getElementById('teacherFeedbackTable').innerHTML = fb;
+	}
 	
 	$('.fouter').css("background","#"+previous[4]+previous[5]+previous[6]+previous[7]+previous[8]+previous[8]);
 		

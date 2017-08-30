@@ -13,6 +13,7 @@ Example seed
 */
 
 //------------==========########### GLOBALS ###########==========------------
+var score = -1;
 var running;
 var retdata = null;
 var canvas = null;
@@ -130,6 +131,21 @@ function returnedDugga(data)
 			drawGraphics();
 		}
 	}
+	// Teacher feedback
+	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
+			// No feedback
+	} else {
+		var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+		var feedbackArr = data["feedback"].split("||");
+		for (var k=feedbackArr.length-1;k>=0;k--){
+			var fb_tmp = feedbackArr[k].split("%%");
+			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+		} 		
+		fb += "</tbody></table>";
+			document.getElementById('feedbackTable').innerHTML = fb;		
+			document.getElementById('feedbackBox').style.display = "block";
+	}
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
 function reset()
@@ -179,14 +195,15 @@ function saveClick()
 	saveDuggaResult(bitstr);
 }
 
-function showFacit(param, uanswer, danswer, userStats)
+function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
-	document.getElementById('duggaTime').innerHTML=userStats[0];
-	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-	document.getElementById('duggaClicks').innerHTML=userStats[2];
-	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-	$("#duggaStats").css("display","block");
-
+	if (userStats != null){
+		document.getElementById('duggaTime').innerHTML=userStats[0];
+		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+		document.getElementById('duggaClicks').innerHTML=userStats[2];
+		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+		$("#duggaStats").css("display","block");
+	}
 	canvas = document.getElementById("myCanvas");
 	ctx = canvas.getContext('2d');
 	ctx.font = "18px Arial";
@@ -194,7 +211,7 @@ function showFacit(param, uanswer, danswer, userStats)
 
 	
 	if (canvas) {
-		retdata = jQuery.parseJSON(decodeURIComponent(param));
+		retdata = jQuery.parseJSON(param);
 
 			boxes.length = 0; // Clear array.
 			evalstr = retdata["code"];
@@ -237,19 +254,25 @@ function showFacit(param, uanswer, danswer, userStats)
 
 			drawGraphics();
 		}
+		// Teacher feedback
+		var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+		if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
+			var feedbackArr = feedback.split("||");
+			for (var k=feedbackArr.length-1;k>=0;k--){
+				var fb_tmp = feedbackArr[k].split("%%");
+				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+			} 		
+		}
+		fb += "</tbody></table>";
+		if (feedback !== undefined){
+				document.getElementById('teacherFeedbackTable').innerHTML = fb;
+		}
 	}
 
 	function closeFacit() 
 	{
 		clearInterval(tickInterval);
 		running = false;
-	}
-
-	function defaultDuggaParameters() 
-	{
-		if (p === null){
-			return {"instructions":"Move and resize the box with id greger until it matches the required format.","query":"Make the greger-box 100px x 100px and with a 25px left side margin and 50px bottom padding",[]};
-		}
 	}
 
 //--------------------================############================--------------------

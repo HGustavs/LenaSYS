@@ -13,6 +13,7 @@ Example seed
 */
 
 //------------==========########### GLOBALS ###########==========------------
+var score = -1;
 var running;
 var retdata = null;
 var canvas = null;
@@ -127,6 +128,21 @@ function returnedDugga(data)
 		}).height(max);
 
 	}
+	// Teacher feedback
+	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
+			// No feedback
+	} else {
+			var fb = "<table><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+			var feedbackArr = data["feedback"].split("||");
+			for (var k=feedbackArr.length-1;k>=0;k--){
+				var fb_tmp = feedbackArr[k].split("%%");
+				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+			} 
+			fb += "</tbody></table>";
+			document.getElementById('feedbackTable').innerHTML = fb;		
+			document.getElementById('feedbackBox').style.display = "block";
+	}
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
 function reset()
@@ -176,12 +192,14 @@ function saveClick()
 	saveDuggaResult(bitstr);
 }
 
-function showFacit(param, uanswer, danswer, userStats)
+function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
-	document.getElementById('duggaTime').innerHTML=userStats[0];
-	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-	document.getElementById('duggaClicks').innerHTML=userStats[2];
-	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+	if (userStats != null){
+		document.getElementById('duggaTime').innerHTML=userStats[0];
+		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+		document.getElementById('duggaClicks').innerHTML=userStats[2];
+		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+	}
 	$("#duggaStats").css("display","none");
 
 	/* reset */
@@ -248,6 +266,19 @@ function showFacit(param, uanswer, danswer, userStats)
 
 			document.getElementById("validation-col").style.height = (markWindowHeight-55)+"px";
 
+	}
+	// Teacher feedback
+	var fb = "<table><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+	if (feedback !== undefined){
+		var feedbackArr = feedback.split("||");
+		for (var k=feedbackArr.length-1;k>=0;k--){
+			var fb_tmp = feedbackArr[k].split("%%");
+			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+		} 		
+	}
+	fb += "</tbody></table><br><textarea id='newFeedback'></textarea>";
+	if (feedback !== undefined){
+			document.getElementById('teacherFeedbackTable').innerHTML = fb;
 	}
 
 }

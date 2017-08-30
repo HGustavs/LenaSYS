@@ -12,26 +12,27 @@
 				$inString=preg_replace("/\>/", "&gt;",$inString);
 
 				$inString=preg_replace("/^\~{3}(\r\n|\n|\r)/m", "~~~@@@",$inString);
+				$inString=preg_replace("/^\=\|\=(\r\n|\n|\r)/m", "=|=&&&",$inString);
 				
 				$str="";
 
-				$codearray=explode('~~~', $inString);
-				$kodblock=0;
+				//$codearray=explode('~~~', $inString);
+				$codearray=preg_split("/\~{3}|\=\|\=/", $inString);
 				
-				// This is a straight 1:1 port of the javascript code
+				$specialBlockStart=true;
 				foreach ($codearray as $workstr) {
-						if(substr($workstr,0,3)==="@@@"){
-								$kodblock=!$kodblock;
-								$workstr=substr($workstr,3);
+						if(substr($workstr,0,3)==="@@@" && $specialBlockStart===true){
+								$specialBlockStart=false;
+								$str.="<pre><code>".substr($workstr,3)."</code></pre>";
+						} else if (substr($workstr,0,3)==="&&&" && $specialBlockStart===true){
+								$specialBlockStart=false;
+								$str.="<div class='console'><pre>".substr($workstr,3)."</pre></div>";
+						} else if ($workstr !== "") {
+								$str.=markdownBlock(preg_replace("/^\&{3}|^\@{3}/","",$workstr));
+								$specialBlockStart=true;
+						} else {
+								$str.=$workstr;
 						}
-
-						if($kodblock && $workstr != ""){
-								$workstr="<pre><code>".$workstr."</code></pre>";
-						}else{
-								$workstr=markdownBlock($workstr);
-						}
-    				
-    				$str.=$workstr;
 				}
 		
 				return $str;
@@ -68,7 +69,7 @@
 				$instring= str_replace ("</ol>\n<ol>","",$instring);
 
 				//Regular expression for line
-				$instring = preg_replace("/\-{3,}/", "<hr>",$instring);
+				$instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
 
 				// Hard line break support
 				$instring= preg_replace ("/(\r\n|\n|\r){3}/","<br><br>",$instring);
@@ -99,8 +100,8 @@
 				$instring = preg_replace("/\={2}\{(.*?\S)}\={2}/","<span id='placeholder-$1'></span>",$instring);
 
 				// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
-				// +++image.png,image.gif+++
-				$instring = preg_replace("/\+{3}(.*?\S),(.*?\S)\+{3}/","<img class='gifimage' src='$1' onclick=\"showGif('$2');\" target='_blank' />",$instring);
+				// +++image.png,image.gif,id+++
+				$instring = preg_replace("/\+{3}(.*?\S),(.*?\S)\+{3}/","<div class='gifwrapper'><img class='gifimage' src='$1' onclick=\"toggleGif('$2', '$1', this);\" target='_blank' /><img class='playbutton' src='../Shared/icons/PlayT.svg'></div>",$instring);
 
 				// Right Arrow for discussing menu options
 				$instring = preg_replace("/\s[\-][\>]\s/","&rarr;",$instring);
@@ -110,15 +111,18 @@
 
 				// Importand Rows in code file in different window ===
 				// ===filename,start row,end row, text to show===
-				$inString = preg_replace("/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/", "<span class='impword' onmouseover=\"highlightRows(\'$1\',$2,$3)\" onmouseout=\"dehighlightRows(\'$1\',$2,$3)\">$4</span>", $instring);
-				
+				$instring = preg_replace("/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/", "<span class='impword' onmouseover=\"highlightRows(\'$1\',$2,$3)\" onmouseout=\"dehighlightRows(\'$1\',$2,$3)\">$4</span>", $instring);
+
 				// Three or more dots should always be converted to an ellipsis.
-				$instring = preg_replace("/\.{3,}/","&hellip;",$instring);
+				$instring = preg_replace("/\.{3,}/", "&hellip;", $instring);
 				
-				// Iframe, website inside a inline frame
-				// (--url,width,height--)
-				$instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>',$instring);
+				// Iframe, website inside a inline frame - (--url,width,height--)
+				$instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", "<iframe src='$1' style='width:$2px; height:$3px;'></iframe>", $instring);
 				
+				// Quote text, this will be displayed in an additional box
+				// ^ Text you want to quote ^
+				$instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote><br/>", $instring);
+
 				return $instring;		
 		}
 
@@ -187,9 +191,10 @@
 					$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 				}
 			}else if($fname!="UNK"){
-				$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE (cid=:cid or isGlobal='1') and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
+				$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE (cid=:cid or isGlobal='1') and (vers is null OR vers=:vers) and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':fname', $fname);
+				$query->bindParam(':vers', $coursevers);
 				$result = $query->execute();
 				if($row = $query->fetch(PDO::FETCH_ASSOC)){
 					$filekind=$row['kind'];

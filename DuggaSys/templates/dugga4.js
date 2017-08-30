@@ -16,6 +16,7 @@ Example seed
 */
 
 //------------==========########### GLOBALS ###########==========------------
+var score = -1;
 var running;
 var retdata = null;
 var canvas = null;
@@ -39,10 +40,22 @@ function setup()
 	canvas = document.getElementById('a');
 	if (canvas) {
 		context = canvas.getContext("2d");
+		context.clearRect(0, 0, canvas.width, canvas.height);
+
 		tickInterval = setInterval("tick();", 50);
 
 		AJAXService("GETPARAM", { }, "PDUGGA");
 	}
+	canvas.addEventListener('click', function() { 
+			if (running) {
+					running = false;
+					cancelAnimationFrame(renderId);
+			} else {
+					running = true;
+					renderId = requestAnimationFrame(foo);
+			}
+	
+	}, false);
 }
 
 function returnedDugga(data) 
@@ -55,38 +68,64 @@ function returnedDugga(data)
 		alert("UNKNOWN DUGGA!");
 	} else {
 		if (canvas) {
-			showDuggaInfoPopup();
+			//showDuggaInfoPopup();
 			var studentPreviousAnswer = "";
 
 			retdata = jQuery.parseJSON(data['param']);
 			variant = retdata["variant"];
 
 			if (data["answer"] !== null || data["answer"] !== "UNK") {
-				var previous = data['answer'].split(',');
-				previous.shift();
-				previous.pop();
+					var previous = data['answer'].split(',');
+					previous.shift();
+					previous.pop();
 
-				// Add previous handed in dugga
-				operationList = [];
-				for (var i = 0; i < previous.length; i++) {
-					if (previous[i] !== ""){
-						operationList.push([operationsMap[previous[i]], previous[i]]);						
+					// Clear Op list
+					document.getElementById("operationList").innerHTML="";
+					// Add previous handed in dugga
+					for (var i = 0; i < previous.length; i++) {
+							if (previous[i] !== ""){
+									var newTableBody = "<tr id='v" + i +"'>";
+									newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
+									newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
+									newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
+									newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+									newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
+									newTableBody += "</tr>";
+										
+									$("#operationList").append(newTableBody);						
+							}
 					}
-				}
-				renderOperationList();
 			}
 
-			foo();
+			if (running) {
+				renderId = requestAnimationFrame(foo);
+			} else {
+				cancelAnimationFrame(renderId);
+			}
 		}
 	}
+	// Teacher feedback
+	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
+			// No feedback
+	} else {
+			var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+			var feedbackArr = data["feedback"].split("||");
+			for (var k=feedbackArr.length-1;k>=0;k--){
+				var fb_tmp = feedbackArr[k].split("%%");
+				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+			} 		
+			fb += "</tbody></table>";
+			document.getElementById('feedbackTable').innerHTML = fb;		
+			document.getElementById('feedbackBox').style.display = "block";
+	}
+	$("#submitButtonTable").appendTo("#content");
+	$("#lockedDuggaInfo").appendTo("#content");
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
 function reset()
 {
 	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-
-	operationList = [];
-	renderOperationList();
 
 	Timer.stopTimer();
 	Timer.score=0;
@@ -108,15 +147,13 @@ function saveClick()
 		score = ClickCounter.score;
 	}
 
-	// Loop through all bits
+	// Loop through all operations
 	bitstr = ",";
-
-	for (var i = 0; i < operationList.length; i++) {
-		bitstr += operationList[i][1];
-		if (i < operationList.length - 1){ bitstr += ","; }
-	}
-
-	bitstr += ",T " + elapsedTime;
+	
+	$("*[id*=opCode_]").each(function (){
+			bitstr+=this.innerHTML + ",";
+	});
+	bitstr += "T " + elapsedTime;
 
 	bitstr += " " + window.screen.width;
 	bitstr += " " + window.screen.height;
@@ -128,28 +165,38 @@ function saveClick()
 	saveDuggaResult(bitstr);
 }
 
-function showFacit(param, uanswer, danswer, userStats)
+function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
-	document.getElementById('duggaTime').innerHTML=userStats[0];
-	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-	document.getElementById('duggaClicks').innerHTML=userStats[2];
-	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-	$("#duggaStats").css("display","block");
-
+	if (userStats != null){
+		document.getElementById('duggaTime').innerHTML=userStats[0];
+		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+		document.getElementById('duggaClicks').innerHTML=userStats[2];
+		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+		$("#duggaStats").css("display","block");
+	}
 	/* reset */
 	sf = 2.0;
 	speed = 0.1;
 	v = 0;
 	pushcount = 0;
 	elapsedTime = 0;
+	if (tickInterval != undefined){
+			clearInterval(tickInterval);
+	}
+	
+	if (renderId != undefined){
+			cancelAnimationFrame(renderId);
+			renderId=undefined;
+	}
 
 	running = true;
 	canvas = document.getElementById('a');
 	context = canvas.getContext("2d");
+	context.clearRect(0, 0, canvas.width, canvas.height);
 	tickInterval = setInterval("tick();", 50);
 	var studentPreviousAnswer = "";
 
-	retdata = jQuery.parseJSON(decodeURIComponent(param));
+	retdata = jQuery.parseJSON(param);
 	variant = retdata["variant"];
 
 	if (uanswer !== null || uanswer !== "UNK") {
@@ -158,16 +205,44 @@ function showFacit(param, uanswer, danswer, userStats)
 		previous.pop();
 
 		// Add previous handed in dugga
-		operationList = [];
+		// Clear Op list
+		document.getElementById("operationList").innerHTML="";
+		// Add previous handed in dugga
 		for (var i = 0; i < previous.length; i++) {
-			if (previous[i] !== ""){
-				operationList.push([operationsMap[previous[i]], previous[i]]);						
-			}
+				if (previous[i] !== ""){
+						var newTableBody = "<tr id='v" + i +"'>";
+						newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
+						newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
+						newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().after($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
+						newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+						newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
+						newTableBody += "</tr>";
+							
+						$("#operationList").append(newTableBody);						
+				}
 		}
-		renderOperationList();
 	}
 
-	foo();
+	if (running) {
+			renderId = requestAnimationFrame(foo);
+	} else {
+			cancelAnimationFrame(renderId);
+	}
+	
+	// Teacher feedback
+	var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+	if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
+		var feedbackArr = feedback.split("||");
+		for (var k=feedbackArr.length-1;k>=0;k--){
+			var fb_tmp = feedbackArr[k].split("%%");
+			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+		} 		
+	}
+	fb += "</tbody></table>";
+	if (feedback !== undefined){
+			document.getElementById('teacherFeedbackTable').innerHTML = fb;
+	}
+
 }
 
 function closeFacit() 
@@ -193,6 +268,9 @@ function fitToContainer()
 		canvas.width = window.innerHeight - 100;
 		canvas.height = canvas.width;
 	}
+
+	document.getElementById("opTableContainer").style.maxHeight=(canvas.height-25-38)+"px";
+	document.getElementById("container").style.height=(canvas.height-50)+"px";
 
 	sf = canvas.width / 200;
 }
@@ -334,61 +412,61 @@ function drawCross(cx, cy, col, size)
 	context.stroke();
 }
 
-function renderOperationList()
-{
-	// Render table
-	var newTableBody = "<tbody>";
-	for (var i=0; i<operationList.length;i++){
-		newTableBody += "<tr id='v" + i +"'>";
-		newTableBody += '<td style="font-size:11px; text-align: right;">op'+i+'</td>';
-		newTableBody += '<td><p style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'">'+operationList[i][0]+'</p></td>';
-		if (i === 0){
-			newTableBody += '<td><button disabled onclick="moveOperationUp('+i+');">&uarr;</button></td>';
+function toggleSelectOperation(e){
+		if ($(e).closest("tr").hasClass("selectedOp")){
+				$(e).closest("tr").removeClass("selectedOp");
+				document.getElementById("addOpButton").value = "Add Op.";
+				$("#operationList").find("tr:odd").css('background-color', '#dad8db');
 		} else {
-			newTableBody += '<td><button onclick="moveOperationUp('+i+');">&uarr;</button></td>';			
-		}
-		if (i === operationList.length-1){
-			newTableBody += '<td><button disabled onclick="moveOperationDown('+i+');">&darr;</button></td>';
-		} else {
-			newTableBody += '<td><button onclick="moveOperationDown('+i+');">&darr;</button></td>';			
-		}
-		newTableBody += '<td><button onclick="deleteOperation('+i+');">X</button></td>';			
-		newTableBody += "</tr>";
-	}
-	newTableBody += "</tbody>";
-	document.getElementById('operationList').innerHTML = newTableBody;	
-
+				$(e).closest("tr").addClass("selectedOp");
+				document.getElementById("addOpButton").value = "Change Op.";
+				// Unselect any previous selected row
+				$("#operationList").find("tr").each(function (){
+						if (this.id != $(e).closest("tr").attr('id')) $(this).removeClass("selectedOp");
+				});
+		}		
 }
 
 function newbutton() 
 {
 	ClickCounter.onClick();
+	var newOp = $('#function > optgroup > option:selected').text();
+	var newOpCode = $("#function").val();
 
-	operationList.push([$('#function > option:selected').text(),$("#function").val()]);
-	
-	renderOperationList();
+	if($("#operationList").find("tr").hasClass("selectedOp")){
+			$(".selectedOp").each(function(){
+				$(this).find("*[id^=op_]").html(newOp);
+				$(this).find("*[id^=opCode_]").html(newOpCode);
+				toggleSelectOperation(this);
+			});
+	} else {
+		var i = 0;
+		$('#operationList tr').each(function (){
+				var tmp = this.id.replace("v","");
+				if (tmp > i) i=tmp;
+		});
+		i++;
+		var newTableBody = "<tr id='v" + i +"'>";
+		newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
+		newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+i+'" style="display:none">'+newOpCode+'</span></td>';
+		newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
+		newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+		newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
+		newTableBody += "</tr>";
+			
+		$("#operationList").append(newTableBody);
+		refreshOpNum();
+	}
 
 }
 
-function moveOperationUp(index) 
-{
-	ClickCounter.onClick();
-	operationList.move(index, index-1);
-	renderOperationList();
-}
-
-function moveOperationDown(index) 
-{
-	ClickCounter.onClick();
-	operationList.move(index, index+1);
-	renderOperationList();
-}
-
-function deleteOperation(index) 
-{
-	ClickCounter.onClick();
-	operationList.splice(index, 1);
-	renderOperationList();
+function refreshOpNum(){
+	var idx = 1;
+	$("*[id^=opNum]").each(function (){
+			this.innerHTML = idx++;
+	});
+	$("#operationList").find("tr:odd").css('background-color', '#dad8db');
+	$("#operationList").find("tr:even").css('background-color', '#ffffff');
 }
 
 function drawCommand(cstr) 
@@ -524,9 +602,9 @@ function foo()
 
 	context.globalAlpha = 1.0;
 
-	for (i = 0; i<operationList.length;i++){
-		drawCommand(operationList[i][1]);
-	}
+	$("*[id*=opCode_]").each(function (){
+			drawCommand(this.innerHTML);
+	});
 
 	drawCross(0, 0, "#f64", 8);
 
@@ -540,7 +618,9 @@ function foo()
 	drawsun(10 * sf);
 
 	if (running) {
-		setTimeout("foo();", 50);
+			renderId = requestAnimationFrame(foo);
+	} else {
+			cancelAnimationFrame(renderId);
 	}
 
 }

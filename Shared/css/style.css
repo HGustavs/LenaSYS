@@ -1,25 +1,61 @@
-@import url("hack-extended.min.css");
-
-html, body, div, span, applet, object,
-iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+/* --------------================################================-------------- *
+ *                               Fonts                                          *
+ * --------------================################================-------------- */
+@font-face{
+  font-family:'Hack';
+  src:url('../fonts/eot/hack-regular-webfont.eot?v=2.019');
+  src:url('../fonts/eot/hack-regular-webfont.eot?#iefix&v=2.019') 
+  format('embedded-opentype'),url('../fonts/woff2/hack-regular-webfont.woff2?v=2.019') 
+  format('woff2'),url('../fonts/woff/hack-regular-webfont.woff?v=2.019') 
+  format('woff'),url('../fonts/web-ttf/hack-regular-webfont.ttf?v=2.019') 
+  format('truetype');font-weight:400;font-style:normal
+}
+@font-face{
+  font-family:'Hack';
+  src:url('../fonts/eot/hack-bold-webfont.eot?v=2.019');
+  src:url('../fonts/eot/hack-bold-webfont.eot?#iefix&v=2.019') 
+  format('embedded-opentype'),url('../fonts/woff2/hack-bold-webfont.woff2?v=2.019') 
+  format('woff2'),url('../fonts/woff/hack-bold-webfont.woff?v=2.019') 
+  format('woff'),url('../fonts/web-ttf/hack-bold-webfont.ttf?v=2.019') 
+  format('truetype');font-weight:700;font-style:normal
+}
+@font-face{
+  font-family:'Hack';
+  src:url('../fonts/eot/hack-italic-webfont.eot?v=2.019');
+  src:url('../fonts/eot/hack-italic-webfont.eot?#iefix&v=2.019') 
+  format('embedded-opentype'),url('../fonts/woff2/hack-italic-webfont.woff2?v=2.019') 
+  format('woff2'),url('../fonts/woff/hack-italic-webfont.woff?v=2.019') 
+  format('woff'),url('../fonts/web-ttf/hack-italic-webfont.ttf?v=2.019') 
+  format('truetype');font-weight:400;font-style:italic
+}
+@font-face{
+  font-family:'Hack';
+  src:url('../fonts/eot/hack-bolditalic-webfont.eot?v=2.019');
+  src:url('../fonts/eot/hack-bolditalic-webfont.eot?#iefix&v=2.019') 
+  format('embedded-opentype'),url('../fonts/woff2/hack-bolditalic-webfont.woff2?v=2.019') 
+  format('woff2'),url('../fonts/woff/hack-bolditalic-webfont.woff?v=2.019') 
+  format('woff'),url('../fonts/web-ttf/hack-bolditalic-webfont.ttf?v=2.019') 
+  format('truetype');font-weight:700;font-style:italic
+}
+@font-face{ 
+  font-family: 'Ubuntu Mono';
+  src: url('../fonts/eot/ubuntu-mono-webfont.eot');
+  src: url('../fonts/eot/ubuntu-mono-webfont.eot?iefix') format('eot'),
+  url('../fonts/woff/ubuntu-mono-webfont.woff') format('woff'),
+  url('../fonts/web-ttf/ubuntu-mono-webfont.ttf') format('truetype'),
+  url('../fonts/svg/ubuntu-mono-webfont.svg#webfont') format('svg');
+}
+/* --------------================################================-------------- *
+ *                                   Generics                                   *
+ * --------------================################================-------------- */
+html, body {
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
-    font: inherit;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing: antialiased;
+}
+body {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 .listbar{
     margin:0px auto;
@@ -36,21 +72,35 @@ th, td {
     padding: 0;
 }
 h1 {
-    color: #fff;
+    /*color: #fff;    
     font-size: 1.8em;
     line-height: 1.4em;
+    */
+    font-size:24px;
+    margin:2px 0px 10px 0px;
+    padding:0px;
 }
 h2 {
-    font-size: 1.5em;
-    line-height: 1.5em;
+    font-size: 18px;
+    margin:1px 0px 8px 0px;
+    padding:0px;
 }
 h3 {
-    font-size: 1.3em;
-    line-height: 1.3em;
+    font-size: 16px;
+    margin:4px 0px 6px 0px;
+    padding:0px;
+    font-weight:bold;
+    border-bottom:2px solid #614875;
+
+}
+.instructions-container h3 {
+    border-bottom:none;
+	
 }
 h4 {
-    font-size: 1.2em;
-    line-height: 1.5em;
+    font-size: 16px;
+    margin:1px 0px 8px 0px;
+    padding:0px;
 }
 body {
     background: #ddd;
@@ -59,6 +109,23 @@ hr {
     border: 0;
     border-bottom: 1px dashed #ccc;
     background: #999;
+}
+
+
+.hidden {
+	opacity:0.5;
+	border-radius:4px;
+	margin-left:16px;
+}
+
+p {
+    margin: .5em auto .5em auto;
+}
+
+/* ---- ---- ---- --- Files page --- ---- ---- ---- */
+
+.fileed-row-wrapper{
+	margin-top: 10px;
 }
 
 /* --------------================################================-------------- *
@@ -71,16 +138,13 @@ hr {
     text-align:center;
     padding: 10px;
     font-size: 10pt;
-    font-family: Calibri,Sans-Serif;
 }
 
 .err{
-
     color:#FFE;
     background-color:#964C4D;
     /* border:2px solid #964C4D; */
     border-radius:10px;
-    font-family: Calibri,Sans-Serif;
     display: block;
     box-shadow:0px 2px 4px #DCD;
     padding:8px;
@@ -88,13 +152,9 @@ hr {
 }
 
 #content {
-    position:absolute;
     background: #fff;
-    top:50px;
-    left:0;
-    right:0;
-    bottom:0;
-    padding: 15px 10px 5px 10px;
+    min-height: calc(100vh - 90px);
+    padding: 65px 10px 25px 10px;
 }
 
 #accessedcontent {
@@ -161,7 +221,6 @@ hr {
     text-align: center;
     color:#775886;
     font-size: 18pt;
-    font-family: Calibri,Sans-Serif;
     display: block;
     background-color: #FFF;
     padding-top:7px;
@@ -177,13 +236,29 @@ hr {
     text-align: center;
     color:#775886;
     font-size: 14pt;
-    font-family: Calibri,Sans-Serif;
     display: block;
     background-color: #fff;
     padding-top:7px;
     min-height:30px;
     margin-right:8px;
     padding-right:8px;
+}
+
+.public {
+  
+}
+
+.hidden {
+    opacity:0.3 !important;
+}
+
+.login {
+    color:#612 !important;
+}
+
+.deleted {
+    text-decoration: line-through !important;
+    opacity:0.3 !important;
 }
 
 #Sectionlist{
@@ -195,8 +270,7 @@ hr {
 }
 
 .item {
-    font-family: Calibri,Sans-Serif;
-    padding-top:7px;
+    padding-top:4px;
     min-height:30px;
     font-size: 14pt;
 }
@@ -225,16 +299,16 @@ hr {
 }
 
 #Sectionlist .spacerLeft {
-    height:32px;
+    height:34px;
     width:20px;
-    margin-left:22px;
+    margin-left:20px;
     border-left:2px solid black;
 }
 
 #Sectionlist .spacerEnd {
-    height:16px;
+    height:18px;
     width:20px;
-    margin-left:22px;
+    margin-left:20px;
     margin-bottom: 14px;
     border-left:2px solid black;
     border-bottom: 2px solid black;
@@ -254,7 +328,7 @@ hr {
     text-align: center;
     color: #fff;
     display: block;
-    font-family: Calibri,Sans-Serif;
+/*    font-family: Calibri,Sans-Serif;*/
     font-size:18pt;
     background-color: #614875;
     clear:both;
@@ -298,57 +372,64 @@ hr {
 			background-color:#eae8eb;
 }
 
-.WhiteLight{
-		width:22px;
-		height:22px;
-		margin: 0px 10px;
-		background: radial-gradient(white, grey, white);
-		border-radius:11px;
+.LightBox {
+		width:36px;
+		vertical-align:bottom;
+		overflow:hidden;
+}
+
+.LightBoxFilled {
+		width:36px;
+		vertical-align:bottom;
+		overflow:hidden;
+    background-color: #927b9e;
+    border-top-left-radius: 13px;
+    border-bottom-left-radius: 13px;
+}
+
+
+.StopLight {
+		vertical-align:bottom;
+		overflow:hidden;
+		border:1px solid yellow;
+		width:26px;
+		height:26px;
+		margin-left: 6px;
+		margin-right: 2px;
+		margin-top: 4px;
+		margin-bottom: 0px;
+		border-radius:14px;
 		border:1px solid #000;
+}
+
+.WhiteLight{
+		background: radial-gradient(white, grey, white);
 }
 
 
 .YellowLight{
-        width:22px;
-        height:22px;
-        margin: 0px 10px;
 		background: radial-gradient(yellow 50%, grey, white 60%);
-        border-radius:11px;
-        border:1px solid #000;
 }
 
 .RedLight{
-		width:22px;
-		height:22px;
-		margin: 0px 10px;
 		background: radial-gradient(red 55%, grey, white 60%);
-		border-radius:11px;
-        border:1px solid #000;
 }
 
 .GreenLight{
-		width:22px;
-		height:22px;
-		margin: 0px 10px;
 		background: radial-gradient(green 55%, grey, white 60%);
-		border-radius:11px;
-		border:1px solid #000;
 }
 
-.hidden {
-	opacity:0.5;
-	border-radius:4px;
-	margin-left:16px;
+#Sectionlist .hiddensection {
+		opacity: 0.3;
+		color: #000;
 }
 
-p {
-    margin: .5em auto .5em auto;
+#Sectionlist .loginsection{
+		color: #dcb;
 }
 
-/* ---- ---- ---- --- Files page --- ---- ---- ---- */
-
-.fileed-row-wrapper{
-	margin-top: 10px;
+#Sectionlist .loginsectionl{
+		color: #612;
 }
 
 /* --------------================################================-------------- *
@@ -356,7 +437,7 @@ p {
  * --------------================################================-------------- */
 
 header {
-    overflow: hidden;
+    /*overflow: hidden;*/
     color: #fff;
     height: 50px;
     width: 100%;
@@ -384,6 +465,11 @@ header td {
     margin-left: -50px;
     border-style: solid;
     border-width: 1px;
+		display:none;
+}
+
+.navheader {
+    width:100%;
 }
 
 .navButt {
@@ -466,11 +552,11 @@ header td {
 
 #div2
 {
-    width:100%;
-    position: fixed;
+    position: absolute;;
     top: 50px;
     bottom: 0px;
     left:0px;
+    right: 0px;
     background:#fff;
 }
 
@@ -481,51 +567,41 @@ header td {
 
 #resultpopover{
     position:fixed;
-    left:50px;
-    top:70px;
-    right:50px;
-    bottom:50px;
+    left:16px;
+    top:8px;
+    right:16px;
+    bottom:8px;
     z-index:9000;
     box-shadow:2px 2px 4px #000;
     padding:4px;
     background-color: #ccc;
     border: 2px solid #999;
 }
-/* Style for button, reuseble */
-#markButton{
-	position:absolute;
-	right:0px;
-	bottom:0px;
-	width:100px;
-	height:50px;
-	box-shadow:2px 2px 4px #000;
-	margin-bottom:10px;
-	margin-right:10px;
-	
+
+#previewpopover{
+    position:fixed;
+    left:8px;
+    top:8px;
+    right:8px;
+    bottom:8px;
+    z-index:11000;
+    box-shadow:2px 2px 4px #000;
+    padding:4px;
+    background-color: #ccc;
+    border: 2px solid #999;
 }
 
-.markWindow{
-	display:block;
-	padding: 4px;
-	position:absolute;
-	background-color:#ccc;
-	width:600px;
-	height:300px;
-	bottom:0px;
-	box-shadow:2px 2px 4px #000;
-	border: 2px solid #999;
-	bottom:0%;
-    right:30%;
-}
-
-.markWindow textarea{
-	position:absolute;
-	resize:none;
-	height:84%;
-	width:50%;
-	font-family:arial;
-	font-size:14px;
-	margin-top:4px;
+.previewpopover{
+    position:absolute;
+    left:20%;
+    top:58px;
+    right:20%;
+    height: 300px;
+    z-index:11000;
+    box-shadow:2px 2px 4px #000;
+    padding:4px;
+    background-color: #ccc;
+    border: 2px solid #999;
 }
 
 .floatRightBox{
@@ -545,16 +621,6 @@ header td {
 
 
 #overlay {
-    position: fixed;
-    top: 0;
-    background-color: #000;
-    opacity: 0.6;
-    width: 100%;
-    height: 100%;
-    z-index: 8000;
-}
-
-#overlayLock {
     position: fixed;
     top: 0;
     background-color: #000;
@@ -642,19 +708,6 @@ header td {
     left: 50%;
     margin-left: -178px;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
-}
-
-.loginTransparent {
-    display:block;
-    padding:4px;
-    width: 350px;
-    min-height: 100px;
-    z-index: 9000;
-    position: fixed;
-    top: 40%;
-    left: 50%;
-    margin-left: -178px;
-    text-align: center;
 }
 
 .loginBox textarea, #import{
@@ -771,6 +824,8 @@ header td {
     vertical-align: bottom;
     padding-left: 10px;
     cursor:move;
+    display:flex;
+    justify-content: space-around;
 /*  padding-top: 15px; */
 }
 .loginBoxheader h3 {
@@ -778,8 +833,7 @@ header td {
     margin-top: 10px;
     line-height: 0.5em;
     color: #fff;
-    float: left;
-    width: 50%;
+    width: 100%;
 }
 .loginBoxheader div {
     padding: 2px 20px;
@@ -922,6 +976,7 @@ button.option {
 }
 
 input.submit-button {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     background-color:#614875;
     border:0px;
     width:110px;
@@ -939,6 +994,10 @@ input.submit-button {
 input.submit-button:hover {
     background-color:#7B5A96;
     border-radius:4px;
+}
+
+input.submit-button:disabled {
+    opacity: 0.3;
 }
 
 input.submit-button-red {
@@ -981,35 +1040,63 @@ input.new-item-button:hover {
     height:35px;
     text-align: right;
 }
+input.large-button {
+    width:160px !important;
+    height:48px !important;
+    line-height:48px !important;
+}
 
-.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;}
+.list {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;font-size: 16px;}
 
+.list tbody tr:nth-child(odd) { background-color: #ccc; }
 .list td {border-right:2px solid #dbd0d8; line-height:28px;padding-left:8px;}
-.list th {background:#614875; color:#fff;line-height:28px;}
+.list th {background:#614875; color:#fff;line-height:28px; font-weight: bold;}
 
 .innertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
 .innertable td {color:#000;line-height:28px;border:none;}
 
-.list tr:hover { background-color: #dbd0d8; }
+.list tr:hover { /*background-color: #dbd0d8;*/ }
 
 .list--nomargin {
     margin: 0!important;
 }
 
-.markinglist {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8;margin-top:20px;font-family: hack,"Lucida Console", Monaco, monospace; font-size: 12px;}
+.last {
+    width:110px;
+}
 
-.markinglist td {border-right:2px solid #dbd0d8;;padding-left:8px;font-family: hack,"Lucida Console", Monaco, monospace; font-size: 10px; }
-.markinglist th {background:#614875; color:#fff;font-style: italic;}
+.markinglist {width:100%;padding:1px;border-left:2px solid #dbd0d8;border-bottom:2px solid #dbd0d8; font-family: hack,"Lucida Console", Monaco, monospace;}
 
-.markinginnertable {background:#fff;box-shadow:2px 3px 2px #a09098 inset;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;font-family: hack,"Lucida Console", Monaco, monospace; font-size: 12px;}
-.markinginnertable td {color:#000;border:none; font-family: hack,"Lucida Console", Monaco, monospace; font-size: 10px; }
+.markinglist  td {border-right:2px solid #dbd0d8;font-size: 10px;}
+.markinglist  th {background:#614875; color:#fff;font-style: italic; font-size: 12px; white-space: nowrap;}
 
-.markinglist tr:hover { background-color: #dbd0d8; }
+.markinginnertable {background:#fff;border-top: 2px solid #dbd0d8;border-bottom: 2px solid #dbd0d8;}
+.markinginnertable  td {color:#000;border:none; }
+
+
+.markinglist tr:hover {}
+
 
 .markinglist--nomargin {
     margin: 0!important;
 }
 
+.feedback-list caption {
+    border-left:2px solid #dbd0d8;background:#614875; color:#fff;line-height:28px;
+}
+.feedback-list {
+    table-layout:fixed;
+    width:100%;
+    margin-top: 2px!important;
+}
+.feedback-list th,.feedback-list td {
+    font-size: 12px;
+    word-wrap: break-word;
+}
+
+.feedback-list td {
+    line-height: normal;
+}
 
 .Trow{
     font-family: "Lucida Console", Monaco, monospace;
@@ -1190,6 +1277,49 @@ input.new-item-button:hover {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
+/* Modal Content/Box */
+.SwimContentWrap {
+  position: absolute;
+  left: 1%;
+  top: 62px;
+  overflow: auto;
+  padding: 0;
+  margin: auto;
+}
+
+/* The Close Button */
+.SwimClose {
+  color: white;
+  position: absolute;
+  text-align: center;
+  float: right;
+  right: 0px;
+  top: 0px;
+  font-size: 28px;
+  font-weight: bold;
+  height: 30px;
+  width: 30px;
+  cursor:pointer;
+  background-color: rgb(204,63,65);
+}
+
+.SwimClose:hover {
+  opacity: 0.5;
+}
+
+.swimlaneOverlay {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 10000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100vw; /* Full width */
+  height: 100vh; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+}
+
 /* End DuggaSys resulted*/
 /**************************/
 
@@ -1220,7 +1350,7 @@ input.new-item-button:hover {
 
 /* Searchfield UMV */
 .searchfieldTV{
-	font-family: Calibri,sans-serif;
+	/*font-family: Calibri,sans-serif;*/
 	width: 35%;
 	margin-left:25px;
 	margin-top:-40px;
@@ -1250,17 +1380,22 @@ input.new-item-button:hover {
 }
 
 .badge {
-    background-color: #FFF;
-    color: #000;
-    margin-left: 2px;
-    margin-right: 2px;
-    padding:2px;
-    border:1px solid black;
-    border-radius: 5px;
-    font-size: 9px;
-    position:relative;
-    top:-5px;
+    position: absolute;
+    right:2px;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #f00;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px #888;
 }
+
 .submit-button {
     background-color:#614875;
     border:0px;
@@ -1283,106 +1418,395 @@ input.new-item-button:hover {
     background-color:#7B5A96;
     border-radius:4px;
 }
-
-
-/* ---- ---- ---- --- Forum page --- ---- ---- ---- */
-
-
-/* --------------================################================-------------- *
- *                                    Forum                                   *
- * --------------================################================-------------- */
-
-
-
-
- /* --------------================################================-------------- *
-  *                                    Thread                                   *
-  * --------------================################================-------------- */
-
-#threadHeader {
-  clear:both;
-  overflow: hidden;
-  background-color: #eae8eb;
-}
-
-#threadTopic {
-  color: #fff;
-  padding: 10px 25px;
-  float: left;
-  font-size: 24px;
-  background-color: #614875;
+#feedbackTable table {
   width: 100%;
 }
 
-#threadOptions {
-  float: right;
-  margin-right: 25px;
+#feedbackTable tbody tr:nth-child(odd) {
+   background-color: #FFF;
 }
 
-#threadOptions input {
-  margin-right: 10px;
+#feedbackBox {
+    display:none;
+    position:absolute;
+    top:0;
+    right:0;
 }
 
-#threadDescr {
-  padding: 10px 25px;
-  clear: both;
-  color: #000;
-  font-size: 16px;
+.facitPreview {
+    width:200px; 
+    height:200px;
+    overflow:hidden; 
+    position:absolute; 
+    bottom:50px;
+    right:11px;
+    border:1px solid black;
 }
 
-#threadDetails {
-  padding: 10px 25px;
-  clear: both;
-  color: #775886;
-  float: right;
-  display: block;
-  font-size: 14px;
+.facitPopover {
+    overflow:hidden; 
+    position:absolute; 
+    top: 50px;
+    bottom:50px;
+    right:50px;
+    left:50px;
+    border:1px solid black;  
 }
 
-#threadComments {
-  clear:both;
-  margin-top: 25px;
-  overflow: hidden;
-  background-color: #eae8eb;
-}
-#threadCommentsTitle {
-  background-color: #927b9e;
-  color: #fff;
-  padding: 10px 25px;
-  text-align: center;
-  float: left;
-  font-size: 20px;
-  width: 100%;
+#MarkCont a:hover {
+    text-decoration: none;
 }
 
-.threadComment {
-  clear: both;
-  padding: 10px 20px;
-  background-color: #eae8eb;
-  overflow: hidden;
-  border-left: 2px solid #927b9e;
+.loginTransparent {
+	display:block;
+	height: 60px;
+	background-color: #614875;
+	text-align: left;
+}
+
+.loginTransparent img{
+			height: 50px;
+			width: auto;
+			display: inline-block;
+			vertical-align: middle; 
+			margin-left: 20px; 
+			padding: 5px 0px;
+}
+
+.loginTransparent p{
+		display: inline-block;
+		vertical-align: middle;
+		padding-left: 15px;
+		color:#fff;
+}
+
+.pane {
+    border-top: 2px solid  #614875;
+    border-left: 2px solid  #614875;
+    border-right: 2px solid  #614875;
+    display: inline-block;
+    padding: 5px 15px 5px 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color:#000000;
+}
+
+.pane-active {
+    background-color: #614875;
+    color: #FFFFFF;
+}
+
+.pane-header {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.pane-body {
+  border:2px solid #614875;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.fab {
+    position:fixed;
+    width:50px;
+    height:50px;
+    border-radius:25px;
+    line-height:50px;
+    box-shadow:0px 0px 15px #888;
+    bottom:50px;
+    right:50px;
+    font-size:24px;
+    text-align:center;
+    background-color:#fecc56;
+    color:#614875;
+    z-index:4000;
+    border:none;
+    cursor: pointer;
+}
+
+.dugga-pass {
+		border-left: 2px solid rgb(219, 208, 216); 
+		background-color: rgb(221, 255, 238);
+}
+
+.dugga-pass-highlighted {
+		background-color: rgb(181,215,168) !important;
+}
+
+.dugga-pending {
+		border-left: 2px solid rgb(219, 208, 216); 
+		background-color: rgb(255, 255, 221);
+}
+
+.dugga-pending-highlighted {
+		background-color: rgb(215,215,181) !important;
+}
+
+.dugga-fail {
+		border-left: 2px solid rgb(219, 208, 216); 
+		background-color: rgb(255, 170, 170);
+}
+
+.dugga-fail-highlighted {
+		background-color: rgb(215, 155, 155) !important;
+}
+
+.dugga-assigned {
+		border-left: 2px solid rgb(219, 208, 216); 
+		background-color: rgb(248, 232, 248);
+}
+.dugga-assigned-highlighted {
+		background-color: rgb(208,192,208) !important;
+}
+
+.dugga-unassigned {
+		border-left: 2px solid rgb(219, 208, 216); 
+		background-color: rgb(255, 255, 255);
+}
+
+.dugga-unassigned-highlighted {
+		background-color: rgb(215,215,215) !important;
+}
+
+.result-header {
+    border-left:2px solid white;
+    padding-right: 3px;
+    position: relative;
+}
+
+.result-data {
+    padding:0px;
+    max-width: 140px;
+    min-width: 140px;
+}
+
+.result-data-cell {
+    min-width: 105px;
+    padding-left: 2px;
+    display:flex;
+    justify-content: space-around;
+}
+
+.text-right {
+      text-align:right;
+}
+
+.text-center {
+      text-align:center;;
+}
+
+.text-left {
+      text-align:left;
+}
+
+.fist {
+    width:24px;
+    height:24px;
+    float:right;
+    /*margin-right:8px;*/
+}
+.grade-img {
+    width:24px;
+    height:24px;
+}
+.highlightRow {
+    opacity: 1.0 !important;
+}
+.responseArea {
+    width: 100%;
+    height:100%;
+    -webkit-box-sizing: border-box; 
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.markCont {
+    position:absolute; 
+    left:4px; 
+    right:204px; 
+    top:34px; 
+    bottom:4px; 
+    border:2px inset #aaa;
+    background:#bbb; 
+    overflow:scroll;
+}
+#teacherFeedbackTable {
+    padding:2px;
+}
+.show {
+    display:block;
+}
+
+.dialogBoxheader {
+    height: 25px;
+    background-color: #614875;
+    vertical-align: bottom;
+    padding-left: 10px;
+    cursor:move;
+    display:flex;
+    justify-content: space-around;
+/*  padding-top: 15px; */
+}
+.dialogBoxheader h3 {
+    font-size: 14px;
+    margin-top: 10px;
+    line-height: 0.5em;
+    color: #fff;
+    width: 100%;
+}
+.gradeContainer {
+    display: flex;
+    justify-content: space-around;
+    padding: 5px 0 5px 0;
+    min-width:140px;
+    max-width:140px; 	
+    margin: auto;
+}
+#newFeedback {
+    width:98%;
+    height: 140px;
+    padding: 2px;
+}
+.feedback-info {
+    font-size: 10px;
+    font-style: italic;
+}
+.dugga-moment{
+		background-image:url('../icons/Stripes2.png');
+}
+
+.dugga-result-subheader
+{
+		border-top:2px solid white;    
+}	
+
+.dugga-result-subheader-div
+{
+		direction:rtl;
+		max-width:140px;
+		min-width:140px;
+		overflow:hidden;
+		white-space:nowrap;
+		text-overflow:ellipsis;
+    display: inline-block;
+    line-height: 26px;
+    height: 20px;
+    position: relative;
+}
+
+.checkbox-dugga {
+    font-size:16px;
+    max-width:280px;
+    overflow-x:hidden;
+    overflow-y: auto;
+		white-space:nowrap;
+		text-overflow:ellipsis;
+}
+
+.checkmoment {
+    border-top: 1px solid #888;
+    font-weight: bold;
+}
+
+.checkhidden {
+  opacity:0.4;
+  font-style:italic;
+}
+
+.checknarrow {
+		max-width:140px !important;
+		min-width:140px !important;	
+}
+
+.grading-hidden {
+  visibility: hidden;
+}
+.headerlabel {
+    color: #000;
+    direction: rtl;
+    max-width: 140px;
+    min-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.U, .Uc, .Uh, .G, .Gc, .Gh, .VG, .VGc, .VGh  {
+    height:24px;
+    width:24px;
+}
+
+.result-header-inverse {
+    background-color: rgb(255, 204, 85) !important;
+    color:#614875 !important;
+}
+
+.dropdown-container {
+    position:relative;
 }
 
 
-.commentDetails {
-  color: #775886;
-}
-.commentUser {
-
-}
-
-.commentContent {
-
-}
-
-.commentDate {
-  clear: both;
-  float: right;
-  color: #775886;
-  font-size: 14px;
+.dropdown-list-container {
+		padding:8px;
+		width:300px;
+		overflow:hidden;
+		font-size:12px;
+		display:none;
+		position:absolute;
+    top:10px;
+		background:#fff;
+		box-shadow:2px 2px 8px #888;
 }
 
-.replyComment {
-  margin-left: 50px;
+.dugga-result-div
+{
+		max-width:200px;
+		min-width:140px;
+		overflow:hidden;
+		white-space:nowrap;
+		text-overflow:ellipsis;    
+}
 
+.badge {
+    position: absolute;
+    top:0px;
+    right:2px;
+    min-width: 10px;
+    padding: 3px 7px 1px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 12px;
+    color: #f00;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px #888;
+}
+
+.vhighlight-border-color{
+    border:4px solid #614875 !important;
+    box-shadow:0px 0px 4px #202 inset;
+}
+.vhighlight-border-color-inverse{
+    border:4px solid #fecc56 !important;
+    box-shadow:0px 0px 4px #ffcc55 inset;
+}
+
+.hhighlight-border-color{
+    border-bottom:2px solid black !important;
+    border-top:2px solid black !important;
+    box-shadow:0px 0px 4px #202 inset;
+}
+.rowno {
+    /*width:40px;*/
+}
+
+.rowno > div {
+    text-align: right;
+    font-size: 20px;
+    color:#614875 !important;
+    min-height: 47px;
+    line-height: 47px;
 }

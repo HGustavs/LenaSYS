@@ -66,6 +66,7 @@ function returnedDugga(data)
 				document.getElementById('instructions').innerHTML = msg;
 			});
 		}		
+		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
 //--------------------================############================--------------------
@@ -103,10 +104,13 @@ function reset()
 
 }
 
-function showFacit(param, uanswer, danswer)
+function showFacit(param, uanswer, danswer, userStats, files, moment)
 {
-	var p = jQuery.parseJSON(decodeURIComponent(param));
-	var daJSON = jQuery.parseJSON(decodeURIComponent(danswer));
+	if (userStats != null){
+
+	}
+	var p = jQuery.parseJSON(param);
+	var daJSON = jQuery.parseJSON(danswer);
 	
 }
 
@@ -117,4 +121,3 @@ function closeFacit(){
 //--------------------================############================--------------------
 //                                  Local Functions
 //--------------------================############================--------------------
-

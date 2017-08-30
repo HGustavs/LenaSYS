@@ -1,0 +1,49 @@
+LenaSYS supports a simple form of markdown. The following syntax can be used:
+
+Italics
+__this is italic__
+**this is italic**
+
+Bold
+___this is bold___
+***this is bold***
+
+Bold and Italic
+____this is bold and italic____
+****this is bold and italic****
+
+Strike through text
+----this is strike through text----
+
+Headings
+# This is a level 1 heading
+## This is a level 2 heading
+### This is a level 3 heading
+
+Links
+Format: !!!url,text to show!!!
+!!!http://www.some.where.com!!!%%%The text to be shown as a link%%%
+
+Animated GIFs
+Format: +++image.png,image.gif+++	
++++showdoc.php?cid=[COURSE_ID]&fname=[FILENAME_PNG]+++@@@showdoc.php?cid=[COURSE_ID]&fname=[FILNAME_ANIMATED_GIF]@@@
+
+Importand Rows in code file in different window (only in Codeviewer)
+Format: ===filename,start row,end row, text to show===
+===javascript_source.js,4,10,A cool source code part!===
+
+Ordered lists
+1. This is item one
+2. This is item two
+
+Unordered lists
+- Item
+- Item
+
+Horizontal line
+---
+
+Code block
+~~~
+var i = 0;
+~~~

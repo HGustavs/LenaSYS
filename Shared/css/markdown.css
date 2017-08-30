@@ -1,77 +1,45 @@
-@font-face{ 
-    font-family: 'MyWebFont';
-    src: url('ubuntu-mono-webfont.eot');
-    src: url('ubuntu-mono-webfont.eot?iefix') format('eot'),
-         url('ubuntu-mono-webfont.woff') format('woff'),
-         url('ubuntu-mono-webfont.ttf') format('truetype'),
-         url('ubuntu-mono-webfont.svg#webfont') format('svg');
-}
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.010/css/hack-extended.min.css">
-
 .descbox {
-		font-family: arial;
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 14px;
+	/*font-family: arial;*/
+	color: #333;
+	text-align: left;
+	font-weight: normal;
+	font-style: normal;
+	font-size: 16px;
+	line-height: 1.5;
 }
 
-.descbox h1 {
-		color: #000;
+/*
+.descbox h1, .descbox h2, .descbox h3
+.descbox h4, .descbox h5, .descbox h6{
 		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.8em;
-    line-height: 1.4em;
-		font-weight: bold;
-
+		font-weight: 600;
+		line-height: 1.25;
+		margin-bottom: 16px;
+		margin-top: 24px;
+}
+.descbox h1 {
+		font-size: 2em;
+		padding-bottom: 0.3em;
 }
 
 .descbox h2 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.5em;
-    line-height: 1.5em; 
-		font-weight: bold;
-
+		font-size: 1.5em;
+		padding-bottom: 0.3em;
 }
 
 .descbox h3 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.3em;
-    line-height: 1.3em; 
-		font-weight: bold;
-
+	font-size: 1.25em;
 }
 
 .descbox h4 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.2em;
-    line-height: 1.5em;
-		font-weight: bold;
-
+	color: #000;
+	text-align: left;
+	font-style: normal;
+	font-size: 1em;
+	line-height: 1.5em;
+	font-weight: bold;
 }
-
-.descbox h5 {
-		color: #000;
-		text-align: left;
-	  font-weight: normal;
-		font-style: normal;
-    font-size: 1.2em;
-    line-height: 1.5em;
-		font-weight: bold;
-
-}
+*/
 
 .descbox pre {
     font-family: Hack, "Courier 10 Pitch", Courier, monospace;
@@ -104,53 +72,86 @@
 }
 
 .descbox ul {
-		margin-left: 32px;
+		margin-top: 0;
+		margin-bottom: 16px;
+		padding-left: 2em;
+}
+
+.descbox ul > li {
+		font-style: normal;
+		font-weight: normal;
 }
 
 .descbox ol {
 		margin-left: 36px;
 }
 
-/* gifimage figmd bigmd backmd are styles for showing gif clips for tutorials etc */
+.descbox blockquote {
+	display: inline-block;
+	background: #ffffff;
+	padding: 10px 20px 10px 30px;
+	margin-bottom: 10px;
+	border-left: 10px solid #614875;
+	border-right: 2px solid #614875;
+	-moz-box-shadow: 0px 0px 5px #cccccc;
+	-webkit-box-shadow: 0px 0px 5px #cccccc;
+	box-shadow: 0px 0px 5px #cccccc;
+}
+
+.descbox .imgzoom {
+	border-radius: 2px;
+	margin: 2px 0px 2px 0px;
+}
+
+.descbox .smileyjs {
+	margin-bottom: -2px;
+	width: 20px;
+}
+
+.descbox .smileyphp {
+	margin-top: 4px;
+	margin-bottom: -1px;
+
+	width: 20px;
+}
+
+/* "gifimage", "gifwrapper" and "playbutton" are styles for showing gif clips for tutorials etc. */
 
 .gifimage{
-		width:128px;
-		border:2px solid teal;
+		width: 150px !important;
+		border: 3px solid teal;
 }
 
-.figmd {
-		position:fixed;
-		left:10%;
-		top:10%;
-		width:80%;
-		height:80%;
-		box-shadow:1px 1px 6px #000;
-		border:2px solid teal;
-		z-index:12200;
-		background:#fff;
-		display:none;
-
-    background-image: url('throbber.gif');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-
+.gifwrapper {	  
+    position: relative;
+		display: flex;
+		align-items: center;
 }
 
-.bigmd{
-		max-width: 100%;
-		height: 100%;
-		width: auto; 
+.playbutton {
+	position: relative;
+	left: -98px;
+  border: 2px solid black;
+  padding:2px;
+  width: 32px !important;
+  height: 32px  !important;
+  border-radius: 32px 32px;
+  pointer-events: none;
+  background-color: rgba(255,255,255,0.5);
 }
 
-.backmd{
-		position:fixed;
-		left:0%;
-		top:0%;
-		width:100%;
-		height:100%;
-		opacity:0.75;
-		background:#101;
-		z-index:12000;
-		display:none;
+.gifimage-fullsize {
+	position: fixed;
+	top:55px;
+	left:20%;
+	width:60% !important;
+	z-index: 10000;
+}
+.console {
+		margin:10px;
+		font-family:Courier;
+		color: #CCCCCC;
+		background: #000000;
+		border: 3px double #CCCCCC;
+		padding: 10px;
 }

@@ -1,5 +1,5 @@
 @font-face{ 
-    font-family: 'MyWebFont';
+    font-family: 'Ubuntu Mono';
     src: url('ubuntu-mono-webfont.eot');
     src: url('ubuntu-mono-webfont.eot?iefix') format('eot'),
          url('ubuntu-mono-webfont.woff') format('woff'),
@@ -10,7 +10,7 @@
 /* DOCUMENT CONTENT STYLE START */
 #docucontent h1 {
     display: block;
-    font-family: Arial,Sans-Serif;
+/*    font-family: Arial,Sans-Serif;*/
     text-align: center;
     font-size: 18px;
     font-weight: bold;
@@ -19,7 +19,7 @@
 
 #docucontent span.codestyle{
     color: grey;
-    font-family: MyWebFont,Arial,Sans-Serif;
+    font-family: 'Ubuntu Mono',Arial,Sans-Serif;
     font-style: italic;
 }
 /* DOCUMENT CONTENT STYLE STOP */
@@ -27,7 +27,8 @@
 /* BOX STYLE START */
 .box h1 {
     display: block;
-    font-family: Arial,Sans-Serif;
+    color: #000;
+    /*font-family: Arial,Sans-Serif;*/
     text-align: center;
     font-size: 18px;
     font-weight: bold;
@@ -40,7 +41,6 @@
 
 .box ul{
 	list-style-type: disc;
-	display: list-item;
 	margin-left: 1.5em;
 }
 
@@ -53,7 +53,7 @@
 
 .box span.codestyle{
     color: #666;
-    font-family: MyWebFont,Arial,Sans-Serif;
+    font-family: 'Ubuntu Mono',Arial,Sans-Serif;
     font-size: 12px;
     line-height: 14px;
 }
@@ -117,7 +117,7 @@
 
 #picktemplate h1{
 	text-align: center;
-    font-family: Arial, Sans-Serif;
+    /*font-family: Arial, Sans-Serif;*/
 }
 
 #picktemplate img{
@@ -166,12 +166,12 @@
 	height: auto;
 	width: auto;
 	border-color: rgb(0,0,0) transparent;
-	font-family: Arial,Serif;
+	/*font-family: Arial,Serif;*/
 	font-size: 14px;
 }
 
 #hotdogdrop table td img{
-	font-family: Arial,Serif;
+	/*font-family: Arial,Serif;*/
 	font-size: 14px;
 	color: white;
 	float:right;
@@ -179,7 +179,7 @@
 
 #hotdogdrop table td{
 	border-bottom: solid 1px #2A120A;
-	font-family: Arial,Serif;
+	/*font-family: Arial,Serif;*/
 	font-size: 14px;
 }
 
@@ -208,7 +208,7 @@
     top: 50px;
     z-index: 4000;
     font-size: 14px;
-    font-family: Arial,Sans-serif;
+    /*font-family: Arial,Sans-serif;*/
 }
 
 .dropdownback {
@@ -216,7 +216,7 @@
     background-color: #614875;
     border-color: rgb(0,0,0) transparent;
     color: white;
-    font-family: Arial,Serif;
+    /*font-family: Arial,Serif;*/
     font-size: 19px;
     font-weight: normal;
 }
@@ -292,7 +292,7 @@
 .dropdownitem {
     display: block;
     font-size: 14px;
-    font-family: Verdana,Arial,Sans-serif;
+    /*font-family: Verdana,Arial,Sans-serif;*/
     cursor: default;
     padding-left: 5px;
 	border-bottom: solid 1px #2A120A;
@@ -366,7 +366,7 @@
     border-radius: 5px;
     margin-top: 20px;
     text-align: center;
-    font: 10px Arial, Sans-Serif;
+    /*font: 10px Arial, Sans-Serif;*/
     font-stretch: condensed;
     text-decoration: none;
     text-transform: uppercase;
@@ -636,15 +636,6 @@
 	width: 100%;
 	cursor: ns-resize;
 }
-/* Resizable jQuery UI fix for absolute positioning west*/
-.ui-resizable-w {
-    left: 0px;
-    bottom: 0px;
-    position: absolute;
-    height: 90%;
-    width: 10px;
-    cursor: ew-resize;
-}
 /* RESIZABLE UI CSS STOP */
 
 /* DragnDrop CSS */
@@ -722,7 +713,7 @@
 
 #editExample{
     top: 185px;
-    width: 474px;
+    width: 464px;
     margin-left: -232px;
 }
 

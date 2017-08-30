@@ -1,5 +1,12 @@
 <?php
+
+// Set cookie life length and start session
+ini_set('session.gc_maxlifetime', 18000);
+session_set_cookie_params('18000');
+
+// Start session using parameters above
 session_start();
+
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
 
@@ -29,11 +36,12 @@ if($opt=="LOGIN"){
 			$res["username"] = $username;
 
 			// Log USERID for Dugga Access
-			logUserEvent($username,EventTypes::LoginSuccess,"");			
+			logUserEvent($username,EventTypes::LoginSuccess,"");
 
 		}else{
 			addlogintry(); // If to many attempts has been commited, it will jump to this
 			// As login has failed we log the attempt
+
 			logUserEvent($username,EventTypes::LoginFail,"");
 		}
 		
@@ -43,7 +51,7 @@ if($opt=="LOGIN"){
 }else{
 		//Adds a row to the logging table for the userlogout.
 		logUserEvent($_SESSION['loginname'],EventTypes::Logout,"");
-		
+
 		// Parts of Logout copied from http://stackoverflow.com/a/3948312 and slightly modified, licensed under cc by-sa
 		// unset all of the session variables.
 		$_SESSION = array();

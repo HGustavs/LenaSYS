@@ -1,1 +1,0 @@
-Welcome to the LenaSYS wiki!

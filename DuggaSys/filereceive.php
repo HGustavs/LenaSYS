@@ -38,6 +38,12 @@ if(isset($_SESSION['uid'])){
 	$userid="UNK";		
 } 	
 
+$log_uuid = getOP('log_uuid');
+
+$filo=print_r($_FILES,true);
+$info=$cid." ".$vers." ".$kind." ".$link." ".$selectedfile." ".$error." ".$filo;
+logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filerecieve.php",$userid,$info);
+
 //  Handle files! One by one  -- if all is ok add file name to database
 //  login for user is successful & has either write access or is superuser					
 
@@ -79,6 +85,7 @@ if($ha){
 		}else if($kind=="LFILE"||$kind=="MFILE"){
 				//  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
 				if(!file_exists ($currcvd."/courses/".$cid)){ 
+						echo $currcvd."/courses/".$cid;
 						$storefile=mkdir($currcvd."/courses/".$cid);
 				}else{
 						$storefile=true;
@@ -95,7 +102,7 @@ if($ha){
 
 		if($storefile){
 				//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
-				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/php","text/markdown", "application/postscript", "application/octet-stream","image/svg+xml", "application/octet-stream", "application/octet-stream", "application/msword", "application/octet-stream", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.oasis.opendocument.text", "text/xml", "text/xml","application/octetstream", "application/x-pdf");
+				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/php","text/markdown", "application/postscript", "application/octet-stream","image/svg+xml", "application/octet-stream", "application/octet-stream", "application/msword", "application/octet-stream", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.oasis.opendocument.text", "text/xml", "text/xml","application/octetstream","application/x-pdf", "application/download" , "application/x-download");
 				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html","txt", "java", "xml", "js", "css", "php","md","ai", "psd","svg", "sql", "sr", "doc", "sl", "glsl", "docx", "odt", "xslt", "xsl");
 				
 				$swizzled = swizzleArray($_FILES['uploadedfile']);
@@ -162,7 +169,8 @@ if($ha){
 										// check if upload is successful 
 										if(move_uploaded_file($filea["tmp_name"],$movname)){ 
 												if($kind=="LFILE"){
-														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=4;" ); // 1=Link 2=Global 3=Course Local 4=Local
+														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND vers=:vers AND filename=:filename AND kind=4;" ); // 1=Link 2=Global 3=Course Local 4=Local
+														$query->bindParam(':vers', $vers);
 												}else if($kind=="MFILE"){
 														$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND filename=:filename AND kind=3;" ); // 1=Link 2=Global 3=Course Local 4=Local
 												}else{					
@@ -177,7 +185,8 @@ if($ha){
 												//  if returned rows equals 0(the existence of the file is not in the db) add data into the db
 												if($norows==0){
 														if($kind=="LFILE"){
-																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'4',:cid);");
+																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,vers) VALUES(:linkval,'4',:cid,:vers);");
+																$query->bindParam(':vers', $vers);
 														}else if($kind=="MFILE"){
 																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'3',:cid);");
 														}else if($kind=="GFILE"){
@@ -210,6 +219,8 @@ if($ha){
 			 	$error=true;
 		}				
 }
+
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive.php", $userid,$info);
 	
 if(!$error){
 		echo "<meta http-equiv='refresh' content='0;URL=fileed.php?cid=".$cid."&coursevers=".$vers."' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id

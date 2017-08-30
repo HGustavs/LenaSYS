@@ -13,6 +13,7 @@ Example seed
 */
 
 //------------==========########### GLOBALS ###########==========------------
+var score = -1;
 var running;
 var retdata = null;
 var canvas = null;
@@ -85,13 +86,10 @@ function returnedDugga(data)
 
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {
-			var userCode = data["answer"].substr(data["answer"].indexOf("###HTMLSTART###")+15,data["answer"].indexOf("###HTMLEND###")-28);
+			var userCode = data["answer"].slice(data["answer"].indexOf("###HTMLSTART###")+15,data["answer"].indexOf("###HTMLEND###"));
 			userCode =  reverseHtmlEntities(userCode);
-			var userUrl = data["answer"].substr(data["answer"].indexOf("###URLSTART###"),data["answer"].indexOf("###URLEND###"));
-			var res = userUrl.split(",");
-			userUrl = res[0]; 
-			userUrl = userUrl.replace("###URLSTART###", "");
-			userUrl = userUrl.replace("###URLEND###", "");
+			
+			var userUrl = data["answer"].slice(data["answer"].indexOf("###URLSTART###")+14,data["answer"].indexOf("###URLEND###"));
 			userUrl =  reverseHtmlEntities(userUrl);
 
 			document.getElementById("content-window").value = userCode;
@@ -107,6 +105,21 @@ function returnedDugga(data)
 		}).height(max);
 
 	}
+	// Teacher feedback
+	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
+			document.getElementById('feedbackBox').style.display = "none";
+	} else {
+			var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+			var feedbackArr = data["feedback"].split("||");
+			for (var k=feedbackArr.length-1;k>=0;k--){
+				var fb_tmp = feedbackArr[k].split("%%");
+				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+			} 		
+			fb += "</tbody></table>";
+			document.getElementById('feedbackTable').innerHTML = fb;		
+			document.getElementById('feedbackBox').style.display = "block";
+	}
+	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
 function reset()
@@ -158,14 +171,16 @@ function saveClick()
 	saveDuggaResult(bitstr);
 }
 
-function showFacit(param, uanswer, danswer, userStats)
+function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
-	document.getElementById('duggaTime').innerHTML=userStats[0];
-	document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-	document.getElementById('duggaClicks').innerHTML=userStats[2];
-	document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-	$("#duggaStats").css("display","none");
-
+	if (userStats != null){
+		document.getElementById('duggaTime').innerHTML=userStats[0];
+		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+		document.getElementById('duggaClicks').innerHTML=userStats[2];
+		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+		$("#duggaStats").css("display","none");
+	}
+	document.getElementById('feedbackBox').style.display = "none";
 	/* reset */
 	sf = 2.0;
 	speed = 0.1;
@@ -177,13 +192,13 @@ function showFacit(param, uanswer, danswer, userStats)
 	tickInterval = setInterval("tick();", 50);
 	var studentPreviousAnswer = "";
 
-	retdata = jQuery.parseJSON(decodeURIComponent(param));
+	retdata = jQuery.parseJSON(param);
 
 	document.getElementById("target-window-img").src = "showdoc.php?fname="+retdata["target"];
 	document.getElementById("target-text").innerHTML = retdata["target-text"];
 
 	if (uanswer !== null || uanswer !== "UNK") {
-		
+			/*
 			var userCode = uanswer.substr(uanswer.indexOf("###HTMLSTART###"),uanswer.indexOf("###HTMLEND###"));
 			userCode = userCode.replace("###HTMLSTART###", "");
 			userCode = userCode.replace("###HTMLEND###", "");
@@ -195,6 +210,17 @@ function showFacit(param, uanswer, danswer, userStats)
 			userUrl = userUrl.replace("###URLSTART###", "");
 			userUrl = userUrl.replace("###URLEND###", "");
 			userUrl =  reverseHtmlEntities(userUrl);
+			*/
+			var userCode = uanswer.slice(uanswer.indexOf("###HTMLSTART###")+15,uanswer.indexOf("###HTMLEND###"));
+			userCode =  reverseHtmlEntities(userCode);
+			
+			var userUrl = uanswer.slice(uanswer.indexOf("###URLSTART###")+14,uanswer.indexOf("###URLEND###"));
+			userUrl =  reverseHtmlEntities(userUrl);
+      if(window.location.protocol === "https:"){
+          userUrl=userUrl.replace("http://", "https://");
+      }else{
+          userUrl=userUrl.replace("https://", "http://");				
+      }
 
 			var markWindowHeight = $("#MarkCont").height();
 			
@@ -204,6 +230,8 @@ function showFacit(param, uanswer, danswer, userStats)
 			document.getElementById("content-window").value = userCode;
 			document.getElementById("content-window").style.fontSize = "12px";
 			document.getElementById("url-input").value = userUrl;
+			document.getElementById("url-button").href = userUrl;
+			document.getElementById("url-button").style.display = "inline-block";
 			document.getElementById("target-col").style.display = "none";
 			document.getElementById("validation-col").style.display = "table-cell";
 			document.getElementById("preview-col").style.height = (markWindowHeight-55)+"px";
@@ -223,9 +251,22 @@ function showFacit(param, uanswer, danswer, userStats)
 
 
 
-			$( "#MarkCont" ).append( '<img id="facit-target-window-img" style="width:200px; height:200px;overflow:hidden; position:absolute; bottom:50px;right:11px;border:1px solid black;" src="'+document.getElementById("target-window-img").src+'" />' );
+			$( "#MarkCont" ).append( '<img id="facit-target-window-img" class="facitPreview" src="'+document.getElementById("target-window-img").src+'" onmouseenter="togglePopover();" onclick="togglePreview();"/>' );
 
 
+	}
+	// Teacher feedback
+	var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+	if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
+		var feedbackArr = feedback.split("||");
+		for (var k=feedbackArr.length-1;k>=0;k--){
+			var fb_tmp = feedbackArr[k].split("%%");
+			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+		} 		
+	}
+	fb += "</tbody></table>";
+	if (document.getElementById('teacherFeedbackTable')){
+			document.getElementById('teacherFeedbackTable').innerHTML = fb;
 	}
 
 }
@@ -298,7 +339,14 @@ function reverseHtmlEntities(str) {
 
 function refreshdUrl()
 {
-		document.getElementById("url-preview-window").innerHTML = '<iframe style="box-sizing:border-box;min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" id="preview-url-window" src="'+document.getElementById("url-input").value+'?name='+(new Date).getTime()+'"></iframe>'
+    var newUrl = document.getElementById("url-input").value+'?name='+(new Date).getTime();
+    if(window.location.protocol === "https:"){
+        newUrl=newUrl.replace("http://", "https://");
+    }else{
+        newUrl=newUrl.replace("https://", "http://");				
+    }
+
+		document.getElementById("url-preview-window").innerHTML = '<iframe style="box-sizing:border-box;min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" id="preview-url-window" src="'+newUrl+'"></iframe>'
 }
 
 
@@ -308,4 +356,11 @@ function processpreview()
 		content=encodeURIComponent(content);
 		
 		document.getElementById("code-preview-window").src="preview.php?prev="+content;
+}
+
+function togglePreview (){
+	$("#facit-target-window-img").removeClass("facitPopover").addClass("facitPreview");}
+
+function togglePopover (){
+	$("#facit-target-window-img").removeClass("facitPreview").addClass("facitPopover");
 }
