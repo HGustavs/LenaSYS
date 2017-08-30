@@ -323,14 +323,14 @@ function showSaveButton(){
   $("#overlay").css("display","none"); 
 } 
 
-function selectDugga(did,name,autograde,gradesys,template,release,deadline)
-{
-	$("#editDugga").css("display","block");
-	$("#overlay").css("display","block");
-	$("#did").val(did); // Set Variant ID
-	$("#name").val(name); // Set Dugga name
-  $("#qstart").val(qstart); // Set Start date name
-	$("#deadline").val(deadline); // Set Deadline date name
+function selectDugga(did,name,autograde,gradesys,template,qstart,deadline,release){
+		$("#editDugga").css("display","block");
+		$("#overlay").css("display","block");
+		$("#did").val(did); // Set Variant ID		
+		$("#name").val(name); // Set Dugga name
+	  $("#qstart").val(qstart); // Set Start date name
+		$("#deadline").val(deadline); // Set Deadline date name
+	  $("#release").val(release); // Set Release date name
 
 	//----------------------------------------------------
 	// Set Autograde
@@ -547,7 +547,7 @@ function returnedDugga(data)
 		str+="</div>";
 		
 		str+="<table class='list' id='testTable'>";
-		str+="<thead><tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Release</th><th>Deadline</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr></thead>";
+		str+="<thead><tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Start</th><th>Deadline</th><th>Release</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr></thead>";
 
 		var oddevenfumo = "";
 		for(i=0;i<data['entries'].length;i++){
@@ -601,22 +601,17 @@ function returnedDugga(data)
 			}
 
 			str+="</select></td>";
-
-			if(item['release']==null){
+			if(item['qstart']==null){
 				str+="<td></td>";
 			}else{
 			result++;
-				str+="<td>"+item['release'].substr(0,10)+"</td>";
-				//Set the min-date for a deadline to be the release date
-				$('#deadline').datepicker("option","minDate", item['release']);
+				str+="<td>"+item['qstart'].substr(0,10)+"</td>";
 			}
-
 			if(item['deadline']==null){
 				str+="<td></td>";
 			}else{
 				str+="<td>"+item['deadline'].substr(0,10)+"</td>";
 			}
-
       if(item['release']==null){
 				str+="<td></td>";
 			}else{
@@ -634,7 +629,7 @@ function returnedDugga(data)
 
 			str+="<td style='padding:4px;'>";
 			str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-			str+=" onclick='selectDugga(\""+item['did']+"\",\""+item['name']+"\",\""+item['autograde']+"\",\""+item['gradesystem']+"\",\""+item['template']+"\",\""+item['release']+"\",\""+item['deadline']+"\");showSaveButton();' >";
+			str+=" onclick='selectDugga(\""+item['did']+"\",\""+item['name']+"\",\""+item['autograde']+"\",\""+item['gradesystem']+"\",\""+item['template']+"\",\""+item['qstart']+"\",\""+item['deadline']+"\",\""+item['release']+"\");' >";
 			str+="</td>";
 			str+="</tr>";
 
@@ -837,7 +832,3 @@ $(document).ready(function(){
 		$('#parameter').val(createJSONString($('#jsonform').serializeArray()));
 	});
 });
-
-
-
-
