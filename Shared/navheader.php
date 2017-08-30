@@ -42,7 +42,7 @@
                     $coursevers=getOPG('coursevers');
                     if($coursevers=="UNK") $coursevers=getOPG('cvers');
 					echo "<td class='navButt' id='swimlane' title='Visual representation of course moment releases and deadlines'>";
-          echo "<a class ='linkSwimlane' href='#'><img src='../Shared/icons/swimlane.svg'></a></td>";
+          echo "<a class ='linkSwimlane' href='#' onclick='swimlaneSetup();'><img src='../Shared/icons/swimlane.svg'></a></td>";
 
 			}
 			
