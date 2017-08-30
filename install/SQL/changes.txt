@@ -1,0 +1,99 @@
+Changes needed to the live sql database
+
+Table userAnswer:
+	Added gradeExpire TIMESTAMP NULL DEFAULT NULL
+
+Table userAnswer:
+	Added timesGraded INT(11) NOT NULL DEFAULT '0'
+
+Table user:
+	Added securityquestion VARCHAR(256) DEFAULT NULL
+	Added securityquestionanswer VARCHAR(256) DEFAULT NULL
+	Added requestedpasswordchange TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+	
+Table listentries:
+	Added comments VARCHAR(512)
+	Added grouptype TINYINT(1)
+
+Added row 'rowcolor' in 'listentries'
+  rowcolor		TINYINT(1),
+
+
+New table user_push_registration, created with the following sql:
+	CREATE TABLE user_push_registration (
+		id							INT NOT NULL AUTO_INCREMENT,
+		uid 						INT UNSIGNED NOT NULL,
+		endpoint				VARCHAR(500) NOT NULL,
+		added						TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		keyAuth					VARCHAR(50) NOT NULL,
+		keyValue				VARCHAR(100) NOT NULL,
+		lastSent				DATE DEFAULT NULL,
+		daysOfUnsent		INT NOT NULL DEFAULT '0',
+		PRIMARY KEY			(id),
+		KEY							(endpoint),
+		FOREIGN KEY (uid) REFERENCES user(uid)
+	) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+
+Added columns to fileLink table:
+
+	filesize			INT(11) NOT NULL DEFAULT 0,
+	uploaddate			DATETIME NOT NULL DEFAULT NOW(),
+  
+  
+/* ----------------------------------------------- */ 
+/* ---- Usergroup and user_usergroup relation ---- */
+/* ----------------------------------------------- */
+
+/* Create the usergroup table. This table consists of groups containing students */
+CREATE TABLE `usergroup` (
+  `ugid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `lid` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL UNIQUE,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastupdated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ugid`,`lid`),
+  KEY `lid` (`lid`),
+  KEY `ugid` (`ugid`),
+  CONSTRAINT `lid` FOREIGN KEY (`lid`) REFERENCES `listentries` (`lid`)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+/* Create table user_usergroup. This table represents the relation between users and usergroups. */
+CREATE TABLE `user_usergroup` (
+  `uid` int(10) UNSIGNED NOT NULL,
+  `ugid` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`uid`,`ugid`),
+  KEY `ugid` (`ugid`),
+  KEY `uid` (`uid`),
+  CONSTRAINT `usergroupid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`),
+  CONSTRAINT `userid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+/* Create table opponents. This table saves opponents for presenters in seminars.*/
+CREATE TABLE opponents (
+	presenter			INT UNSIGNED NOT NULL,
+	lid 					INT UNSIGNED NOT NULL,
+	opponent1			INT UNSIGNED DEFAULT NULL,
+	opponent2			INT UNSIGNED DEFAULT NULL,
+	PRIMARY KEY(presenter, lid),
+	FOREIGN KEY(presenter) REFERENCES user(uid),
+	FOREIGN KEY(lid) REFERENCES listentries(lid),
+	FOREIGN KEY(opponent1) REFERENCES user(uid),
+	FOREIGN KEY(opponent2) REFERENCES user(uid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+/* -----------------------------*/
+/* ------- COURSE DATES --------*/
+/* -----------------------------*/
+
+Added rows to 'vers' to have a start date and end date to a version of a course
+  startdate     DATETIME,
+  enddate       DATETIME,
+
+/* Updated courseexample to match the current version of the course */
+INSERT INTO codeexample ... (1,'PHP Example 1',"PHP Startup","PHP_Ex1.php",1,2013,'2','1',1,1); # Old version
+INSERT INTO codeexample ... (1,'PHP Example 1',"PHP Startup","PHP_Ex1.php",1,45656,'2','1',1,1); # New version
+
+Made ´name´ in usergroup not unique
+	´name´ varchar(255) NOT NULL UNIQUE #Old version
+	´name´ varchar(255) NOT NULL #New version

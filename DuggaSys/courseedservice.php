@@ -362,8 +362,22 @@ if($ha){
 }
 */
 
+$queryreg = $pdo->prepare("SELECT cid FROM user_course WHERE uid=:uid");
+$queryreg->bindParam(':uid', $userid);
+
+if(!$queryreg->execute()) {
+    $error=$queryz->errorInfo();
+    $debug="Error reading courses".$error[2];
+}
+
+$userRegCourses = array();
+foreach($queryreg->fetchAll(PDO::FETCH_ASSOC) as $row){
+    $userRegCourses[$row['cid']] = $row['cid'];
+}
+
 $queryz = $pdo->prepare("SELECT cid,access FROM user_course WHERE uid=:uid;");
 $queryz->bindParam(':uid', $userid);
+
 if(!$queryz->execute()) {
 	$error=$queryz->errorInfo();
 	$debug="Error reading courses".$error[2];
@@ -399,6 +413,13 @@ if(!$query->execute()) {
 					$row['visibility']==1 || 
 					($row['visibility']==2 && (isset ($userCourse[$row['cid']] ))) ||
 					($row['visibility']==0 && $writeAccess)){
+					$isRegisteredToCourse = false;
+					foreach($userRegCourses as $userRegCourse){
+							if($userRegCourse == $row['cid']){
+								$isRegisteredToCourse = true;
+								break;
+							}
+						}
 					array_push(
 						$entries,
 						array(
@@ -407,7 +428,8 @@ if(!$query->execute()) {
 							'coursecode' => $row['coursecode'],
 							'visibility' => $row['visibility'],
 							'activeversion' => $row['activeversion'],
-							'activeedversion' => $row['activeedversion']
+							'activeedversion' => $row['activeedversion'],
+							'registered' => $isRegisteredToCourse
 							)
 						);
 				}			

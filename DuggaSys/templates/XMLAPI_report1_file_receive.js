@@ -91,7 +91,8 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","none");
+		$("#duggaStats").css("display","block");
+		$("#duggaStats").draggable({ handle:'.loginBoxheader'});
 	}
 
 	$("#content").css({"position":"relative","top":"50px"});

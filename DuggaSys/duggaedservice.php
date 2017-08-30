@@ -48,11 +48,17 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php",
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 	if(strcmp($opt,"ADDUGGA")===0){
-		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,creator,vers) VALUES (:cid,1,1,'New Dugga','test.html',:uid,:coursevers)";	
+		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers) VALUES (:cid,:autograde,:gradesystem,:qname,:template,:release,:deadline,:uid,:coursevers)";	
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':cid', $cid);
 		$stmt->bindParam(':uid', $userid);
 		$stmt->bindParam(':coursevers', $coursevers);
+		$stmt->bindParam(':autograde', $autograde);
+		$stmt->bindParam(':gradesystem', $gradesys);
+		$stmt->bindParam(':qname', $name);
+		$stmt->bindParam(':template', $template);
+		$stmt->bindParam(':release', $release);
+		$stmt->bindParam(':deadline', $deadline);
 		
 		try{
 			$stmt->execute();
@@ -182,6 +188,13 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
 			}
+	}else if(strcmp($opt,"DELDU")===0){
+        $query = $pdo->prepare("DELETE FROM quiz WHERE id=:qid");
+        $query->bindParam(':qid', $qid);
+        if(!$query->execute()) {
+            $error=$query->errorInfo();
+            $debug="Error deleting dugga".error[2];
+        }
 	}
 
 }

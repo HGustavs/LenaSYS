@@ -1,5 +1,5 @@
-	<header>
-		<?php
+    <header>
+		<?php	
 			echo "<table class='navheader'><tr>";
 
 			include_once "../Shared/basic.php";
@@ -19,27 +19,20 @@
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			//---------------------------------------------------------------------
-			echo "<td class='navButt' id='back' title='Back'>";
+			echo "<td class='navButt' id='back' title='Back' onmouseover='hoverBack();' onclick='window.history.back()'>";
 
+            echo "<img src='../Shared/icons/Up.svg'></a></td>";
+			
 			if($noup=='COURSE'){
-					echo "<a class='navButt' href='";
-					echo (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "../DuggaSys/courseed.php");
-					echo "'>";
-					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-          echo "<td class='navButt' id='swimlane' title='Visual representation of course moment releases and deadlines'>";
-          echo "<a class ='linkSwimlane' href='#' onclick='swimlaneSetup();'><img src='../Shared/icons/swimlane.svg'></a></td>";
-			}else if($noup=='SECTION'){
-					$cid=getOPG('cid');
-					if($cid=="UNK") $cid=getOPG('courseid');
-					$coursevers=getOPG('coursevers');
-					if($coursevers=="UNK") $coursevers=getOPG('cvers');
-					echo "<a href='";
-					echo ($cid != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers : "../DuggaSys/courseed.php");
-					echo "'>";
-					echo "<img src='../Shared/icons/Up.svg'></a></td>";          
+                    $cid=getOPG('cid');
+                    if($cid=="UNK") $cid=getOPG('courseid');
+                    $coursevers=getOPG('coursevers');
+                    if($coursevers=="UNK") $coursevers=getOPG('cvers');
+					echo "<td class='navButt' id='swimlane' title='Visual representation of course moment releases and deadlines'>";
+          echo "<a class ='linkSwimlane' href='#'><img src='../Shared/icons/swimlane.svg'></a></td>";
+
 			}
-
-
+			
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
 					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
@@ -48,7 +41,7 @@
 					if(checklogin()) {
 						echo "<td class='navButt' id='templatebutton' title='Choose Template' onclick='openTemplateWindow();'><img src='../Shared/icons/choose_template.svg'  /></td>";
 						echo "<td class='navButt' onclick='displayEditExample();' title='Example Settings' ><img src='../Shared/icons/general_settings_button.svg' /></td>";
-					  echo "<td class='navButt' id='fileedButton' onclick='' style='display:hidden;' title='File Download/Upload' ><img src='../Shared/icons/files_icon.svg' /></td>";
+					  echo "<td class='navButt' id='fileedButton' onclick='' style='display:none;' title='File Download/Upload' ><img src='../Shared/icons/files_icon.svg' /></td>";
 					}
 
 					echo "<td class='navButt showmobile' style='display:none;'><a href='courseed.php'><img src='../Shared/icons/hotdog_button.svg'></a></td>";
@@ -62,15 +55,19 @@
 
 
 			if(checklogin()) {
-					echo "<td class='navName'><label id='userName' onclick='redirectToUMV()'>".$_SESSION['loginname']."</label></td>";
-					echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' /></td>";
+					echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
+					echo "<td id='loginbutton' class='loggedin'><img id='loginbuttonIcon' onload='loginButtonHover(\"online\")' src='../Shared/icons/Man.svg' title='Logout'/></td>";
 			}else{
-					echo "<td class='navName'><label id='userName'>Guest</label></td>";
-					echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' /></td>";
+					echo "<td class='navName'><label id='userName' title='Login to view your profile'>Guest</label></td>";
+					echo "<td id='loginbutton' class='loggedout'><img id='loginbuttonIcon' onload='loginButtonHover(\"offline\")' src='../Shared/icons/Man.svg' title='Login'/></td>";
 			}
 
 
 		echo "</tr></table>";
+		
+		//Cookie message
+		echo "<div id='cookiemsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' onclick='cookieMessage()'/></div>";
+		
 	?>
 </header>
 <?php
@@ -78,5 +75,19 @@
 	include_once("swimlane.php");
 ?>
 <script type="text/javascript">
+		if(localStorage.getItem("cookieMessage")=="off"){
+			$("#cookiemsg").css("display", "none");
+		}
+		else{
+			$("#cookiemsg").css("display", "flex");
+		}
+
 	setupLoginLogoutButton('<?PHP echo json_encode(checklogin()) ?>');
+	function cookieMessage(){
+		localStorage.setItem("cookieMessage", "off");
+		$("#cookiemsg").css("display", "none");
+	}
+	function hoverBack(){
+		$(".dropdown-list-container").css("display", "none");
+	}
 </script>

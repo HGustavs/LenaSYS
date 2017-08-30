@@ -155,3 +155,50 @@
 		border: 3px double #CCCCCC;
 		padding: 10px;
 }
+
+/* Styles for markdown-tables */
+.markdown-table {
+	color: #333;
+	width: 100%;
+	max-width: 100%;
+	border: 1px solid #ddd;
+	border-collapse: collapse;
+  	border-spacing: 0;
+  	line-height: 1.42857143;
+}
+.markdown-table thead tr {
+	background: #f9f9f9;
+}
+.markdown-table tbody, .markdown-table thead {
+	vertical-align: middle;
+}
+
+.markdown-table tbody tr:nth-child(even)  {
+	background-color: #f9f9f9;
+}
+.markdown-table thead th {
+	border: 1px solid #ddd;
+	border-top: 0;
+	border-bottom-width: 3px;
+	vertical-align: bottom;
+	padding: 8px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.markdown-table > tbody > tr > td {
+	padding: 8px;
+	line-height: 1.42857143;
+	vertical-align: top;
+	border-top: 1px solid #ddd;
+	border: 1px solid #ddd;
+}
+
+#markdown h4, #markdown h5, #markdown h6 {
+	margin-top: 25px !important;
+}
+
+#markdown h3, #markdown h2 #markdown h1 {
+    margin-top: 35px !important;
+}
+

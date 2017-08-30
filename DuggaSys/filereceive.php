@@ -102,16 +102,48 @@ if($ha){
 
 		if($storefile){
 				//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
-				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/php","text/markdown", "application/postscript", "application/octet-stream","image/svg+xml", "application/octet-stream", "application/octet-stream", "application/msword", "application/octet-stream", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.oasis.opendocument.text", "text/xml", "text/xml","application/octetstream","application/x-pdf", "application/download" , "application/x-download");
-				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html","txt", "java", "xml", "js", "css", "php","md","ai", "psd","svg", "sql", "sr", "doc", "sl", "glsl", "docx", "odt", "xslt", "xsl");
+//				$allowedT = array("application/pdf", "image/gif", "image/jpeg", "image/jpg","image/png","image/x-png","application/x-rar-compressed","application/zip","text/html","text/plain", "application/octet-stream", "text/xml", "application/x-javascript", "text/css", "text/php","text/markdown", "application/postscript", "application/octet-stream","image/svg+xml", "application/octet-stream", "application/octet-stream", "application/msword", "application/octet-stream", "application/octet-stream", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.oasis.opendocument.text", "text/xml", "text/xml","application/octetstream","application/x-pdf", "application/download" , "application/x-download", "application/x-dosexec", "application/x-sharedlib", "text/x-php");
+//				$allowedX = array("pdf","gif", "jpeg", "jpg", "png","zip","rar","html","txt", "java", "xml", "js", "css", "php","md","ai", "psd","svg", "sql", "sr", "doc", "sl", "glsl", "docx", "odt", "xslt", "xsl");
+				
+// Derived from testing files and IANA assignment of MIME types
+$allowedExtensions = [
+	"txt"		=> ["text/plain"],
+	"pdf"		=> ["application/pdf"],
+	"gif"		=> ["image/gif"],
+	"jpeg"	=> ["image/jpeg"],
+	"jpg"		=> ["image/jpeg"],
+	"png"		=> ["image/png"],
+	"zip"		=> ["application/zip"],
+	"html"	=> ["text/html"],
+	"java"	=> ["text/plain"],
+	"xml"		=> ["text/plain", "application/xml"],
+	"js"		=> ["text/plain", "application/javascript"],
+	"css"		=> ["text/plain", "text/css"],
+	"php"		=> ["text/x-php"],
+	"sr"		=> ["text/plain"],
+	"md"		=> ["text/plain", "text/markdown"],
+	"svg"		=> ["image/svg+xml"],
+	"sql"		=> ["text/plain", "application/sql"],
+	"doc"		=> ["application/msword"],
+	"docx"	=> ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"],
+	"odt"		=> ["application/vnd.oasis.opendocument.text"]
+//	"xslt"	=> [
+//	"xsl"		=> [
+//	"sl"		=> [
+//	"glsl"	=> [
+//	"ai"		=> [
+//	"psd"		=> [
+//	"rar"		=> [
+];
 				
 				$swizzled = swizzleArray($_FILES['uploadedfile']);
 				
 				echo "<pre>";
+				// Uncomment for debug printing
 				print_r($swizzled);
 		
 				foreach ($swizzled as $key => $filea){
-					
+					// Uncomment for debug printing
 						print_r($filea)."<br />";
 						
 						if($selectedfile!="NONE"&&($kind=="GFILE"||$kind=="MFILE")){
@@ -125,18 +157,20 @@ if($ha){
 								$query->bindParam(':filename', $selectedfile);
 								$query->bindParam(':cid', $cid);
 								$query->execute(); 
-								$norows = $query->fetchColumn(); 
+								$norows = $query->fetchColumn();
+								$filesize=filesize($selectedfile);
 								
 								//  if rows equals to 0 (e.g it doesn't exist) add it yo.
 								if($norows==0&&($kind=="GFILE"||$kind=="MFILE")){
 										if($kind=="GFILE"){
-												$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal) VALUES(:linkval,'2',:cid,'1');");
+												$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:linkval,'2',:cid,'1', :filesize);");
 										}else if($kind=="MFILE"){
-												$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'3',:cid);");
+												$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:linkval,'3',:cid,:filesize);");
 										}
 
 										$query->bindParam(':cid', $cid);
 										$query->bindParam(':linkval', $selectedfile);
+										$query->bindParam(':filesize', $filesize);
 								
 										if(!$query->execute()) {
 											$error=$query->errorInfo();
@@ -150,7 +184,9 @@ if($ha){
 							
 								$temp = explode(".", $filea["name"]);
 								$extension = end($temp); //stores the file type
-								if(in_array($extension, $allowedX)&&in_array($filea['type'], $allowedT)){ 
+								// Determine file MIME-type
+								$filetype = mime_content_type($filea["tmp_name"]);
+								if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension], True)){
 										//  if file type is allowed, continue the uploading process.
 				
 										$fname=$filea['name'];
@@ -180,7 +216,8 @@ if($ha){
 												$query->bindParam(':filename', $fname);
 												$query->bindParam(':cid', $cid);
 												$query->execute(); 
-												$norows = $query->fetchColumn(); 
+												$norows = $query->fetchColumn();
+												$filesize=filesize($movname);
 												
 												//  if returned rows equals 0(the existence of the file is not in the db) add data into the db
 												if($norows==0){
@@ -188,13 +225,14 @@ if($ha){
 																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,vers) VALUES(:linkval,'4',:cid,:vers);");
 																$query->bindParam(':vers', $vers);
 														}else if($kind=="MFILE"){
-																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid) VALUES(:linkval,'3',:cid);");
+																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:linkval,'3',:cid,:filesize);");
 														}else if($kind=="GFILE"){
-																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal) VALUES(:linkval,'2',:cid,'1');");
+																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:linkval,'2',:cid,'1',:filesize);");
 														}
 
 														$query->bindParam(':cid', $cid);
 														$query->bindParam(':linkval', $fname);
+														$query->bindParam(':filesize', $filesize);
 												
 														if(!$query->execute()) {
 															$error=$query->errorInfo();
@@ -208,8 +246,8 @@ if($ha){
 
 								}else{ 
 									//if the file extension is not allowed
-									if(!in_array($extension, $allowedX)) echo "Extension ".$extension." not allowed.\n";
-									if(!in_array($filea['type'], $allowedT)) echo "Type ".$filea['type']." not allowed.\n";
+									if(!array_key_exists($extension, $allowedExtensions)) echo "Extension \"".$extension."\" not allowed.\n";
+								 	else echo "Type \"$filetype\" not valid for file extension: \"$extension\"" . "\n";
 									$error=true;
 								}
 						}

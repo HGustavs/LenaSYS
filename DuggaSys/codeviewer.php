@@ -176,10 +176,10 @@ Testing Link:
 		<span id='forwdrop' style='left:100px;display:none;' class='dropdown dropdownStyle forwdrop'><div class='dropdownback dropdownbackStyle'>Forw</div><span id='forwdropc'>bii</span></span>
 		<!-- Dropdowns END -->
 		<!-- Example Content Cog Wheel Dialog START -->
-		<div id='editContent' class='loginBox' style='width:464px;display:none;'>
+		<div id='editContent' class='loginBox' style='width:510px;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Content</h3>
-				<div onclick='closeEditContent();'>x</div>
+				<div class='cursorPointer' onclick='closeEditContent();'>x</div>
 			</div>	
 			<table width="100%" style="table-layout:fixed;">
 				<tr>
@@ -227,10 +227,10 @@ Testing Link:
 		</div>
 		<!-- Example Content Cog Wheel Dialog END -->
 		<!-- Code Example Cog Wheel Dialog START -->
-		<div id='editExample' class='loginBox' style='width:464x;display:none;'>
+		<div id='editExample' class='loginBox' style='width:650px;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Example</h3>
-				<div onclick='closeEditExample();'>x</div>
+				<div class='cursorPointer' onclick='closeEditExample();'>x</div>
 			</div>
 			<fieldset>
 				<legend>Example Info</legend>
@@ -246,7 +246,7 @@ Testing Link:
 					</tr>
 
 					<tr>
-						<td>Play Link:<input class='form-control textinput' type='text' id='playlink' value='User Name' /></td>
+						<td>Play Link:<select id='playlink'></select></td>
 						<td>Important Words:<input class='form-control textinput' type='text' id='impword' placeholder="<Important word>" /><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='+' onclick='editImpWords("+");' /><select style="float:none;" id='impwords'><input style="width:32px; float:none; margin-left:5px; margin-top:0px;" class='submit-button' type='button' value='-' onclick='editImpWords("-");' /></select></td>			
 					</tr>
 					<tr>
@@ -260,7 +260,7 @@ Testing Link:
 		<div id='chooseTemplate' class='loginBox' style='width:464px;display:none;'>
 			<div class='loginBoxheader'>
 				<h3>Edit Example</h3>
-				<div onclick='closeTemplateWindow();'>x</div>
+				<div class='cursorPointer' onclick='closeTemplateWindow();'>x</div>
 			</div>
 			<table width="100%">
 				<tr>

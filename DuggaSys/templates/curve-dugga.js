@@ -11,11 +11,11 @@
 Example seed
 ---------------------
 	 Example seed - simple
-	 Param: {*linje*:*10,30,19 20 40 20 50 30 50,81 65 50*}
+	 Param: {"linje":"10,30,19 20 40 20 50 30 50,81 65 50"}
 	 Answer: Variant 
 
 	Example seed - complex
-	Param: {*linje*:*10,30,81 10 20,81 65 10,63 20 30 75 35,19 30 60 75 70 50 35,19 100 10 85 95 45 50,19 40 40 50 40 15 55,63 10 60 10 50,81 20 30*}
+	Param: {"linje":"10,30,81 10 20,81 65 10,63 20 30 75 35,19 30 60 75 70 50 35,19 100 10 85 95 45 50,19 40 40 50 40 15 55,63 10 60 10 50,81 20 30"}
 	Answer: Variant ]
 
 -------------==============######## Documentation End ###########==============-------------
@@ -158,6 +158,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
 		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
 		$("#duggaStats").css("display","block");
+		$("#duggaStats").draggable({ handle:'.loginBoxheader'});
 	}
 	running = true;
 	canvas = document.getElementById('a');

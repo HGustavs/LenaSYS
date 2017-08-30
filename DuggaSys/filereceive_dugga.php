@@ -65,6 +65,13 @@ if($ha){
 		// Create folder if link textinput or file
 		$currcvd=getcwd();
 
+		if(!file_exists($currcvd."/submissions")) {
+				if(!mkdir($currcvd."/submissions")) {
+						echo "Error creating folder: ".$currcvd."/submissions";
+						$error=true;
+				}
+		}
+
 		if(!file_exists ($currcvd."/submissions/".$cid)){
 				if(!mkdir($currcvd."/submissions/".$cid)){
 						echo "Error creating folder: ".$currcvd."/submissions/cid";
@@ -191,8 +198,13 @@ if($ha){
 				
 								
 				//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
-			  $allowedT = array("applicaton/octet-stream","application/x-zip","application/x-msdownload","application/x-pdf","application/pdf","application/x-rar-compressed","application/zip", "application/octet-stream","application/force-download","application/x-download", "application/x-zip-compressed", "binary/octet-stream", "application/download","application/application-download", "text/html", "application/save");
-				$allowedX = array("pdf","zip","rar");
+			  //$allowedT = array("applicaton/octet-stream","application/x-zip","application/x-msdownload","application/x-pdf","application/pdf","application/x-rar-compressed","application/zip", "application/octet-stream","application/force-download","application/x-download", "application/x-zip-compressed", "binary/octet-stream", "application/download","application/application-download", "text/html", "application/save");
+				//$allowedX = array("pdf","zip","rar");
+				$allowedExtensions = [
+					"pdf"		=> ["application/pdf"],
+					"zip"		=> ["application/zip"],
+					//"rar"	=> [
+				];
 				
 				$swizzled = swizzleArray($_FILES['uploadedfile']);
 				
@@ -215,10 +227,9 @@ if($ha){
 								} else {
 									$extension = "UNK";
 								}
-								
-								if(in_array($extension, $allowedX)){ 
-										//  if file type is allowed, continue the uploading process.
-																						
+								$filetype = mime_content_type($filea["tmp_name"]);
+								//  if file type is allowed, continue the uploading process.
+								if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension], True)){ 
 										$seq=0;
 										$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
 										$query->bindParam(':did', $duggaid);
@@ -263,8 +274,8 @@ if($ha){
 				
 								}else{ 
 									//if the file extension is not allowed
-									if(!in_array($extension, $allowedX)) echo "Extension ".$extension." not allowed.\n";
-									if(!in_array($filea['type'], $allowedT)) echo "Type ".$filea['type']." not allowed.\n";
+									if(!array_key_exists($extension, $allowedExtensions)) echo "Extension \"".$extension."\" not allowed.\n";
+								 	else echo "Type \"$filetype\" not valid for file extension: \"$extension\"" . "\n";
 									$error=true;
 								}
 						}

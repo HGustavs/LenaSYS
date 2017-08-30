@@ -1,9 +1,69 @@
 #### **Overview**
-The difference between this example and the previous example is that in this case the base html tags are written using echo. 
+This example shows how variables can be printed to the web page using the echo command.
 
-From the standpoint of the browser the result is identical. 
+#### **Simple Echo**
+The first part of the example (rows 9-12) shows how variables can be printed using echo. It is possible to mix the printing of variables and strings in any order.
+
+#### **Mathematical Operators**
+Variables (rows 14-17) can be manipulated using mathematical operators. In PHP the most common operators from other programming languages are available for example: + ++ += - -- -= * / /= *=
+
+#### **String Addition**
+The addition operator (rows 20-21) does not work for strings. Only number variables can be added.
+
+#### **String Concatenation**
+The dot operator (row 24) merges (or concatenates) two strings.
+
+#### **String Echo**
+Printing of variables inside strings (row 28). Simple variables can be printed as part of the text in an echo statement. This is slightly more compact than the example from row 24 but does not work with every kind of variable and does not work well with expressions.
 
 **Web Page Output:**
 ~~~
 Hello!
+2
+3
+3
+Hello! 3
+Hello! 3
 ~~~
+
+| Header 1 | Header 2 | Header 3 |
+| -------- | -------: | :------: |
+| Item 1 | Item 2 | Item 3 |
+| Item 4 | Item 5 | Item 6 |
+| Item 7 | **Item 8** | Item 9 |
+
+****Unordered list****
+* item 1*
+* item 2*
+* item 3*
+  1. item 1.
+  2. item 2.
+    1. item 1.
+    2. item 2.
+      * item 1*
+      * item 2*
+      * item 3*
+        1. item 1.
+        2. item 2.
+      * item 4*
+      * item 5*
+* item 4*
+* item 5*
+  1. item 1.
+  2. item 1.
+    1. item 1.
+    2. item 1.
+      * item 1*
+        * item 1*
+          1. item 1.
+          2. item 1.
+          3. item 1.
+    3. item 1.
+  3. item 1.
+* item 6*
+
+| Header 1 | Header 2 | Header 3 |
+| -------- | -------: | :------: |
+| Item 1 | *Item 2* | `Item 3`|
+| Item 4 | Item 5 | Item 6 |
+| Item 7 | Item 8 | Item 9 |

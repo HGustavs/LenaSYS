@@ -4,10 +4,10 @@
 		include_once "../Shared/sessions.php";
 		
 		$file_extension="UNK";
-
+        $tableAlignmentConf = [];
+        $openedSublists = [];
 		function parseMarkdown($inString)
 		{	
-				$str="";
 				$inString=preg_replace("/\</", "&lt;",$inString);
 				$inString=preg_replace("/\>/", "&gt;",$inString);
 
@@ -21,23 +21,206 @@
 				
 				$specialBlockStart=true;
 				foreach ($codearray as $workstr) {
+					
 						if(substr($workstr,0,3)==="@@@" && $specialBlockStart===true){
 								$specialBlockStart=false;
-								$str.="<pre><code>".substr($workstr,3)."</code></pre>";
+								$workstr="<pre><code>".substr($workstr,3)."</code></pre>";
 						} else if (substr($workstr,0,3)==="&&&" && $specialBlockStart===true){
 								$specialBlockStart=false;
-								$str.="<div class='console'><pre>".substr($workstr,3)."</pre></div>";
+								$workstr="<div class='console'><pre>".substr($workstr,3)."</pre></div>";
 						} else if ($workstr !== "") {
-								$str.=markdownBlock(preg_replace("/^\&{3}|^\@{3}/","",$workstr));
+
+								$workstr=parseLineByLine(preg_replace("/^\&{3}|^\@{3}/","",$workstr));
 								$specialBlockStart=true;
-						} else {
-								$str.=$workstr;
 						}
+						
+						$str.=$workstr;
+						
 				}
-		
-				return $str;
+
+				return "<div id='markdown'>".$str."</div>";
 		}
 
+		function parseLineByLine($inString) {
+			$str = $inString;	
+			$markdown = "";
+
+			$currentLineFeed = strpos($str, PHP_EOL);
+			$currentLine = "";
+			$prevLine = "";
+			$remainingLines = "";
+			$nextLine = "";
+
+			while($currentLineFeed !== false) { // EOF
+				$prevLine = $currentLine;
+				$currentLine = substr($str, 0, $currentLineFeed);
+				$remainingLines = substr($str, $currentLineFeed + 1, strlen($str));
+
+				$nextLine = substr($remainingLines, 0, strpos($remainingLines, PHP_EOL));
+
+
+				$markdown = identifier($prevLine, $currentLine, $markdown, $nextLine);
+
+				// line done parsing. change start position to next line
+		        $str = $remainingLines;
+		        $currentLineFeed = strpos($str, PHP_EOL);
+
+			}
+
+			return $markdown;
+		}
+
+		// identify what to parse and parse it
+		function identifier($prevLine, $currentLine, $markdown, $nextLine) {
+
+            // handle ordered lists
+            if(isOrderdList($currentLine) || isUnorderdList($currentLine)) {
+                $markdown .= handleLists($currentLine, $prevLine, $nextLine);
+            }
+            // handle tables
+            else if(isTable($currentLine)){
+                $markdown .= handleTable($currentLine, $prevLine, $nextLine);
+            }
+            // If its ordinary text then show it directly
+            else{
+                $markdown .= markdownBlock($currentLine);
+                if(preg_match('/\br*/', $currentLine)){
+                    $markdown .= "<br>";
+                }
+            }
+            // close table
+            if(!isTable($currentLine) && !isTable($nextLine)){
+                $markdown .= "</tbody></table>";
+            }
+			return $markdown;
+		}
+        // Check if its an ordered list
+		function isOrderdList($item) {
+			// return 1 if ordered list
+			return preg_match('/^\s*\d+\.\s(.*)/', $item);
+		}
+		// Check if its an unordered list
+		function isUnorderdList($item) {
+			// return 1 if unordered list
+			return preg_match('/^\s*(\-|\*)\s+[^|]/', $item); // doesn't support dash like markdown!
+		}
+		// Check if its a table
+		function isTable($item) {
+			// return 1 if space followed by a pipe-character and have closing pipe-character
+			return preg_match('/^\s*\|\s*(.*)\|/', $item);
+		}
+        // The creation and destruction of lists
+        function handleLists($currentLine, $prevLine, $nextLine) {
+		    global $openedSublists;
+            $markdown = "";
+            $value = "";
+            $currentLineIndentation = substr_count($currentLine, ' ');
+            $nextLineIndentation = substr_count($nextLine, ' ');
+            // decide value
+            if(isOrderdList($currentLine)) $value = preg_replace('/^\s*\d*\.\s*/','',$currentLine);
+            if(isUnorderdList($currentLine)) $value = preg_replace('/^\s*[\-\*]\s*/','',$currentLine);
+            // Open new list
+            if(!isOrderdList($prevLine) && isOrderdList($currentLine) && !isUnorderdList($prevLine)) $markdown .= "<ol>"; // Open a new ordered list
+            if(!isUnorderdList($prevLine) && isUnorderdList($currentLine) && !isOrderdList($prevLine)) $markdown .= "<ul>"; //Open a new unordered list
+             // Open a new sublist
+            if($currentLineIndentation < $nextLineIndentation) {
+                $markdown .= "<li>";
+                $markdown .=  $value;
+                // begin open sublist
+                if(isOrderdList($nextLine)) {
+                    $markdown .= "<ol>";
+                    array_push($openedSublists,0);
+                } else {
+                    $markdown .= "<ul>";
+                    array_push($openedSublists,1);
+                }
+            }
+            // Stay in current list or sublist
+            if($currentLineIndentation === $nextLineIndentation) {
+                $markdown .= "<li>";
+                $markdown .=  $value;
+                $markdown .= "</li>";
+            }
+            // Close sublists
+            if($currentLineIndentation > $nextLineIndentation) {
+                $markdown .= "<li>";
+                $markdown .=  $value;
+                $markdown .= "</li>";
+                $sublistsToClose = ($currentLineIndentation - $nextLineIndentation) / 2;
+                for($i = 0; $i < $sublistsToClose; $i++) {
+                    $whatSublistToClose = array_pop($openedSublists);
+
+                    if($whatSublistToClose === 0) { // close ordered list
+                        $markdown .= "</ol>";
+                    } else { // close unordered list
+                        $markdown .= "</ul>";
+                    }
+                    $markdown .= "</li>";
+                }
+            }
+            // Close list
+            if(!isOrderdList($nextLine) && isOrderdList($currentLine) && !isUnorderdList($nextLine)) $markdown .= "</ol>"; // Close ordered list
+            if(!isUnorderdList($nextLine) && isUnorderdList($currentLine) && !isOrderdList($nextLine)) $markdown .= "</ul>"; // Close unordered list
+            return $markdown;
+        }
+        // Function for Tables
+        function handleTable($currentLine, $prevLine, $nextLine) {
+            global $tableAlignmentConf;
+            $markdown = "";
+            $columns = array_values(array_map("trim", array_filter(explode('|', $currentLine), function($k) {
+                return $k !== '';
+            })));
+            // open table
+            if(!isTable($prevLine)) {
+                $markdown .= "<table class='markdown-table'>";
+            }
+            // create thead
+            if(!isTable($prevLine) && preg_match('/^\s*\|\s*[:]?[-]*[:]?\s*\|/', $nextLine)) {
+                $markdown .= "<thead>";
+                $markdown .= "<tr>";
+                for($i = 0; $i < count($columns); $i++) {
+                    $markdown .= "<th>".$columns[$i]."</th>";
+                }
+                $markdown .= "</tr>";
+                $markdown .= "</thead>";
+            }
+            // create tbody
+            else {
+                // configure alignment
+                if(preg_match('/^\s*\|\s*[:]?[-]*[:]?\s*\|/', $currentLine)) {
+                    for($i = 0; $i < count($columns); $i++) {
+                        // align center
+                        if(preg_match('/[:][-]*[:]/', $columns[$i])) $tableAlignmentConf[$i] = 1;
+                        // align right
+                        else if(preg_match('/[-]*[:]/', $columns[$i])) $tableAlignmentConf[$i] = 2;
+                        // align left
+                        else $tableAlignmentConf[$i] = 3;
+                    }
+                }
+                // handle table row
+                else {
+                    $markdown .= "<tr style=''>";
+                    for($i = 0; $i < count($columns); $i++) {
+                        $alignment = "";
+
+                        if($tableAlignmentConf[$i] === 1) $alignment = "center";
+                        else if($tableAlignmentConf[$i] === 2) $alignment = "right";
+                        else $alignment = "left";
+                        if(preg_match('/^[*].{1}\s*(.*)[*].{1}/',$columns[$i])){
+                            $markdown .= "<td style='text-align: " . $alignment . ";font-weight:bold;'>" . preg_replace('/[*].{1}/', '', $columns[$i]) . "</td>";
+						}else if(preg_match('/^[*].{0}\s*(.*)[*].{0}/',$columns[$i])){
+                            $markdown .= "<td style='text-align: " . $alignment . ";font-style:italic'>" . preg_replace('/[*].{0}/', '', $columns[$i]) . "</td>";
+                		}else if(preg_match('/^[`].{0}\s*(.*)[`].{0}/',$columns[$i])){
+                            $markdown .= "<td style='text-align: " . $alignment . ";'><code style='border-radius: 3px; display: inline-block; color: white; background: darkgray; padding: 2px;''>" . preg_replace('/[`].{0}/', '', $columns[$i]) . "</code></td>";
+                		}else{
+                    		$markdown .= "<td style='text-align: " . $alignment . ";'>" . $columns[$i] . "</td>";
+               			}
+                    }
+                    $markdown .= "</tr>";
+                }
+            }
+            return $markdown;
+        }
 		function markdownBlock($instring)
 		{
 				//Regular expressions for italics
@@ -57,16 +240,6 @@
 				$instring = preg_replace("/^\#{3}\s(.*)=*/m", "<h3>$1</h3>",$instring);	
 				$instring = preg_replace("/^\#{2}\s(.*)=*/m", "<h2>$1</h2>",$instring);	
 				$instring = preg_replace("/^\#{1}\s(.*)=*/m", "<h1>$1</h1>",$instring);	
-
-				//Regular expressions for lists both - and * lists are supported
-				$instring = preg_replace("/^\s*\d*\.\s(.*)/m", "<ol><li>$1</li></ol>",$instring);
-				
-				$instring = preg_replace("/^\s*\-\s(.*)/m", "<ul><li>$1</li></ul>",$instring);
-				$instring = preg_replace("/^\s*\*\s(.*)/m", "<ul><li>$1</li></ul>",$instring);
-
-				// Fix for superflous ul and ol statements
-				$instring= str_replace ("</ul>\n<ul>","",$instring);
-				$instring= str_replace ("</ol>\n<ol>","",$instring);
 
 				//Regular expression for line
 				$instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
@@ -221,8 +394,17 @@
 					
 							if(file_exists ( $file)){
 									$file_extension = strtolower(substr(strrchr($filename,"."),1));									
-									if($file_extension=="html"){
-											$bummer=file_get_contents($file);
+									if($file_extension=="html" || $file_extension=="css" || $file_extension=="js" || $file_extension=="php"){
+											//$bummer=file_get_contents($file);
+										    header('Content-Description: File Transfer');
+										    header('Content-Type: application/octet-stream');
+										    header('Content-Disposition: attachment; filename="'.basename($file).'"');
+										    header('Expires: 0');
+										    header('Cache-Control: must-revalidate');
+										    header('Pragma: public');
+										    header('Content-Length: ' . filesize($file));
+										    readfile($file);
+										    exit;
 									}else if($file_extension=="md"){
 											$bummer=file_get_contents($file);
 									}else{
@@ -237,12 +419,14 @@
 												case "gif": $ctype="image/gif"; break;
 												case "png": $ctype="image/png"; break;
 												case "jpg": $ctype="image/jpg"; break;
+												default: $ctype=mime_content_type($file); break;
 											}
 											header("Content-Type: ".$ctype);
 											header('Content-Disposition: inline; filename="' .$filename.'"');
 											header('Content-Transfer-Encoding: binary');
 											header('Accept-Ranges: bytes');
 											@readfile($file);
+											exit;
 									}
 								}else{
 									$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!".$file."</div>";										  
@@ -262,11 +446,14 @@
 				if($hdrs=="none"){
 				
 				}else{
+                    $temp = explode('.', $filename);
+                    $ext  = array_pop($temp);
+                    $name = implode('.', $temp);
 						echo "<html>";
 						echo "<head>";
 						echo "<link rel='icon' type='image/ico' href='../Shared/icons/favicon.ico'/>";
 						echo "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
-						echo "<title>Document Viewer</title>";
+						echo "<title>Document Viewer: $name</title>";
 						echo "<link type='text/css' href='../Shared/css/style.css' rel='stylesheet'>";
 						echo "<link type='text/css' href='../Shared/css/markdown.css' rel='stylesheet'>";
 						echo "<link type='text/css' href='../Shared/css/jquery-ui-1.10.4.min.css' rel='stylesheet'>";  
@@ -275,16 +462,14 @@
 						echo "<script src='../Shared/dugga.js'></script>";
 						echo "<script src='../Shared/markdown.js'></script>";				
 						echo "</head>";
-						echo "<body onload='loadedmd();'>";
+						echo "<body>";
 				}
 				
 				if($hdrs=="none"){
 					
 				}else if($readfile == false){
 					$noup="SECTION";
-					$loginvar="LINK"; 
 					include '../Shared/navheader.php';
-					setcookie("loginvar", $loginvar); 
 				}
 								
 				if($hdrs!="none") echo "<div id='content'>";

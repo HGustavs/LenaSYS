@@ -18,35 +18,60 @@ pdoConnect();
 	<script src="../Shared/dugga.js"></script>
 	<script src="fileed.js"></script>
 </head>
-<body>
+<body onload="setupSort();">
 	<?php 
 		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
-		
+
 	<!-- content START -->
 	<div id="content" >
+	
+		<div class='titles' style='padding-top:10px;'>
+			<h1 style='flex:1;text-align:center;'>Files</h1>
+		</div>
+	
+		<button class="switchContent" onclick="switchcontent(),keyUpSearch()" type="button">Switch to One table</button>
+
+		<input id="searchinput" type="text" name="search" placeholder="Search.." onkeypress="return searchKeyPress(event);">
+
+		<button id="searchbutton" class="switchContent" onclick="searchcontent()" type="button">Search</button>
+
+        <div id="searchresults" style='width:100%; display:none;'>
+            <table class='list list--nomargin' style='margin-bottom:8px;' >
+                <tr><th class='first' style='width:64px;'>ID</th><th>Search Results</th><th style='width:30px' class='last'></th></tr>
+            </table>
+        </div>
 		<div id="alllinks" style='width:100%;'>
 			<table class='list list--nomargin' style='margin-bottom:8px;' >
-				<tr><th><input class='submit-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>
+				<tr><th><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>
 				<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>
 			</table>
 		</div>
+		<!-- allcontent -->
+		<div id="allcontent" style="width:100%;display:none">
+
+			<table class='list list--nomargin' style='margin-bottom:8px;' >
+				<tr><th><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("GFILE");'/></th></tr>
+				<tr><th class='first' style='width:64px;'>ID</th><th>File Group</th><th style='width:30px' class='last'></th></tr>
+			</table>			
+
+		</div>
 		<div id="allglobalfiles" style='width:100%;'>
 			<table class='list list--nomargin' style='margin-bottom:8px;' >
-				<tr><th><input class='submit-button' type='button' value='Add File' onclick='createFile("GFILE");'/></th></tr>
+				<tr><th><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("GFILE");'/></th></tr>
 				<tr><th class='first' style='width:64px;'>ID</th><th>Global File</th><th style='width:30px' class='last'></th></tr>
 			</table>
 		</div>
 		<div id="allcoursefiles" style='width:100%;'>
 				<table class='list list--nomargin'>
-						<tr><th><input class='submit-button' type='button' value='Add File' onclick='createFile("MFILE");'/></th></tr>
+						<tr><th><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("MFILE");'/></th></tr>
 						<tr><th class='first' style='width:64px;'>ID</th><th>Course Local File</th><th style='width:30px' class='last'></th></tr>
 				</table>
 		</div>
 		<div id="alllocalfiles" style='width:100%;'>
 			<table class='list list--nomargin'>
-				<tr><th><input class='submit-button' type='button' value='Add File' onclick='createFile("LFILE");'/></th></tr>
+				<tr><th><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("LFILE");'/></th></tr>
 				<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>
 			</table>
 		</div>
@@ -57,11 +82,11 @@ pdoConnect();
 		include '../Shared/loginbox.php';
 	?>
 
-	<!-- Edit File Dialog START -->
-	<div id='editFile' class='loginBox' style='width:464px;display:none;'>
+	<!-- Add File Dialog START -->
+	<div id='addFile' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
-			<h3>Edit File/Link</h3>
-			<div onclick='closeEditFile();'>x</div>
+			<h3>Add File/Link</h3>
+			<div class='cursorPointer' onclick='closeAddFile();'>x</div>
 		</div>
 		<form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
 			<div style='padding:5px;'>
@@ -75,7 +100,7 @@ pdoConnect();
 			<div style='padding:5px;'>
 				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>
 			</div> 
-			<div style ='padding:5px, display:none' id='errormessage'>
+			<div style ='padding:5px; display:none;' id='errormessage'>
 			</div> 
 		</form>
 	</div>

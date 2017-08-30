@@ -25,6 +25,8 @@ function updateCourse()
 
 	// Show dialog
 	$("#editCourse").css("display", "none");
+	
+	$("#overlay").css("display", "none");
 
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
 }
@@ -44,11 +46,13 @@ function closeNewCourse()
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$("#newCourse").css("display", "none");
+	$("#overlay").css("display", "none");
 }
 
 function newCourse()
 {
 	$("#newCourse").css("display", "block");
+	$("#overlay").css("display", "block");
 }
 
 function createNewCourse()
@@ -56,6 +60,7 @@ function createNewCourse()
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
 	$("#newCourse").css("display", "none");
+	$("#overlay").css("display", "none");
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
 }
 
@@ -169,6 +174,8 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 
 	// Show dialog
 	$("#editCourse").css("display", "block");
+	
+	$("#overlay").css("display", "block");
 
 	return false;
 }
@@ -188,6 +195,7 @@ function getCurrentVersion(cid){
 
 function editVersion(cid, cname, ccode) {
 		document.getElementById('newCourseVersion').style.display = "block";
+		document.getElementById('overlay').style.display = "block";
 		document.getElementById('cid').value = cid;
 		document.getElementById('coursename1').value = cname;
 		document.getElementById('coursecode1').value = ccode;
@@ -251,6 +259,7 @@ function createVersion(){
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
 	var copycourse = $("#copyvers").val();
+	var comments = $("#comments").val();
 
 	if (versid=="" || versname=="") {
 		alert("Version Name and Version ID must be entered!");
@@ -289,6 +298,7 @@ function createVersion(){
 		}
 	
 		$("#newCourseVersion").css("display","none");		
+		$("#overlay").css("display","none");		
 	}
 
 }
@@ -307,24 +317,23 @@ function returnedCourse(data)
 
 	if (data['writeaccess']) {
 		str += "<div style='float:right;'>";
-		str += "<input class='submit-button' type='button' value='New' onclick='newCourse();'/>";
+		str += "<input class='submit-button' type='button' value='Add new course' onclick='newCourse();' title='Create new course' />";
 		str += "</div>";
 	}
 
+//  style='display: flex;align-items: center;justify-content: center;'
 	// Course Name
-	str += "<div id='Courselistc' >";
-	str += "<div id='lena' class='head'><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a> Course Organization System"
-	if (data['writeaccess']){
-			str+="<img style='margin-left:15px;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings();'>"	
-	}
-	str+="</div>";
+	str += "<div id='Courselistc'>";
+  
+// Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
+  str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;'><a href='https://github.com/HGustavs/LenaSYS_2014' title='Go to LenaSYS on GitHub.com'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div class='ellipsis'> Course Organization System</div></div>";
 
 	// For now we only have two kinds of sections
 	if (data['entries'].length > 0) {
 		for ( i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
 
-			str += "<span class='bigg item' id='C" + item['cid'] + "' ";
+			str += "<div class='bigg item nowrap' style='display: flex; align-items: center;justify-content: center;' id='C" + item['cid'] + "'>";
 			
 			var textStyle ="";
 			if (parseInt(item['visibility']) == 0) {
@@ -335,22 +344,36 @@ function returnedCourse(data)
 				textStyle += "deleted"
 			}
 
-			str += ">";
+      var courseString = item['coursename'];
+      var courseBegin = "";
+      var courseEnd = "";
+      var courseSplitIndex = courseString.lastIndexOf(" ");
+      if(courseSplitIndex>0) { // There is a space in the course name
+        courseBegin = courseString.substr(0, courseSplitIndex);
+        courseEnd = courseString.substr(courseSplitIndex);
+      } else { // No space in course name, so just split the name in half *chop chop*
+        courseSplitIndex = parseInt(courseString.length/2);
+        courseBegin = courseString.substr(0, courseSplitIndex);
+        courseEnd = courseString.substr(courseSplitIndex);
+      }
 
 			if (data['writeaccess']) {
-				str += "<span style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
-			} else {
-				str += "<span style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] +"&coursevers=" + item['activeversion'] + "'>" + item['coursename'] + "</a></span>";
+        str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Course coordinator]'>" + courseBegin + courseEnd + "</a></div>";
+				str += "<span style='margin-right:15px;'><img id='dorf' src='../Shared/icons/PenV.svg' onclick='editVersion("+item['cid']+",\""+htmlFix(item['coursename'])+"\",\""+item['coursecode']+"\")' title='Create new version of \"" + item['coursename'] + "\"'></span>";
+        str += "<span style='margin-bottom: 15px'>";
+				str += "<span><img id='dorf' style='position: absolute; right: 15px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" [" + item['activeversion'] + "]'></span>";
+        str += "</span>";
+      } else {
+        str += "<div class='ellipsis' style='margin-right:15px;'>";
+				if(item['registered'] == true) {
+          str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Registered]'>" + item['coursename'] + "</a></span>";
+        }else{
+          str += "<span style='margin-right:15px;opacity:0.3'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Not registered]'>" + item['coursename'] + "</a></span>";
+        }
+        str += "</div>";
 			}
 
-			if (data['writeaccess']) {
-				//str += "<a style='margin-right:15px;' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeedversion'] + "'><img id='dorf' src='../Shared/icons/PenV.svg'></a>";
-				str += "<img id='dorf' src='../Shared/icons/PenV.svg' onclick='editVersion("+item['cid']+",\""+item['coursename']+"\",\""+item['coursecode']+"\")'>";
-				str += "<img id='dorf' style='float:right;' src='../Shared/icons/Cogwheel.svg' ";
-				str += " onclick='selectCourse(\"" + item['cid'] + "\",\"" + item['coursename'] + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' >";
-			}
-
-			str += "</span>";
+			str += "</div>";
 		}
 	} else {
 		// No items were returned!
@@ -377,4 +400,17 @@ function returnedCourse(data)
 
 	resetinputs();
 	//resets all inputs
+}
+
+/* Used to enable using list entries with ' */
+function htmlFix(text){
+    var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }

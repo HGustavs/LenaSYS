@@ -26,6 +26,9 @@ $username = getOP('username');
 $val = getOP('val');
 $newusers = getOP('newusers');
 $coursevers = getOP('coursevers');
+$teacher = getOP('teacher');
+$vers = getOP('vers');
+$requestedpasswordchange = getOP('requestedpasswordchange');
 
 $debug="NONE!";	
 
@@ -51,8 +54,18 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
 		}
+
+		$query = $pdo->prepare("UPDATE user_course set teacher=:teacher WHERE uid=:uid;");
+		$query->bindParam(':uid', $uid);
+		$query->bindParam(':teacher', $teacher);
+
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating user".$error[2];
+		}
+
 	}else if(strcmp($opt,"ACCESS")==0){
-		$query = $pdo->prepare("UPDATE user_course set access=:val WHERE uid=:uid and cid=:cid;");
+		$query = $pdo->prepare("UPDATE user_course set access=:val WHERE uid=:uid AND cid=:cid;");
 		$query->bindParam(':uid', $uid);
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':val', $val);
@@ -62,9 +75,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$debug="Error updating user".$error[2];
 		}
 	}else if(strcmp($opt,"CHPWD")==0){
-		$query = $pdo->prepare("UPDATE user set password=password(:pwd) where uid=:uid;");
+		$query = $pdo->prepare("UPDATE user set password=:pwd, requestedpasswordchange=0 where uid=:uid;");
 		$query->bindParam(':uid', $uid);
-		$query->bindParam(':pwd', $pw);
+		$query->bindParam(':pwd', standardPasswordHash($pw));
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
@@ -107,14 +120,14 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					// assigned password which can be printed later.
 					if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) {
 							$rnd=makeRandomString(9);
-							$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,password(:password),now(),:className);';	
+							$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,:password,now(),:className);';	
 							$stmt = $pdo->prepare($querystring);
 							$stmt->bindParam(':username', $username);
 							$stmt->bindParam(':email', $saveemail);
 							$stmt->bindParam(':firstname', $firstname);
 							$stmt->bindParam(':lastname', $lastname);
 							$stmt->bindParam(':ssn', $ssn);
-							$stmt->bindParam(':password', $rnd);
+							$stmt->bindParam(':password', standardPasswordHash($rnd));
 							$stmt->bindParam(':className', $className);
 							
 							if(!$stmt->execute()) {
@@ -154,7 +167,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 $entries=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
+	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,teacher,vers,requestedpasswordchange, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -171,14 +184,54 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				'ssn' => $row['ssn'],	
 				'class' => $row['class'],	
 				'modified' => $row['modified'],
-				'newly' => $row['newly']
+				'newly' => $row['newly'],
+				'teacher' => $row['teacher'],
+				'vers' => $row['vers'],
+				'requestedpasswordchange' => $row['requestedpasswordchange']
 			);
 			array_push($entries, $entry);
 	}
 }
+
+// Array to fetch the username of all users with access "W" as these are all the teachers.
+$teachers=array();
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+	$query = $pdo->prepare("SELECT user.firstname, user.lastname FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP BY user.firstname, user.lastname;");
+	$query->bindParam(':cid', $cid);
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		$debug="Error reading user entries".$error[2];
+	}
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$teacher = array(
+				'firstname' => $row['firstname'],
+				'lastname' => $row['lastname']
+			);
+			array_push($teachers, $teacher);
+		}
+}
+
+$classes=array();
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+	$query = $pdo->prepare("SELECT class FROM class;");
+	$query->bindParam(':cid', $cid);
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		$debug="Error reading user entries".$error[2];
+	}
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$classe = array(
+				'class' => $row['class'],
+			);
+			array_push($classes, $classe);
+		}
+}
+
 $array = array(
 	'entries' => $entries,
 	"debug" => $debug,
+	'teachers' => $teachers,
+	'classes' => $classes
 );
 
 echo json_encode($array);
