@@ -322,7 +322,6 @@ $query->bindParam(':did', $duggaid);
 	
 $result = $query->execute();
 foreach($query->fetchAll() as $row) {
-		
 		if($row['kind']=="3"){
 				// Read file contents
 
@@ -334,11 +333,11 @@ foreach($query->fetchAll() as $row) {
 			  if (file_exists ($movname)){
 						$content=file_get_contents($movname);
 			  }else{
-						$content="Empty";			  
+						$content="File does not exist";			  
 			  }
 		
 		}else{
-				$content="Empty";						
+				$content="Not a text submission";						
 		}
 	
 		$entry = array(

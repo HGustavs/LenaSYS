@@ -1,5 +1,3 @@
-<html>
-<head>
 <?php
 /********************************************************************************
 
@@ -52,7 +50,7 @@ if(isset($_SESSION['uid'])){
 
 //  Handle files! One by one  -- if all is ok add file name to database
 //  login for user is successful & has either write access or is superuser					
-
+echo "<html><head>";
 $ha = checklogin();
 if($ha){
 

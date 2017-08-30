@@ -188,6 +188,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 $entries=array();
 $files=array();
+$duggaPages = array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified FROM quiz WHERE cid=:cid ORDER BY id;");
@@ -240,7 +241,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 	$dir    = './templates';
 	$giles = scandir($dir);
 	$files =array();
-	$duggaPages = array();
 	foreach ($giles as $value){
 		if(endsWith($value,".html")){
 			array_push($files,substr ( $value , 0, strlen($value)-5 ));

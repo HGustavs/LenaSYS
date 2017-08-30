@@ -70,14 +70,10 @@ function returnedDugga(data)
 
 		duggaFiles = data['files'];
 		
-	  console.log(duggaFiles);
+	  //console.log(duggaFiles);
 	
 
-		if (duggaFiles.length > 0){
 
-		} else {
-			// No files uploaded.
-		}
 
 		createFileUploadArea(duggaParams["submissions"]);
 		for (var k=0; k < duggaParams["submissions"].length; k++){
@@ -87,6 +83,17 @@ function returnedDugga(data)
 			}
 
 		}
+
+		if (duggaFiles.length > 0){
+			for (var l=0; l<data["files"].length; l++){
+				if (data["files"][l].kind == "3"){
+					if (document.getElementById(data["files"][l].fieldnme+"Text") != null) document.getElementById(data["files"][l].fieldnme+"Text").value=data["files"][l].content;
+				}
+			}
+		} else {
+			// No files uploaded.
+		}
+
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {
 
@@ -216,8 +223,8 @@ function createFileUploadArea(fileuploadfileds){
 				form +="<input name='link' type='text' size='40' maxlength='256' />";
 				form +="<input type='hidden' name='kind' value='2' />";
 		}else if(type=="text"){
-				form +="<textarea rows='20' name='inputtext'  id='inputtext' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;	box-sizing: border-box;	width: 100%;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;' >Fumho</textarea>";
-				form +="<input type='hidden' name='kind' value='3' />";
+				form +="<textarea rows='20' name='inputtext'  id='"+fieldname+"Text' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;	width: 100%;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;' placeholder='Enter your text and upload.' ></textarea>";
+				form +="<input type='hidden' name='kind' value='3' />";	
 		}else{
 				form +="<input name='uploadedfile[]' type='file' multiple='multiple' />";
 				form +="<input type='hidden' name='kind' value='1' />";
