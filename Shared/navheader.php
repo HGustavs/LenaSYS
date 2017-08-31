@@ -20,10 +20,9 @@
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
 			//---------------------------------------------------------------------
 			echo "<td class='navButt' id='back' title='Back'>";
-			if($noup=='COURSE'){
-					echo "<a class='navButt' href='";
-					echo (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "../DuggaSys/courseed.php");
-					echo "'>";
+      echo $noup;
+      if($noup=='COURSE'){
+					echo "<a class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}else if($noup=='SECTION'){
 					$cid=getOPG('cid');
