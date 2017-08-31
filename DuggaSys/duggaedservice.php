@@ -178,22 +178,12 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 				$error=$query->errorInfo();
 				$debug="Error updating user".$error[2];
 			}
-	}	
-	else if(strcmp($opt,"SAVVARIPARA")===0){
-			$query = $pdo->prepare("UPDATE variant SET  param=:param WHERE vid=:vid;");
-			$query->bindParam(':vid', $vid);
-			$query->bindParam(':param', $param);
-	
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating user".$error[2];
-			}
 	}else if(strcmp($opt,"DELDU")===0){
         $query = $pdo->prepare("DELETE FROM quiz WHERE id=:qid");
         $query->bindParam(':qid', $qid);
         if(!$query->execute()) {
             $error=$query->errorInfo();
-            $debug="Error deleting dugga".error[2];
+            $debug="Error deleting dugga".$error[2];
         }
 	}
 
