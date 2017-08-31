@@ -133,7 +133,7 @@ function returned(data)
 	}
 	
   // Create boxes
-  if(retData['numbox']!=retData['box'].length){
+  if(retData['numbox']>retData['box'].length){
       alert("Number of boxes is inconsistent\n"+retData['numbox']+"\n"+retData['box'].length);
   }
   
@@ -1681,7 +1681,7 @@ function updateTemplate()
 	}catch(e){
 		alert("Error when updating template: "+e.message)
 	}
-	setTimeout("location.reload()", 500);
+	// setTimeout("location.reload()", 500);
 }
 
 //----------------------------------------------------------------------------------

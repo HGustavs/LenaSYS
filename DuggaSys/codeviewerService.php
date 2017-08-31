@@ -67,8 +67,8 @@
 	
 	$exampleCount = 0;
 	
-		$query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
-    $query->bindParam(':exampleid', $exampleId);
+  $query = $pdo->prepare( "SELECT exampleid,sectionname,examplename,runlink,cid,cversion,beforeid,afterid,public FROM codeexample WHERE exampleid = :exampleid;");
+  $query->bindParam(':exampleid', $exampleId);
 	$query->execute();
 	
 	while ($row = $query->fetch(PDO::FETCH_ASSOC)){
@@ -113,11 +113,9 @@
 								
 				// Create appropriate number of boxes
 				for($i=1;$i<$boxCount+1;$i++){
-				        // Update boxes
-                        $query = $pdo->prepare("UPDATE box SET boxid = :i , exampleid = :exampleid , 
-                          boxtitle = :boxtitle , boxcontent = :boxcontent , settings = :settings, filename = :filename 
-                          WHERE boxid = :i AND exampleid = :exapleid");
-
+				    // Create boxes, if some box does not exist
+            $query = $pdo->prepare("INSERT INTO box(boxid,exampleid,boxtitle,boxcontent,settings,filename) VALUES (:i,:exampleid, :boxtitle, :boxcontent, :settings, :filename);");	
+          
 						$query->bindParam(':i', $i);
 						$query->bindParam(':exampleid', $exampleId);
 						$query->bindValue(':boxtitle', 'Title');
@@ -128,9 +126,14 @@
 						// Update code example to reflect change of template
 						if(!$query->execute()) {
 							$error=$query->errorInfo();
-							$debug.="Error creating new box: ".$error[2];
-						} 
+
+              // If we get duplicate key error message, ignore error, otherwise carry on adding to debug message
+              if(strpos($error[2],"Duplicate entry")==-1) $debug.="Error creating new box: ".$error[2];
+
+            } 
 				}	
+        
+          
 			}else if(strcmp('EDITEXAMPLE',$opt)===0){
 				if(isset($_POST['playlink'])) {$playlink = $_POST['playlink'];}
 				if(isset($_POST['examplename'])) {$exampleName = $_POST['examplename'];}
@@ -296,8 +299,6 @@
 			$templateId=$row['templateid'];
 			$styleSheet=$row['stylesheet'];
 			$numBox=$row['numbox'];					
-
-//			$debug=" T: ".$row['templateid']." N: ".$row['numbox'];
 		}
 		
 		
@@ -424,13 +425,13 @@
 		// Array to be filled with the primary keys to all boxes of the example
 		$queryy = $pdo->prepare("SELECT boxid, boxcontent, boxtitle, filename, wordlistid, segment, fontsize FROM box WHERE exampleid = :exampleid ORDER BY boxid;");
 		$queryy->bindParam(':exampleid', $exampleId);
-		
+      
 		if(!$queryy->execute()) {
 			$error=$queryy->errorInfo();
 			$debug="Error reading boxes ".$error[2];
 		}
 		while ($row = $queryy->FETCH(PDO::FETCH_ASSOC)){
-			$boxContent=strtoupper($row['boxcontent']);
+      $boxContent=strtoupper($row['boxcontent']);
 			$filename=$row['filename'];
 			$content="";
 						
