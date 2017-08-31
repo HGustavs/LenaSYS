@@ -81,7 +81,26 @@ if(checklogin()){
 				$debug="Error updating entries";
 			}
 		}else if(strcmp($opt,"NEW")===0){
-			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments,rowcolor,grouptype) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment,:rowcolor,:grouptype)"); 
+
+			// Insert a new code example and update variables accordingly.
+			if($link==-1){
+      
+          $query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
+			
+					$query2->bindParam(':cid', $courseid);
+					$query2->bindParam(':cversion', $coursevers);
+					$query2->bindParam(':ename', $sectname);					
+					$query2->bindParam(':sname', $sname);					
+			
+					if(!$query2->execute()) {
+						$error=$query2->errorInfo();
+						$debug="Error updating entries".$error[2];
+					}
+
+					$link=$pdo->lastInsertId();
+			}			
+
+      $query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments,rowcolor,grouptype) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment,:rowcolor,:grouptype)"); 
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
@@ -97,7 +116,8 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
-		}else if(strcmp($opt,"REORDER")===0){
+      
+    }else if(strcmp($opt,"REORDER")===0){
 			$orderarr=explode(",",$order);
 			
 			foreach ($orderarr as $key => $value){
@@ -145,9 +165,9 @@ if(checklogin()){
 					}
 
 					$link=$pdo->lastInsertId();
-
 			}			
-			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,rowcolor=:rowcolor,grouptype=:grouptype WHERE lid=:lid;");
+
+      $query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,rowcolor=:rowcolor,grouptype=:grouptype WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':comments', $comments);
