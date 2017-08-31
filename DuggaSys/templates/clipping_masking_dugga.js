@@ -13,93 +13,85 @@ Example seed
 
 //------------==========########### GLOBALS ###########==========------------
 var score = -1;
-var running;
-var retdata = null;
 var canvas = null;
-
+var needParams = true;
+var duggaParams = null;
 var pushcount = 0;
 var elapsedTime = 0;
-
 var dataV;
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
 function setup() 
 {
-	running = true;
-	canvas = document.getElementById('a');
-	if (canvas) {
-		context = canvas.getContext("2d");
-    fitToContainer();
-    $( window ).resize(function() {
-        fitToContainer();
-        render();
-    });
-		context.clearRect(0, 0, canvas.width, canvas.height);
+		canvas = document.getElementById('a');
+		if (canvas) {
+				context = canvas.getContext("2d");
+				fitToContainer();
+				$( window ).resize(function() {
+						fitToContainer();
+						render();
+				});
+				context.clearRect(0, 0, canvas.width, canvas.height);
 
-		AJAXService("GETPARAM", { }, "PDUGGA");
-	}
-
+				if(needParams){
+						AJAXService("GETPARAM", { }, "PDUGGA");
+				}
+		}
 }
 
 function returnedDugga(data) 
 {	
-	dataV = data;
-	
-	if (data['debug'] != "NONE!") { alert(data['debug']); }
+		dataV = data;
+		if (data['debug'] != "NONE!") { alert(data['debug']); }
 
-	if (data['param'] == "UNK") {
-		alert("UNKNOWN DUGGA!");
-	} else {
-		if (canvas) {
-			//showDuggaInfoPopup();
-			var studentPreviousAnswer = "";
+		if (data['param'] == "UNK") {
+				alert("UNKNOWN DUGGA!");
+		} else {
+				duggaParams = jQuery.parseJSON(data['param']);
 
-			retdata = jQuery.parseJSON(data['param']);
-			variant = retdata["variant"];
-      document.getElementById("target-img").src="showdoc.php?cid=3&fname="+retdata.target;
+				// Fetch target image
+				document.getElementById("target-img").src="showdoc.php?cid=3&fname="+duggaParams.target;
+				
+				// Insert saved dugga answer
+				document.getElementById("operationList").innerHTML="";
+				if (data["answer"] !== null || data["answer"] !== "UNK") {
+						var previous = data['answer'].split(',');
+						previous.shift();
+						previous.pop();
 
-			if (data["answer"] !== null || data["answer"] !== "UNK") {
-					var previous = data['answer'].split(',');
-					previous.shift();
-					previous.pop();
-
-					// Clear Op list
-					document.getElementById("operationList").innerHTML="";
-					// Add previous handed in dugga
-					for (var i = 0; i < previous.length; i++) {
-							if (previous[i] !== ""){
-									var newTableBody = "<tr id='v" + i +"'>";
-									newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-									newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
-									newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
-									newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
-									newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
-									newTableBody += "</tr>";
-										
-									$("#operationList").append(newTableBody);						
-							}
-					}
-			}
+						for (var i = 0; i < previous.length; i++) {
+								if (previous[i] !== ""){
+										var newTableBody = "<tr id='v" + i +"'>";
+										newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
+										newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
+										newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
+										newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+										newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
+										newTableBody += "</tr>";
+											
+										$("#operationList").append(newTableBody);						
+								}
+						}
+				}
 		}
-	}
-	// Teacher feedback
-	if (data["feedback"] == null || data["feedback"] === "" || data["feedback"] === "UNK") {
-			// No feedback
-	} else {
-			var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-			var feedbackArr = data["feedback"].split("||");
-			for (var k=feedbackArr.length-1;k>=0;k--){
-				var fb_tmp = feedbackArr[k].split("%%");
-				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-			} 		
-			fb += "</tbody></table>";
-			document.getElementById('feedbackTable').innerHTML = fb;		
-			document.getElementById('feedbackBox').style.display = "block";
-	}
-	$("#submitButtonTable").appendTo("#content");
-	$("#lockedDuggaInfo").appendTo("#content");
-	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+
+		// Display teacher feedback
+		if (data["feedback"] !== null || data["feedback"] !== "" || data["feedback"] !== "UNK") {
+				var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+				var feedbackArr = data["feedback"].split("||");
+				for (var k=feedbackArr.length-1;k>=0;k--){
+					var fb_tmp = feedbackArr[k].split("%%");
+					fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+				} 		
+				fb += "</tbody></table>";
+				document.getElementById('feedbackTable').innerHTML = fb;		
+				document.getElementById('feedbackBox').style.display = "block";
+		}
+
+		$("#submitButtonTable").appendTo("#content");
+		$("#lockedDuggaInfo").appendTo("#content");
+		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
 function reset()
@@ -146,84 +138,55 @@ function saveClick()
 
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
-	if (userStats != null){
-		document.getElementById('duggaTime').innerHTML=userStats[0];
-		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-		document.getElementById('duggaClicks').innerHTML=userStats[2];
-		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
-	}
-	
-	running = true;
-	canvas = document.getElementById('a');
-	context = canvas.getContext("2d");
-	context.clearRect(0, 0, canvas.width, canvas.height);
-  canvas.addEventListener('click', function() { 
-      if (running) {
-          running = false;
-      } else {
-          running = true;
-          foo();
-      }
-  
-  }, false);
-
-  var studentPreviousAnswer = "";
-
-	retdata = jQuery.parseJSON(param);
-  document.getElementById("target-img").src="showdoc.php?cid=3&fname="+retdata.target;
-
-  var s="<select id='function' name='function'>"
-  for(var j=0;j<retdata.ops.length;j++){
-    s+="<option value='"+retdata.ops[j]+"'>"+retdata.ops[j]+"</option>";
-  }
-  s+="</select>";
-  document.getElementById("function").innerHTML=s;
-	variant = retdata["variant"];
-
-	if (uanswer !== null || uanswer !== "UNK") {
-		var previous = uanswer.split(',');
-		previous.shift();
-		previous.pop();
-
-		// Add previous handed in dugga
-		// Clear Op list
-		document.getElementById("operationList").innerHTML="";
-		// Add previous handed in dugga
-		for (var i = 0; i < previous.length; i++) {
-				if (previous[i] !== ""){
-						var newTableBody = "<tr id='v" + i +"'>";
-						newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-						newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
-						newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().after($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
-						newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
-						newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
-						newTableBody += "</tr>";
-							
-						$("#operationList").append(newTableBody);						
-				}
+		duggaParams=jQuery.parseJSON(param);
+		needParams=false;
+		setup();
+		
+		if (userStats != null){
+			document.getElementById('duggaTime').innerHTML=userStats[0];
+			document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+			document.getElementById('duggaClicks').innerHTML=userStats[2];
+			document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+			$("#duggaStats").css("display","block");
 		}
+	
+		// Fetch target image
+	  document.getElementById("target-img").src="showdoc.php?cid=3&fname="+duggaParams.target;
+
+		// Insert saved dugga answer
+		document.getElementById("operationList").innerHTML="";
+		if (uanswer !== null || uanswer !== "UNK") {
+				var previous = uanswer.split(',');
+				previous.shift();
+				previous.pop();
+
+				document.getElementById("operationList").innerHTML="";
+				for (var i = 0; i < previous.length; i++) {
+						if (previous[i] !== ""){
+								var newTableBody = "<tr id='v" + i +"'>";
+								newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
+								newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
+								newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().after($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
+								newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+								newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
+								newTableBody += "</tr>";
+									
+								$("#operationList").append(newTableBody);						
+						}
+				}
 	}
 
-/*
-	if (running) {
-			renderId = requestAnimationFrame(foo);
-	} else {
-			cancelAnimationFrame(renderId);
-	}
-	*/
-  foo();
-	// Teacher feedback
-	var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-	if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
-		var feedbackArr = feedback.split("||");
-		for (var k=feedbackArr.length-1;k>=0;k--){
-			var fb_tmp = feedbackArr[k].split("%%");
-			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-		} 		
-	}
-	fb += "</tbody></table>";
+	// Display teacher feedback
 	if (feedback !== undefined){
+			var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+			if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
+				var feedbackArr = feedback.split("||");
+				for (var k=feedbackArr.length-1;k>=0;k--){
+					var fb_tmp = feedbackArr[k].split("%%");
+					fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+				} 		
+			}
+			fb += "</tbody></table>";
 			document.getElementById('teacherFeedbackTable').innerHTML = fb;
 	}
 
@@ -271,7 +234,7 @@ function toggleSelectOperation(e){
 
 function newbutton() 
 {
-	//ClickCounter.onClick();
+	ClickCounter.onClick();
 	var newOp = $('#function > optgroup > option:selected').text();
 	var newOpCode = $("#function").val();
 
