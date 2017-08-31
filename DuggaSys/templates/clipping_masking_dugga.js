@@ -64,7 +64,7 @@ function returnedDugga(data)
 								if (previous[i] !== ""){
 										var newTableBody = "<tr id='v" + i +"'>";
 										newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-										newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
+										newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+previous[i]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
 										newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
 										newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
 										newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
@@ -73,11 +73,12 @@ function returnedDugga(data)
 										$("#operationList").append(newTableBody);						
 								}
 						}
+						render();
 				}
 		}
 
 		// Display teacher feedback
-		if (data["feedback"] !== null || data["feedback"] !== "" || data["feedback"] !== "UNK") {
+		if (data["feedback"] !== null && data["feedback"] !== "" && data["feedback"] !== "UNK") {
 				var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
 				var feedbackArr = data["feedback"].split("||");
 				for (var k=feedbackArr.length-1;k>=0;k--){
@@ -165,7 +166,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 						if (previous[i] !== ""){
 								var newTableBody = "<tr id='v" + i +"'>";
 								newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-								newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+operationsMap[previous[i]]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
+								newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+previous[i]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
 								newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().after($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
 								newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
 								newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
@@ -174,6 +175,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 								$("#operationList").append(newTableBody);						
 						}
 				}
+				render();
 	}
 
 	// Display teacher feedback
