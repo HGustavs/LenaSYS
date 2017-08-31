@@ -684,50 +684,38 @@ function returnedSection(data)
         }
 
       // hide som elements if to narrow
-     var hiddenInline = "";
-     if($(window).width() < 480) {
-        showInline = false;
-        hiddenInline = "none";
-      } else {
-        showInline = true;
-        hiddenInline = "inline";
-      }
-	var showhideall = "Show/hide all";
-    // Course Name
-    // This will ellipsis on the course name, and keep course code and vers always fully expanded
-    str+="<div class='course' style='display: flex;align-items: center;justify-content: center;'>";
+    var hiddenInline = "";
+    if($(window).width() < 480) {
+      showInline = false;
+      hiddenInline = "none";
+    } else {
+      showInline = true;
+      hiddenInline = "inline";
+    }
 
-		/*Adds the Show/hide all arrow and text to the section editor*/
-//			str+="<div class='hideAllArrow showHideMetaButton' id='course-showhide' value='Show/Hide all' style='position:absolute;  cursor: pointer; left:10px; margin-top: 12px; display:inline-block;' >";
-//			str+="<img src='../Shared/icons/desc_complement.svg' class='arrowComp'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
-//			str+="</div>";
+    str+="<div class='course' style='display: flex;align-items: center; justify-content: flex-end;'>";
+    str+="<div style='flex-grow:1'>"
+      str+="<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>"+data.coursename+"</span>";
+      str+="<span id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</span>";
+      str+="<span id='course-versname' class='courseVersionField'>"+versionname+"</span>";
+    str+="</div>";
+    // If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign 
+    if(retdata["writeaccess"]){
+        str+="<div id='course-newitem' style='display: flex;'>";
+        str+= "<input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
+        str+="</div>";
+    }
 
-//			str+="<div class='hideAll showHideMetaButton' id='course-showhide-text' style='position:absolute; cursor: pointer; margin-top: 8px; display: inline-block; vertical-align: baseline;' >";
-//			str+="<text class='showhidetext' >"+showhideall+"</text>";
-//			str+="</div>";
-
-			str+="<div class='showAllArrow showHideMetaButton' title='Click to show/hide all moments' id='course-showhide' value='Show/Hide all' style='display:inline; position:absolute;  cursor: pointer; left:10px; margin-top: 10px;' >";
-			str+="<img src='../Shared/icons/right_complement.svg' class='arrowRightMeta' style='display:none'><img src='../Shared/icons/desc_complement.svg' class='arrowCompMeta'>";
-			str+="</div>";
-
-			str+="<div class='showAll showHideMetaButton' id='course-showhide-text' style='display:inline; position:absolute; cursor: pointer; margin-top: 8px; vertical-align: baseline;' >";
-			str+="<text class='showhidetext' title='Click to show/hide all moments' >"+showhideall+"</text>";
-			str+="</div>";
-
-			str+="<div id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>"+data.coursename+"</div>";
-			str+="<div id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</div>";
-			str+="<div id='course-versname' class='courseVersionField'>"+versionname+"</div>";
-		/*If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign */
-        if(retdata["writeaccess"]){
-            str+="<div id='course-newitem' style='display: flex; position: absolute; right:15px;'>";
-            str += "<input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
-           	str+="</div>";
-        }
-        
-      str+="<div style='width: 50px;'></div>";
-      str+='</div>';
-			str+="<div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div>";
-			str+="<div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
+/*    
+    str+="<table style='width:100%;'><tr class='course'>";
+    str+="<td style='padding:6px;'>"+data.coursename+" "+data.coursecode+" "+versionname+"</td>";
+    if(retdata["writeaccess"]){
+        str+="<td style='padding-right:4px;'>"+"<input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/></td>";
+    }  
+    str+="</tr></table>"
+*/    
+    str+="<div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div>";
+    str+="<div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
 
 		str+="</div>";
 
@@ -1208,34 +1196,6 @@ function setGlobalArrow() {
     $('.arrowRightMeta').hide();
     $('.arrowCompMeta').show();
   }
-}
-
-// Toggle content for all moments
-$(document).on('click', '.showHideMetaButton', function () {
-	if(hasUnfoldedParts()) {
-    $('.moment, .section').nextUntil('.moment, .section').slideUp('fast', setGlobalArrow());
-    $('.arrowRight').show();
-    $('.arrowComp').hide();
-	} else {
-    $('.moment, .section').nextUntil('.moment, .section').slideDown('fast', setGlobalArrow());
-    $('.arrowRight').hide();
-    $('.arrowComp').show();
-	}
-});
-
-// Check visibility status of all the sub moments, used to see if there are any open sections
-function hasUnfoldedParts(){
-  var fold = false;
-  $('div.moment, div.section').each(function(i) {
-    $('.moment, .section').nextUntil('.moment, .section').each(function(j) {
-      if($(this).is(":visible")) {
-        fold = true;
-        return(!fold); // Don't break if still false
-      }
-    });
-    return(!fold);
-  });
-  return fold;
 }
 
 // Function to prevent collapsing when clicking icons

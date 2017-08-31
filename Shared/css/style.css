@@ -337,12 +337,8 @@ p {
   padding:6px;
   text-align: center;
   color: #fff;
-  display: block;
-  font-size:18pt;
+  font-size:24px;
   background-color: #614875;
-  clear:both;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
 }
 
 .item a {
