@@ -90,15 +90,15 @@ function returned(data)
 		$("#afterbutton").css("opacity",0.4);
 		$("#afterbutton").css("pointer-events","none");	
 	}
-	
-	// Disables the play button if there is no playlink or if the file linked does not exist
-	if(!UrlExists()) {
-			$("#playbutton").css("opacity",0.4);
-			$("#playbutton").css("pointer-events","none");
-	}else{
-			retData['playlink']=retData['playlink'].replace(/\&\#47\;/g,"/"); 
-	}
-	
+
+  // Disables the play button if there is no playlink
+  if(typeof retData['playlink'] == 'undefined' || retData['playlink'] == "" || retData['playlink'] == null) {
+    $("#playbutton").css("opacity",0.4);
+    $("#playbutton").css("pointer-events","none");
+  }else{
+    retData['playlink']=retData['playlink'].replace(/\&\#47\;/g,"/"); 
+  }
+    
 	// Fill Section Name and Example Name
 	var exName= $('#exampleName');
 	if(data['examplename'] != null){
@@ -131,8 +131,13 @@ function returned(data)
 		var debug = "Debug: Nr boxes ret: " +retData['numbox']+ ", may cause page crash"
 		console.log(debug);
 	}
-	// Create boxes
-	for(var i=0;i<retData['numbox'];i++){
+	
+  // Create boxes
+  if(retData['numbox']!=retData['box'].length){
+      alert("Number of boxes is inconsistent\n"+retData['numbox']+"\n"+retData['box'].length);
+  }
+  
+  for(var i=0;i<retData['numbox'];i++){
 		var contentid="box"+retData['box'][i][0];
 		var boxid=retData['box'][i][0];
 		var boxtype=retData['box'][i][1].toUpperCase();
@@ -2706,24 +2711,4 @@ function setResizableToPer(boxValArray)
 //----------------------------------------------------------------------------------
 function addHtmlLineBreak(inString){
 	return inString.replace(/\n/g, '<br>'); 
-}
-
-function UrlExists()
-{
-    var urlText = "";
-    if(retData['public'] === "1") {
-        urlText = "global/" + retData['playlink'];
-    }
-    else{
-        urlText = retData['courseid'] + "/" + retData['playlink'];
-    }
-    var http = new XMLHttpRequest();
-    http.open('HEAD', "../courses/" + urlText, false);
-    http.send();
-    if(http.status == 404 || typeof retData['playlink'] == 'undefined' || retData['playlink'] == "" || retData['playlink'] == null){
-    	return false;
-	}
-	else{
-    	return true;
-	}
 }
