@@ -706,14 +706,6 @@ function returnedSection(data)
         str+="</div>";
     }
 
-/*    
-    str+="<table style='width:100%;'><tr class='course'>";
-    str+="<td style='padding:6px;'>"+data.coursename+" "+data.coursecode+" "+versionname+"</td>";
-    if(retdata["writeaccess"]){
-        str+="<td style='padding-right:4px;'>"+"<input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/></td>";
-    }  
-    str+="</tr></table>"
-*/    
     str+="<div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div>";
     str+="<div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div>";
 
