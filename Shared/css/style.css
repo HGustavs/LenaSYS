@@ -2315,7 +2315,7 @@ table {
 /* @media only screen */
 /* and (min-device-width : 320px) */
 /* and (max-device-width : 480px) { */
-#cookiemsg {
+.alertmsg {
   background-color: #fecc56;
   z-index: 1000;
   position: fixed;
@@ -2327,7 +2327,7 @@ table {
   text-align: center;
 }
 
-#cookiemsg p {
+.alertmsg p {
   /* margin: 0px; */
   /* margin-left: 5px; */
   display: inline;
@@ -2335,7 +2335,7 @@ table {
   color: #614875;
 }
 
-#cookiemsg input {
+.alertmsg input {
   float: none;
   align-self: center;
   margin-right: 5px;
