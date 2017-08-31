@@ -503,39 +503,29 @@ if($ha){
 		}
 	}
 
-	// Should be optimized into one query!
-	$query=$pdo->prepare("select count(*) as unmarked from userAnswer where cid=:cid and (submitted is not null and useranswer is not null and grade is null);");
+  $query=$pdo->prepare("select count(*) as unmarked from userAnswer where cid=:cid and ((grade = 1 and submitted > marked) OR (submitted is not null and useranswer is not null and grade is null));");
 	$query->bindParam(':cid', $courseid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading number of unmarked duggas".$error[2];
 	}else{
-		$row = $query->fetchAll(PDO::FETCH_ASSOC);
-		$unmarked = $row[0]["unmarked"];
-
-	}
-	$query=$pdo->prepare("select count(*) as unmarked from userAnswer where cid=:cid and (grade = 1 and submitted > marked);");
-	$query->bindParam(':cid', $courseid);
-	if(!$query->execute()) {
-		$error=$query->errorInfo();
-		$debug="Error reading number of unmarked duggas".$error[2];
-	}else{
-		$row = $query->fetchAll(PDO::FETCH_ASSOC);
-		$unmarked += $row[0]["unmarked"];
+    foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+        $unmarked = $row["unmarked"];
+    }
 	}
 	
-	$queryo=$pdo->prepare("SELECT startdate,enddate FROM vers WHERE cid=:cid AND vers=:vers;");
+	$queryo=$pdo->prepare("SELECT startdate,enddate FROM vers WHERE cid=:cid AND vers=:vers LIMIT 1;");
 	$queryo->bindParam(':cid', $courseid);
 	$queryo->bindParam(':vers', $coursevers);
 	if(!$queryo->execute()) {
 		$error=$queryo->errorInfo();
 		$debug="Error reading start/stopdate".$error[2];
 	}else{
-		$row = $queryo->fetchAll(PDO::FETCH_ASSOC);
-		$startdate = $row[0]["startdate"];
-		$enddate = $row[0]["enddate"];
-	}
-
+    foreach($queryo->fetchAll(PDO::FETCH_ASSOC) as $row){
+      $startdate = $row["startdate"];
+      $enddate = $row["enddate"];
+    }
+  }
 }
 
 $array = array(
