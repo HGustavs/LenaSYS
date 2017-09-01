@@ -17,6 +17,7 @@ var canvas = null;
 var requiresParams = true;
 var duggaParams=null;
 var hasFeedback=false;
+var isTeacher=false;
 var feedback=null;
 var hasFacit=false;
 var facit=null;
@@ -48,7 +49,9 @@ function setup()
 
 				if(requiresParams){
 						AJAXService("GETPARAM", { }, "PDUGGA");
-				}
+				}else{
+            show();
+        }
 		}
 }
 
@@ -84,13 +87,19 @@ function show(){
     }
 
     // Display teacher feedback
-		if (hasFeedback) {
-				var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-				var feedbackArr = feedback.split("||");
-				for (var k=feedbackArr.length-1;k>=0;k--){
-					var fb_tmp = feedbackArr[k].split("%%");
-					fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-				} 		
+		if (hasFeedback || isTeacher) {
+				var fb ="";
+        if(isTeacher){
+            fb+="<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div>"
+        }
+        fb+="<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+        if(hasFeedback){
+            var feedbackArr = feedback.split("||");
+            for (var k=feedbackArr.length-1;k>=0;k--){
+                var fb_tmp = feedbackArr[k].split("%%");
+                fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+            } 		
+        }
 				fb += "</tbody></table>";
 				document.getElementById('feedbackTable').innerHTML = fb;		
 				document.getElementById('feedbackBox').style.display = "block";
@@ -192,29 +201,34 @@ function saveClick()
 //   - mark a student's submition
 //   - preview a specific dugga variant
 // -----------------------------------------------------------------------------------------------
-function showFacit(param, uanswer, danswer, userStats, files_, moment_, feedback_)
+function showFacit(param, uanswer, danswer, userStats_, files_, moment_, feedback_)
 {
+  
     requiresParams=false;
     if (param!==null){
         duggaParams=jQuery.parseJSON(param);      
     }
 
-    if (uanswer !== null || uanswer !== "UNK") {
+    if (!(uanswer === null || uanswer === "UNK")) {
         hasSavedAnswer=true
         savedAnswer=uanswer;
     }
 
-    if(feedback_ !== null && feedback_ !== "" && feedback_ !== "UNK") {
+    isTeacher=true;
+    if(!(feedback_ === null || feedback_ === "" || feedback_ === "UNK")) {
         hasFeedback=true;
         feedback=feedback_;
     }
         
     hasFacit=true;
-    if(danswer!==null){
+    if(!(danswer === null || danswer === "UNK")){
         facit=jQuery.parseJSON(danswer);
     }
-    
-    if(userStats!==null){hasUserStats=true;}
+
+    if(!(userStats_===null||userStats_==="UNK")){
+      hasUserStats=true;
+      userStats=userStats_;
+    }
     
 		setup();		
 }
