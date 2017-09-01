@@ -14,13 +14,25 @@ Example seed
 //------------==========########### GLOBALS ###########==========------------
 var score = -1;
 var canvas = null;
-var needParams = true;
-var duggaParams = null;
+var requiresParams = true;
+var duggaParams=null;
+var hasFeedback=false;
+var feedback=null;
+var hasFacit=false;
+var facit=null;
+var hasSavedAnswer=false;
+var savedAnswer=null;
+var hasUserStats=false;
+var userStats=null;
 var pushcount = 0;
 var elapsedTime = 0;
 var dataV;
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
+
+// -----------------------------------------------------------------------------------------------
+// Setup dugga. Code to execute before we have any parameters for the dugga.
+// -----------------------------------------------------------------------------------------------
 
 function setup() 
 {
@@ -34,53 +46,47 @@ function setup()
 				});
 				context.clearRect(0, 0, canvas.width, canvas.height);
 
-				if(needParams){
+				if(requiresParams){
 						AJAXService("GETPARAM", { }, "PDUGGA");
 				}
 		}
 }
 
-function returnedDugga(data) 
-{	
-		dataV = data;
-		if (data['debug'] != "NONE!") { alert(data['debug']); }
+// -----------------------------------------------------------------------------------------------
+// Show dugga when we have received parameters
+// -----------------------------------------------------------------------------------------------
 
-		if (data['param'] == "UNK") {
-				alert("UNKNOWN DUGGA!");
-		} else {
-				duggaParams = jQuery.parseJSON(data['param']);
+function show(){
+    // Fetch target image
+    document.getElementById("target-img").src="showdoc.php?cid=3&fname="+duggaParams.target;
+    
+    // Insert saved dugga answer
+    document.getElementById("operationList").innerHTML="";
+    if (hasSavedAnswer) {
+        var previous = savedAnswer.split(',');
+        previous.shift();
+        previous.pop();
 
-				// Fetch target image
-				document.getElementById("target-img").src="showdoc.php?cid=3&fname="+duggaParams.target;
-				
-				// Insert saved dugga answer
-				document.getElementById("operationList").innerHTML="";
-				if (data["answer"] !== null || data["answer"] !== "UNK") {
-						var previous = data['answer'].split(',');
-						previous.shift();
-						previous.pop();
+        for (var i = 0; i < previous.length; i++) {
+            if (previous[i] !== ""){
+                var newTableBody = "<tr id='v" + i +"'>";
+                newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
+                newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+previous[i]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
+                newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
+                newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+                newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
+                newTableBody += "</tr>";
+                  
+                $("#operationList").append(newTableBody);						
+            }
+        }
+        render();
+    }
 
-						for (var i = 0; i < previous.length; i++) {
-								if (previous[i] !== ""){
-										var newTableBody = "<tr id='v" + i +"'>";
-										newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-										newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+previous[i]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
-										newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
-										newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
-										newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
-										newTableBody += "</tr>";
-											
-										$("#operationList").append(newTableBody);						
-								}
-						}
-						render();
-				}
-		}
-
-		// Display teacher feedback
-		if (data["feedback"] !== null && data["feedback"] !== "" && data["feedback"] !== "UNK") {
+    // Display teacher feedback
+		if (hasFeedback) {
 				var fb = "<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-				var feedbackArr = data["feedback"].split("||");
+				var feedbackArr = feedback.split("||");
 				for (var k=feedbackArr.length-1;k>=0;k--){
 					var fb_tmp = feedbackArr[k].split("%%");
 					fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
@@ -90,108 +96,127 @@ function returnedDugga(data)
 				document.getElementById('feedbackBox').style.display = "block";
 		}
 
-		$("#submitButtonTable").appendTo("#content");
-		$("#lockedDuggaInfo").appendTo("#content");
-		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+    if(hasFacit){
+
+    }else{
+        $("#submitButtonTable").appendTo("#content");
+    		$("#lockedDuggaInfo").appendTo("#content");
+    }
+
+    if (hasUserStats){
+      document.getElementById('duggaTime').innerHTML=userStats[0];
+      document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+      document.getElementById('duggaClicks').innerHTML=userStats[2];
+      document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
+      $("#duggaStats").css("display","block");
+    }
+
 }
 
+// -----------------------------------------------------------------------------------------------
+// This method is the return function after the AJAXService call for dugga variant parameters
+// We get data such as:
+//   - specific variant parameters
+//   - saved answer
+//   - list of submitted files
+//   - feedback
+// -----------------------------------------------------------------------------------------------
+function returnedDugga(data) 
+{	
+		dataV = data;
+		if (data['debug'] != "NONE!") { alert(data['debug']); }
+		if (data['param'] == "UNK") {
+				alert("UNKNOWN DUGGA!");
+		} else {
+				duggaParams = jQuery.parseJSON(data['param']);
+		}
+    if(data["feedback"] !== null && data["feedback"] !== "" && data["feedback"] !== "UNK") {
+        hasFeedback=true;
+        feedback=data["feedback"];
+    }
+    if(data["answer"] !== null || data["answer"] !== "UNK") {
+        hasSavedAnswer=true;
+        savedAnswer=data['answer'];
+    }
+    displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);      
+    show();
+}
+
+// -----------------------------------------------------------------------------------------------
+// This method clears any input and resets the elapsed time and # steps, giving the user a new chance to reach the highscore
+// -----------------------------------------------------------------------------------------------
 function reset()
 {
-	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
-	ClickCounter.initialize();
-
+  	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
+    document.getElementById("operationList").innerHTML="";
+  	Timer.stopTimer();
+  	Timer.score=0;
+  	Timer.startTimer();
+  	ClickCounter.initialize();
 }
 
+// -----------------------------------------------------------------------------------------------
+// This method submits the current answer and marks the dugga as pending grading.
+// -----------------------------------------------------------------------------------------------
 function saveClick() 
 {
-	Timer.stopTimer();
+  	Timer.stopTimer();
 
-	timeUsed = Timer.score;
-	stepsUsed = ClickCounter.score;
+  	timeUsed = Timer.score;
+  	stepsUsed = ClickCounter.score;
 
-	if (querystring['highscoremode'] == 1) {	
-		score = Timer.score;
-	} else if (querystring['highscoremode'] == 2) {
-		score = ClickCounter.score;
-	}
+  	if (querystring['highscoremode'] == 1) {	
+  		  score = Timer.score;
+  	} else if (querystring['highscoremode'] == 2) {
+  		  score = ClickCounter.score;
+  	}
 
-	// Loop through all operations
-	bitstr = ",";
-	
-	$("*[id*=opCode_]").each(function (){
-			bitstr+=this.innerHTML + ",";
-	});
-	bitstr += "T " + elapsedTime;
+  	// Loop through all the added operations
+  	bitstr = ",";	
+  	$("*[id*=opCode_]").each(function (){
+  			bitstr+=this.innerHTML + ",";
+  	});
+  	bitstr += "T " + elapsedTime;
+  	bitstr += " " + window.screen.width;
+  	bitstr += " " + window.screen.height;
+  	bitstr += " " + $(window).width();
+  	bitstr += " " + $(window).height();
 
-	bitstr += " " + window.screen.width;
-	bitstr += " " + window.screen.height;
-
-	bitstr += " " + $(window).width();
-	bitstr += " " + $(window).height();
-
-	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
-	saveDuggaResult(bitstr);
+  	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
+  	saveDuggaResult(bitstr);
 }
 
-function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
+// -----------------------------------------------------------------------------------------------
+// Prepare the dugga to show facit. 
+// This method is used to
+//   - mark a student's submition
+//   - preview a specific dugga variant
+// -----------------------------------------------------------------------------------------------
+function showFacit(param, uanswer, danswer, userStats, files_, moment_, feedback_)
 {
-		duggaParams=jQuery.parseJSON(param);
-		needParams=false;
-		setup();
-		
-		if (userStats != null){
-			document.getElementById('duggaTime').innerHTML=userStats[0];
-			document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-			document.getElementById('duggaClicks').innerHTML=userStats[2];
-			document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-			$("#duggaStats").css("display","block");
-		}
-	
-		// Fetch target image
-	  document.getElementById("target-img").src="showdoc.php?cid=3&fname="+duggaParams.target;
+    requiresParams=false;
+    if (param!==null){
+        duggaParams=jQuery.parseJSON(param);      
+    }
 
-		// Insert saved dugga answer
-		document.getElementById("operationList").innerHTML="";
-		if (uanswer !== null || uanswer !== "UNK") {
-				var previous = uanswer.split(',');
-				previous.shift();
-				previous.pop();
+    if (uanswer !== null || uanswer !== "UNK") {
+        hasSavedAnswer=true
+        savedAnswer=uanswer;
+    }
 
-				document.getElementById("operationList").innerHTML="";
-				for (var i = 0; i < previous.length; i++) {
-						if (previous[i] !== ""){
-								var newTableBody = "<tr id='v" + i +"'>";
-								newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-								newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+previous[i]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
-								newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().after($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
-								newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
-								newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
-								newTableBody += "</tr>";
-									
-								$("#operationList").append(newTableBody);						
-						}
-				}
-				render();
-	}
-
-	// Display teacher feedback
-	if (feedback !== undefined){
-			var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
-			if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
-				var feedbackArr = feedback.split("||");
-				for (var k=feedbackArr.length-1;k>=0;k--){
-					var fb_tmp = feedbackArr[k].split("%%");
-					fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-				} 		
-			}
-			fb += "</tbody></table>";
-			document.getElementById('teacherFeedbackTable').innerHTML = fb;
-	}
-
+    if(feedback_ !== null && feedback_ !== "" && feedback_ !== "UNK") {
+        hasFeedback=true;
+        feedback=feedback_;
+    }
+        
+    hasFacit=true;
+    if(danswer!==null){
+        facit=jQuery.parseJSON(danswer);
+    }
+    
+    if(userStats!==null){hasUserStats=true;}
+    
+		setup();		
 }
 
 function closeFacit() 
