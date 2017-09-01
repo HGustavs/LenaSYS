@@ -218,27 +218,50 @@ $allowedExtensions = [
 												$query->execute(); 
 												$norows = $query->fetchColumn();
 												$filesize=filesize($movname);
+                        $kindid=-1;
 												
 												//  if returned rows equals 0(the existence of the file is not in the db) add data into the db
 												if($norows==0){
 														if($kind=="LFILE"){
-																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,vers) VALUES(:linkval,'4',:cid,:vers);");
+                                $kindid=4;
+																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,vers,filesize) VALUES(:filename,:kindid,:cid,:vers,:filesize);");
 																$query->bindParam(':vers', $vers);
 														}else if($kind=="MFILE"){
-																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:linkval,'3',:cid,:filesize);");
+                                $kindid=3;
+																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:filename,:kindid,:cid,:filesize)");
 														}else if($kind=="GFILE"){
-																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:linkval,'2',:cid,'1',:filesize);");
+                                $kindid=2;
+																$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:filename,:kindid,:cid,'1',:filesize);");
 														}
 
 														$query->bindParam(':cid', $cid);
-														$query->bindParam(':linkval', $fname);
+														$query->bindParam(':filename', $fname);
 														$query->bindParam(':filesize', $filesize);
+                            $query->bindParam(':kindid', $kindid);
 												
 														if(!$query->execute()) {
 															$error=$query->errorInfo();
 															echo "Error updating file entries".$error[2];
 														}			 				
 												}
+                        $query = $pdo->prepare("UPDATE fileLink SET filesize=:filesize, uploaddate=NOW() WHERE cid=:cid AND kind=:kindid AND filename=:filename;");
+                        $query->bindParam(':filename', $fname);
+												$query->bindParam(':cid', $cid);
+                        $query->bindParam(':filesize', $filesize);                    
+                        if($kind=="LFILE"){
+                            $kindid=4;
+                        }else if($kind=="MFILE"){
+                            $kindid=3;
+                        }else if($kind=="GFILE"){
+                            $kindid=2;
+                        }
+                        $query->bindParam(':kindid', $kindid);    
+
+                        if(!$query->execute()) {
+    											$error=$query->errorInfo();
+    											echo "Error updating filesize and uploaddate: ".$error[2];
+    										}			 				
+                        
 										}else{
 												echo "Error moving file ".$movname;
 												$error=true;
