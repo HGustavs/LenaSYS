@@ -110,8 +110,11 @@ function swimlaneDrawLanes() {
     }
   }
   str+=colspan+"'>"+tmpname+"</th>";
-  str+="</tr></thead><tbody><tr><td>";
-  str+="<svg width='75' height='" + (70 * info['verslength'] ) + "'>";
+  str+="</tr></thead><tbody><tr>";
+  str+="<svg style='width:100%;height:100%;position:absolute;pointer-events:none;'>";
+  str+="<line stroke-dasharray='5,5' x1='75' y1='" + (170 + (info['thisweek'] - info['versstartweek']) * 70) + "' x2='" + (3000) + "' y2='" + (170 + (info['thisweek'] - info['versstartweek']) * 70) + "' style='stroke:rgb(203,63,65); stroke-width:2;' />";
+  str+="</svg>";
+  str+="<td><svg width='75' height='" + (70 * info['verslength'] ) + "'>";
   var id=0;
   var duggaInfoArray = [];
   var oddRow = false;
@@ -129,7 +132,7 @@ function swimlaneDrawLanes() {
   }
   str += "</svg></td>";  
   var bgcol="#EEE";
-  for (var i=0; i<moments.length; i++) {
+  for (var i=0; i<moments.length; i++) {      
       var moment = moments[i];
       if (moment['kind']==4){
           if (bgcol=="#FFF"){
@@ -142,16 +145,18 @@ function swimlaneDrawLanes() {
           duggaInfoArray.push("<b>" + moment['entryname'] + "</b><br> Start date: " + moment['qrelease'] + "<br> Deadline: " + moment['deadline']);
           str+="<td style='text-align:center;background-color:"+bgcol+"'><svg style='margin:0 5px 0 5px;' width='30' height='"+(70 * info['verslength'] ) + "'>";
           // The ---- that marks the release of a dugga
-          str += "<line x1='5' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='25' y2='" + (30 + (moment['startweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
+          str+="<line x1='5' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='25' y2='" + (30 + (moment['startweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
           // The | that marks the duration of a dugga
-          str += "<line x1='15' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='15' y2='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
+          str+="<line x1='15' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='15' y2='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
           // The O that marks the deadline of a dugga
-          str += "<circle id='" + id + "' onmouseover='mouseOverCircle(this,\"" + duggaInfoArray[id++] + "\")' onmouseout='mouseGoneFromCircle(this)' cx='15' cy='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' r='10' stroke='rgb(83,166,84)' stroke-width='3' fill='rgb(253,203,96)' />";
+          str+="<circle id='" + id + "' onmouseover='mouseOverCircle(this,\"" + duggaInfoArray[id++] + "\")' onmouseout='mouseGoneFromCircle(this)' cx='15' cy='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' r='10' stroke='rgb(83,166,84)' stroke-width='3' fill='rgb(146,125,156)' />";          
+          //str+="<line onmouseover='mouseOverLine(\"Current date:<br>" + info['thisdate'] + "\")' onmouseout='mouseGoneFromLine()' x1='250' y1='" + (100 + (info['thisweek'] - info['versstartweek']) * 70) + "' x2='" + ((info['numberofparts'] * 30) + 30) + "' y2='" + (100 + (info['thisweek'] - info['versstartweek']) * 70) + "' style='stroke:rgb(0,0,0); stroke-width:10; stroke-opacity:0;' /></svg>";
           str+="</svg></td>";
       }
     }
   
-    str+="</tbody></table></div>";
+    str+="</tbody></table></div>";    
+
     // Box for dugga info on mouse over
     str += "<div id='duggainfo' class='duggainfo' style='display:none; position:absolute; background-color:white; border-style:solid; border-color:#3C3C3C; padding:5px;'>";
     str += "<span id='duggaInfoText'></span>";
