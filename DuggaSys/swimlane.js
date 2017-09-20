@@ -112,7 +112,7 @@ function swimlaneDrawLanes() {
   str+=colspan+"'>"+tmpname+"</th>";
   str+="</tr></thead><tbody><tr>";
   str+="<svg style='width:100%;height:100%;position:absolute;pointer-events:none;'>";
-  str+="<line stroke-dasharray='5,5' x1='75' y1='" + (170 + (info['thisweek'] - info['versstartweek']) * 70) + "' x2='" + (3000) + "' y2='" + (170 + (info['thisweek'] - info['versstartweek']) * 70) + "' style='stroke:rgb(203,63,65); stroke-width:2;' />";
+  str+="<line stroke-dasharray='5,5' x1='75' y1='" + (35 + info['weekprog'] * 70) + "' x2='" + (3000) + "' y2='" + (35 + info['weekprog'] * 70) + "' style='stroke:rgb(203,63,65); stroke-width:2;' />";
   str+="</svg>";
   str+="<td><svg width='75' height='" + (70 * info['verslength'] ) + "'>";
   var id=0;

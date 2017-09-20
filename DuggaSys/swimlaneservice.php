@@ -108,7 +108,8 @@ if ($course != "UNK" && $vers != "UNK") {
   $thisDate = new DateTime(date('Y/m/d'));
   $information['thisweek'] = intval($thisDate->format('W'));
   $information['thisdate'] = $thisDate->format('jS F');
-
+  $information['weekprog'] = datediffInWeeks($versStart,$thisDate);
+  
   $moments = array();
 // Get parts and duggas.
   $querystring = "SELECT listentries.entryname, listentries.kind, quiz.qstart, quiz.deadline FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid = :cid AND listentries.vers = :vers AND listentries.visible=1 ORDER BY pos;";
