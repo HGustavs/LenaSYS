@@ -79,8 +79,6 @@ window.onclick = function (event) {
 function swimlaneDrawLanes() {
   var info = swimlaneInformation['information'];
   var moments = swimlaneInformation['moments'];
-  console.log(info);
-  console.log(moments);
   var bgcol="#EEE";
   var str = "";
   str += "<div id='swimlanebox' class='swimlanebox'>";
@@ -171,8 +169,6 @@ function swimlaneDrawLanes() {
 function swimlaneDrawLanes2() {
   var info = swimlaneInformation['information'];
   var moments = swimlaneInformation['moments'];
-  console.log(info);
-  console.log(moments);
   var str = "";
   str += "<div id='swimlanebox' class='swimlanebox'>";
   str += "<div id='weeks' style='position:absolute; background: white;'>";
@@ -219,7 +215,6 @@ function swimlaneDrawLanes2() {
   // i = each moment
   for (i = 0; i < moments.length; i++) {
     var moment = moments[i];
-      console.log(moment);
       if (moment['kind'] == 4) { // It's a course part
       hasCoursePart = true;
       k = 0;
@@ -289,7 +284,6 @@ function swimlaneDrawLanes2() {
 // Gather the fetched data from the database and execute the swimming
 function returnedSwimlane(swimlaneData) {
   swimlaneInformation = swimlaneData;
-  console.log(swimlaneInformation['returnvalue']);
   if (swimlaneInformation['returnvalue']) {
     swimlaneDrawLanes();
   }
