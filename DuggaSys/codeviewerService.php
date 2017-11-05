@@ -472,6 +472,8 @@
 									$buffer=file_get_contents($file);
 									$content=$content.$buffer;
 							}
+					}else{
+							$content.="File: ".$file." not found.";
 					}
 					$ruery->closeCursor();
 			}else{
