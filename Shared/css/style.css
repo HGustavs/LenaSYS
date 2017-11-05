@@ -670,18 +670,18 @@ header td {
 }
 
 .loginBox, .expiremessagebox, .endsessionmessagebox {
-  display:block;
-  padding:4px;
-  background-color: #ccc;
-  border: 2px solid #999;
-  width: 295px;
-  min-height: 100px;
-  z-index: 9000;
-  position: absolute;
-  top: 20%;
-  left: 40%;
-  
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
+		display:block;
+		padding:4px;
+		background-color: #ccc;
+		border: 2px solid #999;
+		width: 350px;
+		min-height: 100px;
+		z-index: 9000;
+		position: fixed;
+		top: 40%;
+		left: 50%;
+		margin-left: -178px;
+		box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 
 #endsessionmessagebutton {
