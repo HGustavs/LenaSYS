@@ -43,17 +43,23 @@ $noup="NONE";
 		<div id='Courselist'>
 		</div>
 	</div>
-	<!-- Server Msg -->
-	<div id="servermsgcontainer" class="alertmsg">
-			<p id="servermsg"></p>
-			<input type='button' value='Close' class='submit-button' onclick='document.getElementById("servermsgcontainer").style.display="none";'/>
-	</div>
+	
 	<!-- version identification -->
 	<div id="version" class='version' style='display:none'>Master hash <br /><?php echo $version ?></div>
+	
 	<!-- content END -->
+	
 	<?php
 	include '../Shared/loginbox.php';
 	?>
+
+	<!-- Server Msg -->
+	<div id="servermsgcontainer" class="alertmsg" style="display:none;">
+			<p id="servermsg"></p>
+			<input type='button' value='Close' class='submit-button' onclick='document.getElementById("servermsgcontainer").style.display="none";'/>
+	</div>
+	<!-- Server Msg END -->
+	
 	<!-- New Course Section Dialog START -->
 	<div id='newCourse' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
@@ -109,6 +115,7 @@ $noup="NONE";
 		</div>
 	</div>
 	<!-- New Verison Dialog END -->
+	
 	<!-- Edit Server Settings START -->
 	<div id='editSettings' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>

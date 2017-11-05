@@ -993,10 +993,15 @@ $(window).load(function() {
       });
 });
 
+/*
+
+// Never make dialogs draggable - ruins everything!
 $(window).load(function() {
 	$('.loginBox').draggable({ handle:'.loginBoxheader'});
 	$('.loginBox').draggable({ containment: "window"});	//contains the draggable box within window-boundaries
 });
+
+*/ 
 
 //----------------------------------------------------------------------------------
 // Help function to allow moving of elements from on index to another in array

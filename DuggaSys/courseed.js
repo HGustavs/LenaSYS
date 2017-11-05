@@ -194,13 +194,14 @@ function getCurrentVersion(cid){
 }
 
 function editVersion(cid, cname, ccode) {
+			
 		document.getElementById('newCourseVersion').style.display = "block";
 		document.getElementById('overlay').style.display = "block";
 		document.getElementById('cid').value = cid;
 		document.getElementById('coursename1').value = cname;
 		document.getElementById('coursecode1').value = ccode;
 		var currentVersion = getCurrentVersion(cid);
-
+	
 		var str = "<select class='course-dropdown'>";
 		str += "<option value='None'"	;
 		
@@ -228,6 +229,7 @@ function editVersion(cid, cname, ccode) {
 			str+="</select>";
 			document.getElementById('copyvers').innerHTML = str;
 }
+
 function editSettings(){
 		if(motd!=="UNK") $("#motd").val(motd);
 		document.getElementById('editSettings').style.display = "block";
