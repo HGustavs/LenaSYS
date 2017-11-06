@@ -686,6 +686,56 @@ function processResetPasswordCheckSecurityAnswer() {
 }	
 
 function processLogin() {
+    /*
+    
+    var username = $("#login #username").val();
+		var saveuserlogin = $("#login #saveuserlogin").val();
+		var password = $("#login #password").val();
+		
+		$.ajax({
+			type:"POST",
+			url: "../Shared/loginlogout.php",
+			data: {
+				username: username,
+				saveuserlogin: saveuserlogin == 1 ? 'on' : 'off',
+				password: password,
+				opt: "LOGIN"
+			},
+			success:function(data) {
+				var result = JSON.parse(data);
+				if(result['login'] == "success") {
+					$("#userName").html(result['username']);
+					$("#loginbutton").removeClass("loggedout");
+					$("#loginbutton").addClass("loggedin");
+
+					hideLoginPopup();
+					
+					$("#login #username").val("");
+					$("#login #password").val("");		
+					
+					$("#loginbutton").off("click");
+					console.log("Removed show login bind");
+					$("#loginbutton").click(function(){processLogout();});
+
+					location.reload();				
+				}else{
+					console.log("Failed to log in.");
+					if(typeof result.reason != "undefined") {
+						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
+					} else {
+						$("#login #message").html("<div class='alert danger'>Wrong username or password!</div>");
+					}
+					$("input#username").css("background-color", "rgba(255, 0, 6, 0.2)");
+					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
+				}
+					
+			},
+			error:function() {
+				console.log("error");
+			}
+		});    
+    
+    */
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
@@ -705,14 +755,18 @@ function processLogin() {
 				opt: "LOGIN"
 			},
 			success:function(data) {
-				var result = JSON.	parse(data);
+				var result = JSON.parse(data);
 				if(result['login'] == "success") {
+          hideLoginPopup();
+          $("#loginbutton").removeClass("loginlogout").addClass("loggedin");
+          $("#userName").html(result['username']);
+          /*
                     if(result['securityquestion'] != null) {
                         localStorage.setItem("securityquestion", "set");
                     } else {
                         setSecurityNotifaction("on"); 
                     }
-                    
+            */        
 					setExpireCookie();
 					setExpireCookieLogOut();
 					
@@ -729,6 +783,7 @@ function processLogin() {
 					
 					$("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
+          closeWindows();
 				}
 
 			},
