@@ -15,11 +15,13 @@ var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 
 //Show or hide security notification based on localstorage variables
+/*
 $( document ).ready(function() {
     if (localStorage.getItem("securityquestion") === null && localStorage.getItem("securitynotification") == "on"){
         showSecurityPopup();
     }
 });
+*/
 
 //Set the localstorage item securitynotifaction to on or off
 function setSecurityNotifaction(param){
