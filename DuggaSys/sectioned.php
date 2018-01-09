@@ -72,26 +72,25 @@ pdoConnect();
 	<!-- Edit Section Dialog END -->
 
 
-	<!-- New Version Dialog START -->
+  <!-- New Version Dialog START -->
 	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
 		<div class='loginBoxheader'>
 			<h3>New Course Version</h3>
-			<div class='cursorPointer' onclick='closeWindows();'>x</div>
+			<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
 		</div>
 		<div style='padding:5px;'>
-			<input type='hidden' id='cid' value='Toddler' />
 			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID'  maxlength='8'/></div>
+			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
+      <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='startdate' value='' /></div>
+      <div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='' /></div>
 			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 			<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
-			<div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='startdate' value='None' /></div>
-			<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='None' /></div>
 		</div>
 		<div style='padding:5px;'>
-			<input class='submit-button' type='button' value='Create' title='Save changes' onclick='createVersion();' />
+			<input class='submit-button' type='button' value='Create' title='Create new version' onclick='createVersion();' />
 		</div>
 	</div>
-	<!-- New Version Dialog END -->
+	<!-- New Verison Dialog END -->
 
 	<!-- Edit Version Dialog START -->
 	<div id='editCourseVersion' class='loginBox' style='width:464px;display:none;'>

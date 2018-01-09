@@ -1,5 +1,6 @@
 var querystring=parseGet();
 var retdata;
+var newversid;
 
 AJAXService("get",{},"SECTION");
 
@@ -487,44 +488,65 @@ function showCreateVersion()
 
 function createVersion(){
 
-	var cid = $("#cid").val();
-	var versid = $("#versid").val();
+  var cid = querystring['courseid'];  
+	var versid = $("#versid").val();  
+  newversid=versid;
 	var versname = $("#versname").val();
 	var coursecode = $("#course-coursecode").text();
 	var courseid = $("#course-courseid").text();
 	var coursename = $("#course-coursename").text();
 	var makeactive = $("#makeactive").is(':checked');
 	var coursevers = $("#course-coursevers").text();
+	var copycourse = $("#copyvers").val();
+	var comments = $("#comments").val();
   var startdate = $("#startdate").val();
   var enddate = $("#enddate").val();
-  
-	if(coursevers=="null"){
-		makeactive=true;
-	}
-	
-	AJAXService("NEWVRS", {
-		cid : cid,
-		versid : versid,
-		versname : versname,
-		coursecode : coursecode,
-		coursename : coursename,
-    startdate : startdate,
-    enddate : enddate
-	}, "SECTION");
-	
-	if(makeactive){
-		AJAXService("CHGVERS", {
-			cid : cid,
-			versid : versid
-		}, "SECTION");
-	}
 
-	$("#newCourseVersion").css("display","none");
-	$("#overlay").css("display","none");
+	if (versid=="" || versname=="") {
+		alert("Version Name and Version ID must be entered!");
+	} else {
+		if(coursevers=="null"){
+			makeactive=true;
+		}
 	
-	window.setTimeout(function(){
-		changeURL("sectioned.php?courseid=" + courseid + "&coursename=" + coursename + "&coursevers=" + versid);
-	}, 1000);
+		if (copycourse != "None"){
+				//create a copy of course version 
+        AJAXService("CPYVRS", {
+          cid : cid,
+          versid : versid,
+          versname : versname,
+          coursecode : coursecode,
+          coursename : coursename,
+          copycourse : copycourse,
+          startdate : startdate,
+          enddate : enddate,
+          makeactive : makeactive
+        }, "COURSE");
+			
+		} else {
+			//create a fresh course version
+			AJAXService("NEWVRS", {
+				cid : cid,
+				versid : versid,
+				versname : versname,
+				coursecode : coursecode,
+				coursename : coursename,
+        makeactive : makeactive
+			}, "COURSE");		
+		}
+  
+		$("#newCourseVersion").css("display","none");		
+		$("#overlay").css("display","none");		
+
+	}
+	
+}
+
+function returnedCourse(data){  
+  if(data['debug']!="NONE!") alert(data['debug']);  
+  window.setTimeout(function(){
+    changeURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + newversid);
+  }, 1000);  
 }
 
 function showEditVersion(versid, versname, startdate, enddate)
@@ -627,22 +649,32 @@ function returnedSection(data)
       }
       
     // Version dropdown
-      str+="<td style='display: inline-block;'><div class='course-dropdown-div'><select class='course-dropdown' onchange='goToVersion(this)'>";
+      str+="<td style='display: inline-block;'><div class='course-dropdown-div'>";
+      var sstr ="<select class='course-dropdown' onchange='goToVersion(this)'>";
+      var ssstr ="<select class='course-dropdown'>";
         if (retdata['versions'].length > 0) {
             for ( i = 0; i < retdata['versions'].length; i++) {
                 var item = retdata['versions'][i];
                 if (retdata['courseid'] == item['cid']) {
                     var vvers = item['vers'];
                     var vname = item['versname'];
-                    str += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+                    sstr += "<option value='?courseid=" + retdata['courseid'] + "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
+                    ssstr += "<option value='" + vvers + "'";
                     if(retdata['coursevers']==vvers){
-                        str += "selected";
+                      sstr += " selected";
+                      ssstr += " selected";
                     }
-                    str += ">" + vname + " - " + vvers + "</option>";
+                    sstr += ">" + vname + " - " + vvers + "</option>";
+                    ssstr += ">" + vname + " - " + vvers + "</option>";
                 }
              }
         }
-        str+="</select></div></td>";
+        sstr+="</select>";
+        ssstr+="</select>";
+        str+=sstr;
+        // Also replace the copyvers dialog dropdown
+        document.getElementById("copyvers").innerHTML=ssstr;
+        str+="</div></td>";
         //Buttons for version editing
         str+="<td class='editVers' style='display: inline-block;'><div class='editVers menuButton'><button type='button' class='submit-button no-radius' style='width:35px; margin-left:0px' title='Edit the selected version' onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");'><img id='versionCog' style='margin-top:6px' src='../Shared/icons/CogwheelWhite.svg'></button></div></td>";	
         

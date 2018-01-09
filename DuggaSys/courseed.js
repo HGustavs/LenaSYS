@@ -10,6 +10,15 @@ var versions;
 var entries;
 var motd;
 
+$(document).ready(function(){
+    $('#startdate').datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+    $('#enddate').datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+});
+
 AJAXService("GET", {}, "COURSE");
 
 //----------------------------------------
@@ -262,6 +271,8 @@ function createVersion(){
 	var coursevers = $("#course-coursevers").text();
 	var copycourse = $("#copyvers").val();
 	var comments = $("#comments").val();
+  var startdate = $("#startdate").val();
+  var enddate = $("#enddate").val();
 
 	if (versid=="" || versname=="") {
 		alert("Version Name and Version ID must be entered!");
@@ -272,14 +283,17 @@ function createVersion(){
 	
 		if (copycourse != "None"){
 				//create a copy of course version 
-				AJAXService("CPYVRS", {
-					cid : cid,
-					versid : versid,
-					versname : versname,
-					coursecode : coursecode,
-					coursename : coursename,
-					copycourse : copycourse
-				}, "COURSE");
+        AJAXService("CPYVRS", {
+          cid : cid,
+          versid : versid,
+          versname : versname,
+          coursecode : coursecode,
+          coursename : coursename,
+          copycourse : copycourse,
+          startdate : startdate,
+          enddate : enddate,
+          makeactive : makeactive
+        }, "COURSE");
 			
 		} else {
 			//create a fresh course version
@@ -288,17 +302,11 @@ function createVersion(){
 				versid : versid,
 				versname : versname,
 				coursecode : coursecode,
-				coursename : coursename
+				coursename : coursename,
+        makeactive : makeactive
 			}, "COURSE");		
 		}
-	
-		if(makeactive){
-			AJAXService("CHGVERS", {
-				cid : cid,
-				versid : versid,
-			}, "COURSE");
-		}
-	
+  
 		$("#newCourseVersion").css("display","none");		
 		$("#overlay").css("display","none");		
 	}

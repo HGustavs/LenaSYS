@@ -31,6 +31,9 @@ $coursenamealt=getOP('coursenamealt');
 $coursecode=getOP('coursecode');
 $coursename=getOP('coursename');
 $copycourse=getOP('copycourse');
+$startdate=getOP('startdate');
+$enddate=getOP('enddate');
+$makeactive=getOP('makeactive');
 $motd=getOP('motd');
 $readonly=getOP('readonly');
 
@@ -106,7 +109,7 @@ if(checklogin()){
 				$debug="Error updating entries".$error[2];
 			}
 		}else if(strcmp($opt, "CPYVRS")===0){
-				$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
+        $query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate);");
 
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':coursecode', $coursecode);
@@ -114,12 +117,17 @@ if(checklogin()){
 				$query->bindParam(':versname', $versname);
 				$query->bindParam(':coursename', $coursename);
 				$query->bindParam(':coursenamealt', $coursenamealt);
+        // if start and end dates are null, insert mysql null value into database
+        if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
+        else $query->bindParam(':startdate', $startdate);
+        if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
+        else $query->bindParam(':enddate', $enddate);
 
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					$debug="Error updating entries".$error[2];
 				}
-				
+        				
 				// Duplicate duggas and dugga variants
 				$duggalist=array();
 				$query = $pdo->prepare("SELECT * from quiz WHERE cid=:cid AND vers = :oldvers;");
@@ -322,6 +330,17 @@ if(checklogin()){
 						}
 
 				}
+        
+        if($makeactive==="true"){
+            $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+            $query->bindParam(':cid', $cid);
+            $query->bindParam(':vers', $versid);
+
+            if(!$query->execute()) {
+              $error=$query->errorInfo();
+              $debug="Error updating entries".$error[2];
+            }          
+        }
 				
 			}else if(strcmp($opt,"UPDATE")===0){
 			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");

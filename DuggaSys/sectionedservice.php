@@ -200,25 +200,6 @@ if(checklogin()){
 					$debug="Error updating entries".$error[2];
 				}
 			}
-		}else if(strcmp($opt,"NEWVRS")===0){
-			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate);");
-			$query->bindParam(':cid', $courseid);
-			$query->bindParam(':coursecode', $coursecode);
-			$query->bindParam(':vers', $versid);
-			$query->bindParam(':versname', $versname);				
-			$query->bindParam(':coursename', $coursename);
-			$query->bindParam(':coursenamealt', $coursenamealt);
-// if start and end dates are null, insert mysql null value into database
-      if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
-     else $query->bindParam(':startdate', $startdate);
-     if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
-     else $query->bindParam(':enddate', $enddate);
-
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating entries".$error[2];
-			}
-			
 		}else if(strcmp($opt,"UPDATEVRS")===0){
 			$query = $pdo->prepare("UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 			$query->bindParam(':cid', $courseid);
