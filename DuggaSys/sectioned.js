@@ -1222,6 +1222,34 @@ function setGlobalArrow() {
   }
 }
 
+// Toggle content for all moments
+$(document).on('click', '.showHideMetaButton', function () {
+	if(hasUnfoldedParts()) {
+    $('.moment, .section').nextUntil('.moment, .section').slideUp('fast', setGlobalArrow());
+    $('.arrowRight').show();
+    $('.arrowComp').hide();
+	} else {
+    $('.moment, .section').nextUntil('.moment, .section').slideDown('fast', setGlobalArrow());
+    $('.arrowRight').hide();
+    $('.arrowComp').show();
+	}
+});
+
+// Check visibility status of all the sub moments, used to see if there are any open sections
+function hasUnfoldedParts(){
+  var fold = false;
+  $('div.moment, div.section').each(function(i) {
+    $('.moment, .section').nextUntil('.moment, .section').each(function(j) {
+      if($(this).is(":visible")) {
+        fold = true;
+        return(!fold); // Don't break if still false
+      }
+    });
+    return(!fold);
+  });
+  return fold;
+}
+
 // Function to prevent collapsing when clicking icons
 $(document).ready(function(){
 	$(document).on('click','#corf',function(e) {
