@@ -39,14 +39,14 @@ $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
 $comments=getOP('comments');
 $unmarked = 0;
-$rowcolor=getOP('rowcolor');
+//$rowcolor=getOP('rowcolor');
 // course start and end dates, for a version of a course, created for swimlane functionality
 $startdate=getOP('startdate');
 $enddate=getOP('enddate');
-$grouptype=getOP('grouptype');
+//$grouptype=getOP('grouptype');
 
 if($gradesys=="UNK") $gradesys=0;
-if($rowcolor=="UNK") $rowcolor=0;
+//if($rowcolor=="UNK") $rowcolor=0;
 
 // Store current day in string
 $today = date("Y-m-d H:i:s");
@@ -100,7 +100,8 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 			}			
 
-      $query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments,rowcolor,grouptype) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment,:rowcolor,:grouptype)"); 
+      $query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment)"); 
+      //$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments,rowcolor,grouptype) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment,:rowcolor,:grouptype)"); 
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
@@ -109,8 +110,8 @@ if(checklogin()){
 			$query->bindParam(':kind', $kind); 
 			$query->bindParam(':comment', $comment); 
 			$query->bindParam(':visible', $visibility);
-			$query->bindParam(':grouptype', $grouptype); 
-			$query->bindParam(':rowcolor', $rowcolor); 
+			//$query->bindParam(':grouptype', $grouptype); 
+			//$query->bindParam(':rowcolor', $rowcolor); 
 			
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -167,13 +168,14 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 			}			
 
-      $query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,rowcolor=:rowcolor,grouptype=:grouptype WHERE lid=:lid;");
+      $query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments WHERE lid=:lid;");
+      //$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,rowcolor=:rowcolor,grouptype=:grouptype WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':comments', $comments);
 			$query->bindParam(':highscoremode', $highscoremode);
-			$query->bindParam(':rowcolor', $rowcolor);
-			$query->bindParam(':grouptype', $grouptype);
+			//$query->bindParam(':rowcolor', $rowcolor);
+			//$query->bindParam(':grouptype', $grouptype);
 			
 			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
 			else $query->bindParam(':moment', $moment);
@@ -319,7 +321,8 @@ foreach($query->fetchAll() as $row) {
 $entries=array();
 
 if($cvisibility){
-	$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments,rowcolor,grouptype FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+  //$query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments,rowcolor,grouptype FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
@@ -347,9 +350,9 @@ if($cvisibility){
 						'code_id' => $row['code_id'],
 						'deadline'=> $row['deadline'],
 						'qrelease' => $row['qrelease'],
-						'comments' => $row['comments'],
-						'rowcolor' => $row['rowcolor'],
-						'grouptype' => $row['grouptype']
+						'comments' => $row['comments']
+						//'rowcolor' => $row['rowcolor'],
+						//'grouptype' => $row['grouptype']
 					)
 				);
 		}
@@ -544,7 +547,7 @@ $array = array(
 	'versions' => $versions,
 	'codeexamples' => $codeexamples,
 	'unmarked' => $unmarked,
-	'rowcolor' => $rowcolor,
+	//'rowcolor' => $rowcolor,
 	'startdate' => $startdate,
 	'enddate' => $enddate
 );

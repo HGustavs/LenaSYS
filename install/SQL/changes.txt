@@ -12,12 +12,9 @@ Table user:
 	Added requestedpasswordchange TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
 	
 Table listentries:
-	Added comments VARCHAR(512)
-	Added grouptype TINYINT(1)
-
-Added row 'rowcolor' in 'listentries'
-  rowcolor		TINYINT(1),
-
+ALTER TABLE listentries ADD COLUMN comments VARCHAR(512);
+/* ALTER TABLE listentries ADD COLUMN rowcolor TINYINT(1); */ /* Should be removed! ALTER TABLE listentries DROP COLUMN rowcolor; */
+/* ALTER TABLE listentries ADD COLUMN grouptype TINYINT(1); */ /* Should be removed! ALTER TABLE listentries DROP COLUMN grouptype; */
 
 New table user_push_registration, created with the following sql:
 	CREATE TABLE user_push_registration (
