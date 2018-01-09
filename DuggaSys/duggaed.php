@@ -20,6 +20,8 @@ pdoConnect();
 
 	<script src="../Shared/dugga.js"></script>
 	<script src="duggaed.js"></script>
+  <script src="timer.js"></script>
+  <script src="clickcounter.js"></script>
 </head>
 <body>
 

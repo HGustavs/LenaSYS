@@ -215,17 +215,10 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 						newTableBody += "</tr>";
 							
 						$("#operationList").append(newTableBody);						
-				}
+			}
 		}
 	}
 
-/*
-	if (running) {
-			renderId = requestAnimationFrame(foo);
-	} else {
-			cancelAnimationFrame(renderId);
-	}
-	*/
   foo();
 	// Teacher feedback
 	var fb = "<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div><table class='list feedback-list'><caption>Previous feedback</caption><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";

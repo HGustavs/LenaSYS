@@ -273,38 +273,7 @@ function toggleSelectOperation(e){
 		}		
 }
 
-function newbutton() 
-{
-	ClickCounter.onClick();
-	var newOp = $('#function > optgroup > option:selected').text();
-	var newOpCode = $("#function").val();
 
-	if($("#operationList").find("tr").hasClass("selectedOp")){
-			$(".selectedOp").each(function(){
-				$(this).find("*[id^=op_]").html(newOp);
-				$(this).find("*[id^=opCode_]").html(newOpCode);
-				toggleSelectOperation(this);
-			});
-	} else {
-		var i = 0;
-		$('#operationList tr').each(function (){
-				var tmp = this.id.replace("v","");
-				if (tmp > i) i=tmp;
-		});
-		i++;
-		var newTableBody = "<tr id='v" + i +"'>";
-		newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
-		newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+i+'" style="display:none">'+newOpCode+'</span></td>';
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
-		newTableBody += "</tr>";
-			
-		$("#operationList").append(newTableBody);
-		refreshOpNum();
-	}
-
-}
 
 function refreshOpNum(){
 	var idx = 1;
@@ -350,6 +319,7 @@ function newbutton()
 				$(this).find("*[id^=opCode_]").html(newOpCode);
 				toggleSelectOperation(this);
 			});
+      render();
 	} else {
 		var i = 0;
 		$('#operationList tr').each(function (){

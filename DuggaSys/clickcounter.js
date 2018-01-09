@@ -28,9 +28,12 @@ var ClickCounter = {
 	
 	// Updates the click counter user interface in a dugga, uses the same 
 	animateClicks: function() {
-		// Apply some web magic to change the ui counter
-		var str = "<p>";
-		str += this.score;
-		document.getElementById('scoreElement').innerHTML = str;
+		var cc = document.getElementById('scoreElement');
+		if (cc){
+			// Apply some web magic to change the ui counter
+			var str = "<p>";
+			str += this.score;
+			cc.innerHTML = str;      
+		}
 	}
 }
