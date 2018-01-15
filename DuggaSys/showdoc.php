@@ -78,9 +78,10 @@
                 $markdown .= handleLists($currentLine, $prevLine, $nextLine);
             }
             // handle tables
+            /*
             else if(isTable($currentLine)){
                 $markdown .= handleTable($currentLine, $prevLine, $nextLine);
-            }
+            }*/
             // If its ordinary text then show it directly
             else{
                 $markdown .= markdownBlock($currentLine);
@@ -262,7 +263,9 @@
 
 				// External img src !!!
 				// |||src|||	
-				$instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);
+				//$instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);        
+        $instring = preg_replace("/\|{3}(.+),([0-9]+)?,([0-9]+)?\|{3}/","<img class='imgzoom' src='$1' onmouseover='originalImg(this, $3)' onmouseout='thumbnailImg(this, $2)' width='$2px' style='border: 3px solid #614875;' />",$instring);
+        $instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);
 
 				// External mp4 src !!!
 				// ==[src]==	
