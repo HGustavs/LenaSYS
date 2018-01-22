@@ -72,100 +72,112 @@
 
 		// identify what to parse and parse it
 		function identifier($prevLine, $currentLine, $markdown, $nextLine) {
-
-            // handle ordered lists
-            if(isOrderdList($currentLine) || isUnorderdList($currentLine)) {
-                $markdown .= handleLists($currentLine, $prevLine, $nextLine);
-            }
+        // handle ordered lists
+        if(isOrderdList($currentLine) || isUnorderdList($currentLine)) {
+            $markdown .= handleLists($currentLine, $prevLine, $nextLine);
+        }else if(isTable($currentLine)){
             // handle tables
-            /*
-            else if(isTable($currentLine)){
-                $markdown .= handleTable($currentLine, $prevLine, $nextLine);
-            }*/
+            $markdown .= handleTable($currentLine, $prevLine, $nextLine);
+        }else{
             // If its ordinary text then show it directly
-            else{
-                $markdown .= markdownBlock($currentLine);
-                if(preg_match('/\br*/', $currentLine)){
-                    $markdown .= "<br>";
-                }
+            $markdown .= markdownBlock($currentLine);
+            if(preg_match('/\br*/', $currentLine)){
+                $markdown .= "<br>";
             }
-            // close table
-            if(!isTable($currentLine) && !isTable($nextLine)){
-                $markdown .= "</tbody></table>";
-            }
-			return $markdown;
+        }
+
+        // close table
+        if(!isTable($currentLine) && !isTable($nextLine)){
+            $markdown .= "</tbody></table>";
+        }
+        return $markdown;
 		}
-        // Check if its an ordered list
+
+    // Check if its an ordered list
 		function isOrderdList($item) {
-			// return 1 if ordered list
-			return preg_match('/^\s*\d+\.\s(.*)/', $item);
+  			// return 1 if ordered list
+        //return preg_match('/^\s*\d+\.\s(.*)/', $item);
+        return preg_match('/^\s*\d\.\s.*$/', $item);
 		}
+
 		// Check if its an unordered list
 		function isUnorderdList($item) {
-			// return 1 if unordered list
-			return preg_match('/^\s*(\-|\*)\s+[^|]/', $item); // doesn't support dash like markdown!
+  			// return 1 if unordered list
+        //return preg_match('/^\s*(\-|\*)\s+[^|]/', $item); // doesn't support dash like markdown!
+        return preg_match('/^\s*(?:\-|\*)\s.*$/', $item); // doesn't support dash like markdown!
 		}
+
 		// Check if its a table
 		function isTable($item) {
-			// return 1 if space followed by a pipe-character and have closing pipe-character
-			return preg_match('/^\s*\|\s*(.*)\|/', $item);
+  			// return 1 if space followed by a pipe-character and have closing pipe-character
+        //return preg_match('/^\s*\|\s*(.*)\|/', $item);
+        return false; // disabled for now
 		}
-        // The creation and destruction of lists
-        function handleLists($currentLine, $prevLine, $nextLine) {
-		    global $openedSublists;
-            $markdown = "";
-            $value = "";
-            $currentLineIndentation = substr_count($currentLine, ' ');
-            $nextLineIndentation = substr_count($nextLine, ' ');
-            // decide value
-            if(isOrderdList($currentLine)) $value = preg_replace('/^\s*\d*\.\s*/','',$currentLine);
-            if(isUnorderdList($currentLine)) $value = preg_replace('/^\s*[\-\*]\s*/','',$currentLine);
-            // Open new list
-            if(!isOrderdList($prevLine) && isOrderdList($currentLine) && !isUnorderdList($prevLine)) $markdown .= "<ol>"; // Open a new ordered list
-            if(!isUnorderdList($prevLine) && isUnorderdList($currentLine) && !isOrderdList($prevLine)) $markdown .= "<ul>"; //Open a new unordered list
-             // Open a new sublist
-            if($currentLineIndentation < $nextLineIndentation) {
-                $markdown .= "<li>";
-                $markdown .=  $value;
-                // begin open sublist
-                if(isOrderdList($nextLine)) {
-                    $markdown .= "<ol>";
-                    array_push($openedSublists,0);
-                } else {
-                    $markdown .= "<ul>";
-                    array_push($openedSublists,1);
-                }
-            }
-            // Stay in current list or sublist
-            if($currentLineIndentation === $nextLineIndentation) {
-                $markdown .= "<li>";
-                $markdown .=  $value;
-                $markdown .= "</li>";
-            }
-            // Close sublists
-            if($currentLineIndentation > $nextLineIndentation) {
-                $markdown .= "<li>";
-                $markdown .=  $value;
-                $markdown .= "</li>";
-                $sublistsToClose = ($currentLineIndentation - $nextLineIndentation) / 2;
-                for($i = 0; $i < $sublistsToClose; $i++) {
-                    $whatSublistToClose = array_pop($openedSublists);
 
-                    if($whatSublistToClose === 0) { // close ordered list
-                        $markdown .= "</ol>";
-                    } else { // close unordered list
-                        $markdown .= "</ul>";
-                    }
-                    $markdown .= "</li>";
-                }
-            }
-            // Close list
-            if(!isOrderdList($nextLine) && isOrderdList($currentLine) && !isUnorderdList($nextLine)) $markdown .= "</ol>"; // Close ordered list
-            if(!isUnorderdList($nextLine) && isUnorderdList($currentLine) && !isOrderdList($nextLine)) $markdown .= "</ul>"; // Close unordered list
-            return $markdown;
+    // The creation and destruction of lists
+    function handleLists($currentLine, $prevLine, $nextLine) {
+		    global $openedSublists;
+        $markdown = "";
+        $value = "";
+        $currentLineIndentation = substr_count($currentLine, ' ');
+        $nextLineIndentation = substr_count($nextLine, ' ');          
+        // decide value
+        if(isOrderdList($currentLine)) $value = preg_replace('/^\s*\d*\.\s*/','',$currentLine);
+        if(isUnorderdList($currentLine)) $value = preg_replace('/^\s*[\-\*]\s*/','',$currentLine);
+        // Open new ordered list
+        if(!(isOrderdList($prevLine) || isUnorderdList($prevLine)) && isOrderdList($currentLine)) {
+            $markdown .= "<ol>"; // Open a new ordered list
         }
-        // Function for Tables
-        function handleTable($currentLine, $prevLine, $nextLine) {
+        if(!(isUnorderdList($prevLine) || isOrderdList($prevLine) ) && isUnorderdList($currentLine)){
+            $markdown .= "<ul>"; //Open a new unordered list          
+        } 
+         // Open a new sublist
+        if($currentLineIndentation < $nextLineIndentation && (isUnorderdList($nextLine) || isOrderdList($nextLine))) {
+            $markdown .= "<li>";
+            $markdown .=  $value;
+            // begin open sublist
+            if(isOrderdList($nextLine)) {
+                $markdown .= "<ol>";
+                array_push($openedSublists,0);
+            } else {
+                $markdown .= "<ul>";
+                array_push($openedSublists,1);
+            }
+        }
+        // Stay in current list or sublist OR next line is not a list line
+        if($currentLineIndentation === $nextLineIndentation || !(isOrderdList($nextLine) || isUnorderdList($nextLine))) {
+            $markdown .= "<li>";
+            $markdown .=  $value;
+            $markdown .= "</li>";
+        }
+        // Close sublists
+        if($currentLineIndentation > $nextLineIndentation) {
+            $markdown .= "<li>";
+            $markdown .=  $value;
+            $markdown .= "</li>";
+            $sublistsToClose = ($currentLineIndentation - $nextLineIndentation) / 2;
+            for($i = 0; $i < $sublistsToClose; $i++) {
+                $whatSublistToClose = array_pop($openedSublists);
+
+                if($whatSublistToClose === 0) { // close ordered list
+                    $markdown .= "</ol>";
+                } else { // close unordered list
+                    $markdown .= "</ul>";
+                }
+                $markdown .= "</li>";
+            }
+        }
+        // Close lists
+        if(!(isOrderdList($nextLine) || isUnorderdList($nextLine) ) && isOrderdList($currentLine) ) {
+            $markdown .= "</ol>"; // Close ordered list
+        }
+        if(!(isUnorderdList($nextLine) || isOrderdList($nextLine) ) && isUnorderdList($currentLine) ) {
+            $markdown .= "</ul>"; // Close unordered list  
+        }
+        return $markdown;
+    }
+    // Function for Tables
+    function handleTable($currentLine, $prevLine, $nextLine) {
             global $tableAlignmentConf;
             $markdown = "";
             $columns = array_values(array_map("trim", array_filter(explode('|', $currentLine), function($k) {
