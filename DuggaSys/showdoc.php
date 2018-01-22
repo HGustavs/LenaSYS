@@ -21,7 +21,6 @@
 				
 				$specialBlockStart=true;
 				foreach ($codearray as $workstr) {
-					
 						if(substr($workstr,0,3)==="@@@" && $specialBlockStart===true){
 								$specialBlockStart=false;
 								$workstr="<pre><code>".substr($workstr,3)."</code></pre>";
@@ -29,11 +28,9 @@
 								$specialBlockStart=false;
 								$workstr="<div class='console'><pre>".substr($workstr,3)."</pre></div>";
 						} else if ($workstr !== "") {
-
 								$workstr=parseLineByLine(preg_replace("/^\&{3}|^\@{3}/","",$workstr));
 								$specialBlockStart=true;
 						}
-						
 						$str.=$workstr;
 						
 				}
@@ -123,7 +120,7 @@
         $nextLineIndentation = substr_count($nextLine, ' ');          
         // decide value
         if(isOrderdList($currentLine)) $value = preg_replace('/^\s*\d*\.\s*/','',$currentLine);
-        if(isUnorderdList($currentLine)) $value = preg_replace('/^\s*[\-\*]\s*/','',$currentLine);
+        if(isUnorderdList($currentLine)) $value = preg_replace('/^\s*[\-\*]\s*/','',$currentLine);        
         // Open new ordered list
         if(!(isOrderdList($prevLine) || isUnorderdList($prevLine)) && isOrderdList($currentLine)) {
             $markdown .= "<ol>"; // Open a new ordered list
@@ -134,7 +131,7 @@
          // Open a new sublist
         if($currentLineIndentation < $nextLineIndentation && (isUnorderdList($nextLine) || isOrderdList($nextLine))) {
             $markdown .= "<li>";
-            $markdown .=  $value;
+            $markdown .=  markdownBlock($value);
             // begin open sublist
             if(isOrderdList($nextLine)) {
                 $markdown .= "<ol>";
@@ -147,13 +144,13 @@
         // Stay in current list or sublist OR next line is not a list line
         if($currentLineIndentation === $nextLineIndentation || !(isOrderdList($nextLine) || isUnorderdList($nextLine))) {
             $markdown .= "<li>";
-            $markdown .=  $value;
+            $markdown .=  markdownBlock($value);
             $markdown .= "</li>";
         }
         // Close sublists
         if($currentLineIndentation > $nextLineIndentation) {
             $markdown .= "<li>";
-            $markdown .=  $value;
+            $markdown .=  markdownBlock($value);
             $markdown .= "</li>";
             $sublistsToClose = ($currentLineIndentation - $nextLineIndentation) / 2;
             for($i = 0; $i < $sublistsToClose; $i++) {

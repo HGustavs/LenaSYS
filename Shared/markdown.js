@@ -202,7 +202,7 @@ function handleLists(currentLine, prevLine, nextLine) {
     // Open a new sublist
     if(currentLineIndentation < nextLineIndentation) { 
         markdown += "<li>";
-        markdown +=  value;
+        markdown +=  markdownBlock(value);
         // begin open sublist
         if(isOrderdList(nextLine)) {
             markdown += "<ol>";
@@ -215,13 +215,13 @@ function handleLists(currentLine, prevLine, nextLine) {
     // Stay in current list or sublist
     if(currentLineIndentation === nextLineIndentation) {
         markdown += "<li>";
-        markdown +=  value;
+        markdown +=  markdownBlock(value);
         markdown += "</li>";
     }
     // Close sublists
     if(currentLineIndentation > nextLineIndentation) { 
       	markdown += "<li>";
-      	markdown +=  value;
+      	markdown +=  markdownBlock(value);
       	markdown += "</li>";
         var sublistsToClose = (currentLineIndentation - nextLineIndentation) / 2;
         for(var i = 0; i < sublistsToClose; i++) {
@@ -334,10 +334,11 @@ function markdownBlock(inString)
 	// |||src,thumbnail width in px,full size width in px|||
 	// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
 	inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
+  inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" />');
 
 	// Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
 	// markdown below doesnt seem to work?????
-    inString = inString.replace(/(\r\n){3}/gm,"<br><br>");
+  inString = inString.replace(/(\r\n){3}/gm,"<br><br>");
 	inString = inString.replace(/(\r\n){2}/gm,"<br>");
 	inString = inString.replace(/(\n){3}/gm,"<br><br>");
 	inString = inString.replace(/(\n){2}/gm,"<br>");
