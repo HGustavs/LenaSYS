@@ -101,7 +101,7 @@
 		function isUnorderdList($item) {
   			// return 1 if unordered list
         //return preg_match('/^\s*(\-|\*)\s+[^|]/', $item); // doesn't support dash like markdown!
-        return preg_match('/^\s*(?:\-|\*)\s.*$/', $item); // doesn't support dash like markdown!
+        return preg_match('/^\s*[\-\*]\s.*$/', $item);
 		}
 
 		// Check if its a table
@@ -116,11 +116,13 @@
 		    global $openedSublists;
         $markdown = "";
         $value = "";
-        $currentLineIndentation = substr_count($currentLine, ' ');
-        $nextLineIndentation = substr_count($nextLine, ' ');          
+        //$currentLineIndentation = substr_count($currentLine, ' ');
+        //$nextLineIndentation = substr_count($nextLine, ' ');          
+        $currentLineIndentation = strlen($currentLine)-strlen(ltrim($currentLine));
+        $nextLineIndentation = strlen($nextLine)-strlen(ltrim($nextLine));
         // decide value
-        if(isOrderdList($currentLine)) $value = preg_replace('/^\s*\d*\.\s*/','',$currentLine);
-        if(isUnorderdList($currentLine)) $value = preg_replace('/^\s*[\-\*]\s*/','',$currentLine);        
+        if(isOrderdList($currentLine)) $value = preg_replace('/^\s*\d*\.\s(.*)/','$1',$currentLine);        
+        if(isUnorderdList($currentLine)) $value = preg_replace('/^\s*[\-\*]\s(.*)/','$1',$currentLine);        
         // Open new ordered list
         if(!(isOrderdList($prevLine) || isUnorderdList($prevLine)) && isOrderdList($currentLine)) {
             $markdown .= "<ol>"; // Open a new ordered list
@@ -234,14 +236,14 @@
 		function markdownBlock($instring)
 		{
 				//Regular expressions for italics
-				$instring = preg_replace("/\*{4}(.*?\S)\*{4}/", "<strong><em>$1</em></strong>",$instring);	
-				$instring = preg_replace("/\*{3}(.*?\S)\*{3}/", "<em>$1</em>",$instring);	
-				$instring = preg_replace("/\*{2}(.*?\S)\*{2}/", "<em>$1</em>",$instring);	
+				$instring = preg_replace("/\*{4}(.*)\*{4}/", "<strong><em>$1</em></strong>",$instring);	
+				$instring = preg_replace("/\*{3}(.*)\*{3}/", "<em>$1</em>",$instring);	
+				$instring = preg_replace("/\*{2}(.*)\*{2}/", "<em>$1</em>",$instring);	
 
 				// Bold
-				$instring = preg_replace("/\_{4}(.*?\S)\_{4}/", "<strong><em>$1</em></strong>",$instring);	
-				$instring = preg_replace("/\_{3}(.*?\S)\_{3}/", "<strong>$1</strong>",$instring);	
-				$instring = preg_replace("/\_{2}(.*?\S)\_{2}/", "<strong>$1</strong>",$instring);	
+				$instring = preg_replace("/\_{4}(.*)\_{4}/", "<strong><em>$1</em></strong>",$instring);	
+				$instring = preg_replace("/\_{3}(.*)\_{3}/", "<strong>$1</strong>",$instring);	
+				$instring = preg_replace("/\_{2}(.*)\_{2}/", "<strong>$1</strong>",$instring);	
 
 				// Headings -- 6 levels
 				$instring = preg_replace("/^\#{6}\s(.*)=*/m", "<h6>$1</h6>",$instring);	
@@ -255,8 +257,8 @@
 				$instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
 
 				// Hard line break support
-				$instring= preg_replace ("/(\r\n|\n|\r){3}/","<br><br>",$instring);
-				$instring= preg_replace ("/(\r\n|\n|\r){2}/","<br>",$instring);
+				//$instring= preg_replace ("/(\r\n|\n|\r){3}/","<br><br>",$instring);
+				//$instring= preg_replace ("/(\r\n|\n|\r)/","<br>",$instring);
 
 				// Fix for swedish characters
 				$instring= str_replace ("å","&aring;",$instring);				
