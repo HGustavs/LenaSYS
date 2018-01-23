@@ -236,14 +236,14 @@
 		function markdownBlock($instring)
 		{
 				//Regular expressions for italics
-				$instring = preg_replace("/\*{4}(.*)\*{4}/", "<strong><em>$1</em></strong>",$instring);	
-				$instring = preg_replace("/\*{3}(.*)\*{3}/", "<em>$1</em>",$instring);	
-				$instring = preg_replace("/\*{2}(.*)\*{2}/", "<em>$1</em>",$instring);	
+				$instring = preg_replace("/\*{4}(.*?)\*{4}/", "<strong><em>$1</em></strong>",$instring);	
+				$instring = preg_replace("/\*{3}(.*?)\*{3}/", "<em>$1</em>",$instring);	
+				$instring = preg_replace("/\*{2}(.*?)\*{2}/", "<em>$1</em>",$instring);	
 
 				// Bold
-				$instring = preg_replace("/\_{4}(.*)\_{4}/", "<strong><em>$1</em></strong>",$instring);	
-				$instring = preg_replace("/\_{3}(.*)\_{3}/", "<strong>$1</strong>",$instring);	
-				$instring = preg_replace("/\_{2}(.*)\_{2}/", "<strong>$1</strong>",$instring);	
+				$instring = preg_replace("/\_{4}(.*?)\_{4}/", "<strong><em>$1</em></strong>",$instring);	
+				$instring = preg_replace("/\_{3}(.*?)\_{3}/", "<strong>$1</strong>",$instring);	
+				$instring = preg_replace("/\_{2}(.*?)\_{2}/", "<strong>$1</strong>",$instring);	
 
 				// Headings -- 6 levels
 				$instring = preg_replace("/^\#{6}\s(.*)=*/m", "<h6>$1</h6>",$instring);	
