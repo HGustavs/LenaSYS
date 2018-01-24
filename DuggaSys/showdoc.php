@@ -144,7 +144,7 @@
             }
         }
         // Stay in current list or sublist OR next line is not a list line
-        if($currentLineIndentation === $nextLineIndentation || !(isOrderdList($nextLine) || isUnorderdList($nextLine))) {
+      if($currentLineIndentation === $nextLineIndentation) {
             $markdown .= "<li>";
             $markdown .=  markdownBlock($value);
             $markdown .= "</li>";

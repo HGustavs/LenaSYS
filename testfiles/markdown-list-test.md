@@ -15,9 +15,10 @@ This tests a few different types of list combinations
   1. item greger
   2. item sven
 2. item beta
+3. item delta
   1. item hilding
   2. item stig
-3. item gamma
+4. item epsilon
 ### Unordered list with unordered sublists 
 * item alpha
   * item greger
@@ -42,3 +43,17 @@ This tests a few different types of list combinations
   1. item hilding
   2. item stig
 * item gamma
+### blah 
+* item alpha
+  1. item greger
+  2. item sven
+    * item stig
+    * item hilding2
+### blah2
+* item alpha
+  1. item greger
+  2. item sven
+    * item stig
+    * item hilding
+  3. item egon
+  
