@@ -434,9 +434,6 @@ function newItem()
   if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs; 
   AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment},"SECTION"); 
   $("#editSection").css("display","none"); 
-  
-  // Refreshes page to make it able to update items
-  window.location.reload();		
 }
 
 function closeSelect()
@@ -509,10 +506,8 @@ function createVersion(){
 }
 
 function returnedCourse(data){  
-  if(data['debug']!="NONE!") alert(data['debug']);  
-  window.setTimeout(function(){
-    changeURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + newversid);
-  }, 1000);  
+  if(data['debug']!="NONE!") alert(data['debug']); 
+  window.setTimeout(function(){changeURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + newversid); }, 1000);  
 }
 
 function showEditVersion(versid, versname, startdate, enddate)
