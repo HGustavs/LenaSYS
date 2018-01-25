@@ -303,14 +303,30 @@ if(checklogin()){
                 	$savedanswer = $answer;
                 }
                 // Make sure that current version is set to active for this student
-              	$vuery = $pdo->prepare("UPDATE user_course set vers=:vers, vershistory=CONCAT(vershistory, CONCAT(:vers,',')) WHERE uid=:uid AND cid=:cid");
+                $vuery = $pdo->prepare("SELECT vers FROM user_course WHERE uid=:uid AND cid=:cid");
               	$vuery->bindParam(':cid', $courseid);
-              	$vuery->bindParam(':vers', $coursevers);
               	$vuery->bindParam(':uid', $userid);
               	if(!$vuery->execute()) {
-              		$error=$vuery->errorInfo();
-              		$debug="Error inserting active version (row ".__LINE__.") ".$vuery->rowCount()." row(s) were inserted. Error code: ".$error[2];
-              	}
+                		$error=$vuery->errorInfo();
+                		$debug="Error inserting active version (row ".__LINE__.") ".$vuery->rowCount()." row(s) were inserted. Error code: ".$error[2];
+              	}else{
+                    // Since we now have submitted a dugga to this course version it should be our active course version
+                    // Check if this is the case
+                    if ($row = $vuery->fetch(PDO::FETCH_ASSOC)) {
+                      	$cvers=$row['vers'];
+                        if($coursevers!=$cvers){
+                            $vuery = $pdo->prepare("UPDATE user_course set vers=:vers, vershistory=CONCAT(vershistory, CONCAT(:vers,',')) WHERE uid=:uid AND cid=:cid");
+                          	$vuery->bindParam(':cid', $courseid);
+                          	$vuery->bindParam(':vers', $coursevers);
+                          	$vuery->bindParam(':uid', $userid);
+                          	if(!$vuery->execute()) {
+                          		$error=$vuery->errorInfo();
+                          		$debug="Error inserting active version (row ".__LINE__.") ".$vuery->rowCount()." row(s) were inserted. Error code: ".$error[2];
+                          	}                                            
+                        }
+                    }
+                }
+                
             }
             
             // Get submission date
