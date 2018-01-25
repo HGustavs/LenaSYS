@@ -188,18 +188,6 @@ if($demo){
 		// There is a variant already -- do nothing!	
 	}
 	
-	// Make sure that current version is set to active for this student
-  /*
-	$vuery = $pdo->prepare("UPDATE user_course set vers=:vers, vershistory=CONCAT(vershistory, CONCAT(:vers,',')) WHERE uid=:uid AND cid=:cid");
-	$vuery->bindParam(':cid', $courseid);
-	$vuery->bindParam(':vers', $coursevers);
-	$vuery->bindParam(':uid', $userid);
-	if(!$vuery->execute()) {
-		$error=$vuery->errorInfo();
-		$debug="Error inserting active version (row ".__LINE__.") ".$vuery->rowCount()." row(s) were inserted. Error code: ".$error[2];
-	}
-	*/
-  
 	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
 	if ($newvariant=="UNK"){
 
