@@ -189,6 +189,7 @@ if($demo){
 	}
 	
 	// Make sure that current version is set to active for this student
+  /*
 	$vuery = $pdo->prepare("UPDATE user_course set vers=:vers, vershistory=CONCAT(vershistory, CONCAT(:vers,',')) WHERE uid=:uid AND cid=:cid");
 	$vuery->bindParam(':cid', $courseid);
 	$vuery->bindParam(':vers', $coursevers);
@@ -197,7 +198,8 @@ if($demo){
 		$error=$vuery->errorInfo();
 		$debug="Error inserting active version (row ".__LINE__.") ".$vuery->rowCount()." row(s) were inserted. Error code: ".$error[2];
 	}
-	
+	*/
+  
 	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
 	if ($newvariant=="UNK"){
 
@@ -265,69 +267,79 @@ if($demo){
 
 if(checklogin()){
 		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions			
-			if(strcmp($opt,"SAVDU")==0){				
-				// Log the dugga write
-				makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
+        if(strcmp($opt,"SAVDU")==0){				
+            // Log the dugga write
+            makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 
-				//Seperate timeUsed, stepsUsed and score from $answer
-				$temp = explode("##!!##", $answer);
-				$answer = $temp[0];
-				$timeUsed = $temp[1];
-				$stepsUsed = $temp[2];
-				$score = $temp[3];
-				
-				// check if the user already has a grade on the assignment
-				$query = $pdo->prepare("SELECT grade from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-				$query->bindParam(':cid', $courseid);
-				$query->bindParam(':coursevers', $coursevers);
-				$query->bindParam(':uid', $userid);
-				$query->bindParam(':moment', $moment);
-				
-				
-				$query->execute();
-				$grade = null;
+            //Seperate timeUsed, stepsUsed and score from $answer
+            $temp = explode("##!!##", $answer);
+            $answer = $temp[0];
+            $timeUsed = $temp[1];
+            $stepsUsed = $temp[2];
+            $score = $temp[3];
 
-				if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-					$grade=$row['grade'];
-				}
+            // check if the user already has a grade on the assignment
+            $query = $pdo->prepare("SELECT grade from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+            $query->bindParam(':cid', $courseid);
+            $query->bindParam(':coursevers', $coursevers);
+            $query->bindParam(':uid', $userid);
+            $query->bindParam(':moment', $moment);				
 
-				if(($grade == 2) || ($grade == 3)||($grade == 4) || ($grade == 5)||($grade == 6)){
-					//if grade equal G, VG, 3, 4, 5, or 6
-					$debug="This assignment has already been marked";
-				}else{
-					// Update Dugga!
-					$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-					$query->bindParam(':cid', $courseid);
-					$query->bindParam(':coursevers', $coursevers);
-					$query->bindParam(':uid', $userid);
-					$query->bindParam(':moment', $moment);
-					$query->bindParam(':useranswer', $answer);
-					$query->bindParam(':timeUsed', $timeUsed);
-					$query->bindParam(':stepsUsed', $stepsUsed);
-					$query->bindParam(':score', $score);
-				}
-				if(!$query->execute()) {
-					$error=$query->errorInfo();
-					$debug="Error updating answer. (row ".__LINE__.") ".$query->rowCount()." row(s) were updated. Error code: ".$error[2];
-				} else if ($query->rowCount() == 0) {
-					$debug="You probably do not have any variants done";
-				}	else {
-					$savedanswer = $answer;
-				}
-				// check if the user already has a grade on the assignment
-				$query = $pdo->prepare("SELECT submitted from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
-				$query->bindParam(':cid', $courseid);
-				$query->bindParam(':coursevers', $coursevers);
-				$query->bindParam(':uid', $userid);
-				$query->bindParam(':moment', $moment);
-				if(!$query->execute()) {
-					$error=$query->errorInfo();
-					$debug="Error fetching submit date. (row ".__LINE__.") ".$error[2];
-				}				
-				if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-					$submitted=$row['submitted'];
-				}
-			}
+            $query->execute();
+            $grade = null;
+
+            if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                $grade=$row['grade'];
+            }
+
+            if(($grade == 2) || ($grade == 3)||($grade == 4) || ($grade == 5)||($grade == 6)){
+                //if grade equal G, VG, 3, 4, 5, or 6
+                $debug="You have already passed this dugga. You are not required/allowed to submit anything new to this dugga.";
+            }else{
+              	// Update Dugga!
+              	$query = $pdo->prepare("UPDATE userAnswer SET submitted=NOW(), useranswer=:useranswer, timeUsed=:timeUsed, totalTimeUsed=totalTimeUsed + :timeUsed, stepsUsed=:stepsUsed, totalStepsUsed=totalStepsUsed+:stepsUsed, score=:score WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+              	$query->bindParam(':cid', $courseid);
+              	$query->bindParam(':coursevers', $coursevers);
+              	$query->bindParam(':uid', $userid);
+              	$query->bindParam(':moment', $moment);
+              	$query->bindParam(':useranswer', $answer);
+              	$query->bindParam(':timeUsed', $timeUsed);
+              	$query->bindParam(':stepsUsed', $stepsUsed);
+              	$query->bindParam(':score', $score);
+                if(!$query->execute()) {
+                	$error=$query->errorInfo();
+                	$debug="Error updating answer. (row ".__LINE__.") ".$query->rowCount()." row(s) were updated. Error code: ".$error[2];
+                } else if ($query->rowCount() == 0) {
+                	$debug="You probably do not have any variants done";
+                }	else {
+                	$savedanswer = $answer;
+                }
+                // Make sure that current version is set to active for this student
+              	$vuery = $pdo->prepare("UPDATE user_course set vers=:vers, vershistory=CONCAT(vershistory, CONCAT(:vers,',')) WHERE uid=:uid AND cid=:cid");
+              	$vuery->bindParam(':cid', $courseid);
+              	$vuery->bindParam(':vers', $coursevers);
+              	$vuery->bindParam(':uid', $userid);
+              	if(!$vuery->execute()) {
+              		$error=$vuery->errorInfo();
+              		$debug="Error inserting active version (row ".__LINE__.") ".$vuery->rowCount()." row(s) were inserted. Error code: ".$error[2];
+              	}
+            }
+            
+            // Get submission date
+            $query = $pdo->prepare("SELECT submitted from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
+            $query->bindParam(':cid', $courseid);
+            $query->bindParam(':coursevers', $coursevers);
+            $query->bindParam(':uid', $userid);
+            $query->bindParam(':moment', $moment);
+            if(!$query->execute()) {
+            	$error=$query->errorInfo();
+            	$debug="Error fetching submit date. (row ".__LINE__.") ".$error[2];
+            }				
+            if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            	$submitted=$row['submitted'];
+            }
+            
+        }
 		}
 }
 
