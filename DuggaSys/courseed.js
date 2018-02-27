@@ -321,6 +321,7 @@ function returnedCourse(data)
 {
 	versions = data['versions'];
 	entries = data['entries'];
+  let uname=document.getElementById('userName').innerHTML;
 
 	// Fill section list with information
 	str = "";
@@ -377,7 +378,7 @@ function returnedCourse(data)
         str += "</span>";
       } else {
         str += "<div class='ellipsis' style='margin-right:15px;'>";
-				if(item['registered'] == true) {
+				if(item['registered'] == true || uname=="Guest") {
           str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Registered]'>" + item['coursename'] + "</a></span>";
         }else{
           str += "<span style='margin-right:15px;opacity:0.3'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Not registered]'>" + item['coursename'] + "</a></span>";
