@@ -408,17 +408,8 @@
 					
 							if(file_exists ( $file)){
 									$file_extension = strtolower(substr(strrchr($filename,"."),1));									
-									if($file_extension=="html" || $file_extension=="css" || $file_extension=="js" || $file_extension=="php"){
-											//$bummer=file_get_contents($file);
-										    header('Content-Description: File Transfer');
-										    header('Content-Type: application/octet-stream');
-										    header('Content-Disposition: attachment; filename="'.basename($file).'"');
-										    header('Expires: 0');
-										    header('Cache-Control: must-revalidate');
-										    header('Pragma: public');
-										    header('Content-Length: ' . filesize($file));
-										    readfile($file);
-										    exit;
+									if($file_extension=="html"){
+											  $bummer=file_get_contents($file);
 									}else if($file_extension=="md"){
 											$bummer=file_get_contents($file);
 									}else{
@@ -460,9 +451,9 @@
 				if($hdrs=="none"){
 				
 				}else{
-                    $temp = explode('.', $filename);
-                    $ext  = array_pop($temp);
-                    $name = implode('.', $temp);
+            $temp = explode('.', $filename);
+            $ext  = array_pop($temp);
+            $name = implode('.', $temp);
 						echo "<html>";
 						echo "<head>";
 						echo "<link rel='icon' type='image/ico' href='../Shared/icons/favicon.ico'/>";
