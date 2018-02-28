@@ -33,7 +33,7 @@ function toggleloginnewpass(){
   //Shows the New password-box (username input)
 	if(status == 0){
 		$("#newpassword").css("display", "block");
-		$("#login").css("display", "none");
+		$("#loginBox").css("display", "none");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -41,7 +41,7 @@ function toggleloginnewpass(){
     //Shows the Login-box
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
-		$("#login").css("display", "block");
+		$("#loginBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
 		status= 0;
@@ -49,7 +49,7 @@ function toggleloginnewpass(){
     //Shows the Sequrity question-box (answer for question input)
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
-		$("#login").css("display", "none");
+		$("#loginBox").css("display", "none");
 		$("#showsecurityquestion").css("display", "block");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -58,7 +58,7 @@ function toggleloginnewpass(){
   //Shows the Reset complete-box
 	else if(status == 3){
 		$("#newpassword").css("display", "none");
-		$("#login").css("display", "none");
+		$("#loginBox").css("display", "none");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "block");
 		status= 1;
@@ -119,7 +119,7 @@ function closeWindows(){
 	$("*").each(function() {
 	    //Always use a radix when using parseInt
 	    var index_current = parseInt($(this).css("zIndex"), 10);
-	    if(index_current > index_highest && this.style.display == "block") {
+	    if(index_current > index_highest && this.style.display == "block"||index_current > index_highest && this.style.display == "flex") {
 	        index_highest = index_current;
 					e=this;
 	    }
@@ -131,8 +131,8 @@ function closeWindows(){
          so if we closed such a window, hide the overlay and clear any values as well. */
 			if (index_highest < 10000) {
 					status=1;
-					toggleloginnewpass();
-					$("#overlay").css("display","none");
+					//toggleloginnewpass();
+					//$("#overlay").css("display","none");
 					resetFields();
 			}
 	}
@@ -772,6 +772,7 @@ function processLogin() {
 					//$("#loginForm").submit();
           reloadPage();
 				}else{
+          alert("Login failed!");
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
@@ -809,8 +810,8 @@ function processLogout() {
 
 function showLoginPopup()
 {
-	$("#loginBox").css("display","block");
-	$("#overlay").css("display","block");
+	$("#loginBox").css("display","flex");
+	/*$("#overlay").css("display","block");*/
 	$("#username").focus();
 
 	// Reset input box color
@@ -826,7 +827,7 @@ function showLoginPopup()
 function hideLoginPopup()
 {
 		$("#loginBox").css("display","none");
-		$("#overlay").css("display","none");
+		/*$("#overlay").css("display","none");*/
 
 		window.removeEventListener("keypress", loginEventHandler, false);
 }
