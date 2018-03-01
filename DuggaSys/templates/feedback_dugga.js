@@ -304,7 +304,7 @@ if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
 	var feedbackArr = feedback.split("||");
 	for (var k=feedbackArr.length-1;k>=0;k--){
 		var fb_tmp = feedbackArr[k].split("%%");
-		fb+="<tr><td style='border-right:2px dotted #aaa;padding-right:6px'>"+fb_tmp[0]+"</td><td><pre>"+fb_tmp[1]+"</pre></td></tr>";
+		fb+="<tr><td style='border-right:2px dotted #aaa;padding-right:6px'>"+fb_tmp[0]+"</td><td><pre style='white-space:pre-wrap;'>"+fb_tmp[1]+"</pre></td></tr>";
 	} 		
 }
 fb += "</tbody></table>";
