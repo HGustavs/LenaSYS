@@ -71,9 +71,11 @@ function changeAccess(cid,uid,val)
 }
 
 // Sets values in the "cogwheel popup"
-function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
+//function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
+function selectUser(uid,username,ssn,firstname,lastname,access,className)
 {
 	// Reverts the string to an array
+  /*
 	var teachs = teacherstring.split("/t");
 	var userClass = classString.split("/t");
 	// Sort the array to make navigation easier
@@ -125,7 +127,7 @@ function selectUser(uid,username,ssn,firstname,lastname,access,className,teacher
     		}
 	};
 
-	
+*/	
 	// Set Name		
 	$("#firstname").val(firstname);
 	$("#lastname").val(lastname);
@@ -226,7 +228,7 @@ function returnedAccess(data)
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>First Name</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>Last Name</th>" +
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Class</th>" +
-			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Teacher</th>" +
+			/*"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Teacher</th>" +*/
 			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:100px; cursor: pointer;'>Added</th>" +
           	"<th style='text-align:left; padding-left:8px; width:90px;'>Version</th>" +
 		  	"<th style='text-align:left; padding-left:8px; width:90px;'>Access</th>" +
@@ -250,7 +252,7 @@ function returnedAccess(data)
 			str+="<td>"+item['firstname']+"</td>";
 			str+="<td>"+item['lastname']+"</td>";
 			str+="<td>"+item['class']+"</td>";
-
+/*
 			// Place array value in a temporary vairable
 			var teacher = item['teacher'];
 			// Check if the value is null (replace won't work with null)
@@ -259,7 +261,7 @@ function returnedAccess(data)
 				teacher = teacher.replace(/([a-z])([A-Z])/g, '$1 $2');
 			}
 			str+="<td>"+teacher+"</td>";
-
+*/
 			str+="<td>"+item['modified'].substr(0,10)+"</td>";
 
             str+="<td>"+item['vers']+"</td>";
@@ -284,24 +286,32 @@ function returnedAccess(data)
 			str+="</select>";
 			
 			// Loops through the "teachers" data array and stores the name of all teachers in a new array
+      /*
 			for(j=0; j<data['teachers'].length;j++){
 				var items=data['teachers'][j];
 				teachs[j] = items['firstname']+" "+items['lastname'];
 			}
-
+      */
 			// Loops through the "classes" data array and stores all the classes in a new array
-			for(h=0; h<data['classes'].length;h++){
+			/*
+      for(h=0; h<data['classes'].length;h++){
 				var itemc=data['classes'][h];
 				userClass[h] = itemc['class'];
 			}
+      */
+      /*
 			// Convert our arrays to strings where each field is separated with /t, this is necessary to keep structure when we send it to another function
 			var teacherstring = teachs.join("/t");
 			var classString = userClass.join("/t");
+      
 
 			// Create cogwheel
 			str+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
 			str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\",\""+item['class']+"\",\""+teacherstring+"\",\""+classString+"\");'></td>";
-			
+			*/
+      // Create cogwheel
+			str+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+			str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\",\""+item['class']+"\");'></td>";
 			str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+item['username']+" ?\")) resetPw(\""+item['uid']+"\",\""+item['username']+"\"); return false;' style='float:none;'></td>";
 			str+="</tr>";
 		}

@@ -60,7 +60,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="username" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+							<input id="usernamereset" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
 						</td>
 					</tr>
 					<tr>

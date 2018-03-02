@@ -564,33 +564,33 @@ function returnedDugga(data)
 			str+="<tr class='fumo "+oddevenfumo+"' id='dugga" +i+ "'>";
 
 			result++;
-            str+="<td id='arrowz' onClick='showVariant("+i+")'><span class='arrow' id='arrow"+i+"'>&#9658;</span></td>";
-            // Name
-			str+="<td><input type='text' id='duggav"+result+"' style='font-size:0,875em;border: 0;border-width:0px;' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
+      str+="<td id='arrowz' onClick='showVariant("+i+")'><span class='arrow' id='arrow"+i+"'>&#9658;</span></td>";
+      // Name
+			str+="<td><input type='text' id='duggav"+result+"' style='font-size:14px;border: 0;border-width:0px;width:100%' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
 			// Autograde
             if(item['autograde']=="1"){
 				result++;
-				str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:0,875em;' id='duggav"+result+"' ><option selected value='1'>On</option><option value='2'>Off</option></select></td>";
+				str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:14px;' id='duggav"+result+"' ><option selected value='1'>On</option><option value='2'>Off</option></select></td>";
 			}else{
 				result++;
-				str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:0,875em;' id='duggav"+result+"' ><option value='1'>On</option><option selected value='2'>Off</option></select></td>";
+				str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:14px;' id='duggav"+result+"' ><option value='1'>On</option><option selected value='2'>Off</option></select></td>";
 			}
 
 			if(item['gradesystem']=="1"){
 				result++;
                 // Grade system
-				str+="<td><select style='font-size:0,875em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option selected='selected' value='1'>U/G/VG</option><option value='2'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
+				str+="<td><select style='font-size:14px;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option selected='selected' value='1'>U/G/VG</option><option value='2'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
 			}else if(item['gradesystem']=="2"){
 				result++;
-				str+="<td class='gradesystem'><select style='font-size:0,875em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2' selected='selected'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
+				str+="<td class='gradesystem'><select style='font-size:14px;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2' selected='selected'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
 			}else{
 				result++;
-				str+="<td><select style='font-size:0,875em;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2'>U/G</option><option selected='selected' value='3'>U/3/4/5</option></select></td>";
+				str+="<td><select style='font-size:14px;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2'>U/G</option><option selected='selected' value='3'>U/3/4/5</option></select></td>";
 			}
 			result++;
             
-            // Template
-			str+="<td><select style='font-size:0,875em;' onchange='changefile("+item['did']+","+result+")' id='duggav"+result+"'>";
+      // Template
+			str+="<td><select style='font-size:14px;' onchange='changefile("+item['did']+","+result+")' id='duggav"+result+"'>";
 
 			for(var j=0;j<filez.length;j++){
 				filen=filez[j];
@@ -605,18 +605,18 @@ function returnedDugga(data)
 				str+="<td></td>";
 			}else{
 			result++;
-				str+="<td>"+item['qstart'].substr(0,10)+"</td>";
+				str+="<td><div style='margin:0 5px'>"+item['qstart'].substr(0,10)+"<div></td>";
 			}
 			if(item['deadline']==null){
-				str+="<td></td>";
+				str+="<td><div style='margin:0 5px'>&nbsp;</div></td>";
 			}else{
-				str+="<td>"+item['deadline'].substr(0,10)+"</td>";
+				str+="<td><div style='margin:0 5px'>"+item['deadline'].substr(0,10)+"</div></td>";
 			}
       if(item['release']==null){
 				str+="<td></td>";
 			}else{
 			result++;
-				str+="<td>"+item['release'].substr(0,10)+"</td>";
+				str+="<td><div style='margin:0 5px'>"+item['release'].substr(0,10)+"</div></td>";
 			}
 
 			str+="<td>"+item['modified'].substr(0,10)+"</td>";
@@ -653,9 +653,9 @@ function returnedDugga(data)
 					}
 					str+="<td colspan='1' style='padding-right:50px;'></td>";
 					result++;
-					str+="<td colspan='1'><label>Params: </label><input type='text' id='duggav"+result+"' style='font-size:0,875em;border: 0;border-width:0px;' onchange='changeparam("+itemz['vid']+","+result+")' placeholder='"+itemz['param']+"' /></td></td>";
+					str+="<td colspan='1'><label>Params: </label><input type='text' id='duggav"+result+"' style='font-size:14px;border: 0;border-width:0px;' onchange='changeparam("+itemz['vid']+","+result+")' placeholder='"+itemz['param']+"' /></td></td>";
 					result++;
-					str+="<td colspan='2'><label>Answer: </label><input type='text' id='duggav"+result+"' style='font-size:0,875em;border: 0;border-width:0px;' onchange='changeanswer("+itemz['vid']+","+result+")' placeholder='"+itemz['variantanswer']+"' /></td>";
+					str+="<td colspan='2'><label>Answer: </label><input type='text' id='duggav"+result+"' style='font-size:14px;border: 0;border-width:0px;' onchange='changeanswer("+itemz['vid']+","+result+")' placeholder='"+itemz['variantanswer']+"' /></td>";
 
 					str+="<td>"+itemz['modified'].substr(0,10)+"</td>";
 
@@ -702,16 +702,15 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 
 	$.getScript("templates/"+template+".js")
 	  .done(function( script, textStatus ) {
-
-		showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer),null,null,null);
-
+        alert("snus");
+		    showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer),null,null,null);
 	  })
 	  .fail(function( jqxhr, settings, exception ) {
-	  	console.log(jqxhr);
-	  	console.log(settings);
-	  	console.log(exception);
-	  	eval(script);
-	  	showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer));
+      	console.log(jqxhr);
+      	console.log(settings);
+      	console.log(exception);
+      	eval(script);
+      	showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer));
 	});
 
 	$("#resultpopover").css("display", "flex");

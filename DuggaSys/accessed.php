@@ -77,26 +77,27 @@
 
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
-    <div class='loginBox' style='width:464px;'>
-		<div class='loginBoxheader'> 
-			<h3>Add user</h3>
-			<div class='cursorPointer' onclick='closeWindows();'>x</div>
-		</div>
-		<div style='padding:5px;'>
-			<input type='hidden' id='uid' value='Toddler' /></td>
-			<div class='inputwrapper'><span>SSN:</span><input placeholder="999102-5571" class='textinput' type='text' id='addSsn'/></div>
-			<div class='inputwrapper'><span>First Name:</span><input placeholder="Greger" class='textinput' type='text' id='addFirstname'/></div>	
-			<div class='inputwrapper'><span>Last Name:</span><input placeholder="Gregersson" class='textinput' type='text' id='addLastname'/></div>
-			<div class='inputwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></input></div>
-			<div class='inputwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></input></div>
-			<div class='inputwrapper'><span>PID:</span><input placeholder="WEBUG" class='textinput' id='addPid'></input></div>
-			<div class='inputwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></input></div>
-			<div class='inputwrapper'><span>Email:</span><input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail'></input></div>
-			
-		</div> 
-		<div style='padding:5px;'>
-			<input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
-		</div> 
+      <div class='loginBox' style='width:464px;'>
+      		<div class='loginBoxheader'> 
+      			<h3>Add user</h3>
+      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
+      		</div>
+      		<div style='padding:5px;'>
+      			<input type='hidden' id='uid' value='Toddler' /></td>
+      			<div class='inputwrapper'><span>SSN:</span><input placeholder="999102-5571" class='textinput' type='text' id='addSsn'/></div>
+      			<div class='inputwrapper'><span>First Name:</span><input placeholder="Greger" class='textinput' type='text' id='addFirstname'/></div>	
+      			<div class='inputwrapper'><span>Last Name:</span><input placeholder="Gregersson" class='textinput' type='text' id='addLastname'/></div>
+      			<div class='inputwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></input></div>
+      			<div class='inputwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></input></div>
+      			<div class='inputwrapper'><span>PID:</span><input placeholder="WEBUG" class='textinput' id='addPid'></input></div>
+      			<div class='inputwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></input></div>
+      			<div class='inputwrapper'><span>Email:</span><input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail'></input></div>
+      			
+      		</div> 
+      		<div style='padding:5px;'>
+      			<input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
+      		</div> 
+      </div>
 	</div>
 	
 	<!-- Add User Dialog END -->
@@ -114,7 +115,7 @@
       			<div class='inputwrapper'><span>SSN:</span><input class='textinput' type='text' id='ussn' value='SSN' /></div>
       			<div class='inputwrapper'><span>First Name:</span><input class='textinput' type='text' id='firstname' value='First Name' /></div>
       			<div class='inputwrapper'><span>Last Name:</span><input class='textinput' type='text' id='lastname' value='Last Name' /></div>
-      			<div class='inputwrapper'><span>Teacher:</span><select  id='teacher' value='Teacher' ></select></div>
+      			<!--<div class='inputwrapper'><span>Teacher:</span><select  id='teacher' value='Teacher' ></select></div>-->
       			<div class='inputwrapper'><span>Study program, Start year:</span><select id='class' value='Class'></select></div>
       		</div> 
       		<div style='padding:5px;'>
