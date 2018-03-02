@@ -690,6 +690,8 @@ header td {
 		/*width: 350px;*/
 		min-height: 100px;
     min-width: 200px;
+    max-height: 80%;
+    overflow-y: scroll;
 		/*z-index: 9000;
 		position: fixed;
 		top: 30%;
@@ -888,6 +890,9 @@ input {
 
 .loginBoxheader div:hover {
   background-color: #ce3d3d;
+}
+.loginBoxbody {
+    
 }
 
 .loginBox form {

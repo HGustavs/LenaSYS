@@ -40,10 +40,11 @@ function addSubmissionRow() {
 						"<option value='zip'>Zip</option>"+
 						"<option value='link'>Link</option>"+
 						"<option value='text'>Text</option>"+
+            "<option value='text'>Text</option>"+
 					"</select>"+
-					"<input type='text' name='fieldname' class='fieldnameRows' id='fieldname"+submissionRow+"' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
-					"<input type='text' name='instruction' id='instruction"+submissionRow+"' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
-					"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>"+
+					"<input type='text' name='fieldname' class='fieldnameRows' id='fieldname"+submissionRow+"' placeholder='Submission name' style='flex:1;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='text' name='instruction' id='instruction"+submissionRow+"' placeholder='Upload instruction' style='flex:3;margin-bottom:3px;height:25px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 0px;'></input>"+
 				 "</div>");
 	submissionRow++;
 }
@@ -62,6 +63,9 @@ function createJSONString(formData) {
 	// Get the first static fields
 	jsonStr += '"' + formData[0]['name'] + '":"' + formData[0]['value'] + '",';
 	jsonStr += '"' + formData[1]['name'] + '":"' + formData[1]['value'] + '",';
+  if(document.getElementById("extraparam").value !== ""){
+      jsonStr+=document.getElementById("extraparam").value+",";
+  }
 	jsonStr += '"submissions":[';
 
 	// Handle the dynamic amount of submission types
@@ -81,7 +85,7 @@ function createJSONString(formData) {
 			// Prepare for next submissions array element.
 			jsonStr += "},";
 		}
-	}
+	}  
 	// Remove the last comma
 	jsonStr = jsonStr.substr(0, jsonStr.length-1);
 	// Append the end of the submissions array.

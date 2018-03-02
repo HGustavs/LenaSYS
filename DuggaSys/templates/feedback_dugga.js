@@ -196,12 +196,14 @@ function saveClick()
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
 	if (userStats != null){
-		document.getElementById('duggaTime').innerHTML=userStats[0];
-		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-		document.getElementById('duggaClicks').innerHTML=userStats[2];
-		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];	
-		$("#duggaStats").css("display","block");
-		$("#duggaStats").draggable({ handle:'.loginBoxheader'});	
+      if (userStats[1] != 0 && userStats[3] != 0){
+          document.getElementById('duggaTime').innerHTML=userStats[0];
+      		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+      		document.getElementById('duggaClicks').innerHTML=userStats[2];
+      		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];	
+      		$("#duggaStats").css("display","block");
+      		$("#duggaStats").draggable({ handle:'.loginBoxheader'});	      
+      }
 	}
 
 	inParams = parseGet();
