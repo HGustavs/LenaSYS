@@ -241,7 +241,7 @@ function editVersion(cid, cname, ccode) {
 
 function editSettings(){
 		if(motd!=="UNK") $("#motd").val(motd);
-		document.getElementById('editSettings').style.display = "block";
+		document.getElementById('editSettings').style.display = "flex";
 		
 }
 

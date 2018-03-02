@@ -124,7 +124,7 @@ $noup="NONE";
 	<!-- New Verison Dialog END -->
 	
 	<!-- Edit Server Settings START -->
-	<div id='editSettings' class='loginBox' style='display:none;'>
+	<div id='editSettings' class='loginBoxContainer' style='display:none;'>
     <div class='loginBox' style='width:464px;'>
     		<div class='loginBoxheader'>
     			<h3>Edit Server Settings</h3>
