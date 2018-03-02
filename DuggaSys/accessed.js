@@ -43,26 +43,26 @@ function addSingleUser()
 
 function showCreateUserPopup()
 {
-	$("#createUser").css("display","block");
-	$("#overlay").css("display","block");
+	$("#createUser").css("display","flex");
+	//$("#overlay").css("display","block");
 }
 
 function showImportUsersPopup()
 {
-	$("#importUsers").css("display", "block");
-	$("#overlay").css("display", "block");
+	$("#importUsers").css("display", "flex");
+	//$("#overlay").css("display", "block");
 }
 
 function hideCreateUserPopup()
 {
 	$("#createUser").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 }
 
 function hideImportUsersPopup()
 {
 	$("#importUsers").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 }
 
 function changeAccess(cid,uid,val)
@@ -139,9 +139,9 @@ function selectUser(uid,username,ssn,firstname,lastname,access,className,teacher
 	$("#uid").val(uid);
 
 	// Displays the cogwheel box
-	$("#editUsers").css("display","block");
+	$("#editUsers").css("display","flex");
 	
-	$("#overlay").css("display","block");
+	//$("#overlay").css("display","block");
 }
 
 function updateUser()
@@ -157,7 +157,7 @@ function updateUser()
 	AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,className:className,cid:querystring['cid'],coursevers:querystring['coursevers'],teacher:teach},"ACCESS");
 	
 	$("#editUsers").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 }
 
 function closeEdituser()

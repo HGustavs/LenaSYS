@@ -60,8 +60,8 @@ function closeNewCourse()
 
 function newCourse()
 {
-	$("#newCourse").css("display", "block");
-	$("#overlay").css("display", "block");
+	$("#newCourse").css("display", "flex");
+	//$("#overlay").css("display", "block");
 }
 
 function createNewCourse()
@@ -69,7 +69,7 @@ function createNewCourse()
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
 	$("#newCourse").css("display", "none");
-	$("#overlay").css("display", "none");
+	//$("#overlay").css("display", "none");
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
 }
 
@@ -182,9 +182,9 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	$("#copyversion").html(cstr);
 
 	// Show dialog
-	$("#editCourse").css("display", "block");
+	$("#editCourse").css("display", "flex");
 	
-	$("#overlay").css("display", "block");
+	//$("#overlay").css("display", "block");
 
 	return false;
 }
@@ -204,8 +204,8 @@ function getCurrentVersion(cid){
 
 function editVersion(cid, cname, ccode) {
 			
-		document.getElementById('newCourseVersion').style.display = "block";
-		document.getElementById('overlay').style.display = "block";
+		document.getElementById('newCourseVersion').style.display = "flex";
+		//document.getElementById('overlay').style.display = "block";
 		document.getElementById('cid').value = cid;
 		document.getElementById('coursename1').value = cname;
 		document.getElementById('coursecode1').value = ccode;

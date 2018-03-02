@@ -61,75 +61,83 @@ $noup="NONE";
 	<!-- Server Msg END -->
 	
 	<!-- New Course Section Dialog START -->
-	<div id='newCourse' class='loginBox' style='width:464px;display:none;'>
-		<div class='loginBoxheader'>
-			<h3>New Course</h3>
-			<div class="cursorPointer" onclick='closeWindows();' title='Close window'>x</div>
-		</div>
-		<div style='padding:5px;'>
-			<input type='hidden' id='cid' value='Toddler' />
-			<div class='inputwrapper'><span>Course Name:</span><input class='textinput' type='text' id='ncoursename' placeholder='Course Name' /></div>
-			<div class='inputwrapper'><span>Course code:</span><input class='textinput' type='text' id='ncoursecode' placeholder='Course Code' /></div>
-		</div>
-		<div style='padding:5px;'>
-			<input class='submit-button' type='button' value='Create' title='Create course' onclick='createNewCourse();' />
-		</div>
+	<div id='newCourse' class='loginBoxContainer' style='display:none;'>
+    <div class='loginBox' style='width:464px;'>
+    		<div class='loginBoxheader'>
+    			<h3>New Course</h3>
+    			<div class="cursorPointer" onclick='closeWindows();' title='Close window'>x</div>
+    		</div>
+    		<div style='padding:5px;'>
+    			<input type='hidden' id='cid' value='Toddler' />
+    			<div class='inputwrapper'><span>Course Name:</span><input class='textinput' type='text' id='ncoursename' placeholder='Course Name' /></div>
+    			<div class='inputwrapper'><span>Course code:</span><input class='textinput' type='text' id='ncoursecode' placeholder='Course Code' /></div>
+    		</div>
+    		<div style='padding:5px;'>
+    			<input class='submit-button' type='button' value='Create' title='Create course' onclick='createNewCourse();' />
+    		</div>
+      </div>
 	</div>
 	<!-- New Course Section Dialog END -->
 
 	<!-- Edit Section Dialog START -->
-	<div id='editCourse' class='loginBox' style='width:464px;display:none;'>
-		<div class='loginBoxheader'>
-			<h3>Edit Course</h3>
-			<div class="cursorPointer" onclick='closeWindows();'>x</div>
-		</div>
-		<div style='padding:5px;'>
-			<input type='hidden' id='cid' value='Toddler' />
-			<div class='inputwrapper'><span>Course Name:</span><input class='textinput' type='text' id='coursename' placeholder='Course Name' /></div>
-			<div class='inputwrapper'><span>Course code:</span><input class='textinput' type='text' id='coursecode' placeholder='Course Code' /></div>
-			<div class='inputwrapper'><span>Visibility:</span><select class='selectinput' id='visib'></select></div>
-		</div>
-		<div style='padding:5px;'>
-			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateCourse();' />
-		</div>
+	<div id='editCourse' class='loginBoxContainer' style='display:none;'>
+      <div class='loginBox' style='width:464px;'>
+    		<div class='loginBoxheader'>
+    			<h3>Edit Course</h3>
+    			<div class="cursorPointer" onclick='closeWindows();'>x</div>
+    		</div>
+    		<div style='padding:5px;'>
+    			<input type='hidden' id='cid' value='Toddler' />
+    			<div class='inputwrapper'><span>Course Name:</span><input class='textinput' type='text' id='coursename' placeholder='Course Name' /></div>
+    			<div class='inputwrapper'><span>Course code:</span><input class='textinput' type='text' id='coursecode' placeholder='Course Code' /></div>
+    			<div class='inputwrapper'><span>Visibility:</span><select class='selectinput' id='visib'></select></div>
+    		</div>
+    		<div style='padding:5px;'>
+    			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateCourse();' />
+    		</div>
+      </div>
 	</div>
 	<!-- Edit Section Dialog END -->
 
 	<!-- New Version Dialog START -->
-	<div id='newCourseVersion' class='loginBox' style='width:464px;display:none;'>
-		<div class='loginBoxheader'>
-			<h3>New Course Version</h3>
-			<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
-		</div>
-		<div style='padding:5px;'>
-			<div class='inputwrapper'><span>Course Name:</span><input class='textinput' type='text' readonly id='coursename1' placeholder='Course Name' /></div>
-			<div class='inputwrapper'><span>Course Code:</span><input class='textinput' type='text' readonly id='coursecode1' placeholder='Course Code' /></div>
-			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
-      <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='startdate' value='' /></div>
-      <div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='' /></div>
-			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
-			<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
-		</div>
-		<div style='padding:5px;'>
-			<input class='submit-button' type='button' value='Create' title='Create new version' onclick='createVersion();' />
-		</div>
+	<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
+      <div class='loginBox' style='width:464px;'>
+      		<div class='loginBoxheader'>
+      			<h3>New Course Version</h3>
+      			<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
+      		</div>
+      		<div style='padding:5px;'>
+      			<div class='inputwrapper'><span>Course Name:</span><input class='textinput' type='text' readonly id='coursename1' placeholder='Course Name' /></div>
+      			<div class='inputwrapper'><span>Course Code:</span><input class='textinput' type='text' readonly id='coursecode1' placeholder='Course Code' /></div>
+      			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
+      			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
+            <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='startdate' value='' /></div>
+            <div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='' /></div>
+      			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
+      			<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
+      		</div>
+      		<div style='padding:5px;'>
+      			<input class='submit-button' type='button' value='Create' title='Create new version' onclick='createVersion();' />
+      		</div>
+      </div>
 	</div>
 	<!-- New Verison Dialog END -->
 	
 	<!-- Edit Server Settings START -->
-	<div id='editSettings' class='loginBox' style='width:464px;display:none;'>
-		<div class='loginBoxheader'>
-			<h3>Edit Server Settings</h3>
-			<div onclick='closeWindows();'>x</div>
-		</div>
-		<div style='padding:5px;'>
-			<div class='inputwrapper'><span>MOTD:</span><input class='textinput' type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
-			<div class='inputwrapper'><span style='font-style:italic;color:rgba(0,0,0,0.6)'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' value="no" title='Disables uploads/submits. Usefull for active backup servers.'  disabled></select></div>
-		</div>
-		<div style='padding:5px;'>
-			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
-		</div>
+	<div id='editSettings' class='loginBox' style='display:none;'>
+    <div class='loginBox' style='width:464px;'>
+    		<div class='loginBoxheader'>
+    			<h3>Edit Server Settings</h3>
+    			<div onclick='closeWindows();'>x</div>
+    		</div>
+    		<div style='padding:5px;'>
+    			<div class='inputwrapper'><span>MOTD:</span><input class='textinput' type='text' id='motd' placeholder='Leave blank for no MOTD' /></div>
+    			<div class='inputwrapper'><span style='font-style:italic;color:rgba(0,0,0,0.6)'>Read Only:</span><input type="checkbox" name='readonly' id='readonly' value="no" title='Disables uploads/submits. Usefull for active backup servers.'  disabled></select></div>
+    		</div>
+    		<div style='padding:5px;'>
+    			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateSettings();' />
+    		</div>
+    </div>
 	</div>
 	<!-- Edit Server Settings END -->
 </body>

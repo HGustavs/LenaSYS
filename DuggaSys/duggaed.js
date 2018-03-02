@@ -94,8 +94,8 @@ function createJSONString(formData) {
 
 function selectVariant(vid,param,answer,template,dis)
 {
-	$("#editVariant").css("display","block"); // Display edit dialog
-	$("#overlay").css("display","block"); 
+	$("#editVariant").css("display","flex"); // Display edit dialog
+	//$("#overlay").css("display","block"); 
 	$("#vid").val(vid); // Set Variant ID
 	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
 	$("#variantanswer").val(decodeURIComponent(answer)); // Set Variant answer
@@ -167,7 +167,7 @@ function deleteVariant()
 	var vid=$("#vid").val();
 	if(confirm("Do you really want to delete this Variant?")) AJAXService("DELVARI",{cid:querystring['cid'],vid:vid,coursevers:querystring['coursevers']},"DUGGA");
 	$("#editVariant").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 }
 
 function toggleVariant()
@@ -179,7 +179,7 @@ function toggleVariant()
 		if(confirm("Do you really want to enable this Variant?")) AJAXService("TOGGLEVARI",{cid:querystring['cid'],vid:vid,disabled:"0",coursevers:querystring['coursevers']},"DUGGA");
 	}
 	$("#editVariant").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 }
 
 function addVariant(cid,qid)
@@ -224,7 +224,7 @@ function updateVariant()
 	else{
 		$('#parameter').val(createJSONString($('#jsonform').serializeArray()));
 		$("#editVariant").css("display","none");
-		$("#overlay").css("display","none");
+		//$("#overlay").css("display","none");
 		
 		var vid=$("#vid").val();
 		var answer=$("#variantanswer").val();
@@ -254,7 +254,7 @@ function createDugga()
 	var coursevers=querystring['coursevers'];
 	window.location.reload();
 	$("#editDugga").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 		
 	
 	//autograde, gradesystem, qname, quizFile, release, deadline, creator, vers
@@ -266,13 +266,13 @@ function deleteDugga()
     did=$("#did").val();
     if(confirm("Do you really want to delete this dugga?")) AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
     $("#editDugga").css("display","none");
-    $("#overlay").css("display","none");
+    //$("#overlay").css("display","none");
 }
 
 function updateDugga()
 {
 	$("#editDugga").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 
 	var did=$("#did").val();
 	var nme=$("#name").val();
@@ -292,19 +292,19 @@ function updateDugga()
 function closeEditDugga()
 {
 	$("#editDugga").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 }
 
 function showLoginPopup()
 {
 	$("#loginBox").css("display","block");
-	$("#overlay").css("display","block");
+	//$("#overlay").css("display","block");
 }
 
 function hideLoginPopup()
 {
 	$("#loginBox").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 }
 
 function showSubmitButton(){ 
@@ -312,7 +312,7 @@ function showSubmitButton(){
   $(".updateDugga").css("display","none"); 
   $(".deleteDugga").css("display","none"); 
   $(".closeDugga").css("display","inline-block"); 
-  $("#overlay").css("display","block"); 
+  //$("#overlay").css("display","block"); 
 } 
  
 function showSaveButton(){ 
@@ -320,12 +320,12 @@ function showSaveButton(){
   $(".updateDugga").css("display","block");
   $(".deleteDugga").css("display","block");
   $(".closeDugga").css("display","none"); 
-  $("#overlay").css("display","none"); 
+//  $("#overlay").css("display","none"); 
 } 
 
 function selectDugga(did,name,autograde,gradesys,template,qstart,deadline,release){
-		$("#editDugga").css("display","block");
-		$("#overlay").css("display","block");
+		$("#editDugga").css("display","flex");
+		//$("#overlay").css("display","block");
 		$("#did").val(did); // Set Variant ID		
 		$("#name").val(name); // Set Dugga name
 	  $("#qstart").val(qstart); // Set Start date name
@@ -397,8 +397,8 @@ function newDugga()
 		}
 	}
 	$("#template").html(str);
-	$("#editDugga").css("display","block");
-	$("#overlay").css("display","block");
+	$("#editDugga").css("display","flex");
+	//$("#overlay").css("display","block");
 }
 
 // Adds a submission row in Edit Variant
@@ -420,8 +420,8 @@ function addSubmissionRow() {
 function selectVariant(vid,param,answer,template,dis)
 {
 
-	$("#editVariant").css("display","block"); // Display edit dialog
-	$("#overlay").css("display","block"); 
+	$("#editVariant").css("display","flex"); // Display edit dialog
+	//$("#overlay").css("display","block"); 
 	$("#vid").val(vid); // Set Variant ID
 	//var pparam = parseParameters(param);
 	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
@@ -714,8 +714,8 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 	  	showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer));
 	});
 
-	$("#resultpopover").css("display", "block");
-	$("#overlay").css("display", "block");
+	$("#resultpopover").css("display", "flex");
+	//$("#overlay").css("display", "block");
 
 }
 

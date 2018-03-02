@@ -238,16 +238,16 @@ function saveDuggaResult(citstr)
 		
 		if(deadline > dateTimeFormat){	//Check if deadline has past
 			
-			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
+			document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
 
 		}
 		else{ //Check if deadline has past
 			
 			if(comment == "UNK" || comment == "undefined" || comment == "null"){
- 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><img style='width:20%;float:left;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p style='float:right; width:79%;'>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid mån av tid.";
+ 				document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>";
  			}
  			else{
- 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><img style='width:20%;float:left;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p style='float:right; width:79%;'>\n\n"+comment+"\n\n</p>";
+ 				document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p>"+comment+"</p>";
  			}
 			
 		}
@@ -853,20 +853,20 @@ function setupLoginLogoutButton(isLoggedIn){
 
 function showReceiptPopup()
 {
-	$("#receiptBox").css("display","block");
-	$("#overlay").css("display","block");
+	$("#receiptBox").css("display","flex");
+	//$("#overlay").css("display","block");
 }
 
 function hideReceiptPopup()
 {
 	$("#receiptBox").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 }
 
 function hideDuggaStatsPopup() 
 {
 	$("#duggaStats").css("display", "none");
-	$("#overlay").css("display", "none");
+	//$("#overlay").css("display", "none");
 }
 
 function checkScroll(obj) { 
@@ -878,8 +878,8 @@ function checkScroll(obj) {
 function showEmailPopup()
 {
 	var receiptcemail ="";
-	$("#emailPopup").css("display","block");
-	$("#overlay").css("display","block");
+	$("#emailPopup").css("display","flex");
+	//$("#overlay").css("display","block");
 	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
 	document.getElementById('email').value = receiptcemail;
 }
@@ -887,7 +887,7 @@ function showEmailPopup()
 function hideEmailPopup()
 {
 	$("#emailPopup").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 }
 
 //----------------------------------------------------------------------------------
@@ -905,23 +905,23 @@ function sendReceiptEmail(){
 
 function showSecurityPopup()
 {
-   $("#securitynotification").css("display","block");
-   $("#overlay").css("display","block");
+   $("#securitynotification").css("display","flex");
+   //$("#overlay").css("display","block");
 }
 
 function showDuggaInfoPopup()
 {
 
-	if ($("#receiptBox").css("display")!= "block"){
-		$("#duggaInfoBox").css("display","block");
-		$("#overlay").css("display","block");
+	if ($("#receiptBox").css("display")!= "flex"){
+		$("#duggaInfoBox").css("display","flex");
+		//$("#overlay").css("display","block");
 	}
 }
 
 function hideDuggaInfoPopup()
 {
 	$("#duggaInfoBox").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 	if(startDuggaHighScore){
 		startDuggaHighScore();
 	}
@@ -1204,7 +1204,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 				document.getElementById("responseArea").innerHTML = "No feedback given.";
 		}
 
-		$("#previewpopover").css("display", "block");
+		$("#previewpopover").css("display", "flex");
 }
 
 function displayDuggaStatus(answer,grade,submitted,marked){
