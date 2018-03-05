@@ -37,7 +37,7 @@ function returnedDugga(data)
 		duggaParams = jQuery.parseJSON(data['param']);
 		$("#submitButtonTable").hide();
 		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
+				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='800px;' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
 			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
         		$("#snus").html(result);
@@ -66,7 +66,7 @@ function returnedDugga(data)
 			}else{
 					filename=filename.replace("https://", "http://");				
 			}
-			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='1000px' type='application/pdf'></iframe>"; 
+			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='800px' type='application/pdf'></iframe>"; 
 		}else {
 			// UNK 
 		}
@@ -87,7 +87,7 @@ function returnedDugga(data)
 							var filename=obj["filename"];
 							var fileseq=obj["seq"];
 							var fileext=obj["extension"];
-							$("#linkedreport").html("<embed src=\""+filepath+filename+fileseq+"."+fileext+"\" width=\"100%\" height=\"100%\" type=\"application/pdf\" />" );
+							$("#linkedreport").html("<embed src=\""+filepath+filename+fileseq+"."+fileext+"\" width=\"100%\" height=\"100%\" type=\"application/pdf\" style=\"min-height:800px;\"/>" );
 							$("#feedback-header").html("Feedback on "+filename+" submitted: "+ obj["updtime"]);
 							$("#report-header").html(filename+" submitted: "+ obj["updtime"]);
 						}
@@ -136,7 +136,7 @@ function returnedDugga(data)
       	var feedbackArr = data["feedback"].split("||");
         var fb="";
         if (feedbackArr.length > 1){
-            fb="<table style='width:100%;border:1px solid #000;'><caption>Previous feedback</caption><thead><tr><th></th></tr></thead><tbody>";
+            fb="<table style='width:100%;border:1px solid #000;table-layout:fixed'><caption>Previous feedback</caption><thead><tr><th></th></tr></thead><tbody>";
     				for (var k=feedbackArr.length-1;k>=0;k--){
       					var fb_tmp = feedbackArr[k].split("%%");
       					if (k==feedbackArr.length-1){						
@@ -195,7 +195,7 @@ function saveClick()
 
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
-	if (userStats != null){
+	if (userStats != null && userStats!==undefined && userStats !== ""){
       if (userStats[1] != 0 && userStats[3] != 0){
           document.getElementById('duggaTime').innerHTML=userStats[0];
       		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
@@ -213,7 +213,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	} else {
 		duggaParams = jQuery.parseJSON(param);
 		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
+				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='800px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
 			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
         		$("#snus").html(result);
@@ -242,7 +242,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			}else{
 					filename=filename.replace("https://", "http://");				
 			}
-			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='1000px' type='application/pdf'></iframe>"; 
+			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' min-height='800px' type='application/pdf'></iframe>"; 
 		}else {
 			// UNK 
 		}
@@ -267,7 +267,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 							var filename=obj["filename"];
 							var fileseq=obj["seq"];
 							var fileext=obj["extension"];
-							$("#linkedreport").html("<embed src=\""+filepath+filename+fileseq+"."+fileext+"\" width=\"100%\" height=\"100%\" type=\"application/pdf\" />" );
+							$("#linkedreport").html("<embed src=\""+filepath+filename+fileseq+"."+fileext+"\" width=\"100%\" height=\"800px\" type=\"application/pdf\" />" );
 							$("#feedback-header").html("Feedback on "+filename+" submitted: "+ obj["updtime"]);
 							$("#report-header").html(filename+" submitted: "+ obj["updtime"]);
 						}
