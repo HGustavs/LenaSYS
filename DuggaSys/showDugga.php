@@ -160,46 +160,51 @@
 	</div>
 
 	<!-- LoginBox (receiptbox) Start! -->
-	<div id='receiptBox' class="loginBox" style="display:none">
-		<div class='loginBoxheader'><h3>Kvitto - Duggasvar</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
-		<div id='receiptInfo'></div>
-		<textarea id="receipt" autofocus readonly></textarea>
-		<div class="button-row">
-			<input type='button' class='submit-button'  onclick="showEmailPopup();" value='Save Receipt'> 
-			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>	
-		</div>
-		<div id='emailPopup' style="display:none">
-			<div class='inputwrapper'><span>Ange din email:</span><input class='textinput' type='text' id='email' placeholder='Email' value=''/></div>
-			<div class="button-row"><input type='button' class='submit-button'  onclick="sendReceiptEmail();" value='Send Email'></div>
-		</div>	
+	<div id='receiptBox' class="loginBoxContainer" style="display:none">
+      <div class="loginBox" style="max-width:400px;">
+    		<div class='loginBoxheader'><h3>Kvitto - Duggasvar</h3><div class='cursorPointer' onclick="hideReceiptPopup()">x</div></div>
+    		<div id='receiptInfo'></div>
+    		<textarea id="receipt" autofocus readonly></textarea>
+    		<div class="button-row">
+    			<input type='button' class='submit-button'  onclick="showEmailPopup();" value='Save Receipt'> 
+    			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>	
+    		</div>
+    		<div id='emailPopup' style="display:none">
+    			<div class='inputwrapper'><span>Ange din email:</span><input class='textinput' type='text' id='email' placeholder='Email' value=''/></div>
+    			<div class="button-row"><input type='button' class='submit-button'  onclick="sendReceiptEmail();" value='Send Email'></div>
+    		</div>	
+      </div>
 	</div>
 	<!-- Login Box (receiptbox) End! -->
 
 <!---------------------=============####### Preview Popover #######=============--------------------->
 
-	<div id='previewpopover' class='previewPopover' style='display:none;'>
-		<div class='loginBoxheader'>
-			<h3 style='width:100%;' id='Nameof'>Submission and feedback view</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
-		</div>
-		<div style="position:absolute;left:0px;top:34px;bottom:0px;right:0px;">
-			<table width="100%" height="100%">
-					<tr>
-							<td width="75%" height="100%" id="popPrev" style="border:2px inset #aaa;background:#bbb; overflow:scroll;">
-									<embed src="" width="100%" height="100%" type='application/pdf' />
-							</td>
-							<td height="100%" id='markMenuPlaceholderz' style="background:#bbb;">
-										<table width="100%" height="100%">
-											<tr height="24px" style="text-align: center;"><td><h2>Teacher Feedback</h2></td></tr>
-											<tr height="100%">
-													<td>
-															<textarea id="responseArea" style="width: 100%;height:100%;-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;">Glomar Explorer</textarea>
-													</td>
-											</tr>
-										</table>
-							</td>
-					</tr>
-			</table>
-		</div>
+  <!--<div id='previewpopover' class='previewPopover' style='display:none;'>-->
+  <div id='previewpopover' class='loginBoxContainer' style='display:none;'>
+    <div class="loginBox">
+    		<div class='loginBoxheader'>
+    			<h3 style='width:100%;' id='Nameof'>Submission and feedback view</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
+    		</div>
+    		<div style="position:absolute;left:0px;top:34px;bottom:0px;right:0px;">
+    			<table width="100%" height="100%">
+    					<tr>
+    							<td width="75%" height="100%" id="popPrev" style="border:2px inset #aaa;background:#bbb; overflow:scroll;">
+    									<embed src="" width="100%" height="100%" type='application/pdf' />
+    							</td>
+    							<td height="100%" id='markMenuPlaceholderz' style="background:#bbb;">
+    										<table width="100%" height="100%">
+    											<tr height="24px" style="text-align: center;"><td><h2>Teacher Feedback</h2></td></tr>
+    											<tr height="100%">
+    													<td>
+    															<textarea id="responseArea" style="width: 100%;height:100%;-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;">Glomar Explorer</textarea>
+    													</td>
+    											</tr>
+    										</table>
+    							</td>
+    					</tr>
+    			</table>
+    		</div>
+    </div>
 	</div>
 
 	<!-- Timer START -->

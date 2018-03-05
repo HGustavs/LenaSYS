@@ -28,7 +28,7 @@ $(function(){$( "#release" ).datepicker({dateFormat: "yy-mm-dd"});$( "#deadline"
 function closeAddFile()
 {
 		$("#addFile").css("display","none");
-		$("#overlay").css("display","none");
+		//$("#overlay").css("display","none");
 }
 
 function deleteFile(fileid,filename){
@@ -117,11 +117,11 @@ $(document).on('click','.last',function(e) {
 function createLink()
 {
 		$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' /></td>");
-		$("#addFile").css("display","block");
+		$("#addFile").css("display","flex");
 		$("#filey").css("display","none");
 		$("#linky").css("display","block");
 		$("#selecty").css("display","none");
-		$("#overlay").css("display","block");
+		//$("#overlay").css("display","block");
 		$("#kind").val("LINK");
 		$("#cid").val(querystring['cid']);
 		$("#coursevers").val(querystring['coursevers']);
@@ -154,10 +154,10 @@ function createFile(kind)
 				$("#selecty").css("display","none");				
 		}
 
-		$("#addFile").css("display","block");
+		$("#addFile").css("display","flex");
 		$("#filey").css("display","block");
 		$("#linky").css("display","none");
-		$("#overlay").css("display","block");
+		//$("#overlay").css("display","block");
 		if(kind!="LFILE") $("#selecty").css("display","block");
 		$("#kind").val(kind);
 		$("#cid").val(querystring['cid']);
@@ -189,14 +189,14 @@ function validateForm()
 
 function showLoginPopup()
 {
-		$("#loginBox").css("display","block");
-		$("#overlay").css("display","block");
+		$("#loginBox").css("display","flex");
+		//$("#overlay").css("display","block");
 }
 
 function hideLoginPopup()
 {
 		$("#loginBox").css("display","none");
-		$("#overlay").css("display","none");
+		//$("#overlay").css("display","none");
 }
 
 //----------------------------------------
@@ -584,4 +584,3 @@ function searchKeyPress(e)
     }
     return true;
 }
-

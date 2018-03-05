@@ -33,7 +33,7 @@ function toggleloginnewpass(){
   //Shows the New password-box (username input)
 	if(status == 0){
 		$("#newpassword").css("display", "block");
-		$("#login").css("display", "none");
+		$("#loginBox").css("display", "none");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -41,7 +41,7 @@ function toggleloginnewpass(){
     //Shows the Login-box
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
-		$("#login").css("display", "block");
+		$("#loginBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
 		status= 0;
@@ -49,7 +49,7 @@ function toggleloginnewpass(){
     //Shows the Sequrity question-box (answer for question input)
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
-		$("#login").css("display", "none");
+		$("#loginBox").css("display", "none");
 		$("#showsecurityquestion").css("display", "block");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -58,7 +58,7 @@ function toggleloginnewpass(){
   //Shows the Reset complete-box
 	else if(status == 3){
 		$("#newpassword").css("display", "none");
-		$("#login").css("display", "none");
+		$("#loginBox").css("display", "none");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "block");
 		status= 1;
@@ -119,7 +119,7 @@ function closeWindows(){
 	$("*").each(function() {
 	    //Always use a radix when using parseInt
 	    var index_current = parseInt($(this).css("zIndex"), 10);
-	    if(index_current > index_highest && this.style.display == "block") {
+	    if(index_current > index_highest && this.style.display == "block"||index_current > index_highest && this.style.display == "flex") {
 	        index_highest = index_current;
 					e=this;
 	    }
@@ -131,8 +131,8 @@ function closeWindows(){
          so if we closed such a window, hide the overlay and clear any values as well. */
 			if (index_highest < 10000) {
 					status=1;
-					toggleloginnewpass();
-					$("#overlay").css("display","none");
+					//toggleloginnewpass();
+					//$("#overlay").css("display","none");
 					resetFields();
 			}
 	}
@@ -238,16 +238,16 @@ function saveDuggaResult(citstr)
 		
 		if(deadline > dateTimeFormat){	//Check if deadline has past
 			
-			document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
+			document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
 
 		}
 		else{ //Check if deadline has past
 			
 			if(comment == "UNK" || comment == "undefined" || comment == "null"){
- 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><img style='width:20%;float:left;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p style='float:right; width:79%;'>OBS! Du har lämnat in efter deadline. Läraren kommer att rätta dugga vid mån av tid.";
+ 				document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>";
  			}
  			else{
- 				document.getElementById('receiptInfo').innerHTML = "<p>\n\nTeckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p><img style='width:20%;float:left;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p style='float:right; width:79%;'>\n\n"+comment+"\n\n</p>";
+ 				document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p>"+comment+"</p>";
  			}
 			
 		}
@@ -772,6 +772,7 @@ function processLogin() {
 					//$("#loginForm").submit();
           reloadPage();
 				}else{
+          alert("Login failed!");
 					if(typeof result.reason != "undefined") {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
@@ -809,8 +810,8 @@ function processLogout() {
 
 function showLoginPopup()
 {
-	$("#loginBox").css("display","block");
-	$("#overlay").css("display","block");
+	$("#loginBox").css("display","flex");
+	/*$("#overlay").css("display","block");*/
 	$("#username").focus();
 
 	// Reset input box color
@@ -826,7 +827,7 @@ function showLoginPopup()
 function hideLoginPopup()
 {
 		$("#loginBox").css("display","none");
-		$("#overlay").css("display","none");
+		/*$("#overlay").css("display","none");*/
 
 		window.removeEventListener("keypress", loginEventHandler, false);
 }
@@ -852,20 +853,20 @@ function setupLoginLogoutButton(isLoggedIn){
 
 function showReceiptPopup()
 {
-	$("#receiptBox").css("display","block");
-	$("#overlay").css("display","block");
+	$("#receiptBox").css("display","flex");
+	//$("#overlay").css("display","block");
 }
 
 function hideReceiptPopup()
 {
 	$("#receiptBox").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 }
 
 function hideDuggaStatsPopup() 
 {
 	$("#duggaStats").css("display", "none");
-	$("#overlay").css("display", "none");
+	//$("#overlay").css("display", "none");
 }
 
 function checkScroll(obj) { 
@@ -877,8 +878,8 @@ function checkScroll(obj) {
 function showEmailPopup()
 {
 	var receiptcemail ="";
-	$("#emailPopup").css("display","block");
-	$("#overlay").css("display","block");
+	$("#emailPopup").css("display","flex");
+	//$("#overlay").css("display","block");
 	receiptcemail = localStorage.getItem("receiptcemail"); //fetches localstorage item
 	document.getElementById('email').value = receiptcemail;
 }
@@ -886,7 +887,7 @@ function showEmailPopup()
 function hideEmailPopup()
 {
 	$("#emailPopup").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 }
 
 //----------------------------------------------------------------------------------
@@ -904,23 +905,23 @@ function sendReceiptEmail(){
 
 function showSecurityPopup()
 {
-   $("#securitynotification").css("display","block");
-   $("#overlay").css("display","block");
+   $("#securitynotification").css("display","flex");
+   //$("#overlay").css("display","block");
 }
 
 function showDuggaInfoPopup()
 {
 
-	if ($("#receiptBox").css("display")!= "block"){
-		$("#duggaInfoBox").css("display","block");
-		$("#overlay").css("display","block");
+	if ($("#receiptBox").css("display")!= "flex"){
+		$("#duggaInfoBox").css("display","flex");
+		//$("#overlay").css("display","block");
 	}
 }
 
 function hideDuggaInfoPopup()
 {
 	$("#duggaInfoBox").css("display","none");
-	$("#overlay").css("display","none");
+	//$("#overlay").css("display","none");
 	if(startDuggaHighScore){
 		startDuggaHighScore();
 	}
@@ -1203,7 +1204,7 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 				document.getElementById("responseArea").innerHTML = "No feedback given.";
 		}
 
-		$("#previewpopover").css("display", "block");
+		$("#previewpopover").css("display", "flex");
 }
 
 function displayDuggaStatus(answer,grade,submitted,marked){

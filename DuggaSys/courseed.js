@@ -60,8 +60,8 @@ function closeNewCourse()
 
 function newCourse()
 {
-	$("#newCourse").css("display", "block");
-	$("#overlay").css("display", "block");
+	$("#newCourse").css("display", "flex");
+	//$("#overlay").css("display", "block");
 }
 
 function createNewCourse()
@@ -69,7 +69,7 @@ function createNewCourse()
 	var coursename = $("#ncoursename").val();
 	var coursecode = $("#ncoursecode").val();
 	$("#newCourse").css("display", "none");
-	$("#overlay").css("display", "none");
+	//$("#overlay").css("display", "none");
 	AJAXService("NEW", { coursename : coursename, coursecode : coursecode }, "COURSE");
 }
 
@@ -182,9 +182,9 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	$("#copyversion").html(cstr);
 
 	// Show dialog
-	$("#editCourse").css("display", "block");
+	$("#editCourse").css("display", "flex");
 	
-	$("#overlay").css("display", "block");
+	//$("#overlay").css("display", "block");
 
 	return false;
 }
@@ -204,8 +204,8 @@ function getCurrentVersion(cid){
 
 function editVersion(cid, cname, ccode) {
 			
-		document.getElementById('newCourseVersion').style.display = "block";
-		document.getElementById('overlay').style.display = "block";
+		document.getElementById('newCourseVersion').style.display = "flex";
+		//document.getElementById('overlay').style.display = "block";
 		document.getElementById('cid').value = cid;
 		document.getElementById('coursename1').value = cname;
 		document.getElementById('coursecode1').value = ccode;
@@ -241,7 +241,7 @@ function editVersion(cid, cname, ccode) {
 
 function editSettings(){
 		if(motd!=="UNK") $("#motd").val(motd);
-		document.getElementById('editSettings').style.display = "block";
+		document.getElementById('editSettings').style.display = "flex";
 		
 }
 
@@ -321,6 +321,7 @@ function returnedCourse(data)
 {
 	versions = data['versions'];
 	entries = data['entries'];
+  let uname=document.getElementById('userName').innerHTML;
 
 	// Fill section list with information
 	str = "";
@@ -377,7 +378,7 @@ function returnedCourse(data)
         str += "</span>";
       } else {
         str += "<div class='ellipsis' style='margin-right:15px;'>";
-				if(item['registered'] == true) {
+				if(item['registered'] == true || uname=="Guest") {
           str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Registered]'>" + item['coursename'] + "</a></span>";
         }else{
           str += "<span style='margin-right:15px;opacity:0.3'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Not registered]'>" + item['coursename'] + "</a></span>";

@@ -3,8 +3,9 @@
   <div id="overlay" style="display:none"></div>
   
 	<!-- Login Box Start! -->
-  <div id='loginBox' class="loginBox" style="display:none;">
-		<div id='login'>
+  <!--  <div id='loginBox' class="loginBox" style="display:none;display:flex;justify-content:center;align-items:center;">-->
+    <div id='loginBox' class="loginBoxContainer" style="display:none;">
+		<div id='login' class="loginBox">
 			<div class='loginBoxheader'>
 				<h3>Login</h3>
 				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
@@ -26,11 +27,13 @@
 							<input id="password" placeholder="Password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
 						</td>
 					</tr>
+          <!--
 					<tr>
 						<td class="nowrap">
 							<label class='text forgotPw' onclick='toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
 						</td>
 					</tr>
+          -->
 					<tr>
 						<td>
 							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login' title='Login'>
@@ -57,7 +60,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input id="username" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
+							<input id="usernamereset" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
 						</td>
 					</tr>
 					<tr>

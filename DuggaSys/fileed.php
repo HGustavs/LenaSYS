@@ -83,26 +83,28 @@ pdoConnect();
 	?>
 
 	<!-- Add File Dialog START -->
-	<div id='addFile' class='loginBox' style='width:464px;display:none;'>
-		<div class='loginBoxheader'>
-			<h3>Add File/Link</h3>
-			<div class='cursorPointer' onclick='closeAddFile();'>x</div>
-		</div>
-		<form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
-			<div style='padding:5px;'>
-				<input type='hidden' id='cid' name='cid' value='Toddler' />
-				<input type='hidden' id='coursevers' name='coursevers' value='Toddler' />
-				<input type='hidden' id='kind' name='kind' value='Toddler' />
-				<div id="linky" class='inputwrapper'><span>URL:</span><input style="width:380px" id ="uploadedlink" class="textinput" name="link" placeholder="https://facebook.com" type="text" /></div>
-				<div id="filey" class='inputwrapper'><span>Upload File:</span><input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" /></div>
-				<div id="selecty" class='inputwrapper'><span>Existing File:</span><select id="selectedfile" name="selectedfile"></select></div>
-			</div> 
-			<div style='padding:5px;'>
-				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>
-			</div> 
-			<div style ='padding:5px; display:none;' id='errormessage'>
-			</div> 
-		</form>
+	<div id='addFile' class='loginBoxContainer' style='display:none;'>
+      <div class='loginBox' style='width:464px;'>
+      		<div class='loginBoxheader'>
+      			<h3>Add File/Link</h3>
+      			<div class='cursorPointer' onclick='closeAddFile();'>x</div>
+      		</div>
+      		<form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
+      			<div style='padding:5px;'>
+      				<input type='hidden' id='cid' name='cid' value='Toddler' />
+      				<input type='hidden' id='coursevers' name='coursevers' value='Toddler' />
+      				<input type='hidden' id='kind' name='kind' value='Toddler' />
+      				<div id="linky" class='inputwrapper'><span>URL:</span><input style="width:380px" id ="uploadedlink" class="textinput" name="link" placeholder="https://facebook.com" type="text" /></div>
+      				<div id="filey" class='inputwrapper'><span>Upload File:</span><input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" /></div>
+      				<div id="selecty" class='inputwrapper'><span>Existing File:</span><select id="selectedfile" name="selectedfile"></select></div>
+      			</div> 
+      			<div style='padding:5px;'>
+      				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>
+      			</div> 
+      			<div style ='padding:5px; display:none;' id='errormessage'>
+      			</div> 
+      		</form>
+      </div>
 	</div>
 	<!-- Edit File Dialog END -->
 </body>

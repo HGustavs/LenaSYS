@@ -669,7 +669,38 @@ header td {
   z-index: 8000;
 }
 
-.loginBox, .expiremessagebox, .endsessionmessagebox {
+.loginBoxContainer {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color:rgba(0,0,0,0.6);
+    z-index: 8000;
+}
+
+.loginBox {
+		/*display:block;*/
+		padding:4px;
+		background-color: #ccc;
+		border: 2px solid #999;
+		/*width: 350px;*/
+		min-height: 100px;
+    min-width: 200px;
+    max-height: 80%;
+    overflow-y: scroll;
+		/*z-index: 9000;
+		position: fixed;
+		top: 30%;
+		left: 50%;
+		margin-left: -178px;*/
+		box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
+}
+
+.expiremessagebox, .endsessionmessagebox {
 		display:block;
 		padding:4px;
 		background-color: #ccc;
@@ -705,10 +736,10 @@ header td {
 }
 
 #editSection {
-  top: 50%;
+  /*top: 50%;
   left: 50%;
   margin-top: -245px;
-  margin-left: -236px;
+  margin-left: -236px;*/
 }
 
 
@@ -846,9 +877,9 @@ input {
 
 .loginBoxheader div {
   padding: 2px 20px;
-  position: absolute;
+  /*position: absolute;
   top: 4px;
-  right: 4px;
+  right: 4px;*/
   color: rgb(255, 255, 255);
   cursor: default;
   background-color: rgb(199, 80, 80);
@@ -859,6 +890,9 @@ input {
 
 .loginBoxheader div:hover {
   background-color: #ce3d3d;
+}
+.loginBoxbody {
+    
 }
 
 .loginBox form {
@@ -2632,8 +2666,8 @@ ul.hamburgerList button.menuButton {
   }
 
   .loginBox{
-    top: 8%;
-    left: 10%;
+    /*top: 8%;
+    left: 10%;*/
   }
 
   #cookiemsg {

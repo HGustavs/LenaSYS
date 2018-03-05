@@ -196,12 +196,14 @@ function saveClick()
 function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 {
 	if (userStats != null){
-		document.getElementById('duggaTime').innerHTML=userStats[0];
-		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-		document.getElementById('duggaClicks').innerHTML=userStats[2];
-		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];	
-		$("#duggaStats").css("display","block");
-		$("#duggaStats").draggable({ handle:'.loginBoxheader'});	
+      if (userStats[1] != 0 && userStats[3] != 0){
+          document.getElementById('duggaTime').innerHTML=userStats[0];
+      		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
+      		document.getElementById('duggaClicks').innerHTML=userStats[2];
+      		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];	
+      		$("#duggaStats").css("display","block");
+      		$("#duggaStats").draggable({ handle:'.loginBoxheader'});	      
+      }
 	}
 
 	inParams = parseGet();
@@ -304,7 +306,7 @@ if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
 	var feedbackArr = feedback.split("||");
 	for (var k=feedbackArr.length-1;k>=0;k--){
 		var fb_tmp = feedbackArr[k].split("%%");
-		fb+="<tr><td style='border-right:2px dotted #aaa;padding-right:6px'>"+fb_tmp[0]+"</td><td><pre>"+fb_tmp[1]+"</pre></td></tr>";
+		fb+="<tr><td style='border-right:2px dotted #aaa;padding-right:6px'>"+fb_tmp[0]+"</td><td><pre style='white-space:pre-wrap;'>"+fb_tmp[1]+"</pre></td></tr>";
 	} 		
 }
 fb += "</tbody></table>";
