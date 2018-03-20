@@ -77,10 +77,11 @@
             $markdown .= handleTable($currentLine, $prevLine, $nextLine);
         }else{
             // If its ordinary text then show it directly
-            $markdown .= markdownBlock($currentLine);
-            if(preg_match('/\br*/', $currentLine)){
-                $markdown .= "<br>";
+            $newestLine=markdownBlock($currentLine);
+            if(!preg_match('/\<\/h/', $newestLine)){
+                $newestLine.= "<br>";
             }
+            $markdown.=$newestLine;
         }
 
         // close table
@@ -126,9 +127,11 @@
         // Open new ordered list
         if(!(isOrderdList($prevLine) || isUnorderdList($prevLine)) && isOrderdList($currentLine)) {
             $markdown .= "<ol>"; // Open a new ordered list
+            array_push($openedSublists,0);
         }
         if(!(isUnorderdList($prevLine) || isOrderdList($prevLine) ) && isUnorderdList($currentLine)){
             $markdown .= "<ul>"; //Open a new unordered list          
+            array_push($openedSublists,1);
         } 
          // Open a new sublist
         if($currentLineIndentation < $nextLineIndentation && (isUnorderdList($nextLine) || isOrderdList($nextLine))) {
@@ -166,12 +169,21 @@
                 $markdown .= "</li>";
             }
         }
-        // Close lists
-        if(!(isOrderdList($nextLine) || isUnorderdList($nextLine) ) && isOrderdList($currentLine) ) {
-            $markdown .= "</ol>"; // Close ordered list
-        }
-        if(!(isUnorderdList($nextLine) || isOrderdList($nextLine) ) && isUnorderdList($currentLine) ) {
-            $markdown .= "</ul>"; // Close unordered list  
+        // Close all open lists if no more list rows are detected
+        if(!(isOrderdList($nextLine) || isUnorderdList($nextLine) )) {
+          $sublistsToClose=sizeof($openedSublists);
+          for($i = $sublistsToClose; $i > 0; $i--) {
+              $whatSublistToClose = array_pop($openedSublists);
+
+              if($whatSublistToClose === 0) { // close ordered list
+                  $markdown .= "</ol>";
+              } else { // close unordered list
+                  $markdown .= "</ul>";
+              }
+              if($i>1){
+                  $markdown .= "</li>";                
+              }
+          }
         }
         return $markdown;
     }
