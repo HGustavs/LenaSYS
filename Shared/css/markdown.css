@@ -85,7 +85,9 @@
 }
 
 .descbox ol {
+  /*
 		margin-left: 36px;
+    */
 }
 
 .descbox blockquote {
@@ -200,10 +202,10 @@
 	margin-top: 25px !important;
 }
 
-#markdown h3 {
+#markdown h3{
     font-size:16px;
-    margin: 2px 0px 2px 0px;    
-    border-bottom: 2px solid #aaa;    
+    margin: 2px 0px 2px 0px;
+    border-bottom:2px solid #aaa;
 }
 #markdown h2 {
   font-size:18px;
@@ -213,4 +215,14 @@
 #markdown h1 {
   font-size:22px;
   margin: 2px 0px 2px 0px;    
+}
+
+#markdown h2 {
+    font-size:18px;
+    margin: 2px 0px 2px 0px;  
+}
+
+#markdown h1 {
+    font-size:22px;
+    margin: 2px 0px 2px 0px;
 }
