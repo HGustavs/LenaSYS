@@ -96,7 +96,7 @@ pdoConnect();
       				<input type='hidden' id='kind' name='kind' value='Toddler' />
       				<div id="linky" class='inputwrapper'><span>URL:</span><input style="width:380px" id ="uploadedlink" class="textinput" name="link" placeholder="https://facebook.com" type="text" /></div>
       				<div id="filey" class='inputwrapper'><span>Upload File:</span><input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" /></div>
-      				<div id="selecty" class='inputwrapper'><span>Existing File:</span><select id="selectedfile" name="selectedfile"></select></div>
+      				<!--<div id="selecty" class='inputwrapper'><span>Existing File:</span><select id="selectedfile" name="selectedfile"></select></div>-->
       			</div> 
       			<div style='padding:5px;'>
       				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>

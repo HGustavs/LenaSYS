@@ -1,5 +1,3 @@
-<html>
-<head>
 <?php
 /********************************************************************************
 
@@ -126,7 +124,9 @@ $allowedExtensions = [
 	"sql"		=> ["text/plain", "application/sql"],
 	"doc"		=> ["application/msword"],
 	"docx"	=> ["application/vnd.openxmlformats-officedocument.wordprocessingml.document"],
-	"odt"		=> ["application/vnd.oasis.opendocument.text"]
+	"odt"		=> ["application/vnd.oasis.opendocument.text"],
+  "md"    => ["text/markdown"],
+  "dtd"   => ["application/octet-stream"]
 //	"xslt"	=> [
 //	"xsl"		=> [
 //	"sl"		=> [
@@ -139,6 +139,7 @@ $allowedExtensions = [
 				$swizzled = swizzleArray($_FILES['uploadedfile']);
 				
 				echo "<pre>";
+        print_r($_POST);
 				// Uncomment for debug printing
 				print_r($swizzled);
 		
@@ -158,7 +159,7 @@ $allowedExtensions = [
 								$query->bindParam(':cid', $cid);
 								$query->execute(); 
 								$norows = $query->fetchColumn();
-								$filesize=filesize($selectedfile);
+                $filesize=filesize($selectedfile);
 								
 								//  if rows equals to 0 (e.g it doesn't exist) add it yo.
 								if($norows==0&&($kind=="GFILE"||$kind=="MFILE")){
@@ -186,7 +187,8 @@ $allowedExtensions = [
 								$extension = end($temp); //stores the file type
 								// Determine file MIME-type
 								$filetype = mime_content_type($filea["tmp_name"]);
-								if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension], True)){
+//                if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension], True)){
+                if(array_key_exists($extension, $allowedExtensions)){
 										//  if file type is allowed, continue the uploading process.
 				
 										$fname=$filea['name'];
@@ -288,10 +290,13 @@ if(!$error){
 }
 
 ?>
+<html>
+<head>
 </head>
 <body>
 <?php
 if(!$error){
+
 		echo "<script>window.location.replace('fileed.php?cid=".$cid."&coursevers=".$vers."');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 ?>
