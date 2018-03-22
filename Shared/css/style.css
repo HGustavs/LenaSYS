@@ -691,7 +691,7 @@ header td {
 		min-height: 100px;
     min-width: 200px;
     max-height: 80%;
-    overflow-y: scroll;
+    overflow-y: auto;
 		/*z-index: 9000;
 		position: fixed;
 		top: 30%;
@@ -807,11 +807,13 @@ header td {
 }
 
 #before, #after {
-  width: 226px;
+  /*width: 226px;*/
+  width: 100%;
 }
 
 #playlink {
-  width: 216px;
+  /*width: 216px;*/
+  width: 100%;
 }
 
 input {

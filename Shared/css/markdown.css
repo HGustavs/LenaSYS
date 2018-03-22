@@ -72,9 +72,11 @@
 }
 
 .descbox ul {
+  /*
 		margin-top: 0;
 		margin-bottom: 16px;
 		padding-left: 2em;
+    */
 }
 
 .descbox ul > li {
@@ -198,7 +200,17 @@
 	margin-top: 25px !important;
 }
 
-#markdown h3, #markdown h2 #markdown h1 {
-    margin-top: 35px !important;
+#markdown h3 {
+    font-size:16px;
+    margin: 2px 0px 2px 0px;    
+    border-bottom: 2px solid #aaa;    
 }
-
+#markdown h2 {
+  font-size:18px;
+  margin: 2px 0px 2px 0px;    
+  
+}
+#markdown h1 {
+  font-size:22px;
+  margin: 2px 0px 2px 0px;    
+}
