@@ -44,11 +44,11 @@ function clickOutsideDialogMenu(ev) {
 
 function dimDialogMenu(dim) {
     if (dim == true) {
-        $("#appearance").css("display", "block");
-        $("#overlay").css("display", "block");
+        $("#appearance").css("display", "flex");
+        //$("#overlay").css("display", "block");
     } else {
         $("#appearance").css("display", "none");
-        $("#overlay").css("display", "none");
+        //$("#overlay").css("display", "none");
     }
 }
 
