@@ -712,9 +712,11 @@
 }
 
 #editExample{
+  /*
     top: 185px;
     width: 464px;
     margin-left: -232px;
+    */
 }
 
 #editExample td {
