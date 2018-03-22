@@ -145,41 +145,7 @@ $allowedExtensions = [
 				foreach ($swizzled as $key => $filea){
 					// Uncomment for debug printing
 						print_r($filea)."<br />";
-						/*
-						if($selectedfile!="NONE"&&($kind=="GFILE"||$kind=="MFILE")){
-								// Store link to existing file
-								if($kind=="GFILE"){
-										$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=2;" );
-								}else if($kind=="MFILE"){
-										$query = $pdo->prepare("SELECT count(*) FROM fileLink WHERE cid=:cid AND UPPER(filename)=UPPER(:filename) AND KIND=3;" );
-								}
-								
-								$query->bindParam(':filename', $selectedfile);
-								$query->bindParam(':cid', $cid);
-								$query->execute(); 
-								$norows = $query->fetchColumn();
-                $filesize=filesize($selectedfile);
-								
-								//  if rows equals to 0 (e.g it doesn't exist) add it yo.
-								if($norows==0&&($kind=="GFILE"||$kind=="MFILE")){
-										if($kind=="GFILE"){
-												$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,isGlobal,filesize) VALUES(:linkval,'2',:cid,'1', :filesize);");
-										}else if($kind=="MFILE"){
-												$query = $pdo->prepare("INSERT INTO fileLink(filename,kind,cid,filesize) VALUES(:linkval,'3',:cid,:filesize);");
-										}
 
-										$query->bindParam(':cid', $cid);
-										$query->bindParam(':linkval', $selectedfile);
-										$query->bindParam(':filesize', $filesize);
-								
-										if(!$query->execute()) {
-											$error=$query->errorInfo();
-											echo "Error updating file entries".$error[2];
-										}			 				
-								}
-					
-						}
-            */
 						//  if the file has a name (e.g it is successfully sent to "filereceive.php") begin the upload process.
 						if($filea["name"]!=""){
 							
@@ -187,7 +153,6 @@ $allowedExtensions = [
 								$extension = end($temp); //stores the file type
 								// Determine file MIME-type
 								$filetype = mime_content_type($filea["tmp_name"]);
-//                if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension], True)){
                 if(array_key_exists($extension, $allowedExtensions)){
 										//  if file type is allowed, continue the uploading process.
 				
