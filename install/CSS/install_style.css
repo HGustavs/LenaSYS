@@ -415,7 +415,7 @@ polygon {
 
 /* The background div in modal*/
 #dialogText div {
-    background-image: url(../../Shared/icons/warningTriangle.png);
+    background-image: url(../../Shared/icons/warningTriangle.svg);
     background-size: 10%;
     background-repeat: no-repeat;
 }

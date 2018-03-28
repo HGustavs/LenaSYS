@@ -23,7 +23,7 @@ function bigMac() {
 // Toggle the '≡' and '⨯' depending on if burger menu is up or not
 function bigMacSymbol() {
   if($(".hamburgerMenu").css('display') == 'block') {
-    $("#hamburgerIcon").val("⨯"); 
+    $("#hamburgerIcon").val("⨯");
 		document.getElementById("hamburgerIcon").title = "Close hamburger menu";
   } else {
     $("#hamburgerIcon").val("≡");
@@ -52,75 +52,75 @@ $(document).ready(function(){
     });
 });
 
-function showSubmitButton(){ 
-  $(".submitDugga").css("display","inline-block"); 
-  $(".updateDugga").css("display","none"); 
-  $(".deleteDugga").css("display","none"); 
-  $(".closeDugga").css("display","inline-block"); 
-  //$("#overlay").css("display","block"); 
-} 
- 
-function showSaveButton(){ 
-  $(".submitDugga").css("display","none"); 
+function showSubmitButton(){
+  $(".submitDugga").css("display","inline-block");
+  $(".updateDugga").css("display","none");
+  $(".deleteDugga").css("display","none");
+  $(".closeDugga").css("display","inline-block");
+  //$("#overlay").css("display","block");
+}
+
+function showSaveButton(){
+  $(".submitDugga").css("display","none");
   $(".updateDugga").css("display","block");
   $(".deleteDugga").css("display","block");
-  $(".closeDugga").css("display","none"); 
-  //$("#overlay").css("display","none"); 
-} 
+  $(".closeDugga").css("display","none");
+  //$("#overlay").css("display","none");
+}
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
 {
-		
+
 	xelink=elink;
-		
+
 	// Display Select Marker
 	$(".item").css("border","none");
 	$(".item").css("box-shadow","none");
 	$("#I"+lid).css("border","2px dashed #FC5");
 	$("#I"+lid).css("box-shadow","1px 1px 3px #000 inset");
-		
+
 	// Set GradeSys
 	str="";
 	if(gradesys==null||gradesys==0) str+="<option selected='selected' value='0'>-</option>"
 	else str+="<option value='0'>-</option>";
-	
+
 	if(gradesys==1) str+="<option selected='selected' value='1'>U-G-VG</option>"
 	else str+="<option value='1'>U-G-VG</option>";
-	
+
 	if(gradesys==2) str+="<option selected='selected' value='2'>U-G</option>"
 	else str+="<option value='2'>U-G</option>";
-	
+
 	if(gradesys==3) str+="<option selected='selected' value='3'>U-3-4-5</option>"
 	else str+="<option value='3'>U-3-4-5</option>";
-  
+
 	$("#gradesys").html(str);
-	
-  /*	
+
+  /*
 	// Set grouptype
 	str="";
 	if(grouptype==null||grouptype==0) str+="<option selected='selected' value='0'>Regular dugga</option>"
 	else str+="<option value='0'>Regular dugga</option>";
-	
+
 	if(grouptype==1) str+="<option selected='selected' value='1'>Group dugga</option>"
 	else str+="<option value='1'>Group dugga</option>";
-	
+
 	if(grouptype==2) str+="<option selected='selected' value='2'>Seminar</option>"
 	else str+="<option value='2'>Seminar</option>";
-	
+
 	if(grouptype==3) str+="<option selected='selected' value='3'>Group seminar</option>"
 	else str+="<option value='3'>Group seminar</option>";
 
 	$("#grouptype").html(str);
 	*/
-  
+
 	// Set Moments
 	str="";
-	if (retdata['entries'].length > 0) {		
-		
+	if (retdata['entries'].length > 0) {
+
 		// Account for null
 		if(moment=="") str+="<option selected='selected' value='null'>&lt;None&gt;</option>"
 		else str+="<option value='null'>&lt;None&gt;</option>";
-		
+
 		// Account for rest of moments!
 		for(var i=0;i<retdata['entries'].length;i++){
 			var item=retdata['entries'][i];
@@ -128,19 +128,19 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 				if(parseInt(moment)==parseInt(item['lid'])) str+="<option selected='selected' value='"+item['lid']+"'>"+item['entryname']+"</option>";
 				else str+="<option value='"+item['lid']+"'>"+item['entryname']+"</option>";
 			}
-		}		
+		}
 	}
 	$("#moment").html(str);
 
-	// Set Name		
+	// Set Name
 	$("#sectionname").val(entryname);
 	$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='"+entryname+"' style='width:448px;'/>");
 
 	// Set Comment
 	$("#comments").val(comments);
 	$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='comments' value='"+comments+"' style='width:448px;'/>");
-	
-	// Set Lid	
+
+	// Set Lid
 	$("#lid").val(lid);
 
 	// Set Kind
@@ -163,7 +163,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	if(kind==5) str+="<option selected='selected' value='5'>Link</option>"
 	else str+="<option value='5'>Link</option>";
 	$("#type").html(str);
-					
+
 	// Set Visibiliy
 	str="";
 	if(evisible==0) str+="<option selected='selected' value='0'>Hidden</option>"
@@ -173,42 +173,42 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	if(evisible==2) str+="<option selected='selected' value='2'>Login</option>"
 	else str+="<option value='2'>Login</option>";
 	$("#visib").html(str);
-	
+
 	// Add hichscore mode options
 	str = "";
-	if(highscoremode==0) str +="<option selected='selected' value ='0'>None</option>" 
-	else str +="<option value ='0'>None</option>"; 
-	if(highscoremode==1) str +="<option selected='selected' value ='1'>Time based</option>" 
-	else str +="<option value ='1'>Time based</option>"; 
-	if(highscoremode==2) str +="<option selected='selected' value ='2'>Click based</option>" 
-	else str +="<option value ='2'>Click based</option>"; 
+	if(highscoremode==0) str +="<option selected='selected' value ='0'>None</option>"
+	else str +="<option value ='0'>None</option>";
+	if(highscoremode==1) str +="<option selected='selected' value ='1'>Time based</option>"
+	else str +="<option value ='1'>Time based</option>";
+	if(highscoremode==2) str +="<option selected='selected' value ='2'>Click based</option>"
+	else str +="<option value ='2'>Click based</option>";
 	$("#highscoremode").html(str);
-	
+
 	// Set tabs
 	str = "";
-	if(gradesys==0||gradesys==null) str +="<option selected='selected' value ='0'>0 tabs</option>" 
-	else str +="<option value ='0'>0 tabs</option>"; 
-	if(gradesys==1) str +="<option selected='selected' value ='1'>1 tab</option>" 
-	else str +="<option value ='1'>1 tab</option>"; 
-	if(gradesys==2) str +="<option selected='selected' value ='2'>2 tabs</option>" 
-	else str +="<option value ='2'>2 tabs</option>"; 
-	if(gradesys==3) str +="<option selected='selected' value ='3'>3 tabs</option>" 
-	else str +="<option value ='3'>3 tabs</option>"; 
-	if(gradesys==4) str +="<option selected='selected' value ='4'>end</option>" 
-	else str +="<option value ='4'>end</option>"; 
-	if(gradesys==5) str +="<option selected='selected' value ='5'>1 tab + end</option>" 
-	else str +="<option value ='5'>1 tab + end</option>"; 
-	if(gradesys>6||gradesys<0) str +="<option selected='selected' value ='6'>2 tabs + end</option>" 
-	else str +="<option value ='6'>2 tabs + end</option>"; 
-	
+	if(gradesys==0||gradesys==null) str +="<option selected='selected' value ='0'>0 tabs</option>"
+	else str +="<option value ='0'>0 tabs</option>";
+	if(gradesys==1) str +="<option selected='selected' value ='1'>1 tab</option>"
+	else str +="<option value ='1'>1 tab</option>";
+	if(gradesys==2) str +="<option selected='selected' value ='2'>2 tabs</option>"
+	else str +="<option value ='2'>2 tabs</option>";
+	if(gradesys==3) str +="<option selected='selected' value ='3'>3 tabs</option>"
+	else str +="<option value ='3'>3 tabs</option>";
+	if(gradesys==4) str +="<option selected='selected' value ='4'>end</option>"
+	else str +="<option value ='4'>end</option>";
+	if(gradesys==5) str +="<option selected='selected' value ='5'>1 tab + end</option>"
+	else str +="<option value ='5'>1 tab + end</option>";
+	if(gradesys>6||gradesys<0) str +="<option selected='selected' value ='6'>2 tabs + end</option>"
+	else str +="<option value ='6'>2 tabs + end</option>";
+
 	$("#tabs").html(str);
 
 	// Set Link
 	$("#link").val(elink);
-	
+
 	// Show dialog
 	iistr="";
-	
+
 	// Header
 	if(kind==0){
 		$("#inputwrapper-tabs").css("display","block");
@@ -241,7 +241,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-comments").css("display","none");
-    
+
 	// Dugga
 	}else if(kind==3){
 		$("#inputwrapper-tabs").css("display","none");
@@ -273,9 +273,9 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
 			if(xelink==iitem['filename']){
-				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";								
+				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";
 			}else{
-				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";																
+				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";
 			}
 		}
 		$("#link").html(iistr);
@@ -287,7 +287,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	}
 	$("#editSection").css("display","flex");
 	//$("#overlay").css("display","block");
-	
+
 }
 
 function participationList(){
@@ -296,10 +296,10 @@ function participationList(){
 
 function changedType()
 {
-	kind=$("#type").val();		
+	kind=$("#type").val();
 	iistr="";
-	
-	if(kind==0){	
+
+	if(kind==0){
 		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","none");
 		$("#inputwrapper-highscore").css("display","none");
@@ -342,8 +342,8 @@ function changedType()
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
-		$("#inputwrapper-tabs").css("display","none");	
-		$("#inputwrapper-comments").css("display","block");	
+		$("#inputwrapper-tabs").css("display","none");
+		$("#inputwrapper-comments").css("display","block");
 
 	}else if(kind==4){
 		$("#inputwrapper-link").css("display","none");
@@ -414,26 +414,26 @@ function createLink()
 {
 	alert("CREATE!");
 }
-		
+
 function newItem()
 {
-	/*lid=$("#lid").val(); 
-  AJAXService("NEW",{lid:lid},"SECTION");*/ 
-   
-  tabs=$("#tabs").val(); 
-  lid=$("#lid").val(); 
-  kind=$("#type").val(); 
-  link=$("#link").val(); 
-  highscoremode=$("#highscoremode").val(); 
-  sectionname=$("#sectionname").val(); 
-  visibility=$("#visib").val(); 
-  moment=$("#moment").val(); 
-  gradesys=$("#gradesys").val(); 
-  comment=$("#deadlinecomment").val(); 
-  // Storing tabs in gradesys column! 
-  if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs; 
-  AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment},"SECTION"); 
-  $("#editSection").css("display","none"); 
+	/*lid=$("#lid").val();
+  AJAXService("NEW",{lid:lid},"SECTION");*/
+
+  tabs=$("#tabs").val();
+  lid=$("#lid").val();
+  kind=$("#type").val();
+  link=$("#link").val();
+  highscoremode=$("#highscoremode").val();
+  sectionname=$("#sectionname").val();
+  visibility=$("#visib").val();
+  moment=$("#moment").val();
+  gradesys=$("#gradesys").val();
+  comment=$("#deadlinecomment").val();
+  // Storing tabs in gradesys column!
+  if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
+  AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment},"SECTION");
+  $("#editSection").css("display","none");
 }
 
 function closeSelect()
@@ -451,8 +451,8 @@ function showCreateVersion()
 
 function createVersion(){
 
-  var cid = querystring['courseid'];  
-	var versid = $("#versid").val();  
+  var cid = querystring['courseid'];
+	var versid = $("#versid").val();
   newversid=versid;
 	var versname = $("#versname").val();
 	var coursecode = $("#course-coursecode").text();
@@ -471,9 +471,9 @@ function createVersion(){
 		if(coursevers=="null"){
 			makeactive=true;
 		}
-	
+
 		if (copycourse != "None"){
-				//create a copy of course version 
+				//create a copy of course version
         AJAXService("CPYVRS", {
           cid : cid,
           versid : versid,
@@ -485,7 +485,7 @@ function createVersion(){
           enddate : enddate,
           makeactive : makeactive
         }, "COURSE");
-			
+
 		} else {
 			//create a fresh course version
 			AJAXService("NEWVRS", {
@@ -495,19 +495,19 @@ function createVersion(){
 				coursecode : coursecode,
 				coursename : coursename,
         makeactive : makeactive
-			}, "COURSE");		
+			}, "COURSE");
 		}
-  
-		$("#newCourseVersion").css("display","none");		
-		//$("#overlay").css("display","none");		
+
+		$("#newCourseVersion").css("display","none");
+		//$("#overlay").css("display","none");
 
 	}
-	
+
 }
 
-function returnedCourse(data){  
-  if(data['debug']!="NONE!") alert(data['debug']); 
-  window.setTimeout(function(){changeURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + newversid); }, 1000);  
+function returnedCourse(data){
+  if(data['debug']!="NONE!") alert(data['debug']);
+  window.setTimeout(function(){changeURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + newversid); }, 1000);
 }
 
 function showEditVersion(versid, versname, startdate, enddate)
@@ -538,9 +538,9 @@ function updateVersion(){
 		versname : versname,
 		coursecode : coursecode,
     startdate : startdate,
-    enddate : enddate    
+    enddate : enddate
 	}, "SECTION");
-	
+
 	if(makeactive){
 		AJAXService("CHGVERS", {
 			cid : cid,
@@ -574,7 +574,7 @@ function returnedSection(data)
 {
 	retdata=data;
   if(data['debug']!="NONE!") alert(data['debug']);
-  
+
 	if(querystring['coursevers']!="null"){
 		// Fill section list with information
     var versionname="";
@@ -590,7 +590,7 @@ function returnedSection(data)
         }
       }
     }
-    
+
 		str="";
 
 		str+="<table class='navheader' style='overflow: hidden; table-layout: fixed;'><tr class='trsize nowrap'>"; // This is for anti-stacking buttons
@@ -608,7 +608,7 @@ function returnedSection(data)
           }
         }
       }
-      
+
     // Version dropdown
       str+="<td style='display: inline-block;'><div class='course-dropdown-div'>";
       var sstr ="<select class='course-dropdown' onchange='goToVersion(this)'>";
@@ -637,10 +637,10 @@ function returnedSection(data)
         document.getElementById("copyvers").innerHTML=ssstr;
         str+="</div></td>";
         //Buttons for version editing
-        str+="<td class='editVers' style='display: inline-block;'><div class='editVers menuButton'><button type='button' class='submit-button no-radius' style='width:35px; margin-left:0px' title='Edit the selected version' onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");'><img id='versionCog' style='margin-top:6px' src='../Shared/icons/CogwheelWhite.svg'></button></div></td>";	
-        
+        str+="<td class='editVers' style='display: inline-block;'><div class='editVers menuButton'><button type='button' class='submit-button no-radius' style='width:35px; margin-left:0px' title='Edit the selected version' onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");'><img id='versionCog' style='margin-top:6px' src='../Shared/icons/CogwheelWhite.svg'></button></div></td>";
+
         str+="<td class='newVers' style='display: inline-block;'><div class='newVers menuButton'><button type='button' value='New version' style='width:35px; margin-left:0px; border-top-right-radius:3px; border-bottom-right-radius:3px;' class='submit-button no-radius' title='Create a new version of this course' onclick='showCreateVersion();'><img id='versionPlus' style='margin-top:6px' src='../Shared/icons/PlusS.svg'></button></div></td>";
-        
+
         //Hamburger menu for navigation
         str+="<td class='hamburger'>";
         str+="<nav tabindex='0' class='package'><input id='hamburgerIcon' type='button' value='&equiv;' class='submit-button hamburger' title='Open hamburger menu'  onClick='bigMac(); bigMacSymbol();'></nav>";
@@ -658,7 +658,7 @@ function returnedSection(data)
         str+="</div";
         str+="</nav>";
         str+="</td>";
-        
+
         //Navigation menu
         str+="<td class='access menuButton' style='display: inline-block;'><div class='access menuButton'><input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/></div></td>";
         str+="<td class='results menuButton' style='display: inline-block;'><div class='results menuButton'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></div></td>";
@@ -692,7 +692,7 @@ function returnedSection(data)
       str+="<span id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</span>";
       str+="<span id='course-versname' class='courseVersionField'>"+versionname+"</span>";
     str+="</div>";
-    // If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign 
+    // If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign
     if(retdata["writeaccess"]){
         str+="<div id='course-newitem' style='display: flex;'>";
         str+= "<input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
@@ -705,9 +705,9 @@ function returnedSection(data)
 		str+="</div>";
 
 		str+="<div id='Sectionlistc' >";
-			
+
 		var groupitems = 0;
-				
+
 		// For now we only have two kinds of sections
 		if (data['entries'].length > 0) {
 			var kk=0;
@@ -733,7 +733,7 @@ function returnedSection(data)
 				// All are visible according to database
 
 
-				// Content table 		
+				// Content table
 				str+="<table id='lid"+item['lid']+"' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
 				if(kk%2==0){
 					str+=" class='hi' ";
@@ -741,7 +741,7 @@ function returnedSection(data)
 					str+=" class='lo' ";
 				}
 				str+=" >";
-				
+
 					var blorf="";
 					if (parseInt(item['visible']) === 0){
 							blorf=" hidden";
@@ -752,7 +752,7 @@ function returnedSection(data)
 					}else{
 							blorf="";
 					}
-					
+
 					// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link
 					if(parseInt(item['kind']) === 3|| parseInt(item['kind']) === 4){
 
@@ -772,25 +772,25 @@ function returnedSection(data)
 									status="";
 									var st = lawtem['submitted'];
 									if (st !== null) {
-										submitted = new Date(st);									
+										submitted = new Date(st);
 									} else {
 										submitted = null;
 									}
 									var mt = lawtem['marked'];
 									if (mt !== null) {
-										marked = new Date(mt);									
+										marked = new Date(mt);
 									} else {
 										marked = null;
 									}
-									
+
 									if(parseInt(item['kind']) === 3){
 											if (lawtem["useranswer"] !== null && submitted !== null && marked === null) {
 												status="pending";
-											} 
-			
+											}
+
 											if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
 												status="pending";
-											} 
+											}
 
                       if (lastSubmit === null){
 												lastSubmit = submitted;
@@ -803,12 +803,12 @@ function returnedSection(data)
                     /*
 											if (submitted !== null && marked === null) {
 												status="pending";
-											} 
-			
+											}
+
 											if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
 												status="pending";
-											} 
-			
+											}
+
                       */
 									}
 								}
@@ -818,7 +818,7 @@ function returnedSection(data)
               } else if ((parseInt(item['kind']) === 4)){
                   str+="<td class='LightBoxFilled"+blorf+"'>";
               }
-							
+
 							if((grady==-1 || grady == 0 || grady==null) && status==="") {
 									// Nothing submitted nor marked (White)
 									str+="<div class='StopLight WhiteLight'></div>";
@@ -826,14 +826,14 @@ function returnedSection(data)
 									//	Nothing marked yet (Yellow)
 									str+="<div class='StopLight YellowLight' title='Status: Handed in\nDate: "+lastSubmit+"' ></div>";
 							}else if(grady==1){
-									//	Marked Fail! (Red)								
+									//	Marked Fail! (Red)
 									str+="<div class='StopLight RedLight' title='Status: Failed\nDate: "+marked+"' ></div>";
 							}else if(grady>1){
-									//	Marked Pass i.e. G/VG/3/4/5 (Green)		
+									//	Marked Pass i.e. G/VG/3/4/5 (Green)
 									str+="<div class='StopLight GreenLight'  title='Status: Pass\nDate: "+marked+"' ></div>";
 							}
 							str+="</td>";
-				
+
 				}
 
 				// Make tabs to align each section element
@@ -842,7 +842,7 @@ function returnedSection(data)
 						if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
 								for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
 									str+="<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td>";
-								}													
+								}
 						} else if (parseInt(item['gradesys']) == 4){
 								str+="<td class='LightBox'><div class='spacerEnd'></div></td>";
 						}else if (parseInt(item['gradesys']) == 5){
@@ -856,7 +856,7 @@ function returnedSection(data)
 				// kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
 				if(parseInt(item['kind']) === 0 ){									// Header
 					// Styling for header row
-					str+="</td><td class='header item"+blorf+"' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";					
+					str+="</td><td class='header item"+blorf+"' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 					kk=0;
 				}else if(parseInt(item['kind']) === 1 ){						// Section
 					// Styling for Section row
@@ -882,7 +882,7 @@ function returnedSection(data)
 				}else if(parseInt(item['kind']) === 3 ){						// Dugga
 					if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
 						str+="<td style='width:20px;'><img style=';' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
-					}						
+					}
 					str += "<td ";
           if(kk%2==0){
 						str+=" class='example item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
@@ -893,7 +893,7 @@ function returnedSection(data)
 				}else if(parseInt(item['kind']) === 4 ){					// Moment
 					//new moment bool equals true
 					momentexists = item['lid'];
-								
+
 					// Styling for moment row
 					str+="<td class='moment item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' style='cursor:pointer;' ";
 					kk=0;
@@ -907,10 +907,10 @@ function returnedSection(data)
 					kk++;
 				}
 
-				// Close Information		
+				// Close Information
 				str+=">";
 
-				// Content of Section Item					
+				// Content of Section Item
 				if (parseInt(item['kind']) == 0) {				// Header
 					str+="<span style='padding-left:5px;' title='"+item['entryname']+"'>"+item['entryname']+"</span>";
 				}else if (parseInt(item['kind']) == 1) {		// Section
@@ -919,7 +919,7 @@ function returnedSection(data)
           str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span class='ellipsis'>"+item['entryname']+"</span></div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"' title='"+item['entryname']+"'>"+item['entryname']+"</a></span>";
-				}else if (parseInt(item['kind']) == 3 ) {	
+				}else if (parseInt(item['kind']) == 3 ) {
             str+="<div><a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' title='"+item['entryname']+"'><span class='nowrap'><span class='ellipsis'>"+item['entryname']+"</span></span></a></div>";
 				}else if(parseInt(item['kind']) == 5){			// Link
 					if(item['link'].substring(0,4) === "http"){
@@ -928,7 +928,7 @@ function returnedSection(data)
 						str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
 					}
 				}
-													
+
 				str+="</td>";
 
 				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
@@ -936,12 +936,12 @@ function returnedSection(data)
 					var dateSubmitted = submitted.toJSON().slice(0,10).replace(/-/g,'-');
 					var timeSubmitted = submitted.toJSON().slice(11,19).replace(/-/g,'-');
 					var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
-					
+
 					// create a warning if the dugga is submitted after the set deadline
 					if ((status === "pending")&&(dateTimeSubmitted>deadline)){
-						str+="<td style='width:20px;'><img style='width:20px;' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.png'/></td>";
+						str+="<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
 					}else{
-						
+
 					}
 				}
 
@@ -974,12 +974,12 @@ function returnedSection(data)
        } else {
 					// Do nothing
 				}
-        
+
 				// Cog Wheel
 				if(data['writeaccess']){
 						str+="<td style='width:24" +
 							"px;";
-											
+
               if(parseInt(item['kind']) === 0){
   								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\");' title='Edit "+item['entryname']+"' /></td>";
   						}else if(parseInt(item['kind']) === 1){
@@ -996,8 +996,8 @@ function returnedSection(data)
 				if(data['writeaccess']){
 						str+="<td style='width:24" +
 							"px;";
-						
-					
+
+
 						if(parseInt(item['kind']) === 0){
 								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
 						}else if(parseInt(item['kind']) === 1){
@@ -1010,20 +1010,20 @@ function returnedSection(data)
 				}
 
                 str += "</tr>";
-				
-				
+
+
 				str +="</table></div>";
-			}								
+			}
 		}else{
-			// No items were returned! 
+			// No items were returned!
 			str+="<div class='bigg'>";
       str+="<span>You either have no access or there isn't anything under this course</span>";
 			str+="</div>";
 		}
-					
+
 		str+="</div>";
 		var slist=document.getElementById('Sectionlist');
-		slist.innerHTML=str;	
+		slist.innerHTML=str;
 		if(resave == true){
 			str="";
 			$("#Sectionlist").find(".item").each(function(i) {
@@ -1031,41 +1031,41 @@ function returnedSection(data)
 				ido=$(this).attr('id');
 				phld=$(this).attr('placeholder')
 				str+=i+"XX"+ido.substr(1)+"XX"+phld;
-									
+
 			});
-							
-			AJAXService("REORDER",{order:str},"SECTION");	
+
+			AJAXService("REORDER",{order:str},"SECTION");
 			resave = false;
 		}
-		if(data['writeaccess']) {				
-			// Enable sorting always if we are superuser as we refresh list on update 
-					
+		if(data['writeaccess']) {
+			// Enable sorting always if we are superuser as we refresh list on update
+
 			$("#Sectionlistc").sortable({
-				helper: 'clone',		
-				update:  function (event, ui) {	
+				helper: 'clone',
+				update:  function (event, ui) {
 					str="";
 					$("#Sectionlist").find(".item").each(function(i) {
 						if(i>0) str+=",";
 						ido=$(this).attr('id');
 						phld=$(this).attr('placeholder')
 						str+=i+"XX"+ido.substr(1)+"XX"+phld;
-									
+
 					});
-							
-					AJAXService("REORDER",{order:str},"SECTION");	
-					resave = true;		
+
+					AJAXService("REORDER",{order:str},"SECTION");
+					resave = true;
 					return false;
-				}	
-							
-			});							
+				}
+
+			});
 		}
 	}else{
 		str="<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>"+data.coursename+"</div><div id='course-coursecode' style='display: inline-block; margin-right:10px;'>"+data.coursecode+"</div><div id='course-coursevers' style='display: inline-block; margin-right:10px;'>"+data.coursevers+"</div><div id='course-courseid' style='display: none; margin-right:10px;'>"+data.courseid+"</div></div>";
-		str+="<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";										  
+		str+="<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";
 		var slist=document.getElementById('Sectionlist');
 		slist.innerHTML=str;
 		showCreateVersion();
-		
+
 	}
 	if(data['debug']!="NONE!") alert(data['debug']);
 }
@@ -1078,7 +1078,7 @@ function showHighscore(did, lid)
 function returnedHighscore(data){
 
 	var str = "";
-	
+
 	str += "<tr>";
 	str += "<th>Rank</th>";
 	str += "<th>Name</th>";
@@ -1107,8 +1107,8 @@ function returnedHighscore(data){
 			str += "</tr>";
 		}
 	}
-	
-	if(data["user"]["username"]){	
+
+	if(data["user"]["username"]){
 		str += "<tr class='highscoreUser'>";
 		str += "<td>";
 		str += "";
@@ -1134,7 +1134,7 @@ $(document).on('click', '.moment, .section', function () {
 	$(this).children('.arrowComp').toggle();
 });
 
-// This part should check if there are any un/folded section when a moment has been clicked 
+// This part should check if there are any un/folded section when a moment has been clicked
 // Sets the show/hide All arrow to a correct state
 function setGlobalArrowWhenSingleMomentIsActivated() {
   if(!hasUnfoldedParts()) {
