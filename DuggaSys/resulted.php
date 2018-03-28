@@ -43,9 +43,9 @@ pdoConnect();
 	<?php
 		include '../Shared/loginbox.php';
 	?>
-			
+
 	<!---------------------=============####### Result Popover #######=============--------------------->
-	
+
 	<div id='resultpopover' class='resultPopover' style='display:none'>
 		<div class='loginBoxheader'>
 			<h3 style='width:100%;' id='Nameof'>Show Results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
@@ -55,7 +55,7 @@ pdoConnect();
 	</div>
 
   <!---------------------=============####### Preview Popover #######=============--------------------->
-	
+
 	<div id='previewpopover' class='previewPopover' style='display:none;'>
 		<div class='loginBoxheader'>
 			<h3 style='width:100%;' id='Nameof'>Document Preview</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
@@ -88,7 +88,7 @@ pdoConnect();
 													<td>
 															<button onclick='saveResponse();'>Save</button>
 													</td>
-											</tr>											
+											</tr>
 										</table>
 							</td>
 					</tr>
@@ -96,7 +96,7 @@ pdoConnect();
 		</div>
 	</div>
   <!---------------------=============####### Statistics Popover #######=============--------------------->
-	
+
 	<div id='statisticspopover' class='previewpopover' style='display:none;'>
 		<div class='loginBoxheader'>
 			<h3 style='width:100%;' id='Nameof'>Collective results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
