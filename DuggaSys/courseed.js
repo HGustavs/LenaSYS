@@ -328,7 +328,7 @@ function returnedCourse(data)
 
 	if (data['writeaccess']) {
 		str += "<div style='float:right;'>";
-		str += "<input class='submit-button' type='button' value='Add new course' onclick='newCourse();' title='Create new course' />";
+		str += "<input class='fab' type='button' value='+' onclick='newCourse();' title='Create new course' />";
 		str += "</div>";
 	}
 
