@@ -537,7 +537,6 @@ function showVariantz(param){
 var alla = 0;
 function returnedDugga(data)
 {
-
 	$("content").html();
 	var result = 0;
 	filez = data['files'];
