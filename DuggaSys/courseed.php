@@ -32,7 +32,7 @@ $noup="NONE";
 	<script src="courseed.js"></script>
 </head>
 <body>
-
+    
 	<?php
 	include '../Shared/navheader.php';
 	?>
