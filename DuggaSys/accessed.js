@@ -70,6 +70,11 @@ function changeAccess(cid,uid,val)
 	AJAXService("ACCESS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
 }
 
+function changeVersion(cid,uid,val)
+{
+	//TODO
+}
+
 // Sets values in the "cogwheel popup"
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
 function selectUser(uid,username,ssn,firstname,lastname,access,className)
@@ -264,8 +269,12 @@ function returnedAccess(data)
 */
 			str+="<td>"+item['modified'].substr(0,10)+"</td>";
 
-            str+="<td>"+item['vers']+"</td>";
-
+            //str+="<td>"+item['vers']+"</td>";
+			// Select box for Version
+			str+="<td valign='center'><select onChange='' onclick='return false;' id='"+item['uid']+"'>";
+			str+="<option selected='selected' value='"+item['vers']+"'>"+item['vers']+"</option>";
+			str+="</select>";
+			
 			// Select box for Access
 			str+="<td valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
 				if(item['access']=="R"){
