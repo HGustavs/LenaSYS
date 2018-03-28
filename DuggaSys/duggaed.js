@@ -537,6 +537,7 @@ function showVariantz(param){
 var alla = 0;
 function returnedDugga(data)
 {
+
 	$("content").html();
 	var result = 0;
 	filez = data['files'];
@@ -551,7 +552,7 @@ function returnedDugga(data)
 		str+="</div>";
 		
 		str+="<table class='list' id='testTable'>";
-		str+="<thead><tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Start</th><th>Deadline</th><th>Release</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr></thead>";
+		str+="<thead><tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Start</th><th>Deadline</th><th>Result date</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr></thead>";
 
 		var oddevenfumo = "";
 		for(i=0;i<data['entries'].length;i++){
