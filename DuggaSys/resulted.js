@@ -114,12 +114,29 @@ function redrawtable()
         }
       }
       strx +="</tr>"
+
       if(!onlyPending && (showTeachers || (!showTeachers && !isTeacher))) {
         str+=strx;
         row++;
       }
     }
 
+  // Append row for amount of ungraded duggas
+  if(!onlyPending && (showTeachers || (!showTeachers && !isTeacher))) {
+    if(row % 2 == 1){
+      str+="<tr class='fumo hi'>";
+    }
+    else{
+      str+="<tr class='fumo lo'>";
+    }
+    str +="<td id='row"+row+"' class='rownoMagic'><div>"+row+"</div></td>"
+    str +="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
+    str +=" style='padding-left:6px;background-color: #614875; color: white; font-size: 12px;"+"'";
+    str +=" class='result-data c"+j;
+    str +="'>Amount of ungraded assignments</td>";
+    str +="</tr>";
+    row++;
+  }
   str += "</tbody>";
   str += "</table>";
   str += "</div>";
@@ -270,36 +287,35 @@ function redrawtable()
     }
     document.getElementById("content").innerHTML=str;
     str = '';
-    
+
     // Row for amount of yellow assignments
     str += '<tr class="fumo hi">';
-        str+="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>"; // Row number
+    str +="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>"; // Row number
 
-        // Description of row
-        str +="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
-        // Mark the cell if it is a teacher, first iteration: changing background color to bright yellow to indicate something
-        str +=" style='padding-left:6px;background-color: #614875; color: white; font-size: 12px;"+"'";
-        str +=" class='result-data c"+j;
-        str +="'>Amount of ungraded assignments</td>";
-        for(var j=0;j<student.length - 1;j++) {
-            str +="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
-            // Mark the cell if it is a teacher, first iteration: changing background color to bright yellow to indicate something
-            str +=" style='padding-left:6px;"+((student[j].access=="W")?" background-color: #ffff90;'":"")+"'";
-            str +=" id='c" + String(j + 1) + "-ungraded-duggas' class='result-data c"+ String(j + 1);
-            str +="'>";
+    // Description of row
+    str +="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
+    str +=" style='padding-left:6px;background-color: #614875; color: white; font-size: 12px;"+"'";
+    str +=" class='result-data c"+j;
+    str +="'>Amount of ungraded assignments</td>";
+    for(var j=0;j<student.length - 1;j++) {
+      str +="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
+      // Mark the cell if it is a teacher, first iteration: changing background color to bright yellow to indicate something
+      str +=" style='padding-left:6px;"+((student[j].access=="W")?" background-color: #ffff90;'":"")+"'";
+      str +=" id='c" + String(j + 1) + "-ungraded-duggas' class='result-data c"+ String(j + 1);
+      str +="'>";
 
-            var ungradedForColumn = 0;
-            var columnValues = document.getElementsByClassName('c' + String(j + 1));
-            for(var i = 0; i < columnValues.length; i++) {
-                if($(columnValues[i]).hasClass("dugga-pending") || $(columnValues[i]).hasClass("dugga-assigned")) {
-                    ungradedForColumn++;
-                }
-            }
-
-            str += ungradedForColumn;
-            str += "</td>";
+      var ungradedForColumn = 0;
+      var columnValues = document.getElementsByClassName('c' + String(j + 1));
+      for(var i = 0; i < columnValues.length; i++) {
+        if($(columnValues[i]).hasClass("dugga-pending") || $(columnValues[i]).hasClass("dugga-assigned")) {
+          ungradedForColumn++;
         }
-        row++;
+      }
+
+      str += ungradedForColumn;
+      str += "</td>";
+    }
+    row++;
     $("#markinglist tbody").append(str);
     idField();
 }
@@ -319,7 +335,6 @@ function updateAmountOfUngraded() {
           ungradedForColumn++;
         }
       }
-      console.log(String(i+1));
       document.getElementById("c" + (String(i + 1) + "-ungraded-duggas")).innerHTML = ungradedForColumn;
     }
   }
@@ -1248,7 +1263,6 @@ function saveResponse()
 
 function returnedResults(data)
 {
-  console.log(data);
   if (data.gradeupdated === true){
       // Update background color
       $("#u"+data.duggauser+"_d"+data.duggaid).removeClass("dugga-fail dugga-pending dugga-assigned dugga-unassigned");
