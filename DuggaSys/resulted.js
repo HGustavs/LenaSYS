@@ -37,7 +37,7 @@ function setup(){
   //console.log("responseEnd -> onload: "+(benchmarkData.loadEventEnd-benchmarkData.responseEnd));
 
   /*    Add filter menu   */
-  var filt =""; 
+  var filt ="";
   filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
   filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
   filt+="<div id='dropdownc' class='dropdown-list-container'>";
@@ -79,11 +79,11 @@ function redrawtable()
   str+="<div class='titles' style='padding-bottom:10px;'>";
     str+="<h1 style='flex:1;text-align:center;'>Results</h1>";
   str+="</div>";
-  
+
   str+="<div id='horizhighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
   str+="<div id='verthighlight' style='position:absolute;left:240px;top:50px;right:400px;bottom:0px;pointer-events:none;display:none;'></div>";
 
-  // Redraw Magic heading 
+  // Redraw Magic heading
 
   str += "<div id='sideDecker' style='position:absolute;left:50px;margin-top:43px;display:none;width:175px;'>";
   str += "<table class='markinglist' style='table-layout: fixed;'>";
@@ -110,18 +110,36 @@ function redrawtable()
         // Mark the cell if it is a teacher, first iteration: changing background color to bright yellow to indicate something
         strx +=" style='padding-left:6px;"+((student[j].access=="W")?" background-color: #ffff90;'":"")+"'";
         strx +=" id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data c"+j;
-        strx +="'>"+student[j].grade+"</td>";  
+        strx +="'>"+student[j].grade+"</td>";
         }
       }
       strx +="</tr>"
+
       if(!onlyPending && (showTeachers || (!showTeachers && !isTeacher))) {
         str+=strx;
         row++;
       }
     }
-  str += "</tbody>"
-  str += "</table>"
-  str += "</div>"
+
+  // Append row for amount of ungraded duggas
+  if(!onlyPending && (showTeachers || (!showTeachers && !isTeacher))) {
+    if(row % 2 == 1){
+      str+="<tr class='fumo hi'>";
+    }
+    else{
+      str+="<tr class='fumo lo'>";
+    }
+    str +="<td id='row"+row+"' class='rownoMagic'><div>"+row+"</div></td>"
+    str +="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
+    str +=" style='padding-left:6px;background-color: #614875; color: white; font-size: 12px;"+"'";
+    str +=" class='result-data c"+j;
+    str +="'>Amount of ungraded assignments</td>";
+    str +="</tr>";
+    row++;
+  }
+  str += "</tbody>";
+  str += "</table>";
+  str += "</div>";
 
 
   str += "<div id='upperDecker' style='position:absolute;left:8px;display:none;'>";
@@ -136,19 +154,19 @@ function redrawtable()
     // Make second header row!
     for(var j=0;j<momtmp.length;j++){
       if(momtmp[j].kind==3){
-        str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"                         
+        str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"
       }else{
-        str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"                         
+        str+="<th onclick='toggleSortDir("+(j+1)+");' id='header"+(j+1)+"magic' class='result-header dugga-result-subheadermagic'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"
       }
     }
-  }   
+  }
   str+="<th style='width: 100%'></th>"; // Padding cell, to make sure the other fields are compressed to a bare minimum
   str+="</tr>";
   str += "</thead>"
   str += "</table>"
   str += "</div>"
 
-  // Redraw main result table    
+  // Redraw main result table
   str+="<table class='markinglist' id='markinglist'>";
   str+="<thead>";
   str+="<tr class='markinglist-header'>";
@@ -165,23 +183,23 @@ function redrawtable()
       var momname=momtmp[0].momname;
       for(var j=1;j<momtmp.length;j++){
         if(momtmp[j].momname!==momname){
-          str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"               
+          str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"
           momname = momtmp[j].momname;
           colpos=j;
           colsp=0;
         }
         colsp++;
       }
-      str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"               
+      str+="<th class='result-header' colspan='"+colsp+"'>"+momname+"</th>"
       str+="</tr><tr class='markinglist-header'>";
 
       // Make second header row!
-      str+="<th  id='header' class='rowno realIdField'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"  
+      str+="<th  id='header' class='rowno realIdField'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
       for(var j=0;j<momtmp.length;j++){
         if(momtmp[j].kind==3){
-          str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"                         
+          str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='"+momtmp[j].entryname+"'>"+momtmp[j].entryname+"</div></th>"
         }else{
-          str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"               
+          str+="<th onclick='toggleSortDir("+(j+1)+");' class='result-header dugga-result-subheader' id='header"+(j+1)+"'><div class='dugga-result-subheader-div' title='Course part grade'>Course part</div></th>"
         }
       }
     }
@@ -218,7 +236,7 @@ function redrawtable()
         strt+=" style='padding-left:6px;"+((student[j].access=="W")?" background-color: #ffff90;":"")+"'";
         strt+=" id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data c"+j;
         if(j==0){
-          strt+="'>"+student[j].grade+"</td>";                                  
+          strt+="'>"+student[j].grade+"</td>";
         } else {
           if(student[j].kind==4){ strt+=" dugga-moment"; }
           // color based on pass,fail,pending,assigned,unassigned
@@ -228,7 +246,7 @@ function redrawtable()
           else if (student[j].grade === 0 ) {strt += " dugga-assigned";}
           else {strt += " dugga-unassigned";}
           strt += "'>";
-          strt += "<div class='gradeContainer";                    
+          strt += "<div class='gradeContainer";
           if(student[j].ishere===false){
             strt += " grading-hidden";
           }
@@ -246,30 +264,80 @@ function redrawtable()
           }
           strt +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\",\"" + student[j].qvariant + "\",\"" + student[j].quizId + "\");' />";
           strt += "</div>";
-      
+
       strt += "<div class='text-center'>";
         if(student[j].ishere===true && student[j].timesGraded!==0){
           strt += "Times Graded: " + student[j].timesGraded;
         }
       strt += "</div>";
-      
-          strt += "<div class='text-center'>"                                 
+
+          strt += "<div class='text-center'>"
           if (student[j].submitted.getTime() !== timeZero.getTime()){
-            strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();  
+            strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();
           }
-          strt += "</div></td>";                      
+          strt += "</div></td>";
         }
       }
       strt+="</tr>"
       // Only show teachers if the showTeacher variable is set (should be off by default)
       if(!onlyPending && (showTeachers || (!showTeachers && !isTeacher))) {
-        str+=strt; 
+        str+=strt;
         row++;
       }
     }
-    str+="</tbody></table>";
     document.getElementById("content").innerHTML=str;
+    str = '';
+
+    // Row for amount of yellow assignments
+    str += '<tr class="fumo hi">';
+    str +="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>"; // Row number
+
+    // Description of row
+    str +="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
+    str +=" style='padding-left:6px;background-color: #614875; color: white; font-size: 12px;"+"'";
+    str +=" class='result-data c"+j;
+    str +="'>Amount of ungraded assignments</td>";
+    for(var j=0;j<student.length - 1;j++) {
+      str +="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
+      // Mark the cell if it is a teacher, first iteration: changing background color to bright yellow to indicate something
+      str +=" style='padding-left:6px;"+((student[j].access=="W")?" background-color: #ffff90;'":"")+"'";
+      str +=" id='c" + String(j + 1) + "-ungraded-duggas' class='result-data c"+ String(j + 1);
+      str +="'>";
+
+      var ungradedForColumn = 0;
+      var columnValues = document.getElementsByClassName('c' + String(j + 1));
+      for(var i = 0; i < columnValues.length; i++) {
+        if($(columnValues[i]).hasClass("dugga-pending") || $(columnValues[i]).hasClass("dugga-assigned")) {
+          ungradedForColumn++;
+        }
+      }
+
+      str += ungradedForColumn;
+      str += "</td>";
+    }
+    row++;
+    $("#markinglist tbody").append(str);
     idField();
+}
+
+// Updates the amount of ungraded duggas per column.
+function updateAmountOfUngraded() {
+  var columnValues = document.getElementsByClassName('c' + String(j + 1));
+
+  for(var j=0;j<students.length;j++) {
+    for(var i = 0; i < students[j].length - 1; i++) {
+      var columnGradeValues = document.getElementsByClassName('c' + String(i + 1));
+      var ungradedForColumn = 0;
+
+      for(var x = 0; x < columnGradeValues.length; x++) {
+        if($(columnGradeValues[x]).hasClass("dugga-pending") ||
+            $(columnGradeValues[x]).hasClass("dugga-assigned")) {
+          ungradedForColumn++;
+        }
+      }
+      document.getElementById("c" + (String(i + 1) + "-ungraded-duggas")).innerHTML = ungradedForColumn;
+    }
+  }
 }
 
 function idField() {
@@ -322,11 +390,11 @@ function cellOut(ev)
 //   columno - sort column
 //   type1 - if sorting fname/lname/ssn column
 //   type2 - if not sorting fname/lname/ssn column
-// 
+//
 // All parameters are stored in local storage.
 function resort()
 {
-    // Read sorting config from localStorage  
+    // Read sorting config from localStorage
     var sortdir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
     if (sortdir === null || sortdir === undefined){dir=1;}
     $("#sortdir"+sortdir).prop("checked", true);
@@ -335,22 +403,22 @@ function resort()
     var colkind=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1");
     if (colkind == null || colkind == undefined){colkind=0;}
     var colkind2=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2");
-    if (colkind2 == null || colkind2 == undefined){colkind2=0;}     
+    if (colkind2 == null || colkind2 == undefined){colkind2=0;}
 
     if (students.length > 0) {
-          
+
         if(columno < students[0].length){
-    
-            if (columno == 0) {       
+
+            if (columno == 0) {
                 $("#sortcol0_"+colkind).prop("checked", true);
             } else {
                 $("#sortcol"+columno).prop("checked", true);
-                $("#sorttype"+colkind2).prop("checked", true);                
+                $("#sorttype"+colkind2).prop("checked", true);
             }
             // Each if case checks what to sort after and then sorts appropiatle depending on ASC or DESC
             if(columno==0){
               if(colkind==0){
-                students.sort(function compare(a,b){                        
+                students.sort(function compare(a,b){
                     if(a[0].firstname>b[0].firstname){
                       return sortdir;
                     }else if(a[0].firstname<b[0].firstname){
@@ -380,7 +448,7 @@ function resort()
                             }
                         });
               }else if(colkind==3){
-                        students.sort(function compare(a,b){ 
+                        students.sort(function compare(a,b){
                           if(a[0].class>b[0].class || b[0].class == undefined){
                               return sortdir;
                             }else if(a[0].class<b[0].class || a[0].class == undefined){
@@ -390,7 +458,7 @@ function resort()
                             }
                         });
               }else if(colkind==4){
-                students.sort(function compare(a,b){ 
+                students.sort(function compare(a,b){
                           if(a[0].setTeacher>b[0].setTeacher || b[0].setTeacher == undefined){
                               return sortdir;
                             }else if(a[0].setTeacher<b[0].setTeacher || a[0].setTeacher == undefined){
@@ -402,12 +470,12 @@ function resort()
               }
             }else{
               // other columns sort by
-              // 0. need marking -> FIFO 
+              // 0. need marking -> FIFO
               // 1. grade
               // 2. submitted
               // 3. marked
-              // 4. 
-              // 5. 
+              // 4.
+              // 5.
               if (colkind2===null){colkind2=0;}
               sortcolumn=columno;
               if(colkind2==0){
@@ -416,7 +484,7 @@ function resort()
                        if(a[sortcolumn].submitted<b[sortcolumn].submitted){
                            return sortdir;
                        }if(a[sortcolumn].submitted>b[sortcolumn].submitted){
-                           return -sortdir;                 
+                           return -sortdir;
                        }else{
                            return 0;
                        }
@@ -429,14 +497,14 @@ function resort()
                           return sortdir;
                       } else if(a[sortcolumn].grade==-1 && b[sortcolumn].grade != -1){
                           return -sortdir;
-                      } else{ 
-                          if(a[sortcolumn].grade>b[sortcolumn].grade){              
+                      } else{
+                          if(a[sortcolumn].grade>b[sortcolumn].grade){
                               return sortdir;
                           }else if(a[sortcolumn].grade<b[sortcolumn].grade){
                               return -sortdir;
                           }else{
                               if(a[sortcolumn].submitted>b[sortcolumn].submitted){
-                                  return -sortdir;                  
+                                  return -sortdir;
                               }else if(a[sortcolumn].submitted<b[sortcolumn].submitted){
                                   return sortdir;
                               }else{
@@ -445,15 +513,15 @@ function resort()
                           }
                       }
                    }
-               });      
+               });
             } else if(colkind2==1){
               students.sort(function compare(a,b){
                   if(a[sortcolumn].grade!=-1 && b[sortcolumn].grade == -1){
                       return -sortdir;
                   } else if(a[sortcolumn].grade==-1 && b[sortcolumn].grade != -1){
                       return sortdir;
-                  } else{ 
-                      if(a[sortcolumn].grade>b[sortcolumn].grade){              
+                  } else{
+                      if(a[sortcolumn].grade>b[sortcolumn].grade){
                           return sortdir;
                       }else if(a[sortcolumn].grade<b[sortcolumn].grade){
                           return -sortdir;
@@ -461,39 +529,39 @@ function resort()
                           return 0;
                       }
                   }
-              });       
+              });
             } else if(colkind2==2){
-              students.sort(function compare(a,b){                    
+              students.sort(function compare(a,b){
                   if(a[sortcolumn].submitted>b[sortcolumn].submitted){
                       return sortdir;
                   }else if(a[sortcolumn].submitted<b[sortcolumn].submitted){
-                      return -sortdir;                  
+                      return -sortdir;
                   }else{
                       return 0;
                   }
-              });       
+              });
             } else if(colkind2==3){
-              students.sort(function compare(a,b){                       
+              students.sort(function compare(a,b){
                   if(a[sortcolumn].marked>b[sortcolumn].marked){
                       return sortdir;
                   }else if(a[sortcolumn].marked<b[sortcolumn].marked){
-                      return -sortdir;                  
+                      return -sortdir;
                   }else{
                       return 0;
                   }
-              });       
+              });
             } else{
               students.sort(function compare(a,b){
-                 if(a[sortcolumn].grade>b[sortcolumn].grade){             
+                 if(a[sortcolumn].grade>b[sortcolumn].grade){
                      return sortdir;
                  }else if(a[sortcolumn].grade<b[sortcolumn].grade){
                      return -sortdir;
                  }else{
                      return 0;
                  }
-              });       
+              });
               }
-            }          
+            }
         }
     }
    redrawtable();
@@ -502,8 +570,8 @@ function resort()
      $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
      $("#header"+columno+"magic").append("<img id='sortdiricon' src='../Shared/icons/asc_primary.svg'/>");
    } else {
-     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>"); 
-     $("#header"+columno+"magic").append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");    
+     $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
+     $("#header"+columno+"magic").append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
    }
 }
 
@@ -513,38 +581,38 @@ function resort()
 function toggleSortDir(col){
     var dir = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
     var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
-    
+
     if (col != ocol){
         $("input[name='sortcol']:checked").prop({"checked":false});
         $("input[name='sorttype']:checked").prop({"checked":false});
         if (col == 0){
-            $("#sorttype0_1").prop({"checked":true});   
+            $("#sorttype0_1").prop({"checked":true});
             localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1",1);
         } else {
-            $("#sortcol"+col).prop({"checked":true});          
-            $("#sorttype0").prop({"checked":true});                      
-            localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", 0);          
+            $("#sortcol"+col).prop({"checked":true});
+            $("#sorttype0").prop({"checked":true});
+            localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", 0);
         }
         dir=-1;
-        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);          
-        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);                
+        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);
+        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
     } else {
     //$("input[name='sortdir']:checked").each(function() {dir=this.value;});
     dir=dir*-1;
     $("input[name='sortdir']:checked").val(dir);
     localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
     }
-    resort();  
+    resort();
     magicHeading();
 }
 
 function process()
-{     
+{
     // Read dropdown from local storage
     clist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
-    if (clist){ 
-        clist=clist.split("**"); 
-    } 
+    if (clist){
+        clist=clist.split("**");
+    }
 
     // Create temporary list that complies with dropdown
     momtmp=new Array;
@@ -553,9 +621,9 @@ function process()
         if (moments[l].kind===4){
             momname = moments[l].entryname;
         }
-        moments[l].momname = momname;   
+        moments[l].momname = momname;
     }
-    
+
     // Create temporary list that complies with dropdown
     momtmp=new Array;
     for(var l=0;l<moments.length;l++){
@@ -587,11 +655,11 @@ function process()
         // Place spaces in the string when a lowercase is followed by a uppercase
         setTeacher = setTeacher.replace(/([a-z])([A-Z])/g, '$1 $2');
       }
-                    
+
           // All results of this student
           var res=results[uid];
           var restmp=new Array;
-          
+
           if (typeof res != 'undefined'){
               // Pre-filter result list for a student for lightning-fast access
               for(var k=0;k<res.length;k++){
@@ -605,25 +673,25 @@ function process()
           for(var j=0;j<momtmp.length;j++){
               // If it is a feedback quiz -- we have special handling.
               if(momtmp[j].quizfile=="feedback_dugga"){
-                  var momentresult=restmp[momtmp[j].lid];   
+                  var momentresult=restmp[momtmp[j].lid];
                   // If moment result does not exist... either make "empty" student result or push mark
-                  if(typeof momentresult!='undefined'){             
+                  if(typeof momentresult!='undefined'){
                       student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire});
                   }else{
-                      student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, userAnswer:"UNK", quizfile:momtmp[j].quizfile, gradeExpire:momentresult.gradeExpire});              
-                  }             
+                      student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, userAnswer:"UNK", quizfile:momtmp[j].quizfile, gradeExpire:momentresult.gradeExpire});
+                  }
               }else{
                   var momentresult=restmp[momtmp[j].lid];
                   // If moment result does not exist... either make "empty" student result or push mark
-                  if(typeof momentresult!='undefined'){             
+                  if(typeof momentresult!='undefined'){
                       student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant,quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire});
                   }else{
-                      student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile});              
-                  }   
+                      student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile});
+                  }
               }
           }
           students.push(student);
-    }     
+    }
     // Update dropdown list
     var dstr="";
 
@@ -634,11 +702,11 @@ function process()
 
         var lid=moments[j].lid;
         var name=moments[j].entryname;
-        dstr+="<div class='checkbox-dugga";       
+        dstr+="<div class='checkbox-dugga";
         if (moments[j].visible == 0) {dstr +=" checkhidden";}
-        
+
         if (moments[j].kind == 4) {dstr +=" checkmoment";}
-        
+
         dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
               if (moments[j].kind == 4) {
                     duggaArray.push( [] );
@@ -660,11 +728,11 @@ function process()
                 if(clist[index+1]=="true"){
                     dstr+=" checked ";
                 }
-            }                   
+            }
         } else {
             /* default to check every visible dugga/moment */
             if (moments[j].visible != 0) dstr+=" checked ";
-        }     
+        }
         dstr+=">";
         dstr+= "<label class='headerlabel' id='hdr"+lid;
         dstr+="' for='hdr"+lid+"check' ";
@@ -696,7 +764,7 @@ function process()
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir1'>Sort ascending</label><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='-1' id='sortdir0'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
   dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
   dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
-  dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";   
+  dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";
     dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >Class</label></div>";
     dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(4)' value='0' id='sortcol0_4'><label class='headerlabel' for='sortcol0_4' >Teacher</label></div>";
 
@@ -710,7 +778,7 @@ function process()
         }
 
 
-        dstr+="<div class='checkbox-dugga checknarrow ";        
+        dstr+="<div class='checkbox-dugga checknarrow ";
         if (moments[j].visible == 0){
             dstr+="checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol"+(j+1)+"' value='"+(j+1)+"'><label class='headerlabel' title='"+name+"' for='sortcol"+(j+1)+"' >"+truncatedname+"</label></div>";
         }else{
@@ -724,7 +792,7 @@ function process()
     dstr+="<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(3)' id='sorttype3' value='3'><label class='headerlabel' for='sorttype3' >Marked</label></div>";
     dstr+="</td></tr></table>";
     dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaves()'>Sort</button></div>"
-    document.getElementById("dropdowns").innerHTML=dstr;  
+    document.getElementById("dropdowns").innerHTML=dstr;
 
     resort();
     //console.log(performance.now()-tim);
@@ -739,14 +807,14 @@ function hoverc()
 
 function leavec()
 {
-  $('#dropdownc').css('display','none');   
-  
+  $('#dropdownc').css('display','none');
+
   // Update columns only now
   var str="";
   $(".headercheck").each(function(){
       str+=$(this).attr("id")+"**"+$(this).is(':checked')+"**";
   });
-  
+
   showTeachers=$('#showteachers').is(":checked");
     old=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
     localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
@@ -759,7 +827,7 @@ function leavec()
   magicHeading();
 }
 
-// Function to select and unselect all duggas 
+// Function to select and unselect all duggas
 function checkedAll() {
   // Current state
   var duggaElements = document.getElementsByName("selectdugga");
@@ -779,12 +847,12 @@ function checkedAll() {
   if(anyChecked) {
     selectToggle.checked = false;
     for (var i =0; i < duggaElements.length; i++) {
-      duggaElements[i].checked = false;    
+      duggaElements[i].checked = false;
     }
   } else { // There are no element(s) checked, so set all
     selectToggle.checked = true;
     for (var i =0; i < duggaElements.length; i++) {
-      duggaElements[i].checked = true;    
+      duggaElements[i].checked = true;
     }
   }
 }
@@ -823,17 +891,17 @@ function hovers()
 
 function leaves()
 {
-  $('#dropdowns').css('display','none'); 
+  $('#dropdowns').css('display','none');
   var col=0;
   var dir=1;
 
   var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
-  var odir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir"); 
+  var odir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
 
-    
+
   $("input[name='sortcol']:checked").each(function() {col=this.value;});
   $("input[name='sortdir']:checked").each(function() {dir=this.value;});
-  
+
   localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol", col);
   localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir", dir);
 
@@ -848,15 +916,15 @@ function leaves()
 function sorttype(t){
     var c=$("input[name='sortcol']:checked").val();
     if (c == 0){
-        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1", t);   
+        localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort1", t);
         $("input[name='sorttype']").prop("checked", false);
     } else {
         if (t == -1){
             t = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
-            $("#sorttype"+t).prop("checked", true);                     
+            $("#sorttype"+t).prop("checked", true);
         } else {
             localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sort2", t);
-            $("#sorttype"+t).prop("checked", true);         
+            $("#sorttype"+t).prop("checked", true);
         }
     }
     typechanged=true;
@@ -869,17 +937,17 @@ function magicHeading()
     if(window.pageYOffset+15>$("#subheading").offset().top){
         $("#upperDecker").css("display","block");
     }else{
-        $("#upperDecker").css("display","none");            
+        $("#upperDecker").css("display","none");
     }
-    
+
     $("#upperDecker").css("width",$("#markinglist").outerWidth()+"px");
-    
+
     if(window.pageXOffset>$("#subheading").offset().left){
         $("#sideDecker").css("display","block");
     }else{
-        $("#sideDecker").css("display","none");      
+        $("#sideDecker").css("display","none");
     }
-    
+
     // Add or Remove the inverse class depending on sorting
     $(".dugga-result-subheader").each(function(){
         var elemid=$(this).attr('id');
@@ -888,7 +956,7 @@ function magicHeading()
         if($(this).hasClass("result-header-inverse")){
             $("#"+elemid+"magic").addClass("result-header-inverse");
         } else {
-            $("#"+elemid+"magic").removeClass("result-header-inverse"); 
+            $("#"+elemid+"magic").removeClass("result-header-inverse");
         }
     });
 
@@ -910,12 +978,12 @@ $(function()
 function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire){
 
     closeWindows();
-    
+
 	var uidGrab = uid;
 	var momentGrab = moment;
     var currentTime = new Date();
 	var currentTimeGetTime = currentTime.getTime();
-    	
+
     if ($(e.target ).hasClass("Uc")){
         changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
     } else if ($(e.target ).hasClass("Gc")) {
@@ -928,19 +996,19 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
     } else if ($(e.target ).hasClass("Uh")){
         for(var a=0;a<students.length;a++){
             var student = students[a];
-            
+
             for(var j=0;j<student.length;j++){
 			    var studentObject = student[j];
-				
+
 				//Lid and uid is used to make sure that only the dugga that is intended to change grade change grade
 				if(studentObject.lid === momentGrab && studentObject.uid === uidGrab){ // && studentObject.gradeExpire!=null
-				
+
 					var newGradeExpire = new Date(studentObject.gradeExpire);
-					
+
 					// This variable adds 24h to the current time
 	                var newDateObj = new Date(newGradeExpire.getTime() + 24*60*60000);
                     var newGradeExpirePlusOneDay = newDateObj.getTime();
-					
+
 					// Compair the gradeExpire value to the current time
 					if(newGradeExpirePlusOneDay > currentTimeGetTime){
 						//The user must press the ctrl-key to activate if-statement
@@ -959,8 +1027,6 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
     else {
       //alert("This grading is not OK!");
     }
-	
-	
 }
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls,qvariant,qid){
@@ -1060,7 +1126,7 @@ function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
     menu += "</table>";
     menu += "</div> <!-- Menu Dialog END -->";
     document.getElementById('markMenuPlaceholder').innerHTML=menu;
-    
+
     AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid, coursevers : vers }, "RESULT");
 }
 
@@ -1092,7 +1158,7 @@ function moveDist(e)
 }
 
 function enterCell(thisObj)
-{  
+{
       var c="";
       var u="";
       var cls = thisObj.className;
@@ -1106,17 +1172,17 @@ function enterCell(thisObj)
       }
       // highligt the row first
       $("tr"+u).addClass("highlightRow");
-      
+
       if (c==="dugga-pass") {
           $(thisObj).addClass("dugga-pass-highlighted");
       } else if (c==="dugga-fail") {
-          $(thisObj).addClass("dugga-fail-highlighted");      
+          $(thisObj).addClass("dugga-fail-highlighted");
       } else if (c==="dugga-pending") {
-          $(thisObj).addClass("dugga-pending-highlighted");     
+          $(thisObj).addClass("dugga-pending-highlighted");
       } else if (c==="dugga-assigned") {
           $(thisObj).addClass("dugga-assigned-highlighted");
       } else if (c==="dugga-unassigned") {
-          $(thisObj).addClass("dugga-unassigned-highlighted");      
+          $(thisObj).addClass("dugga-unassigned-highlighted");
       } else {
       }
 }
@@ -1135,13 +1201,13 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
 {
     clickedindex=fileindex;
     document.getElementById("responseArea").outerHTML='<textarea id="responseArea" style="width: 100%;height:100%;-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;">'+allData["files"][allData["duggaentry"]][clickedindex].feedback+'</textarea>'
-    
+
     if(displaystate){
-        document.getElementById("markMenuPlaceholderz").style.display="block";    
+        document.getElementById("markMenuPlaceholderz").style.display="block";
     }else{
-        document.getElementById("markMenuPlaceholderz").style.display="none";   
-    } 
-        
+        document.getElementById("markMenuPlaceholderz").style.display="none";
+    }
+
     var str ="";
     if (filetype === "text") {
         str+="<textarea style='width: 100%;height: 100%;box-sizing: border-box;'>"+allData["files"][allData["duggaentry"]][fileindex].content+"</textarea>";
@@ -1150,14 +1216,14 @@ function displayPreview(filepath, filename, fileseq, filetype, fileext, fileinde
         if(window.location.protocol === "https:"){
             filename=filename.replace("http://", "https://");
         }else{
-            filename=filename.replace("https://", "http://");       
+            filename=filename.replace("https://", "http://");
         }
-        str += '<iframe src="'+filename+'" width="100%" height="100%" />';      
+        str += '<iframe src="'+filename+'" width="100%" height="100%" />';
     } else {
         if (fileext === "pdf"){
-            str += '<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" />';       
+            str += '<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" />';
         } else if (fileext === "zip" || fileext === "rar"){
-            str += '<a href="'+filepath+filename+fileseq+'.'+fileext+'"/>'+filename+'.'+fileext+'</a>';       
+            str += '<a href="'+filepath+filename+fileseq+'.'+fileext+'"/>'+filename+'.'+fileext+'</a>';
         } else if (fileext === "txt"){
             str+="<pre style='width: 100%;height: 100%;box-sizing: border-box;'>"+allData["files"][allData["duggaentry"]][fileindex].content+"</pre>";
         }
@@ -1183,10 +1249,10 @@ function addCanned()
 function saveResponse()
 {
     respo=document.getElementById("responseArea").value;
-  
+
     var filename=allData["files"][allData["duggaentry"]][clickedindex].filename+allData["files"][allData["duggaentry"]][clickedindex].seq;
-  
-    AJAXService("RESP", { cid : querystring['cid'],vers : querystring['coursevers'],resptext:respo, respfile:filename, duggaid: allData["duggaid"],luid : allData["duggauser"],moment : allData["duggaentry"], luid : allData["duggauser"] }, "RESULT");  
+
+    AJAXService("RESP", { cid : querystring['cid'],vers : querystring['coursevers'],resptext:respo, respfile:filename, duggaid: allData["duggaid"],luid : allData["duggauser"],moment : allData["duggaentry"], luid : allData["duggauser"] }, "RESULT");
     document.getElementById("responseArea").innerHTML = "";
     $("#previewpopover").css("display", "none");
 }
@@ -1203,7 +1269,7 @@ function returnedResults(data)
       if (data.results != "1"){
           $("#u"+data.duggauser+"_d"+data.duggaid).addClass("dugga-pass");
       } else {
-          $("#u"+data.duggauser+"_d"+data.duggaid).addClass("dugga-fail");       
+          $("#u"+data.duggauser+"_d"+data.duggaid).addClass("dugga-fail");
       }
       // Find the array row for updated grade in our local data structure "students"
       var rowpos=-1;
@@ -1237,13 +1303,13 @@ function returnedResults(data)
         alert("Error updating result");
       }
   } else {
-    
+
     entries=data.entries;
     moments=data.moments;
     versions=data.versions;
     results=data.results;
     teacher=data.teachers;
-    
+
     //tim=performance.now();
 
     subheading=0;
@@ -1262,17 +1328,19 @@ function returnedResults(data)
     });
 
     allData = data; // used by dugga.js
-  
+
     if (data['dugganame'] !== "") {
         // Display student submission
         $.getScript(data['dugganame'], function() {
-          $("#MarkCont").html(data['duggapage']);          
+          $("#MarkCont").html(data['duggapage']);
           showFacit(data['duggaparam'],data['useranswer'],data['duggaanswer'], data['duggastats'], data['files'],data['moment'],data['duggafeedback']);
         });
         $("#resultpopover").css("display", "block");
     } else {
         // Process and render filtered data
-      process();  
+      process();
     }
   }
+  // Upgrade the most bottom row with amount of ungraded duggas per column.
+  updateAmountOfUngraded();
 }
