@@ -246,15 +246,15 @@ function redrawtable()
           }
           strt +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\",\"" + student[j].qvariant + "\",\"" + student[j].quizId + "\");' />";
           strt += "</div>";
-      
-      strt += "<div class='text-center'>";
+		
+		strt += "<div class='text-center'>";
         if(student[j].ishere===true && student[j].timesGraded!==0){
           strt += "Times Graded: " + student[j].timesGraded;
         }
-      strt += "</div>";
-      
+		strt += "</div>";
+		
           strt += "<div class='text-center'"
-		  if (student[j].submitted.dugga.deadlineDate() < student[j].submitted.getDate()){
+		  if (student[j].submitted.dugga.deadline < student[j].submitted.getDate()){
 			  strt = " style='color:red;'";
 		  }
 		  strt += ">";
