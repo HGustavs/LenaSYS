@@ -264,8 +264,11 @@ function returnedAccess(data)
 */
 			str+="<td>"+item['modified'].substr(0,10)+"</td>";
 
-            str+="<td>"+item['vers']+"</td>";
-
+			// Select box for Version
+			str+="<td valign='center'><select onChange='' onclick='return false;' id='"+item['uid']+"'>";
+			str+="<option selected='selected' value='"+item['vers']+"'>"+item['vers']+"</option>";
+			str+="</select>";
+			
 			// Select box for Access
 			str+="<td valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
 				if(item['access']=="R"){
