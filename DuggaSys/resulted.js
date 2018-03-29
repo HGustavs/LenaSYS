@@ -253,13 +253,14 @@ function redrawtable()
         }
       strt += "</div>";
       
-          strt += "<div class='text-center' id='deadlineDate'>"                                 
+          strt += "<div class='text-center'"
+		  if (student[j].submitted.dugga.deadlineDate() < student[j].submitted.getDate()){
+			  strt = " style='color:red;'";
+		  }
+		  strt += ">";
           if (student[j].submitted.getTime() !== timeZero.getTime()){
             strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();  
           }
-		  else if (student[j].submitted.dugga.deadlineDate() < student[j].submitted.getDate()){
-			  document.getElementById("deadlineDate").style.color = "red";
-		  }
           strt += "</div></td>";                      
         }
       }
