@@ -57,7 +57,7 @@ pdoConnect();
       			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
             <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='qstart' value='None' /></div>
       			<div class='inputwrapper'><span>Deadline Date:</span><input class='textinput datepicker' type='text' id='deadline' value='None' /></div>
-            <div class='inputwrapper'><span>Result Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
+            <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
       		</div>
       		<div style='padding:5px;'>
       			<input style='float:left; 'class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteDugga();' />
