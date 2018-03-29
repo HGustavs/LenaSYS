@@ -75,7 +75,7 @@ function resetFields(){
 		$("#newpassword #username").val("");
 	}
 	$("#showsecurityquestion #answer").val("");
-  
+
   //Changes the background color back to white
 	$("#loginBox #username").css("background-color", "rgb(255, 255, 255)");
 	$("#loginBox #password").css("background-color", "rgb(255, 255, 255)");
@@ -219,37 +219,37 @@ function saveDuggaResult(citstr)
 		}
 
 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
-		
+
 		document.getElementById('receipt').value = hexstr;
-		
+
 		var dateTime = new Date(); // Get the current date and time
 
  		var comment = querystring['comment']; //Get the comment
-		
+
 		var deadline = querystring['deadline']; //Get deadlinedate from URL
-		
+
 
 		Number.prototype.padLeft = function(base,chr){
 			var  len = (String(base || 10).length - String(this).length)+1;
 			return len > 0? new Array(len).join(chr || '0')+this : this;
 		}
-		
+
 		dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');
-		
+
 		if(deadline > dateTimeFormat){	//Check if deadline has past
-			
+
 			document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
 
 		}
 		else{ //Check if deadline has past
-			
+
 			if(comment == "UNK" || comment == "undefined" || comment == "null"){
- 				document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>";
+ 				document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>";
  			}
  			else{
- 				document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p>"+comment+"</p>";
+ 				document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>"+comment+"</p>";
  			}
-			
+
 		}
 		showReceiptPopup();
 }
@@ -586,7 +586,7 @@ function addSecurityQuestionProfile(username) {
 			opt: "GETQUESTION"
 		},
 		success:function(data) {
-			var result = JSON.parse(data);	
+			var result = JSON.parse(data);
 			if(result['getname'] == "success") {
 				$("#challengeQuestion").html(result['securityquestion']);
 			}else{
@@ -603,14 +603,14 @@ function addSecurityQuestionProfile(username) {
 }
 
 // Checks if the page is using https
-function checkHTTPS() { 
+function checkHTTPS() {
 	return (location.protocol == 'https:');
-} 
+}
 
 function processResetPasswordCheckUsername() {
   //Gets the security question from the database
 	var username = $("#newpassword #username").val();
-	
+
 	$.ajax({
 		type:"POST",
 		url: "../Shared/resetpw.php",
@@ -619,8 +619,8 @@ function processResetPasswordCheckUsername() {
 			opt: "GETQUESTION"
 		},
 		success:function(data) {
-			var result = JSON.parse(data);	
-				//It is worth to note that getname should probably be named status/error since thats basically what it is			
+			var result = JSON.parse(data);
+				//It is worth to note that getname should probably be named status/error since thats basically what it is
 			if(result['getname'] == "success") {
 				$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
 				status = 2;
@@ -636,7 +636,7 @@ function processResetPasswordCheckUsername() {
 		}
 	});
 }
-			
+
 
 
 function processResetPasswordCheckSecurityAnswer() {
@@ -683,15 +683,15 @@ function processResetPasswordCheckSecurityAnswer() {
 			}
 		}
 	});
-}	
+}
 
 function processLogin() {
     /*
-    
+
     var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
-		
+
 		$.ajax({
 			type:"POST",
 			url: "../Shared/loginlogout.php",
@@ -709,15 +709,15 @@ function processLogin() {
 					$("#loginbutton").addClass("loggedin");
 
 					hideLoginPopup();
-					
+
 					$("#login #username").val("");
-					$("#login #password").val("");		
-					
+					$("#login #password").val("");
+
 					$("#loginbutton").off("click");
 					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
 
-					location.reload();				
+					location.reload();
 				}else{
 					console.log("Failed to log in.");
 					if(typeof result.reason != "undefined") {
@@ -728,13 +728,13 @@ function processLogin() {
 					$("input#username").css("background-color", "rgba(255, 0, 6, 0.2)");
 					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
-					
+
 			},
 			error:function() {
 				console.log("error");
 			}
-		});    
-    
+		});
+
     */
 		var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
@@ -762,12 +762,12 @@ function processLogin() {
                     if(result['securityquestion'] != null) {
                         localStorage.setItem("securityquestion", "set");
                     } else {
-                        setSecurityNotifaction("on"); 
+                        setSecurityNotifaction("on");
                     }
-            */        
+            */
 					setExpireCookie();
 					setExpireCookieLogOut();
-					
+
 					// Fake a second login, this will reload the page and enable chrome and firefox to save username and password
 					//$("#loginForm").submit();
           reloadPage();
@@ -777,10 +777,10 @@ function processLogin() {
 						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
 						$("#login #message").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong username or password! </div>");
-						
+
 					}
-					
-					
+
+
 					$("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
           closeWindows();
@@ -863,13 +863,13 @@ function hideReceiptPopup()
 	//$("#overlay").css("display","none");
 }
 
-function hideDuggaStatsPopup() 
+function hideDuggaStatsPopup()
 {
 	$("#duggaStats").css("display", "none");
 	//$("#overlay").css("display", "none");
 }
 
-function checkScroll(obj) { 
+function checkScroll(obj) {
 	if(obj.clientHeight < obj.scrollHeight) {
 		obj.style.height = (parseInt(obj.style.height)+1) + 'em';
 	}
@@ -988,7 +988,7 @@ function sessionExpireLogOut() {
 	}
 
 	function checkIfExpired() {
-		
+
 			if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
@@ -999,7 +999,7 @@ function sessionExpireLogOut() {
 
 	}
 }
-	
+
 //----------------------------------------------------------------------------------
 // A function that handles the onmouseover/onmouseout events on the loginbutton-td, changing the icon-image on hover.
 //----------------------------------------------------------------------------------
@@ -1058,7 +1058,7 @@ $(window).load(function() {
 	$('.loginBox').draggable({ containment: "window"});	//contains the draggable box within window-boundaries
 });
 
-*/ 
+*/
 
 //----------------------------------------------------------------------------------
 // Help function to allow moving of elements from on index to another in array
@@ -1091,7 +1091,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							tab+="<tr'>"
 
 							tab+="<td>";
-							// Button for making / viewing feedback - note - only button for given feedback to students.			
+							// Button for making / viewing feedback - note - only button for given feedback to students.
 							if (ctype == "link"){
 									tab+="<a href='"+filez[i].content+"' ><button>P</button></a>";
 							} else {
