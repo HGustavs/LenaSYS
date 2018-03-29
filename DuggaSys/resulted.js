@@ -215,6 +215,7 @@ function redrawtable()
 
     // Make result table
     var row=1;
+    var student;
     for(var i=0;i<students.length;i++){
       var isTeacher = false; // Will be true if a member of the course has "W" access
       var strt="";
@@ -226,7 +227,7 @@ function redrawtable()
         strt+="<tr class='fumo lo'>";
       }
       strt+="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>";
-      var student=students[i];
+      student = students[i];
       for(var j=0;j<student.length;j++){
         if(student[j].access == "W") { // Member is a teacher
           isTeacher = true;
@@ -337,6 +338,7 @@ function updateAmountOfUngraded() {
       }
       document.getElementById("c" + (String(i + 1) + "-ungraded-duggas")).innerHTML = ungradedForColumn;
     }
+    break;
   }
 }
 
