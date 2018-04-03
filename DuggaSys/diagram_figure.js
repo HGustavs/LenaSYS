@@ -389,7 +389,7 @@ function figureFreeDraw() {
             figurePath.addsegment(1, p1, p2);
             diagram.push(figurePath);
             cleanUp();
-            openInitialDialog();
+           // openInitialDialog();
         } else {
             // Temporary store the new line and then render it
             var tempPath = new Path;
@@ -419,7 +419,7 @@ function figureSquare() {
         figurePath.addsegment(1, p4, p1);
         diagram.push(figurePath);
         cleanUp();
-        openInitialDialog();
+      //  openInitialDialog();
     }
 }
 
