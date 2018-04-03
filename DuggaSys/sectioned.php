@@ -5,9 +5,11 @@ include_once "../Shared/sessions.php";
 pdoConnect();
 ?>
 
+
 <!DOCTYPE html>
 <html>
 <head>
+	
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -62,10 +64,10 @@ pdoConnect();
       		</div>
       		<!-- Error message, no duggas present-->
       		<div style='padding:5px;'>
-      			<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' /> 
-      			<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows();' /> 
-      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();showSaveButton();' /> 
-      			<input style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' /> 
+      			<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
+      			<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows();' />
+      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();showSaveButton();' />
+      			<input style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' />
           </div>
       </div>
 	</div>
