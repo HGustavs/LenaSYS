@@ -21,7 +21,7 @@ function closeAppearanceDialogMenu() {
     /*
      * Closes the dialog menu for appearance.
      */
-    $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+    //$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     globalAppearanceValue = 0;
     hashFunction();
     $("#appearance").hide();
