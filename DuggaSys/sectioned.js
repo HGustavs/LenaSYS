@@ -1,6 +1,7 @@
 var querystring=parseGet();
 var retdata;
 var newversid;
+var decider;
 
 AJAXService("get",{},"SECTION");
 
@@ -380,9 +381,35 @@ function changedType()
 	}
 }
 
+// Displaying and hidding the dynamic comfirmbox for the section edit dialog
+	function confirmBox(temp)
+	{	
+		if (temp == 1 || temp == 2 || temp == 3){
+	        decider = temp;
+	        $("#sectionConfirmBox").css("display","flex");
+	    }    
+	    else if(temp == 4){
+	    	console.log(decider);
+	    	if (decider == 1){
+	    		deleteItem();
+	    	}
+	   	 	else if (decider == 2){
+	    		newItem();
+	    	}
+	    	else if (decider == 3){
+	    		updateItem();
+	    	}
+	    	$("#sectionConfirmBox").css("display","none");
+	    	decider = 0;
+	    }
+	    else{
+	    	$("#sectionConfirmBox").css("display","none");
+	    	decider = 0;
+	    }
+	}
+
 function deleteItem()
 {
-	confirm("Are you sure you want to delete this item?");
 	lid=$("#lid").val();
 	AJAXService("DEL",{lid:lid},"SECTION");
 	$("#editSection").css("display","none");
@@ -408,16 +435,6 @@ function updateItem()
 	$("#editSection").css("display", "none");
 	//$("#overlay").css("display","none");
 }
-
-
-// Displaying and hidding the comfirmbox for the section edit dialog
-function showConfirmBox(item)
-{
-	var item  = this.item;
-	item();
-	$("#sectionConfirmBox").css("display","flex");
-}
-
 
 // Create New Dugga/Example
 
@@ -1012,13 +1029,13 @@ function returnedSection(data)
 
 
 						if(parseInt(item['kind']) === 0){
-								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
 						}else if(parseInt(item['kind']) === 1){
-								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
 						}else if(parseInt(item['kind']) === 4){
-								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
 						}else{
-								str+="' ><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+								str+="' ><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
 						}
 				}
 
