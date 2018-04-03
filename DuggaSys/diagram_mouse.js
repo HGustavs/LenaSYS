@@ -421,6 +421,9 @@ function resize() {
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
 function movemode(e, t) {
+    //Clear all selected items
+    points.clearAllSelects();
+
     uimode = "MoveAround";
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
