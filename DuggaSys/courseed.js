@@ -34,7 +34,7 @@ function updateCourse()
 
 	// Show dialog
 	$("#editCourse").css("display", "none");
-	
+
 	$("#overlay").css("display", "none");
 
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
@@ -183,7 +183,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 
 	// Show dialog
 	$("#editCourse").css("display", "flex");
-	
+
 	//$("#overlay").css("display", "block");
 
 	return false;
@@ -203,23 +203,23 @@ function getCurrentVersion(cid){
 }
 
 function editVersion(cid, cname, ccode) {
-			
+
 		document.getElementById('newCourseVersion').style.display = "flex";
 		//document.getElementById('overlay').style.display = "block";
 		document.getElementById('cid').value = cid;
 		document.getElementById('coursename1').value = cname;
 		document.getElementById('coursecode1').value = ccode;
 		var currentVersion = getCurrentVersion(cid);
-	
+
 		var str = "<select class='course-dropdown'>";
 		str += "<option value='None'"	;
-		
+
 		if(currentVersion=="None"){
 			str += "selected";
 			var versionname=vname;
 		}
 		str += ">-</option>";
-		
+
 		if (versions.length > 0) {
 			for ( i = 0; i < versions.length; i++) {
 				var item = versions[i];
@@ -242,21 +242,21 @@ function editVersion(cid, cname, ccode) {
 function editSettings(){
 		if(motd!=="UNK") $("#motd").val(motd);
 		document.getElementById('editSettings').style.display = "flex";
-		
+
 }
 
 function updateSettings() {
-			
+
 		var motd = $("#motd").val();
 		var readonly = 0;
 		if ($("#readonly").val() == "yes"){
 			readonly = 1;
-		} 
-	
+		}
+
 		// Show dialog
 		$("#editSettings").css("display", "none");
-	
-		AJAXService("SETTINGS", {	motd : motd, readonly : readonly}, "COURSE");		
+
+		AJAXService("SETTINGS", {	motd : motd, readonly : readonly}, "COURSE");
 }
 
 function createVersion(){
@@ -280,9 +280,9 @@ function createVersion(){
 		if(coursevers=="null"){
 			makeactive=true;
 		}
-	
+
 		if (copycourse != "None"){
-				//create a copy of course version 
+				//create a copy of course version
         AJAXService("CPYVRS", {
           cid : cid,
           versid : versid,
@@ -294,7 +294,7 @@ function createVersion(){
           enddate : enddate,
           makeactive : makeactive
         }, "COURSE");
-			
+
 		} else {
 			//create a fresh course version
 			AJAXService("NEWVRS", {
@@ -304,11 +304,11 @@ function createVersion(){
 				coursecode : coursecode,
 				coursename : coursename,
         makeactive : makeactive
-			}, "COURSE");		
+			}, "COURSE");
 		}
-  
-		$("#newCourseVersion").css("display","none");		
-		$("#overlay").css("display","none");		
+
+		$("#newCourseVersion").css("display","none");
+		$("#overlay").css("display","none");
 	}
 
 }
@@ -334,12 +334,12 @@ function returnedCourse(data)
 
 	// Course Name
 	str += "<div id='Courselistc'>";
-  
+
 	// Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
-	str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;''><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div class='ellipsis'> Course Organization System</div>" 
-  if (data['writeaccess']){ 
-      str+="<img style='margin-left:15px;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings();'>"   
-  } 
+	str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;''><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div class='ellipsis'> Course Organization System</div>"
+  if (data['writeaccess']){
+      str+="<img style='margin-left:15px;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings();'>"
+  }
   str+="</div>";
 	// For now we only have two kinds of sections
 	if (data['entries'].length > 0) {
@@ -347,7 +347,7 @@ function returnedCourse(data)
 			var item = data['entries'][i];
 
 			str += "<div class='bigg item nowrap' style='display: flex; align-items: center;justify-content: center;' id='C" + item['cid'] + "'>";
-			
+
 			var textStyle ="";
 			if (parseInt(item['visibility']) == 0) {
 				textStyle += "hidden";
@@ -372,7 +372,6 @@ function returnedCourse(data)
 
 			if (data['writeaccess']) {
         str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Course coordinator]'>" + courseBegin + courseEnd + "</a></div>";
-				str += "<span style='margin-right:15px;'><img id='dorf' src='../Shared/icons/PenV.svg' onclick='editVersion("+item['cid']+",\""+htmlFix(item['coursename'])+"\",\""+item['coursecode']+"\")' title='Create new version of \"" + item['coursename'] + "\"'></span>";
         str += "<span style='margin-bottom: 15px'>";
 				str += "<span><img id='dorf' style='position: absolute; right: 15px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" [" + item['activeversion'] + "]'></span>";
         str += "</span>";
