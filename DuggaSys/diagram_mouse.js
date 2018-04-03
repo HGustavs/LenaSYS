@@ -439,9 +439,8 @@ function movemode(e, t) {
         canvas.addEventListener('mousedown', getMousePos, false);
         canvas.addEventListener('mouseup', mouseupcanvas, false);
 
-    //Clear all selected items
-         points.clearAllSelects();    
-    
+        //Clear 
+        diagram[lastSelectedObject].targeted == false;
 
     } else {
 		buttonStyle.className = "unpressed";
@@ -453,6 +452,7 @@ function movemode(e, t) {
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
+
     }
 }
 
