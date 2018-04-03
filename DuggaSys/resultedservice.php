@@ -397,7 +397,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 					'totalStepsUsed' => $row['totalStepsUsed'],
 					'needMarking' => (bool)$row['needMarking'],
 					'timesGraded' => (int)$row['timesGraded'],
-					'gradeExpire' => $row['gradeExpire']
+					'gradeExpire' => $row['gradeExpire'],
 				)
 			);
 		}
@@ -406,7 +406,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 		//$query = $pdo->prepare("SELECT listentries.*,quizFile FROM listentries,quiz WHERE listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
 		//$query = $pdo->prepare("SELECT listentries.*,quizFile,variant.vid as qvariant FROM listentries,quiz,variant WHERE quiz.id=variant.quizID AND listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) GROUP BY lid ORDER BY pos;");
 		$query = $pdo->prepare("
-      SELECT listentries.*,quizFile,COUNT(variant.vid) AS qvariant
+      SELECT listentries.*,quizFile,COUNT(variant.vid) AS qvariant, quiz.deadline
       FROM listentries
       LEFT JOIN quiz ON listentries.link=quiz.id
       LEFT JOIN variant ON quiz.id=variant.quizID
@@ -436,7 +436,8 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 					'vers' => $row['vers'],
 					'quizfile' => $row['quizFile'],
 					'gradesystem' => (int)$row['gradesystem'],
-					'qvariant' => $row['qvariant']
+					'qvariant' => $row['qvariant'],
+					'deadline' => $row['deadline']
 				)
 			);
 		}
