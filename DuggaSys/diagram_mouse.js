@@ -215,7 +215,9 @@ function mousedownevt(ev) {
             for (var i = 0; i < diagram.length; i++) {
                 diagram[i].targeted = false;
             }
-            diagram[lastSelectedObject].targeted = true;
+            if(uimode != "MoveAround") {
+                diagram[lastSelectedObject].targeted = true;
+            }
         }
     } else {
         md = 4;            // Box select or Create mode.
@@ -223,7 +225,9 @@ function mousedownevt(ev) {
         startMouseCoordinateY = currentMouseCoordinateY;
     }
     if (lastSelectedObject >= 0) {
-        diagram[lastSelectedObject].targeted = true;
+        if(uimode != "MoveAround") {
+            diagram[lastSelectedObject].targeted = true;
+        }
     }
 }
 
@@ -437,6 +441,7 @@ function movemode(e, t) {
         canvas.style.cursor = "all-scroll";
         canvas.addEventListener('mousedown', getMousePos, false);
         canvas.addEventListener('mouseup', mouseupcanvas, false);
+
 
 
     } else {
