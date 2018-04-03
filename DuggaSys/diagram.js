@@ -713,6 +713,7 @@ $(document).ready(function(){
         $("#moveButton").removeClass("pressed").addClass("unpressed");
         if ($(this).hasClass("pressed")){
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            uimode = "normal";
         } else {
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             $(this).removeClass("unpressed").addClass("pressed");
