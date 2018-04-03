@@ -115,7 +115,7 @@ function mousemoveevt(ev, t) {
             canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.lineTo(startMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.lineTo(startMouseCoordinateX, startMouseCoordinateY);
-            canvasContext.strokeStyle = "#d51";
+            canvasContext.strokeStyle = "#000";
             canvasContext.stroke();
             canvasContext.setLineDash([]);
             canvasContext.closePath(1);
@@ -134,7 +134,7 @@ function mousemoveevt(ev, t) {
             canvasContext.lineTo(midx, currentMouseCoordinateY);
             canvasContext.lineTo(startMouseCoordinateX, midy);
             canvasContext.lineTo(midx, startMouseCoordinateY);
-            canvasContext.strokeStyle = "#d51";
+            canvasContext.strokeStyle = "#000";
             canvasContext.stroke();
             canvasContext.setLineDash([]);
             canvasContext.closePath(1);
@@ -146,7 +146,7 @@ function mousemoveevt(ev, t) {
         } else if(uimode == "CreateERAttr"){
             canvasContext.setLineDash([3, 3]);
             drawOval(startMouseCoordinateX, startMouseCoordinateY, currentMouseCoordinateX, currentMouseCoordinateY);
-            canvasContext.strokeStyle = "#d51";
+            canvasContext.strokeStyle = "#000";
             canvasContext.stroke();
             canvasContext.setLineDash([]);
             if (ghostingCrosses == true) {
@@ -159,7 +159,7 @@ function mousemoveevt(ev, t) {
             canvasContext.beginPath();
             canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
             canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
-            canvasContext.strokeStyle = "#d51";
+            canvasContext.strokeStyle = "#000";
             canvasContext.stroke();
             canvasContext.setLineDash([]);
             if (ghostingCrosses == true) {
@@ -192,7 +192,7 @@ function mousemoveevt(ev, t) {
             canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.lineTo(startMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.lineTo(startMouseCoordinateX, startMouseCoordinateY);
-            canvasContext.strokeStyle = "#d51";
+            canvasContext.strokeStyle = "#000";
             canvasContext.stroke();
             canvasContext.setLineDash([]);
             canvasContext.closePath(1);
@@ -315,7 +315,7 @@ function mouseupevt(ev) {
 
         erAttributeA.centerPoint = p3;
         erAttributeA.object_type = "";
-        erAttributeA.fontColor = "#253";
+        erAttributeA.fontColor = "#000";
         erAttributeA.font = "Arial";
         diagram.push(erAttributeA);
         //selecting the newly created attribute and open the dialogmenu.
@@ -329,7 +329,7 @@ function mouseupevt(ev) {
         erEnityA.centerPoint = p3;
         erEnityA.arity = [];
         erEnityA.object_type = "";
-        erEnityA.fontColor = "#253";
+        erEnityA.fontColor = "#000";
         erEnityA.font = "Arial";
         diagram.push(erEnityA);
         //selecting the newly created enitity and open the dialogmenu.
