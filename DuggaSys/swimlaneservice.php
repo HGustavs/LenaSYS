@@ -109,10 +109,10 @@ if ($course != "UNK" && $vers != "UNK") {
   $information['thisweek'] = intval($thisDate->format('W'));
   $information['thisdate'] = $thisDate->format('jS F');
   $information['weekprog'] = datediffInWeeks($versStart,$thisDate);
-  
+
   $moments = array();
 // Get parts and duggas.
-  $querystring = "SELECT listentries.entryname, listentries.kind, quiz.qstart, quiz.deadline FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid = :cid AND listentries.vers = :vers AND listentries.visible=1 ORDER BY pos;";
+  $querystring = "SELECT listentries.entryname, listentries.kind, quiz.deadline, quiz.id FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid=2 AND listentries.vers=97732 AND listentries.visible=1 ORDER BY pos;";
   $stmt = $pdo->prepare($querystring);
   $stmt->bindParam(':cid', $course);
   $stmt->bindParam(':vers', $vers);
@@ -129,7 +129,7 @@ if ($course != "UNK" && $vers != "UNK") {
       $sqlQrelease = $row['qstart'];
 
       if($sqlQrelease == null){
-          $sqlQrelease=$information['versstartweek']; 
+          $sqlQrelease=$information['versstartweek'];
           $startweek=$information['versstartweek'];
       } else {
           $startdate = new DateTime($sqlQrelease);
@@ -137,24 +137,25 @@ if ($course != "UNK" && $vers != "UNK") {
           $tempDateArray = explode(' ', $sqlQrelease);
           if ($tempDateArray[1] == '00:00:00') {
             $sqlQrelease = $tempDateArray[0];
-          }        
+          }
       }
       if($sqlDeadline == null){
-          $sqlDeadline=$information['versstartweek']; 
+          $sqlDeadline=$information['versstartweek'];
           $deadlineweek=$information['versstartweek'];
       } else {
           $deadlinedate = new DateTime($sqlDeadline);
           $deadlineweek = $deadlinedate->format('W') - $information['versstartweek'] + 1;
-    
+
           $tempDateArray = explode(' ', $sqlDeadline);
           if ($tempDateArray[1] == '00:00:00') {
             $sqlDeadline = $tempDateArray[0];
-          }        
+          }
       }
 
       $moments[] = array(
         'kind' => $row['kind'],
         'entryname' => $row['entryname'],
+        'quizid' => $row['id'],
         'deadline' => $sqlDeadline,
         'qrelease' => $sqlQrelease,
         'startweek' => $startweek,
@@ -167,9 +168,33 @@ if ($course != "UNK" && $vers != "UNK") {
       );
     }
   }
+
+  $userAnswers = array();
+  if($userid != "UNK") {
+    $querystring = "select * from userAnswer WHERE cid=:cid AND vers=:vers AND uid=:uid";
+    $stmt = $pdo->prepare($querystring);
+    $stmt->bindParam(':cid', $course);
+    $stmt->bindParam(':vers', $vers);
+    $stmt->bindParam(':uid', $userid);
+
+    try {
+      $stmt->execute();
+    } catch (PDOException $e) {
+      // Error handling to $debug
+    }
+
+    foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+      $userAnswers[] = array(
+        'grade' => $row['grade'],
+        'quizid' => $row['quiz']
+      );
+    }
+  }
+
   $returnMe = array(
     'information' => $information,
     'moments' => $moments,
+    'userresults' => $userAnswers,
     'returnvalue' => true
   );
 } else { // Return some faulty information if there are no valid input

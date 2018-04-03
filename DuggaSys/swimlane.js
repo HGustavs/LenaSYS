@@ -79,6 +79,7 @@ window.onclick = function (event) {
 function swimlaneDrawLanes() {
   var info = swimlaneInformation['information'];
   var moments = swimlaneInformation['moments'];
+  var userResults = swimlaneInformation['userresults'];
   var bgcol="#EEE";
   var str = "";
   str+="<div id='swimlanebox' class='swimlanebox'>";
@@ -102,7 +103,7 @@ function swimlaneDrawLanes() {
           str+="<th style='background-color:"+bgcol+";padding:0 5px 0 5px;' colspan='";
           colspan=0;
         } else {
-          count=true;          
+          count=true;
           str+="<th style='background-color:"+bgcol+";padding:0 5px 0 5px;' colspan='";
         }
         tmpname=moment['entryname'];
@@ -110,7 +111,7 @@ function swimlaneDrawLanes() {
         colspan++;
     }
   }
-  str+=colspan+"'>"+tmpname+"</th>";
+  if(moments.length != 0) str+=colspan+"'>"+tmpname+"test</th>";
   str+="</tr></thead><tbody><tr>";
   str+="<td><svg width='75' height='" + (70 * info['verslength'] ) + "'>";
   var id=0;
@@ -128,9 +129,9 @@ function swimlaneDrawLanes() {
       str += "<rect x='0' y='" + (i * 70) + "' width='75' height='70' " + weekColor + " />";
       str += "<text x='5' y='" + (40 + (i * 70)) + "' font-weight='bold' fill='black'>Week " + (i+1) + "</text>";
   }
-  str += "</svg></td>";  
+  str += "</svg></td>";
   var bgcol="#EEE";
-  for (var i=0; i<moments.length; i++) {      
+  for (var i=0; i<moments.length; i++) {
       var moment = moments[i];
       if (moment['kind']==4){
           if (bgcol=="#FFF"){
@@ -147,13 +148,30 @@ function swimlaneDrawLanes() {
           // The | that marks the duration of a dugga
           str+="<line x1='15' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='15' y2='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
           // The O that marks the deadline of a dugga
-          str+="<circle id='" + id + "' onmouseover='mouseOverCircle(this,\"" + duggaInfoArray[id++] + "\")' onmouseout='mouseGoneFromCircle(this)' cx='15' cy='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' r='10' stroke='rgb(83,166,84)' stroke-width='3' fill='rgb(146,125,156)' />";          
+          str+="<circle id='" + id + "' onmouseover='mouseOverCircle(this,\"" + duggaInfoArray[id++];
+          str+="\")' onmouseout='mouseGoneFromCircle(this)' cx='15' cy='" + (30 + (moment['deadlineweek'] - 1) * 70);
+          str+="' r='10' stroke='rgb(83,166,84)'";
+          str+= "stroke-width='3'";
+
+          for(var m = 0; m < userResults.length; m++) {
+            if(moment['quizid'] === userResults[m]['quizid']) {
+              var grade = userResults[m]['grade'];
+              if(grade == 2) {
+                  str+= "fill='rgb(0, 255, 0)'/>";
+                  break;
+              } else if(grade == 1) {
+                str+= "fill='rgb(255,0,0)'/>";
+                break;
+              }
+            }
+          }
+          if(userResults.length == 0) str+= "fill='rgb(146,125,156)'/>";
           //str+="<line onmouseover='mouseOverLine(\"Current date:<br>" + info['thisdate'] + "\")' onmouseout='mouseGoneFromLine()' x1='250' y1='" + (100 + (info['thisweek'] - info['versstartweek']) * 70) + "' x2='" + ((info['numberofparts'] * 30) + 30) + "' y2='" + (100 + (info['thisweek'] - info['versstartweek']) * 70) + "' style='stroke:rgb(0,0,0); stroke-width:10; stroke-opacity:0;' /></svg>";
           str+="</svg></td>";
       }
     }
-  
-    str+="</tbody></table></div>";    
+
+    str+="</tbody></table></div>";
 
     // Box for dugga info on mouse over
     str += "<div id='duggainfo' class='duggainfo' style='display:none; position:absolute; background-color:white; border-style:solid; border-color:#3C3C3C; padding:5px;'>";
@@ -163,7 +181,7 @@ function swimlaneDrawLanes() {
     str += "<div id='currentDate' class='currentDate' style='display:none; position:absolute; background-color:white; border-style:solid; border-width:1px; border-color:red; padding:5px;'>";
     str += "<span id='currentDateText'></span>";
     str += "</div>";
-  
+
   swimContent.innerHTML=str;
 }
 function swimlaneDrawLanes2() {
@@ -284,6 +302,7 @@ function swimlaneDrawLanes2() {
 // Gather the fetched data from the database and execute the swimming
 function returnedSwimlane(swimlaneData) {
   swimlaneInformation = swimlaneData;
+  console.log(swimlaneData);
   if (swimlaneInformation['returnvalue']) {
     swimlaneDrawLanes();
   }
