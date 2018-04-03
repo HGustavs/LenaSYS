@@ -404,9 +404,20 @@ function updateItem()
 	// Storing tabs in gradesys column!
 	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
 	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments},"SECTION");
-	$("#editSection").css("display","none");
+	$("#sectionConfirmBox").css("display", "none");
+	$("#editSection").css("display", "none");
 	//$("#overlay").css("display","none");
 }
+
+
+// Displaying and hidding the comfirmbox for the section edit dialog
+function showConfirmBox(item)
+{
+	var item  = this.item;
+	item();
+	$("#sectionConfirmBox").css("display","flex");
+}
+
 
 // Create New Dugga/Example
 
@@ -442,6 +453,8 @@ function closeSelect()
 	$(".item").css("box-shadow","none");
 	$("#editSection").css("display","none");
 }
+
+
 
 function showCreateVersion()
 {

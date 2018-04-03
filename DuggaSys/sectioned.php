@@ -62,15 +62,32 @@ pdoConnect();
       		</div>
       		<!-- Error message, no duggas present-->
       		<div style='padding:5px;'>
-      			<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' /> 
+      			<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='showConfirmBox('deleteItem');' /> 
       			<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows();' /> 
-      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();showSaveButton();' /> 
-      			<input style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' /> 
+      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='showConfirmBox('newItem');' /> 
+      			<input style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='showConfirmBox('updateItem');' /> 
           </div>
       </div>
 	</div>
 	<!-- Edit Section Dialog END -->
 
+      <!-- Confirm Edit Section Dialog START -->
+      <div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
+             <div class='loginBox' style='width:460px;'>
+                  <div class='loginBoxheader'>
+                        <h3>Confirm your update</h3>
+                        <div class="cursorPointer" onclick='closeConfirmBox();' title="Close window">x</div>
+                  </div>
+                  <div style='text-align: center;'>
+                        <h4>Are you sure you want to save the changes?</h4>
+                  </div>
+                  <div style='display:flex; align-items:center; justify-content: center;'>
+                        <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='updateItem();' />
+                        <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='closeConfirmBox();' />
+                  </div>
+            </div>
+      </div>
+      <!-- Confirm Edit Section Dialog END -->
 
   <!-- New Version Dialog START -->
 	<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
