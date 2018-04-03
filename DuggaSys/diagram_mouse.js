@@ -362,6 +362,7 @@ function mouseupevt(ev) {
     // Clear mouse state
     md = 0;
     if (uimode != "CreateFigure" || uimode != "MoveAround") {
+        console.log("uimode = normal now");
         uimode = "normal";
     }
 }
