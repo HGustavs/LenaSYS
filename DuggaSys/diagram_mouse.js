@@ -433,13 +433,18 @@ function movemode(e, t) {
         //Clear all selected items
       //  points.clearAllSelects();
 
-       diagram[lastSelectedObject].targeted = true;
-        updateGraphics();
+
 
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
         canvas.addEventListener('mousedown', getMousePos, false);
         canvas.addEventListener('mouseup', mouseupcanvas, false);
+
+        for(int i = 0; i < diagram.length; i++){
+        diagram[i].targeted = false;
+        updateGraphics();
+    }
+
     } else {
 		buttonStyle.className = "unpressed";
         canvas.addEventListener('dblclick', doubleclick, false);
