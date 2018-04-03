@@ -420,7 +420,7 @@ function resize() {
 //---------------------------------------
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
-function movemode(e, t) {
+function movemode() {
     uimode = "MoveAround";
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
