@@ -189,6 +189,7 @@ function mousemoveevt(ev, t) {
 }
 
 function mousedownevt(ev) {
+    console.log(uimode);
     if (uimode == "CreateLine") {
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
@@ -215,7 +216,9 @@ function mousedownevt(ev) {
             for (var i = 0; i < diagram.length; i++) {
                 diagram[i].targeted = false;
             }
-            diagram[lastSelectedObject].targeted = true;
+            if(uimode != "MoveAround") {
+                diagram[lastSelectedObject].targeted = true;
+            }
         }
     } else {
         md = 4;            // Box select or Create mode.
@@ -223,7 +226,9 @@ function mousedownevt(ev) {
         startMouseCoordinateY = currentMouseCoordinateY;
     }
     if (lastSelectedObject >= 0) {
-        diagram[lastSelectedObject].targeted = true;
+        if(uimode != "MoveAround") {
+            diagram[lastSelectedObject].targeted = true;
+        }
     }
 }
 
@@ -301,7 +306,6 @@ function mouseupevt(ev) {
         //selecting the newly created attribute and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-        openAppearanceDialogMenu();
     } else if (uimode == "CreateEREntity" && md == 4) {
         erEnityA = new Symbol(3);
         erEnityA.name = "Entity" + diagram.length;
@@ -316,7 +320,6 @@ function mouseupevt(ev) {
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-        openAppearanceDialogMenu();
     } else if (uimode == "CreateLine" && md == 4) {
         /* Code for making a line */
         erLineA = new Symbol(4);
@@ -332,7 +335,6 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         updateGraphics();
         diagram.createAritySymbols(diagram[lastSelectedObject]);
-        openAppearanceDialogMenu();
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5);
         erRelationA.name = "Relation" + diagram.length;
@@ -344,12 +346,14 @@ function mouseupevt(ev) {
         //selecting the newly created relation and open the dialog menu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-        openAppearanceDialogMenu();
     } else if (md == 4 && !(uimode == "CreateFigure") &&
                !(uimode == "CreateLine") && !(uimode == "CreateEREntity") &&
                !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) &&
                !(uimode == "MoveAround" ) && !(uimode == "CreateERRelation")) {
-        diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+
+       
+            diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+        
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
@@ -358,7 +362,9 @@ function mouseupevt(ev) {
     // Clear mouse state
     md = 0;
     if (uimode != "CreateFigure") {
-        uimode = "normal";
+        if (uimode != "MoveAround") {
+           uimode = "normal";
+        }
     }
 }
 
@@ -425,16 +431,22 @@ function resize() {
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
 function movemode(e, t) {
+    
+
     uimode = "MoveAround";
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
+
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
         canvas.addEventListener('mousedown', getMousePos, false);
         canvas.addEventListener('mouseup', mouseupcanvas, false);
+
+
+
     } else {
 		buttonStyle.className = "unpressed";
         canvas.addEventListener('dblclick', doubleclick, false);
@@ -445,6 +457,8 @@ function movemode(e, t) {
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
+        uimode = "normal";
+
     }
 }
 
