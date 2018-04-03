@@ -470,6 +470,14 @@ CREATE TABLE list (
 	PRIMARY KEY(listid)
 ) CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
 
+/* This table holds configuration for the entire LenaSYS server */
+CREATE TABLE settings (
+  sid int(11) NOT NULL AUTO_INCREMENT,
+  motd varchar(4096) DEFAULT NULL,
+  readonly tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`sid`)
+);
+
 
 CREATE TABLE user_push_registration (
 	id							INT NOT NULL AUTO_INCREMENT,
