@@ -2523,6 +2523,10 @@ ul.hamburgerList button.menuButton {
   -o-transition: opacity 300ms, width 300ms, margin 300ms;
 }
 
+.dateSize{
+   width: 100px;
+}
+
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
   table.navheader td.editVers,
   table.navheader td.contribution,
@@ -2584,6 +2588,10 @@ ul.hamburgerList button.menuButton {
     -moz-transition: opacity 300ms, width 300ms, margin 300ms;
     -o-transition: opacity 300ms, width 300ms, margin 300ms;
   }
+  
+  .dateSize{
+	  width: 50px;
+  }
 }
 
 @media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
@@ -2631,6 +2639,10 @@ ul.hamburgerList button.menuButton {
 	display: flex;
 	text-align: center;
 	}
+	
+	#Sectionlist .course {
+    font-size: 20px;
+  }
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
@@ -2682,6 +2694,16 @@ ul.hamburgerList button.menuButton {
     padding: 0 20px 0 0px;
     display: flex;
     text-align: center;
+  }
+  
+  #Sectionlist .course {
+    font-size: 16px;
+  }
+}
+
+@media only screen and (max-width: 320px), only screen and (max-device-width: 320px) {
+  #Sectionlist .course {
+    font-size: 14px;
   }
 }
 
