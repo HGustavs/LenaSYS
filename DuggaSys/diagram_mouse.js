@@ -346,9 +346,9 @@ function mouseupevt(ev) {
                !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) &&
                !(uimode == "MoveAround" ) && !(uimode == "CreateERRelation")) {
 
-        if(uimode != "MoveAround"){
+       
             diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
-        }
+        
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();

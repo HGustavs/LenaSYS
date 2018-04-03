@@ -317,6 +317,9 @@ diagram.targetItemsInsideSelectionBox = function (endX, endY, startX, startY) {
 // itemClicked - Returns the index of the first clicked item
 //--------------------------------------------------------------------
 diagram.itemClicked = function() {
+    if(uimode == "MoveAround"){
+        return -1;
+    }
     for (var i = 0; i < this.length; i++) {
         if (this[i].isClicked(currentMouseCoordinateX, currentMouseCoordinateY)) {
             return i;
