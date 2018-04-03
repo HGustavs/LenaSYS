@@ -440,11 +440,7 @@ function movemode(e, t) {
         canvas.addEventListener('mouseup', mouseupcanvas, false);
 
     //Clear all selected items
-    for(int i = 0; i < diagram.length; i++){
-         points.clearAllSelects();
-
-        updateGraphics();
-    }
+         points.clearAllSelects();    
     
 
     } else {
