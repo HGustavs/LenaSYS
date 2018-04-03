@@ -206,6 +206,7 @@ function mousemoveevt(ev, t) {
 }
 
 function mousedownevt(ev) {
+    console.log(uimode);
     if (uimode == "CreateLine") {
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
@@ -232,7 +233,9 @@ function mousedownevt(ev) {
             for (var i = 0; i < diagram.length; i++) {
                 diagram[i].targeted = false;
             }
-            diagram[lastSelectedObject].targeted = true;
+            if(uimode != "MoveAround") {
+                diagram[lastSelectedObject].targeted = true;
+            }
         }
     } else {
         md = 4;            // Box select or Create mode.
@@ -240,7 +243,9 @@ function mousedownevt(ev) {
         startMouseCoordinateY = currentMouseCoordinateY;
     }
     if (lastSelectedObject >= 0) {
-        diagram[lastSelectedObject].targeted = true;
+        if(uimode != "MoveAround") {
+            diagram[lastSelectedObject].targeted = true;
+        }
     }
     if(uimode == "CreateFigure" && figureType == "Square"){
         createFigure();
@@ -365,7 +370,10 @@ function mouseupevt(ev) {
                !(uimode == "CreateLine") && !(uimode == "CreateEREntity") &&
                !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) &&
                !(uimode == "MoveAround" ) && !(uimode == "CreateERRelation")) {
-        diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+
+       
+            diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+        
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
@@ -373,6 +381,11 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
+    if (uimode != "CreateFigure") {
+        if (uimode != "MoveAround") {
+           uimode = "normal";
+        }
+    }
 }
 
 function doubleclick(ev) {
@@ -437,13 +450,14 @@ function resize() {
 //---------------------------------------
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
-function movemode() {
+function movemode(e, t) {
     uimode = "MoveAround";
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
+
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
         canvas.addEventListener('mousedown', getMousePos, false);
@@ -458,6 +472,7 @@ function movemode() {
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
+        uimode = "normal";
     }
 }
 
