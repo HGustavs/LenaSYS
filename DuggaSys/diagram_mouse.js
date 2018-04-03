@@ -430,17 +430,12 @@ function movemode(e, t) {
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
 
-        
-
-
-
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
         canvas.addEventListener('mousedown', getMousePos, false);
         canvas.addEventListener('mouseup', mouseupcanvas, false);
 
-        //Clear 
-        diagram[lastSelectedObject].targeted == false;
+        document.addEventListener("click", clickOutsideDialogMenu);
 
     } else {
 		buttonStyle.className = "unpressed";
