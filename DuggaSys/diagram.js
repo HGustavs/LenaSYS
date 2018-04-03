@@ -709,6 +709,7 @@ $(document).ready(function(){
     $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton").click(function(){
         if ($(this).hasClass("pressed")){
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            uimode = "normal";
         } else {
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             $(this).removeClass("unpressed").addClass("pressed");
