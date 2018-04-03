@@ -30,12 +30,14 @@
     /*/this script fix so that the drop down menus close after you have clicked on something on them./*/
     <script>
         $(document).ready(function(){
-        $(".drop-down-item").click(function(){
-        $("a").slideUp(); });
+            $(".drop-down-item").click(function(){
+            $("a").slideUp(); });
 
-        $(".drop-down-item").click(function(){
-        $("a").slideDown(); });
-    });
+            $(".drop-down-item").click(function(){
+            $("a").slideDown(); });
+
+            window.addEventListener('keypress', clickEnterOnDialogMenu);
+        });
     </script>
 
 </head>
