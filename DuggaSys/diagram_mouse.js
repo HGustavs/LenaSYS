@@ -457,6 +457,7 @@ function movemode(e, t) {
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
+        uimode = "normal";
 
     }
 }
