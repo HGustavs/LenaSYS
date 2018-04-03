@@ -421,8 +421,7 @@ function resize() {
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
 function movemode(e, t) {
-    //Clear all selected items
-    points.clearAllSelects();
+    
 
     uimode = "MoveAround";
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
@@ -430,6 +429,10 @@ function movemode(e, t) {
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
+
+        //Clear all selected items
+        points.clearAllSelects();
+
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
         canvas.addEventListener('mousedown', getMousePos, false);
