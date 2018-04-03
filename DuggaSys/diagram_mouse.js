@@ -430,8 +430,7 @@ function movemode(e, t) {
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
 
-        //Clear all selected items
-      //  points.clearAllSelects();
+        
 
 
 
@@ -440,10 +439,13 @@ function movemode(e, t) {
         canvas.addEventListener('mousedown', getMousePos, false);
         canvas.addEventListener('mouseup', mouseupcanvas, false);
 
-        for(int i = 0; i < diagram.length; i++){
-        diagram[i].targeted = false;
+    //Clear all selected items
+    for(int i = 0; i < diagram.length; i++){
+         points.clearAllSelects();
+
         updateGraphics();
     }
+    
 
     } else {
 		buttonStyle.className = "unpressed";
