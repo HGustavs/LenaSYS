@@ -672,7 +672,11 @@ function Symbol(kind) {
             canvasContext.textBaseline = "middle";
             drawOval(x1, y1, x2, y2);
             canvasContext.fillStyle = this.symbolColor;
+            canvasContext.save();
+            canvasContext.shadowBlur = 10;
+            canvasContext.shadowColor = "#000";
             canvasContext.fill();
+            canvasContext.restore();
             if (this.targeted) {
                 canvasContext.strokeStyle = "#F82";
             } else {
@@ -720,6 +724,11 @@ function Symbol(kind) {
             canvasContext.lineTo(x1, y2);
             canvasContext.lineTo(x1, y1);
             canvasContext.closePath();
+            canvasContext.save();
+            canvasContext.shadowBlur = 10;
+            canvasContext.shadowColor = "#000";
+            canvasContext.fill();
+            canvasContext.restore();
             canvasContext.save();
             canvasContext.clip();
             canvasContext.fillStyle = this.symbolColor;
@@ -812,7 +821,11 @@ function Symbol(kind) {
             canvasContext.lineTo(x1, midy);
             canvasContext.lineTo(midx, y1);
             canvasContext.fillStyle = this.symbolColor;
+            canvasContext.save();
+            canvasContext.shadowBlur = 10;
+            canvasContext.shadowColor = "#000";
             canvasContext.fill();
+            canvasContext.restore();
             canvasContext.closePath();
             canvasContext.save();
             canvasContext.clip();
