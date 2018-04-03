@@ -212,7 +212,9 @@ function sortData(column){
 //----------------------------------------
 // Renderer
 //----------------------------------------
+
 function returnedAccess(data)
+
 {
   // Defining arrays for later use
   var teachs = [];
@@ -222,18 +224,18 @@ function returnedAccess(data)
 	str="";
 	if (data['entries'].length > 0) {
 		keyUpSearch();
-		str+="<table class='list'>";
-      str+="<tr><th class='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:140px; cursor: pointer;'>Username</th>" +
-			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>SSN</th>" +
-			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>First Name</th>" +
-			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>Last Name</th>" +
-			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Class</th>" +
+		str+="<table class='list' style='margin:0px; padding:0px; border:1px solid #ccc; border-top:0px;'>";
+      str+="<tr><th class='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:140px; cursor: pointer; position:sticky; top:141px;'>Username</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer; position:sticky; top:141px;'>SSN</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer; position:sticky; top:141px;'>First Name</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer; position:sticky; top:141px;'>Last Name</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer; position:sticky; top:141px;'>Class</th>" +
 			/*"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Teacher</th>" +*/
-			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:100px; cursor: pointer;'>Added</th>" +
-          	"<th style='text-align:left; padding-left:8px; width:90px;'>Version</th>" +
-		  	"<th style='text-align:left; padding-left:8px; width:90px;'>Access</th>" +
-			"<th style='text-align:left; padding-left:8px; width:90px;'>Settings</th>" +
-			"<th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr><tbody id='accesstable_body'>";
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:100px; cursor: pointer; position:sticky; top:141px;'>Added</th>" +
+          	"<th style='text-align:left; padding-left:8px; width:90px; position:sticky; top:141px;'>Version</th>" +
+		  	"<th style='text-align:left; padding-left:8px; width:90px; position:sticky; top:141px;'>Access</th>" +
+			"<th style='text-align:left; padding-left:8px; width:90px; position:sticky; top:141px;'>Settings</th>" +
+			"<th class='last' style='text-align:left; padding-left:8px; width:120px; position:sticky; top:141px;'>Password</th></tr><tbody id='accesstable_body'>";
 		for(i=0;i<data['entries'].length;i++){
 			var item=data['entries'][i];
 

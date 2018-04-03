@@ -18,6 +18,7 @@
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="accessed.js"></script>
+
 </head>
 <body>
 	
@@ -27,10 +28,10 @@
 	?>
 		
 	<!-- content START -->
-	<div id="wrappall">
+	<div id="wrappall" style="border-top:0px">
 		<div id="newbutton">
 			<?PHP
-				echo "<div class='titles' style='padding-top:10px;'>";
+				echo "<div class='titles' style='position:sticky;top:50px;z-index:100;background:#ffffff;padding-top:20px;padding-bottom:20px;margin-top:0px;'>";
 				echo "<h1 style='flex:10;text-align:center;'>Access</h1>";
 				echo "<div style='align-items: flex-end; display: flex; justify-content: space-between;'>";
 				echo "<div style='display: inline-block;'>";
@@ -42,7 +43,7 @@
 				//needs to calculate if the user has access to this button before writing out
 			?>		
 		</div>
-		<div id="accessedcontent">
+		<div id="accessedcontent" style="padding-top:0px">
 			
 		</div>
 	</div>
