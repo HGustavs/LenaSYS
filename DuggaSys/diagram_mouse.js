@@ -431,7 +431,10 @@ function movemode(e, t) {
     if (button == "unpressed") {
 
         //Clear all selected items
-        points.clearAllSelects();
+      //  points.clearAllSelects();
+
+       diagram[lastSelectedObject].targeted = true;
+        updateGraphics();
 
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
