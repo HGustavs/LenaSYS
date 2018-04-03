@@ -301,7 +301,7 @@ function mouseupevt(ev) {
         //selecting the newly created attribute and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-        openAppearanceDialogMenu();
+      //  openAppearanceDialogMenu();
     } else if (uimode == "CreateEREntity" && md == 4) {
         erEnityA = new Symbol(3);
         erEnityA.name = "Entity" + diagram.length;
@@ -316,7 +316,7 @@ function mouseupevt(ev) {
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-        openAppearanceDialogMenu();
+     //   openAppearanceDialogMenu();
     } else if (uimode == "CreateLine" && md == 4) {
         /* Code for making a line */
         erLineA = new Symbol(4);
@@ -332,7 +332,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         updateGraphics();
         diagram.createAritySymbols(diagram[lastSelectedObject]);
-        openAppearanceDialogMenu();
+      //  openAppearanceDialogMenu();
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5);
         erRelationA.name = "Relation" + diagram.length;
@@ -344,7 +344,7 @@ function mouseupevt(ev) {
         //selecting the newly created relation and open the dialog menu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-        openAppearanceDialogMenu();
+      //  openAppearanceDialogMenu();
     } else if (md == 4 && !(uimode == "CreateFigure") &&
                !(uimode == "CreateLine") && !(uimode == "CreateEREntity") &&
                !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) &&

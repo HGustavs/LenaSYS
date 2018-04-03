@@ -42,6 +42,7 @@ function clickOutsideDialogMenu(ev) {
     });
 }
 
+
 function dimDialogMenu(dim) {
     if (dim == true) {
         $("#appearance").css("display", "flex");
