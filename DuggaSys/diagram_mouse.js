@@ -189,6 +189,7 @@ function mousemoveevt(ev, t) {
 }
 
 function mousedownevt(ev) {
+    console.log(uimode);
     if (uimode == "CreateLine") {
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
