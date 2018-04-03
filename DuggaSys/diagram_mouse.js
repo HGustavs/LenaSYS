@@ -361,7 +361,7 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
-    if (uimode != "CreateFigure" || uimode != "MoveAround") {
+    if (uimode != "CreateFigure" && uimode != "MoveAround") {
         console.log(uimode);
         console.log("uimode = normal now");
         uimode = "normal";
