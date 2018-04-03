@@ -345,7 +345,10 @@ function mouseupevt(ev) {
                !(uimode == "CreateLine") && !(uimode == "CreateEREntity") &&
                !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) &&
                !(uimode == "MoveAround" ) && !(uimode == "CreateERRelation")) {
-        diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+
+        if(uimode != "MoveAround"){
+            diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+        }
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
@@ -435,7 +438,6 @@ function movemode(e, t) {
         canvas.addEventListener('mousedown', getMousePos, false);
         canvas.addEventListener('mouseup', mouseupcanvas, false);
 
-        document.addEventListener("click", clickOutsideDialogMenu);
 
     } else {
 		buttonStyle.className = "unpressed";
