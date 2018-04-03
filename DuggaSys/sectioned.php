@@ -9,7 +9,7 @@ pdoConnect();
 <!DOCTYPE html>
 <html>
 <head>
-	
+	<!-- hejhej -->
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
