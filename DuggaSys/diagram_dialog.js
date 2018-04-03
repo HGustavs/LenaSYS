@@ -41,6 +41,23 @@ function clickOutsideDialogMenu(ev) {
     });
 }
 
+function clickEnterOnDialogMenu(ev) {
+    /*
+     * Closes the dialog menu when the enter button is pressed.
+     */
+    $(document).keypress(function (ev) {
+        var container = $("#appearance");
+        if (ev.which == 13) {
+            globalAppearanceValue = 0;
+            closeAppearanceDialogMenu();
+
+            // Is called in the separate appearance php-files at the buttons.
+            // Called here since an enter press doesn't relate to any element
+            changeObjectAppearance();
+        }
+    });
+}
+
 function dimDialogMenu(dim) {
     if (dim == true) {
         $("#appearance").css("display", "flex");

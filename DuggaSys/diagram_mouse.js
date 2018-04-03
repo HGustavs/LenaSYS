@@ -115,7 +115,7 @@ function mousemoveevt(ev, t) {
             canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.lineTo(startMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.lineTo(startMouseCoordinateX, startMouseCoordinateY);
-            canvasContext.strokeStyle = "#d51";
+            canvasContext.strokeStyle = "#000";
             canvasContext.stroke();
             canvasContext.setLineDash([]);
             canvasContext.closePath(1);
@@ -134,7 +134,7 @@ function mousemoveevt(ev, t) {
             canvasContext.lineTo(midx, currentMouseCoordinateY);
             canvasContext.lineTo(startMouseCoordinateX, midy);
             canvasContext.lineTo(midx, startMouseCoordinateY);
-            canvasContext.strokeStyle = "#d51";
+            canvasContext.strokeStyle = "#000";
             canvasContext.stroke();
             canvasContext.setLineDash([]);
             canvasContext.closePath(1);
@@ -146,7 +146,7 @@ function mousemoveevt(ev, t) {
         } else if(uimode == "CreateERAttr"){
             canvasContext.setLineDash([3, 3]);
             drawOval(startMouseCoordinateX, startMouseCoordinateY, currentMouseCoordinateX, currentMouseCoordinateY);
-            canvasContext.strokeStyle = "#d51";
+            canvasContext.strokeStyle = "#000";
             canvasContext.stroke();
             canvasContext.setLineDash([]);
             if (ghostingCrosses == true) {
@@ -159,7 +159,7 @@ function mousemoveevt(ev, t) {
             canvasContext.beginPath();
             canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
             canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
-            canvasContext.strokeStyle = "#d51";
+            canvasContext.strokeStyle = "#000";
             canvasContext.stroke();
             canvasContext.setLineDash([]);
             if (ghostingCrosses == true) {
@@ -167,7 +167,7 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
-        } else {
+        } else if(uimode == "CreateFigure" && figureType == "Square"){
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath(1);
             canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
@@ -184,11 +184,29 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
+        } else {
+            canvasContext.setLineDash([3, 3]);
+            canvasContext.beginPath(1);
+            canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
+            canvasContext.lineTo(currentMouseCoordinateX, startMouseCoordinateY);
+            canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
+            canvasContext.lineTo(startMouseCoordinateX, currentMouseCoordinateY);
+            canvasContext.lineTo(startMouseCoordinateX, startMouseCoordinateY);
+            canvasContext.strokeStyle = "#000";
+            canvasContext.stroke();
+            canvasContext.setLineDash([]);
+            canvasContext.closePath(1);
+            if (ghostingCrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossFillStyle = "rgba(255, 102, 68, 0.0)";
+            }
         }
     }
 }
 
 function mousedownevt(ev) {
+    console.log(uimode);
     if (uimode == "CreateLine") {
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
@@ -215,7 +233,9 @@ function mousedownevt(ev) {
             for (var i = 0; i < diagram.length; i++) {
                 diagram[i].targeted = false;
             }
-            diagram[lastSelectedObject].targeted = true;
+            if(uimode != "MoveAround") {
+                diagram[lastSelectedObject].targeted = true;
+            }
         }
     } else {
         md = 4;            // Box select or Create mode.
@@ -223,7 +243,12 @@ function mousedownevt(ev) {
         startMouseCoordinateY = currentMouseCoordinateY;
     }
     if (lastSelectedObject >= 0) {
-        diagram[lastSelectedObject].targeted = true;
+        if(uimode != "MoveAround") {
+            diagram[lastSelectedObject].targeted = true;
+        }
+    }
+    if(uimode == "CreateFigure" && figureType == "Square"){
+        createFigure();
     }
 }
 
@@ -295,13 +320,12 @@ function mouseupevt(ev) {
 
         erAttributeA.centerPoint = p3;
         erAttributeA.object_type = "";
-        erAttributeA.fontColor = "#253";
+        erAttributeA.fontColor = "#000";
         erAttributeA.font = "Arial";
         diagram.push(erAttributeA);
         //selecting the newly created attribute and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-        openAppearanceDialogMenu();
     } else if (uimode == "CreateEREntity" && md == 4) {
         erEnityA = new Symbol(3);
         erEnityA.name = "Entity" + diagram.length;
@@ -310,13 +334,12 @@ function mouseupevt(ev) {
         erEnityA.centerPoint = p3;
         erEnityA.arity = [];
         erEnityA.object_type = "";
-        erEnityA.fontColor = "#253";
+        erEnityA.fontColor = "#000";
         erEnityA.font = "Arial";
         diagram.push(erEnityA);
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-        openAppearanceDialogMenu();
     } else if (uimode == "CreateLine" && md == 4) {
         /* Code for making a line */
         erLineA = new Symbol(4);
@@ -332,7 +355,6 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         updateGraphics();
         diagram.createAritySymbols(diagram[lastSelectedObject]);
-        openAppearanceDialogMenu();
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5);
         erRelationA.name = "Relation" + diagram.length;
@@ -344,12 +366,14 @@ function mouseupevt(ev) {
         //selecting the newly created relation and open the dialog menu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-        openAppearanceDialogMenu();
     } else if (md == 4 && !(uimode == "CreateFigure") &&
                !(uimode == "CreateLine") && !(uimode == "CreateEREntity") &&
                !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) &&
                !(uimode == "MoveAround" ) && !(uimode == "CreateERRelation")) {
-        diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+
+       
+            diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+        
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
@@ -357,6 +381,7 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
+
 }
 
 function doubleclick(ev) {
@@ -428,6 +453,7 @@ function movemode(e, t) {
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
+
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
         canvas.addEventListener('mousedown', getMousePos, false);
@@ -442,6 +468,7 @@ function movemode(e, t) {
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
+        uimode = "normal";
     }
 }
 

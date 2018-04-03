@@ -11,10 +11,10 @@ function Path() {
     this.intarr = Array();          // Intersection list (one list per segment)
     this.tmplist = Array();         // Temporary list for testing of intersections
     this.auxlist = Array();         // Auxillary temp list for testing of intersections
-    this.fillColor = "#48B";        // Fill color (default is blueish)
-    this.strokeColor = "#246";      // Stroke color (default is dark blue)
-    this.Opacity = 0.5;             // Opacity (default is 50%)
-    this.linewidth = 3;             // Line Width (stroke width - default is 3 pixels)
+    this.fillColor = "#fff";        // Fill color (default is white)
+    this.strokeColor = "#000";      // Stroke color (default is black)
+    this.Opacity = 1;               // Opacity (default is 100%)
+    this.linewidth = 2;             // Line Width (stroke width - default is 2 pixels)
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
                                     // An organized path can contain several sub-path, each of which must be organized
 
@@ -319,7 +319,7 @@ function Path() {
     //--------------------------------------------------------------------
     this.drawsegments = function (segmentlist, color) {
         // Draw aux set
-        canvasContext.lineWidth = 1;
+        canvasContext.lineWidth = this.lineWidth;
         canvasContext.strokeStyle = "#46f";
         for (var i = 0; i < segmentlist.length; i++) {
             var line = segmentlist[i];
@@ -389,7 +389,6 @@ function figureFreeDraw() {
             figurePath.addsegment(1, p1, p2);
             diagram.push(figurePath);
             cleanUp();
-            openInitialDialog();
         } else {
             // Temporary store the new line and then render it
             var tempPath = new Path;
@@ -419,7 +418,6 @@ function figureSquare() {
         figurePath.addsegment(1, p4, p1);
         diagram.push(figurePath);
         cleanUp();
-        openInitialDialog();
     }
 }
 
