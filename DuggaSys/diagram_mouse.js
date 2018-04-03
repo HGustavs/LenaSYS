@@ -167,6 +167,23 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
+        } else if(uimode == "CreateFigure" && figureType == "Square"){
+            canvasContext.setLineDash([3, 3]);
+            canvasContext.beginPath(1);
+            canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
+            canvasContext.lineTo(currentMouseCoordinateX, startMouseCoordinateY);
+            canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
+            canvasContext.lineTo(startMouseCoordinateX, currentMouseCoordinateY);
+            canvasContext.lineTo(startMouseCoordinateX, startMouseCoordinateY);
+            canvasContext.strokeStyle = "#d51";
+            canvasContext.stroke();
+            canvasContext.setLineDash([]);
+            canvasContext.closePath(1);
+            if (ghostingCrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossFillStyle = "rgba(255, 102, 68, 0.0)";
+            }
         } else {
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath(1);
@@ -224,6 +241,9 @@ function mousedownevt(ev) {
     }
     if (lastSelectedObject >= 0) {
         diagram[lastSelectedObject].targeted = true;
+    }
+    if(uimode == "CreateFigure" && figureType == "Square"){
+        createFigure();
     }
 }
 
