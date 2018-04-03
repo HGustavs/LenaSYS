@@ -272,7 +272,19 @@ function redrawtable()
         }
       strt += "</div>";
 
-          strt += "<div class='text-center'>"
+          strt += "<div class='text-center'"
+		  
+		  for (var p = 0; p < moments.length; p++){
+			  if (moments[p].link == student[j].quizId){
+				   if (Date.parse(moments[p].deadline) < Date.parse(student[j].submitted)){
+						strt += " style='color:red;'";
+				   }
+					break;
+			  }
+		  }
+		  
+		  strt += ">";
+		  
           if (student[j].submitted.getTime() !== timeZero.getTime()){
             strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();
           }
@@ -1264,7 +1276,7 @@ function saveResponse()
 //----------------------------------------
 
 function returnedResults(data)
-{
+{	
   if (data.gradeupdated === true){
       // Update background color
       $("#u"+data.duggauser+"_d"+data.duggaid).removeClass("dugga-fail dugga-pending dugga-assigned dugga-unassigned");
