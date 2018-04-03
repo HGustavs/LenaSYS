@@ -757,6 +757,11 @@ function process()
     dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
     if (onlyPending){ dstr+=" checked"; }
     dstr+="><label class='headerlabel' for='pending'>Only pending</label>";
+
+    // Filter for mini mode
+    dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='minimode' value='0' id='minimode'";
+    dstr+="><label class='headerlabel' for='minimode'>Mini mode</label>";
+
   dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
 
   document.getElementById("dropdownc").innerHTML=dstr;
