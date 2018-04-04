@@ -54,8 +54,8 @@
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap">
                     <div class="application-header">
-                        <div id="toolbar-minimize" style="position: absolute left: 10px; top: 5px;">
-                            <img src="../Shared/icons/arrow.svg" style="width:15px; height:15px;/* position: absolute; */">
+                        <div id="toolbar-minimize">
+                            <img src="../Shared/icons/arrow.svg">
                         </div>
                         <h3>Toolbar</h3>
                     </div>
