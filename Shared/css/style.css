@@ -1040,13 +1040,16 @@ input {
 #toolbar-minimize{
   position: absolute;
   display: inline-block;
-  width: 10px;
-  height: 10px;
-  left: 15px;
-  top: 6px;
+  width: 30px;
+  height: 25px;
+  left: 5px;
   cursor:pointer;
+  text-align: center;
+  line-height: 25px;
 }
 #minimizeArrow{
+width: 10px;
+height: 10px;
     filter:invert(100%);
 }
 .toolbarMinimized{
