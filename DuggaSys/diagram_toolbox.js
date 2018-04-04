@@ -12,11 +12,11 @@ function toggleToolbarMinimize(){
     if($("#toolbar-minimize").hasClass("toolbarMaximized")){
       console.log("Tjooooo");
         $(".application-toolbar").hide();
-        $("#toolbar-minimize").removeClass("toolbarMaximized").addClass("toolboxMinimized");
+        $("#toolbar-minimize").removeClass("toolbarMaximized").addClass("toolbarMinimized");
     }else{
       console.log("byeee");
         $(".application-toolbar").show();
-        $("#toolbar-minimize").removeClass("toolbarMinimized").addClass("toolboxMaximized");
+        $("#toolbar-minimize").removeClass("toolbarMinimized").addClass("toolbarMaximized");
     }
 }
 
