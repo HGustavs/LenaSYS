@@ -556,6 +556,7 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.draw = function () {
         canvasContext.lineWidth = this.lineWidth * 2;
+        makeShadow();
         if (this.sizeOftext == 'Tiny') {
             textsize = 14;
         } else if (this.sizeOftext == 'Small') {
@@ -677,7 +678,7 @@ function Symbol(kind) {
             drawOval(x1, y1, x2, y2);
             canvasContext.fillStyle = this.symbolColor;
             canvasContext.fill();
- /**/           //makeShadow();
+            makeShadow();
             if (this.targeted) {
                 canvasContext.strokeStyle = "#F82";
             } else {
@@ -726,7 +727,7 @@ function Symbol(kind) {
             canvasContext.lineTo(x1, y1);
             canvasContext.closePath();
             canvasContext.fill();
-/**/        //makeShadow();
+           // makeShadow();
             canvasContext.save();
             canvasContext.clip();
             canvasContext.fillStyle = this.symbolColor;

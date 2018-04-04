@@ -88,14 +88,6 @@ function Path() {
             canvasContext.globalAlpha = this.Opacity;
             canvasContext.lineWidth = this.linewidth;
 
-            canvasContext.save();
-            canvasContext.shadowBlur = 10;
-            canvasContext.shadowOffsetX = 3;
-            canvasContext.shadowOffsetY = 6;
-            canvasContext.shadowColor = "rgba(0, 0, 0, 0.3)";
-            canvasContext.fill();
-            canvasContext.restore();
-
             canvasContext.beginPath();
             var pseg = this.segments[0];
             canvasContext.moveTo(points[pseg.pa].x, points[pseg.pa].y);
@@ -111,8 +103,14 @@ function Path() {
                 pseg = seg;
             }
             // Make either stroke or fill or both -- stroke always after fill
-            if (fillstate) {
+            if (fillstate) {     
+                canvasContext.save();
+                canvasContext.shadowBlur = 10;
+                canvasContext.shadowOffsetX = 3;
+                canvasContext.shadowOffsetY = 6;
+                canvasContext.shadowColor = "rgba(0, 0, 0, 0.3)";
                 canvasContext.fill();
+                canvasContext.restore();
             }
             if (strokestate) {
                 canvasContext.stroke();
@@ -120,6 +118,7 @@ function Path() {
             // Reset opacity so that following draw operations are unaffected
             canvasContext.globalAlpha = 1.0;
         }
+
     }
 
     //--------------------------------------------------------------------
