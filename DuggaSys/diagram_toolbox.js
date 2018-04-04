@@ -8,12 +8,15 @@ function initToolbox(){
 }
 
 function toggleToolbarMinimize(){
-    if($("#toolbar-minimize").hasClass("toolboxMaximized")){
+  console.log("Jag var här");
+    if($("#toolbar-minimize").hasClass("toolbarMaximized")){
+      console.log("Tjooooo");
         $(".application-toolbar").hide();
-        $("#toolbar-minimize").removeClass("toolboxMaximized").addClass("toolboxMinimized");
+        $("#toolbar-minimize").removeClass("toolbarMaximized").addClass("toolboxMinimized");
     }else{
+      console.log("byeee");
         $(".application-toolbar").show();
-        $("#toolbar-minimize").removeClass("toolboxMinimized").addClass("toolboxMaximized");
+        $("#toolbar-minimize").removeClass("toolbarMinimized").addClass("toolboxMaximized");
     }
 }
 
