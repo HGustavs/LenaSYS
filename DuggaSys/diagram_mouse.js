@@ -102,6 +102,9 @@ function mousemoveevt(ev, t) {
             }
         }
     }
+    diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
+    updateGraphics();
+    // Draw select or create dotted box
     if (figureType == "Free"){
         if(p2 != null) {
             console.log("freedraw");
@@ -119,9 +122,6 @@ function mousemoveevt(ev, t) {
             }
         }
     }
-    diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
-    updateGraphics();
-    // Draw select or create dotted box
     if (md == 4) {
 		
         if (uimode == "CreateEREntity"){
