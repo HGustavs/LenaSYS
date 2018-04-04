@@ -2,8 +2,10 @@ var querystring=parseGet();
 var retdata;
 var newversid;
 
-var sectionIDcounter = 0;
-var hideElements = [];
+var menuState = {
+	idCounter:0,
+	hiddenElements:[]
+}
 
 AJAXService("get",{},"SECTION");
 
@@ -721,19 +723,19 @@ function returnedSection(data)
 
 				// Separating sections into different classes
 				if(parseInt(item['kind']) === 0){
-					str += "<div class='header' style='display:block'>";
+					str += "<div  id='header" + menuState.idCounter + "' class='header' style='display:block'>";
 				}else if(parseInt(item['kind']) === 1){
-					str += "<div class='section' style='display:block'>";
+					str += "<div id='section" + menuState.idCounter + "'  class='section' style='display:block'>";
 				}else if(parseInt(item['kind']) === 2){
-					str += "<div class='code' style='display:block'>";
+					str += "<div id='code" + menuState.idCounter + "' class='code' style='display:block'>";
 				}else if(parseInt(item['kind']) === 3){
-					str += "<div id='test" + sectionIDcounter + "' class='test' style='display:block'>";
-					sectionIDcounter++;
+					str += "<div id='test" + menuState.idCounter + "' class='test' style='display:block'>";
 				}else if(parseInt(item['kind']) === 4){
 					str += "<div class='moment' style='display:block'>";
 				}else if(parseInt(item['kind']) === 5){
-					str += "<div class='link' style='display:block'>";
+					str += "<div  id='link" + menuState.idCounter + "' class='link' style='display:block'>";
 				}
+				menuState.idCounter++;
 				// All are visible according to database
 
 
@@ -1133,29 +1135,47 @@ function returnedHighscore(data){
 
 // Toggle content for each moment
 $(document).on('click', '.moment, .section', function () {
-	$(this).nextUntil('.moment, .section').slideToggle('fast', setGlobalArrowWhenSingleMomentIsActivated());
+	// $(this).nextUntil('.moment, .section').slideToggle('fast', setGlobalArrowWhenSingleMomentIsActivated());
 	$(this).children('.arrowRight').toggle();
 	$(this).children('.arrowComp').toggle();
 
 	$(this).nextUntil('.moment, .section').each(function() {
 		var exists = false;
-		for(var i = 0; i < hideElements.length; i++) {
-			if(this.id == hideElements[i]) {
+		for(var i = 0; i < menuState.hiddenElements.length; i++) {
+			if(this.id == menuState.hiddenElements[i]) {
 				exists = true;
-				delete hideElements[i];
+				menuState.hiddenElements.splice(i, 1);
 				break;
 			}
 		}
 		if(!exists) {
-			hideElements.push(this.id);
+			menuState.hiddenElements.push(this.id);
 		}
 	});
 
-	// console.clear();
-	// for(var i = 0; i < hideElements.length; i++) {
-	// 	console.log(hideElements[i]);
-	// }
+	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
+	hideCollapsedMenus();
+
 });
+
+// Get all element ids from local storage that should be hidden.
+function getHiddenElements() {
+	menuState.hiddenElements = JSON.parse(localStorage.getItem('hiddenElements'));
+	if(menuState.hiddenElements === null) {
+		menuState.hiddenElements = [];
+	}
+}
+
+// Hide all elements from the hiddenElements array.
+function hideCollapsedMenus() {
+	$('.header, .section, .code, .test, .link').show();
+	for(var i = 0; i < menuState.hiddenElements.length; i++) {
+		$('#' + menuState.hiddenElements[i]).hide();
+		// $('#' + menuState.hiddenElements[i]).children('.arrowRight').toggle();
+		// $('#' + menuState.hiddenElements[i]).children('.arrowComp').toggle();
+		console.log($('#' + menuState.hiddenElements[i]));
+	}
+}
 
 // This part should check if there are any un/folded section when a moment has been clicked
 // Sets the show/hide All arrow to a correct state
@@ -1217,3 +1237,9 @@ $(document).ready(function(){
 		e.stopPropagation();
 	});
 });
+
+window.onload = function() {
+	// localStorage.clear();
+	getHiddenElements();
+	hideCollapsedMenus();
+};
