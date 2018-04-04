@@ -91,7 +91,6 @@ var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 
 //this block of the code is used to handel keyboard input;
-window.addEventListener("keyup", this.keyUpHandler, false);
 window.addEventListener("keypress", this.keyPressHandler, false);
 
 
@@ -105,17 +104,9 @@ function keyPressHandler(e){
         //Use space for movearound
         if(uimode != "MoveAround"){
             activateMovearound();
-            updateGraphics();
+        } else{
+            deactivateMovearound();
         }
-    }
-}
-
-function keyUpHandler(e){
-    var key = e.keyCode;
-    if(key == 32){
-        //Use space for movearound
-        console.log("Spacebar up");
-        deactivateMovearound();
         updateGraphics();
     }
 }
