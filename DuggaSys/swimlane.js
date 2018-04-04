@@ -154,7 +154,7 @@ function swimlaneDrawLanes() {
 
           var hasGrade = false;
           for(var m = 0; m < userResults.length; m++) {
-            if(moment['quizid'] === userResults[m]['quizid'] && moment['kind'] == 3) {
+            if(moment['quizid'] === userResults[m]['quizid']) {
               var grade = userResults[m]['grade'];
               if(grade == 2) {
                   str+= "fill='rgb(0, 255, 0)'/>";
