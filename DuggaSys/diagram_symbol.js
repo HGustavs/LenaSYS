@@ -24,10 +24,11 @@ function Symbol(kind) {
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
-    this.shadowBlur = 10;
-    this.shadowOffsetX = 3;
-    this.shadowOffsetY = 6;
-    this.shadowColor = "rgba(0, 0, 0, 0.3)";
+    this.shadowBlur = 10;           // Shadowblur for all objects
+    this.shadowOffsetX = 3;         // The horizontal distance of the shadow for the object.
+    this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
+    this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
+    
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -556,7 +557,6 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.draw = function () {
         canvasContext.lineWidth = this.lineWidth * 2;
-        makeShadow();
         if (this.sizeOftext == 'Tiny') {
             textsize = 14;
         } else if (this.sizeOftext == 'Small') {
@@ -573,6 +573,7 @@ function Symbol(kind) {
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
         if (this.symbolkind == 1) {
+            canvasContext.save();
             var midy = points[this.middleDivider].y;
             canvasContext.font = "bold " + parseInt(textsize) + "px Arial";
             // Clear Class Box
@@ -587,7 +588,7 @@ function Symbol(kind) {
             // Write Class Name
             canvasContext.textAlign = "center";
             canvasContext.textBaseline = "middle";
-            canvasContext.fillStyle = "#000";
+            canvasContext.fillStyle = "#fff";
             canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
             if (this.key_type == 'Primary key') {
                 var linelenght = canvasContext.measureText(this.name).width;
@@ -603,7 +604,6 @@ function Symbol(kind) {
             canvasContext.textBaseline = "top";
             canvasContext.font = parseInt(this.textsize) + "px Arial";
             // Clipping of text and drawing of attributes
-            canvasContext.save();
             canvasContext.beginPath();
             canvasContext.moveTo(x1, y1 + (this.textsize * 1.5));
             canvasContext.lineTo(x2, y1 + (this.textsize * 1.5));
@@ -614,9 +614,7 @@ function Symbol(kind) {
             for (var i = 0; i < this.attributes.length; i++) {
                 canvasContext.fillText(this.attributes[i].visibility + " " + this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
             }
-            canvasContext.restore();
             // Clipping of text and drawing of methods
-            canvasContext.save();
             canvasContext.beginPath();
             canvasContext.moveTo(x1, midy);
             canvasContext.lineTo(x2, midy);
@@ -629,7 +627,6 @@ function Symbol(kind) {
             for (var i = 0; i < this.operations.length; i++) {
                 canvasContext.fillText(this.operations[i].visibility + " " + this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
             }
-            canvasContext.restore();
             // Box
             canvasContext.beginPath();
             canvasContext.moveTo(x1, y1);
@@ -644,7 +641,9 @@ function Symbol(kind) {
             canvasContext.moveTo(x1, midy);
             canvasContext.lineTo(x2, midy);
             canvasContext.stroke();
+            canvasContext.restore();
         } else if (this.symbolkind == 2) {
+            canvasContext.save();
             //drawing a multivalue attribute
             canvasContext.lineWidth = this.lineWidth;
             if (this.key_type == 'Multivalue') {
@@ -688,10 +687,8 @@ function Symbol(kind) {
             canvasContext.fillStyle = "#fff";
             canvasContext.fillStyle = this.fontColor;
             canvasContext.closePath();
-            canvasContext.save();
             canvasContext.clip();
             canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-            canvasContext.restore();
             if (this.key_type == 'Primary key') {
                 var linelenght = canvasContext.measureText(this.name).width;
                 canvasContext.beginPath(1);
@@ -708,7 +705,9 @@ function Symbol(kind) {
                 canvasContext.lineTo(x1 + ((x2 - x1) * 0.5) + (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
                 canvasContext.strokeStyle = this.strokeColor;
             }
+            canvasContext.restore();
         } else if (this.symbolkind == 3) {
+            canvasContext.save();
             canvasContext.font = "bold " + parseInt(textsize) + "px " + this.font;
             canvasContext.textAlign = "center";
             canvasContext.textBaseline = "middle";
@@ -727,8 +726,7 @@ function Symbol(kind) {
             canvasContext.lineTo(x1, y1);
             canvasContext.closePath();
             canvasContext.fill();
-           // makeShadow();
-            canvasContext.save();
+            makeShadow();
             canvasContext.clip();
             canvasContext.fillStyle = this.symbolColor;
             canvasContext.fill();
@@ -741,7 +739,6 @@ function Symbol(kind) {
             canvasContext.fillStyle = "#fff";
             canvasContext.fillStyle = this.fontColor;
             canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-            canvasContext.restore();
             canvasContext.font = parseInt(textsize) + "px " + this.font;
             canvasContext.fillStyle = "#fff";
             for (var i = 0; i < this.arity.length; i++) {
@@ -754,6 +751,7 @@ function Symbol(kind) {
             }
             canvasContext.restore();
         } else if (this.symbolkind == 4) {
+            canvasContext.save();
             // ER Attribute relationship is a single line
             if (this.key_type == "Forced") {
                 canvasContext.lineWidth = this.lineWidth;
@@ -799,7 +797,9 @@ function Symbol(kind) {
                 canvasContext.stroke();
                 canvasContext.strokeStyle = this.strokeColor;
             }
+            canvasContext.restore();
         } else if (this.symbolkind == 5) {
+            canvasContext.save();
             canvasContext.font = "bold " + parseInt(textsize) + "px " + this.font;
             canvasContext.textAlign = "center";
             canvasContext.textBaseline = "middle";
@@ -820,10 +820,9 @@ function Symbol(kind) {
             canvasContext.lineTo(x1, midy);
             canvasContext.lineTo(midx, y1);
             canvasContext.fillStyle = this.symbolColor;
+            makeShadow();
             canvasContext.fill();
-            //makeShadow();
             canvasContext.closePath();
-            canvasContext.save();
             canvasContext.clip();
 
             if (this.targeted) {

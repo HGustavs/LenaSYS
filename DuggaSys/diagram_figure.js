@@ -103,7 +103,7 @@ function Path() {
                 pseg = seg;
             }
             // Make either stroke or fill or both -- stroke always after fill
-            if (fillstate) {     
+            if (fillstate) {   
                 canvasContext.save();
                 canvasContext.shadowBlur = 10;
                 canvasContext.shadowOffsetX = 3;
@@ -118,7 +118,6 @@ function Path() {
             // Reset opacity so that following draw operations are unaffected
             canvasContext.globalAlpha = 1.0;
         }
-
     }
 
     //--------------------------------------------------------------------
