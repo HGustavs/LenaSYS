@@ -254,14 +254,9 @@ function mousedownevt(ev) {
             }
         }
     } else {
-        if(uimode == null){
-            uimode = "normal";
-        }
-        if(uidmode != "CreateFigure"){
-            md = 4;            // Box select or Create mode.
-            startMouseCoordinateX = currentMouseCoordinateX;
-            startMouseCoordinateY = currentMouseCoordinateY;
-        }
+        md = 4;            // Box select or Create mode.
+        startMouseCoordinateX = currentMouseCoordinateX;
+        startMouseCoordinateY = currentMouseCoordinateY;
     }
     if (lastSelectedObject >= 0) {
         if(uimode != "MoveAround") {
