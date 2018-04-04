@@ -108,8 +108,9 @@ function keyPressHandler(e){
     var key = e.keyCode;
     if(key == 32){
         //Use space for movearound
-        console.log("Spacebar pressed");
-        activateMovearound();
+        if(uimode != "MoveAround"){
+            activateMovearound();
+        }
     }
 }
 
