@@ -101,7 +101,8 @@ function mousemoveevt(ev, t) {
                 }
             }
         }
-    } else if (figureType == "Free"){
+    }
+    if (figureType == "Free"){
         canvasContext.setLineDash([3, 3]);
         canvasContext.beginPath(1);
         canvasContext.moveTo(p1.x, p1.y);
