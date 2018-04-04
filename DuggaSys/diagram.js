@@ -98,9 +98,11 @@ function keyDownHandler(e){
     var key = e.keyCode;
     //Delete selected objects when del key is pressed down.
     if(key == 46 || key == 8){
+        console.log("Delete");
         eraseSelectedObject();
     } else if(key == 32){
         //Use space for movearound
+        console.log("Spacebar pressed");
         if(uimode != "MoveAround"){
             activateMovearound();
         }else{
