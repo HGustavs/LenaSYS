@@ -54,7 +54,7 @@
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap">
                     <div class="application-header">
-                        <div id="toolbar-minimize" class="toolboxMaximized" onclick="toggleToolboxMinimize();">
+                        <div id="toolbar-minimize" class="toolbarMaximized" onclick="toggleToolbarMinimize();">
                             <img class="minimizeArrow" src="../Shared/icons/arrow.svg">
                         </div>
                         <h3>Toolbar</h3>
@@ -64,7 +64,7 @@
                         <div class="toolbar-drawer">
                             <div class="tooltipdialog">
                                 <button id='linebutton' onclick='lineMode();' class='buttonsStyle unpressed' data="Create Line">
-                                    <img  src="../Shared/icons/diagram_create_line.svg">
+                                    <img src="../Shared/icons/diagram_create_line.svg">
                                 </button>
                             </div>
                         </div>

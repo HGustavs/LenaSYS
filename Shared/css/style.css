@@ -1042,17 +1042,18 @@ input {
   display: inline-block;
   width: 10px;
   height: 10px;
-  left: 10px;
-  top: 2px;
+  left: 15px;
+  top: 6px;
+  cursor:pointer;
 }
-.minimize{
+.minimizeArrow{
     filter:invert(100%);
 }
-.toolboxMinimized{
-    transform: rotate(180deg);
-}
-.toolboxMaximized{
+.toolbarMinimized{
     transform: rotate(90deg);
+}
+.toolbarMaximized{
+    transform: rotate(180deg);
 }
 
 /* --------------================################================-------------- *

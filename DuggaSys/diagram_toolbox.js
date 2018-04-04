@@ -7,13 +7,13 @@ function initToolbox(){
     //element.style.height = (400+"px");
 }
 
-function toggleToolboxMinimize(){
+function toggleToolbarMinimize(){
     if($("#toolbar-minimize").hasClass("toolboxMaximized")){
         $(".application-toolbar").hide();
         $("#toolbar-minimize").removeClass("toolboxMaximized").addClass("toolboxMinimized");
     }else{
-      $(".application-toolbar").show();
-      $("#toolbar-minimize").removeClass("toolboxMinimized").addClass("toolboxMaximized");
+        $(".application-toolbar").show();
+        $("#toolbar-minimize").removeClass("toolboxMinimized").addClass("toolboxMaximized");
     }
 }
 
