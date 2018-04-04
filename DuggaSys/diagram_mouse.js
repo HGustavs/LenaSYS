@@ -472,10 +472,12 @@ function movemode(e, t) {
 }
 
 function activateMovearound(){
+    console.log("activateMovearound");
    movemode();
 }
 
 function deactivateMovearound(){
+    console.log("deactivateMovearound");
     movemode();
 }
 
