@@ -104,6 +104,7 @@ function mousemoveevt(ev, t) {
     }
     if (figureType == "Free"){
         if(p2 != null) {
+            console.log("freedraw");
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath();
             canvasContext.moveTo(p2.x, p2.y);
