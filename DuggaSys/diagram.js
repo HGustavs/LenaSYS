@@ -110,6 +110,7 @@ function keyPressHandler(e){
         //Use space for movearound
         if(uimode != "MoveAround"){
             activateMovearound();
+            updateGraphics();
         }
     }
 }
@@ -120,6 +121,7 @@ function keyUpHandler(e){
         //Use space for movearound
         console.log("Spacebar up");
         deactivateMovearound();
+        updateGraphics();
     }
 }
 
