@@ -472,22 +472,11 @@ function movemode(e, t) {
 }
 
 function activateMovearound(){
-    uimode = "MoveAround";
-    canvas.style.cursor = "all-scroll";
-    canvas.addEventListener('mousedown', getMousePos, false);
-    canvas.addEventListener('mouseup', mouseupcanvas, false);
+   movemode();
 }
 
 function deactivateMovearound(){
-    canvas.addEventListener('dblclick', doubleclick, false);
-    mousedownX = 0; mousedownY = 0;
-    mousemoveX = 0; mousemoveY = 0;
-    mouseDiffX = 0; mouseDiffY = 0;
-    canvas.style.cursor = "default";
-    canvas.removeEventListener('mousedown', getMousePos, false);
-    canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
-    canvas.removeEventListener('mouseup', mouseupcanvas, false);
-    uimode = "normal";
+    movemode();
 }
 
 function getMousePos(e) {
