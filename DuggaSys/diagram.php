@@ -53,13 +53,18 @@
         <div id="buttonDiv">
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap">
-                    <h3 class="application-header">Toolbar</h3>
+                    <div class="application-header">
+                        <div id="toolbar-minimize" style="position: absolute left: 10px; top: 5px;">
+                            <img src="../Shared/icons/arrow.svg" style="width:15px; height:15px;/* position: absolute; */">
+                        </div>
+                        <h3>Toolbar</h3>
+                    </div>
                     <div class='application-toolbar'>
                         <h4 class="label">Tools</h4>
                         <div class="toolbar-drawer">
                             <div class="tooltipdialog">
                                 <button id='linebutton' onclick='lineMode();' class='buttonsStyle unpressed' data="Create Line">
-                                    <img src="../Shared/icons/diagram_create_line.svg">
+                                    <img class="minimizeArrow" src="../Shared/icons/diagram_create_line.svg">
                                 </button>
                             </div>
                         </div>
@@ -119,8 +124,8 @@
                         <div class="drop-down-item">
                             <a href="#" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
                         </div>
-                        <div class="drop-down-item"> 
-                            <a href="#" id="picid">Export Picture</a> 
+                        <div class="drop-down-item">
+                            <a href="#" id="picid">Export Picture</a>
                         </div>
                         <div class="drop-down-divider">
 
@@ -295,7 +300,7 @@
             //<script type="text/javascript" src="diagram_IOHandler.js"></script>
         }
 
-    
+
     ?>
 </body>
 </html>
