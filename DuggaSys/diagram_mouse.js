@@ -254,6 +254,9 @@ function mousedownevt(ev) {
             }
         }
     } else {
+        if(uimode == null){
+            uimode = "normal";
+        }
         if(uidmode != "CreateFigure"){
             md = 4;            // Box select or Create mode.
             startMouseCoordinateX = currentMouseCoordinateX;
