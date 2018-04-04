@@ -1,5 +1,5 @@
 <?php
 
-		echo $_GET['prev'];
+		echo $_GET['hej hej'];
 
 ?>
