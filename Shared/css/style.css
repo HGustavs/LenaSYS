@@ -1049,6 +1049,9 @@ input {
  .document-settings{
      font-size:14px;
  }
+ .export-drop-down{
+     display:none;
+ }
  .document-settings > .menu-item, .document-settings > .menu-drop-down{
      float:left;
  }
@@ -1065,7 +1068,10 @@ input {
  .document-settings > .menu-drop-down:hover > .drop-down{
      display:inline-block;
  }
- .drop-down{
+ .document-settings > .menu-drop-down > .drop-down > .export-drop-down-head:hover > .export-drop-down{
+     display:inline-block;
+ }
+ .drop-down, .export-drop-down{
      position:absolute;
      z-index:2000;
      outline:1px solid rgb(240,240,240);
@@ -1074,7 +1080,11 @@ input {
      width:260px;
      background-color:rgb(255,255,255);
  }
- .menu-drop-drown{
+ .export-drop-down{
+     left:260px;
+     top:109px;
+ }
+ .menu-drop-drown, .export-drop-down-head{
      display:relative;
      top:22px;
  }
@@ -1085,10 +1095,9 @@ input {
      border-bottom:1px solid rgb(240,240,240);
      margin-bottom:6px;
  }
- .drop-down-item > a{
+ .drop-down-item > a, .export-drop-down-item > a{
      color:rgb(0,0,0);
      text-decoration:none;
-
      display:inline-block;
      width:252px;
      height:16px;
@@ -1096,14 +1105,14 @@ input {
      padding: 8px 0px 8px 8px;
  }
 
- .drop-down-item > a::before{
+ .drop-down-item > a::before, .export-drop-down-item > a::before{
      /*PLACEHOLDER FOR ICON*/
      display:inline-block;
      width:16px;
      height:16px;
      content:"I";
  }
- .drop-down-item:hover{
+ .drop-down-item:hover, .export-drop-down-item:hover{
      background-color:rgb(240,240,240);
  }
 
