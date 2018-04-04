@@ -112,7 +112,7 @@ if ($course != "UNK" && $vers != "UNK") {
 
   $moments = array();
 // Get parts and duggas.
-  $querystring = "SELECT listentries.entryname, listentries.kind, quiz.deadline, quiz.id FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid=2 AND listentries.vers=97732 AND listentries.visible=1 ORDER BY pos;";
+  $querystring = "SELECT listentries.entryname, listentries.kind, quiz.deadline, quiz.id FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid=:cid AND listentries.vers=:vers AND listentries.visible=1 ORDER BY pos;";
   $stmt = $pdo->prepare($querystring);
   $stmt->bindParam(':cid', $course);
   $stmt->bindParam(':vers', $vers);
