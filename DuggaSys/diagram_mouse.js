@@ -453,7 +453,6 @@ function movemode(e, t) {
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
-
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
         canvas.addEventListener('mousedown', getMousePos, false);
@@ -470,6 +469,25 @@ function movemode(e, t) {
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
         uimode = "normal";
     }
+}
+
+function activateMovearound(){
+    uimode = "MoveAround";
+    canvas.style.cursor = "all-scroll";
+    canvas.addEventListener('mousedown', getMousePos, false);
+    canvas.addEventListener('mouseup', mouseupcanvas, false);
+}
+
+function deactivateMovearound(){
+    canvas.addEventListener('dblclick', doubleclick, false);
+    mousedownX = 0; mousedownY = 0;
+    mousemoveX = 0; mousemoveY = 0;
+    mouseDiffX = 0; mouseDiffY = 0;
+    canvas.style.cursor = "default";
+    canvas.removeEventListener('mousedown', getMousePos, false);
+    canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
+    canvas.removeEventListener('mouseup', mouseupcanvas, false);
+    uimode = "normal";
 }
 
 function getMousePos(e) {

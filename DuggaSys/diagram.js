@@ -92,12 +92,20 @@ var diagramCode = "";                   // Is used to stringfy the diagram-array
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler, false);
+//window.addEventListener("keyup", this.keyUpHandler, false);
 
 function keyDownHandler(e){
     var key = e.keyCode;
     //Delete selected objects when del key is pressed down.
-    if(key == 46){
+    if(key == 46 || key == 8){
         eraseSelectedObject();
+    } else if(key == 32){
+        //Use space for movearound
+        if(uimode != "MoveAround"){
+            activateMovearound();
+        }else{
+            deactivateMovearound();
+        }
     }
 }
 
