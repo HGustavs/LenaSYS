@@ -570,9 +570,9 @@ function initializeCanvas() {
     }
     getUploads();
     // generateExampleCode();
-    updateGraphics();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
+    updateGraphics();
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
