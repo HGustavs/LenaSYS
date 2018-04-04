@@ -93,11 +93,8 @@ var diagramCode = "";                   // Is used to stringfy the diagram-array
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler, false);
 
-
-
 function keyDownHandler(e){
     var key = e.keyCode;
-    console.log("keydown");
     if(key == 46 || key == 8){
         eraseSelectedObject();
     } else if(key == 32){
