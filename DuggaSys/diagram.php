@@ -192,10 +192,10 @@
                     <span class="label">Help</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <div class="drop-down"><a href="#">Spacebar</a></div>
+                            <a href="#">Spacebar</a>
                         </div>
                         <div class="drop-down-item">
-                            <div class="drop-down"><a href="#">Ctrl</a></div>
+                            <a href="#">Ctrl</a>
                         </div>
                     </div>
                 </div>
