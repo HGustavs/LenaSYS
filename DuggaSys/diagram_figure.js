@@ -88,6 +88,14 @@ function Path() {
             canvasContext.globalAlpha = this.Opacity;
             canvasContext.lineWidth = this.linewidth;
 
+            canvasContext.save();
+            canvasContext.shadowBlur = 10;
+            canvasContext.shadowOffsetX = 3;
+            canvasContext.shadowOffsetY = 6;
+            canvasContext.shadowColor = "rgba(0, 0, 0, 0.3)";
+            canvasContext.fill();
+            canvasContext.restore();
+
             canvasContext.beginPath();
             var pseg = this.segments[0];
             canvasContext.moveTo(points[pseg.pa].x, points[pseg.pa].y);
@@ -111,11 +119,6 @@ function Path() {
             }
             // Reset opacity so that following draw operations are unaffected
             canvasContext.globalAlpha = 1.0;
-            canvasContext.save();
-            canvasContext.shadowBlur = 10;
-            canvasContext.shadowColor = "#000";
-            canvasContext.fill();
-            canvasContext.restore();
         }
     }
 

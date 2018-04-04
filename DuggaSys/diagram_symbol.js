@@ -24,6 +24,10 @@ function Symbol(kind) {
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
+    this.shadowBlur = 10;
+    this.shadowOffsetX = 3;
+    this.shadowOffsetY = 6;
+    this.shadowColor = "rgba(0, 0, 0, 0.3)";
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -672,11 +676,8 @@ function Symbol(kind) {
             canvasContext.textBaseline = "middle";
             drawOval(x1, y1, x2, y2);
             canvasContext.fillStyle = this.symbolColor;
-            canvasContext.save();
-            canvasContext.shadowBlur = 10;
-            canvasContext.shadowColor = "#000";
             canvasContext.fill();
-            canvasContext.restore();
+ /**/           //makeShadow();
             if (this.targeted) {
                 canvasContext.strokeStyle = "#F82";
             } else {
@@ -724,11 +725,8 @@ function Symbol(kind) {
             canvasContext.lineTo(x1, y2);
             canvasContext.lineTo(x1, y1);
             canvasContext.closePath();
-            canvasContext.save();
-            canvasContext.shadowBlur = 10;
-            canvasContext.shadowColor = "#000";
             canvasContext.fill();
-            canvasContext.restore();
+/**/        //makeShadow();
             canvasContext.save();
             canvasContext.clip();
             canvasContext.fillStyle = this.symbolColor;
@@ -821,11 +819,8 @@ function Symbol(kind) {
             canvasContext.lineTo(x1, midy);
             canvasContext.lineTo(midx, y1);
             canvasContext.fillStyle = this.symbolColor;
-            canvasContext.save();
-            canvasContext.shadowBlur = 10;
-            canvasContext.shadowColor = "#000";
             canvasContext.fill();
-            canvasContext.restore();
+            //makeShadow();
             canvasContext.closePath();
             canvasContext.save();
             canvasContext.clip();
@@ -843,6 +838,16 @@ function Symbol(kind) {
         }
         canvasContext.setLineDash([]);
     }
+}
+
+function makeShadow(){
+    canvasContext.save();
+    canvasContext.shadowBlur = this.shadowBlur;
+    canvasContext.shadowOffsetX = this.shadowOffsetX;
+    canvasContext.shadowOffsetY = this.shadowOffsetY;
+    canvasContext.shadowColor = this.shadowColor;
+    canvasContext.fill();
+    canvasContext.restore();
 }
 
 this.drawOval = function (x1, y1, x2, y2) {
