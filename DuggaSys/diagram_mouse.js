@@ -107,7 +107,6 @@ function mousemoveevt(ev, t) {
     // Draw select or create dotted box
     if (figureType == "Free" && uimode == "CreateFigure"){
         if(p2 != null) {
-            console.log("freedraw");
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath();
             canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);

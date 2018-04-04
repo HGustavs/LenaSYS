@@ -427,8 +427,6 @@ function figureSquare() {
 function cleanUp() {
     figurePath = new Path;
     startPosition = null;
-    uimode = null;
-    figureType = null;
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
 }
