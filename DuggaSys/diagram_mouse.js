@@ -453,12 +453,13 @@ function movemode(e, t) {
     var buttonStyle = document.getElementById("moveButton");
     canvas.removeEventListener("dblclick", doubleclick, false);
     if (button == "unpressed") {
-
+        buttonStyle.style.visibility = 'visible';
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
         canvas.addEventListener('mousedown', getMousePos, false);
         canvas.addEventListener('mouseup', mouseupcanvas, false);
     } else {
+        buttonStyle.style.visibility = 'hidden';
 		buttonStyle.className = "unpressed";
         canvas.addEventListener('dblclick', doubleclick, false);
         mousedownX = 0; mousedownY = 0;
@@ -470,6 +471,14 @@ function movemode(e, t) {
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
         uimode = "normal";
     }
+}
+
+function activateMovearound(){
+   movemode();
+}
+
+function deactivateMovearound(){
+    movemode();
 }
 
 function getMousePos(e) {

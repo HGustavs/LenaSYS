@@ -91,13 +91,23 @@ var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 
 //this block of the code is used to handel keyboard input;
-window.addEventListener("keydown", this.keyDownHandler, false);
+window.addEventListener("keypress", this.keyPressHandler, false);
 
-function keyDownHandler(e){
+
+
+function keyPressHandler(e){
     var key = e.keyCode;
-    //Delete selected objects when del key is pressed down.
-    if(key == 46){
+    if(key == 46 || key == 8){
+        console.log("Delete");
         eraseSelectedObject();
+    } else if(key == 32){
+        //Use space for movearound
+        if(uimode != "MoveAround"){
+            activateMovearound();
+        } else{
+            deactivateMovearound();
+        }
+        updateGraphics();
     }
 }
 
@@ -560,8 +570,9 @@ function initializeCanvas() {
     }
     getUploads();
     // generateExampleCode();
-    updateGraphics();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
+    document.getElementById("moveButton").style.visibility = 'hidden';
+    updateGraphics();
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
