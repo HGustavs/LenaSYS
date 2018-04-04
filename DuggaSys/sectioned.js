@@ -383,11 +383,11 @@ function changedType()
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 	function confirmBox(temp)
-	{	
+	{
 		if (temp == 1 || temp == 2 || temp == 3){
 	        decider = temp;
 	        $("#sectionConfirmBox").css("display","flex");
-	    }    
+	    }
 	    else if(temp == 4){
 	    	console.log(decider);
 	    	if (decider == 1){
@@ -944,7 +944,7 @@ function returnedSection(data)
 				}else if (parseInt(item['kind']) == 1) {		// Section
 					str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span class='ellipsis'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></div>";
 				}else if (parseInt(item['kind']) == 4) {		// Moment
-          str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span class='ellipsis'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></div>";
+          str+="<div><div class='ellipsis nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></div>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"' title='"+item['entryname']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {		// Dugga
