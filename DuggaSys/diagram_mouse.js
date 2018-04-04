@@ -105,15 +105,13 @@ function mousemoveevt(ev, t) {
     if (figureType == "Free"){
         if(p2 != null) {
             canvasContext.setLineDash([3, 3]);
-            canvasContext.beginPath(1);
+            canvasContext.beginPath();
             canvasContext.moveTo(p2.x, p2.y);
             canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.strokeStyle = "#000";
             canvasContext.stroke();
             canvasContext.setLineDash([]);
-            canvasContext.closePath(1);
         }
-
     }
     diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     updateGraphics();
