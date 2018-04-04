@@ -110,7 +110,7 @@ function mousemoveevt(ev, t) {
             console.log("freedraw");
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath();
-            canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
+            canvasContext.moveTo(p2.x, p2.y);
             canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.strokeStyle = "#000";
             canvasContext.stroke();
