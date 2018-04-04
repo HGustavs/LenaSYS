@@ -103,14 +103,17 @@ function mousemoveevt(ev, t) {
         }
     }
     if (figureType == "Free"){
-        canvasContext.setLineDash([3, 3]);
-        canvasContext.beginPath(1);
-        canvasContext.moveTo(p1.x, p1.y);
-        canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
-        canvasContext.strokeStyle = "#000";
-        canvasContext.stroke();
-        canvasContext.setLineDash([]);
-        canvasContext.closePath(1);
+        if(p2 != null) {
+            canvasContext.setLineDash([3, 3]);
+            canvasContext.beginPath(1);
+            canvasContext.moveTo(p2.x, p2.y);
+            canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
+            canvasContext.strokeStyle = "#000";
+            canvasContext.stroke();
+            canvasContext.setLineDash([]);
+            canvasContext.closePath(1);
+        }
+
     }
     diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     updateGraphics();
