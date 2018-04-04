@@ -171,7 +171,7 @@ if ($course != "UNK" && $vers != "UNK") {
 
   $userAnswers = array();
   if($userid != "UNK") {
-    $querystring = "SELECT * FROM userAnswer WHERE cid=:cid AND vers=:vers AND uid=:uid AND useranswer IS NOT NULL;";
+    $querystring = "SELECT grade, quiz, score FROM userAnswer WHERE cid=:cid AND vers=:vers AND uid=:uid AND useranswer IS NOT NULL;";
     $stmt = $pdo->prepare($querystring);
     $stmt->bindParam(':cid', $course);
     $stmt->bindParam(':vers', $vers);
