@@ -429,6 +429,7 @@ function cleanUp() {
     startPosition = null;
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
+    p2 = null;
 }
 
 function openInitialDialog() {
