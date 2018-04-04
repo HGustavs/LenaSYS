@@ -94,10 +94,8 @@ var diagramCode = "";                   // Is used to stringfy the diagram-array
 window.addEventListener("keydown", this.keyDownHandler, false);
 
 function keyDownHandler(e){
-    console.log("keyevent down");
     var key = e.keyCode;
     if(key == 46 || key == 8){
-        console.log("Delete");
         eraseSelectedObject();
     } else if(key == 32){
         //Use space for movearound
