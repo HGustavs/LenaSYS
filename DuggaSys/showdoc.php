@@ -383,6 +383,7 @@
 				$result = $query->execute();
 				if($row = $query->fetch(PDO::FETCH_ASSOC)){
 					if(file_exists ( $row['filename'])){
+
 					}else{
 						$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 					}
@@ -515,3 +516,33 @@
 				
 		}
 ?>
+<html>
+<body>
+<head>
+
+
+<div id='receiptBox' class="loginBoxContainer" style="display:none">
+    <div class="loginBox" style="max-width:400px;">
+        <div class='loginBoxheader'>
+            <h3>Kvitto - Duggasvar</h3>
+            <div class='cursorPointer' onclick="hideReceiptPopup()">x</div>
+        </div>
+        <div id='receiptInfo'></div>
+        <textarea id="receipt" autofocus readonly></textarea>
+        <div class="button-row">
+            <input type='button' class='submit-button'  onclick="showEmailPopup();" value='Save Receipt'>
+            <input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
+        </div>
+        <div id='emailPopup' style="display:none">
+            <div class='inputwrapper'><span>Ange din email:</span>
+                <input class='textinput' type='text' id='email' placeholder='Email' value=''/>
+            </div>
+            <div class="button-row">
+                <input type='button' class='submit-button'  onclick="sendReceiptEmail();" value='Send Email'>
+            </div>
+        </div>
+    </div>
+</div>
+</head>
+</body>
+</html>
