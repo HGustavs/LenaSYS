@@ -192,10 +192,10 @@
                     <span class="label">Help</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <a href="#">Spacebar</a>
+                            <div class="drop-down"><a href="#">Move grid</a></div>
                         </div>
                         <div class="drop-down-item">
-                            <a href="#">Ctrl</a>
+                            <a href="#" onclick="">Select multiple objects</a>
                         </div>
                     </div>
                 </div>
