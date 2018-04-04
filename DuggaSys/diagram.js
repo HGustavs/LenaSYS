@@ -572,6 +572,7 @@ function initializeCanvas() {
     // generateExampleCode();
     updateGraphics();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
+    document.getElementById("moveButton").style.visibility = 'hidden';
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
