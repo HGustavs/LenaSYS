@@ -141,7 +141,7 @@ function swimlaneDrawLanes() {
           }
       }
       if (moment['kind']==3){
-          duggaInfoArray.push("<b>" + moment['entryname'] + "</b><br> Start date: " + moment['qrelease'] + "<br> Deadline: " + moment['deadline']);
+          duggaInfoArray.push("<b>" + moment['entryname'] + "</b><br> Start date: " + moment['qrelease'] + "<br> Deadline: " + moment['deadline'] + "<br> Feedback: <br>" + moment['feedback']);
           str+="<td style='text-align:center;background-color:"+bgcol+"'><svg style='margin:0 5px 0 5px;' width='30' height='"+(70 * info['verslength'] ) + "'>";
           // The ---- that marks the release of a dugga
           str+="<line x1='5' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='25' y2='" + (30 + (moment['startweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
