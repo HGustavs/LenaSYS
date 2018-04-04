@@ -97,6 +97,7 @@ window.addEventListener("keypress", this.keyPressHandler, false);
 
 function keyPressHandler(e){
     var key = e.keyCode;
+    console.log("keydown");
     if(key == 46 || key == 8){
         eraseSelectedObject();
     } else if(key == 32){
