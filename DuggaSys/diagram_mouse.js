@@ -107,11 +107,16 @@ function mousemoveevt(ev, t) {
             console.log("freedraw");
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath();
-            canvasContext.moveTo(p2.x, p2.y);
+            canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
             canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.strokeStyle = "#000";
             canvasContext.stroke();
             canvasContext.setLineDash([]);
+            if (ghostingCrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossFillStyle = "rgba(255, 102, 68, 0.0)";
+            }
         }
     }
     diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
