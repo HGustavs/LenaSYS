@@ -682,7 +682,6 @@ function returnedSection(data)
         str+="<li class='access'><button class='submit-button menuButton access' onclick='closeWindows(); accessCourse();' title='Give students access to the selected version'>Access</button></li>";
         str+="<li class='files'><button class='submit-button menuButton files' onclick='closeWindows(); changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Show files'>Files</button></li>";
         str+="<li class='tests'><button class='submit-button menuButton tests' onclick='closeWindows(); changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Show tests'>Tests</button></li>";
-        str+="<li class='groups'><button class='submit-button menuButton groups' onclick='closeWindows(); changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Student groups page'>Groups</button></li>";
         str+="<li class='results'><button class='submit-button menuButton results' onclick='closeWindows(); changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Edit student results'>Results</button></li>";
         str+="</ul>";
         str+="</div";
@@ -695,6 +694,7 @@ function returnedSection(data)
         str+="<td class='tests menuButton' style='display: inline-block;'><div class='tests menuButton'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
         str+="<td class='files menuButton' style='display: inline-block;'><div class='files menuButton'><input type='button' value='Files' class='submit-button' title='Show files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
         str+="<td class='groups menuButton' style='display: inline-block;'><div class='groups menuButton'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+        str+="<td class='contribution menuButton' style='display: inline-block;'><div class='contribution menuButton'><input type='button' value='Contribution' class='submit-button' title='Access contribution page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
     }else{
 			// No version selector for students
 		}
