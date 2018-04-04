@@ -111,7 +111,7 @@ function swimlaneDrawLanes() {
         colspan++;
     }
   }
-  if(moments.length != 0) str+=colspan+"'>"+tmpname+"test</th>";
+  if(moments.length != 0) str+=colspan+"'>"+tmpname+"</th>";
   str+="</tr></thead><tbody><tr>";
   str+="<td><svg width='75' height='" + (70 * info['verslength'] ) + "'>";
   var id=0;
