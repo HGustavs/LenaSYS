@@ -150,22 +150,34 @@ function swimlaneDrawLanes() {
           // The O that marks the deadline of a dugga
           str+="<circle id='" + id + "' onmouseover='mouseOverCircle(this,\"" + duggaInfoArray[id++];
           str+="\")' onmouseout='mouseGoneFromCircle(this)' cx='15' cy='" + (30 + (moment['deadlineweek'] - 1) * 70);
-          str+="' r='10' stroke='rgb(83,166,84)'";
-          str+= "stroke-width='3'";
+          str+="' r='10' stroke='rgb(83,166,84)' stroke-width='3'";
 
+          var hasGrade = false;
           for(var m = 0; m < userResults.length; m++) {
-            if(moment['quizid'] === userResults[m]['quizid']) {
+            if(moment['quizid'] === userResults[m]['quizid'] && moment['kind'] == 3) {
+              console.log("---");
+              console.log(moment['quizid']);
+              console.log(userResults[m]['quizid']);
+              console.log(moment['kind']);
+              console.log("inside");
               var grade = userResults[m]['grade'];
               if(grade == 2) {
                   str+= "fill='rgb(0, 255, 0)'/>";
+                  hasGrade = true;
                   break;
               } else if(grade == 1) {
                 str+= "fill='rgb(255,0,0)'/>";
+                hasGrade = true;
+                break;
+              } else {
+                str+= "fill='rgb(255,255,0)'/>";
+                hasGrade = true;
                 break;
               }
             }
           }
-          if(userResults.length == 0) str+= "fill='rgb(146,125,156)'/>";
+          if(!hasGrade) str+= "fill='rgb(146,125,156)'/>";
+
           //str+="<line onmouseover='mouseOverLine(\"Current date:<br>" + info['thisdate'] + "\")' onmouseout='mouseGoneFromLine()' x1='250' y1='" + (100 + (info['thisweek'] - info['versstartweek']) * 70) + "' x2='" + ((info['numberofparts'] * 30) + 30) + "' y2='" + (100 + (info['thisweek'] - info['versstartweek']) * 70) + "' style='stroke:rgb(0,0,0); stroke-width:10; stroke-opacity:0;' /></svg>";
           str+="</svg></td>";
       }

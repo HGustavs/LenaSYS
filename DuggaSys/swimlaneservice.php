@@ -171,7 +171,7 @@ if ($course != "UNK" && $vers != "UNK") {
 
   $userAnswers = array();
   if($userid != "UNK") {
-    $querystring = "select * from userAnswer WHERE cid=:cid AND vers=:vers AND uid=:uid";
+    $querystring = "SELECT * FROM userAnswer WHERE cid=:cid AND vers=:vers AND uid=:uid AND score IS NOT NULL;";
     $stmt = $pdo->prepare($querystring);
     $stmt->bindParam(':cid', $course);
     $stmt->bindParam(':vers', $vers);
@@ -186,7 +186,8 @@ if ($course != "UNK" && $vers != "UNK") {
     foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
       $userAnswers[] = array(
         'grade' => $row['grade'],
-        'quizid' => $row['quiz']
+        'quizid' => $row['quiz'],
+        'score' => $row['score']
       );
     }
   }
