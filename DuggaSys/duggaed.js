@@ -293,7 +293,7 @@ function createDugga()
 function deleteDugga()
 {
     did=$("#did").val();
-    if(confirm("Do you really want to delete this dugga?")) AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+    AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
     $("#editDugga").css("display","none");
     //$("#overlay").css("display","none");
 }
