@@ -382,8 +382,7 @@ function changedType()
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-	function confirmBox(temp)
-	{
+	function confirmBox(temp){	
 		if (temp == 1 || temp == 2 || temp == 3){
 	        decider = temp;
 	        $("#sectionConfirmBox").css("display","flex");
@@ -693,6 +692,7 @@ function returnedSection(data)
         str+="<td class='results menuButton' style='display: inline-block;'><div class='results menuButton'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></div></td>";
         str+="<td class='tests menuButton' style='display: inline-block;'><div class='tests menuButton'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
         str+="<td class='files menuButton' style='display: inline-block;'><div class='files menuButton'><input type='button' value='Files' class='submit-button' title='Show files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+        str+="<td class='groups menuButton' style='display: inline-block;'><div class='groups menuButton'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
         str+="<td class='contribution menuButton' style='display: inline-block;'><div class='contribution menuButton'><input type='button' value='Contribution' class='submit-button' title='Access contribution page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
     }else{
 			// No version selector for students

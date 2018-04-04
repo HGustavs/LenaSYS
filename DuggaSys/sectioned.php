@@ -73,7 +73,7 @@ pdoConnect();
 
       <!-- Confirm Section Dialog START -->
       <div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
-             <div class='loginBox' style='width:460px;'>
+            <div class='loginBox' style='width:460px;'>
                   <div class='loginBoxheader'>
                         <h3>Confirm your update</h3>
                         <div class="cursorPointer" onclick='confirmBox(5);' title="Close window">x</div>
@@ -89,7 +89,7 @@ pdoConnect();
       </div>
       <!-- Confirm Edit Section Dialog END -->
 
-  <!-- New Version Dialog START -->
+      <!-- New Version Dialog START -->
 	<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
       		<div class='loginBoxheader'>

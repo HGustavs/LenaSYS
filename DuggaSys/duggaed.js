@@ -8,6 +8,7 @@ var querystring=parseGet();
 var filez;
 var variant = [];
 var submissionRow = 0;
+var decider;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -244,6 +245,30 @@ function closeEditVariant()
 {
 	$("#editVariant").css("display","none");
 }
+// Displaying and hidding the dynamic comfirmbox for the section edit dialog
+	function confirmBox(temp){	
+		if (temp == 1 || temp == 2 || temp == 3){
+			decider = temp;
+			$("#sectionConfirmBox").css("display","flex");
+		}else if(temp == 4){
+			console.log(decider);
+		    if (decider == 1){
+		    	deleteDugga();
+		    }
+		   	else if (decider == 2){
+		    	createDugga();
+		    }
+		    else if (decider == 3){
+		    	updateDugga();
+		    }
+		    $("#sectionConfirmBox").css("display","none");
+		    decider = 0;
+		}
+		else{
+		   	$("#sectionConfirmBox").css("display","none");
+		   	decider = 0;
+		}
+	}
 
 function createDugga()
 {
