@@ -91,9 +91,11 @@ var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 
 //this block of the code is used to handel keyboard input;
-window.addEventListener("keydown", this.keyDownHandler, false);
+window.addEventListener("keypress", this.keyPressHandler, false);
 
-function keyDownHandler(e){
+
+
+function keyPressHandler(e){
     var key = e.keyCode;
     if(key == 46 || key == 8){
         eraseSelectedObject();
