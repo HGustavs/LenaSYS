@@ -95,9 +95,16 @@ window.addEventListener("keydown", this.keyDownHandler, false);
 
 function keyDownHandler(e){
     var key = e.keyCode;
-    //Delete selected objects when del key is pressed down.
-    if(key == 46){
+    if(key == 46 || key == 8){
         eraseSelectedObject();
+    } else if(key == 32){
+        //Use space for movearound
+        if(uimode != "MoveAround"){
+            activateMovearound();
+        } else{
+            deactivateMovearound();
+        }
+        updateGraphics();
     }
 }
 
@@ -560,8 +567,9 @@ function initializeCanvas() {
     }
     getUploads();
     // generateExampleCode();
-    updateGraphics();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
+    document.getElementById("moveButton").style.visibility = 'hidden';
+    updateGraphics();
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);

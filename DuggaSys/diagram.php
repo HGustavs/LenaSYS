@@ -121,11 +121,18 @@
                         <div class="drop-down-item">
                             <a href="#" id="buttonid" value='getImage'>Import</a>
                         </div>
-                        <div class="drop-down-item">
-                            <a href="#" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
-                        </div>
-                        <div class="drop-down-item">
-                            <a href="#" id="picid">Export Picture</a>
+
+                        <div class="drop-down-item export-drop-down-head">
+                            <a href="#" id="exportid">Export...</a>
+
+                            <div class="export-drop-down">
+                                <div class="export-drop-down-item">
+                                    <a href="#" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
+                                </div>
+                                <div class="export-drop-down-item">
+                                    <a href="#" id="picid">Export Picture</a>
+                                </div>
+                            </div>
                         </div>
                         <div class="drop-down-divider">
 
@@ -201,7 +208,7 @@
             <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
             <div class="tooltipdialog">
-                <button id='moveButton' class='unpressed' title="Move Around">
+                <button id='moveButton' class='unpressed' title="Move Around" style="visibility:hidden">
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button>
             </div>
