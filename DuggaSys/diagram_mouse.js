@@ -105,7 +105,7 @@ function mousemoveevt(ev, t) {
     diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     updateGraphics();
     // Draw select or create dotted box
-    if (figureType == "Free" && uimode == "CreateFigure" && md != 4){
+    if (figureType == "Free" && uimode == "CreateFigure"){
         if(p2 != null) {
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath();
@@ -200,7 +200,7 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
-        } else {
+        } else if(uimode != "CreateFigure"){
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath(1);
             canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
