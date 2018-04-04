@@ -2,6 +2,9 @@ var querystring=parseGet();
 var retdata;
 var newversid;
 
+var sectionIDcounter = 0;
+var hideElements = [];
+
 AJAXService("get",{},"SECTION");
 
 //----------------------------------------
@@ -724,7 +727,8 @@ function returnedSection(data)
 				}else if(parseInt(item['kind']) === 2){
 					str += "<div class='code' style='display:block'>";
 				}else if(parseInt(item['kind']) === 3){
-					str += "<div class='test' style='display:block'>";
+					str += "<div id='test" + sectionIDcounter + "' class='test' style='display:block'>";
+					sectionIDcounter++;
 				}else if(parseInt(item['kind']) === 4){
 					str += "<div class='moment' style='display:block'>";
 				}else if(parseInt(item['kind']) === 5){
@@ -1132,6 +1136,25 @@ $(document).on('click', '.moment, .section', function () {
 	$(this).nextUntil('.moment, .section').slideToggle('fast', setGlobalArrowWhenSingleMomentIsActivated());
 	$(this).children('.arrowRight').toggle();
 	$(this).children('.arrowComp').toggle();
+
+	$(this).nextUntil('.moment, .section').each(function() {
+		var exists = false;
+		for(var i = 0; i < hideElements.length; i++) {
+			if(this.id == hideElements[i]) {
+				exists = true;
+				delete hideElements[i];
+				break;
+			}
+		}
+		if(!exists) {
+			hideElements.push(this.id);
+		}
+	});
+
+	// console.clear();
+	// for(var i = 0; i < hideElements.length; i++) {
+	// 	console.log(hideElements[i]);
+	// }
 });
 
 // This part should check if there are any un/folded section when a moment has been clicked
