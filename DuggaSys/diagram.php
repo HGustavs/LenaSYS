@@ -196,7 +196,7 @@
             <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
             <div class="tooltipdialog">
-                <button id='moveButton' class='unpressed' title="Move Around">
+                <button id='moveButton' class='unpressed' title="Move Around" style_"display:none">
                     <img src="../Shared/icons/diagram_move_arrows.svg">
                 </button>
             </div>
