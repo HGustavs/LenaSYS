@@ -996,13 +996,13 @@ input {
  /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
 
 #diagram-toolbar{
-    height:500px;
     width:125px;
 }
 .application-toolbar-wrap{
     position:fixed;
     z-index:1000;
     display:block;
+    padding-bottom:5px;
 
     border:1px solid rgb(200,200,200);
     outline:1px solid rgb(240,240,240);
@@ -1013,7 +1013,6 @@ input {
     background-color: #614875;
     color:#fff;
     vertical-align: bottom;
-    padding-left: 10px;
     cursor: move;
     display: flex;
     justify-content: space-around;
@@ -1038,18 +1037,22 @@ input {
     margin-bottom:0px;
     padding:0px 4px 0px 4px;
 }
-
 #toolbar-minimize{
-  position:absolute;
+  position: absolute;
   display: inline-block;
-  width:15px;
-  height:15px;
-  left:10px;
-  top:5px;
+  width: 10px;
+  height: 10px;
+  left: 10px;
+  top: 2px;
 }
-
-.minimizeArrow{
-  transform: rotate(180deg);
+.minimize{
+    filter:invert(100%);
+}
+.toolboxMinimized{
+    transform: rotate(180deg);
+}
+.toolboxMaximized{
+    transform: rotate(90deg);
 }
 
 /* --------------================################================-------------- *
