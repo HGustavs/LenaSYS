@@ -254,9 +254,11 @@ function mousedownevt(ev) {
             }
         }
     } else {
-        md = 4;            // Box select or Create mode.
-        startMouseCoordinateX = currentMouseCoordinateX;
-        startMouseCoordinateY = currentMouseCoordinateY;
+        if(uidmode != "CreateFigure"){
+            md = 4;            // Box select or Create mode.
+            startMouseCoordinateX = currentMouseCoordinateX;
+            startMouseCoordinateY = currentMouseCoordinateY;
+        }
     }
     if (lastSelectedObject >= 0) {
         if(uimode != "MoveAround") {
