@@ -103,11 +103,16 @@ function keyDownHandler(e){
     } else if(key == 32){
         //Use space for movearound
         console.log("Spacebar pressed");
-        if(uimode != "MoveAround"){
-            activateMovearound();
-        }else{
-            deactivateMovearound();
-        }
+        activateMovearound();
+    }
+}
+
+function keyUpHandler(e){
+    var key = e.keyCode;
+    if(key == 32){
+        //Use space for movearound
+        console.log("Spacebar up");
+        deactivateMovearound();
     }
 }
 
