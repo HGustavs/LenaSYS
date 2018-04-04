@@ -54,8 +54,8 @@
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap">
                     <div class="application-header">
-                        <div id="toolbar-minimize" class="toolbarMaximized" onclick="toggleToolbarMinimize();">
-                            <img class="minimizeArrow" src="../Shared/icons/arrow.svg">
+                        <div id="toolbar-minimize"  onclick="toggleToolbarMinimize();">
+                            <img id="minimizeArrow" class="toolbarMaximized" src="../Shared/icons/arrow.svg">
                         </div>
                         <h3>Toolbar</h3>
                     </div>

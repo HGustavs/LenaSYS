@@ -1046,7 +1046,7 @@ input {
   top: 6px;
   cursor:pointer;
 }
-.minimizeArrow{
+#minimizeArrow{
     filter:invert(100%);
 }
 .toolbarMinimized{

@@ -8,15 +8,12 @@ function initToolbox(){
 }
 
 function toggleToolbarMinimize(){
-  console.log("Jag var här");
-    if($("#toolbar-minimize").hasClass("toolbarMaximized")){
-      console.log("Tjooooo");
+    if($("#minimizeArrow").hasClass("toolbarMaximized")){
         $(".application-toolbar").hide();
-        $("#toolbar-minimize").removeClass("toolbarMaximized").addClass("toolbarMinimized");
+        $("#minimizeArrow").removeClass("toolbarMaximized").addClass("toolbarMinimized");
     }else{
-      console.log("byeee");
         $(".application-toolbar").show();
-        $("#toolbar-minimize").removeClass("toolbarMinimized").addClass("toolbarMaximized");
+        $("#minimizeArrow").removeClass("toolbarMinimized").addClass("toolbarMaximized");
     }
 }
 
