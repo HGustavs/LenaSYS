@@ -33,8 +33,8 @@
             $(".drop-down-item").click(function(){
             $("a").slideUp(); });
 
-            $(".drop-down-item").click(function(){
-            $("a").slideDown(); });
+            //$(".drop-down-item").click(function(){
+            //$("a").slideDown(); });
 
             window.addEventListener('keypress', clickEnterOnDialogMenu);
         });
@@ -192,10 +192,10 @@
                     <span class="label">Help</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <a href="#">Move grid: BLABLABLABLABLABLABLA</a>
+                            <a href="#">Move grid</a>
                         </div>
                         <div class="drop-down-item">
-                            <a href="#">Select multiple objects: BLABLABLABLABLABLABLA</a>
+                            <a href="#">Select multiple objects</a>
                         </div>
                     </div>
                 </div>
