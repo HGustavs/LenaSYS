@@ -192,7 +192,7 @@
                     <span class="label">Help</span>
                     <div class="drop-down">
                         <div class="drop-down-text">
-                            <a href="#" id="Space">Move grid<div id="Space"><i>Blankspace</i></div></a>
+                            <a href="#" id="Space">Move grid</a><div id="Space"><i>Blankspace</i></div>
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-text">
