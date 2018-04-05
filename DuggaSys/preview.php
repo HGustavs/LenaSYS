@@ -458,9 +458,7 @@ if($hr){
         //$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 2!</div>";
     }
 }else{
-<<<<<<< HEAD
     $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 3!</div>";
-=======
     //$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 3!</div>";
 //A small textarea, will change its place
     echo "<div class ='err'><textarea name='comment' rows='40' cols='40'></textarea></div>";
@@ -470,7 +468,6 @@ if($hr){
     echo "<input type='submit'
         <input type='text'   name='field'  /><br>";
         echo "</form>";
->>>>>>> 88c7e5b9144be9c0f9575081626cc9b9a4ed10ef
     }
 
 if(!$readfile){
