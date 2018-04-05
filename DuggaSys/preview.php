@@ -526,7 +526,8 @@ if(!$readfile){
 
     //A small textarea, will change its place
     echo "<div class ='err'><textarea name='comment' rows='20' cols='60'> Coming soon..... bam bam bam...... Some markdown code!! :D </textarea></div>";
-    //Thw button is linked to showdoc, when pushed the page will change
+    //The button is linked to showdoc, when pushed the preview window (not implemented) will update.
+    //We also need a button for help (?), when pressed the user should get a window with a simple guide or som commands 
     echo "<form action='showdoc.php'; method='post'>";
     echo "Update or something (is now linked to showdoc). We also need a help thing    ";
     echo "<input type='submit'
