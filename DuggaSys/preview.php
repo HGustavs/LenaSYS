@@ -458,6 +458,7 @@ if($hr){
         $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 2!</div>";
     }
 }else{
+    $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 3!</div>";
 //A small textarea, will change its place
     echo "<div class ='err'><textarea name='comment' rows='50' cols='60'></textarea></div>";
     echo "<form action='showdoc.php'; method='post'>";
@@ -465,8 +466,7 @@ if($hr){
     echo "<input type='submit'
         <input type='text'   name='field'  /><br>";
         echo "</form>";
-    $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 3!</div>";
-}
+    }
 
 if(!$readfile){
     if($hdrs=="none"){
