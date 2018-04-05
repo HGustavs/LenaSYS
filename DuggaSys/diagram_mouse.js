@@ -106,7 +106,7 @@ function mousemoveevt(ev, t) {
     updateGraphics();
     // Draw select or create dotted box
     if (figureType == "Free" && uimode == "CreateFigure"){
-        if(p2 != null) {
+        if(p2 != null && isFirstPoint) {
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath();
             canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
@@ -222,7 +222,6 @@ function mousemoveevt(ev, t) {
 }
 
 function mousedownevt(ev) {
-    console.log(uimode);
     if (uimode == "CreateLine") {
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
@@ -254,7 +253,9 @@ function mousedownevt(ev) {
             }
         }
     } else {
-        md = 4;            // Box select or Create mode.
+        if(uimode != "CreateFigure"){
+            md = 4;            // Box select or Create mode.
+        }
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
     }
