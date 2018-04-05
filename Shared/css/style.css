@@ -1109,7 +1109,6 @@ input {
  .drop-down-text > a {
      color:rgb(0,0,0);
      text-decoration:none;
-
      display:inline-block;
      width:400px;
      height:16px;
@@ -1125,7 +1124,7 @@ input {
      content:"I";
  }
 
- .drop-down-item:hover{
+ .drop-down-text:hover{
      background-color:rgb(240,240,240);
  }
 
