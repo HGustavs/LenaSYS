@@ -4,12 +4,13 @@ var newversid;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
-	// idCounter is used to give elements unique ids. This might? brake because
-	// an element is not guaranteed to recieve the same id every time, i.e. if
-	// new elements are added.
+	// The id counters are used to give elements unique ids. This might? brake
+	// because an element is not guaranteed to recieve the same id every time,
+	// i.e. if new elements are added.
 	idCounter:0,
+	arrowIdCounter:0,
 	hiddenElements:[], // Stores the id of elements that should be hidden.
-	arrowIcons:[] // Stores which arrows need to be toggled.
+	arrowIcons:[] // Stores which arrows whose state needs to be remembered.
 }
 
 AJAXService("get",{},"SECTION");
@@ -728,17 +729,17 @@ function returnedSection(data)
 
 				// Separating sections into different classes
 				if(parseInt(item['kind']) === 0){
-					str += "<div  id='header" + menuState.idCounter + "' class='header' style='display:block'>";
+					str += "<div  id='header" + menuState.idCounter + data.coursecode + "' class='header' style='display:block'>";
 				}else if(parseInt(item['kind']) === 1){
-					str += "<div id='section" + menuState.idCounter + "'  class='section' style='display:block'>";
+					str += "<div id='section" + menuState.idCounter + data.coursecode + "'  class='section' style='display:block'>";
 				}else if(parseInt(item['kind']) === 2){
-					str += "<div id='code" + menuState.idCounter + "' class='code' style='display:block'>";
+					str += "<div id='code" + menuState.idCounter + data.coursecode + "' class='code' style='display:block'>";
 				}else if(parseInt(item['kind']) === 3){
-					str += "<div id='test" + menuState.idCounter + "' class='test' style='display:block'>";
+					str += "<div id='test" + menuState.idCounter + data.coursecode + "' class='test' style='display:block'>";
 				}else if(parseInt(item['kind']) === 4){
 					str += "<div class='moment' style='display:block'>";
 				}else if(parseInt(item['kind']) === 5){
-					str += "<div  id='link" + menuState.idCounter + "' class='link' style='display:block'>";
+					str += "<div  id='link" + menuState.idCounter + data.coursecode + "' class='link' style='display:block'>";
 				}
 				menuState.idCounter++;
 				// All are visible according to database
@@ -925,9 +926,9 @@ function returnedSection(data)
 				if (parseInt(item['kind']) == 0) {				// Header
 					str+="<span style='padding-left:5px;' title='"+item['entryname']+"'>"+item['entryname']+"</span>";
 				}else if (parseInt(item['kind']) == 1) {		// Section
-					str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span class='ellipsis'>"+item['entryname']+"</span></div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+					str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span class='ellipsis'>"+item['entryname']+"</span></div></div><img src='../Shared/icons/desc_complement.svg' id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode + "' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode + "' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 4) {		// Moment
-          str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span class='ellipsis'>"+item['entryname']+"</span></div></div><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'>";
+          str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span class='ellipsis'>"+item['entryname']+"</span></div></div><img src='../Shared/icons/desc_complement.svg' id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode + "' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode + "' class='arrowRight' style='display:none;'>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"' title='"+item['entryname']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {
@@ -1082,6 +1083,8 @@ function returnedSection(data)
 
 	getHiddenElements();
 	hideCollapsedMenus();
+	getArrowElements();
+	toggleArrows();
 }
 
 function showHighscore(did, lid)
@@ -1144,28 +1147,10 @@ function returnedHighscore(data){
 // Toggle content for each moment
 $(document).on('click', '.moment, .section', function () {
 	setGlobalArrowWhenSingleMomentIsActivated();
-	$(this).children('.arrowRight').toggle();
-	$(this).children('.arrowComp').toggle();
-
-	// Toggle elements that should be hidden by adding or removing them
-	// from hiddenElements array.
-	$(this).nextUntil('.moment, .section').each(function() {
-		var exists = false;
-		for(var i = 0; i < menuState.hiddenElements.length; i++) {
-			if(this.id == menuState.hiddenElements[i]) {
-				exists = true;
-				menuState.hiddenElements.splice(i, 1);
-				break;
-			}
-		}
-		if(!exists) {
-			menuState.hiddenElements.push(this.id);
-		}
-	});
-
-	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
+	saveHiddenElementIDs($(this));
 	hideCollapsedMenus();
-
+	saveArrowIds($(this));
+	toggleArrows();
 });
 
 // Get all element ids from local storage that should be hidden.
@@ -1176,11 +1161,76 @@ function getHiddenElements() {
 	}
 }
 
+// Get all arrow image ids from local storage that should be toggled.
+function getArrowElements() {
+	menuState.arrowIcons = JSON.parse(localStorage.getItem('arrowIcons'));
+	if(menuState.arrowIcons === null) {
+		menuState.arrowIcons = [];
+	}
+}
+
+// Save ids of all elements, whose state needs to be remembered, in local storage.
+function saveHiddenElementIDs(clickedElement) {
+	
+	clickedElement.nextUntil('.moment, .section').each(function() {
+		addOrRemoveFromArray(this.id, menuState.hiddenElements);
+	});
+
+	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
+
+}
+
 // Hide all elements from the hiddenElements array.
 function hideCollapsedMenus() {
 	$('.header, .section, .code, .test, .link').show();
 	for(var i = 0; i < menuState.hiddenElements.length; i++) {
 		$('#' + menuState.hiddenElements[i]).hide();
+	}
+}
+
+// Save ids of all arrows, whose state needs to be remembered, in local storage.
+function saveArrowIds(clickedElement) {
+	clickedElement.children('.arrowRight').each(function() {
+		addOrRemoveFromArray(this.id, menuState.arrowIcons);
+	});
+
+	clickedElement.children('.arrowComp').each(function() {
+		addOrRemoveFromArray(this.id, menuState.arrowIcons);
+	});
+
+	localStorage.setItem('arrowIcons', JSON.stringify(menuState.arrowIcons));
+}
+
+// Add element id to array if it does not exist in the array.
+// Remove element id from array if it exist in the array.
+function addOrRemoveFromArray(elementID, array) {
+	var exists = false;
+	for(var i = 0; i < array.length; i++) {
+		if(elementID == array[i]) {
+			exists = true;
+			array.splice(i, 1);
+			break;
+		}
+	}
+	if(!exists) {
+		array.push(elementID);
+	}
+}
+
+// Show down arrow by default and then hide this arrow and show the right
+// arrow if it is in the arrowIcons array.
+function toggleArrows() {
+	$('.arrowComp').show();
+	$('.arrowRight').hide();
+
+	for(var i = 0; i < menuState.arrowIcons.length; i++) {
+		// If the string 'arrowComp' is a part of the string on the current
+		// index of the arrowIcons array, hide down arrow and show right arrow.
+		if(menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
+			$('#' + menuState.arrowIcons[i]).hide();
+		} else {
+			$('#' + menuState.arrowIcons[i]).show();
+		}
 	}
 }
 
