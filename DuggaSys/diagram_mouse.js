@@ -104,12 +104,10 @@ function mousemoveevt(ev, t) {
     }
     diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     updateGraphics();
-    // Draw select or create dotted box
     if (figureType == "Free" && uimode == "CreateFigure"){
         if(p2 != null) {
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath();
-            console.log("md " + md);
             canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
             canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.strokeStyle = "#000";
@@ -122,6 +120,7 @@ function mousemoveevt(ev, t) {
             }
         }
     }
+    // Draw select or create dotted box
     if (md == 4) {
         if (uimode == "CreateEREntity"){
             canvasContext.setLineDash([3, 3]);
@@ -253,8 +252,10 @@ function mousedownevt(ev) {
             }
         }
     } else {
-        md = 4;            // Box select or Create mode.
-        if(figureType != "Free"){
+        md = 4; // Box select or Create mode.
+        //When we are creating a freedraw figure we dont want to update the startposition. The startposition is set inside figureFreeDraw()
+        //This is to enable the user to hold down the mousebutton or just clicking out points
+        if(figureType != "Free" && uimode != "CreateFigure"){
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
         }
