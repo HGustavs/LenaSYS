@@ -1097,10 +1097,12 @@ input {
  }
 
  #Space {
+    position: relative;
     padding-left: 50px;
  }
  #Ctrl {
      padding-left: 50px;
+     position: relative;
 }
  .drop-down-text > a {
      color:rgb(0,0,0);
