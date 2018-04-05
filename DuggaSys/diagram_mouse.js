@@ -253,7 +253,7 @@ function mousedownevt(ev) {
             }
         }
     } else {
-        if(md != 4){
+        if(figureType != "Free"){
             md = 4;            // Box select or Create mode.
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;

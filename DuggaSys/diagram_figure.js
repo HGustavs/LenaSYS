@@ -366,6 +366,9 @@ function createFigure() {
 //--------------------------------------------------------------------
 function figureFreeDraw() {
     p1 = null;
+    md = 4;            // Box select or Create mode.
+    startMouseCoordinateX = currentMouseCoordinateX;
+    startMouseCoordinateY = currentMouseCoordinateY;
     if (isFirstPoint) {
         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         startPosition = p2;
