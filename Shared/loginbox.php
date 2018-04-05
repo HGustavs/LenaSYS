@@ -1,7 +1,7 @@
 		<!-- Overlay -->
 
   <div id="overlay" style="display:none"></div>
-  
+
 	<!-- Login Box Start! -->
   <!--  <div id='loginBox' class="loginBox" style="display:none;display:flex;justify-content:center;align-items:center;">-->
     <div id='loginBox' class="loginBoxContainer" style="display:none;">
@@ -11,8 +11,8 @@
 				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
 			</div>
 			<form action="" id="loginForm" method="post">
-				<table class="loginBoxTable">			
-					<tr>	
+				<table class="loginBoxTable">
+					<tr>
 						<td>
 							<label id="loginBoxTitle">Sign in</label>
 						</td>
@@ -27,13 +27,11 @@
 							<input id="password" placeholder="Password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
 						</td>
 					</tr>
-          <!--
 					<tr>
 						<td class="nowrap">
 							<label class='text forgotPw' onclick='toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
 						</td>
 					</tr>
-          -->
 					<tr>
 						<td>
 							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login' title='Login'>
@@ -44,16 +42,16 @@
 						<td id="message";></td>
 					</tr>
 				</table>
-			</form>		
+			</form>
 		</div>
-		<div id='newpassword' style="display:none">
+		<div id='newpassword' class='newpassword' style="display:none">
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
 				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
-				<table class="loginBoxTable">			
-					<tr>	
+				<table class="loginBoxTable">
+					<tr>
 						<td>
 							<label id="loginBoxTitle">Enter your username to reset the password</label>
 						</td>
@@ -74,10 +72,10 @@
 					</tr>
 				</table>
 			</div>
-			<tr>	
+			<tr>
 				<td>
 					<label class='forgotPw' onclick='toggleloginnewpass();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
-				</td>	
+				</td>
 			</tr>
 		</div>
 		<div id='showsecurityquestion' style="display:none">
@@ -86,8 +84,8 @@
 				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
-				<table class="loginBoxTable">			
-					<tr>	
+				<table class="loginBoxTable">
+					<tr>
 						<td>
 							<label id="loginBoxTitle">Please answer your security question</label>
 						</td>
@@ -99,7 +97,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td>							
+						<td>
 							<input id="answer" class='form-control textinput' type='password' placeholder="Answer" autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
 						</td>
 					</tr>
@@ -108,19 +106,19 @@
 							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckSecurityAnswer();" value='Check answer' style='margin-top: 10px;' title='Check answer'>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<!-- Message displayed when using wrong password or username -->
 						<td id="message3";></td>
 					</tr>
 				</table>
-			</div>			
-			<tr>	
+			</div>
+			<tr>
 				<td>
 					<label class='forgotPw' onclick='toggleloginnewpass();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
-				</td>	
+				</td>
 			</tr>
-			
+
 		</div>
 		<div id='resetcomplete' style="display:none">
 			<div class='loginBoxheader' id="completeid">
@@ -128,7 +126,7 @@
 				<div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
-				<table class="loginBoxTable">	
+				<table class="loginBoxTable">
 					<tr>
 						<td>
 							<p style='font-size: 0.8em;'>Your teachers have been notified, a new password will be sent to your school email as soon as possible.</p>
@@ -141,21 +139,21 @@
 						</td>
 					</tr>
 				</table>
-			</div>	
+			</div>
 		</div>
 	</div>
 	<!-- Login Box End! -->
-    
+
   <!-- Security question notifaction -->
     <div class="loginBox" id="securitynotification" style="display:none;">
          <div class='loginBoxheader'>
           <h3>Choose a challenge question</h3>
           <div class='cursorPointer' onclick="closeWindows(); setSecurityNotifaction('off');" title="Close window">x</div>
-        </div>  
+        </div>
         <p id="securitynotificationmessage">You need to choose a challenge question. You can do this by visiting your profile page (clicking your username) or by clicking <a onclick="closeWindows(); setSecurityNotifaction('off');" href='profile.php'>here</a> </p>
     </div>
   <!-- Security question notification END -->
-  
+
   <!-- Session expire message -->
   <div class="expiremessagebox" style="display:none">
     <div class='loginBoxheader'>
