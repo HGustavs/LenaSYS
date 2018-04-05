@@ -384,6 +384,28 @@ if($hr){
         $result = $query->execute();
         if($row = $query->fetch(PDO::FETCH_ASSOC)){
             if(file_exists ( $row['filename'])){
+                echo "<div id='receiptBox' class='loginBoxContainer' style='display:none'>";
+                echo "<div class='loginBox' style='max-width:400px;'>";
+                echo "<div class='loginBoxheader'>";
+                echo "<h3>Kvitto - Duggasvar</h3>";
+                echo "<div class='cursorPointer' onclick='hideReceiptPopup()'>x</div>";
+                echo "</div>";
+                echo "<div id='receiptInfo'></div>";
+                echo "<textarea id='receipt' autofocus readonly></textarea>";
+                echo "<div class='button-row''>";
+                echo "<input type='button' class='submit-button'  onclick='showEmailPopup();' value='Save Receipt'>";
+                echo "<input type='button' class='submit-button'  onclick='hideReceiptPopup();' value='Close'>";
+                echo "</div>";
+                echo "<div id='emailPopup' style='display:none'>";
+                echo "<div class='inputwrapper'><span>Ange din email:</span>";
+                echo "<input class='textinput' type='text' id='email' placeholder='Email' value=''/>";
+                echo"</div>";
+                echo "<div class='button-row'>";
+                echo "<input type='button' class='submit-button'  onclick='sendReceiptEmail();' value='Send Email'>";
+                echo "</div>";
+                echo "</div>";
+                echo "</div>";
+                echo "</div>";
             }else{
                 $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
             }
