@@ -112,11 +112,11 @@ if ($course != "UNK" && $vers != "UNK") {
 
   $moments = array();
 // Get parts and duggas.
-  $querystring = "SELECT DISTINCT listentries.entryname, listentries.kind, quiz.deadline, quiz.id, userAnswer.feedback FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id LEFT JOIN userAnswer ON userAnswer.moment = listentries.lid WHERE listentries.cid=:cid AND listentries.vers=:vers AND userAnswer.uid=:uid AND listentries.visible=1 ORDER BY pos;";
+  $querystring;
+  $querystring = "SELECT listentries.entryname, listentries.kind, quiz.deadline, quiz.id FROM listentries LEFT JOIN quiz ON  listentries.link = quiz.id WHERE listentries.cid=:cid AND listentries.vers=:vers AND listentries.visible=1 ORDER BY pos;";
   $stmt = $pdo->prepare($querystring);
   $stmt->bindParam(':cid', $course);
   $stmt->bindParam(':vers', $vers);
-  $stmt->bindParam(':uid', $userid);
 
   try {
     $stmt->execute();
@@ -173,7 +173,7 @@ if ($course != "UNK" && $vers != "UNK") {
 
   $userAnswers = array();
   if($userid != "UNK") {
-    $querystring = "SELECT grade, quiz, score FROM userAnswer WHERE cid=:cid AND vers=:vers AND uid=:uid AND useranswer IS NOT NULL;";
+    $querystring = "SELECT grade, quiz, feedback FROM userAnswer WHERE cid=:cid AND vers=:vers AND uid=:uid AND useranswer IS NOT NULL;";
     $stmt = $pdo->prepare($querystring);
     $stmt->bindParam(':cid', $course);
     $stmt->bindParam(':vers', $vers);
@@ -185,11 +185,25 @@ if ($course != "UNK" && $vers != "UNK") {
       // Error handling to $debug
     }
 
+
+
     foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
+      // Determine what color the lamp should be.
+      $grade = $row['grade'];
+      if($grade != null) {
+        if($grade >= 2) {
+          $grade = "green";
+        } else if($grade == 1) {
+          $grade = "yellow";
+        } else {
+          $grade = "red";
+        }
+      }
+
       $userAnswers[] = array(
-        'grade' => $row['grade'],
+        'grade' => $grade,
         'quizid' => $row['quiz'],
-        'score' => $row['score']
+        'feedback' => $row['feedback']
       );
     }
   }
