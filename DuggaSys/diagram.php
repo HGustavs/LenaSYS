@@ -191,11 +191,11 @@
                 <div class="menu-drop-down">
                     <span class="label">Help</span>
                     <div class="drop-down">
-                        <div class="drop-down-item">
+                        <div class="drop-down-text">
                             <a href="#" id="Space">Move grid<div id="Space"><i>Blankspace</i></div></a>
                         </div>
                         <div class="drop-down-divider"></div>
-                        <div class="drop-down-item">
+                        <div class="drop-down-text">
                             <a href="#" id="Ctrl">Select multiple objects<div id="Ctrl"><i>Ctrl + leftclick</i></div></a>
                         </div>
                     </div>

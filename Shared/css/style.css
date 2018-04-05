@@ -1096,17 +1096,6 @@ input {
      padding: 8px 0px 8px 8px;
  }
 
- .drop-down-text > a {
-     color:rgb(0,0,0);
-     text-decoration:none;
-
-     display:inline-block;
-     width:252px;
-     height:16px;
-     line-height:16px;
-     padding: 8px 0px 8px 8px;
- }
-
  .drop-down-item > a::before{
      /*PLACEHOLDER FOR ICON*/
      display:inline-block;
@@ -1114,6 +1103,28 @@ input {
      height:16px;
      content:"I";
  }
+ .drop-down-item:hover{
+     background-color:rgb(240,240,240);
+ }
+ .drop-down-text > a {
+     color:rgb(0,0,0);
+     text-decoration:none;
+
+     display:inline-block;
+     width:400px;
+     height:16px;
+     line-height:16px;
+     padding: 8px 0px 8px 8px;
+ }
+
+ .drop-down-text > a::before{
+     /*PLACEHOLDER FOR ICON*/
+     display:inline-block;
+     width:16px;
+     height:16px;
+     content:"I";
+ }
+
  .drop-down-item:hover{
      background-color:rgb(240,240,240);
  }
