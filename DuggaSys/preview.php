@@ -458,7 +458,9 @@ if($hr){
         $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 2!</div>";
     }
 }else{
+    echo "<body>";
     echo "<div class ='err'><textarea name='comment' rows='80' cols='60'></textarea></div>";
+    echo "</body>";
     $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 3!</div>";
 }
 
