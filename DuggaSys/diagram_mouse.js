@@ -253,7 +253,7 @@ function mousedownevt(ev) {
         }
     } else {
         md = 4; // Box select or Create mode.
-        //When we are creating a freedraw figure we dont want to update the startposition. The startposition is set inside figureFreeDraw()
+        //When we are creating a freedraw figure we dont want to update the startposition. The startposition is set inside createFigure()
         //This is to enable the user to hold down the mousebutton or just clicking out points
         if(uimode != "CreateFigure"){
             startMouseCoordinateX = currentMouseCoordinateX;
@@ -319,7 +319,9 @@ function mouseupevt(ev) {
             }
         }
     }
-    createFigure();
+    if (uimode == "CreateFigure" && md == 4) {
+        createFigure();
+    }
     if (uimode == "CreateClass" && md == 4) {
         classB = new Symbol(1);
         classB.name = "New" + diagram.length;

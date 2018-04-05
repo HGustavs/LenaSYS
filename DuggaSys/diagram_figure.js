@@ -352,14 +352,12 @@ var startPosition;
 var numberOfPointsInFigure = 0;
 
 function createFigure() {
-    if (uimode == "CreateFigure" && md == 4) {
-        startMouseCoordinateX = currentMouseCoordinateX;
-        startMouseCoordinateY = currentMouseCoordinateY;
-        if (figureType == "Free") {
-            figureFreeDraw();
-        } else if (figureType == "Square") {
-            figureSquare();
-        }
+    startMouseCoordinateX = currentMouseCoordinateX;
+    startMouseCoordinateY = currentMouseCoordinateY;
+    if (figureType == "Free") {
+        figureFreeDraw();
+    } else if (figureType == "Square") {
+        figureSquare();
     }
 }
 
