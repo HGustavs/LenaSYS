@@ -383,7 +383,6 @@
 				$result = $query->execute();
 				if($row = $query->fetch(PDO::FETCH_ASSOC)){
 					if(file_exists ( $row['filename'])){
-					    echo "test";
 					}else{
 						$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
 					}
