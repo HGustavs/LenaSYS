@@ -34,6 +34,7 @@ function toggleloginnewpass(){
 	if(status == 0){
 		$("#newpassword").css("display", "block");
 		$("#loginBox").css("display", "flex");
+    $("#login").hide();
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -677,6 +678,7 @@ function processResetPasswordCheckSecurityAnswer() {
 					if(typeof result.reason != "undefined") {
 						$("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
+            //update database here.
 						$("#showsecurityquestion #message3").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong answer</div>");
 					}
 					$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 6, 0.2)");
