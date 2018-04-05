@@ -530,7 +530,7 @@ if(!$readfile){
     echo "<div class ='err'><textarea name='comment' rows='20' cols='60'> Coming soon..... bam bam bam...... Some markdown code!! :D </textarea></div>";
     //Thw button is linked to showdoc, when pushed the page will change
     echo "<form action='showdoc.php'; method='post'>";
-    echo "Go to the preview     ";
+    echo "Go to the preview or something (is now linked to showdoc)     ";
     echo "<input type='submit'
     <input type='text'   name='field'  /><br>";
     echo "</form>";
