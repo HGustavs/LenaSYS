@@ -1047,7 +1047,7 @@ input {
   * --------------================################================-------------- */
 /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
  .document-settings{
-     /*font-size:14px;*/
+     font-size:14px;
  }
  .document-settings > .menu-item, .document-settings > .menu-drop-down{
      float:left;
@@ -1106,7 +1106,7 @@ input {
      background-color:rgb(240,240,240);
  }
  .drop-down-text > a {
-     font-size:14px;
+     font-size:14px !important;
      color:rgb(0,0,0);
      text-decoration:none;
      display:inline-block;
