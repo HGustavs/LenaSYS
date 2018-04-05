@@ -198,7 +198,7 @@
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-text">
                             <a href="#">Select multiple objects</a>
-                            <!--<div id="hotkey"><i>Ctrl + leftclick</i></div>-->
+                            <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
                         </div>
                     </div>
                 </div>
