@@ -193,7 +193,7 @@
                     <div class="drop-down">
                         <div class="drop-down-text">
                             <a href="#">Move grid</a>
-                            <div id="hotkey"><i>Blankspace</i></div>
+                            <div id="hotkey-space"><i>Blankspace</i></div>
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-text">
