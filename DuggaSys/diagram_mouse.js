@@ -109,6 +109,7 @@ function mousemoveevt(ev, t) {
         if(p2 != null) {
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath();
+            console.log("md " + md);
             canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
             canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
             canvasContext.strokeStyle = "#000";
@@ -252,7 +253,6 @@ function mousedownevt(ev) {
             }
         }
     } else {
-        console.log("Setting md to 4 and updating startmousepos");
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
