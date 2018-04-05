@@ -199,6 +199,21 @@
                         </div>
                     </div>
                 </div>
+                 
+                <div class="menu-drop-down">
+                    <span class="label">Help</span>
+                    <div class="drop-down">
+                        <div class="drop-down-text">
+                            <a href="#">Move grid</a>
+                            <div id="hotkey-space"><i>Blankspace</i></div>
+                        </div>
+                        <div class="drop-down-divider"></div>
+                        <div class="drop-down-text">
+                            <a href="#">Select multiple objects</a>
+                            <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             </br>
             </br>
@@ -207,6 +222,7 @@
             <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
             <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
+            
             <div class="tooltipdialog">
                 <button id='moveButton' class='unpressed' title="Move Around" style="visibility:hidden">
                     <img src="../Shared/icons/diagram_move_arrows.svg">
