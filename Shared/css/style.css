@@ -1136,7 +1136,6 @@ input {
   top: 8px;
  }
  #hotkey-ctrl {
-  position: absolute !important;
   font-size: 11px !important;
   color: #3d3d3d !important;
   right: 6px !important;
