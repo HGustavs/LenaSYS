@@ -259,7 +259,7 @@ function redrawtable()
           }else {
             strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'U', student[j].qvariant, student[j].quizId);
           }
-          strt += "<img id='korf' class='fist";
+          strt += "<img id='korf' class='fist gradeImg";
           if(student[j].userAnswer===null && !(student[j].quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
             strt += " grading-hidden";
           }
@@ -771,7 +771,7 @@ function process()
     dstr+="><label class='headerlabel' for='pending'>Only pending</label></div>";
 
     // Filter for mini mode
-    dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='minimode' value='0' id='minimode'>";
+    dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='minimode' value='0' id='minimode' onchange='miniMode()'>";
     dstr+="<label class='headerlabel' for='minimode'>Mini mode</label></div>";
 
   dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
@@ -1049,7 +1049,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 }
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls,qvariant,qid){
-  return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
+  return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+" gradeImg\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
 }
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid)
@@ -1310,7 +1310,7 @@ function returnedResults(data)
       if(rowpos !== -1){
         // Regenerate the marking buttons to reflect the new grade
         var tst = makeSelect(students[rowpos][dpos].gradeSystem, querystring['cid'], students[rowpos][dpos].vers, parseInt(data.duggaid), parseInt(data.duggauser), parseInt(data.results), 'U', null, null);
-        tst += "<img id='korf' class='fist";
+        tst += "<img id='korf' class='fist gradeImg";
         //console.log(students[rowpos][dpos]);
         if(students[rowpos][dpos].userAnswer===null){
           tst += " grading-hidden";
@@ -1362,4 +1362,12 @@ function returnedResults(data)
   }
   // Upgrade the most bottom row with amount of ungraded duggas per column.
   updateAmountOfUngraded();
+}
+
+function miniMode(){
+  if (document.getElementById('minimode').checked){
+    $(".gradeImg").css("display", "none");
+  } else {
+    $(".gradeImg").css("display", "block");
+  }
 }
