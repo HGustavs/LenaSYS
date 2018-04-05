@@ -384,8 +384,8 @@
 				if($row = $query->fetch(PDO::FETCH_ASSOC)){
 					if(file_exists ( $row['filename'])){
 					}else{
-                        $bummer = "<div class ='err'><textarea name="comment" rows="5" cols="40"></textarea></div>"
-						}
+						$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
+					}
 				}else{
 					$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 				}
