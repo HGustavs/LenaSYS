@@ -1096,16 +1096,6 @@ input {
      padding: 8px 0px 8px 8px;
  }
 
- #Space {
-    position: absolute;
-    padding-left: 50px;
-    font-style: italic;
- }
- #Ctrl {
-     padding-left: 50px;
-     position: absolute;
-     font-style: italic;
-}
  .drop-down-text > a {
      color:rgb(0,0,0);
      text-decoration:none;
@@ -2755,6 +2745,17 @@ ul.hamburgerList button.menuButton {
 
 #nametext {
   padding: 2px 0px 2px 10px;
+}
+
+#Space {
+    position: absolute;
+    padding-left: 50px;
+    font-style: italic;
+ }
+ #Ctrl {
+     padding-left: 50px;
+     position: absolute;
+     font-style: italic;
 }
 
 /* Is used to style a Select-box in diagram.php. */
