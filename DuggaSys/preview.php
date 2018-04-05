@@ -527,7 +527,7 @@ if(!$readfile){
 
 
     //A small textarea, will change its place
-    echo "<div class ='err'><textarea name='comment' rows='20' cols='60'> lite text </textarea></div>";
+    echo "<div class ='err'><textarea name='comment' rows='20' cols='60'> Coming soon..... bam bam bam...... Some markdown code!! :D </textarea></div>";
     //Thw button is linked to showdoc, when pushed the page will change
     echo "<form action='showdoc.php'; method='post'>";
     echo "Go to the preview     ";
