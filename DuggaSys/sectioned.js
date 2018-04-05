@@ -2,9 +2,14 @@ var querystring=parseGet();
 var retdata;
 var newversid;
 
+// Stores everything that relates to collapsable menus and their state.
 var menuState = {
+	// idCounter is used to give elements unique ids. This might? brake because
+	// an element is not guaranteed to recieve the same id every time, i.e. if
+	// new elements are added.
 	idCounter:0,
-	hiddenElements:[]
+	hiddenElements:[], // Stores the id of elements that should be hidden.
+	arrowIcons:[] // Stores which arrows need to be toggled.
 }
 
 AJAXService("get",{},"SECTION");
@@ -1135,10 +1140,12 @@ function returnedHighscore(data){
 
 // Toggle content for each moment
 $(document).on('click', '.moment, .section', function () {
-	// $(this).nextUntil('.moment, .section').slideToggle('fast', setGlobalArrowWhenSingleMomentIsActivated());
+	setGlobalArrowWhenSingleMomentIsActivated();
 	$(this).children('.arrowRight').toggle();
 	$(this).children('.arrowComp').toggle();
 
+	// Toggle elements that should be hidden by adding or removing them
+	// from hiddenElements array.
 	$(this).nextUntil('.moment, .section').each(function() {
 		var exists = false;
 		for(var i = 0; i < menuState.hiddenElements.length; i++) {
@@ -1171,9 +1178,6 @@ function hideCollapsedMenus() {
 	$('.header, .section, .code, .test, .link').show();
 	for(var i = 0; i < menuState.hiddenElements.length; i++) {
 		$('#' + menuState.hiddenElements[i]).hide();
-		// $('#' + menuState.hiddenElements[i]).children('.arrowRight').toggle();
-		// $('#' + menuState.hiddenElements[i]).children('.arrowComp').toggle();
-		console.log($('#' + menuState.hiddenElements[i]));
 	}
 }
 
@@ -1239,7 +1243,6 @@ $(document).ready(function(){
 });
 
 window.onload = function() {
-	// localStorage.clear();
 	getHiddenElements();
 	hideCollapsedMenus();
 };
