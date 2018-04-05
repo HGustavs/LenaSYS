@@ -1095,6 +1095,13 @@ input {
      line-height:16px;
      padding: 8px 0px 8px 8px;
  }
+
+ #Space {
+    padding-left: 50px;
+ }
+ #Ctrl {
+     padding-left: 50px;
+}
  .drop-down-text > a {
      color:rgb(0,0,0);
      text-decoration:none;
