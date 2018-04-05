@@ -1002,7 +1002,6 @@ input {
     position:fixed;
     z-index:1000;
     display:block;
-    padding-bottom:5px;
 
     border:1px solid rgb(200,200,200);
     outline:1px solid rgb(240,240,240);
@@ -1020,7 +1019,7 @@ input {
 }
 
 .application-toolbar{
-    padding-top:16px;
+    padding-top:5px;
 }
 .application-toolbar > input[type='button']{
     background-color:black;
@@ -1038,19 +1037,20 @@ input {
     padding:0px 4px 0px 4px;
 }
 #toolbar-minimize{
-  position: absolute;
-  display: inline-block;
-  width: 30px;
-  height: 25px;
-  left: 5px;
-  cursor:pointer;
-  text-align: center;
-  line-height: 25px;
+    position: absolute;
+    display: inline-block;
+    width: 30px;
+    height: 25px;
+    left: 5px;
+    cursor:pointer;
+    text-align: center;
+    line-height: 25px;
 }
 #minimizeArrow{
-width: 10px;
-height: 10px;
+    width: 10px;
+    height: 10px;
     filter:invert(100%);
+    transition: 0.2s;
 }
 .toolbarMinimized{
     transform: rotate(90deg);

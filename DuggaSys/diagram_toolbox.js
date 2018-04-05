@@ -9,10 +9,10 @@ function initToolbox(){
 
 function toggleToolbarMinimize(){
     if($("#minimizeArrow").hasClass("toolbarMaximized")){
-        $(".application-toolbar").hide();
+        $(".application-toolbar").slideUp();
         $("#minimizeArrow").removeClass("toolbarMaximized").addClass("toolbarMinimized");
     }else{
-        $(".application-toolbar").show();
+        $(".application-toolbar").slideDown();
         $("#minimizeArrow").removeClass("toolbarMinimized").addClass("toolbarMaximized");
     }
 }
