@@ -253,9 +253,7 @@ function mousedownevt(ev) {
             }
         }
     } else {
-        if(uimode != "CreateFigure"){
-            md = 4;            // Box select or Create mode.
-        }
+        md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
     }
