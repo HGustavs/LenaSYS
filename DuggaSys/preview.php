@@ -459,14 +459,6 @@ if($hr){
     }
 }else{
     $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 3!</div>";
-//A small textarea, will change its place
-    echo "<div class ='err'><textarea name='comment' rows='40' cols='40'></textarea></div>";
-    //Thw button is linked to showdoc, when pushed the page will change
-    echo "<form action='showdoc.php'; method='post'>";
-    echo "Go to the preview     ";
-    echo "<input type='submit'
-        <input type='text'   name='field'  /><br>";
-        echo "</form>";
     }
 
 if(!$readfile){
@@ -530,8 +522,10 @@ if(!$readfile){
 ?>
 
  <?php
+
+
     //A small textarea, will change its place
-    echo "<div class ='err'><textarea name='comment' rows='20' cols='60'></textarea></div>";
+    echo "<div class ='err'><textarea name='comment' rows='20' cols='60' style='font-weight:bold;'></textarea></div>";
     //Thw button is linked to showdoc, when pushed the page will change
     echo "<form action='showdoc.php'; method='post'>";
     echo "Go to the preview     ";
