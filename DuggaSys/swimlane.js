@@ -197,7 +197,7 @@ function swimlaneDrawLanes() {
     str+="</tbody></table></div>";
 
     // Box for dugga info on mouse over
-    str += "<div id='duggainfo' class='duggainfo' style='display:none; position:absolute; background-color:white; border-style:solid; border-color:#3C3C3C; padding:5px; max-width: 250px;'>";
+    str += "<div id='duggainfo' class='duggainfo' style='display:none; position:absolute; background-color:white; border-style:solid; border-color:#3C3C3C; padding:5px; max-width: 350px;'>";
     str += "<span id='duggaInfoText'></span>";
     str += "</div>";
     // Box for current date info
