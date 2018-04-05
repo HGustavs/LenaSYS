@@ -104,9 +104,24 @@ function mousemoveevt(ev, t) {
     }
     diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     updateGraphics();
+    if (figureType == "Free" && uimode == "CreateFigure"){
+        if(p2 != null && !(isFirstPoint)) {
+            canvasContext.setLineDash([3, 3]);
+            canvasContext.beginPath();
+            canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
+            canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
+            canvasContext.strokeStyle = "#000";
+            canvasContext.stroke();
+            canvasContext.setLineDash([]);
+            if (ghostingCrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossFillStyle = "rgba(255, 102, 68, 0.0)";
+            }
+        }
+    }
     // Draw select or create dotted box
     if (md == 4) {
-		
         if (uimode == "CreateEREntity"){
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath(1);
@@ -184,7 +199,7 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
-        } else {
+        } else if(uimode != "CreateFigure"){
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath(1);
             canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
@@ -206,7 +221,6 @@ function mousemoveevt(ev, t) {
 }
 
 function mousedownevt(ev) {
-    console.log(uimode);
     if (uimode == "CreateLine") {
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
@@ -238,9 +252,13 @@ function mousedownevt(ev) {
             }
         }
     } else {
-        md = 4;            // Box select or Create mode.
-        startMouseCoordinateX = currentMouseCoordinateX;
-        startMouseCoordinateY = currentMouseCoordinateY;
+        md = 4; // Box select or Create mode.
+        //When we are creating a freedraw figure we dont want to update the startposition. The startposition is set inside createFigure()
+        //This is to enable the user to hold down the mousebutton or just clicking out points
+        if(uimode != "CreateFigure"){
+            startMouseCoordinateX = currentMouseCoordinateX;
+            startMouseCoordinateY = currentMouseCoordinateY;
+        }
     }
     if (lastSelectedObject >= 0) {
         if(uimode != "MoveAround") {
@@ -301,7 +319,9 @@ function mouseupevt(ev) {
             }
         }
     }
-    createFigure();
+    if (uimode == "CreateFigure" && md == 4) {
+        createFigure();
+    }
     if (uimode == "CreateClass" && md == 4) {
         classB = new Symbol(1);
         classB.name = "New" + diagram.length;

@@ -352,12 +352,12 @@ var startPosition;
 var numberOfPointsInFigure = 0;
 
 function createFigure() {
-    if (uimode == "CreateFigure" && md == 4) {
-        if (figureType == "Free") {
-            figureFreeDraw();
-        } else if (figureType == "Square") {
-            figureSquare();
-        }
+    startMouseCoordinateX = currentMouseCoordinateX;
+    startMouseCoordinateY = currentMouseCoordinateY;
+    if (figureType == "Free") {
+        figureFreeDraw();
+    } else if (figureType == "Square") {
+        figureSquare();
     }
 }
 
@@ -427,10 +427,9 @@ function figureSquare() {
 function cleanUp() {
     figurePath = new Path;
     startPosition = null;
-    uimode = null;
-    figureType = null;
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
+    p2 = null;
 }
 
 function openInitialDialog() {
