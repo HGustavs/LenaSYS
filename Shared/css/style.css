@@ -2757,17 +2757,14 @@ ul.hamburgerList button.menuButton {
   padding: 2px 0px 2px 10px;
 }
 
-#Space {
+#hotkey {
   position: absolute !important;
   font-size: 11px !important;
   color: #3d3d3d !important;
   right: 6px !important;
  }
-#Ctrl {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
-  right: 6px;
+#hotkey:hover {
+    background: rgb(240,240,240);
 }
 
 /* Is used to style a Select-box in diagram.php. */
