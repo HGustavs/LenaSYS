@@ -53,7 +53,12 @@
         <div id="buttonDiv">
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap">
-                    <h3 class="application-header">Toolbar</h3>
+                    <div class="application-header">
+                        <div id="toolbar-minimize"  onclick="toggleToolbarMinimize();">
+                            <img id="minimizeArrow" class="toolbarMaximized" src="../Shared/icons/arrow.svg">
+                        </div>
+                        <h3>Toolbar</h3>
+                    </div>
                     <div class='application-toolbar'>
                         <h4 class="label">Tools</h4>
                         <div class="toolbar-drawer">
@@ -124,8 +129,8 @@
                                 <div class="export-drop-down-item">
                                     <a href="#" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
                                 </div>
-                                <div class="export-drop-down-item"> 
-                                    <a href="#" id="picid">Export Picture</a> 
+                                <div class="export-drop-down-item">
+                                    <a href="#" id="picid">Export Picture</a>
                                 </div>
                             </div>
                         </div>
@@ -302,7 +307,7 @@
             //<script type="text/javascript" src="diagram_IOHandler.js"></script>
         }
 
-    
+
     ?>
 </body>
 </html>

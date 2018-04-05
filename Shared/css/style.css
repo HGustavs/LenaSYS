@@ -727,7 +727,7 @@ header td {
   margin-bottom:2px;
   margin-left:115px;
   font-size:14px;
-  transition:1s background-color;  
+  transition:1s background-color;
 }
 
 #endsessionmessagebutton:hover {
@@ -769,7 +769,7 @@ header td {
 .loginBox .cursorPointer {
   cursor: pointer;
 }
- 
+
 #playlink {
   width: 216px;
 }
@@ -894,7 +894,7 @@ input {
   background-color: #ce3d3d;
 }
 .loginBoxbody {
-    
+
 }
 
 .loginBox form {
@@ -996,7 +996,6 @@ input {
  /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
 
 #diagram-toolbar{
-    height:500px;
     width:125px;
 }
 .application-toolbar-wrap{
@@ -1013,7 +1012,6 @@ input {
     background-color: #614875;
     color:#fff;
     vertical-align: bottom;
-    padding-left: 10px;
     cursor: move;
     display: flex;
     justify-content: space-around;
@@ -1021,7 +1019,7 @@ input {
 }
 
 .application-toolbar{
-    padding-top:16px;
+    padding-top:5px;
 }
 .application-toolbar > input[type='button']{
     background-color:black;
@@ -1037,6 +1035,28 @@ input {
     margin-top:8px;
     margin-bottom:0px;
     padding:0px 4px 0px 4px;
+}
+#toolbar-minimize{
+    position: absolute;
+    display: inline-block;
+    width: 30px;
+    height: 25px;
+    left: 5px;
+    cursor:pointer;
+    text-align: center;
+    line-height: 25px;
+}
+#minimizeArrow{
+    width: 10px;
+    height: 10px;
+    filter:invert(100%);
+    transition: 0.2s;
+}
+.toolbarMinimized{
+    transform: rotate(90deg);
+}
+.toolbarMaximized{
+    transform: rotate(180deg);
 }
 
 /* --------------================################================-------------- *
@@ -1339,7 +1359,7 @@ input.submit-button:disabled {
 }
 
 .pressed{
-  background:#FFA500; 
+  background:#FFA500;
 }
 
 .button-row {
@@ -1885,28 +1905,28 @@ span.arrow {
   border-bottom-right-radius: 10px;
 }
 
-.fab { 
-  position:fixed; 
-  width:50px; 
-   height:50px; 
-   border-radius:25px; 
-   box-shadow:0px 0px 15px #888; 
-   bottom:35px; 
-   right:50px; 
-   font-size:24px; 
-   text-align:center; 
-   background-color:#fecc56; 
-   color:#614875; 
-   z-index:4000; 
+.fab {
+  position:fixed;
+  width:50px;
+   height:50px;
+   border-radius:25px;
+   box-shadow:0px 0px 15px #888;
+   bottom:35px;
+   right:50px;
+   font-size:24px;
+   text-align:center;
+   background-color:#fecc56;
+   color:#614875;
+   z-index:4000;
    border:0;
-   outline: none; 
-   cursor: pointer; 
-   padding-left: 7px; 
-   padding-top: 1px; 
- } 
+   outline: none;
+   cursor: pointer;
+   padding-left: 7px;
+   padding-top: 1px;
+ }
 
-.fab:hover { 
-    transform:scale(1.1); 
+.fab:hover {
+    transform:scale(1.1);
 }
 
 .dugga-pass {
@@ -2172,8 +2192,8 @@ span.arrow {
   line-height: 47px;
 }
 
-.rownoMagic { 
-  width: 25px; 
+.rownoMagic {
+  width: 25px;
 }
 
 .rownoMagic > div {
@@ -2664,7 +2684,7 @@ ul.hamburgerList button.menuButton {
     transform: scale(0.7, 0.7);
     left: 10px;
   }
-  
+
   #cookiemsg {
 	background-color: #fecc56;
 	z-index: 1000;
