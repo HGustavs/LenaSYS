@@ -1079,6 +1079,9 @@ function returnedSection(data)
 
 	}
 	if(data['debug']!="NONE!") alert(data['debug']);
+
+	getHiddenElements();
+	hideCollapsedMenus();
 }
 
 function showHighscore(did, lid)
@@ -1241,8 +1244,3 @@ $(document).ready(function(){
 		e.stopPropagation();
 	});
 });
-
-window.onload = function() {
-	getHiddenElements();
-	hideCollapsedMenus();
-};
