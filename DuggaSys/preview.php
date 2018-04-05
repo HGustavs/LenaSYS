@@ -386,10 +386,10 @@ if($hr){
             if(file_exists ( $row['filename'])){
 
             }else{
-                //$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
+                $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
             }
         }else{
-            //$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
+            $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
         }
     }else if($fname!="UNK"){
         $query = $pdo->prepare("SELECT filename,kind from fileLink WHERE (cid=:cid or isGlobal='1') and (vers is null OR vers=:vers) and UPPER(filename)=UPPER(:fname) ORDER BY kind DESC LIMIT 1;");
@@ -452,15 +452,13 @@ if($hr){
                 }
             }
         }else{
-            $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 1!</div>";
+            $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
         }
     }else{
-        $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 2!</div>";
+        $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
     }
 }else{
-    $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 3!</div>";
-    //A small textarea, will change its place
-    echo "<div class ='err'><textarea name='comment' rows='40' cols='40'></textarea></div>";
+    $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
     }
 
 if(!$readfile){
