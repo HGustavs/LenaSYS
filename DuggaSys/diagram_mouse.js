@@ -105,7 +105,7 @@ function mousemoveevt(ev, t) {
     diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     updateGraphics();
     if (figureType == "Free" && uimode == "CreateFigure"){
-        if(p2 != null) {
+        if(p2 != null && !(isFirstPoint)) {
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath();
             canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
@@ -255,7 +255,7 @@ function mousedownevt(ev) {
         md = 4; // Box select or Create mode.
         //When we are creating a freedraw figure we dont want to update the startposition. The startposition is set inside figureFreeDraw()
         //This is to enable the user to hold down the mousebutton or just clicking out points
-        if(uimode != "CreateFigure" || p2 == null){
+        if(uimode != "CreateFigure"){
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
         }
