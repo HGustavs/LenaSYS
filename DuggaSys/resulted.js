@@ -40,7 +40,7 @@ function setup(){
   var filt ="";
   filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
   filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-  filt+="<div id='dropdownc' class='dropdown-list-container'>";
+  filt+="<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
   filt+="</div>";
   filt+="</span></td>";
 
@@ -709,7 +709,7 @@ function process()
     // Update dropdown list
     var dstr="";
 
-      dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+      dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 
       var activeMoment = 0;
       for(var j=0;j<moments.length;j++){
@@ -753,7 +753,7 @@ function process()
         dstr+=">"+name+"</label></div>";
     }
     // Filter for teachers.
-    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'>";
+    dstr+="<div class='checkbox-dugga checkmoment'>";
     dstr+="<input type='checkbox' class='headercheck' name='showTeachers' value='0' id='showteachers'";
     if(clist){
       index=clist.indexOf("showteachers");
