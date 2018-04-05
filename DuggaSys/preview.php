@@ -459,9 +459,10 @@ if($hr){
     }
 }else{
 //A small textarea, will change its place
-    echo "<div class ='err'><textarea name='comment' rows='50' cols='60'></textarea></div>";
+    echo "<div class ='err'><textarea name='comment' rows='40' cols='40'></textarea></div>";
+    //Thw button is linked to showdoc, when pushed the page will change
     echo "<form action='showdoc.php'; method='post'>";
-    echo "Go to showdoc";
+    echo "Go to the preview     ";
     echo "<input type='submit'
         <input type='text'   name='field'  /><br>";
         echo "</form>";
@@ -527,3 +528,13 @@ if(!$readfile){
 		echo $_GET['nav'];
 
 ?>
+ <?php
+//A small textarea, will change its place
+echo "<div class ='err'><textarea name='comment' rows='50' cols='60'></textarea></div>";
+//Thw button is linked to showdoc, when pushed the page will change
+echo "<form action='showdoc.php'; method='post'>";
+    echo "Go to the preview     ";
+    echo "<input type='submit'
+    <input type='text'   name='field'  /><br>";
+    echo "</form>";
+    ?>
