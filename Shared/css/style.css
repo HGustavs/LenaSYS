@@ -2758,10 +2758,10 @@ ul.hamburgerList button.menuButton {
 }
 
 #Space {
-  position: absolute;
-  font-size: 11px;
-  color: #3d3d3d;
-  right: 6px;
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
  }
 #Ctrl {
   position: absolute;
