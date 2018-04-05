@@ -317,7 +317,7 @@ function markdownBlock($instring)
     $instring = preg_replace("/\.{3,}/", "&hellip;", $instring);
 
     // Iframe, website inside a inline frame - (--url,width,height--)
-    $instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", "<iframe src='$1' style='width:$2px; height:$3px;'></iframe>", $instring);
+    $instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", "<iframe src='$1' style='width:$5px; height:$3px;'></iframe>", $instring);
 
     // Quote text, this will be displayed in an additional box
     // ^ Text you want to quote ^
