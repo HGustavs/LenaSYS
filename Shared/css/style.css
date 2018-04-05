@@ -1097,12 +1097,14 @@ input {
  }
 
  #Space {
-    position: relative;
+    position: absolute;
     padding-left: 50px;
+    font-style: italic;
  }
  #Ctrl {
      padding-left: 50px;
-     position: relative;
+     position: absolute;
+     font-style: italic;
 }
  .drop-down-text > a {
      color:rgb(0,0,0);
