@@ -191,10 +191,10 @@
                 <div class="menu-drop-down">
                     <span class="label">Help</span>
                     <div class="drop-down">
-                        <div class="drop-down-text">
+                        <div class="drop-down-item">
                             <a href="#">Move grid: BLABLABLABLABLABLABLA</a>
                         </div>
-                        <div class="drop-down-text">
+                        <div class="drop-down-item">
                             <a href="#">Select multiple objects: BLABLABLABLABLABLABLA</a>
                         </div>
                     </div>
