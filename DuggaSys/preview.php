@@ -384,6 +384,11 @@ if($hr){
         $result = $query->execute();
         if($row = $query->fetch(PDO::FETCH_ASSOC)){
             if(file_exists ( $row['filename'])){
+
+            }else{
+                echo "<html>";
+                echo "<body>";
+                echo "<head>";
                 echo "<div id='receiptBox' class='loginBoxContainer' style='display:none'>";
                 echo "<div class='loginBox' style='max-width:400px;'>";
                 echo "<div class='loginBoxheader'>";
@@ -406,7 +411,9 @@ if($hr){
                 echo "</div>";
                 echo "</div>";
                 echo "</div>";
-            }else{
+                echo "</head>";
+                echo "</body>";
+                echo "</html>";
                 $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
             }
         }else{
