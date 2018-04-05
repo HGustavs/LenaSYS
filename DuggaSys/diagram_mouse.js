@@ -105,24 +105,7 @@ function mousemoveevt(ev, t) {
     diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     updateGraphics();
     // Draw select or create dotted box
-    if (figureType == "Free" && uimode == "CreateFigure"){
-        if(p2 != null) {
-            canvasContext.setLineDash([3, 3]);
-            canvasContext.beginPath();
-            canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
-            canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
-            canvasContext.strokeStyle = "#000";
-            canvasContext.stroke();
-            canvasContext.setLineDash([]);
-            if (ghostingCrosses == true) {
-                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                crossFillStyle = "rgba(255, 102, 68, 0.0)";
-            }
-        }
-    }
     if (md == 4) {
-		
         if (uimode == "CreateEREntity"){
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath(1);
@@ -264,6 +247,21 @@ function mousedownevt(ev) {
     }
     if(uimode == "CreateFigure" && figureType == "Square"){
         createFigure();
+    } else if (figureType == "Free" && uimode == "CreateFigure"){
+        if(p2 != null) {
+            canvasContext.setLineDash([3, 3]);
+            canvasContext.beginPath();
+            canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
+            canvasContext.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
+            canvasContext.strokeStyle = "#000";
+            canvasContext.stroke();
+            canvasContext.setLineDash([]);
+            if (ghostingCrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossFillStyle = "rgba(255, 102, 68, 0.0)";
+            }
+        }
     }
 }
 
