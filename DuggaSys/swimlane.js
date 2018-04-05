@@ -170,12 +170,15 @@ function swimlaneDrawLanes() {
           feedback = '';
           if (feedbackArr.length > 0) {
             var lastFeedback = feedbackArr[feedbackArr.length - 1].split("%%");
-            feedback += lastFeedback[0] + ":<br> " + lastFeedback[1];
+            var date = lastFeedback[0];
+            var tempFeedback = lastFeedback[1].replace(/^\s\n+|\s\n+$/g,'').replace(/(?:\r\n|\r|\n)/g, '<br/>').trim();
+            var amountOfChars = 400;
+            if(tempFeedback.length >= amountOfChars) tempFeedback = tempFeedback.substring(0, amountOfChars) + "...";
+            feedback += date + ":<br> " + tempFeedback;
           }
         } else {
           feedback = 'No feedback was given.';
         }
-
 
         duggaInfoArray.push("<b>" + moment['entryname'] + "</b><br> Start date: " + moment['qrelease'] + "<br> Deadline: " + moment['deadline'] + "<br> <b>Feedback</b> <br>" + feedback);
         str+="<td style='text-align:center;background-color:"+bgcol+"'><svg style='margin:0 5px 0 5px;' width='30' height='"+(70 * info['verslength'] ) + "'>";
@@ -194,7 +197,7 @@ function swimlaneDrawLanes() {
     str+="</tbody></table></div>";
 
     // Box for dugga info on mouse over
-    str += "<div id='duggainfo' class='duggainfo' style='display:none; position:absolute; background-color:white; border-style:solid; border-color:#3C3C3C; padding:5px;'>";
+    str += "<div id='duggainfo' class='duggainfo' style='display:none; position:absolute; background-color:white; border-style:solid; border-color:#3C3C3C; padding:5px; max-width: 350px;'>";
     str += "<span id='duggaInfoText'></span>";
     str += "</div>";
     // Box for current date info
