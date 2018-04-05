@@ -1127,6 +1127,15 @@ input {
      background-color:rgb(240,240,240);
      cursor: default;
  }
+ #hotkey {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
+ }
+ #hotkey:hover {
+    background: rgb(240,240,240);
+ }
 
  /* --------------================################================-------------- *
   *                       END TOOLBAR/DROPDOWN/APPLICATION                       *
@@ -2757,15 +2766,6 @@ ul.hamburgerList button.menuButton {
   padding: 2px 0px 2px 10px;
 }
 
-#hotkey {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
- }
-#hotkey:hover {
-    background: rgb(240,240,240);
-}
 
 /* Is used to style a Select-box in diagram.php. */
 #selectDiv {

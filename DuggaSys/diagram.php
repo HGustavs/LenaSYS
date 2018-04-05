@@ -192,11 +192,13 @@
                     <span class="label">Help</span>
                     <div class="drop-down">
                         <div class="drop-down-text">
-                            <a href="#">Move grid<div id="hotkey"><i>Blankspace</i></div></a>
+                            <a href="#">Move grid</a>
+                            <!--<div id="hotkey"><i>Blankspace</i></div>-->
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-text">
-                            <a href="#">Select multiple objects<div id="hotkey"><i>Ctrl + leftclick</i></div></a>
+                            <a href="#">Select multiple objects</a>
+                            <!--<div id="hotkey"><i>Ctrl + leftclick</i></div>-->
                         </div>
                     </div>
                 </div>
