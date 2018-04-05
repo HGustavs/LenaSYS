@@ -49,7 +49,7 @@ function toggleloginnewpass(){
     //Shows the Sequrity question-box (answer for question input)
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "none");
+		$("#loginBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "block");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -58,7 +58,7 @@ function toggleloginnewpass(){
   //Shows the Reset complete-box
 	else if(status == 3){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "none");
+		$("#loginBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "block");
 		status= 1;
@@ -609,7 +609,7 @@ function checkHTTPS() {
 
 function processResetPasswordCheckUsername() {
   //Gets the security question from the database
-	var username = $("#newpassword #username").val();
+	var username = $("#usernamereset").val();
 
 	$.ajax({
 		type:"POST",
@@ -641,8 +641,8 @@ function processResetPasswordCheckUsername() {
 
 function processResetPasswordCheckSecurityAnswer() {
 	//Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
-	var username = $("#newpassword #username").val();
-	var securityquestionanswer = $("#showsecurityquestion #answer").val();
+	var username = $("#usernamereset").val();
+	var securityquestionanswer = $("#answer").val();
 
 	$.ajax({
 			type:"POST",
