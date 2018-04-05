@@ -1126,7 +1126,7 @@ input {
 
  .drop-down-text:hover{
      background-color:rgb(240,240,240);
-     cursor: default;
+     cursor: default !important;
  }
  #hotkey-space {
   position: absolute !important;
@@ -1140,7 +1140,7 @@ input {
   font-size: 11px !important;
   color: #3d3d3d !important;
   right: 6px !important;
-  top: 50px;
+  top: 55px;
  }
 
  /* --------------================################================-------------- *
