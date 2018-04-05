@@ -172,7 +172,8 @@ function swimlaneDrawLanes() {
             var lastFeedback = feedbackArr[feedbackArr.length - 1].split("%%");
             var date = lastFeedback[0];
             var tempFeedback = lastFeedback[1].replace(/^\s\n+|\s\n+$/g,'').replace(/(?:\r\n|\r|\n)/g, '<br/>').trim();
-            if(tempFeedback.length >= 150) tempFeedback = tempFeedback.substring(0, 150) + "...";
+            var amountOfChars = 400;
+            if(tempFeedback.length >= amountOfChars) tempFeedback = tempFeedback.substring(0, amountOfChars) + "...";
             feedback += date + ":<br> " + tempFeedback;
           }
         } else {
