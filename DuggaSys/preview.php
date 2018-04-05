@@ -386,28 +386,27 @@ if($hr){
             if(file_exists ( $row['filename'])){
 
             }else{
-                echo "<div id='receiptBox' class='loginBoxContainer' style='display:none'>";
-                echo "<div class='loginBox' style='max-width:400px;'>";
-                echo "<div class='loginBoxheader'>";
-                echo "<h3>Kvitto - Duggasvar</h3>";
-                echo "<div class='cursorPointer' onclick='hideReceiptPopup()'>x</div>";
-                echo "</div>";
-                echo "<div id='receiptInfo'></div>";
-                echo "<textarea id='receipt' autofocus readonly></textarea>";
-                echo "<div class='button-row''>";
-                echo "<input type='button' class='submit-button'  onclick='showEmailPopup();' value='Save Receipt'>";
-                echo "<input type='button' class='submit-button'  onclick='hideReceiptPopup();' value='Close'>";
-                echo "</div>";
-                echo "<div id='emailPopup' style='display:none'>";
-                echo "<div class='inputwrapper'><span>Ange din email:</span>";
-                echo "<input class='textinput' type='text' id='email' placeholder='Email' value=''/>";
-                echo"</div>";
-                echo "<div class='button-row'>";
-                echo "<input type='button' class='submit-button'  onclick='sendReceiptEmail();' value='Send Email'>";
-                echo "</div>";
-                echo "</div>";
-                echo "</div>";
-                echo "</div>";
+                $bummer= "<div id='receiptBox' class='loginBoxContainer' style='display:none'>";
+                $bummer= "<div class='loginBox' style='max-width:400px;'>";
+                $bummer= "<div class='loginBoxheader'>";
+                $bummer= "<h3>Kvitto - Duggasvar</h3>";
+                $bummer= "<div class='cursorPointer' onclick='hideReceiptPopup()'>x</div>";
+                $bummer= "</div>";
+                $bummer= "<div id='receiptInfo'></div>";
+                $bummer= "<textarea id='receipt' autofocus readonly></textarea>";
+                $bummer= "<div class='button-row''>";
+                $bummer= "<input type='button' class='submit-button'  onclick='showEmailPopup();' value='Save Receipt'>";
+                $bummer= "<input type='button' class='submit-button'  onclick='hideReceiptPopup();' value='Close'>";
+                $bummer= "</div>";
+                $bummer= "<div id='emailPopup' style='display:none'>";
+                $bummer= "<div class='inputwrapper'><span>Ange din email:</span>";
+                $bummer= "<input class='textinput' type='text' id='email' placeholder='Email' value=''/>";
+                $bummer="</div>";
+                $bummer= "<div class='button-row'>";
+                $bummer= "<input type='button' class='submit-button'  onclick='sendReceiptEmail();' value='Send Email'>";
+                $bummer= "</div>";
+                $bummer= "</div>";
+                $bummer= "</div>";
                 $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!</div>";
             }
         }else{
