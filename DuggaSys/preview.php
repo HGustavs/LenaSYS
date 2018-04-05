@@ -535,3 +535,9 @@ if(!$readfile){
     <input type='text'   name='field'  /><br>";
     echo "</form>";
     ?>
+
+<?php
+
+echo $_GET['prev'];
+
+?>
