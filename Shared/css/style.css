@@ -1110,7 +1110,7 @@ input {
      color:rgb(0,0,0);
      text-decoration:none;
      display:inline-block;
-     width:400px;
+     width:400px !important;
      height:16px;
      line-height:16px;
      padding: 8px 0px 8px 8px;
@@ -1136,6 +1136,7 @@ input {
   top: 8px;
  }
  #hotkey-ctrl {
+  position: relative !important;
   font-size: 11px !important;
   color: #3d3d3d !important;
   right: 6px !important;
