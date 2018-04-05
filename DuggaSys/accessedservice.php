@@ -39,9 +39,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php"
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
-
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
-	
+    
 		if(strcmp($opt,"UPDATE")==0){
 				$query = $pdo->prepare("UPDATE user set firstname=:firstname,lastname=:lastname,ssn=:ssn,username=:username,class=:className WHERE uid=:uid;");
 				$query->bindParam(':firstname', $firstname);
@@ -69,7 +68,17 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				$query->bindParam(':uid', $uid);
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':val', $val);
-
+            
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating user".$error[2];
+				}
+	}else if(strcmp($opt,"VERSION")==0){
+				$query = $pdo->prepare("UPDATE user_course set vers=:val WHERE uid=:uid AND cid=:cid;");
+				$query->bindParam(':uid', $uid);
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':val', $val);
+            
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					$debug="Error updating user".$error[2];
@@ -229,11 +238,39 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 }
 
+$courses=array();
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+    
+        $query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers WHERE cid=:cid;");
+        $query->bindParam(':cid', $cid);
+        if(!$query->execute()) {
+            $error=$query->errorInfo();
+            $debug="Error reading courses".$error[2];
+        }else{
+            foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+                array_push(
+                    $courses,
+                    array(
+                        'cid' => $row['cid'],
+                        'coursecode' => $row['coursecode'],
+                        'vers' => $row['vers'],
+                        'versname' => $row['versname'],
+                        'coursename' => $row['coursename'],
+                        'coursenamealt' => $row['coursenamealt'],
+                        'startdate' => $row['startdate'],
+                        'enddate' => $row['enddate']
+                    )
+                );
+            }
+        }
+}
+
 $array = array(
 	'entries' => $entries,
 	"debug" => $debug,
 	'teachers' => $teachers,
-	'classes' => $classes
+	'classes' => $classes,
+    'courses' => $courses
 );
 
 echo json_encode($array);
