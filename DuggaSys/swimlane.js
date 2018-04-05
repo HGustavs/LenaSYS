@@ -143,7 +143,7 @@ function swimlaneDrawLanes() {
       if (moment['kind']==3) {
         var hasGrade = false;
         var color;
-        var feedback = '';
+        var feedback = null;
         for(var m = 0; m < userResults.length; m++) {
           if(moment['quizid'] === userResults[m]['quizid']) {
             var grade = userResults[m]['grade'];
@@ -165,15 +165,15 @@ function swimlaneDrawLanes() {
         }
         if(!hasGrade) color = "fill='rgb(146,125,156)'/>";
 
-        if(feedback == null) {
-          feedback = '';
-        } else {
+        if(feedback) {
           var feedbackArr = feedback.split("||");
           feedback = '';
           if (feedbackArr.length > 0) {
             var lastFeedback = feedbackArr[feedbackArr.length - 1].split("%%");
             feedback += lastFeedback[0] + ":<br> " + lastFeedback[1];
           }
+        } else {
+          feedback = 'No feedback was given.';
         }
 
 
