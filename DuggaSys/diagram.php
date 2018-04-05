@@ -194,6 +194,7 @@
                         <div class="drop-down-item">
                             <a href="#" id="Space">Move grid<div id="Space"><i>Blankspace</i></div></a>
                         </div>
+                        <div class="drop-down-divider">
                         <div class="drop-down-item">
                             <a href="#" id="Ctrl">Select multiple objects<div id="Ctrl"><i>Ctrl + leftclick</i></div></a>
                         </div>
