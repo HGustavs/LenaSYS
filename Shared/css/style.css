@@ -2748,14 +2748,10 @@ ul.hamburgerList button.menuButton {
 }
 
 #Space {
-    position: absolute;
-    padding-left: 50px;
-    font-style: italic;
+  
  }
  #Ctrl {
-     padding-left: 50px;
-     position: absolute;
-     font-style: italic;
+     
 }
 
 /* Is used to style a Select-box in diagram.php. */
