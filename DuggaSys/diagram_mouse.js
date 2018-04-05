@@ -233,10 +233,6 @@ function mousedownevt(ev) {
             for (var i = 0; i < diagram.length; i++) {
                 diagram[i].targeted = false;
             }
-
-
-/****************** HÄR ÄR JAGGGG *******************************************************/
-
             if(uimode != "MoveAround") {
                 // Will add multiple selected diagram objects if the
                 // CTRL/CMD key is currently active
