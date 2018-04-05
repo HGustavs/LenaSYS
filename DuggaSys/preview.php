@@ -317,7 +317,7 @@ function markdownBlock($instring)
     $instring = preg_replace("/\.{3,}/", "&hellip;", $instring);
 
     // Iframe, website inside a inline frame - (--url,width,height--)
-    $instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", "<iframe src='$1' style='width:$30px; height:$50px;'></iframe>", $instring);
+    $instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", "<iframe src='$1' style='width:$5px; height:$3px;'></iframe>", $instring);
 
     // Quote text, this will be displayed in an additional box
     // ^ Text you want to quote ^
@@ -448,26 +448,19 @@ if($hr){
                         exit;
                     }
                 }else{
-                    //$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!".$file."</div>";
+                    $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!".$file."</div>";
                 }
             }
         }else{
-            //$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 1!</div>";
+            $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 1!</div>";
         }
     }else{
-        //$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 2!</div>";
+        $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 2!</div>";
     }
 }else{
     $bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 3!</div>";
-    //$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link 3!</div>";
-//A small textarea, will change its place
+    //A small textarea, will change its place
     echo "<div class ='err'><textarea name='comment' rows='40' cols='40'></textarea></div>";
-    //Thw button is linked to showdoc, when pushed the page will change
-    echo "<form action='showdoc.php'; method='post'>";
-    echo "Go to the preview     ";
-    echo "<input type='submit'
-        <input type='text'   name='field'  /><br>";
-        echo "</form>";
     }
 
 if(!$readfile){
