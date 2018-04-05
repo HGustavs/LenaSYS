@@ -106,7 +106,7 @@ function mousemoveevt(ev, t) {
     updateGraphics();
     // Draw select or create dotted box
     if (figureType == "Free" && uimode == "CreateFigure"){
-        if(p2 != null && isFirstPoint) {
+        if(p2 != null) {
             canvasContext.setLineDash([3, 3]);
             canvasContext.beginPath();
             canvasContext.moveTo(startMouseCoordinateX, startMouseCoordinateY);
