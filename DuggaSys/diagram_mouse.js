@@ -255,7 +255,7 @@ function mousedownevt(ev) {
         md = 4; // Box select or Create mode.
         //When we are creating a freedraw figure we dont want to update the startposition. The startposition is set inside figureFreeDraw()
         //This is to enable the user to hold down the mousebutton or just clicking out points
-        if(uimode != "CreateFigure"){
+        if(uimode != "CreateFigure" || isFirstPoint){
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
         }
