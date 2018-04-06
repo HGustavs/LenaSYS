@@ -13,8 +13,8 @@
         <script src="../Shared/dugga.js"></script>
         <style>
             .PreviewWindow {
-                height: 800px;
-                width: 700px;
+                height: 700px;
+                width: 800px;
                 margin: 0px auto;
                 border: solid rgb(200,200,200);
                 background-color: rgb(240,240,240);
@@ -26,7 +26,36 @@
                 color: #FFFFFF;
                 text-align: center;
                 font-size: 24px;
-            }    
+                line-height: 50px;
+            }
+            #button-cancel {
+                position: relative;
+                bottom: 4px;
+                right: 4px;
+            }
+            #button-save {
+                position: relative;
+                bottom: 4px;
+                right: 75px;
+            }
+            .Markdown {
+                border: solid rgb(200,200,200);
+                background-color: #FFFFFF;
+                width: 380px;
+                height: 600px;
+                position: relative;
+                padding: 10px;
+                right: 0px;
+            }
+            .MarkdownPrev {
+                border: solid rgb(200,200,200);
+                background-color: #FFFFFF;
+                width: 380px;
+                height: 600px;
+                position: relative;
+                padding: 10px;
+                left: 0px;
+            }
         </style>
         <script>
             function onload() {
@@ -51,9 +80,11 @@
         <div class="Header">Hello its me, preview</div>
         <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
+            <div class="Markdown">Markdown</div>
+            <div class="MarkdownPrev">Markdown Preview</div>
             This is the preview window  
-            <button id="save" onclick="saveMarkdown()">Save</button>
-            <button id="save" onclick="cancelPreview()">Cancel</button>
+            <button id="button-save" onclick="saveMarkdown()">Save</button>
+            <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
         </div>
         <?php
 		  //echo $_GET['prev'];
