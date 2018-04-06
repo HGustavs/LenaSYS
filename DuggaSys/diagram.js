@@ -1065,31 +1065,21 @@ function getCurrentDate() {
 }
 
 function setRefreshTime() {
-    console.log("setRefreshTime running");
-    var time = 5000;
-    lastDiagramEdit = localStorage.getItem('lastEdit');
-    if (typeof lastDiagramEdit !== "undefined") {
-        var timeDiffrence = getCurrentDate() - lastDiagramEdit;
-        if (timeDiffrence <= 10800000 && timeDiffrence <= 259200000) {
-            refresh_lock = false;
-            console.log("setRefreshTime seting time to" + time + " " + timeDiffrence);
-            return time;
-        } else if (timeDiffrence >= 259200000 && timeDiffrence <= 604800000) {
-            refresh_lock = false;
-            time = 300000;
-            console.log("setRefreshTime seting time to" + time+ " " + timeDiffrence);
-            return time;
-        } else if (timeDiffrence > 604800000) {
-            refresh_lock = true;
-            time = 300000;
-            console.log("setRefreshTime seting time to" + time + " will only update on refresh."+ " " + timeDiffrence);
-            return time;
-        } else {
-            return time;
-        }
-    } else {
-        return time;
+  console.log("setRefreshTime running");
+  var time = 5000;
+  lastDiagramEdit = localStorage.getItem('lastEdit');
+  if (typeof lastDiagramEdit !== "undefined"){
+    var timeDifference = getCurrentDate() - lastDiagramEdit;
+    refresh_lock = timeDifference > 604800000 ? true : false;
+    time = timeDifference <= 259200000 ? 5000 : 300000;
+
+    if (timeDifference > 604800000){
+      console.log("setRefreshTime setting time to" + time + " will only update on refresh."+ " " + timeDifference);
+    } else{
+      console.log("setRefreshTime setting time to" + time + " " + timeDifference);
     }
+  }
+  return time;
 }
 function align(mode){
     var selected_objects = [];
@@ -1217,9 +1207,9 @@ function sortObjects(selected_objects, mode){
       for(var i = 0; i < private_objects.length; i++){
         swap = private_objects[i];
           for(var j = 0; j < position.length; j++){
-              if(((mode=='vertically' && points[private_objects[i].topLeft].y == position[j])
-              || (mode=='horizontally' && points[private_objects[i].topLeft].x == position[j]))
-              && i != j){
+            if(i==j) continue;
+              if((mode=='vertically' && points[private_objects[i].topLeft].y == position[j])
+              || (mode=='horizontally' && points[private_objects[i].topLeft].x == position[j])){
                   private_objects[i] = private_objects[j];
                   private_objects[j] = swap;
               }
