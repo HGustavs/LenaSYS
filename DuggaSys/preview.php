@@ -532,17 +532,14 @@ if(!$readfile){
             <textarea cols='15'rows='15' 
             class='inline-txtarea'></textarea>
          </div>";
-
- echo "<button onClick='popupWindow()'> Edit</button></p>";
-
- echo "<input type = 'edit' onClick='popupWindow()' name='show PopupWindow'/>";
+ 
 
  echo "<script>popupWindow();</script>";
 
  //echo "<script src='../shared/markdown.js'>popupWindow();</script>";
 
  echo "<button ='onClick='popupWindow()'> Edit</button></p>";
- echo "<button ='onClick='popupWindow()'> Edit</button></p>";
+
  echo "<input type = 'edit' onClick='popupWindow' name='show PopupWindow'/>";
  echo "<script>popupWindow();</script>";
 
