@@ -41,7 +41,7 @@
             .Markdown {
                 border: solid rgb(200,200,200);
                 background-color: #FFFFFF;
-                width: 380px;
+                width: 350px;
                 height: 600px;
                 position: relative;
                 padding: 10px;
@@ -50,7 +50,7 @@
             .MarkdownPrev {
                 border: solid rgb(200,200,200);
                 background-color: #FFFFFF;
-                width: 380px;
+                width: 350px;
                 height: 600px;
                 position: relative;
                 padding: 10px;
