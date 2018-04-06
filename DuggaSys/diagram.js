@@ -1202,22 +1202,9 @@ function alignHorizontalCenter(selected_objects){
 }
 function bubbleSort(values, rising){
     //Setting rising to true will sort low - high
-    var swap = null;
+    values.sort();
+    if(!rising) values.reverse();
 
-      for(var i = 0; i < values.length; i++){
-        for(var j = i+1; j < values.length; j++){
-          if(rising && values[i] > values[j]){
-          swap = values[i];
-          values[i] = values[j];
-          values[j] = swap;
-        }
-          else if(!rising && values[i] < values[j]){
-            swap = values[j];
-            values[j] = values[i];
-            values[i] = swap;
-          }
-        }
-      }
     return values;
 }
 function sortObjects(selected_objects, mode, rising){
