@@ -34,6 +34,7 @@ function toggleloginnewpass(){
 	if(status == 0){
 		$("#newpassword").css("display", "block");
 		$("#loginBox").css("display", "flex");
+    $("#login").hide();
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -49,7 +50,7 @@ function toggleloginnewpass(){
     //Shows the Sequrity question-box (answer for question input)
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "none");
+		$("#loginBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "block");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -58,7 +59,7 @@ function toggleloginnewpass(){
   //Shows the Reset complete-box
 	else if(status == 3){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "none");
+		$("#loginBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "block");
 		status= 1;
@@ -115,6 +116,7 @@ function setExpireCookieLogOut() {
 function closeWindows(){
 	var index_highest = 0;
 	var e;
+
 	//More effective to have a class for the div you want to search and pass that to your selector
 	$("*").each(function() {
 	    //Always use a radix when using parseInt
@@ -609,7 +611,7 @@ function checkHTTPS() {
 
 function processResetPasswordCheckUsername() {
   //Gets the security question from the database
-	var username = $("#newpassword #username").val();
+	var username = $("#usernamereset").val();
 
 	$.ajax({
 		type:"POST",
@@ -641,8 +643,8 @@ function processResetPasswordCheckUsername() {
 
 function processResetPasswordCheckSecurityAnswer() {
 	//Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
-	var username = $("#newpassword #username").val();
-	var securityquestionanswer = $("#showsecurityquestion #answer").val();
+	var username = $("#usernamereset").val();
+	var securityquestionanswer = $("#answer").val();
 
 	$.ajax({
 			type:"POST",
@@ -677,6 +679,7 @@ function processResetPasswordCheckSecurityAnswer() {
 					if(typeof result.reason != "undefined") {
 						$("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
 					} else {
+            //update database here.
 						$("#showsecurityquestion #message3").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong answer</div>");
 					}
 					$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 6, 0.2)");

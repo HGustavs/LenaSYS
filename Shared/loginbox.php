@@ -78,7 +78,7 @@
 				</td>
 			</tr>
 		</div>
-		<div id='showsecurityquestion' style="display:none">
+		<div id='showsecurityquestion' class='showsecurityquestion' style="display:none">
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
 				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
@@ -120,7 +120,7 @@
 			</tr>
 
 		</div>
-		<div id='resetcomplete' style="display:none">
+		<div id='resetcomplete' class='resetcomplete' style="display:none">
 			<div class='loginBoxheader' id="completeid">
 				<h3>Request complete</h3>
 				<div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>

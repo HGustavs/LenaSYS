@@ -169,7 +169,6 @@ if ($course != "UNK" && $vers != "UNK") {
       );
     }
   }
-
   $userAnswers = array();
   if($userid != "UNK") {
     $querystring = "SELECT grade, quiz, feedback FROM userAnswer WHERE cid=:cid AND vers=:vers AND uid=:uid AND useranswer IS NOT NULL;";
@@ -177,15 +176,11 @@ if ($course != "UNK" && $vers != "UNK") {
     $stmt->bindParam(':cid', $course);
     $stmt->bindParam(':vers', $vers);
     $stmt->bindParam(':uid', $userid);
-
     try {
       $stmt->execute();
     } catch (PDOException $e) {
       // Error handling to $debug
     }
-
-
-
     foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $row) {
       // Determine what color the lamp should be.
       $grade = $row['grade'];
@@ -198,7 +193,6 @@ if ($course != "UNK" && $vers != "UNK") {
           $grade = "red";
         }
       }
-
       $userAnswers[] = array(
         'grade' => $grade,
         'quizid' => $row['quiz'],
@@ -206,7 +200,6 @@ if ($course != "UNK" && $vers != "UNK") {
       );
     }
   }
-
   $returnMe = array(
     'information' => $information,
     'moments' => $moments,
