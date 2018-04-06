@@ -30,13 +30,12 @@
             }
             #button-cancel {
                 position: relative;
-                bottom: 4px;
-                right: 4px;
+                bottom: 23px;
+                right: 160px;
             }
             #button-save {
                 position: relative;
-                bottom: 4px;
-                right: 75px;
+                right: 90px;
             }
             .Markdown {
                 border: solid rgb(200,200,200);
@@ -59,9 +58,9 @@
             .OptionButtons {
                 width: auto;
                 height: auto;
-                bottom: 4px;
-                right: 4px;
+                top: 610px;
                 position: relative;
+                margin: 0px 10px 0px 10px;
             }
         </style>
         <script>
