@@ -46,7 +46,7 @@
     </head>
     <body onload="onload()">
         Hello its me, preview
-        <button id="Preview" onclick="showPreview">Preview</button>
+        <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
             This is the preview window    
         </div>
