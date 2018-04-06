@@ -533,7 +533,7 @@ if(!$readfile){
             class='inline-txtarea'></textarea>
          </div>";
  echo "<input type = 'edit' onClick='popupWindow' value='show PopupWindow'/>";
- echo "<script src='../shared/markdown.js/popupWindow'></script>";
+ echo "<script src='../shared/markdown.js/popupWindow()'></script>";
  //The button is linked to showdoc, when pushed the preview window (not implemented) will update.
  //We also need a button for help (?), when pressed the user should get a window with a simple guide or som commands
  echo "<form action='showdoc.php'; method='post'>";
