@@ -1202,7 +1202,7 @@ function alignHorizontalCenter(selected_objects){
 }
 function bubbleSort(values, rising){
     //Setting rising to true will sort low - high
-    values.sort();
+    values.sort(function(a,b) { return a - b });
     if(!rising) values.reverse();
 
     return values;
