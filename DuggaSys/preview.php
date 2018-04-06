@@ -45,7 +45,7 @@
                 height: 600px;
                 position: relative;
                 padding: 10px;
-                right: 0px;
+                float: left;
             }
             .MarkdownPrev {
                 border: solid rgb(200,200,200);
@@ -54,7 +54,7 @@
                 height: 600px;
                 position: relative;
                 padding: 10px;
-                left: 0px;
+                float: right;
             }
         </style>
         <script>
