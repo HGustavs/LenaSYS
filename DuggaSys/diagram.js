@@ -1215,9 +1215,7 @@ function sortObjects(selected_objects, mode){
 
         for(var i = 0; i < private_objects.length; i++){
             for(var j = 0; j < position.length; j++){
-              console.log(position[j]);
                 if(points[private_objects[i].topLeft].y == position[j] && i != j){
-                  console.log("In the mainframe");
                     swap = private_objects[i];
                     private_objects[i] = private_objects[j];
                     private_objects[j] = swap;
@@ -1267,7 +1265,7 @@ function distribute(axis){
     hashFunction();
 }
 function distributeVertically(selected_objects, spacing){
-    selected_objects = sortObjects(selected_objects, 'vertically');
+    //selected_objects = sortObjects(selected_objects, 'vertically');
 
     for(var i = 1; i < selected_objects.length; i++){
         var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
