@@ -1202,39 +1202,29 @@ function alignHorizontalCenter(selected_objects){
 }
 
 function sortObjects(selected_objects, mode){
-    //Sorts objects by X or Y position
-    var position = [];
-    if(mode=='vertically'){
-        for(var i = 0; i < selected_objects.length; i++){
-            position.push(points[selected_objects[i].topLeft].y);
-        }
-        position.sort(function(a,b) { return a - b });
+  //Sorts objects by X or Y position
+  var position = [];
 
-        var private_objects = selected_objects.splice([]);
-        var swap = null;
+      for(var i = 0; i < selected_objects.length; i++){
+        if(mode=='vertically') position.push(points[selected_objects[i].topLeft].y);
+        else if(mode=='horizontally') position.push(points[selected_objects[i].topLeft].x);
+      }
+      position.sort(function(a,b) { return a - b });
 
-        private_objects.sort(function(a,b) { return a == b ? 1 : 0});
+      var private_objects = selected_objects.splice([]);
+      var swap = null;
 
-    }else if(mode=='horizontally'){
-        for(var i = 0; i < selected_objects.length; i++){
-            position.push(points[selected_objects[i].topLeft].x);
-        }
-        position.sort(function(a,b) { return a - b });
-
-        var private_objects = selected_objects.splice([]);
-        var swap = null;
-        for(var i = 0; i < private_objects.length; i++){
-            for(var j = 0; j < position.length; j++){
-                if(points[private_objects[i].topLeft].x == position[j] && i != j){
-                    swap = private_objects[i];
-                    private_objects[i] = private_objects[j];
-                    private_objects[j] = swap;
-                }
+      for(var i = 0; i < private_objects.length; i++){
+        swap = private_objects[i];
+          for(var j = i+1; j < position.length; j++){
+              if((mode=='vertically' && points[private_objects[i].topLeft].y == position[j])
+              || (mode=='horizontally' && points[private_objects[i].topLeft].x == position[j])){
+                  private_objects[i] = private_objects[j];
+                  private_objects[j] = swap;
+              }
             }
         }
-    }
-
-    return private_objects;
+  return private_objects;
 }
 function distribute(axis){
     var spacing = 32;
