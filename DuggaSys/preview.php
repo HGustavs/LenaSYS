@@ -28,8 +28,8 @@
             $(document).ready(function() {
                 $("Preview").click(function() {
                     $("PreviewWindow").addClass("PWShow");
-                }
-            }
+                });
+            });
                                 
             function saveCode() {
                 
