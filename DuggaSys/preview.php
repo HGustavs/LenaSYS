@@ -536,7 +536,7 @@ if(!$readfile){
 
 
 //Here we add a button called "Edit", when clicked a new popupwindow for the markdowncode will open. Not done yet.
- echo "<button ='onClick='popupWindow()'> Edit</button></p>";
+ echo "<button onClick='popupWindow()'> Edit</button></p>";
  echo "<input type = 'edit' onClick='popupWindow' name='show PopupWindow'/>";
  echo "<script>popupWindow();</script>";
 
