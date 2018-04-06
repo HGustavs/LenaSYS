@@ -26,14 +26,14 @@
         </style>
         <script>
             function showPreview() {
-                $(.PreivewWindow).addClass(PWShow);
-            }
+                $(PreivewWindow).addClass(PWShow);
+            });
             function saveCode() {
                 
-            }
+            });
             function cancelPreivew() {
                 $(.PreivewWindow).style="display:none";
-            }
+            });
         </script>
     </head>
     <body>
