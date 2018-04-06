@@ -49,14 +49,14 @@ function mousemoveevt(ev, t) {
     oldMouseCoordinateY = currentMouseCoordinateY;
     hovobj = diagram.itemClicked();
     if (ev.pageX || ev.pageY == 0) { // Chrome
-        currentMouseCoordinateX = (((ev.pageX - canvas.offsetLeft) * (1 / zoomValue)) + (startX * (1 / zoomValue)));
-        currentMouseCoordinateY = (((ev.pageY - canvas.offsetTop) * (1 / zoomValue)) + (startY * (1 / zoomValue)));
+        currentMouseCoordinateX = (((ev.pageX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
+        currentMouseCoordinateY = (((ev.pageY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
     } else if (ev.layerX || ev.layerX == 0) { // Firefox
-        currentMouseCoordinateX = (((ev.layerX - canvas.offsetLeft) * (1 / zoomValue)) + (startX * (1 / zoomValue)));
-        currentMouseCoordinateY = (((ev.layerY - canvas.offsetTop) * (1 / zoomValue)) + (startY * (1 / zoomValue)));
+        currentMouseCoordinateX = (((ev.layerX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
+        currentMouseCoordinateY = (((ev.layerY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
     } else if (ev.offsetX || ev.offsetX == 0) { // Opera
-        currentMouseCoordinateX = (((ev.offsetX - canvas.offsetLeft) * (1 / zoomValue)) + (startX * (1 / zoomValue)));
-        currentMouseCoordinateY = (((ev.offsetY - canvas.offsetTop) * (1 / zoomValue)) + (startY * (1 / zoomValue)));
+        currentMouseCoordinateX = (((ev.offsetX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
+        currentMouseCoordinateY = (((ev.offsetY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
     }
     if (md == 1 || md == 2 || md == 0 && uimode != " ") {
         if (snapToGrid) {
@@ -419,8 +419,8 @@ function mouseupevt(ev) {
 }
 
 function doubleclick(ev) {
-    var posistionX = (startX + xPos);
-    var posistionY = (startY + yPos);
+    var posistionX = (sx + xPos);
+    var posistionY = (sy + yPos);
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
         //console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
@@ -526,8 +526,8 @@ function mousemoveposcanvas(e) {
     mousemoveY = e.clientY;
     mouseDiffX = (mousedownX - mousemoveX);
     mouseDiffY = (mousedownY - mousemoveY);
-    startX += mouseDiffX;
-    startY += mouseDiffY;
+    sx += mouseDiffX;
+    sy += mouseDiffY;
     mousedownX = mousemoveX;
     mousedownY = mousemoveY;
     moveValue = 1;
