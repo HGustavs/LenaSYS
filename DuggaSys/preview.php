@@ -17,7 +17,6 @@
                 width: 1500px;
                 border: solid rgb(200,200,200);
                 background-color: rgb(240,240,240);
-                display: none;
             }
             .PWShow {
                 display: block;
@@ -25,8 +24,11 @@
                 
         </style>
         <script>
+            function onload() {
+                $("PreviewWindow").hide();
+            }
             function showPreview() {
-                document.getElementsByClassName("PreviewWindow").style.display = "block";
+                $("PreviewWindow").show();
             }
             /*$(document).ready(function() {
                 $('#Preview').click(function() {
@@ -38,11 +40,11 @@
                 
             }
             function cancelPreivew() {
-                document.getElementsByClassName("PreviewWindow").style.display = "block";
+                $("PreviewWindow").hide();     
             }
         </script>
     </head>
-    <body>
+    <body onload="onload()">
         Hello its me, preview
         <button id="Preview" onclick="showPreview">Preview</button>
         <div class="PreviewWindow">
