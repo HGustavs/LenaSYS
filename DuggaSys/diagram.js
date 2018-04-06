@@ -79,6 +79,7 @@ var classTemplate = {
   height: 7 * gridSize
 };
 var a = [], b = [], c = [];
+var selected_objects = [];              // Is used to store multiple selected objects
 var mousedownX = 0, mousedownY = 0;     // Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
 var mousemoveX = 0, mousemoveY = 0;     // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
 var mouseDiffX = 0, mouseDiffY = 0;     // Saves to diff between mousedown and mousemove to know how much to translate the diagram
@@ -317,6 +318,25 @@ diagram.targetItemsInsideSelectionBox = function (endX, endY, startX, startY) {
                 this[i].targeted = false;
             }
         }
+    }
+}
+
+
+//--------------------------------------------------------------------
+// Keeps track of if the CTRL or CMD key is active or not
+//--------------------------------------------------------------------
+var ctrlIsClicked = false;
+//var selectedItems = [];
+
+window.onkeydown = function(event) {
+    if(event.which == 17 || event.which == 91) {
+        ctrlIsClicked = true;
+    }
+}
+
+window.onkeyup = function(event) {
+    if(event.which == 17 || event.which == 91) {
+        ctrlIsClicked = false;
     }
 }
 
@@ -1092,8 +1112,6 @@ function setRefreshTime() {
     }
 }
 function align(mode){
-    var selected_objects = [];
-
     for(var i = 0; i < diagram.length; i++){
         if(diagram[i].targeted == true){
             selected_objects.push(diagram[i]);

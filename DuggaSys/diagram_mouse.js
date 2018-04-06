@@ -248,7 +248,22 @@ function mousedownevt(ev) {
                 diagram[i].targeted = false;
             }
             if(uimode != "MoveAround") {
-                diagram[lastSelectedObject].targeted = true;
+                // Will add multiple selected diagram objects if the
+                // CTRL/CMD key is currently active
+                if (ctrlIsClicked) {
+                    selected_objects.push(diagram[lastSelectedObject]);
+                    diagram[lastSelectedObject].targeted = true
+                    for (var i = 0; i < selected_objects.length; i++) {
+                        if (selected_objects[i].targeted == false) {
+                            selected_objects.push(diagram[lastSelectedObject]);
+                            selected_objects[i].targeted = true;
+                        }
+                    }
+                } else {
+                    selected_objects = [];
+                    selected_objects.push(diagram[lastSelectedObject]);
+                    diagram[lastSelectedObject].targeted = true;
+                }
             }
         }
     } else {
@@ -259,11 +274,10 @@ function mousedownevt(ev) {
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
         }
-    }
-    if (lastSelectedObject >= 0) {
-        if(uimode != "MoveAround") {
-            diagram[lastSelectedObject].targeted = true;
+        for (var i = 0; i < selected_objects.length; i++) {
+            selected_objects[i].targeted = false;
         }
+        selected_objects = [];
     }
     if(uimode == "CreateFigure" && figureType == "Square"){
         createFigure();
