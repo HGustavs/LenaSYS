@@ -705,8 +705,7 @@ function eraseSelectedObject() {
     updateGraphics();
 }
 
-function setMode(mode) //"CreateClass" yet to be implemented in .php
-{
+function setMode(mode){ //"CreateClass" yet to be implemented in .php
     canvas.style.cursor = "default";
     uimode = mode;
     if(mode == 'Square' || mode == 'Free') {
