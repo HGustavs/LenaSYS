@@ -1065,19 +1065,12 @@ function getCurrentDate() {
 }
 
 function setRefreshTime() {
-  console.log("setRefreshTime running");
   var time = 5000;
   lastDiagramEdit = localStorage.getItem('lastEdit');
   if (typeof lastDiagramEdit !== "undefined"){
     var timeDifference = getCurrentDate() - lastDiagramEdit;
     refresh_lock = timeDifference > 604800000 ? true : false;
     time = timeDifference <= 259200000 ? 5000 : 300000;
-
-    if (timeDifference > 604800000){
-      console.log("setRefreshTime setting time to" + time + " will only update on refresh."+ " " + timeDifference);
-    } else{
-      console.log("setRefreshTime setting time to" + time + " " + timeDifference);
-    }
   }
   return time;
 }
