@@ -13,13 +13,17 @@
         <script src="../Shared/dugga.js"></script>
         <style>
             .PreviewWindow {
-                height: 900px;
-                width: 600px;
+                height: 800px;
+                width: 700px;
                 margin: 0px auto;
                 border: solid rgb(200,200,200);
                 background-color: rgb(240,240,240);
             }
-                
+            .Header {
+                width: 100%;
+                background-color: #775886;
+                color: #FFFFFF;
+            }    
         </style>
         <script>
             function onload() {
@@ -32,7 +36,7 @@
             function saveCode() {
                 
             }
-            function cancelPreivew() {
+            function cancelPreview() {
                 $(".PreviewWindow").hide();     
             }
             function saveMarkdown() {
@@ -41,7 +45,7 @@
         </script>
     </head>
     <body onload="onload()">
-        Hello its me, preview
+        <div class="Header">Hello its me, preview</div>
         <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
             This is the preview window  
