@@ -2,53 +2,8 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <!--<style>
-        table {
-          padding: 0 75px;
-        }
-
-        th,td {
-            white-space: nowrap;
-            padding: 0 0px;           
-        }
-        tr,td {
-            background-color: inherit;
-        }
-        th {
-            background-color: #614875;
-            line-height: 42px;
-        }
-        tr:nth-child(odd) {
-            background-color: #dddddd;
-        }
-        tr:nth-child(even) {
-            background-color: #ffffff;
-        }
-				.gradient {
-							background-image: radial-gradient(yellow,#f06d06);
-				}
-		
-				#editpopover{
-						border:1px solid red;
-						box-shadow:2px 2px 2px #000;
-						position:absolute;
-						background-color: #82a43a; 
-				}
-			
-  			.icon {
-  					width:20px;
-  					height:20px;
-  					padding:0px;
-  			}                
-        
-        #input-container input{
-            width:100%;
-        }
-			
-    </style>-->
- 		<script src="sortableTable.js"></script> 
-		<script>
-
+ 	<script src="sortableTable.js"></script> 
+	<script>
         // -------------------------------------------------------------------------------------------------------
         // -----------------=============######## Sortable Table Demo Code ########=============-----------------
         // -------------------------------------------------------------------------------------------------------
@@ -72,24 +27,23 @@
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         		
         for (i = 0; i < 200; i++) {
-        		var wordcnt = Math.round(Math.random()*5+1);
-        		var str = "";
-        		var str2 = "";
-        		var str3 = "";
-        		for (j = 0; j < wordcnt; j++) {
-        				var charcnt = Math.round(Math.random()*10);
-        				for (var k = 0; k < charcnt; k++) {
-        						str += possible.charAt(Math.floor(Math.random() * possible.length));
+    		var wordcnt = Math.round(Math.random() * 5 + 1);
+    		var str = "";
+    		var str2 = "";
+    		var str3 = "";
+    		for (j = 0; j < wordcnt; j++) {
+    			var charcnt = Math.round(Math.random() * 10);
+    			for (var k = 0; k < charcnt; k++) {
+    				str += possible.charAt(Math.floor(Math.random() * possible.length));
                     str2 += possible.charAt(Math.floor(Math.random() * possible.length));
                     str3 += possible.charAt(Math.floor(Math.random() * possible.length));
-        				}
-
-                str +=" ";
-                str2 +=" ";
-                str3 +=" ";
-        		}
+    			}
+                str += " ";
+                str2 += " ";
+                str3 += " ";
+    		}
         		
-        		tabledata.tblbody.push([str,Math.random()*5000,Math.round(Math.random()*20),str2,str3,{xk:Math.round(Math.random()*2000+1000),yk:Math.round(Math.random()*500),col:"Free Shevacadoo"}]);
+        	tabledata.tblbody.push([str,Math.random() * 5000, Math.round(Math.random() * 20), str2, str3, {xk:Math.round(Math.random() * 2000 + 1000), yk:Math.round(Math.random() * 500), col:"Free Shevacadoo"}]);
         }
 
         var myTable,myTable2;
@@ -109,29 +63,28 @@
         //--------------------------------------------------------------------------
 
         function setup() {
-          myTable = new SortableTable(
-        		  tabledata,
-        		  "thetable",
-        		  null,
-        			"Table Title!",
-              renderCell,
-              null,
-              null,
-              null,
-              [],
-              [],				
-              "",
-              null,
-              null,
-        			null,
-        			null,
-        			null,
-              null,
-        		  true
+            myTable = new SortableTable(
+        		tabledata,
+        		"thetable",
+        		null,
+        		"Table Title!",
+                renderCell,
+                null,
+                null,
+                null,
+                [],
+                [],				
+                "",
+                null,
+                null,
+        		null,
+        		null,
+        		null,
+                null,
+        		true
         	);
         	
         	myTable.renderTable();
-          
         }
 
         //--------------------------------------------------------------------------
@@ -142,14 +95,14 @@
         		
         function renderCell(celldata,col) {
             if (col == "Trumma") {
-                return "<div><span>"+celldata.xk+"</span>/<span>"+celldata.yk+"</span></div>";
+                return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
             } else if (col == "Pnr") {
-                return "<div>"+celldata+"</div>";
+                return "<div>" + celldata + "</div>";
             }    
-        		return celldata;
+        	return celldata;
         }
         			
-		</script>
+	</script>
 </head>
 <body onload="setup();" onkeypress='keypressHandler(event)'>
     <h2>Example Table 1</h2>
