@@ -116,6 +116,7 @@ function setExpireCookieLogOut() {
 function closeWindows(){
 	var index_highest = 0;
 	var e;
+
 	//More effective to have a class for the div you want to search and pass that to your selector
 	$("*").each(function() {
 	    //Always use a radix when using parseInt
