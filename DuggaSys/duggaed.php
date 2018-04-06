@@ -57,18 +57,35 @@ pdoConnect();
       			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
             <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='qstart' value='None' /></div>
       			<div class='inputwrapper'><span>Deadline Date:</span><input class='textinput datepicker' type='text' id='deadline' value='None' /></div>
-            <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
+            <div class='inputwrapper'><span>Result Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
       		</div>
       		<div style='padding:5px;'>
-      			<input style='float:left; 'class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteDugga();' />
-      			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeEditDugga(); showSaveButton();' /> 
-      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='createDugga();showSaveButton();' /> 
-      			<input style='float:right; 'class='submit-button updateDugga' type='button' value='Save' onclick='updateDugga();' />
+      			<input style='float:left; 'class='submit-button deleteDugga' type='button' value='Delete' onclick='confirmBox(1);' />
+      			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeEditDugga();' /> 
+      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='confirmBox(2);showSaveButton();' /> 
+      			<input style='float:right; 'class='submit-button updateDugga' type='button' value='Save' onclick='confirmBox(3);' />
       		</div>
       </div>
 	</div>
 	<!-- Edit Dugga Dialog END -->
 
+  <!-- Confirm Section Dialog START -->  
+      <div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
+            <div class='loginBox' style='width:460px;'>
+                  <div class='loginBoxheader'>
+                        <h3>Confirm your update</h3>
+                        <div class="cursorPointer" onclick='confirmBox(5);' title="Close window">x</div>
+                  </div>
+                  <div style='text-align: center;'>
+                        <h4>Are you sure you want to make this happen?</h4>
+                  </div>
+                  <div style='display:flex; align-items:center; justify-content: center;'>
+                        <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox(4);' />
+                        <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox(5);' />
+                  </div>
+            </div>
+      </div>
+  <!-- Confirm Section Dialog START -->  
 	<!-- Edit Variant Dialog START -->
 	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style="width:80%;">

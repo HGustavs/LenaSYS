@@ -8,6 +8,7 @@ var querystring=parseGet();
 var filez;
 var variant = [];
 var submissionRow = 0;
+var decider;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -244,6 +245,30 @@ function closeEditVariant()
 {
 	$("#editVariant").css("display","none");
 }
+// Displaying and hidding the dynamic comfirmbox for the section edit dialog
+	function confirmBox(temp){	
+		if (temp == 1 || temp == 2 || temp == 3){
+			decider = temp;
+			$("#sectionConfirmBox").css("display","flex");
+		}else if(temp == 4){
+			console.log(decider);
+		    if (decider == 1){
+		    	deleteDugga();
+		    }
+		   	else if (decider == 2){
+		    	createDugga();
+		    }
+		    else if (decider == 3){
+		    	updateDugga();
+		    }
+		    $("#sectionConfirmBox").css("display","none");
+		    decider = 0;
+		}
+		else{
+		   	$("#sectionConfirmBox").css("display","none");
+		   	decider = 0;
+		}
+	}
 
 function createDugga()
 {
@@ -268,7 +293,7 @@ function createDugga()
 function deleteDugga()
 {
     did=$("#did").val();
-    if(confirm("Do you really want to delete this dugga?")) AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+    AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
     $("#editDugga").css("display","none");
     //$("#overlay").css("display","none");
 }
@@ -551,7 +576,7 @@ function returnedDugga(data)
 		str+="</div>";
 		
 		str+="<table class='list' id='testTable'>";
-		str+="<thead><tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Start</th><th>Deadline</th><th>Release</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr></thead>";
+		str+="<thead><tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Start</th><th>Deadline</th><th>Result date</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr></thead>";
 
 		var oddevenfumo = "";
 		for(i=0;i<data['entries'].length;i++){

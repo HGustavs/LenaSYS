@@ -1,6 +1,7 @@
 var querystring=parseGet();
 var retdata;
 var newversid;
+var decider;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -391,9 +392,34 @@ function changedType()
 	}
 }
 
+// Displaying and hidding the dynamic comfirmbox for the section edit dialog
+	function confirmBox(temp){	
+		if (temp == 1 || temp == 2 || temp == 3){
+	        decider = temp;
+	        $("#sectionConfirmBox").css("display","flex");
+	    }
+	    else if(temp == 4){
+	    	console.log(decider);
+	    	if (decider == 1){
+	    		deleteItem();
+	    	}
+	   	 	else if (decider == 2){
+	    		newItem();
+	    	}
+	    	else if (decider == 3){
+	    		updateItem();
+	    	}
+	    	$("#sectionConfirmBox").css("display","none");
+	    	decider = 0;
+	    }
+	    else{
+	    	$("#sectionConfirmBox").css("display","none");
+	    	decider = 0;
+	    }
+	}
+
 function deleteItem()
 {
-	confirm("Are you sure you want to delete this item?");
 	lid=$("#lid").val();
 	AJAXService("DEL",{lid:lid},"SECTION");
 	$("#editSection").css("display","none");
@@ -415,7 +441,8 @@ function updateItem()
 	// Storing tabs in gradesys column!
 	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
 	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments},"SECTION");
-	$("#editSection").css("display","none");
+	$("#sectionConfirmBox").css("display", "none");
+	$("#editSection").css("display", "none");
 	//$("#overlay").css("display","none");
 }
 
@@ -453,6 +480,8 @@ function closeSelect()
 	$(".item").css("box-shadow","none");
 	$("#editSection").css("display","none");
 }
+
+
 
 function showCreateVersion()
 {
@@ -663,7 +692,6 @@ function returnedSection(data)
         str+="<li class='access'><button class='submit-button menuButton access' onclick='closeWindows(); accessCourse();' title='Give students access to the selected version'>Access</button></li>";
         str+="<li class='files'><button class='submit-button menuButton files' onclick='closeWindows(); changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Show files'>Files</button></li>";
         str+="<li class='tests'><button class='submit-button menuButton tests' onclick='closeWindows(); changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Show tests'>Tests</button></li>";
-        str+="<li class='groups'><button class='submit-button menuButton groups' onclick='closeWindows(); changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Student groups page'>Groups</button></li>";
         str+="<li class='results'><button class='submit-button menuButton results' onclick='closeWindows(); changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Edit student results'>Results</button></li>";
         str+="</ul>";
         str+="</div";
@@ -675,8 +703,8 @@ function returnedSection(data)
         str+="<td class='results menuButton' style='display: inline-block;'><div class='results menuButton'><input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></div></td>";
         str+="<td class='tests menuButton' style='display: inline-block;'><div class='tests menuButton'><input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' onclick='changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
         str+="<td class='files menuButton' style='display: inline-block;'><div class='files menuButton'><input type='button' value='Files' class='submit-button' title='Show files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
-        str+="<td class='contribution menuButton' style='display: inline-block;'><div class='contribution menuButton'><input type='button' value='Contribution' class='submit-button' title='Access contribution page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
         str+="<td class='groups menuButton' style='display: inline-block;'><div class='groups menuButton'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+        str+="<td class='contribution menuButton' style='display: inline-block;'><div class='contribution menuButton'><input type='button' value='Contribution' class='submit-button' title='Access contribution page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
     }else{
 			// No version selector for students
 		}
@@ -1043,7 +1071,7 @@ function returnedSection(data)
            var yearFormat = "0000-";
            var dateFormat = "00-00";
 
-           str+="<td style='text-align:right;overflow:hidden;width:154px;'><div style='white-space:nowrap;'>";
+           str+="<td class='dateSize' style='text-align:right;overflow:hidden;'><div style='white-space:nowrap;'>";
            if(dl[1] == timeFilterAndFormat) {
              str+="<div class='dateField'>";
              str+=deadline.slice(0, yearFormat.length)
@@ -1083,13 +1111,13 @@ function returnedSection(data)
 
 
 						if(parseInt(item['kind']) === 0){
-								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
 						}else if(parseInt(item['kind']) === 1){
-								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
 						}else if(parseInt(item['kind']) === 4){
-								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
 						}else{
-								str+="' ><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='deleteItem();'></td>";
+								str+="' ><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
 						}
 				}
 
