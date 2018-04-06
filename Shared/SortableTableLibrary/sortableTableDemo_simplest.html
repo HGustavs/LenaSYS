@@ -1,0 +1,163 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        table {
+          padding: 0 75px;
+        }
+
+        th,td {
+            white-space: nowrap;
+            padding: 0 0px;           
+        }
+        tr,td,th {
+            background-color: inherit;
+        }
+        tr:nth-child(odd) {
+            background-color: #dddddd;
+        }
+        tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+				.gradient {
+							background-image: radial-gradient(yellow,#f06d06);
+				}
+		
+				#editpopover{
+						border:1px solid red;
+						box-shadow:2px 2px 2px #000;
+						position:absolute;
+						background-color: #82a43a; 
+				}
+			
+  			.icon {
+  					width:20px;
+  					height:20px;
+  					padding:0px;
+  			}                
+        
+        #input-container input{
+            width:100%;
+        }
+			
+     </style>
+ 		<script src="sortableTable.js"></script> 
+		<script>
+
+// -------------------------------------------------------------------------------------------------------
+// -----------------=============######## Sortable Table Demo Code ########=============-----------------
+// -------------------------------------------------------------------------------------------------------
+//  Copyright a97marbr / HGustavs 
+//
+//        (\ /)
+//        (. .)           
+//       c(")(")                ∴ 
+//--------------------------------------------------------------------------------------------------------
+
+//------------==========########### GLOBALS ###########==========------------
+
+var tabledata={
+	tblhead:[
+		"First/Last","Pnr","Num","Foo","Holk","Trumma"
+	],
+	tblbody:[
+	],
+	tblfoot:[]
+}
+
+var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		
+for(i=0;i<200;i++){
+
+		var wordcnt=Math.round(Math.random()*5+1);
+		var str="";
+		var str2="";
+		var str3="";
+		for(j=0;j<wordcnt;j++){
+				var charcnt=Math.round(Math.random()*10);
+				for(var k=0;k<charcnt;k++){
+						str += possible.charAt(Math.floor(Math.random() * possible.length));
+            str2 += possible.charAt(Math.floor(Math.random() * possible.length));
+            str3 += possible.charAt(Math.floor(Math.random() * possible.length));
+				}
+        str+=" ";
+        str2+=" ";
+        str3+=" ";
+		}
+		
+		tabledata.tblbody.push([str,Math.random()*5000,Math.round(Math.random()*20),str2,str3,{xk:Math.round(Math.random()*2000+1000),yk:Math.round(Math.random()*500),col:"Free Shevacadoo"}]);
+}
+
+var myTable,myTable2;
+
+//------------==========########### FUNCTIONZ ###########==========------------
+
+//--------------------------------------------------------------------------
+// setup
+// ---------------
+//  Creates the table object and assigns all mandatory pararmeters
+//  
+// tabledata contains the data for the table contents
+// "thetable" is ID for table element
+// "TableTitle" is Title of Table
+// "renderCell" is Callback for rendering each cell
+//--------------------------------------------------------------------------
+
+function setup(){
+  myTable = new SortableTable(
+		  tabledata,
+		  "thetable",
+		  null,
+			"Table Title!",
+      renderCell,
+      null,
+      null,
+      null,
+      [],
+      [],				
+      "",
+      null,
+      null,
+			null,
+			null,
+			null,
+      null,
+		  false
+	);
+	
+	myTable.renderTable();
+  
+}
+
+//--------------------------------------------------------------------------
+// renderCell
+// ---------------
+//  Callback function that renders a specific cell in the table
+//--------------------------------------------------------------------------
+		
+function renderCell(celldata,col){
+    if (col=="Trumma"){
+        return "<div><span>"+celldata.xk+"</span>/<span>"+celldata.yk+"</span></div>";
+    } else if (col=="Pnr"){
+        return "<div style='text-align:right'>"+celldata+"</div>";
+    }    
+		return celldata;
+}
+			
+		</script>
+</head>
+<body onload="setup();" onkeypress='keypressHandler(event)'>
+  <h2>Example Table 1</h2>
+	
+	<div id='MHTEST'></div>
+
+	<!-- Column filter div -->
+	<div id="columnfilter"></div>
+  
+  <!-- Table placeholder -->
+  <div id="thetable"></div>
+  <br>
+  <br>
+
+	
+</body>

@@ -1,0 +1,266 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        table {
+          padding: 0 75px;
+        }
+
+        th,td {
+            white-space: nowrap;
+            padding: 0 0px;           
+        }
+        tr,td,th {
+            background-color: inherit;
+        }
+        tr:nth-child(odd) {
+            background-color: #dddddd;
+        }
+        tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+				.gradient {
+							background-image: radial-gradient(yellow,#f06d06);
+				}
+		
+				#editpopover{
+						border:1px solid red;
+						box-shadow:2px 2px 2px #000;
+						position:absolute;
+						background-color: #82a43a; 
+				}
+			
+  			.icon {
+  					width:20px;
+  					height:20px;
+  					padding:0px;
+  			}                
+        
+        #input-container input{
+            width:100%;
+        }
+			
+     </style>
+ 		<script src="sortableTable.js"></script> 
+		<script>
+
+// -------------------------------------------------------------------------------------------------------
+// -----------------=============######## Sortable Table Demo Code ########=============-----------------
+// -------------------------------------------------------------------------------------------------------
+//  Copyright a97marbr / HGustavs 
+//
+//        (\ /)
+//        (. .)           
+//       c(")(")                ∴ 
+//--------------------------------------------------------------------------------------------------------
+
+//------------==========########### GLOBALS ###########==========------------
+
+var tabledata={
+	tblhead:[
+		"First/Last","Pnr","Num","Foo","Holk","Trumma"
+	],
+	tblbody:[
+	],
+	tblfoot:[]
+}
+
+var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		
+for(i=0;i<200;i++){
+
+		var wordcnt=Math.round(Math.random()*5+1);
+		var str="";
+		var str2="";
+		var str3="";
+		for(j=0;j<wordcnt;j++){
+				var charcnt=Math.round(Math.random()*10);
+				for(var k=0;k<charcnt;k++){
+						str += possible.charAt(Math.floor(Math.random() * possible.length));
+            str2 += possible.charAt(Math.floor(Math.random() * possible.length));
+            str3 += possible.charAt(Math.floor(Math.random() * possible.length));
+				}
+        str+=" ";
+        str2+=" ";
+        str3+=" ";
+		}
+		
+		tabledata.tblbody.push([str,Math.random()*5000,Math.round(Math.random()*20),str2,str3,{xk:Math.round(Math.random()*2000+1000),yk:Math.round(Math.random()*500),col:"Free Shevacadoo"}]);
+}
+
+var myTable,myTable2;
+
+//------------==========########### FUNCTIONZ ###########==========------------
+
+//--------------------------------------------------------------------------
+// setup
+// ---------------
+//  Creates the table object and assigns all mandatory pararmeters
+//  
+// tabledata contains the data for the table contents
+// "thetable" is ID for table element
+// "TableTitle" is Title of Table
+// "renderCell" is Callback for rendering each cell
+// Changed last parameter (hasMagicHeadings) to true
+//--------------------------------------------------------------------------
+
+function setup(){
+  myTable = new SortableTable(
+		  tabledata,
+		  "thetable",
+		  "columnfilter",
+			"Table Title!",
+      renderCell,
+      renderSortOptions,
+      null,
+      null,
+      [],
+      [],				
+      "",
+      null,
+      null,
+			null,
+			null,
+			null,
+      null,
+		  true
+	);
+	
+	myTable.renderTable();
+  
+}
+
+//--------------------------------------------------------------------------
+// renderCell
+// ---------------
+//  Callback function that renders a specific cell in the table
+//--------------------------------------------------------------------------
+		
+function renderCell(celldata,col){
+    if (col=="Trumma"){
+        return "<div><span>"+celldata.xk+"</span>/<span>"+celldata.yk+"</span></div>";
+    } else if (col=="Pnr"){
+        return "<div style='text-align:right'>"+celldata+"</div>";
+    }    
+		return celldata;
+}
+
+//--------------------------------------------------------------------------
+// renderSortOptions
+// ---------------
+//  Callback function that renders the col filter div
+//--------------------------------------------------------------------------
+		
+function renderSortOptions(col,status){
+		str="";
+		
+		if(status==-1){
+				if(col=="First/Last"){
+						str+="<span onclick='myTable.toggleSortStatus(\"First/Last\",1)'>First</span>/";								
+						str+="<span onclick='myTable.toggleSortStatus(\"First/Last\",3)'>Last</span>";								
+				}else{
+						str+="<span onclick='myTable.toggleSortStatus(\""+col+"\",1)'>"+col+"</span>";				
+				}
+		}else{
+				if(col=="First/Last"){
+						// First up/down vs Last up/down
+						if(status==0||status==1){
+								if(status==0){
+										str+="<span onclick='myTable.toggleSortStatus(\"First/Last\",1)'>First&#x25b2;</span>/";								
+								}else{
+										str+="<span onclick='myTable.toggleSortStatus(\"First/Last\",0)'>First&#x25bc;</span>/";								
+								}
+								str+="<span onclick='myTable.toggleSortStatus(\"First/Last\",2)'>Last</span>";								
+						}
+						else if(status==2||status==3){
+								str+="<span onclick='myTable.toggleSortStatus(\"First/Last\",1)'>First</span>/";								
+								if(status==2){
+										str+="<span onclick='myTable.toggleSortStatus(\"First/Last\",3)'>Last&#x25b2;</span>";								
+								}else{
+										str+="<span onclick='myTable.toggleSortStatus(\"First/Last\",2)'>Last&#x25bc;</span>";								
+								}
+						}		            
+				} else if(col=="Trumma"){
+						// Special sort for Trumma (JSON structure)
+            str+="<span>"+col+"</span>";
+            str+="<select onchange='myTable.toggleSortStatus(\""+col+"\",this.value)'>";
+            str+="<option hidden disabled selected value>Select Sort</option>"
+            str+="<option value='0'>x&#x25b2;/y</option>";
+            str+="<option value='1'>x&#x25bc;/y</option>";
+            str+="<option value='2'>x/y&#x25b2;</option>";
+            str+="<option value='3'>x/y&#x25bc;</option>";
+            str+="</select>";
+				} else{
+						if(status){
+								str+="<span onclick='myTable.toggleSortStatus(\""+col+"\",0)'>"+col+"&#x25bc;</span>";
+						}else{
+								str+="<span onclick='myTable.toggleSortStatus(\""+col+"\",1)'>"+col+"&#x25b2;</span>";
+						}
+				}
+		}
+
+		return str;
+}
+			
+//--------------------------------------------------------------------------
+// compare
+// ---------------
+//  Callback function with different compare alternatives for the column sort
+//--------------------------------------------------------------------------
+function compare(a,b){
+    // Find out which column and part of column are we sorting on from currentTable
+    let col=sortableTable.currentTable.getSortcolumn();
+    let kind=sortableTable.currentTable.getSortkind();
+    
+    if (col == "Trumma"){
+        if(kind==0 || kind==1){ 
+          return a.xk-b.xk; 
+      } else if(kind==2 || kind==3){ 
+          return a.yk-b.yk; 
+      } 
+    } else if (col == "First/Last"){
+        // Sort Fname / Lname 
+        if(kind==0 || kind==1){ 
+            let afname=a.substr(0,a.indexOf(' '));
+            let bfname=b.substr(0,b.indexOf(' '));
+            if ( afname < bfname ) return -1; 
+            if ( afname > bfname ) return 1; 
+            return 0; 
+        } else if(kind==2 || kind==3){ 
+            let alname=a.substr(a.indexOf(' ')+1);
+            let blname=b.substr(b.indexOf(' ')+1);
+            if ( alname < blname ) return -1; 
+            if ( alname > blname ) return 1; 
+            return 0; 
+        }
+    } else if (col == "Foo" || col == "Holk"){
+        if ( a < b ) return -1; 
+        if ( a > b ) return 1; 
+        return 0; 
+    } else {
+        // We allways sort none numbers below 
+        let tmp=(sortableTable.currentTable.ascending) ? -1000000 : 1000000;
+        
+        let left = (isNaN(a)) ? tmp : +a; 
+        let right = (isNaN(b)) ? tmp : +b; 
+        
+        return right-left;     
+    }
+}
+
+			
+		</script>
+</head>
+<body onload="setup();" onkeypress='keypressHandler(event)'>
+  <h2>Example Table 1</h2>
+	
+	<!-- Column filter div -->
+	<div id="columnfilter"></div>
+  
+  <!-- Table placeholder -->
+  <div id="thetable"></div>
+  <br>
+  <br>
+
+	
+</body>
