@@ -705,35 +705,14 @@ function eraseSelectedObject() {
     updateGraphics();
 }
 
-function classMode() {
+function setMode(mode) //"CreateClass" yet to be implemented in .php
+{
     canvas.style.cursor = "default";
-    uimode = "CreateClass";
-}
-
-function attrMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateERAttr";
-}
-
-function entityMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateEREntity";
-}
-
-function lineMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateLine";
-}
-
-function figureMode(mode) {
-    canvas.style.cursor = "default";
-    uimode = "CreateFigure";
-    figureType = mode;
-}
-
-function relationMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateERRelation";
+    uimode = mode;
+    if(mode == 'Square' || mode == 'Free') {
+      uimode = "CreateFigure";
+      figureType = mode;
+    }
 }
 
 $(document).ready(function(){
