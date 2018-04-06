@@ -517,8 +517,6 @@ if(!$readfile){
 
 }
 
-		echo $_GET['nav'];
-
 ?>
 
  <?php

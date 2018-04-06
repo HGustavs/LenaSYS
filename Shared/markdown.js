@@ -420,7 +420,7 @@ SomeName <<<<<< {
 	while loop that uppdates as long as the windowIsOpen = true{
 		calls the function that handles the users key-events - updateText();
 		checks if the user wants to save the file - saveFile();
-
+		closeWi(); kolla
 	} when the variable windowIsOpen = false {
 		close the window
 	}
@@ -432,14 +432,14 @@ Maybe we should create a seperate funtion for the keyIsPressed? Call the keyIsPr
 just uppdate the window with the latest update?
 updateText <<<<<{
 	when a keyboard is pressed and detected {
-		call a function that pase markdown
-		
+		call a function that paseMarkdown
+
 	}
 }
  */
 
 /*
-saveFile <<<<<<<<<<{
+saveFile <<<<<<<<<<{	till en början update
 	if the user presses the save button we shold save it with this function
 }
  */
