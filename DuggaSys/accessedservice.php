@@ -241,28 +241,28 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 $courses=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
     
-        $query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers WHERE cid=:cid;");
-        $query->bindParam(':cid', $cid);
-        if(!$query->execute()) {
-            $error=$query->errorInfo();
-            $debug="Error reading courses".$error[2];
-        }else{
-            foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-                array_push(
-                    $courses,
-                    array(
-                        'cid' => $row['cid'],
-                        'coursecode' => $row['coursecode'],
-                        'vers' => $row['vers'],
-                        'versname' => $row['versname'],
-                        'coursename' => $row['coursename'],
-                        'coursenamealt' => $row['coursenamealt'],
-                        'startdate' => $row['startdate'],
-                        'enddate' => $row['enddate']
-                    )
-                );
-            }
-        }
+  $query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers WHERE cid=:cid;");
+  $query->bindParam(':cid', $cid);
+  if(!$query->execute()) {
+    $error=$query->errorInfo();
+    $debug="Error reading courses".$error[2];
+  }else{
+    foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+      array_push(
+        $courses,
+        array(
+          'cid' => $row['cid'],
+          'coursecode' => $row['coursecode'],
+          'vers' => $row['vers'],
+          'versname' => $row['versname'],
+          'coursename' => $row['coursename'],
+          'coursenamealt' => $row['coursenamealt'],
+          'startdate' => $row['startdate'],
+          'enddate' => $row['enddate']
+        )
+      );
+    }
+  }
 }
 
 $array = array(
