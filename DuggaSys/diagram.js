@@ -757,13 +757,15 @@ function setTextSizeEntity() {
 }
 
 function setType() {
-    if (document.getElementById('object_type').value == 'Primary key') {
+    var elementVal = document.getElementById('object_type').value;
+
+    if (elementVal == 'Primary key') {
         diagram[lastSelectedObject].key_type = 'Primary key';
-    } else if (document.getElementById('object_type').value == 'Normal') {
+    } else if (elementVal == 'Normal') {
         diagram[lastSelectedObject].key_type = 'Normal';
-    } else if (document.getElementById('object_type').value == 'Multivalue') {
+    } else if (elementVal == 'Multivalue') {
         diagram[lastSelectedObject].key_type = 'Multivalue';
-    } else if (document.getElementById('object_type').value == 'Drive') {
+    } else if (elementVal == 'Drive') {
         diagram[lastSelectedObject].key_type = 'Drive';
     }
     updateGraphics();
@@ -943,14 +945,13 @@ function debugMode() {
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
         ghostingCrosses = false;
-        updateGraphics();
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
         ghostingCrosses = true;
-        updateGraphics();
     }
+    updateGraphics();
 }
 
 //calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram. it also save the local diagram
@@ -1052,7 +1053,10 @@ function removeLocalStorage() {
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 function reWrite() {
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + startX + " & Y=" + startY + "</p>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
+     + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+     + "X=" + startX
+     + " & Y=" + startY + "</p>";
 }
 
 //----------------------------------------
@@ -1085,31 +1089,14 @@ function getCurrentDate() {
 }
 
 function setRefreshTime() {
-    console.log("setRefreshTime running");
-    var time = 5000;
-    lastDiagramEdit = localStorage.getItem('lastEdit');
-    if (typeof lastDiagramEdit !== "undefined") {
-        var timeDiffrence = getCurrentDate() - lastDiagramEdit;
-        if (timeDiffrence <= 10800000 && timeDiffrence <= 259200000) {
-            refresh_lock = false;
-            console.log("setRefreshTime seting time to" + time + " " + timeDiffrence);
-            return time;
-        } else if (timeDiffrence >= 259200000 && timeDiffrence <= 604800000) {
-            refresh_lock = false;
-            time = 300000;
-            console.log("setRefreshTime seting time to" + time+ " " + timeDiffrence);
-            return time;
-        } else if (timeDiffrence > 604800000) {
-            refresh_lock = true;
-            time = 300000;
-            console.log("setRefreshTime seting time to" + time + " will only update on refresh."+ " " + timeDiffrence);
-            return time;
-        } else {
-            return time;
-        }
-    } else {
-        return time;
-    }
+  var time = 5000;
+  lastDiagramEdit = localStorage.getItem('lastEdit');
+  if (typeof lastDiagramEdit !== "undefined"){
+    var timeDifference = getCurrentDate() - lastDiagramEdit;
+    refresh_lock = timeDifference > 604800000 ? true : false;
+    time = timeDifference <= 259200000 ? 5000 : 300000;
+  }
+  return time;
 }
 function align(mode){
     for(var i = 0; i < diagram.length; i++){
@@ -1218,72 +1205,32 @@ function alignHorizontalCenter(selected_objects){
         selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
 }
-function bubbleSort(values, rising){
-    //Setting rising to true will sort low - high
-    var swap = null;
-    if(rising){
-        for(var i = 0; i < values.length; i++){
-            for(var j = 0; j < values.length; j++){
-                if(values[i] < values[j] && i != j){
-                    swap = values[i];
-                    values[i] = values[j];
-                    values[j] = swap;
-                }
-            }
-        }
-    }else{
-        for(var i = 0; i < values.length; i++){
-            for(var j = 0; j < values.length; j++){
-                if(values[i] > values[j] && i != j){
-                    swap = values[i];
-                    values[i] = values[j];
-                    values[i] = swap;
-                }
-            }
-        }
-    }
-    return values;
-}
-function sortObjects(selected_objects, mode, rising){
-    //Sorts objects by X or Y position
-    var position = [];
-    if(mode=='vertically'){
-        for(var i = 0; i < selected_objects.length; i++){
-            position.push(points[selected_objects[i].topLeft].y);
-        }
-        position = bubbleSort(position, rising);
 
-        var private_objects = selected_objects.splice([]);
-        var swap = null;
-        for(var i = 0; i < private_objects.length; i++){
-            for(var j = 0; j < position.length; j++){
-                if(points[private_objects[i].topLeft].y == position[j] && i != j){
-                    swap = private_objects[i];
-                    private_objects[i] = private_objects[j];
-                    private_objects[j] = swap;
-                }
+function sortObjects(selected_objects, mode){
+  //Sorts objects by X or Y position
+  var position = [];
+
+      for(var i = 0; i < selected_objects.length; i++){
+        if(mode=='vertically') position.push(points[selected_objects[i].topLeft].y);
+        else if(mode=='horizontally') position.push(points[selected_objects[i].topLeft].x);
+      }
+      position.sort(function(a,b) { return a - b });
+
+      var private_objects = selected_objects.splice([]);
+      var swap = null;
+
+      for(var i = 0; i < private_objects.length; i++){
+        swap = private_objects[i];
+          for(var j = 0; j < position.length; j++){
+            if(i==j) continue;
+              if((mode=='vertically' && points[private_objects[i].topLeft].y == position[j])
+              || (mode=='horizontally' && points[private_objects[i].topLeft].x == position[j])){
+                  private_objects[i] = private_objects[j];
+                  private_objects[j] = swap;
+              }
             }
         }
-    }else if(mode=='horizontally'){
-        for(var i = 0; i < selected_objects.length; i++){
-            position.push(points[selected_objects[i].topLeft].x);
-        }
-        position = bubbleSort(position, rising);
-
-        var private_objects = selected_objects.splice([]);
-        var swap = null;
-        for(var i = 0; i < private_objects.length; i++){
-            for(var j = 0; j < position.length; j++){
-                if(points[private_objects[i].topLeft].x == position[j] && i != j){
-                    swap = private_objects[i];
-                    private_objects[i] = private_objects[j];
-                    private_objects[j] = swap;
-                }
-            }
-        }
-    }
-
-    return private_objects;
+  return private_objects;
 }
 function distribute(axis){
     var spacing = 32;
@@ -1307,7 +1254,7 @@ function distribute(axis){
     hashFunction();
 }
 function distributeVertically(selected_objects, spacing){
-    selected_objects = sortObjects(selected_objects, 'vertically', true);
+    selected_objects = sortObjects(selected_objects, 'vertically');
 
     for(var i = 1; i < selected_objects.length; i++){
         var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
@@ -1317,7 +1264,7 @@ function distributeVertically(selected_objects, spacing){
     }
 }
 function distributeHorizontally(selected_objects, spacing){
-    selected_objects = sortObjects(selected_objects, 'horizontally', true);
+    selected_objects = sortObjects(selected_objects, 'horizontally');
 
     for(var i = 1; i < selected_objects.length; i++){
         var object_width = (points[selected_objects[i].bottomRight].x - points[selected_objects[i].topLeft].x);
