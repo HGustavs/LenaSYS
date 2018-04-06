@@ -553,10 +553,10 @@ function Symbol(kind) {
     //     beginpath - moveto - lineto
     //
     //     För att göra streckad linje rita med
-    //     canvasContext.setLineDash(segments);
+    //     ctx.setLineDash(segments);
     //--------------------------------------------------------------------
     this.draw = function () {
-        canvasContext.lineWidth = this.lineWidth * 2;
+        ctx.lineWidth = this.lineWidth * 2;
         if (this.sizeOftext == 'Tiny') {
             textsize = 14;
         } else if (this.sizeOftext == 'Small') {
@@ -573,290 +573,290 @@ function Symbol(kind) {
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
         if (this.symbolkind == 1) {
-            canvasContext.save();
+            ctx.save();
             var midy = points[this.middleDivider].y;
-            canvasContext.font = "bold " + parseInt(textsize) + "px Arial";
+            ctx.font = "bold " + parseInt(textsize) + "px Arial";
             // Clear Class Box
-            canvasContext.fillStyle = "#fff";
-            canvasContext.fillRect(x1, y1, x2 - x1, y2 - y1);
-            canvasContext.fillStyle = "#fff";
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+            ctx.fillStyle = "#fff";
             if (this.targeted) {
-                canvasContext.strokeStyle = "#F82";
+                ctx.strokeStyle = "#F82";
             } else {
-                canvasContext.strokeStyle = this.strokeColor;
+                ctx.strokeStyle = this.strokeColor;
             }
             // Write Class Name
-            canvasContext.textAlign = "center";
-            canvasContext.textBaseline = "middle";
-            canvasContext.fillStyle = "#fff";
-            canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillStyle = "#fff";
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
             if (this.key_type == 'Primary key') {
-                var linelenght = canvasContext.measureText(this.name).width;
-                canvasContext.beginPath(1);
-                canvasContext.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
-                canvasContext.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
-                canvasContext.lineTo(x1 + ((x2 - x1) * 0.5) + linelenght, y1 + (0.85 * this.textsize) + 10);
-                canvasContext.strokeStyle = this.strokeColor;
-                canvasContext.stroke();
+                var linelenght = ctx.measureText(this.name).width;
+                ctx.beginPath(1);
+                ctx.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
+                ctx.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
+                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + linelenght, y1 + (0.85 * this.textsize) + 10);
+                ctx.strokeStyle = this.strokeColor;
+                ctx.stroke();
             }
             // Change Alignment and Font
-            canvasContext.textAlign = "start";
-            canvasContext.textBaseline = "top";
-            canvasContext.font = parseInt(this.textsize) + "px Arial";
+            ctx.textAlign = "start";
+            ctx.textBaseline = "top";
+            ctx.font = parseInt(this.textsize) + "px Arial";
             // Clipping of text and drawing of attributes
-            canvasContext.beginPath();
-            canvasContext.moveTo(x1, y1 + (this.textsize * 1.5));
-            canvasContext.lineTo(x2, y1 + (this.textsize * 1.5));
-            canvasContext.lineTo(x2, midy);
-            canvasContext.lineTo(x1, midy);
-            canvasContext.lineTo(x1, y1 + (this.textsize * 1.5));
-            canvasContext.clip();
+            ctx.beginPath();
+            ctx.moveTo(x1, y1 + (this.textsize * 1.5));
+            ctx.lineTo(x2, y1 + (this.textsize * 1.5));
+            ctx.lineTo(x2, midy);
+            ctx.lineTo(x1, midy);
+            ctx.lineTo(x1, y1 + (this.textsize * 1.5));
+            ctx.clip();
             for (var i = 0; i < this.attributes.length; i++) {
-                canvasContext.fillText(this.attributes[i].visibility + " " + this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
+                ctx.fillText(this.attributes[i].visibility + " " + this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
             }
             // Clipping of text and drawing of methods
-            canvasContext.beginPath();
-            canvasContext.moveTo(x1, midy);
-            canvasContext.lineTo(x2, midy);
-            canvasContext.lineTo(x2, y2);
-            canvasContext.lineTo(x1, y2);
-            canvasContext.lineTo(x1, midy);
-            canvasContext.clip();
-            canvasContext.textAlign = "start";
-            canvasContext.textBaseline = "top";
+            ctx.beginPath();
+            ctx.moveTo(x1, midy);
+            ctx.lineTo(x2, midy);
+            ctx.lineTo(x2, y2);
+            ctx.lineTo(x1, y2);
+            ctx.lineTo(x1, midy);
+            ctx.clip();
+            ctx.textAlign = "start";
+            ctx.textBaseline = "top";
             for (var i = 0; i < this.operations.length; i++) {
-                canvasContext.fillText(this.operations[i].visibility + " " + this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
+                ctx.fillText(this.operations[i].visibility + " " + this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
             }
             // Box
-            canvasContext.beginPath();
-            canvasContext.moveTo(x1, y1);
-            canvasContext.lineTo(x2, y1);
-            canvasContext.lineTo(x2, y2);
-            canvasContext.lineTo(x1, y2);
-            canvasContext.lineTo(x1, y1);
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y1);
+            ctx.lineTo(x2, y2);
+            ctx.lineTo(x1, y2);
+            ctx.lineTo(x1, y1);
             // Top Divider
-            canvasContext.moveTo(x1, y1 + (this.textsize * 1.5));
-            canvasContext.lineTo(x2, y1 + (this.textsize * 1.5));
+            ctx.moveTo(x1, y1 + (this.textsize * 1.5));
+            ctx.lineTo(x2, y1 + (this.textsize * 1.5));
             // Middie Divider
-            canvasContext.moveTo(x1, midy);
-            canvasContext.lineTo(x2, midy);
-            canvasContext.stroke();
-            canvasContext.restore();
+            ctx.moveTo(x1, midy);
+            ctx.lineTo(x2, midy);
+            ctx.stroke();
+            ctx.restore();
         } else if (this.symbolkind == 2) {
-            canvasContext.save();
+            ctx.save();
             //drawing a multivalue attribute
-            canvasContext.lineWidth = this.lineWidth;
+            ctx.lineWidth = this.lineWidth;
             if (this.key_type == 'Multivalue') {
                 drawOval(x1 - 10, y1 - 10, x2 + 10, y2 + 10);
-                canvasContext.fillStyle = this.symbolColor;
-                canvasContext.fill();
+                ctx.fillStyle = this.symbolColor;
+                ctx.fill();
                 if (this.targeted) {
-                    canvasContext.strokeStyle = "#F82";
+                    ctx.strokeStyle = "#F82";
                 } else {
-                    canvasContext.strokeStyle = this.strokeColor;
+                    ctx.strokeStyle = this.strokeColor;
                 }
-                canvasContext.stroke();
+                ctx.stroke();
             }
             //drawing an derived attribute
             if (this.key_type == 'Drive') {
-                canvasContext.setLineDash([5, 4]);
+                ctx.setLineDash([5, 4]);
                 drawOval(x1 - 10, y1 - 10);
-                canvasContext.fillStyle = this.symbolColor;
-                canvasContext.fill();
+                ctx.fillStyle = this.symbolColor;
+                ctx.fill();
                 if (this.targeted) {
-                    canvasContext.strokeStyle = "#F82";
+                    ctx.strokeStyle = "#F82";
                 } else {
-                    canvasContext.strokeStyle = this.strokeColor;
+                    ctx.strokeStyle = this.strokeColor;
                 }
             }
             //scale the text
-            canvasContext.font = "bold " + parseInt(textsize) + "px " + this.font;
+            ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
             // Write Attribute Name
-            canvasContext.textAlign = "center";
-            canvasContext.textBaseline = "middle";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
             drawOval(x1, y1, x2, y2);
-            canvasContext.fillStyle = this.symbolColor;
-            canvasContext.fill();
+            ctx.fillStyle = this.symbolColor;
+            ctx.fill();
             makeShadow();
             if (this.targeted) {
-                canvasContext.strokeStyle = "#F82";
+                ctx.strokeStyle = "#F82";
             } else {
-                canvasContext.strokeStyle = this.strokeColor;
+                ctx.strokeStyle = this.strokeColor;
             }
-            canvasContext.stroke();
-            canvasContext.fillStyle = "#fff";
-            canvasContext.fillStyle = this.fontColor;
-            canvasContext.closePath();
-            canvasContext.clip();
-            canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+            ctx.stroke();
+            ctx.fillStyle = "#fff";
+            ctx.fillStyle = this.fontColor;
+            ctx.closePath();
+            ctx.clip();
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
             if (this.key_type == 'Primary key') {
-                var linelenght = canvasContext.measureText(this.name).width;
-                canvasContext.beginPath(1);
-                canvasContext.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                canvasContext.lineTo(x1 + ((x2 - x1) * 0.5) - (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                canvasContext.lineTo(x1 + ((x2 - x1) * 0.5) + (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                canvasContext.strokeStyle = this.strokeColor;
-                canvasContext.stroke();
+                var linelenght = ctx.measureText(this.name).width;
+                ctx.beginPath(1);
+                ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+                ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+                ctx.strokeStyle = this.strokeColor;
+                ctx.stroke();
 
             } else if (this.key_type == 'Normal') {
-                canvasContext.beginPath(1);
-                canvasContext.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                canvasContext.lineTo(x1 + ((x2 - x1) * 0.5) - (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                canvasContext.lineTo(x1 + ((x2 - x1) * 0.5) + (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                canvasContext.strokeStyle = this.strokeColor;
+                ctx.beginPath(1);
+                ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+                ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+                ctx.strokeStyle = this.strokeColor;
             }
-            canvasContext.restore();
+            ctx.restore();
         } else if (this.symbolkind == 3) {
-            canvasContext.save();
-            canvasContext.font = "bold " + parseInt(textsize) + "px " + this.font;
-            canvasContext.textAlign = "center";
-            canvasContext.textBaseline = "middle";
-            canvasContext.beginPath();
+            ctx.save();
+            ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.beginPath();
             if (this.key_type == "Weak") {
-                canvasContext.moveTo(x1 - 5, y1 - 5);
-                canvasContext.lineTo(x2 + 5, y1 - 5);
-                canvasContext.lineTo(x2 + 5, y2 + 5);
-                canvasContext.lineTo(x1 - 5, y2 + 5);
-                canvasContext.lineTo(x1 - 5, y1 - 5);
+                ctx.moveTo(x1 - 5, y1 - 5);
+                ctx.lineTo(x2 + 5, y1 - 5);
+                ctx.lineTo(x2 + 5, y2 + 5);
+                ctx.lineTo(x1 - 5, y2 + 5);
+                ctx.lineTo(x1 - 5, y1 - 5);
             }
-            canvasContext.moveTo(x1, y1);
-            canvasContext.lineTo(x2, y1);
-            canvasContext.lineTo(x2, y2);
-            canvasContext.lineTo(x1, y2);
-            canvasContext.lineTo(x1, y1);
-            canvasContext.closePath();
-            canvasContext.fill();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y1);
+            ctx.lineTo(x2, y2);
+            ctx.lineTo(x1, y2);
+            ctx.lineTo(x1, y1);
+            ctx.closePath();
+            ctx.fill();
             makeShadow();
-            canvasContext.clip();
-            canvasContext.fillStyle = this.symbolColor;
-            canvasContext.fill();
+            ctx.clip();
+            ctx.fillStyle = this.symbolColor;
+            ctx.fill();
             if (this.targeted) {
-                canvasContext.strokeStyle = "#F82";
+                ctx.strokeStyle = "#F82";
             } else {
-                canvasContext.strokeStyle = this.strokeColor;
+                ctx.strokeStyle = this.strokeColor;
             }
-            canvasContext.stroke();
-            canvasContext.fillStyle = "#fff";
-            canvasContext.fillStyle = this.fontColor;
-            canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-            canvasContext.font = parseInt(textsize) + "px " + this.font;
-            canvasContext.fillStyle = "#fff";
+            ctx.stroke();
+            ctx.fillStyle = "#fff";
+            ctx.fillStyle = this.fontColor;
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+            ctx.font = parseInt(textsize) + "px " + this.font;
+            ctx.fillStyle = "#fff";
             for (var i = 0; i < this.arity.length; i++) {
                 for (var j = 0; j < this.arity[i].length; j++) {
                     var arity = this.arity[i][j];
-                    canvasContext.textAlign = arity.align;
-                    canvasContext.textBaseline = arity.baseLine;
-                    canvasContext.fillText(arity.text, arity.x, arity.y);
+                    ctx.textAlign = arity.align;
+                    ctx.textBaseline = arity.baseLine;
+                    ctx.fillText(arity.text, arity.x, arity.y);
                 }
             }
-            canvasContext.restore();
+            ctx.restore();
         } else if (this.symbolkind == 4) {
-            canvasContext.save();
+            ctx.save();
             // ER Attribute relationship is a single line
             if (this.key_type == "Forced") {
-                canvasContext.lineWidth = this.lineWidth;
+                ctx.lineWidth = this.lineWidth;
                 if (this.isHovered || this.targeted) {
-                    canvasContext.strokeStyle = "#F82";
+                    ctx.strokeStyle = "#F82";
                 } else {
-                    canvasContext.strokeStyle = this.strokeColor;
+                    ctx.strokeStyle = this.strokeColor;
                 }
-                canvasContext.beginPath();
-                canvasContext.moveTo(x1, y1);
-                canvasContext.lineTo(x2, y2);
-                canvasContext.stroke();
-                canvasContext.lineWidth = this.lineWidth;
-                canvasContext.strokeStyle = "#000";
-                canvasContext.beginPath();
-                canvasContext.moveTo(x1, y1);
-                canvasContext.lineTo(x2, y2);
-                canvasContext.stroke();
-                canvasContext.strokeStyle = this.strokeColor;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                ctx.lineWidth = this.lineWidth;
+                ctx.strokeStyle = "#000";
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                ctx.strokeStyle = this.strokeColor;
             } else if (this.key_type == "Derived") {
                 if (this.isHovered || this.targeted) {
-                    canvasContext.strokeStyle = "#F82";
+                    ctx.strokeStyle = "#F82";
                 } else {
-                    canvasContext.strokeStyle = this.strokeColor;
+                    ctx.strokeStyle = this.strokeColor;
                 }
-                canvasContext.setLineDash([5, 4]);
-                canvasContext.beginPath();
-                canvasContext.moveTo(x1, y1);
-                canvasContext.lineTo(x2, y2);
-                canvasContext.stroke();
-                canvasContext.strokeStyle = this.strokeColor;
+                ctx.setLineDash([5, 4]);
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                ctx.strokeStyle = this.strokeColor;
             }
             else {
                 if (this.isHovered || this.targeted) {
-                    canvasContext.strokeStyle = "#F82";
+                    ctx.strokeStyle = "#F82";
                 } else {
-                    canvasContext.strokeStyle = this.strokeColor;
+                    ctx.strokeStyle = this.strokeColor;
                 }
-                canvasContext.lineWidth = this.lineWidth;
-                canvasContext.beginPath();
-                canvasContext.moveTo(x1, y1);
-                canvasContext.lineTo(x2, y2);
-                canvasContext.stroke();
-                canvasContext.strokeStyle = this.strokeColor;
+                ctx.lineWidth = this.lineWidth;
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+                ctx.strokeStyle = this.strokeColor;
             }
-            canvasContext.restore();
+            ctx.restore();
         } else if (this.symbolkind == 5) {
-            canvasContext.save();
-            canvasContext.font = "bold " + parseInt(textsize) + "px " + this.font;
-            canvasContext.textAlign = "center";
-            canvasContext.textBaseline = "middle";
+            ctx.save();
+            ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
             var midx = points[this.middleDivider].x;
             var midy = points[this.middleDivider].y;
-            canvasContext.beginPath();
+            ctx.beginPath();
             if (this.key_type == 'Weak') {
 
-                canvasContext.moveTo(midx, y1 + 5);
-                canvasContext.lineTo(x2 - 9, midy + 0);
-                canvasContext.lineTo(midx + 0, y2 - 5);
-                canvasContext.lineTo(x1 + 9, midy + 0);
-                canvasContext.lineTo(midx + 0, y1 + 5);
+                ctx.moveTo(midx, y1 + 5);
+                ctx.lineTo(x2 - 9, midy + 0);
+                ctx.lineTo(midx + 0, y2 - 5);
+                ctx.lineTo(x1 + 9, midy + 0);
+                ctx.lineTo(midx + 0, y1 + 5);
             }
-            canvasContext.moveTo(midx, y1);
-            canvasContext.lineTo(x2, midy);
-            canvasContext.lineTo(midx, y2);
-            canvasContext.lineTo(x1, midy);
-            canvasContext.lineTo(midx, y1);
-            canvasContext.fillStyle = this.symbolColor;
+            ctx.moveTo(midx, y1);
+            ctx.lineTo(x2, midy);
+            ctx.lineTo(midx, y2);
+            ctx.lineTo(x1, midy);
+            ctx.lineTo(midx, y1);
+            ctx.fillStyle = this.symbolColor;
             makeShadow();
-            canvasContext.fill();
-            canvasContext.closePath();
-            canvasContext.clip();
+            ctx.fill();
+            ctx.closePath();
+            ctx.clip();
 
             if (this.targeted) {
-                canvasContext.strokeStyle = "#F82";
+                ctx.strokeStyle = "#F82";
             } else {
-                canvasContext.strokeStyle = this.strokeColor;
+                ctx.strokeStyle = this.strokeColor;
             }
-            canvasContext.stroke();
-            canvasContext.fillStyle = "#fff";
-            canvasContext.fillStyle = this.fontColor;
-            canvasContext.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-            canvasContext.restore();
+            ctx.stroke();
+            ctx.fillStyle = "#fff";
+            ctx.fillStyle = this.fontColor;
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+            ctx.restore();
         }
-        canvasContext.setLineDash([]);
+        ctx.setLineDash([]);
     }
 }
 
 function makeShadow(){
-    canvasContext.save();
-    canvasContext.shadowBlur = this.shadowBlur;
-    canvasContext.shadowOffsetX = this.shadowOffsetX;
-    canvasContext.shadowOffsetY = this.shadowOffsetY;
-    canvasContext.shadowColor = this.shadowColor;
-    canvasContext.fill();
-    canvasContext.restore();
+    ctx.save();
+    ctx.shadowBlur = this.shadowBlur;
+    ctx.shadowOffsetX = this.shadowOffsetX;
+    ctx.shadowOffsetY = this.shadowOffsetY;
+    ctx.shadowColor = this.shadowColor;
+    ctx.fill();
+    ctx.restore();
 }
 
 this.drawOval = function (x1, y1, x2, y2) {
     var middleX = x1 + ((x2 - x1) * 0.5);
     var middleY = y1 + ((y2 - y1) * 0.5);
-    canvasContext.beginPath();
-    canvasContext.moveTo(x1, middleY);
-    canvasContext.quadraticCurveTo(x1, y1, middleX, y1);
-    canvasContext.quadraticCurveTo(x2, y1, x2, middleY);
-    canvasContext.quadraticCurveTo(x2, y2, middleX, y2);
-    canvasContext.quadraticCurveTo(x1, y2, x1, middleY);
+    ctx.beginPath();
+    ctx.moveTo(x1, middleY);
+    ctx.quadraticCurveTo(x1, y1, middleX, y1);
+    ctx.quadraticCurveTo(x2, y1, x2, middleY);
+    ctx.quadraticCurveTo(x2, y2, middleX, y2);
+    ctx.quadraticCurveTo(x1, y2, x1, middleY);
 }

@@ -24,7 +24,7 @@ var gridSize = 16;
 var arityBuffer = gridSize / 2;
 var crossSize = 4.0;                // Size of point cross
 var tolerance = 8;                  // Size of tolerance area around the point
-var canvasContext;                  // Canvas context
+var ctx;                  // Canvas context
 var canvas;                         // Canvas Element
 var sel;                            // Selection state
 var currentMouseCoordinateX = 0;
@@ -79,6 +79,7 @@ var classTemplate = {
   height: 7 * gridSize
 };
 var a = [], b = [], c = [];
+var selected_objects = [];              // Is used to store multiple selected objects
 var mousedownX = 0, mousedownY = 0;     // Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
 var mousemoveX = 0, mousemoveY = 0;     // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
 var mouseDiffX = 0, mouseDiffY = 0;     // Saves to diff between mousedown and mousemove to know how much to translate the diagram
@@ -160,24 +161,24 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 // drawPoints - Draws each of the points as a cross
 //--------------------------------------------------------------------
 points.drawPoints = function() {
-    canvasContext.strokeStyle = crossStrokeStyle1;
-    canvasContext.lineWidth = 2;
+    ctx.strokeStyle = crossStrokeStyle1;
+    ctx.lineWidth = 2;
     for (var i = 0; i < this.length; i++) {
         var point = this[i];
         if (!point.isSelected) {
-            canvasContext.beginPath();
-            canvasContext.moveTo(point.x - crossSize, point.y - crossSize);
-            canvasContext.lineTo(point.x + crossSize, point.y + crossSize);
-            canvasContext.moveTo(point.x + crossSize, point.y - crossSize);
-            canvasContext.lineTo(point.x - crossSize, point.y + crossSize);
-            canvasContext.stroke();
+            ctx.beginPath();
+            ctx.moveTo(point.x - crossSize, point.y - crossSize);
+            ctx.lineTo(point.x + crossSize, point.y + crossSize);
+            ctx.moveTo(point.x + crossSize, point.y - crossSize);
+            ctx.lineTo(point.x - crossSize, point.y + crossSize);
+            ctx.stroke();
         } else {
-            canvasContext.save();
-            canvasContext.fillStyle = crossFillStyle;
-            canvasContext.strokeStyle = crossStrokeStyle2;
-            canvasContext.fillRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
-            canvasContext.strokeRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
-            canvasContext.restore();
+            ctx.save();
+            ctx.fillStyle = crossFillStyle;
+            ctx.strokeStyle = crossStrokeStyle2;
+            ctx.fillRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
+            ctx.strokeRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
+            ctx.restore();
         }
     }
 }
@@ -317,6 +318,25 @@ diagram.targetItemsInsideSelectionBox = function (endX, endY, sx, sy) {
                 this[i].targeted = false;
             }
         }
+    }
+}
+
+
+//--------------------------------------------------------------------
+// Keeps track of if the CTRL or CMD key is active or not
+//--------------------------------------------------------------------
+var ctrlIsClicked = false;
+//var selectedItems = [];
+
+window.onkeydown = function(event) {
+    if(event.which == 17 || event.which == 91) {
+        ctrlIsClicked = true;
+    }
+}
+
+window.onkeyup = function(event) {
+    if(event.which == 17 || event.which == 91) {
+        ctrlIsClicked = false;
     }
 }
 
@@ -563,7 +583,7 @@ function initializeCanvas() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
-        canvasContext = canvas.getContext("2d");
+        ctx = canvas.getContext("2d");
     }
     getUploads();
     // generateExampleCode();
@@ -626,7 +646,7 @@ window.addEventListener('resize', canvasSize);
 function updateGraphics() {
     ctx.clearRect(sx, sy, (widthWindow / zoomValue), (heightWindow / zoomValue));
     if (moveValue == 1) {
-        canvasContext.translate((-mouseDiffX), (-mouseDiffY));
+        ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
     }
     diagram.updateQuadrants();
@@ -831,19 +851,19 @@ function connectedObjects(line) {
 }
 
 function cross(xCoordinate, yCoordinate) {
-    canvasContext.strokeStyle = "#4f6";
-    canvasContext.lineWidth = 3;
-    canvasContext.beginPath();
-    canvasContext.moveTo(xCoordinate - crossSize, yCoordinate - crossSize);
-    canvasContext.lineTo(xCoordinate + crossSize, yCoordinate + crossSize);
-    canvasContext.moveTo(xCoordinate + crossSize, yCoordinate - crossSize);
-    canvasContext.lineTo(xCoordinate - crossSize, yCoordinate + crossSize);
-    canvasContext.stroke();
+    ctx.strokeStyle = "#4f6";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(xCoordinate - crossSize, yCoordinate - crossSize);
+    ctx.lineTo(xCoordinate + crossSize, yCoordinate + crossSize);
+    ctx.moveTo(xCoordinate + crossSize, yCoordinate - crossSize);
+    ctx.lineTo(xCoordinate - crossSize, yCoordinate + crossSize);
+    ctx.stroke();
 }
 
 function drawGrid() {
-    canvasContext.lineWidth = 1;
-    canvasContext.strokeStyle = "rgb(238, 238, 250)";
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgb(238, 238, 250)";
     var quadrantX;
     var quadrantY;
     if (sx < 0) {
@@ -877,7 +897,7 @@ function drawGrid() {
         ctx.closePath();
     }
     //Draws the thick lines
-    canvasContext.strokeStyle = "rgb(208, 208, 220)";
+    ctx.strokeStyle = "rgb(208, 208, 220)";
     for (var i = 0 + quadrantX; i < quadrantX + (widthWindow / zoomValue); i++) {
         if (i % 5 == 0) {
             ctx.beginPath();
@@ -1092,8 +1112,6 @@ function setRefreshTime() {
     }
 }
 function align(mode){
-    var selected_objects = [];
-
     for(var i = 0; i < diagram.length; i++){
         if(diagram[i].targeted == true){
             selected_objects.push(diagram[i]);
