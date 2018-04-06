@@ -26,7 +26,7 @@
         </style>
         <script>
             $(document).ready(function() {
-                $("Preview").click(function() {
+                $("#Preview").click(function() {
                     $("PreviewWindow").addClass("PWShow");
                 });
             });
