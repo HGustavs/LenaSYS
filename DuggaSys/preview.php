@@ -25,10 +25,10 @@
         </style>
         <script>
             function onload() {
-                $("PreviewWindow").hide();
+                $(".PreviewWindow").hide();
             }
             function showPreview() {
-                $("PreviewWindow").show();
+                $(".PreviewWindow").show();
             }
             /*$(document).ready(function() {
                 $('#Preview').click(function() {
@@ -40,7 +40,7 @@
                 
             }
             function cancelPreivew() {
-                $("PreviewWindow").hide();     
+                $(".PreviewWindow").hide();     
             }
         </script>
     </head>
