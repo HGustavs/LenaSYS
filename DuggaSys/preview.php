@@ -42,19 +42,26 @@
                 border: solid rgb(200,200,200);
                 background-color: #FFFFFF;
                 width: 350px;
-                height: 600px;
+                height: 550px;
                 position: relative;
-                margin: 10px;
+                margin: 50px 10px 10px 10px;
                 float: left;
             }
             .MarkdownPrev {
                 border: solid rgb(200,200,200);
                 background-color: #FFFFFF;
                 width: 400px;
-                height: 600px;
+                height: 550px;
                 position: relative;
-                margin: 10px;
+                margin: 50px 10px 10px 10px;
                 float: right;
+            }
+            .OptionButtons {
+                width: auto;
+                height: auto;
+                bottom: 4px;
+                right: 4px;
+                position: relative;
             }
         </style>
         <script>
@@ -82,8 +89,10 @@
         <div class="PreviewWindow">
             <div class="Markdown">Markdown</div>
             <div class="MarkdownPrev">Markdown Preview</div> 
-            <button id="button-save" onclick="saveMarkdown()">Save</button>
-            <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
+            <div class="OptionButtons">
+                <button id="button-save" onclick="saveMarkdown()">Save</button>
+                <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
+            </div>
         </div>
         <?php
 		  //echo $_GET['prev'];
