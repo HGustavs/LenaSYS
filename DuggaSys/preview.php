@@ -56,11 +56,17 @@
                 float: right;
             }
             .OptionButtons {
-                width: auto;
-                height: auto;
                 top: 610px;
                 position: relative;
                 margin: 0px 10px 0px 10px;
+            }
+             .PrevHead {
+                height: 30px
+                position: relative;
+                background-color: #775886;
+                color: #FFFFFF;
+                font-size: 14px;
+                line-height: 
             }
         </style>
         <script>
@@ -86,6 +92,7 @@
         <div class="Header">Hello its me, preview</div>
         <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
+            <div class="PrevHead">This is the preview window</div>
             <div class="Markdown">Markdown</div>
             <div class="MarkdownPrev">Markdown Preview</div> 
             <div class="OptionButtons">
