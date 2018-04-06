@@ -1216,7 +1216,7 @@ function sortObjects(selected_objects, mode){
 
       for(var i = 0; i < private_objects.length; i++){
         swap = private_objects[i];
-          for(var j = i+1; j < position.length; j++){
+          for(var j = i; j < position.length; j++){
               if((mode=='vertically' && points[private_objects[i].topLeft].y == position[j])
               || (mode=='horizontally' && points[private_objects[i].topLeft].x == position[j])){
                   private_objects[i] = private_objects[j];
