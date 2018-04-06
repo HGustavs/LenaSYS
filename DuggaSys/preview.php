@@ -14,7 +14,7 @@
         <style>
             .PreviewWindow {
                 height: 700px;
-                width: 800px;
+                width: 900px;
                 margin: 0px auto;
                 border: solid rgb(200,200,200);
                 background-color: rgb(240,240,240);
@@ -44,16 +44,16 @@
                 width: 350px;
                 height: 600px;
                 position: relative;
-                padding: 10px;
+                margin: 10px;
                 float: left;
             }
             .MarkdownPrev {
                 border: solid rgb(200,200,200);
                 background-color: #FFFFFF;
-                width: 350px;
+                width: 400px;
                 height: 600px;
                 position: relative;
-                padding: 10px;
+                margin: 10px;
                 float: right;
             }
         </style>
@@ -81,8 +81,7 @@
         <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
             <div class="Markdown">Markdown</div>
-            <div class="MarkdownPrev">Markdown Preview</div>
-            This is the preview window  
+            <div class="MarkdownPrev">Markdown Preview</div> 
             <button id="button-save" onclick="saveMarkdown()">Save</button>
             <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
         </div>
