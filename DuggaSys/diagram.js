@@ -1200,13 +1200,7 @@ function alignHorizontalCenter(selected_objects){
         selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
 }
-function bubbleSort(values, rising){
-    //Setting rising to true will sort low - high
-    values.sort(function(a,b) { return a - b });
-    if(!rising) values.reverse();
 
-    return values;
-}
 function sortObjects(selected_objects, mode, rising){
     //Sorts objects by X or Y position
     var position = [];
@@ -1214,11 +1208,12 @@ function sortObjects(selected_objects, mode, rising){
         for(var i = 0; i < selected_objects.length; i++){
             position.push(points[selected_objects[i].topLeft].y);
         }
-        position = bubbleSort(position, rising);
+        position.sort(function(a,b) { return a - b });
 
         var private_objects = selected_objects.splice([]);
         var swap = null;
         for(var i = 0; i < private_objects.length; i++){
+          alert("hej");
             for(var j = 0; j < position.length; j++){
                 if(points[private_objects[i].topLeft].y == position[j] && i != j){
                     swap = private_objects[i];
@@ -1231,7 +1226,7 @@ function sortObjects(selected_objects, mode, rising){
         for(var i = 0; i < selected_objects.length; i++){
             position.push(points[selected_objects[i].topLeft].x);
         }
-        position = bubbleSort(position, rising);
+        position.sort(function(a,b) { return a - b });
 
         var private_objects = selected_objects.splice([]);
         var swap = null;
