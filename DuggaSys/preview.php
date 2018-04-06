@@ -19,11 +19,14 @@
                 background-color: rgb(240,240,240);
                 display: none;
             }
+            .PWShow {
+                display: block;
+            }
                 
         </style>
         <script>
             function showPreview() {
-                $(.PreivewWindow).style="display:block";
+                $(.PreivewWindow).addClass(PWShow);
             }
             function saveCode() {
                 
@@ -39,7 +42,7 @@
         <div class="PreviewWindow">
             This is the preview window    
         </div>
-        //<?php
+        <?php
 		  //echo $_GET['prev'];
         //?>
         
