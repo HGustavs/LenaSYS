@@ -1217,6 +1217,7 @@ function sortObjects(selected_objects, mode){
             for(var j = 0; j < position.length; j++){
               console.log(position[j]);
                 if(points[private_objects[i].topLeft].y == position[j] && i != j){
+                  console.log("In the mainframe");
                     swap = private_objects[i];
                     private_objects[i] = private_objects[j];
                     private_objects[j] = swap;
