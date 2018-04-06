@@ -737,13 +737,15 @@ function setTextSizeEntity() {
 }
 
 function setType() {
-    if (document.getElementById('object_type').value == 'Primary key') {
+    var elementVal = document.getElementById('object_type').value;
+
+    if (elementVal == 'Primary key') {
         diagram[lastSelectedObject].key_type = 'Primary key';
-    } else if (document.getElementById('object_type').value == 'Normal') {
+    } else if (elementVal == 'Normal') {
         diagram[lastSelectedObject].key_type = 'Normal';
-    } else if (document.getElementById('object_type').value == 'Multivalue') {
+    } else if (elementVal == 'Multivalue') {
         diagram[lastSelectedObject].key_type = 'Multivalue';
-    } else if (document.getElementById('object_type').value == 'Drive') {
+    } else if (elementVal == 'Drive') {
         diagram[lastSelectedObject].key_type = 'Drive';
     }
     updateGraphics();
@@ -923,14 +925,13 @@ function debugMode() {
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
         ghostingCrosses = false;
-        updateGraphics();
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
         ghostingCrosses = true;
-        updateGraphics();
     }
+    updateGraphics();
 }
 
 //calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram. it also save the local diagram
