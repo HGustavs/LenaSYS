@@ -699,9 +699,9 @@ function returnedSection(data)
 
     str+="<div class='course' style='display: flex;align-items: center; justify-content: flex-end;'>";
     str+="<div style='flex-grow:1'>"
-      str+="<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>"+data.coursename+"</span>";
-      str+="<span id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</span>";
-      str+="<span id='course-versname' class='courseVersionField'>"+versionname+"</span>";
+    str+="<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px; margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>"+data.coursename+"</span>";
+    str+="<span id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</span>";
+    str+="<span id='course-versname' class='courseVersionField'>"+versionname+"</span>";
     str+="</div>";
     // If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign
     if(retdata["writeaccess"]){
@@ -728,28 +728,48 @@ function returnedSection(data)
 				var released = item['release'];
 
 				// Separating sections into different classes
-				if(parseInt(item['kind']) === 0){
-					str += "<div  id='header" + menuState.idCounter + data.coursecode + "' class='header' style='display:block'>";
-				}else if(parseInt(item['kind']) === 1){
-					str += "<div id='section" + menuState.idCounter + data.coursecode + "'  class='section' style='display:block'>";
-				}else if(parseInt(item['kind']) === 2){
-					str += "<div id='code" + menuState.idCounter + data.coursecode + "' class='code' style='display:block'>";
-				}else if(parseInt(item['kind']) === 3){
-					str += "<div id='test" + menuState.idCounter + data.coursecode + "' class='test' style='display:block'>";
-				}else if(parseInt(item['kind']) === 4){
+				if(parseInt(item['kind']) === 0) {
+					str += 
+						"<div id='header"
+						+ menuState.idCounter
+						+ data.coursecode
+						+ "' class='header' style='display:block'>";
+				} else if(parseInt(item['kind']) === 1) {
+					str +=
+						"<div id='section"
+						+ menuState.idCounter
+						+ data.coursecode
+						+ "'  class='section' style='display:block'>";
+				} else if(parseInt(item['kind']) === 2) {
+					str +=
+						"<div id='code"
+						+ menuState.idCounter
+						+ data.coursecode
+						+ "' class='code' style='display:block'>";
+				} else if(parseInt(item['kind']) === 3) {
+					str +=
+						"<div id='test"
+						+ menuState.idCounter
+						+ data.coursecode
+						+ "' class='test' style='display:block'>";
+				} else if(parseInt(item['kind']) === 4) {
 					str += "<div class='moment' style='display:block'>";
-				}else if(parseInt(item['kind']) === 5){
-					str += "<div  id='link" + menuState.idCounter + data.coursecode + "' class='link' style='display:block'>";
+				} else if(parseInt(item['kind']) === 5){
+					str +=
+						"<div id='link"
+						+ menuState.idCounter
+						+ data.coursecode
+						+ "' class='link' style='display:block'>";
 				}
 				menuState.idCounter++;
 				// All are visible according to database
 
-
 				// Content table
 				str+="<table id='lid"+item['lid']+"' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
-				if(kk%2==0){
+				
+				if(kk%2==0) {
 					str+=" class='hi' ";
-				}else{
+				} else {
 					str+=" class='lo' ";
 				}
 				str+=" >";
@@ -923,21 +943,73 @@ function returnedSection(data)
 				str+=">";
 
 				// Content of Section Item
-				if (parseInt(item['kind']) == 0) {				// Header
-					str+="<span style='padding-left:5px;' title='"+item['entryname']+"'>"+item['entryname']+"</span>";
-				}else if (parseInt(item['kind']) == 1) {		// Section
-					str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span class='ellipsis'>"+item['entryname']+"</span></div></div><img src='../Shared/icons/desc_complement.svg' id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode + "' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode + "' class='arrowRight' style='display:none;'>";
-				}else if (parseInt(item['kind']) == 4) {		// Moment
-          str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span class='ellipsis'>"+item['entryname']+"</span></div></div><img src='../Shared/icons/desc_complement.svg' id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode + "' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode + "' class='arrowRight' style='display:none;'>";
-				}else if (parseInt(item['kind']) == 2) {		// Code Example
-					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"' title='"+item['entryname']+"'>"+item['entryname']+"</a></span>";
-				}else if (parseInt(item['kind']) == 3 ) {
-            str+="<div><a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' title='"+item['entryname']+"'><span class='nowrap'><span class='ellipsis'>"+item['entryname']+"</span></span></a></div>";
-				}else if(parseInt(item['kind']) == 5){			// Link
-					if(item['link'].substring(0,4) === "http"){
-						str+= "<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+"</a>";
-					}else{
-						str+="<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showdoc.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"\");' >"+item['entryname']+"</a>";
+				if (parseInt(item['kind']) == 0) { // Header
+					str +=
+						"<span style='padding-left:5px;' title='"
+						+ item['entryname'] + "'>" + item['entryname'] + "</span>";
+				}
+				 
+				else if (parseInt(item['kind']) == 1) { // Section
+					str +=
+						"<div style='display:inline-block;'><div class='nowrap"
+						+ blorf + "' style='padding-left:5px;' title='"
+						+ item['entryname'] + "'><span class='ellipsis'>"
+						+ item['entryname']
+						+ "</span></div></div><img src='../Shared/icons/desc_complement.svg'"
+						+ "id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode
+						+ "' class='arrowComp' style='display:inline-block;'>"
+						+ "<img src='../Shared/icons/right_complement.svg'"
+						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
+						+ "' class='arrowRight' style='display:none;'>";
+				}
+				
+				else if (parseInt(item['kind']) == 4) { // Moment
+					str+="<div style='display:inline-block;'><div class='nowrap"
+						+ blorf + "' style='padding-left:5px;' title='"
+						+ item['entryname'] + "'><span class='ellipsis'>"
+						+ item['entryname'] + "</span></div></div>"
+						+ "<img src='../Shared/icons/desc_complement.svg'"
+						+ "id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode
+						+ "' class='arrowComp' style='display:inline-block;'>"
+						+ "<img src='../Shared/icons/right_complement.svg'"
+						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
+						+ "' class='arrowRight' style='display:none;'>";
+				}
+				
+				else if (parseInt(item['kind']) == 2) { // Code Example
+					str +=
+						"<span><a class='" + blorf
+						+ "' style='margin-left:15px;' href='codeviewer.php?exampleid="
+						+ item['link'] + "&courseid=" + querystring['courseid']
+						+ "&cvers=" + querystring['coursevers'] + "' title='"
+						+ item['entryname'] + "'>" + item['entryname'] + "</a></span>";
+				}
+				
+				else if (parseInt(item['kind']) == 3 ) {
+					str +=
+						"<div><a class='" + blorf
+						+ "' style='cursor:pointer;margin-left:15px;' "
+						+ "onClick='changeURL(\"showDugga.php?cid=" + querystring['courseid']
+						+ "&coursevers=" + querystring['coursevers'] + "&did="
+						+ item['link'] + "&moment=" + item['lid'] + "&segment="
+						+ momentexists + "&highscoremode=" + item['highscoremode']
+						+ "&comment=" + item['comments'] + "&deadline="
+						+ item['deadline'] + "\");' title='" + item['entryname']
+						+ "'><span class='nowrap'><span class='ellipsis'>"
+						+ item['entryname'] + "</span></span></a></div>";
+				}
+				
+				else if(parseInt(item['kind']) == 5){ // Link
+					if(item['link'].substring(0,4) === "http") {
+						str +=
+							"<a class='" + blorf + "' style='cursor:pointer;margin-left:15px;'  href="
+							+ item['link'] + " target='_blank' >" + item['entryname'] + "</a>";
+					} else {
+						str +=
+							"<a class='" + blorf + "' style='cursor:pointer;margin-left:15px;'"
+							+ "onClick='changeURL(\"showdoc.php?cid=" + querystring['courseid']
+							+ "&coursevers=" + querystring['coursevers'] + "&fname="
+							+ item['link'] + "\");' >" + item['entryname'] + "</a>";
 					}
 				}
 
