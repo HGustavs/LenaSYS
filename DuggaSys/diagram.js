@@ -24,7 +24,7 @@ var gridSize = 16;
 var arityBuffer = gridSize / 2;
 var crossSize = 4.0;                // Size of point cross
 var tolerance = 8;                  // Size of tolerance area around the point
-var canvasContext;                  // Canvas context
+var ctx;                  // Canvas context
 var canvas;                         // Canvas Element
 var sel;                            // Selection state
 var currentMouseCoordinateX = 0;
@@ -161,24 +161,24 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 // drawPoints - Draws each of the points as a cross
 //--------------------------------------------------------------------
 points.drawPoints = function() {
-    canvasContext.strokeStyle = crossStrokeStyle1;
-    canvasContext.lineWidth = 2;
+    ctx.strokeStyle = crossStrokeStyle1;
+    ctx.lineWidth = 2;
     for (var i = 0; i < this.length; i++) {
         var point = this[i];
         if (!point.isSelected) {
-            canvasContext.beginPath();
-            canvasContext.moveTo(point.x - crossSize, point.y - crossSize);
-            canvasContext.lineTo(point.x + crossSize, point.y + crossSize);
-            canvasContext.moveTo(point.x + crossSize, point.y - crossSize);
-            canvasContext.lineTo(point.x - crossSize, point.y + crossSize);
-            canvasContext.stroke();
+            ctx.beginPath();
+            ctx.moveTo(point.x - crossSize, point.y - crossSize);
+            ctx.lineTo(point.x + crossSize, point.y + crossSize);
+            ctx.moveTo(point.x + crossSize, point.y - crossSize);
+            ctx.lineTo(point.x - crossSize, point.y + crossSize);
+            ctx.stroke();
         } else {
-            canvasContext.save();
-            canvasContext.fillStyle = crossFillStyle;
-            canvasContext.strokeStyle = crossStrokeStyle2;
-            canvasContext.fillRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
-            canvasContext.strokeRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
-            canvasContext.restore();
+            ctx.save();
+            ctx.fillStyle = crossFillStyle;
+            ctx.strokeStyle = crossStrokeStyle2;
+            ctx.fillRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
+            ctx.strokeRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
+            ctx.restore();
         }
     }
 }
@@ -583,7 +583,7 @@ function initializeCanvas() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + startX + " & Y=" + startY + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
-        canvasContext = canvas.getContext("2d");
+        ctx = canvas.getContext("2d");
     }
     getUploads();
     // generateExampleCode();
@@ -634,19 +634,19 @@ function canvasSize() {
     heightWindow = (window.innerHeight - 144);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
-    canvasContext.clearRect(startX, startY, widthWindow, heightWindow);
-    canvasContext.translate(startX, startY);
-    canvasContext.scale(1, 1);
-    canvasContext.scale(zoomValue, zoomValue);
+    ctx.clearRect(startX, startY, widthWindow, heightWindow);
+    ctx.translate(startX, startY);
+    ctx.scale(1, 1);
+    ctx.scale(zoomValue, zoomValue);
 }
 
 // Listen if the window is the resized
 window.addEventListener('resize', canvasSize);
 
 function updateGraphics() {
-    canvasContext.clearRect(startX, startY, (widthWindow / zoomValue), (heightWindow / zoomValue));
+    ctx.clearRect(startX, startY, (widthWindow / zoomValue), (heightWindow / zoomValue));
     if (moveValue == 1) {
-        canvasContext.translate((-mouseDiffX), (-mouseDiffY));
+        ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
     }
     diagram.updateQuadrants();
@@ -851,19 +851,19 @@ function connectedObjects(line) {
 }
 
 function cross(xCoordinate, yCoordinate) {
-    canvasContext.strokeStyle = "#4f6";
-    canvasContext.lineWidth = 3;
-    canvasContext.beginPath();
-    canvasContext.moveTo(xCoordinate - crossSize, yCoordinate - crossSize);
-    canvasContext.lineTo(xCoordinate + crossSize, yCoordinate + crossSize);
-    canvasContext.moveTo(xCoordinate + crossSize, yCoordinate - crossSize);
-    canvasContext.lineTo(xCoordinate - crossSize, yCoordinate + crossSize);
-    canvasContext.stroke();
+    ctx.strokeStyle = "#4f6";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(xCoordinate - crossSize, yCoordinate - crossSize);
+    ctx.lineTo(xCoordinate + crossSize, yCoordinate + crossSize);
+    ctx.moveTo(xCoordinate + crossSize, yCoordinate - crossSize);
+    ctx.lineTo(xCoordinate - crossSize, yCoordinate + crossSize);
+    ctx.stroke();
 }
 
 function drawGrid() {
-    canvasContext.lineWidth = 1;
-    canvasContext.strokeStyle = "rgb(238, 238, 250)";
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgb(238, 238, 250)";
     var quadrantX;
     var quadrantY;
     if (startX < 0) {
@@ -880,40 +880,40 @@ function drawGrid() {
         if (i % 5 == 0) {
             i++;
         }
-        canvasContext.beginPath();
-        canvasContext.moveTo(i * gridSize, 0 + startY);
-        canvasContext.lineTo(i * gridSize, (heightWindow / zoomValue) + startY);
-        canvasContext.stroke();
-        canvasContext.closePath();
+        ctx.beginPath();
+        ctx.moveTo(i * gridSize, 0 + startY);
+        ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + startY);
+        ctx.stroke();
+        ctx.closePath();
     }
     for (var i = 0 + quadrantY; i < quadrantY + (heightWindow / zoomValue); i++) {
         if (i % 5 == 0) {
             i++;
         }
-        canvasContext.beginPath();
-        canvasContext.moveTo(0 + startX, i * gridSize);
-        canvasContext.lineTo((widthWindow / zoomValue) + startX, i * gridSize);
-        canvasContext.stroke();
-        canvasContext.closePath();
+        ctx.beginPath();
+        ctx.moveTo(0 + startX, i * gridSize);
+        ctx.lineTo((widthWindow / zoomValue) + startX, i * gridSize);
+        ctx.stroke();
+        ctx.closePath();
     }
     //Draws the thick lines
-    canvasContext.strokeStyle = "rgb(208, 208, 220)";
+    ctx.strokeStyle = "rgb(208, 208, 220)";
     for (var i = 0 + quadrantX; i < quadrantX + (widthWindow / zoomValue); i++) {
         if (i % 5 == 0) {
-            canvasContext.beginPath();
-            canvasContext.moveTo(i * gridSize, 0 + startY);
-            canvasContext.lineTo(i * gridSize, (heightWindow / zoomValue) + startY);
-            canvasContext.stroke();
-            canvasContext.closePath();
+            ctx.beginPath();
+            ctx.moveTo(i * gridSize, 0 + startY);
+            ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + startY);
+            ctx.stroke();
+            ctx.closePath();
         }
     }
     for (var i = 0 + quadrantY; i < quadrantY + (heightWindow / zoomValue); i++) {
         if (i % 5 == 0) {
-            canvasContext.beginPath();
-            canvasContext.moveTo(0 + startX, i * gridSize);
-            canvasContext.lineTo((widthWindow / zoomValue) + startX, i * gridSize);
-            canvasContext.stroke();
-            canvasContext.closePath();
+            ctx.beginPath();
+            ctx.moveTo(0 + startX, i * gridSize);
+            ctx.lineTo((widthWindow / zoomValue) + startX, i * gridSize);
+            ctx.stroke();
+            ctx.closePath();
         }
     }
 }
