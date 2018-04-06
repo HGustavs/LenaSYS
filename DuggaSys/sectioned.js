@@ -2,6 +2,7 @@ var querystring=parseGet();
 var retdata;
 var newversid;
 var decider;
+var active_lid;
 
 AJAXService("get",{},"SECTION");
 
@@ -382,22 +383,22 @@ function changedType()
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-	function confirmBox(temp){	
+	function confirmBox(temp, item = null){
 		if (temp == 1 || temp == 2 || temp == 3){
+		    active_lid = item ? $(item).parents('table').attr('value') : null ;
+
 	        decider = temp;
 	        $("#sectionConfirmBox").css("display","flex");
-	    }
-	    else if(temp == 4){
-	    	console.log(decider);
+	    } else if(temp == 4){
 	    	if (decider == 1){
-	    		deleteItem();
-	    	}
-	   	 	else if (decider == 2){
+	    	    console.log(active_lid);
+	    		deleteItem(active_lid);
+	    	} else if (decider == 2) {
 	    		newItem();
-	    	}
-	    	else if (decider == 3){
+	    	} else if (decider == 3) {
 	    		updateItem();
 	    	}
+
 	    	$("#sectionConfirmBox").css("display","none");
 	    	decider = 0;
 	    }
@@ -407,12 +408,13 @@ function changedType()
 	    }
 	}
 
-function deleteItem()
+function deleteItem(item_lid= null)
 {
-	lid=$("#lid").val();
+    console.log("Item lid " + item_lid);
+	var lid = item_lid ? item_lid : $("#lid").val() ;
+    console.log("final lid " + lid);
 	AJAXService("DEL",{lid:lid},"SECTION");
 	$("#editSection").css("display","none");
-	//$("#overlay").css("display","none");
 }
 
 function updateItem()
@@ -762,7 +764,7 @@ function returnedSection(data)
 
 
 				// Content table
-				str+="<table id='lid"+item['lid']+"' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
+				str+="<table id='lid"+item['lid']+"' value='"+item['lid']+"' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
 				if(kk%2==0){
 					str+=" class='hi' ";
 				}else{
@@ -944,11 +946,11 @@ function returnedSection(data)
 				}else if (parseInt(item['kind']) == 1) {		// Section
 					str+="<div style='display:inline-block;'><div class='nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span class='ellipsis'>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></div>";
 				}else if (parseInt(item['kind']) == 4) {		// Moment
-          str+="<div><div class='ellipsis nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></div>";
+				    // str+="<div><div class='ellipsis nowrap"+blorf+"' style='padding-left:5px;' title='"+item['entryname']+"'><span>"+item['entryname']+"</span><img src='../Shared/icons/desc_complement.svg' class='arrowComp' style='display:inline-block;'><img src='../Shared/icons/right_complement.svg' class='arrowRight' style='display:none;'></div></div>";
 				}else if (parseInt(item['kind']) == 2) {		// Code Example
 					str+="<span><a class='"+blorf+"' style='margin-left:15px;' href='codeviewer.php?exampleid="+item['link']+"&courseid="+querystring['courseid']+"&cvers="+querystring['coursevers']+"' title='"+item['entryname']+"'>"+item['entryname']+"</a></span>";
 				}else if (parseInt(item['kind']) == 3 ) {		// Dugga
-            str+="<div class='ellipsis nowrap' ><a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' title='"+item['entryname']+"'><span><span>"+item['entryname']+"</span></span></a></div>";
+				    // str+="<div class='ellipsis nowrap' ><a class='"+blorf+"' style='cursor:pointer;margin-left:15px;' onClick='changeURL(\"showDugga.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&did="+item['link']+"&moment="+item['lid']+"&segment="+momentexists+"&highscoremode="+item['highscoremode']+"&comment="+item['comments']+"&deadline="+item['deadline']+"\");' title='"+item['entryname']+"'><span><span>"+item['entryname']+"</span></span></a></div>";
 				}else if(parseInt(item['kind']) == 5){			// Link
 					if(item['link'].substring(0,4) === "http"){
 						str+= "<a class='"+blorf+"' style='cursor:pointer;margin-left:15px;'  href=" + item['link'] + " target='_blank' >"+item['entryname']+"</a>";
@@ -1027,18 +1029,17 @@ function returnedSection(data)
 
 
 						if(parseInt(item['kind']) === 0){
-								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
+								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1, this);'></td>";
 						}else if(parseInt(item['kind']) === 1){
-								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
+								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1, this);'></td>";
 						}else if(parseInt(item['kind']) === 4){
-								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
+								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1, this);'></td>";
 						}else{
-								str+="' ><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
+								str+="' ><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1, this);'></td>";
 						}
 				}
 
                 str += "</tr>";
-
 
 				str +="</table></div>";
 			}
