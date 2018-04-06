@@ -21,8 +21,11 @@
             }
             .Header {
                 width: 100%;
+                height: 50px;
                 background-color: #775886;
                 color: #FFFFFF;
+                text-align: center;
+                font-size: 24px;
             }    
         </style>
         <script>
