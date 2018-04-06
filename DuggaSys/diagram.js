@@ -1201,7 +1201,7 @@ function alignHorizontalCenter(selected_objects){
     }
 }
 
-function sortObjects(selected_objects, mode, rising){
+function sortObjects(selected_objects, mode){
     //Sorts objects by X or Y position
     var position = [];
     if(mode=='vertically'){
@@ -1212,9 +1212,10 @@ function sortObjects(selected_objects, mode, rising){
 
         var private_objects = selected_objects.splice([]);
         var swap = null;
+
         for(var i = 0; i < private_objects.length; i++){
-          alert("hej");
             for(var j = 0; j < position.length; j++){
+              console.log(position[j]);
                 if(points[private_objects[i].topLeft].y == position[j] && i != j){
                     swap = private_objects[i];
                     private_objects[i] = private_objects[j];
@@ -1265,7 +1266,7 @@ function distribute(axis){
     hashFunction();
 }
 function distributeVertically(selected_objects, spacing){
-    selected_objects = sortObjects(selected_objects, 'vertically', true);
+    selected_objects = sortObjects(selected_objects, 'vertically');
 
     for(var i = 1; i < selected_objects.length; i++){
         var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
@@ -1275,7 +1276,7 @@ function distributeVertically(selected_objects, spacing){
     }
 }
 function distributeHorizontally(selected_objects, spacing){
-    selected_objects = sortObjects(selected_objects, 'horizontally', true);
+    selected_objects = sortObjects(selected_objects, 'horizontally');
 
     for(var i = 1; i < selected_objects.length; i++){
         var object_width = (points[selected_objects[i].bottomRight].x - points[selected_objects[i].topLeft].x);
