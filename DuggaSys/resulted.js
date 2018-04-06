@@ -1031,7 +1031,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 					// Compair the gradeExpire value to the current time
 					if(newGradeExpirePlusOneDay > currentTimeGetTime){
 						//The user must press the ctrl-key to activate if-statement
-						if(event.ctrlKey || even.mentKey){
+						if(event.ctrlKey || event.metaKey){
 							changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 						}else{
 							alert("You must press down the ctrl-key or cmd-key to change from grade G to U.");
