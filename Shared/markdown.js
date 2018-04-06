@@ -393,3 +393,8 @@ function markdownBlock(inString)
 
 	return inString;
 }
+//funcion for showing popupWindow
+
+function popupWindow(){
+    alert('hello it works!');
+}

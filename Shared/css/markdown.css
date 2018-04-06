@@ -53,7 +53,7 @@
 }
 .inline-txtarea{
     resize: none;
-    border: 2px solid white;
+    border: 10px solid white;
     height: 125px;
 }
 .descbox code {
