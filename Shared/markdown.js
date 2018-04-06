@@ -396,5 +396,7 @@ function markdownBlock(inString)
 //funcion for showing popupWindow
 
 function popupWindow(){
-    alert('hello it works!');
+    
+    
+    alert('hello it works');
 }
