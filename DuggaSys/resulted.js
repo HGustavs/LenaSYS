@@ -273,7 +273,7 @@ function redrawtable()
       strt += "</div>";
 
           strt += "<div class='text-center'"
-		  
+
 		  for (var p = 0; p < moments.length; p++){
 			  if (moments[p].link == student[j].quizId){
 				   if (Date.parse(moments[p].deadline) < Date.parse(student[j].submitted)){
@@ -282,9 +282,9 @@ function redrawtable()
 					break;
 			  }
 		  }
-		  
+
 		  strt += ">";
-		  
+
           if (student[j].submitted.getTime() !== timeZero.getTime()){
             strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();
           }
@@ -1031,10 +1031,10 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 					// Compair the gradeExpire value to the current time
 					if(newGradeExpirePlusOneDay > currentTimeGetTime){
 						//The user must press the ctrl-key to activate if-statement
-						if(event.ctrlKey){
+						if(event.ctrlKey || event.metaKey){
 							changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 						}else{
-							alert("You must press down the ctrl-key to change from grade G to U.");
+							alert("You must press down the ctrl-key or cmd-key to change from grade G to U.");
 						}
 					} else {
 						alert("You can no longer change the grade to U, due to 24 hours has passed since grade G was set.");
@@ -1281,7 +1281,7 @@ function saveResponse()
 //----------------------------------------
 
 function returnedResults(data)
-{	
+{
   if (data.gradeupdated === true){
       // Update background color
       $("#u"+data.duggauser+"_d"+data.duggaid).removeClass("dugga-fail dugga-pending dugga-assigned dugga-unassigned");
