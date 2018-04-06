@@ -386,12 +386,10 @@ function changedType()
 	function confirmBox(temp, item = null){
 		if (temp == 1 || temp == 2 || temp == 3){
 		    active_lid = item ? $(item).parents('table').attr('value') : null ;
-
 	        decider = temp;
 	        $("#sectionConfirmBox").css("display","flex");
 	    } else if(temp == 4){
 	    	if (decider == 1){
-	    	    console.log(active_lid);
 	    		deleteItem(active_lid);
 	    	} else if (decider == 2) {
 	    		newItem();
@@ -410,9 +408,7 @@ function changedType()
 
 function deleteItem(item_lid= null)
 {
-    console.log("Item lid " + item_lid);
 	var lid = item_lid ? item_lid : $("#lid").val() ;
-    console.log("final lid " + lid);
 	AJAXService("DEL",{lid:lid},"SECTION");
 	$("#editSection").css("display","none");
 }
