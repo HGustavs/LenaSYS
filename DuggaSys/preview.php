@@ -11,14 +11,37 @@
         <script src="../Shared/js/jquery-1.11.0.min.js"></script>
         <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
         <script src="../Shared/dugga.js"></script>
+        <style>
+            .PreviewWindow {
+                height: 1200px;
+                width: 1500px;
+                border: solid rgb(200,200,200);
+                background-color: rgb(240,240,240);
+                display: none;
+            }
+                
+        </style>
         <script>
+            function showPreview() {
+                $(.PreivewWindow).style="display:block";
+            }
+            function saveCode() {
+                
+            }
+            function cancelPreivew() {
+                $(.PreivewWindow).style="display:none";
+            }
         </script>
     </head>
     <body>
-    Hello its me, preview
-        <?php
-		  echo $_GET['prev'];
-        ?>
+        Hello its me, preview
+        <button id="Preview" onclick="showPreview()">Preview</button>
+        <div class="PreviewWindow">
+            This is the preview window    
+        </div>
+        //<?php
+		  //echo $_GET['prev'];
+        //?>
         
     </body>
 </html>
