@@ -538,7 +538,7 @@ if(!$readfile){
 //Here we add a button called "Edit", when clicked a new popupwindow for the markdowncode will open. Not done yet.
  echo "<button onClick='popupWindow()'> Edit</button></p>";
  //echo "<input type = 'edit' onClick='popupWindow' name='show PopupWindow'/>";
- echo "<script>popupWindow();</script>";
+ //echo "<script>popupWindow();</script>";
 
  //The button is linked to showdoc, when pushed the preview window (not implemented) will update.
  //We also need a button for help (?), when pressed the user should get a window with a simple guide or som commands
