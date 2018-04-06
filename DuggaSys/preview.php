@@ -520,7 +520,7 @@ if(!$readfile){
 ?>
 
  <?php
- include '../DuggaSys/preview.js';
+ echo "<script src='../DuggaSys/preview.js'></script>";
 //This is the textbox where the user can write the markdowncode, this i the textbox to the left
  echo "<div class ='inline-div'>
             <textarea rows='20' cols='60' 
