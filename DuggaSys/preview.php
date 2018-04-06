@@ -530,14 +530,14 @@ if(!$readfile){
          </div>";
  echo "<div class='inline-div'>
             <textarea cols='15'rows='15' 
-            class='inline-txtarea'></textarea>
+            class='inline-txtarea'> Ny text wooo! </textarea>
          </div>";
 
 
 
- //echo "<button ='onClick='popupWindow()'> Edit</button></p>";
+ echo "<button ='onClick='popupWindow()'> Edit</button></p>";
 
- echo "<input type = 'edit' onClick='popupWindow' name='show PopupWindow'/>";
+ //echo "<input type = 'edit' onClick='popupWindow' name='show PopupWindow'/>";
  echo "<script>popupWindow();</script>";
 
  //The button is linked to showdoc, when pushed the preview window (not implemented) will update.
