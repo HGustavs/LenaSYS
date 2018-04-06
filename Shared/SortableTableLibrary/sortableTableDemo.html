@@ -27,22 +27,22 @@
 		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 				
 		for (i = 0; i < 200; i++) {
-				var wordcnt = Math.round(Math.random() * 5 + 1);
-				var str = "";
-				var str2 = "";
-				var str3 = "";
-				for (j = 0; j < wordcnt; j++) {
-					var charcnt = Math.round(Math.random() * 10);
-					for (var k = 0; k < charcnt; k++) {
-						str += possible.charAt(Math.floor(Math.random() * possible.length));
-	            		str2 += possible.charAt(Math.floor(Math.random() * possible.length));
-	            		str3 += possible.charAt(Math.floor(Math.random() * possible.length));
-					}
-	        		str += " ";
-	       			str2 += " ";
-	        		str3 += " ";
+			var wordcnt = Math.round(Math.random() * 5 + 1);
+			var str = "";
+			var str2 = "";
+			var str3 = "";
+			for (j = 0; j < wordcnt; j++) {
+				var charcnt = Math.round(Math.random() * 10);
+				for (var k = 0; k < charcnt; k++) {
+					str += possible.charAt(Math.floor(Math.random() * possible.length));
+            		str2 += possible.charAt(Math.floor(Math.random() * possible.length));
+            		str3 += possible.charAt(Math.floor(Math.random() * possible.length));
 				}
-				tabledata.tblbody.push([str,Math.random() * 5000,Math.round(Math.random() * 20),str2,str3,{xk:Math.round(Math.random() * 2000 + 1000),yk:Math.round(Math.random() * 500),col:"Free Shevacadoo"}]);
+        		str += " ";
+       			str2 += " ";
+        		str3 += " ";
+			}
+			tabledata.tblbody.push([str,Math.random() * 5000,Math.round(Math.random() * 20),str2,str3,{xk:Math.round(Math.random() * 2000 + 1000),yk:Math.round(Math.random() * 500),col:"Free Shevacadoo"}]);
 		}
 
 		var myTable, myTable2;
@@ -58,7 +58,11 @@
 		//--------------------------------------------------------------------------
 
 		function setup() {
-			myTable = new SortableTable(tabledata,"thetable","columnfilter","Booyah!",
+			myTable = new SortableTable(
+				tabledata,
+				"thetable",
+				"columnfilter",
+				"Booyah!",
 				renderCell,
 				renderSortOptions,
 				renderColumnFilter,
@@ -73,7 +77,11 @@
 				displayCellEdit,
 				updateCellCallback
 			);
-			myTable2 = new SortableTable(tabledata,"thetable2","columnfilter2","Booyah!",
+			myTable2 = new SortableTable(
+				tabledata,
+				"thetable2",
+				"columnfilter2",
+				"Booyah!",
 				function(celldata,col,cellid){return renderCell(celldata,col,cellid)},
 				function(col, kind){return renderSortOptions2(col,kind)},
 				function(col, status){return renderColumnFilter2(col,status)},
@@ -411,7 +419,7 @@
 	<!-- Table placeholder -->
 	<div id="thetable"></div>
 	<br>
-	
+
 	<!-- You can have multiple tables on the same page -->
 	<h2>Example Table 2</h2>
 	<div id="columnfilter2"></div>
