@@ -1205,13 +1205,14 @@ function bubbleSort(values, rising){
     var swap = null;
 
       for(var i = 0; i < values.length; i++){
-        swap = values[i];
         for(var j = i+1; j < values.length; j++){
-          if(rising && values[i] < values[j]){
+          if(rising && values[i] > values[j]){
+          swap = values[i];
           values[i] = values[j];
           values[j] = swap;
         }
-          else if(!rising && values[i] > values[j]){
+          else if(!rising && values[i] < values[j]){
+            swap = values[j];
             values[j] = values[i];
             values[i] = swap;
           }
