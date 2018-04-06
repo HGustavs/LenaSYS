@@ -523,20 +523,21 @@ if(!$readfile){
 
  <?php
 
-
+//This is the textbox where the user can write the markdowncode, this i the textbox to the left
  echo "<div class ='inline-div'>
             <textarea rows='20' cols='60' 
-            class = 'inline-txtarea'> Coming soon..... bam bam bam...... Some markdown code!! :smile: </textarea>
+            class = 'inline-txtarea'> Coming soon...... Some markdown code!! :D </textarea>
          </div>";
+ //This is the textbox to the right, where the user can later see live markdown preview
  echo "<div class='inline-div'>
-            <textarea cols='15'rows='15' 
+            <textarea cols='20'rows='60' 
             class='inline-txtarea'> Ny text wooo! </textarea>
          </div>";
 
 
-//This
+//Here we add a button called "Edit", when clicked a new popupwindow for the markdowncode will open. Not done yet.
  echo "<button ='onClick='popupWindow()'> Edit</button></p>";
- //echo "<input type = 'edit' onClick='popupWindow' name='show PopupWindow'/>";
+ echo "<input type = 'edit' onClick='popupWindow' name='show PopupWindow'/>";
  echo "<script>popupWindow();</script>";
 
  //The button is linked to showdoc, when pushed the preview window (not implemented) will update.
