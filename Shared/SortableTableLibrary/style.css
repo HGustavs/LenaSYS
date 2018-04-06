@@ -1,7 +1,7 @@
 /* --------------================################================-------------- *
  *                               Fonts                                          *
  * --------------================################================-------------- */
-/*@font-face {
+@font-face {
   font-family:'Hack';
   src:url('../fonts/eot/hack-regular-webfont.eot?v=2.019');
   src:url('../fonts/eot/hack-regular-webfont.eot?#iefix&v=2.019')
@@ -52,7 +52,7 @@
 @font-face {
   font-family: 'Roboto';
   src: url('../fonts/web-ttf/Roboto-Regular.ttf');
-}*/
+}
 /* --------------================################================-------------- *
  *                                   Generics                                   *
  * --------------================################================-------------- */
@@ -148,7 +148,7 @@ p {
   border-right:2px solid #dbd0d8;
   line-height:28px;
   padding-left:8px;
-  height:56px;
+  height:40px;
   margin:0 5px;
 }
 
@@ -177,17 +177,18 @@ p {
     border:1px solid red;
     box-shadow:2px 2px 2px #000;
     position:absolute;
-    background-color: #82a43a; 
+    background-color: #FFF; 
 }
 
 .icon {
-    width:20px;
-    height:20px;
+    width:15px;
+    height:15px;
     padding:0px;
 }                
 
 #input-container input{
     width:100%;
+    border: none;
 }
 
 /* --------------================################================-------------- *
@@ -201,7 +202,6 @@ p {
   padding: 10px;
   font-size: 10pt;
   background-color: #ddd;
-
 }
 
 .err{
@@ -469,7 +469,6 @@ p {
 .WhiteLight{
 	background: radial-gradient(white, grey, white);
 }
-
 
 .YellowLight{
 	background: radial-gradient(yellow 50%, grey, white 60%);
