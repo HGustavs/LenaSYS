@@ -25,23 +25,26 @@
                 
         </style>
         <script>
-            $(document).ready(function() {
-                $("#Preview").click(function() {
+            function showPreview() {
+                document.getElementsByClassName("PreviewWindow").style.display = "block";
+            }
+            /*$(document).ready(function() {
+                $('#Preview').click(function() {
                     $("PreviewWindow").addClass("PWShow");
                 });
-            });
+            });*/
                                 
             function saveCode() {
                 
             }
             function cancelPreivew() {
-                $("PreivewWindow").style="display:none";
+                document.getElementsByClassName("PreviewWindow").style.display = "block";
             }
         </script>
     </head>
     <body>
         Hello its me, preview
-        <button id="Preview">Preview</button>
+        <button id="Preview" onclick="showPreview">Preview</button>
         <div class="PreviewWindow">
             This is the preview window    
         </div>
