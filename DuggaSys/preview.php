@@ -524,7 +524,10 @@ if(!$readfile){
  <?php
 
     //A small textarea, will change its place
-    echo "<div class ='inline-div'><textarea rows='20' cols='60' class = 'inline-txtarea> Coming soon..... bam bam bam...... Some markdown code!! :D </textarea></div>";
+    echo "<div class ='inline-div'>
+            <textarea rows='20' cols='60' 
+            class = 'inline-txtarea'> Coming soon..... bam bam bam...... Some markdown code!! :D </textarea>
+         </div>";
     echo "<div class='inline-div'>
             <textarea cols='15'rows='15' 
             class='inline-txtarea'></textarea>
