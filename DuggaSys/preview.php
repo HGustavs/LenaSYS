@@ -532,13 +532,26 @@ if(!$readfile){
             <textarea cols='15'rows='15' 
             class='inline-txtarea'></textarea>
          </div>";
+<<<<<<< HEAD
  echo "<button onClick='popupWindow()'> Edit</button></p>";
+=======
+<<<<<<< HEAD
+ echo "<input type = 'edit' onClick='popupWindow()' name='show PopupWindow'/>";
+
+ echo "<script>popupWindow();</script>";
+
+ //echo "<script src='../shared/markdown.js'>popupWindow();</script>";
+
+=======
+ echo "<button = 'onClick='popupWindow()'> Edit</button></p>";
+>>>>>>> d6a485598ec0d467d0c202b718822a31f2ebe872
  echo "<input type = 'edit' onClick='popupWindow' name='show PopupWindow'/>";
  echo "<script>popupWindow();</script>";
 
+>>>>>>> 0c63d4769bcd41a6a9176be114746a091d24d722
  //The button is linked to showdoc, when pushed the preview window (not implemented) will update.
  //We also need a button for help (?), when pressed the user should get a window with a simple guide or som commands
- echo "<form action='showdoc.php'; method='post'>";
+ echo "<form action=; method='post'>";
  echo "Update or something (is now linked to showdoc). We also need a help thing    ";
  echo "<input type='submit'<input type='text'   name='field'  /><br>";
  echo "</form>"
