@@ -534,9 +534,8 @@ if(!$readfile){
          </div>";
 
 
-
+//This
  echo "<button ='onClick='popupWindow()'> Edit</button></p>";
-
  //echo "<input type = 'edit' onClick='popupWindow' name='show PopupWindow'/>";
  echo "<script>popupWindow();</script>";
 
