@@ -70,6 +70,11 @@ function changeAccess(cid,uid,val)
 	AJAXService("ACCESS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
 }
 
+function changeVersion(cid,uid,val)
+{
+	AJAXService("VERSION",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
+}
+
 // Sets values in the "cogwheel popup"
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
 function selectUser(uid,username,ssn,firstname,lastname,access,className)
@@ -267,8 +272,14 @@ function returnedAccess(data)
 			str+="<td>"+item['modified'].substr(0,10)+"</td>";
 
 			// Select box for Version
-			str+="<td valign='center'><select onChange='' onclick='return false;' id='"+item['uid']+"'>";
-			str+="<option selected='selected' value='"+item['vers']+"'>"+item['vers']+"</option>";
+			str+="<td valign='center'><select onChange='changeVersion(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
+            for(var j = 0; j < data['courses'].length; j++){
+                str+="<option ";
+                if(item['vers'] === data['courses'][j]['vers']) {
+                    str+="selected='selected' ";
+                }
+                str+="value='"+data['courses'][j]['vers']+"'>"+data['courses'][j]['vers']+"</option>";
+            }
 			str+="</select>";
 			
 			// Select box for Access
