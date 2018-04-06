@@ -25,20 +25,21 @@
                 
         </style>
         <script>
-            function showPreview() {
-                $("#Preview").addClass(PWShow);
+            $(document).ready(function(){
+                $("#Preview").click(function(){
+                    $("PreviewWindow").addClass("PWShow");
             }
             function saveCode() {
                 
             }
             function cancelPreivew() {
-                $(.PreivewWindow).style="display:none";
+                $("PreivewWindow").style="display:none";
             }
         </script>
     </head>
     <body>
         Hello its me, preview
-        <button id="Preview" onclick="showPreview()">Preview</button>
+        <button id="Preview">Preview</button>
         <div class="PreviewWindow">
             This is the preview window    
         </div>
