@@ -13,13 +13,11 @@
         <script src="../Shared/dugga.js"></script>
         <style>
             .PreviewWindow {
-                height: 1200px;
-                width: 1500px;
+                height: 900px;
+                width: 600px;
+                margin: 0px auto;
                 border: solid rgb(200,200,200);
                 background-color: rgb(240,240,240);
-            }
-            .PWShow {
-                display: block;
             }
                 
         </style>
@@ -30,11 +28,6 @@
             function showPreview() {
                 $(".PreviewWindow").show();
             }
-            /*$(document).ready(function() {
-                $('#Preview').click(function() {
-                    $("PreviewWindow").addClass("PWShow");
-                });
-            });*/
                                 
             function saveCode() {
                 
@@ -42,13 +35,18 @@
             function cancelPreivew() {
                 $(".PreviewWindow").hide();     
             }
+            function saveMarkdown() {
+                
+            }
         </script>
     </head>
     <body onload="onload()">
         Hello its me, preview
         <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
-            This is the preview window    
+            This is the preview window  
+            <button id="save" onclick="saveMarkdown()">Save</button>
+            <button id="save" onclick="cancelPreview()">Cancel</button>
         </div>
         <?php
 		  //echo $_GET['prev'];
