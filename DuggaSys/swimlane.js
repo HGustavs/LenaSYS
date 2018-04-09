@@ -4,6 +4,7 @@ var courseVers = querystring['coursevers'];
 var swimlaneInformation; // The container for returnData
 var swimBox; // This is the box that gets toggled (display: block/none)
 var swimContent; // Here be the content of the swimlane
+var duggaInfoStatus = false;
 
 // Initialize swim-content, and fetching data from the database
 function swimlaneSetup() {
@@ -34,10 +35,15 @@ $(window).scroll(function () {
 
 // Display information about the deadline when hoovering over the deadline circle
 function mouseOverCircle(circle, text) {
-  circle.setAttribute("r", '13');
-  circlePosY = circle.parentNode.parentNode.offsetTop+parseInt(circle.getAttribute('cy')) - 70;
-  circlePosX = circle.parentNode.parentNode.offsetLeft+parseInt(circle.getAttribute('cx')) + 20;
   document.getElementById("duggaInfoText").innerHTML = text;
+  var column = circle.parentNode.parentNode;
+  circle.setAttribute("r", '13');
+  circlePosY = column.offsetTop+parseInt(circle.getAttribute('cy')) - 70;
+  if(column.parentNode.offsetWidth > (column.offsetLeft + (column.offsetWidth / 2) + $('#duggainfo').width())) {
+    circlePosX = column.offsetLeft+parseInt(circle.getAttribute('cx')) + column.offsetWidth / 2;
+  } else {
+    circlePosX = column.offsetLeft + (column.offsetWidth / 2) - (parseInt(circle.getAttribute('cx')) * 2) - $('#duggainfo').width();
+  }
   $('#duggainfo').css({'top': circlePosY, 'left': circlePosX}).fadeIn('fast');
 }
 
