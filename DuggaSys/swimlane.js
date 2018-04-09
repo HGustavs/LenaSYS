@@ -4,7 +4,6 @@ var courseVers = querystring['coursevers'];
 var swimlaneInformation; // The container for returnData
 var swimBox; // This is the box that gets toggled (display: block/none)
 var swimContent; // Here be the content of the swimlane
-var duggaInfoStatus = false;
 
 // Initialize swim-content, and fetching data from the database
 function swimlaneSetup() {
