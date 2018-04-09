@@ -444,6 +444,7 @@ diagram.getRelationObjects = function() {
 // Creates an arity symbol for the line specified.
 // An arity symbol includes a line of text on both sides of the line.
 //--------------------------------------------------------------------
+/*
 diagram.createAritySymbols = function(line) {
     var relations = diagram.getRelationObjects();
     var entities = diagram.getEntityObjects();
@@ -528,7 +529,7 @@ diagram.updateArity = function() {
         }
     }
 }
-
+*/
 //--------------------------------------------------------------------
 // updateLineRelations - Updates a line's relation depending on
 // what object it is connected to
@@ -650,7 +651,7 @@ function updateGraphics() {
         moveValue = 0;
     }
     diagram.updateQuadrants();
-    diagram.updateArity();
+    //diagram.updateArity();
     drawGrid();
     diagram.sortConnectors();
     diagram.draw();

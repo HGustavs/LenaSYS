@@ -171,7 +171,7 @@ function Symbol(kind) {
             }
         }
     }
-
+/*
     this.updateArityPosition = function() {
         for (var i = 0; i < this.arity.length; i++) {
             for (var j = 0; j < this.connectorTop.length; j++) {
@@ -252,7 +252,7 @@ function Symbol(kind) {
         arity1.align = "end";
         arity1.baseLine = "top";
     }
-
+*/
     //--------------------------------------------------------------------
     // Moves midpoint or other fixed point to geometric center of object again
     // Restricts resizing for classes
