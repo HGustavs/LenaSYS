@@ -128,13 +128,12 @@
     <div class="Markdown">
         <form>
             <input type="text"
-                   id="markdown"
                    onkeyup="showPreview(this.value)">
         </form>
     </div>
 
     <div class="MarkdownPrev">
-
+        <span id="markdown"> </span>
 
     </div>
 

@@ -308,7 +308,6 @@ function handleTable(currentLine, prevLine, nextLine) {
 //					
 //          
 //----------------------------------------------------------------------------------
-/*
 function markdownBlock(inString)
 {
 
@@ -320,22 +319,22 @@ function markdownBlock(inString)
 	inString = inString.replace(/\_{3}(.*?\S)\_{3}/g, '<em>$1</em>');	
 	inString = inString.replace(/\_{2}(.*?\S)\_{2}/g, '<em>$1</em>');
 
-	//Regular expressions for headings*/
-//-	inString = inString.replace(/^\#{6}\s(.*)=*/gm, '<h6>$1</h6>');
-//-	inString = inString.replace(/^\#{5}\s(.*)=*/gm, '<h5>$1</h5>');
-//-	inString = inString.replace(/^\#{4}\s(.*)=*/gm, '<h4>$1</h4>');
-//-inString = inString.replace(/^\#{3}\s(.*)=*/gm, '<h3>$1</h3>');
-//-inString = inString.replace(/^\#{2}\s(.*)=*/gm, '<h2>$1</h2>');
-//-inString = inString.replace(/^\#{1}\s(.*)=*/gm, '<h1>$1</h1>');
+	//Regular expressions for headings
+	inString = inString.replace(/^\#{6}\s(.*)=*/gm, '<h6>$1</h6>');
+	inString = inString.replace(/^\#{5}\s(.*)=*/gm, '<h5>$1</h5>');
+	inString = inString.replace(/^\#{4}\s(.*)=*/gm, '<h4>$1</h4>');
+	inString = inString.replace(/^\#{3}\s(.*)=*/gm, '<h3>$1</h3>');
+	inString = inString.replace(/^\#{2}\s(.*)=*/gm, '<h2>$1</h2>');
+	inString = inString.replace(/^\#{1}\s(.*)=*/gm, '<h1>$1</h1>');
 
 	//Regular expression for line
-//-inString = inString.replace(/\-{3,}/g, '<hr>');
+	inString = inString.replace(/\-{3,}/g, '<hr>');
 	
 	// External img src !!!
 	// |||src,thumbnail width in px,full size width in px|||
 	// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
-//-inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
-//- inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" />');
+	inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
+  inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" />');
 
 	// Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
 	// markdown below doesnt seem to work?????
@@ -348,39 +347,39 @@ function markdownBlock(inString)
 	
 	// Hyperlink !!!
 	// !!!url,text to show!!!	
-//-	inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
+	inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
 
 	// External mp4 src !!!
 	// ==[src]==	
-//-inString = inString.replace(/\={2}\[(.*?\S)\]\={2}/g, '<video width="80%" style="display:block; margin: 10px auto;" controls><source src="$1" type="video/mp4"></video>');
+	inString = inString.replace(/\={2}\[(.*?\S)\]\={2}/g, '<video width="80%" style="display:block; margin: 10px auto;" controls><source src="$1" type="video/mp4"></video>');
 
 	// Link to gif animation with thumbnail
 	// +++thumbnail.png,animation.gif+++	
-//-inString = inString.replace(/\+{3}(.*?\S),(.*?\S)\+{3}/g,"<div class='gifwrapper'><img class='gifimage' src='$1' onclick=\"toggleGif('$2', '$1', this);\" /><img class='playbutton' src='../Shared/icons/PlayT.svg'></div>");
+	inString = inString.replace(/\+{3}(.*?\S),(.*?\S)\+{3}/g,"<div class='gifwrapper'><img class='gifimage' src='$1' onclick=\"toggleGif('$2', '$1', this);\" /><img class='playbutton' src='../Shared/icons/PlayT.svg'></div>");
 
 	// Right Arrow for discussing menu options
 	inString = inString.replace(/\s[\-][\>]\s/gm, "&rarr;");
 
 	// Strike trough text
-//-inString = inString.replace(/\-{4}(.*?\S)\-{4}/g, "<span style=\"text-decoration:line-through;\">$1</span>");
+	inString = inString.replace(/\-{4}(.*?\S)\-{4}/g, "<span style=\"text-decoration:line-through;\">$1</span>");
 
 	// Importand Rows in code file in different window ===
 	// ===filename,start row,end row, text to show===
-//-	inString = inString.replace(/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/g, '<span class="impword2" onmouseover="highlightRows(\'$1\',$2,$3)" onmouseout="dehighlightRows(\'$1\',$2,$3)">$4</span>');
+	inString = inString.replace(/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/g, '<span class="impword2" onmouseover="highlightRows(\'$1\',$2,$3)" onmouseout="dehighlightRows(\'$1\',$2,$3)">$4</span>');
 
 	// Three or more dots should always be converted to an ellipsis.
 	inString = inString.replace(/\.{3,}/g, "&hellip;");
 	
 	// Iframe, website inside a inline frame - (--url,width,height--)
-//-	inString = inString.replace(/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/g, '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>');
+	inString = inString.replace(/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/g, '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>');
 	
 	// Quote text, this will be displayed in an additional box
 	// ^ Text you want to quote ^
-//-inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote><br/>");
+	inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote><br/>");
 		
 	//Markdown smileys
 	//Supported: :D :) ;) :( :'( :P :/ :o <3 (Y) (N)
-	/*inString = inString.replace(/\s:D(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/happy.svg'/>");
+	inString = inString.replace(/\s:D(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/happy.svg'/>");
 	inString = inString.replace(/\s:\)(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/smiling.svg'/>");
 	inString = inString.replace(/\s;\)(?!\S)/g, " <img class='smileyjs' src='../Shared/icons/wink.gif'/>");
 	inString = inString.replace(/\s:\((?!\S)/g, " <img class='smileyjs' src='../Shared/icons/sad.svg'/>");
@@ -392,5 +391,5 @@ function markdownBlock(inString)
 	inString = inString.replace(/\s\(Y\)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/thumbsup.svg'/>");
 	inString = inString.replace(/\s\(N\)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/thumbsdown.svg'/>");
 
-	return inString;*/
+	return inString;
 }
