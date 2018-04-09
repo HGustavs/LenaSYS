@@ -80,7 +80,7 @@
             $(".PreviewWindow").show();
             var x= document.getElementById("test").value;
             //This function is triggered when key is pressed down in the input field
-            if(str.length == 0){
+            if(x.length == 0){
                 //Here we check if the input field is empty (str.length == 0).
                 // If it is, clear the content of the txtHint placeholder
                 // and exit the function.
