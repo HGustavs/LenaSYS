@@ -114,8 +114,9 @@
             </div>
             <div class="OptionButtons">
                 <button id="button-save" onclick="saveMarkdown()">Save</button>
-                <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
+                <button id="button-cancel" onclick="">Cancel</button>
             </div>
+            <button id="button-close" onclick="cancelPreview()">Close</button>
         </div>
         <?php
 		  //echo $_GET['prev'];
