@@ -1,5 +1,5 @@
 
-
+i
 
 //GLOBAL
 var windowIsOpen;  //måste skapa en funktion till denna
@@ -47,6 +47,7 @@ function run(){
 }
 
 function reWriteCode(){
+
     //call parseMarkdown
     // empty window ----> !empty window
     //rewrite the code to the second window
@@ -76,10 +77,14 @@ function updateCode(){
 
 function closeWindow(){
     //knapp som stänger
-	//if the user presses the cancel-button windowIsOpen = false{
-		windowIsOpen = false;
-	  //  same thing happens here, the window will close
-	//}
+    //if the user presses the cancel-button windowIsOpen = false{
+    var cancelEvent = confirm("Are you sure you want to cancel the event")
+    if(cancelEvent = false){
+        windowIsOpen = false;
+    }
+
+    windowIsOpen = true;
+    //  same thing happens here, the window will close
 }
 
 

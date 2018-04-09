@@ -1,5 +1,113 @@
-<?php
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome = 1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Preview</title>
+    <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+    <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+    <script src="../Shared/js/jquery-1.11.0.min.js"></script>
+    <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+    <script src="../Shared/dugga.js"></script>
+    <style>
+        .PreviewWindow {
+            height: 700px;
+            width: 900px;
+            margin: 0px auto;
+            border: solid rgb(200,200,200);
+            background-color: rgb(240,240,240);
+        }
+        .Header {
+            width: 100%;
+            height: 50px;
+            background-color: #775886;
+            color: #FFFFFF;
+            text-align: center;
+            font-size: 24px;
+            line-height: 50px;
+        }
+        #button-cancel {
+            position: relative;
+            bottom: 23px;
+            right: 160px;
+        }
+        #button-save {
+            position: relative;
+            right: 90px;
+        }
+        .Markdown {
+            border: solid rgb(200,200,200);
+            background-color: #FFFFFF;
+            width: 350px;
+            height: 550px;
+            position: relative;
+            margin: 50px 10px 10px 10px;
+            float: left;
+        }
+        .MarkdownPrev {
+            border: solid rgb(200,200,200);
+            background-color: #FFFFFF;
+            width: 400px;
+            height: 550px;
+            position: relative;
+            margin: 50px 10px 10px 10px;
+            float: right;
+        }
+        .OptionButtons {
+            top: 610px;
+            position: relative;
+            margin: 0px 10px 0px 10px;
+        }
+        .PrevHead {
+            height: 30px
+            position: relative;
+            background-color: #775886;
+            color: #FFFFFF;
+            font-size: 14px;
+            line-height:
+        }
+    </style>
+    <script>
+        function onload() {
+            $(".PreviewWindow").hide();
+        }
+        function showPreview() {
+            $(".PreviewWindow").show();
+        }
 
+        function saveCode() {
+
+        }
+        function cancelPreview() {
+            $(".PreviewWindow").hide();
+        }
+        function saveMarkdown() {
+
+        }
+    </script>
+</head>
+<body onload="onload()">
+<div class="Header">Hello its me, preview</div>
+<button id="Preview" onclick="showPreview()">Preview</button>
+<div class="PreviewWindow">
+    <div class="PrevHead">This is the preview window</div>
+    <div class="Markdown">Markdown</div>
+    <div class="MarkdownPrev">Markdown Preview</div>
+    <div class="OptionButtons">
+        <button id="button-save" onclick="saveMarkdown()">Save</button>
+        <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
+    </div>
+</div>
+<?php
+//echo $_GET['prev'];
+//?>
+
+</body>
+</html>
+<!-- <?php
+/*
 ini_set("auto_detect_line_endings", true);
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
@@ -257,22 +365,23 @@ function markdownBlock($instring)
     $instring = preg_replace("/\_{4}(.*?)\_{4}/", "<strong><em>$1</em></strong>",$instring);
     $instring = preg_replace("/\_{3}(.*?)\_{3}/", "<strong>$1</strong>",$instring);
     $instring = preg_replace("/\_{2}(.*?)\_{2}/", "<strong>$1</strong>",$instring);
+*/
 
     // Headings -- 6 levels
-    $instring = preg_replace("/^\#{6}\s(.*)=*/m", "<h6>$1</h6>",$instring);
-    $instring = preg_replace("/^\#{5}\s(.*)=*/m", "<h5>$1</h5>",$instring);
-    $instring = preg_replace("/^\#{4}\s(.*)=*/m", "<h4>$1</h4>",$instring);
-    $instring = preg_replace("/^\#{3}\s(.*)=*/m", "<h3>$1</h3>",$instring);
-    $instring = preg_replace("/^\#{2}\s(.*)=*/m", "<h2>$1</h2>",$instring);
-    $instring = preg_replace("/^\#{1}\s(.*)=*/m", "<h1>$1</h1>",$instring);
+  // - $instring = preg_replace("/^\#{6}\s(.*)=*/m", "<h6>$1</h6>",$instring);
+  //-  $instring = preg_replace("/^\#{5}\s(.*)=*/m", "<h5>$1</h5>",$instring);
+   //- $instring = preg_replace("/^\#{4}\s(.*)=*/m", "<h4>$1</h4>",$instring);
+   //- $instring = preg_replace("/^\#{3}\s(.*)=*/m", "<h3>$1</h3>",$instring);
+   //- $instring = preg_replace("/^\#{2}\s(.*)=*/m", "<h2>$1</h2>",$instring);
+//-    $instring = preg_replace("/^\#{1}\s(.*)=*/m", "<h1>$1</h1>",$instring);
 
     //Regular expression for line
-    $instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
+   //- $instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
 
     // Hard line break support
     //$instring= preg_replace ("/(\r\n|\n|\r){3}/","<br><br>",$instring);
     //$instring= preg_replace ("/(\r\n|\n|\r)/","<br>",$instring);
-
+/*
     // Fix for swedish characters
     $instring= str_replace ("å","&aring;",$instring);
     $instring= str_replace ("Å","&Aring;",$instring);
@@ -324,8 +433,8 @@ function markdownBlock($instring)
     $instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote><br/>", $instring);
 
     return $instring;
-}
-
+}*/
+/*
 ob_start();
 date_default_timezone_set("Europe/Stockholm");
 
@@ -533,6 +642,8 @@ if(!$readfile){
          </div>";
 
 
+
+
 //Here we add a button called "Edit", when clicked a new popupwindow for the markdowncode will open. Not done yet.
  echo "<button onClick='popupWindow()'> Edit</button></p>";
 
@@ -554,3 +665,4 @@ The original code
 echo $_GET['prev'];
 
 ?>
+*/
