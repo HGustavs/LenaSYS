@@ -89,7 +89,7 @@
                 line-height: 25px;
             }
             #mrkdwntxt {
-                border-radius: 2px;
+                border-radius: 8px;
                 box-shadow: 2px 2px 4px #888 inset;
                 resize: none;
                 margin: 10px 4px 0px 4px;
