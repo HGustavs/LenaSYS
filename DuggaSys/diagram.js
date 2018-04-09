@@ -40,11 +40,11 @@ var lineStartObj = -1;
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
-var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
+//var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
 var widthWindow;                    // The width on the users screen is saved is in this var.
 var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
-var startX = 0, startY = 0;         // Current X- and Y-coordinant from which the canvas start from
+var sx = 0, sy = 0;         // Current X- and Y-coordinant from which the canvas start from
 var waldoPoint = "";
 var moveValue = 0;                  // Used to deside if the canvas should translate or not
 var activePoint = null;             // This point indicates what point is being hovered by the user
@@ -289,17 +289,17 @@ diagram.deleteObject = function(object) {
 // targetItemsInsideSelectionBox - Targets all items inside the
 // selection box (dragged by the user)
 //--------------------------------------------------------------------
-diagram.targetItemsInsideSelectionBox = function (endX, endY, startX, startY) {
+diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
     //ensure that an entity cannot scale below the minimum size
-    if (startX > endX) {
-        var tempEndX = endX;
-        endX = startX;
-        startX = tempEndX;
+    if (sx > ex) {
+        var tempEndX = ex;
+        ex = sx;
+        sx = tempEndX;
     }
-    if (startY > endY) {
-        var tempEndY = endY;
-        endY = startY;
-        startY = tempEndY;
+    if (sy > ey) {
+        var tempEndY = ey;
+        ey = sy;
+        sy = tempEndY;
     }
     for (var i = 0; i < this.length; i++) {
         if (this[i].kind == 1) {
@@ -309,8 +309,8 @@ diagram.targetItemsInsideSelectionBox = function (endX, endY, startX, startY) {
             }
             var pointsSelected = 0;
             for (var j = 0; j < tempPoints.length; j++) {
-                if (tempPoints[j].x < endX && tempPoints[j].x > startX &&
-                    tempPoints[j].y < endY && tempPoints[j].y > startY) {
+                if (tempPoints[j].x < ex && tempPoints[j].x > sx &&
+                    tempPoints[j].y < ey && tempPoints[j].y > sy) {
                     pointsSelected++;
                 }
             }
@@ -330,10 +330,10 @@ diagram.targetItemsInsideSelectionBox = function (endX, endY, startX, startY) {
             if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
                 tempTopLeftY = tempBottomRightY - minEntityY;
             }
-            if (startX < tempTopLeftX && endX > tempTopLeftX &&
-                startY < tempTopLeftY && endY > tempTopLeftY &&
-                startX < tempBottomRightX && endX > tempBottomRightX &&
-                startY < tempBottomRightY && endY > tempBottomRightY) {
+            if (sx < tempTopLeftX && ex > tempTopLeftX &&
+                sy < tempTopLeftY && ey > tempTopLeftY &&
+                sx < tempBottomRightX && ex > tempBottomRightX &&
+                sy < tempBottomRightY && ey > tempBottomRightY) {
                 this[i].targeted = true;
             } else {
                 this[i].targeted = false;
@@ -582,7 +582,7 @@ function initializeCanvas() {
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 80);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + startX + " & Y=" + startY + "</p>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -636,8 +636,8 @@ function canvasSize() {
     heightWindow = (window.innerHeight - 144);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
-    ctx.clearRect(startX, startY, widthWindow, heightWindow);
-    ctx.translate(startX, startY);
+    ctx.clearRect(sx, sy, widthWindow, heightWindow);
+    ctx.translate(sx, sy);
     ctx.scale(1, 1);
     ctx.scale(zoomValue, zoomValue);
 }
@@ -646,7 +646,7 @@ function canvasSize() {
 window.addEventListener('resize', canvasSize);
 
 function updateGraphics() {
-    ctx.clearRect(startX, startY, (widthWindow / zoomValue), (heightWindow / zoomValue));
+    ctx.clearRect(sx, sy, (widthWindow / zoomValue), (heightWindow / zoomValue));
     if (moveValue == 1) {
         ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
@@ -709,11 +709,41 @@ function eraseSelectedObject() {
 
 function setMode(mode){ //"CreateClass" yet to be implemented in .php
     canvas.style.cursor = "default";
+<<<<<<< HEAD
     uimode = mode;
     if(mode == 'Square' || mode == 'Free') {
       uimode = "CreateFigure";
       figureType = mode;
     }
+=======
+    uimode = "CreateClass";
+}
+
+function attrMode() {
+    canvas.style.cursor = "default";
+    uimode = "CreateERAttr";
+}
+
+function entityMode() {
+    canvas.style.cursor = "default";
+    uimode = "CreateEREntity";
+}
+
+function lineMode() {
+    canvas.style.cursor = "default";
+    uimode = "CreateLine";
+}
+
+/*function figureMode(mode) {
+    canvas.style.cursor = "default";
+    uimode = "CreateFigure";
+    figureType = mode;
+}*/
+
+function relationMode() {
+    canvas.style.cursor = "default";
+    uimode = "CreateERRelation";
+>>>>>>> G2V02-2018
 }
 
 $(document).ready(function(){
@@ -838,6 +868,7 @@ function drawGrid() {
     ctx.lineWidth = 1;
     var quadrantX;
     var quadrantY;
+<<<<<<< HEAD
 
     if (startX < 0) quadrantX = startX;
     else quadrantX = -startX;
@@ -846,6 +877,18 @@ function drawGrid() {
     else quadrantY = -startY;
 
 
+=======
+    if (sx < 0) {
+        quadrantX = sx;
+    } else {
+        quadrantX = -sx;
+    }
+    if (sy < 0) {
+        quadrantY = sy;
+    } else {
+        quadrantY = -sy;
+    }
+>>>>>>> G2V02-2018
     for (var i = 0 + quadrantX; i < quadrantX + widthWindow; i++) {
         if (i % 5 == 0) { //This is a "thick" line
             ctx.strokeStyle = "rgb(208, 208, 220)";
@@ -854,8 +897,8 @@ function drawGrid() {
             ctx.strokeStyle = "rgb(238, 238, 250)";
         }
         ctx.beginPath();
-        ctx.moveTo(i * gridSize, 0 + startY);
-        ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + startY);
+        ctx.moveTo(i * gridSize, 0 + sy);
+        ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + sy);
         ctx.stroke();
         ctx.closePath();
     }
@@ -863,11 +906,34 @@ function drawGrid() {
         if (i % 5 == 0) ctx.strokeStyle = "rgb(208, 208, 220)"; //This is a "thick" line
         else ctx.strokeStyle = "rgb(238, 238, 250)";
         ctx.beginPath();
-        ctx.moveTo(0 + startX, i * gridSize);
-        ctx.lineTo((widthWindow / zoomValue) + startX, i * gridSize);
+        ctx.moveTo(0 + sx, i * gridSize);
+        ctx.lineTo((widthWindow / zoomValue) + sx, i * gridSize);
         ctx.stroke();
         ctx.closePath();
     }
+<<<<<<< HEAD
+=======
+    //Draws the thick lines
+    ctx.strokeStyle = "rgb(208, 208, 220)";
+    for (var i = 0 + quadrantX; i < quadrantX + (widthWindow / zoomValue); i++) {
+        if (i % 5 == 0) {
+            ctx.beginPath();
+            ctx.moveTo(i * gridSize, 0 + sy);
+            ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + sy);
+            ctx.stroke();
+            ctx.closePath();
+        }
+    }
+    for (var i = 0 + quadrantY; i < quadrantY + (heightWindow / zoomValue); i++) {
+        if (i % 5 == 0) {
+            ctx.beginPath();
+            ctx.moveTo(0 + sx, i * gridSize);
+            ctx.lineTo((widthWindow / zoomValue) + sx, i * gridSize);
+            ctx.stroke();
+            ctx.closePath();
+        }
+    }
+>>>>>>> G2V02-2018
 }
 
 //remove all elements in the diagram array. it hides the points by placing them beyond the users view.
@@ -975,7 +1041,7 @@ function loadDiagram() {
                 if (b.diagramNames[i] == "Symbol") {
                     b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
                 } else if (b.diagramNames[i] == "Path") {
-                    b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+                  //  b.diagram[i] = Object.assign(new Path, b.diagram[i]);
                 }
             }
             diagram.length = b.diagram.length;
@@ -984,7 +1050,7 @@ function loadDiagram() {
             }
             // Points fix
             for (var i = 0; i < b.points.length; i++) {
-                b.points[i] = Object.assign(new Path, b.points[i]);
+             //   b.points[i] = Object.assign(new Path, b.points[i]);
             }
             points.length = b.points.length;
             for (var i = 0; i < b.points.length; i++) {
@@ -1005,8 +1071,8 @@ function removeLocalStorage() {
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
      + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-     + "X=" + startX
-     + " & Y=" + startY + "</p>";
+     + "X=" + sx
+     + " & Y=" + sy + "</p>";
 }
 
 //----------------------------------------
