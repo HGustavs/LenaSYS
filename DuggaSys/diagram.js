@@ -737,15 +737,8 @@ function setTextSizeEntity() {
 function setType() {
     var elementVal = document.getElementById('object_type').value;
 
-    if (elementVal == 'Primary key') {
-        diagram[lastSelectedObject].key_type = 'Primary key';
-    } else if (elementVal == 'Normal') {
-        diagram[lastSelectedObject].key_type = 'Normal';
-    } else if (elementVal == 'Multivalue') {
-        diagram[lastSelectedObject].key_type = 'Multivalue';
-    } else if (elementVal == 'Drive') {
-        diagram[lastSelectedObject].key_type = 'Drive';
-    }
+    diagram[lastSelectedObject].key_type = elementVal;
+
     updateGraphics();
 }
 
