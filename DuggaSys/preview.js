@@ -21,7 +21,7 @@ function popupWindow(){
 
 function initializeName() {     //Change name!
     windowIsOpen = true;
-    run();
+    //run();
 }
 
 
