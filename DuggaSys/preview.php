@@ -59,12 +59,13 @@
                 left: 235px;
             }
             #button-save {
-                position: relative;
-                float: right;
-                margin: 0px 10px auto;
+                position: absolute;
+                left: 305px;
             }
             #button-close {
-                background-color: red;
+                float: right;
+                position: relative;
+                margin: 0px 10px 0px 0px;
             }
              .PrevHead {
                 height: 20px;
@@ -86,6 +87,11 @@
                 color: #FFF;
                 padding: 0px 5px 0px 5px;
                 line-height: 25px;
+            }
+            #mrkdwntxt {
+                border-radius: 2px;
+                border: solid 1px black;
+                box-shadow: inset 5px 5px 0px 0px #000;
             }
         </style>
         <script>
@@ -115,6 +121,10 @@
             </div>
             <div class="Markdown">
                 <div class="markNav">Markdown</div>
+                <div class="markText" >
+                    <textarea id="mrkdwntxt" name="markdowntext">
+                    </textarea>
+                </div>
             </div>
             <div class="MarkdownPrev">
                 <div class="prevNav">Markdown Preview</div>
