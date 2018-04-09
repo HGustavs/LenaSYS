@@ -432,25 +432,25 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 						document.getElementById(table.tableid+"_tbl_mh").style.left = thetab.left+"px";
 						document.getElementById(table.tableid+"_tbl_mh").style.display = "table";
 					}
-//					 else {
-//						document.getElementById(table.tableid+"_tbl_mh").style.display = "none";
-//					}
+					 else {
+						document.getElementById(table.tableid+"_tbl_mh").style.display = "none";
+					}
 					// Horizontal
 					if (thetab.left < 0 && thetab.right > 0) {
 						document.getElementById(table.tableid+"_tbl_mhv").style.top = thetabhead.top+"px";
 						document.getElementById(table.tableid+"_tbl_mhv").style.display = "table";
 					}
-//					else {
-//						document.getElementById(table.tableid+"_tbl_mhv").style.display = "none";							
-//					}
+					else {
+						document.getElementById(table.tableid+"_tbl_mhv").style.display = "none";							
+					}
 
 					// Fixed
 					if (thetab.left < 0 && thetab.right > 0 && thetabhead.top < 0 && thetab.bottom > 0) {
 						document.getElementById(table.tableid+"_tbl_mhf").style.display = "table";
 					}
-//					else {
-//						document.getElementById(table.tableid+"_tbl_mhf").style.display = "none";
-//					}
+					else {
+						document.getElementById(table.tableid+"_tbl_mhf").style.display = "none";
+					}
 				}
 			}
 		}
