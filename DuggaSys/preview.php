@@ -11,6 +11,8 @@
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
+    <script src='../DuggaSys/Shared/markdown.js'></script>
+    <script src='../DuggaSys/showdoc.php'></script>
     <style>
         .PreviewWindow {
             height: 700px;
@@ -69,32 +71,37 @@
             line-height:
         }
     </style>
-    <script src='../DuggaSys/Shared/markdown.js'></script>
-    <script src='../DuggaSys/showdoc.php'></script>
+
     <script>
         function onload() {
             $(".PreviewWindow").hide();
         }
         function showPreview(str) {
             $(".PreviewWindow").show();
-            //Here we check if the input field is empty (str.length == 0).
-            // If it is, clear the content of the txtHint placeholder
-            // and exit the function.
+            //This function is triggered when key is pressed down in the input field
 
             if(str.length == 0){
+                //Here we check if the input field is empty (str.length == 0).
+                // If it is, clear the content of the txtHint placeholder
+                // and exit the function.
                 document.getElementById("markdown").innerHTML = " ";
                 return;
             }else {
-                var xmlhttp =new XMLHttpRequest(); //Create an XMLHttpRequest object
+                var xmlhttp =new XMLHttpRequest();
+                //Create an XMLHttpRequest object
                 //Create the function to be executed when the server response is ready
                 xmlhttp.onreadystatechange = function () {
                     if(this.readyState == 4 && this.status == 200){
-                        document.getElementById("markdown").innerHTML =
-                            this.responseText;
+                        //
+                        document.getElementById("markdown").innerHTML = //replace markdown with responseText
+                            this.responseText; //get the response data as a string
                     }
                 };
+                //Return data from the file
                 //The str variable holds the content of the input field
-                xmlhttp.open("GET", "showdoc.php" + str, true);
+                //Specifies the type of request
+                xmlhttp.open("GET", "markdown.js" + str, true);
+                //Sends the request to the server
                 xmlhttp.send();
 
             }
