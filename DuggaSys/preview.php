@@ -94,10 +94,10 @@
 <div class="PreviewWindow">
     <div class="PrevHead">This is the preview window</div>
     <div class="Markdown">
-        <form>
+       
             <input type="text"
                    onekeyup="showPreview(this.value)">
-        </form>
+
     </div>
     <div class="MarkdownPrev">Markdown Preview</div>
     <div class="OptionButtons">
