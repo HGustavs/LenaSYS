@@ -73,7 +73,7 @@
         function onload() {
             $(".PreviewWindow").hide();
         }
-        function showPreview() {
+        function showPreview(str) {
             $(".PreviewWindow").show();
         }
 
@@ -93,7 +93,12 @@
 <button id="Preview" onclick="showPreview()">Preview</button>
 <div class="PreviewWindow">
     <div class="PrevHead">This is the preview window</div>
-    <div class="Markdown">Markdown</div>
+    <div class="Markdown">
+        <form>
+            <input type="text"
+                   onekeyup="showPreview(this.value)">
+        </form>
+    </div>
     <div class="MarkdownPrev">Markdown Preview</div>
     <div class="OptionButtons">
         <button id="button-save" onclick="saveMarkdown()">Save</button>
