@@ -122,7 +122,6 @@
 <div class="PreviewWindow">
     <div class="PrevHead">This is the preview window</div>
     <div class="Markdown">
-        <span id="markdown"> </span>
         <form>
             <input type="text"
                    id="markdown"
@@ -131,7 +130,8 @@
     </div>
 
     <div class="MarkdownPrev">
-    <span id="markdown"> </span>
+        <textarea><span id="markdown"> </span></textarea>
+
     </div>
 
     <div class="OptionButtons">
