@@ -1,9 +1,9 @@
 <?php
-  $db = new PDO('sqlite:free_shavocado.sqlite3');
+  $db = new PDO("mysql:host=localhost;port=20001;dbname=c16linst", "c16linst", "password");
   if (isset($_GET['command'])) {
-      $command = $_GET['command'];    
+      $command = $_GET['command']; 
   } else {
-      $command = "UNK";  
+      $command = "UNK";
   }
 
   if (isset($_GET['dbarr'])) {
@@ -36,12 +36,12 @@
       $updateid = "UNK";  
   }
 
-  /*
+  
   $command="update";
   $updatecol="first_last";
   $updatevalue="Snus";
   $updateid=1;
-  */
+  
 
   function genData() {
       $possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -134,9 +134,9 @@
           try {   
               $results = $db->query('SELECT * FROM ' . $database);
               if ($results) {
-                  while ($result = $results->fetch(PDO::FETCH_ASSOC)) { 
-                      array_push($tbl,array(intval($result['id']),$result['firstlast'],floatval($result['pnr']),intval($result['num']),$result['foo'],$result['holk'],json_decode($result['trumma'])));
-                  }              
+                  while ($result = $results->fetch(PDO::FETCH_ASSOC)) {
+                      array_push($tbl,array(intval($result['cid']),intval($result['lid']),$result['entryname']));
+                  }             
               }
               $data[$database] = $tbl;
           } catch (PDOException $e) {

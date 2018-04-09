@@ -91,7 +91,7 @@ function clickedInternal(event,clickdobj) {
 		popoverelement.style.left = Math.round(lmnt.left+xscroll)+"px";
 		popoverelement.style.top = Math.round(lmnt.top+yscroll)+"px";
 		popoverelement.style.minHeight = (Math.round(lmnt.height)-5)+"px";
-		popoverelement.style.minWidth = (Math.round(lmnt.width)+0)+"px";
+		popoverelement.style.maxWidth = (Math.round(lmnt.width)+0)+"px";
 		popoverelement.style.display = "flex";	
 	}
 }
