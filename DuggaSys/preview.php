@@ -44,16 +44,16 @@
                 width: 350px;
                 height: 550px;
                 position: relative;
-                margin: 50px 10px 10px 10px;
+                margin: 20px 10px 10px 10px;
                 float: left;
             }
             .MarkdownPrev {
                 border: solid rgb(200,200,200);
                 background-color: #FFFFFF;
-                width: 400px;
+                width: 490px;
                 height: 550px;
                 position: relative;
-                margin: 50px 10px 10px 10px;
+                margin: 20px 10px 10px 10px;
                 float: right;
             }
             .OptionButtons {
@@ -70,10 +70,14 @@
                 line-height: 
             }
             .prevNav {
-                
+                background-color: #775886;
+                height: 30px;
+                color: #FFF;
             }
             .markNav {
-                
+                background-color: #775886;
+                height: 30px;
+                color: #FFF;
             }
         </style>
         <script>
