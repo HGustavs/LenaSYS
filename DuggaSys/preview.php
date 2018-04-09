@@ -69,8 +69,8 @@
             line-height:
         }
     </style>
-    <script src='../DuggaSys/Shared/markdown.js'></script>;
-    <script src='../DuggaSys/showdoc.php'></script>;
+    <script src='../DuggaSys/Shared/markdown.js'></script>
+    <script src='../DuggaSys/showdoc.php'></script>
     <script>
         function onload() {
             $(".PreviewWindow").hide();
@@ -82,14 +82,14 @@
             // and exit the function.
 
             if(str.length == 0){
-                document.getElementById("txtHint").innerHTML = " ";
+                document.getElementById("markdown").innerHTML = " ";
                 return;
             }else {
                 var xmlhttp =new XMLHttpRequest(); //Create an XMLHttpRequest object
                 //Create the function to be executed when the server response is ready
                 xmlhttp.onreadystatechange = function () {
                     if(this.readyState == 4 && this.status == 200){
-                        document.getElementById("txtHint").innerHTML =
+                        document.getElementById("markdown").innerHTML =
                             this.responseText;
                     }
                 };
@@ -119,11 +119,14 @@
     <div class="Markdown">
         <form>
             <input type="text"
-                   onekeyup="showPreview(this.value)">
+                   <!-- -->
+                   onkeyup="showPreview(this.value)">
         </form>
     </div>
 
-    <p class="MarkdownPrev"> <p> test: </p><span id="txtHint"> </span></p></div>
+    <div class="MarkdownPrev">Markdown Preview
+    <span id="markdown"> </span>
+    </div>
 
     <div class="OptionButtons">
         <button id="button-save" onclick="saveMarkdown()">Save</button>
