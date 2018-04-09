@@ -60,6 +60,8 @@
                 top: 610px;
                 position: relative;
                 margin: 0px 10px 0px 10px;
+                height: 40px;
+                width: 355px;
             }
              .PrevHead {
                 height: 30px
