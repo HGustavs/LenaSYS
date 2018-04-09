@@ -393,7 +393,7 @@ function changedType()
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-	function confirmBox(temp){	
+	function confirmBox(temp){
 		if (temp == 1 || temp == 2 || temp == 3){
 	        decider = temp;
 	        $("#sectionConfirmBox").css("display","flex");
@@ -757,7 +757,7 @@ function returnedSection(data)
 
 				// Separating sections into different classes
 				if(parseInt(item['kind']) === 0) {
-					str += 
+					str +=
 						"<div id='header"
 						+ menuState.idCounter
 						+ data.coursecode
@@ -794,7 +794,7 @@ function returnedSection(data)
 
 				// Content table
 				str+="<table id='lid"+item['lid']+"' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
-				
+
 				if(kk%2==0) {
 					str+=" class='hi' ";
 				} else {
@@ -976,7 +976,7 @@ function returnedSection(data)
 						"<span style='padding-left:5px;' title='"
 						+ item['entryname'] + "'>" + item['entryname'] + "</span>";
 				}
-				 
+
 				else if (parseInt(item['kind']) == 1) { // Section
 					str +=
 						"<div style='display:inline-block;'><div class='nowrap"
@@ -990,7 +990,7 @@ function returnedSection(data)
 						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
 						+ "' class='arrowRight' style='display:none;'>";
 				}
-				
+
 				else if (parseInt(item['kind']) == 4) { // Moment
 					str+="<div style='display:inline-block;'><div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
@@ -1003,7 +1003,7 @@ function returnedSection(data)
 						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
 						+ "' class='arrowRight' style='display:none;'>";
 				}
-				
+
 				else if (parseInt(item['kind']) == 2) { // Code Example
 					str +=
 						"<span><a class='" + blorf
@@ -1012,7 +1012,7 @@ function returnedSection(data)
 						+ "&cvers=" + querystring['coursevers'] + "' title='"
 						+ item['entryname'] + "'>" + item['entryname'] + "</a></span>";
 				}
-				
+
 				else if (parseInt(item['kind']) == 3 ) {
 					str +=
 						"<div><a class='" + blorf
@@ -1026,7 +1026,7 @@ function returnedSection(data)
 						+ "'><span class='nowrap'><span class='ellipsis'>"
 						+ item['entryname'] + "</span></span></a></div>";
 				}
-				
+
 				else if(parseInt(item['kind']) == 5){ // Link
 					if(item['link'].substring(0,4) === "http") {
 						str +=
@@ -1246,7 +1246,6 @@ function returnedHighscore(data){
 
 // Toggle content for each moment
 $(document).on('click', '.moment, .section', function () {
-	setGlobalArrowWhenSingleMomentIsActivated();
 	saveHiddenElementIDs($(this));
 	hideCollapsedMenus();
 	saveArrowIds($(this));
@@ -1271,7 +1270,7 @@ function getArrowElements() {
 
 // Save ids of all elements, whose state needs to be remembered, in local storage.
 function saveHiddenElementIDs(clickedElement) {
-	
+
 	clickedElement.nextUntil('.moment, .section').each(function() {
 		addOrRemoveFromArray(this.id, menuState.hiddenElements);
 	});
@@ -1332,57 +1331,6 @@ function toggleArrows() {
 			$('#' + menuState.arrowIcons[i]).show();
 		}
 	}
-}
-
-// This part should check if there are any un/folded section when a moment has been clicked
-// Sets the show/hide All arrow to a correct state
-function setGlobalArrowWhenSingleMomentIsActivated() {
-  if(!hasUnfoldedParts()) {
-    $('.arrowRightMeta').show();
-    $('.arrowCompMeta').hide();
-  } else {
-    $('.arrowRightMeta').hide();
-    $('.arrowCompMeta').show();
-  }
-}
-
-// Sets the show/hide All arrow to a correct state
-function setGlobalArrow() {
-  if(hasUnfoldedParts()) {
-    $('.arrowRightMeta').show();
-    $('.arrowCompMeta').hide();
-  } else {
-    $('.arrowRightMeta').hide();
-    $('.arrowCompMeta').show();
-  }
-}
-
-// Toggle content for all moments
-$(document).on('click', '.showHideMetaButton', function () {
-	if(hasUnfoldedParts()) {
-    $('.moment, .section').nextUntil('.moment, .section').slideUp('fast', setGlobalArrow());
-    $('.arrowRight').show();
-    $('.arrowComp').hide();
-	} else {
-    $('.moment, .section').nextUntil('.moment, .section').slideDown('fast', setGlobalArrow());
-    $('.arrowRight').hide();
-    $('.arrowComp').show();
-	}
-});
-
-// Check visibility status of all the sub moments, used to see if there are any open sections
-function hasUnfoldedParts(){
-  var fold = false;
-  $('div.moment, div.section').each(function(i) {
-    $('.moment, .section').nextUntil('.moment, .section').each(function(j) {
-      if($(this).is(":visible")) {
-        fold = true;
-        return(!fold); // Don't break if still false
-      }
-    });
-    return(!fold);
-  });
-  return fold;
 }
 
 // Function to prevent collapsing when clicking icons
