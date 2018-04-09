@@ -91,7 +91,9 @@
             #mrkdwntxt {
                 border-radius: 2px;
                 border: solid 1px black;
-                box-shadow: inset 5px 5px 0px 0px #000;
+                box-shadow: 2px 2px 4px #888 inset;
+                resize: none;
+                margin: 10px 4px 0px 4px;
             }
         </style>
         <script>
