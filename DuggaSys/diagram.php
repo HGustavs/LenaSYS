@@ -63,7 +63,7 @@
                         <h4 class="label">Tools</h4>
                         <div class="toolbar-drawer">
                             <div class="tooltipdialog">
-                                <button id='linebutton' onclick='lineMode();' class='buttonsStyle unpressed' data="Create Line">
+                                <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
                                     <img src="../Shared/icons/diagram_create_line.svg">
                                 </button>
                             </div>
@@ -71,17 +71,17 @@
                         <h4 class="label">Create</h4>
                         <div class="toolbar-drawer">
                             <div class="tooltipdialog">
-                                <button id='attributebutton' onclick='attrMode();' class='buttonsStyle unpressed' data="Create Attribute">
+                                <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute">
                                     <img src="../Shared/icons/diagram_create_attribute.svg">
                                 </button>
                             </div><br>
                             <div class="tooltipdialog">
-                                <button id='entitybutton' onclick='entityMode();' class='buttonsStyle unpressed' data="Create Entity">
+                                <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle unpressed' data="Create Entity">
                                     <img src="../Shared/icons/diagram_create_entity.svg">
                                 </button>
                             </div><br>
                             <div class="tooltipdialog">
-                                <button id='relationbutton' onclick='relationMode();' class='buttonsStyle unpressed' data="Create Relation">
+                                <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed' data="Create Relation">
                                     <img src="../Shared/icons/diagram_create_relation.svg">
                                 </button>
                             </div>
@@ -89,10 +89,10 @@
                         <!--
                         <h4 class="label">Draw</h4>
                         <div class="toolbar-drawer">
-                            <button id='squarebutton' onclick="figureMode('Square');" class='buttonsStyle unpressed' data="Draw Square">
+                            <button id='squarebutton' onclick="setMode('Square');" class='buttonsStyle unpressed' data="Draw Square">
                                 <img src="../Shared/icons/diagram_draw_square.svg">
                             </button><br>
-                            <button id='drawfreebutton' onclick="figureMode('Free');" class='buttonsStyle unpressed' data="Draw Free">
+                            <button id='drawfreebutton' onclick="setMode('Free');" class='buttonsStyle unpressed' data="Draw Free">
                                 <img src="../Shared/icons/diagram_draw_free.svg">
                             </button>
                         </div>
@@ -124,9 +124,9 @@
                             <a href="#" id="buttonid" value='getImage'>Import</a>
                         </div>
 
+
                         <div class="drop-down-item export-drop-down-head">
                             <a href="#" id="exportid">Export...</a>
-
                             <div class="export-drop-down">
                                 <div class="export-drop-down-item">
                                     <a href="#" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
@@ -201,21 +201,6 @@
                         </div>
                     </div>
                 </div>
-                 
-                <div class="menu-drop-down">
-                    <span class="label">Help</span>
-                    <div class="drop-down">
-                        <div class="drop-down-text">
-                            <a href="#">Move grid</a>
-                            <div id="hotkey-space"><i>Blankspace</i></div>
-                        </div>
-                        <div class="drop-down-divider"></div>
-                        <div class="drop-down-text">
-                            <a href="#">Select multiple objects</a>
-                            <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
-                        </div>
-                    </div>
-                </div>
             </div>
             </br>
             </br>
@@ -224,7 +209,6 @@
             <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
             <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
             <button onclick='eraseSelectedObject();'>Delete Object</button>
-            
             <div class="tooltipdialog">
                 <button id='moveButton' class='unpressed' title="Move Around" style="visibility:hidden">
                     <img src="../Shared/icons/diagram_move_arrows.svg">
