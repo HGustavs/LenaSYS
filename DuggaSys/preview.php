@@ -87,11 +87,10 @@
                 document.getElementById("markdown").innerHTML = " ";
                 return;
             }else {
-                        document.getElementById("markdown").innerHTML = //replace markdown with responseText
-                            parseMarkdown(str); //get the response data as a string
-                    };
+                        document.getElementById("markdown").innerHTML=parseMarkdown(str); //get the response data as a string
+            };
 
-            }
+
         }
 
         function saveCode() {
