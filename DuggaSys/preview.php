@@ -87,21 +87,10 @@
                 document.getElementById("markdown").innerHTML = " ";
                 return;
             }else {
-                var xmlhttp =new XMLHttpRequest();  //Create an XMLHttpRequest object
-                //Create the function to be executed when the server response is ready
-                xmlhttp.onreadystatechange = function() { //Triggered every time the ready state changes.
-                    if(this.readyState == 4 && this.status == 200){
-                    }
                         document.getElementById("markdown").innerHTML = //replace markdown with responseText
-                            markdownBlock(str); //get the response data as a string
+                            parseMarkdown(str); //get the response data as a string
                     };
 
-                //Return data from the file
-                //Specifies the type of request
-                xmlhttp.open("POST", "../Shared/markdown.js", true);
-
-                //Sends the request to the server
-                xmlhttp.send(str);
             }
         }
 
