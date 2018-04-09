@@ -119,6 +119,7 @@
     <div class="Markdown">
         <form>
             <input type="text"
+                   id="markdown"
                    onkeyup="showPreview(this.value)">
         </form>
     </div>
