@@ -347,7 +347,7 @@ diagram.itemClicked = function() {
     if(uimode == "MoveAround"){
         return -1;
     }
-    for (var i = 0; i < this.length; i++) {
+    for (var i = this.length - 1; i >= 0; i--) {
         if (this[i].isClicked(currentMouseCoordinateX, currentMouseCoordinateY)) {
             return i;
         }
