@@ -102,6 +102,8 @@
                 xmlhttp.open("GET", "markdown.js" + str, true);
                 //Sends the request to the server
                 xmlhttp.send();
+                //var text = markdown.parseMarkdown(str);
+
 
             }
         }
@@ -125,13 +127,12 @@
     <div class="Markdown">
         <form>
             <input type="text"
-                   id="markdown"
                    onkeyup="showPreview(this.value)">
         </form>
     </div>
 
     <div class="MarkdownPrev">
-    <p id="markdown"> </p>
+    <span id="markdown"> </span>
     </div>
 
     <div class="OptionButtons">
