@@ -101,7 +101,7 @@
                 xmlhttp.open("POST", "../Shared/markdown.js", true);
 
                 //Sends the request to the server
-                xmlhttp.send(str);
+                xmlhttp.send(x);
             }
         }
 
