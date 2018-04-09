@@ -268,16 +268,16 @@ diagram.deleteObject = function(object) {
 // targetItemsInsideSelectionBox - Targets all items inside the
 // selection box (dragged by the user)
 //--------------------------------------------------------------------
-diagram.targetItemsInsideSelectionBox = function (endX, endY, sx, sy) {
+diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
     //ensure that an entity cannot scale below the minimum size
-    if (sx > endX) {
-        var tempEndX = endX;
-        endX = sx;
+    if (sx > ex) {
+        var tempEndX = ex;
+        ex = sx;
         sx = tempEndX;
     }
-    if (sy > endY) {
-        var tempEndY = endY;
-        endY = sy;
+    if (sy > ey) {
+        var tempEndY = ey;
+        ey = sy;
         sy = tempEndY;
     }
     for (var i = 0; i < this.length; i++) {
@@ -288,8 +288,8 @@ diagram.targetItemsInsideSelectionBox = function (endX, endY, sx, sy) {
             }
             var pointsSelected = 0;
             for (var j = 0; j < tempPoints.length; j++) {
-                if (tempPoints[j].x < endX && tempPoints[j].x > sx &&
-                    tempPoints[j].y < endY && tempPoints[j].y > sy) {
+                if (tempPoints[j].x < ex && tempPoints[j].x > sx &&
+                    tempPoints[j].y < ey && tempPoints[j].y > sy) {
                     pointsSelected++;
                 }
             }
@@ -309,10 +309,10 @@ diagram.targetItemsInsideSelectionBox = function (endX, endY, sx, sy) {
             if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
                 tempTopLeftY = tempBottomRightY - minEntityY;
             }
-            if (sx < tempTopLeftX && endX > tempTopLeftX &&
-                sy < tempTopLeftY && endY > tempTopLeftY &&
-                sx < tempBottomRightX && endX > tempBottomRightX &&
-                sy < tempBottomRightY && endY > tempBottomRightY) {
+            if (sx < tempTopLeftX && ex > tempTopLeftX &&
+                sy < tempTopLeftY && ey > tempTopLeftY &&
+                sx < tempBottomRightX && ex > tempBottomRightX &&
+                sy < tempBottomRightY && ey > tempBottomRightY) {
                 this[i].targeted = true;
             } else {
                 this[i].targeted = false;
