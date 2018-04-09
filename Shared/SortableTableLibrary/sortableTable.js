@@ -181,7 +181,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		sortableTable.currentTable = this;
 
 		// Private array that contains names of filtered columns
-		columnfilter = JSON.parse(localStorage.getItem(tableid+"_filtercolnames"));
+//		columnfilter = JSON.parse(localStorage.getItem(tableid+"_filtercolnames"));
+		columnfilter = tbl.tblhead;
 
 		// Local variable that contains summing array
 		var sumContent = [];
@@ -279,9 +280,11 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		str += "<tbody id='"+tableid+"_body'>";
 		mhvstr += "<tbody id='"+tableid+"_mhvbody'>";
 		for (let rowno in tbl.tblbody) {
-			var row=tbl.tblbody[rowno]
+			var row=tbl.tblbody[rowno];
 			if (rowFilter(row)) {
 				
+				console.log(row);
+
 				// Keep row sum total here
 				var rowsum = 0;
 				
@@ -292,7 +295,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
   					cleancol = tbl.cleanHead[colno];
 														
 					// If we show this column...
-					if (columnfilter.indexOf(tbl.tblhead[colno]) >- 1) {
+					console.log("Output",colno,columnfilter,tbl.tblhead[colno],columnfilter.indexOf(tbl.tblhead[colno]));
+					if (columnfilter.indexOf(colno) >- 1) {
 						// This condition is true if column is in summing list and in that case perform the sum like a BOSS
 						if (colsumList.indexOf(tbl.tblhead[colno]) >- 1) {
 							if (typeof(sumContent[tbl.tblhead[colno]]) == "undefined") sumContent[tbl.tblhead[colno]] = 0;
@@ -320,6 +324,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				mhvstr += "</tr>";
 			}
 		}
+
+		alert(str);
 
 		str += "</tbody>";
 		mhvstr += "</tbody>";

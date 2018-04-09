@@ -135,7 +135,14 @@
               $results = $db->query('SELECT * FROM ' . $database);
               if ($results) {
                   while ($result = $results->fetch(PDO::FETCH_ASSOC)) {
-                      array_push($tbl,array(intval($result['cid']),intval($result['lid']),$result['entryname']));
+                      array_push(
+                        $tbl,
+                        array(
+                          intval($result['cid']),
+                          intval($result['lid']),
+                          getType($result['entryname'])
+                        )
+                      );
                   }             
               }
               $data[$database] = $tbl;

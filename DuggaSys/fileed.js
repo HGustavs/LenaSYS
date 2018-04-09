@@ -199,12 +199,63 @@ function hideLoginPopup()
 		//$("#overlay").css("display","none");
 }
 
+//--------------------------------------------------------------------------
+// renderCell
+// ---------------
+//  Callback function that renders a specific cell in the table
+//--------------------------------------------------------------------------
+
+function renderCell(celldata,col) {
+	if (col == "Trumma"){
+	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
+	} else if (col == "Pnr") {
+	    return "<div style='text-align:right'>" + celldata + "</div>";
+	}
+	return celldata;
+}
+
+var myTable;
 //----------------------------------------
 // Renderer <- ran after the ajax call(ajax is started after initialation of this file) is successful
 //----------------------------------------
 function returnedFile(data)
 {
 		filez = data;
+
+        var tabledata = {
+        	tblhead:[
+        		"fileid","filesize","filename","kind","uploaddate"
+        	],
+        	tblbody: data['entries'],
+        	tblfoot:[]
+        }
+
+        myTable = new SortableTable(
+    		tabledata,
+    		"thetable",
+    		null,
+    		"Table Title!",
+            renderCell,
+            null,
+            null,
+            null,
+            [],
+            [],				
+            "",
+            null,
+            null,
+    		null,
+    		null,
+    		null,
+            null,
+    		false
+    	);
+    	
+
+		console.log(data);
+
+    	myTable.renderTable();
+
 		//strings filled with content that will later be html code in certain parts of the page
 		//----------------------------------------
 		str1=""; 

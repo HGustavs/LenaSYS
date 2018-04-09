@@ -244,7 +244,6 @@ if(array_key_exists($extension, $allowedExtensions)){
 	 	echo "No file found - check upload_max_filesize and post_max_size in php.ini";
 	 	$error=true;
 }				
-}
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive.php", $userid,$info);
 	
