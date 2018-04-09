@@ -426,6 +426,28 @@ function deleteItem()
 	//$("#overlay").css("display","none");
 }
 
+
+// Checks if the title name includes any invalid characters
+function validateName(){
+	var retValue = false;
+	
+	var nme=document.getElementById("sectionname");
+	
+	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)){
+		$('#saveBtn').removeAttr('disabled');
+		$('#submitBtn').removeAttr('disabled');
+		nme.style.backgroundColor = "#fff";
+		retValue = true;
+	}else{
+		$('#saveBtn').attr('disabled','disabled');
+		$('#submitBtn').attr('disabled','disabled');
+		nme.style.backgroundColor = "#f57";
+	}
+	
+	return retValue;
+}
+
+
 function updateItem()
 {
 	tabs=$("#tabs").val();
@@ -479,6 +501,11 @@ function closeSelect()
 	$(".item").css("border","none");
 	$(".item").css("box-shadow","none");
 	$("#editSection").css("display","none");
+	
+	$('#saveBtn').removeAttr('disabled');  							 		// Resets save button to its default form
+	$('#submitBtn').removeAttr('disabled');									// Resets submit button to its default form
+	document.getElementById("sectionname").style.backgroundColor = "#fff";  // Resets color for name input
+	
 }
 
 

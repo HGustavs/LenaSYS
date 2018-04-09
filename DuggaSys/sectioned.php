@@ -49,7 +49,7 @@ pdoConnect();
       		</div>
       		<div style='padding:5px;'>
       			<input type='hidden' id='lid' value='Toddler' />
-      			<div id='inputwrapper-name' class='inputwrapper'><span>Name:</span><input type='text' class='textinput' id='sectionname' value='sectionname' /></div>
+      			<div id='inputwrapper-name' class='inputwrapper'><span>Name:</span><input type='text' class='textinput' id='sectionname' value='sectionname' onkeyup="validateName();" onchange="validateName();" /></div>
       			<div id='inputwrapper-type' class='inputwrapper'><span>Type:</span><select id='type' onchange='changedType();'></select></div>
       			<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
       			<div id='inputwrapper-gradesystem' class='inputwrapper'><span>GradeSystem:</span><select id='gradesys' ></select></div>
@@ -64,8 +64,8 @@ pdoConnect();
       		<div style='padding:5px;'>
       			<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='confirmBox(1);' /> 
       			<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows();' /> 
-      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='confirmBox(2);' /> 
-      			<input style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='confirmBox(3);' /> 
+      			<input id="submitBtn" style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='confirmBox(2);' /> 
+      			<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='confirmBox(3);' /> 
           </div>
       </div>
 	</div>

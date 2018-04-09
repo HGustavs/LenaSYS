@@ -298,6 +298,28 @@ function deleteDugga()
     //$("#overlay").css("display","none");
 }
 
+
+// Checks if the title name includes any invalid characters
+function validateName(){
+	var retValue = false;
+	
+	var nme=document.getElementById("name");
+	
+	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)){
+		$('#saveBtn').removeAttr('disabled');
+		$('#submitBtn').removeAttr('disabled');
+		nme.style.backgroundColor = "#fff";
+		retValue = true;
+	}else{
+		$('#submitBtn').attr('disabled','disabled');
+		$('#saveBtn').attr('disabled','disabled');
+		nme.style.backgroundColor = "#f57";
+	}
+	
+	return retValue;
+}
+
+
 function updateDugga()
 {
 	$("#editDugga").css("display","none");
@@ -308,9 +330,9 @@ function updateDugga()
 	var autograde=$("#autograde").val();
 	var gradesys=$("#gradesys").val();
 	var template=$("#template").val();
-  var qstart=$("#qstart").val();
+	var qstart=$("#qstart").val();
 	var deadline=$("#deadline").val();
-  var release=$("#release").val();
+	var release=$("#release").val();
 	
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,qstart:qstart,deadline:deadline,release:release,coursevers:querystring['coursevers']},"DUGGA");
 	console.log(deadline);
@@ -319,8 +341,11 @@ function updateDugga()
 }
 
 function closeEditDugga()
-{
+{	
 	$("#editDugga").css("display","none");
+	document.getElementById("name").style.backgroundColor = "#fff";  // Resets color for name input
+	$('#submitBtn').removeAttr('disabled');  						 // Resets submit button to its default form
+	$('#saveBtn').removeAttr('disabled');  						 	 // Resets save button to its default form
 	//$("#overlay").css("display","none");
 }
 
