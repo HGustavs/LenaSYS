@@ -93,7 +93,7 @@
                     if(this.readyState == 4 && this.status == 200){
                     }
                         document.getElementById("markdown").innerHTML = //replace markdown with responseText
-                            str.responseText; //get the response data as a string
+                            this.responseText; //get the response data as a string
                     };
 
                 //Return data from the file
@@ -102,7 +102,7 @@
                 xmlhttp.open("POST", "../Shared/markdown.js", true);
 
                 //Sends the request to the server
-                xmlhttp.send(str);
+                xmlhttp.send(parseMarkdown(str));
             }
         }
 
