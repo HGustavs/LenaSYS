@@ -90,7 +90,6 @@
             }
             #mrkdwntxt {
                 border-radius: 2px;
-                border: solid 1px black;
                 box-shadow: 2px 2px 4px #888 inset;
                 resize: none;
                 margin: 10px 4px 0px 4px;
@@ -124,7 +123,7 @@
             <div class="Markdown">
                 <div class="markNav">Markdown</div>
                 <div class="markText" >
-                    <textarea id="mrkdwntxt" name="markdowntext">
+                    <textarea id="mrkdwntxt" name="markdowntext" rows="32" cols="40"> 
                     </textarea>
                 </div>
             </div>
