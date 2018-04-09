@@ -78,12 +78,12 @@
         }
         function showPreview(str) {
             $(".PreviewWindow").show();
-            var x= document.getElementById("test").value;
             //This function is triggered when key is pressed down in the input field
             if(str.length == 0){
                 //Here we check if the input field is empty (str.length == 0).
                 // If it is, clear the content of the txtHint placeholder
                 // and exit the function.
+
                 document.getElementById("markdown").innerHTML = " ";
                 return;
             }else {
@@ -93,7 +93,7 @@
                     if(this.readyState == 4 && this.status == 200){
                     }
                         document.getElementById("markdown").innerHTML = //replace markdown with responseText
-                             this.responseType; //this.responseText; //get the response data as a string
+                            markdownBlock(str); //get the response data as a string
                     };
 
                 //Return data from the file
@@ -124,7 +124,6 @@
     <div class="Markdown">
         <form>
             <input type="text"
-                   id="test"
                    onkeyup="showPreview(this.value)">
         </form>
     </div>
