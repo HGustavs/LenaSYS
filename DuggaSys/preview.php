@@ -87,10 +87,9 @@
                 document.getElementById("markdown").innerHTML = " ";
                 return;
             }else {
-                var xmlhttp =new XMLHttpRequest();
-                //Create an XMLHttpRequest object
+                var xmlhttp =new XMLHttpRequest();  //Create an XMLHttpRequest object
                 //Create the function to be executed when the server response is ready
-                xmlhttp.onreadystatechange = function () {
+                xmlhttp.onreadystatechange = function() { //Triggered every time the ready state changes.
                     if(this.readyState == 4 && this.status == 200){
                         //
                         document.getElementById("markdown").innerHTML = //replace markdown with responseText
@@ -100,7 +99,7 @@
                 //Return data from the file
                 //The str variable holds the content of the input field
                 //Specifies the type of request
-                xmlhttp.open("GET", "parseMarkdown()" + str, true);
+                xmlhttp.open("GET", "markdown.js" + str, true);
                 //Sends the request to the server
                 xmlhttp.send();
 
@@ -132,10 +131,11 @@
     </div>
 
     <div class="MarkdownPrev">
-    <span id="markdown"> </span>
+    <p id="markdown"> </p>
     </div>
 
     <div class="OptionButtons">
+        <button id="button-test" onclick="showPreview()">test</button>
         <button id="button-save" onclick="saveMarkdown()">Save</button>
         <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
     </div>
