@@ -118,7 +118,6 @@
 
     <div class="MarkdownPrev">
         <span id="markdown"> </span>
-
     </div>
 
     <div class="OptionButtons">
