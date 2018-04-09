@@ -110,10 +110,10 @@
 <div class="PreviewWindow">
     <div class="PrevHead">This is the preview window</div>
     <div class="Markdown">
-        <form>
+
             <textarea onkeyup="showPreview(this.value)" rows="32" cols="40">
             </textarea>
-        </form>
+        
     </div>
 
     <div class="MarkdownPrev">
