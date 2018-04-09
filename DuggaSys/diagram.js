@@ -92,7 +92,9 @@ var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 
 //this block of the code is used to handel keyboard input;
-window.addEventListener("keydown", this.keyDownHandler, false);
+window.addEventListener("keydown", this.keyDownHandler);
+
+var ctrlIsClicked = false;
 
 function keyDownHandler(e){
     var key = e.keyCode;
@@ -107,7 +109,26 @@ function keyDownHandler(e){
         }
         updateGraphics();
     }
+    else if(key == 17 || key == 91)
+    {
+      ctrlIsClicked = true;
+    }
 }
+
+//--------------------------------------------------------------------
+// Keeps track of if the CTRL or CMD key is active or not
+//--------------------------------------------------------------------
+
+//var selectedItems = [];
+
+//Not used yet
+window.onkeyup = function(event) {
+    if(event.which == 17 || event.which == 91) {
+        ctrlIsClicked = false;
+    }
+  }
+
+
 
 //--------------------------------------------------------------------
 // points - stores a global list of points
@@ -318,25 +339,6 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                 this[i].targeted = false;
             }
         }
-    }
-}
-
-
-//--------------------------------------------------------------------
-// Keeps track of if the CTRL or CMD key is active or not
-//--------------------------------------------------------------------
-var ctrlIsClicked = false;
-//var selectedItems = [];
-
-window.onkeydown = function(event) {
-    if(event.which == 17 || event.which == 91) {
-        ctrlIsClicked = true;
-    }
-}
-
-window.onkeyup = function(event) {
-    if(event.which == 17 || event.which == 91) {
-        ctrlIsClicked = false;
     }
 }
 
@@ -621,35 +623,13 @@ function eraseSelectedObject() {
     updateGraphics();
 }
 
-function classMode() {
+function setMode(mode){ //"CreateClass" yet to be implemented in .php
     canvas.style.cursor = "default";
-    uimode = "CreateClass";
-}
-
-function attrMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateERAttr";
-}
-
-function entityMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateEREntity";
-}
-
-function lineMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateLine";
-}
-
-/*function figureMode(mode) {
-    canvas.style.cursor = "default";
-    uimode = "CreateFigure";
-    figureType = mode;
-}*/
-
-function relationMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateERRelation";
+    uimode = mode;
+    if(mode == 'Square' || mode == 'Free') {
+      uimode = "CreateFigure";
+      figureType = mode;
+    }
 }
 
 $(document).ready(function(){
@@ -675,15 +655,8 @@ function setTextSizeEntity() {
 function setType() {
     var elementVal = document.getElementById('object_type').value;
 
-    if (elementVal == 'Primary key') {
-        diagram[lastSelectedObject].key_type = 'Primary key';
-    } else if (elementVal == 'Normal') {
-        diagram[lastSelectedObject].key_type = 'Normal';
-    } else if (elementVal == 'Multivalue') {
-        diagram[lastSelectedObject].key_type = 'Multivalue';
-    } else if (elementVal == 'Drive') {
-        diagram[lastSelectedObject].key_type = 'Drive';
-    }
+    diagram[lastSelectedObject].key_type = elementVal;
+
     updateGraphics();
 }
 
@@ -713,10 +686,8 @@ function clickOutsideDialogMenu(event) {
 function dimDialogMenu(dim) {
     if (dim) {
         $("#appearance").css("display", "flex");
-        //$("#overlay").css("display", "block");
     } else {
         $("#appearance").css("display", "none");
-        //$("#overlay").css("display", "none");
     }
 }
 
@@ -781,22 +752,22 @@ function cross(xCoordinate, yCoordinate) {
 
 function drawGrid() {
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "rgb(238, 238, 250)";
     var quadrantX;
     var quadrantY;
-    if (sx < 0) {
-        quadrantX = sx;
-    } else {
-        quadrantX = -sx;
-    }
-    if (sy < 0) {
-        quadrantY = sy;
-    } else {
-        quadrantY = -sy;
-    }
+
+    if (sx < 0) quadrantX = sx;
+    else quadrantX = -sx;
+
+    if (sy < 0) quadrantY = sy;
+    else quadrantY = -sy;
+
+
     for (var i = 0 + quadrantX; i < quadrantX + widthWindow; i++) {
-        if (i % 5 == 0) {
-            i++;
+        if (i % 5 == 0) { //This is a "thick" line
+            ctx.strokeStyle = "rgb(208, 208, 220)";
+        }
+        else {
+            ctx.strokeStyle = "rgb(238, 238, 250)";
         }
         ctx.beginPath();
         ctx.moveTo(i * gridSize, 0 + sy);
@@ -805,34 +776,13 @@ function drawGrid() {
         ctx.closePath();
     }
     for (var i = 0 + quadrantY; i < quadrantY + (heightWindow / zoomValue); i++) {
-        if (i % 5 == 0) {
-            i++;
-        }
+        if (i % 5 == 0) ctx.strokeStyle = "rgb(208, 208, 220)"; //This is a "thick" line
+        else ctx.strokeStyle = "rgb(238, 238, 250)";
         ctx.beginPath();
         ctx.moveTo(0 + sx, i * gridSize);
         ctx.lineTo((widthWindow / zoomValue) + sx, i * gridSize);
         ctx.stroke();
         ctx.closePath();
-    }
-    //Draws the thick lines
-    ctx.strokeStyle = "rgb(208, 208, 220)";
-    for (var i = 0 + quadrantX; i < quadrantX + (widthWindow / zoomValue); i++) {
-        if (i % 5 == 0) {
-            ctx.beginPath();
-            ctx.moveTo(i * gridSize, 0 + sy);
-            ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + sy);
-            ctx.stroke();
-            ctx.closePath();
-        }
-    }
-    for (var i = 0 + quadrantY; i < quadrantY + (heightWindow / zoomValue); i++) {
-        if (i % 5 == 0) {
-            ctx.beginPath();
-            ctx.moveTo(0 + sx, i * gridSize);
-            ctx.lineTo((widthWindow / zoomValue) + sx, i * gridSize);
-            ctx.stroke();
-            ctx.closePath();
-        }
     }
 }
 
