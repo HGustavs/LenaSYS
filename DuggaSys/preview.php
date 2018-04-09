@@ -100,7 +100,7 @@
                 //Return data from the file
                 //The str variable holds the content of the input field
                 //Specifies the type of request
-                xmlhttp.open("GET", "markdown.js" + str, true);
+                xmlhttp.open("GET", "parseMarkdown()" + str, true);
                 //Sends the request to the server
                 xmlhttp.send();
 
