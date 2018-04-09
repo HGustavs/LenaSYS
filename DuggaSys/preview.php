@@ -11,7 +11,7 @@
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
-    <script src='../Shared/markdown.js'></script>
+    <script src='../DuggaSys/showdoc.php'></script>
 
     <style>
         .PreviewWindow {
@@ -99,7 +99,7 @@
                 //Return data from the file
                 //The str variable holds the content of the input field
                 //Specifies the type of request
-                xmlhttp.open("POST", "../Shared/markdown.js", true);
+                xmlhttp.open("POST", "../DuggaSys/showdoc.php", true);
                 //Sends the request to the server
                 xmlhttp.send(str);
             }
@@ -131,6 +131,7 @@
 
     <div class="MarkdownPrev">
        <p><span id="markdown"> </span></p>
+
     </div>
 
     <div class="OptionButtons">
