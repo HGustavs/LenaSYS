@@ -69,12 +69,35 @@
             line-height:
         }
     </style>
+    echo "<script src='../DuggaSys/Shared/markdown.js'></script>";
+    echo "<script src='../DuggaSys/showdoc.php'></script>";
     <script>
         function onload() {
             $(".PreviewWindow").hide();
         }
         function showPreview(str) {
             $(".PreviewWindow").show();
+            //Here we check if the input field is empty (str.length == 0).
+            // If it is, clear the content of the txtHint placeholder
+            // and exit the function.
+
+            if(str.length == 0){
+                document.getElementById("txtHint").innerHTML = " ";
+                return;
+            }else {
+                var xmlhttp =new XMLHttpRequest(); //Create an XMLHttpRequest object
+                //Create the function to be executed when the server response is ready
+                xmlhttp.onreadystatechange = function () {
+                    if(this.readyState == 4 && this.status == 200){
+                        document.getElementById("txtHint").innerHTML =
+                            this.responseText;
+                    }
+                };
+                //The str variable holds the content of the input field
+                xmlhttp.open("GET", "showdoc.php" + str, true);
+                xmlhttp.send();
+
+            }
         }
 
         function saveCode() {
@@ -94,12 +117,16 @@
 <div class="PreviewWindow">
     <div class="PrevHead">This is the preview window</div>
     <div class="Markdown">
-       
+        <form>
             <input type="text"
                    onekeyup="showPreview(this.value)">
-
+        </form>
     </div>
-    <div class="MarkdownPrev">Markdown Preview</div>
+
+    <div class="MarkdownPrev">Markdown Preview
+    <span id="txtHint"> </span>
+    </div>
+
     <div class="OptionButtons">
         <button id="button-save" onclick="saveMarkdown()">Save</button>
         <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
