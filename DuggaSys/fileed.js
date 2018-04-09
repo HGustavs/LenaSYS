@@ -31,14 +31,6 @@ function closeAddFile()
 		//$("#overlay").css("display","none");
 }
 
-function deleteFile(fileid,filename){
-		if(confirm("Do you really want to delete the file/link: "+filename)){
-				AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
-		}
-			/*Reloads window when deleteFile has been called*/
-			window.location.reload(true);
-}
-
 //----------------------------------------
 // makeSortable(table) <- Makes a table sortable and also allows the table to collapse when
 // 						user double clicks on table head.
@@ -224,7 +216,7 @@ function returnedFile(data)
 
         var tabledata = {
         	tblhead:[
-        		"fileid","filesize","filename","kind","uploaddate"
+        		"fileid","filename","kind","filesize","uploaddate"
         	],
         	tblbody: data['entries'],
         	tblfoot:[]
@@ -234,7 +226,7 @@ function returnedFile(data)
     		tabledata,
     		"thetable",
     		null,
-    		"Table Title!",
+    		"",
             renderCell,
             null,
             null,

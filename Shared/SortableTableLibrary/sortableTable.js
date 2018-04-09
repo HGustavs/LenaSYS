@@ -23,15 +23,15 @@ function defaultRowFilter() {
 // Global sorting function global
 function sortableInternalSort(a,b) {
 	let ret = 0;		
-    //let colno = currentTable.tbl.tblhead.indexOf(currentTable.sortcolumn);
-    let colno = sortableTable.currentTable.getSortcolumnNum();
+    //let colname = currentTable.tbl.tblhead.indexOf(currentTable.sortcolumn);
+    let colname = sortableTable.currentTable.getSortcolumnNum();
 		
 	if (sortableTable.currentTable.ascending) {
 		//alert("Compare: "+a+" "+b);			
-		ret = compare(a[colno],b[colno]);
+		ret = compare(a[colname],b[colname]);
 	} else {
 		//alert("Compare: "+b+" "+a);
-		ret = compare(b[colno],a[colno]);
+		ret = compare(b[colname],a[colname]);
 	}		
 	return ret;
 }
@@ -194,8 +194,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		} 
 
 		var filterstr = "";
-		for (let colno in tbl.tblhead) {
-				var col = tbl.tblhead[colno];
+		for (let colname in tbl.tblhead) {
+				var col = tbl.tblhead[colname];
 				if (isFirstVisit) {
 					columnfilter.push(col);
 				} 
@@ -209,7 +209,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		}
 
 		// Local variable that contains html code for main table and local variable that contains magic headings table
-		var str = "<table style='border-collapse: collapse;' id='"+tableid+"_tbl'>";
+		var str = "<table style='border-collapse: collapse;' id='"+tableid+"_tbl' class='list list--nomargin'>";
 		var	mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;' id='"+tableid+"_tbl_mh'>";
 		var mhvstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;' id='"+tableid+"_tbl_mhv'>";
 		var mhfstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;top:0px;z-index:3000;' id='"+tableid+"_tbl_mhf'>";
@@ -223,14 +223,14 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	    mhfstr += "<thead id='"+tableid+"_tblhead_mhf'><tr>";
 		
 		var freezePaneIndex = tbl.tblhead.indexOf(freezePane);
-		for (let colno = 0; colno < tbl.tblhead.length; colno++) {
-			var col = tbl.tblhead[colno];
-			var cleancol = tbl.cleanHead[colno];
+		for (let colname = 0; colname < tbl.tblhead.length; colname++) {
+			var col = tbl.tblhead[colname];
+			var cleancol = tbl.cleanHead[colname];
 			
 			// If column is visible
 			if (columnfilter.indexOf(col) >- 1) {
 				if (this.renderSortOptions != null) {
-					if (colno <= freezePaneIndex) {
+					if (colname <= freezePaneIndex) {
 						if (col == sortcolumn){
 							mhfstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhf' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
 							mhvstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhv' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
@@ -247,7 +247,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 						mhstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
 					}
 				} else {
-					if (colno <= freezePaneIndex){
+					if (colname <= freezePaneIndex){
 						if (col == sortcolumn){
 							mhfstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhf' class='"+tableid+"'>"+col+"</th>";
 							mhvstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhv' class='"+tableid+"'>"+col+"</th>";
@@ -272,6 +272,10 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 			}
 		}
 
+		str += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
+		mhstr += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
+		mhfstr += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
+
 		str += "</tr></thead>";
 		mhstr += "</tr></thead></table>";
 		mhfstr += "</tr></thead></table>";
@@ -282,36 +286,32 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		for (let rowno in tbl.tblbody) {
 			var row=tbl.tblbody[rowno];
 			if (rowFilter(row)) {
-				
-				console.log(row);
-
 				// Keep row sum total here
 				var rowsum = 0;
 				
 				str += "<tr id='"+tableid+"_"+rowno+"' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 				mhvstr += "<tr id='"+tableid+"_"+rowno+"_mvh' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
-				for (let colno in row) {
-					col = row[colno];
-  					cleancol = tbl.cleanHead[colno];
+				for (let colname in row) {
+					col = row[colname];
+  					cleancol = tbl.cleanHead[colname];
 														
 					// If we show this column...
-					console.log("Output",colno,columnfilter,tbl.tblhead[colno],columnfilter.indexOf(tbl.tblhead[colno]));
-					if (columnfilter.indexOf(colno) >- 1) {
+					if (columnfilter.indexOf(colname) >- 1) {
 						// This condition is true if column is in summing list and in that case perform the sum like a BOSS
-						if (colsumList.indexOf(tbl.tblhead[colno]) >- 1) {
-							if (typeof(sumContent[tbl.tblhead[colno]]) == "undefined") sumContent[tbl.tblhead[colno]] = 0;
-							sumContent[tbl.tblhead[colno]] += sumFunc(tbl.tblhead[colno],col);		
+						if (colsumList.indexOf(tbl.tblhead[colname]) >- 1) {
+							if (typeof(sumContent[tbl.tblhead[colname]]) == "undefined") sumContent[tbl.tblhead[colname]] = 0;
+							sumContent[tbl.tblhead[colname]] += sumFunc(tbl.tblhead[colname],col);		
 						}
 
-						if (rowsumList.indexOf(tbl.tblhead[colno]) >- 1) {
-							rowsum += sumFunc(tbl.tblhead[colno],col);
+						if (rowsumList.indexOf(tbl.tblhead[colname]) >- 1) {
+							rowsum += sumFunc(tbl.tblhead[colname],col);
 						}
 
 						let cellid = "r"+rowno+"_"+tableid+"_"+cleancol;
-						str += "<td id='"+cellid+"' onclick='clickedInternal(event,this);' class='"+tableid+"-"+tbl.cleanHead[colno]+"-"+colno+"'>"+renderCell(col,tbl.tblhead[colno],cellid)+"</td>";
-						
-						if (colno <= freezePaneIndex) {
-							mhvstr+="<td id='"+cellid+"' >"+renderCell(col,tbl.tblhead[colno],cellid)+"</td>";                      
+						str += "<td id='"+cellid+"' onclick='clickedInternal(event,this);' class='"+tableid+"-"+tbl.cleanHead[colname]+"-"+colname+"'>"+renderCell(col,tbl.tblhead[colname],cellid)+"</td>";
+
+						if (colname <= freezePaneIndex) {
+							mhvstr+="<td id='"+cellid+"' >"+renderCell(col,tbl.tblhead[colname],cellid)+"</td>";                      
 						}
 					}
 				}
@@ -319,13 +319,21 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				if (rowsumList.length > 0) {
 					str += "<td>"+rowsum+"</td>";
 				}
-				
+
+				str+="<td style='padding:4px;'>";
+				str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+				str+=" onclick='deleteFile(\""+row['fileid']+"\",\""+row['filename']+"\");' >";
+				str+="</td>";
+
+				mhvstr+="<td style='padding:4px;'>";
+				mhvstr+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+				mhvstr+=" onclick='deleteFile(\""+row['fileid']+"\",\""+row['filename']+"\");' >";
+				mhvstr+="</td>";
+
 				str += "</tr>";
 				mhvstr += "</tr>";
 			}
 		}
-
-		alert(str);
 
 		str += "</tbody>";
 		mhvstr += "</tbody>";
@@ -333,15 +341,15 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		str += "<tfoot style='border-top:2px solid #000'>";
 		str += "<tr style='font-style:italic;'>";
 		
-		for (let colno in tbl.tblfoot) {
+		for (let colname in tbl.tblfoot) {
 			// If we show this column...
-			if (columnfilter.indexOf(tbl.tblhead[colno]) >- 1) {
-				if (colsumList.indexOf(tbl.tblhead[colno]) >- 1) {
+			if (columnfilter.indexOf(tbl.tblhead[colname]) >- 1) {
+				if (colsumList.indexOf(tbl.tblhead[colname]) >- 1) {
 					// If writing sum - just write it
-					str += "<td>"+sumContent[tbl.tblhead[colno]]+"</td>";						
+					str += "<td>"+sumContent[tbl.tblhead[colname]]+"</td>";						
 				} else {
 					if (tbl.tblfoot[col] != "UNK") {
-						str += "<td>"+tbl.tblfoot[colno]+"</td>";
+						str += "<td>"+tbl.tblfoot[colname]+"</td>";
 					} else {
 						str += "<td>&nbsp;</td>";
 					}
@@ -463,8 +471,17 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	}
 	
     this.updateCell = function() {
-        console.log(sortableTable.edit_rowno,sortableTable.edit_columnno,sortableTable.edit_columnname,sortableTable.edit_tableid)     
+    	alert("hej");
+        console.log(sortableTable.edit_rowno,sortableTable.edit_columnno,sortableTable.edit_columnname,sortableTable.edit_tableid);
         tbl.tblbody[sortableTable.edit_rowno][sortableTable.edit_columnno] = updateCellCallback(sortableTable.edit_rowno,sortableTable.edit_columnno,sortableTable.edit_columnname,sortableTable.edit_tableid);
         this.renderTable();
     }
+}
+
+function deleteFile(fileid,filename){
+		if(confirm("Do you really want to delete the file/link: "+filename)){
+				AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
+		}
+			/*Reloads window when deleteFile has been called*/
+			window.location.reload(true);
 }
