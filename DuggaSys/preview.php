@@ -30,13 +30,12 @@
                 line-height: 50px;
             }
             #button-cancel {
-                position: relative;
-                bottom: 23px;
-                right: 160px;
+                position: absolute;
+                left: 235px;
             }
             #button-save {
-                position: relative;
-                right: 90px;
+                position: absolute;
+                left: 305px;
             }
             .Markdown {
                 border: solid rgb(200,200,200);
@@ -57,7 +56,7 @@
                 float: right;
             }
             .OptionButtons {
-                top: 610px;
+                top: 585px;
                 position: relative;
                 margin: 0px 10px 0px 10px;
                 height: 40px;
