@@ -201,6 +201,21 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="menu-drop-down">
+                    <span class="label">Help</span>
+                    <div class="drop-down">
+                        <div class="drop-down-text">
+                            <a href="#">Move grid</a>
+                            <div id="hotkey-space"><i>Blankspace</i></div>
+                        </div>
+                        <div class="drop-down-divider"></div>
+                        <div class="drop-down-text">
+                            <a href="#">Select multiple objects</a>	
+                           <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
+                        </div>
+                    </div>
+                </div>
             </div>
             </br>
             </br>
