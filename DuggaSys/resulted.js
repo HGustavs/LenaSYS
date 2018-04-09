@@ -10,6 +10,7 @@ var msx = 0, msy = 0;
 var rProbe = null;
 var subheading=0;
 var allData;
+var allowedRegradeTime = 24*60*60*1000;
 //var benchmarkData = performance.timing; // Will be updated after onload event
 //var ajaxStart;
 //var tim;
@@ -1008,7 +1009,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 					var newGradeExpire = new Date(studentObject.gradeExpire);
 
 					// This variable adds 24h to the current time
-	                var newDateObj = new Date(newGradeExpire.getTime() + 24*60*60000);
+	                var newDateObj = new Date(newGradeExpire.getTime() + allowedRegradeTime);
                     var newGradeExpirePlusOneDay = newDateObj.getTime();
 
 					// Compair the gradeExpire value to the current time
