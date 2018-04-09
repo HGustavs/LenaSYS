@@ -76,6 +76,7 @@
         function onload() {
             $(".PreviewWindow").hide();
         }
+
         function showPreview(str) {
             $(".PreviewWindow").show();
             //This function is triggered when key is pressed down in the input field
@@ -87,10 +88,9 @@
                 document.getElementById("markdown").innerHTML = " ";
                 return;
             }else {
-                        document.getElementById("markdown").innerHTML=parseMarkdown(str); //get the response data as a string
+                        document.getElementById("markdown").innerHTML =
+                            parseMarkdown(str); //get the response data as a string
             };
-
-
         }
 
         function saveCode() {
