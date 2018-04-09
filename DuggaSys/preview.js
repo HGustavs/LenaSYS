@@ -8,7 +8,7 @@ var windowIsOpen;  //måste skapa en funktion till denna
 //funcion for showing popupWindow
 
 function popupWindow(){
-    initializeName();
+    //initializeName();
 
     alert('hello it works');
 }
@@ -47,6 +47,8 @@ function run(){
 }
 
 function reWriteCode(){
+    //call parseMarkdown
+    // empty window ----> !empty window
     //rewrite the code to the second window
     //check for updates, if there is any call reWrite()
     //if not - do nothing
@@ -66,12 +68,14 @@ updateText <<<<<{
 //For now, we need to rename it and change the function to saveFile() later
 //if the user presses the save button we shold save it with this function
 function updateCode(){
+    //kolla efter key-input
     //check for updates, if there is any call reWrite()
     //if not - do nothing
 }
 
 
 function closeWindow(){
+    //knapp som stänger
 	//if the user presses the cancel-button windowIsOpen = false{
 		windowIsOpen = false;
 	  //  same thing happens here, the window will close
