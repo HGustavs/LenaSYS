@@ -69,8 +69,8 @@
             line-height:
         }
     </style>
-    echo "<script src='../DuggaSys/Shared/markdown.js'></script>";
-    echo "<script src='../DuggaSys/showdoc.php'></script>";
+    <script src='../DuggaSys/Shared/markdown.js'></script>;
+    <script src='../DuggaSys/showdoc.php'></script>;
     <script>
         function onload() {
             $(".PreviewWindow").hide();
@@ -123,9 +123,7 @@
         </form>
     </div>
 
-    <div class="MarkdownPrev">Markdown Preview
-    <span id="txtHint"> </span>
-    </div>
+    <p class="MarkdownPrev"> <p> test: </p><span id="txtHint"> </span></p></div>
 
     <div class="OptionButtons">
         <button id="button-save" onclick="saveMarkdown()">Save</button>
