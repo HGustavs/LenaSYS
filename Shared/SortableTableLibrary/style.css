@@ -174,7 +174,7 @@ p {
 }
 
 #editpopover{
-    border:1px solid red;
+    border:1px solid black;
     box-shadow:2px 2px 2px #000;
     position:absolute;
     background-color: #FFF; 
@@ -189,6 +189,7 @@ p {
 #input-container input{
     width:100%;
     border: none;
+    text-overflow: ellipsis;
 }
 
 /* --------------================################================-------------- *
