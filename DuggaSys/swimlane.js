@@ -38,7 +38,7 @@ function mouseOverCircle(circle, text) {
   var column = circle.parentNode.parentNode;
   circle.setAttribute("r", '13');
   circlePosY = column.offsetTop+parseInt(circle.getAttribute('cy')) - 70;
-  if(column.parentNode.offsetWidth > (column.offsetLeft + (column.offsetWidth / 2) + $('#duggainfo').width())) {
+  if(column.parentNode.offsetWidth > (column.offsetLeft + (column.offsetWidth / 2) + parseInt(circle.getAttribute('cx')) + $('#duggainfo').width())) {
     circlePosX = column.offsetLeft+parseInt(circle.getAttribute('cx')) + column.offsetWidth / 2;
   } else {
     circlePosX = column.offsetLeft + (column.offsetWidth / 2) - (parseInt(circle.getAttribute('cx')) * 2) - $('#duggainfo').width();
