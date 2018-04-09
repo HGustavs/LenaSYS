@@ -1,3 +1,4 @@
+/*
 //Was in mousemoveevt in digram_mouse    
 if (figureType == "Free" && uimode == "CreateFigure"){
         if(p2 != null && !(isFirstPoint)) {
@@ -56,3 +57,174 @@ else if(uimode == "CreateFigure" && figureType == "Square"){
     if (uimode == "CreateFigure" && md == 4) {
         createFigure();
     }
+*/
+/*
+Function that wasent used in diagram.js 
+diagram.createAritySymbols = function(line) {
+    var relations = diagram.getRelationObjects();
+    var entities = diagram.getEntityObjects();
+    for (var i = 0; i < relations.length; i++) {
+        for (var j = 0; j < entities.length; j++) {
+            for (var k = 0; k < relations[i].connectorTop.length; k++) {
+                var relationsFrom = relations[i].connectorTop[k].from;
+                var relationsTo = relations[i].connectorTop[k].to;
+                for (var l = 0; l < entities[j].connectorTop.length; l++) {
+                    if (relationsTo == entities[j].connectorTop[l].from &&
+                        relationsFrom == entities[j].connectorTop[l].to) {
+                        if ((relationsTo == line.topLeft &&
+                            relationsFrom == line.bottomRight) ||
+                            (relationsTo == line.bottomRight &&
+                            relationsFrom == line.topLeft)) {
+                            var point = points[relationsTo];
+                            entities[j].arity.push([
+                                {text:"1", x:point.x - arityBuffer, y:point.y - arityBuffer, connectionPoint:relationsTo, align:"end", baseLine:"bottom"},
+                                {text:"-", x:point.x + arityBuffer, y:point.y - arityBuffer, connectionPoint:relationsTo, align:"start", baseLine:"bottom"}
+                            ]);
+                            return;
+                        }
+                    }
+                }
+                for (var l = 0; l < entities[j].connectorBottom.length; l++) {
+                    if (relationsTo == entities[j].connectorBottom[l].from &&
+                        relationsFrom == entities[j].connectorBottom[l].to) {
+                        if ((relationsTo == line.topLeft &&
+                            relationsFrom == line.bottomRight) ||
+                            (relationsTo == line.bottomRight &&
+                            relationsFrom == line.topLeft)) {
+                            var point = points[relationsTo];
+                            entities[j].arity.push([
+                                {text:"1", x:point.x - arityBuffer, y:point.y + arityBuffer, connectionPoint:relationsTo, align:"end", baseLine:"top"},
+                                {text:"-", x:point.x + arityBuffer, y:point.y + arityBuffer, connectionPoint:relationsTo, align:"start", baseLine:"top"}
+                            ]);
+                            return;
+                        }
+                    }
+                }
+                for (var l = 0; l < entities[j].connectorRight.length; l++) {
+                    if (relationsTo == entities[j].connectorRight[l].from &&
+                        relationsFrom == entities[j].connectorRight[l].to) {
+                        if ((relationsTo == line.topLeft &&
+                            relationsFrom == line.bottomRight) ||
+                            (relationsTo == line.bottomRight &&
+                            relationsFrom == line.topLeft)) {
+                            var point = points[relationsTo];
+                            entities[j].arity.push([
+                                {text:"1", x:point.x + arityBuffer, y:point.y - arityBuffer, connectionPoint:relationsTo, align:"start", baseLine:"bottom"},
+                                {text:"-", x:point.x + arityBuffer, y:point.y + arityBuffer, connectionPoint:relationsTo, align:"start", baseLine:"top"}
+                            ]);
+                            return;
+                        }
+                    }
+                }
+                for (var l = 0; l < entities[j].connectorLeft.length; l++) {
+                    if (relationsTo == entities[j].connectorLeft[l].from &&
+                        relationsFrom == entities[j].connectorLeft[l].to) {
+                        if ((relationsTo == line.topLeft &&
+                            relationsFrom == line.bottomRight) ||
+                            (relationsTo == line.bottomRight &&
+                            relationsFrom == line.topLeft)) {
+                            var point = points[relationsTo];
+                            entities[j].arity.push([
+                                {text:"1", x:point.x - arityBuffer, y:point.y - arityBuffer, connectionPoint:relationsTo, align:"end", baseLine:"bottom"},
+                                {text:"-", x:point.x - arityBuffer, y:point.y + arityBuffer, connectionPoint:relationsTo, align:"end", baseLine:"top"}
+                            ]);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+diagram.updateArity = function() {
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].symbolkind == 3 && diagram[i].arity.length > 0) {
+            diagram[i].updateArityPosition();
+        }
+    }
+}
+*/
+
+/* Functions from diagram_symbol - Arity
+    this.updateArityPosition = function() {
+        for (var i = 0; i < this.arity.length; i++) {
+            for (var j = 0; j < this.connectorTop.length; j++) {
+                if (this.connectorTop[j].from == this.arity[i][0].connectionPoint) {
+                    this.setArityToTop(i);
+                }
+            }
+            for (var j = 0; j < this.connectorBottom.length; j++) {
+                if (this.connectorBottom[j].from == this.arity[i][0].connectionPoint) {
+                    this.setArityToBottom(i);
+                }
+            }
+            for (var j = 0; j < this.connectorRight.length; j++) {
+                if (this.connectorRight[j].from == this.arity[i][0].connectionPoint) {
+                    this.setArityToRight(i);
+                }
+            }
+            for (var j = 0; j < this.connectorLeft.length; j++) {
+                if (this.connectorLeft[j].from == this.arity[i][0].connectionPoint) {
+                    this.setArityToLeft(i);
+                }
+            }
+        }
+    }
+
+    this.setArityToTop = function(index) {
+        var arity0 = this.arity[index][0];
+        var arity1 = this.arity[index][1];
+        var point = points[arity0.connectionPoint];
+        arity0.x = point.x - arityBuffer;
+        arity0.y = point.y - arityBuffer;
+        arity0.align = "end";
+        arity0.baseLine = "bottom";
+        arity1.x = point.x + arityBuffer;
+        arity1.y = point.y - arityBuffer;
+        arity1.align = "start";
+        arity1.baseLine = "bottom";
+    }
+
+    this.setArityToBottom = function(index) {
+        var arity0 = this.arity[index][0];
+        var arity1 = this.arity[index][1];
+        var point = points[arity0.connectionPoint];
+        arity0.x = point.x - arityBuffer;
+        arity0.y = point.y + arityBuffer;
+        arity0.align = "end";
+        arity0.baseLine = "top";
+        arity1.x = point.x + arityBuffer;
+        arity1.y = point.y + arityBuffer;
+        arity1.align = "start";
+        arity1.baseLine = "top";
+    }
+
+    this.setArityToRight = function(index) {
+        var arity0 = this.arity[index][0];
+        var arity1 = this.arity[index][1];
+        var point = points[arity0.connectionPoint];
+        arity0.x = point.x + arityBuffer;
+        arity0.y = point.y - arityBuffer;
+        arity0.align = "start";
+        arity0.baseLine = "bottom";
+        arity1.x = point.x + arityBuffer;
+        arity1.y = point.y + arityBuffer;
+        arity1.align = "start";
+        arity1.baseLine = "top";
+    }
+
+    this.setArityToLeft = function(index) {
+        var arity0 = this.arity[index][0];
+        var arity1 = this.arity[index][1];
+        var point = points[arity0.connectionPoint];
+        arity0.x = point.x - arityBuffer;
+        arity0.y = point.y - arityBuffer;
+        arity0.align = "end";
+        arity0.baseLine = "bottom";
+        arity1.x = point.x - arityBuffer;
+        arity1.y = point.y + arityBuffer;
+        arity1.align = "end";
+        arity1.baseLine = "top";
+    }
+*/

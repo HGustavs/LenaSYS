@@ -345,7 +345,7 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         updateGraphics();
-        diagram.createAritySymbols(diagram[lastSelectedObject]);
+        //diagram.createAritySymbols(diagram[lastSelectedObject]);
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5);
         erRelationA.name = "Relation" + diagram.length;
