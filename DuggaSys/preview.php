@@ -92,7 +92,6 @@
                 //Create the function to be executed when the server response is ready
                 xmlhttp.onreadystatechange = function() { //Triggered every time the ready state changes.
                     if(this.readyState == 4 && this.status == 200){
-                        alert("1");
                     }
                         document.getElementById("markdown").innerHTML = //replace markdown with responseText
                             this.responseText; //get the response data as a string
@@ -102,7 +101,6 @@
                 //The str variable holds the content of the input field
                 //Specifies the type of request
                 xmlhttp.open("POST", "../Shared/markdown.js", true);
-                alert("2");
 
                 //Sends the request to the server
                 xmlhttp.send(str);
