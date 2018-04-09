@@ -130,12 +130,12 @@
     </div>
 
     <div class="MarkdownPrev">
-        <textarea><span id="markdown"> </span></textarea>
+        <form><span id="markdown"> </span></form>
+
 
     </div>
 
     <div class="OptionButtons">
-        <button id="button-test" onclick="showPreview()">test</button>
         <button id="button-save" onclick="saveMarkdown()">Save</button>
         <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
     </div>
