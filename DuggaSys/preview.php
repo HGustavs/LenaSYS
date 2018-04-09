@@ -29,14 +29,6 @@
                 font-size: 24px;
                 line-height: 50px;
             }
-            #button-cancel {
-                position: absolute;
-                left: 235px;
-            }
-            #button-save {
-                position: absolute;
-                left: 305px;
-            }
             .Markdown {
                 border: solid rgb(200,200,200);
                 background-color: #FFFFFF;
@@ -61,6 +53,17 @@
                 margin: 0px 10px 0px 10px;
                 height: 40px;
                 width: 355px;
+            }
+            #button-cancel {
+                position: absolute;
+                left: 235px;
+            }
+            #button-save {
+                position: absolute;
+                left: 305px;
+            }
+            #button-close {
+                background-color: red;
             }
              .PrevHead {
                 height: 30px
