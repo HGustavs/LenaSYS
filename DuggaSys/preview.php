@@ -76,7 +76,7 @@
         function onload() {
             $(".PreviewWindow").hide();
         }
-        function showPreview(str) {
+        function showPreview(test) {
             $(".PreviewWindow").show();
             var x= document.getElementById("test").value;
             //This function is triggered when key is pressed down in the input field
@@ -93,7 +93,7 @@
                     if(this.readyState == 4 && this.status == 200){
                     }
                         document.getElementById("markdown").innerHTML = //replace markdown with responseText
-                             parseLineByLine(str); //this.responseText; //get the response data as a string
+                             parseLineByLine(x); //this.responseText; //get the response data as a string
                     };
 
                 //Return data from the file
@@ -125,7 +125,7 @@
         <form>
             <input type="text"
                    id="test"
-                   onkeyup="showPreview(this.value)">
+                   onkeyup="showPreview(test)">
         </form>
     </div>
 
