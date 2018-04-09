@@ -11,8 +11,8 @@
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
-    <script src='../DuggaSys/Shared/markdown.js'></script>
-    <script src='../DuggaSys/showdoc.php'></script>
+    <script src='../Shared/markdown.js'></script>
+    <script src='../showdoc.php'></script>
     <style>
         .PreviewWindow {
             height: 700px;
@@ -99,12 +99,9 @@
                 //Return data from the file
                 //The str variable holds the content of the input field
                 //Specifies the type of request
-                xmlhttp.open("GET", "markdown.js" + str, true);
+                xmlhttp.open("POST", "markdown.js" + str, true);
                 //Sends the request to the server
                 xmlhttp.send();
-                //var text = markdown.parseMarkdown(str);
-
-
             }
         }
 
@@ -127,6 +124,7 @@
     <div class="Markdown">
         <form>
             <input type="text"
+                   id="markdown"
                    onkeyup="showPreview(this.value)">
         </form>
     </div>
