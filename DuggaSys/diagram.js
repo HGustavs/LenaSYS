@@ -40,7 +40,7 @@ var lineStartObj = -1;
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
-var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
+//var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
 var widthWindow;                    // The width on the users screen is saved is in this var.
 var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
@@ -725,11 +725,11 @@ function lineMode() {
     uimode = "CreateLine";
 }
 
-function figureMode(mode) {
+/*function figureMode(mode) {
     canvas.style.cursor = "default";
     uimode = "CreateFigure";
     figureType = mode;
-}
+}*/
 
 function relationMode() {
     canvas.style.cursor = "default";
@@ -1025,7 +1025,7 @@ function loadDiagram() {
                 if (b.diagramNames[i] == "Symbol") {
                     b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
                 } else if (b.diagramNames[i] == "Path") {
-                    b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+                  //  b.diagram[i] = Object.assign(new Path, b.diagram[i]);
                 }
             }
             diagram.length = b.diagram.length;
@@ -1034,7 +1034,7 @@ function loadDiagram() {
             }
             // Points fix
             for (var i = 0; i < b.points.length; i++) {
-                b.points[i] = Object.assign(new Path, b.points[i]);
+             //   b.points[i] = Object.assign(new Path, b.points[i]);
             }
             points.length = b.points.length;
             for (var i = 0; i < b.points.length; i++) {
@@ -1055,8 +1055,8 @@ function removeLocalStorage() {
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
      + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-     + "X=" + startX
-     + " & Y=" + startY + "</p>";
+     + "X=" + sx
+     + " & Y=" + sy + "</p>";
 }
 
 //----------------------------------------

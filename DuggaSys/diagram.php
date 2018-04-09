@@ -86,6 +86,7 @@
                                 </button>
                             </div>
                         </div>
+                        <!--
                         <h4 class="label">Draw</h4>
                         <div class="toolbar-drawer">
                             <button id='squarebutton' onclick="figureMode('Square');" class='buttonsStyle unpressed' data="Draw Square">
@@ -95,6 +96,7 @@
                                 <img src="../Shared/icons/diagram_draw_free.svg">
                             </button>
                         </div>
+                        -->
                         <!--
                         IS NOT IN USE YET
                         <h4 class="label">Undo/Redo</h4>

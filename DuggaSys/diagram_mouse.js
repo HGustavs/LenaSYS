@@ -104,22 +104,6 @@ function mousemoveevt(ev, t) {
     }
     diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     updateGraphics();
-    if (figureType == "Free" && uimode == "CreateFigure"){
-        if(p2 != null && !(isFirstPoint)) {
-            ctx.setLineDash([3, 3]);
-            ctx.beginPath();
-            ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
-            ctx.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
-            ctx.strokeStyle = "#000";
-            ctx.stroke();
-            ctx.setLineDash([]);
-            if (ghostingCrosses == true) {
-                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                crossFillStyle = "rgba(255, 102, 68, 0.0)";
-            }
-        }
-    }
     // Draw select or create dotted box
     if (md == 4) {
         if (uimode == "CreateEREntity"){
@@ -182,24 +166,7 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
-        } else if(uimode == "CreateFigure" && figureType == "Square"){
-            ctx.setLineDash([3, 3]);
-            ctx.beginPath(1);
-            ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
-            ctx.lineTo(currentMouseCoordinateX, startMouseCoordinateY);
-            ctx.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
-            ctx.lineTo(startMouseCoordinateX, currentMouseCoordinateY);
-            ctx.lineTo(startMouseCoordinateX, startMouseCoordinateY);
-            ctx.strokeStyle = "#d51";
-            ctx.stroke();
-            ctx.setLineDash([]);
-            ctx.closePath(1);
-            if (ghostingCrosses == true) {
-                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
-                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
-                crossFillStyle = "rgba(255, 102, 68, 0.0)";
-            }
-        } else if(uimode != "CreateFigure"){
+        } else {
             ctx.setLineDash([3, 3]);
             ctx.beginPath(1);
             ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
@@ -238,7 +205,7 @@ function mousedownevt(ev) {
                 p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
             }
         }
-    } else if (uimode != "CreateFigure" && sel.distance < tolerance) {
+    } else if (sel.distance < tolerance) {
         md = 2;
     } else if (movobj != -1) {
         md = 3;
@@ -268,19 +235,12 @@ function mousedownevt(ev) {
         }
     } else {
         md = 4; // Box select or Create mode.
-        //When we are creating a freedraw figure we dont want to update the startposition. The startposition is set inside createFigure()
-        //This is to enable the user to hold down the mousebutton or just clicking out points
-        if(uimode != "CreateFigure"){
-            startMouseCoordinateX = currentMouseCoordinateX;
-            startMouseCoordinateY = currentMouseCoordinateY;
-        }
+        startMouseCoordinateX = currentMouseCoordinateX;
+        startMouseCoordinateY = currentMouseCoordinateY;
         for (var i = 0; i < selected_objects.length; i++) {
             selected_objects[i].targeted = false;
         }
         selected_objects = [];
-    }
-    if(uimode == "CreateFigure" && figureType == "Square"){
-        createFigure();
     }
 }
 
@@ -332,9 +292,6 @@ function mouseupevt(ev) {
                 diagram[hovobj].connectorTop.push({from:p2, to:p1});
             }
         }
-    }
-    if (uimode == "CreateFigure" && md == 4) {
-        createFigure();
     }
     if (uimode == "CreateClass" && md == 4) {
         classB = new Symbol(1);

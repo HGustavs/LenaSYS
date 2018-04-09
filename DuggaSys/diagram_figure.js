@@ -5,6 +5,7 @@
 //--------------------------------------------------------------------
 // path - stores a number of segments
 //--------------------------------------------------------------------
+/*
 function Path() {
     this.kind = 1;                  // Path kind
     this.segments = Array();        // Segments
