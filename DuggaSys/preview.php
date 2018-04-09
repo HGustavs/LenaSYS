@@ -18,6 +18,7 @@
                 margin: 0px auto;
                 border: solid rgb(200,200,200);
                 background-color: rgb(240,240,240);
+                box-shadow: 0px 5px 10px grey;
             }
             .Header {
                 width: 100%;
@@ -92,9 +93,13 @@
         <div class="Header">Hello its me, preview</div>
         <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
-            <div class="PrevHead">This is the preview window</div>
-            <div class="Markdown">Markdown</div>
-            <div class="MarkdownPrev">Markdown Preview</div> 
+            <div class="PrevHead">This is the preview window
+            </div>
+            <div class="Markdown">
+                <div class="markNav">Markdown</div>
+            </div>
+            <div class="MarkdownPrev"></div>
+            <div class="prevNav">Markdown Preview</div>
             <div class="OptionButtons">
                 <button id="button-save" onclick="saveMarkdown()">Save</button>
                 <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
