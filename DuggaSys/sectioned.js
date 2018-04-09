@@ -416,7 +416,7 @@ function deleteItem()
 }
 
 
-// Checkar så att namnet innehåller inga olagliga tecken
+// Checks if the title name includes any invalid characters
 function validateName(){
 	var retValue = false;
 	
@@ -493,7 +493,7 @@ function closeSelect()
 	
 	$('#saveBtn').removeAttr('disabled');  							 		// Resets save button to its default form
 	$('#submitBtn').removeAttr('disabled');									// Resets submit button to its default form
-	document.getElementById("sectionname").style.backgroundColor = "#fff";  //Resets color for name input
+	document.getElementById("sectionname").style.backgroundColor = "#fff";  // Resets color for name input
 	
 }
 
