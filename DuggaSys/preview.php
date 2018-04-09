@@ -79,11 +79,12 @@
         function showPreview(str) {
             $(".PreviewWindow").show();
             //This function is triggered when key is pressed down in the input field
-
             if(str.length == 0){
                 //Here we check if the input field is empty (str.length == 0).
                 // If it is, clear the content of the txtHint placeholder
                 // and exit the function.
+                alert("3");
+
                 document.getElementById("markdown").innerHTML = " ";
                 return;
             }else {
@@ -91,15 +92,18 @@
                 //Create the function to be executed when the server response is ready
                 xmlhttp.onreadystatechange = function() { //Triggered every time the ready state changes.
                     if(this.readyState == 4 && this.status == 200){
-                        //
+                        alert("1");
+                    }
                         document.getElementById("markdown").innerHTML = //replace markdown with responseText
                             this.responseText; //get the response data as a string
                     }
-                };
+
                 //Return data from the file
                 //The str variable holds the content of the input field
                 //Specifies the type of request
                 xmlhttp.open("POST", "../DuggaSys/showdoc.php", true);
+                alert("2");
+
                 //Sends the request to the server
                 xmlhttp.send(str);
             }
@@ -122,7 +126,6 @@
 <div class="PreviewWindow">
     <div class="PrevHead">This is the preview window</div>
     <div class="Markdown">
-        <span id="markdown"> </span>
         <form>
             <input type="text"
                    id="markdown"
