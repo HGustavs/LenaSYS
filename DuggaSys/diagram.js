@@ -1055,8 +1055,8 @@ function removeLocalStorage() {
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
      + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-     + "X=" + startX
-     + " & Y=" + startY + "</p>";
+     + "X=" + sx
+     + " & Y=" + sy + "</p>";
 }
 
 //----------------------------------------
