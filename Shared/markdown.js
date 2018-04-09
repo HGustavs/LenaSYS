@@ -308,6 +308,7 @@ function handleTable(currentLine, prevLine, nextLine) {
 //					
 //          
 //----------------------------------------------------------------------------------
+/*
 function markdownBlock(inString)
 {
 
@@ -318,23 +319,23 @@ function markdownBlock(inString)
 	inString = inString.replace(/\_{4}(.*?\S)\_{4}/g, '<strong><em>$1</em></strong>');
 	inString = inString.replace(/\_{3}(.*?\S)\_{3}/g, '<em>$1</em>');	
 	inString = inString.replace(/\_{2}(.*?\S)\_{2}/g, '<em>$1</em>');
-	
-	//Regular expressions for headings
-	inString = inString.replace(/^\#{6}\s(.*)=*/gm, '<h6>$1</h6>');
-	inString = inString.replace(/^\#{5}\s(.*)=*/gm, '<h5>$1</h5>');
-	inString = inString.replace(/^\#{4}\s(.*)=*/gm, '<h4>$1</h4>');
-	inString = inString.replace(/^\#{3}\s(.*)=*/gm, '<h3>$1</h3>');
-	inString = inString.replace(/^\#{2}\s(.*)=*/gm, '<h2>$1</h2>');
-	inString = inString.replace(/^\#{1}\s(.*)=*/gm, '<h1>$1</h1>');
+
+	//Regular expressions for headings*/
+//-	inString = inString.replace(/^\#{6}\s(.*)=*/gm, '<h6>$1</h6>');
+//-	inString = inString.replace(/^\#{5}\s(.*)=*/gm, '<h5>$1</h5>');
+//-	inString = inString.replace(/^\#{4}\s(.*)=*/gm, '<h4>$1</h4>');
+//-inString = inString.replace(/^\#{3}\s(.*)=*/gm, '<h3>$1</h3>');
+//-inString = inString.replace(/^\#{2}\s(.*)=*/gm, '<h2>$1</h2>');
+//-inString = inString.replace(/^\#{1}\s(.*)=*/gm, '<h1>$1</h1>');
 
 	//Regular expression for line
-	inString = inString.replace(/\-{3,}/g, '<hr>');
+//-inString = inString.replace(/\-{3,}/g, '<hr>');
 	
 	// External img src !!!
 	// |||src,thumbnail width in px,full size width in px|||
 	// Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
-	inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
-  inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" />');
+//-inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
+//- inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" />');
 
 	// Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
 	// markdown below doesnt seem to work?????
@@ -347,35 +348,35 @@ function markdownBlock(inString)
 	
 	// Hyperlink !!!
 	// !!!url,text to show!!!	
-	inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
+//-	inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
 
 	// External mp4 src !!!
 	// ==[src]==	
-	inString = inString.replace(/\={2}\[(.*?\S)\]\={2}/g, '<video width="80%" style="display:block; margin: 10px auto;" controls><source src="$1" type="video/mp4"></video>');
+//-inString = inString.replace(/\={2}\[(.*?\S)\]\={2}/g, '<video width="80%" style="display:block; margin: 10px auto;" controls><source src="$1" type="video/mp4"></video>');
 
 	// Link to gif animation with thumbnail
 	// +++thumbnail.png,animation.gif+++	
-	inString = inString.replace(/\+{3}(.*?\S),(.*?\S)\+{3}/g,"<div class='gifwrapper'><img class='gifimage' src='$1' onclick=\"toggleGif('$2', '$1', this);\" /><img class='playbutton' src='../Shared/icons/PlayT.svg'></div>");
+//-inString = inString.replace(/\+{3}(.*?\S),(.*?\S)\+{3}/g,"<div class='gifwrapper'><img class='gifimage' src='$1' onclick=\"toggleGif('$2', '$1', this);\" /><img class='playbutton' src='../Shared/icons/PlayT.svg'></div>");
 
 	// Right Arrow for discussing menu options
 	inString = inString.replace(/\s[\-][\>]\s/gm, "&rarr;");
 
 	// Strike trough text
-	inString = inString.replace(/\-{4}(.*?\S)\-{4}/g, "<span style=\"text-decoration:line-through;\">$1</span>");
+//-inString = inString.replace(/\-{4}(.*?\S)\-{4}/g, "<span style=\"text-decoration:line-through;\">$1</span>");
 
 	// Importand Rows in code file in different window ===
 	// ===filename,start row,end row, text to show===
-	inString = inString.replace(/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/g, '<span class="impword2" onmouseover="highlightRows(\'$1\',$2,$3)" onmouseout="dehighlightRows(\'$1\',$2,$3)">$4</span>');
+//-	inString = inString.replace(/\={3}(.*?\S),(.*?\S),(.*?\S),(.*?\S)\={3}/g, '<span class="impword2" onmouseover="highlightRows(\'$1\',$2,$3)" onmouseout="dehighlightRows(\'$1\',$2,$3)">$4</span>');
 
 	// Three or more dots should always be converted to an ellipsis.
 	inString = inString.replace(/\.{3,}/g, "&hellip;");
 	
 	// Iframe, website inside a inline frame - (--url,width,height--)
-	inString = inString.replace(/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/g, '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>');
+//-	inString = inString.replace(/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/g, '<iframe src="$1" style="width:$2px; height:$3px;"></iframe>');
 	
 	// Quote text, this will be displayed in an additional box
 	// ^ Text you want to quote ^
-	inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote><br/>");
+//-inString = inString.replace(/\^{1}\s(.*?\S)\s\^{1}/g, "<blockquote>$1</blockquote><br/>");
 		
 	//Markdown smileys
 	//Supported: :D :) ;) :( :'( :P :/ :o <3 (Y) (N)
@@ -392,94 +393,4 @@ function markdownBlock(inString)
 	inString = inString.replace(/\s\(N\)(?!\S)/gi, " <img class='smileyjs' src='../Shared/icons/thumbsdown.svg'/>");
 
 	return inString;
-}
-
-
-
-//##########================----------------------NEW----------------------================##########//
-
-//GLOBAL
-var windowIsOpen;  //måste skapa en funktion till denna
-
-
-//funcion for showing popupWindow
-
-function popupWindow(){
-    //initializeName();
-
-    alert('hello it works');
-}
-
-
-
-//This is just some comments on what we need to do, feel free to edit och suggest ideas.
-//Need to implement some variables and function, this is a not working beta-test.
-//Obs the funtion names are just random and will be changed.
-
-function initializeName() {     //Change name!
-    windowIsOpen = true;
-    //run();
-}
-
-
-/**************************************************************
- -----------------------------run()-----------------------------
- The run function will execute when called, the purpose is that
- as long as the wndow is open a set of different funtions will
- run along. It will constantly check for updates and if the
- variable windowIsOpen == false the while-loop will break and
- the window close.
- **************************************************************/
-function run(){
-    //Set frame ?
-    while (windowIsOpen == true){
-        //calls the function that handles the users key-events - updateText();
-        //checks if the user wants to save the file - saveFile();
-        updateCode();
-        //closeWi(); kolla
-        reWriteCode();
-    }   //when the variable windowIsOpen = false {
-        //close the window
-    //}
-}
-
-function reWriteCode(){
-	parseMarkdown();
-    //call parseMarkdown
-    // empty window ----> !empty window
-    //rewrite the code to the second window
-    //check for updates, if there is any call reWrite()
-    //if not - do nothing
-}
-/*
-Maybe we should create a seperate funtion for the keyIsPressed? Call the keyIsPressed here and in the updateText
-just uppdate the window with the latest update?
-updateText <<<<<{
-	when a keyboard is pressed and detected {
-		call a function that paseMarkdown
-
-	}
-}
- */
-
-//----------------------------updateCode----------------------------//
-//For now, we need to rename it and change the function to saveFile() later
-//if the user presses the save button we shold save it with this function
-function updateCode(){
-    //kolla efter key-input
-    //check for updates, if there is any call reWrite()
-    //if not - do nothing
-}
-
-
-function closeWindow(){
-    //knapp som stänger
-    //if the user presses the cancel-button windowIsOpen = false{
-    var cancelEvent = confirm("Are you sure you want to cancel the event")
-    if(cancelEvent = false){
-        windowIsOpen = false;
-    }
-
-    windowIsOpen = true;
-    //  same thing happens here, the window will close
 }
