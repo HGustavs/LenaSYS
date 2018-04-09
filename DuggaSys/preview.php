@@ -130,7 +130,9 @@
     </div>
 
     <div class="MarkdownPrev">
-        <form><span id="markdown"> </span></form>
+        <form>
+            <span id="markdown"> </span>
+        </form>
 
 
     </div>
