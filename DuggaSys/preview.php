@@ -97,12 +97,11 @@
                     };
 
                 //Return data from the file
-                //The str variable holds the content of the input field
                 //Specifies the type of request
                 xmlhttp.open("POST", "../Shared/markdown.js", true);
 
                 //Sends the request to the server
-                xmlhttp.send(parseMarkdown(str));
+                xmlhttp.send();
             }
         }
 
