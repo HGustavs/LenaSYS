@@ -92,7 +92,7 @@
                 xmlhttp.onreadystatechange = function() { //Triggered every time the ready state changes.
                     if(this.readyState == 4 && this.status == 200){
                     }
-                        document.getElementById("markdown").innerHTML = //replace markdown with responseText
+                        document.getElementById("markdown" + str).innerHTML = //replace markdown with responseText
                             this.responseText; //get the response data as a string
                     };
 
