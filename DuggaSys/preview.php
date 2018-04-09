@@ -13,7 +13,7 @@
         <script src="../Shared/dugga.js"></script>
         <style>
             .PreviewWindow {
-                height: 700px;
+                height: 635px;
                 width: 900px;
                 margin: 0px auto;
                 border: solid rgb(200,200,200);
@@ -59,29 +59,33 @@
                 left: 235px;
             }
             #button-save {
-                position: absolute;
-                left: 305px;
+                position: relative;
+                float: right;
+                margin: 0px 10px auto;
             }
             #button-close {
                 background-color: red;
             }
              .PrevHead {
-                height: 30px
-                position: relative;
+                height: 20px;
                 background-color: #775886;
                 color: #FFFFFF;
                 font-size: 14px;
-                line-height: 
+                padding: 0px 5px 0px 5px; 
             }
             .prevNav {
                 background-color: #775886;
                 height: 30px;
                 color: #FFF;
+                padding: 0px 5px 0px 5px;
+                line-height: 25px; 
             }
             .markNav {
                 background-color: #775886;
                 height: 30px;
                 color: #FFF;
+                padding: 0px 5px 0px 5px;
+                line-height: 25px;
             }
         </style>
         <script>
