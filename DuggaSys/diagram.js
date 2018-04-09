@@ -92,7 +92,9 @@ var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 
 //this block of the code is used to handel keyboard input;
-window.addEventListener("keydown", this.keyDownHandler, false);
+window.addEventListener("keydown", this.keyDownHandler);
+
+var ctrlIsClicked = false;
 
 function keyDownHandler(e){
     var key = e.keyCode;
@@ -107,7 +109,26 @@ function keyDownHandler(e){
         }
         updateGraphics();
     }
+    else if(key == 17 || key == 91)
+    {
+      ctrlIsClicked = true;
+    }
 }
+
+//--------------------------------------------------------------------
+// Keeps track of if the CTRL or CMD key is active or not
+//--------------------------------------------------------------------
+
+//var selectedItems = [];
+
+//Not used yet
+window.onkeyup = function(event) {
+    if(event.which == 17 || event.which == 91) {
+        ctrlIsClicked = false;
+    }
+  }
+
+
 
 //--------------------------------------------------------------------
 // points - stores a global list of points
@@ -318,25 +339,6 @@ diagram.targetItemsInsideSelectionBox = function (endX, endY, startX, startY) {
                 this[i].targeted = false;
             }
         }
-    }
-}
-
-
-//--------------------------------------------------------------------
-// Keeps track of if the CTRL or CMD key is active or not
-//--------------------------------------------------------------------
-var ctrlIsClicked = false;
-//var selectedItems = [];
-
-window.onkeydown = function(event) {
-    if(event.which == 17 || event.which == 91) {
-        ctrlIsClicked = true;
-    }
-}
-
-window.onkeyup = function(event) {
-    if(event.which == 17 || event.which == 91) {
-        ctrlIsClicked = false;
     }
 }
 
@@ -768,10 +770,8 @@ function clickOutsideDialogMenu(event) {
 function dimDialogMenu(dim) {
     if (dim) {
         $("#appearance").css("display", "flex");
-        //$("#overlay").css("display", "block");
     } else {
         $("#appearance").css("display", "none");
-        //$("#overlay").css("display", "none");
     }
 }
 
@@ -836,22 +836,22 @@ function cross(xCoordinate, yCoordinate) {
 
 function drawGrid() {
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "rgb(238, 238, 250)";
     var quadrantX;
     var quadrantY;
-    if (startX < 0) {
-        quadrantX = startX;
-    } else {
-        quadrantX = -startX;
-    }
-    if (startY < 0) {
-        quadrantY = startY;
-    } else {
-        quadrantY = -startY;
-    }
+
+    if (startX < 0) quadrantX = startX;
+    else quadrantX = -startX;
+
+    if (startY < 0) quadrantY = startY;
+    else quadrantY = -startY;
+
+
     for (var i = 0 + quadrantX; i < quadrantX + widthWindow; i++) {
-        if (i % 5 == 0) {
-            i++;
+        if (i % 5 == 0) { //This is a "thick" line
+            ctx.strokeStyle = "rgb(208, 208, 220)";
+        }
+        else {
+            ctx.strokeStyle = "rgb(238, 238, 250)";
         }
         ctx.beginPath();
         ctx.moveTo(i * gridSize, 0 + startY);
@@ -860,34 +860,13 @@ function drawGrid() {
         ctx.closePath();
     }
     for (var i = 0 + quadrantY; i < quadrantY + (heightWindow / zoomValue); i++) {
-        if (i % 5 == 0) {
-            i++;
-        }
+        if (i % 5 == 0) ctx.strokeStyle = "rgb(208, 208, 220)"; //This is a "thick" line
+        else ctx.strokeStyle = "rgb(238, 238, 250)";
         ctx.beginPath();
         ctx.moveTo(0 + startX, i * gridSize);
         ctx.lineTo((widthWindow / zoomValue) + startX, i * gridSize);
         ctx.stroke();
         ctx.closePath();
-    }
-    //Draws the thick lines
-    ctx.strokeStyle = "rgb(208, 208, 220)";
-    for (var i = 0 + quadrantX; i < quadrantX + (widthWindow / zoomValue); i++) {
-        if (i % 5 == 0) {
-            ctx.beginPath();
-            ctx.moveTo(i * gridSize, 0 + startY);
-            ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + startY);
-            ctx.stroke();
-            ctx.closePath();
-        }
-    }
-    for (var i = 0 + quadrantY; i < quadrantY + (heightWindow / zoomValue); i++) {
-        if (i % 5 == 0) {
-            ctx.beginPath();
-            ctx.moveTo(0 + startX, i * gridSize);
-            ctx.lineTo((widthWindow / zoomValue) + startX, i * gridSize);
-            ctx.stroke();
-            ctx.closePath();
-        }
     }
 }
 
