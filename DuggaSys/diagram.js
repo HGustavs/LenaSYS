@@ -709,41 +709,11 @@ function eraseSelectedObject() {
 
 function setMode(mode){ //"CreateClass" yet to be implemented in .php
     canvas.style.cursor = "default";
-<<<<<<< HEAD
     uimode = mode;
     if(mode == 'Square' || mode == 'Free') {
       uimode = "CreateFigure";
       figureType = mode;
     }
-=======
-    uimode = "CreateClass";
-}
-
-function attrMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateERAttr";
-}
-
-function entityMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateEREntity";
-}
-
-function lineMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateLine";
-}
-
-/*function figureMode(mode) {
-    canvas.style.cursor = "default";
-    uimode = "CreateFigure";
-    figureType = mode;
-}*/
-
-function relationMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateERRelation";
->>>>>>> G2V02-2018
 }
 
 $(document).ready(function(){
@@ -868,27 +838,14 @@ function drawGrid() {
     ctx.lineWidth = 1;
     var quadrantX;
     var quadrantY;
-<<<<<<< HEAD
 
-    if (startX < 0) quadrantX = startX;
-    else quadrantX = -startX;
+    if (sx < 0) quadrantX = sx;
+    else quadrantX = -sx;
 
-    if (startY < 0) quadrantY = startY;
-    else quadrantY = -startY;
+    if (sy < 0) quadrantY = sy;
+    else quadrantY = -sy;
 
 
-=======
-    if (sx < 0) {
-        quadrantX = sx;
-    } else {
-        quadrantX = -sx;
-    }
-    if (sy < 0) {
-        quadrantY = sy;
-    } else {
-        quadrantY = -sy;
-    }
->>>>>>> G2V02-2018
     for (var i = 0 + quadrantX; i < quadrantX + widthWindow; i++) {
         if (i % 5 == 0) { //This is a "thick" line
             ctx.strokeStyle = "rgb(208, 208, 220)";
@@ -911,29 +868,6 @@ function drawGrid() {
         ctx.stroke();
         ctx.closePath();
     }
-<<<<<<< HEAD
-=======
-    //Draws the thick lines
-    ctx.strokeStyle = "rgb(208, 208, 220)";
-    for (var i = 0 + quadrantX; i < quadrantX + (widthWindow / zoomValue); i++) {
-        if (i % 5 == 0) {
-            ctx.beginPath();
-            ctx.moveTo(i * gridSize, 0 + sy);
-            ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + sy);
-            ctx.stroke();
-            ctx.closePath();
-        }
-    }
-    for (var i = 0 + quadrantY; i < quadrantY + (heightWindow / zoomValue); i++) {
-        if (i % 5 == 0) {
-            ctx.beginPath();
-            ctx.moveTo(0 + sx, i * gridSize);
-            ctx.lineTo((widthWindow / zoomValue) + sx, i * gridSize);
-            ctx.stroke();
-            ctx.closePath();
-        }
-    }
->>>>>>> G2V02-2018
 }
 
 //remove all elements in the diagram array. it hides the points by placing them beyond the users view.
