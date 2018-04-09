@@ -93,7 +93,7 @@
                     if(this.readyState == 4 && this.status == 200){
                     }
                         document.getElementById("markdown").innerHTML = //replace markdown with responseText
-                            parseMarkdown(str); //get the response data as a string
+                            markdownBlock(str); //get the response data as a string
                     };
 
                 //Return data from the file
