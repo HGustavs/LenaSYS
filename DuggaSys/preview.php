@@ -69,6 +69,12 @@
                 font-size: 14px;
                 line-height: 
             }
+            .prevNav {
+                
+            }
+            .markNav {
+                
+            }
         </style>
         <script>
             function onload() {
@@ -98,8 +104,9 @@
             <div class="Markdown">
                 <div class="markNav">Markdown</div>
             </div>
-            <div class="MarkdownPrev"></div>
-            <div class="prevNav">Markdown Preview</div>
+            <div class="MarkdownPrev">
+                <div class="prevNav">Markdown Preview</div>
+            </div>
             <div class="OptionButtons">
                 <button id="button-save" onclick="saveMarkdown()">Save</button>
                 <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
