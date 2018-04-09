@@ -83,7 +83,6 @@
                 //Here we check if the input field is empty (str.length == 0).
                 // If it is, clear the content of the txtHint placeholder
                 // and exit the function.
-                alert("3");
 
                 document.getElementById("markdown").innerHTML = " ";
                 return;
@@ -95,7 +94,7 @@
                     }
                         document.getElementById("markdown").innerHTML = //replace markdown with responseText
                             this.responseText; //get the response data as a string
-                    }
+                    };
 
                 //Return data from the file
                 //The str variable holds the content of the input field
