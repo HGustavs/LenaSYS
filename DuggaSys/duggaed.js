@@ -306,11 +306,13 @@ function validateName(){
 	var nme=document.getElementById("name");
 	
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)){
+		$('#tooltipTxt').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
 		$('#submitBtn').removeAttr('disabled');
 		nme.style.backgroundColor = "#fff";
 		retValue = true;
 	}else{
+		$('#tooltipTxt').fadeIn();
 		$('#submitBtn').attr('disabled','disabled');
 		$('#saveBtn').attr('disabled','disabled');
 		nme.style.backgroundColor = "#f57";
@@ -346,6 +348,7 @@ function closeEditDugga()
 	document.getElementById("name").style.backgroundColor = "#fff";  // Resets color for name input
 	$('#submitBtn').removeAttr('disabled');  						 // Resets submit button to its default form
 	$('#saveBtn').removeAttr('disabled');  						 	 // Resets save button to its default form
+	$('#tooltipTxt').css("display","none");							 // Resets tooltip text to its default form
 	//$("#overlay").css("display","none");
 }
 
