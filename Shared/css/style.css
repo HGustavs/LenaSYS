@@ -156,7 +156,7 @@ p {
 
 #content {
   background: #fff;
-  min-height: calc(100vh - 90px);
+  /*min-height: calc(100vh - 90px);*/
   padding: 65px 10px 25px 10px;
 }
 
@@ -1548,7 +1548,7 @@ input.large-button {
     cursor:pointer;
 }
 
-.list#testTable #plorf, .list#testTable #dorf {
+#plorf, #dorf {
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
     padding:4px;
 }

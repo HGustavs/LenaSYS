@@ -124,6 +124,7 @@ var searchterm = "";
 
 function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions,renderColumnFilter,rowFilter,colsumList,rowsumList,rowsumHeading,sumFunc,freezePane,highlightRow,deHighlightRow,showEditCell,updateCell,hasmagic) {
 	// Private members
+	var result = 0;
 	var columnfilter = [];
 	var sortcolumn = "UNK";
 	var sortkind = -1;
@@ -181,7 +182,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		sortableTable.currentTable = this;
 
 		// Private array that contains names of filtered columns
-//		columnfilter = JSON.parse(localStorage.getItem(tableid+"_filtercolnames"));
+//		columnfilter = JSON.parse(localStorage.getrow(tableid+"_filtercolnames"));
 		columnfilter = tbl.tblhead;
 
 		// Local variable that contains summing array
@@ -222,6 +223,10 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	    mhvstr += "<thead id='"+tableid+"_tblhead_mhv'><tr>";
 	    mhfstr += "<thead id='"+tableid+"_tblhead_mhf'><tr>";
 		
+	    if (tableid == "quiz") {
+	    	str += "<th></th><th class='name'>Name</th>";
+	    }
+
 		var freezePaneIndex = tbl.tblhead.indexOf(freezePane);
 		for (let colname = 0; colname < tbl.tblhead.length; colname++) {
 			var col = tbl.tblhead[colname];
@@ -272,10 +277,14 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 			}
 		}
 
-		str += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
-		mhstr += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
-		mhfstr += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
-
+		if (tableid == "fileLink") {
+			str += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
+			mhstr += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
+			mhfstr += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
+		} else if (tableid == "quiz") {
+			str += "<th></th><th></th>";
+		}
+		
 		str += "</tr></thead>";
 		mhstr += "</tr></thead></table>";
 		mhfstr += "</tr></thead></table>";
@@ -284,13 +293,21 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		str += "<tbody id='"+tableid+"_body'>";
 		mhvstr += "<tbody id='"+tableid+"_mhvbody'>";
 		for (let rowno in tbl.tblbody) {
-			var row=tbl.tblbody[rowno];
+			var row = tbl.tblbody[rowno];
 			if (rowFilter(row)) {
 				// Keep row sum total here
 				var rowsum = 0;
 				
 				str += "<tr id='"+tableid+"_"+rowno+"' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 				mhvstr += "<tr id='"+tableid+"_"+rowno+"_mvh' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
+
+				if (tableid == "quiz") {
+      				str += "<td id='arrowz' onclick='showVariant("+rowno+")'><span class='arrow' id='arrow"+rowno+"'>&#9658;</span></td>";
+					str += "<td><input type='text' id='duggav"+result+"' style='font-size:14px;border: 0;border-width:0px;width:100%' onchange='changename("+row['did']+","+result+")' placeholder='"+row['name']+"' /></td>";
+				}
+
+				result++;
+
 				for (let colname in row) {
 					col = row[colname];
   					cleancol = tbl.cleanHead[colname];
@@ -320,15 +337,49 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 					str += "<td>"+rowsum+"</td>";
 				}
 
-				str+="<td style='padding:4px;'>";
-				str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-				str+=" onclick='deleteFile(\""+row['fileid']+"\",\""+row['filename']+"\");' >";
-				str+="</td>";
+				if (rowno != "move" && tableid == "fileLink") {
+					str+="<td style='padding:4px;'>";
+					str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+					str+=" onclick='deleteFile(\""+row['fileid']+"\",\""+row['filename']+"\");' >";
+					str+="</td>";
 
-				mhvstr+="<td style='padding:4px;'>";
-				mhvstr+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-				mhvstr+=" onclick='deleteFile(\""+row['fileid']+"\",\""+row['filename']+"\");' >";
-				mhvstr+="</td>";
+					mhvstr+="<td style='padding:4px;'>";
+					mhvstr+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+					mhvstr+=" onclick='deleteFile(\""+row['fileid']+"\",\""+row['filename']+"\");' >";
+					mhvstr+="</td>";
+				}else if(rowno != "move" && tableid == "user"){
+					      // Create cogwheel
+					str+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+					str+=" onclick='selectUser(\""+row['uid']+"\",\""+row['username']+"\",\""+row['ssn']+"\",\""+row['firstname']+"\",\""+row['lastname']+"\",\""+row['access']+"\",\""+row['class']+"\");'></td>";
+					str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+row['username']+" ?\")) resetPw(\""+row['uid']+"\",\""+row['username']+"\"); return false;' style='float:none;'></td>";
+					str+="</tr>";
+
+					mhvstr+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+					mhvstr+=" onclick='selectUser(\""+row['uid']+"\",\""+row['username']+"\",\""+row['ssn']+"\",\""+row['firstname']+"\",\""+row['lastname']+"\",\""+row['access']+"\",\""+row['class']+"\");'></td>";
+					mhvstr+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+row['username']+" ?\")) resetPw(\""+row['uid']+"\",\""+row['username']+"\"); return false;' style='float:none;'></td>";
+					mhvstr+="</tr>";
+				}else if(rowno != "move" && tableid == "quiz"){
+					      // Create cogwheel
+					str+="<td style='padding:4px;'>";
+					str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
+					str+=" onclick=' showVariantz("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
+					str+="</td>";
+					str+="<td style='padding:4px;'>";
+					str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+					str+=" onclick='selectDugga(\""+row['did']+"\",\""+row['name']+"\",\""+row['autograde']+"\",\""+row['gradesystem']+"\",\""+row['template']+"\",\""+row['qstart']+"\",\""+row['deadline']+"\",\""+row['release']+"\");' >";
+					str+="</td>";
+
+					mhvstr+="<td style='padding:4px;'>";
+					mhvstr+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
+					mhvstr+=" onclick=' showVariantz("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
+					mhvstr+="</td>";
+					mhvstr+="<td style='padding:4px;'>";
+					mhvstr+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+					mhvstr+=" onclick='selectDugga(\""+row['did']+"\",\""+row['name']+"\",\""+row['autograde']+"\",\""+row['gradesystem']+"\",\""+row['template']+"\",\""+row['qstart']+"\",\""+row['deadline']+"\",\""+row['release']+"\");' >";
+					mhvstr+="</td>";
+
+
+				}
 
 				str += "</tr>";
 				mhvstr += "</tr>";
@@ -397,7 +448,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 			columnfilter.splice(columnfilter.indexOf(col),1);
 		}
 
-		localStorage.setItem(tableid+"_filtercolnames", JSON.stringify(columnfilter));
+		localStorage.setrow(tableid+"_filtercolnames", JSON.stringify(columnfilter));
 
 		this.reRender();
 	}
@@ -478,10 +529,32 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
     }
 }
 
-function deleteFile(fileid,filename){
-		if(confirm("Do you really want to delete the file/link: "+filename)){
-				AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
-		}
-			/*Reloads window when deleteFile has been called*/
-			window.location.reload(true);
+function showVariant(param){
+    var variantId="#variantInfo" + param;
+    var duggaId="#dugga" + param;
+    var arrowId="#arrow" + param;
+    var index = variant.indexOf(param);
+    
+    
+    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) { // Check if dugga row and corresponding variant
+        if(!isInArray(variant, param)){
+             variant.push(param);
+        }
+        
+        if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
+            $(variantId).hide();
+            $(duggaId).removeClass("selectedtr");
+            $(arrowId).html("&#9658;");
+            if (index > -1) {
+               variant.splice(index, 1);
+            }
+            
+        } else {
+            $(duggaId).addClass("selectedtr");
+            $(variantId).slideDown();
+            $(arrowId).html("&#x25BC;");
+        }
+        
+        $(variantId).css("border-bottom", "1px solid gray");
+    }
 }

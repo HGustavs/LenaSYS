@@ -224,7 +224,7 @@ function returnedFile(data)
 
         myTable = new SortableTable(
     		tabledata,
-    		"thetable",
+    		"fileLink",
     		null,
     		"",
             renderCell,
@@ -242,9 +242,6 @@ function returnedFile(data)
             null,
     		false
     	);
-    	
-
-		console.log(data);
 
     	myTable.renderTable();
 
@@ -626,4 +623,13 @@ function searchKeyPress(e)
         return false;
     }
     return true;
+}
+
+function deleteFile(fileid,filename){
+	if (confirm("Do you really want to delete the file/link: "+filename)){
+		AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
+	}
+
+	/*Reloads window when deleteFile has been called*/
+	window.location.reload(true);
 }

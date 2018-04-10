@@ -199,6 +199,16 @@ var bool = true;
  * Sort based on what cell was pressed. Toggles between sort and reverse sort.
  * @param column
  */
+
+ function renderCell(celldata,col) {
+	if (col == "Trumma"){
+	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
+	} else if (col == "Pnr") {
+	    return "<div style='text-align:right'>" + celldata + "</div>";
+	}
+	return celldata;
+}
+
 function sortData(column){
     if(bool) {
         dataInfo['entries'].sort(propComparator(column));
@@ -209,11 +219,44 @@ function sortData(column){
     returnedAccess(dataInfo);
     bool = !bool;
 }
+
+var myTable;
 //----------------------------------------
 // Renderer
 //----------------------------------------
-function returnedAccess(data)
-{
+function returnedAccess(data) {
+	filez = data;
+
+	var tabledata = {
+		tblhead:[
+			"username","firstname","lastname","ssn","class","addedtime","vers","teacher","requestedpasswordchange"
+		],
+		tblbody: data['entries'],
+		tblfoot:[]
+	}
+
+	myTable = new SortableTable(
+		tabledata,
+		"user",
+		null,
+		"",
+	    renderCell,
+	    null,
+	    null,
+	    null,
+	    [],
+	    [],				
+	    "",
+	    null,
+	    null,
+		null,
+		null,
+		null,
+	    null,
+		false
+	);
+
+	myTable.renderTable();
   // Defining arrays for later use
   var teachs = [];
   var userClass = [];

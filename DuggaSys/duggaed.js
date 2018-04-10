@@ -531,111 +531,156 @@ function showVariantz(param){
          variant.push(param);
     }
 }
+
+function renderCell(celldata,col) {
+	if (col == "Trumma"){
+	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
+	} else if (col == "Pnr") {
+	    return "<div style='text-align:right'>" + celldata + "</div>";
+	}
+	return celldata;
+}
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
 var alla = 0;
-function returnedDugga(data)
-{
+var myTable;
+function returnedDugga(data) {
+	filez = data;
+
+    var tabledata = {
+    	tblhead:[
+    		"autograde","gradesystem","template","deadline","release","modified"
+    	],
+    	tblbody: data['entries'],
+    	tblfoot:[]
+    }
+
+    myTable = new SortableTable(
+		tabledata,
+		"quiz",
+		null,
+		"",
+        renderCell,
+        null,
+        null,
+        null,
+        [],
+        [],				
+        "",
+        null,
+        null,
+		null,
+		null,
+		null,
+        null,
+		false
+	);
+
+    myTable.renderTable();
+
 	$("content").html();
 	var result = 0;
 	filez = data['files'];
 	duggaPages = data['duggaPages'];
 
 	str="";
+	// Funktion som kallas från diven
+	function leFunk(){
 	if (data['files'].length > 0) {
 
-		str+="<div class='titles' style='padding-top:10px;'>";
-		str+="<h1 style='flex:10;text-align:center;'>Tests</h1>";
-		str+="<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='Add Dugga' onclick='newDugga();showSubmitButton();'/>";
-		str+="</div>";
+	// 	str+="<div class='titles' style='padding-top:10px;'>";
+	// 	str+="<h1 style='flex:10;text-align:center;'>Tests</h1>";
+	// 	str+="<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='Add Dugga' onclick='newDugga();showSubmitButton();'/>";
+	// 	str+="</div>";
 		
-		str+="<table class='list' id='testTable'>";
-		str+="<thead><tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Start</th><th>Deadline</th><th>Release</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr></thead>";
+	// 	str+="<table class='list' id='quiz' style='width:100%; border: 2px solid green;'>";
+	// 	str+="<thead><tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Start</th><th>Deadline</th><th>Release</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr></thead>";
 
-		var oddevenfumo = "";
+	// 	var oddevenfumo = "";
 		for(i=0;i<data['entries'].length;i++){
 
 			var item=data['entries'][i];
 
-			// check if even or odd fumo row
-			if(i % 2 === 0) {
-                oddevenfumo = "evenfumo";
-			} else {
-				oddevenfumo = "oddfumo";
-			}
+	// 		// check if even or odd fumo row
+	// 		if(i % 2 === 0) {
+ //                oddevenfumo = "evenfumo";
+	// 		} else {
+	// 			oddevenfumo = "oddfumo";
+	// 		}
       
-			str+="<tr class='fumo "+oddevenfumo+"' id='dugga" +i+ "'>";
+	// 		str+="<tr class='fumo "+oddevenfumo+"' id='dugga" +i+ "'>";
 
-			result++;
-      str+="<td id='arrowz' onClick='showVariant("+i+")'><span class='arrow' id='arrow"+i+"'>&#9658;</span></td>";
-      // Name
-			str+="<td><input type='text' id='duggav"+result+"' style='font-size:14px;border: 0;border-width:0px;width:100%' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
-			// Autograde
-            if(item['autograde']=="1"){
-				result++;
-				str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:14px;' id='duggav"+result+"' ><option selected value='1'>On</option><option value='2'>Off</option></select></td>";
-			}else{
-				result++;
-				str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:14px;' id='duggav"+result+"' ><option value='1'>On</option><option selected value='2'>Off</option></select></td>";
-			}
+	// 		result++;
+ //      str+="<td id='arrowz' onClick='showVariant("+i+")'><span class='arrow' id='arrow"+i+"'>&#9658;</span></td>";
+ //      // Name
+	// 		str+="<td><input type='text' id='duggav"+result+"' style='font-size:14px;border: 0;border-width:0px;width:100%' onchange='changename("+item['did']+","+result+")' placeholder='"+item['name']+"' /></td>";
+	// 		// Autograde
+ //            if(item['autograde']=="1"){
+	// 			result++;
+	// 			str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:14px;' id='duggav"+result+"' ><option selected value='1'>On</option><option value='2'>Off</option></select></td>";
+	// 		}else{
+	// 			result++;
+	// 			str+="<td><select onchange='changeauto("+item['did']+","+result+")' style='font-size:14px;' id='duggav"+result+"' ><option value='1'>On</option><option selected value='2'>Off</option></select></td>";
+	// 		}
 
-			if(item['gradesystem']=="1"){
-				result++;
-                // Grade system
-				str+="<td><select style='font-size:14px;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option selected='selected' value='1'>U/G/VG</option><option value='2'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
-			}else if(item['gradesystem']=="2"){
-				result++;
-				str+="<td class='gradesystem'><select style='font-size:14px;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2' selected='selected'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
-			}else{
-				result++;
-				str+="<td><select style='font-size:14px;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2'>U/G</option><option selected='selected' value='3'>U/3/4/5</option></select></td>";
-			}
-			result++;
+	// 		if(item['gradesystem']=="1"){
+	// 			result++;
+ //                // Grade system
+	// 			str+="<td><select style='font-size:14px;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option selected='selected' value='1'>U/G/VG</option><option value='2'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
+	// 		}else if(item['gradesystem']=="2"){
+	// 			result++;
+	// 			str+="<td class='gradesystem'><select style='font-size:14px;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2' selected='selected'>U/G</option><option value='3'>U/3/4/5</option></select></td>";
+	// 		}else{
+	// 			result++;
+	// 			str+="<td><select style='font-size:14px;' onchange='changegrade("+item['did']+","+result+")' id='duggav"+result+"' ><option value='1'>U/G/VG</option><option value='2'>U/G</option><option selected='selected' value='3'>U/3/4/5</option></select></td>";
+	// 		}
+	// 		result++;
             
-      // Template
-			str+="<td><select style='font-size:14px;' onchange='changefile("+item['did']+","+result+")' id='duggav"+result+"'>";
+ //      // Template
+	// 		str+="<td><select style='font-size:14px;' onchange='changefile("+item['did']+","+result+")' id='duggav"+result+"'>";
 
-			for(var j=0;j<filez.length;j++){
-				filen=filez[j];
-				if(filen!=".."&&filen!="."){
-					if(item['template']==filen) str+="<option selected='selected' value='"+filen+"'>"+filen+"</option>"
-					else str+="<option value='"+filen+"'>"+filen+"</option>"
-				}
-			}
+	// 		for(var j=0;j<filez.length;j++){
+	// 			filen=filez[j];
+	// 			if(filen!=".."&&filen!="."){
+	// 				if(item['template']==filen) str+="<option selected='selected' value='"+filen+"'>"+filen+"</option>"
+	// 				else str+="<option value='"+filen+"'>"+filen+"</option>"
+	// 			}
+	// 		}
 
-			str+="</select></td>";
-			if(item['qstart']==null){
-				str+="<td></td>";
-			}else{
-			result++;
-				str+="<td><div style='margin:0 5px'>"+item['qstart'].substr(0,10)+"<div></td>";
-			}
-			if(item['deadline']==null){
-				str+="<td><div style='margin:0 5px'>&nbsp;</div></td>";
-			}else{
-				str+="<td><div style='margin:0 5px'>"+item['deadline'].substr(0,10)+"</div></td>";
-			}
-      if(item['release']==null){
-				str+="<td></td>";
-			}else{
-			result++;
-				str+="<td><div style='margin:0 5px'>"+item['release'].substr(0,10)+"</div></td>";
-			}
+	// 		str+="</select></td>";
+	// 		if(item['qstart']==null){
+	// 			str+="<td></td>";
+	// 		}else{
+	// 		result++;
+	// 			str+="<td><div style='margin:0 5px'>"+item['qstart'].substr(0,10)+"<div></td>";
+	// 		}
+	// 		if(item['deadline']==null){
+	// 			str+="<td><div style='margin:0 5px'>&nbsp;</div></td>";
+	// 		}else{
+	// 			str+="<td><div style='margin:0 5px'>"+item['deadline'].substr(0,10)+"</div></td>";
+	// 		}
+ //      if(item['release']==null){
+	// 			str+="<td></td>";
+	// 		}else{
+	// 		result++;
+	// 			str+="<td><div style='margin:0 5px'>"+item['release'].substr(0,10)+"</div></td>";
+	// 		}
 
-			str+="<td>"+item['modified'].substr(0,10)+"</td>";
+	// 		str+="<td>"+item['modified'].substr(0,10)+"</td>";
 
-			str+="<td style='padding:4px;'>";
-			str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-			str+=" onclick=' showVariantz("+i+"); addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");'>";
-			str+="</td>";
+	// 		str+="<td style='padding:4px;'>";
+	// 		str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
+	// 		str+=" onclick=' showVariantz("+i+"); addVariant(\""+querystring['cid']+"\",\""+item['did']+"\");'>";
+	// 		str+="</td>";
 
 
-			str+="<td style='padding:4px;'>";
-			str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-			str+=" onclick='selectDugga(\""+item['did']+"\",\""+item['name']+"\",\""+item['autograde']+"\",\""+item['gradesystem']+"\",\""+item['template']+"\",\""+item['qstart']+"\",\""+item['deadline']+"\",\""+item['release']+"\");' >";
-			str+="</td>";
-			str+="</tr>";
+	// 		str+="<td style='padding:4px;'>";
+	// 		str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+	// 		str+=" onclick='selectDugga(\""+item['did']+"\",\""+item['name']+"\",\""+item['autograde']+"\",\""+item['gradesystem']+"\",\""+item['template']+"\",\""+item['qstart']+"\",\""+item['deadline']+"\",\""+item['release']+"\");' >";
+	// 		str+="</td>";
+	// 		str+="</tr>";
 
 			var variantz=item['variants'];
 
@@ -675,28 +720,28 @@ function returnedDugga(data)
 				str+="</table>";
 				str+="</td></tr>";
 			}
-		}
+	 	}
 
-		str+="</table>";
-	}
-	alla = result;
-	var slist=document.getElementById("content");
-	slist.innerHTML=str;
-	if(data['debug']!="NONE!") alert(data['debug']);
+	// 	str+="</table>";
+	// }
+	// alla = result;
+	// var slist=document.getElementById("content");
+	// slist.innerHTML=str;
+	// if(data['debug']!="NONE!") alert(data['debug']);
     
-    var length = variant.length;
-    for(index = 0;  index < length; index++){
-        showVariant(variant[index]);
-    }
+ //    var length = variant.length;
+ //    for(index = 0;  index < length; index++){
+ //        showVariant(variant[index]);
+ //    }
     
-    var variantLength = data['entries'].length;
-    for(idx = 0; idx < variantLength; idx++) {
-        if (!document.getElementById("variantInfo"+idx) && document.getElementById("dugga"+idx)) {
-            $("#arrow"+idx).hide();
-        }
+ //    var variantLength = data['entries'].length;
+ //    for(idx = 0; idx < variantLength; idx++) {
+ //        if (!document.getElementById("variantInfo"+idx) && document.getElementById("dugga"+idx)) {
+ //            $("#arrow"+idx).hide();
+ //        }
     }
 }
-
+}
 function parseParameters(str){
 	return str;
 }

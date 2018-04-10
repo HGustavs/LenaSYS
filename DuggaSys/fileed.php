@@ -44,7 +44,7 @@ pdoConnect();
 			</button>
 		</div>
 
-		<div id="thetable" style='width:100%;'></div>
+		<div id="fileLink" style='width:100%;'></div>
 
         <div id="searchresults" style='width:100%; display:none;'>
             <table class='list list--nomargin' style='margin-bottom:8px;' >
