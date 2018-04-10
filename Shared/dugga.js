@@ -28,8 +28,15 @@ function setSecurityNotifaction(param){
     localStorage.setItem("securitynotification", param);
 }
 
+function resetLoginStatus(){
+  status = 1;
+  showing = 0;
+  toggleloginnewpass();
+}
+
 function toggleloginnewpass(){
 	resetFields();
+
   //Shows the New password-box (username input)
 	if(status == 0){
 		$("#newpassword").css("display", "block");
@@ -42,7 +49,7 @@ function toggleloginnewpass(){
     //Shows the Login-box
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "flex");
+		$("#login").css("display", "block");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
 		status= 0;

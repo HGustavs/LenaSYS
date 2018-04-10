@@ -74,7 +74,7 @@
 			</div>
 			<tr>
 				<td>
-					<label class='forgotPw' onclick='toggleloginnewpass();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
+					<label class='forgotPw' onclick='resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
 				</td>
 			</tr>
 		</div>
@@ -115,7 +115,7 @@
 			</div>
 			<tr>
 				<td>
-					<label class='forgotPw' onclick='toggleloginnewpass();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
+					<label class='forgotPw' onclick='resetLoginStatus();' style='margin-left: 18px; font-size: 13px;'>Back to login</label>
 				</td>
 			</tr>
 
@@ -135,7 +135,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='buttonLoginBox' onclick="closeWindows();" value='Ok!' style='margin-top: 10px;' title='Ok!'>
+							<input type='button' class='buttonLoginBox' onclick="location.reload();" value='Ok!' style='margin-top: 10px;' title='Ok!'>
 						</td>
 					</tr>
 				</table>
