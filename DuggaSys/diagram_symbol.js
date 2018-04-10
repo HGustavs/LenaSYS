@@ -491,217 +491,228 @@ function Symbol(kind) {
 
         ctx.save();
 
-        if (this.symbolkind == 1) {
-            var midy = points[this.middleDivider].y;
-            ctx.font = "bold " + parseInt(textsize) + "px Arial";
-            // Clear Class Box
-            ctx.fillStyle = "#fff";
-            ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
-            ctx.fillStyle = "#fff";
-
-            // Write Class Name
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillStyle = "#fff";
-            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
-            if (this.key_type == 'Primary key') {
-                var linelength = ctx.measureText(this.name).width;
-                ctx.beginPath(1);
-                ctx.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + linelength, y1 + (0.85 * this.textsize) + 10);
-                ctx.strokeStyle = this.strokeColor;
-                ctx.stroke();
-            }
-            // Change Alignment and Font
-            ctx.textAlign = "start";
-            ctx.textBaseline = "top";
-            ctx.font = parseInt(this.textsize) + "px Arial";
-            // Clipping of text and drawing of attributes
-            ctx.beginPath();
-            ctx.moveTo(x1, y1 + (this.textsize * 1.5));
-            ctx.lineTo(x2, y1 + (this.textsize * 1.5));
-            ctx.lineTo(x2, midy);
-            ctx.lineTo(x1, midy);
-            ctx.lineTo(x1, y1 + (this.textsize * 1.5));
-            ctx.clip();
-            for (var i = 0; i < this.attributes.length; i++) {
-                ctx.fillText(this.attributes[i].visibility + " " + this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
-            }
-            // Clipping of text and drawing of methods
-            ctx.beginPath();
-            ctx.moveTo(x1, midy);
-            ctx.lineTo(x2, midy);
-            ctx.lineTo(x2, y2);
-            ctx.lineTo(x1, y2);
-            ctx.lineTo(x1, midy);
-            ctx.clip();
-            ctx.textAlign = "start";
-            ctx.textBaseline = "top";
-            for (var i = 0; i < this.operations.length; i++) {
-                ctx.fillText(this.operations[i].visibility + " " + this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
-            }
-            // Box
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y1);
-            ctx.lineTo(x2, y2);
-            ctx.lineTo(x1, y2);
-            ctx.lineTo(x1, y1);
-            // Top Divider
-            ctx.moveTo(x1, y1 + (this.textsize * 1.5));
-            ctx.lineTo(x2, y1 + (this.textsize * 1.5));
-            // Middie Divider
-            ctx.moveTo(x1, midy);
-            ctx.lineTo(x2, midy);
-            ctx.stroke();
+        if(this.symbolkind == 1){
+          drawUML();
         }
-        else if (this.symbolkind == 2) {
-            //drawing a multivalue attribute
-            ctx.lineWidth = this.lineWidth;
-            if (this.key_type == 'Multivalue') {
-                drawOval(x1 - 10, y1 - 10, x2 + 10, y2 + 10);
-                ctx.fillStyle = this.symbolColor;
-                ctx.fill();
-                ctx.stroke();
-            }
-            //drawing an derived attribute
-            if (this.key_type == 'Drive') {
-                ctx.setLineDash([5, 4]);
-                drawOval(x1 - 10, y1 - 10);
-                ctx.fillStyle = this.symbolColor;
-                ctx.fill();
-            }
-            //scale the text
-            ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
-            // Write Attribute Name
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            drawOval(x1, y1, x2, y2);
-            ctx.fillStyle = this.symbolColor;
-            ctx.fill();
-            makeShadow();
-
-            ctx.stroke();
-            ctx.fillStyle = "#fff";
-            ctx.fillStyle = this.fontColor;
-            ctx.closePath();
-            ctx.clip();
-            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-            if (this.key_type == 'Primary key') {
-                var linelength = ctx.measureText(this.name).width;
-                ctx.beginPath(1);
-                ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                ctx.strokeStyle = this.strokeColor;
-                ctx.stroke();
-
-            } else if (this.key_type == 'Normal') {
-                ctx.beginPath(1);
-                ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                ctx.strokeStyle = this.strokeColor;
-            }
+        else if(this.symbolkind == 2){
+          drawERAttribute();
         }
-        else if (this.symbolkind == 3) {
-            ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.beginPath();
-            if (this.key_type == "Weak") {
-                ctx.moveTo(x1 - 5, y1 - 5);
-                ctx.lineTo(x2 + 5, y1 - 5);
-                ctx.lineTo(x2 + 5, y2 + 5);
-                ctx.lineTo(x1 - 5, y2 + 5);
-                ctx.lineTo(x1 - 5, y1 - 5);
-            }
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y1);
-            ctx.lineTo(x2, y2);
-            ctx.lineTo(x1, y2);
-            ctx.lineTo(x1, y1);
-            ctx.closePath();
-            ctx.fill();
-            makeShadow();
-            ctx.clip();
-            ctx.fillStyle = this.symbolColor;
-            ctx.fill();
-
-            ctx.stroke();
-            ctx.fillStyle = "#fff";
-            ctx.fillStyle = this.fontColor;
-            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-            ctx.font = parseInt(textsize) + "px " + this.font;
-            ctx.fillStyle = "#fff";
-            for (var i = 0; i < this.arity.length; i++) {
-                for (var j = 0; j < this.arity[i].length; j++) {
-                    var arity = this.arity[i][j];
-                    ctx.textAlign = arity.align;
-                    ctx.textBaseline = arity.baseLine;
-                    ctx.fillText(arity.text, arity.x, arity.y);
-                }
-            }
+        else if(this.symbolkind == 3){
+          drawEntity();
         }
-        else if (this.symbolkind == 4) {
-            // ER Attribute relationship is a single line
-
-            if (this.key_type == "Forced") {
-                ctx.lineWidth = this.lineWidth;
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-                ctx.lineWidth = this.lineWidth;
-                ctx.strokeStyle = "#000";
-            } else if (this.key_type == "Derived") {
-                ctx.setLineDash([5, 4]);
-            }
-            else {
-                ctx.lineWidth = this.lineWidth;
-            }
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
-            ctx.strokeStyle = this.strokeColor;
+        else if(this.symbolkind == 4){
+          drawLine();
         }
-        else if (this.symbolkind == 5) {
-            ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            var midx = points[this.middleDivider].x;
-            var midy = points[this.middleDivider].y;
-            ctx.beginPath();
-            if (this.key_type == 'Weak') {
-                ctx.moveTo(midx, y1 + 5);
-                ctx.lineTo(x2 - 9, midy + 0);
-                ctx.lineTo(midx + 0, y2 - 5);
-                ctx.lineTo(x1 + 9, midy + 0);
-                ctx.lineTo(midx + 0, y1 + 5);
-            }
-            ctx.moveTo(midx, y1);
-            ctx.lineTo(x2, midy);
-            ctx.lineTo(midx, y2);
-            ctx.lineTo(x1, midy);
-            ctx.lineTo(midx, y1);
-            ctx.fillStyle = this.symbolColor;
-            makeShadow();
-            ctx.fill();
-            ctx.closePath();
-            ctx.clip();
-
-            ctx.stroke();
-            ctx.fillStyle = "#fff";
-            ctx.fillStyle = this.fontColor;
-            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        else if(this.symbolkind == 5){
+          drawRelation();
         }
+
+
         ctx.restore();
         ctx.setLineDash([]);
     }
 }
+function drawUML()
+{
+    var midy = points[this.middleDivider].y;
+    ctx.font = "bold " + parseInt(textsize) + "px Arial";
+    // Clear Class Box
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
 
+    // Write Class Name
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
+    if (this.key_type == 'Primary key') {
+        var linelength = ctx.measureText(this.name).width;
+        ctx.beginPath(1);
+        ctx.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
+        ctx.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
+        ctx.lineTo(x1 + ((x2 - x1) * 0.5) + linelength, y1 + (0.85 * this.textsize) + 10);
+        ctx.strokeStyle = this.strokeColor;
+        ctx.stroke();
+    }
+    // Change Alignment and Font
+    ctx.textAlign = "start";
+    ctx.textBaseline = "top";
+    ctx.font = parseInt(this.textsize) + "px Arial";
+    // Clipping of text and drawing of attributes
+    ctx.beginPath();
+    ctx.moveTo(x1, y1 + (this.textsize * 1.5));
+    ctx.lineTo(x2, y1 + (this.textsize * 1.5));
+    ctx.lineTo(x2, midy);
+    ctx.lineTo(x1, midy);
+    ctx.lineTo(x1, y1 + (this.textsize * 1.5));
+    ctx.clip();
+    for (var i = 0; i < this.attributes.length; i++) {
+        ctx.fillText(this.attributes[i].visibility + " " + this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
+    }
+    // Clipping of text and drawing of methods
+    ctx.beginPath();
+    ctx.moveTo(x1, midy);
+    ctx.lineTo(x2, midy);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x1, y2);
+    ctx.lineTo(x1, midy);
+    ctx.clip();
+    ctx.textAlign = "start";
+    ctx.textBaseline = "top";
+    for (var i = 0; i < this.operations.length; i++) {
+        ctx.fillText(this.operations[i].visibility + " " + this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
+    }
+    // Box
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x1, y2);
+    ctx.lineTo(x1, y1);
+    // Top Divider
+    ctx.moveTo(x1, y1 + (this.textsize * 1.5));
+    ctx.lineTo(x2, y1 + (this.textsize * 1.5));
+    // Middie Divider
+    ctx.moveTo(x1, midy);
+    ctx.lineTo(x2, midy);
+    ctx.stroke();
+}
+function drawERAttribute()
+{
+    //scale the text
+    ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
+    // Write Attribute Name
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    ctx.fillStyle = this.symbolColor;
+    //drawing a multivalue attribute
+    ctx.lineWidth = this.lineWidth;
+
+    if (this.key_type == 'Multivalue') {
+        drawOval(x1 - 10, y1 - 10, x2 + 10, y2 + 10);
+        ctx.stroke();
+    }
+    //drawing an derived attribute
+    else if (this.key_type == 'Drive') {
+        ctx.setLineDash([5, 4]);
+        drawOval(x1 - 10, y1 - 10);
+    }
+    else if (this.key_type == 'Primary key') {
+        var linelength = ctx.measureText(this.name).width;
+        ctx.beginPath(1);
+        ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+        ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+        ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+        ctx.strokeStyle = this.strokeColor;
+
+    }
+    else {
+        drawOval(x1, y1, x2, y2);
+    }
+
+    ctx.fill();
+    makeShadow();
+
+    ctx.stroke();
+    ctx.fillStyle = "#fff";
+    ctx.closePath();
+    ctx.clip();
+    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+}
+function drawEntity()
+{
+    ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.beginPath();
+    if (this.key_type == "Weak") {
+        ctx.moveTo(x1 - 5, y1 - 5);
+        ctx.lineTo(x2 + 5, y1 - 5);
+        ctx.lineTo(x2 + 5, y2 + 5);
+        ctx.lineTo(x1 - 5, y2 + 5);
+        ctx.lineTo(x1 - 5, y1 - 5);
+    }
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x1, y2);
+    ctx.lineTo(x1, y1);
+    ctx.closePath();
+    ctx.fill();
+    makeShadow();
+    ctx.clip();
+    ctx.fillStyle = this.symbolColor;
+    ctx.fill();
+
+    ctx.stroke();
+    ctx.fillStyle = "#fff";
+    ctx.fillStyle = this.fontColor;
+    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+    ctx.font = parseInt(textsize) + "px " + this.font;
+    ctx.fillStyle = "#fff";
+    for (var i = 0; i < this.arity.length; i++) {
+        for (var j = 0; j < this.arity[i].length; j++) {
+            var arity = this.arity[i][j];
+            ctx.textAlign = arity.align;
+            ctx.textBaseline = arity.baseLine;
+            ctx.fillText(arity.text, arity.x, arity.y);
+        }
+    }
+}
+function drawLine()
+{
+    // ER Attribute relationship is a single line
+    if (this.key_type == "Forced") {
+        ctx.lineWidth = this.lineWidth;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        ctx.lineWidth = this.lineWidth;
+        ctx.strokeStyle = "#000";
+    } else if (this.key_type == "Derived") {
+        ctx.setLineDash([5, 4]);
+    }
+    else {
+        ctx.lineWidth = this.lineWidth;
+    }
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+    ctx.strokeStyle = this.strokeColor;
+}
+function drawRelation()
+{
+    ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    var midx = points[this.middleDivider].x;
+    var midy = points[this.middleDivider].y;
+    ctx.beginPath();
+    if (this.key_type == 'Weak') {
+        ctx.moveTo(midx, y1 + 5);
+        ctx.lineTo(x2 - 9, midy + 0);
+        ctx.lineTo(midx + 0, y2 - 5);
+        ctx.lineTo(x1 + 9, midy + 0);
+        ctx.lineTo(midx + 0, y1 + 5);
+    }
+    ctx.moveTo(midx, y1);
+    ctx.lineTo(x2, midy);
+    ctx.lineTo(midx, y2);
+    ctx.lineTo(x1, midy);
+    ctx.lineTo(midx, y1);
+    ctx.fillStyle = this.symbolColor;
+    makeShadow();
+    ctx.fill();
+    ctx.closePath();
+    ctx.clip();
+
+    ctx.stroke();
+    ctx.fillStyle = "#fff";
+    ctx.fillStyle = this.fontColor;
+    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+}
 function makeShadow(){
     ctx.save();
     ctx.shadowBlur = this.shadowBlur;
