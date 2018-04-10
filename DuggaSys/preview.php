@@ -170,11 +170,12 @@
             function selected() {
                 $('#select-header').hide();
             }
-
-            function dropDownToggle() {
-                document.getElementById("#select-header").classList.toggle(".show-dropdown-content");   
-            }
-
+            $(document).ready(function(){
+               $(".headerType").click(function(){
+                    $("#select-header").Toggle();
+                    $("#select-header").addClass("show-dropdown-content");
+                });
+            });
             // Close the dropdown if the user clicks outside of it
             window.onclick = function(event) {
                 if (!event.target.matches('#select-header')) {
@@ -206,7 +207,7 @@
             </div>
             <div class="Markdown">
                 <div class="markNav">Markdown
-                    <span class="headerType" onclick="dropDownToggle()">aA&#9663;</span>
+                    <span class="headerType">aA&#9663;</span>
                         <div id="select-header">
                             <a href="#" id="h1" onclick="selected()" value="H1">Header 1</a>
                             <a href="#" id="h2" onclick="selected()" value="H2">Header 2</a>
