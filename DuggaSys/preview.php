@@ -78,21 +78,21 @@
         function showPreview(str) {
             $(".PreviewWindow").show();
             //This function is triggered when key is pressed down in the input field
-            if(str.length == 0){
+        //    if(str.length == 0){
                 //Here we check if the input field is empty (str.length == 0).
                 // If it is, clear the content of the txtHint placeholder
                 // and exit the function.
 
-                document.getElementById("markdown").innerHTML = " ";
-                return;
-            }else {
-                        document.getElementById("markdown").innerHTML = //replace markdown with responseText
-                            parseMarkdown(str); //get the response data as a string
+          //      document.getElementById("markdown").innerHTML = " ";
+          //      return;
+          //  }else {
+            //            document.getElementById("markdown").innerHTML = //replace markdown with responseText
+              //              parseMarkdown(str); //get the response data as a string
 
-            };
+          //  };
 
                 document.getElementById("markdown").innerHTML=parseMarkdown(str);
-            
+
         }
         function saveCode() {
 
