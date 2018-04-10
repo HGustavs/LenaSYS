@@ -572,7 +572,7 @@ function loginEventHandler(event){
 		if(showing == 1){
 			processLogin();
 		}else if(showing == 0){
-			processResetPasswordCheckUsername();
+			resetPasswordBarrier();
 		}else if(showing == 2){
 			processResetPasswordCheckSecurityAnswer();
 		}
@@ -609,8 +609,27 @@ function checkHTTPS() {
 	return (location.protocol == 'https:');
 }
 
-function processResetPasswordCheckUsername() {
-  //Gets the security question from the database
+function resetPasswordBarrier() {
+	var username = $("#usernamereset").val();
+
+	$.ajax({
+		type:"POST",
+		url: "../DuggaSys/accessedservice.php",
+		data: {
+			username: username,
+			opt: "REQNEWPWD"
+		},
+		success:function(data) {
+			var result = JSON.parse(data);
+			result = result.queryResult;
+			processResetPasswordCheckUsername(result);
+		}
+	});
+}
+
+function processResetPasswordCheckUsername(result) {
+	if(result <= 5) {
+	//Gets the security question from the database
 	var username = $("#usernamereset").val();
 
 	$.ajax({
@@ -637,9 +656,11 @@ function processResetPasswordCheckUsername() {
 			}
 		}
 	});
+	}else {
+		$("#newpassword #message2").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>" + "You have exceeded the maximum <br> amount of tries within 5 min" + "</div>");
+		$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
+	}
 }
-
-
 
 function processResetPasswordCheckSecurityAnswer() {
 	//Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
