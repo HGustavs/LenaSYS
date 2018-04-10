@@ -42,6 +42,7 @@
             .MarkdownPrev {
                 border: solid rgb(200,200,200);
                 background-color: #FFFFFF;
+                word-wrap: break-word;
                 width: 490px;
                 height: 550px;
                 position: relative;
@@ -57,7 +58,7 @@
             }
             .prevSpan {
                 background-color: red;
-                
+                max-width: 100%;
             }
             #button-cancel {
                 position: absolute;
@@ -98,6 +99,12 @@
                 box-shadow: 2px 2px 4px #888 inset;
                 resize: none;
                 margin: 10px 4px 0px 4px;
+            }
+            .boldText {
+                cursor: pointer;
+            }
+            .cursiveText {
+                cursor: pointer;
             }
         </style>
         <script>
@@ -141,7 +148,17 @@
             <div class="PrevHead">This is the preview window
             </div>
             <div class="Markdown">
-                <div class="markNav">Markdown</div>
+                <div class="markNav">Markdown
+                    <span class="headerType">H
+                        <select>
+                            <option value="H1">Header 1</option>
+                            <option value="H2">Header 2</option>
+                            <option value="H3">Header 3</option>
+                        </select>
+                    </span>
+                    <span class="boldText" onclick="">B</span>
+                    <span class="cursiveText" onclick="">I</span>
+                </div>
                 <div class="markText">
                     <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
                 </div>
