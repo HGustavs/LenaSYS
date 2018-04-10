@@ -112,6 +112,20 @@
             function saveMarkdown() {
                 
             }
+            function showPreview(str) {
+                $(".PreviewWindow").show();
+                //This function is triggered when key is pressed down in the input field
+                if(str.length == 0){
+                    //Here we check if the input field is empty (str.length == 0).
+                    // If it is, clear the content of the txtHint placeholder
+                    // and exit the function.
+                    document.getElementById("markdown").innerHTML = " ";
+                    return;
+                }   
+                else {
+                    document.getElementById("markdown").innerHTML=parseMarkdown(str);
+                }
+            }
         </script>
     </head>
     <body onload="onload()">
@@ -123,12 +137,15 @@
             <div class="Markdown">
                 <div class="markNav">Markdown</div>
                 <div class="markText" >
-                    <textarea id="mrkdwntxt" name="markdowntext" rows="32" cols="40"> 
+                    <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"> 
                     </textarea>
                 </div>
             </div>
             <div class="MarkdownPrev">
                 <div class="prevNav">Markdown Preview</div>
+                <div class="markTextPrev">
+                    <span id="markdown"></span>
+                </div>
             </div>
             <div class="OptionButtons">
                 <button id="button-save" onclick="saveMarkdown()">Save</button>
