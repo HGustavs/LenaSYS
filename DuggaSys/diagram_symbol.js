@@ -311,7 +311,7 @@ function Symbol(kind) {
     this.sortPoints = function(tl, tr, bl, br){
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
-        
+        console.log(p1.x + " " + p2.x)
         if(p1.x < p2.x){
             if(p1.y < p2.y){
                 //we are in the topleft
