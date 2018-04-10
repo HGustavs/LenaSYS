@@ -609,6 +609,7 @@ function drawERAttribute(x1, y1, x2, y2)
     ctx.fill();
     makeShadow();
 
+    ctx.fillStyle = this.fontColor;
     ctx.stroke();
     ctx.closePath();
     ctx.clip();
