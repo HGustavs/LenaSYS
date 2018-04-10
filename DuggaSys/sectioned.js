@@ -943,15 +943,15 @@ function returnedSection(data)
 
 					if(kk==0){
 						if(kk%2==0){
-							str+=" class='example item"+blorf+"' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}else{
-							str+=" class='example item"+blorf+"' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}
 					}else{
 						if(kk%2==0){
-							str+=" class='example item"+blorf+"' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}else{
-							str+=" class='example item"+blorf+"' style='white-space:nowrap;overflow:hidden;' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
+							str+=" class='example item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 						}
 					}
 					kk++;
@@ -995,9 +995,9 @@ function returnedSection(data)
 
 				else if (parseInt(item['kind']) == 1) { // Section
 					str +=
-						"<div style='display:inline-block;'><div class='nowrap"
+						"<div><div class='ellipsis nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
-						+ item['entryname'] + "'><span class='ellipsis'>"
+						+ item['entryname'] + "'><span>"
 						+ item['entryname']
 						+ "</span><img src='../Shared/icons/desc_complement.svg'"
 						+ "id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode
@@ -1008,9 +1008,9 @@ function returnedSection(data)
 				}
 
 				else if (parseInt(item['kind']) == 4) { // Moment
-					str+="<div style='display:inline-block;'><div class='nowrap"
+					str+="<div><div class='ellipsis nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
-						+ item['entryname'] + "'><span class='ellipsis'>"
+						+ item['entryname'] + "'><span>"
 						+ item['entryname'] + "</span>"
 						+ "<img src='../Shared/icons/desc_complement.svg'"
 						+ "id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode
@@ -1022,16 +1022,16 @@ function returnedSection(data)
 
 				else if (parseInt(item['kind']) == 2) { // Code Example
 					str +=
-						"<span><a class='" + blorf
+						"<div class='ellipsis nowrap'><span><a class='" + blorf
 						+ "' style='margin-left:15px;' href='codeviewer.php?exampleid="
 						+ item['link'] + "&courseid=" + querystring['courseid']
 						+ "&cvers=" + querystring['coursevers'] + "' title='"
-						+ item['entryname'] + "'>" + item['entryname'] + "</a></span>";
+						+ item['entryname'] + "'>" + item['entryname'] + "</a></span></div>";
 				}
 
-				else if (parseInt(item['kind']) == 3 ) {
+				else if (parseInt(item['kind']) == 3 ) { // Test Title
 					str +=
-						"<div><a class='" + blorf
+						"<div class='ellipsis nowrap'><a class='" + blorf
 						+ "' style='cursor:pointer;margin-left:15px;' "
 						+ "onClick='changeURL(\"showDugga.php?cid=" + querystring['courseid']
 						+ "&coursevers=" + querystring['coursevers'] + "&did="
@@ -1039,7 +1039,7 @@ function returnedSection(data)
 						+ momentexists + "&highscoremode=" + item['highscoremode']
 						+ "&comment=" + item['comments'] + "&deadline="
 						+ item['deadline'] + "\");' title='" + item['entryname']
-						+ "'><span class='nowrap'><span class='ellipsis'>"
+						+ "'><span><span>"
 						+ item['entryname'] + "</span></span></a></div>";
 				}
 
