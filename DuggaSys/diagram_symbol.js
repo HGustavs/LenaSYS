@@ -22,6 +22,7 @@ function Symbol(kind) {
     this.sizeOftext = "none"        // Used to set size of text.
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
+    this.tl, this.tr, this.bl, this.br; //Points that always are correct after a sortPoints()
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
     this.shadowBlur = 10;           // Shadowblur for all objects
@@ -258,43 +259,86 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
-    this.isClicked = function(xCoordinate, yCoordinate) {
-        var x1 = points[this.topLeft].x;
-        var y1 = points[this.topLeft].y;
-        var x2 = points[this.bottomRight].x;
-        var y2 = points[this.bottomRight].y;
-        if (x1 < xCoordinate && xCoordinate < x2 && y1 < yCoordinate && yCoordinate < y2) {
-            return true;
-        } else {
-            return false;
-        }
+    this.isClicked = function(mx, my) {
+        return this.checkForHover(mx, my);
     }
 
     //--------------------------------------------------------------------
     // Returns line distance to segment object e.g. line objects (currently only relationship markers)
     //--------------------------------------------------------------------
-    this.checkForHover = function (xCoordinate, yCoordinate) {
-        var topLeftX = points[this.topLeft].x;
-        var topLeftY = points[this.topLeft].y;
-        var bottomRightX = points[this.bottomRight].x;
-        var bottomRightY = points[this.bottomRight].y;
-        var width = bottomRightX - topLeftX;
-        var height = bottomRightY - topLeftY;
-        var boxHypotenuseElevatedBy2 = width * width + height * height;
-        var result = ((xCoordinate - topLeftX) * width + (yCoordinate - topLeftY) * height) / boxHypotenuseElevatedBy2;
-        if (result > 1) {
-            result = 1;
-        } else if (result < 0) {
-            result = 0;
+    this.checkForHover = function (mx, my) {
+        this.sortPoints();
+        if(this.symbolkind == 4){
+            return this.linehover(mx, my);
+        }else if(this.symbolkind == 3){
+            return this.entityhover(mx, my);
+        }else{
+            return this.entityhover(mx, my);
         }
-        var x = topLeftX + result * width;
-        var y = topLeftY + result * height;
-        width = x - xCoordinate;
-        height = y - yCoordinate;
-        if ((width * width + height * height) < 15) {
-            return true;
-        } else {
-            return false;
+    }
+
+    this.linehover = function (mx, my) {
+        var tolerance = 5;
+        tl.y -= tolerance;
+        tr.y -= tolerance;
+        tl.x -= tolerance;
+        tr.x += tolerance;
+        bl.x -= tolerance;
+        bl.y += tolerance;
+        br.x += tolerance;
+        br.y += tolerance;
+
+
+        if (!this.entityhover(mx, my)) {
+          return false;
+        }
+
+        return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
+    }
+
+    this.entityhover = function(mx,my){
+        //we have correct points in the four corners of a square.
+        if(mx > tl.x && mx < tr.x){
+            if(my > tl.y && my < bl.y){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //init four points, the four corners based on the two cornerpoints in the symbol.
+    //Trust me, it is needed.
+    this.sortPoints = function(){
+        var p1 = points[this.topLeft];
+        var p2 = points[this.bottomRight];
+        if(p1.x < p2.x){
+            if(p1.y < p2.y){
+                //we are in the topleft
+                tl = {x:p1.x, y:p1.y};
+                br = {x:p2.x, y:p2.y};
+                tr = {x:br.x, y:tl.y};
+                bl = {x:tl.x, y:br.y};
+            }else{
+                //we are in the buttomleft
+                tr = {x:p2.x, y:p2.y};
+                bl = {x:p1.x, y:p1.y};
+                tl = {x:bl.x, y:tr.y};
+                br = {x:tr.x, y:bl.y};
+            }
+        }else{
+            if(p1.y < p2.y){
+                //we are in the topright
+                tr = {x:p1.x, y:p1.y};
+                bl = {x:p2.x, y:p2.y};
+                tl = {x:bl.x, y:tr.y};
+                br = {x:tr.x, y:bl.y};
+            }else{
+                //we are in the buttomright
+                br = {x:p1.x, y:p1.y};
+                tl = {x:p2.x, y:p2.y};
+                bl = {x:tl.x, y:br.y};
+                tr = {x:br.x, y:tl.y};
+            }
         }
     }
 
@@ -892,4 +936,11 @@ this.drawOval = function (x1, y1, x2, y2) {
     ctx.quadraticCurveTo(x2, y1, x2, middleY);
     ctx.quadraticCurveTo(x2, y2, middleX, y2);
     ctx.quadraticCurveTo(x1, y2, x1, middleY);
+}
+
+function pointToLineDistance(P1, P2, x, y){
+    var numerator, denominator;
+    numerator = Math.abs((P2.y-P1.y)*x - (P2.x - P1.x)*y + P2.x * P1.y - P2.y*P1.x);
+    denominator = Math.sqrt((P2.y - P1.y)*(P2.y - P1.y) + (P2.x - P1.x)*(P2.x - P1.x));
+    return numerator/denominator;
 }

@@ -23,6 +23,7 @@ $className = getOP('className');
 $firstname = getOP('firstname');
 $lastname = getOP('lastname');
 $username = getOP('username');
+$addedtime = getOP('addedtime');
 $val = getOP('val');
 $newusers = getOP('newusers');
 $coursevers = getOP('coursevers');
@@ -50,6 +51,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				$query->bindParam(':username', $username);
 				$query->bindParam(':uid', $uid);
 				$query->bindParam(':className', $className);
+				$query->bindParam(':addedtime', $addedtime);
 
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
@@ -129,6 +131,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 									$stmt->bindParam(':ssn', $ssn);
 									$stmt->bindParam(':password', standardPasswordHash($rnd));
 									$stmt->bindParam(':className', $className);
+									$stmt->bindParam(':addedtime', $addedtime);
 
 									if(!$stmt->execute()) {
 											$error=$stmt->errorInfo();
