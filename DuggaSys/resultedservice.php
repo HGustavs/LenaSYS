@@ -16,10 +16,10 @@ if(isset($_SESSION['uid'])){
 	$firstname=$_SESSION['firstname'];
 }else{
 	$userid=1;
-	$loginname="UNK";		
+	$loginname="UNK";
 	$lastname="UNK";
 	$firstname="UNK";
-} 	
+}
 
 $opt = getOP('opt');
 $cid = getOP('cid');
@@ -79,6 +79,10 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$query->bindParam(':vers', $vers);
 			$query->bindParam(':uid', $luid);
 
+			if ($mark == "UNK"){
+				$mark = null;
+			}
+
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
@@ -128,7 +132,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':moment', $listentry);
 			$query->bindParam(':vers', $vers);
-			$query->bindParam(':uid', $luid);			
+			$query->bindParam(':uid', $luid);
 			$query->bindParam(':quizid', $quizId);
 			$query->bindParam(':variant', $qvariant);
 
@@ -169,7 +173,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				}
 			}
 		}
-		
+
 	}
 
 	if(strcmp($opt,"DUGGA")==0){
@@ -229,7 +233,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				$queryp->bindParam(':cid', $cid);
 				$queryp->bindParam(':vers', $vers);
 				$queryp->bindParam(':moment', $listentry);
-		
+
 				if(!$queryp->execute()) {
 					$error=$queryp->errorInfo();
 					$debug="Error reading param".$error[2]." ". __LINE__;
@@ -243,10 +247,10 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				$duggaentry=$listentry;
 				$dugganame="templates/".$row["quizFile"].".js";
 				$duggapage=file_get_contents("templates/".$row["quizFile"].".html");
-			
+
 		}
 	}
-	
+
 	if(strcmp($opt,"RESP")==0){
 
 			$currcvd=getcwd();
@@ -270,25 +274,25 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 					// Create a file area with format Lastname-Firstname-Login
 					$userdir = $row["lastname"]."_".$row["firstname"]."_".$row["username"];
-					
+
 					// First replace a predefined list of national characters
 					// Then replace any additional character that is not a-z, a number, period or underscore
 					$national = array("&ouml;", "&Ouml;", "&auml;", "&Auml;", "&aring;", "&Aring;","&uuml;","&Uuml;");
 					$nationalReplace = array("o", "O", "a", "A", "a", "A","u","U");
 					$userdir = str_replace($national, $nationalReplace, $userdir);
-					$userdir=preg_replace("/[^a-zA-Z0-9._]/", "", $userdir);				
-			
+					$userdir=preg_replace("/[^a-zA-Z0-9._]/", "", $userdir);
+
 					if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
 							if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
 									echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid/".$userdir;
 									$error=true;
 							}
 					}
-					
+
 					$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$responsefile."_FB.txt";
-					file_put_contents($movname,$responsetext);			
+					file_put_contents($movname,$responsetext);
 		}
-	}	
+	}
 }
 
 //------------------------------------------------------------------------------------------------
@@ -311,11 +315,11 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 
 		foreach($q->fetchAll(PDO::FETCH_ASSOC) as $row){
 				if (array_key_exists($row['uid'], $snus){
-					
+
 				} else {
-						
+
 				}
-				
+
 		}
 		*/
 		$query = $pdo->prepare("
@@ -384,7 +388,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 					'aid' => (int)$row['quiz'],
 					'variant' => (int)$row['variant'],
 					'dugga' => (int)$row['dugga'],
-					'moment' => (int)$row['moment'],					
+					'moment' => (int)$row['moment'],
 					'grade' => (int)$row['grade'],
 					'uid' => (int)$row['uid'],
 					'useranswer' => $row['useranswer'],
@@ -485,15 +489,15 @@ if(strcmp($opt,"DUGGA")===0){
 			$feedback = "UNK";
 
 			$currcvd=getcwd();
-			
-			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
+
+			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";
 			if(!file_exists($fedbname)) {
 					$feedback="UNK";
 			} else {
 					$feedback=file_get_contents($fedbname);
-			}			
-			
-			
+			}
+
+
 			if($row['kind']=="3"){
 					// Read file contents
 					$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
@@ -538,13 +542,13 @@ if(strcmp($opt,"DUGGA")===0){
 			if (!isset($files[$row['segment']])) $files[$row['segment']] = array();
 			array_push($files[$row['segment']], $entry);
 		}
-	
+
 }
 
 if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be object
 
 if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
-		$serviceTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];	
+		$serviceTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
 		$benchmark =  array('totalServiceTime' => $serviceTime);
 }else{
 		$benchmark="-1";

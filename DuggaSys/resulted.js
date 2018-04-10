@@ -988,9 +988,10 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 
     if ($(e.target ).hasClass("Uc")){
         changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+    } else if (($(e.target ).hasClass("G"))  || ($(e.target ).hasClass("VG")) || ($(e.target ).hasClass("U"))){
+        changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
     } else if ($(e.target ).hasClass("Gc")) {
         changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
-		location.reload();
     } else if ($(e.target ).hasClass("VGc")){
         changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
     } else if ($(e.target ).hasClass("U")) {
@@ -1011,8 +1012,8 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	                var newDateObj = new Date(newGradeExpire.getTime() + 24*60*60000);
                     var newGradeExpirePlusOneDay = newDateObj.getTime();
 
-					// Compair the gradeExpire value to the current time
-					if(newGradeExpirePlusOneDay > currentTimeGetTime){
+					// Compair the gradeExpire value to the current time, no matter
+					if(newGradeExpirePlusOneDay > currentTimeGetTime || (($(e.target ).hasClass("Gc"))  || ($(e.target ).hasClass("VGc")) || ($(e.target ).hasClass("Uh")))){
 						//The user must press the ctrl-key to activate if-statement
 						if(event.ctrlKey){
 							changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
