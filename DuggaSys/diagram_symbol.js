@@ -259,22 +259,15 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
-    this.isClicked = function(xCoordinate, yCoordinate) {
-        var x1 = points[this.topLeft].x;
-        var y1 = points[this.topLeft].y;
-        var x2 = points[this.bottomRight].x;
-        var y2 = points[this.bottomRight].y;
-        if (x1 < xCoordinate && xCoordinate < x2 && y1 < yCoordinate && yCoordinate < y2) {
-            return true;
-        } else {
-            return false;
-        }
+    this.isClicked = function(mx, my) {
+        return this.checkForHover(mx, my);
     }
 
     //--------------------------------------------------------------------
     // Returns line distance to segment object e.g. line objects (currently only relationship markers)
     //--------------------------------------------------------------------
     this.checkForHover = function (mx, my) {
+        this.sortPoints();
         if(this.symbolkind == 4){
             return this.linehover(mx, my);
         }else if(this.symbolkind == 3){
@@ -284,27 +277,35 @@ function Symbol(kind) {
         }
     }
 
-    this.linehover = function (mx, my) {        
-        this.sortPoints();
-        if(mx > tr.x + 15 || mx < tl.x - 15 || my < tr.y - 15 || my > br.y + 15){
-            return false;
+    this.linehover = function (mx, my) {
+        var tolerance = 5;
+        tl.y -= tolerance;
+        tr.y -= tolerance;
+        tl.x -= tolerance;
+        tr.x += tolerance;
+        bl.x -= tolerance;
+        bl.y += tolerance;
+        br.x += tolerance;
+        br.y += tolerance;
+
+
+        if (!this.entityhover(mx, my)) {
+          return false;
         }
-        
-        return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 15;
+
+        return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
     }
 
     this.entityhover = function(mx,my){
-        sortPoints();
         //we have correct points in the four corners of a square.
         if(mx > tl.x && mx < tr.x){
             if(my > tl.y && my < bl.y){
-                console.log("we hover the shit of this one  " + this.symbolkind);
                 return true;
             }
         }
         return false;
     }
-    
+
     //init four points, the four corners based on the two cornerpoints in the symbol.
     //Trust me, it is needed.
     this.sortPoints = function(){
@@ -313,28 +314,28 @@ function Symbol(kind) {
         if(p1.x < p2.x){
             if(p1.y < p2.y){
                 //we are in the topleft
-                tl = p1;
-                br = p2;
+                tl = {x:p1.x, y:p1.y};
+                br = {x:p2.x, y:p2.y};
                 tr = {x:br.x, y:tl.y};
                 bl = {x:tl.x, y:br.y};
             }else{
                 //we are in the buttomleft
-                tr = p2;
-                bl = p1;
+                tr = {x:p2.x, y:p2.y};
+                bl = {x:p1.x, y:p1.y};
                 tl = {x:bl.x, y:tr.y};
                 br = {x:tr.x, y:bl.y};
             }
         }else{
             if(p1.y < p2.y){
                 //we are in the topright
-                tr = p1;
-                bl = p2;
+                tr = {x:p1.x, y:p1.y};
+                bl = {x:p2.x, y:p2.y};
                 tl = {x:bl.x, y:tr.y};
                 br = {x:tr.x, y:bl.y};
             }else{
                 //we are in the buttomright
-                br = p1;
-                tl = p2;
+                br = {x:p1.x, y:p1.y};
+                tl = {x:p2.x, y:p2.y};
                 bl = {x:tl.x, y:br.y};
                 tr = {x:br.x, y:tl.y};
             }
