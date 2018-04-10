@@ -128,6 +128,9 @@
                 max-width: 50px;
                 position: absolute;
                 z-index: 2000;
+                right: 80px;
+                background-color: #fff;
+                box-shadow: #888 0px 1px 1px 1px;
             }
         </style>
         <script>
