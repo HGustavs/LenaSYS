@@ -121,6 +121,9 @@
                 cursor: pointer;
                 margin-left: 150px;
             }
+            .show-dropdown-content {
+                display: block;
+            }
         </style>
         <script>
             
@@ -155,6 +158,12 @@
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
                 };
             }
+            function makeBold() {
+                
+            }
+            function makeCursive() {
+                
+            }
             function showDropdown() {
                 $('#select-header').show();
             }
@@ -163,7 +172,7 @@
             }
 
             function dropDownToggle() {
-                document.getElementById(".headerType").toggle("showDropdown");   
+                document.getElementById(".headerType").toggle(".show-dropdown-content");   
             }
 
             // Close the dropdown if the user clicks outside of it
@@ -190,7 +199,7 @@
         </script>
     </head>
     <body onload="onload()">
-        <div class="Header">Hello its me, preview</div>
+        <div class="Header">Markdown preview</div>
         <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
             <div class="PrevHead">This is the preview window
@@ -203,8 +212,8 @@
                             <a href="#" id="h2" onclick="selected()" value="H2">Header 2</a>
                             <a href="#" id="h3" onclick="selected()" value="H3">Header 3</a>
                         </div>
-                    <span class="boldText" onclick=""><b>B</b></span>
-                    <span class="cursiveText" onclick=""><i>I</i></span>
+                    <span class="boldText" onclick="makeBold()"><b>B</b></span>
+                    <span class="cursiveText" onclick="makeCursive()"><i>i</i></span>
                 </div>
                 <div class="markText">
                     <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
