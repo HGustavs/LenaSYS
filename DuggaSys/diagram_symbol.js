@@ -511,7 +511,7 @@ function Symbol(kind) {
         ctx.setLineDash([]);
     }
 }
-function drawUML()
+function drawUML(x1, y1, x2, y2)
 {
     var midy = points[this.middleDivider].y;
     ctx.font = "bold " + parseInt(textsize) + "px Arial";
@@ -614,7 +614,7 @@ function drawERAttribute(x1, y1, x2, y2)
     ctx.clip();
     ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
 }
-function drawEntity()
+function drawEntity(x1, y1, x2, y2)
 {
     ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
     ctx.textAlign = "center";
@@ -654,7 +654,7 @@ function drawEntity()
         }
     }
 }
-function drawLine()
+function drawLine(x1, y1, x2, y2)
 {
     // ER Attribute relationship is a single line
     if (this.key_type == "Forced") {
@@ -677,7 +677,7 @@ function drawLine()
     ctx.stroke();
     ctx.strokeStyle = this.strokeColor;
 }
-function drawRelation()
+function drawRelation(x1, y1, x2, y2)
 {
     ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
     ctx.textAlign = "center";
