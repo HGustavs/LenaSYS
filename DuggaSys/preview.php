@@ -152,10 +152,10 @@
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
                 }
             }
-            function showDropdown {
+            function showDropdown() {
                 $('#select-header').show();
             }
-            function selected {
+            function selected() {
                 $('#select-header').hide();
             }
         </script>
