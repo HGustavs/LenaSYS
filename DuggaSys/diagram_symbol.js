@@ -302,14 +302,10 @@ function Symbol(kind) {
                 //we are in the buttomleft
                 br = p1;
                 tl = p2;
-                
-                
             }
-            tr = new Point;
             tr.y = tl.y;
             tr.x = br.x;
                 
-            bl = new Point;
             bl.y = br.y;
             bl.x = tl.y;
         }else{
@@ -322,11 +318,9 @@ function Symbol(kind) {
                 br = p1;
                 tl = p2;
             }
-            tl = new Point;
             tl.x = bl.x;
             tl.y = tr.y;
 
-            br = new Point;
             br.x = tr.x;
             br.y = bl.y;
         }
