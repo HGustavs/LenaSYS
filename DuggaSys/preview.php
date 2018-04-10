@@ -148,9 +148,9 @@
                     document.getElementById("markdown").innerHTML = " ";
                     return;
                 }   
-                else {
+               // else {
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
-                }
+               // }
             }
             function showDropdown() {
                 $('#select-header').show();
@@ -158,31 +158,28 @@
             function selected() {
                 $('#select-header').hide();
             }
-<<<<<<< HEAD
-=======
+
             function dropDownToggle() {
                 document.getElementById('.headerType').classList.toggle("showDropdown");   
             }
->>>>>>> 675bf56779534b19155af27b1efe31727bb77694
+
             // Close the dropdown if the user clicks outside of it
             window.onclick = function(event) {
                 if (!event.target.matches('#select-header')) {
 
-<<<<<<< HEAD
+
                     var dropdowns = document.getElementsByClassName("dropdown-content");
                     var i;
                     for (i = 0; i < dropdowns.length; i++) {
                         var openDropdown = dropdowns[i];
                         if (openDropdown.classList.contains('show')) {
                             openDropdown.classList.remove('show');
-=======
                     var dropdowns = document.getElementsByClassName("select-header");
                     var i;
                     for (i = 0; i < dropdowns.length; i++) {
                         var openDropdown = dropdowns[i];
                         if (openDropdown.classList.contains('showDropdown')) {
                             openDropdown.classList.remove('showDropdown');
->>>>>>> 675bf56779534b19155af27b1efe31727bb77694
                         }
                     }
                 }
@@ -230,9 +227,4 @@
         //?>
         
     </body>
-<<<<<<< HEAD
 </html>
-
-=======
-</html>
->>>>>>> 675bf56779534b19155af27b1efe31727bb77694
