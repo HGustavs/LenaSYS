@@ -2,6 +2,7 @@ var querystring=parseGet();
 var retdata;
 var newversid;
 var decider;
+var active_lid;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -394,21 +395,20 @@ function changedType()
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 	function confirmBox(temp){
+
 		if (temp == 1 || temp == 2 || temp == 3){
+		      active_lid = $(item).parents('table').attr('value');
 	        decider = temp;
 	        $("#sectionConfirmBox").css("display","flex");
-	    }
-	    else if(temp == 4){
-	    	console.log(decider);
+	    } else if(temp == 4){
 	    	if (decider == 1){
-	    		deleteItem();
-	    	}
-	   	 	else if (decider == 2){
+	    		deleteItem(active_lid);
+	    	} else if (decider == 2) {
 	    		newItem();
-	    	}
-	    	else if (decider == 3){
+	    	} else if (decider == 3) {
 	    		updateItem();
 	    	}
+
 	    	$("#sectionConfirmBox").css("display","none");
 	    	decider = 0;
 	    }
@@ -418,12 +418,11 @@ function changedType()
 	    }
 	}
 
-function deleteItem()
+function deleteItem(item_lid= null)
 {
-	lid=$("#lid").val();
+	var lid = item_lid ? item_lid : $("#lid").val() ;
 	AJAXService("DEL",{lid:lid},"SECTION");
 	$("#editSection").css("display","none");
-	//$("#overlay").css("display","none");
 }
 
 
@@ -820,8 +819,8 @@ function returnedSection(data)
 				// All are visible according to database
 
 				// Content table
-				str+="<table id='lid"+item['lid']+"' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
 
+				str+="<table id='lid"+item['lid']+"' value='"+item['lid']+"' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
 				if(kk%2==0) {
 					str+=" class='hi' ";
 				} else {
@@ -1010,25 +1009,25 @@ function returnedSection(data)
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis'>"
 						+ item['entryname']
-						+ "</span></div></div><img src='../Shared/icons/desc_complement.svg'"
+						+ "</span><img src='../Shared/icons/desc_complement.svg'"
 						+ "id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
 						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
-						+ "' class='arrowRight' style='display:none;'>";
+						+ "' class='arrowRight' style='display:none;'></div></div>";
 				}
 
 				else if (parseInt(item['kind']) == 4) { // Moment
 					str+="<div style='display:inline-block;'><div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis'>"
-						+ item['entryname'] + "</span></div></div>"
+						+ item['entryname'] + "</span>"
 						+ "<img src='../Shared/icons/desc_complement.svg'"
 						+ "id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
 						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
-						+ "' class='arrowRight' style='display:none;'>";
+						+ "' class='arrowRight' style='display:none;'></div></div>";
 				}
 
 				else if (parseInt(item['kind']) == 2) { // Code Example
@@ -1138,18 +1137,17 @@ function returnedSection(data)
 
 
 						if(parseInt(item['kind']) === 0){
-								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
+								str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1, this);'></td>";
 						}else if(parseInt(item['kind']) === 1){
-								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
+								str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1, this);'></td>";
 						}else if(parseInt(item['kind']) === 4){
-								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
+								str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1, this);'></td>";
 						}else{
-								str+="' ><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1);'></td>";
+								str+="' ><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(1, this);'></td>";
 						}
 				}
 
                 str += "</tr>";
-
 
 				str +="</table></div>";
 			}
