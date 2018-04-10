@@ -285,16 +285,6 @@ function Symbol(kind) {
 
     this.linehover = function (mx, my) {
         var tl, tr, bl, br;
-        sortPoints(tl, tr, bl, br);
-        if(mx > tr.x + 15 || mx < tl.x + 15 || my < tr.y +15 || my > br.y + 15){
-            return false;
-        }
-        
-        return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 15;
-    }
-
-    this.entityhover = function(mx,my){
-        var tl, tr, bl, br;
         
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
@@ -328,6 +318,16 @@ function Symbol(kind) {
             }
         }
         
+        if(mx > tr.x + 15 || mx < tl.x + 15 || my < tr.y +15 || my > br.y + 15){
+            return false;
+        }
+        
+        return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 15;
+    }
+
+    this.entityhover = function(mx,my){
+        var tl, tr, bl, br;
+        sortPoints(tl, tr, bl, br);
         //we have correct points in the four corners of a square.
         if(mx > tl.x && mx < tr.x){
             if(my > tl.y && my < bl.y){
