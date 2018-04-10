@@ -71,7 +71,6 @@
             line-height:
         }
     </style>
-
     <script>
         function onload() {
             $(".PreviewWindow").hide();
@@ -87,12 +86,16 @@
                 document.getElementById("markdown").innerHTML = " ";
                 return;
             }else {
+<<<<<<< HEAD
                         document.getElementById("markdown").innerHTML = //replace markdown with responseText
                             parseMarkdown(str); //get the response data as a string
 
             };
+=======
+                document.getElementById("markdown").innerHTML=parseMarkdown(str);
+            }
+>>>>>>> 232353028738e4c841d6501fdae48a8a72f98974
         }
-
         function saveCode() {
 
         }
@@ -111,24 +114,17 @@
     <div class="PrevHead">This is the preview window</div>
     <div class="Markdown">
         <form>
-            <textarea onkeyup="showPreview(this.value)" rows="32" cols="40" value ="code">
+            <textarea onkeyup="showPreview(this.value)" rows="36" cols="46" value="hej"> 
             </textarea>
         </form>
     </div>
-
     <div class="MarkdownPrev">
         <span id="markdown"> </span>
-
     </div>
-
     <div class="OptionButtons">
         <button id="button-save" onclick="saveMarkdown()">Save</button>
         <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
     </div>
 </div>
-<?php
-//echo $_GET['prev'];
-//?>
-
 </body>
 </html>
