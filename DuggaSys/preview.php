@@ -139,7 +139,8 @@
             <div class="Markdown">
                 <div class="markNav">Markdown</div>
                 <div class="markText" >
-                    <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
+                    <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"> 
+                    </textarea>
                 </div>
             </div>
             <div class="MarkdownPrev">
