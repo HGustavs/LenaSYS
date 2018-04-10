@@ -495,7 +495,7 @@ function Symbol(kind) {
           drawUML();
         }
         else if(this.symbolkind == 2){
-          drawERAttribute();
+          drawERAttribute(x1, y1, x2, y2);
         }
         else if(this.symbolkind == 3){
           drawEntity();
@@ -506,7 +506,6 @@ function Symbol(kind) {
         else if(this.symbolkind == 5){
           drawRelation();
         }
-
 
         ctx.restore();
         ctx.setLineDash([]);
@@ -576,18 +575,15 @@ function drawUML()
     ctx.lineTo(x2, midy);
     ctx.stroke();
 }
-function drawERAttribute()
+function drawERAttribute(x1, y1, x2, y2)
 {
-    //scale the text
-    ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
-    // Write Attribute Name
+    ctx.font = "bold " + parseInt(textsize) + "px " + this.font; //scale the text
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-
     ctx.fillStyle = this.symbolColor;
-    //drawing a multivalue attribute
     ctx.lineWidth = this.lineWidth;
 
+    //drawing a multivalue attribute
     if (this.key_type == 'Multivalue') {
         drawOval(x1 - 10, y1 - 10, x2 + 10, y2 + 10);
         ctx.stroke();
@@ -614,7 +610,6 @@ function drawERAttribute()
     makeShadow();
 
     ctx.stroke();
-    ctx.fillStyle = "#fff";
     ctx.closePath();
     ctx.clip();
     ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
