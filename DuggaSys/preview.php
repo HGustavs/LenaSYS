@@ -148,9 +148,9 @@
                     document.getElementById("markdown").innerHTML = " ";
                     return;
                 }   
-                else {
+               // else {
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
-                }
+               // }
             }
             function showDropdown() {
                 $('#select-header').show();
@@ -158,13 +158,22 @@
             function selected() {
                 $('#select-header').hide();
             }
+
             function dropDownToggle() {
                 document.getElementById('.headerType').classList.toggle("showDropdown");   
             }
+
             // Close the dropdown if the user clicks outside of it
             window.onclick = function(event) {
                 if (!event.target.matches('#select-header')) {
 
+
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    var i;
+                    for (i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
                     var dropdowns = document.getElementsByClassName("select-header");
                     var i;
                     for (i = 0; i < dropdowns.length; i++) {
