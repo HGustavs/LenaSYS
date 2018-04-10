@@ -295,7 +295,39 @@ function Symbol(kind) {
 
     this.entityhover = function(mx,my){
         var tl, tr, bl, br;
-        sortPoints(tl, tr, bl, br);
+        
+        var p1 = points[this.topLeft];
+        var p2 = points[this.bottomRight];
+        if(p1.x < p2.x){
+            if(p1.y < p2.y){
+                //we are in the topleft
+                tl = p1;
+                br = p2;
+                tr = {x:br.x, y:tl.y};
+                bl = {x:tl.x, y:br.y};
+            }else{
+                //we are in the buttomleft
+                tr = p2;
+                bl = p1;
+                tl = {x:bl.x, y:tr.y};
+                br = {x:tr.x, y:bl.y};
+            }
+        }else{
+            if(p1.y < p2.y){
+                //we are in the topright
+                tr = p1;
+                bl = p2;
+                tl = {x:bl.x, y:tr.y};
+                br = {x:tr.x, y:bl.y};
+            }else{
+                //we are in the buttomright
+                br = p1;
+                tl = p2;
+                bl = {x:tl.x, y:br.y};
+                tr = {x:br.x, y:tl.y};
+            }
+        }
+        
         //we have correct points in the four corners of a square.
         if(mx > tl.x && mx < tr.x){
             if(my > tl.y && my < bl.y){
@@ -311,7 +343,6 @@ function Symbol(kind) {
     this.sortPoints = function(tl, tr, bl, br){
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
-        console.log(p1.x + " " + p2.x)
         if(p1.x < p2.x){
             if(p1.y < p2.y){
                 //we are in the topleft
