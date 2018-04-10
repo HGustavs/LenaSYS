@@ -124,6 +124,11 @@
             .show-dropdown-content {
                 display: block;
             }
+            #select-header {
+                max-width: 50px;
+                position: absolute;
+                z-index: 2000;
+            }
         </style>
         <script>
             
