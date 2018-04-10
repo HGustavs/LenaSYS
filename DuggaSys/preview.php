@@ -102,9 +102,11 @@
             }
             .boldText {
                 cursor: pointer;
+                margin-left: 5px;
             }
             .cursiveText {
                 cursor: pointer;
+                margin-left: 5px;
             }
             #h1 {
                 font-size: 12px;
@@ -117,6 +119,7 @@
             }
             .headerType {
                 cursor: pointer;
+                margin-left: 20px;
             }
         </style>
         <script>
@@ -160,7 +163,7 @@
             }
 
             function dropDownToggle() {
-                document.getElementById(".headerType").classList.toggle("showDropdown");   
+                document.getElementById(".headerType").toggle("showDropdown");   
             }
 
             // Close the dropdown if the user clicks outside of it
@@ -200,7 +203,7 @@
                             <a href="#" id="h2" onclick="selected()" value="H2">Header 2</a>
                             <a href="#" id="h3" onclick="selected()" value="H3">Header 3</a>
                         </div>
-                    <span class="boldText" onclick="">B</span>
+                    <span class="boldText" onclick=""><b>B</b></span>
                     <span class="cursiveText" onclick="">I</span>
                 </div>
                 <div class="markText">
