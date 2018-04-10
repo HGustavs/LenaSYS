@@ -434,11 +434,13 @@ function validateName(){
 	var nme=document.getElementById("sectionname");
 	
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)){
+		$('#tooltipTxt').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
 		$('#submitBtn').removeAttr('disabled');
 		nme.style.backgroundColor = "#fff";
 		retValue = true;
 	}else{
+		$('#tooltipTxt').fadeIn();
 		$('#saveBtn').attr('disabled','disabled');
 		$('#submitBtn').attr('disabled','disabled');
 		nme.style.backgroundColor = "#f57";
@@ -505,6 +507,8 @@ function closeSelect()
 	$('#saveBtn').removeAttr('disabled');  							 		// Resets save button to its default form
 	$('#submitBtn').removeAttr('disabled');									// Resets submit button to its default form
 	document.getElementById("sectionname").style.backgroundColor = "#fff";  // Resets color for name input
+	$('#tooltipTxt').css("display","none");							 		// Resets tooltip text to its default form
+
 	
 }
 

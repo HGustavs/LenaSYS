@@ -49,7 +49,13 @@ pdoConnect();
       		</div>
       		<div style='padding:5px;'>
       			<input type='hidden' id='lid' value='Toddler' />
-      			<div id='inputwrapper-name' class='inputwrapper'><span>Name:</span><input type='text' class='textinput' id='sectionname' value='sectionname' onkeyup="validateName();" onchange="validateName();" /></div>
+      			<div id='inputwrapper-name' class='inputwrapper'>
+	      			<span>Name:</span>
+	      			<div class="tooltipDugga">
+		      			<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
+		      		</div>
+	      			<input type='text' class='textinput' id='sectionname' value='sectionname' onkeyup="validateName();" onchange="validateName();" />
+      			</div>
       			<div id='inputwrapper-type' class='inputwrapper'><span>Type:</span><select id='type' onchange='changedType();'></select></div>
       			<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
       			<div id='inputwrapper-gradesystem' class='inputwrapper'><span>GradeSystem:</span><select id='gradesys' ></select></div>

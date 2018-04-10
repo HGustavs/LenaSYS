@@ -51,7 +51,13 @@ pdoConnect();
       		</div>
       		<div style='padding:5px;'>
       			<input type='hidden' id='did' value='Toddler' /></td>
-      			<div class='inputwrapper'><span>Name:</span><input class='textinput' type='text' id='name' value='New Dugga' onkeyup="validateName();" onchange="validateName();" /></div>
+      			<div class='inputwrapper'>
+	      			<span>Name:</span>
+	      			<div class="tooltipDugga">
+		      			<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
+		      		</div>
+		      		<input class='textinput' type='text' id='name' value='New Dugga' onkeyup="validateName();" onchange="validateName();" />
+		      	</div>
       			<div class='inputwrapper'><span>Auto-grade:</span><select id='autograde'><option value='0'>Hidden</option><option value='1'>Public</option></select></div>
       			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'><option value='1'>U-G-VG</option><option value='2'>U-G</option><option value='3'>U-3-4-5</option></select></div>
       			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
