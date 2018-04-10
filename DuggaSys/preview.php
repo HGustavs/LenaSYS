@@ -111,7 +111,7 @@
     <div class="PrevHead">This is the preview window</div>
     <div class="Markdown">
         <form>
-            <textarea onkeyup="showPreview(this.value)" rows="32" cols="40" value ="code">
+            <textarea onkeydown="showPreview(this.value)" rows="32" cols="40" value ="code">
             </textarea>
         </form>
     </div>
