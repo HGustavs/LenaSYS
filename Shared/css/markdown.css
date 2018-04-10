@@ -48,7 +48,14 @@
     white-space: pre;
     white-space: pre-wrap;
 }
-
+.inline-div{
+    display: inline-block;
+}
+.inline-txtarea{
+    resize: none;
+    border: 10px solid black;
+    height: 125px;
+}
 .descbox code {
     font-family: Hack, MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
     font-size: 10px;
