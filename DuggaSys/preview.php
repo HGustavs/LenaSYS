@@ -102,11 +102,11 @@
             }
             .boldText {
                 cursor: pointer;
-                margin-left: 5px;
+                margin-left: 10px;
             }
             .cursiveText {
                 cursor: pointer;
-                margin-left: 5px;
+                margin-left: 10px;
             }
             #h1 {
                 font-size: 12px;
@@ -119,7 +119,7 @@
             }
             .headerType {
                 cursor: pointer;
-                margin-left: 20px;
+                margin-left: 150px;
             }
         </style>
         <script>
@@ -190,7 +190,7 @@
         </script>
     </head>
     <body onload="onload()">
-        <div class="Header">Hello its me, preview 2xdfsdf</div>
+        <div class="Header">Hello its me, preview</div>
         <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
             <div class="PrevHead">This is the preview window
@@ -204,7 +204,7 @@
                             <a href="#" id="h3" onclick="selected()" value="H3">Header 3</a>
                         </div>
                     <span class="boldText" onclick=""><b>B</b></span>
-                    <span class="cursiveText" onclick="">I</span>
+                    <span class="cursiveText" onclick=""><i>I</i></span>
                 </div>
                 <div class="markText">
                     <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
