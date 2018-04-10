@@ -158,16 +158,19 @@
             function selected() {
                 $('#select-header').hide();
             }
+            function dropDownToggle() {
+                document.getElementById('.headerType').classList.toggle("showDropdown");   
+            }
             // Close the dropdown if the user clicks outside of it
             window.onclick = function(event) {
                 if (!event.target.matches('#select-header')) {
 
-                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    var dropdowns = document.getElementsByClassName("select-header");
                     var i;
                     for (i = 0; i < dropdowns.length; i++) {
                         var openDropdown = dropdowns[i];
-                        if (openDropdown.classList.contains('show')) {
-                            openDropdown.classList.remove('show');
+                        if (openDropdown.classList.contains('showDropdown')) {
+                            openDropdown.classList.remove('showDropdown');
                         }
                     }
                 }
