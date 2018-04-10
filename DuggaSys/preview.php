@@ -106,11 +106,24 @@
             .cursiveText {
                 cursor: pointer;
             }
+            #h1 {
+                font-size: 12px;
+            }
+            #h2 {
+                font-size: 10px;
+            }
+            #h3 {
+                font-size: 8px;
+            }
+            .headerType {
+                cursor: pointer;
+            }
         </style>
         <script>
             
             function onload() {
                 $(".PreviewWindow").hide();
+                $('#select-header').hide();
             }
             function showPreview() {
                 $(".PreviewWindow").show();
@@ -139,6 +152,12 @@
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
                 }
             }
+            function showDropdown {
+                $('#select-header').show();
+            }
+            function selected {
+                $('#select-header').hide();
+            }
         </script>
     </head>
     <body onload="onload()">
@@ -149,11 +168,11 @@
             </div>
             <div class="Markdown">
                 <div class="markNav">Markdown
-                    <span class="headerType">H
-                        <select>
-                            <option value="H1">Header 1</option>
-                            <option value="H2">Header 2</option>
-                            <option value="H3">Header 3</option>
+                    <span class="headerType" onclick="showDropdown()">H
+                        <select id="select-header">
+                            <option id="h1" onclick="selected()" value="H1">Header 1</option>
+                            <option id="h2" onclick="selected()" value="H2">Header 2</option>
+                            <option id="h3" onclick="selected()" value="H3">Header 3</option>
                         </select>
                     </span>
                     <span class="boldText" onclick="">B</span>
