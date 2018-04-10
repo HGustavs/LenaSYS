@@ -394,10 +394,10 @@ function changedType()
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-	function confirmBox(temp){
+	function confirmBox(temp, item = null){
 
 		if (temp == 1 || temp == 2 || temp == 3){
-		      active_lid = $(item).parents('table').attr('value');
+		    active_lid = item ? $(item).parents('table').attr('value') : null;
 	        decider = temp;
 	        $("#sectionConfirmBox").css("display","flex");
 	    } else if(temp == 4){
