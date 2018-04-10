@@ -22,6 +22,7 @@ function Symbol(kind) {
     this.sizeOftext = "none"        // Used to set size of text.
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
+    this.tl, this.tr, this.bl, this.br; //Points that always are correct after a sortPoints()
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
     this.shadowBlur = 10;           // Shadowblur for all objects
@@ -283,13 +284,8 @@ function Symbol(kind) {
         }
     }
 
-    this.linehover = function (mx, my) {
-        var tl, tr, bl, br;
-        
-        var p1 = points[this.topLeft];
-        var p2 = points[this.bottomRight];
-        this.sortPoints(tl, tr, bl, br, p1, p2);
-        
+    this.linehover = function (mx, my) {        
+        this.sortPoints();
         if(mx > tr.x + 15 || mx < tl.x - 15 || my < tr.y - 15 || my > br.y + 15){
             return false;
         }
@@ -298,10 +294,7 @@ function Symbol(kind) {
     }
 
     this.entityhover = function(mx,my){
-        var tl, tr, bl, br;
-        var p1 = points[this.topLeft];
-        var p2 = points[this.bottomRight];
-        sortPoints(tl, tr, bl, br, p1, p2);
+        sortPoints();
         //we have correct points in the four corners of a square.
         if(mx > tl.x && mx < tr.x){
             if(my > tl.y && my < bl.y){
@@ -314,7 +307,9 @@ function Symbol(kind) {
     
     //init four points, the four corners based on the two cornerpoints in the symbol.
     //Trust me, it is needed.
-    this.sortPoints = function(tl, tr, bl, br, p1, p2){
+    this.sortPoints = function(){
+        var p1 = points[this.topLeft];
+        var p2 = points[this.bottomRight];
         if(p1.x < p2.x){
             if(p1.y < p2.y){
                 //we are in the topleft
