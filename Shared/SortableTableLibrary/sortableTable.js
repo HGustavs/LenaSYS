@@ -362,7 +362,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 					      // Create cogwheel
 					str+="<td style='padding:4px;'>";
 					str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-					str+=" onclick=' showVariantz("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
+					str+=" onclick=' showVariant("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
 					str+="</td>";
 					str+="<td style='padding:4px;'>";
 					str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
@@ -371,7 +371,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 
 					mhvstr+="<td style='padding:4px;'>";
 					mhvstr+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-					mhvstr+=" onclick=' showVariantz("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
+					mhvstr+=" onclick=' showVariant("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
 					mhvstr+="</td>";
 					mhvstr+="<td style='padding:4px;'>";
 					mhvstr+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
