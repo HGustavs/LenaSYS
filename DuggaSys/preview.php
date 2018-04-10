@@ -55,6 +55,9 @@
                 height: 40px;
                 width: 355px;
             }
+            .markdown {
+                background-color: red;
+            }
             #button-cancel {
                 position: absolute;
                 left: 235px;
@@ -138,9 +141,8 @@
             </div>
             <div class="Markdown">
                 <div class="markNav">Markdown</div>
-                <div class="markText" >
-                    <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"> 
-                    </textarea>
+                <div class="markText">
+                    <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
                 </div>
             </div>
             <div class="MarkdownPrev">
