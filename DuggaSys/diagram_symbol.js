@@ -28,7 +28,7 @@ function Symbol(kind) {
     this.shadowOffsetX = 3;         // The horizontal distance of the shadow for the object.
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
-    
+
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -383,16 +383,12 @@ function Symbol(kind) {
                     break;
                 }
             }
-        }
-        if(!broken){
             for(var i = 0; i < this.connectorRight.length; i++){
                 if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
                     this.connectorRight.splice(i,1);
                     break;
                 }
             }
-        }
-        if(!broken){
             for(var i = 0; i < this.connectorLeft.length; i++){
                 if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
                     this.connectorLeft.splice(i,1);
@@ -476,45 +472,44 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.draw = function () {
         ctx.lineWidth = this.lineWidth * 2;
-        if (this.sizeOftext == 'Tiny') {
-            textsize = 14;
-        } else if (this.sizeOftext == 'Small') {
+        if (this.sizeOftext == 'Small') {
             textsize = 20;
         } else if (this.sizeOftext == 'Medium') {
             textsize = 30;
         } else if (this.sizeOftext == 'Large') {
             textsize = 50;
         } else {
-            textsize = 14;
+            textsize = 14; //<-- Tiny and everything else
         }
+
+        ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.strokeColor;
+
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
+
+        ctx.save();
+
         if (this.symbolkind == 1) {
-            ctx.save();
             var midy = points[this.middleDivider].y;
             ctx.font = "bold " + parseInt(textsize) + "px Arial";
             // Clear Class Box
             ctx.fillStyle = "#fff";
             ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
             ctx.fillStyle = "#fff";
-            if (this.targeted) {
-                ctx.strokeStyle = "#F82";
-            } else {
-                ctx.strokeStyle = this.strokeColor;
-            }
+
             // Write Class Name
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillStyle = "#fff";
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
             if (this.key_type == 'Primary key') {
-                var linelenght = ctx.measureText(this.name).width;
+                var linelength = ctx.measureText(this.name).width;
                 ctx.beginPath(1);
                 ctx.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
                 ctx.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + linelenght, y1 + (0.85 * this.textsize) + 10);
+                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + linelength, y1 + (0.85 * this.textsize) + 10);
                 ctx.strokeStyle = this.strokeColor;
                 ctx.stroke();
             }
@@ -560,20 +555,14 @@ function Symbol(kind) {
             ctx.moveTo(x1, midy);
             ctx.lineTo(x2, midy);
             ctx.stroke();
-            ctx.restore();
-        } else if (this.symbolkind == 2) {
-            ctx.save();
+        }
+        else if (this.symbolkind == 2) {
             //drawing a multivalue attribute
             ctx.lineWidth = this.lineWidth;
             if (this.key_type == 'Multivalue') {
                 drawOval(x1 - 10, y1 - 10, x2 + 10, y2 + 10);
                 ctx.fillStyle = this.symbolColor;
                 ctx.fill();
-                if (this.targeted) {
-                    ctx.strokeStyle = "#F82";
-                } else {
-                    ctx.strokeStyle = this.strokeColor;
-                }
                 ctx.stroke();
             }
             //drawing an derived attribute
@@ -582,11 +571,6 @@ function Symbol(kind) {
                 drawOval(x1 - 10, y1 - 10);
                 ctx.fillStyle = this.symbolColor;
                 ctx.fill();
-                if (this.targeted) {
-                    ctx.strokeStyle = "#F82";
-                } else {
-                    ctx.strokeStyle = this.strokeColor;
-                }
             }
             //scale the text
             ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
@@ -597,11 +581,7 @@ function Symbol(kind) {
             ctx.fillStyle = this.symbolColor;
             ctx.fill();
             makeShadow();
-            if (this.targeted) {
-                ctx.strokeStyle = "#F82";
-            } else {
-                ctx.strokeStyle = this.strokeColor;
-            }
+
             ctx.stroke();
             ctx.fillStyle = "#fff";
             ctx.fillStyle = this.fontColor;
@@ -609,24 +589,23 @@ function Symbol(kind) {
             ctx.clip();
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
             if (this.key_type == 'Primary key') {
-                var linelenght = ctx.measureText(this.name).width;
+                var linelength = ctx.measureText(this.name).width;
                 ctx.beginPath(1);
                 ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+                ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
                 ctx.strokeStyle = this.strokeColor;
                 ctx.stroke();
 
             } else if (this.key_type == 'Normal') {
                 ctx.beginPath(1);
                 ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelenght * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+                ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
                 ctx.strokeStyle = this.strokeColor;
             }
-            ctx.restore();
-        } else if (this.symbolkind == 3) {
-            ctx.save();
+        }
+        else if (this.symbolkind == 3) {
             ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
@@ -649,11 +628,7 @@ function Symbol(kind) {
             ctx.clip();
             ctx.fillStyle = this.symbolColor;
             ctx.fill();
-            if (this.targeted) {
-                ctx.strokeStyle = "#F82";
-            } else {
-                ctx.strokeStyle = this.strokeColor;
-            }
+
             ctx.stroke();
             ctx.fillStyle = "#fff";
             ctx.fillStyle = this.fontColor;
@@ -668,57 +643,31 @@ function Symbol(kind) {
                     ctx.fillText(arity.text, arity.x, arity.y);
                 }
             }
-            ctx.restore();
-        } else if (this.symbolkind == 4) {
-            ctx.save();
+        }
+        else if (this.symbolkind == 4) {
             // ER Attribute relationship is a single line
+
             if (this.key_type == "Forced") {
                 ctx.lineWidth = this.lineWidth;
-                if (this.isHovered || this.targeted) {
-                    ctx.strokeStyle = "#F82";
-                } else {
-                    ctx.strokeStyle = this.strokeColor;
-                }
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
                 ctx.stroke();
                 ctx.lineWidth = this.lineWidth;
                 ctx.strokeStyle = "#000";
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-                ctx.strokeStyle = this.strokeColor;
             } else if (this.key_type == "Derived") {
-                if (this.isHovered || this.targeted) {
-                    ctx.strokeStyle = "#F82";
-                } else {
-                    ctx.strokeStyle = this.strokeColor;
-                }
                 ctx.setLineDash([5, 4]);
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-                ctx.strokeStyle = this.strokeColor;
             }
             else {
-                if (this.isHovered || this.targeted) {
-                    ctx.strokeStyle = "#F82";
-                } else {
-                    ctx.strokeStyle = this.strokeColor;
-                }
                 ctx.lineWidth = this.lineWidth;
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-                ctx.strokeStyle = this.strokeColor;
             }
-            ctx.restore();
-        } else if (this.symbolkind == 5) {
-            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            ctx.strokeStyle = this.strokeColor;
+        }
+        else if (this.symbolkind == 5) {
             ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
@@ -726,7 +675,6 @@ function Symbol(kind) {
             var midy = points[this.middleDivider].y;
             ctx.beginPath();
             if (this.key_type == 'Weak') {
-
                 ctx.moveTo(midx, y1 + 5);
                 ctx.lineTo(x2 - 9, midy + 0);
                 ctx.lineTo(midx + 0, y2 - 5);
@@ -744,17 +692,12 @@ function Symbol(kind) {
             ctx.closePath();
             ctx.clip();
 
-            if (this.targeted) {
-                ctx.strokeStyle = "#F82";
-            } else {
-                ctx.strokeStyle = this.strokeColor;
-            }
             ctx.stroke();
             ctx.fillStyle = "#fff";
             ctx.fillStyle = this.fontColor;
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-            ctx.restore();
         }
+        ctx.restore();
         ctx.setLineDash([]);
     }
 }
