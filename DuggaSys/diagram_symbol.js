@@ -310,13 +310,16 @@ function Symbol(kind) {
                 //we are in the topright
                 tr = p1;
                 bl = p2;
+                tl = {x:bl.x, y:tr.y};
+                br = {x:tr.x, y:bl.y};
             }else{
                 //we are in the buttomright
                 br = p1;
                 tl = p2;
+                bl = {x:tl.x, y:br.y};
+                tr = {x:br.x, y:tl.y};
             }
-            tl = {x:bl.x, y:tr.y};
-            br = {x:tr.x, y:bl.y};
+           
         }
         
         //we have correct points in the four corners of a square.
