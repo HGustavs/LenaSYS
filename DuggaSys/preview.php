@@ -194,13 +194,12 @@
             </div>
             <div class="Markdown">
                 <div class="markNav">Markdown
-                    <span class="headerType" onclick="dropDownToggle()">aA&#9661;
-                        <span id="select-header">
+                    <span class="headerType" onclick="dropDownToggle()">aA&#9663;</span>
+                        <div id="select-header">
                             <a href="#" id="h1" onclick="selected()" value="H1">Header 1</a>
                             <a href="#" id="h2" onclick="selected()" value="H2">Header 2</a>
                             <a href="#" id="h3" onclick="selected()" value="H3">Header 3</a>
-                        </span>
-                    </span>
+                        </div>
                     <span class="boldText" onclick="">B</span>
                     <span class="cursiveText" onclick="">I</span>
                 </div>
