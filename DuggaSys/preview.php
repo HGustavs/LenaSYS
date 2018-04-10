@@ -55,8 +55,9 @@
                 height: 40px;
                 width: 355px;
             }
-            .markdown {
+            .prevSpan {
                 background-color: red;
+                
             }
             #button-cancel {
                 position: absolute;
@@ -148,7 +149,9 @@
             <div class="MarkdownPrev">
                 <div class="prevNav">Markdown Preview</div>
                 <div class="markTextPrev">
-                    <span id="markdown"></span>
+                    <div class="prevSpan">
+                        <span id="markdown"></span>
+                    </div>    
                 </div>
             </div>
             <div class="OptionButtons">
