@@ -288,37 +288,9 @@ function Symbol(kind) {
         
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
-        if(p1.x < p2.x){
-            if(p1.y < p2.y){
-                //we are in the topleft
-                tl = p1;
-                br = p2;
-                tr = {x:br.x, y:tl.y};
-                bl = {x:tl.x, y:br.y};
-            }else{
-                //we are in the buttomleft
-                tr = p2;
-                bl = p1;
-                tl = {x:bl.x, y:tr.y};
-                br = {x:tr.x, y:bl.y};
-            }
-        }else{
-            if(p1.y < p2.y){
-                //we are in the topright
-                tr = p1;
-                bl = p2;
-                tl = {x:bl.x, y:tr.y};
-                br = {x:tr.x, y:bl.y};
-            }else{
-                //we are in the buttomright
-                br = p1;
-                tl = p2;
-                bl = {x:tl.x, y:br.y};
-                tr = {x:br.x, y:tl.y};
-            }
-        }
+        this.sortPoints(tl, tr, bl, br, p1, p2);
         
-        if(mx > tr.x + 15 || mx < tl.x + 15 || my < tr.y +15 || my > br.y + 15){
+        if(mx > tr.x + 15 || mx < tl.x - 15 || my < tr.y - 15 || my > br.y + 15){
             return false;
         }
         
@@ -327,7 +299,9 @@ function Symbol(kind) {
 
     this.entityhover = function(mx,my){
         var tl, tr, bl, br;
-        sortPoints(tl, tr, bl, br);
+        var p1 = points[this.topLeft];
+        var p2 = points[this.bottomRight];
+        sortPoints(tl, tr, bl, br, p1, p2);
         //we have correct points in the four corners of a square.
         if(mx > tl.x && mx < tr.x){
             if(my > tl.y && my < bl.y){
@@ -340,9 +314,7 @@ function Symbol(kind) {
     
     //init four points, the four corners based on the two cornerpoints in the symbol.
     //Trust me, it is needed.
-    this.sortPoints = function(tl, tr, bl, br){
-        var p1 = points[this.topLeft];
-        var p2 = points[this.bottomRight];
+    this.sortPoints = function(tl, tr, bl, br, p1, p2){
         if(p1.x < p2.x){
             if(p1.y < p2.y){
                 //we are in the topleft
