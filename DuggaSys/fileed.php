@@ -16,6 +16,7 @@ pdoConnect();
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
+	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script> 
 	<script src="fileed.js"></script>
 </head>
 <body onload="setupSort();">
@@ -39,6 +40,8 @@ pdoConnect();
 				<img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
 			</button>
 		</div>
+
+		<div id="fileLink" style='width:100%;'></div>
 
         <div id="searchresults" style='width:100%; display:none;'>
             <table class='list list--nomargin' style='margin-bottom:8px;' >
