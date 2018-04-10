@@ -81,14 +81,15 @@ function showSaveButton(){
   //$("#overlay").css("display","none");
 }
 
-function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
+function selectItem(editSectionDialogTitle,lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
 {
-
 	xelink=elink;
 
 	// Change title of the edit section dialog
-	if(title === "new") {
+	if(editSectionDialogTitle === "newItem") {
 		document.getElementById("editSectionDialogTitle").innerHTML = "New item";
+	} else {
+		document.getElementById("editSectionDialogTitle").innerHTML = "Edit item";
 	}
 
 	// Display Select Marker
@@ -743,15 +744,16 @@ function returnedSection(data)
 		str +=
 			"<input type='button' class='fab' value='+' title='New Item'"
 			+ " onclick='selectItem("
-			+ "\""+item['lid']+"\","
+			+ "\"newItem\","
+			+ "\"" + item['lid'] + "\","
 			+ "\"New Item\","
-			+ "\""+item['kind']+"\","
-			+ "\""+item['visible']+"\","
-			+ "\""+item['link']+"\","
-			+ "\""+momentexists+"\","
-			+ "\""+item['gradesys']+"\","
-			+ "\""+item['highscoremode']+"\")"
-			+ ";showSubmitButton();'>";
+			+ "\"" + item['kind'] + "\","
+			+ "\"" + item['visible'] + "\","
+			+ "\"" + item['link'] + "\","
+			+ "\"" + momentexists + "\","
+			+ "\"" + item['gradesys'] + "\","
+			+ "\"" + item['highscoremode'] + "\","
+			+ "); showSubmitButton();'>";
 	} else {
 		str += "</tr></table>";
 	}
@@ -774,9 +776,21 @@ function returnedSection(data)
     str+="</div>";
     // If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign
     if(retdata["writeaccess"]){
-        str+="<div id='course-newitem' style='display: flex;'>";
-        str+= "<input type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'/>";
-        str+="</div>";
+        str += "<div id='course-newitem' style='display: flex;'>";
+		str +=
+			"<input type='button' value='+' class='submit-button-newitem' title='New Item'"
+			+ " onclick='selectItem("
+			+ "\"newItem\","
+			+ "\"" + item['lid'] + "\","
+			+ "\"New Item\","
+			+ "\"" + item['kind'] + "\","
+			+ "\"" + item['visible'] + "\","
+			+ "\"" + item['link'] + "\","
+			+ "\"" + momentexists + "\","
+			+ "\"" + item['gradesys'] + "\","
+			+ "\"" + item['highscoremode'] + "\","
+			+ "); showSubmitButton();'>";
+        str += "</div>";
     }
 
     str+="<div id='course-coursevers' style='display: none; margin-right:10px;'>"+data.coursevers+"</div>";
