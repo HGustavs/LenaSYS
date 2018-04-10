@@ -30,7 +30,6 @@ function parser($migrationArray, $version) {
                     $keyString = !isset($col[4]) ? "" :", " . $col[4] ;
                     $query = "CREATE TABLE IF NOT EXISTS $col[0]($col[1] $col[2] $col[3] $keyString) ENGINE=InnoDB;";
                     $message[] = queryExecute($query);
-
                 } else if ($type == 'column') {
                     $modifier = queryExecute("SELECT ".$col[1]." FROM " . $col[0]) == "Success" ? "MODIFY COLUMN" : "ADD" ;
                     $query = "ALTER TABLE $col[0] $modifier $col[1] $col[2] $col[3];";
@@ -54,7 +53,6 @@ function parser($migrationArray, $version) {
  */
 function queryExecute($query) {
     global $pdo;
-    echo $query . "<br>";
 
     $stmt = $pdo->prepare($query);
     if ($stmt->execute()) {
