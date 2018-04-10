@@ -158,6 +158,20 @@
             function selected() {
                 $('#select-header').hide();
             }
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function(event) {
+                if (!event.target.matches('#select-header')) {
+
+                    var dropdowns = document.getElementsByClassName("dropdown-content");
+                    var i;
+                    for (i = 0; i < dropdowns.length; i++) {
+                        var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                            openDropdown.classList.remove('show');
+                        }
+                    }
+                }
+            }
         </script>
     </head>
     <body onload="onload()">
@@ -168,13 +182,13 @@
             </div>
             <div class="Markdown">
                 <div class="markNav">Markdown
-                    <span class="headerType" onclick="showDropdown()">H
-                        <select id="select-header">
-                            <option id="h1" onclick="selected()" value="H1">Header 1</option>
-                            <option id="h2" onclick="selected()" value="H2">Header 2</option>
-                            <option id="h3" onclick="selected()" value="H3">Header 3</option>
-                        </select>
-                    </span>
+                    <div class="headerType" onclick="showDropdown()">H
+                        <div id="select-header">
+                            <a href="#" id="h1" onclick="selected()" value="H1">Header 1</a>
+                            <a href="#" id="h2" onclick="selected()" value="H2">Header 2</a>
+                            <a href="#" id="h3" onclick="selected()" value="H3">Header 3</a>
+                        </div>
+                    </div>
                     <span class="boldText" onclick="">B</span>
                     <span class="cursiveText" onclick="">I</span>
                 </div>
