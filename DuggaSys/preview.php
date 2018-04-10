@@ -71,7 +71,6 @@
             line-height:
         }
     </style>
-
     <script>
         function onload() {
             $(".PreviewWindow").hide();
@@ -90,7 +89,6 @@
                 document.getElementById("markdown").innerHTML=parseMarkdown(str);
             }
         }
-
         function saveCode() {
 
         }
@@ -111,21 +109,15 @@
         <form>
             <textarea onkeyup="showPreview(this.value)" rows="32" cols="40" value ="hej"> 
             </textarea>
-            
         </form>
     </div>
-
     <div class="MarkdownPrev">
         <span id="markdown"> </span>
-
     </div>
-
     <div class="OptionButtons">
         <button id="button-save" onclick="saveMarkdown()">Save</button>
         <button id="button-cancel" onclick="cancelPreview()">Cancel</button>
     </div>
 </div>
-
-
 </body>
 </html>
