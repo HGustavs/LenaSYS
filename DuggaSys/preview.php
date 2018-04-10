@@ -86,15 +86,13 @@
                 document.getElementById("markdown").innerHTML = " ";
                 return;
             }else {
-<<<<<<< HEAD
                         document.getElementById("markdown").innerHTML = //replace markdown with responseText
                             parseMarkdown(str); //get the response data as a string
 
             };
-=======
+
                 document.getElementById("markdown").innerHTML=parseMarkdown(str);
-            }
->>>>>>> 232353028738e4c841d6501fdae48a8a72f98974
+            
         }
         function saveCode() {
 
