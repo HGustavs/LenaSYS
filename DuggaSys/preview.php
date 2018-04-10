@@ -130,7 +130,8 @@
                 z-index: 2000;
                 right: 80px;
                 background-color: #fff;
-                box-shadow: #888 0px 1px 1px 1px;
+                box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.3);
+                text-decoration: none;
             }
         </style>
         <script>
