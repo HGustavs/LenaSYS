@@ -193,7 +193,7 @@
             <div class="PrevHead">This is the preview window
             </div>
             <div class="Markdown">
-                <div class="markNav">Markdown test
+                <div class="markNav">Markdown test2
                     <span class="headerType" onclick="dropDownToggle()">H
                         <span id="select-header">
                             <a href="#" id="h1" onclick="selected()" value="H1">Header 1</a>
