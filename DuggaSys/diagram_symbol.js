@@ -303,11 +303,8 @@ function Symbol(kind) {
                 br = p1;
                 tl = p2;
             }
-            tr.y = tl.y;
-            tr.x = br.x;
-                
-            bl.y = br.y;
-            bl.x = tl.y;
+            tr = {x:tl.y, y:br.x};
+            bl = {x:tl.x, y:br.y};
         }else{
             if(p1.y < p2.y){
                 //we are in the topright
@@ -318,11 +315,8 @@ function Symbol(kind) {
                 br = p1;
                 tl = p2;
             }
-            tl.x = bl.x;
-            tl.y = tr.y;
-
-            br.x = tr.x;
-            br.y = bl.y;
+            tl = {x:bl.x, y:tr.y};
+            br = {x:tr.x, y:bl.y};
         }
         
         //we have correct points in the four corners of a square.
