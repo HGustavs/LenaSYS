@@ -172,7 +172,7 @@
             }
 
             function dropDownToggle() {
-                document.getElementById(".headerType").toggle(".show-dropdown-content");   
+                document.getElementsByClassName(".headerType").toggle(".show-dropdown-content");   
             }
 
             // Close the dropdown if the user clicks outside of it
