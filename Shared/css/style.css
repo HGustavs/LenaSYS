@@ -1204,6 +1204,7 @@ input.submit-button-newitem {
   transition:1s background-color;
   float:right;
 }
+
 input.diagram-sidebar-buttons {
    background-color:#7B5A96;
    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -1284,6 +1285,7 @@ input.submit-button:disabled {
   opacity: 0.3;
 }
 
+
 .buttonsStyle {
   display: flex;
   flex-direction: column;
@@ -1344,6 +1346,40 @@ input.large-button {
   height:48px !important;
   line-height:48px !important;
 }
+
+/* Tooltip */
+
+.tooltipDugga {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltipDugga .tooltipDuggatext {
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 5;
+    top: -24px;
+	left: -18px;
+    font-size: 12px;
+    line-height: 14px;
+}
+
+.tooltipDugga .tooltipDuggatext::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent black;
+}
+
 
 /* File upload form */
 

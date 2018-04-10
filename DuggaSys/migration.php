@@ -27,7 +27,9 @@ function parser($migrationArray, $version) {
                 $col = array_slice($col, 1);
 
                 if ($type == 'create') {
-                    $query = "CREATE TABLE IF NOT EXISTS $col[0]($col[1] $col[2], PRIMARY KEY($col[1])) ENGINE=InnoDB;";
+
+                    $keyString = !isset($col[4]) ? "" :", " . $col[4] ;
+                    $query = "CREATE TABLE IF NOT EXISTS $col[0]($col[1] $col[2] $col[3] $keyString) ENGINE=InnoDB;";
                     $message[] = queryExecute($query);
                 } else if ($type == 'column') {
                     $modifier = queryExecute("SELECT ".$col[1]." FROM " . $col[0]) == "Success" ? "MODIFY COLUMN" : "ADD" ;
@@ -58,7 +60,6 @@ function parser($migrationArray, $version) {
  */
 function queryExecute($query) {
     global $pdo;
-    //echo $query . "<br>";
 
     $stmt = $pdo->prepare($query);
     if ($stmt->execute()) {
@@ -70,11 +71,12 @@ function queryExecute($query) {
 
 $migrationArray = array(
     [
-        'version' => 'v0.02',
+
+        'version' => 'v0.01',
         [
 
-            ['create', 'user', 'uid', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT'],
-			['column', 'user', 'username', 'varchar(80)', 'NOT NULL'],
+            ['create', 'user', 'uid', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT', 'PRIMARY KEY(uid)'],
+			      ['column', 'user', 'username', 'varchar(80)', 'NOT NULL'],
             ['column', 'user', 'firstname', 'varchar(50)', ''],
             ['column', 'user', 'lastname', 'varchar(50)', ''],
             ['column', 'user', 'ssn', 'varchar(20)', ''],
@@ -92,7 +94,8 @@ $migrationArray = array(
             ['column', 'user', 'securityquestionanswer', 'varchar(256)', ''],
             ['column', 'user', 'requestedpasswordchange', 'tinyint(1)', 'UNSIGNED NOT NULL'],
 
-            ['create', 'course', 'cid', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT'],
+
+            ['create', 'course', 'cid', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT', 'PRIMARY KEY(cid)'],
             ['column', 'course', 'coursecode', 'varchar(45)', ''],
             ['column', 'course', 'coursename', 'varchar(80)', ''],
             ['column', 'course', 'created', 'datetime', ''],
@@ -108,6 +111,7 @@ $migrationArray = array(
         ],
     ],
     [
+
         'version' => 'v0.01',
 		[
 		    ['insert', 'user', 'values'=> [
