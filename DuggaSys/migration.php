@@ -27,6 +27,7 @@ function parser($migrationArray, $version) {
                 $col = array_slice($col, 1);
 
                 if ($type == 'create') {
+
                     $keyString = !isset($col[4]) ? "" :", " . $col[4] ;
                     $query = "CREATE TABLE IF NOT EXISTS $col[0]($col[1] $col[2] $col[3] $keyString) ENGINE=InnoDB;";
                     $message[] = queryExecute($query);
@@ -38,6 +39,12 @@ function parser($migrationArray, $version) {
                     if (count($col) >= 5) {
                         $message[] = queryExecute("ALTER TABLE $col[0] ADD $col[4]");
                     }
+                } else if ($type == 'insert') {
+                    $keys = implode(", ", array_keys($col['values']));
+                    $values = implode("', '", $col['values']);
+                    $query = "INSERT INTO $col[0]($keys) VALUES ('$values')";
+                    echo $query;
+                    $message[] = queryExecute($query);
                 }
             }
 		}
@@ -64,11 +71,12 @@ function queryExecute($query) {
 
 $migrationArray = array(
     [
+
         'version' => 'v0.01',
         [
 
             ['create', 'user', 'uid', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT', 'PRIMARY KEY(uid)'],
-			['column', 'user', 'username', 'varchar(80)', 'NOT NULL'],
+			      ['column', 'user', 'username', 'varchar(80)', 'NOT NULL'],
             ['column', 'user', 'firstname', 'varchar(50)', ''],
             ['column', 'user', 'lastname', 'varchar(50)', ''],
             ['column', 'user', 'ssn', 'varchar(20)', ''],
@@ -86,6 +94,7 @@ $migrationArray = array(
             ['column', 'user', 'securityquestionanswer', 'varchar(256)', ''],
             ['column', 'user', 'requestedpasswordchange', 'tinyint(1)', 'UNSIGNED NOT NULL'],
 
+
             ['create', 'course', 'cid', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT', 'PRIMARY KEY(cid)'],
             ['column', 'course', 'coursecode', 'varchar(45)', ''],
             ['column', 'course', 'coursename', 'varchar(80)', ''],
@@ -102,10 +111,25 @@ $migrationArray = array(
         ],
     ],
     [
-        'version' => 'v0.02',
+
+        'version' => 'v0.01',
 		[
+		    ['insert', 'user', 'values'=> [
+                    'username' => 'Hugo',
+                    'password' => '$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q',
+                    'lastupdated' => '2018-04-10 15:25:46',
+                    'requestedpasswordchange' => 0,
+                ]
+            ],
+            ['insert', 'user', 'values'=> [
+                    'username' => 'Rudolf',
+                    'password' => '$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q',
+                    'lastupdated' => '2018-04-10 15:25:46',
+                    'requestedpasswordchange' => 0,
+                ]
+            ]
 		],
     ],
 );
 
-var_dump(parser($migrationArray, "v0.02"));
+var_dump(parser($migrationArray, "v0.01"));
