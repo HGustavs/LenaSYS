@@ -151,9 +151,9 @@
                     document.getElementById("markdown").innerHTML = " ";
                     return;
                 }
-               // else {
+                else {
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
-               // };
+                };
             }
             function showDropdown() {
                 $('#select-header').show();
