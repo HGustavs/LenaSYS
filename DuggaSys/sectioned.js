@@ -86,6 +86,11 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	xelink=elink;
 
+	// Change title of the edit section dialog
+	if(title === "new") {
+		document.getElementById("editSectionDialogTitle").innerHTML = "New item";
+	}
+
 	// Display Select Marker
 	$(".item").css("border","none");
 	$(".item").css("box-shadow","none");
@@ -679,7 +684,7 @@ function returnedSection(data)
       str+="<td style='display: inline-block;'><div class='course-dropdown-div'>";
       var sstr ="<select class='course-dropdown' onchange='goToVersion(this)'>";
       var ssstr ="<select class='course-dropdown'>";
-        if (retdata['versions'].length > 0) {
+    	if (retdata['versions'].length > 0) {
             for ( i = 0; i < retdata['versions'].length; i++) {
                 var item = retdata['versions'][i];
                 if (retdata['courseid'] == item['cid']) {
@@ -731,15 +736,25 @@ function returnedSection(data)
         str+="<td class='files menuButton' style='display: inline-block;'><div class='files menuButton'><input type='button' value='Files' class='submit-button' title='Show files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
         str+="<td class='groups menuButton' style='display: inline-block;'><div class='groups menuButton'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
         str+="<td class='contribution menuButton' style='display: inline-block;'><div class='contribution menuButton'><input type='button' value='Contribution' class='submit-button' title='Access contribution page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
-    }else{
-			// No version selector for students
-		}
-        if(retdata["writeaccess"]){
-            str+="</tr></table>";
-            str += "<input type='button' class='fab' value='+' title='New Item' onclick='selectItem(\""+item['lid']+"\",\"New Item\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\");showSubmitButton();'>";
-        }else{
-            str+="</tr></table>";
-        }
+	} else {/* No version selector for students */}
+	
+	if(retdata["writeaccess"]) {
+		str += "</tr></table>";
+		str +=
+			"<input type='button' class='fab' value='+' title='New Item'"
+			+ " onclick='selectItem("
+			+ "\""+item['lid']+"\","
+			+ "\"New Item\","
+			+ "\""+item['kind']+"\","
+			+ "\""+item['visible']+"\","
+			+ "\""+item['link']+"\","
+			+ "\""+momentexists+"\","
+			+ "\""+item['gradesys']+"\","
+			+ "\""+item['highscoremode']+"\")"
+			+ ";showSubmitButton();'>";
+	} else {
+		str += "</tr></table>";
+	}
 
       // hide som elements if to narrow
     var hiddenInline = "";
