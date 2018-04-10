@@ -147,10 +147,10 @@
                     // and exit the function.
                     document.getElementById("markdown").innerHTML = " ";
                     return;
-                }   
+                }
                // else {
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
-               // }
+               // };
             }
             function showDropdown() {
                 $('#select-header').show();
