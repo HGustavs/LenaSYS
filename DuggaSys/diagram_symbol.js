@@ -28,7 +28,7 @@ function Symbol(kind) {
     this.shadowOffsetX = 3;         // The horizontal distance of the shadow for the object.
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
-    
+
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -284,16 +284,16 @@ function Symbol(kind) {
     }
 
     this.linehover = function (mx, my) {
-        console.log(pointToLineDistance(this.topLeft, this.bottomRight, mx, my));
-        return pointToLineDistance(this.topLeft, this.bottomRight, mx, my) < 15;
+
+        return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 15;
     }
-    
+
     this.entityhover = function(mx,my){
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
-        
+
         var tl, tr, bl, br;
-        
+
         if(p1.x < p2.x){
             if(p1.y < p2.y){
                 //we are in the topleft
@@ -322,9 +322,9 @@ function Symbol(kind) {
                 bl = {x:tl.x, y:br.y};
                 tr = {x:br.x, y:tl.y};
             }
-           
+
         }
-        
+
         //we have correct points in the four corners of a square.
         if(mx > tl.x && mx < tr.x){
             if(my > tl.y && my < bl.y){
@@ -334,7 +334,7 @@ function Symbol(kind) {
         }
         return false;
     }
-    
+
     //--------------------------------------------------------------------
     // Updates all points referenced by symbol
     //--------------------------------------------------------------------
@@ -817,9 +817,9 @@ this.drawOval = function (x1, y1, x2, y2) {
     ctx.quadraticCurveTo(x1, y2, x1, middleY);
 }
 
-function pointToLineDistance(p1, p2, x, y){
+function pointToLineDistance(P1, P2, x, y){
     var numerator, denominator;
-    numerator = Math.abs((p2.y-p1.y)*x - (p2.x - p1.x)*y + p2.x * p1.y - p2.y*p1.x);
-    denominator = Math.sqrt((p2.y - p1.y)*(p2.y - p1.y) + (p2.x - p1.x)*(p2.x - p1.x));
+    numerator = Math.abs((P2.y-P1.y)*x - (P2.x - P1.x)*y + P2.x * P1.y - P2.y*P1.x);
+    denominator = Math.sqrt((P2.y - P1.y)*(P2.y - P1.y) + (P2.x - P1.x)*(P2.x - P1.x));
     return numerator/denominator;
 }
