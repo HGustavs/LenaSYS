@@ -62,10 +62,10 @@ pdoConnect();
       		</div>
       		<!-- Error message, no duggas present-->
       		<div style='padding:5px;'>
-      			<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='confirmBox(1);' /> 
-      			<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows();' /> 
-      			<input id="submitBtn" style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='confirmBox(2);' /> 
-      			<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='confirmBox(3);' /> 
+      			<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
+      			<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows();' />
+      			<input id="submitBtn" style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();' />
+      			<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' />
           </div>
       </div>
 	</div>
@@ -75,15 +75,15 @@ pdoConnect();
       <div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
             <div class='loginBox' style='width:460px;'>
                   <div class='loginBoxheader'>
-                        <h3>Confirm your update</h3>
-                        <div class="cursorPointer" onclick='confirmBox(5);' title="Close window">x</div>
+                        <h3>Confirm deletion</h3>
+                        <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
                   </div>
                   <div style='text-align: center;'>
-                        <h4>Are you sure you want to make this happen?</h4>
+                        <h4>Are you sure you want to delete this item?</h4>
                   </div>
                   <div style='display:flex; align-items:center; justify-content: center;'>
-                        <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox(4);' />
-                        <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox(5);' />
+                        <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
+                        <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
                   </div>
             </div>
       </div>
