@@ -212,9 +212,9 @@ points.closestPoint = function(xCoordinate, yCoordinate) {
     var distance = 50000000;
     var index = -1;
     for (var i = 0; i < this.length; i++) {
-        var deltaX = xCoordinate - this[i].x;
-        var deltaY = yCoordinate - this[i].y;
-        var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
+        var dx = xCoordinate - this[i].x;
+        var dy = yCoordinate - this[i].y;
+        var hypotenuseElevatedBy2 = (dx * dx) + (dy * dy);
         if (hypotenuseElevatedBy2 < distance) {
             distance = hypotenuseElevatedBy2;
             index = i;
