@@ -363,7 +363,7 @@ diagram.itemClicked = function() {
 //--------------------------------------------------------------------
 diagram.checkForHover = function(xCoordinate, yCoordinate) {
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 2 && this[i].symbolkind == 4) {
+        if (this[i].kind == 2) {
             this[i].isHovered = this[i].checkForHover(xCoordinate, yCoordinate);
         }
     }

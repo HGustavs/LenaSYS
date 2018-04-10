@@ -257,8 +257,6 @@ function mouseupevt(ev) {
         // Add required points
         p1 = points.addPoint(startMouseCoordinateX, startMouseCoordinateY, false);
         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-
-
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
     if (uimode == "CreateLine" && md == 4) {
@@ -361,10 +359,7 @@ function mouseupevt(ev) {
                !(uimode == "CreateLine") && !(uimode == "CreateEREntity") &&
                !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) &&
                !(uimode == "MoveAround" ) && !(uimode == "CreateERRelation")) {
-
-       
             diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
-        
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();

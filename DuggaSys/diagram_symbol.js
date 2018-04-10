@@ -273,31 +273,73 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     // Returns line distance to segment object e.g. line objects (currently only relationship markers)
     //--------------------------------------------------------------------
-    this.checkForHover = function (xCoordinate, yCoordinate) {
-        var topLeftX = points[this.topLeft].x;
-        var topLeftY = points[this.topLeft].y;
-        var bottomRightX = points[this.bottomRight].x;
-        var bottomRightY = points[this.bottomRight].y;
-        var width = bottomRightX - topLeftX;
-        var height = bottomRightY - topLeftY;
-        var boxHypotenuseElevatedBy2 = width * width + height * height;
-        var result = ((xCoordinate - topLeftX) * width + (yCoordinate - topLeftY) * height) / boxHypotenuseElevatedBy2;
-        if (result > 1) {
-            result = 1;
-        } else if (result < 0) {
-            result = 0;
-        }
-        var x = topLeftX + result * width;
-        var y = topLeftY + result * height;
-        width = x - xCoordinate;
-        height = y - yCoordinate;
-        if ((width * width + height * height) < 15) {
-            return true;
-        } else {
-            return false;
+    this.checkForHover = function (mx, my) {
+        if(this.symbolkind == 4){
+            return this.linehover(mx, my);
+        }else if(this.symbolkind == 3){
+            return this.entityhover(mx, my);
+        }else{
+            return this.entityhover(mx, my);
         }
     }
 
+    this.linehover = function (mx, my) {
+        return this.entityhover(mx,my);
+    }
+    
+    this.entityhover = function(mx,my){
+        var p1 = points[this.topLeft];
+        var p2 = points[this.bottomRight];
+        
+        var tl, tr, bl, br;
+        
+        if(p1.x < p2.x){
+            if(p1.y < p2.y){
+                //we are in the topleft
+                tl = p1;
+                br = p2;
+            }else{
+                //we are in the buttomleft
+                br = p1;
+                tl = p2;
+                
+                
+            }
+            tr = new Point;
+            tr.y = tl.y;
+            tr.x = br.x;
+                
+            bl = new Point;
+            bl.y = br.y;
+            bl.x = tl.y;
+        }else{
+            if(p1.y < p2.y){
+                //we are in the topright
+                tr = p1;
+                bl = p2;
+            }else{
+                //we are in the buttomright
+                br = p1;
+                tl = p2;
+            }
+            tl = new Point;
+            tl.x = bl.x;
+            tl.y = tr.y;
+
+            br = new Point;
+            br.x = tr.x;
+            br.y = bl.y;
+        }
+        
+        //we have correct points in the four corners of a square.
+        if(mx > tl.x && mx < tr.x){
+            if(my > tl.y && my < bl.y){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     //--------------------------------------------------------------------
     // Updates all points referenced by symbol
     //--------------------------------------------------------------------
