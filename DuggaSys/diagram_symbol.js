@@ -284,16 +284,34 @@ function Symbol(kind) {
     }
 
     this.linehover = function (mx, my) {
-
+        var tl, tr, bl, br;
+        sortPoints(tl, tr, bl, br);
+        if(mx > tr.x + 15 || mx < tl.x + 15 || my < tr.y +15 || my > br.y + 15){
+            return false;
+        }
+        
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 15;
     }
 
     this.entityhover = function(mx,my){
+        var tl, tr, bl, br;
+        sortPoints(tl, tr, bl, br);
+        //we have correct points in the four corners of a square.
+        if(mx > tl.x && mx < tr.x){
+            if(my > tl.y && my < bl.y){
+                console.log("we hover the shit of this one  " + this.symbolkind);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    //init four points, the four corners based on the two cornerpoints in the symbol.
+    //Trust me, it is needed.
+    this.sortPoints = function(tl, tr, bl, br){
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
-
-        var tl, tr, bl, br;
-
+        
         if(p1.x < p2.x){
             if(p1.y < p2.y){
                 //we are in the topleft
@@ -322,17 +340,7 @@ function Symbol(kind) {
                 bl = {x:tl.x, y:br.y};
                 tr = {x:br.x, y:tl.y};
             }
-
         }
-
-        //we have correct points in the four corners of a square.
-        if(mx > tl.x && mx < tr.x){
-            if(my > tl.y && my < bl.y){
-                console.log("we hover the shit of this one  " + this.symbolkind);
-                return true;
-            }
-        }
-        return false;
     }
 
     //--------------------------------------------------------------------
