@@ -172,7 +172,7 @@
             }
             $(document).ready(function(){
                $(".headerType").click(function(){
-                    $("#select-header").Toggle();
+                    $("#select-header").toggle();
                     $("#select-header").addClass("show-dropdown-content");
                 });
             });
