@@ -325,6 +325,7 @@ function Symbol(kind) {
         //we have correct points in the four corners of a square.
         if(mx > tl.x && mx < tr.x){
             if(my > tl.y && my < bl.y){
+                console.log("we hover the shit of this one  " + this.symbolkind);
                 return true;
             }
         }
