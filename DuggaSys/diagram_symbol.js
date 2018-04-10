@@ -284,7 +284,8 @@ function Symbol(kind) {
     }
 
     this.linehover = function (mx, my) {
-        return this.entityhover(mx,my);
+        console.log(pointToLineDistance(this.topLeft, this.bottomRight, mx, my));
+        return pointToLineDistance(this.topLeft, this.bottomRight, mx, my) < 15;
     }
     
     this.entityhover = function(mx,my){
@@ -814,4 +815,11 @@ this.drawOval = function (x1, y1, x2, y2) {
     ctx.quadraticCurveTo(x2, y1, x2, middleY);
     ctx.quadraticCurveTo(x2, y2, middleX, y2);
     ctx.quadraticCurveTo(x1, y2, x1, middleY);
+}
+
+function pointToLineDistance(p1, p2, x, y){
+    var numerator, denominator;
+    numerator = Math.abs((p2.y-p1.y)*x - (p2.x - p1.x)*y + p2.x * p1.y - p2.y*p1.x);
+    denominator = Math.sqrt((p2.y - p1.y)*(p2.y - p1.y) + (p2.x - p1.x)*(p2.x - p1.x));
+    return numerator/denominator;
 }
