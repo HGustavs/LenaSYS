@@ -602,7 +602,7 @@ function Symbol(kind) {
                 drawOval(x1 - 10, y1 - 10, x2 + 10, y2 + 10);
                 ctx.fillStyle = this.symbolColor;
                 ctx.fill();
-                if (this.targeted) {
+                if (this.targeted || this.isHovered) {
                     ctx.strokeStyle = "#F82";
                 } else {
                     ctx.strokeStyle = this.strokeColor;
@@ -615,7 +615,7 @@ function Symbol(kind) {
                 drawOval(x1 - 10, y1 - 10);
                 ctx.fillStyle = this.symbolColor;
                 ctx.fill();
-                if (this.targeted) {
+                if (this.targeted || this.isHovered) {
                     ctx.strokeStyle = "#F82";
                 } else {
                     ctx.strokeStyle = this.strokeColor;
@@ -630,7 +630,7 @@ function Symbol(kind) {
             ctx.fillStyle = this.symbolColor;
             ctx.fill();
             makeShadow();
-            if (this.targeted) {
+            if (this.targeted || this.isHovered) {
                 ctx.strokeStyle = "#F82";
             } else {
                 ctx.strokeStyle = this.strokeColor;
