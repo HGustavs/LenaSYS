@@ -160,7 +160,7 @@
             }
 
             function dropDownToggle() {
-                document.getElementById('.headerType').classList.toggle("showDropdown");   
+                document.getElementById(".headerType").classList.toggle("showDropdown");   
             }
 
             // Close the dropdown if the user clicks outside of it
@@ -193,8 +193,8 @@
             <div class="PrevHead">This is the preview window
             </div>
             <div class="Markdown">
-                <div class="markNav">Markdown test2
-                    <span class="headerType" onclick="dropDownToggle()">H
+                <div class="markNav">Markdown
+                    <span class="headerType" onclick="dropDownToggle()">aA&#9661;
                         <span id="select-header">
                             <a href="#" id="h1" onclick="selected()" value="H1">Header 1</a>
                             <a href="#" id="h2" onclick="selected()" value="H2">Header 2</a>
