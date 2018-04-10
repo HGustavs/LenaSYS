@@ -298,13 +298,15 @@ function Symbol(kind) {
                 //we are in the topleft
                 tl = p1;
                 br = p2;
+                tr = {x:br.x, y:tl.y};
+                bl = {x:tl.x, y:br.y};
             }else{
                 //we are in the buttomleft
-                br = p1;
-                tl = p2;
+                tr = p2;
+                bl = p1;
+                tl = {x:bl.x, y:tr.y};
+                br = {x:tr.x, y:bl.y};
             }
-            tr = {x:tl.y, y:br.x};
-            bl = {x:tl.x, y:br.y};
         }else{
             if(p1.y < p2.y){
                 //we are in the topright
