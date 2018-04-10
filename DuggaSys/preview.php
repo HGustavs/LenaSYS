@@ -190,7 +190,7 @@
         </script>
     </head>
     <body onload="onload()">
-        <div class="Header">Hello its me, preview</div>
+        <div class="Header">Hello its me, preview 2</div>
         <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
             <div class="PrevHead">This is the preview window
