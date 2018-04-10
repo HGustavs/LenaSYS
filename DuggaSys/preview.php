@@ -172,7 +172,7 @@
             }
 
             function dropDownToggle() {
-                document.getElementsByClassName(".headerType").classList.toggle(".show-dropdown-content");   
+                document.getElementsByID("#select-header").classList.toggle(".show-dropdown-content");   
             }
 
             // Close the dropdown if the user clicks outside of it
