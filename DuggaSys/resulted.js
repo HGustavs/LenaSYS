@@ -1012,7 +1012,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	                var newDateObj = new Date(newGradeExpire.getTime() + 24*60*60000);
                     var newGradeExpirePlusOneDay = newDateObj.getTime();
 
-					// Compair the gradeExpire value to the current time, no matter
+					// Compair the gradeExpire value to the current time, if no grade is set, we can always set it no matter the last change
 					if(newGradeExpirePlusOneDay > currentTimeGetTime || (($(e.target ).hasClass("Gc"))  || ($(e.target ).hasClass("VGc")) || ($(e.target ).hasClass("Uh")))){
 						//The user must press the ctrl-key to activate if-statement
 						if(event.ctrlKey){
