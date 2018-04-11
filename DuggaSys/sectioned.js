@@ -81,16 +81,18 @@ function showSaveButton(){
   //$("#overlay").css("display","none");
 }
 
-function selectItem(editSectionDialogTitle,lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
-{
-	xelink=elink;
-
+function editSectionDialogTitle(title) {
 	// Change title of the edit section dialog
-	if(editSectionDialogTitle === "newItem") {
+	if(title === "newItem") {
 		document.getElementById("editSectionDialogTitle").innerHTML = "New item";
 	} else {
 		document.getElementById("editSectionDialogTitle").innerHTML = "Edit item";
 	}
+}
+
+function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
+{
+	xelink=elink;
 
 	// Display Select Marker
 	$(".item").css("border","none");
@@ -728,13 +730,12 @@ function returnedSection(data)
         str+="<td class='groups menuButton' style='display: inline-block;'><div class='groups menuButton'><input type='button' value='Groups' class='submit-button' title='Student groups page' onclick='changeURL(\"grouped.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
         str+="<td class='contribution menuButton' style='display: inline-block;'><div class='contribution menuButton'><input type='button' value='Contribution' class='submit-button' title='Access contribution page' onclick='changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
 	} else {/* No version selector for students */}
-	
+
 	if(retdata["writeaccess"]) {
 		str += "</tr></table>";
 		str +=
 			"<input type='button' class='fab' value='+' title='New Item'"
 			+ " onclick='selectItem("
-			+ "\"newItem\","
 			+ "\"" + item['lid'] + "\","
 			+ "\"New Item\","
 			+ "\"" + item['kind'] + "\","
@@ -743,7 +744,7 @@ function returnedSection(data)
 			+ "\"" + momentexists + "\","
 			+ "\"" + item['gradesys'] + "\","
 			+ "\"" + item['highscoremode'] + "\","
-			+ "); showSubmitButton();'>";
+			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\")'>";
 	} else {
 		str += "</tr></table>";
 	}
@@ -770,7 +771,6 @@ function returnedSection(data)
 		str +=
 			"<input type='button' value='+' class='submit-button-newitem' title='New Item'"
 			+ " onclick='selectItem("
-			+ "\"newItem\","
 			+ "\"" + item['lid'] + "\","
 			+ "\"New Item\","
 			+ "\"" + item['kind'] + "\","
@@ -779,7 +779,7 @@ function returnedSection(data)
 			+ "\"" + momentexists + "\","
 			+ "\"" + item['gradesys'] + "\","
 			+ "\"" + item['highscoremode'] + "\","
-			+ "); showSubmitButton();'>";
+			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\")'>";
         str += "</div>";
     }
 
@@ -1138,16 +1138,74 @@ function returnedSection(data)
 				if(data['writeaccess']){
 					str+="<td style='width:24" + "px;";
 
-              		if(parseInt(item['kind']) === 0){
-  						str+="' class='header"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\");' title='Edit "+item['entryname']+"' /></td>";
-					}else if(parseInt(item['kind']) === 1){
-						str+="' class='section"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\");' title='Edit "+item['entryname']+"' /></td>";
-					}else if(parseInt(item['kind']) === 4){
-						str+="' class='moment"+blorf+"'><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\");' title='Edit "+item['entryname']+"' /></td>";
-					}else{
-						str+="' ><img id='dorf' style='margin:4px' src='../Shared/icons/Cogwheel.svg' onclick='selectItem(\""+item['lid']+"\",\""+item['entryname']+"\",\""+item['kind']+"\",\""+item['visible']+"\",\""+item['link']+"\",\""+momentexists+"\",\""+item['gradesys']+"\",\""+item['highscoremode']+"\",\""+item['comments']+"\");' title='Edit "+item['entryname']+"'  /></td>";
+              		if(parseInt(item['kind']) === 0) {
+  						str+=
+                            "' class='header"+blorf+"'>"
+                            + "<img id='dorf' style='margin:4px'"
+                            + " src='../Shared/icons/Cogwheel.svg'"
+                            + " onclick='selectItem("
+                            + "\""+item['lid']+"\","
+                            + "\""+item['entryname']+"\","
+                            + "\""+item['kind']+"\","
+                            + "\""+item['visible']+"\","
+                            + "\""+item['link']+"\","
+                            + "\""+momentexists+"\","
+                            + "\""+item['gradesys']+"\","
+                            + "\""+item['highscoremode']+"\","
+                            + "\""+item['comments']+"\""
+                            + "); editSectionDialogTitle(\"newItem\")'"
+                            + " title='Edit "+item['entryname']+"' /></td>";
+					} else if(parseInt(item['kind']) === 1) {
+						str+=
+                            "' class='section"+blorf+"'>"
+                            + "<img id='dorf' style='margin:4px'"
+                            + " src='../Shared/icons/Cogwheel.svg'"
+                            + " onclick='selectItem("
+                            + "\""+item['lid']+"\","
+                            + "\""+item['entryname']+"\","
+                            + "\""+item['kind']+"\","
+                            + "\""+item['visible']+"\","
+                            + "\""+item['link']+"\","
+                            + "\""+momentexists+"\","
+                            + "\""+item['gradesys']+"\","
+                            + "\""+item['highscoremode']+"\","
+                            + "\""+item['comments']+"\""
+                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + " title='Edit "+item['entryname']+"' /></td>";
+					} else if(parseInt(item['kind']) === 4) {
+						str+=
+                            "' class='moment"+blorf+"'>"
+                            + "<img id='dorf' style='margin:4px'"
+                            + " src='../Shared/icons/Cogwheel.svg'"
+                            + " onclick='selectItem("
+                            + "\""+item['lid']+"\","
+                            + "\""+item['entryname']+"\","
+                            + "\""+item['kind']+"\","
+                            + "\""+item['visible']+"\","
+                            + "\""+item['link']+"\","
+                            + "\""+momentexists+"\","
+                            + "\""+item['gradesys']+"\","
+                            + "\""+item['highscoremode']+"\","
+                            + "\""+item['comments']+"\""
+                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + " title='Edit "+item['entryname']+"' /></td>";
+					} else {
+						str+=
+                            "' ><img id='dorf' style='margin:4px'"
+                            + " src='../Shared/icons/Cogwheel.svg'"
+                            + " onclick='selectItem("
+                            + "\""+item['lid']+"\","
+                            + "\""+item['entryname']+"\","
+                            + "\""+item['kind']+"\","
+                            + "\""+item['visible']+"\","
+                            + "\""+item['link']+"\","
+                            + "\""+momentexists+"\","
+                            + "\""+item['gradesys']+"\","
+                            + "\""+item['highscoremode']+"\","
+                            + "\""+item['comments']+"\""
+                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + " title='Edit "+item['entryname']+"'  /></td>";
 					}
-
 				}
 
 				// trashcan
