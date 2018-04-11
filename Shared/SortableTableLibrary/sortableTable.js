@@ -539,17 +539,6 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
     }
 }
 
-function renderCell(col,celldata,cellid) {
-	if (col == "Trumma"){
-	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
-	} else if (col == "Pnr") {
-	    return "<div>" + celldata + "</div>";
-	} else {
-		return "<div>" + celldata + "</div>";
-	}
-	return celldata;
-}
-
 function showVariant(param){
     var variantId="#variantInfo" + param;
     var duggaId="#dugga" + param;

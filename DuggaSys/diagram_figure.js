@@ -5,6 +5,7 @@
 //--------------------------------------------------------------------
 // path - stores a number of segments
 //--------------------------------------------------------------------
+/*
 function Path() {
     this.kind = 1;                  // Path kind
     this.segments = Array();        // Segments
@@ -83,40 +84,40 @@ function Path() {
         }
         if (this.segments.length > 0) {
             // Assign stroke style, color, transparency etc
-            canvasContext.strokeStyle = this.strokeColor;
-            canvasContext.fillStyle = this.fillColor;
-            canvasContext.globalAlpha = this.Opacity;
-            canvasContext.lineWidth = this.linewidth;
+            ctx.strokeStyle = this.strokeColor;
+            ctx.fillStyle = this.fillColor;
+            ctx.globalAlpha = this.Opacity;
+            ctx.lineWidth = this.linewidth;
 
-            canvasContext.beginPath();
+            ctx.beginPath();
             var pseg = this.segments[0];
-            canvasContext.moveTo(points[pseg.pa].x, points[pseg.pa].y);
+            ctx.moveTo(points[pseg.pa].x, points[pseg.pa].y);
             for (var i = 0; i < this.segments.length; i++) {
                 var seg = this.segments[i];
                 // If we start over on another sub-path, we must start with a moveto
                 if (seg.pa != pseg.pb) {
-                    canvasContext.moveTo(points[seg.pa].x, points[seg.pa].y);
+                    ctx.moveTo(points[seg.pa].x, points[seg.pa].y);
                 }
                 // Draw current line
-                canvasContext.lineTo(points[seg.pb].x, points[seg.pb].y);
+                ctx.lineTo(points[seg.pb].x, points[seg.pb].y);
                 // Remember previous segment
                 pseg = seg;
             }
             // Make either stroke or fill or both -- stroke always after fill
             if (fillstate) {   
-                canvasContext.save();
-                canvasContext.shadowBlur = 10;
-                canvasContext.shadowOffsetX = 3;
-                canvasContext.shadowOffsetY = 6;
-                canvasContext.shadowColor = "rgba(0, 0, 0, 0.3)";
-                canvasContext.fill();
-                canvasContext.restore();
+                ctx.save();
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetX = 3;
+                ctx.shadowOffsetY = 6;
+                ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+                ctx.fill();
+                ctx.restore();
             }
             if (strokestate) {
-                canvasContext.stroke();
+                ctx.stroke();
             }
             // Reset opacity so that following draw operations are unaffected
-            canvasContext.globalAlpha = 1.0;
+            ctx.globalAlpha = 1.0;
         }
     }
 
@@ -326,16 +327,16 @@ function Path() {
     //--------------------------------------------------------------------
     this.drawsegments = function (segmentlist, color) {
         // Draw aux set
-        canvasContext.lineWidth = this.lineWidth;
-        canvasContext.strokeStyle = "#46f";
+        ctx.lineWidth = this.lineWidth;
+        ctx.strokeStyle = "#46f";
         for (var i = 0; i < segmentlist.length; i++) {
             var line = segmentlist[i];
             // If line is a straight line
             if (line.kind == 1) {
-                canvasContext.beginPath();
-                canvasContext.moveTo(points[line.pa].x, points[line.pa].y);
-                canvasContext.lineTo(points[line.pb].x, points[line.pb].y);
-                canvasContext.stroke();
+                ctx.beginPath();
+                ctx.moveTo(points[line.pa].x, points[line.pa].y);
+                ctx.lineTo(points[line.pb].x, points[line.pb].y);
+                ctx.stroke();
             }
         }
     }
@@ -444,3 +445,4 @@ function openInitialDialog() {
     diagram[lastSelectedObject].targeted = true;
     openAppearanceDialogMenu();
 }
+*/
