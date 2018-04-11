@@ -5,16 +5,17 @@
 //--------------------------------------------------------------------
 // path - stores a number of segments
 //--------------------------------------------------------------------
+/*
 function Path() {
     this.kind = 1;                  // Path kind
     this.segments = Array();        // Segments
     this.intarr = Array();          // Intersection list (one list per segment)
     this.tmplist = Array();         // Temporary list for testing of intersections
     this.auxlist = Array();         // Auxillary temp list for testing of intersections
-    this.fillColor = "#48B";        // Fill color (default is blueish)
-    this.strokeColor = "#246";      // Stroke color (default is dark blue)
-    this.Opacity = 0.5;             // Opacity (default is 50%)
-    this.linewidth = 3;             // Line Width (stroke width - default is 3 pixels)
+    this.fillColor = "#fff";        // Fill color (default is white)
+    this.strokeColor = "#000";      // Stroke color (default is black)
+    this.Opacity = 1;               // Opacity (default is 100%)
+    this.linewidth = 2;             // Line Width (stroke width - default is 2 pixels)
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
                                     // An organized path can contain several sub-path, each of which must be organized
 
@@ -83,33 +84,40 @@ function Path() {
         }
         if (this.segments.length > 0) {
             // Assign stroke style, color, transparency etc
-            canvasContext.strokeStyle = this.strokeColor;
-            canvasContext.fillStyle = this.fillColor;
-            canvasContext.globalAlpha = this.Opacity;
-            canvasContext.lineWidth = this.linewidth;
-            canvasContext.beginPath();
+            ctx.strokeStyle = this.strokeColor;
+            ctx.fillStyle = this.fillColor;
+            ctx.globalAlpha = this.Opacity;
+            ctx.lineWidth = this.linewidth;
+
+            ctx.beginPath();
             var pseg = this.segments[0];
-            canvasContext.moveTo(points[pseg.pa].x, points[pseg.pa].y);
+            ctx.moveTo(points[pseg.pa].x, points[pseg.pa].y);
             for (var i = 0; i < this.segments.length; i++) {
                 var seg = this.segments[i];
                 // If we start over on another sub-path, we must start with a moveto
                 if (seg.pa != pseg.pb) {
-                    canvasContext.moveTo(points[seg.pa].x, points[seg.pa].y);
+                    ctx.moveTo(points[seg.pa].x, points[seg.pa].y);
                 }
                 // Draw current line
-                canvasContext.lineTo(points[seg.pb].x, points[seg.pb].y);
+                ctx.lineTo(points[seg.pb].x, points[seg.pb].y);
                 // Remember previous segment
                 pseg = seg;
             }
             // Make either stroke or fill or both -- stroke always after fill
-            if (fillstate) {
-                canvasContext.fill();
+            if (fillstate) {   
+                ctx.save();
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetX = 3;
+                ctx.shadowOffsetY = 6;
+                ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+                ctx.fill();
+                ctx.restore();
             }
             if (strokestate) {
-                canvasContext.stroke();
+                ctx.stroke();
             }
             // Reset opacity so that following draw operations are unaffected
-            canvasContext.globalAlpha = 1.0;
+            ctx.globalAlpha = 1.0;
         }
     }
 
@@ -319,16 +327,16 @@ function Path() {
     //--------------------------------------------------------------------
     this.drawsegments = function (segmentlist, color) {
         // Draw aux set
-        canvasContext.lineWidth = 1;
-        canvasContext.strokeStyle = "#46f";
+        ctx.lineWidth = this.lineWidth;
+        ctx.strokeStyle = "#46f";
         for (var i = 0; i < segmentlist.length; i++) {
             var line = segmentlist[i];
             // If line is a straight line
             if (line.kind == 1) {
-                canvasContext.beginPath();
-                canvasContext.moveTo(points[line.pa].x, points[line.pa].y);
-                canvasContext.lineTo(points[line.pb].x, points[line.pb].y);
-                canvasContext.stroke();
+                ctx.beginPath();
+                ctx.moveTo(points[line.pa].x, points[line.pa].y);
+                ctx.lineTo(points[line.pb].x, points[line.pb].y);
+                ctx.stroke();
             }
         }
     }
@@ -352,12 +360,12 @@ var startPosition;
 var numberOfPointsInFigure = 0;
 
 function createFigure() {
-    if (uimode == "CreateFigure" && md == 4) {
-        if (figureType == "Free") {
-            figureFreeDraw();
-        } else if (figureType == "Square") {
-            figureSquare();
-        }
+    startMouseCoordinateX = currentMouseCoordinateX;
+    startMouseCoordinateY = currentMouseCoordinateY;
+    if (figureType == "Free") {
+        figureFreeDraw();
+    } else if (figureType == "Square") {
+        figureSquare();
     }
 }
 
@@ -389,7 +397,6 @@ function figureFreeDraw() {
             figurePath.addsegment(1, p1, p2);
             diagram.push(figurePath);
             cleanUp();
-            openInitialDialog();
         } else {
             // Temporary store the new line and then render it
             var tempPath = new Path;
@@ -419,7 +426,6 @@ function figureSquare() {
         figurePath.addsegment(1, p4, p1);
         diagram.push(figurePath);
         cleanUp();
-        openInitialDialog();
     }
 }
 
@@ -429,10 +435,9 @@ function figureSquare() {
 function cleanUp() {
     figurePath = new Path;
     startPosition = null;
-    uimode = null;
-    figureType = null;
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
+    p2 = null;
 }
 
 function openInitialDialog() {
@@ -440,3 +445,4 @@ function openInitialDialog() {
     diagram[lastSelectedObject].targeted = true;
     openAppearanceDialogMenu();
 }
+*/

@@ -31,14 +31,6 @@ function closeAddFile()
 		//$("#overlay").css("display","none");
 }
 
-function deleteFile(fileid,filename){
-		if(confirm("Do you really want to delete the file/link: "+filename)){
-				AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
-		}
-			/*Reloads window when deleteFile has been called*/
-			window.location.reload(true);
-}
-
 //----------------------------------------
 // makeSortable(table) <- Makes a table sortable and also allows the table to collapse when
 // 						user double clicks on table head.
@@ -199,12 +191,66 @@ function hideLoginPopup()
 		//$("#overlay").css("display","none");
 }
 
+//--------------------------------------------------------------------------
+// renderCell
+// ---------------
+//  Callback function that renders a specific cell in the table
+//--------------------------------------------------------------------------
+
+function renderCell(col,celldata,cellid) {
+	if (col == "Trumma"){
+	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
+	} else if (col == "Pnr") {
+	    return "<div>" + celldata + "</div>";
+	} else {
+		return "<div id='" + cellid + "'>" + celldata + "</div>";
+	}
+	return celldata;
+}
+
+var myTable;
 //----------------------------------------
 // Renderer <- ran after the ajax call(ajax is started after initialation of this file) is successful
 //----------------------------------------
 function returnedFile(data)
 {
 		filez = data;
+
+        var tabledata = {
+        	tblhead:{
+        		fileid:"File ID",
+        		filename:"File name",
+        		kind:"Kind",
+        		filesize:"Size",
+        		uploaddate:"Upload date"
+        	},
+        	tblbody: data['entries'],
+        	tblfoot:[]
+        }
+
+        myTable = new SortableTable(
+    		tabledata,
+    		"fileLink",
+    		null,
+    		"",
+            renderCell,
+            null,
+            null,
+            null,
+            [],
+            [],				
+            "",
+            null,
+            null,
+    		null,
+    		null,
+    		null,
+            null,
+    		false
+    	);
+
+    	myTable.renderTable();
+
 		//strings filled with content that will later be html code in certain parts of the page
 		//----------------------------------------
 		str1=""; 
@@ -583,4 +629,13 @@ function searchKeyPress(e)
         return false;
     }
     return true;
+}
+
+function deleteFile(fileid,filename){
+	if (confirm("Do you really want to delete the file/link: "+filename)){
+		AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
+	}
+
+	/*Reloads window when deleteFile has been called*/
+	window.location.reload(true);
 }

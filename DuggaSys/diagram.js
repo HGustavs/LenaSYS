@@ -21,10 +21,10 @@ AJAXService("get", {}, "DIAGRAM");
 
 // Global settings
 var gridSize = 16;
-var arityBuffer = gridSize / 2;
+//var arityBuffer = gridSize / 2;
 var crossSize = 4.0;                // Size of point cross
 var tolerance = 8;                  // Size of tolerance area around the point
-var canvasContext;                  // Canvas context
+var ctx;                  // Canvas context
 var canvas;                         // Canvas Element
 var sel;                            // Selection state
 var currentMouseCoordinateX = 0;
@@ -40,11 +40,11 @@ var lineStartObj = -1;
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
-var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
+//var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
 var widthWindow;                    // The width on the users screen is saved is in this var.
 var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
-var startX = 0, startY = 0;         // Current X- and Y-coordinant from which the canvas start from
+var sx = 0, sy = 0;         // Current X- and Y-coordinant from which the canvas start from
 var waldoPoint = "";
 var moveValue = 0;                  // Used to deside if the canvas should translate or not
 var activePoint = null;             // This point indicates what point is being hovered by the user
@@ -79,6 +79,7 @@ var classTemplate = {
   height: 7 * gridSize
 };
 var a = [], b = [], c = [];
+var selected_objects = [];              // Is used to store multiple selected objects
 var mousedownX = 0, mousedownY = 0;     // Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
 var mousemoveX = 0, mousemoveY = 0;     // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
 var mouseDiffX = 0, mouseDiffY = 0;     // Saves to diff between mousedown and mousemove to know how much to translate the diagram
@@ -91,15 +92,43 @@ var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 
 //this block of the code is used to handel keyboard input;
-window.addEventListener("keydown", this.keyDownHandler, false);
+window.addEventListener("keydown", this.keyDownHandler);
+
+var ctrlIsClicked = false;
 
 function keyDownHandler(e){
     var key = e.keyCode;
-    //Delete selected objects when del key is pressed down.
-    if(key == 46){
+    if(key == 46 || key == 8){
         eraseSelectedObject();
+    } else if(key == 32){
+        //Use space for movearound
+        if(uimode != "MoveAround"){
+            activateMovearound();
+        } else{
+            deactivateMovearound();
+        }
+        updateGraphics();
+    }
+    else if(key == 17 || key == 91)
+    {
+      ctrlIsClicked = true;
     }
 }
+
+//--------------------------------------------------------------------
+// Keeps track of if the CTRL or CMD key is active or not
+//--------------------------------------------------------------------
+
+//var selectedItems = [];
+
+//Not used yet
+window.onkeyup = function(event) {
+    if(event.which == 17 || event.which == 91) {
+        ctrlIsClicked = false;
+    }
+  }
+
+
 
 //--------------------------------------------------------------------
 // points - stores a global list of points
@@ -153,24 +182,24 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 // drawPoints - Draws each of the points as a cross
 //--------------------------------------------------------------------
 points.drawPoints = function() {
-    canvasContext.strokeStyle = crossStrokeStyle1;
-    canvasContext.lineWidth = 2;
+    ctx.strokeStyle = crossStrokeStyle1;
+    ctx.lineWidth = 2;
     for (var i = 0; i < this.length; i++) {
         var point = this[i];
         if (!point.isSelected) {
-            canvasContext.beginPath();
-            canvasContext.moveTo(point.x - crossSize, point.y - crossSize);
-            canvasContext.lineTo(point.x + crossSize, point.y + crossSize);
-            canvasContext.moveTo(point.x + crossSize, point.y - crossSize);
-            canvasContext.lineTo(point.x - crossSize, point.y + crossSize);
-            canvasContext.stroke();
+            ctx.beginPath();
+            ctx.moveTo(point.x - crossSize, point.y - crossSize);
+            ctx.lineTo(point.x + crossSize, point.y + crossSize);
+            ctx.moveTo(point.x + crossSize, point.y - crossSize);
+            ctx.lineTo(point.x - crossSize, point.y + crossSize);
+            ctx.stroke();
         } else {
-            canvasContext.save();
-            canvasContext.fillStyle = crossFillStyle;
-            canvasContext.strokeStyle = crossStrokeStyle2;
-            canvasContext.fillRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
-            canvasContext.strokeRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
-            canvasContext.restore();
+            ctx.save();
+            ctx.fillStyle = crossFillStyle;
+            ctx.strokeStyle = crossStrokeStyle2;
+            ctx.fillRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
+            ctx.strokeRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
+            ctx.restore();
         }
     }
 }
@@ -260,17 +289,17 @@ diagram.deleteObject = function(object) {
 // targetItemsInsideSelectionBox - Targets all items inside the
 // selection box (dragged by the user)
 //--------------------------------------------------------------------
-diagram.targetItemsInsideSelectionBox = function (endX, endY, startX, startY) {
+diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
     //ensure that an entity cannot scale below the minimum size
-    if (startX > endX) {
-        var tempEndX = endX;
-        endX = startX;
-        startX = tempEndX;
+    if (sx > ex) {
+        var tempEndX = ex;
+        ex = sx;
+        sx = tempEndX;
     }
-    if (startY > endY) {
-        var tempEndY = endY;
-        endY = startY;
-        startY = tempEndY;
+    if (sy > ey) {
+        var tempEndY = ey;
+        ey = sy;
+        sy = tempEndY;
     }
     for (var i = 0; i < this.length; i++) {
         if (this[i].kind == 1) {
@@ -280,8 +309,8 @@ diagram.targetItemsInsideSelectionBox = function (endX, endY, startX, startY) {
             }
             var pointsSelected = 0;
             for (var j = 0; j < tempPoints.length; j++) {
-                if (tempPoints[j].x < endX && tempPoints[j].x > startX &&
-                    tempPoints[j].y < endY && tempPoints[j].y > startY) {
+                if (tempPoints[j].x < ex && tempPoints[j].x > sx &&
+                    tempPoints[j].y < ey && tempPoints[j].y > sy) {
                     pointsSelected++;
                 }
             }
@@ -301,10 +330,10 @@ diagram.targetItemsInsideSelectionBox = function (endX, endY, startX, startY) {
             if (tempTopLeftY > tempBottomRightY || tempTopLeftY > tempBottomRightY - minEntityY) {
                 tempTopLeftY = tempBottomRightY - minEntityY;
             }
-            if (startX < tempTopLeftX && endX > tempTopLeftX &&
-                startY < tempTopLeftY && endY > tempTopLeftY &&
-                startX < tempBottomRightX && endX > tempBottomRightX &&
-                startY < tempBottomRightY && endY > tempBottomRightY) {
+            if (sx < tempTopLeftX && ex > tempTopLeftX &&
+                sy < tempTopLeftY && ey > tempTopLeftY &&
+                sx < tempBottomRightX && ex > tempBottomRightX &&
+                sy < tempBottomRightY && ey > tempBottomRightY) {
                 this[i].targeted = true;
             } else {
                 this[i].targeted = false;
@@ -317,7 +346,10 @@ diagram.targetItemsInsideSelectionBox = function (endX, endY, startX, startY) {
 // itemClicked - Returns the index of the first clicked item
 //--------------------------------------------------------------------
 diagram.itemClicked = function() {
-    for (var i = 0; i < this.length; i++) {
+    if(uimode == "MoveAround"){
+        return -1;
+    }
+    for (var i = this.length - 1; i >= 0; i--) {
         if (this[i].isClicked(currentMouseCoordinateX, currentMouseCoordinateY)) {
             return i;
         }
@@ -331,7 +363,7 @@ diagram.itemClicked = function() {
 //--------------------------------------------------------------------
 diagram.checkForHover = function(xCoordinate, yCoordinate) {
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 2 && this[i].symbolkind == 4) {
+        if (this[i].kind == 2) {
             this[i].isHovered = this[i].checkForHover(xCoordinate, yCoordinate);
         }
     }
@@ -414,90 +446,6 @@ diagram.getRelationObjects = function() {
 // Creates an arity symbol for the line specified.
 // An arity symbol includes a line of text on both sides of the line.
 //--------------------------------------------------------------------
-diagram.createAritySymbols = function(line) {
-    var relations = diagram.getRelationObjects();
-    var entities = diagram.getEntityObjects();
-    for (var i = 0; i < relations.length; i++) {
-        for (var j = 0; j < entities.length; j++) {
-            for (var k = 0; k < relations[i].connectorTop.length; k++) {
-                var relationsFrom = relations[i].connectorTop[k].from;
-                var relationsTo = relations[i].connectorTop[k].to;
-                for (var l = 0; l < entities[j].connectorTop.length; l++) {
-                    if (relationsTo == entities[j].connectorTop[l].from &&
-                        relationsFrom == entities[j].connectorTop[l].to) {
-                        if ((relationsTo == line.topLeft &&
-                            relationsFrom == line.bottomRight) ||
-                            (relationsTo == line.bottomRight &&
-                            relationsFrom == line.topLeft)) {
-                            var point = points[relationsTo];
-                            entities[j].arity.push([
-                                {text:"1", x:point.x - arityBuffer, y:point.y - arityBuffer, connectionPoint:relationsTo, align:"end", baseLine:"bottom"},
-                                {text:"-", x:point.x + arityBuffer, y:point.y - arityBuffer, connectionPoint:relationsTo, align:"start", baseLine:"bottom"}
-                            ]);
-                            return;
-                        }
-                    }
-                }
-                for (var l = 0; l < entities[j].connectorBottom.length; l++) {
-                    if (relationsTo == entities[j].connectorBottom[l].from &&
-                        relationsFrom == entities[j].connectorBottom[l].to) {
-                        if ((relationsTo == line.topLeft &&
-                            relationsFrom == line.bottomRight) ||
-                            (relationsTo == line.bottomRight &&
-                            relationsFrom == line.topLeft)) {
-                            var point = points[relationsTo];
-                            entities[j].arity.push([
-                                {text:"1", x:point.x - arityBuffer, y:point.y + arityBuffer, connectionPoint:relationsTo, align:"end", baseLine:"top"},
-                                {text:"-", x:point.x + arityBuffer, y:point.y + arityBuffer, connectionPoint:relationsTo, align:"start", baseLine:"top"}
-                            ]);
-                            return;
-                        }
-                    }
-                }
-                for (var l = 0; l < entities[j].connectorRight.length; l++) {
-                    if (relationsTo == entities[j].connectorRight[l].from &&
-                        relationsFrom == entities[j].connectorRight[l].to) {
-                        if ((relationsTo == line.topLeft &&
-                            relationsFrom == line.bottomRight) ||
-                            (relationsTo == line.bottomRight &&
-                            relationsFrom == line.topLeft)) {
-                            var point = points[relationsTo];
-                            entities[j].arity.push([
-                                {text:"1", x:point.x + arityBuffer, y:point.y - arityBuffer, connectionPoint:relationsTo, align:"start", baseLine:"bottom"},
-                                {text:"-", x:point.x + arityBuffer, y:point.y + arityBuffer, connectionPoint:relationsTo, align:"start", baseLine:"top"}
-                            ]);
-                            return;
-                        }
-                    }
-                }
-                for (var l = 0; l < entities[j].connectorLeft.length; l++) {
-                    if (relationsTo == entities[j].connectorLeft[l].from &&
-                        relationsFrom == entities[j].connectorLeft[l].to) {
-                        if ((relationsTo == line.topLeft &&
-                            relationsFrom == line.bottomRight) ||
-                            (relationsTo == line.bottomRight &&
-                            relationsFrom == line.topLeft)) {
-                            var point = points[relationsTo];
-                            entities[j].arity.push([
-                                {text:"1", x:point.x - arityBuffer, y:point.y - arityBuffer, connectionPoint:relationsTo, align:"end", baseLine:"bottom"},
-                                {text:"-", x:point.x - arityBuffer, y:point.y + arityBuffer, connectionPoint:relationsTo, align:"end", baseLine:"top"}
-                            ]);
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-diagram.updateArity = function() {
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3 && diagram[i].arity.length > 0) {
-            diagram[i].updateArityPosition();
-        }
-    }
-}
 
 //--------------------------------------------------------------------
 // updateLineRelations - Updates a line's relation depending on
@@ -550,15 +498,16 @@ function initializeCanvas() {
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 80);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + startX + " & Y=" + startY + "</p>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
-        canvasContext = canvas.getContext("2d");
+        ctx = canvas.getContext("2d");
     }
     getUploads();
     // generateExampleCode();
-    updateGraphics();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
+    document.getElementById("moveButton").style.visibility = 'hidden';
+    updateGraphics();
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
@@ -603,23 +552,23 @@ function canvasSize() {
     heightWindow = (window.innerHeight - 144);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);
-    canvasContext.clearRect(startX, startY, widthWindow, heightWindow);
-    canvasContext.translate(startX, startY);
-    canvasContext.scale(1, 1);
-    canvasContext.scale(zoomValue, zoomValue);
+    ctx.clearRect(sx, sy, widthWindow, heightWindow);
+    ctx.translate(sx, sy);
+    ctx.scale(1, 1);
+    ctx.scale(zoomValue, zoomValue);
 }
 
 // Listen if the window is the resized
 window.addEventListener('resize', canvasSize);
 
 function updateGraphics() {
-    canvasContext.clearRect(startX, startY, (widthWindow / zoomValue), (heightWindow / zoomValue));
+    ctx.clearRect(sx, sy, (widthWindow / zoomValue), (heightWindow / zoomValue));
     if (moveValue == 1) {
-        canvasContext.translate((-mouseDiffX), (-mouseDiffY));
+        ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
     }
     diagram.updateQuadrants();
-    diagram.updateArity();
+    //diagram.updateArity();
     drawGrid();
     diagram.sortConnectors();
     diagram.draw();
@@ -674,41 +623,24 @@ function eraseSelectedObject() {
     updateGraphics();
 }
 
-function classMode() {
+function setMode(mode){ //"CreateClass" yet to be implemented in .php
     canvas.style.cursor = "default";
-    uimode = "CreateClass";
-}
-
-function attrMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateERAttr";
-}
-
-function entityMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateEREntity";
-}
-
-function lineMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateLine";
-}
-
-function figureMode(mode) {
-    canvas.style.cursor = "default";
-    uimode = "CreateFigure";
-    figureType = mode;
-}
-
-function relationMode() {
-    canvas.style.cursor = "default";
-    uimode = "CreateERRelation";
+    uimode = mode;
+    if(mode == 'Square' || mode == 'Free') {
+      uimode = "CreateFigure";
+      figureType = mode;
+    }
 }
 
 $(document).ready(function(){
     $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton").click(function(){
+        canvas.removeEventListener('mousedown', getMousePos, false);
+        canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
+        canvas.removeEventListener('mouseup', mouseupcanvas, false);
+        $("#moveButton").removeClass("pressed").addClass("unpressed");
         if ($(this).hasClass("pressed")){
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
+            uimode = "normal";
         } else {
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             $(this).removeClass("unpressed").addClass("pressed");
@@ -721,15 +653,10 @@ function setTextSizeEntity() {
 }
 
 function setType() {
-    if (document.getElementById('object_type').value == 'Primary key') {
-        diagram[lastSelectedObject].key_type = 'Primary key';
-    } else if (document.getElementById('object_type').value == 'Normal') {
-        diagram[lastSelectedObject].key_type = 'Normal';
-    } else if (document.getElementById('object_type').value == 'Multivalue') {
-        diagram[lastSelectedObject].key_type = 'Multivalue';
-    } else if (document.getElementById('object_type').value == 'Drive') {
-        diagram[lastSelectedObject].key_type = 'Drive';
-    }
+    var elementVal = document.getElementById('object_type').value;
+
+    diagram[lastSelectedObject].key_type = elementVal;
+
     updateGraphics();
 }
 
@@ -759,10 +686,8 @@ function clickOutsideDialogMenu(event) {
 function dimDialogMenu(dim) {
     if (dim) {
         $("#appearance").css("display", "flex");
-        //$("#overlay").css("display", "block");
     } else {
         $("#appearance").css("display", "none");
-        //$("#overlay").css("display", "none");
     }
 }
 
@@ -815,70 +740,49 @@ function connectedObjects(line) {
 }
 
 function cross(xCoordinate, yCoordinate) {
-    canvasContext.strokeStyle = "#4f6";
-    canvasContext.lineWidth = 3;
-    canvasContext.beginPath();
-    canvasContext.moveTo(xCoordinate - crossSize, yCoordinate - crossSize);
-    canvasContext.lineTo(xCoordinate + crossSize, yCoordinate + crossSize);
-    canvasContext.moveTo(xCoordinate + crossSize, yCoordinate - crossSize);
-    canvasContext.lineTo(xCoordinate - crossSize, yCoordinate + crossSize);
-    canvasContext.stroke();
+    ctx.strokeStyle = "#4f6";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(xCoordinate - crossSize, yCoordinate - crossSize);
+    ctx.lineTo(xCoordinate + crossSize, yCoordinate + crossSize);
+    ctx.moveTo(xCoordinate + crossSize, yCoordinate - crossSize);
+    ctx.lineTo(xCoordinate - crossSize, yCoordinate + crossSize);
+    ctx.stroke();
 }
 
 function drawGrid() {
-    canvasContext.lineWidth = 1;
-    canvasContext.strokeStyle = "rgb(238, 238, 250)";
+    ctx.lineWidth = 1;
     var quadrantX;
     var quadrantY;
-    if (startX < 0) {
-        quadrantX = startX;
-    } else {
-        quadrantX = -startX;
-    }
-    if (startY < 0) {
-        quadrantY = startY;
-    } else {
-        quadrantY = -startY;
-    }
+
+    if (sx < 0) quadrantX = sx;
+    else quadrantX = -sx;
+
+    if (sy < 0) quadrantY = sy;
+    else quadrantY = -sy;
+
+
     for (var i = 0 + quadrantX; i < quadrantX + widthWindow; i++) {
-        if (i % 5 == 0) {
-            i++;
+        if (i % 5 == 0) { //This is a "thick" line
+            ctx.strokeStyle = "rgb(208, 208, 220)";
         }
-        canvasContext.beginPath();
-        canvasContext.moveTo(i * gridSize, 0 + startY);
-        canvasContext.lineTo(i * gridSize, (heightWindow / zoomValue) + startY);
-        canvasContext.stroke();
-        canvasContext.closePath();
+        else {
+            ctx.strokeStyle = "rgb(238, 238, 250)";
+        }
+        ctx.beginPath();
+        ctx.moveTo(i * gridSize, 0 + sy);
+        ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + sy);
+        ctx.stroke();
+        ctx.closePath();
     }
     for (var i = 0 + quadrantY; i < quadrantY + (heightWindow / zoomValue); i++) {
-        if (i % 5 == 0) {
-            i++;
-        }
-        canvasContext.beginPath();
-        canvasContext.moveTo(0 + startX, i * gridSize);
-        canvasContext.lineTo((widthWindow / zoomValue) + startX, i * gridSize);
-        canvasContext.stroke();
-        canvasContext.closePath();
-    }
-    //Draws the thick lines
-    canvasContext.strokeStyle = "rgb(208, 208, 220)";
-    for (var i = 0 + quadrantX; i < quadrantX + (widthWindow / zoomValue); i++) {
-        if (i % 5 == 0) {
-            canvasContext.beginPath();
-            canvasContext.moveTo(i * gridSize, 0 + startY);
-            canvasContext.lineTo(i * gridSize, (heightWindow / zoomValue) + startY);
-            canvasContext.stroke();
-            canvasContext.closePath();
-        }
-    }
-    for (var i = 0 + quadrantY; i < quadrantY + (heightWindow / zoomValue); i++) {
-        if (i % 5 == 0) {
-            canvasContext.beginPath();
-            canvasContext.moveTo(0 + startX, i * gridSize);
-            canvasContext.lineTo((widthWindow / zoomValue) + startX, i * gridSize);
-            canvasContext.stroke();
-            canvasContext.closePath();
-        }
+        if (i % 5 == 0) ctx.strokeStyle = "rgb(208, 208, 220)"; //This is a "thick" line
+        else ctx.strokeStyle = "rgb(238, 238, 250)";
+        ctx.beginPath();
+        ctx.moveTo(0 + sx, i * gridSize);
+        ctx.lineTo((widthWindow / zoomValue) + sx, i * gridSize);
+        ctx.stroke();
+        ctx.closePath();
     }
 }
 
@@ -907,14 +811,13 @@ function debugMode() {
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
         ghostingCrosses = false;
-        updateGraphics();
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
         crossFillStyle = "rgba(255, 102, 68, 0.0)";
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
         ghostingCrosses = true;
-        updateGraphics();
     }
+    updateGraphics();
 }
 
 //calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram. it also save the local diagram
@@ -988,7 +891,7 @@ function loadDiagram() {
                 if (b.diagramNames[i] == "Symbol") {
                     b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
                 } else if (b.diagramNames[i] == "Path") {
-                    b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+                  //  b.diagram[i] = Object.assign(new Path, b.diagram[i]);
                 }
             }
             diagram.length = b.diagram.length;
@@ -997,7 +900,7 @@ function loadDiagram() {
             }
             // Points fix
             for (var i = 0; i < b.points.length; i++) {
-                b.points[i] = Object.assign(new Path, b.points[i]);
+             //   b.points[i] = Object.assign(new Path, b.points[i]);
             }
             points.length = b.points.length;
             for (var i = 0; i < b.points.length; i++) {
@@ -1016,7 +919,10 @@ function removeLocalStorage() {
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 function reWrite() {
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + startX + " & Y=" + startY + "</p>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
+     + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+     + "X=" + sx
+     + " & Y=" + sy + "</p>";
 }
 
 //----------------------------------------
@@ -1049,35 +955,16 @@ function getCurrentDate() {
 }
 
 function setRefreshTime() {
-    console.log("setRefreshTime running");
-    var time = 5000;
-    lastDiagramEdit = localStorage.getItem('lastEdit');
-    if (typeof lastDiagramEdit !== "undefined") {
-        var timeDiffrence = getCurrentDate() - lastDiagramEdit;
-        if (timeDiffrence <= 10800000 && timeDiffrence <= 259200000) {
-            refresh_lock = false;
-            console.log("setRefreshTime seting time to" + time + " " + timeDiffrence);
-            return time;
-        } else if (timeDiffrence >= 259200000 && timeDiffrence <= 604800000) {
-            refresh_lock = false;
-            time = 300000;
-            console.log("setRefreshTime seting time to" + time+ " " + timeDiffrence);
-            return time;
-        } else if (timeDiffrence > 604800000) {
-            refresh_lock = true;
-            time = 300000;
-            console.log("setRefreshTime seting time to" + time + " will only update on refresh."+ " " + timeDiffrence);
-            return time;
-        } else {
-            return time;
-        }
-    } else {
-        return time;
-    }
+  var time = 5000;
+  lastDiagramEdit = localStorage.getItem('lastEdit');
+  if (typeof lastDiagramEdit !== "undefined"){
+    var timeDifference = getCurrentDate() - lastDiagramEdit;
+    refresh_lock = timeDifference > 604800000 ? true : false;
+    time = timeDifference <= 259200000 ? 5000 : 300000;
+  }
+  return time;
 }
 function align(mode){
-    var selected_objects = [];
-
     for(var i = 0; i < diagram.length; i++){
         if(diagram[i].targeted == true){
             selected_objects.push(diagram[i]);
@@ -1184,72 +1071,32 @@ function alignHorizontalCenter(selected_objects){
         selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
 }
-function bubbleSort(values, rising){
-    //Setting rising to true will sort low - high
-    var swap = null;
-    if(rising){
-        for(var i = 0; i < values.length; i++){
-            for(var j = 0; j < values.length; j++){
-                if(values[i] < values[j] && i != j){
-                    swap = values[i];
-                    values[i] = values[j];
-                    values[j] = swap;
-                }
-            }
-        }
-    }else{
-        for(var i = 0; i < values.length; i++){
-            for(var j = 0; j < values.length; j++){
-                if(values[i] > values[j] && i != j){
-                    swap = values[i];
-                    values[i] = values[j];
-                    values[i] = swap;
-                }
-            }
-        }
-    }
-    return values;
-}
-function sortObjects(selected_objects, mode, rising){
-    //Sorts objects by X or Y position
-    var position = [];
-    if(mode=='vertically'){
-        for(var i = 0; i < selected_objects.length; i++){
-            position.push(points[selected_objects[i].topLeft].y);
-        }
-        position = bubbleSort(position, rising);
 
-        var private_objects = selected_objects.splice([]);
-        var swap = null;
-        for(var i = 0; i < private_objects.length; i++){
-            for(var j = 0; j < position.length; j++){
-                if(points[private_objects[i].topLeft].y == position[j] && i != j){
-                    swap = private_objects[i];
-                    private_objects[i] = private_objects[j];
-                    private_objects[j] = swap;
-                }
+function sortObjects(selected_objects, mode){
+  //Sorts objects by X or Y position
+  var position = [];
+
+      for(var i = 0; i < selected_objects.length; i++){
+        if(mode=='vertically') position.push(points[selected_objects[i].topLeft].y);
+        else if(mode=='horizontally') position.push(points[selected_objects[i].topLeft].x);
+      }
+      position.sort(function(a,b) { return a - b });
+
+      var private_objects = selected_objects.splice([]);
+      var swap = null;
+
+      for(var i = 0; i < private_objects.length; i++){
+        swap = private_objects[i];
+          for(var j = 0; j < position.length; j++){
+            if(i==j) continue;
+              if((mode=='vertically' && points[private_objects[i].topLeft].y == position[j])
+              || (mode=='horizontally' && points[private_objects[i].topLeft].x == position[j])){
+                  private_objects[i] = private_objects[j];
+                  private_objects[j] = swap;
+              }
             }
         }
-    }else if(mode=='horizontally'){
-        for(var i = 0; i < selected_objects.length; i++){
-            position.push(points[selected_objects[i].topLeft].x);
-        }
-        position = bubbleSort(position, rising);
-
-        var private_objects = selected_objects.splice([]);
-        var swap = null;
-        for(var i = 0; i < private_objects.length; i++){
-            for(var j = 0; j < position.length; j++){
-                if(points[private_objects[i].topLeft].x == position[j] && i != j){
-                    swap = private_objects[i];
-                    private_objects[i] = private_objects[j];
-                    private_objects[j] = swap;
-                }
-            }
-        }
-    }
-
-    return private_objects;
+  return private_objects;
 }
 function distribute(axis){
     var spacing = 32;
@@ -1273,7 +1120,7 @@ function distribute(axis){
     hashFunction();
 }
 function distributeVertically(selected_objects, spacing){
-    selected_objects = sortObjects(selected_objects, 'vertically', true);
+    selected_objects = sortObjects(selected_objects, 'vertically');
 
     for(var i = 1; i < selected_objects.length; i++){
         var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
@@ -1283,7 +1130,7 @@ function distributeVertically(selected_objects, spacing){
     }
 }
 function distributeHorizontally(selected_objects, spacing){
-    selected_objects = sortObjects(selected_objects, 'horizontally', true);
+    selected_objects = sortObjects(selected_objects, 'horizontally');
 
     for(var i = 1; i < selected_objects.length; i++){
         var object_width = (points[selected_objects[i].bottomRight].x - points[selected_objects[i].topLeft].x);

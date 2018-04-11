@@ -318,7 +318,7 @@ function markdownBlock(inString)
 	inString = inString.replace(/\_{4}(.*?\S)\_{4}/g, '<strong><em>$1</em></strong>');
 	inString = inString.replace(/\_{3}(.*?\S)\_{3}/g, '<em>$1</em>');	
 	inString = inString.replace(/\_{2}(.*?\S)\_{2}/g, '<em>$1</em>');
-	
+
 	//Regular expressions for headings
 	inString = inString.replace(/^\#{6}\s(.*)=*/gm, '<h6>$1</h6>');
 	inString = inString.replace(/^\#{5}\s(.*)=*/gm, '<h5>$1</h5>');

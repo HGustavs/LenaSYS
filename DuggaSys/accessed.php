@@ -17,6 +17,7 @@
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
+	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script> 
 	<script src="accessed.js"></script>
 
 </head>
@@ -47,6 +48,7 @@
 			
 		</div>
 	</div>
+	<div id="user" style='width:100%; border: 2px solid green;'></div>
 	<!--- Edit Section Dialog END --->
 	
 	<?php 

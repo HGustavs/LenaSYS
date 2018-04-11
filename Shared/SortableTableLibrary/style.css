@@ -130,6 +130,69 @@ p {
 }
 
 /* --------------================################================-------------- *
+ *                                Sortable Table                                *
+ * --------------================################================-------------- */
+#thetable {
+  padding:10px;
+}
+
+#thetable table {
+  width:100%;
+  padding:1px;
+  border-left:2px solid #dbd0d8;
+  border-bottom:2px solid #dbd0d8;
+  font-size: 16px;
+}
+
+#thetable table td {
+  border-right:2px solid #dbd0d8;
+  line-height:28px;
+  padding-left:10px;
+  padding-right: 10px;
+  margin:0 5px;
+}
+
+#thetable table th {
+  background:#614875;
+  color:#fff;
+  line-height:28px;
+  font-weight: bold;
+  padding-left: 10px;
+  height:40px;
+}
+
+#thetable--nomargin {
+  margin: 0!important;
+}
+
+#thetable tbody tr:nth-child(odd) {
+    background-color: #ccc;
+}
+
+.gradient {
+    background-image: radial-gradient(yellow,#f06d06);
+}
+
+#editpopover{
+    border:1px solid black;
+    box-shadow:2px 2px 2px #000;
+    position:absolute;
+    background-color: #FFF; 
+}
+
+.icon {
+    width:15px;
+    height:15px;
+    padding:0px;
+}                
+
+#input-container input{
+    width:100%;
+    border: none;
+    text-overflow: ellipsis;
+}
+
+/* --------------================################================-------------- *
  *                               Lists and Content                              *
  * --------------================################================-------------- */
 
@@ -140,7 +203,6 @@ p {
   padding: 10px;
   font-size: 10pt;
   background-color: #ddd;
-
 }
 
 .err{
@@ -156,7 +218,7 @@ p {
 
 #content {
   background: #fff;
-  /*min-height: calc(100vh - 90px);*/
+  min-height: calc(100vh - 90px);
   padding: 65px 10px 25px 10px;
 }
 
@@ -408,7 +470,6 @@ p {
 .WhiteLight{
 	background: radial-gradient(white, grey, white);
 }
-
 
 .YellowLight{
 	background: radial-gradient(yellow 50%, grey, white 60%);
@@ -700,39 +761,6 @@ header td {
 		box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 
-.newpassword {
-		padding:4px;
-		background-color: #ccc;
-		border: 2px solid #999;
-		min-height: 100px;
-    min-width: 200px;
-    max-height: 80%;
-    overflow-y: auto;
-		box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
-}
-
-.showsecurityquestion {
-  padding:4px;
-  background-color: #ccc;
-  border: 2px solid #999;
-  min-height: 100px;
-  min-width: 200px;
-  max-height: 80%;
-  overflow-y: auto;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
-}
-
-.resetcomplete {
-  padding:4px;
-  background-color: #ccc;
-  border: 2px solid #999;
-  min-height: 100px;
-  min-width: 200px;
-  max-height: 80%;
-  overflow-y: auto;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
-}
-
 .expiremessagebox, .endsessionmessagebox {
 		display:block;
 		padding:4px;
@@ -760,7 +788,7 @@ header td {
   margin-bottom:2px;
   margin-left:115px;
   font-size:14px;
-  transition:1s background-color;
+  transition:1s background-color;  
 }
 
 #endsessionmessagebutton:hover {
@@ -802,7 +830,7 @@ header td {
 .loginBox .cursorPointer {
   cursor: pointer;
 }
-
+ 
 #playlink {
   width: 216px;
 }
@@ -927,7 +955,7 @@ input {
   background-color: #ce3d3d;
 }
 .loginBoxbody {
-
+    
 }
 
 .loginBox form {
@@ -1029,6 +1057,7 @@ input {
  /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
 
 #diagram-toolbar{
+    height:500px;
     width:125px;
 }
 .application-toolbar-wrap{
@@ -1045,6 +1074,7 @@ input {
     background-color: #614875;
     color:#fff;
     vertical-align: bottom;
+    padding-left: 10px;
     cursor: move;
     display: flex;
     justify-content: space-around;
@@ -1052,7 +1082,7 @@ input {
 }
 
 .application-toolbar{
-    padding-top:5px;
+    padding-top:16px;
 }
 .application-toolbar > input[type='button']{
     background-color:black;
@@ -1069,28 +1099,6 @@ input {
     margin-bottom:0px;
     padding:0px 4px 0px 4px;
 }
-#toolbar-minimize{
-    position: absolute;
-    display: inline-block;
-    width: 30px;
-    height: 25px;
-    left: 5px;
-    cursor:pointer;
-    text-align: center;
-    line-height: 25px;
-}
-#minimizeArrow{
-    width: 10px;
-    height: 10px;
-    filter:invert(100%);
-    transition: 0.2s;
-}
-.toolbarMinimized{
-    transform: rotate(90deg);
-}
-.toolbarMaximized{
-    transform: rotate(180deg);
-}
 
 /* --------------================################================-------------- *
  *                            END TOOLBOX/APPLICATION                           *
@@ -1101,9 +1109,6 @@ input {
 /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
  .document-settings{
      font-size:14px;
- }
- .export-drop-down{
-     display:none;
  }
  .document-settings > .menu-item, .document-settings > .menu-drop-down{
      float:left;
@@ -1121,10 +1126,7 @@ input {
  .document-settings > .menu-drop-down:hover > .drop-down{
      display:inline-block;
  }
- .document-settings > .menu-drop-down > .drop-down > .export-drop-down-head:hover > .export-drop-down{
-     display:inline-block;
- }
- .drop-down, .export-drop-down{
+ .drop-down{
      position:absolute;
      z-index:2000;
      outline:1px solid rgb(240,240,240);
@@ -1133,11 +1135,7 @@ input {
      width:260px;
      background-color:rgb(255,255,255);
  }
- .export-drop-down{
-     left:260px;
-     top:109px;
- }
- .menu-drop-drown, .export-drop-down-head{
+ .menu-drop-drown{
      display:relative;
      top:22px;
  }
@@ -1148,9 +1146,10 @@ input {
      border-bottom:1px solid rgb(240,240,240);
      margin-bottom:6px;
  }
- .drop-down-item > a, .export-drop-down-item > a{
+ .drop-down-item > a{
      color:rgb(0,0,0);
      text-decoration:none;
+
      display:inline-block;
      width:252px;
      height:16px;
@@ -1158,51 +1157,15 @@ input {
      padding: 8px 0px 8px 8px;
  }
 
- .drop-down-item > a::before, .export-drop-down-item > a::before{
+ .drop-down-item > a::before{
      /*PLACEHOLDER FOR ICON*/
      display:inline-block;
      width:16px;
      height:16px;
      content:"I";
  }
- .drop-down-item:hover, .export-drop-down-item:hover{
+ .drop-down-item:hover{
      background-color:rgb(240,240,240);
- }
- .drop-down-text > a {
-     font-size:14px !important;
-     color:rgb(0,0,0);
-     text-decoration:none;
-     display:inline-block;
-     height:16px;
-     line-height:16px;
-     padding: 8px 0px 8px 8px;
- }
-
- .drop-down-text > a::before{
-     /*PLACEHOLDER FOR ICON*/
-     display:inline-block;
-     width:16px;
-     height:16px;
-     content:"I";
- }
-
- .drop-down-text:hover{
-     background-color:rgb(240,240,240);
-     cursor: default !important;
- }
- #hotkey-space {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
-  top: 10px;
- }
- #hotkey-ctrl {
-  position: absolute !important;
-  font-size: 11px !important;
-  color: #3d3d3d !important;
-  right: 6px !important;
-  top: 55px;
  }
 
  /* --------------================################================-------------- *
@@ -1302,7 +1265,6 @@ input.submit-button-newitem {
   transition:1s background-color;
   float:right;
 }
-
 input.diagram-sidebar-buttons {
    background-color:#7B5A96;
    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -1383,7 +1345,6 @@ input.submit-button:disabled {
   opacity: 0.3;
 }
 
-
 .buttonsStyle {
   display: flex;
   flex-direction: column;
@@ -1430,7 +1391,7 @@ input.submit-button:disabled {
 }
 
 .pressed{
-  background:#FFA500;
+  background:#FFA500; 
 }
 
 .button-row {
@@ -1444,40 +1405,6 @@ input.large-button {
   height:48px !important;
   line-height:48px !important;
 }
-
-/* Tooltip */
-
-.tooltipDugga {
-    position: relative;
-    display: inline-block;
-}
-
-.tooltipDugga .tooltipDuggatext {
-    width: 200px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 5;
-    top: -24px;
-	left: -18px;
-    font-size: 12px;
-    line-height: 14px;
-}
-
-.tooltipDugga .tooltipDuggatext::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 100%;
-    margin-top: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent transparent black;
-}
-
 
 /* File upload form */
 
@@ -1617,7 +1544,7 @@ input.large-button {
     cursor:pointer;
 }
 
-#plorf, #dorf {
+.list#testTable #plorf, .list#testTable #dorf {
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
     padding:4px;
 }
@@ -2010,28 +1937,28 @@ span.arrow {
   border-bottom-right-radius: 10px;
 }
 
-.fab {
-  position:fixed;
-  width:50px;
-   height:50px;
-   border-radius:25px;
-   box-shadow:0px 0px 15px #888;
-   bottom:35px;
-   right:50px;
-   font-size:24px;
-   text-align:center;
-   background-color:#fecc56;
-   color:#614875;
-   z-index:4000;
+.fab { 
+  position:fixed; 
+  width:50px; 
+   height:50px; 
+   border-radius:25px; 
+   box-shadow:0px 0px 15px #888; 
+   bottom:35px; 
+   right:50px; 
+   font-size:24px; 
+   text-align:center; 
+   background-color:#fecc56; 
+   color:#614875; 
+   z-index:4000; 
    border:0;
-   outline: none;
-   cursor: pointer;
-   padding-left: 7px;
-   padding-top: 1px;
- }
+   outline: none; 
+   cursor: pointer; 
+   padding-left: 7px; 
+   padding-top: 1px; 
+ } 
 
-.fab:hover {
-    transform:scale(1.1);
+.fab:hover { 
+    transform:scale(1.1); 
 }
 
 .dugga-pass {
@@ -2297,8 +2224,8 @@ span.arrow {
   line-height: 47px;
 }
 
-.rownoMagic {
-  width: 25px;
+.rownoMagic { 
+  width: 25px; 
 }
 
 .rownoMagic > div {
@@ -2452,7 +2379,7 @@ table {
 
 #lookingGlassSVG {
   position: absolute;
-  top: 3px;
+  top: 2px;
   left: 3px;
 }
 
@@ -2693,10 +2620,6 @@ ul.hamburgerList button.menuButton {
   -o-transition: opacity 300ms, width 300ms, margin 300ms;
 }
 
-.dateSize{
-   width: 100px;
-}
-
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
   table.navheader td.editVers,
   table.navheader td.contribution,
@@ -2758,10 +2681,6 @@ ul.hamburgerList button.menuButton {
     -moz-transition: opacity 300ms, width 300ms, margin 300ms;
     -o-transition: opacity 300ms, width 300ms, margin 300ms;
   }
-  
-  .dateSize{
-	  width: 50px;
-  }
 }
 
 @media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
@@ -2797,7 +2716,7 @@ ul.hamburgerList button.menuButton {
     transform: scale(0.7, 0.7);
     left: 10px;
   }
-
+  
   #cookiemsg {
 	background-color: #fecc56;
 	z-index: 1000;
@@ -2809,10 +2728,6 @@ ul.hamburgerList button.menuButton {
 	display: flex;
 	text-align: center;
 	}
-	
-	#Sectionlist .course {
-    font-size: 20px;
-  }
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
@@ -2865,16 +2780,6 @@ ul.hamburgerList button.menuButton {
     display: flex;
     text-align: center;
   }
-  
-  #Sectionlist .course {
-    font-size: 16px;
-  }
-}
-
-@media only screen and (max-width: 320px), only screen and (max-device-width: 320px) {
-  #Sectionlist .course {
-    font-size: 14px;
-  }
 }
 
 /* Title for the subpages of the section-editor */
@@ -2891,7 +2796,6 @@ ul.hamburgerList button.menuButton {
 #nametext {
   padding: 2px 0px 2px 10px;
 }
-
 
 /* Is used to style a Select-box in diagram.php. */
 #selectDiv {

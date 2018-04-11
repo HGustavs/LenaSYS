@@ -21,7 +21,6 @@ function closeAppearanceDialogMenu() {
     /*
      * Closes the dialog menu for appearance.
      */
-    $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     globalAppearanceValue = 0;
     hashFunction();
     $("#appearance").hide();
@@ -38,6 +37,23 @@ function clickOutsideDialogMenu(ev) {
         if (!container.is(ev.target) && container.has(ev.target).length === 0) {
             globalAppearanceValue = 0;
             closeAppearanceDialogMenu();
+        }
+    });
+}
+
+function clickEnterOnDialogMenu(ev) {
+    /*
+     * Closes the dialog menu when the enter button is pressed.
+     */
+    $(document).keypress(function (ev) {
+        var container = $("#appearance");
+        if (ev.which == 13) {
+            globalAppearanceValue = 0;
+            closeAppearanceDialogMenu();
+
+            // Is called in the separate appearance php-files at the buttons.
+            // Called here since an enter press doesn't relate to any element
+            changeObjectAppearance();
         }
     });
 }

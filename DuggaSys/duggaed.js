@@ -611,37 +611,92 @@ function showVariantz(param){
          variant.push(param);
     }
 }
+
+function renderCell(col,celldata,cellid) {
+	if (col == "Trumma"){
+	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
+	} else if (col == "Pnr") {
+	    return "<div>" + celldata + "</div>";
+	} else {
+		return "<div id='" + cellid + "'>" + celldata + "</div>";
+	}
+	return celldata;
+}
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
 var alla = 0;
-function returnedDugga(data)
-{
+var myTable;
+function returnedDugga(data) {
+	filez = data;
+
+    var tabledata = {
+    	tblhead:{
+    		autograde:"Autograde on/off",
+    		gradesystem:"Grade",
+    		template:"Template",
+    		deadline:"Deadline",
+    		release:"Release date",
+    		modified:"Last modified"
+    	},
+    	tblbody: data['entries'],
+    	tblfoot:[]
+    }
+
+    myTable = new SortableTable(
+		tabledata,
+		"quiz",
+		null,
+		"",
+        renderCell,
+        null,
+        null,
+        null,
+        [],
+        [],				
+        "",
+        null,
+        null,
+		null,
+		null,
+		null,
+        null,
+		false
+	);
+
+    myTable.renderTable();
+
 	$("content").html();
 	var result = 0;
 	filez = data['files'];
 	duggaPages = data['duggaPages'];
 
 	str="";
+	// Funktion som kallas från diven
+	function leFunk(){
 	if (data['files'].length > 0) {
 
-		str+="<div class='titles' style='padding-top:10px;'>";
-		str+="<h1 style='flex:10;text-align:center;'>Tests</h1>";
-		str+="<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='Add Dugga' onclick='newDugga();showSubmitButton();'/>";
-		str+="</div>";
 
-		str+="<table class='list' id='testTable'>";
+  // Group 1 start
+	//	str+="<div class='titles' style='padding-top:10px;'>";
+	//	str+="<h1 style='flex:10;text-align:center;'>Tests</h1>";
+	//	str+="<input style='float:none;flex:1;max-width:85px;' class='submit-button' type='button' value='Add Dugga' onclick='newDugga();showSubmitButton();'/>";
+	//	str+="</div>";
 
-		str+="<thead><tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Start</th><th>Deadline</th><th>Deadline2</th><th>Deadline3</th><th>Release</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr></thead>";
+	//	str+="<table class='list' id='testTable'>";
+
+	//	str+="<thead><tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Start</th><th>Deadline</th><th>Deadline2</th><th>Deadline3</th><th>Release</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr></thead>";
+  // Group 1 end
 
 
-		var oddevenfumo = "";
+	// 	var oddevenfumo = "";
 		for(i=0;i<data['entries'].length;i++){
 
 			var item=data['entries'][i];
 
 			// check if even or odd fumo row
-			if(i % 2 === 0) {
+			/*if(i % 2 === 0) {
                 oddevenfumo = "evenfumo";
 			} else {
 				oddevenfumo = "oddfumo";
@@ -730,7 +785,7 @@ function returnedDugga(data)
 			+item['deadline3']+"\",\""
 			+item['release']+"\");' >";
 			str+="</td>";
-			str+="</tr>";
+			str+="</tr>";*/
 
 			var variantz=item['variants'];
 
@@ -770,7 +825,8 @@ function returnedDugga(data)
 				str+="</table>";
 				str+="</td></tr>";
 			}
-		}
+
+		/*}
 
 		str+="</table>";
 	}
@@ -788,10 +844,11 @@ function returnedDugga(data)
     for(idx = 0; idx < variantLength; idx++) {
         if (!document.getElementById("variantInfo"+idx) && document.getElementById("dugga"+idx)) {
             $("#arrow"+idx).hide();
-        }
+        }*/
+
     }
 }
-
+}
 function parseParameters(str){
 	return str;
 }

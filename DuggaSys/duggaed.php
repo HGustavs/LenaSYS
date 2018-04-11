@@ -17,9 +17,9 @@ pdoConnect();
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-
 	<script src="../Shared/dugga.js"></script>
 	<script src="duggaed.js"></script>
+  <script src="../Shared/SortableTableLibrary/sortableTable.js"></script> 
   <script src="timer.js"></script>
   <script src="clickcounter.js"></script>
 </head>
@@ -41,7 +41,7 @@ pdoConnect();
 		include '../Shared/loginbox.php';
 	?>
 	<!-- Login Dialog END -->
-
+  <div id="quiz" onchange='leFunk()' style='width:100%; border: 2px solid green;'></div>
 	<!-- Edit Dugga Dialog START -->
 	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
