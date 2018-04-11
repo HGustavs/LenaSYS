@@ -186,7 +186,7 @@ if(strcmp($opt,"REQNEWPWD")==0) {
 											AND timestamp > :currentTime - :timeInterval");
 	$query->bindParam(':IP', $IP);
 	$query->bindParam(':currentTime', $currentTime);
-	$query->bindParam('timeInterval', $timeInterval);
+	$query->bindParam(':timeInterval', $timeInterval);
 
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
@@ -211,7 +211,7 @@ if(strcmp($opt,"CHECKSECURITYANSWER")==0) {
 											AND timestamp > :currentTime - :timeInterval");
 	$query->bindParam(':IP', $IP);
 	$query->bindParam(':currentTime', $currentTime);
-	$query->bindParam('timeInterval', $timeInterval);
+	$query->bindParam(':timeInterval', $timeInterval);
 
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
