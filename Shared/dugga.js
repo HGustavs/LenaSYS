@@ -28,12 +28,20 @@ function setSecurityNotifaction(param){
     localStorage.setItem("securitynotification", param);
 }
 
+function resetLoginStatus(){
+  status = 1;
+  showing = 0;
+  toggleloginnewpass();
+}
+
 function toggleloginnewpass(){
 	resetFields();
+
   //Shows the New password-box (username input)
 	if(status == 0){
 		$("#newpassword").css("display", "block");
-		$("#loginBox").css("display", "none");
+		$("#loginBox").css("display", "flex");
+    $("#login").hide();
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -41,7 +49,7 @@ function toggleloginnewpass(){
     //Shows the Login-box
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "flex");
+		$("#login").css("display", "block");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
 		status= 0;
@@ -49,7 +57,7 @@ function toggleloginnewpass(){
     //Shows the Sequrity question-box (answer for question input)
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "none");
+		$("#loginBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "block");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -58,7 +66,7 @@ function toggleloginnewpass(){
   //Shows the Reset complete-box
 	else if(status == 3){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "none");
+		$("#loginBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "block");
 		status= 1;
@@ -115,6 +123,7 @@ function setExpireCookieLogOut() {
 function closeWindows(){
 	var index_highest = 0;
 	var e;
+
 	//More effective to have a class for the div you want to search and pass that to your selector
 	$("*").each(function() {
 	    //Always use a radix when using parseInt
@@ -570,9 +579,9 @@ function loginEventHandler(event){
 		if(showing == 1){
 			processLogin();
 		}else if(showing == 0){
-			processResetPasswordCheckUsername();
+			resetPasswordBarrier();
 		}else if(showing == 2){
-			processResetPasswordCheckSecurityAnswer();
+			enterSecurityQuestionBarrier();
 		}
 	}
 }
@@ -607,9 +616,28 @@ function checkHTTPS() {
 	return (location.protocol == 'https:');
 }
 
-function processResetPasswordCheckUsername() {
-  //Gets the security question from the database
-	var username = $("#newpassword #username").val();
+function resetPasswordBarrier() {
+	var username = $("#usernamereset").val();
+
+	$.ajax({
+		type:"POST",
+		url: "../DuggaSys/accessedservice.php",
+		data: {
+			username: username,
+			opt: "REQNEWPWD"
+		},
+		success:function(data) {
+			var result = JSON.parse(data);
+			result = result.queryResult;
+			processResetPasswordCheckUsername(result);
+		}
+	});
+}
+
+function processResetPasswordCheckUsername(result) {
+	if(result <= 5) {
+	//Gets the security question from the database
+	var username = $("#usernamereset").val();
 
 	$.ajax({
 		type:"POST",
@@ -635,54 +663,79 @@ function processResetPasswordCheckUsername() {
 			}
 		}
 	});
+	}else {
+		$("#newpassword #message2").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>" + "You have exceeded the maximum <br> amount of tries within 5 min" + "</div>");
+		$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
+	}
 }
 
-
-
-function processResetPasswordCheckSecurityAnswer() {
-	//Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
-	var username = $("#newpassword #username").val();
-	var securityquestionanswer = $("#showsecurityquestion #answer").val();
+function enterSecurityQuestionBarrier(){
+  var username = $("#usernamereset").val();
 
 	$.ajax({
-			type:"POST",
-			url: "../Shared/resetpw.php",
-			data: {
-				username: username,
-				securityquestionanswer: securityquestionanswer,
-				opt: "CHECKANSWER"
-			},
-			success:function(data) {
-				var result = JSON.parse(data);
-				if(result['checkanswer'] == "success") {
-					$.ajax({
-						type:"POST",
-						url: "../Shared/resetpw.php",
-						data: {
-							username: username,
-							opt: "REQUESTCHANGE"
-						},
-						success:function(data){
-							var result = JSON.parse(data);
-							if(result['requestchange'] == "success"){
-								status = 3;
-								toggleloginnewpass();
-							}else{
-								$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
-								$("#showsecurityquestion #message3").html("<div class='alert danger'>Something went wrong</div>");
-							}
-						}
-					});
-				}else{
-					if(typeof result.reason != "undefined") {
-						$("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
-					} else {
-						$("#showsecurityquestion #message3").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong answer</div>");
-					}
-					$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 6, 0.2)");
-			}
+		type:"POST",
+		url: "../DuggaSys/accessedservice.php",
+		data: {
+      username: username,
+			opt: "CHECKSECURITYANSWER"
+		},
+		success:function(data) {
+			var result = JSON.parse(data);
+			result = result.queryResult;
+			processResetPasswordCheckSecurityAnswer(result);
 		}
 	});
+}
+
+function processResetPasswordCheckSecurityAnswer(result) {
+  if (result <= 5){
+    //Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
+    var username = $("#usernamereset").val();
+    var securityquestionanswer = $("#answer").val();
+
+    $.ajax({
+        type:"POST",
+        url: "../Shared/resetpw.php",
+        data: {
+          username: username,
+          securityquestionanswer: securityquestionanswer,
+          opt: "CHECKANSWER"
+        },
+        success:function(data) {
+          var result = JSON.parse(data);
+          if(result['checkanswer'] == "success") {
+            $.ajax({
+              type:"POST",
+              url: "../Shared/resetpw.php",
+              data: {
+                username: username,
+                opt: "REQUESTCHANGE"
+              },
+              success:function(data){
+                var result = JSON.parse(data);
+                if(result['requestchange'] == "success"){
+                  status = 3;
+                  toggleloginnewpass();
+                }else{
+                  $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
+                  $("#showsecurityquestion #message3").html("<div class='alert danger'>Something went wrong</div>");
+                }
+              }
+            });
+          }else{
+            if(typeof result.reason != "undefined") {
+              $("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
+            } else {
+              //update database here.
+              $("#showsecurityquestion #message3").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong answer</div>");
+            }
+            $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 6, 0.2)");
+        }
+      }
+    });
+  } else {
+    $("#showsecurityquestion #message3").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>You have exceeded the maximum <br> amount of tries within 5 min</div>");
+  }
 }
 
 function processLogin() {

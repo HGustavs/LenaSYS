@@ -700,6 +700,39 @@ header td {
 		box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 
+.newpassword {
+		padding:4px;
+		background-color: #ccc;
+		border: 2px solid #999;
+		min-height: 100px;
+    min-width: 200px;
+    max-height: 80%;
+    overflow-y: auto;
+		box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
+}
+
+.showsecurityquestion {
+  padding:4px;
+  background-color: #ccc;
+  border: 2px solid #999;
+  min-height: 100px;
+  min-width: 200px;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
+}
+
+.resetcomplete {
+  padding:4px;
+  background-color: #ccc;
+  border: 2px solid #999;
+  min-height: 100px;
+  min-width: 200px;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
+}
+
 .expiremessagebox, .endsessionmessagebox {
 		display:block;
 		padding:4px;
@@ -727,7 +760,7 @@ header td {
   margin-bottom:2px;
   margin-left:115px;
   font-size:14px;
-  transition:1s background-color;  
+  transition:1s background-color;
 }
 
 #endsessionmessagebutton:hover {
@@ -769,7 +802,7 @@ header td {
 .loginBox .cursorPointer {
   cursor: pointer;
 }
- 
+
 #playlink {
   width: 216px;
 }
@@ -894,7 +927,7 @@ input {
   background-color: #ce3d3d;
 }
 .loginBoxbody {
-    
+
 }
 
 .loginBox form {
@@ -1330,7 +1363,7 @@ input.submit-button:disabled {
 }
 
 .pressed{
-  background:#FFA500; 
+  background:#FFA500;
 }
 
 .button-row {
@@ -1876,28 +1909,28 @@ span.arrow {
   border-bottom-right-radius: 10px;
 }
 
-.fab { 
-  position:fixed; 
-  width:50px; 
-   height:50px; 
-   border-radius:25px; 
-   box-shadow:0px 0px 15px #888; 
-   bottom:35px; 
-   right:50px; 
-   font-size:24px; 
-   text-align:center; 
-   background-color:#fecc56; 
-   color:#614875; 
-   z-index:4000; 
+.fab {
+  position:fixed;
+  width:50px;
+   height:50px;
+   border-radius:25px;
+   box-shadow:0px 0px 15px #888;
+   bottom:35px;
+   right:50px;
+   font-size:24px;
+   text-align:center;
+   background-color:#fecc56;
+   color:#614875;
+   z-index:4000;
    border:0;
-   outline: none; 
-   cursor: pointer; 
-   padding-left: 7px; 
-   padding-top: 1px; 
- } 
+   outline: none;
+   cursor: pointer;
+   padding-left: 7px;
+   padding-top: 1px;
+ }
 
-.fab:hover { 
-    transform:scale(1.1); 
+.fab:hover {
+    transform:scale(1.1);
 }
 
 .dugga-pass {
@@ -2163,8 +2196,8 @@ span.arrow {
   line-height: 47px;
 }
 
-.rownoMagic { 
-  width: 25px; 
+.rownoMagic {
+  width: 25px;
 }
 
 .rownoMagic > div {
@@ -2619,7 +2652,7 @@ ul.hamburgerList button.menuButton {
     transform: scale(0.7, 0.7);
     left: 10px;
   }
-  
+
   #cookiemsg {
 	background-color: #fecc56;
 	z-index: 1000;

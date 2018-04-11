@@ -329,6 +329,20 @@ function getOS() {
 	return $osPlatform;
 }
 
+function getIP() {
+	$IP="";
+	if(isset($_SERVER['REMOTE_ADDR'])){
+			$IP.=$_SERVER['REMOTE_ADDR'];
+	}
+	if(isset($_SERVER['HTTP_CLIENT_IP'])){
+			$IP.=" ".$_SERVER['HTTP_CLIENT_IP'];
+	}
+	if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
+			$IP.=" ".$_SERVER['HTTP_X_FORWARDED_FOR'];
+	}
+	return $IP;
+}
+
 //------------------------------------------------------------------------------------------------
 // EventTypes - Contains constants for log event types
 //------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 /********************************************************************************
 
-   Documentation 
+   Documentation
 
 *********************************************************************************
 
@@ -8,7 +8,7 @@ Example seed
 ---------------------
 	 Example seed
 	 Param: {"type":"pdf","filelink":"instructions.pdf", "submissions":[{"fieldname":"Inl1Document","type":"pdf"},{"fieldname":"Inl2Document","type":"zip", "instruction":"Zip your project folder and submit the file here."},{"fieldname":"Inl3Document","type":"multi", "instruction":"Upload all of your graphics, i.e., all the generated png and svg files."}]}
-	 Answer: 
+	 Answer:
 -------------==============######## Documentation End ###########==============-------------
 */
 
@@ -18,17 +18,16 @@ var elapsedTime = 0;
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
-function setup() 
+function setup()
 {
 	inParams = parseGet();
 
 	AJAXService("GETPARAM", { }, "PDUGGA");
 }
 
-function returnedDugga(data) 
-{	
+function returnedDugga(data)
+{
 	dataV = data;
-	
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
 	if (data['param'] == "UNK") {
@@ -56,7 +55,7 @@ function returnedDugga(data)
 								}
 							}
 						}
-					}					
+					}
 				}
     		}});
 		}else if(duggaParams["type"]==="link"){
@@ -64,11 +63,11 @@ function returnedDugga(data)
 			if(window.location.protocol === "https:"){
 					filename=filename.replace("http://", "https://");
 			}else{
-					filename=filename.replace("https://", "http://");				
+					filename=filename.replace("https://", "http://");
 			}
-			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='1000px' type='application/pdf'></iframe>"; 
+			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='1000px' type='application/pdf'></iframe>";
 		}else {
-			// UNK 
+			// UNK
 		}
 
 		var duggaFiles = data["files"][inParams["moment"]];
@@ -79,32 +78,32 @@ function returnedDugga(data)
 	    		if (duggaParams['uploadInstruction'] !== null){
 					document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
 				}
-	
+
 			}
 			if (typeof duggaFiles !== "undefined"){
-				for (var version=0; version < duggaFiles.length;version++){				
+				for (var version=0; version < duggaFiles.length;version++){
 					if (duggaFiles[version].kind == "3"){
 						if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
-						 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;					
+						 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;
 						}
 					}
-				}							
+				}
 			}
 		} else {
 			var msg = "<div class='loginTransparent' id='lockedDuggaInfo' style='margin-bottom:5px;'>";
 			msg+="<img src='../Shared/icons/duggaLock.svg'>";
 			if (document.getElementById("loginbutton").className==="loggedin"){
-				msg+="<p>Not registered to the course!<br>You can view the assignment but you need to be registered to the course to save your dugga result.</p>";				
+				msg+="<p>Not registered to the course!<br>You can view the assignment but you need to be registered to the course to save your dugga result.</p>";
 			} else {
 				msg+="<p>Not logged in!<br>You can view the assignment but you need to be logged in and registered to the course to save your dugga result.</p>";
-				
+
 			}
 			msg+="</div>";
-			
+
 			document.getElementById("tomten").innerHTML=msg;
 		}
 
-		if (duggaFiles.length > 0){
+		if (duggaFiles && duggaFiles.length > 0){
 			for (var l=0; l<data["files"].length; l++){
 				if (data["files"][l].kind == "3"){
 					if (document.getElementById(data["files"][l].fieldnme+"Text") != null) document.getElementById(data["files"][l].fieldnme+"Text").value=data["files"][l].content;
@@ -138,7 +137,7 @@ function reset()
 
 }
 
-function saveClick() 
+function saveClick()
 {
 	Timer.stopTimer();
 
@@ -167,7 +166,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 		document.getElementById('duggaTime').innerHTML=userStats[0];
 		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
 		document.getElementById('duggaClicks').innerHTML=userStats[2];
-		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];		
+		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
 		$("#duggaStats").css("display","block");
 		$("#duggaStats").draggable({ handle:'.loginBoxheader'});
 	}
@@ -199,7 +198,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 								}
 							}
 						}
-					}					
+					}
 				}
     		}});
 		}else if(duggaParams["type"]==="link"){
@@ -207,11 +206,11 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 			if(window.location.protocol === "https:"){
 					filename=filename.replace("http://", "https://");
 			}else{
-					filename=filename.replace("https://", "http://");				
+					filename=filename.replace("https://", "http://");
 			}
-			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='1000px' type='application/pdf'></iframe>"; 
+			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='1000px' type='application/pdf'></iframe>";
 		}else {
-			// UNK 
+			// UNK
 		}
 
 		$("#snus").parent().find(".instructions-content").slideToggle("slow");
@@ -219,7 +218,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 		var duggaFiles = [];
 		if (moment != null) {
 			duggaFiles = files[moment];
-		} 
+		}
 
 		createFileUploadArea(duggaParams["submissions"]);
 		for (var k=0; k < duggaParams["submissions"].length; k++){
@@ -234,22 +233,22 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 		// This is in show facit marking view NOT official running version!
 		// ----------------========#############========----------------
 
-		for (var version=0; version < duggaFiles.length;version++){				
+		for (var version=0; version < duggaFiles.length;version++){
 				if (duggaFiles[version].kind == "3"){
 					if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
-					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;					
+					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;
 					}
 				}
-		}			
+		}
 
 		// Bring up the feedback tools
 		document.getElementById('markMenuPlaceholder').style.display = "block";
 //		document.getElementById('markSaveButton').style.display = "block";
-	
+
 	}
 }
 
-function closeFacit() 
+function closeFacit()
 {
 	clearInterval(tickInterval);
 	running = false;
@@ -276,21 +275,22 @@ function createFileUploadArea(fileuploadfileds){
 				form +="<textarea rows='15' name='inputtext'  id='"+fieldname+"Text' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;	width: 80%;background:#f8f8ff;padding:10px;margin-bottom:10px;border: 2px solid #e8e6e6;' placeholder='Enter your text and upload.' onkeyup='disableSave();'></textarea><br>";
 				form +="<input type='hidden' name='kind' value='3' />";
 		}else{
-				form +="<input name='uploadedfile[]' type='file' id='inputfile' class='inputfile' multiple='multiple' onchange='this.form.submit();'/>";
-                form +="<label for='inputfile'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
+				form +="<input name='uploadedfile[]' type='file' id='inputfile" + l + "' class='inputfile' multiple='multiple' onchange='this.form.submit();'/>";
+                form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
 				form +="<input type='hidden' name='kind' value='1' />";
 		}
-		
-		form +="<input type='submit' id='okGo' name='okGo' class='inputfile' value='Upload'>";
-        form +="<label for='okGo' style='padding-left:20px; padding-right:20px'>Upload</label>";
+
+		form +="<input type='submit' name='okGo' id='okGo" + l + "' class='inputfile' value='Upload'>";
+        form +="<label for='okGo" + l + "' style='padding-left:20px; padding-right:20px'>Upload</label>";
 		form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 		form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
 		form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";
 		form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
 		form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
+
 		form +="<input type='hidden' name='field' value='"+fieldname+"' />";
 		form +="</form>";
-		
+
 		str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
 		str += "<div style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
 		if (type === "pdf"){
@@ -314,7 +314,7 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</tr>";
 			str += "</table>";
 			str += "</div>"
-			str += "</div>"			
+			str += "</div>"
 		}
 		str += "</div>";
 		str += "<div>";
@@ -324,7 +324,7 @@ function createFileUploadArea(fileuploadfileds){
             str +="<h4>Instructions</h4>";
             str +="<div id='"+fieldname+"Instruction' style='font-style: italic;padding:0px;'></div>"
             str +="<br />";
-			str +="<h4>New submission</h4>"; 
+			str +="<h4>New submission</h4>";
 			str +="<table>";
 			str +="<tr>";
 			str +="<td id='"+fieldname+"'>";
@@ -345,5 +345,5 @@ function createFileUploadArea(fileuploadfileds){
 		str += "</div>"
 
 	}
-	document.getElementById("tomten").innerHTML=str;	
+	document.getElementById("tomten").innerHTML=str;
 }
