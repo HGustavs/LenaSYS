@@ -1099,7 +1099,10 @@ function getCookie(cname) {
 $(window).load(function() {
 	//There is an issue with using this code, it generates errors that stop execution
       $(window).keyup(function(event){
-      	if(event.keyCode == 27) closeWindows();
+      	if(event.keyCode == 27) {
+          closeWindows();
+          showSaveButton();
+        }
       });
 });
 

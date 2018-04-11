@@ -8,6 +8,7 @@ var querystring=parseGet();
 var filez;
 var variant = [];
 var submissionRow = 0;
+var decider;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -262,6 +263,30 @@ function closeEditVariant()
 {
 	$("#editVariant").css("display","none");
 }
+// Displaying and hidding the dynamic comfirmbox for the section edit dialog
+	function confirmBox(temp){	
+		if (temp == 1 || temp == 2 || temp == 3){
+			decider = temp;
+			$("#sectionConfirmBox").css("display","flex");
+		}else if(temp == 4){
+			console.log(decider);
+		    if (decider == 1){
+		    	deleteDugga();
+		    }
+		   	else if (decider == 2){
+		    	createDugga();
+		    }
+		    else if (decider == 3){
+		    	updateDugga();
+		    }
+		    $("#sectionConfirmBox").css("display","none");
+		    decider = 0;
+		}
+		else{
+		   	$("#sectionConfirmBox").css("display","none");
+		   	decider = 0;
+		}
+	}
 
 function createDugga()
 {
@@ -288,10 +313,34 @@ function createDugga()
 function deleteDugga()
 {
     did=$("#did").val();
-    if(confirm("Do you really want to delete this dugga?")) AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+    AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
     $("#editDugga").css("display","none");
     //$("#overlay").css("display","none");
 }
+
+
+// Checks if the title name includes any invalid characters
+function validateName(){
+	var retValue = false;
+	
+	var nme=document.getElementById("name");
+	
+	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)){
+		$('#tooltipTxt').fadeOut();
+		$('#saveBtn').removeAttr('disabled');
+		$('#submitBtn').removeAttr('disabled');
+		nme.style.backgroundColor = "#fff";
+		retValue = true;
+	}else{
+		$('#tooltipTxt').fadeIn();
+		$('#submitBtn').attr('disabled','disabled');
+		$('#saveBtn').attr('disabled','disabled');
+		nme.style.backgroundColor = "#f57";
+	}
+	
+	return retValue;
+}
+
 
 function updateDugga()
 {
@@ -303,21 +352,27 @@ function updateDugga()
 	var autograde=$("#autograde").val();
 	var gradesys=$("#gradesys").val();
 	var template=$("#template").val();
-  var qstart=$("#qstart").val();
+	var qstart=$("#qstart").val();
 	var deadline=$("#deadline").val();
+
 	var deadline2=$("#deadline2").val();
 	var deadline3=$("#deadline3").val();
   var release=$("#release").val();
 
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,qstart:qstart,deadline:deadline,deadline2:deadline2,deadline3:deadline3,release:release,coursevers:querystring['coursevers']},"DUGGA");
+
 	console.log(deadline);
 
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,release:release,deadline:deadline,deadline2:deadline2,deadline3:deadline3,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function closeEditDugga()
-{
+{	
 	$("#editDugga").css("display","none");
+	document.getElementById("name").style.backgroundColor = "#fff";  // Resets color for name input
+	$('#submitBtn').removeAttr('disabled');  						 // Resets submit button to its default form
+	$('#saveBtn').removeAttr('disabled');  						 	 // Resets save button to its default form
+	$('#tooltipTxt').css("display","none");							 // Resets tooltip text to its default form
 	//$("#overlay").css("display","none");
 }
 
@@ -576,7 +631,9 @@ function returnedDugga(data)
 		str+="</div>";
 
 		str+="<table class='list' id='testTable'>";
+
 		str+="<thead><tr><th></th><th class='first'>Name</th><th>Autograde</th><th>Gradesys</th><th>Template</th><th>Start</th><th>Deadline</th><th>Deadline2</th><th>Deadline3</th><th>Release</th><th>Modified</th><th style='width:30px'></th><th style='width:30px' class='last'></th></tr></thead>";
+
 
 		var oddevenfumo = "";
 		for(i=0;i<data['entries'].length;i++){
