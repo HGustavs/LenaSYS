@@ -36,7 +36,7 @@ INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,securityque
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,securityquestion,securityquestionanswer, class) VALUES (223,'a99andni','Anders','Nilsson','19990101-0008',password('password'),'a99andni@student.his.se','what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i','WEBUG13h');
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,securityquestion,securityquestionanswer, class) VALUES (224,'a99evaer','Eva','Eriksson','19990101-0009',password('password'),'a99evaer@student.his.se','what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i','WEBUG13h');
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,securityquestion,securityquestionanswer, class) VALUES (225,'a99joher','Johan','Eriksson','19990101-0010',password('password'),'a99joher@student.his.se','what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i','WEBUG13h');
--- WEBUG14h --                                                                                                                           
+-- WEBUG14h --
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,securityquestion,securityquestionanswer, class) VALUES (226,'a99krila','Kristina','Larsson','19990101-0011',password('password'),'a99krila@student.his.se','what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i','WEBUG14h');
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,securityquestion,securityquestionanswer, class) VALUES (227,'a99perla','Per','Larsson','19990101-0012',password('password'),'a99perla@student.his.se','what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i','WEBUG14h');
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,securityquestion,securityquestionanswer, class) VALUES (228,'a99birol','Birgitta','Olsson','19990101-0013',password('password'),'a99birol@student.his.se','what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i','WEBUG14h');
@@ -136,6 +136,7 @@ INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (7,2,1,2,'dugga1','dugga4','2015-01-01 00:00:00','2015-02-05 00:00:00',NOW(),2);
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (8,2,1,2,'dugga2','dugga4','2015-02-01 00:00:00','2015-02-20 00:00:00',NOW(),2);
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (9,2,1,2,'Quiz','kryss','2015-01-01 00:00:00','2015-02-19 00:00:00',NOW(),2);
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (10,2,1,2,'Rapport','generic_dugga_file_receive','2015-01-01 00:00:00','2015-02-19 00:00:00',NOW(),2);
 
 /* Insert variants of tests */
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (1,1,'{\"tal\":\"2\"}','{"danswer":\"00000010 0 2\"}',NOW(),2);
@@ -158,7 +159,7 @@ INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (17
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (18,9,'{question\"RGB and CMYK are abbreviations for what?: A\"Red, Green, Blue and Cyan Magenta, Yellow, Key (black): B\"Red, Grey, Black and Cyclone, Magenta, Yellow, Kayo: C\"Randy´s Green Brick and Cactus Magnolia Yronema Kalmia}','A',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (19,9,'{question\"Which of these are examples of actual shaders?: A\"B32shader, 554shader: B\"Context shaders, Shadow shaders and Block shaders: C\"Vertex shaders, Pixel shaders and Geometry shaders}','C',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (20,9,'{question\"Points, lines and curves are examples of geometrical...: A\"Primitives: B\"Substitutes: C\"Formations: D\"Partitions}','A',NOW(),2);
-
+INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (21,10,'{\"type\":\"md\",\"filelink\":\"minimikrav_m2.md\", \"submissions\":[{\"fieldname\":\"InlPHPDocument\",\"type\":\"pdf\",\"instruction\":\"Your report as a .pdf document.\"},{\"fieldname\":\"InlPHPZip\",\"type\":\"zip\", \"instruction\":\"Zip your project folder and submit the file here.\"}]}', NOW(),2);
 
 /* Insert items on coursepage */
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1001,1,'PHP examples','UNK',1,1,1,1,'45656',0);
@@ -196,23 +197,25 @@ INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,mo
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2012,2,'Transformationsdugga 2','8',3,11,1,1,'97732',2010,2,2,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2013,2,'Frågeduggor 1HP','',4,12,1,1,'97732',2013,2,0,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2014,2,'Frågedugga 1','9',3,13,1,1,'97732',2013,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2015,2,'Rapport 1HP', '',4,14,2,1,'97732',2015,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2016,2,'Rapport inlämning','10',3,15,2,1,'97732',2015,2,1,0);
 
-
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2015,2,'Bit count test 1HP','',4,0,1,1,'97731',2015,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2016,2,'Bit count test 1','1',3,1,1,1,'97731',2015,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2017,2,'Bit count test 2','2',3,2,1,1,'97731',2015,0,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2018,2,'Color test 1HP','',4,3,1,1,'97731',2018,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2019,2,'Hex color test 1','3',3,4,1,1,'97731',2018,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2020,2,'Hex color test 2','4',3,5,1,1,'97731',2018,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2021,2,'Geometry 2HP','',4,6,1,1,'97731',2021,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2022,2,'Geometry test 1','5',3,7,1,1,'97731',2021,2,2,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2023,2,'Geometry test 2','6',3,8,1,1,'97731',2021,2,2,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2024,2,'Transforms 3,5HP','',4,9,1,1,'97731',2024,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2025,2,'Transforms test 1','7',3,10,1,1,'97731',2024,2,2,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2026,2,'Transforms test 2','8',3,11,1,1,'97731',2024,2,2,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2027,2,'Quizzes 1HP','',4,12,1,1,'97731',2027,2,0,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2028,2,'Quiz 1','9',3,13,1,1,'97731',2027,2,1,0);
-
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2017,2,'Bit count test 1HP','',4,0,1,1,'97731',2017,2,0,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2018,2,'Bit count test 1','1',3,1,1,1,'97731',2017,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2019,2,'Bit count test 2','2',3,2,1,1,'97731',2017,0,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2020,2,'Color test 1HP','',4,3,1,1,'97731',2020,2,0,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2021,2,'Hex color test 1','3',3,4,1,1,'97731',2020,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2022,2,'Hex color test 2','4',3,5,1,1,'97731',2020,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2023,2,'Geometry 2HP','',4,6,1,1,'97731',2023,2,0,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2024,2,'Geometry test 1','5',3,7,1,1,'97731',2022,2,2,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2025,2,'Geometry test 2','6',3,8,1,1,'97731',2022,2,2,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2026,2,'Transforms 3,5HP','',4,9,1,1,'97731',2026,2,0,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2027,2,'Transforms test 1','7',3,10,1,1,'97731',2026,2,2,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2028,2,'Transforms test 2','8',3,11,1,1,'97731',2026,2,2,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2029,2,'Quizzes 1HP','',4,12,1,1,'97731',2029,2,0,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2030,2,'Quiz 1','9',3,13,1,1,'97731',2029,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2031,2,'Report 1HP', '',4,14,2,1,'97731',2031,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2032,2,'Report submission','10',3,15,2,1,'97731',2031,2,1,0);
 
 /* Insert access for users */
 INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1010,1,'0.0',1,'R',0,'', 45656);
@@ -731,6 +734,15 @@ INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,m
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2','5','13','2007',NULL,'1010',NULL,'2015-05-20 11:18:42',NULL,'97732',NULL,NULL);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2','9','19','2007',NULL,'100',NULL,'2015-05-21 14:17:02',NULL,'97732',NULL,NULL);
 INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2','7','15','2010',NULL,'2',NULL,'2015-05-20 14:40:35',NULL,'97732',NULL,NULL);
+INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2','10','21','2015',NULL,'216',NULL,'2015-05-20 14:50:35',NULL,'97732',NULL,NULL);
+INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2','10','21','2016',NULL,'216','2 97732 3006 Submitted,T 0 1440 900 1440 738','2015-05-20 14:50:35',NULL,'97732',NULL,NULL);
+INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2','10','21','2015',NULL,'229',NULL,'2015-05-20 14:50:35',NULL,'97732',NULL,NULL);
+INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2','10','21','2016',NULL,'229','2 97732 3006 Submitted,T 0 1440 900 1440 738','2015-05-20 14:50:35',NULL,'97732',NULL,NULL);
+INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2','10','21','2015',NULL,'219',NULL,'2015-05-20 14:50:35',NULL,'97732',NULL,NULL);
+INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2','10','21','2016',NULL,'219','2 97732 3006 Submitted,T 0 1440 900 1440 738','2015-05-20 14:50:35',NULL,'97732',NULL,NULL);
+INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2','10','21','2015',NULL,'218',NULL,'2015-05-20 14:50:35',NULL,'97732',NULL,NULL);
+INSERT INTO userAnswer (cid,quiz,variant,moment,grade,uid,useranswer,submitted,marked,vers,creator,score) VALUES ('2','10','21','2016',NULL,'218','2 97732 3006 Submitted,T 0 1440 900 1440 738','2015-05-20 14:50:35',NULL,'97732',NULL,NULL);
+
 /* Link all test files */
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML_Ex1.css",3,1,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("HTML_Ex1.html",3,1,0);
@@ -773,6 +785,7 @@ INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("Shader_Ex1.txt",2,1,0
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("Shader_Ex2.html",3,1,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("Shader_Ex2.js",3,1,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("Shader_Ex2.txt",2,1,0);
+INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("minimikrav_m2.md",3,2,0);
 
 
 /* Creation of new dugga (MINIMAL needs more fixing..) */
@@ -780,9 +793,29 @@ INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (24,12,'{\"tal\":\"33\"}','{"danswer":\"7\"}',NOW(),6);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode) VALUES (3001,5,'Bitdugga 1HP','12',3,100,6,1,'1339',3,1);
 
-INSERT INTO `usergroup` (`ugid`, `lid`, `name`, `created`, `lastupdated`) VALUES (NULL, '2001', 'Festargruppen', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP); 
+INSERT INTO `usergroup` (`ugid`, `lid`, `name`, `created`, `lastupdated`) VALUES (NULL, '2001', 'Festargruppen', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 INSERT INTO `usergroup` (`ugid`, `lid`, `name`, `created`, `lastupdated`) VALUES (NULL, '2013', 'Coola gurppen', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO user_usergroup (uid,ugid) VALUES (209,1);
 INSERT INTO user_usergroup (uid,ugid) VALUES (212,1);
 INSERT INTO user_usergroup (uid,ugid) VALUES (100,2);
+
+INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
+VALUES (216,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/13/Johansson_Maria_a99marjo/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
+INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
+VALUES (216,2,'97732',10,1,'InlPHPZip','submissions/2/97732/13/Johansson_Maria_a99marjo/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');
+
+INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
+VALUES (229,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/13/Olsson_Nils_a99nilol/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
+INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
+VALUES (229,2,'97732',10,1,'InlPHPZip','submissions/2/97732/13/Olsson_Nils_a99nilol/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');
+
+INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
+VALUES (219,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/13/Andersson_Lars_a99laran/','Kursplan_IT351G','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
+INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
+VALUES (219,2,'97732',10,1,'InlPHPZip','submissions/2/97732/13/Andersson_Lars_a99laran/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');
+
+INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
+VALUES (218,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/13/Andersson_Anna_a99annan/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
+INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
+VALUES (218,2,'97732',10,1,'InlPHPZip','submissions/2/97732/13/Andersson_Anna_a99annan/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');

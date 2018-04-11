@@ -34,10 +34,15 @@ $(window).scroll(function () {
 
 // Display information about the deadline when hoovering over the deadline circle
 function mouseOverCircle(circle, text) {
-  circle.setAttribute("r", '13');
-  circlePosY = circle.parentNode.parentNode.offsetTop+parseInt(circle.getAttribute('cy')) - 70;
-  circlePosX = circle.parentNode.parentNode.offsetLeft+parseInt(circle.getAttribute('cx')) + 20;
   document.getElementById("duggaInfoText").innerHTML = text;
+  var column = circle.parentNode.parentNode;
+  circle.setAttribute("r", '13');
+  circlePosY = column.offsetTop+parseInt(circle.getAttribute('cy')) - 70;
+  if(column.parentNode.offsetWidth > (column.offsetLeft + (column.offsetWidth / 2) + parseInt(circle.getAttribute('cx')) + $('#duggainfo').width())) {
+    circlePosX = column.offsetLeft+parseInt(circle.getAttribute('cx')) + column.offsetWidth / 2;
+  } else {
+    circlePosX = column.offsetLeft + (column.offsetWidth / 2) - (parseInt(circle.getAttribute('cx')) * 2) - $('#duggainfo').width();
+  }
   $('#duggainfo').css({'top': circlePosY, 'left': circlePosX}).fadeIn('fast');
 }
 
@@ -79,6 +84,7 @@ window.onclick = function (event) {
 function swimlaneDrawLanes() {
   var info = swimlaneInformation['information'];
   var moments = swimlaneInformation['moments'];
+  var userResults = swimlaneInformation['userresults'];
   var bgcol="#EEE";
   var str = "";
   str+="<div id='swimlanebox' class='swimlanebox'>";
@@ -102,7 +108,7 @@ function swimlaneDrawLanes() {
           str+="<th style='background-color:"+bgcol+";padding:0 5px 0 5px;' colspan='";
           colspan=0;
         } else {
-          count=true;          
+          count=true;
           str+="<th style='background-color:"+bgcol+";padding:0 5px 0 5px;' colspan='";
         }
         tmpname=moment['entryname'];
@@ -110,7 +116,7 @@ function swimlaneDrawLanes() {
         colspan++;
     }
   }
-  str+=colspan+"'>"+tmpname+"</th>";
+  if(moments.length != 0) str+=colspan+"'>"+tmpname+"</th>";
   str+="</tr></thead><tbody><tr>";
   str+="<td><svg width='75' height='" + (70 * info['verslength'] ) + "'>";
   var id=0;
@@ -128,9 +134,9 @@ function swimlaneDrawLanes() {
       str += "<rect x='0' y='" + (i * 70) + "' width='75' height='70' " + weekColor + " />";
       str += "<text x='5' y='" + (40 + (i * 70)) + "' font-weight='bold' fill='black'>Week " + (i+1) + "</text>";
   }
-  str += "</svg></td>";  
+  str += "</svg></td>";
   var bgcol="#EEE";
-  for (var i=0; i<moments.length; i++) {      
+  for (var i=0; i<moments.length; i++) {
       var moment = moments[i];
       if (moment['kind']==4){
           if (bgcol=="#FFF"){
@@ -139,31 +145,71 @@ function swimlaneDrawLanes() {
               bgcol="#FFF"
           }
       }
-      if (moment['kind']==3){
-          duggaInfoArray.push("<b>" + moment['entryname'] + "</b><br> Start date: " + moment['qrelease'] + "<br> Deadline: " + moment['deadline']);
-          str+="<td style='text-align:center;background-color:"+bgcol+"'><svg style='margin:0 5px 0 5px;' width='30' height='"+(70 * info['verslength'] ) + "'>";
-          // The ---- that marks the release of a dugga
-          str+="<line x1='5' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='25' y2='" + (30 + (moment['startweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
-          // The | that marks the duration of a dugga
-          str+="<line x1='15' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='15' y2='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
-          // The O that marks the deadline of a dugga
-          str+="<circle id='" + id + "' onmouseover='mouseOverCircle(this,\"" + duggaInfoArray[id++] + "\")' onmouseout='mouseGoneFromCircle(this)' cx='15' cy='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' r='10' stroke='rgb(83,166,84)' stroke-width='3' fill='rgb(146,125,156)' />";          
-          //str+="<line onmouseover='mouseOverLine(\"Current date:<br>" + info['thisdate'] + "\")' onmouseout='mouseGoneFromLine()' x1='250' y1='" + (100 + (info['thisweek'] - info['versstartweek']) * 70) + "' x2='" + ((info['numberofparts'] * 30) + 30) + "' y2='" + (100 + (info['thisweek'] - info['versstartweek']) * 70) + "' style='stroke:rgb(0,0,0); stroke-width:10; stroke-opacity:0;' /></svg>";
-          str+="</svg></td>";
+      if (moment['kind']==3) {
+        var hasGrade = false;
+        var color;
+        var feedback = null;
+        for(var m = 0; m < userResults.length; m++) {
+          if(moment['quizid'] === userResults[m]['quizid']) {
+            var grade = userResults[m]['grade'];
+            feedback = userResults[m]['feedback'];
+            if(grade == "green") {
+              color = "fill='rgb(0, 255, 0)'/>";
+              hasGrade = true;
+              break;
+            } else if(grade == "yellow") {
+              color = "fill='rgb(255,0,0)'/>";
+              hasGrade = true;
+              break;
+            } else {
+              color = "fill='rgb(255,255,0)'/>";
+              hasGrade = true;
+              break;
+            }
+          }
+        }
+        if(!hasGrade) color = "fill='rgb(146,125,156)'/>";
+
+        if(feedback) {
+          var feedbackArr = feedback.split("||");
+          feedback = '';
+          if (feedbackArr.length > 0) {
+            var lastFeedback = feedbackArr[feedbackArr.length - 1].split("%%");
+            var date = lastFeedback[0];
+            var tempFeedback = lastFeedback[1].replace(/^\s\n+|\s\n+$/g,'').replace(/(?:\r\n|\r|\n)/g, '<br/>').trim();
+            var amountOfChars = 400;
+            if(tempFeedback.length >= amountOfChars) tempFeedback = tempFeedback.substring(0, amountOfChars) + "...";
+            feedback += date + ":<br> " + tempFeedback;
+          }
+        } else {
+          feedback = 'No feedback was given.';
+        }
+
+        duggaInfoArray.push("<b>" + moment['entryname'] + "</b><br> Start date: " + moment['qrelease'] + "<br> Deadline: " + moment['deadline'] + "<br> <b>Feedback</b> <br>" + feedback);
+        str+="<td style='text-align:center;background-color:"+bgcol+"'><svg style='margin:0 5px 0 5px;' width='30' height='"+(70 * info['verslength'] ) + "'>";
+        // The ---- that marks the release of a dugga
+        str+="<line x1='5' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='25' y2='" + (30 + (moment['startweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
+        // The | that marks the duration of a dugga
+        str+="<line x1='15' y1='" + (30 + (moment['startweek'] - 1) * 70) + "' x2='15' y2='" + (30 + (moment['deadlineweek'] - 1) * 70) + "' style='stroke:rgb(83,166,84);stroke-width:3' />";
+        // The O that marks the deadline of a dugga
+        str+="<circle id='" + id + "' onmouseover='mouseOverCircle(this,\"" + duggaInfoArray[id++];
+        str+="\")' onmouseout='mouseGoneFromCircle(this)' cx='15' cy='" + (30 + (moment['deadlineweek'] - 1) * 70);
+        str+="' r='10' stroke='rgb(83,166,84)' stroke-width='3' " + color + "</svg></td>";
+        //str+="<line onmouseover='mouseOverLine(\"Current date:<br>" + info['thisdate'] + "\")' onmouseout='mouseGoneFromLine()' x1='250' y1='" + (100 + (info['thisweek'] - info['versstartweek']) * 70) + "' x2='" + ((info['numberofparts'] * 30) + 30) + "' y2='" + (100 + (info['thisweek'] - info['versstartweek']) * 70) + "' style='stroke:rgb(0,0,0); stroke-width:10; stroke-opacity:0;' /></svg>";
       }
     }
-  
-    str+="</tbody></table></div>";    
+
+    str+="</tbody></table></div>";
 
     // Box for dugga info on mouse over
-    str += "<div id='duggainfo' class='duggainfo' style='display:none; position:absolute; background-color:white; border-style:solid; border-color:#3C3C3C; padding:5px;'>";
+    str += "<div id='duggainfo' class='duggainfo' style='display:none; position:absolute; background-color:white; border-style:solid; border-color:#3C3C3C; padding:5px; max-width: 350px;'>";
     str += "<span id='duggaInfoText'></span>";
     str += "</div>";
     // Box for current date info
     str += "<div id='currentDate' class='currentDate' style='display:none; position:absolute; background-color:white; border-style:solid; border-width:1px; border-color:red; padding:5px;'>";
     str += "<span id='currentDateText'></span>";
     str += "</div>";
-  
+
   swimContent.innerHTML=str;
 }
 function swimlaneDrawLanes2() {

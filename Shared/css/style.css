@@ -700,6 +700,39 @@ header td {
 		box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
 }
 
+.newpassword {
+		padding:4px;
+		background-color: #ccc;
+		border: 2px solid #999;
+		min-height: 100px;
+    min-width: 200px;
+    max-height: 80%;
+    overflow-y: auto;
+		box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
+}
+
+.showsecurityquestion {
+  padding:4px;
+  background-color: #ccc;
+  border: 2px solid #999;
+  min-height: 100px;
+  min-width: 200px;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
+}
+
+.resetcomplete {
+  padding:4px;
+  background-color: #ccc;
+  border: 2px solid #999;
+  min-height: 100px;
+  min-width: 200px;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5),0 2px 10px 0 rgba(0,0,0,0.1);
+}
+
 .expiremessagebox, .endsessionmessagebox {
 		display:block;
 		padding:4px;
@@ -1269,6 +1302,7 @@ input.submit-button-newitem {
   transition:1s background-color;
   float:right;
 }
+
 input.diagram-sidebar-buttons {
    background-color:#7B5A96;
    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -1349,6 +1383,7 @@ input.submit-button:disabled {
   opacity: 0.3;
 }
 
+
 .buttonsStyle {
   display: flex;
   flex-direction: column;
@@ -1409,6 +1444,40 @@ input.large-button {
   height:48px !important;
   line-height:48px !important;
 }
+
+/* Tooltip */
+
+.tooltipDugga {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltipDugga .tooltipDuggatext {
+    width: 200px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 5;
+    top: -24px;
+	left: -18px;
+    font-size: 12px;
+    line-height: 14px;
+}
+
+.tooltipDugga .tooltipDuggatext::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent black;
+}
+
 
 /* File upload form */
 
@@ -2624,6 +2693,10 @@ ul.hamburgerList button.menuButton {
   -o-transition: opacity 300ms, width 300ms, margin 300ms;
 }
 
+.dateSize{
+   width: 100px;
+}
+
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
   table.navheader td.editVers,
   table.navheader td.contribution,
@@ -2685,6 +2758,10 @@ ul.hamburgerList button.menuButton {
     -moz-transition: opacity 300ms, width 300ms, margin 300ms;
     -o-transition: opacity 300ms, width 300ms, margin 300ms;
   }
+  
+  .dateSize{
+	  width: 50px;
+  }
 }
 
 @media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
@@ -2732,6 +2809,10 @@ ul.hamburgerList button.menuButton {
 	display: flex;
 	text-align: center;
 	}
+	
+	#Sectionlist .course {
+    font-size: 20px;
+  }
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
@@ -2783,6 +2864,16 @@ ul.hamburgerList button.menuButton {
     padding: 0 20px 0 0px;
     display: flex;
     text-align: center;
+  }
+  
+  #Sectionlist .course {
+    font-size: 16px;
+  }
+}
+
+@media only screen and (max-width: 320px), only screen and (max-device-width: 320px) {
+  #Sectionlist .course {
+    font-size: 14px;
   }
 }
 
