@@ -537,13 +537,6 @@ CREATE TABLE opponents (
 	FOREIGN KEY (opponent2) REFERENCES user(uid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-CREATE TABLE settings (
-	sid						int(11) NOT NULL AUTO_INCREMENT,
-    motd					varchar(4096) DEFAULT NULL,
-    readonly				tinyint(4) DEFAULT '0',
-    PRIMARY KEY (sid)
-);
-
 CREATE TABLE options (
 	label					varchar(128),
   	value					char(1),
