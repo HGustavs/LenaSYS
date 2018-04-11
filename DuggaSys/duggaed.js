@@ -532,11 +532,13 @@ function showVariantz(param){
     }
 }
 
-function renderCell(celldata,col) {
+function renderCell(col,celldata,cellid) {
 	if (col == "Trumma"){
 	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
 	} else if (col == "Pnr") {
-	    return "<div style='text-align:right'>" + celldata + "</div>";
+	    return "<div>" + celldata + "</div>";
+	} else {
+		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
 	return celldata;
 }
@@ -550,9 +552,14 @@ function returnedDugga(data) {
 	filez = data;
 
     var tabledata = {
-    	tblhead:[
-    		"autograde","gradesystem","template","deadline","release","modified"
-    	],
+    	tblhead:{
+    		autograde:"Autograde on/off",
+    		gradesystem:"Grade",
+    		template:"Template",
+    		deadline:"Deadline",
+    		release:"Release date",
+    		modified:"Last modified"
+    	},
     	tblbody: data['entries'],
     	tblfoot:[]
     }

@@ -200,11 +200,13 @@ var bool = true;
  * @param column
  */
 
- function renderCell(celldata,col) {
+function renderCell(col,celldata,cellid) {
 	if (col == "Trumma"){
 	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
 	} else if (col == "Pnr") {
-	    return "<div style='text-align:right'>" + celldata + "</div>";
+	    return "<div>" + celldata + "</div>";
+	} else {
+		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
 	return celldata;
 }
@@ -228,9 +230,17 @@ function returnedAccess(data) {
 	filez = data;
 
 	var tabledata = {
-		tblhead:[
-			"username","firstname","lastname","ssn","class","addedtime","vers","teacher","requestedpasswordchange"
-		],
+		tblhead:{
+			username:"User",
+			firstname:"First name",
+			lastname:"Last name",
+			ssn:"SSN",
+			//class:"Class",
+			lastupdated:"Added",
+			vers:"Version",
+			teacher:"Teacher",
+			requestedpasswordchange:""
+		},
 		tblbody: data['entries'],
 		tblfoot:[]
 	}

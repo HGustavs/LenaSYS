@@ -227,42 +227,49 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	    	str += "<th></th><th class='name'>Name</th>";
 	    }
 
-		var freezePaneIndex = tbl.tblhead.indexOf(freezePane);
-		for (let colname = 0; colname < tbl.tblhead.length; colname++) {
+		//var freezePaneIndex = tbl.tblhead.indexOf(freezePane);
+//for (var key in arr_jq_TabContents) {
+//    console.log(arr_jq_TabContents[key]);
+		for(var colname in tbl.tblhead) {
+		// for (let colname = 0; colname < tbl.tblhead.length; colname++) {
 			var col = tbl.tblhead[colname];
-			var cleancol = tbl.cleanHead[colname];
+			//var cleancol = tbl.cleanHead[colname];
 			
 			// If column is visible
-			if (columnfilter.indexOf(col) >- 1) {
+			
+
+			if (columnfilter[colname] != null) {
 				if (this.renderSortOptions != null) {
 					if (colname <= freezePaneIndex) {
 						if (col == sortcolumn){
-							mhfstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhf' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
-							mhvstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhv' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
+							mhfstr += "<th id='"+colname+"_"+tableid+"_tbl_mhf' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
+							mhvstr += "<th id='"+colname+"_"+tableid+"_tbl_mhv' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
 						} else {
-							mhfstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhf' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
-							mhvstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhv' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
+							mhfstr += "<th id='"+colname+"_"+tableid+"_tbl_mhf' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
+							mhvstr += "<th id='"+colname+"_"+tableid+"_tbl_mhv' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
 						}
 					}
 					if (col == sortcolumn) {
-						str += "<th id='"+cleancol+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
-						mhstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
+						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
+						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
 					} else {
-						str += "<th id='"+cleancol+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
-						mhstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
+						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
+						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
 					}
 				} else {
-					if (colname <= freezePaneIndex){
-						if (col == sortcolumn){
-							mhfstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhf' class='"+tableid+"'>"+col+"</th>";
-							mhvstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhv' class='"+tableid+"'>"+col+"</th>";
-						} else {
-							mhfstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhf' class='"+tableid+"'>"+col+"</th>";
-							mhvstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhv' class='"+tableid+"'>"+col+"</th>";
-						}
+					// if (colname <= freezePaneIndex) {
+					// 	if (col == sortcolumn){
+					// 		mhfstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhf' class='"+tableid+"'>"+col+"</th>";
+					// 		mhvstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhv' class='"+tableid+"'>"+col+"</th>";
+					// 	} else {
+					// 		mhfstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhf' class='"+tableid+"'>"+col+"</th>";
+					// 		mhvstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mhv' class='"+tableid+"'>"+col+"</th>";
+					// 	}
+					// }
+					if (colname != "move") {
+						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+col+"</th>";											
+						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+col+"</th>";		
 					}
-					str += "<th id='"+cleancol+"_"+tableid+"_tbl' class='"+tableid+"'>"+col+"</th>";											
-					mhstr += "<th id='"+cleancol+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+col+"</th>";										
 				}
 			}
 		}
@@ -308,28 +315,28 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 
 				result++;
 
-				for (let colname in row) {
-					col = row[colname];
-  					cleancol = tbl.cleanHead[colname];
+				for (let colnamez in row) {
+					// col = row[colnamez];
+  			// 		cleancol = tbl.cleanHead[col];
 														
 					// If we show this column...
-					if (columnfilter.indexOf(colname) >- 1) {
+					if (columnfilter[colnamez] != null) {
 						// This condition is true if column is in summing list and in that case perform the sum like a BOSS
-						if (colsumList.indexOf(tbl.tblhead[colname]) >- 1) {
-							if (typeof(sumContent[tbl.tblhead[colname]]) == "undefined") sumContent[tbl.tblhead[colname]] = 0;
-							sumContent[tbl.tblhead[colname]] += sumFunc(tbl.tblhead[colname],col);		
+						if (colsumList.indexOf(colnamez) >- 1) {
+							if (typeof(sumContent[colnamez]) == "undefined") sumContent[colnamez] = 0;
+							sumContent[colnamez] += sumFunc(colnamez,col);		
 						}
 
-						if (rowsumList.indexOf(tbl.tblhead[colname]) >- 1) {
-							rowsum += sumFunc(tbl.tblhead[colname],col);
+						if (rowsumList.indexOf(colnamez) >- 1) {
+							rowsum += sumFunc(colnamez,col);
 						}
 
-						let cellid = "r"+rowno+"_"+tableid+"_"+cleancol;
-						str += "<td id='"+cellid+"' onclick='clickedInternal(event,this);' class='"+tableid+"-"+tbl.cleanHead[colname]+"-"+colname+"'>"+renderCell(col,tbl.tblhead[colname],cellid)+"</td>";
+						let cellid = "r"+rowno+"_"+tableid+"_"+colnamez;
+						str += "<td id='"+cellid+"' onclick='clickedInternal(event,this);' class='"+tableid+"-"+colnamez+"'>"+renderCell(colnamez,tbl.tblbody[rowno][colnamez],cellid)+"</td>";
 
-						if (colname <= freezePaneIndex) {
-							mhvstr+="<td id='"+cellid+"' >"+renderCell(col,tbl.tblhead[colname],cellid)+"</td>";                      
-						}
+						// if (colnamez <= freezePaneIndex) {
+						// 	mhvstr+="<td id='"+cellid+"' >"+renderCell(col,colnamez,cellid)+"</td>";                      
+						// }
 					}
 				}
 				
@@ -362,7 +369,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 					      // Create cogwheel
 					str+="<td style='padding:4px;'>";
 					str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-					str+=" onclick=' showVariant("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
+					str+=" onclick=' showVariantz("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
 					str+="</td>";
 					str+="<td style='padding:4px;'>";
 					str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
@@ -371,7 +378,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 
 					mhvstr+="<td style='padding:4px;'>";
 					mhvstr+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-					mhvstr+=" onclick=' showVariant("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
+					mhvstr+=" onclick=' showVariantz("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
 					mhvstr+="</td>";
 					mhvstr+="<td style='padding:4px;'>";
 					mhvstr+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
@@ -389,27 +396,30 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		str += "</tbody>";
 		mhvstr += "</tbody>";
 
-		str += "<tfoot style='border-top:2px solid #000'>";
-		str += "<tr style='font-style:italic;'>";
-		
-		for (let colname in tbl.tblfoot) {
-			// If we show this column...
-			if (columnfilter.indexOf(tbl.tblhead[colname]) >- 1) {
-				if (colsumList.indexOf(tbl.tblhead[colname]) >- 1) {
-					// If writing sum - just write it
-					str += "<td>"+sumContent[tbl.tblhead[colname]]+"</td>";						
-				} else {
-					if (tbl.tblfoot[col] != "UNK") {
-						str += "<td>"+tbl.tblfoot[colname]+"</td>";
+		if(tbl.tblfoot.length > 0) {
+			str += "<tfoot style='border-top:2px solid #000'>";
+			str += "<tr style='font-style:italic;'>";
+
+			for (var colnamez in tbl.tblfoot) {
+				// If we show this column...
+				if (columnfilter.indexOf(colnamez) >- 1) {
+					if (colsumList.indexOf(colnamez) >- 1) {
+						// If writing sum - just write it
+						str += "<td>"+sumContent[colnamez]+"</td>";						
 					} else {
-						str += "<td>&nbsp;</td>";
+						if (tbl.tblfoot[col] != "UNK") {
+							str += "<td>"+colnamez+"</td>";
+						} else {
+							str += "<td>&nbsp;</td>";
+						}
 					}
 				}
 			}
-		}
 
-		str+="</tr>";
-		str+= "</tfoot></table>";
+			str+= "</tr></tfoot>";
+		}
+		
+		str += "</table>";
 		mhvstr+= "</table>";
 
 		// Assign table and magic headings table(s)
