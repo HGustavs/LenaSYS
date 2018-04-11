@@ -197,11 +197,13 @@ function hideLoginPopup()
 //  Callback function that renders a specific cell in the table
 //--------------------------------------------------------------------------
 
-function renderCell(celldata,col) {
+function renderCell(col,celldata,cellid) {
 	if (col == "Trumma"){
 	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
 	} else if (col == "Pnr") {
-	    return "<div style='text-align:right'>" + celldata + "</div>";
+	    return "<div>" + celldata + "</div>";
+	} else {
+		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
 	return celldata;
 }
@@ -215,9 +217,13 @@ function returnedFile(data)
 		filez = data;
 
         var tabledata = {
-        	tblhead:[
-        		"fileid","filename","kind","filesize","uploaddate"
-        	],
+        	tblhead:{
+        		fileid:"File ID",
+        		filename:"File name",
+        		kind:"Kind",
+        		filesize:"Size",
+        		uploaddate:"Upload date"
+        	},
         	tblbody: data['entries'],
         	tblfoot:[]
         }
