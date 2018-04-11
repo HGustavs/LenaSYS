@@ -62,14 +62,23 @@ pdoConnect();
       			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'><option value='1'>U-G-VG</option><option value='2'>U-G</option><option value='3'>U-3-4-5</option></select></div>
       			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
             <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='qstart' value='None' /></div>
-      			<div class='inputwrapper'><span>Deadline Date:</span><input class='textinput datepicker' type='text' id='deadline' value='None' /></div>
-            <div class='inputwrapper'><span>Result Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
+
+      			<div class='inputwrapper'><span>First  Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='None' /></div>
+						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span>Second Deadline :</span><input class='textinput datepicker' type='text' id='deadline2' value='None' /></div>
+						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span> Third Deadline :</span><input class='textinput datepicker' type='text' id='deadline3' value='None' /></div>
+						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
+
+
+            <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
       		</div>
       		<div style='padding:5px;'>
-      			<input style='float:left; 'class='submit-button deleteDugga' type='button' value='Delete' onclick='confirmBox(1);' />
-      			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeEditDugga();' /> 
-      			<input id="submitBtn" style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='confirmBox(2);showSaveButton();' /> 
-      			<input id="saveBtn" style='float:right; 'class='submit-button updateDugga' type='button' value='Save' onclick='confirmBox(3);' />
+      			<input style='float:left; 'class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteDugga();' />
+      			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeEditDugga(); showSaveButton();' />
+      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='createDugga();showSaveButton();' />
+      			<input style='float:right; 'class='submit-button updateDugga' type='button' value='Save' onclick='updateDugga();' />
+
       		</div>
       </div>
 	</div>
@@ -128,11 +137,11 @@ pdoConnect();
                     <div>
                       <div id="duggaExtraParamForm">
                         <fieldset style="width:90%">
-                          <legend>Extra parameters</legend>                          
+                          <legend>Extra parameters</legend>
                               <textarea id='extraparam' placeholder='Extra dugga parameters in valid JSON' rows="5" style=""></textarea>
                         </fieldset>
                       </div>
-                    </div>            
+                    </div>
                     <!-- Submissions for dugga -->
           					<div>
           						<div id="duggaSubmissionForm">
@@ -145,8 +154,8 @@ pdoConnect();
           							<input type="button" class="submit-button" name="createjson" id="createjson" value="Create JSON" style=""></button>
           						</div>
           					</div>
-                  <!-- Submissions for dugga -->                  
-          			<!-- End of leftDivDialog -->          
+                  <!-- Submissions for dugga -->
+          			<!-- End of leftDivDialog -->
                 </div>
           			<!-- JSON and answer fields -->
           			<div id="rightDivDialog">

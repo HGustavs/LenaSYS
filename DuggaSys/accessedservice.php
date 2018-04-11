@@ -1,4 +1,4 @@
-<?php 
+<?php
 date_default_timezone_set("Europe/Stockholm");
 // Include basic application services!
 include_once "../Shared/sessions.php";
@@ -11,8 +11,8 @@ session_start();
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="1";		
-} 
+	$userid="UNK";
+}
 
 $pw = getOP('pw');
 $cid = getOP('cid');
@@ -29,8 +29,9 @@ $coursevers = getOP('coursevers');
 $teacher = getOP('teacher');
 $vers = getOP('vers');
 $requestedpasswordchange = getOP('requestedpasswordchange');
+$queryResult = 'NONE!';
 
-$debug="NONE!";	
+$debug="NONE!";
 
 $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$uid." ".$username." ".$newusers;
@@ -39,9 +40,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php"
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
-
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
-	
+
 		if(strcmp($opt,"UPDATE")==0){
 				$query = $pdo->prepare("UPDATE user set firstname=:firstname,lastname=:lastname,ssn=:ssn,username=:username,class=:className WHERE uid=:uid;");
 				$query->bindParam(':firstname', $firstname);
@@ -74,6 +74,16 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$error=$query->errorInfo();
 					$debug="Error updating user".$error[2];
 				}
+	}else if(strcmp($opt,"VERSION")==0){
+				$query = $pdo->prepare("UPDATE user_course set vers=:val WHERE uid=:uid AND cid=:cid;");
+				$query->bindParam(':uid', $uid);
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':val', $val);
+
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating user".$error[2];
+				}
 	}else if(strcmp($opt,"CHPWD")==0){
 				$query = $pdo->prepare("UPDATE user set password=:pwd, requestedpasswordchange=0 where uid=:uid;");
 				$query->bindParam(':uid', $uid);
@@ -83,7 +93,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$error=$query->errorInfo();
 					$debug="Error updating user".$error[2];
 				}
-	}else if(strcmp($opt,"ADDUSR")==0){		
+	}else if(strcmp($opt,"ADDUSR")==0){
 			$newUserData = json_decode(htmlspecialchars_decode($newusers));
 
 			foreach ($newUserData as $user) {
@@ -100,7 +110,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 									foreach($userquery->fetchAll(PDO::FETCH_ASSOC) as $row){
 											$uid = $row["uid"];
 									}
-							}				
+							}
 					} else if (count($user) > 1 && count($user) <= 6){
 							$ssn = $user[0];
 							$tmp = explode(',', $user[1]);
@@ -108,10 +118,10 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							$lastname = trim($tmp[0]);
 							if(isset($user[4])){
 									$className = trim($user[4]);
-							}					
+							}
 							$tmp2 = explode('@', $user[count($user)-1]);
 							$username = $tmp2[0];
-							//$debug.=$ssn." ".$username."#".$firstname."#".$lastname."\n";					
+							//$debug.=$ssn." ".$username."#".$firstname."#".$lastname."\n";
 							$userquery = $pdo->prepare("SELECT uid,username FROM user WHERE username=:username or ssn=:ssn");
 							$userquery->bindParam(':username', $username);
 							$userquery->bindParam(':ssn', $ssn);
@@ -120,7 +130,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							// assigned password which can be printed later.
 							if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) {
 									$rnd=makeRandomString(9);
-									$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,:password,now(),:className);';	
+									$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,:password,now(),:className);';
 									$stmt = $pdo->prepare($querystring);
 									$stmt->bindParam(':username', $username);
 									$stmt->bindParam(':email', $saveemail);
@@ -140,7 +150,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							}else if($userquery->rowCount() > 0){
 									$usr = $userquery->fetch(PDO::FETCH_ASSOC);
 									$uid = $usr['uid'];
-							}				
+							}
 					}
 
 					// We have a user, connect to current course
@@ -154,17 +164,66 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 							if(!$stmt->execute()) {
 								$error=$stmt->errorInfo();
 								$debug.="Error connecting user to course: ".$error[2];
-							} 
-					}	
+							}
+					}
 
 				// End of foreach user
 			}
-		
+
+	}
+}
+
+if(strcmp($opt,"REQNEWPWD")==0) {
+	$log_db = new PDO('sqlite:../../log/loglena4.db');
+	$IP = getIP();
+	$currentTime = round(microtime(true) * 1000);
+	$timeInterval = 300000; // five minutes
+
+	$query = $GLOBALS['log_db']->prepare("SELECT COUNT(*) FROM serviceLogEntries
+											WHERE info LIKE 'REQNEWPWD%'
+											AND IP = :IP
+											AND eventType = '6'
+											AND timestamp > :currentTime - :timeInterval");
+	$query->bindParam(':IP', $IP);
+	$query->bindParam(':currentTime', $currentTime);
+	$query->bindParam(':timeInterval', $timeInterval);
+
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error counting rows".$error[2];
+	} else {
+		$result = $query->fetch(PDO::FETCH_ASSOC);
+		$queryResult = $result['COUNT(*)'];
+	}
+}
+
+if(strcmp($opt,"CHECKSECURITYANSWER")==0) {
+	$log_db = new PDO('sqlite:../../log/loglena4.db');
+	$IP = getIP();
+	$currentTime = round(microtime(true) * 1000);
+	$timeInterval = 300000; // five minutes
+
+	$query = $GLOBALS['log_db']->prepare("SELECT COUNT(*) FROM serviceLogEntries
+											WHERE info LIKE 'CHECKSECURITYANSWER%'
+											AND info LIKE '%{$username}%'
+											AND IP = :IP
+											AND eventType = '6'
+											AND timestamp > :currentTime - :timeInterval");
+	$query->bindParam(':IP', $IP);
+	$query->bindParam(':currentTime', $currentTime);
+	$query->bindParam(':timeInterval', $timeInterval);
+
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error counting rows".$error[2];
+	} else {
+		$result = $query->fetch(PDO::FETCH_ASSOC);
+		$queryResult = $result['COUNT(*)'];
 	}
 }
 
 //------------------------------------------------------------------------------------------------
-// Retrieve Information			
+// Retrieve Information
 //------------------------------------------------------------------------------------------------
 
 $entries=array();
@@ -183,8 +242,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				'access' => $row['access'],
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
-				'ssn' => $row['ssn'],	
-				'class' => $row['class'],	
+				'ssn' => $row['ssn'],
+				'class' => $row['class'],
 				'modified' => $row['modified'],
 				'newly' => $row['newly'],
 				'teacher' => $row['teacher'],
@@ -229,11 +288,40 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 }
 
+$courses=array();
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+
+  $query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers WHERE cid=:cid;");
+  $query->bindParam(':cid', $cid);
+  if(!$query->execute()) {
+    $error=$query->errorInfo();
+    $debug="Error reading courses".$error[2];
+  }else{
+    foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+      array_push(
+        $courses,
+        array(
+          'cid' => $row['cid'],
+          'coursecode' => $row['coursecode'],
+          'vers' => $row['vers'],
+          'versname' => $row['versname'],
+          'coursename' => $row['coursename'],
+          'coursenamealt' => $row['coursenamealt'],
+          'startdate' => $row['startdate'],
+          'enddate' => $row['enddate']
+        )
+      );
+    }
+  }
+}
+
 $array = array(
 	'entries' => $entries,
 	"debug" => $debug,
 	'teachers' => $teachers,
-	'classes' => $classes
+	'classes' => $classes,
+	'courses' => $courses,
+	'queryResult' => $queryResult
 );
 
 echo json_encode($array);
