@@ -63,7 +63,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckUsername();" value='Continue' style='margin-top: 10px;' title='Continue'>
+							<input type='button' class='buttonLoginBox' onclick="resetPasswordBarrier();" value='Continue' style='margin-top: 10px;' title='Continue'>
 						</td>
 					</tr>
 					<tr>
@@ -103,7 +103,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckSecurityAnswer();" value='Check answer' style='margin-top: 10px;' title='Check answer'>
+							<input type='button' class='buttonLoginBox' onclick="enterSecurityQuestionBarrier();" value='Check answer' style='margin-top: 10px;' title='Check answer'>
 						</td>
 					</tr>
 

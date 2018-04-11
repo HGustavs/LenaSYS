@@ -11,7 +11,7 @@ session_start();
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="1";
+	$userid="UNK";
 }
 
 $pw = getOP('pw');
@@ -29,6 +29,7 @@ $coursevers = getOP('coursevers');
 $teacher = getOP('teacher');
 $vers = getOP('vers');
 $requestedpasswordchange = getOP('requestedpasswordchange');
+$queryResult = 'NONE!';
 
 $debug="NONE!";
 
@@ -172,6 +173,55 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 	}
 }
 
+if(strcmp($opt,"REQNEWPWD")==0) {
+	$log_db = new PDO('sqlite:../../log/loglena4.db');
+	$IP = getIP();
+	$currentTime = round(microtime(true) * 1000);
+	$timeInterval = 300000; // five minutes
+
+	$query = $GLOBALS['log_db']->prepare("SELECT COUNT(*) FROM serviceLogEntries
+											WHERE info LIKE 'REQNEWPWD%'
+											AND IP = :IP
+											AND eventType = '6'
+											AND timestamp > :currentTime - :timeInterval");
+	$query->bindParam(':IP', $IP);
+	$query->bindParam(':currentTime', $currentTime);
+	$query->bindParam(':timeInterval', $timeInterval);
+
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error counting rows".$error[2];
+	} else {
+		$result = $query->fetch(PDO::FETCH_ASSOC);
+		$queryResult = $result['COUNT(*)'];
+	}
+}
+
+if(strcmp($opt,"CHECKSECURITYANSWER")==0) {
+	$log_db = new PDO('sqlite:../../log/loglena4.db');
+	$IP = getIP();
+	$currentTime = round(microtime(true) * 1000);
+	$timeInterval = 300000; // five minutes
+
+	$query = $GLOBALS['log_db']->prepare("SELECT COUNT(*) FROM serviceLogEntries
+											WHERE info LIKE 'CHECKSECURITYANSWER%'
+											AND info LIKE '%{$username}%'
+											AND IP = :IP
+											AND eventType = '6'
+											AND timestamp > :currentTime - :timeInterval");
+	$query->bindParam(':IP', $IP);
+	$query->bindParam(':currentTime', $currentTime);
+	$query->bindParam(':timeInterval', $timeInterval);
+
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error counting rows".$error[2];
+	} else {
+		$result = $query->fetch(PDO::FETCH_ASSOC);
+		$queryResult = $result['COUNT(*)'];
+	}
+}
+
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
@@ -270,7 +320,8 @@ $array = array(
 	"debug" => $debug,
 	'teachers' => $teachers,
 	'classes' => $classes,
-  'courses' => $courses
+	'courses' => $courses,
+	'queryResult' => $queryResult
 );
 
 echo json_encode($array);
