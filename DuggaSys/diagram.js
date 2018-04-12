@@ -656,7 +656,6 @@ function setType() {
     var elementVal = document.getElementById('object_type').value;
 
     diagram[lastSelectedObject].key_type = elementVal;
-
     updateGraphics();
 }
 
@@ -734,14 +733,9 @@ function drawGrid() {
     if (sy < 0) quadrantY = sy;
     else quadrantY = -sy;
 
-
     for (var i = 0 + quadrantX; i < quadrantX + widthWindow; i++) {
-        if (i % 5 == 0) { //This is a "thick" line
-            ctx.strokeStyle = "rgb(208, 208, 220)";
-        }
-        else {
-            ctx.strokeStyle = "rgb(238, 238, 250)";
-        }
+        if (i % 5 == 0) ctx.strokeStyle = "rgb(208, 208, 220)"; //This is a "thick" line
+        else ctx.strokeStyle = "rgb(238, 238, 250)";
         ctx.beginPath();
         ctx.moveTo(i * gridSize, 0 + sy);
         ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + sy);
