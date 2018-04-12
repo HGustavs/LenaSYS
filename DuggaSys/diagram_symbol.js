@@ -721,7 +721,7 @@ function Symbol(kind) {
         
         
         //Highlighting points when targeted, makes it easier to resize
-        if(this.targeted){
+        if(this.targeted && this.kind != 5){
             ctx.beginPath();
             ctx.arc(x1,y1,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
