@@ -608,34 +608,7 @@ function Symbol(kind) {
             this.drawLine(x1,y1,x2,y2);
         }
         else if(this.symbolkind == 5){
-            ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            var midx = points[this.middleDivider].x;
-            var midy = points[this.middleDivider].y;
-            ctx.beginPath();
-            if (this.key_type == 'Weak') {
-                ctx.moveTo(midx, y1 + 5);
-                ctx.lineTo(x2 - 9, midy + 0);
-                ctx.lineTo(midx + 0, y2 - 5);
-                ctx.lineTo(x1 + 9, midy + 0);
-                ctx.lineTo(midx + 0, y1 + 5);
-            }
-            ctx.moveTo(midx, y1);
-            ctx.lineTo(x2, midy);
-            ctx.lineTo(midx, y2);
-            ctx.lineTo(x1, midy);
-            ctx.lineTo(midx, y1);
-            ctx.fillStyle = this.symbolColor;
-            makeShadow();
-            ctx.fill();
-            ctx.closePath();
-            ctx.clip();
-
-            ctx.stroke();
-            ctx.fillStyle = "#fff";
-            ctx.fillStyle = this.fontColor;
-            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+            this.drawRelation(x1,y1,x2,y2);
         }
 
         ctx.restore();
@@ -708,8 +681,7 @@ function Symbol(kind) {
     }
     */
 
-this.drawERAttribute = function(x1, y1, x2, y2)
-{
+this.drawERAttribute = function(x1, y1, x2, y2){
     ctx.font = "bold " + parseInt(textsize) + "px " + this.font; //scale the text
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -748,8 +720,7 @@ this.drawERAttribute = function(x1, y1, x2, y2)
     ctx.clip();
 }
 
-this.drawEntity = function(x1, y1, x2, y2)
-{
+this.drawEntity = function(x1, y1, x2, y2){
     ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
@@ -788,8 +759,7 @@ this.drawEntity = function(x1, y1, x2, y2)
     }
 }
 
-this.drawLine = function(x1, y1, x2, y2)
-{
+this.drawLine = function(x1, y1, x2, y2){
     ctx.lineWidth = this.lineWidth;
     if (this.key_type == "Forced") {
         //Draw a thick black line
@@ -812,7 +782,7 @@ this.drawLine = function(x1, y1, x2, y2)
     ctx.lineTo(x2, y2);
     ctx.stroke();
 }
-/*
+
 this.drawRelation = function(x1, y1, x2, y2)
 {
     ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
@@ -843,7 +813,7 @@ this.drawRelation = function(x1, y1, x2, y2)
     ctx.fillStyle = "#fff";
     ctx.fillStyle = this.fontColor;
     ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-}*/
+}
 
 }
 
