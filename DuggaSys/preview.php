@@ -246,8 +246,17 @@
                 });
             });
             
+            $(document).click(function (e) {
+                e.stopPropagation();
+                var container = $("#select-header");
+
+                //check if the clicked area is dropDown or not
+                if (container.has(e.target).length === 0) {
+                    $('#select-header').hide();
+                }
+            });
             // Close the dropdown if the user clicks outside of it
-            window.onclick = function(event) {
+            /*window.onclick = function(event) {
                 if (!event.target.matches('#select-header')) {
                     var dropdowns = document.getElementById("select-header");
                     var i;
@@ -266,7 +275,7 @@
                         }
                     }
                 }
-            }
+            }*/
         </script>
     </head>
     <body onload="onload()">
