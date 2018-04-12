@@ -237,7 +237,7 @@ function mousedownevt(ev) {
             }
         } else{
             if(ctrlIsClicked){
-                console.log("Deselect");
+                console.log("Deselect len: " + selected_objects.length);
                 var index = selected_objects.indexOf(last);
                 if(index > -1){
                     console.log("index: " + index);
