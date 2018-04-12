@@ -193,12 +193,15 @@
                 });
                 
                 if (headerOption == 1) {
-                    $('#mrkdwntxt').append("# "); 
+                    $('#mrkdwntxt').append("# ");
+                    console.log('1');
                 }
                 else if (headerOption == 2) {
-                    $('#mrkdwntxt').append("## ");                 }
-                else {
-                    $('#mrkdwntxt').append("### "); 
+                    $('#mrkdwntxt').append("## ");
+                    console.log('2');}
+                else if (headerOption == 3) {
+                    $('#mrkdwntxt').append("### ");
+                    console.log('3');
                 }
                 $('#select-header').hide();
             }
