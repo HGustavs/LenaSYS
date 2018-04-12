@@ -1024,7 +1024,7 @@ function returnedSection(data)
 
 				else if (parseInt(item['kind']) == 1) { // Section
 					str +=
-						"<div><div class='ellipsis nowrap"
+						"<div class='ellipsis nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span>"
 						+ item['entryname']
@@ -1033,11 +1033,11 @@ function returnedSection(data)
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
 						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
-						+ "' class='arrowRight' style='display:none;'></div></div>";
+						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
 				else if (parseInt(item['kind']) == 4) { // Moment
-					str+="<div><div class='ellipsis nowrap"
+					str+="<div class='ellipsis nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span>"
 						+ item['entryname'] + "</span>"
@@ -1046,7 +1046,7 @@ function returnedSection(data)
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
 						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
-						+ "' class='arrowRight' style='display:none;'></div></div>";
+						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
 				else if (parseInt(item['kind']) == 2) { // Code Example
@@ -1360,7 +1360,13 @@ function returnedHighscore(data){
 $(document).on('click', '.moment, .section', function () {
 	saveHiddenElementIDs($(this));
 	hideCollapsedMenus();
-	saveArrowIds($(this));
+
+	// The event handler returns two elements. This if statement gets the
+	// element of interest.
+	if(this.id.length > 0) {
+		saveArrowIds(this.id);
+	}
+
 	toggleArrows();
 });
 
@@ -1382,13 +1388,10 @@ function getArrowElements() {
 
 // Save ids of all elements, whose state needs to be remembered, in local storage.
 function saveHiddenElementIDs(clickedElement) {
-
 	clickedElement.nextUntil('.moment, .section').each(function() {
 		addOrRemoveFromArray(this.id, menuState.hiddenElements);
 	});
-
 	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
-
 }
 
 // Hide all elements from the hiddenElements array.
@@ -1401,13 +1404,13 @@ function hideCollapsedMenus() {
 
 // Save ids of all arrows, whose state needs to be remembered, in local storage.
 function saveArrowIds(clickedElement) {
-	clickedElement.children('.arrowRight').each(function() {
-		addOrRemoveFromArray(this.id, menuState.arrowIcons);
-	});
+	var childNodes = document.getElementById(clickedElement).firstChild.childNodes;
 
-	clickedElement.children('.arrowComp').each(function() {
-		addOrRemoveFromArray(this.id, menuState.arrowIcons);
-	});
+	for(var i = 0; i < childNodes.length; i++) {
+		if(childNodes[i].nodeName == "IMG") {
+			addOrRemoveFromArray(childNodes[i].id, menuState.arrowIcons);
+		}
+	}
 
 	localStorage.setItem('arrowIcons', JSON.stringify(menuState.arrowIcons));
 }
