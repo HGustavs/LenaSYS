@@ -22,7 +22,7 @@ function Symbol(kind) {
     this.sizeOftext = "none"        // Used to set size of text.
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
-    this.corners = sortPoints;       //Points that always are correct after a sortPoints()
+    this.corners = sortPoints();      //Points that always are correct after a sortPoints()
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
     this.shadowBlur = 10;           // Shadowblur for all objects
