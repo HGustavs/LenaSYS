@@ -180,14 +180,11 @@
                 $('#select-header').show();
             }
             function selected() {
-                var headerValue1 = document.getElementById('h1').value;
-                var headerValue2 = document.getElementById('h2').value;
-                var headerValue3 = document.getElementById('h3').value;
                 
-                if (headerValue1 == "H3") {
+                if ($("#select-header").text() == "Header 1") {
                     $('#mrkdwntxt').append("# "); 
                 }
-                else if (headerValue2 == "H2") {
+                else if ($("#select-header").text() == "Header 2") {
                     $('#mrkdwntxt').append("## ");                 }
                 else {
                     $('#mrkdwntxt').append("### "); 
