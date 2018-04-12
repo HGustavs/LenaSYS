@@ -123,7 +123,7 @@
             .show-dropdown-content {
                 display: block;
             }
-            #select-header < a {
+            #select-header > a {
                 max-width: 50px;
                 position: absolute;
                 z-index: 2000;
