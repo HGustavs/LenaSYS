@@ -1118,7 +1118,7 @@ function returnedSection(data)
 					var yearFormat = "0000-";
 					var dateFormat = "00-00";
 
-					str+="<td class='dateSize' style='text-align:right;overflow:hidden;'><div style='white-space:nowrap;'>";
+					str+="<td class='dateSize' style='text-align:right;overflow:hidden;'><div class='margin-4' style='white-space:nowrap;'>";
 
 					if(dl[1] == timeFilterAndFormat) {
 						str+="<div class='dateField'>";
@@ -1136,12 +1136,12 @@ function returnedSection(data)
 
 				// Cog Wheel
 				if(data['writeaccess']){
-					str+="<td style='width:24" + "px;";
+					str+="<td style='width:32" + "px;";
 
               		if(parseInt(item['kind']) === 0) {
   						str+=
                             "' class='header"+blorf+"'>"
-                            + "<img id='dorf' style='margin:4px'"
+                            + "<img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
                             + " onclick='selectItem("
                             + "\""+item['lid']+"\","
@@ -1158,7 +1158,7 @@ function returnedSection(data)
 					} else if(parseInt(item['kind']) === 1) {
 						str+=
                             "' class='section"+blorf+"'>"
-                            + "<img id='dorf' style='margin:4px'"
+                            + "<img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
                             + " onclick='selectItem("
                             + "\""+item['lid']+"\","
@@ -1175,7 +1175,7 @@ function returnedSection(data)
 					} else if(parseInt(item['kind']) === 4) {
 						str+=
                             "' class='moment"+blorf+"'>"
-                            + "<img id='dorf' style='margin:4px'"
+                            + "<img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
                             + " onclick='selectItem("
                             + "\""+item['lid']+"\","
@@ -1191,7 +1191,7 @@ function returnedSection(data)
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else {
 						str+=
-                            "' ><img id='dorf' style='margin:4px'"
+                            "' ><img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
                             + " onclick='selectItem("
                             + "\""+item['lid']+"\","
@@ -1210,26 +1210,26 @@ function returnedSection(data)
 
 				// trashcan
 				if(data['writeaccess']) {
-					str+="<td style='width:24" + "px;";
+					str+="<td style='width:36" + "px;";
 
 					if(parseInt(item['kind']) === 0) {
 						str+=
 							"' class='header"+blorf+"'>"
-							+ "<img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg'"
+							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					} else if(parseInt(item['kind']) === 1) {
 						str+=
 							"' class='section"+blorf+"'>"
-							+ "<img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg'"
+							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					} else if(parseInt(item['kind']) === 4) {
 						str+=
 							"' class='moment"+blorf+"'>"
-							+ "<img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg'"
+							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					} else {
 						str+=
-							"' ><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg'"
+							"' ><img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					}
 				}

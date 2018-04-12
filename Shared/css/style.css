@@ -129,6 +129,10 @@ p {
   margin: .5em auto .5em auto;
 }
 
+.margin-4{
+	margin: 4px;
+}
+
 /* --------------================################================-------------- *
  *                               Lists and Content                              *
  * --------------================################================-------------- */
@@ -1620,6 +1624,7 @@ input.large-button {
 #plorf, #dorf {
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
     padding:4px;
+    border-radius: 2px;
 }
 
 .list#testTable input, .list#testTable select, .list#testTable label {
