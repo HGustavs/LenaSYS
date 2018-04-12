@@ -244,8 +244,8 @@ function mousedownevt(ev) {
                 if(index > -1){
                     console.log("index: " + index);
                     selected_objects = selected_objects.splice(index, 1);
-                    last.targeted = false;
                 }
+                last.targeted = false;
             }
         }
     } else {
