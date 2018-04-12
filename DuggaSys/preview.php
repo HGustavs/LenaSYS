@@ -171,7 +171,7 @@
                 };
             }
             function makeBold() {
-                
+                 $('#mrkdwntxt').append("**");
             }
             function makeCursive() {
                 
@@ -180,7 +180,7 @@
                 $('#select-header').show();
             }
             function selected() {
-                var headerOption = 0;
+                /*var headerOption = 0;
                 
                 $('#h1').click(function() {
                     headerOption = 1;
@@ -202,10 +202,18 @@
                 else if (headerOption == 3) {
                     $('#mrkdwntxt').append("### ");
                     console.log('3');
-                }
+                }*/
                 $('#select-header').hide();
             }
-            
+            function headerVal1() {
+                $('#mrkdwntxt').append("# ");
+            }
+            function headerVal2() {
+                $('#mrkdwntxt').append("## ");
+            }
+            function headerVal3() {
+                $('#mrkdwntxt').append("### ");
+            }
             $(document).ready(function(){
                $(".headerType").click(function(){
                     $("#select-header").toggle();
@@ -246,9 +254,9 @@
                 <div class="markNav">Markdown
                     <span class="headerType">aA&#9663;</span>
                         <div id="select-header">
-                            <a href="#" id="h1" onclick="selected()" value="H1">Header 1</a>
-                            <a href="#" id="h2" onclick="selected()" value="H2">Header 2</a>
-                            <a href="#" id="h3" onclick="selected()" value="H3">Header 3</a>
+                            <a href="#" id="h1" onclick="selected();headerVal1()" value="H1">Header 1</a>
+                            <a href="#" id="h2" onclick="selected();headerVal2()" value="H2">Header 2</a>
+                            <a href="#" id="h3" onclick="selected();headerVal3()" value="H3">Header 3</a>
                         </div>
                     <span class="boldText" onclick="makeBold()"><b>B</b></span>
                     <span class="cursiveText" onclick="makeCursive()"><i>i</i></span>
