@@ -170,8 +170,14 @@
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
                 };
             }
-            function makeBold() {
-                var textarea = $('#mrkdwntxt').val;
+            function boldText() {
+                $('#mrkdwntxt').append("****");
+            }
+            function boldText() {
+                $('#mrkdwntxt').append("__");
+            }
+            /*function makeBold() {
+                var textarea = $('#mrkdwntxt');
                 var bold = "****";
                 textarea.focus().val(textarea + bold).selectRange(2,2);
                 $.fn.selectRange = function(start, end) {
@@ -210,7 +216,7 @@
                             }
                         });
                 };
-            }
+            }*/
             
             function showDropdown() {
                 $('#select-header').show();
