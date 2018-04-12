@@ -606,7 +606,6 @@ function Symbol(kind) {
         }
         else if(this.symbolkind == 4){
             this.drawLine(x1,y1,x2,y2);
-
         }
         else if(this.symbolkind == 5){
             ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
@@ -801,10 +800,11 @@ this.drawLine = function(x1, y1, x2, y2)
         ctx.stroke();
 
         //Draw a white line in the middle to simulate space (2 line illusion).
-        ctx.linewidth = this.lineWidth;
+        ctx.lineWidth = this.lineWidth;
         ctx.strokeStyle = "#fff";
     }
     else if (this.key_type == "Derived") {
+        ctx.lineWidth = this.lineWidth * 2;
         ctx.setLineDash([5, 4]);
     }
     ctx.beginPath();
