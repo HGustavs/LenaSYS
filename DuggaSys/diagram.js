@@ -638,7 +638,7 @@ $(document).ready(function(){
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
         $("#moveButton").removeClass("pressed").addClass("unpressed");
-        $("#moveButton").style.visibility = "hidden";
+        $("#moveButton").css("visibility", "hidden");
         if ($(this).hasClass("pressed")){
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             uimode = "normal";
