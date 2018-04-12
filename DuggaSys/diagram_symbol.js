@@ -537,69 +537,7 @@ function Symbol(kind) {
         ctx.textBaseline = "middle";
 
         if(this.symbolkind == 1){
-            var midy = points[this.middleDivider].y;
-            ctx.font = "bold " + parseInt(textsize) + "px Arial";
-            // Clear Class Box
-            ctx.fillStyle = "#fff";
-            ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
-            ctx.fillStyle = "#fff";
-
-            // Write Class Name
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillStyle = "#fff";
-            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
-            if (this.key_type == 'Primary key') {
-                var linelength = ctx.measureText(this.name).width;
-                ctx.beginPath(1);
-                ctx.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
-                ctx.lineTo(x1 + ((x2 - x1) * 0.5) + linelength, y1 + (0.85 * this.textsize) + 10);
-                ctx.strokeStyle = this.strokeColor;
-                ctx.stroke();
-            }
-            // Change Alignment and Font
-            ctx.textAlign = "start";
-            ctx.textBaseline = "top";
-            ctx.font = parseInt(this.textsize) + "px Arial";
-            // Clipping of text and drawing of attributes
-            ctx.beginPath();
-            ctx.moveTo(x1, y1 + (this.textsize * 1.5));
-            ctx.lineTo(x2, y1 + (this.textsize * 1.5));
-            ctx.lineTo(x2, midy);
-            ctx.lineTo(x1, midy);
-            ctx.lineTo(x1, y1 + (this.textsize * 1.5));
-            ctx.clip();
-            for (var i = 0; i < this.attributes.length; i++) {
-                ctx.fillText(this.attributes[i].visibility + " " + this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
-            }
-            // Clipping of text and drawing of methods
-            ctx.beginPath();
-            ctx.moveTo(x1, midy);
-            ctx.lineTo(x2, midy);
-            ctx.lineTo(x2, y2);
-            ctx.lineTo(x1, y2);
-            ctx.lineTo(x1, midy);
-            ctx.clip();
-            ctx.textAlign = "start";
-            ctx.textBaseline = "top";
-            for (var i = 0; i < this.operations.length; i++) {
-                ctx.fillText(this.operations[i].visibility + " " + this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
-            }
-            // Box
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y1);
-            ctx.lineTo(x2, y2);
-            ctx.lineTo(x1, y2);
-            ctx.lineTo(x1, y1);
-            // Top Divider
-            ctx.moveTo(x1, y1 + (this.textsize * 1.5));
-            ctx.lineTo(x2, y1 + (this.textsize * 1.5));
-            // Middie Divider
-            ctx.moveTo(x1, midy);
-            ctx.lineTo(x2, midy);
-            ctx.stroke();
+            this.drawUML(x1, y1, x2, y2);
         }
         else if(this.symbolkind == 2){
             this.drawERAttribute(x1, y1, x2, y2);
@@ -608,16 +546,15 @@ function Symbol(kind) {
             this.drawEntity(x1, y1, x2, y2);
         }
         else if(this.symbolkind == 4){
-            this.drawLine(x1,y1,x2,y2);
+            this.drawLine(x1, y1, x2, y2);
         }
         else if(this.symbolkind == 5){
-            this.drawRelation(x1,y1,x2,y2);
+            this.drawRelation(x1, y1, x2, y2);
         }
 
         ctx.restore();
         ctx.setLineDash([]);
     }
-/*
     this.drawUML = function(x1, y1, x2, y2)
     {
         var midy = points[this.middleDivider].y;
@@ -682,7 +619,6 @@ function Symbol(kind) {
         ctx.lineTo(x2, midy);
         ctx.stroke();
     }
-    */
 
 this.drawERAttribute = function(x1, y1, x2, y2){
     ctx.fillStyle = this.symbolColor;
