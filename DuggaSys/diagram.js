@@ -248,17 +248,12 @@ diagram.draw = function() {
         if (this[i].kind == 1) {
             this[i].draw(1, 1);
         }
-    }
-    // Render Lines
-    for (var i = 0; i < this.length; i++) {
-        if (this[i].symbolkind == 4) {
+        else if(this[i].symbolkind == 4){ //We need to draw lines before any other object
             this[i].draw();
         }
-    }
-    for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 2 && !(this[i].symbolkind == 4)) {
+        else if(this[i].kind == 2){
             this[i].draw();
-       }
+        }
     }
 }
 
@@ -733,7 +728,7 @@ function drawGrid() {
     if (sy < 0) quadrantY = sy;
     else quadrantY = -sy;
 
-    for (var i = 0 + quadrantX; i < quadrantX + widthWindow; i++) {
+    for (var i = 0 + quadrantX; i < quadrantX + (widthWindow / zoomValue); i++) {
         if (i % 5 == 0) ctx.strokeStyle = "rgb(208, 208, 220)"; //This is a "thick" line
         else ctx.strokeStyle = "rgb(238, 238, 250)";
         ctx.beginPath();
