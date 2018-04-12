@@ -1357,7 +1357,9 @@ function returnedHighscore(data){
 
 // Toggle content for each moment
 $(document).on('click', '.moment, .section', function () {
-	saveHiddenElementIDs($(this));
+	if(this.id.length > 0) {
+		saveHiddenElementIDs(this.id);
+	}
 	hideCollapsedMenus();
 
 	// The event handler returns two elements. This if statement gets the
@@ -1365,9 +1367,13 @@ $(document).on('click', '.moment, .section', function () {
 	if(this.id.length > 0) {
 		saveArrowIds(this.id);
 	}
-
 	toggleArrows();
 });
+
+function findAncestor (element, className) {
+    while ((element = element.parentElement) && !element.classList.contains(className));
+    return element;
+}
 
 // Get all element ids from local storage that should be hidden.
 function getHiddenElements() {
@@ -1387,9 +1393,7 @@ function getArrowElements() {
 
 // Save ids of all elements, whose state needs to be remembered, in local storage.
 function saveHiddenElementIDs(clickedElement) {
-	clickedElement.nextUntil('.moment, .section').each(function() {
-		addOrRemoveFromArray(this.id, menuState.hiddenElements);
-	});
+	addOrRemoveFromArray(clickedElement, menuState.hiddenElements);
 	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
 }
 
@@ -1397,7 +1401,8 @@ function saveHiddenElementIDs(clickedElement) {
 function hideCollapsedMenus() {
 	$('.header, .section, .code, .test, .link').show();
 	for(var i = 0; i < menuState.hiddenElements.length; i++) {
-		$('#' + menuState.hiddenElements[i]).hide();
+		var ancestor = jQuery(findAncestor($("#"+menuState.hiddenElements[i])[0], "moment"));
+		ancestor.nextUntil('.moment, .section').hide();
 	}
 }
 
