@@ -1427,6 +1427,7 @@ input.submit-button:disabled {
 
 .unpressed{
   background:#614875;
+  visibility:hidden;
 }
 
 .pressed{
