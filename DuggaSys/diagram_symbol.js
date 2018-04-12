@@ -307,33 +307,33 @@ function Symbol(kind) {
 
     //init four points, the four corners based on the two cornerpoints in the symbol.
     this.corners = function(){
-        var P1 = points[this.topLeft];
-        var P2 = points[this.bottomRight];
-        if(P1.x < P2.x){
-            if(P1.y < P2.y){
+        var p1 = points[this.topLeft];
+        var p2 = points[this.bottomRight];
+        if(p1.x < p2.x){
+            if(p1.y < p2.y){
                 //we are in the topleft
-                tl = {x:P1.x, y:P1.y};
-                br = {x:P2.x, y:P2.y};
+                tl = {x:p1.x, y:p1.y};
+                br = {x:p2.x, y:p2.y};
                 tr = {x:br.x, y:tl.y};
                 bl = {x:tl.x, y:br.y};
             }else{
                 //we are in the buttomleft
-                tr = {x:P2.x, y:P2.y};
-                bl = {x:P1.x, y:P1.y};
+                tr = {x:p2.x, y:p2.y};
+                bl = {x:p1.x, y:p1.y};
                 tl = {x:bl.x, y:tr.y};
                 br = {x:tr.x, y:bl.y};
             }
         }else{
-            if(P1.y < P2.y){
+            if(p1.y < p2.y){
                 //we are in the topright
-                tr = {x:P1.x, y:P1.y};
-                bl = {x:P2.x, y:P2.y};
+                tr = {x:p1.x, y:p1.y};
+                bl = {x:p2.x, y:p2.y};
                 tl = {x:bl.x, y:tr.y};
                 br = {x:tr.x, y:bl.y};
             }else{
                 //we are in the buttomright
-                br = {x:P1.x, y:P1.y};
-                tl = {x:P2.x, y:P2.y};
+                br = {x:p1.x, y:p1.y};
+                tl = {x:p2.x, y:p2.y};
                 bl = {x:tl.x, y:br.y};
                 tr = {x:br.x, y:tl.y};
             }
