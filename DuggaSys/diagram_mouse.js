@@ -250,10 +250,12 @@ function mousedownevt(ev) {
         md = 4; // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
-        for (var i = 0; i < selected_objects.length; i++) {
-            selected_objects[i].targeted = false;
+        if(uimode != "MoveAround"){
+            for (var i = 0; i < selected_objects.length; i++) {
+                selected_objects[i].targeted = false;
+            }
+            selected_objects = [];
         }
-        selected_objects = [];
     }
 }
 
