@@ -172,7 +172,7 @@
             }
             function makeBold() {
                 var bold = $('#mrkdwntxt');
-                text.focus().val('****').selectRange(2,2);
+                bold.focus().val('****').selectRange(2,2);
                 $.fn.selectRange = function(start, end) {
                     if(!end) end = start; 
                         return this.each(function() {
@@ -192,7 +192,7 @@
             }
             function makeCursive() {
                 var cursive = $('#mrkdwntxt');
-                text.focus().val('__').selectRange(1,1);
+                cursive.focus().val('__').selectRange(1,1);
                 $.fn.selectRange = function(start, end) {
                     if(!end) end = start; 
                         return this.each(function() {
