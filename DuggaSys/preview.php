@@ -57,7 +57,6 @@
                 width: 355px;
             }
             .prevSpan {
-                background-color: red;
                 max-width: 100%;
             }
             #button-cancel {
@@ -124,7 +123,7 @@
             .show-dropdown-content {
                 display: block;
             }
-            #select-header {
+            #select-header < a {
                 max-width: 50px;
                 position: absolute;
                 z-index: 2000;
@@ -132,6 +131,7 @@
                 background-color: #fff;
                 box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.3);
                 text-decoration: none;
+                padding: 5px 5px 5px 5px;
             }
         </style>
         <script>
