@@ -243,8 +243,7 @@ function mousedownevt(ev) {
                 var index = selected_objects.indexOf(last);
                 if(index > -1){
                     console.log("index: " + index);
-                    selected_objects = selected_objects.splice(index, 1);
-                    console.log("Deselect len after splice: " + selected_objects.length);
+                    selected_objects.splice(index, 1);
                 }
                 last.targeted = false;
             }
