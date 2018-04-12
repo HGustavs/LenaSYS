@@ -180,12 +180,22 @@
                 $('#select-header').show();
             }
             function selected() {
-                $(this).data('clicked', true);
-
-                if ($("#h1").data('clicked')) {
+                var headerOption = 0;
+                
+                $('#h1').click(function() {
+                    headerOption = 1;
+                });
+                $('#h2').click(function() {
+                    headerOption = 2;
+                });
+                $('#h3').click(function() {
+                    headerOption = 3;
+                });
+                
+                if (headerOption == 1) {
                     $('#mrkdwntxt').append("# "); 
                 }
-                else if ($("#h2").text() == "Header 2") {
+                else if (headerOption == 2) {
                     $('#mrkdwntxt').append("## ");                 }
                 else {
                     $('#mrkdwntxt').append("### "); 
