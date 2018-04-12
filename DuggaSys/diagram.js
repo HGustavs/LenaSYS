@@ -102,6 +102,10 @@ function keyDownHandler(e){
         eraseSelectedObject();
     } else if(key == 32){
         //Use space for movearound
+        if (e.stopPropagation) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
         if(uimode != "MoveAround"){
             activateMovearound();
         } else{
@@ -638,6 +642,7 @@ $(document).ready(function(){
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
         $("#moveButton").removeClass("pressed").addClass("unpressed");
+        $("#moveButton").css("visibility", "hidden");
         if ($(this).hasClass("pressed")){
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             uimode = "normal";
