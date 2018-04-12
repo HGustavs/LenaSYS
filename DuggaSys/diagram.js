@@ -102,6 +102,10 @@ function keyDownHandler(e){
         eraseSelectedObject();
     } else if(key == 32){
         //Use space for movearound
+        if (e.stopPropagation) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
         if(uimode != "MoveAround"){
             activateMovearound();
         } else{
@@ -203,6 +207,7 @@ points.drawPoints = function() {
         }
     }
 }
+
 
 //--------------------------------------------------------------------
 // closestPoint - Returns the distance and index of the point closest
@@ -638,6 +643,7 @@ $(document).ready(function(){
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
         $("#moveButton").removeClass("pressed").addClass("unpressed");
+        $("#moveButton").css("visibility", "hidden");
         if ($(this).hasClass("pressed")){
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             uimode = "normal";
@@ -803,6 +809,8 @@ consloe.log = function(gobBluth) {
     document.getElementById("consloe").innerHTML = ((JSON.stringify(gobBluth) + "<br>") + document.getElementById("consloe").innerHTML);
 }
 
+
+
 //debugMode this function show and hides crosses and the consol.
 var ghostingCrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
 function debugMode() {
@@ -966,7 +974,7 @@ function setRefreshTime() {
 }
 function align(mode){
     for(var i = 0; i < diagram.length; i++){
-        if(diagram[i].targeted == true){
+        if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1){
             selected_objects.push(diagram[i]);
         }
     }
@@ -1103,7 +1111,7 @@ function distribute(axis){
     var selected_objects = [];
 
     for(var i = 0; i < diagram.length; i++){
-        if(diagram[i].targeted == true){
+        if(diagram[i].targeted == true  && selected_objects.indexOf(diagram[i]) > -1){
             selected_objects.push(diagram[i]);
         }
     }
