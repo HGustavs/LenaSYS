@@ -219,10 +219,11 @@ function mousedownevt(ev) {
                 // CTRL/CMD key is currently active
                 if (ctrlIsClicked) {
                     var last = diagram[lastSelectedObject];
-                    if(!last.targeted){
-                        selected_objects.push(diagram[lastSelectedObject]);
-                        diagram[lastSelectedObject].targeted = true;
+                    if(!selected_objects.contains(last)){
+                        selected_objects.push(last);
+                        last.targeted = true;
                     }else {
+                        console.log("Deselect");
                         var index = selected_objects.indexOf(last);
                         if(index > -1){
                             selected_objects = selected_objects.splice(index, 1);
