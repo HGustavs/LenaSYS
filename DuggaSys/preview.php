@@ -210,7 +210,7 @@
                         });
                 };
             }
-            }
+            
             function showDropdown() {
                 $('#select-header').show();
             }
