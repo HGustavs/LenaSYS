@@ -219,7 +219,7 @@ function mousedownevt(ev) {
                 // CTRL/CMD key is currently active
                 if (ctrlIsClicked) {
                     var last = diagram[lastSelectedObject];
-                    if(!selected_objects.contains(last)){
+                    if(selected_objects.indexOf(last) < 0){
                         selected_objects.push(last);
                         last.targeted = true;
                     }else {
