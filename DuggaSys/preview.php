@@ -246,15 +246,14 @@
                 });
             });
             
-            $(document).click(function (e) {
-                e.stopPropagation();
+           $(document).mouseup(function(e) {
                 var container = $("#select-header");
 
-                //check if the clicked area is dropDown or not
-                if (container.has(e.target).length === 0) {
-                    $('#select-header').hide();
+                // if the target of the click isn't the container nor a descendant of the container
+                if (!container.is(e.target) && container.has(e.target).length === 0) {
+                    container.hide();
                 }
-            })
+            });
             // Close the dropdown if the user clicks outside of it
             /*window.onclick = function(event) {
                 if (!event.target.matches('#select-header')) {
