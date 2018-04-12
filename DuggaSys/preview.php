@@ -273,16 +273,15 @@
                 <div class="markNav">Markdown
                     <span class="headerType">aA&#9663;</span>
                         <div id="select-header">
-                            <a href="#" id="h1" onclick="selected();headerVal1()" value="H1">Header 1</a>
-                            <a href="#" id="h2" onclick="selected();headerVal2()" value="H2">Header 2</a>
-                            <a href="#" id="h3" onclick="selected();headerVal3()" value="H3">Header 3</a>
+                            <a href="" id="h1" onclick="selected();headerVal1()" value="H1">Header 1</a>
+                            <a href="" id="h2" onclick="selected();headerVal2()" value="H2">Header 2</a>
+                            <a href="" id="h3" onclick="selected();headerVal3()" value="H3">Header 3</a>
                         </div>
                     <span id="boldText" onclick="boldText()"><b>B</b></span>
                     <span id="cursiveText" onclick="cursiveText()"><i>i</i></span>
                 </div>
                 <div class="markText">
-                    <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40">
-                    </textarea>
+                    <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
                 </div>
             </div>
             <div class="MarkdownPrev">
