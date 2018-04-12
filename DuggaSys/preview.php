@@ -173,7 +173,7 @@
             function boldText() {
                 $('#mrkdwntxt').append("****");
             }
-            function boldText() {
+            function cursiveText() {
                 $('#mrkdwntxt').append("__");
             }
             /*function makeBold() {
@@ -277,8 +277,8 @@
                             <a href="#" id="h2" onclick="selected();headerVal2()" value="H2">Header 2</a>
                             <a href="#" id="h3" onclick="selected();headerVal3()" value="H3">Header 3</a>
                         </div>
-                    <span id="boldText" onclick="makeBold()"><b>B</b></span>
-                    <span id="cursiveText" onclick="makeCursive()"><i>i</i></span>
+                    <span id="boldText" onclick="boldText()"><b>B</b></span>
+                    <span id="cursiveText" onclick="cursiveText()"><i>i</i></span>
                 </div>
                 <div class="markText">
                     <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
