@@ -99,11 +99,11 @@
                 resize: none;
                 margin: 10px 4px 0px 4px;
             }
-            .boldText {
+            #boldText {
                 cursor: pointer;
                 margin-left: 10px;
             }
-            .cursiveText {
+            #cursiveText {
                 cursor: pointer;
                 margin-left: 10px;
             }
@@ -171,38 +171,50 @@
                 };
             }
             function makeBold() {
-                 $('#mrkdwntxt').append("**");
+                var bold = $('#mrkdwntxt');
+                bold.focus().val('****').selectRange(2,2);
+                $.fn.selectRange = function(start, end) {
+                    if(!end) end = start; 
+                        return this.each(function() {
+                            if (this.setSelectionRange) {
+                                this.focus();
+                                this.setSelectionRange(start, end);
+                            } 
+                            else if (this.createTextRange) {
+                                var range = this.createTextRange();
+                                range.collapse(true);
+                                range.moveEnd('character', end);
+                                range.moveStart('character', start);
+                                range.select();
+                            }
+                        });
+                };
             }
             function makeCursive() {
-                
+                var cursive = $('#mrkdwntxt');
+                cursive.focus().val('__').selectRange(1,1);
+                $.fn.selectRange = function(start, end) {
+                    if(!end) end = start; 
+                        return this.each(function() {
+                            if (this.setSelectionRange) {
+                                this.focus();
+                                this.setSelectionRange(start, end);
+                            } 
+                            else if (this.createTextRange) {
+                                var range = this.createTextRange();
+                                range.collapse(true);
+                                range.moveEnd('character', end);
+                                range.moveStart('character', start);
+                                range.select();
+                            }
+                        });
+                };
+            }
             }
             function showDropdown() {
                 $('#select-header').show();
             }
             function selected() {
-                /*var headerOption = 0;
-                
-                $('#h1').click(function() {
-                    headerOption = 1;
-                });
-                $('#h2').click(function() {
-                    headerOption = 2;
-                });
-                $('#h3').click(function() {
-                    headerOption = 3;
-                });
-                
-                if (headerOption == 1) {
-                    $('#mrkdwntxt').append("# ");
-                    console.log('1');
-                }
-                else if (headerOption == 2) {
-                    $('#mrkdwntxt').append("## ");
-                    console.log('2');}
-                else if (headerOption == 3) {
-                    $('#mrkdwntxt').append("### ");
-                    console.log('3');
-                }*/
                 $('#select-header').hide();
             }
             function headerVal1() {
@@ -258,8 +270,8 @@
                             <a href="#" id="h2" onclick="selected();headerVal2()" value="H2">Header 2</a>
                             <a href="#" id="h3" onclick="selected();headerVal3()" value="H3">Header 3</a>
                         </div>
-                    <span class="boldText" onclick="makeBold()"><b>B</b></span>
-                    <span class="cursiveText" onclick="makeCursive()"><i>i</i></span>
+                    <span id="boldText" onclick="makeBold()"><b>B</b></span>
+                    <span id="cursiveText" onclick="makeCursive()"><i>i</i></span>
                 </div>
                 <div class="markText">
                     <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
