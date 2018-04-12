@@ -102,6 +102,10 @@ function keyDownHandler(e){
         eraseSelectedObject();
     } else if(key == 32){
         //Use space for movearound
+        if (e.stopPropagation) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
         if(uimode != "MoveAround"){
             activateMovearound();
         } else{
