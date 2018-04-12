@@ -108,12 +108,18 @@
                 margin-left: 10px;
             }
             #h1 {
+                cursor: pointer;
+                color: #000;
                 font-size: 13px;
             }
             #h2 {
+                cursor: pointer;
+                color: #000;
                 font-size: 12px;
             }
             #h3 {
+                cursor: pointer;
+                color: #000;
                 font-size: 11px;
             }
             .headerType {
