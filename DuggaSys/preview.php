@@ -108,13 +108,13 @@
                 margin-left: 10px;
             }
             #h1 {
-                font-size: 12px;
+                font-size: 13px;
             }
             #h2 {
-                font-size: 10px;
+                font-size: 12px;
             }
             #h3 {
-                font-size: 8px;
+                font-size: 11px;
             }
             .headerType {
                 cursor: pointer;
@@ -124,7 +124,7 @@
                 display: block;
             }
             #select-header {
-                max-width: 50px;
+                max-width: 53px;
                 position: absolute;
                 z-index: 2000;
                 right: 80px;
@@ -134,6 +134,7 @@
             }
             a {
                 text-decoration: none;
+                color: #000;
             }
         </style>
         <script>
@@ -179,24 +180,36 @@
                 $('#select-header').show();
             }
             function selected() {
+                var headerValue = document.getElementById('select-header').value;
+                
+                if (headerValue == "H3") {
+                    $('#mrkdwntxt').append("#"); 
+                }
+                else if (headerValue == "H2") {
+                    $('#mrkdwntxt').append("##");                 }
+                else {
+                    $('#mrkdwntxt').append("###"); 
+                }
                 $('#select-header').hide();
             }
+            
             $(document).ready(function(){
                $(".headerType").click(function(){
                     $("#select-header").toggle();
                     $("#select-header").addClass("show-dropdown-content");
                 });
             });
+            
             // Close the dropdown if the user clicks outside of it
             window.onclick = function(event) {
                 if (!event.target.matches('#select-header')) {
-                    var dropdowns = document.getElementsByClassName("select-header");
+                    var dropdowns = document.getElementById("select-header");
                     var i;
                     for (i = 0; i < dropdowns.length; i++) {
                         var openDropdown = dropdowns[i];
                         if (openDropdown.classList.contains('showDropdown')) {
                             openDropdown.classList.remove('showDropdown');
-                            var dropdowns = document.getElementsByClassName("select-header");
+                            var dropdowns = document.getElementById("select-header");
                             var i;
                             for (i = 0; i < dropdowns.length; i++) {
                                 var openDropdown = dropdowns[i];
@@ -219,7 +232,7 @@
             <div class="Markdown">
                 <div class="markNav">Markdown
                     <span class="headerType">aA&#9663;</span>
-                        <div id="select-header">
+                        <div id="select-header" value="headerOption">
                             <a href="#" id="h1" onclick="selected()" value="H1">Header 1</a>
                             <a href="#" id="h2" onclick="selected()" value="H2">Header 2</a>
                             <a href="#" id="h3" onclick="selected()" value="H3">Header 3</a>
