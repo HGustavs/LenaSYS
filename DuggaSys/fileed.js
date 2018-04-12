@@ -198,10 +198,14 @@ function hideLoginPopup()
 //--------------------------------------------------------------------------
 
 function renderCell(col,celldata,cellid) {
-	if (col == "Trumma"){
-	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
-	} else if (col == "Pnr") {
-	    return "<div>" + celldata + "</div>";
+	if (col == "trashcan"){
+		obj=JSON.parse(celldata);
+	    str="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
+		str+=" onclick='deleteFile(\""+obj.fileid+"\",\""+obj.filename+"\");' >";
+		return str;
+	} else if (col == "extension") {
+		var list=celldata.split('.');
+	    return "<div>" + list[1] + "</div>";
 	} else {
 		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
@@ -220,9 +224,11 @@ function returnedFile(data)
     	tblhead:{
     		fileid:"File ID",
     		filename:"File name",
+    		extension:"extension",
     		kind:"Kind",
     		filesize:"Size",
-    		uploaddate:"Upload date"
+    		uploaddate:"Upload date",
+    		trashcan:"delete"
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
