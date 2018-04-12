@@ -224,6 +224,9 @@ function mousedownevt(ev) {
                         if (selected_objects[i].targeted == false) {
                             selected_objects.push(diagram[lastSelectedObject]);
                             selected_objects[i].targeted = true;
+                        }else{
+                            selected_objects[i].targeted = false;
+                            selected_objects = selected_objects.splice(i, 1);
                         }
                     }
                 } else {
