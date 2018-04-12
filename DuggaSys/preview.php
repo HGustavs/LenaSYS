@@ -273,9 +273,9 @@
                 <div class="markNav">Markdown
                     <span class="headerType">aA&#9663;</span>
                         <div id="select-header">
-                            <a href="" id="h1" onclick="selected();headerVal1()" value="H1">Header 1</a>
-                            <a href="" id="h2" onclick="selected();headerVal2()" value="H2">Header 2</a>
-                            <a href="" id="h3" onclick="selected();headerVal3()" value="H3">Header 3</a>
+                            <span id="h1" onclick="selected();headerVal1()" value="H1">Header 1</span>
+                            <span id="h2" onclick="selected();headerVal2()" value="H2">Header 2</span>
+                            <span id="h3" onclick="selected();headerVal3()" value="H3">Header 3</span>
                         </div>
                     <span id="boldText" onclick="boldText()"><b>B</b></span>
                     <span id="cursiveText" onclick="cursiveText()"><i>i</i></span>
