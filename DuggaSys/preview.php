@@ -181,10 +181,10 @@
             }
             function selected() {
                 
-                if ($("#select-header").text() == "Header 1") {
+                if ($("#h1").text() == "Header 1") {
                     $('#mrkdwntxt').append("# "); 
                 }
-                else if ($("#select-header").text() == "Header 2") {
+                else if ($("#h2").text() == "Header 2") {
                     $('#mrkdwntxt').append("## ");                 }
                 else {
                     $('#mrkdwntxt').append("### "); 
