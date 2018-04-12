@@ -16,7 +16,6 @@ function Symbol(kind) {
     this.symbolColor = '#fff';      // change background colors on entities
     this.strokeColor = '#000';      // change standard line color
     this.lineWidth = 2;
-    var textscale = 10;
     this.name = "New Class";        // Default name is new class
     this.key_type = "none"          // Defult key tyoe for a class.
     this.sizeOftext = "none"        // Used to set size of text.
@@ -533,6 +532,10 @@ function Symbol(kind) {
         var y2 = points[this.bottomRight].y;
 
         ctx.save();
+        ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
         if(this.symbolkind == 1){
             var midy = points[this.middleDivider].y;
             ctx.font = "bold " + parseInt(textsize) + "px Arial";
@@ -682,9 +685,6 @@ function Symbol(kind) {
     */
 
 this.drawERAttribute = function(x1, y1, x2, y2){
-    ctx.font = "bold " + parseInt(textsize) + "px " + this.font; //scale the text
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
     ctx.fillStyle = this.symbolColor;
     ctx.lineWidth = this.lineWidth;
     //This is a temporary solution to the black symbol problem
@@ -721,9 +721,6 @@ this.drawERAttribute = function(x1, y1, x2, y2){
 }
 
 this.drawEntity = function(x1, y1, x2, y2){
-    ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
     ctx.fillStyle = this.symbolColor;
 
     ctx.beginPath();
@@ -783,15 +780,12 @@ this.drawLine = function(x1, y1, x2, y2){
     ctx.stroke();
 }
 
-this.drawRelation = function(x1, y1, x2, y2)
-{
-    ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
+this.drawRelation = function(x1, y1, x2, y2){
     var midx = points[this.middleDivider].x;
     var midy = points[this.middleDivider].y;
     ctx.beginPath();
     if (this.key_type == 'Weak') {
+        ctx.lineWidth = this.lineWidth;
         ctx.moveTo(midx, y1 + 5);
         ctx.lineTo(x2 - 9, midy + 0);
         ctx.lineTo(midx + 0, y2 - 5);
@@ -803,6 +797,7 @@ this.drawRelation = function(x1, y1, x2, y2)
     ctx.lineTo(midx, y2);
     ctx.lineTo(x1, midy);
     ctx.lineTo(midx, y1);
+
     ctx.fillStyle = this.symbolColor;
     makeShadow();
     ctx.fill();
@@ -810,7 +805,6 @@ this.drawRelation = function(x1, y1, x2, y2)
     ctx.clip();
 
     ctx.stroke();
-    ctx.fillStyle = "#fff";
     ctx.fillStyle = this.fontColor;
     ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
 }
