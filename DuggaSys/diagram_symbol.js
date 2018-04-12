@@ -287,7 +287,6 @@ function Symbol(kind) {
         c.br.x += tolerance;
         c.br.y += tolerance;
 
-
         if (!this.entityhover(mx, my)) {
           return false;
         }
@@ -307,7 +306,6 @@ function Symbol(kind) {
     }
 
     //init four points, the four corners based on the two cornerpoints in the symbol.
-    //Trust me, it is needed.
     this.corners = function(){
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
