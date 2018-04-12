@@ -966,7 +966,7 @@ function setRefreshTime() {
 }
 function align(mode){
     for(var i = 0; i < diagram.length; i++){
-        if(diagram[i].targeted == true){
+        if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1){
             selected_objects.push(diagram[i]);
         }
     }
@@ -1103,7 +1103,7 @@ function distribute(axis){
     var selected_objects = [];
 
     for(var i = 0; i < diagram.length; i++){
-        if(diagram[i].targeted == true){
+        if(diagram[i].targeted == true  && selected_objects.indexOf(diagram[i]) > -1){
             selected_objects.push(diagram[i]);
         }
     }
