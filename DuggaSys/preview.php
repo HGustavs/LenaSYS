@@ -171,7 +171,7 @@
                 };
             }
             function makeBold() {
-                var textarea = $('#mrkdwntxt').value;
+                var textarea = $('#mrkdwntxt').val;
                 var bold = "****";
                 textarea.focus().val(textarea + bold).selectRange(2,2);
                 $.fn.selectRange = function(start, end) {
