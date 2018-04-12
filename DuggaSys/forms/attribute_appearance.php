@@ -3,10 +3,10 @@ Attribute name:</br>
 Attribute type: </br>
 <select onclick="changeObjectAppearance('attributeType');" id='object_type'>
     "<option value='Primary key'>Primary key</option>
-    "<option value='Normal'>Normal</option>
+    "<option value='Normal' selected>Normal</option>
     "<option value='Multivalue'>Multivalue</option>
-    "<option value='Composite' selected>Composite</option>
-    "<option value='Drive' selected>Derive</option>
+    "<option value='Composite'>Composite</option>
+    "<option value='Drive'>Derive</option>
 </select></br>
 Background color:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='symbolColor'>
@@ -17,7 +17,7 @@ Background color:<br>
     <option value='#ffffcc'>Yellow</option>
     <option value='#ffe0cc'>Orange</option>
     <option value='#ffccff'>Purple</option>
-    <option value='#ffffff'>White</option>
+    <option value='#ffffff' selected>White</option>
     <option value='#000000'>Black</option>
 </select><br>
 Font family:<br>
@@ -37,11 +37,11 @@ Font color:<br>
     <option value='#ffe0cc'>Orange</option>
     <option value='#ffccff'>Purple</option>
     <option value='#ffffff'>White</option>
-    <option value='#000000'>Black</option>
+    <option value='#000000' selected>Black</option>
 </select><br>
 Text size:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='TextSize'>
-    "<option value='Tiny'>Tiny</option>
+    "<option value='Tiny' selected>Tiny</option>
     "<option value='Small'>Small</option>
     "<option value='Medium'>Medium</option>
     "<option value='Large'>Large</option>
@@ -56,6 +56,6 @@ Line colors:<br>
     <option value='#ffe0cc'>Orange</option>
     <option value='#ffccff'>Purple</option>
     <option value='#ffffff'>White</option>
-    <option value='#000000'>Black</option>
+    <option value='#000000' selected>Black</option>
 </select><br>
 <button type='submit' class='submit-button' onclick="changeObjectAppearance('attributeType'); setType(); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>OK</button>

@@ -14,7 +14,7 @@ Background color:<br>
     <option value='#ffffcc'>Yellow</option>
     <option value='#ffe0cc'>Orange</option>
     <option value='#ffccff'>Purple</option>
-    <option value='#ffffff'>White</option>
+    <option value='#ffffff' selected>White</option>
     <option value='#000000'>Black</option>
 </select><br>
 Font family:<br>
@@ -34,11 +34,11 @@ Font color:<br>
     <option value='#ffe0cc'>Orange</option>
     <option value='#ffccff'>Purple</option>
     <option value='#ffffff'>White</option>
-    <option value='#000000'>Black</option>
+    <option value='#000000' selected>Black</option>
 </select><br>
 Text size:<br>
 <select onclick="changeObjectAppearance('relationType');" id='TextSize'>
-    <option value='Tiny'>Tiny</option>
+    <option value='Tiny' selected>Tiny</option>
     <option value='Small'>Small</option>
     <option value='Medium'>Medium</option>
     <option value='Large'>Large</option>
@@ -53,6 +53,6 @@ Line colors:<br>
     <option value='#ffe0cc'>Orange</option>
     <option value='#ffccff'>Purple</option>
     <option value='#ffffff'>White</option>
-    <option value='#000000'>Black</option>
+    <option value='#000000' selected>Black</option>
 </select><br>
 <button type='submit' class='submit-button' onclick="changeObjectAppearance('relationType'); setType(form); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>OK</button>

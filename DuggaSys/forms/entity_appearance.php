@@ -14,7 +14,7 @@ Background color:<br>
     <option value='#ffffcc'>Yellow</option>
     <option value='#ffe0cc'>Orange</option>
     <option value='#ffccff'>Purple</option>
-    <option value='#ffffff'>White</option>
+    <option value='#ffffff' selected>White</option>
     <option value='#000000'>Black</option>
 </select><br>
 Font family:<br>
@@ -34,7 +34,7 @@ Font color:<br>
     <option value='#ffe0cc'>Orange</option>
     <option value='#ffccff'>Purple</option>
     <option value='#ffffff'>White</option>
-    <option value='#000000'>Black</option>
+    <option value='#000000' selected>Black</option>
 </select><br>
 Text size:<br>
 <select onclick="changeObjectAppearance('entityType');" id ='TextSize'>
@@ -53,6 +53,6 @@ Line colors:<br>
     <option value='#ffe0cc'>Orange</option>
     <option value='#ffccff'>Purple</option>
     <option value='#ffffff'>White</option>
-    <option value='#000000'>Black</option>
+    <option value='#000000' selected>Black</option>
 </select><br>
 <button type='submit' class='submit-button' onclick="changeObjectAppearance('entityType'); setType(); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>OK</button>
