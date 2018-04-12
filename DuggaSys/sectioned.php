@@ -56,7 +56,12 @@ pdoConnect();
 					</div>
 					<input type='text' class='textinput' id='sectionname' value='sectionname' onkeyup="validateName();" onchange="validateName();" />
 				</div>
-				<div id='inputwrapper-type' class='inputwrapper'><span>Type:</span><select id='type' onchange='changedType();'></select></div>
+				<div id='inputwrapper-type' class='inputwrapper'>
+					<span>Type:</span>
+					<div class="tooltipDuggaType">
+						<span id="tooltipType" style="display: none;" class="tooltipDuggaTypeTxt">Create a Dugga before you can use it for a test.</span>
+				</div>
+				<select id='type' value='type'  onchange='changedType();validateType();'></select></div>
 				<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
 				<div id='inputwrapper-gradesystem' class='inputwrapper'><span>GradeSystem:</span><select id='gradesys' ></select></div>
 				<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>

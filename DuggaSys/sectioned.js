@@ -444,6 +444,27 @@ function validateName(){
 	return retValue;
 }
 
+function validateType(){
+	var retValue = false;
+	kind=$("#type").val();
+	var nme=document.getElementById("type");
+
+	if (kind==0){
+		$('#tooltipType').fadeOut();
+		$('#saveBtn').removeAttr('disabled');
+		$('#submitBtn').removeAttr('disabled');
+		nme.style.backgroundColor = "#fff";
+		retValue = true;
+	}else{
+		$('#tooltipType').fadeIn();
+		$('#saveBtn').attr('disabled','disabled');
+		$('#submitBtn').attr('disabled','disabled');
+		nme.style.backgroundColor = "#f57";
+	}
+
+	return retValue;
+}
+
 
 function updateItem()
 {
