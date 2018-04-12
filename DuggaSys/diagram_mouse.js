@@ -211,33 +211,31 @@ function mousedownevt(ev) {
         md = 3;
         lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
         var last = diagram[lastSelectedObject];
-        if (last.targeted == false) {
+        if (last.targeted == false && uimode != "MoveAround") {
             for (var i = 0; i < diagram.length; i++) {
                 diagram[i].targeted = false;
             }
-            if(uimode != "MoveAround") {
-                // Will add multiple selected diagram objects if the
-                // CTRL/CMD key is currently active
-                if (ctrlIsClicked) {
-                    if(selected_objects.indexOf(last) < 0){
-                        selected_objects.push(last);
-                        last.targeted = true;
-                    }
-                    for (var i = 0; i < selected_objects.length; i++) {
-                        if (selected_objects[i].targeted == false) {
-                            if(selected_objects.indexOf(last) < 0){
-                                selected_objects.push(last);
-                            }
-                            selected_objects[i].targeted = true;
-                        }
-                    }
-                } else {
-                    selected_objects = [];
+            // Will add multiple selected diagram objects if the
+            // CTRL/CMD key is currently active
+            if (ctrlIsClicked) {
+                if(selected_objects.indexOf(last) < 0){
                     selected_objects.push(last);
                     last.targeted = true;
                 }
+                for (var i = 0; i < selected_objects.length; i++) {
+                    if (selected_objects[i].targeted == false) {
+                        if(selected_objects.indexOf(last) < 0){
+                            selected_objects.push(last);
+                        }
+                        selected_objects[i].targeted = true;
+                    }
+                }
+            } else {
+                selected_objects = [];
+                selected_objects.push(last);
+                last.targeted = true;
             }
-        } else{
+        } else if(uimode != "MoveAround"){
             if(ctrlIsClicked){
                 console.log("Deselect len: " + selected_objects.length);
                 var index = selected_objects.indexOf(last);
