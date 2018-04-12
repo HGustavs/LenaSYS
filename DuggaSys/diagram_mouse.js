@@ -225,7 +225,9 @@ function mousedownevt(ev) {
                     }
                     for (var i = 0; i < selected_objects.length; i++) {
                         if (selected_objects[i].targeted == false) {
-                            selected_objects.push(last);
+                            if(selected_objects.indexOf(last) < 0){
+                                selected_objects.push(last);
+                            }
                             selected_objects[i].targeted = true;
                         }
                     }
