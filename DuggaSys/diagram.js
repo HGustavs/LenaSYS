@@ -243,15 +243,17 @@ var diagram = [];
 //--------------------------------------------------------------------
 diagram.draw = function() {
     this.adjustPoints();
-    // Render figures
+    //Draws all lines first so that they appear behind the object instead
+    for(var i = 0; i < this.length; i++){
+        if(this[i].symbolkind == 4){
+            this[i].draw();
+        }
+    }
     for (var i = 0; i < this.length; i++) {
         if (this[i].kind == 1) {
             this[i].draw(1, 1);
         }
-        else if(this[i].symbolkind == 4){ //We need to draw lines before any other object
-            this[i].draw();
-        }
-        else if(this[i].kind == 2){
+        else if(this[i].kind == 2 && this[i].symbolkind != 4){
             this[i].draw();
         }
     }
