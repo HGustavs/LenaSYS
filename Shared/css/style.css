@@ -2698,6 +2698,34 @@ ul.hamburgerList button.menuButton {
 }
 
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
+  /* moment date and course version */
+  .dateField {
+    opacity: 0.0;
+    max-width: 0px;
+    pointer-events: none;
+    transition: opacity 300ms, width 300ms;
+    -webkit-transition: opacity 300ms, width 300ms;
+    -moz-transition: opacity 300ms, width 300ms;
+    -o-transition: opacity 300ms, width 300ms;
+  }
+
+  .courseVersionField {
+    margin-right: 0px;
+    opacity: 0.0;
+    max-width: 0px;
+    pointer-events: none;
+    transition: opacity 300ms, width 300ms, margin 300ms;
+    -webkit-transition: opacity 300ms, width 300ms, margin 300ms;
+    -moz-transition: opacity 300ms, width 300ms, margin 300ms;
+    -o-transition: opacity 300ms, width 300ms, margin 300ms;
+  }
+  
+  .dateSize{
+	  width: 50px;
+  }
+}
+
+@media only screen and (max-width: 800px), only screen and (max-device-width: 800px) {
   table.navheader td.editVers,
   table.navheader td.contribution,
   table.navheader td.newVers {
@@ -2736,61 +2764,13 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
-
-  /* moment date and course version */
-  .dateField {
-    opacity: 0.0;
-    max-width: 0px;
-    pointer-events: none;
-    transition: opacity 300ms, width 300ms;
-    -webkit-transition: opacity 300ms, width 300ms;
-    -moz-transition: opacity 300ms, width 300ms;
-    -o-transition: opacity 300ms, width 300ms;
-  }
-
-  .courseVersionField {
-    margin-right: 0px;
-    opacity: 0.0;
-    max-width: 0px;
-    pointer-events: none;
-    transition: opacity 300ms, width 300ms, margin 300ms;
-    -webkit-transition: opacity 300ms, width 300ms, margin 300ms;
-    -moz-transition: opacity 300ms, width 300ms, margin 300ms;
-    -o-transition: opacity 300ms, width 300ms, margin 300ms;
-  }
-  
-  .dateSize{
-	  width: 50px;
+  ul.hamburgerList li.hamburgerSeparator{
+    display: block;
+    height: 13px;
   }
 }
 
 @media only screen and (max-width: 768px), only screen and (max-device-width: 768px) {
-  table.navheader td.access,
-  table.navheader td.groups {
-    margin-right: 0px;
-    width: 0px;
-    -webkit-transition: margin-right 0.5s, width 0.5s;
-    -moz-transition: margin-right 0.5s, width 0.5s;
-    -o-transition: margin-right 0.5s, width 0.5s;
-  }
-
-  table.navheader div.access,
-  table.navheader div.groups {
-    pointer-events: none;
-    opacity: 0;
-    -webkit-transition: opacity 0.5s;
-    -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s,;
-  }
-
-  ul.hamburgerList li.access,
-  ul.hamburgerList li.groups {
-    pointer-events: auto;
-    display: block;
-    height: 26px;
-    opacity: 1.0;
-  }
-
   .hideAll,
   .showAll{
     -webkit-transform: scale(0.7, 0.7);
@@ -2814,10 +2794,8 @@ ul.hamburgerList button.menuButton {
     font-size: 20px;
   }
 }
-
-@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
-  table.navheader td.tests,
-  table.navheader td.files{
+@media only screen and (max-width: 650px), only screen and (max-device-width: 650px) {
+  table.navheader td.access {
     margin-right: 0px;
     width: 0px;
     -webkit-transition: margin-right 0.5s, width 0.5s;
@@ -2825,25 +2803,49 @@ ul.hamburgerList button.menuButton {
     -o-transition: margin-right 0.5s, width 0.5s;
   }
 
-  table.navheader div.tests,
+  table.navheader div.access {
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s,;
+  }
+
+  ul.hamburgerList li.access {
+    pointer-events: auto;
+    display: block;
+    height: 26px;
+    opacity: 1.0;
+  }
+}
+@media only screen and (max-width: 540px), only screen and (max-device-width: 540px) {
+  table.navheader td.files {
+    margin-right: 0px;
+    width: 0px;
+    -webkit-transition: margin-right 0.5s, width 0.5s;
+    -moz-transition: margin-right 0.5s, width 0.5s;
+    -o-transition: margin-right 0.5s, width 0.5s;
+  }
+
   table.navheader div.files {
     pointer-events: none;
     opacity: 0;
     -webkit-transition: opacity 0.5s;
     -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s,;
   }
 
-  ul.hamburgerList li.tests,
   ul.hamburgerList li.files {
     pointer-events: auto;
     display: block;
     height: 26px;
     opacity: 1.0;
   }
+}
 
+@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
   .hideAll,
-  .showAll{
+  .showAll {
     -webkit-transform: scale(0.6, 0.6);
     transform: scale(0.6, 0.6);
     left: 4px;
@@ -2868,6 +2870,34 @@ ul.hamburgerList button.menuButton {
   
   #Sectionlist .course {
     font-size: 16px;
+  }
+}
+
+@media only screen and (max-width: 430px), only screen and (max-device-width: 430px) {
+  table.navheader td.tests,
+   table.navheader td.results{
+    margin-right: 0px;
+    width: 0px;
+    -webkit-transition: margin-right 0.5s, width 0.5s;
+    -moz-transition: margin-right 0.5s, width 0.5s;
+    -o-transition: margin-right 0.5s, width 0.5s;
+  }
+
+  table.navheader div.tests,
+   table.navheader div.results {
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+  }
+
+  ul.hamburgerList li.tests,
+   ul.hamburgerList li.results {
+    pointer-events: auto;
+    display: block;
+    height: 26px;
+    opacity: 1.0;
   }
 }
 
@@ -2980,3 +3010,4 @@ ul.hamburgerList button.menuButton {
        -ms-user-select: none;
            user-select: none;
 }
+
