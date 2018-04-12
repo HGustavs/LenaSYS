@@ -277,7 +277,7 @@ function Symbol(kind) {
 
     this.linehover = function (mx, my) {
         var tolerance = 5;
-        var c = corners();
+        var c = this.corners();
         c.tl.y -= tolerance;
         c.tr.y -= tolerance;
         c.tl.x -= tolerance;
@@ -296,7 +296,7 @@ function Symbol(kind) {
 
     this.entityhover = function(mx,my){
         //we have correct points in the four corners of a square.
-        var c = corners();
+        var c = this.corners();
         if(mx > c.tl.x && mx < c.tr.x){
             if(my > c.tl.y && my < c.bl.y){
                 return true;
