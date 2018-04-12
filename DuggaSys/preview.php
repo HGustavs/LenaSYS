@@ -123,15 +123,17 @@
             .show-dropdown-content {
                 display: block;
             }
-            #select-header > a {
+            #select-header {
                 max-width: 50px;
                 position: absolute;
                 z-index: 2000;
                 right: 80px;
                 background-color: #fff;
                 box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.3);
-                text-decoration: none;
                 padding: 5px 5px 5px 5px;
+            }
+            a {
+                text-decoration: none;
             }
         </style>
         <script>
