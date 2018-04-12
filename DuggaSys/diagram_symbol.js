@@ -602,43 +602,7 @@ function Symbol(kind) {
             this.drawERAttribute(x1, y1, x2, y2);
         }
         else if(this.symbolkind == 3){
-            ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.beginPath();
-            if (this.key_type == "Weak") {
-                ctx.moveTo(x1 - 5, y1 - 5);
-                ctx.lineTo(x2 + 5, y1 - 5);
-                ctx.lineTo(x2 + 5, y2 + 5);
-                ctx.lineTo(x1 - 5, y2 + 5);
-                ctx.lineTo(x1 - 5, y1 - 5);
-            }
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y1);
-            ctx.lineTo(x2, y2);
-            ctx.lineTo(x1, y2);
-            ctx.lineTo(x1, y1);
-            ctx.closePath();
-            ctx.fill();
-            makeShadow();
-            ctx.clip();
-            ctx.fillStyle = this.symbolColor;
-            ctx.fill();
-
-            ctx.stroke();
-            ctx.fillStyle = "#fff";
-            ctx.fillStyle = this.fontColor;
-            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-            ctx.font = parseInt(textsize) + "px " + this.font;
-            ctx.fillStyle = "#fff";
-            for (var i = 0; i < this.arity.length; i++) {
-                for (var j = 0; j < this.arity[i].length; j++) {
-                    var arity = this.arity[i][j];
-                    ctx.textAlign = arity.align;
-                    ctx.textBaseline = arity.baseLine;
-                    ctx.fillText(arity.text, arity.x, arity.y);
-                }
-            }
+            this.drawEntity(x1, y1, x2, y2);
         }
         else if(this.symbolkind == 4){
             // ER Attribute relationship is a single line
@@ -703,7 +667,6 @@ function Symbol(kind) {
             ctx.fillStyle = this.fontColor;
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
-
 
         ctx.restore();
         ctx.setLineDash([]);
@@ -810,14 +773,11 @@ this.drawERAttribute = function(x1, y1, x2, y2)
     }
     ctx.stroke();
 
-    //This is a temporary solution to the black symbol problem
-    ctx.fillStyle = (this.symbolColor == "" || this.symbolColor == '#000') ? '#fff' : '#000';
-
-    //ctx.fillStyle = this.fontColor;
+    ctx.fillStyle = this.fontColor;
     ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
     ctx.clip();
 }
-/*
+
 this.drawEntity = function(x1, y1, x2, y2)
 {
     ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
@@ -831,6 +791,7 @@ this.drawEntity = function(x1, y1, x2, y2)
         ctx.lineTo(x1 - 5, y2 + 5);
         ctx.lineTo(x1 - 5, y1 - 5);
     }
+
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y1);
     ctx.lineTo(x2, y2);
@@ -844,7 +805,6 @@ this.drawEntity = function(x1, y1, x2, y2)
     ctx.fill();
 
     ctx.stroke();
-    ctx.fillStyle = "#fff";
     ctx.fillStyle = this.fontColor;
     ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
     ctx.font = parseInt(textsize) + "px " + this.font;
@@ -858,6 +818,7 @@ this.drawEntity = function(x1, y1, x2, y2)
         }
     }
 }
+/*
 this.drawLine = function(x1, y1, x2, y2)
 {
     // ER Attribute relationship is a single line
