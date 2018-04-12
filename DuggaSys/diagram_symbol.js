@@ -783,6 +783,8 @@ this.drawEntity = function(x1, y1, x2, y2)
     ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
+    ctx.fillStyle = this.symbolColor;
+
     ctx.beginPath();
     if (this.key_type == "Weak") {
         ctx.moveTo(x1 - 5, y1 - 5);
@@ -798,17 +800,14 @@ this.drawEntity = function(x1, y1, x2, y2)
     ctx.lineTo(x1, y2);
     ctx.lineTo(x1, y1);
     ctx.closePath();
-    ctx.fill();
     makeShadow();
     ctx.clip();
-    ctx.fillStyle = this.symbolColor;
-    ctx.fill();
-
     ctx.stroke();
+
+    //Print arity and entity name
     ctx.fillStyle = this.fontColor;
     ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
     ctx.font = parseInt(textsize) + "px " + this.font;
-    ctx.fillStyle = "#fff";
     for (var i = 0; i < this.arity.length; i++) {
         for (var j = 0; j < this.arity[i].length; j++) {
             var arity = this.arity[i][j];
