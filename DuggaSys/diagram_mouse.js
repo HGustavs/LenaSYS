@@ -210,7 +210,8 @@ function mousedownevt(ev) {
     } else if (movobj != -1) {
         md = 3;
         lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
-        if (diagram[lastSelectedObject].targeted == false) {
+        var last = diagram[lastSelectedObject];
+        if (last.targeted == false) {
             for (var i = 0; i < diagram.length; i++) {
                 diagram[i].targeted = false;
             }
@@ -218,28 +219,29 @@ function mousedownevt(ev) {
                 // Will add multiple selected diagram objects if the
                 // CTRL/CMD key is currently active
                 if (ctrlIsClicked) {
-                    var last = diagram[lastSelectedObject];
                     if(selected_objects.indexOf(last) < 0){
                         selected_objects.push(last);
                         last.targeted = true;
-                    }else {
-                        console.log("Deselect");
-                        var index = selected_objects.indexOf(last);
-                        if(index > -1){
-                            selected_objects = selected_objects.splice(index, 1);
-                            last.targeted = false;
-                        }
                     }
                     for (var i = 0; i < selected_objects.length; i++) {
                         if (selected_objects[i].targeted == false) {
-                            selected_objects.push(diagram[lastSelectedObject]);
+                            selected_objects.push(last);
                             selected_objects[i].targeted = true;
                         }
                     }
                 } else {
                     selected_objects = [];
-                    selected_objects.push(diagram[lastSelectedObject]);
-                    diagram[lastSelectedObject].targeted = true;
+                    selected_objects.push(last);
+                    last.targeted = true;
+                }
+            }
+        } else{
+            if(ctrlIsClicked){
+                console.log("Deselect");
+                var index = selected_objects.indexOf(last);
+                if(index > -1){
+                    selected_objects = selected_objects.splice(index, 1);
+                    last.targeted = false;
                 }
             }
         }
