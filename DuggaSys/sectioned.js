@@ -172,13 +172,10 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str+="<option value='1'>Section</option>";
 	if(kind==2) str+="<option selected='selected' value='2'>Code</option>"
 	else str+="<option value='2'>Code</option>";
-	if(retdata['duggor'].length == 0){
-		str+="<option disabled>Test</option>";
-		displaymessage();
-	}else{
+
 		if(kind==3) str+="<option selected='selected' value='3'>Test</option>"
 		else str+="<option value='3'>Test</option>";
-	}
+	
 	if(kind==4) str+="<option selected='selected' value='4'>Moment</option>"
 	else str+="<option value='4'>Moment</option>";
 	if(kind==5) str+="<option selected='selected' value='5'>Link</option>"
@@ -449,17 +446,18 @@ function validateType(){
 	kind=$("#type").val();
 	var nme=document.getElementById("type");
 
-	if (kind==0){
+	if (retdata['duggor'].length == 0 && kind == 3){
+		$('#tooltipType').fadeIn();
+		$('#saveBtn').attr('disabled','disabled');
+		$('#submitBtn').attr('disabled','disabled');
+		nme.style.backgroundColor = "#f57";
+		
+	}else{
 		$('#tooltipType').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
 		$('#submitBtn').removeAttr('disabled');
 		nme.style.backgroundColor = "#fff";
 		retValue = true;
-	}else{
-		$('#tooltipType').fadeIn();
-		$('#saveBtn').attr('disabled','disabled');
-		$('#submitBtn').attr('disabled','disabled');
-		nme.style.backgroundColor = "#f57";
 	}
 
 	return retValue;
