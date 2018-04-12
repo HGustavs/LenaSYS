@@ -38,11 +38,13 @@ pdoConnect();
 
 	<!-- Login Dialog START -->
 	<?php
-		include '../Shared/loginbox.php';
+	 include '../Shared/loginbox.php';
 	?>
 	<!-- Login Dialog END -->
-  <div id="quiz" onchange='leFunk()' style='width:100%; border: 2px solid green;'></div>
-	<!-- Edit Dugga Dialog START -->
+  
+  <div id="quiz" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the table within. -->
+	
+  <!-- Edit Dugga Dialog START -->
 	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
       		<div class='loginBoxheader'>
@@ -62,15 +64,12 @@ pdoConnect();
       			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'><option value='1'>U-G-VG</option><option value='2'>U-G</option><option value='3'>U-3-4-5</option></select></div>
       			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
             <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='qstart' value='None' /></div>
-
       			<div class='inputwrapper'><span>First  Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='None' /></div>
 						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
 						<div class='inputwrapper'><span>Second Deadline :</span><input class='textinput datepicker' type='text' id='deadline2' value='None' /></div>
 						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
 						<div class='inputwrapper'><span> Third Deadline :</span><input class='textinput datepicker' type='text' id='deadline3' value='None' /></div>
 						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
-
-
             <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
       		</div>
       		<div style='padding:5px;'>
@@ -78,7 +77,6 @@ pdoConnect();
       			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeEditDugga(); showSaveButton();' />
       			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='createDugga();showSaveButton();' />
       			<input style='float:right; 'class='submit-button updateDugga' type='button' value='Save' onclick='updateDugga();' />
-
       		</div>
       </div>
 	</div>
@@ -101,6 +99,7 @@ pdoConnect();
             </div>
       </div>
   <!-- Confirm Section Dialog START -->  
+  
 	<!-- Edit Variant Dialog START -->
 	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style="width:80%;">

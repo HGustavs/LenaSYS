@@ -282,14 +282,11 @@ function closeEditVariant()
 		    $("#sectionConfirmBox").css("display","none");
 		    decider = 0;
 		}
-		else{
-		   	$("#sectionConfirmBox").css("display","none");
-		   	decider = 0;
-		}
 	}
 
 function createDugga()
 {
+	decider = "createDugga";
 	var did=$("#did").val();
 	var nme=$("#name").val();
 	var autograde=$("#autograde").val();
@@ -304,7 +301,6 @@ function createDugga()
 	window.location.reload();
 	$("#editDugga").css("display","none");
 	//$("#overlay").css("display","none");
-
 
 	//autograde, gradesystem, qname, quizFile, release, deadline, creator, vers
 	AJAXService("ADDUGGA",{cid:cid,autograde:autograde,gradesys:gradesys,nme:nme,template:template,release:release,deadline:deadline,deadline2:deadline2,deadline3:deadline3,coursevers:coursevers},"DUGGA");
@@ -322,7 +318,6 @@ function deleteDugga()
 // Checks if the title name includes any invalid characters
 function validateName(){
 	var retValue = false;
-	
 	var nme=document.getElementById("name");
 	
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)){
@@ -337,7 +332,6 @@ function validateName(){
 		$('#saveBtn').attr('disabled','disabled');
 		nme.style.backgroundColor = "#f57";
 	}
-	
 	return retValue;
 }
 
@@ -357,7 +351,7 @@ function updateDugga()
 
 	var deadline2=$("#deadline2").val();
 	var deadline3=$("#deadline3").val();
-  var release=$("#release").val();
+  	var release=$("#release").val();
 
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,qstart:qstart,deadline:deadline,deadline2:deadline2,deadline3:deadline3,release:release,coursevers:querystring['coursevers']},"DUGGA");
 
@@ -405,15 +399,15 @@ function showSaveButton(){
 }
 
 function selectDugga(did,name,autograde,gradesys,template,qstart,deadline,deadline2,deadline3,release){
-		$("#editDugga").css("display","flex");
+	$("#editDugga").css("display","flex");
 		//$("#overlay").css("display","block");
-		$("#did").val(did); // Set Variant ID
-		$("#name").val(name); // Set Dugga name
-	  $("#qstart").val(qstart); // Set Start date name
-		$("#deadline").val(deadline); // Set Deadline date name
-		$("#deadline2").val(deadline2); // Set Deadline date name
-	  $("#deadline3").val(deadline3); // Set Deadline date name
-	  $("#release").val(release); // Set Release date name
+	$("#did").val(did); // Set Variant ID
+	$("#name").val(name); // Set Dugga name
+	$("#qstart").val(qstart); // Set Start date name
+	$("#deadline").val(deadline); // Set Deadline date name
+	$("#deadline2").val(deadline2); // Set Deadline date name
+	$("#deadline3").val(deadline3); // Set Deadline date name
+	$("#release").val(release); // Set Release date name
 
 	//----------------------------------------------------
 	// Set Autograde
@@ -612,21 +606,8 @@ function showVariantz(param){
     }
 }
 
-function renderCell(col,celldata,cellid) {
-	if (col == "Trumma"){
-	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
-	} else if (col == "Pnr") {
-	    return "<div>" + celldata + "</div>";
-	} else {
-		return "<div id='" + cellid + "'>" + celldata + "</div>";
-	}
-	return celldata;
-}
 
-//----------------------------------------
-// Renderer
-//----------------------------------------
-var alla = 0;
+// Start of rendering the table
 var myTable;
 function returnedDugga(data) {
 	filez = data;
@@ -676,6 +657,18 @@ function returnedDugga(data) {
 
 }
 
+// Rendring a specific cell
+function renderCell(col,celldata,cellid) {
+	if (col == "Trumma"){
+	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
+	} else if (col == "Pnr") {
+	    return "<div>" + celldata + "</div>";
+	} else {
+		return "<div id='" + cellid + "'>" + celldata + "</div>";
+	}
+	return celldata;
+}
+// End of rendering the table
 
 function parseParameters(str){
 	return str;
