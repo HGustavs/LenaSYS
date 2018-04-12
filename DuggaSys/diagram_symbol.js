@@ -525,7 +525,6 @@ function Symbol(kind) {
         } else {
             textsize = 14; //<-- Tiny and everything else
         }
-
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.strokeColor;
 
         var x1 = points[this.topLeft].x;
@@ -784,35 +783,35 @@ this.drawERAttribute = function(x1, y1, x2, y2)
     ctx.fillStyle = this.symbolColor;
     ctx.lineWidth = this.lineWidth;
     //This is a temporary solution to the black symbol problem
-    ctx.fillStyle = '#fff';
 
     drawOval(x1, y1, x2, y2);
 
     ctx.fill();
     makeShadow();
-    ctx.stroke();
-
 
     //drawing a multivalue attribute
     if (this.key_type == 'Multivalue') {
-        drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
         ctx.stroke();
+        drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
     }
     //drawing an derived attribute
     else if (this.key_type == 'Drive') {
         ctx.setLineDash([5, 4]);
     }
     else if (this.key_type == 'Primary key') {
+        ctx.stroke();
         var linelength = ctx.measureText(this.name).width;
         ctx.beginPath(1);
         ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
         ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
         ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
         ctx.strokeStyle = this.strokeColor;
-        ctx.stroke();
+
     }
+    ctx.stroke();
+
     //This is a temporary solution to the black symbol problem
-    ctx.fillStyle = (this.symbolColor == "" || this.symbolColor == '#fff') ? '#000' : '#fff';
+    ctx.fillStyle = (this.symbolColor == "" || this.symbolColor == '#000') ? '#fff' : '#000';
 
     //ctx.fillStyle = this.fontColor;
     ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
