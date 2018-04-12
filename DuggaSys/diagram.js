@@ -208,6 +208,7 @@ points.drawPoints = function() {
     }
 }
 
+
 //--------------------------------------------------------------------
 // closestPoint - Returns the distance and index of the point closest
 // to the coordinates passed as parameters.
@@ -807,6 +808,8 @@ var consloe = {};
 consloe.log = function(gobBluth) {
     document.getElementById("consloe").innerHTML = ((JSON.stringify(gobBluth) + "<br>") + document.getElementById("consloe").innerHTML);
 }
+
+
 
 //debugMode this function show and hides crosses and the consol.
 var ghostingCrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
