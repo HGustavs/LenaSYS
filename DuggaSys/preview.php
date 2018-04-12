@@ -180,15 +180,17 @@
                 $('#select-header').show();
             }
             function selected() {
-                var headerValue = document.getElementById('select-header').value;
+                var headerValue1 = document.getElementById('h1').value;
+                var headerValue2 = document.getElementById('h2').value;
+                var headerValue3 = document.getElementById('h3').value;
                 
-                if (headerValue == "H3") {
-                    $('#mrkdwntxt').append("#"); 
+                if (headerValue1 == "H3") {
+                    $('#mrkdwntxt').append("# "); 
                 }
-                else if (headerValue == "H2") {
-                    $('#mrkdwntxt').append("##");                 }
+                else if (headerValue2 == "H2") {
+                    $('#mrkdwntxt').append("## ");                 }
                 else {
-                    $('#mrkdwntxt').append("###"); 
+                    $('#mrkdwntxt').append("### "); 
                 }
                 $('#select-header').hide();
             }
@@ -232,7 +234,7 @@
             <div class="Markdown">
                 <div class="markNav">Markdown
                     <span class="headerType">aA&#9663;</span>
-                        <div id="select-header" value="headerOption">
+                        <div id="select-header">
                             <a href="#" id="h1" onclick="selected()" value="H1">Header 1</a>
                             <a href="#" id="h2" onclick="selected()" value="H2">Header 2</a>
                             <a href="#" id="h3" onclick="selected()" value="H3">Header 3</a>
