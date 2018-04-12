@@ -180,8 +180,9 @@
                 $('#select-header').show();
             }
             function selected() {
-                
-                if ($("#h1").text() == "Header 1") {
+                $(this).data('clicked', true);
+
+                if ($("#h1").data('clicked')) {
                     $('#mrkdwntxt').append("# "); 
                 }
                 else if ($("#h2").text() == "Header 2") {
