@@ -605,37 +605,8 @@ function Symbol(kind) {
             this.drawEntity(x1, y1, x2, y2);
         }
         else if(this.symbolkind == 4){
-            // ER Attribute relationship is a single line
+            this.drawLine(x1,y1,x2,y2);
 
-            if (this.key_type == "Forced") {
-                ctx.lineWidth = this.lineWidth;
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-                ctx.lineWidth = this.lineWidth;
-                ctx.strokeStyle = "#000";
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-                ctx.strokeStyle = this.strokeColor;
-            } else if (this.key_type == "Derived") {
-                ctx.setLineDash([5, 4]);
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-                ctx.strokeStyle = this.strokeColor;
-            }
-            else {
-                ctx.lineWidth = this.lineWidth;
-                ctx.beginPath();
-                ctx.moveTo(x1, y1);
-                ctx.lineTo(x2, y2);
-                ctx.stroke();
-                ctx.strokeStyle = this.strokeColor;
-            }
         }
         else if(this.symbolkind == 5){
             ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
@@ -817,30 +788,31 @@ this.drawEntity = function(x1, y1, x2, y2)
         }
     }
 }
-/*
+
 this.drawLine = function(x1, y1, x2, y2)
 {
-    // ER Attribute relationship is a single line
+    ctx.lineWidth = this.lineWidth;
     if (this.key_type == "Forced") {
-        ctx.lineWidth = this.lineWidth;
+        //Draw a thick black line
+        ctx.lineWidth = this.lineWidth*3;
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
-        ctx.lineWidth = this.lineWidth;
-        ctx.strokeStyle = "#000";
-    } else if (this.key_type == "Derived") {
-        ctx.setLineDash([5, 4]);
+
+        //Draw a white line in the middle to simulate space (2 line illusion).
+        ctx.linewidth = this.lineWidth;
+        ctx.strokeStyle = "#fff";
     }
-    else {
-        ctx.lineWidth = this.lineWidth;
+    else if (this.key_type == "Derived") {
+        ctx.setLineDash([5, 4]);
     }
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.stroke();
-    ctx.strokeStyle = this.strokeColor;
 }
+/*
 this.drawRelation = function(x1, y1, x2, y2)
 {
     ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
