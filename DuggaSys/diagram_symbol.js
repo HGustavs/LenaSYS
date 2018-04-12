@@ -18,11 +18,10 @@ function Symbol(kind) {
     this.lineWidth = 2;
     var textscale = 10;
     this.name = "New Class";        // Default name is new class
-    this.key_type = "none"          // Defult key tyoe for a class.
-    this.sizeOftext = "none"        // Used to set size of text.
+    this.key_type = "none";          // Defult key tyoe for a class.
+    this.sizeOftext = "none";        // Used to set size of text.
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
-    this.tl, this.tr, this.bl, this.br; //Points that always are correct after a sortPoints()
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
     this.shadowBlur = 10;           // Shadowblur for all objects
@@ -267,7 +266,6 @@ function Symbol(kind) {
     // Returns line distance to segment object e.g. line objects (currently only relationship markers)
     //--------------------------------------------------------------------
     this.checkForHover = function (mx, my) {
-        this.sortPoints();
         if(this.symbolkind == 4){
             return this.linehover(mx, my);
         }else if(this.symbolkind == 3){
@@ -279,15 +277,15 @@ function Symbol(kind) {
 
     this.linehover = function (mx, my) {
         var tolerance = 5;
-        tl.y -= tolerance;
-        tr.y -= tolerance;
-        tl.x -= tolerance;
-        tr.x += tolerance;
-        bl.x -= tolerance;
-        bl.y += tolerance;
-        br.x += tolerance;
-        br.y += tolerance;
-
+        var c = this.corners();
+        c.tl.y -= tolerance;
+        c.tr.y -= tolerance;
+        c.tl.x -= tolerance;
+        c.tr.x += tolerance;
+        c.bl.x -= tolerance;
+        c.bl.y += tolerance;
+        c.br.x += tolerance;
+        c.br.y += tolerance;
 
         if (!this.entityhover(mx, my)) {
           return false;
@@ -300,8 +298,9 @@ function Symbol(kind) {
     
     this.entityhover = function(mx,my){
         //we have correct points in the four corners of a square.
-        if(mx > tl.x && mx < tr.x){
-            if(my > tl.y && my < bl.y){
+        var c = this.corners();
+        if(mx > c.tl.x && mx < c.tr.x){
+            if(my > c.tl.y && my < c.bl.y){
                 return true;
             }
         }
@@ -309,8 +308,7 @@ function Symbol(kind) {
     }
 
     //init four points, the four corners based on the two cornerpoints in the symbol.
-    //Trust me, it is needed.
-    this.sortPoints = function(){
+    this.corners = function(){
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
         if(p1.x < p2.x){
@@ -342,6 +340,12 @@ function Symbol(kind) {
                 tr = {x:br.x, y:tl.y};
             }
         }
+        return {
+            tl: tl,
+            tr: tr,
+            br: br,
+            bl: bl
+        };
     }
 
     //--------------------------------------------------------------------
