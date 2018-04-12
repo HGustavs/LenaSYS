@@ -18,8 +18,8 @@ function Symbol(kind) {
     this.lineWidth = 2;
     var textscale = 10;
     this.name = "New Class";        // Default name is new class
-    this.key_type = "none"          // Defult key tyoe for a class.
-    this.sizeOftext = "none"        // Used to set size of text.
+    this.key_type = "none";          // Defult key tyoe for a class.
+    this.sizeOftext = "none";        // Used to set size of text.
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
