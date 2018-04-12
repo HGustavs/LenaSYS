@@ -691,33 +691,6 @@ function dimDialogMenu(dim) {
     }
 }
 
-/*
-THIS FUNCTION IS NOT USED RIGHT NOW! MIGHT BE USED AT A LATER STAGE
-
-function Consolemode(action) {
-    if(action == 1) {
-        document.getElementById('Hide Console').style.display = "none";
-        document.getElementById('Show Console').style.display = "block";
-        document.getElementById('Show Console').style = "position: fixed; right: 0; bottom: 0px;";
-        document.getElementById('valuesCanvas').style.bottom = "0";
-        heightWindow = (window.innerHeight - 120);
-        canvas.setAttribute("height", heightWindow);
-        $("#consloe").hide();
-        updateGraphics();
-    }
-    if(action == 2) {
-        document.getElementById('Hide Console').style.display = "block";
-        document.getElementById('Show Console').style.display = "none";
-        document.getElementById('Hide Console').style = "position: fixed; right: 0; bottom: 133px;";
-        heightWindow = (window.innerHeight - 244);
-        canvas.setAttribute("height", heightWindow);
-        document.getElementById('valuesCanvas').style.bottom = "130px";
-        $("#consloe").show();
-        updateGraphics();
-    }
-}
-*/
-
 function connectedObjects(line) {
     var privateObjects = [];
     for (var i = 0; i < diagram.length; i++) {
@@ -1190,50 +1163,3 @@ function globalStrokeColor() {
             diagram[i].strokeColor = document.getElementById('StrokeColor').value;
     }
 }
-
-/*
-
-THIS FUNCTION SAVES EVERYTHING CORRECTLY. THE PROBLEM IS THAT IT DOES'T
-REWRITE THE DIAGRAM AS IT SHOULD. IF THAT GETS FIXED, THE REDO AND UNDO
-SHOULD WORK!
-
-function diagramLocalStorage(){
-    var diagramNumberStorage = localStorage.getItem("diagramNumber");
-    diagramNumberStorage++;
-    for(var i = 0; i < diagramNumberStorage; i++){
-        localStorage.removeItem("diagram"+i);
-    }
-    diagramCode = localStorage.getItem("localdiagram");
-    localStorage.setItem("diagram"+diagramNumber, diagramCode);
-}
-
-function saveLocalStorage(e){
-    var oldDiagram = localStorage.getItem("diagram"+diagramNumber);
-    diagramCode = localStorage.getItem("localdiagram");
-    diagramNumber++;
-    diagramNumberUndo = diagramNumber;
-    diagramNumberRedo = diagramNumber;
-    localStorage.setItem("diagramNumber", diagramNumber);
-    localStorage.setItem("diagram"+diagramNumber, diagramCode);
-}
-
-function undoDiagram(){
-    diagramNumberUndo--;
-    if (diagramNumberUndo > 0) {
-        var diagramUndo = localStorage.getItem("diagram"+diagramNumberUndo);
-        localStorage.setItem("localdiagram", diagramUndo);
-        loadDiagram();
-    }
-}
-
-function redoDiagram(){
-    var a = [], b = [], c = [];
-    diagramNumberRedo++;
-    if (diagramNumberRedo<diagramNumber) {
-        var diagramRedo = localStorage.getItem("diagram"+diagramNumberRedo);
-        localStorage.setItem("localdiagram", diagramUndo);
-        loadDiagram();
-    }
-}
-
-*/
