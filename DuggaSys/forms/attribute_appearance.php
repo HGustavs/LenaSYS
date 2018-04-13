@@ -41,10 +41,10 @@ Font color:<br>
 </select><br>
 Text size:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='TextSize'>
-    "<option value='Tiny' selected="true">Tiny</option>
-    "<option value='Small'>Small</option>
-    "<option value='Medium'>Medium</option>
-    "<option value='Large'>Large</option>
+    "<option value='14' selected="true">Tiny</option>
+    "<option value='20'>Small</option>
+    "<option value='30'>Medium</option>
+    "<option value='50'>Large</option>
 </select><br>
 Line colors:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='AttributeLineColor'>
