@@ -173,7 +173,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	if(kind==2) str+="<option selected='selected' value='2'>Code</option>"
 	else str+="<option value='2'>Code</option>";
 
-		if(kind==3) str+="<option selected='selected' value='3'>Test</option>"
+		if(kind==3) str+="<option selected='selected' class='test' value='3'>Test</option>"
 		else str+="<option value='3'>Test</option>";
 	
 	if(kind==4) str+="<option selected='selected' value='4'>Moment</option>"
@@ -445,13 +445,17 @@ function validateType(){
 	var retValue = false;
 	kind=$("#type").val();
 	var nme=document.getElementById("type");
+	
+	
 
 	if (retdata['duggor'].length == 0 && kind == 3){
 		$('#tooltipType').fadeIn();
 		$('#saveBtn').attr('disabled','disabled');
 		$('#submitBtn').attr('disabled','disabled');
 		nme.style.backgroundColor = "#f57";
-		
+		for(i = 0; i < nme.options.length; i++){
+			nme.options[i].style.backgroundColor = "#fff";
+		}
 	}else{
 		$('#tooltipType').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
