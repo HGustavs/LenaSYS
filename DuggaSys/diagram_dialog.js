@@ -82,7 +82,7 @@ function loadFormIntoElement(element, dir){
             setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
             setSelectedOption('font', diagram[lastSelectedObject].font);
             setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
-            setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+            setSelectedOption('TextSize', diagram[lastSelectedObject].textsize);
             setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
 
             /*document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
