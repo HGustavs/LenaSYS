@@ -240,18 +240,16 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$entry = array(
-				'uid' => $row['uid'],
 				'username' => $row['username'],
-				'access' => $row['access'],
+				'ssn' => $row['ssn'],
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
-				'ssn' => $row['ssn'],
 				'class' => $row['class'],
 				'modified' => $row['modified'],
-				'newly' => $row['newly'],
 				'teacher' => $row['teacher'],
 				'vers' => $row['vers'],
-				'requestedpasswordchange' => $row['requestedpasswordchange']
+				'access' => $row['access'],
+				'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid']])
 			);
 			array_push($entries, $entry);
 	}
