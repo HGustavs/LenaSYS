@@ -65,20 +65,18 @@ $(document).ready(function(){
     });
 });
 
-function showSubmitButton(){
+function showSubmitButton() {
 	$(".submitDugga").css("display","inline-block");
 	$(".updateDugga").css("display","none");
 	$(".deleteDugga").css("display","none");
 	$(".closeDugga").css("display","inline-block");
-  
 }
 
-function showSaveButton(){
-	$(".submitDugga").css("display","none");
-	$(".updateDugga").css("display","block");
-	$(".deleteDugga").css("display","block");
-	$(".closeDugga").css("display","none");
-  
+function showSaveButton() {
+  $(".submitDugga").css("display","none");
+  $(".updateDugga").css("display","block");
+  $(".deleteDugga").css("display","block");
+  $(".closeDugga").css("display","none");
 }
 
 function editSectionDialogTitle(title) {
@@ -89,6 +87,7 @@ function editSectionDialogTitle(title) {
 		document.getElementById("editSectionDialogTitle").innerHTML = "Edit item";
 	}
 }
+
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
 {
@@ -156,13 +155,10 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str+="<option value='1'>Section</option>";
 	if(kind==2) str+="<option selected='selected' value='2'>Code</option>"
 	else str+="<option value='2'>Code</option>";
-	if(retdata['duggor'].length == 0){
-		str+="<option disabled>Test</option>";
-		displaymessage();
-	}else{
-		if(kind==3) str+="<option selected='selected' value='3'>Test</option>"
+
+		if(kind==3) str+="<option selected='selected' class='test' value='3'>Test</option>"
 		else str+="<option value='3'>Test</option>";
-	}
+	
 	if(kind==4) str+="<option selected='selected' value='4'>Moment</option>"
 	else str+="<option value='4'>Moment</option>";
 	if(kind==5) str+="<option selected='selected' value='5'>Link</option>"
@@ -423,6 +419,35 @@ function validateName(){
 		$('#saveBtn').attr('disabled','disabled');
 		$('#submitBtn').attr('disabled','disabled');
 		nme.style.backgroundColor = "#f57";
+	}
+
+	return retValue;
+}
+
+function validateType(){
+	var retValue = false;
+	kind=$("#type").val();
+	var nme=document.getElementById("type");
+	
+	
+
+	if (retdata['duggor'].length == 0 && kind == 3){
+		$('#tooltipType').fadeIn();
+		$('#saveBtn').attr('disabled','disabled');
+		$('#submitBtn').attr('disabled','disabled');
+		
+		nme.style.backgroundColor = "#f57";
+		//the line of code above changes the selected element AND the list's background color.
+		//the for loop changes the list's background color back to white so only the selected item shows up as red.
+		for(i = 0; i < nme.options.length; i++){
+			nme.options[i].style.backgroundColor = "#fff";
+		}
+	}else{
+		$('#tooltipType').fadeOut();
+		$('#saveBtn').removeAttr('disabled');
+		$('#submitBtn').removeAttr('disabled');
+		nme.style.backgroundColor = "#fff";
+		retValue = true;
 	}
 
 	return retValue;
@@ -696,7 +721,7 @@ function returnedSection(data)
         str+="<li class='editVers'><button class='submit-button menuButton editVers ' onclick='closeWindows(); bigMacSymbol(); showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");' title='Edit the selected version'>Edit Version</button></li>";
         str+="<li class='newVers'><button class='submit-button menuButton newVers' onclick='closeWindows(); bigMacSymbol(); showCreateVersion();' title='Create a new version of this course'>New Version</button></li>";
 		str+="<li class='hamburgerSeparator'><hr></li>";
-		str+="<li class='results'><button class='submit-button menuButton results' onclick='closeWindows(); changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Edit student results'>Results</button></li>";       
+		str+="<li class='results'><button class='submit-button menuButton results' onclick='closeWindows(); changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Edit student results'>Results</button></li>";
         str+="<li class='tests'><button class='submit-button menuButton tests' onclick='closeWindows(); changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Show tests'>Tests</button></li>";
         str+="<li class='files'><button class='submit-button menuButton files' onclick='closeWindows(); changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Show files'>Files</button></li>";
         str+="<li class='access'><button class='submit-button menuButton access' onclick='closeWindows(); accessCourse();' title='Give students access to the selected version'>Access</button></li>";
@@ -1077,10 +1102,8 @@ function returnedSection(data)
 				}
 
 				// Add generic td for deadlines if one exists
-				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")) {
-					
+				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")) {	
 					var dl = deadline.split(" ");
-
 					var timeFilterAndFormat = "00:00:00"; // time to filter away
 					var yearFormat = "0000-";
 					var dateFormat = "00-00";
@@ -1120,7 +1143,7 @@ function returnedSection(data)
                             + "\""+item['gradesys']+"\","
                             + "\""+item['highscoremode']+"\","
                             + "\""+item['comments']+"\""
-                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else if(parseInt(item['kind']) === 1) {
 						str+=
@@ -1137,7 +1160,7 @@ function returnedSection(data)
                             + "\""+item['gradesys']+"\","
                             + "\""+item['highscoremode']+"\","
                             + "\""+item['comments']+"\""
-                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else if(parseInt(item['kind']) === 4) {
 						str+=
@@ -1154,7 +1177,7 @@ function returnedSection(data)
                             + "\""+item['gradesys']+"\","
                             + "\""+item['highscoremode']+"\","
                             + "\""+item['comments']+"\""
-                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else {
 						str+=
@@ -1264,6 +1287,7 @@ function returnedSection(data)
 	hideCollapsedMenus();
 	getArrowElements();
 	toggleArrows();
+	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 }
 
 function showHighscore(did, lid)
