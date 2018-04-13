@@ -452,7 +452,10 @@ function validateType(){
 		$('#tooltipType').fadeIn();
 		$('#saveBtn').attr('disabled','disabled');
 		$('#submitBtn').attr('disabled','disabled');
+		
 		nme.style.backgroundColor = "#f57";
+		//the line of code above changes the selected element AND the list's background color.
+		//the for loop changes the list's background color back to white so only the selected item shows up as red.
 		for(i = 0; i < nme.options.length; i++){
 			nme.options[i].style.backgroundColor = "#fff";
 		}
