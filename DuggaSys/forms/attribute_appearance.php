@@ -22,7 +22,7 @@ Background color:<br>
 </select><br>
 Font family:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='font'>
-    "<option value='arial' selected="true">Arial</option>
+    "<option value='Arial' selected="true">Arial</option>
     "<option value='Courier New'>Courier New</option>
     "<option value='Impact'>Impact</option>
     "<option value='Calibri'>Calibri</option>
