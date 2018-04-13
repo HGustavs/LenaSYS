@@ -753,7 +753,7 @@ function returnedSection(data)
 			+ "\"" + momentexists + "\","
 			+ "\"" + item['gradesys'] + "\","
 			+ "\"" + item['highscoremode'] + "\","
-			+ "); showSubmitButton(); validateName(); validateType(); editSectionDialogTitle(\"newItem\")'>";
+			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\")'>";
 	} else {
 		str += "</tr></table>";
 	}
@@ -788,7 +788,7 @@ function returnedSection(data)
 			+ "\"" + momentexists + "\","
 			+ "\"" + item['gradesys'] + "\","
 			+ "\"" + item['highscoremode'] + "\","
-			+ "); showSubmitButton(); validateType(); validateName(); editSectionDialogTitle(\"newItem\")'>";
+			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\")'>";
         str += "</div>";
     }
 
@@ -1197,7 +1197,7 @@ function returnedSection(data)
                             + "\""+item['gradesys']+"\","
                             + "\""+item['highscoremode']+"\","
                             + "\""+item['comments']+"\""
-                            + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
+                            + "); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"'  /></td>";
 					}
 				}
