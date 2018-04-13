@@ -90,8 +90,6 @@ function thumbnailImg(x,size) {
 
 function parseMarkdown(inString)
 {
-
-    // markdown below doesnt seem to work?????
     inString = inString.replace(/\</g, "&lt;");
     inString = inString.replace(/\>/g, "&gt;");
 
