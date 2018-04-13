@@ -112,6 +112,7 @@
                 color: #000;
                 font-size: 13px;
                 margin: 5px 5px 5px 5px;
+                background-color: #fff;
             }
             #h1:hover {
                 background-color: rgb(240,240,240);
@@ -121,6 +122,7 @@
                 color: #000;
                 font-size: 12px;
                 margin: 5px 5px 5px 5px;
+                background-color: #fff;
             }
             #h2:hover {
                 background-color: rgb(240,240,240);
@@ -130,6 +132,7 @@
                 color: #000;
                 font-size: 11px;
                 margin: 5px 5px 5px 5px;
+                background-color: #fff;
             }
             #h3:hover {
                 background-color: rgb(240,240,240);
