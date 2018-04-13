@@ -289,11 +289,6 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				str += "<tr id='"+tableid+"_"+rowno+"' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 				mhvstr += "<tr id='"+tableid+"_"+rowno+"_mvh' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 
-				if (tableid == "quiz") {
-      				str += "<td id='arrowz' onclick='showVariant("+rowno+")'><span class='arrow' id='arrow"+rowno+"'>&#9658;</span></td>";
-					str += "<td><input type='text' id='duggav"+result+"' style='font-size:14px;border: 0;border-width:0px;width:100%' onchange='changename("+row['did']+","+result+")' placeholder='"+row['name']+"' /></td>";
-				}
-
 				result++;
 
 				for (let colnamez in row) {

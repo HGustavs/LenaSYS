@@ -12,7 +12,7 @@ pdoConnect();
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Section Editor</title>
+	<title id = "sectionedPageTitle">Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
@@ -56,14 +56,18 @@ pdoConnect();
 					</div>
 					<input type='text' class='textinput' id='sectionname' value='sectionname' onkeyup="validateName();" onchange="validateName();" />
 				</div>
-				<div id='inputwrapper-type' class='inputwrapper'><span>Type:</span><select id='type' onchange='changedType();'></select></div>
+				<div id='inputwrapper-type' class='inputwrapper'>
+					<span>Type:</span>
+					<div class="tooltipDuggaType">
+						<span id="tooltipType" style="display: none;" class="tooltipDuggaTypeTxt">Create a Dugga before you can use it for a test.</span>
+				</div>
+				<select id='type' value='type'  onchange='changedType();validateType();'></select></div>
 				<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
 				<div id='inputwrapper-gradesystem' class='inputwrapper'><span>GradeSystem:</span><select id='gradesys' ></select></div>
 				<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
 				<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 				<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
 				<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
-				<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-style:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
 			</div>
 
 			<!-- Error message, no duggas present-->
