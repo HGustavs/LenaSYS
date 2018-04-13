@@ -1050,7 +1050,7 @@ function returnedSection(data)
 
 				else if (parseInt(item['kind']) == 1) { // Section
 					str +=
-						"<div><div class='ellipsis nowrap"
+						"<div class='ellipsis nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span>"
 						+ item['entryname']
@@ -1059,11 +1059,11 @@ function returnedSection(data)
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
 						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
-						+ "' class='arrowRight' style='display:none;'></div></div>";
+						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
 				else if (parseInt(item['kind']) == 4) { // Moment
-					str+="<div><div class='ellipsis nowrap"
+					str+="<div class='ellipsis nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span>"
 						+ item['entryname'] + "</span>"
@@ -1072,7 +1072,7 @@ function returnedSection(data)
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
 						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
-						+ "' class='arrowRight' style='display:none;'></div></div>";
+						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
 				else if (parseInt(item['kind']) == 2) { // Code Example
@@ -1144,7 +1144,7 @@ function returnedSection(data)
 					var yearFormat = "0000-";
 					var dateFormat = "00-00";
 
-					str+="<td class='dateSize' style='text-align:right;overflow:hidden;'><div style='white-space:nowrap;'>";
+					str+="<td class='dateSize' style='text-align:right;overflow:hidden;'><div class='margin-4' style='white-space:nowrap;'>";
 
 					if(dl[1] == timeFilterAndFormat) {
 						str+="<div class='dateField'>";
@@ -1162,12 +1162,12 @@ function returnedSection(data)
 
 				// Cog Wheel
 				if(data['writeaccess']){
-					str+="<td style='width:24" + "px;";
+					str+="<td style='width:32" + "px;";
 
               		if(parseInt(item['kind']) === 0) {
   						str+=
                             "' class='header"+blorf+"'>"
-                            + "<img id='dorf' style='margin:4px'"
+                            + "<img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
                             + " onclick='selectItem("
                             + "\""+item['lid']+"\","
@@ -1179,12 +1179,12 @@ function returnedSection(data)
                             + "\""+item['gradesys']+"\","
                             + "\""+item['highscoremode']+"\","
                             + "\""+item['comments']+"\""
-                            + "); editSectionDialogTitle(\"newItem\")'"
+                            + "); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else if(parseInt(item['kind']) === 1) {
 						str+=
                             "' class='section"+blorf+"'>"
-                            + "<img id='dorf' style='margin:4px'"
+                            + "<img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
                             + " onclick='selectItem("
                             + "\""+item['lid']+"\","
@@ -1201,7 +1201,7 @@ function returnedSection(data)
 					} else if(parseInt(item['kind']) === 4) {
 						str+=
                             "' class='moment"+blorf+"'>"
-                            + "<img id='dorf' style='margin:4px'"
+                            + "<img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
                             + " onclick='selectItem("
                             + "\""+item['lid']+"\","
@@ -1217,7 +1217,7 @@ function returnedSection(data)
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else {
 						str+=
-                            "' ><img id='dorf' style='margin:4px'"
+                            "' ><img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
                             + " onclick='selectItem("
                             + "\""+item['lid']+"\","
@@ -1236,26 +1236,26 @@ function returnedSection(data)
 
 				// trashcan
 				if(data['writeaccess']) {
-					str+="<td style='width:24" + "px;";
+					str+="<td style='width:36" + "px;";
 
 					if(parseInt(item['kind']) === 0) {
 						str+=
 							"' class='header"+blorf+"'>"
-							+ "<img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg'"
+							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					} else if(parseInt(item['kind']) === 1) {
 						str+=
 							"' class='section"+blorf+"'>"
-							+ "<img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg'"
+							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					} else if(parseInt(item['kind']) === 4) {
 						str+=
 							"' class='moment"+blorf+"'>"
-							+ "<img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg'"
+							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					} else {
 						str+=
-							"' ><img id='dorf' style='margin:4px;' src='../Shared/icons/Trashcan.svg'"
+							"' ><img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					}
 				}
@@ -1386,7 +1386,13 @@ function returnedHighscore(data){
 $(document).on('click', '.moment, .section', function () {
 	saveHiddenElementIDs($(this));
 	hideCollapsedMenus();
-	saveArrowIds($(this));
+
+	// The event handler returns two elements. This if statement gets the
+	// element of interest.
+	if(this.id.length > 0) {
+		saveArrowIds(this.id);
+	}
+
 	toggleArrows();
 });
 
@@ -1408,13 +1414,10 @@ function getArrowElements() {
 
 // Save ids of all elements, whose state needs to be remembered, in local storage.
 function saveHiddenElementIDs(clickedElement) {
-
 	clickedElement.nextUntil('.moment, .section').each(function() {
 		addOrRemoveFromArray(this.id, menuState.hiddenElements);
 	});
-
 	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
-
 }
 
 // Hide all elements from the hiddenElements array.
@@ -1427,13 +1430,13 @@ function hideCollapsedMenus() {
 
 // Save ids of all arrows, whose state needs to be remembered, in local storage.
 function saveArrowIds(clickedElement) {
-	clickedElement.children('.arrowRight').each(function() {
-		addOrRemoveFromArray(this.id, menuState.arrowIcons);
-	});
+	var childNodes = document.getElementById(clickedElement).firstChild.childNodes;
 
-	clickedElement.children('.arrowComp').each(function() {
-		addOrRemoveFromArray(this.id, menuState.arrowIcons);
-	});
+	for(var i = 0; i < childNodes.length; i++) {
+		if(childNodes[i].nodeName == "IMG") {
+			addOrRemoveFromArray(childNodes[i].id, menuState.arrowIcons);
+		}
+	}
 
 	localStorage.setItem('arrowIcons', JSON.stringify(menuState.arrowIcons));
 }
