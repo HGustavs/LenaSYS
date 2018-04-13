@@ -404,9 +404,9 @@ function Symbol(kind) {
     this.movePoints = function () {
         if (this.symbolkind == 4) return;
         points[this.topLeft] = waldoPoint;
+        points[this.bottomRight] = waldoPoint;
         points[this.centerPoint] = waldoPoint;
         points[this.middleDivider] = waldoPoint;
-        points[this.bottomRight] = waldoPoint;
     }
     //--------------------------------------------------------------------
     // Moves all relevant points, within the object, off the canvas.
