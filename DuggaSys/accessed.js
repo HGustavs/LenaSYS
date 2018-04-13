@@ -251,7 +251,8 @@ function returnedAccess(data) {
 			lastname:"Last name",
 			class:"Class",
 			modified:"Added",
-			vers:"Version",
+			examiner:"Examiner",
+      vers:"Version",
 			access:"Access",
 			requestedpasswordchange:"Password"
 		},
