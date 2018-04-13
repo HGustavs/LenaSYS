@@ -1,18 +1,15 @@
 var querystring=parseGet();
 var retdata;
 var newversid;
-var decider;
 var active_lid;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
-	// The id counters are used to give elements unique ids. This might? brake
-	// because an element is not guaranteed to recieve the same id every time,
-	// i.e. if new elements are added.
-	idCounter:0,
-	arrowIdCounter:0,
-	hiddenElements:[], // Stores the id of elements that should be hidden.
-	arrowIcons:[] // Stores which arrows whose state needs to be remembered.
+	idCounter: 0, 		/* Used to give elements unique ids. This might? brake
+						   because an element is not guaranteed to recieve the
+						   same id every time. */
+	hiddenElements: [], // Stores the id of elements who's childs should be hidden.
+	arrowIcons: [] 		// Stores ids of arrows whose state needs to be remembered.
 }
 
 AJAXService("get",{},"SECTION");
@@ -1030,10 +1027,10 @@ function returnedSection(data)
 						+ item['entryname'] + "'><span>"
 						+ item['entryname']
 						+ "</span><img src='../Shared/icons/desc_complement.svg'"
-						+ "id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode
+						+ "id='arrowComp" + menuState.idCounter++ + data.coursecode
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
-						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
+						+ "id='arrowRight" + menuState.idCounter++ + data.coursecode
 						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
@@ -1043,10 +1040,10 @@ function returnedSection(data)
 						+ item['entryname'] + "'><span>"
 						+ item['entryname'] + "</span>"
 						+ "<img src='../Shared/icons/desc_complement.svg'"
-						+ "id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode
+						+ "id='arrowComp" + menuState.idCounter++ + data.coursecode
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
-						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
+						+ "id='arrowRight" + menuState.idCounter++ + data.coursecode
 						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
@@ -1287,11 +1284,11 @@ function returnedSection(data)
 
 	}
 	if(data['debug']!="NONE!") alert(data['debug']);
-
 	getHiddenElements();
 	hideCollapsedMenus();
 	getArrowElements();
 	toggleArrows();
+	menuState.idCounter = 0;
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 }
 
@@ -1354,19 +1351,69 @@ function returnedHighscore(data){
 
 // Toggle content for each moment
 $(document).on('click', '.moment, .section', function () {
-	saveHiddenElementIDs($(this));
-	hideCollapsedMenus();
-
-	// The event handler returns two elements. This if statement gets the
-	// element of interest.
+	/* The event handler returns two elements. The following two if statements
+	   gets the element of interest. */
+	if(this.id.length > 0) {
+		saveHiddenElementIDs(this.id);
+	}
 	if(this.id.length > 0) {
 		saveArrowIds(this.id);
 	}
-
+	hideCollapsedMenus();
 	toggleArrows();
 });
 
-// Get all element ids from local storage that should be hidden.
+// Save ids of all elements, whose state needs to be remembered, in local storage.
+function saveHiddenElementIDs(clickedElement) {
+	addOrRemoveFromArray(clickedElement, menuState.hiddenElements);
+	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
+}
+
+// Save ids of all arrows, whose state needs to be remembered, in local storage.
+function saveArrowIds(clickedElement) {
+	var childNodes = document.getElementById(clickedElement).firstChild.childNodes;
+	for(var i = 0; i < childNodes.length; i++) {
+		if(childNodes[i].nodeName == "IMG") {
+			addOrRemoveFromArray(childNodes[i].id, menuState.arrowIcons);
+		}
+	}
+	localStorage.setItem('arrowIcons', JSON.stringify(menuState.arrowIcons));
+}
+
+/* Hide all child elements to the moment and section elements in the
+   hiddenElements array. */
+function hideCollapsedMenus() {
+	$('.header, .section, .code, .test, .link').show();
+	for(var i = 0; i < menuState.hiddenElements.length; i++) {
+		var ancestor = findAncestor($("#"+menuState.hiddenElements[i])[0], "moment");
+		if((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
+			jQuery(ancestor).nextUntil('.moment').hide();
+		}
+		ancestor = findAncestor($("#"+menuState.hiddenElements[i])[0], "section");
+		if((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
+			jQuery(ancestor).nextUntil('.section').hide();
+		}
+	}
+}
+
+/* Show down arrow by default and then hide this arrow and show the right
+   arrow if it is in the arrowIcons array. */
+function toggleArrows() {
+	$('.arrowComp').show();
+	$('.arrowRight').hide();
+
+	for(var i = 0; i < menuState.arrowIcons.length; i++) {
+		/* If the string 'arrowComp' is a part of the string on the current
+		   index of the arrowIcons array, hide down arrow and show right arrow. */
+		if(menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
+			$('#' + menuState.arrowIcons[i]).hide();
+		} else {
+			$('#' + menuState.arrowIcons[i]).show();
+		}
+	}
+}
+
+// Get all element ids from local storage (who's children should be hidden).
 function getHiddenElements() {
 	menuState.hiddenElements = JSON.parse(localStorage.getItem('hiddenElements'));
 	if(menuState.hiddenElements === null) {
@@ -1382,37 +1429,17 @@ function getArrowElements() {
 	}
 }
 
-// Save ids of all elements, whose state needs to be remembered, in local storage.
-function saveHiddenElementIDs(clickedElement) {
-	clickedElement.nextUntil('.moment, .section').each(function() {
-		addOrRemoveFromArray(this.id, menuState.hiddenElements);
-	});
-	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
-}
-
-// Hide all elements from the hiddenElements array.
-function hideCollapsedMenus() {
-	$('.header, .section, .code, .test, .link').show();
-	for(var i = 0; i < menuState.hiddenElements.length; i++) {
-		$('#' + menuState.hiddenElements[i]).hide();
+// Finds the nearest parent element of "element" that contains the class "className".
+function findAncestor (element, className) {
+	if(element != undefined || element != null){
+		while ((element = element.parentElement) && !element.classList.contains(className));
+		return element;
 	}
 }
 
-// Save ids of all arrows, whose state needs to be remembered, in local storage.
-function saveArrowIds(clickedElement) {
-	var childNodes = document.getElementById(clickedElement).firstChild.childNodes;
-
-	for(var i = 0; i < childNodes.length; i++) {
-		if(childNodes[i].nodeName == "IMG") {
-			addOrRemoveFromArray(childNodes[i].id, menuState.arrowIcons);
-		}
-	}
-
-	localStorage.setItem('arrowIcons', JSON.stringify(menuState.arrowIcons));
-}
-
-// Add element id to array if it does not exist in the array.
-// Remove element id from array if it exist in the array.
+/* Toggle string in array.
+   Add string to array if it does not exist in the array.
+   Remove string from array if it exist in the array. */
 function addOrRemoveFromArray(elementID, array) {
 	var exists = false;
 	for(var i = 0; i < array.length; i++) {
@@ -1424,23 +1451,6 @@ function addOrRemoveFromArray(elementID, array) {
 	}
 	if(!exists) {
 		array.push(elementID);
-	}
-}
-
-// Show down arrow by default and then hide this arrow and show the right
-// arrow if it is in the arrowIcons array.
-function toggleArrows() {
-	$('.arrowComp').show();
-	$('.arrowRight').hide();
-
-	for(var i = 0; i < menuState.arrowIcons.length; i++) {
-		// If the string 'arrowComp' is a part of the string on the current
-		// index of the arrowIcons array, hide down arrow and show right arrow.
-		if(menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
-			$('#' + menuState.arrowIcons[i]).hide();
-		} else {
-			$('#' + menuState.arrowIcons[i]).show();
-		}
 	}
 }
 
