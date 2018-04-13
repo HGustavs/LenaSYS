@@ -70,7 +70,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
           'extension' => $row['filename'],
     			'filesize' => $row['filesize'],
     			'uploaddate' => $row['uploaddate'],
-          'trashcan' => '{"fileid":'.$row['fileid'].',"filename":"'.$row['filename'].'"}',
+          'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']]),
           'markdown' => $row['filename']
   		);
 

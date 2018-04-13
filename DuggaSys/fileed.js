@@ -207,7 +207,7 @@ function renderCell(col,celldata,cellid) {
 	} else if (col == "extension") {
 	    return "<div>" + list[1] + "</div>";
 	} else if (col == "markdown") {
-		if(list[1] == "js"){
+		if(list[1] == "md"){
 			str="<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' >";
 		}else{
 			str="";
