@@ -243,16 +243,6 @@ function mousedownevt(ev) {
                 }
                 last.targeted = false;
             }
-            else{
-                //Unselects every object.
-                for(var i = 0; i < diagram.length; i++){
-                    diagram[i].targeted = false;
-                }
-                //Sets the clicked object as targeted
-                selected_objects = [];
-                selected_objects.push(last);
-                last.targeted = true;
-            }
         }
     } else {
         md = 4; // Box select or Create mode.
