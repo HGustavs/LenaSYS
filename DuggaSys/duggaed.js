@@ -311,7 +311,6 @@ function deleteDugga()
     did=$("#did").val();
     AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
     $("#editDugga").css("display","none");
-    //$("#overlay").css("display","none");
 }
 
 
@@ -692,7 +691,7 @@ function renderCell(col,celldata,cellid) {
 
 	// Placing a clickable trashcan in its designated column
 	else if (col == "trashcan"){
-		celldata = "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'" + "onclick='console.log('Hej') />";
+    	celldata = "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg' onclick='deleteDugga()'>";
 	}
 	return "<div id='" + cellid + "'>" + celldata + "</div>";
 }
