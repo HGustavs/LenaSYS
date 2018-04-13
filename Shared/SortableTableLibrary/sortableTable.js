@@ -222,21 +222,10 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	    mhstr += "<thead id='"+tableid+"_tblhead_mh'><tr>";
 	    mhvstr += "<thead id='"+tableid+"_tblhead_mhv'><tr>";
 	    mhfstr += "<thead id='"+tableid+"_tblhead_mhf'><tr>";
-		
-	    if (tableid == "quiz") {
-	    	str += "<th></th><th class='name'>Name</th>";
-	    }
 
 		//var freezePaneIndex = tbl.tblhead.indexOf(freezePane);
-//for (var key in arr_jq_TabContents) {
-//    console.log(arr_jq_TabContents[key]);
 		for(var colname in tbl.tblhead) {
-		// for (let colname = 0; colname < tbl.tblhead.length; colname++) {
 			var col = tbl.tblhead[colname];
-			//var cleancol = tbl.cleanHead[colname];
-			
-			// If column is visible
-			
 
 			if (columnfilter[colname] != null) {
 				if (this.renderSortOptions != null) {
@@ -283,14 +272,6 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				mhstr += "<th id='"+rowsumHeading+"_"+tableid+"_tbl_mh' class='"+tableid+" freeze_vertical'>"+renderSortOptions(rowsumHeading,-1)+"</th>";
 			}
 		}
-
-		if (tableid == "fileLink") {
-			str += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
-			mhstr += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
-			mhfstr += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
-		} else if (tableid == "quiz") {
-			str += "<th></th><th></th>";
-		}
 		
 		str += "</tr></thead>";
 		mhstr += "</tr></thead></table>";
@@ -316,9 +297,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				result++;
 
 				for (let colnamez in row) {
-					// col = row[colnamez];
-  			// 		cleancol = tbl.cleanHead[col];
-														
+					//Counter for freeze here							
 					// If we show this column...
 					if (columnfilter[colnamez] != null) {
 						// This condition is true if column is in summing list and in that case perform the sum like a BOSS
@@ -342,50 +321,6 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				
 				if (rowsumList.length > 0) {
 					str += "<td>"+rowsum+"</td>";
-				}
-
-				if (rowno != "move" && tableid == "fileLink") {
-					str+="<td style='padding:4px;'>";
-					str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-					str+=" onclick='deleteFile(\""+row['fileid']+"\",\""+row['filename']+"\");' >";
-					str+="</td>";
-
-					mhvstr+="<td style='padding:4px;'>";
-					mhvstr+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-					mhvstr+=" onclick='deleteFile(\""+row['fileid']+"\",\""+row['filename']+"\");' >";
-					mhvstr+="</td>";
-				}else if(rowno != "move" && tableid == "user"){
-					      // Create cogwheel
-					str+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-					str+=" onclick='selectUser(\""+row['uid']+"\",\""+row['username']+"\",\""+row['ssn']+"\",\""+row['firstname']+"\",\""+row['lastname']+"\",\""+row['access']+"\",\""+row['class']+"\");'></td>";
-					str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+row['username']+" ?\")) resetPw(\""+row['uid']+"\",\""+row['username']+"\"); return false;' style='float:none;'></td>";
-					str+="</tr>";
-
-					mhvstr+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-					mhvstr+=" onclick='selectUser(\""+row['uid']+"\",\""+row['username']+"\",\""+row['ssn']+"\",\""+row['firstname']+"\",\""+row['lastname']+"\",\""+row['access']+"\",\""+row['class']+"\");'></td>";
-					mhvstr+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+row['username']+" ?\")) resetPw(\""+row['uid']+"\",\""+row['username']+"\"); return false;' style='float:none;'></td>";
-					mhvstr+="</tr>";
-				}else if(rowno != "move" && tableid == "quiz"){
-					      // Create cogwheel
-					str+="<td style='padding:4px;'>";
-					str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-					str+=" onclick=' showVariantz("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
-					str+="</td>";
-					str+="<td style='padding:4px;'>";
-					str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-					str+=" onclick='selectDugga(\""+row['did']+"\",\""+row['name']+"\",\""+row['autograde']+"\",\""+row['gradesystem']+"\",\""+row['template']+"\",\""+row['qstart']+"\",\""+row['deadline']+"\",\""+row['release']+"\");' >";
-					str+="</td>";
-
-					mhvstr+="<td style='padding:4px;'>";
-					mhvstr+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-					mhvstr+=" onclick=' showVariantz("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
-					mhvstr+="</td>";
-					mhvstr+="<td style='padding:4px;'>";
-					mhvstr+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-					mhvstr+=" onclick='selectDugga(\""+row['did']+"\",\""+row['name']+"\",\""+row['autograde']+"\",\""+row['gradesystem']+"\",\""+row['template']+"\",\""+row['qstart']+"\",\""+row['deadline']+"\",\""+row['release']+"\");' >";
-					mhvstr+="</td>";
-
-
 				}
 
 				str += "</tr>";

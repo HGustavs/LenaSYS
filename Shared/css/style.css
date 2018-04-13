@@ -301,6 +301,16 @@ p {
 	cursor: pointer;
 }
 
+.markdownIcon, .trashcanIcon {
+  vertical-align: middle;
+  margin: 4px auto;
+}
+
+.markdownIcon {
+  width: 16px;
+  height: 16px;
+}
+
 #Sectionlist .example {
   color:#434343;
   font-size: 12pt;
@@ -1362,11 +1372,9 @@ input.hide-moments-button {
 }
 
 input.fileed-button {
-    background-color:#7B5A96;
-    margin-right:6px;
-    margin-top:6px;
-    margin-left:6px;
-    margin-bottom:6px;
+    background-color:#614875;
+    margin: 0 0 0 8px;
+    float: right;
 }
 
 input.submit-button:hover {
@@ -1553,7 +1561,6 @@ input.large-button {
 
 .list td {
   border-right:2px solid #dbd0d8;
-  line-height:28px;
   padding-left:8px;
 }
 
@@ -1562,7 +1569,6 @@ input.large-button {
   color:#fff;
   line-height:28px;
   font-weight: bold;
-  padding-left: 10px;
 }
 
 .innertable {

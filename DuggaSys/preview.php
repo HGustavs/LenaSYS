@@ -141,6 +141,7 @@
                 cursor: pointer;
                 margin-left: 150px;
             }
+
             .show-dropdown-content {
                 display: block;
             }
@@ -156,6 +157,7 @@
                 text-decoration: none;
                 color: #000;
             }
+
         </style>
         <script>
             
@@ -190,53 +192,14 @@
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
                 };
             }
+
             function boldText() {
                 $('#mrkdwntxt').append("****");
             }
             function cursiveText() {
                 $('#mrkdwntxt').append("__");
             }
-            /*function makeBold() {
-                var textarea = $('#mrkdwntxt');
-                var bold = "****";
-                textarea.focus().val(textarea + bold).selectRange(2,2);
-                $.fn.selectRange = function(start, end) {
-                    if(!end) end = start; 
-                        return this.each(function() {
-                            if (this.setSelectionRange) {
-                                this.focus();
-                                this.setSelectionRange(start, end);
-                            } 
-                            else if (this.createTextRange) {
-                                var range = this.createTextRange();
-                                range.collapse(true);
-                                range.moveEnd('character', end);
-                                range.moveStart('character', start);
-                                range.select();
-                            }
-                        });
-                };
-            }
-            function makeCursive() {
-                var cursive = $('#mrkdwntxt');
-                cursive.focus().val('__').selectRange(1,1);
-                $.fn.selectRange = function(start, end) {
-                    if(!end) end = start; 
-                        return this.each(function() {
-                            if (this.setSelectionRange) {
-                                this.focus();
-                                this.setSelectionRange(start, end);
-                            } 
-                            else if (this.createTextRange) {
-                                var range = this.createTextRange();
-                                range.collapse(true);
-                                range.moveEnd('character', end);
-                                range.moveStart('character', start);
-                                range.select();
-                            }
-                        });
-                };
-            }*/
+            
             
             function showDropdown() {
                 $('#select-header').show();
@@ -244,6 +207,7 @@
             function selected() {
                 $('#select-header').hide();
             }
+
             function headerVal1() {
                 $('#mrkdwntxt').append("# ");
             }
@@ -253,6 +217,8 @@
             function headerVal3() {
                 $('#mrkdwntxt').append("### ");
             }
+
+    
             $(document).ready(function(){
                $(".headerType").click(function(){
                     $("#select-header").toggle();
@@ -271,6 +237,8 @@
         </script>
     </head>
     <body onload="onload()">
+
+
         <div class="Header">Markdown preview</div>
         <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
@@ -278,12 +246,15 @@
             </div>
             <div class="Markdown">
                 <div class="markNav">Markdown
+
                     <span class="headerType" title="Header">aA&#9663;</span>
+
                         <div id="select-header">
                             <span id="h1" onclick="selected();headerVal1()" value="H1">Header 1</span>
                             <span id="h2" onclick="selected();headerVal2()" value="H2">Header 2</span>
                             <span id="h3" onclick="selected();headerVal3()" value="H3">Header 3</span>
                         </div>
+
                     <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
                     <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
                 </div>

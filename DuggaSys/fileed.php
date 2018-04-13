@@ -31,57 +31,20 @@ pdoConnect();
 		<div class='titles' style='padding-top:10px;'>
 			<h1 style='flex:1;text-align:center;'>Files</h1>
 		</div>
+    
+		<button class="switchContent" onclick="switchcontent();keyUpSearch()" type="button">Switch to One table</button>
 	
-		<button class="switchContent" onclick="switchcontent(),keyUpSearch()" type="button">Switch to One table</button>
-
 		<div id="searchBar">
-			<input id="searchinput" type="text" name="search" placeholder="Search.." onkeypress="return searchKeyPress(event);">
-			<button id="searchbutton" class="switchContent" onclick="searchcontent()" type="button">
+			<input id="searchinput" type="text" name="search" placeholder="Search.." onkeypress="return searchKeyPress(event);searchterm = document.getElementById('lookingGlass').value;fileLink.renderTable();">
+			<button id="searchbutton" class="switchContent" onclick="searchcontent();keyUpSearch()" type="button">
 				<img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
 			</button>
 		</div>
+  
+    <input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/>
+		<input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("GFILE");'/>
 
-		<div id="fileLink" style='width:100%;'></div>
-
-        <div id="searchresults" style='width:100%; display:none;'>
-            <table class='list list--nomargin' style='margin-bottom:8px;' >
-                <tr><th class='first' style='width:64px;'>ID</th><th>Search Results</th><th style='width:30px' class='last'></th></tr>
-            </table>
-        </div>
-		<div id="alllinks" style='width:100%;'>
-			<table class='list list--nomargin' style='margin-bottom:8px;' >
-				<tr><th><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>
-				<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>
-			</table>
-		</div>
-		<!-- allcontent -->
-		<div id="allcontent" style="width:100%;display:none">
-
-			<table class='list list--nomargin' style='margin-bottom:8px;' >
-				<tr><th><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("GFILE");'/></th></tr>
-				<tr><th class='first' style='width:64px;'>ID</th><th>File Group</th><th style='width:30px' class='last'></th></tr>
-			</table>			
-
-		</div>
-		<div id="allglobalfiles" style='width:100%;'>
-			<table class='list list--nomargin' style='margin-bottom:8px;' >
-				<tr><th><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("GFILE");'/></th></tr>
-				<tr><th class='first' style='width:64px;'>ID</th><th>Global File</th><th style='width:30px' class='last'></th></tr>
-			</table>
-		</div>
-		<div id="allcoursefiles" style='width:100%;'>
-				<table class='list list--nomargin'>
-						<tr><th><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("MFILE");'/></th></tr>
-						<tr><th class='first' style='width:64px;'>ID</th><th>Course Local File</th><th style='width:30px' class='last'></th></tr>
-				</table>
-		</div>
-		<div id="alllocalfiles" style='width:100%;'>
-			<table class='list list--nomargin'>
-				<tr><th><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("LFILE");'/></th></tr>
-				<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>
-			</table>
-		</div>
-	</div>
+		<div id="fileLink" style='width:100%; border: 5px solid green;'></div>
 	<!-- content END -->
 	
 	<?php 
@@ -102,7 +65,6 @@ pdoConnect();
       				<input type='hidden' id='kind' name='kind' value='Toddler' />
       				<div id="linky" class='inputwrapper'><span>URL:</span><input style="width:380px" id ="uploadedlink" class="textinput" name="link" placeholder="https://facebook.com" type="text" /></div>
       				<div id="filey" class='inputwrapper'><span>Upload File:</span><input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" /></div>
-      				<!--<div id="selecty" class='inputwrapper'><span>Existing File:</span><select id="selectedfile" name="selectedfile"></select></div>-->
       			</div> 
       			<div style='padding:5px;'>
       				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>
