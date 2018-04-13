@@ -123,37 +123,36 @@ function createLink()
 // createFile(kind) <- gets the files that exists and puts them as options under a select tag.
 //		       ,options can be used to overwrite existing files later on
 //----------------------------------------
-function createFile(kind)
-{
-		$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload File' /></td>");
-		if(kind=="MFILE"){
-				var str="<option>NONE</option>";
-				for(i=0;i<filez['lfiles'].length;i++){
-						var item=filez['lfiles'][i];
-						if(item!=".."&&item!=".") str+="<option>"+item+"</option>";
-				}
-				$("#selectedfile").html(str);
-				$("#selecty").css("display","block");				
-		}else if(kind=="GFILE"){
-				var str="<option>NONE</option>";
-				for(i=0;i<filez['gfiles'].length;i++){
-						var item=filez['gfiles'][i];
-						if(item!=".."&&item!=".") str+="<option>"+item+"</option>";
-				}
-				$("#selectedfile").html(str);		
-				$("#selecty").css("display","block");				
-		}else if(kind=="LFILE"||kind=="LINK"){
-				$("#selecty").css("display","none");				
+function createFile(kind) {
+	$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload File' /></td>");
+	if (kind == "MFILE") {
+		var str = "<option>NONE</option>";
+		for (i = 0; i < filez['lfiles'].length; i++) {
+			var item = filez['lfiles'][i];
+			if (item != ".." && item != ".") str += "<option>" + item + "</option>";
 		}
+		$("#selectedfile").html(str);
+		$("#selecty").css("display","block");				
+	} else if (kind == "GFILE") {
+		var str = "<option>NONE</option>";
+		for (i = 0; i < filez['gfiles'].length; i++) {
+			var item = filez['gfiles'][i];
+			if (item != ".." && item != ".") str += "<option>" + item + "</option>";
+		}
+		$("#selectedfile").html(str);		
+		$("#selecty").css("display","block");				
+	} else if (kind == "LFILE" || kind == "LINK") {
+		$("#selecty").css("display","none");				
+	}
 
-		$("#addFile").css("display","flex");
-		$("#filey").css("display","block");
-		$("#linky").css("display","none");
-		//$("#overlay").css("display","block");
-		if(kind!="LFILE") $("#selecty").css("display","block");
-		$("#kind").val(kind);
-		$("#cid").val(querystring['cid']);
-		$("#coursevers").val(querystring['coursevers']);
+	$("#addFile").css("display","flex");
+	$("#filey").css("display","block");
+	$("#linky").css("display","none");
+	//$("#overlay").css("display","block");
+	if (kind != "LFILE") $("#selecty").css("display","block");
+	$("#kind").val(kind);
+	$("#cid").val(querystring['cid']);
+	$("#coursevers").val(querystring['coursevers']);
 }
 
 function validateForm()
@@ -261,13 +260,6 @@ function returnedFile(data)
 	);
 
 	myTable.renderTable();
-
-    $("content").html();
-	var result = 0;
-	filez = data['files'];
-	duggaPages = data['duggaPages'];
-
-	str="";
 
 	if(data['debug']!="NONE!") alert(data['debug']);
 	makeAllSortable();

@@ -32,8 +32,12 @@ pdoConnect();
 			<h1 style='flex:1;text-align:center;'>Files</h1>
 		</div>
 	
-		<button class="switchContent" onclick="switchcontent(),keyUpSearch()" type="button">Switch to One table</button>
-		<span>Search:</span><input type="text" id="lookingGlass" placeholder="write your query" onkeyup="searchterm = document.getElementById('lookingGlass').value;fileLink.renderTable();"/><br>
+		<button class="switchContent" onclick="switchcontent();keyUpSearch()" type="button">Switch to One table</button>
+		<span>Search:</span><input type="text" id="lookingGlass" placeholder="write your query" onkeyup="searchterm = document.getElementById('lookingGlass').value;fileLink.renderTable();"/>
+
+		<input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/>
+		<input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("GFILE");'/>
+
 		<div id="fileLink" style='width:100%; border: 5px solid green;'></div>
 	<!-- content END -->
 	

@@ -1372,11 +1372,9 @@ input.hide-moments-button {
 }
 
 input.fileed-button {
-    background-color:#7B5A96;
-    margin-right:6px;
-    margin-top:6px;
-    margin-left:6px;
-    margin-bottom:6px;
+    background-color:#614875;
+    margin: 0 0 0 8px;
+    float: right;
 }
 
 input.submit-button:hover {
