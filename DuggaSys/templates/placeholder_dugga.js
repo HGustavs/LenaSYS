@@ -57,7 +57,6 @@ function returnedDugga(data)
 				alert("UNKNOWN DUGGA!");
 		}else{
 			retdata=jQuery.parseJSON(data['param']);
-			console.log(data);
 			$.ajax({
 				method: "GET",
 				url: "showdoc.php",
