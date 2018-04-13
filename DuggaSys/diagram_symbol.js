@@ -43,10 +43,11 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.getquadrant = function (xk, yk) {
         // Read cardinal points
-        var x1 = points[this.topLeft].x;
-        var y1 = points[this.topLeft].y;
-        var x2 = points[this.bottomRight].x;
-        var y2 = points[this.bottomRight].y;
+        var c = this.corners();
+        var x1 = c.tl.x;
+        var y1 = c.tl.y;
+        var x2 = c.br.x;
+        var y2 = c.br.y;
         var vx = points[this.centerPoint].x;
         var vy = points[this.centerPoint].y;
         // Compute deltas and k
@@ -244,10 +245,11 @@ function Symbol(kind) {
     // Sorts all connectors
     //--------------------------------------------------------------------
     this.sortAllConnectors = function () {
-        var x1 = points[this.topLeft].x;
-        var y1 = points[this.topLeft].y;
-        var x2 = points[this.bottomRight].x;
-        var y2 = points[this.bottomRight].y;
+        var c = this.corners();
+        var x1 = c.tl.x;
+        var y1 = c.tl.y;
+        var x2 = c.br.x;
+        var y2 = c.br.y;
         this.sortConnector(this.connectorRight, 1, y1, y2, x2);
         this.sortConnector(this.connectorLeft, 1, y1, y2, x1);
         this.sortConnector(this.connectorTop, 2, x1, x2, y1);
