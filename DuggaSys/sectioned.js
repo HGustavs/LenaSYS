@@ -1293,6 +1293,7 @@ function returnedSection(data)
 	hideCollapsedMenus();
 	getArrowElements();
 	toggleArrows();
+	menuState.idCounter = 0;
 }
 
 function showHighscore(did, lid)
