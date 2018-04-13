@@ -1179,7 +1179,7 @@ function returnedSection(data)
                             + "\""+item['gradesys']+"\","
                             + "\""+item['highscoremode']+"\","
                             + "\""+item['comments']+"\""
-                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else if(parseInt(item['kind']) === 1) {
 						str+=
@@ -1196,7 +1196,7 @@ function returnedSection(data)
                             + "\""+item['gradesys']+"\","
                             + "\""+item['highscoremode']+"\","
                             + "\""+item['comments']+"\""
-                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else if(parseInt(item['kind']) === 4) {
 						str+=
@@ -1213,7 +1213,7 @@ function returnedSection(data)
                             + "\""+item['gradesys']+"\","
                             + "\""+item['highscoremode']+"\","
                             + "\""+item['comments']+"\""
-                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else {
 						str+=
