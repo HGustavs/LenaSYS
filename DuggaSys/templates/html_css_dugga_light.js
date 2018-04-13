@@ -1,6 +1,6 @@
 /********************************************************************************
 
-   Documentation 
+   Documentation
 
 *********************************************************************************
 
@@ -8,7 +8,7 @@ Example seed
 ---------------------
 	 Example seed
 	 Param: {"instructions":"Move and resize the box with id greger until it matches the required format.","query":"Make the greger-box 100px x 100px and with a 25px left side margin and 50px bottom padding",[]}
-	 Answer: 
+	 Answer:
 -------------==============######## Documentation End ###########==============-------------
 */
 
@@ -57,7 +57,7 @@ var evalstr = "";
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
-function setup() 
+function setup()
 {
 	running = true;
 	tickInterval = setInterval("tick();", 50);
@@ -67,13 +67,13 @@ function setup()
 
 }
 
-function returnedDugga(data) 
-{	
+function returnedDugga(data)
+{
 
 	$("#content").css({"position":"relative","top":"50px"});
 
 	dataV = data;
-	
+
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
 	if (data['param'] == "UNK") {
@@ -84,9 +84,9 @@ function returnedDugga(data)
 		//document.getElementById("duggaInstructions").innerHTML = retdata["instructions"];
 		//showDuggaInfoPopup();
 		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
+				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&moment="+inParams['moment']+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
-			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
+			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&moment="+inParams['moment']+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
         		$("#snus").html(result);
         		// Placeholder code
 				var pl = duggaParams.placeholders;
@@ -103,7 +103,7 @@ function returnedDugga(data)
 								}
 							}
 						}
-					}					
+					}
 				}
     		}});
 		}
@@ -122,7 +122,7 @@ function returnedDugga(data)
 			refreshdUrl();
 		}
 
-		var max = 0;    
+		var max = 0;
 		$('.dugga-col').each(function() {
 		    max = Math.max($(this).height(), max);
 		}).height(max);
@@ -137,9 +137,9 @@ function returnedDugga(data)
 			for (var k=feedbackArr.length-1;k>=0;k--){
 				var fb_tmp = feedbackArr[k].split("%%");
 				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-			} 
+			}
 			fb += "</tbody></table>";
-			document.getElementById('feedbackTable').innerHTML = fb;		
+			document.getElementById('feedbackTable').innerHTML = fb;
 			document.getElementById('feedbackBox').style.display = "block";
 	}
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
@@ -158,7 +158,7 @@ function reset()
 
 }
 
-function saveClick() 
+function saveClick()
 {
 	Timer.stopTimer();
 
@@ -167,7 +167,7 @@ function saveClick()
 
 	score = 0;
 
-	if (querystring['highscoremode'] == 1) {	
+	if (querystring['highscoremode'] == 1) {
 		score = Timer.score;
 	} else if (querystring['highscoremode'] == 2) {
 		score = ClickCounter.score;
@@ -217,9 +217,9 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	retdata = jQuery.parseJSON(decodeURIComponent(param));
 	duggaParams = retdata;
 	if(duggaParams["type"]==="pdf"){
-			document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
+			document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&moment="+inParams['moment']+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 	}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
-		$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
+		$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&moment="+inParams['moment']+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
     		$("#snus").html(result);
     		// Placeholder code
 			var pl = duggaParams.placeholders;
@@ -236,13 +236,13 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 							}
 						}
 					}
-				}					
+				}
 			}
 		}});
 	}
 
 	if (uanswer !== null || uanswer !== "UNK") {
-		
+
 			var userCode = uanswer.substr(uanswer.indexOf("###HTMLSTART###"),uanswer.indexOf("###HTMLEND###"));
 			userCode = userCode.replace("###HTMLSTART###", "");
 			userCode = userCode.replace("###HTMLEND###", "");
@@ -250,7 +250,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			userCode =  reverseHtmlEntities(userCode);
 
 			var markWindowHeight = $("#MarkCont").height();
-			
+
 			$("#MarkCont").css({"overflow":"hidden"});
 
 			document.getElementById("input-col").style.height = (markWindowHeight-55)+"px";
@@ -275,7 +275,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		for (var k=feedbackArr.length-1;k>=0;k--){
 			var fb_tmp = feedbackArr[k].split("%%");
 			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-		} 		
+		}
 	}
 	fb += "</tbody></table><br><textarea id='newFeedback'></textarea>";
 	if (feedback !== undefined){
@@ -284,7 +284,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 
 }
 
-function closeFacit() 
+function closeFacit()
 {
 	clearInterval(tickInterval);
 	running = false;
@@ -295,7 +295,7 @@ function closeFacit()
 //--------------------================############================--------------------
 //------------==========########### CONTROLLER FUNCTIONS ###########==========------------
 
-function tick() 
+function tick()
 {
 	v += speed;
 	elapsedTime++;
@@ -324,9 +324,9 @@ function startDuggaHighScore(){
 	} else {
 		score = 0;
 	}
-}			
+}
 function reverseHtmlEntities(str) {
-													
+
 		befstr=str;
 		if(str!=undefined && str != null){
 				str=str.replace(/\&amp\;/g, '&');
@@ -360,6 +360,6 @@ function processpreview()
 {
 		content=document.getElementById("content-window").value;
 		content=encodeURIComponent(content);
-		
+
 		document.getElementById("code-preview-window").src="preview.php?prev="+content;
 }
