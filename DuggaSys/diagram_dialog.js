@@ -83,6 +83,7 @@ function loadFormIntoElement(element, dir){
             setSelectedOption('font', diagram[lastSelectedObject].font);
             setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
             setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+            setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
 
             /*document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
             document.getElementById('symbolColor').options[2].selected = "true";
@@ -96,10 +97,11 @@ function loadFormIntoElement(element, dir){
 
 function setSelectedOption(type, value){
   for(var i = 0; i < document.getElementById(type).options.length; i++){
+    //console.log("value: " + value + " type " + type + " typevalue " + document.getElementById(type).options[i].value);
     if(value == document.getElementById(type).options[i].value){
-      console.log("value:" + value + " blir satt i valuet för: " + type);
       document.getElementById(type).value = value;
       document.getElementById(type).options[i].selected = "true";
+      break;
     }else{
       document.getElementById(type).options[i].selected = "false";
     }
