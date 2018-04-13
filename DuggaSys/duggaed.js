@@ -615,12 +615,12 @@ function returnedDugga(data) {
     var tabledata = {
     	tblhead:{
     		arrow:"->",
-    		name:"Name",
+    		qname:"Name",
     		autograde:"Autograde",
-    		gradesys:"Gradesystem",
-    		template:"Template",
+    		gradesystem:"Gradesystem",
+    		quizFile:"Template",
     		deadline:"Deadline",
-    		release:"Result date",
+    		qrelease:"Result date",
     		modified:"Last modified",
     		cogwheel:"*",
     		trashcan:"-"
