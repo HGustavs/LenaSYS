@@ -97,7 +97,7 @@ function loadFormIntoElement(element, dir){
 function setSelectedOption(type, value){
   for(var i = 0; i < document.getElementById(type).options.length; i++){
     if(value == document.getElementById(type).options[i].value){
-      console.log("value:" + value + " blir satt i valuet för: " type);
+      console.log("value:" + value + " blir satt i valuet för: " + type);
       document.getElementById(type).value = value;
       document.getElementById(type).options[i].selected = "true";
     }else{
