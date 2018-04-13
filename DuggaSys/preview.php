@@ -111,16 +111,28 @@
                 cursor: pointer;
                 color: #000;
                 font-size: 13px;
+                margin: 5px 5px 5px 5px;
+            }
+            #h1:hover {
+                background-color: rgb(240,240,240);
             }
             #h2 {
                 cursor: pointer;
                 color: #000;
                 font-size: 12px;
+                margin: 5px 5px 5px 5px;
+            }
+            #h2:hover {
+                background-color: rgb(240,240,240);
             }
             #h3 {
                 cursor: pointer;
                 color: #000;
                 font-size: 11px;
+                margin: 5px 5px 5px 5px;
+            }
+            #h3:hover {
+                background-color: rgb(240,240,240);
             }
             .headerType {
                 cursor: pointer;
@@ -133,10 +145,9 @@
                 max-width: 53px;
                 position: absolute;
                 z-index: 2000;
-                right: 80px;
+                right: 75px;
                 background-color: #fff;
                 box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.3);
-                padding: 5px 5px 5px 5px;
             }
             a {
                 text-decoration: none;
@@ -246,35 +257,14 @@
                 });
             });
             
-           $(document).mouseup(function(e) {
+            //Hide dropdown if click is outside the div
+            $(document).mouseup(function(e) {
                 var container = $("#select-header");
 
-                // if the target of the click isn't the container nor a descendant of the container
                 if (!container.is(e.target) && container.has(e.target).length === 0) {
                     container.hide();
                 }
             });
-            // Close the dropdown if the user clicks outside of it
-            /*window.onclick = function(event) {
-                if (!event.target.matches('#select-header')) {
-                    var dropdowns = document.getElementById("select-header");
-                    var i;
-                    for (i = 0; i < dropdowns.length; i++) {
-                        var openDropdown = dropdowns[i];
-                        if (openDropdown.classList.contains('showDropdown')) {
-                            openDropdown.classList.remove('showDropdown');
-                            var dropdowns = document.getElementById("select-header");
-                            var i;
-                            for (i = 0; i < dropdowns.length; i++) {
-                                var openDropdown = dropdowns[i];
-                                if (openDropdown.classList.contains('showDropdown')) {
-                                    openDropdown.classList.remove('showDropdown');
-                                }
-                            }
-                        }
-                    }
-                }
-            }*/
         </script>
     </head>
     <body onload="onload()">
