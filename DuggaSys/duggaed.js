@@ -674,6 +674,7 @@ function renderCell(col,celldata,cellid) {
 		else{
 			celldata = "Undefined";
 		}
+		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
 
 	// Translating gradsystem from integers so that it shows the possible grades.
@@ -688,8 +689,10 @@ function renderCell(col,celldata,cellid) {
 		else{
 			celldata = "Undefined";
 		}
+		return "<div id='" +  + "'>" + celldata + "</div>";	}
+	else if (col == "trashcan"){
+		return "<div id='" + cellid + "'>" + "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'" + "onclick='console.log('HEJ')) </div>";
 	}
-	return "<div id='" + cellid + "'>" + celldata + "</div>";
 }
 // End of rendering the table
 
