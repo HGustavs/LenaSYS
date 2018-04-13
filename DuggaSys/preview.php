@@ -115,7 +115,7 @@
                 background-color: #fff;
             }
             #h1:hover {
-                background-color: rgb(240,240,240);
+                background-color: rgb(200,200,200);
             }
             #h2 {
                 cursor: pointer;
@@ -125,7 +125,7 @@
                 background-color: #fff;
             }
             #h2:hover {
-                background-color: rgb(240,240,240);
+                background-color: rgb(200,200,200);
             }
             #h3 {
                 cursor: pointer;
@@ -135,7 +135,7 @@
                 background-color: #fff;
             }
             #h3:hover {
-                background-color: rgb(240,240,240);
+                background-color: rgb(200,200,200);
             }
             .headerType {
                 cursor: pointer;
