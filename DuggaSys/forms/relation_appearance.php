@@ -19,7 +19,7 @@ Background color:<br>
 </select><br>
 Font family:<br>
 <select onclick="changeObjectAppearance('relationType');" id='font'>
-    <option value='arial' selected>Arial</option>
+    <option value='Arial' selected>Arial</option>
     <option value='Courier New'>Courier New</option>
     <option value='Impact'>Impact</option>
     <option value='Calibri'>Calibri</option>
