@@ -257,7 +257,7 @@ function returnedFile(data)
 		null,
 		null,
         null,
-		false
+		true
 	);
 
 	myTable.renderTable();

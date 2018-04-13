@@ -41,7 +41,7 @@ pdoConnect();
 			</button>
 		</div>
 
-		<div id="fileLink" style='width:100%; border: 5px solid green;'></div>
+		<div id="fileLink" style='width:100%;'></div>
 	<!-- content END -->
 	
 	<?php 

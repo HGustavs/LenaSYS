@@ -272,7 +272,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				mhstr += "<th id='"+rowsumHeading+"_"+tableid+"_tbl_mh' class='"+tableid+" freeze_vertical'>"+renderSortOptions(rowsumHeading,-1)+"</th>";
 			}
 		}
-		
+
 		str += "</tr></thead>";
 		mhstr += "</tr></thead></table>";
 		mhfstr += "</tr></thead></table>";
@@ -365,7 +365,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 			children=document.getElementById(tableid+"_tbl").getElementsByTagName('TH');
 			
 			for (i = 0; i < children.length; i++) {
-				document.getElementById(children[i].id+"_mh").style.width = children[i].getBoundingClientRect().width;
+				document.getElementById(children[i].id+"_mh").style.width = children[i].getBoundingClientRect().width+"px";
 				document.getElementById(children[i].id+"_mh").style.boxSizing = "border-box";          
 			}
 
@@ -374,7 +374,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 			children=document.getElementById(tableid+"_tbl_mhv").getElementsByTagName('TH');
 			
 			for (i = 0; i < children.length; i++) {
-				document.getElementById(children[i].id.slice(0, -1)+"f").style.width = children[i].getBoundingClientRect().width;
+				document.getElementById(children[i].id.slice(0, -1)+"f").style.width = children[i].getBoundingClientRect().width+"px";
 				document.getElementById(children[i].id.slice(0, -1)+"f").style.boxSizing = "border-box";
 			}
 		} else {
@@ -438,7 +438,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 					var thetabhead = document.getElementById(table.tableid+"_tblhead").getBoundingClientRect();
 					// If top is negative and top+height is positive draw mh otherwise hide
 					// Vertical
-					if (thetabhead.top < 0 && thetab.bottom > 0) {
+					if (thetabhead.top < 50 && thetab.bottom > 0) {
 						document.getElementById(table.tableid+"_tbl_mh").style.left = thetab.left+"px";
 						document.getElementById(table.tableid+"_tbl_mh").style.display = "table";
 					}
