@@ -614,16 +614,16 @@ function returnedDugga(data) {
 
     var tabledata = {
     	tblhead:{
-    		arrow:"",
-    		name:"Name",
-    		autograde:"Autograde",
-    		gradesys:"Gradesystem",
-    		template:"Template",
-    		qstart:"Release date",
-    		deadline:"Deadline",
-    		release:"Result date",
-    		coursevers:"Coursversion",
-    		cogwheel:"",
+    		did:"did",
+    		cid:"cid",
+    		autograde:"autograde",
+    		gradesystem:"gradesystem",
+    		name:"name",
+    		template:"template",
+    		qstart:"qstart",
+    		deadline:"deadline",
+    		release:"release",
+    		modified:"",
     		trashcan:""
     	},
     	tblbody: data['entries'],
@@ -664,7 +664,7 @@ function returnedDugga(data) {
 
 // Rendring a specific cell
 function renderCell(col,celldata,cellid) {
-	return "<div id='" + cellid + "'>" + celldata + "</div>";
+		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	return celldata;
 }
 // End of rendering the table
