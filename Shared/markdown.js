@@ -116,7 +116,6 @@ function parseMarkdown(inString)
             workstr='<div class="console"><pre>'+workstr.substr(3)+'</pre></div>';
             alert("2" + codearray);
         } else if(workstr !== "") {
-            //RADEN NEDAN FUNGERAR EJ KORREKT
             workstr=parseLineByLine(workstr.replace(/^\&{3}|^\@{3}/gm, ''));
             specialBlockStart=true;
         }
