@@ -692,7 +692,7 @@ function renderCell(col,celldata,cellid) {
 
 	// Placing a clickable trashcan in its designated column
 	else if (col == "trashcan"){
-		celldata = "<a href='console.log('lol')" + "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'/>>";
+		celldata = "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'" + "onclick='console.log('Hej') />";
 	}
 	return "<div id='" + cellid + "'>" + celldata + "</div>";
 }
