@@ -104,7 +104,7 @@ pdoConnect();
 		</div>
 	</div>
 
-	<div id="resultTable"></div>
+	<div id="resultTable" style='width:100%; border: 2px solid green;'></div>
 
 </body>
 </html>

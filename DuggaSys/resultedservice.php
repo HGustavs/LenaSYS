@@ -326,7 +326,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 		}
 		*/
 		$query = $pdo->prepare("
-      SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class,user_course.access
+      SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class,user_course.access,user_course.teacher
       FROM user,user_course
       WHERE user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;
     ");
@@ -343,6 +343,12 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 			// Create array entry for each course participant
 
 			$entry = array(
+				'firstnamelastnamessn' => json_encode([	'username' => $row['username'],
+														'firstname' => $row['firstname'],
+														'lastname' => $row['lastname'],
+														'class' => $row['class'],
+														'ssn' => $row['ssn'],
+														'teacher' => $row['teacher']]),
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
 				'username' => $row['username'],

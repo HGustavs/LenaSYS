@@ -1386,18 +1386,24 @@ var myTable;
 
 function testSortable(data){
 filez = data;
-
+  
   var tabledata = {
     tblhead:{
-      username:"User"
+      firstnamelastnamessn:"Fname/Lname/SSN",
+      cid:"Cid",
+      uid:"uid",
+      firstname:"first name",
+      lastname:"last name",
+      ssn:"ssn",
+      class:"Class"
     },
     tblbody: data['entries'],
     tblfoot:[]
   }
-
+console.log(data);
   myTable = new SortableTable(
     tabledata,
-    "user",
+    "resultTable",
     null,
     "",
     renderCell,
@@ -1417,7 +1423,7 @@ filez = data;
   );
 
   myTable.renderTable();
-  
+
   if(data['debug']!="NONE!") alert(data['debug']);
 
   makeAllSortable();
@@ -1434,8 +1440,17 @@ function makeAllSortable(parent) {
 }
 
 function renderCell(col,celldata,cellid) {
-  if (col == "requestedpasswordchange"){
-    return celldata;
+  if (col == "firstnamelastnamessn"){
+    obj=JSON.parse(celldata);
+    console.log(obj);
+
+    str = "<p style='font-size:12px;line-height:12px;'>";
+    str +=  obj.firstname + " " + obj.lastname + "<br>";
+    str += obj.username + " / " + obj.class + "<br>";
+    str += obj.ssn + "<br>";
+    str += obj.teacher + "</p>";
+
+    return str;
   }else {
     return "<div id='" + cellid + "'>" + celldata + "</div>";
   }
