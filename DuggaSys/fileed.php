@@ -31,9 +31,16 @@ pdoConnect();
 		<div class='titles' style='padding-top:10px;'>
 			<h1 style='flex:1;text-align:center;'>Files</h1>
 		</div>
+
+		<button class="switchContent" onclick="switchcontent();keyUpSearch()" type="button">Switch to One table</button>
 	
-		<button class="switchContent" onclick="switchcontent(),keyUpSearch()" type="button">Switch to One table</button>
-		<span>Search:</span><input type="text" id="lookingGlass" placeholder="write your query" onkeyup="searchterm = document.getElementById('lookingGlass').value;fileLink.renderTable();"/><br>
+		<div id="searchBar">
+			<input id="searchinput" type="text" name="search" placeholder="Search.." onkeypress="return searchKeyPress(event);searchterm = document.getElementById('lookingGlass').value;fileLink.renderTable();">
+			<button id="searchbutton" class="switchContent" onclick="searchcontent();keyUpSearch()" type="button">
+				<img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
+			</button>
+		</div>
+
 		<div id="fileLink" style='width:100%; border: 5px solid green;'></div>
 	<!-- content END -->
 	
