@@ -206,7 +206,7 @@ function renderCell(col,celldata,cellid) {
 	} else if (col == "extension") {
 	    return "<div>" + list[1] + "</div>";
 	} else if (col == "markdown") {
-		if(list[1] == "js"){
+		if(list[1] == "md"){
 			str="<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' >";
 		}else{
 			str="";
@@ -263,18 +263,6 @@ function returnedFile(data)
 
 	if(data['debug']!="NONE!") alert(data['debug']);
 	makeAllSortable();
-}
-
-function getFileInformation(name, getExt) {
-	var str = name.split(".");
-	var extension = str[str.length - 1];
-	var filename = str.splice(0, str.length - 1).join("");
-	if(getExt === true) {
-		return extension;
-	}
-	else {
-		return filename;
-	}
 }
 
 function formatBytes(bytes,decimals) {
