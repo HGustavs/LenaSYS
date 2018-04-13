@@ -43,10 +43,11 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.getquadrant = function (xk, yk) {
         // Read cardinal points
-        var x1 = points[this.topLeft].x;
-        var y1 = points[this.topLeft].y;
-        var x2 = points[this.bottomRight].x;
-        var y2 = points[this.bottomRight].y;
+        var c = this.corners();
+        var x1 = points[c.tl].x;
+        var y1 = points[c.tl].y;
+        var x2 = points[c.br].x;
+        var y2 = points[c.br].y;
         var vx = points[this.centerPoint].x;
         var vy = points[this.centerPoint].y;
         // Compute deltas and k
