@@ -79,7 +79,6 @@ function changeVersion(cid,uid,val)
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
 function selectUser(uid,username,ssn,firstname,lastname,access,className)
 {
-	console.log('Hej');
 	// Reverts the string to an array
   /*
 	var teachs = teacherstring.split("/t");
