@@ -35,16 +35,16 @@ pdoConnect();
 		<button class="switchContent" onclick="switchcontent();keyUpSearch()" type="button">Switch to One table</button>
 	
 		<div id="searchBar">
-			<input id="searchinput" type="text" name="search" placeholder="Search.." onkeypress="return searchKeyPress(event);searchterm = document.getElementById('lookingGlass').value;fileLink.renderTable();">
-			<button id="searchbutton" class="switchContent" onclick="searchcontent();keyUpSearch()" type="button">
+			<input id="searchinput" type="text" name="search" placeholder="Search.." onkeydown="searchterm = document.getElementById('searchinput').value;fileLink.renderTable();return searchKeyDown(event);">
+			<button id="searchbutton" class="switchContent" onclick="return searchKeyDown(event)" type="button">
 				<img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
 			</button>
 		</div>
   
-    <input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/>
+    	<input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/>
 		<input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("GFILE");'/>
 
-		<div id="fileLink" style='width:100%; border: 5px solid green;'></div>
+		<div id="fileLink" style='width:100%;'></div>
 	<!-- content END -->
 	
 	<?php 

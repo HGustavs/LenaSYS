@@ -8,6 +8,25 @@ var sortableTable = {
     edit_tableid:null,
 }
 
+function searchKeyDown(e) {
+    // look for window.event in case event isn't passed in
+    e = e || window.event;
+    if (e.keyCode == 13) {
+        document.getElementById('searchbutton').click();
+        return false;
+    } /*else if (e.keyCode == 8) {		Trying to implement renewed search for backspace
+    									(-- note to self: 1: strange error when pressing esc
+    										2: the search is made on the last letter...
+    										when you enter h, it search for " "
+    										when you enter he, it search for "h")
+
+    	searchterm = searchterm.substring(0, searchterm.length - 1);
+    	document.getElementById('searchbutton').click();
+    	return false;
+    }*/
+    return true;
+}
+
 function keypressHandler(event) {    
     if (event.keyCode == 13) {
         updateCellInternal();
@@ -119,8 +138,6 @@ function rowDeHighlightInternal(event,row) {
 		}
     }    
 }
-
-var searchterm = "";
 
 function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions,renderColumnFilter,rowFilter,colsumList,rowsumList,rowsumHeading,sumFunc,freezePane,highlightRow,deHighlightRow,showEditCell,updateCell,hasmagic) {
 	// Private members
