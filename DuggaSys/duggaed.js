@@ -668,7 +668,7 @@ function renderCell(col,celldata,cellid) {
 	if (col == "autograde"){
 		if(celldata == "0"){
 			celldata = "No";
-		}else if(celldata == "2"){
+		}else if(celldata == "1"){
 			celldata = "Yes";
 		}
 		else{
@@ -677,7 +677,7 @@ function renderCell(col,celldata,cellid) {
 	}
 
 	// Translating gradsystem from integers so that it shows the possible grades.
-	if (col == "gradesystem"){
+	else if (col == "gradesystem"){
 		if(celldata == "1"){
 			celldata = "U-G-VG";
 		}else if(celldata == "2"){
@@ -690,7 +690,6 @@ function renderCell(col,celldata,cellid) {
 		}
 	}
 	return "<div id='" + cellid + "'>" + celldata + "</div>";
-	return celldata;
 }
 // End of rendering the table
 
