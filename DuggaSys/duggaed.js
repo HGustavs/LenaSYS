@@ -614,12 +614,17 @@ function returnedDugga(data) {
 
     var tabledata = {
     	tblhead:{
-    		autograde:"Autograde on/off",
-    		gradesystem:"Grade",
+    		arrow:"",
+    		name:"Name",
+    		autograde:"Autograde",
+    		gradesys:"Gradesystem",
     		template:"Template",
+    		qstart:"Release date",
     		deadline:"Deadline",
-    		release:"Release date",
-    		modified:"Last modified"
+    		release:"Result date",
+    		coursevers:"Coursversion",
+    		cogwheel:"",
+    		trashcan:""
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
@@ -659,13 +664,7 @@ function returnedDugga(data) {
 
 // Rendring a specific cell
 function renderCell(col,celldata,cellid) {
-	if (col == "Trumma"){
-	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
-	} else if (col == "Pnr") {
-	    return "<div>" + celldata + "</div>";
-	} else {
-		return "<div id='" + cellid + "'>" + celldata + "</div>";
-	}
+	return "<div id='" + cellid + "'>" + celldata + "</div>";
 	return celldata;
 }
 // End of rendering the table

@@ -26,6 +26,7 @@ $disabled = getOP('disabled');
 
 $uid = getOP('uid');
 
+$arrow = getOP('id');
 $name = getOP('nme');
 $autograde = getOP('autograde');
 $gradesys = getOP('gradesys');
@@ -34,6 +35,8 @@ $qstart = getOP('qstart');
 $deadline = getOP('deadline');
 $release = getOP('release');
 $coursevers = getOP('coursevers');
+$cogwheel = getOP('id');
+$trashcan = getOP('id');
 
 $debug="NONE!";
 
