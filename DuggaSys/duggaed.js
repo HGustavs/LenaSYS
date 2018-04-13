@@ -688,9 +688,11 @@ function renderCell(col,celldata,cellid) {
 		else{
 			celldata = "Undefined";
 		}
-		return "<div id='" +  + "'>" + celldata + "</div>";	}
+	}
+
+	// Placing a clickable trashcan in its designated column
 	else if (col == "trashcan"){
-		celldata = "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'" + "onclick='console.log('HEJ') </div>";
+		celldata = "<a href='console.log('lol')" + "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'/>>";
 	}
 	return "<div id='" + cellid + "'>" + celldata + "</div>";
 }
