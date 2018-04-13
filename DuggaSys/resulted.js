@@ -1284,6 +1284,9 @@ function saveResponse()
 
 function returnedResults(data)
 {
+
+  testSortable(data);
+
   if (data.gradeupdated === true){
       // Update background color
       $("#u"+data.duggauser+"_d"+data.duggaid).removeClass("dugga-fail dugga-pending dugga-assigned dugga-unassigned");
@@ -1372,4 +1375,69 @@ function miniMode(){
   } else {
     $(".gradeImg").css("display", "block");
   }
+}
+
+
+var myTable;
+//----------------------------------------
+// Renderer
+//----------------------------------------
+
+
+function testSortable(data){
+filez = data;
+
+  var tabledata = {
+    tblhead:{
+      username:"User"
+    },
+    tblbody: data['entries'],
+    tblfoot:[]
+  }
+
+  myTable = new SortableTable(
+    tabledata,
+    "user",
+    null,
+    "",
+    renderCell,
+    null,
+    null,
+    null,
+    [],
+    [],       
+    "",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    false
+  );
+
+  myTable.renderTable();
+  
+  if(data['debug']!="NONE!") alert(data['debug']);
+
+  makeAllSortable();
+}
+
+
+//----------------------------------------
+// makeAllSortable(parent) <- Makes all tables within given scope sortable.
+//----------------------------------------
+function makeAllSortable(parent) {
+  parent = parent || document.body;
+  var t = parent.getElementsByTagName('table'), i = t.length;
+  //while (--i >= 0) makeSortable(t[i]);
+}
+
+function renderCell(col,celldata,cellid) {
+  if (col == "requestedpasswordchange"){
+    return celldata;
+  }else {
+    return "<div id='" + cellid + "'>" + celldata + "</div>";
+  }
+  return celldata;
 }

@@ -28,6 +28,7 @@ pdoConnect();
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 
 	<script src="../Shared/dugga.js"></script>
+	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
 	<script src="resulted.js"></script>
 
 </head>
@@ -102,5 +103,8 @@ pdoConnect();
 			<h3 style='width:100%;' id='Nameof'>Collective results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 	</div>
+
+	<div id="resultTable"></div>
+
 </body>
 </html>
