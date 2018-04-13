@@ -142,11 +142,11 @@
                 display: block;
             }
             #select-header {
-                max-width: 53px;
+                max-width: 63px;
                 position: absolute;
                 z-index: 2000;
                 right: 75px;
-                background-color: #fff;
+                background-color: rgba(0, 0, 0, 0);
                 box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.3);
             }
             a {
