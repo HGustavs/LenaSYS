@@ -805,7 +805,7 @@ function returnedSection(data)
 			+ "\"" + momentexists + "\","
 			+ "\"" + item['gradesys'] + "\","
 			+ "\"" + item['highscoremode'] + "\","
-			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\")'>";
+			+ "); showSubmitButton(); validateType(); validateName(); editSectionDialogTitle(\"newItem\")'>";
         str += "</div>";
     }
 
