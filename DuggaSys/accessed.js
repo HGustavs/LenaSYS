@@ -206,11 +206,11 @@ var bool = true;
  */
 
 function renderCell(col,celldata,cellid) {
-	
 	if (col == "requestedpasswordchange"){
+		obj=JSON.parse(celldata);
 		str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
-		str += " onclick='if(confirm(\"Reset password for " + celldata[0] + "?\")) ";
-			str += "resetPw(\""+ celldata[1] +"\",\""+ celldata[0] + "\"); return false;'>";
+		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
+			str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
 	    return str;
 	}else if(col == "access"){
 		if(celldata == "W"){
@@ -281,14 +281,6 @@ function returnedAccess(data) {
 	);
 
 	myTable.renderTable();
-
-  // Defining arrays for later use
-  var teachs = [];
-  var userClass = [];
-  dataInfo = data;
-
-
-	dataInfo = data['entries'];
 	
 	if(data['debug']!="NONE!") alert(data['debug']);
 

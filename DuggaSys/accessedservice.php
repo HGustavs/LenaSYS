@@ -249,7 +249,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				'teacher' => $row['teacher'],
 				'vers' => $row['vers'],
 				'access' => $row['access'],
-				'requestedpasswordchange' => array($row['username'], $row['uid'])
+				'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid']])
 			);
 			array_push($entries, $entry);
 	}
