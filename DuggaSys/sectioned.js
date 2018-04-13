@@ -70,7 +70,7 @@ function showSubmitButton(){
   $(".updateDugga").css("display","none");
   $(".deleteDugga").css("display","none");
   $(".closeDugga").css("display","inline-block");
-  //$("#overlay").css("display","block");
+  
 }
 
 function showSaveButton(){
@@ -78,7 +78,7 @@ function showSaveButton(){
   $(".updateDugga").css("display","block");
   $(".deleteDugga").css("display","block");
   $(".closeDugga").css("display","none");
-  //$("#overlay").css("display","none");
+  
 }
 
 function editSectionDialogTitle(title) {
@@ -116,23 +116,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	$("#gradesys").html(str);
 
-  /*
-	// Set grouptype
-	str="";
-	if(grouptype==null||grouptype==0) str+="<option selected='selected' value='0'>Regular dugga</option>"
-	else str+="<option value='0'>Regular dugga</option>";
-
-	if(grouptype==1) str+="<option selected='selected' value='1'>Group dugga</option>"
-	else str+="<option value='1'>Group dugga</option>";
-
-	if(grouptype==2) str+="<option selected='selected' value='2'>Seminar</option>"
-	else str+="<option value='2'>Seminar</option>";
-
-	if(grouptype==3) str+="<option selected='selected' value='3'>Group seminar</option>"
-	else str+="<option value='3'>Group seminar</option>";
-
-	$("#grouptype").html(str);
-	*/
+  
 
 	// Set Moments
 	str="";
@@ -304,7 +288,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	}
 	$("#editSection").css("display","flex");
-	//$("#overlay").css("display","block");
+	
 
 }
 
@@ -488,7 +472,7 @@ function updateItem()
 	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments},"SECTION");
 	$("#sectionConfirmBox").css("display", "none");
 	$("#editSection").css("display", "none");
-	//$("#overlay").css("display","none");
+	
 }
 
 // Create New Dugga/Example
@@ -500,8 +484,7 @@ function createLink()
 
 function newItem()
 {
-	/*lid=$("#lid").val();
-  AJAXService("NEW",{lid:lid},"SECTION");*/
+	
 
   tabs=$("#tabs").val();
   lid=$("#lid").val();
@@ -536,7 +519,7 @@ function closeSelect()
 function showCreateVersion()
 {
 	$("#newCourseVersion").css("display", "flex");
-	//$("#overlay").css("display", "block");
+	
 }
 
 function createVersion(){
@@ -589,7 +572,7 @@ function createVersion(){
 		}
 
 		$("#newCourseVersion").css("display","none");
-		//$("#overlay").css("display","none");
+		
 
 	}
 
@@ -608,7 +591,7 @@ function showEditVersion(versid, versname, startdate, enddate)
   $("#eenddate").val(enddate);
 
 	$("#editCourseVersion").css("display", "flex");
-	//$("#overlay").css("display", "block");
+	
 }
 
 function updateVersion(){
@@ -639,7 +622,7 @@ function updateVersion(){
 	}
 
 	$("#editCourseVersion").css("display","none");
-	//$("#overlay").css("display","none");
+	
 }
 
 function goToVersion(selected)
@@ -931,16 +914,7 @@ function returnedSection(data)
 												}
 											}
 									}else{
-                    /*
-											if (submitted !== null && marked === null) {
-												status="pending";
-											}
-
-											if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
-												status="pending";
-											}
-
-                      */
+                    
 									}
 								}
 							}
@@ -1130,13 +1104,7 @@ function returnedSection(data)
 
 				// Add generic td for deadlines if one exists
 				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")) {
-					/*
-					if(kk==1){
-						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;'";
-					}else{
-						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;'";
-					}
-					*/
+					
 
 					var dl = deadline.split(" ");
 
