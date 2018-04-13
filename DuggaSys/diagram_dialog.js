@@ -75,15 +75,34 @@ function loadFormIntoElement(element, dir){
     file.onreadystatechange = function(){
         element.innerHTML = file.responseText;
         if(globalAppearanceValue == 0){
+          //this returns true in console.
+          //
             document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-            document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
+            setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
+            setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
+            setSelectedOption('font', diagram[lastSelectedObject].font);
+            setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
+            setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+
+            /*document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
             document.getElementById('symbolColor').options[2].selected = "true";
             document.getElementById('font').value = diagram[lastSelectedObject].font;
             document.getElementById('fontColor').value = diagram[lastSelectedObject].fontColor;
-            document.getElementById('TextSize').value = diagram[lastSelectedObject].sizeOftext;
+            document.getElementById('TextSize').value = diagram[lastSelectedObject].sizeOftext;*/
         }
     }
     file.send();
+}
+
+function setSelectedOption(type, value){
+  for(var i = 0; i < document.getElementById(type).options.length; i++){
+    if(value == document.getElementById(type).options[i].value){
+      document.getElementById(type).value = value;
+      document.getElementById(type).options[i].selected = "true";
+    }else{
+      document.getElementById(type).options[i].selected = "false";
+    }
+  }
 }
 
 //--------------------------------------------------------------------
