@@ -35,23 +35,23 @@ function parser($migrationArray, $version) {
                     $query = "ALTER TABLE $col[0] $modifier $col[1] $col[2] $col[3];";
                     $message[] = queryExecute($query);
 
+                    // Execute query to add foreign keys
                     if (count($col) >= 5) {
                         $message[] = queryExecute("ALTER TABLE $col[0] ADD $col[4]");
                     }
-                } else if ($type == 'insert') {
-                    if (count($col) <= 1){
-                        
-                        $query = stripslashes($col[0]);
 
-                        
+                } else if ($type == 'insert') {
+
+                    // Check wich syntax should be used to make the query string
+                    if (count($col) <= 1){
+                        $query = stripslashes($col[0]);
                         $message[] = queryExecute($query);
                     } else {
                         $keys = implode(", ", array_keys($col['values']));
                         $values = implode("', '", $col['values']);
                         $query = "INSERT INTO $col[0]($keys) VALUES ('$values')";
                         $message[] = queryExecute($query);    
-                    }
-                    
+                    }                    
                 }
             }
 		}
