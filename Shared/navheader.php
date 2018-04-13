@@ -32,8 +32,22 @@
 					echo ($cid != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers : "../DuggaSys/courseed.php");
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
-			}
-        
+			}else if($noup=='SHOWDOC'){
+    			$cid=getOPG('cid');
+    			if($cid=="UNK") $cid=getOPG('courseid');
+    				$coursevers=getOPG('coursevers');
+    			if($coursevers=="UNK"){
+    				$coursevers=getOP('coursevers');
+    				$query = $pdo->prepare("SELECT activeversion from course where cid=:cid limit 1;");
+					$query->bindParam(':cid', $cid);
+					$result = $query->execute();
+				if($row = $query->fetch(PDO::FETCH_ASSOC)) $coursevers = $row['activeversion'];
+				}
+    		echo "<a href='";
+    		echo ($cid != (string)"UNK" ? "../DuggaSys/sectioned.php?courseid=".$cid."&coursevers=".$coursevers : "../DuggaSys/courseed.php");
+    		echo "'>";
+    		echo "<img src='../Shared/icons/Up.svg'></a></td>";
+    		}
 			if($noup=='COURSE'){
                     $cid=getOPG('cid');
                     if($cid=="UNK") $cid=getOPG('courseid');

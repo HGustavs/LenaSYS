@@ -485,7 +485,7 @@
 				if($hdrs=="none"){
 					
 				}else if($readfile == false){
-					$noup="SECTION";
+					$noup="SHOWDOC";
 					include '../Shared/navheader.php';
 				}
 								
