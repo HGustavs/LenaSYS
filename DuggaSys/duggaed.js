@@ -615,12 +615,12 @@ function returnedDugga(data) {
     var tabledata = {
     	tblhead:{
     		arrow:"->",
-    		name:"Name",
+    		qname:"Name",
     		autograde:"Autograde",
-    		gradesys:"Gradesystem",
-    		template:"Template",
+    		gradesystem:"Gradesystem",
+    		quizFile:"Template",
     		deadline:"Deadline",
-    		release:"Result date",
+    		qrelease:"Result date",
     		modified:"Last modified",
     		cogwheel:"*",
     		trashcan:"-"
@@ -661,10 +661,35 @@ function returnedDugga(data) {
 
 }
 
-// Rendring a specific cell
+// Rendring specific cells
 function renderCell(col,celldata,cellid) {
-		return "<div id='" + cellid + "'>" + celldata + "</div>";
-	return celldata;
+
+	// Translating autograding from integers to show the data like yes/no.
+	if (col == "autograde"){
+		if(celldata == "0"){
+			celldata = "No";
+		}else if(celldata == "1"){
+			celldata = "Yes";
+		}
+		else{
+			celldata = "Undefined";
+		}
+	}
+
+	// Translating gradsystem from integers so that it shows the possible grades.
+	else if (col == "gradesystem"){
+		if(celldata == "1"){
+			celldata = "U-G-VG";
+		}else if(celldata == "2"){
+			celldata = "U-G"
+		}else if(celldata == "3"){
+			celldata = "U-3-4-5"
+		}
+		else{
+			celldata = "Undefined";
+		}
+	}
+	return "<div id='" + cellid + "'>" + celldata + "</div>";
 }
 // End of rendering the table
 
