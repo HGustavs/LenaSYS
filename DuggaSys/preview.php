@@ -57,7 +57,6 @@
                 width: 355px;
             }
             .prevSpan {
-                background-color: red;
                 max-width: 100%;
             }
             #button-cancel {
@@ -100,22 +99,43 @@
                 resize: none;
                 margin: 10px 4px 0px 4px;
             }
-            .boldText {
+            #boldText {
                 cursor: pointer;
                 margin-left: 10px;
             }
-            .cursiveText {
+            #cursiveText {
                 cursor: pointer;
                 margin-left: 10px;
             }
             #h1 {
-                font-size: 12px;
+                cursor: pointer;
+                color: #000;
+                font-size: 13px;
+                padding: 5px 5px 5px 5px;
+                background-color: #fff;
+            }
+            #h1:hover {
+                background-color: rgb(200,200,200);
             }
             #h2 {
-                font-size: 10px;
+                cursor: pointer;
+                color: #000;
+                font-size: 12px;
+                padding: 5px 5px 5px 9px;
+                background-color: #fff;
+            }
+            #h2:hover {
+                background-color: rgb(200,200,200);
             }
             #h3 {
-                font-size: 8px;
+                cursor: pointer;
+                color: #000;
+                font-size: 11px;
+                padding: 8px 5px 5px 13px;
+                background-color: #fff;
+            }
+            #h3:hover {
+                background-color: rgb(200,200,200);
             }
             .headerType {
                 cursor: pointer;
@@ -126,13 +146,16 @@
                 display: block;
             }
             #select-header {
-                max-width: 50px;
+                max-width: 63px;
                 position: absolute;
                 z-index: 2000;
-                right: 80px;
-                background-color: #fff;
+                right: 75px;
+                background-color: rgba(0, 0, 0, 0);
                 box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.3);
+            }
+            a {
                 text-decoration: none;
+                color: #000;
             }
 
         </style>
@@ -170,13 +193,14 @@
                 };
             }
 
-            function makeBold() {
-                
+            function boldText() {
+                $('#mrkdwntxt').append("****");
             }
-            function makeCursive() {
-                
+            function cursiveText() {
+                $('#mrkdwntxt').append("__");
             }
-
+            
+            
             function showDropdown() {
                 $('#select-header').show();
             }
@@ -184,37 +208,32 @@
                 $('#select-header').hide();
             }
 
-            function dropDownToggle() {
-                document.getElementById(".headerType").toggle("showDropdown");   
+            function headerVal1() {
+                $('#mrkdwntxt').append("# ");
+            }
+            function headerVal2() {
+                $('#mrkdwntxt').append("## ");
+            }
+            function headerVal3() {
+                $('#mrkdwntxt').append("### ");
             }
 
+    
             $(document).ready(function(){
                $(".headerType").click(function(){
                     $("#select-header").toggle();
                     $("#select-header").addClass("show-dropdown-content");
                 });
             });
-            // Close the dropdown if the user clicks outside of it
-            window.onclick = function(event) {
-                if (!event.target.matches('#select-header')) {
-                    var dropdowns = document.getElementsByClassName("select-header");
-                    var i;
-                    for (i = 0; i < dropdowns.length; i++) {
-                        var openDropdown = dropdowns[i];
-                        if (openDropdown.classList.contains('showDropdown')) {
-                            openDropdown.classList.remove('showDropdown');
-                            var dropdowns = document.getElementsByClassName("select-header");
-                            var i;
-                            for (i = 0; i < dropdowns.length; i++) {
-                                var openDropdown = dropdowns[i];
-                                if (openDropdown.classList.contains('showDropdown')) {
-                                    openDropdown.classList.remove('showDropdown');
-                                }
-                            }
-                        }
-                    }
+            
+            //Hide dropdown if click is outside the div
+            $(document).mouseup(function(e) {
+                var container = $("#select-header");
+
+                if (!container.is(e.target) && container.has(e.target).length === 0) {
+                    container.hide();
                 }
-            }
+            });
         </script>
     </head>
     <body onload="onload()">
@@ -228,17 +247,16 @@
             <div class="Markdown">
                 <div class="markNav">Markdown
 
-                    <span class="headerType">aA&#9663;</span>
+                    <span class="headerType" title="Header">aA&#9663;</span>
+
                         <div id="select-header">
-                            <a href="#" id="h1" onclick="selected()" value="H1">Header 1</a>
-                            <a href="#" id="h2" onclick="selected()" value="H2">Header 2</a>
-                            <a href="#" id="h3" onclick="selected()" value="H3">Header 3</a>
+                            <span id="h1" onclick="selected();headerVal1()" value="H1">Header 1</span>
+                            <span id="h2" onclick="selected();headerVal2()" value="H2">Header 2</span>
+                            <span id="h3" onclick="selected();headerVal3()" value="H3">Header 3</span>
                         </div>
 
-
-                    <span class="boldText" onclick="makeBold()"><b>B</b></span>
-                    <span class="cursiveText" onclick="makeCursive()"><i>i</i></span>
-                  
+                    <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
+                    <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
                 </div>
                 <div class="markText">
                     <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
