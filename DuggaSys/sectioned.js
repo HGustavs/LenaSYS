@@ -1371,8 +1371,10 @@ $(document).on('click', '.moment, .section', function () {
 });
 
 function findAncestor (element, className) {
-    while ((element = element.parentElement) && !element.classList.contains(className));
-    return element;
+	if(element != undefined || element != null){
+			while ((element = element.parentElement) && !element.classList.contains(className));
+			return element;
+	}
 }
 
 // Get all element ids from local storage that should be hidden.
@@ -1402,7 +1404,13 @@ function hideCollapsedMenus() {
 	$('.header, .section, .code, .test, .link').show();
 	for(var i = 0; i < menuState.hiddenElements.length; i++) {
 		var ancestor = jQuery(findAncestor($("#"+menuState.hiddenElements[i])[0], "moment"));
-		ancestor.nextUntil('.moment, .section').hide();
+		if((ancestor[0] != undefined || ancestor[0] != null) && ancestor[0].classList.contains('moment')){
+			ancestor.nextUntil('.moment').hide();
+		}
+		ancestor = jQuery(findAncestor($("#"+menuState.hiddenElements[i])[0], "section"));
+		if((ancestor[0] != undefined || ancestor[0] != null) && ancestor[0].classList.contains('section')){
+			ancestor.nextUntil('.section').hide();
+		}
 	}
 }
 
@@ -1415,7 +1423,6 @@ function saveArrowIds(clickedElement) {
 			addOrRemoveFromArray(childNodes[i].id, menuState.arrowIcons);
 		}
 	}
-
 	localStorage.setItem('arrowIcons', JSON.stringify(menuState.arrowIcons));
 }
 
