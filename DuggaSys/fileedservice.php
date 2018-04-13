@@ -68,10 +68,10 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
     			'fileid' => $row['fileid'],
     			'filename' => $row['filename'],
           'extension' => $row['filename'],
-    			'kind' => $row['kind'],
     			'filesize' => $row['filesize'],
     			'uploaddate' => $row['uploaddate'],
-          'trashcan' => '{"fileid":'.$row['fileid'].',"filename":"'.$row['filename'].'"}'
+          'trashcan' => '{"fileid":'.$row['fileid'].',"filename":"'.$row['filename'].'"}',
+          'markdown' => $row['filename']
   		);
 
   		array_push($entries, $entry);
