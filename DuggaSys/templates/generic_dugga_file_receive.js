@@ -36,9 +36,9 @@ function returnedDugga(data)
 		duggaParams = jQuery.parseJSON(data['param']);
 
 		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
+				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&moment="+inParams['moment']+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
-			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&moment="+querystring['moment']+"&headers=none", success: function(result){
+			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&moment="+inParams['moment']+"&headers=none", success: function(result){
         		$("#snus").html(result);
         		// Placeholder code
 				var pl = duggaParams.placeholders;
@@ -179,9 +179,9 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 		duggaParams = jQuery.parseJSON(param);
 
 		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
+				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&moment="+inParams['moment']+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
-			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
+			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&moment="+inParams['moment']+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
         		$("#snus").html(result);
         		// Placeholder code
 				var pl = duggaParams.placeholders;
