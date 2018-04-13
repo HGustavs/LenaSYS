@@ -250,6 +250,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				'modified' => $row['modified'],
 				'newly' => $row['newly'],
 				'teacher' => $row['teacher'],
+        'examiner' => "examiner1",
 				'vers' => $row['vers'],
 				'requestedpasswordchange' => $row['requestedpasswordchange']
 			);

@@ -243,6 +243,7 @@ function returnedAccess(data) {
 			ssn:"SSN",
 			//class:"Class",
 			lastupdated:"Added",
+      examiner:"Examiner",
 			vers:"Version",
 			teacher:"Teacher",
 			requestedpasswordchange:""
