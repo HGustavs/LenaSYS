@@ -27,7 +27,7 @@ function Symbol(kind) {
     this.shadowOffsetX = 3;         // The horizontal distance of the shadow for the object.
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
-
+    var self = this;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -43,7 +43,7 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.getquadrant = function (xk, yk) {
         // Read cardinal points
-        var c = this.corners();
+        var c = self.corners();
         var x1 = points[c.tl].x;
         var y1 = points[c.tl].y;
         var x2 = points[c.br].x;
