@@ -278,14 +278,14 @@
             </div>
             <div class="Markdown">
                 <div class="markNav">Markdown
-                    <span class="headerType">aA&#9663;</span>
+                    <span class="headerType" title="Header">aA&#9663;</span>
                         <div id="select-header">
                             <span id="h1" onclick="selected();headerVal1()" value="H1">Header 1</span>
                             <span id="h2" onclick="selected();headerVal2()" value="H2">Header 2</span>
                             <span id="h3" onclick="selected();headerVal3()" value="H3">Header 3</span>
                         </div>
-                    <span id="boldText" onclick="boldText()"><b>B</b></span>
-                    <span id="cursiveText" onclick="cursiveText()"><i>i</i></span>
+                    <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
+                    <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
                 </div>
                 <div class="markText">
                     <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
