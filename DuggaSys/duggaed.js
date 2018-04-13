@@ -614,17 +614,16 @@ function returnedDugga(data) {
 
     var tabledata = {
     	tblhead:{
-    		did:"did",
-    		cid:"cid",
+    		arrow:"-_-",
+    		name:"name",
     		autograde:"autograde",
     		gradesystem:"gradesystem",
-    		name:"name",
     		template:"template",
-    		qstart:"qstart",
     		deadline:"deadline",
     		release:"release",
-    		modified:"",
-    		trashcan:""
+    		modified:"modified",
+    		cogwheel:"*",
+    		trashcan:"|"
     	},
     	tblbody: data['entries'],
     	tblfoot:[]

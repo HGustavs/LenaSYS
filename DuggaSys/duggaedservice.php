@@ -235,16 +235,16 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 		$entry = array(
 			'variants' => $mass,
-			'did' => $row['id'],
-			'cid' => $row['cid'],
+			'arrow' => $row['id'],
+			'name' => $row['qname'],
 			'autograde' => $row['autograde'],
 			'gradesystem' => $row['gradesystem'],
-			'name' => $row['qname'],
 			'template' => $row['quizFile'],
-      	'qstart' => $row['qstart'],	
 			'deadline' => $row['deadline'],				
-      'release' => $row['qrelease'],	
-			'modified' => $row['modified']				
+      		'release' => $row['qrelease'],	
+			'modified' => $row['modified'],
+			'cogwheel' => $row['id'],
+			'trashcan' => $row['id']			
 			);
 
 		array_push($entries, $entry);
