@@ -1372,8 +1372,8 @@ $(document).on('click', '.moment, .section', function () {
 
 function findAncestor (element, className) {
 	if(element != undefined || element != null){
-			while ((element = element.parentElement) && !element.classList.contains(className));
-			return element;
+		while ((element = element.parentElement) && !element.classList.contains(className));
+		return element;
 	}
 }
 
