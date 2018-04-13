@@ -77,7 +77,7 @@ function loadFormIntoElement(element, dir){
         if(globalAppearanceValue == 0){
             document.getElementById('nametext').value = diagram[lastSelectedObject].name;
             document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
-            document.getElementById('symbolColor').value = diagram[lastSelectedObject].symbolColor;
+            document.getElementById('symbolColor').options[2].selected = "true";
             document.getElementById('font').value = diagram[lastSelectedObject].font;
             document.getElementById('fontColor').value = diagram[lastSelectedObject].fontColor;
             document.getElementById('TextSize').value = diagram[lastSelectedObject].sizeOftext;
