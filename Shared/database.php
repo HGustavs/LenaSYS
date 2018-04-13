@@ -53,6 +53,5 @@ function pdoConnect()
 		echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
 		exit;
 	}
-
 }
 ?>

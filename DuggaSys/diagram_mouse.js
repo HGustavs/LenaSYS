@@ -210,37 +210,50 @@ function mousedownevt(ev) {
     } else if (movobj != -1) {
         md = 3;
         lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
-        if (diagram[lastSelectedObject].targeted == false) {
+        var last = diagram[lastSelectedObject];
+        if (last.targeted == false && uimode != "MoveAround") {
             for (var i = 0; i < diagram.length; i++) {
                 diagram[i].targeted = false;
             }
-            if(uimode != "MoveAround") {
-                // Will add multiple selected diagram objects if the
-                // CTRL/CMD key is currently active
-                if (ctrlIsClicked) {
-                    selected_objects.push(diagram[lastSelectedObject]);
-                    diagram[lastSelectedObject].targeted = true
-                    for (var i = 0; i < selected_objects.length; i++) {
-                        if (selected_objects[i].targeted == false) {
-                            selected_objects.push(diagram[lastSelectedObject]);
-                            selected_objects[i].targeted = true;
-                        }
-                    }
-                } else {
-                    selected_objects = [];
-                    selected_objects.push(diagram[lastSelectedObject]);
-                    diagram[lastSelectedObject].targeted = true;
+            // Will add multiple selected diagram objects if the
+            // CTRL/CMD key is currently active
+            if (ctrlIsClicked) {
+                if(selected_objects.indexOf(last) < 0){
+                    selected_objects.push(last);
+                    last.targeted = true;
                 }
+                for (var i = 0; i < selected_objects.length; i++) {
+                    if (selected_objects[i].targeted == false) {
+                        if(selected_objects.indexOf(last) < 0){
+                            selected_objects.push(last);
+                        }
+                        selected_objects[i].targeted = true;
+                    }
+                }
+            } else {
+                selected_objects = [];
+                selected_objects.push(last);
+                last.targeted = true;
+            }
+        } else if(uimode != "MoveAround"){
+            if(ctrlIsClicked){
+                var index = selected_objects.indexOf(last);
+                if(index > -1){
+                    selected_objects.splice(index, 1);
+                }
+                last.targeted = false;
             }
         }
     } else {
         md = 4; // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
-        for (var i = 0; i < selected_objects.length; i++) {
-            selected_objects[i].targeted = false;
+        if(uimode != "MoveAround"){
+            for (var i = 0; i < selected_objects.length; i++) {
+                selected_objects[i].targeted = false;
+            }
+            selected_objects = [];
         }
-        selected_objects = [];
     }
 }
 
@@ -257,8 +270,6 @@ function mouseupevt(ev) {
         // Add required points
         p1 = points.addPoint(startMouseCoordinateX, startMouseCoordinateY, false);
         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-
-
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
     if (uimode == "CreateLine" && md == 4) {
@@ -361,10 +372,7 @@ function mouseupevt(ev) {
                !(uimode == "CreateLine") && !(uimode == "CreateEREntity") &&
                !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) &&
                !(uimode == "MoveAround" ) && !(uimode == "CreateERRelation")) {
-
-       
             diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
-        
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();

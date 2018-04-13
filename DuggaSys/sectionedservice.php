@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 //---------------------------------------------------------------------------------------------------------------
 // editorService - Saves and Reads content for Code Editor
@@ -17,8 +17,8 @@ session_start();
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
-	$userid="guest";		
-} 
+	$userid="guest";
+}
 
 $opt=getOP('opt');
 $courseid=getOP('courseid');
@@ -48,7 +48,7 @@ if($gradesys=="UNK") $gradesys=0;
 // Store current day in string
 $today = date("Y-m-d H:i:s");
 
-$debug="NONE!";	
+$debug="NONE!";
 
 $info=$opt." ".$courseid." ".$coursevers." ".$coursename;
 $log_uuid = getOP('log_uuid');
@@ -73,7 +73,7 @@ if(checklogin()){
 		if(strcmp($opt,"DEL")===0){
 			$query = $pdo->prepare("DELETE FROM listentries WHERE lid=:lid");
 			$query->bindParam(':lid', $sectid);
-			
+
 			if(!$query->execute()) {
 				$debug="Error updating entries";
 			}
@@ -81,54 +81,54 @@ if(checklogin()){
 
 			// Insert a new code example and update variables accordingly.
 			if($link==-1){
-      
+
           $query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
-			
+
 					$query2->bindParam(':cid', $courseid);
 					$query2->bindParam(':cversion', $coursevers);
-					$query2->bindParam(':ename', $sectname);					
-					$query2->bindParam(':sname', $sname);					
-			
+					$query2->bindParam(':ename', $sectname);
+					$query2->bindParam(':sname', $sname);
+
 					if(!$query2->execute()) {
 						$error=$query2->errorInfo();
 						$debug="Error updating entries".$error[2];
 					}
 
 					$link=$pdo->lastInsertId();
-			}			
+			}
 
-      $query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment)"); 
+      $query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment)");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
-			$query->bindParam(':entryname', $sectname); 
-			$query->bindParam(':link', $link); 
-			$query->bindParam(':kind', $kind); 
-			$query->bindParam(':comment', $comment); 
+			$query->bindParam(':entryname', $sectname);
+			$query->bindParam(':link', $link);
+			$query->bindParam(':kind', $kind);
+			$query->bindParam(':comment', $comment);
 			$query->bindParam(':visible', $visibility);
-			
+
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
-      
+
     }else if(strcmp($opt,"REORDER")===0){
 			$orderarr=explode(",",$order);
-			
+
 			foreach ($orderarr as $key => $value){
 				$armin=explode("XX",$value);
 				$query = $pdo->prepare("UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;");
 				$query->bindParam(':lid', $armin[1]);
 				$query->bindParam(':pos', $armin[0]);
 				$query->bindParam(':moment', $armin[2]);
-				
+
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					$debug="Error updating entries".$error[2];
 				}
 			}
 		}else if(strcmp($opt,"UPDATE")===0){
-			
+
 			// Insert a new code example and update variables accordingly.
 			if($link==-1){
 
@@ -148,39 +148,39 @@ if(checklogin()){
 					}
 
 					$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
-			
+
 					$query2->bindParam(':cid', $courseid);
 					$query2->bindParam(':cversion', $coursevers);
-					$query2->bindParam(':ename', $sectname);					
-					$query2->bindParam(':sname', $sname);					
-			
+					$query2->bindParam(':ename', $sectname);
+					$query2->bindParam(':sname', $sname);
+
 					if(!$query2->execute()) {
 						$error=$query2->errorInfo();
 						$debug="Error updating entries".$error[2];
 					}
 
 					$link=$pdo->lastInsertId();
-			}			
+			}
 
       $query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':comments', $comments);
 			$query->bindParam(':highscoremode', $highscoremode);
-			
+
 			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
 			else $query->bindParam(':moment', $moment);
-				
+
 			$query->bindParam(':kind', $kind);
 			$query->bindParam(':link', $link);
 			$query->bindParam(':visible', $visibility);
 			$query->bindParam(':gradesys', $gradesys);
-	
+
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
-			
+
 			// insert into list forthe specific course
 			if($kind == 4){
 				$query2 = $pdo->prepare("INSERT INTO list(listnr,listeriesid,responsible,course) values('23415',:lid,'Christina Sjogren',:cid);");
@@ -198,7 +198,7 @@ if(checklogin()){
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':vers', $versid);
-			$query->bindParam(':versname', $versname);				
+			$query->bindParam(':versname', $versname);
 // if start and end dates are null, insert mysql null value into database
      if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
      else $query->bindParam(':startdate', $startdate);
@@ -212,7 +212,7 @@ if(checklogin()){
 		}else if(strcmp($opt,"CHGVERS")===0){
 			$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
 			$query->bindParam(':cid', $courseid);
-			$query->bindParam(':vers', $versid);		
+			$query->bindParam(':vers', $versid);
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -223,7 +223,7 @@ if(checklogin()){
 }
 
 //------------------------------------------------------------------------------------------------
-// Retrieve Information			
+// Retrieve Information
 //------------------------------------------------------------------------------------------------
 
 $query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
@@ -254,7 +254,7 @@ if(!$query->execute()) {
 	$debug="Error reading entries".$error[2];
 }
 
-// Create "duggor" array to store information about quizes and create "releases" to perform checks 
+// Create "duggor" array to store information about quizes and create "releases" to perform checks
 
 foreach($query->fetchAll() as $row) {
 	$releases[$row['id']]=array(
@@ -287,7 +287,7 @@ foreach($query->fetchAll() as $row) {
 	if(isset($releases[$row['quiz']])){
 			$release=$releases[$row['quiz']]['release'];
 			if($release<$today){
-					$resulty=$row['grade'];	
+					$resulty=$row['grade'];
 					$markedy=$row['marked'];
 			}else{
 					$resulty=-1;
@@ -316,13 +316,13 @@ if($cvisibility){
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
-	
+
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries".$error[2];
 	}
-	
-	foreach($query->fetchAll() as $row) {	
+
+	foreach($query->fetchAll() as $row) {
 		// Push info
 		if($isSuperUserVar||$row['visible']==1||($row['visible']==2&&($hasread||$haswrite))||($row['visible']==0&&$haswrite==true)){
 				array_push(
@@ -354,8 +354,8 @@ if($cvisibility){
 			$error=$query->errorInfo();
 			$debug="Error reading groups".$error[2];
 		}
-		
-		foreach($query->fetchAll() as $row) {	
+
+		foreach($query->fetchAll() as $row) {
 			foreach ($entries as $key => $val) {
 				if ($val['lid'] === $row['lid']) {
 					$entries[$key]['group'] = array(
@@ -414,12 +414,12 @@ $codeexamples = array();
 if($ha){
 	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind=1 ORDER BY filename");
 	$query->bindParam(':cid', $courseid);
-	
+
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading entries".$error[2];
 	}
-	
+
 	foreach($query->fetchAll() as $row) {
 		array_push(
 			$links,
@@ -445,10 +445,10 @@ if($ha){
 		$oldkind=$row['kind'];
 		array_push($links,array('fileid' => $row['fileid'],'filename' => $row['filename']));
 	}
-	
+
 	$versions=array();
 	$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers;");
-	
+
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
 		$debug="Error reading courses".$error[2];
@@ -469,7 +469,7 @@ if($ha){
 			);
 		}
 	}
-	
+
 	$codeexamples=array();
 
 	// New Example
@@ -505,7 +505,7 @@ if($ha){
         $unmarked = $row["unmarked"];
     }
 	}
-	
+
 	$queryo=$pdo->prepare("SELECT startdate,enddate FROM vers WHERE cid=:cid AND vers=:vers LIMIT 1;");
 	$queryo->bindParam(':cid', $courseid);
 	$queryo->bindParam(':vers', $coursevers);

@@ -44,12 +44,18 @@ pdoConnect();
 	<div id='editSection' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:460px;'>
       		<div class='loginBoxheader'>
-      			<h3>Edit Item</h3>
+      			<h3 id='editSectionDialogTitle'>Edit Item</h3>
       			<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
       		</div>
       		<div style='padding:5px;'>
       			<input type='hidden' id='lid' value='Toddler' />
-      			<div id='inputwrapper-name' class='inputwrapper'><span>Name:</span><input type='text' class='textinput' id='sectionname' value='sectionname' /></div>
+      			<div id='inputwrapper-name' class='inputwrapper'>
+	      			<span>Name:</span>
+	      			<div class="tooltipDugga">
+		      			<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
+		      		</div>
+	      			<input type='text' class='textinput' id='sectionname' value='sectionname' onkeyup="validateName();" onchange="validateName();" />
+      			</div>
       			<div id='inputwrapper-type' class='inputwrapper'><span>Type:</span><select id='type' onchange='changedType();'></select></div>
       			<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
       			<div id='inputwrapper-gradesystem' class='inputwrapper'><span>GradeSystem:</span><select id='gradesys' ></select></div>
@@ -58,21 +64,38 @@ pdoConnect();
       			<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
       			<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
       			<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-style:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
-      			<div id='inputwrapper-comments' class='inputwrapper'><span>Comment for deadline:</span><input type='text' class='textinput' id='comments' value='comments' placeholder="Deadline comment" /></div>
-      		</div>
+
       		<!-- Error message, no duggas present-->
       		<div style='padding:5px;'>
-      			<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' /> 
-      			<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows();' /> 
-      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem();showSaveButton();' /> 
-      			<input style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' /> 
+      			<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
+      			<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows();' />
+      			<input id="submitBtn" style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
+      			<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' />
+
           </div>
       </div>
 	</div>
 	<!-- Edit Section Dialog END -->
 
+      <!-- Confirm Section Dialog START -->
+      <div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
+            <div class='loginBox' style='width:460px;'>
+                  <div class='loginBoxheader'>
+                        <h3>Confirm deletion</h3>
+                        <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+                  </div>
+                  <div style='text-align: center;'>
+                        <h4>Are you sure you want to delete this item?</h4>
+                  </div>
+                  <div style='display:flex; align-items:center; justify-content: center;'>
+                        <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
+                        <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+                  </div>
+            </div>
+      </div>
+      <!-- Confirm Edit Section Dialog END -->
 
-  <!-- New Version Dialog START -->
+      <!-- New Version Dialog START -->
 	<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
       		<div class='loginBoxheader'>

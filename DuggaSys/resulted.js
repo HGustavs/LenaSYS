@@ -10,6 +10,7 @@ var msx = 0, msy = 0;
 var rProbe = null;
 var subheading=0;
 var allData;
+var allowedRegradeTime = 24*60*60*1000;
 //var benchmarkData = performance.timing; // Will be updated after onload event
 //var ajaxStart;
 //var tim;
@@ -40,7 +41,7 @@ function setup(){
   var filt ="";
   filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
   filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-  filt+="<div id='dropdownc' class='dropdown-list-container'>";
+  filt+="<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
   filt+="</div>";
   filt+="</span></td>";
 
@@ -259,7 +260,7 @@ function redrawtable()
           }else {
             strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'U', student[j].qvariant, student[j].quizId);
           }
-          strt += "<img id='korf' class='fist";
+          strt += "<img id='korf' class='fist gradeImg";
           if(student[j].userAnswer===null && !(student[j].quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
             strt += " grading-hidden";
           }
@@ -272,7 +273,19 @@ function redrawtable()
         }
       strt += "</div>";
 
-          strt += "<div class='text-center'>"
+          strt += "<div class='text-center'"
+
+		  for (var p = 0; p < moments.length; p++){
+			  if (moments[p].link == student[j].quizId){
+				   if (Date.parse(moments[p].deadline) < Date.parse(student[j].submitted)){
+						strt += " style='color:red;'";
+				   }
+					break;
+			  }
+		  }
+
+		  strt += ">";
+
           if (student[j].submitted.getTime() !== timeZero.getTime()){
             strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();
           }
@@ -697,7 +710,7 @@ function process()
     // Update dropdown list
     var dstr="";
 
-      dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+      dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 
       var activeMoment = 0;
       for(var j=0;j<moments.length;j++){
@@ -741,7 +754,7 @@ function process()
         dstr+=">"+name+"</label></div>";
     }
     // Filter for teachers.
-    dstr+="<div class='checkbox-dugga checkmoment' style='border-bottom:1px solid #888'>";
+    dstr+="<div class='checkbox-dugga checkmoment'>";
     dstr+="<input type='checkbox' class='headercheck' name='showTeachers' value='0' id='showteachers'";
     if(clist){
       index=clist.indexOf("showteachers");
@@ -756,7 +769,12 @@ function process()
     // Filter for only showing pending
     dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
     if (onlyPending){ dstr+=" checked"; }
-    dstr+="><label class='headerlabel' for='pending'>Only pending</label>";
+    dstr+="><label class='headerlabel' for='pending'>Only pending</label></div>";
+
+    // Filter for mini mode
+    dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='minimode' value='0' id='minimode' onchange='miniMode()'>";
+    dstr+="<label class='headerlabel' for='minimode'>Mini mode</label></div>";
+
   dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
 
   document.getElementById("dropdownc").innerHTML=dstr;
@@ -988,9 +1006,10 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 
     if ($(e.target ).hasClass("Uc")){
         changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
+    } else if (($(e.target ).hasClass("G"))  || ($(e.target ).hasClass("VG")) || ($(e.target ).hasClass("U"))){
+        changeGrade(0, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
     } else if ($(e.target ).hasClass("Gc")) {
         changeGrade(2, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire);
-		location.reload();
     } else if ($(e.target ).hasClass("VGc")){
         changeGrade(3, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
     } else if ($(e.target ).hasClass("U")) {
@@ -1008,16 +1027,16 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 					var newGradeExpire = new Date(studentObject.gradeExpire);
 
 					// This variable adds 24h to the current time
-	                var newDateObj = new Date(newGradeExpire.getTime() + 24*60*60000);
+	                var newDateObj = new Date(newGradeExpire.getTime() + allowedRegradeTime);
                     var newGradeExpirePlusOneDay = newDateObj.getTime();
 
-					// Compair the gradeExpire value to the current time
-					if(newGradeExpirePlusOneDay > currentTimeGetTime){
+					// Compair the gradeExpire value to the current time, if no grade is set, we can always set it no matter the last change
+					if(newGradeExpirePlusOneDay > currentTimeGetTime || (($(e.target ).hasClass("Gc"))  || ($(e.target ).hasClass("VGc")) || ($(e.target ).hasClass("Uh")))){
 						//The user must press the ctrl-key to activate if-statement
-						if(event.ctrlKey){
+						if(event.ctrlKey || event.metaKey){
 							changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
 						}else{
-							alert("You must press down the ctrl-key to change from grade G to U.");
+							alert("You must press down the ctrl-key or cmd-key to change from grade G to U.");
 						}
 					} else {
 						alert("You can no longer change the grade to U, due to 24 hours has passed since grade G was set.");
@@ -1032,7 +1051,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 }
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls,qvariant,qid){
-  return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
+  return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+" gradeImg\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
 }
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid)
@@ -1293,7 +1312,7 @@ function returnedResults(data)
       if(rowpos !== -1){
         // Regenerate the marking buttons to reflect the new grade
         var tst = makeSelect(students[rowpos][dpos].gradeSystem, querystring['cid'], students[rowpos][dpos].vers, parseInt(data.duggaid), parseInt(data.duggauser), parseInt(data.results), 'U', null, null);
-        tst += "<img id='korf' class='fist";
+        tst += "<img id='korf' class='fist gradeImg";
         //console.log(students[rowpos][dpos]);
         if(students[rowpos][dpos].userAnswer===null){
           tst += " grading-hidden";
@@ -1345,4 +1364,12 @@ function returnedResults(data)
   }
   // Upgrade the most bottom row with amount of ungraded duggas per column.
   updateAmountOfUngraded();
+}
+
+function miniMode(){
+  if (document.getElementById('minimode').checked){
+    $(".gradeImg").css("display", "none");
+  } else {
+    $(".gradeImg").css("display", "block");
+  }
 }

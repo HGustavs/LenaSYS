@@ -70,6 +70,11 @@ function changeAccess(cid,uid,val)
 	AJAXService("ACCESS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
 }
 
+function changeVersion(cid,uid,val)
+{
+	AJAXService("VERSION",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
+}
+
 // Sets values in the "cogwheel popup"
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
 function selectUser(uid,username,ssn,firstname,lastname,access,className)
@@ -199,6 +204,18 @@ var bool = true;
  * Sort based on what cell was pressed. Toggles between sort and reverse sort.
  * @param column
  */
+
+function renderCell(col,celldata,cellid) {
+	if (col == "Trumma"){
+	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
+	} else if (col == "Pnr") {
+	    return "<div>" + celldata + "</div>";
+	} else {
+		return "<div id='" + cellid + "'>" + celldata + "</div>";
+	}
+	return celldata;
+}
+
 function sortData(column){
     if(bool) {
         dataInfo['entries'].sort(propComparator(column));
@@ -209,11 +226,54 @@ function sortData(column){
     returnedAccess(dataInfo);
     bool = !bool;
 }
+
+var myTable;
 //----------------------------------------
 // Renderer
 //----------------------------------------
-function returnedAccess(data)
-{
+
+function returnedAccess(data) {
+	filez = data;
+
+	var tabledata = {
+		tblhead:{
+			username:"User",
+			firstname:"First name",
+			lastname:"Last name",
+			ssn:"SSN",
+			//class:"Class",
+			lastupdated:"Added",
+			vers:"Version",
+			teacher:"Teacher",
+			requestedpasswordchange:""
+		},
+		tblbody: data['entries'],
+		tblfoot:[]
+	}
+
+	myTable = new SortableTable(
+		tabledata,
+		"user",
+		null,
+		"",
+	    renderCell,
+	    null,
+	    null,
+	    null,
+	    [],
+	    [],				
+	    "",
+	    null,
+	    null,
+		null,
+		null,
+		null,
+	    null,
+		false
+	);
+
+	myTable.renderTable();
+
   // Defining arrays for later use
   var teachs = [];
   var userClass = [];
@@ -222,18 +282,18 @@ function returnedAccess(data)
 	str="";
 	if (data['entries'].length > 0) {
 		keyUpSearch();
-		str+="<table class='list'>";
-      str+="<tr><th class='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:140px; cursor: pointer;'>Username</th>" +
-			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>SSN</th>" +
-			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>First Name</th>" +
-			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer;'>Last Name</th>" +
-			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Class</th>" +
+		str+="<table class='list' style='margin:0px; padding:0px; border:1px solid #ccc; border-top:0px;'>";
+      str+="<tr><th class='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:140px; cursor: pointer; position:sticky; top:141px;'>Username</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer; position:sticky; top:141px;'>SSN</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer; position:sticky; top:141px;'>First Name</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer; position:sticky; top:141px;'>Last Name</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer; position:sticky; top:141px;'>Class</th>" +
 			/*"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Teacher</th>" +*/
-			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:100px; cursor: pointer;'>Added</th>" +
-          	"<th style='text-align:left; padding-left:8px; width:90px;'>Version</th>" +
-		  	"<th style='text-align:left; padding-left:8px; width:90px;'>Access</th>" +
-			"<th style='text-align:left; padding-left:8px; width:90px;'>Settings</th>" +
-			"<th class='last' style='text-align:left; padding-left:8px; width:120px;'>Password</th></tr><tbody id='accesstable_body'>";
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:100px; cursor: pointer; position:sticky; top:141px;'>Added</th>" +
+          	"<th style='text-align:left; padding-left:8px; width:90px; position:sticky; top:141px;'>Version</th>" +
+		  	"<th style='text-align:left; padding-left:8px; width:90px; position:sticky; top:141px;'>Access</th>" +
+			"<th style='text-align:left; padding-left:8px; width:90px; position:sticky; top:141px;'>Settings</th>" +
+			"<th class='last' style='text-align:left; padding-left:8px; width:120px; position:sticky; top:141px;'>Password</th></tr><tbody id='accesstable_body'>";
 		for(i=0;i<data['entries'].length;i++){
 			var item=data['entries'][i];
 
@@ -265,8 +325,14 @@ function returnedAccess(data)
 			str+="<td>"+item['modified'].substr(0,10)+"</td>";
 
 			// Select box for Version
-			str+="<td valign='center'><select onChange='' onclick='return false;' id='"+item['uid']+"'>";
-			str+="<option selected='selected' value='"+item['vers']+"'>"+item['vers']+"</option>";
+			str+="<td valign='center'><select onChange='changeVersion(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
+            for(var j = 0; j < data['courses'].length; j++){
+                str+="<option ";
+                if(item['vers'] === data['courses'][j]['vers']) {
+                    str+="selected='selected' ";
+                }
+                str+="value='"+data['courses'][j]['vers']+"'>"+data['courses'][j]['vers']+"</option>";
+            }
 			str+="</select>";
 			
 			// Select box for Access

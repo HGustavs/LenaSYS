@@ -121,6 +121,20 @@
                 cursor: pointer;
                 margin-left: 150px;
             }
+
+            .show-dropdown-content {
+                display: block;
+            }
+            #select-header {
+                max-width: 50px;
+                position: absolute;
+                z-index: 2000;
+                right: 80px;
+                background-color: #fff;
+                box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.3);
+                text-decoration: none;
+            }
+
         </style>
         <script>
             
@@ -155,6 +169,14 @@
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
                 };
             }
+
+            function makeBold() {
+                
+            }
+            function makeCursive() {
+                
+            }
+
             function showDropdown() {
                 $('#select-header').show();
             }
@@ -166,6 +188,12 @@
                 document.getElementById(".headerType").toggle("showDropdown");   
             }
 
+            $(document).ready(function(){
+               $(".headerType").click(function(){
+                    $("#select-header").toggle();
+                    $("#select-header").addClass("show-dropdown-content");
+                });
+            });
             // Close the dropdown if the user clicks outside of it
             window.onclick = function(event) {
                 if (!event.target.matches('#select-header')) {
@@ -190,21 +218,27 @@
         </script>
     </head>
     <body onload="onload()">
-        <div class="Header">Hello its me, preview</div>
+
+
+        <div class="Header">Markdown preview</div>
         <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
             <div class="PrevHead">This is the preview window
             </div>
             <div class="Markdown">
                 <div class="markNav">Markdown
-                    <span class="headerType" onclick="dropDownToggle()">aA&#9663;</span>
+
+                    <span class="headerType">aA&#9663;</span>
                         <div id="select-header">
                             <a href="#" id="h1" onclick="selected()" value="H1">Header 1</a>
                             <a href="#" id="h2" onclick="selected()" value="H2">Header 2</a>
                             <a href="#" id="h3" onclick="selected()" value="H3">Header 3</a>
                         </div>
-                    <span class="boldText" onclick=""><b>B</b></span>
-                    <span class="cursiveText" onclick=""><i>I</i></span>
+
+
+                    <span class="boldText" onclick="makeBold()"><b>B</b></span>
+                    <span class="cursiveText" onclick="makeCursive()"><i>i</i></span>
+                  
                 </div>
                 <div class="markText">
                     <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>

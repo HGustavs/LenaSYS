@@ -1,0 +1,425 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+	<script src="sortableTable.js"></script> 
+	<script>
+		// -------------------------------------------------------------------------------------------------------
+		// -----------------=============######## Sortable Table Demo Code ########=============-----------------
+		// -------------------------------------------------------------------------------------------------------
+		//  Copyright a97marbr / HGustavs 
+		//
+		//        (\ /)
+		//        (. .)           
+		//       c(")(")                ∴ 
+		//--------------------------------------------------------------------------------------------------------
+
+		//------------==========########### GLOBALS ###########==========------------
+
+		var tabledata = {
+			tblhead:[
+				"First/Last","Pnr","Num","Foo","Holk","Trumma"
+			],
+			tblbody:[],
+			tblfoot:["","Pnr","Num","","","Trumma"]
+		}
+
+		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+				
+		for (i = 0; i < 10; i++) {
+			var wordcnt = Math.round(Math.random() * 5 + 1);
+			var str = "";
+			var str2 = "";
+			var str3 = "";
+			for (j = 0; j < wordcnt; j++) {
+				var charcnt = Math.round(Math.random() * 10);
+				for (var k = 0; k < charcnt; k++) {
+					str += possible.charAt(Math.floor(Math.random() * possible.length));
+            		str2 += possible.charAt(Math.floor(Math.random() * possible.length));
+            		str3 += possible.charAt(Math.floor(Math.random() * possible.length));
+				}
+        		str += " ";
+       			str2 += " ";
+        		str3 += " ";
+			}
+			tabledata.tblbody.push([str,Math.random() * 5000,Math.round(Math.random() * 20),str2,str3,{xk:Math.round(Math.random() * 2000 + 1000),yk:Math.round(Math.random() * 500),col:"Free Shevacadoo"}]);
+		}
+
+		var myTable, myTable2;
+
+		//------------==========########### FUNCTIONZ ###########==========------------
+
+		//--------------------------------------------------------------------------
+		// setup
+		// ---------------
+		//  Creates the table object and assigns all mandatory pararmeters
+		//  
+		//  tbl,tableid,filterid,caption,renderCell,renderSortOptions,renderColumnFilter
+		//--------------------------------------------------------------------------
+
+		function setup() {
+			myTable = new SortableTable(
+				tabledata,
+				"thetable",
+				"columnfilter",
+				"Booyah!",
+				renderCell,
+				renderSortOptions,
+				renderColumnFilter,
+				rowFilter,
+				["Pnr","Num","Trumma"],
+				["Pnr","Num"],				
+				"RowSum",
+				makeSum,
+				"Pnr",
+				rowHighlightOn,
+				rowHighlightOff,
+				displayCellEdit,
+				updateCellCallback
+			);
+			myTable2 = new SortableTable(
+				tabledata,
+				"thetable2",
+				"columnfilter2",
+				"Booyah!",
+				function(celldata,col,cellid){return renderCell(celldata,col,cellid)},
+				function(col, kind){return renderSortOptions2(col,kind)},
+				function(col, status){return renderColumnFilter2(col,status)},
+				function(row){ return rowFilter(row)},
+				["Pnr","Num","Trumma"],
+				["Pnr","Num"],				
+				"RowSum",
+				function(col, val, row){return makeSum(col,val,row);},
+				"First/Last",
+				rowHighlightOn,
+				rowHighlightOff,
+				displayCellEdit,
+				updateCellCallback
+				);
+			myTable.renderTable();
+			myTable2.renderTable();
+		}
+					
+		//--------------------------------------------------------------------------
+		// editCell
+		// ---------------
+		//  Callback function for showing a cell editing interface
+		//--------------------------------------------------------------------------
+		function displayCellEdit(celldata,rowno,rowelement,cellelement,column,colno,rowdata,coldata,tableid) {
+		    let str = "";
+		    if (column == "trumma") {
+		        str += "<div style='display:flex;flex-direction:column;flex-grow:1;'>";
+		        str += "<input type='text' id='popoveredit_xk' class='popoveredit' style='flex-grow:1' value='" + celldata.xk + "' size=" + celldata.xk.toString().length + "/>";
+		        str += "<input type='text' id='popoveredit_yk' class='popoveredit' style='flex-grow:1' value='" + celldata.yk + "' size=" + celldata.yk.toString().length + "/>";
+		        str += "<input type='text' id='popoveredit_col' class='popoveredit' style='flex-grow:1' value='" + celldata.col + "' size=" + celldata.col.toString().length + "/>";
+		        str += "</div>";
+		    } else {
+		        str += "<input type='text' id='popoveredit0' class='popoveredit' style='flex-grow:1' value='" + celldata + "' size='" + celldata.toString().length + "'/>";
+		    }
+		    return str;          
+		}
+
+		//--------------------------------------------------------------------------
+		// updateCellCallback
+		// ---------------
+		//  Callback function for updating a cell value after editing a cell
+		//--------------------------------------------------------------------------
+		function updateCellCallback(rowno,colno,column,tableid) {
+		    // Make AJAX call and return 
+		    console.log(rowno,colno,column,tableid);
+		    if (column == "pnr") {        
+		        var newcelldata = parseFloat(document.getElementById("popoveredit0").value);
+		        if (isNaN(newcelldata)) {
+		            return -1;// This must be handled
+		        } else {
+		            return newcelldata;
+		        }          
+		    } else if (column == "num") {
+		        var newcelldata = parseInt(document.getElementById("popoveredit0").value);
+		        if (isNaN(newcelldata)) {
+		            return -1;// This must be handled
+		        } else {
+		            return newcelldata;
+		        }          
+		    } else if (column == "trumma") {
+		        // TODO: Check of individual parts needs to be done.
+		        var obj = {xk:parseInt(document.getElementById("popoveredit_xk").value),yk:parseInt(document.getElementById("popoveredit_yk").value),col:document.getElementById("popoveredit_col").value};
+		        return obj;
+		    } else {
+		        return document.getElementById("popoveredit0").value;
+		    }    
+		}
+					
+
+		//--------------------------------------------------------------------------
+		// rowHighlight
+		// ---------------
+		//  Callback function that highlights the currently hovered row
+		//--------------------------------------------------------------------------			
+		function rowHighlightOn(rowid,rowno,colclass,centerel) {
+		    document.getElementById(rowid).style.border = "2px solid rgba(97,72,117,1)";
+			centerel.style.backgroundImage = "radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2))";
+		}
+
+		function rowHighlightOff(rowid,rowno,colclass,centerel) {
+		    document.getElementById(rowid).style.border = "";
+			centerel.style.backgroundImage = "none";
+		}
+					
+		//--------------------------------------------------------------------------
+		// renderColumnFilter
+		// ---------------
+		//  Callback function that renders the col filter div
+		//--------------------------------------------------------------------------
+				
+		function renderColumnFilter(col,status) {
+			str = "";
+			if (status) {
+				str = "<label>" + col + "</label>:<input type='checkbox' checked onclick='myTable.toggleColumn(\"" + col + "\")'>";
+			} else {
+				str = "<label>" + col + "</label>:<input type='checkbox' onclick='myTable.toggleColumn(\"" + col + "\")'>";
+			}
+
+			return str;
+		}
+
+		function renderColumnFilter2(col,status) {		
+			str = "";
+			if (status) {
+				str = "<label>" + col + "</label>:<input type='checkbox' checked onclick='myTable2.toggleColumn(\"" + col + "\")'>";
+			} else {
+				str = "<label>" + col + "</label>:<input type='checkbox' onclick='myTable2.toggleColumn(\"" + col + "\")'>";
+			}
+
+			return str;
+		}
+
+		//--------------------------------------------------------------------------
+		// renderSortOptions
+		// ---------------
+		//  Callback function that renders the col filter div
+		//--------------------------------------------------------------------------
+				
+		function renderSortOptions(col,status) {
+			str = "";
+			if (status == -1) {
+				if (col == "First/Last") {
+					str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",1)'>First</span>/";		
+					str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",3)'>Last</span>";
+				} else {
+					str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "</span>";	
+				}
+			} else {
+				if (col == "First/Last") {
+					// First up/down vs Last up/down
+					if (status == 0 || status == 1) {
+						if (status == 0) {
+							str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",1)'>First&#x25b2;</span>/";
+						} else {
+							str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",0)'>First&#x25bc;</span>/";
+						}
+						str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",2)'>Last</span>";				
+					} else if (status == 2 || status == 3) {
+						str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",1)'>First</span>/";				
+						if (status == 2) {
+							str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",3)'>Last&#x25b2;</span>";
+						} else {
+							str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",2)'>Last&#x25bc;</span>";
+						}
+					}		            
+				} else if (col == "Trumma") {
+					// Special sort for Trumma (JSON structure)
+		            str += "<span>" + col + "</span>";
+		            str += "<select onchange='myTable.toggleSortStatus(\"" + col + "\",this.value)'>";
+		            str += "<option hidden disabled selected value>Select Sort</option>"
+		            str += "<option value='0'>x&#x25b2;/y</option>";
+		            str += "<option value='1'>x&#x25bc;/y</option>";
+		            str += "<option value='2'>x/y&#x25b2;</option>";
+		            str += "<option value='3'>x/y&#x25bc;</option>";
+		            str += "</select>";
+				} else {
+					if (status) {
+						str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "&#x25bc;</span>";
+					} else {
+						str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "&#x25b2;</span>";
+					}
+				}
+			}
+
+			return str;
+		}
+
+		function renderSortOptions2(col,status) {
+			str = "";
+			if (status == -1) {
+				if (col == "First/Last") {
+					str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",1)'>First</span>/";
+					str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",3)'>Last</span>";				
+				} else {
+					str += "<span onclick='myTable2.toggleSortStatus(\"" + col + "\",1)'>" + col + "</span>";	
+				}
+			} else {
+				if (col == "First/Last") {
+					// First up/down vs Last up/down
+					if (status == 0 || status == 1) {
+						if (status == 0) {
+							str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",1)'>First&#x25b2;</span>/";
+						} else {
+							str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",0)'>First&#x25bc;</span>/";								
+						}
+						str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",2)'>Last</span>";		
+					} else if (status == 2 || status == 3) {
+						str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",1)'>First</span>/";
+						if (status == 2) {
+							str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",3)'>Last&#x25b2;</span>";
+						} else {
+							str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",2)'>Last&#x25bc;</span>";
+						}
+					}		            
+				} else if (col == "Trumma") {
+					// Special sort for Trumma (JSON structure)
+		            str += "<span>" + col + "</span>";
+		            str += "<select onchange='myTable2.toggleSortStatus(\"" + col + "\",this.value)'>";
+		            str += "<option hidden disabled selected value>Select Sort</option>"
+		            str += "<option value='0'>x&#x25b2;/y</option>";
+		            str += "<option value='1'>x&#x25bc;/y</option>";
+		            str += "<option value='2'>x/y&#x25b2;</option>";
+		            str += "<option value='3'>x/y&#x25bc;</option>";
+		            str += "</select>";
+				} else {
+					if (status) {
+						str += "<span onclick='myTable2.toggleSortStatus(\"" + col + "\",0)'>" + col + "&#x25bc;</span>";
+					} else {
+						str += "<span onclick='myTable2.toggleSortStatus(\"" + col + "\",1)'>" + col + "&#x25b2;</span>";
+					}
+				}
+			}
+
+			return str;
+		}
+
+		//--------------------------------------------------------------------------
+		// renderCell
+		// ---------------
+		//  Callback function that renders a specific cell in the table
+		//--------------------------------------------------------------------------
+				
+		function renderCell(celldata,col){
+		    if (col == "Trumma") {
+		        return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
+		    } else if (col == "Pnr") {
+		        return "<div>" + celldata + "</div>";
+		    }    
+			return celldata;
+		}
+
+		//--------------------------------------------------------------------------
+		// rowFilter
+		// ---------------
+		//  Callback function that filters rows in the table
+		//--------------------------------------------------------------------------
+				
+		function rowFilter(row){
+			return true;
+		}
+
+		//--------------------------------------------------------------------------
+		// compare
+		// ---------------
+		//  Callback function with different compare alternatives for the column sort
+		//--------------------------------------------------------------------------
+		function compare(a,b){
+		    // Find out which column and part of column are we sorting on from currentTable
+		    let col = sortableTable.currentTable.getSortcolumn();
+		    let kind = sortableTable.currentTable.getSortkind();
+		    
+		    if (col == "Trumma") {
+		        if (kind == 0 || kind == 1) { 
+		          	return a.xk - b.xk; 
+			    } else if (kind == 2 || kind == 3) { 
+			         	return a.yk - b.yk; 
+			    } 
+		    } else if (col == "First/Last") {
+		        // Sort Fname / Lname 
+		        if (kind == 0 || kind == 1) { 
+		            let afname = a.substr(0,a.indexOf(' '));
+		            let bfname = b.substr(0,b.indexOf(' '));
+		            if (afname < bfname) return -1; 
+		            if (afname > bfname) return 1; 
+		            return 0; 
+		        } else if (kind == 2 || kind == 3) { 
+		            let alname = a.substr(a.indexOf(' ') + 1);
+		            let blname = b.substr(b.indexOf(' ') + 1);
+		            if (alname < blname) return -1; 
+		            if (alname > blname) return 1; 
+		            return 0; 
+		        }
+		    } else if (col == "Foo" || col == "Holk") {
+		        if (a < b) return -1; 
+		        if (a > b) return 1; 
+		        return 0; 
+		    } else {
+		        // We allways sort none numbers below 
+		        let tmp = (sortableTable.currentTable.ascending) ? -1000000 : 1000000;
+		        let left = (isNaN(a)) ? tmp : +a; 
+		        let right = (isNaN(b)) ? tmp : +b; 
+		        return right - left;     
+		    }
+		}
+
+		//--------------------------------------------------------------------------
+		// makeSum
+		// ---------------
+		//	makeSum col,value  
+		//  row is optional
+		//--------------------------------------------------------------------------
+
+		function makeSum(col,value,row){
+			if (col == "Trumma") {
+				return value.xk;
+			} else if (col == "RowSum") {
+				return value.xk;
+			} else {
+				if (value == "UNK") {
+					return 0;
+				} else {
+					return parseFloat(value);
+				}
+			}
+			return 0;
+		}
+
+		//--------------------------------------------------------------------------
+		// rowFilter
+		// ---------------
+		//  Callback function that filters rows in the table
+		//--------------------------------------------------------------------------
+		var searchterm = "";
+		function rowFilter(row) {
+			for (i = 0; i < row.length; i++) {
+				if (row[i].indexOf != null) {
+					if (row[i].indexOf(searchterm) != -1) return true;
+				}
+			}
+			return false;
+		}
+	</script>
+</head>
+<body onload="setup();" onkeypress='keypressHandler(event)'>
+  	<h2>Example Table 1</h2>
+
+  	<span>Search:</span><input type="text" id="lookingGlass" placeholder="write your query" onkeyup="searchterm = document.getElementById('lookingGlass').value;myTable.renderTable();"/><br>
+	
+	<div id='MHTEST'></div>
+
+	<!-- Column filter div -->
+	<div id="columnfilter"></div>
+  
+	<!-- Table placeholder -->
+	<div id="thetable"></div>
+	<br>
+
+	<div id="editpopover" style="display:none;"></div>
+
+	<div id="dropdown"></div>
+</body>
