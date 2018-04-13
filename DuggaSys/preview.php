@@ -111,7 +111,7 @@
                 cursor: pointer;
                 color: #000;
                 font-size: 13px;
-                margin: 5px 5px 5px 5px;
+                padding: 5px 5px 5px 5px;
                 background-color: #fff;
             }
             #h1:hover {
@@ -121,7 +121,7 @@
                 cursor: pointer;
                 color: #000;
                 font-size: 12px;
-                margin: 5px 5px 5px 5px;
+                padding: 5px 5px 5px 9px;
                 background-color: #fff;
             }
             #h2:hover {
@@ -131,7 +131,7 @@
                 cursor: pointer;
                 color: #000;
                 font-size: 11px;
-                margin: 5px 5px 5px 5px;
+                padding: 8px 5px 5px 13px;
                 background-color: #fff;
             }
             #h3:hover {
