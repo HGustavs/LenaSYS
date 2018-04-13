@@ -26,6 +26,7 @@ $disabled = getOP('disabled');
 
 $uid = getOP('uid');
 
+$arrow = getOP('id');
 $name = getOP('nme');
 $autograde = getOP('autograde');
 $gradesys = getOP('gradesys');
@@ -34,6 +35,8 @@ $qstart = getOP('qstart');
 $deadline = getOP('deadline');
 $release = getOP('release');
 $coursevers = getOP('coursevers');
+$cogwheel = getOP('id');
+$trashcan = getOP('id');
 
 $debug="NONE!";
 
@@ -232,16 +235,16 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 		$entry = array(
 			'variants' => $mass,
-			'did' => $row['id'],
-			'cid' => $row['cid'],
-			'autograde' => $row['autograde'],
-			'gradesystem' => $row['gradesystem'],
+			'arrow' => $row['id'],
 			'name' => $row['qname'],
+			'autograde' => $row['autograde'],
+			'gradesys' => $row['gradesystem'],
 			'template' => $row['quizFile'],
-      'qstart' => $row['qstart'],	
 			'deadline' => $row['deadline'],				
-      'release' => $row['qrelease'],	
-			'modified' => $row['modified']				
+      		'release' => $row['qrelease'],	
+			'modified' => $row['modified'],
+			'cogwheel' => $row['id'],
+			'trashcan' => $row['id']			
 			);
 
 		array_push($entries, $entry);
