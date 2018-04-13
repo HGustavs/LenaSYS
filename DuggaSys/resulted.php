@@ -44,7 +44,7 @@ pdoConnect();
 		include '../Shared/loginbox.php';
 	?>
 
-	<!---------------------=============####### Result Popover #######=============--------------------->
+	<!-- -------------------=============####### Result Popover #######=============------------------- -->
 
 	<div id='resultpopover' class='resultPopover' style='display:none'>
 		<div class='loginBoxheader'>
@@ -54,7 +54,7 @@ pdoConnect();
 		<div style="position:absolute; right:2px; top:34px; background:#bbb; width:200px;"><div id='markMenuPlaceholder'></div><div id="teacherFeedbackTable"></div></div>
 	</div>
 
-  <!---------------------=============####### Preview Popover #######=============--------------------->
+  <!-- -------------------=============####### Preview Popover #######=============------------------- -->
 
 	<div id='previewpopover' class='previewPopover' style='display:none;'>
 		<div class='loginBoxheader'>
@@ -95,7 +95,7 @@ pdoConnect();
 			</table>
 		</div>
 	</div>
-  <!---------------------=============####### Statistics Popover #######=============--------------------->
+  <!-- -------------------=============####### Statistics Popover #######=============------------------- -->
 
 	<div id='statisticspopover' class='previewpopover' style='display:none;'>
 		<div class='loginBoxheader'>
