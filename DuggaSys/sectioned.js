@@ -90,6 +90,7 @@ function editSectionDialogTitle(title) {
 	}
 }
 
+
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
 {
 	xelink=elink;
@@ -713,7 +714,7 @@ function returnedSection(data)
         str+="<li class='editVers'><button class='submit-button menuButton editVers ' onclick='closeWindows(); bigMacSymbol(); showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");' title='Edit the selected version'>Edit Version</button></li>";
         str+="<li class='newVers'><button class='submit-button menuButton newVers' onclick='closeWindows(); bigMacSymbol(); showCreateVersion();' title='Create a new version of this course'>New Version</button></li>";
 		str+="<li class='hamburgerSeparator'><hr></li>";
-		str+="<li class='results'><button class='submit-button menuButton results' onclick='closeWindows(); changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Edit student results'>Results</button></li>";       
+		str+="<li class='results'><button class='submit-button menuButton results' onclick='closeWindows(); changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Edit student results'>Results</button></li>";
         str+="<li class='tests'><button class='submit-button menuButton tests' onclick='closeWindows(); changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Show tests'>Tests</button></li>";
         str+="<li class='files'><button class='submit-button menuButton files' onclick='closeWindows(); changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Show files'>Files</button></li>";
         str+="<li class='access'><button class='submit-button menuButton access' onclick='closeWindows(); accessCourse();' title='Give students access to the selected version'>Access</button></li>";
@@ -1297,6 +1298,7 @@ function returnedSection(data)
 	hideCollapsedMenus();
 	getArrowElements();
 	toggleArrows();
+	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 }
 
 function showHighscore(did, lid)
