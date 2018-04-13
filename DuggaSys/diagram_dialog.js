@@ -94,6 +94,11 @@ function setSelectedOption(type, value){
     if(value == document.getElementById(type).options[i].value){
       document.getElementById(type).value = value;
       document.getElementById(type).options[i].selected = "true";
+      if(type == "TextSize"){
+        document.getElementById(type).value = document.getElementById('TextSize').options[i].innerHTML;
+      }else{
+        document.getElementById(type).value = value;
+      }
       break;
     }else{
       document.getElementById(type).options[i].selected = "false";
