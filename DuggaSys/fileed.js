@@ -262,27 +262,8 @@ function returnedFile(data)
 
 	myTable.renderTable();
 
-    $("content").html();
-	var result = 0;
-	filez = data['files'];
-	duggaPages = data['duggaPages'];
-
-	str="";
-
 	if(data['debug']!="NONE!") alert(data['debug']);
 	makeAllSortable();
-}
-
-function getFileInformation(name, getExt) {
-	var str = name.split(".");
-	var extension = str[str.length - 1];
-	var filename = str.splice(0, str.length - 1).join("");
-	if(getExt === true) {
-		return extension;
-	}
-	else {
-		return filename;
-	}
 }
 
 function formatBytes(bytes,decimals) {
