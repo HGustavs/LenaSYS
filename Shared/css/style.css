@@ -3016,3 +3016,51 @@ ul.hamburgerList button.menuButton {
            user-select: none;
 }
 
+.migration-form {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.migration-row {
+  width: 40%;
+  margin: 1rem auto;
+}
+.migration-row select {
+  max-width: 100%;
+}
+
+.scrollable {
+  overflow-y: scroll;
+}
+
+.migration-status {
+  border: 1px solid black;
+  width: 95%;
+  margin: 0 auto;
+  max-height: 100vh;
+  height: 80vh;
+}
+
+.migration-status p:nth-child(odd) {
+  background-color: #ffe7fa;
+}
+
+.migration-status p {
+  margin: .1rem 0;
+}
+
+.success {
+  background-color: #B5FFB8;
+}
+
+.danger {
+  background-color: #ffa7a7;
+}
+
+@media only screen and (max-width: 320px), only screen and (max-device-width: 320px) {
+  .migration-row {
+    width: 95%;
+    margin: 1rem auto;
+  }
+
+}
