@@ -1,18 +1,15 @@
 var querystring=parseGet();
 var retdata;
 var newversid;
-var decider;
 var active_lid;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
-	// The id counters are used to give elements unique ids. This might? brake
-	// because an element is not guaranteed to recieve the same id every time,
-	// i.e. if new elements are added.
-	idCounter:0,
-	arrowIdCounter:0,
-	hiddenElements:[], // Stores the id of elements that should be hidden.
-	arrowIcons:[] // Stores which arrows whose state needs to be remembered.
+	idCounter: 0, 		/* Used to give elements unique ids. This might? brake
+						   because an element is not guaranteed to recieve the
+						   same id every time. */
+	hiddenElements: [], // Stores the id of elements who's childs should be hidden.
+	arrowIcons: [] 		// Stores ids of arrows whose state needs to be remembered.
 }
 
 AJAXService("get",{},"SECTION");
@@ -70,7 +67,7 @@ function showSubmitButton(){
   $(".updateDugga").css("display","none");
   $(".deleteDugga").css("display","none");
   $(".closeDugga").css("display","inline-block");
-  //$("#overlay").css("display","block");
+  
 }
 
 function showSaveButton(){
@@ -78,7 +75,7 @@ function showSaveButton(){
   $(".updateDugga").css("display","block");
   $(".deleteDugga").css("display","block");
   $(".closeDugga").css("display","none");
-  //$("#overlay").css("display","none");
+  
 }
 
 function editSectionDialogTitle(title) {
@@ -89,6 +86,7 @@ function editSectionDialogTitle(title) {
 		document.getElementById("editSectionDialogTitle").innerHTML = "Edit item";
 	}
 }
+
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
 {
@@ -116,23 +114,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	$("#gradesys").html(str);
 
-  /*
-	// Set grouptype
-	str="";
-	if(grouptype==null||grouptype==0) str+="<option selected='selected' value='0'>Regular dugga</option>"
-	else str+="<option value='0'>Regular dugga</option>";
-
-	if(grouptype==1) str+="<option selected='selected' value='1'>Group dugga</option>"
-	else str+="<option value='1'>Group dugga</option>";
-
-	if(grouptype==2) str+="<option selected='selected' value='2'>Seminar</option>"
-	else str+="<option value='2'>Seminar</option>";
-
-	if(grouptype==3) str+="<option selected='selected' value='3'>Group seminar</option>"
-	else str+="<option value='3'>Group seminar</option>";
-
-	$("#grouptype").html(str);
-	*/
+  
 
 	// Set Moments
 	str="";
@@ -172,13 +154,10 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str+="<option value='1'>Section</option>";
 	if(kind==2) str+="<option selected='selected' value='2'>Code</option>"
 	else str+="<option value='2'>Code</option>";
-	if(retdata['duggor'].length == 0){
-		str+="<option disabled>Test</option>";
-		displaymessage();
-	}else{
-		if(kind==3) str+="<option selected='selected' value='3'>Test</option>"
+
+		if(kind==3) str+="<option selected='selected' class='test' value='3'>Test</option>"
 		else str+="<option value='3'>Test</option>";
-	}
+	
 	if(kind==4) str+="<option selected='selected' value='4'>Moment</option>"
 	else str+="<option value='4'>Moment</option>";
 	if(kind==5) str+="<option selected='selected' value='5'>Link</option>"
@@ -307,7 +286,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	}
 	$("#editSection").css("display","flex");
-	//$("#overlay").css("display","block");
+	
 
 }
 
@@ -444,6 +423,35 @@ function validateName(){
 	return retValue;
 }
 
+function validateType(){
+	var retValue = false;
+	kind=$("#type").val();
+	var nme=document.getElementById("type");
+	
+	
+
+	if (retdata['duggor'].length == 0 && kind == 3){
+		$('#tooltipType').fadeIn();
+		$('#saveBtn').attr('disabled','disabled');
+		$('#submitBtn').attr('disabled','disabled');
+		
+		nme.style.backgroundColor = "#f57";
+		//the line of code above changes the selected element AND the list's background color.
+		//the for loop changes the list's background color back to white so only the selected item shows up as red.
+		for(i = 0; i < nme.options.length; i++){
+			nme.options[i].style.backgroundColor = "#fff";
+		}
+	}else{
+		$('#tooltipType').fadeOut();
+		$('#saveBtn').removeAttr('disabled');
+		$('#submitBtn').removeAttr('disabled');
+		nme.style.backgroundColor = "#fff";
+		retValue = true;
+	}
+
+	return retValue;
+}
+
 
 function updateItem()
 {
@@ -462,7 +470,7 @@ function updateItem()
 	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments},"SECTION");
 	$("#sectionConfirmBox").css("display", "none");
 	$("#editSection").css("display", "none");
-	//$("#overlay").css("display","none");
+	
 }
 
 // Create New Dugga/Example
@@ -474,8 +482,7 @@ function createLink()
 
 function newItem()
 {
-	/*lid=$("#lid").val();
-  AJAXService("NEW",{lid:lid},"SECTION");*/
+	
 
   tabs=$("#tabs").val();
   lid=$("#lid").val();
@@ -510,7 +517,7 @@ function closeSelect()
 function showCreateVersion()
 {
 	$("#newCourseVersion").css("display", "flex");
-	//$("#overlay").css("display", "block");
+	
 }
 
 function createVersion(){
@@ -563,7 +570,7 @@ function createVersion(){
 		}
 
 		$("#newCourseVersion").css("display","none");
-		//$("#overlay").css("display","none");
+		
 
 	}
 
@@ -582,7 +589,7 @@ function showEditVersion(versid, versname, startdate, enddate)
   $("#eenddate").val(enddate);
 
 	$("#editCourseVersion").css("display", "flex");
-	//$("#overlay").css("display", "block");
+	
 }
 
 function updateVersion(){
@@ -613,7 +620,7 @@ function updateVersion(){
 	}
 
 	$("#editCourseVersion").css("display","none");
-	//$("#overlay").css("display","none");
+	
 }
 
 function goToVersion(selected)
@@ -713,7 +720,7 @@ function returnedSection(data)
         str+="<li class='editVers'><button class='submit-button menuButton editVers ' onclick='closeWindows(); bigMacSymbol(); showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");' title='Edit the selected version'>Edit Version</button></li>";
         str+="<li class='newVers'><button class='submit-button menuButton newVers' onclick='closeWindows(); bigMacSymbol(); showCreateVersion();' title='Create a new version of this course'>New Version</button></li>";
 		str+="<li class='hamburgerSeparator'><hr></li>";
-		str+="<li class='results'><button class='submit-button menuButton results' onclick='closeWindows(); changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Edit student results'>Results</button></li>";       
+		str+="<li class='results'><button class='submit-button menuButton results' onclick='closeWindows(); changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Edit student results'>Results</button></li>";
         str+="<li class='tests'><button class='submit-button menuButton tests' onclick='closeWindows(); changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Show tests'>Tests</button></li>";
         str+="<li class='files'><button class='submit-button menuButton files' onclick='closeWindows(); changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' title='Show files'>Files</button></li>";
         str+="<li class='access'><button class='submit-button menuButton access' onclick='closeWindows(); accessCourse();' title='Give students access to the selected version'>Access</button></li>";
@@ -790,6 +797,7 @@ function returnedSection(data)
 
 		str+="<div id='Sectionlistc' >";
 
+		//group-related variable
 		var groupitems = 0;
 
 		// For now we only have two kinds of sections
@@ -905,16 +913,7 @@ function returnedSection(data)
 												}
 											}
 									}else{
-                    /*
-											if (submitted !== null && marked === null) {
-												status="pending";
-											}
-
-											if ( submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())){
-												status="pending";
-											}
-
-                      */
+                    
 									}
 								}
 							}
@@ -1029,10 +1028,10 @@ function returnedSection(data)
 						+ item['entryname'] + "'><span>"
 						+ item['entryname']
 						+ "</span><img src='../Shared/icons/desc_complement.svg'"
-						+ "id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode
+						+ "id='arrowComp" + menuState.idCounter++ + data.coursecode
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
-						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
+						+ "id='arrowRight" + menuState.idCounter++ + data.coursecode
 						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
@@ -1042,10 +1041,10 @@ function returnedSection(data)
 						+ item['entryname'] + "'><span>"
 						+ item['entryname'] + "</span>"
 						+ "<img src='../Shared/icons/desc_complement.svg'"
-						+ "id='arrowComp" + menuState.arrowIdCounter++ + data.coursecode
+						+ "id='arrowComp" + menuState.idCounter++ + data.coursecode
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
-						+ "id='arrowRight" + menuState.arrowIdCounter++ + data.coursecode
+						+ "id='arrowRight" + menuState.idCounter++ + data.coursecode
 						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
@@ -1104,13 +1103,7 @@ function returnedSection(data)
 
 				// Add generic td for deadlines if one exists
 				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")) {
-					/*
-					if(kk==1){
-						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;'";
-					}else{
-						str +="<td style='text-align:right;overflow:none;white-space:nowrap;overflow:hidden;width:140px;'";
-					}
-					*/
+					
 
 					var dl = deadline.split(" ");
 
@@ -1153,7 +1146,7 @@ function returnedSection(data)
                             + "\""+item['gradesys']+"\","
                             + "\""+item['highscoremode']+"\","
                             + "\""+item['comments']+"\""
-                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else if(parseInt(item['kind']) === 1) {
 						str+=
@@ -1170,7 +1163,7 @@ function returnedSection(data)
                             + "\""+item['gradesys']+"\","
                             + "\""+item['highscoremode']+"\","
                             + "\""+item['comments']+"\""
-                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else if(parseInt(item['kind']) === 4) {
 						str+=
@@ -1187,7 +1180,7 @@ function returnedSection(data)
                             + "\""+item['gradesys']+"\","
                             + "\""+item['highscoremode']+"\","
                             + "\""+item['comments']+"\""
-                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else {
 						str+=
@@ -1292,11 +1285,12 @@ function returnedSection(data)
 
 	}
 	if(data['debug']!="NONE!") alert(data['debug']);
-
 	getHiddenElements();
 	hideCollapsedMenus();
 	getArrowElements();
 	toggleArrows();
+	menuState.idCounter = 0;
+	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 }
 
 function showHighscore(did, lid)
@@ -1358,19 +1352,69 @@ function returnedHighscore(data){
 
 // Toggle content for each moment
 $(document).on('click', '.moment, .section', function () {
-	saveHiddenElementIDs($(this));
-	hideCollapsedMenus();
-
-	// The event handler returns two elements. This if statement gets the
-	// element of interest.
+	/* The event handler returns two elements. The following two if statements
+	   gets the element of interest. */
+	if(this.id.length > 0) {
+		saveHiddenElementIDs(this.id);
+	}
 	if(this.id.length > 0) {
 		saveArrowIds(this.id);
 	}
-
+	hideCollapsedMenus();
 	toggleArrows();
 });
 
-// Get all element ids from local storage that should be hidden.
+// Save ids of all elements, whose state needs to be remembered, in local storage.
+function saveHiddenElementIDs(clickedElement) {
+	addOrRemoveFromArray(clickedElement, menuState.hiddenElements);
+	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
+}
+
+// Save ids of all arrows, whose state needs to be remembered, in local storage.
+function saveArrowIds(clickedElement) {
+	var childNodes = document.getElementById(clickedElement).firstChild.childNodes;
+	for(var i = 0; i < childNodes.length; i++) {
+		if(childNodes[i].nodeName == "IMG") {
+			addOrRemoveFromArray(childNodes[i].id, menuState.arrowIcons);
+		}
+	}
+	localStorage.setItem('arrowIcons', JSON.stringify(menuState.arrowIcons));
+}
+
+/* Hide all child elements to the moment and section elements in the
+   hiddenElements array. */
+function hideCollapsedMenus() {
+	$('.header, .section, .code, .test, .link').show();
+	for(var i = 0; i < menuState.hiddenElements.length; i++) {
+		var ancestor = findAncestor($("#"+menuState.hiddenElements[i])[0], "moment");
+		if((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
+			jQuery(ancestor).nextUntil('.moment').hide();
+		}
+		ancestor = findAncestor($("#"+menuState.hiddenElements[i])[0], "section");
+		if((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
+			jQuery(ancestor).nextUntil('.section').hide();
+		}
+	}
+}
+
+/* Show down arrow by default and then hide this arrow and show the right
+   arrow if it is in the arrowIcons array. */
+function toggleArrows() {
+	$('.arrowComp').show();
+	$('.arrowRight').hide();
+
+	for(var i = 0; i < menuState.arrowIcons.length; i++) {
+		/* If the string 'arrowComp' is a part of the string on the current
+		   index of the arrowIcons array, hide down arrow and show right arrow. */
+		if(menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
+			$('#' + menuState.arrowIcons[i]).hide();
+		} else {
+			$('#' + menuState.arrowIcons[i]).show();
+		}
+	}
+}
+
+// Get all element ids from local storage (who's children should be hidden).
 function getHiddenElements() {
 	menuState.hiddenElements = JSON.parse(localStorage.getItem('hiddenElements'));
 	if(menuState.hiddenElements === null) {
@@ -1386,37 +1430,17 @@ function getArrowElements() {
 	}
 }
 
-// Save ids of all elements, whose state needs to be remembered, in local storage.
-function saveHiddenElementIDs(clickedElement) {
-	clickedElement.nextUntil('.moment, .section').each(function() {
-		addOrRemoveFromArray(this.id, menuState.hiddenElements);
-	});
-	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
-}
-
-// Hide all elements from the hiddenElements array.
-function hideCollapsedMenus() {
-	$('.header, .section, .code, .test, .link').show();
-	for(var i = 0; i < menuState.hiddenElements.length; i++) {
-		$('#' + menuState.hiddenElements[i]).hide();
+// Finds the nearest parent element of "element" that contains the class "className".
+function findAncestor (element, className) {
+	if(element != undefined || element != null){
+		while ((element = element.parentElement) && !element.classList.contains(className));
+		return element;
 	}
 }
 
-// Save ids of all arrows, whose state needs to be remembered, in local storage.
-function saveArrowIds(clickedElement) {
-	var childNodes = document.getElementById(clickedElement).firstChild.childNodes;
-
-	for(var i = 0; i < childNodes.length; i++) {
-		if(childNodes[i].nodeName == "IMG") {
-			addOrRemoveFromArray(childNodes[i].id, menuState.arrowIcons);
-		}
-	}
-
-	localStorage.setItem('arrowIcons', JSON.stringify(menuState.arrowIcons));
-}
-
-// Add element id to array if it does not exist in the array.
-// Remove element id from array if it exist in the array.
+/* Toggle string in array.
+   Add string to array if it does not exist in the array.
+   Remove string from array if it exist in the array. */
 function addOrRemoveFromArray(elementID, array) {
 	var exists = false;
 	for(var i = 0; i < array.length; i++) {
@@ -1428,23 +1452,6 @@ function addOrRemoveFromArray(elementID, array) {
 	}
 	if(!exists) {
 		array.push(elementID);
-	}
-}
-
-// Show down arrow by default and then hide this arrow and show the right
-// arrow if it is in the arrowIcons array.
-function toggleArrows() {
-	$('.arrowComp').show();
-	$('.arrowRight').hide();
-
-	for(var i = 0; i < menuState.arrowIcons.length; i++) {
-		// If the string 'arrowComp' is a part of the string on the current
-		// index of the arrowIcons array, hide down arrow and show right arrow.
-		if(menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
-			$('#' + menuState.arrowIcons[i]).hide();
-		} else {
-			$('#' + menuState.arrowIcons[i]).show();
-		}
 	}
 }
 

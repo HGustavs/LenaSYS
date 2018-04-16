@@ -306,12 +306,10 @@ function createDugga()
 	AJAXService("ADDUGGA",{cid:cid,autograde:autograde,gradesys:gradesys,nme:nme,template:template,release:release,deadline:deadline,deadline2:deadline2,deadline3:deadline3,coursevers:coursevers},"DUGGA");
 }
 
-function deleteDugga()
+function deleteDugga(did)
 {
-    did=$("#did").val();
-    AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+    if(confirm("Do you really want to delete this dugga?"))AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
     $("#editDugga").css("display","none");
-    //$("#overlay").css("display","none");
 }
 
 
@@ -614,12 +612,16 @@ function returnedDugga(data) {
 
     var tabledata = {
     	tblhead:{
-    		autograde:"Autograde on/off",
-    		gradesystem:"Grade",
-    		template:"Template",
+    		arrow:"->",
+    		qname:"Name",
+    		autograde:"Autograde",
+    		gradesystem:"Gradesystem",
+    		quizFile:"Template",
     		deadline:"Deadline",
-    		release:"Release date",
-    		modified:"Last modified"
+    		qrelease:"Result date",
+    		modified:"Last modified",
+    		cogwheel:"*",
+    		trashcan:"-"
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
@@ -657,16 +659,42 @@ function returnedDugga(data) {
 
 }
 
-// Rendring a specific cell
+// Rendring specific cells
 function renderCell(col,celldata,cellid) {
-	if (col == "Trumma"){
-	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
-	} else if (col == "Pnr") {
-	    return "<div>" + celldata + "</div>";
-	} else {
-		return "<div id='" + cellid + "'>" + celldata + "</div>";
+	var list = celldata.split();
+	// Translating autograding from integers to show the data like yes/no.
+	if (col == "autograde"){
+		if(celldata == "0"){
+			celldata = "No";
+		}else if(celldata == "1"){
+			celldata = "Yes";
+		}
+		else{
+			celldata = "Undefined";
+		}
 	}
-	return celldata;
+
+	// Translating gradsystem from integers so that it shows the possible grades.
+	else if (col == "gradesystem"){
+		if(celldata == "1"){
+			celldata = "U-G-VG";
+		}else if(celldata == "2"){
+			celldata = "U-G"
+		}else if(celldata == "3"){
+			celldata = "U-3-4-5"
+		}
+		else{
+			celldata = "Undefined";
+		}
+	}
+
+	// Placing a clickable trashcan in its designated column
+
+	else if (col == "trashcan"){
+		did = JSON.parse(celldata);
+		celldata = "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg' onclick='deleteDugga(did)'>"
+	}
+	return "<div id='" + cellid + "'>" + celldata + "</div>";
 }
 // End of rendering the table
 
