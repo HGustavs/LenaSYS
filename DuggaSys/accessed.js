@@ -75,6 +75,11 @@ function changeVersion(cid,uid,val)
 	AJAXService("VERSION",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
 }
 
+function changeExaminer(cid,uid,val)
+{
+	AJAXService("EXAMINER",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
+}
+
 // Sets values in the "cogwheel popup"
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
 function selectUser(uid,username,ssn,firstname,lastname,access,className)
@@ -210,9 +215,24 @@ function renderCell(col,celldata,cellid) {
 		obj=JSON.parse(celldata);
 		str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
 		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
-			str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
-	    return str;
-	}else if(col == "access"){
+    str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
+    return str;
+	}else if(col == "examiner"){
+    if(celldata[celldata.length - 1]['access'] == 'W'){
+      str = "none";
+    }else{
+      str = "<select onChange='changeExaminer(\""+querystring['cid']+"\",\""+celldata[celldata.length - 1]['uid']+"\",this.value);' onclick='return false;'>";
+      for(var i = 0; i < celldata.length - 1; i++){
+        str+="<option ";
+        if(celldata[i]['username'] === celldata[celldata.length - 1]['teacher']) {
+          str+="selected='selected' ";
+        }
+        str+="value='"+celldata[i]['username']+"'>"+celldata[i]['username']+"</option>";
+      }
+      str+="</select>";
+    } 
+    return str;
+  }else if(col == "access"){
 		if(celldata == "W"){
 			celldata = "Teacher";
 		}else if(celldata == "R"){
