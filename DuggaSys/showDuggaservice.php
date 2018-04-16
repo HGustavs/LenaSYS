@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 //---------------------------------------------------------------------------------------------------------------
 // showDuggaservice - Retrieve duggor, services save and update duggor
@@ -21,8 +21,8 @@ if(isset($_SESSION['uid'])){
 	$lastname=$_SESSION['lastname'];
 	$firstname=$_SESSION['firstname'];
 }else{
-	$userid="1";
-}
+	$userid="1";		
+} 	
 
 $opt=getOP('opt');
 $courseid=getOP('courseid');
@@ -55,14 +55,14 @@ $variants=array();
 // Create empty array for dugga info!
 $duggainfo=array();
 
-$debug="NONE!";
+$debug="NONE!";	
 
 $log_uuid = getOP('log_uuid');
 $info=$opt." ".$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$segment." ".$answer;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "showDuggaservice.php",$userid,$info);
 
 //------------------------------------------------------------------------------------------------
-// Retrieve Information
+// Retrieve Information			
 //------------------------------------------------------------------------------------------------
 
 // Read visibility of course
@@ -125,7 +125,7 @@ if ($cvisibility == 1 && $dvisibility == 1 && !$hr) $demo=true;
 
 if($demo){
 	// We are not logged in - provide the first variant as demo.
-	$param=html_entity_decode($variants[0]['param']);
+	$param=html_entity_decode($variants[0]['param']);	
 } else if ($hr){
 	// We are part of the course - assign variant
 	// See if we already have a result i.e. a chosen variant.
@@ -155,7 +155,7 @@ if($demo){
 		$submitted = $row['submitted'];
 		$marked = $row['marked'];
 	}
-
+	
 	// If selected variant is not found - pick another from working list.
 	// Should we connect this to answer or not e.g. if we have an answer should we still give a working variant??
 	$foundvar=-1;
@@ -172,27 +172,27 @@ if($demo){
 		$cnt=0;
 		do{
 				$randomno=rand(0,sizeof($variants)-1);
-
+				
 				// If there is a variant choose one at random
 				if(sizeof($variants)>0){
 						if($variants[$randomno]['disabled']==0){
-								$newvariant=$variants[$randomno]['vid'];
+								$newvariant=$variants[$randomno]['vid'];						
 						}
-				}
+				} 
 				$cnt++;
 		}while($cnt<8&&$newvariant=="UNK");
-
+		
 		// if none has been chosen and there is a first one take that one.
 		if($newvariant=="UNK" && $firstvariant!=-1) $newvariant=$firstvariant;
 	}else{
-		// There is a variant already -- do nothing!
+		// There is a variant already -- do nothing!	
 	}
-
+	
 	// Savedvariant now contains variant (from previous visit) "" (null) or UNK (no variant inserted)
 	if ($newvariant=="UNK"){
 
 	} else if ($newvariant!="UNK") {
-
+		
 		if($isIndb){
 			$query = $pdo->prepare("UPDATE userAnswer SET variant=:variant WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
 			$query->bindParam(':cid', $courseid);
@@ -218,7 +218,7 @@ if($demo){
 				$error=$query->errorInfo();
 				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
 			}
-
+						
 			$savedvariant=$newvariant;
 			//------------------------------
 			//mark segment as started on
@@ -254,8 +254,8 @@ if($demo){
 //------------------------------------------------------------------------------------------------
 
 if(checklogin()){
-		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions
-        if(strcmp($opt,"SAVDU")==0){
+		if($hr&&$userid!="UNK" || isSuperUser($userid)){ // The code for modification using sessions			
+        if(strcmp($opt,"SAVDU")==0){				
             // Log the dugga write
             makeLogEntry($userid,2,$pdo,$courseid." ".$coursevers." ".$duggaid." ".$moment." ".$answer);
 
@@ -271,7 +271,7 @@ if(checklogin()){
             $query->bindParam(':cid', $courseid);
             $query->bindParam(':coursevers', $coursevers);
             $query->bindParam(':uid', $userid);
-            $query->bindParam(':moment', $moment);
+            $query->bindParam(':moment', $moment);				
 
             $query->execute();
             $grade = null;
@@ -322,13 +322,13 @@ if(checklogin()){
                           	if(!$vuery->execute()) {
                           		$error=$vuery->errorInfo();
                           		$debug="Error inserting active version (row ".__LINE__.") ".$vuery->rowCount()." row(s) were inserted. Error code: ".$error[2];
-                          	}
+                          	}                                            
                         }
                     }
                 }
-
+                
             }
-
+            
             // Get submission date
             $query = $pdo->prepare("SELECT submitted from userAnswer WHERE uid=:uid AND cid=:cid AND moment=:moment AND vers=:coursevers;");
             $query->bindParam(':cid', $courseid);
@@ -338,17 +338,17 @@ if(checklogin()){
             if(!$query->execute()) {
             	$error=$query->errorInfo();
             	$debug="Error fetching submit date. (row ".__LINE__.") ".$error[2];
-            }
+            }				
             if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             	$submitted=$row['submitted'];
             }
-
+            
         }
 		}
 }
 
 //------------------------------------------------------------------------------------------------
-// Retrieve Information
+// Retrieve Information			
 //------------------------------------------------------------------------------------------------
 
 if(strcmp($opt,"GETVARIANTANSWER")==0){
@@ -358,19 +358,19 @@ if(strcmp($opt,"GETVARIANTANSWER")==0){
 	$thrid = $temp[2];
 
 	$query = $pdo->prepare("SELECT variant.variantanswer,useranswer,feedback FROM variant,userAnswer WHERE userAnswer.quiz = variant.quizID and userAnswer.uid = :uid and userAnswer.cid = :cid and userAnswer.vers = :vers");
-
+	
 	$query->bindParam(':uid', $userid);
 	$query->bindParam(':cid', $first);
 	$query->bindParam(':vers', $second);
 	$result = $query->execute();
-
+	
 	$setanswer="";
-
+	
 	foreach($query->fetchAll() as $row) {
 		$setanswer.=$row['variantanswer'].",";
 		$savedanswer.=$row['useranswer'].",";
 	}
-
+	
 	makeLogEntry($userid,2,$pdo,$first);
 	$insertparam = true;
 	$param = $setanswer;
@@ -384,41 +384,41 @@ $param = str_replace("*####*", '&cup;', $param);
 $savedanswer = str_replace("*####*", '&cup;', $savedanswer);
 if(strcmp($savedanswer,"") == 0){$savedanswer = "UNK";} // Return UNK if we have not submitted any answer
 if(strcmp($grade,"") == 0){$grade = "UNK";} // Return UNK if we have no grade
-if(strcmp($submitted,"") == 0){$submitted = "UNK";} // Return UNK if we have not submitted
+if(strcmp($submitted,"") == 0){$submitted = "UNK";} // Return UNK if we have not submitted 
 if(strcmp($marked,"") == 0){$marked = "UNK";} // Return UNK if we have not been marked
 
 $files= array();
 if ($showall==="true"){
-  $query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");
+  $query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid order by subid,fieldnme,updtime asc;");  
 } else {
-  $query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");
+  $query = $pdo->prepare("select subid,uid,vers,did,fieldnme,filename,extension,mime,updtime,kind,filepath,seq,segment from submission where uid=:uid and vers=:vers and cid=:cid and did=:did order by subid,fieldnme,updtime asc;");  
   $query->bindParam(':did', $duggaid);
 }
 $query->bindParam(':uid', $userid);
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':vers', $coursevers);
-
+	
 $result = $query->execute();
 
 // Store current day in string
 $today = date("Y-m-d H:i:s");
 
 foreach($query->fetchAll() as $row) {
-
+		
 		$content = "UNK";
 		$feedback = "UNK";
 
 		$currcvd=getcwd();
-
-		$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";
+		
+		$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
 		if(!file_exists($fedbname)) {
 				$feedback="UNK";
 		} else {
 			if($today > $duggainfo['qrelease']  || is_null($duggainfo['qrelease'])){
-				$feedback=file_get_contents($fedbname);
+				$feedback=file_get_contents($fedbname);				
 			}
-		}
-
+		}			
+		
 		if($row['kind']=="3"){
 				// Read file contents
 				$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
@@ -440,21 +440,21 @@ foreach($query->fetchAll() as $row) {
 		}else{
 				$content="Not a text-submit or URL";
 		}
-
+	
 		$entry = array(
 			'uid' => $row['uid'],
 			'subid' => $row['subid'],
 			'vers' => $row['vers'],
 			'did' => $row['did'],
 			'fieldnme' => $row['fieldnme'],
-			'filename' => $row['filename'],
-			'filepath' => $row['filepath'],
+			'filename' => $row['filename'],	
+			'filepath' => $row['filepath'],	
 			'extension' => $row['extension'],
 			'mime' => $row['mime'],
 			'updtime' => $row['updtime'],
-			'kind' => $row['kind'],
-			'seq' => $row['seq'],
-			'segment' => $row['segment'],
+			'kind' => $row['kind'],	
+			'seq' => $row['seq'],	
+			'segment' => $row['segment'],	
 			'content' => $content,
 			'feedback' => $feedback
 		);
@@ -462,7 +462,7 @@ foreach($query->fetchAll() as $row) {
 		// If the filednme key isn't set, create it now
  		if (!isset($files[$row['segment']])) $files[$row['segment']] = array();
 
-		array_push($files[$row['segment']], $entry);
+		array_push($files[$row['segment']], $entry);	
 }
 
 if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be object

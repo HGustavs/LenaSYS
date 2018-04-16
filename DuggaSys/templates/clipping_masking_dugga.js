@@ -1,6 +1,6 @@
 /********************************************************************************
 
-   Documentation
+   Documentation 
 
 *********************************************************************************
 
@@ -28,7 +28,6 @@ var userStats=null;
 var pushcount = 0;
 var elapsedTime = 0;
 var dataV;
-var querystring=parseGet();
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
@@ -36,7 +35,7 @@ var querystring=parseGet();
 // Setup dugga. Code to execute before we have any parameters for the dugga.
 // -----------------------------------------------------------------------------------------------
 
-function setup()
+function setup() 
 {
 		canvas = document.getElementById('a');
 		if (canvas) {
@@ -62,8 +61,8 @@ function setup()
 
 function show(){
     // Fetch target image
-    document.getElementById("target-img").src="showdoc.php?cid=" + querystring['cid'] + "&moment=" + querystring['moment'] + "&fname="+duggaParams.target;
-
+    document.getElementById("target-img").src="showdoc.php?cid=3&fname="+duggaParams.target;
+    
     // Insert saved dugga answer
     document.getElementById("operationList").innerHTML="";
     if (hasSavedAnswer) {
@@ -77,11 +76,11 @@ function show(){
                 newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
                 newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+previous[i]+'</span><span id="opCode_'+i+'" style="display:none">'+previous[i]+'</span></td>';
                 newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
-                newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
-                newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';
+                newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+                newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
                 newTableBody += "</tr>";
-
-                $("#operationList").append(newTableBody);
+                  
+                $("#operationList").append(newTableBody);						
             }
         }
         render();
@@ -99,10 +98,10 @@ function show(){
             for (var k=feedbackArr.length-1;k>=0;k--){
                 var fb_tmp = feedbackArr[k].split("%%");
                 fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-            }
+            } 		
         }
 				fb += "</tbody></table>";
-				document.getElementById('feedbackTable').innerHTML = fb;
+				document.getElementById('feedbackTable').innerHTML = fb;		
 				document.getElementById('feedbackBox').style.display = "block";
 		}
 
@@ -131,12 +130,11 @@ function show(){
 //   - list of submitted files
 //   - feedback
 // -----------------------------------------------------------------------------------------------
-function returnedDugga(data)
-{
-	console.log(data);
+function returnedDugga(data) 
+{	
 		dataV = data;
 		if (data['debug'] != "NONE!") { alert(data['debug']); }
-		if (data['param'] == "UNK" || data['param'] == "NONE!") {
+		if (data['param'] == "UNK") {
 				alert("UNKNOWN DUGGA!");
 		} else {
 				duggaParams = jQuery.parseJSON(data['param']);
@@ -149,7 +147,7 @@ function returnedDugga(data)
         hasSavedAnswer=true;
         savedAnswer=data['answer'];
     }
-    displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
+    displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);      
     show();
 }
 
@@ -169,21 +167,21 @@ function reset()
 // -----------------------------------------------------------------------------------------------
 // This method submits the current answer and marks the dugga as pending grading.
 // -----------------------------------------------------------------------------------------------
-function saveClick()
+function saveClick() 
 {
   	Timer.stopTimer();
 
   	timeUsed = Timer.score;
   	stepsUsed = ClickCounter.score;
 
-  	if (querystring['highscoremode'] == 1) {
+  	if (querystring['highscoremode'] == 1) {	
   		  score = Timer.score;
   	} else if (querystring['highscoremode'] == 2) {
   		  score = ClickCounter.score;
   	}
 
   	// Loop through all the added operations
-  	bitstr = ",";
+  	bitstr = ",";	
   	$("*[id*=opCode_]").each(function (){
   			bitstr+=this.innerHTML + ",";
   	});
@@ -198,17 +196,17 @@ function saveClick()
 }
 
 // -----------------------------------------------------------------------------------------------
-// Prepare the dugga to show facit.
+// Prepare the dugga to show facit. 
 // This method is used to
 //   - mark a student's submition
 //   - preview a specific dugga variant
 // -----------------------------------------------------------------------------------------------
 function showFacit(param, uanswer, danswer, userStats_, files_, moment_, feedback_)
 {
-
+  
     requiresParams=false;
     if (param!==null){
-        duggaParams=jQuery.parseJSON(param);
+        duggaParams=jQuery.parseJSON(param);      
     }
 
     if (!(uanswer === null || uanswer === "UNK")) {
@@ -221,7 +219,7 @@ function showFacit(param, uanswer, danswer, userStats_, files_, moment_, feedbac
         hasFeedback=true;
         feedback=feedback_;
     }
-
+        
     hasFacit=true;
     if(!(danswer === null || danswer === "UNK")){
         facit=jQuery.parseJSON(danswer);
@@ -231,11 +229,11 @@ function showFacit(param, uanswer, danswer, userStats_, files_, moment_, feedbac
       hasUserStats=true;
       userStats=userStats_;
     }
-
-		setup();
+    
+		setup();		
 }
 
-function closeFacit()
+function closeFacit() 
 {
 }
 
@@ -244,16 +242,16 @@ function closeFacit()
 //--------------------================############================--------------------
 //------------==========########### CONTROLLER FUNCTIONS ###########==========------------
 
-function fitToContainer()
+function fitToContainer() 
 {
 	divw = $("#content").width();
 	if (divw > 500){ divw -= 248; }
-	if (divw < window.innerHeight) {
+	if (divw < window.innerHeight) {    
       canvas.width = divw;
-  		canvas.height = divw;
+  		canvas.height = divw;      
 	} else {
       canvas.width = window.innerHeight - 180;
-  		canvas.height = canvas.width;
+  		canvas.height = canvas.width;      
 	}
 
 	document.getElementById("opTableContainer").style.maxHeight=(canvas.height-25-38)+"px";
@@ -272,7 +270,7 @@ function toggleSelectOperation(e){
 				$("#operationList").find("tr").each(function (){
 						if (this.id != $(e).closest("tr").attr('id')) $(this).removeClass("selectedOp");
 				});
-		}
+		}		
 }
 
 
@@ -309,7 +307,7 @@ function startDuggaHighScore(){
 	}
 }
 
-function newbutton()
+function newbutton() 
 {
 	//ClickCounter.onClick();
 	var newOp = $('#ops > optgroup > option:selected').text();
@@ -332,11 +330,11 @@ function newbutton()
 		var newTableBody = "<tr id='v" + i +"'>";
 		newTableBody += '<td style="font-size:11px; text-align: center;" id="opNum'+i+'">'+(i+1)+'</td>';
 		newTableBody += '<td><span style="width:100%; padding:0; margin:0; box-sizing: border-box;" id="op_'+i+'" onclick="toggleSelectOperation(this);">'+newOp+'</span><span id="opCode_'+i+'" style="display:none">'+newOpCode+'</span></td>';
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';
-		newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';
+		newTableBody += '<td><button onclick="$(this).closest(\'tr\').prev().insertAfter($(this).closest(\'tr\'));refreshOpNum();">&uarr;</button></td>';			
+		newTableBody += '<td><button onclick="$(this).closest(\'tr\').next().after($(this).closest(\'tr\'));refreshOpNum();">&darr;</button></td>';			
+		newTableBody += '<td><button onclick="$(this).closest(\'tr\').remove();refreshOpNum();">X</button></td>';			
 		newTableBody += "</tr>";
-
+			
 		$("#operationList").append(newTableBody);
 		refreshOpNum();
 	}
@@ -647,8 +645,9 @@ function goMofo(txt)
     }
     function render(){
         canvas.width = canvas.width;
-        context.scale(canvas.width/600,canvas.height/700);
+        context.scale(canvas.width/600,canvas.height/700);      
         $("*[id*=opCode_]").each(function (){
             goMofo(this.innerHTML);
         });
     }
+    

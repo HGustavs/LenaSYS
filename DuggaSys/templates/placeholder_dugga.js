@@ -1,6 +1,6 @@
 /********************************************************************************
 
-   Documentation
+   Documentation 
 
 *********************************************************************************
 
@@ -27,7 +27,6 @@ var hc=null;
 function setup()
 {
 		AJAXService("GETPARAM",{ },"PDUGGA");
-		inParams = parseGet();
 }
 
 //----------------------------------------------------------------------------------
@@ -50,22 +49,23 @@ function returnedDugga(data)
 		}
 		ClickCounter.showClicker();
 	}
-
+	
 	  if(data['debug']!="NONE!") alert(data['debug']);
 
 		if(data['param']=="UNK"){
 				alert("UNKNOWN DUGGA!");
-		}else{
+		}else{		
 			retdata=jQuery.parseJSON(data['param']);
+			data=null;
 			$.ajax({
 				method: "GET",
 				url: "showdoc.php",
-				data: { cid: retdata.cid, coursevers: retdata.coursevers, fname: retdata.fname, moment: inParams['moment'] }
+				data: { cid: retdata.cid, coursevers: retdata.coursevers, fname: retdata.fname }
 			})
 			.done(function( msg ) {
 				document.getElementById('instructions').innerHTML = msg;
 			});
-		}
+		}		
 		displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
@@ -81,7 +81,7 @@ function saveClick()
 	timeUsed = Timer.score;
 	stepsUsed = ClickCounter.score;
 
-	if (querystring['highscoremode'] == 1) {
+	if (querystring['highscoremode'] == 1) {	
 		score = Timer.score;
 	} else if (querystring['highscoremode'] == 2) {
 		score = ClickCounter.score;
@@ -89,7 +89,7 @@ function saveClick()
 
 	// Loop through all bits
 	bitstr="";
-
+	
 	// Duggastr includes only the local information, duggasys adds the dugga number and the rest of the information.
 	saveDuggaResult(bitstr);
 }
@@ -111,7 +111,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment)
 	}
 	var p = jQuery.parseJSON(param);
 	var daJSON = jQuery.parseJSON(danswer);
-
+	
 }
 
 function closeFacit(){
