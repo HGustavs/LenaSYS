@@ -225,7 +225,7 @@ var searchterm = "";
 function rowFilter(row) {
 	for (key in row) {
 		if (row[key] != null) {
-			if (row[key].indexOf(searchterm) != -1) return true;
+			if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
 		}
 	}
 	return false;
