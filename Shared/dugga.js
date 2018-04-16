@@ -1101,7 +1101,7 @@ $(window).load(function() {
       $(window).keyup(function(event){
       	if(event.keyCode == 27) {
           closeWindows();
-          closeSelect();
+         // closeSelect();
           showSaveButton();
         }
       });

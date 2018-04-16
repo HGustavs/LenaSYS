@@ -268,7 +268,6 @@ function closeEditVariant()
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item) {
-	console.log(operation, item);
 	if(operation == "openConfirmBox") {
 		itemToDelete = item; // save the item to delete in this variable
 		$("#sectionConfirmBox").css("display","flex");
@@ -350,7 +349,6 @@ function updateDugga()
 
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,qstart:qstart,deadline:deadline,deadline2:deadline2,deadline3:deadline3,release:release,coursevers:querystring['coursevers']},"DUGGA");
 
-	console.log(deadline);
 
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,release:release,deadline:deadline,deadline2:deadline2,deadline3:deadline3,coursevers:querystring['coursevers']},"DUGGA");
 }
@@ -710,9 +708,6 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 		    showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer),null,null,null);
 	  })
 	  .fail(function( jqxhr, settings, exception ) {
-      	console.log(jqxhr);
-      	console.log(settings);
-      	console.log(exception);
       	eval(script);
       	showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer));
 	});
@@ -834,4 +829,16 @@ $(document).ready(function(){
 	$('#createjson').click(function(){
 		$('#parameter').val(createJSONString($('#jsonform').serializeArray()));
 	});
+});
+
+$(window).load(function() {
+	//There is an issue with using this code, it generates errors that stop execution
+      $(window).keyup(function(event){
+      	if(event.keyCode == 27) {
+			console.log("asd");
+         	closeWindows();
+         // closeSelect();
+          	showSaveButton();
+        }
+      });
 });

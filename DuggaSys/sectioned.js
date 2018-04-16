@@ -67,7 +67,7 @@ function showSubmitButton(){
   $(".updateDugga").css("display","none");
   $(".deleteDugga").css("display","none");
   $(".closeDugga").css("display","inline-block");
-  
+
 }
 
 function showSaveButton(){
@@ -75,7 +75,7 @@ function showSaveButton(){
   $(".updateDugga").css("display","block");
   $(".deleteDugga").css("display","block");
   $(".closeDugga").css("display","none");
-  
+
 }
 
 function editSectionDialogTitle(title) {
@@ -114,7 +114,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	$("#gradesys").html(str);
 
-  
+
 
 	// Set Moments
 	str="";
@@ -157,7 +157,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 		if(kind==3) str+="<option selected='selected' class='test' value='3'>Test</option>"
 		else str+="<option value='3'>Test</option>";
-	
+
 	if(kind==4) str+="<option selected='selected' value='4'>Moment</option>"
 	else str+="<option value='4'>Moment</option>";
 	if(kind==5) str+="<option selected='selected' value='5'>Link</option>"
@@ -286,7 +286,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	}
 	$("#editSection").css("display","flex");
-	
+
 
 }
 
@@ -427,14 +427,14 @@ function validateType(){
 	var retValue = false;
 	kind=$("#type").val();
 	var nme=document.getElementById("type");
-	
-	
+
+
 
 	if (retdata['duggor'].length == 0 && kind == 3){
 		$('#tooltipType').fadeIn();
 		$('#saveBtn').attr('disabled','disabled');
 		$('#submitBtn').attr('disabled','disabled');
-		
+
 		nme.style.backgroundColor = "#f57";
 		//the line of code above changes the selected element AND the list's background color.
 		//the for loop changes the list's background color back to white so only the selected item shows up as red.
@@ -470,7 +470,7 @@ function updateItem()
 	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments},"SECTION");
 	$("#sectionConfirmBox").css("display", "none");
 	$("#editSection").css("display", "none");
-	
+
 }
 
 // Create New Dugga/Example
@@ -482,7 +482,7 @@ function createLink()
 
 function newItem()
 {
-	
+
 
   tabs=$("#tabs").val();
   lid=$("#lid").val();
@@ -517,7 +517,7 @@ function closeSelect()
 function showCreateVersion()
 {
 	$("#newCourseVersion").css("display", "flex");
-	
+
 }
 
 function createVersion(){
@@ -570,7 +570,7 @@ function createVersion(){
 		}
 
 		$("#newCourseVersion").css("display","none");
-		
+
 
 	}
 
@@ -589,7 +589,7 @@ function showEditVersion(versid, versname, startdate, enddate)
   $("#eenddate").val(enddate);
 
 	$("#editCourseVersion").css("display", "flex");
-	
+
 }
 
 function updateVersion(){
@@ -620,7 +620,7 @@ function updateVersion(){
 	}
 
 	$("#editCourseVersion").css("display","none");
-	
+
 }
 
 function goToVersion(selected)
@@ -913,7 +913,7 @@ function returnedSection(data)
 												}
 											}
 									}else{
-                    
+
 									}
 								}
 							}
@@ -1103,7 +1103,7 @@ function returnedSection(data)
 
 				// Add generic td for deadlines if one exists
 				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")) {
-					
+
 
 					var dl = deadline.split(" ");
 
@@ -1463,4 +1463,15 @@ $(document).ready(function(){
 	$(document).on('click','#dorf',function(e) {
 		e.stopPropagation();
 	});
+});
+
+$(window).load(function() {
+	//There is an issue with using this code, it generates errors that stop execution
+      $(window).keyup(function(event){
+      	if(event.keyCode == 27) {
+          closeWindows();
+          closeSelect();
+          showSaveButton();
+        }
+      });
 });
