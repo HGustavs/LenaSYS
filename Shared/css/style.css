@@ -1566,11 +1566,7 @@ input.large-button {
   padding-left:8px;
 }
 
-#fileLink_tbl_mh {
-  margin-top: 50px;
-}
-
-.list th, #fileLink_tbl_mh th {
+.list th {
   background:#614875;
   color:#fff;
   line-height:28px;

@@ -266,7 +266,7 @@ function returnedFile(data)
 	makeAllSortable();
 }
 
-window.onresize = function(){
+window.onresize = function() {
 	myTable.magicHeader();
 }  
 
