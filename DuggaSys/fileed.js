@@ -203,6 +203,8 @@ function renderCell(col,celldata,cellid) {
 	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
 		str+=" onclick='deleteFile(\""+obj.fileid+"\",\""+obj.filename+"\");' >";
 		return str;
+	} else if (col == "filename") {
+	    return "<div>" + list[0] + "</div>";
 	} else if (col == "extension") {
 	    return "<div>" + list[1] + "</div>";
 	} else if (col == "markdown") {

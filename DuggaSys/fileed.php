@@ -41,7 +41,7 @@ pdoConnect();
 			</button>
 		</div>
   
-    <input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/>
+    	<input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/>
 		<input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("GFILE");'/>
 
 		<div id="fileLink" style='width:100%;'></div>
