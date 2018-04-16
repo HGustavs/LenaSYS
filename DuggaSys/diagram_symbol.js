@@ -17,8 +17,8 @@ function Symbol(kind) {
     this.strokeColor = '#000000';   // change standard line color
     this.lineWidth = 2;
     this.name = "New Class";        // Default name is new class
-    this.key_type = "none";          // Defult key tyoe for a class.
-    this.sizeOftext = "none";        // Used to set size of text.
+    this.key_type = "normal";       // Defult key tyoe for a class.
+    this.sizeOftext = "Tiny";       // Used to set size of text.
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
