@@ -248,8 +248,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				'modified' => $row['modified'],
 				'teacher' => $row['teacher'],
         'examiner' => "examiner1",
-				'vers' => $row['vers'],
-				'access' => $row['access'],
+				'vers' => json_encode(['vers' => $row['vers'], 'uid' => $row['uid']]),
+				'access' => json_encode(['access' => $row['access'], 'uid' => $row['uid']]),
 				'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid']])
 			);
 			array_push($entries, $entry);

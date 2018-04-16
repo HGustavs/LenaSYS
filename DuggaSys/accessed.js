@@ -213,11 +213,21 @@ function renderCell(col,celldata,cellid) {
 			str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
 	    return str;
 	}else if(col == "access"){
-		if(celldata == "W"){
-			celldata = "Teacher";
-		}else if(celldata == "R"){
-			celldata = "Student";
-		}
+    obj=JSON.parse(celldata);
+    str = "<select onChange='changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);' onclick='return false;'>";
+    str+="<option value='W'" + (obj.access == 'W' ? " selected='selected'" : "") + ">Teacher</option>";
+    str+="<option value='R'" + (obj.access == 'R' ? " selected='selected'" : "") + ">Student</option>";
+    str+="<option value=null"+ (obj.access == 'null' || obj.access == null ? " selected='selected'" : "") + ">none</option>";
+    str+="</select>";
+    return str;
+	}else if(col == "vers"){
+    obj=JSON.parse(celldata);
+    str = "<select onChange='changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);' onclick='return false;'>";
+    for(var i = 0; i < filez['courses'].length; i++){
+      str+="<option value='"+filez['courses'][i]['vers']+"'" + (obj.vers == filez['courses'][i]['vers'] ? " selected='selected'" : "") + ">"+filez['courses'][i]['vers']+"</option>";
+    }
+    str+="</select>";
+    return str;
 	}else {
 		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
@@ -242,7 +252,6 @@ var myTable;
 
 function returnedAccess(data) {
 	filez = data;
-
 	var tabledata = {
 		tblhead:{
 			username:"User",
