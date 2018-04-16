@@ -9,6 +9,7 @@ var filez;
 var variant = [];
 var submissionRow = 0;
 var decider;
+var list = "";
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -661,6 +662,9 @@ function returnedDugga(data) {
 
 // Rendring specific cells
 function renderCell(col,celldata,cellid) {
+	list+= celldata + " ";
+	var dataGrej = list.split(",");
+	console.log(list[0][0]);
 	
 	// Translating autograding from integers to show the data like yes/no.
 	if (col == "autograde"){
@@ -690,15 +694,22 @@ function renderCell(col,celldata,cellid) {
 	
 	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
 	else if (col == "cogwheel"){
-		celldata = "<img id='plorf' class='margin-4' src='../Shared/icons/Cogwheel.svg' onclick='selectDugga()'>";
+		object=JSON.parse(celldata);
+	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Cogwheel.svg' ";
+		str+=" onclick='selectDugga(\""+object+"\");' >";
+		console.log(object);
+		return str;
 	}
 
-	// Placing a clickable trash can in its designated column to delete the row.
+	// Placing a clickable trash can in its designated column and implementing the code behind it.
 	else if (col == "trashcan"){
-		did = JSON.parse(celldata);
-		celldata = "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg' onclick='deleteDugga(did)'>";
+		object=JSON.parse(celldata);
+		list+= ",";
+	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+		str+=" onclick='deleteDugga(\""+object+"\");' >";
+		return str;
 	}
-	return "<div id='" + cellid + "'>" + celldata + "</div>";
+	return celldata;
 }
 // End of rendering the table
 
