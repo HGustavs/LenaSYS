@@ -1387,20 +1387,20 @@ var myTable;
 function testSortable(data){
 filez = data;
   
+  //build the dynamic headers
+  let tblhead = {firstnamelastnamessn:"Fname/Lname/SSN"};
+  data['moments'].forEach(function(entry) {
+  	tblhead[entry['entryname']] = entry['entryname'];
+  });
+
   var tabledata = {
-    tblhead:{
-      firstnamelastnamessn:"Fname/Lname/SSN",
-      cid:"Cid",
-      uid:"uid",
-      firstname:"first name",
-      lastname:"last name",
-      ssn:"ssn",
-      class:"Class"
-    },
+  	tblhead,
     tblbody: data['entries'],
     tblfoot:[]
   }
-console.log(data);
+  
+	console.log(tabledata);
+	console.log(data);
   myTable = new SortableTable(
     tabledata,
     "resultTable",
@@ -1442,17 +1442,27 @@ function makeAllSortable(parent) {
 function renderCell(col,celldata,cellid) {
   if (col == "firstnamelastnamessn"){
     obj=JSON.parse(celldata);
-    console.log(obj);
+    //console.log(obj);
 
     str = "<p style='font-size:12px;line-height:12px;'>";
     str +=  obj.firstname + " " + obj.lastname + "<br>";
     str += obj.username + " / " + obj.class + "<br>";
     str += obj.ssn + "<br>";
     str += obj.teacher + "</p>";
-
+    
     return str;
+
   }else {
-    return "<div id='" + cellid + "'>" + celldata + "</div>";
+    //return "<div id='" + cellid + "'>" + celldata + "</div>";
+    obj = JSON.parse(celldata);
+
+    str = "<p>";
+    str += obj.hej;
+    str += "</p>";
+    console.log(col);
+    console.log(celldata);
+    console.log(cellid);
+    return str;
   }
   return celldata;
 }

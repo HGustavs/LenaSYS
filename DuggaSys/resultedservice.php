@@ -358,6 +358,8 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 				'class' => $row['class'],
 				'access' => $row['access']
 			);
+			// build the dynamic content for the cells
+			$entry['Rapport 1HP'] = json_encode(['hej' => 'hejjhg']);
 /*
 			$entry = array(
 				'cid' => (int)$row['cid'],
