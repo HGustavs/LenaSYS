@@ -256,7 +256,7 @@ function returnedFile(data)
 		null,
 		null,
         null,
-		false
+		true
 	);
 
 	myTable.renderTable();
@@ -264,6 +264,10 @@ function returnedFile(data)
 	if(data['debug']!="NONE!") alert(data['debug']);
 	makeAllSortable();
 }
+
+window.onresize = function() {
+	myTable.magicHeader();
+}  
 
 function formatBytes(bytes,decimals) {
    if(bytes == 0) return '0 Bytes';
