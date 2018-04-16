@@ -93,7 +93,7 @@ function mousemoveevt(ev, t) {
                         var tly = (Math.round(firstPoint.y / gridSize) * gridSize);
                         var deltatlx = firstPoint.x - tlx;
                         var deltatly = firstPoint.y - tly;
-                                                
+
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                         currentMouseCoordinateX -= deltatlx;
@@ -103,7 +103,7 @@ function mousemoveevt(ev, t) {
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                     }
-                    
+
                     diagram[i].move(currentMouseCoordinateX - oldMouseCoordinateX, currentMouseCoordinateY - oldMouseCoordinateY);
                 }
             }
@@ -270,7 +270,7 @@ function mousedownevt(ev) {
 }
 
 function mouseupevt(ev) {
-    
+
   /*  if (snapToGrid) {
         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
@@ -383,7 +383,7 @@ function mouseupevt(ev) {
     } else if (md == 4 && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
     }
-    else if(uimode != "Moved" && !ctrlIsClicked) {
+    else if(uimode != "Moved" && !ctrlIsClicked && md != 4) {
         //Unselects every object.
         for(var i = 0; i < diagram.length; i++){
             diagram[i].targeted = false;
