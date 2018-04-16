@@ -195,10 +195,10 @@
             }
 
             function boldText() {
-                $('#mrkdwntxt').append("****");
+                $('#mrkdwntxt').append('****');
             }
             function cursiveText() {
-                $('#mrkdwntxt').append("__");
+                $('#mrkdwntxt').append('____');
             }
 
 
@@ -210,13 +210,13 @@
             }
 
             function headerVal1() {
-                $('#mrkdwntxt').append("# ");
+                $('#mrkdwntxt').append('# ');
             }
             function headerVal2() {
-                $('#mrkdwntxt').append("## ");
+                $('#mrkdwntxt').append('## ');
             }
             function headerVal3() {
-                $('#mrkdwntxt').append("### ");
+                $('#mrkdwntxt').append('### ');
             }
 
 
