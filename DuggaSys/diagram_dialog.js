@@ -15,12 +15,14 @@ function openAppearanceDialogMenu() {
      * Opens the dialog menu for appearance.
      */
     var form = showMenu();
+    appearanceMenuOpen = true;
     objectAppearanceMenu(form);
 }
 function closeAppearanceDialogMenu() {
     /*
      * Closes the dialog menu for appearance.
      */
+    appearanceMenuOpen = false;
     globalAppearanceValue = 0;
     hashFunction();
     $("#appearance").hide();
