@@ -198,10 +198,18 @@
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****'); 
             }
             function cursiveText() {
-                //$('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
-                $('#mrkdwntxt').insertAtCaret('____');
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
             }
-
+            function changeText(specialChar) {
+                const textarea = document.getElementById('mrkdwntxt');
+                const insertStartPoint = textarea.selectionStart;
+                const insertEndPoint = textarea.selectionEnd;
+                let value = textarea.value;
+ 
+                // text before cursor/highlighted text + special character + text after cursor/highlighted text
+                value = value.slice(0, insertStartPoint) + specialChar + value.slice(insertEndPoint);
+                textarea.value = value;
+            }
 
             function showDropdown() {
                 $('#select-header').show();
@@ -258,8 +266,8 @@
                             <span id="h3" onclick="selected();headerVal3()" value="H3">Header 3</span>
                         </div>
 
-                    <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
-                    <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
+                    <span id="boldText" onclick="changeText(B)" title="Bold"><b>B</b></span>
+                    <span id="cursiveText" onclick="changeText(i)" title="Italic"><i>i</i></span>
                 </div>
                 <div class="markText">
                     <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
