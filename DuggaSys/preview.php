@@ -266,8 +266,8 @@
                             <span id="h3" onclick="selected();headerVal3()" value="H3">Header 3</span>
                         </div>
 
-                    <span id="boldText" onclick="changeText('B')" title="Bold"><b>B</b></span>
-                    <span id="cursiveText" onclick="changeText('i')" title="Italic"><i>i</i></span>
+                    <span id="boldText" onclick="changeText('****')" title="Bold"><b>B</b></span>
+                    <span id="cursiveText" onclick="changeText('____')" title="Italic"><i>i</i></span>
                 </div>
                 <div class="markText">
                     <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
