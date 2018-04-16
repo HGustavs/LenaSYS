@@ -801,21 +801,21 @@ INSERT INTO user_usergroup (uid,ugid) VALUES (212,1);
 INSERT INTO user_usergroup (uid,ugid) VALUES (100,2);
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
-VALUES (216,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/13/Johansson_Maria_a99marjo/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
+VALUES (216,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Johansson_Maria_a99marjo/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
-VALUES (216,2,'97732',10,1,'InlPHPZip','submissions/2/97732/13/Johansson_Maria_a99marjo/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');
+VALUES (216,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Johansson_Maria_a99marjo/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
-VALUES (229,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/13/Olsson_Nils_a99nilol/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
+VALUES (229,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Olsson_Nils_a99nilol/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
-VALUES (229,2,'97732',10,1,'InlPHPZip','submissions/2/97732/13/Olsson_Nils_a99nilol/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');
+VALUES (229,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Olsson_Nils_a99nilol/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
-VALUES (219,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/13/Andersson_Lars_a99laran/','Kursplan_IT351G','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
+VALUES (219,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Andersson_Lars_a99laran/','Kursplan_IT351G','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
-VALUES (219,2,'97732',10,1,'InlPHPZip','submissions/2/97732/13/Andersson_Lars_a99laran/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');
+VALUES (219,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Andersson_Lars_a99laran/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');
 
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
-VALUES (218,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/13/Andersson_Anna_a99annan/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
+VALUES (218,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Andersson_Anna_a99annan/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
-VALUES (218,2,'97732',10,1,'InlPHPZip','submissions/2/97732/13/Andersson_Anna_a99annan/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');
+VALUES (218,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Andersson_Anna_a99annan/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');
