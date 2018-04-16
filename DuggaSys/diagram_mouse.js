@@ -80,6 +80,7 @@ function mousemoveevt(ev, t) {
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1) {
+            uimode = "Moved";
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
                   /* if (snapToGrid) {
@@ -92,7 +93,7 @@ function mousemoveevt(ev, t) {
                         var tly = (Math.round(firstPoint.y / gridSize) * gridSize);
                         var deltatlx = firstPoint.x - tlx;
                         var deltatly = firstPoint.y - tly;
-                                                
+
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                         currentMouseCoordinateX -= deltatlx;
@@ -102,7 +103,7 @@ function mousemoveevt(ev, t) {
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                     }
-                    
+
                     diagram[i].move(currentMouseCoordinateX - oldMouseCoordinateX, currentMouseCoordinateY - oldMouseCoordinateY);
                 }
             }
@@ -194,6 +195,11 @@ function mousemoveevt(ev, t) {
 }
 
 function mousedownevt(ev) {
+
+    if(uimode == "Moved" && !ctrlIsClicked && md != 4){
+        uimode = "normal";
+        md = 0;
+    }
     if (uimode == "CreateLine") {
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
@@ -264,7 +270,7 @@ function mousedownevt(ev) {
 }
 
 function mouseupevt(ev) {
-    
+
   /*  if (snapToGrid) {
         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
@@ -374,11 +380,18 @@ function mouseupevt(ev) {
         //selecting the newly created relation and open the dialog menu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-    } else if (md == 4 && !(uimode == "CreateFigure") &&
-               !(uimode == "CreateLine") && !(uimode == "CreateEREntity") &&
-               !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) &&
-               !(uimode == "MoveAround" ) && !(uimode == "CreateERRelation")) {
-            diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+    } else if (md == 4 && uimode == "normal") {
+        diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+    }
+    else if(uimode != "Moved" && !ctrlIsClicked && md != 4) {
+        //Unselects every object.
+        for(var i = 0; i < diagram.length; i++){
+            diagram[i].targeted = false;
+        }
+        //Sets the clicked object as targeted
+        selected_objects = [];
+        selected_objects.push(diagram[lastSelectedObject]);
+        diagram[lastSelectedObject].targeted = true;
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
