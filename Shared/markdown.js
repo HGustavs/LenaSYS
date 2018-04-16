@@ -95,7 +95,7 @@ function parseMarkdown(inString)
 
     // append '@@@' to all code block indicators '~~~'
     inString = inString.replace(/^\~{3}(\r\n|\n|\r)/gm, '~~~@@@');
-    // append '¤¤¤' to all console block indicators '=|='
+    // append '&&&' to all console block indicators '=|='
     inString = inString.replace(/^\=\|\=(\r\n|\n|\r)/gm, '=|=&&&');
 
     // Split on code or console block
@@ -112,7 +112,6 @@ function parseMarkdown(inString)
         } else if(workstr.substr(0,3)==="&&&" && specialBlockStart===true) {
             specialBlockStart=false;
             workstr='<div class="console"><pre>'+workstr.substr(3)+'</pre></div>';
-            alert("2" + codearray);
         } else if(workstr !== "") {
             workstr=parseLineByLine(workstr.replace(/^\&{3}|^\@{3}/gm, ''));
             specialBlockStart=true;
@@ -347,12 +346,14 @@ function markdownBlock(inString)
 
     // Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
     // markdown below doesnt seem to work?????
-    inString = inString.replace(/(\r\n){3}/gm,"<br><br>");
-    inString = inString.replace(/(\r\n){2}/gm,"<br>");
+    inString = inString.replace(/\ {3}/gm,"<br><br>");
+    inString = inString.replace(/\ {2}/gm,"<br>");
+    /*
     inString = inString.replace(/(\n){3}/gm,"<br><br>");
     inString = inString.replace(/(\n){2}/gm,"<br>");
     inString = inString.replace(/(\r){3}/gm,"<br><br>");
     inString = inString.replace(/(\r){2}/gm,"<br>");
+    */
 
     // Hyperlink !!!
     // !!!url,text to show!!!
