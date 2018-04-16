@@ -271,7 +271,7 @@ function closeEditVariant()
 		}else if(temp == 4){
 			console.log(decider);
 		    if (decider == 1){
-		    	//deleteDugga();
+		    	deleteDugga();
 		    }
 		   	else if (decider == 2){
 		    	createDugga();
@@ -308,7 +308,7 @@ function createDugga()
 
 function deleteDugga(did)
 {
-    if(confirm("Do you really want to delete this Variant?"))AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+    if(confirm("Do you really want to delete this dugga?"))AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
     $("#editDugga").css("display","none");
 }
 
