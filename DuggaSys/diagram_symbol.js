@@ -13,12 +13,13 @@ function Symbol(kind) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textsize = 14;             // 14 pixels text size is default
-    this.symbolColor = '#fff';      // change background colors on entities
-    this.strokeColor = '#000';      // change standard line color
+    this.symbolColor = '#ffffff';   // change background colors on entities
+    this.strokeColor = '#000000';   // change standard line color
+    this.font = "Arial";             // set the standard font
     this.lineWidth = 2;
     this.name = "New Class";        // Default name is new class
-    this.key_type = "none";          // Defult key tyoe for a class.
-    this.sizeOftext = "none";        // Used to set size of text.
+    this.key_type = "normal";       // Defult key tyoe for a class.
+    this.sizeOftext = "Tiny";       // Used to set size of text.
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
@@ -294,9 +295,7 @@ function Symbol(kind) {
 
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
     }
-
-    
-    
+      
     this.entityhover = function(mx, my, c){
         if(!c){
              c = this.corners();
@@ -321,7 +320,7 @@ function Symbol(kind) {
                 br = {x:p2.x, y:p2.y};
                 tr = {x:br.x, y:tl.y};
                 bl = {x:tl.x, y:br.y};
-            }else{ 
+            }else{
                 //we are in the bottomleft
                 tr = {x:p2.x, y:p2.y};
                 bl = {x:p1.x, y:p1.y};
@@ -537,19 +536,19 @@ function Symbol(kind) {
         }
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.strokeColor;
 
-     
-        
+
+
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-        
-        
+
+
 
         ctx.save();
-        ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
+        ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
 
         if(this.symbolkind == 1){
             this.drawUML(x1, y1, x2, y2);
@@ -568,23 +567,23 @@ function Symbol(kind) {
         }
 
         ctx.restore();
-        ctx.setLineDash([]);  
-        
-        
+        ctx.setLineDash([]);
+
+
         //Highlighting points when targeted, makes it easier to resize
         if(this.targeted && this.symbolkind != 5){
             ctx.beginPath();
             ctx.arc(x1,y1,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
-               
+
             ctx.beginPath();
             ctx.arc(x2,y2,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
         }
-        
-        
+
+
     }
     this.drawUML = function(x1, y1, x2, y2)
     {
