@@ -797,6 +797,7 @@ function returnedSection(data)
 
 		str+="<div id='Sectionlistc' >";
 
+		//group-related variable
 		var groupitems = 0;
 
 		// For now we only have two kinds of sections
