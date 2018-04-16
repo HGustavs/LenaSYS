@@ -80,6 +80,7 @@ function mousemoveevt(ev, t) {
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1) {
+            uimode = "Moved";
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
                     if (snapToGrid) {
@@ -188,6 +189,11 @@ function mousemoveevt(ev, t) {
 }
 
 function mousedownevt(ev) {
+
+    if(uimode == "Moved" && !ctrlIsClicked && md != 4){
+        uimode = "normal";
+        md = 0;
+    }
     if (uimode == "CreateLine") {
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
@@ -242,16 +248,6 @@ function mousedownevt(ev) {
                     selected_objects.splice(index, 1);
                 }
                 last.targeted = false;
-            }
-            else{
-                //Unselects every object.
-                for(var i = 0; i < diagram.length; i++){
-                    diagram[i].targeted = false;
-                }
-                //Sets the clicked object as targeted
-                selected_objects = [];
-                selected_objects.push(last);
-                last.targeted = true;
             }
         }
     } else {
@@ -378,11 +374,18 @@ function mouseupevt(ev) {
         //selecting the newly created relation and open the dialog menu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-    } else if (md == 4 && !(uimode == "CreateFigure") &&
-               !(uimode == "CreateLine") && !(uimode == "CreateEREntity") &&
-               !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) &&
-               !(uimode == "MoveAround" ) && !(uimode == "CreateERRelation")) {
-            diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+    } else if (md == 4 && uimode == "normal") {
+        diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+    }
+    else if(uimode != "Moved" && !ctrlIsClicked) {
+        //Unselects every object.
+        for(var i = 0; i < diagram.length; i++){
+            diagram[i].targeted = false;
+        }
+        //Sets the clicked object as targeted
+        selected_objects = [];
+        selected_objects.push(diagram[lastSelectedObject]);
+        diagram[lastSelectedObject].targeted = true;
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();

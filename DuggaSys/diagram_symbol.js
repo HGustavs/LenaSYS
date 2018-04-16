@@ -27,7 +27,6 @@ function Symbol(kind) {
     this.shadowOffsetX = 3;         // The horizontal distance of the shadow for the object.
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
-
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -295,8 +294,8 @@ function Symbol(kind) {
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
     }
 
-    
-    
+
+
     this.entityhover = function(mx,my){
         //we have correct points in the four corners of a square.
         var c = this.corners();
@@ -319,7 +318,7 @@ function Symbol(kind) {
                 br = {x:p2.x, y:p2.y};
                 tr = {x:br.x, y:tl.y};
                 bl = {x:tl.x, y:br.y};
-            }else{ 
+            }else{
                 //we are in the bottomleft
                 tr = {x:p2.x, y:p2.y};
                 bl = {x:p1.x, y:p1.y};
@@ -535,14 +534,14 @@ function Symbol(kind) {
         }
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.strokeColor;
 
-     
-        
+
+
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-        
-        
+
+
 
         ctx.save();
         ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
@@ -566,23 +565,23 @@ function Symbol(kind) {
         }
 
         ctx.restore();
-        ctx.setLineDash([]);  
-        
-        
+        ctx.setLineDash([]);
+
+
         //Highlighting points when targeted, makes it easier to resize
         if(this.targeted && this.symbolkind != 5){
             ctx.beginPath();
             ctx.arc(x1,y1,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
-               
+
             ctx.beginPath();
             ctx.arc(x2,y2,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
         }
-        
-        
+
+
     }
     this.drawUML = function(x1, y1, x2, y2)
     {
@@ -649,130 +648,130 @@ function Symbol(kind) {
         ctx.stroke();
     }
 
-this.drawERAttribute = function(x1, y1, x2, y2){
-    ctx.fillStyle = this.symbolColor;
-    ctx.lineWidth = this.lineWidth;
-    //This is a temporary solution to the black symbol problem
+    this.drawERAttribute = function(x1, y1, x2, y2){
+        ctx.fillStyle = this.symbolColor;
+        ctx.lineWidth = this.lineWidth;
+        //This is a temporary solution to the black symbol problem
 
-    drawOval(x1, y1, x2, y2);
+        drawOval(x1, y1, x2, y2);
 
-    ctx.fill();
-    makeShadow();
+        ctx.fill();
+        makeShadow();
 
-    //drawing a multivalue attribute
-    if (this.key_type == 'Multivalue') {
+        //drawing a multivalue attribute
+        if (this.key_type == 'Multivalue') {
+            ctx.stroke();
+            drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
+        }
+        //drawing an derived attribute
+        else if (this.key_type == 'Drive') {
+            ctx.setLineDash([5, 4]);
+        }
+        else if (this.key_type == 'Primary key') {
+            ctx.stroke();
+            var linelength = ctx.measureText(this.name).width;
+            ctx.beginPath(1);
+            ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+            ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+            ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+            ctx.strokeStyle = this.strokeColor;
+
+        }
         ctx.stroke();
-        drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
+
+        ctx.fillStyle = this.fontColor;
+        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        ctx.clip();
     }
-    //drawing an derived attribute
-    else if (this.key_type == 'Drive') {
-        ctx.setLineDash([5, 4]);
-    }
-    else if (this.key_type == 'Primary key') {
+
+    this.drawEntity = function(x1, y1, x2, y2){
+        ctx.fillStyle = this.symbolColor;
+
+        ctx.beginPath();
+        if (this.key_type == "Weak") {
+            ctx.moveTo(x1 - 5, y1 - 5);
+            ctx.lineTo(x2 + 5, y1 - 5);
+            ctx.lineTo(x2 + 5, y2 + 5);
+            ctx.lineTo(x1 - 5, y2 + 5);
+            ctx.lineTo(x1 - 5, y1 - 5);
+        }
+
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineTo(x1, y2);
+        ctx.lineTo(x1, y1);
+        ctx.closePath();
+        makeShadow();
+        ctx.clip();
         ctx.stroke();
-        var linelength = ctx.measureText(this.name).width;
-        ctx.beginPath(1);
-        ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-        ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-        ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-        ctx.strokeStyle = this.strokeColor;
 
-    }
-    ctx.stroke();
-
-    ctx.fillStyle = this.fontColor;
-    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-    ctx.clip();
-}
-
-this.drawEntity = function(x1, y1, x2, y2){
-    ctx.fillStyle = this.symbolColor;
-
-    ctx.beginPath();
-    if (this.key_type == "Weak") {
-        ctx.moveTo(x1 - 5, y1 - 5);
-        ctx.lineTo(x2 + 5, y1 - 5);
-        ctx.lineTo(x2 + 5, y2 + 5);
-        ctx.lineTo(x1 - 5, y2 + 5);
-        ctx.lineTo(x1 - 5, y1 - 5);
-    }
-
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y1);
-    ctx.lineTo(x2, y2);
-    ctx.lineTo(x1, y2);
-    ctx.lineTo(x1, y1);
-    ctx.closePath();
-    makeShadow();
-    ctx.clip();
-    ctx.stroke();
-
-    //Print arity and entity name
-    ctx.fillStyle = this.fontColor;
-    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-    ctx.font = parseInt(textsize) + "px " + this.font;
-    for (var i = 0; i < this.arity.length; i++) {
-        for (var j = 0; j < this.arity[i].length; j++) {
-            var arity = this.arity[i][j];
-            ctx.textAlign = arity.align;
-            ctx.textBaseline = arity.baseLine;
-            ctx.fillText(arity.text, arity.x, arity.y);
+        //Print arity and entity name
+        ctx.fillStyle = this.fontColor;
+        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        ctx.font = parseInt(textsize) + "px " + this.font;
+        for (var i = 0; i < this.arity.length; i++) {
+            for (var j = 0; j < this.arity[i].length; j++) {
+                var arity = this.arity[i][j];
+                ctx.textAlign = arity.align;
+                ctx.textBaseline = arity.baseLine;
+                ctx.fillText(arity.text, arity.x, arity.y);
+            }
         }
     }
-}
 
-this.drawLine = function(x1, y1, x2, y2){
-    ctx.lineWidth = this.lineWidth;
-    if (this.key_type == "Forced") {
-        //Draw a thick black line
-        ctx.lineWidth = this.lineWidth*3;
+    this.drawLine = function(x1, y1, x2, y2){
+        ctx.lineWidth = this.lineWidth;
+        if (this.key_type == "Forced") {
+            //Draw a thick black line
+            ctx.lineWidth = this.lineWidth*3;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            //Draw a white line in the middle to simulate space (2 line illusion).
+            ctx.lineWidth = this.lineWidth;
+            ctx.strokeStyle = "#fff";
+        }
+        else if (this.key_type == "Derived") {
+            ctx.lineWidth = this.lineWidth * 2;
+            ctx.setLineDash([5, 4]);
+        }
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
-
-        //Draw a white line in the middle to simulate space (2 line illusion).
-        ctx.lineWidth = this.lineWidth;
-        ctx.strokeStyle = "#fff";
     }
-    else if (this.key_type == "Derived") {
-        ctx.lineWidth = this.lineWidth * 2;
-        ctx.setLineDash([5, 4]);
+
+    this.drawRelation = function(x1, y1, x2, y2){
+        var midx = points[this.middleDivider].x;
+        var midy = points[this.middleDivider].y;
+        ctx.beginPath();
+        if (this.key_type == 'Weak') {
+            ctx.lineWidth = this.lineWidth;
+            ctx.moveTo(midx, y1 + 5);
+            ctx.lineTo(x2 - 9, midy + 0);
+            ctx.lineTo(midx + 0, y2 - 5);
+            ctx.lineTo(x1 + 9, midy + 0);
+            ctx.lineTo(midx + 0, y1 + 5);
+        }
+        ctx.moveTo(midx, y1);
+        ctx.lineTo(x2, midy);
+        ctx.lineTo(midx, y2);
+        ctx.lineTo(x1, midy);
+        ctx.lineTo(midx, y1);
+
+        ctx.fillStyle = this.symbolColor;
+        makeShadow();
+        ctx.fill();
+        ctx.closePath();
+        ctx.clip();
+
+        ctx.stroke();
+        ctx.fillStyle = this.fontColor;
+        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
     }
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-}
-
-this.drawRelation = function(x1, y1, x2, y2){
-    var midx = points[this.middleDivider].x;
-    var midy = points[this.middleDivider].y;
-    ctx.beginPath();
-    if (this.key_type == 'Weak') {
-        ctx.lineWidth = this.lineWidth;
-        ctx.moveTo(midx, y1 + 5);
-        ctx.lineTo(x2 - 9, midy + 0);
-        ctx.lineTo(midx + 0, y2 - 5);
-        ctx.lineTo(x1 + 9, midy + 0);
-        ctx.lineTo(midx + 0, y1 + 5);
-    }
-    ctx.moveTo(midx, y1);
-    ctx.lineTo(x2, midy);
-    ctx.lineTo(midx, y2);
-    ctx.lineTo(x1, midy);
-    ctx.lineTo(midx, y1);
-
-    ctx.fillStyle = this.symbolColor;
-    makeShadow();
-    ctx.fill();
-    ctx.closePath();
-    ctx.clip();
-
-    ctx.stroke();
-    ctx.fillStyle = this.fontColor;
-    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-}
 
 }
 
