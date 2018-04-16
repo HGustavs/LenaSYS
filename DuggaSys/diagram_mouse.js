@@ -58,12 +58,12 @@ function mousemoveevt(ev, t) {
         currentMouseCoordinateX = (((ev.offsetX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.offsetY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
     }
-    if (md == 1 || md == 2 || md == 0 && uimode != " ") {
+  /*  if (md == 1 || md == 2 || md == 0 && uimode != " ") {
         if (snapToGrid) {
             currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
             currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
         }
-    }
+    }*/
     if (md == 0) {
         // Select a new point only if mouse is not already moving a point or selection box
         sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
@@ -83,7 +83,7 @@ function mousemoveevt(ev, t) {
             uimode = "Moved";
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
-                    if (snapToGrid) {
+                  /* if (snapToGrid) {
                         if (diagram[i].kind == 1) {
                             var firstPoint = points[diagram[i].segments[0].pa];
                         } else {
@@ -93,11 +93,17 @@ function mousemoveevt(ev, t) {
                         var tly = (Math.round(firstPoint.y / gridSize) * gridSize);
                         var deltatlx = firstPoint.x - tlx;
                         var deltatly = firstPoint.y - tly;
+                                                
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                         currentMouseCoordinateX -= deltatlx;
                         currentMouseCoordinateY -= deltatly;
+                    }*/
+                    if(snapToGrid){
+                        currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
+                        currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                     }
+                    
                     diagram[i].move(currentMouseCoordinateX - oldMouseCoordinateX, currentMouseCoordinateY - oldMouseCoordinateY);
                 }
             }
@@ -249,16 +255,6 @@ function mousedownevt(ev) {
                 }
                 last.targeted = false;
             }
-            else{
-                //Unselects every object.
-                for(var i = 0; i < diagram.length; i++){
-                    diagram[i].targeted = false;
-                }
-                //Sets the clicked object as targeted
-                selected_objects = [];
-                selected_objects.push(last);
-                last.targeted = true;
-            }
         }
     } else {
         md = 4; // Box select or Create mode.
@@ -274,11 +270,11 @@ function mousedownevt(ev) {
 }
 
 function mouseupevt(ev) {
-
-    if (snapToGrid) {
+    
+  /*  if (snapToGrid) {
         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
-    }
+    }*/
     // Code for creating a new class
     if (md == 4 && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
         resize();
