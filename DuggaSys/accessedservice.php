@@ -86,6 +86,16 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$error=$query->errorInfo();
 					$debug="Error updating user".$error[2];
 				}
+	}else if(strcmp($opt,"EXAMINER")==0){
+				$query = $pdo->prepare("UPDATE user_course set teacher=:val WHERE uid=:uid AND cid=:cid;");
+				$query->bindParam(':uid', $uid);
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':val', $val);
+
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating user".$error[2];
+				}
 	}else if(strcmp($opt,"CHPWD")==0){
 				$query = $pdo->prepare("UPDATE user set password=:pwd, requestedpasswordchange=0 where uid=:uid;");
 				$query->bindParam(':uid', $uid);
@@ -237,8 +247,17 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		$error=$query->errorInfo();
 		$debug="Error reading user entries".$error[2];
 	}
-
-	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+  $result = $query->fetchAll(PDO::FETCH_ASSOC);
+  // Adds all teachers for course to array
+  $examiners = array();
+  foreach($result as $row){
+    if($row['access'] == 'W') {
+      array_push($examiners, $row);
+    }
+  }
+	foreach($result as $row){
+      // Adds current student to array
+      array_push($examiners, $row);
 			$entry = array(
 				'username' => $row['username'],
 				'ssn' => $row['ssn'],
@@ -247,12 +266,13 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				'class' => $row['class'],
 				'modified' => $row['modified'],
 				'teacher' => $row['teacher'],
-        'examiner' => "examiner1",
+        'examiner' => $examiners,
 				'vers' => $row['vers'],
 				'access' => $row['access'],
 				'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid']])
 			);
 			array_push($entries, $entry);
+      array_pop($examiners);
 	}
 }
 
