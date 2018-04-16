@@ -266,6 +266,10 @@ function returnedFile(data)
 	makeAllSortable();
 }
 
+window.onresize = function(){
+	myTable.magicHeader();
+}  
+
 function formatBytes(bytes,decimals) {
    if(bytes == 0) return '0 Bytes';
    var k = 1000,

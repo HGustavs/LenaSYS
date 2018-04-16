@@ -148,7 +148,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	var freezePane = freezePane;
 	var freezePaneArr = [];
 
-	// Publick Callback Declarations
+	// Public Callback Declarations
 	this.highlightRow = highlightRow;
 	this.deHighlightRow = deHighlightRow;
 	this.showEditCell = showEditCell;
@@ -156,6 +156,13 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	this.ascending = false;
 	this.tableid = tableid;
   	this.hasMagicHeadings = hasmagic;
+
+	// Local variable that contains html code for main table and local variable that contains magic headings table
+	var str = "<table style='border-collapse: collapse;' id='"+tableid+"_tbl' class='list list--nomargin'>";
+	var	mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;' id='"+tableid+"_tbl_mh'>";
+	var mhvstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;' id='"+tableid+"_tbl_mhv'>";
+	var mhfstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;top:0px;z-index:3000;' id='"+tableid+"_tbl_mhf'>";
+
 	
     tbl.cleanHead = [];
     
@@ -208,12 +215,6 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		if (renderColumnFilter != null) {
 			document.getElementById(filterid).innerHTML = filterstr;
 		}
-
-		// Local variable that contains html code for main table and local variable that contains magic headings table
-		var str = "<table style='border-collapse: collapse;' id='"+tableid+"_tbl' class='list list--nomargin'>";
-		var	mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;' id='"+tableid+"_tbl_mh'>";
-		var mhvstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;' id='"+tableid+"_tbl_mhv'>";
-		var mhfstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;top:0px;z-index:3000;' id='"+tableid+"_tbl_mhf'>";
 
 		str += "<caption>"+caption+"</caption>";
 
@@ -357,29 +358,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		str += "</table>";
 		mhvstr+= "</table>";
 
-		// Assign table and magic headings table(s)
-		if (this.hasMagicHeadings) {					 
-			document.getElementById(tableid).innerHTML = str+mhstr+mhvstr+mhfstr;
-			document.getElementById(tableid+"_tbl_mh").style.width=document.getElementById(tableid+"_tbl").getBoundingClientRect().width+"px";
-			document.getElementById(tableid+"_tbl_mh").style.boxSizing = "border-box";          
-			children=document.getElementById(tableid+"_tbl").getElementsByTagName('TH');
-			
-			for (i = 0; i < children.length; i++) {
-				document.getElementById(children[i].id+"_mh").style.width = children[i].getBoundingClientRect().width+"px";
-				document.getElementById(children[i].id+"_mh").style.boxSizing = "border-box";          
-			}
-
-			document.getElementById(tableid+"_tbl_mhf").style.width = Math.round(document.getElementById(tableid+"_tbl_mhv").getBoundingClientRect().width)+"px";
-			document.getElementById(tableid+"_tbl_mhf").style.boxSizing = "border-box";
-			children=document.getElementById(tableid+"_tbl_mhv").getElementsByTagName('TH');
-			
-			for (i = 0; i < children.length; i++) {
-				document.getElementById(children[i].id.slice(0, -1)+"f").style.width = children[i].getBoundingClientRect().width+"px";
-				document.getElementById(children[i].id.slice(0, -1)+"f").style.boxSizing = "border-box";
-			}
-		} else {
-			document.getElementById(tableid).innerHTML = str;
-		}
+		this.magicHeader();
 
 	}
 
@@ -423,7 +402,33 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
     
     this.getSortkind = function() {
         return sortkind;
-    }    
+    } 
+
+	this.magicHeader = function() {
+		// Assign table and magic headings table(s)
+		if (this.hasMagicHeadings) {					 
+			document.getElementById(tableid).innerHTML = str+mhstr+mhvstr+mhfstr;
+			document.getElementById(tableid+"_tbl_mh").style.width=document.getElementById(tableid+"_tbl").getBoundingClientRect().width+"px";
+			document.getElementById(tableid+"_tbl_mh").style.boxSizing = "border-box";          
+			children=document.getElementById(tableid+"_tbl").getElementsByTagName('TH');
+			
+			for (i = 0; i < children.length; i++) {
+				document.getElementById(children[i].id+"_mh").style.width = children[i].getBoundingClientRect().width+"px";
+				document.getElementById(children[i].id+"_mh").style.boxSizing = "border-box";          
+			}
+
+			document.getElementById(tableid+"_tbl_mhf").style.width = Math.round(document.getElementById(tableid+"_tbl_mhv").getBoundingClientRect().width)+"px";
+			document.getElementById(tableid+"_tbl_mhf").style.boxSizing = "border-box";
+			children=document.getElementById(tableid+"_tbl_mhv").getElementsByTagName('TH');
+			
+			for (i = 0; i < children.length; i++) {
+				document.getElementById(children[i].id.slice(0, -1)+"f").style.width = children[i].getBoundingClientRect().width+"px";
+				document.getElementById(children[i].id.slice(0, -1)+"f").style.boxSizing = "border-box";
+			}
+		} else {
+			document.getElementById(tableid).innerHTML = str;
+		}
+	} 
     
 	// Simpler magic heading v. III
 	setInterval(freezePaneHandler,30);
