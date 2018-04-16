@@ -80,6 +80,15 @@ window.onclick = function (event) {
 // Renderer
 // -------------
 
+function createPieChart() {
+  var canvas = document.getElementById("pieChart");
+  var c = canvas.getContext("2d");
+  var width = canvas.width;
+  var height = canvas.height;
+  c.fillStyle = "#000";
+  c.fillRect(0, 0, width, height);
+}
+
 // Draw the content of the SwimContent container
 function swimlaneDrawLanes() {
   var info = swimlaneInformation['information'];
@@ -91,7 +100,10 @@ function swimlaneDrawLanes() {
   str+="<svg style='width:100%;height:100%;position:absolute;pointer-events:none;'>";
   str+="<line stroke-dasharray='5,5' x1='75' y1='" + (35 + info['weekprog'] * 70) + "' x2='" + (3000) + "' y2='" + (35 + info['weekprog'] * 70) + "' style='stroke:rgb(203,63,65); stroke-width:2;' />";
   str+="</svg>";
-  str += "<table><thead><tr style='height:70px;background-color:#FFF'><th>&nbsp;</th>";
+  str+="<table><thead><tr style='height:70px;background-color:#FFF'>"
+  str+="<th>";
+  str+="<canvas id='pieChart' width='75px' height='75px'></canvas>"; // Contains pie chart. // str+="&nbsp;";
+  str+="</th>";
   var colspan=0;
   var count=false;
   var tmpname;
