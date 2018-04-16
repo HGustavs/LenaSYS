@@ -688,15 +688,17 @@ function renderCell(col,celldata,cellid) {
 		}
 	}
 
-	// Placing a clickable trashcan in its designated column
-
+	// Placing a clickable trash can in its designated column and implementing the code behind it.
 	else if (col == "trashcan"){
-		did = JSON.parse(celldata);
-		celldata = "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg' onclick='deleteDugga(did)'>"
+		object=JSON.parse(celldata);
+	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+		str+=" onclick='deleteDugga(\""+object+"\");' >";
+		return str;
 	}
-	return "<div id='" + cellid + "'>" + celldata + "</div>";
+	return celldata;
+	
 }
-// End of rendering the table
+// End of rendering the table.
 
 function parseParameters(str){
 	return str;
