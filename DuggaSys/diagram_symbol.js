@@ -545,9 +545,9 @@ function Symbol(kind) {
 
 
         ctx.save();
-        ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
+        ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
 
         if(this.symbolkind == 1){
             this.drawUML(x1, y1, x2, y2);

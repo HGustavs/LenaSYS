@@ -82,8 +82,14 @@ function loadFormIntoElement(element, dir){
             setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
             setSelectedOption('font', diagram[lastSelectedObject].font);
             setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
-            setSelectedOption('TextSize', diagram[lastSelectedObject].textsize);
-            setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
+            setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+            setSelectedOption('LineColor', diagram[lastSelectedObject].strokeColor)
+
+            /*document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
+            document.getElementById('symbolColor').options[2].selected = "true";
+            document.getElementById('font').value = diagram[lastSelectedObject].font;
+            document.getElementById('fontColor').value = diagram[lastSelectedObject].fontColor;
+            document.getElementById('TextSize').value = diagram[lastSelectedObject].sizeOftext;*/
         }
     }
     file.send();
@@ -91,14 +97,10 @@ function loadFormIntoElement(element, dir){
 
 function setSelectedOption(type, value){
   for(var i = 0; i < document.getElementById(type).options.length; i++){
+    //console.log("value: " + value + " type " + type + " typevalue " + document.getElementById(type).options[i].value);
     if(value == document.getElementById(type).options[i].value){
       document.getElementById(type).value = value;
       document.getElementById(type).options[i].selected = "true";
-      if(type == "TextSize"){
-        document.getElementById(type).value = document.getElementById('TextSize').options[i].innerHTML;
-      }else{
-        document.getElementById(type).value = value;
-      }
       break;
     }else{
       document.getElementById(type).options[i].selected = "false";
@@ -159,7 +161,7 @@ function changeObjectAppearance(object_type){
         diagram[lastSelectedObject].name = document.getElementById('nametext').value;
         diagram[lastSelectedObject].fontColor = document.getElementById('fontColor').value;
         diagram[lastSelectedObject].font = document.getElementById('font').value;
-        diagram[lastSelectedObject].textsize = document.getElementById('TextSize').value;
+        diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
         diagram[lastSelectedObject].strokeColor = document.getElementById('AttributeLineColor').value;
     }
