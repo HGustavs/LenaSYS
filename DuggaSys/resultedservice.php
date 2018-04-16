@@ -70,7 +70,12 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 	if(strcmp($opt,"CHGR")==0){
 		if($ukind=="U"){
-			$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+			if ($mark == "UNK"){
+				$mark = null;
+				$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NULL,timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+			} else {
+				$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+			}
 			$query->bindParam(':mark', $mark);
 			$query->bindParam(':cuser', $userid);
 
@@ -79,9 +84,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$query->bindParam(':vers', $vers);
 			$query->bindParam(':uid', $luid);
 
-			if ($mark == "UNK"){
-				$mark = null;
-			}
+
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();

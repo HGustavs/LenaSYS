@@ -1,6 +1,6 @@
 /********************************************************************************
 
-   Documentation 
+   Documentation
 
 *********************************************************************************
 
@@ -8,7 +8,7 @@ Example seed
 ---------------------
 	 Example seed
 	 Param: {"type":"pdf","filelink":"instructions.pdf", "submissions":[{"fieldname":"Inl1Document","type":"pdf"},{"fieldname":"Inl2Document","type":"zip", "instruction":"Zip your project folder and submit the file here."},{"fieldname":"Inl3Document","type":"multi", "instruction":"Upload all of your graphics, i.e., all the generated png and svg files."}]}
-	 Answer: 
+	 Answer:
 -------------==============######## Documentation End ###########==============-------------
 */
 
@@ -18,17 +18,17 @@ var elapsedTime = 0;
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
-function setup() 
+function setup()
 {
 	inParams = parseGet();
 
 	AJAXService("GETPARAM", { }, "PDUGGA");
 }
 
-function returnedDugga(data) 
-{	
+function returnedDugga(data)
+{
 	dataV = data;
-	
+
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
 	if (data['param'] == "UNK") {
@@ -37,9 +37,9 @@ function returnedDugga(data)
 		duggaParams = jQuery.parseJSON(data['param']);
 		$("#submitButtonTable").hide();
 		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='800px;' type='application/pdf'>";
+				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&moment="+inParams['moment']+"&fname="+duggaParams["filelink"]+"' width='100%' height='800px;' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
-			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
+			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&moment="+inParams['moment']+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
         		$("#snus").html(result);
         		// Placeholder code
 				var pl = duggaParams.placeholders;
@@ -56,7 +56,7 @@ function returnedDugga(data)
 								}
 							}
 						}
-					}					
+					}
 				}
     		}});
 		}else if(duggaParams["type"]==="link"){
@@ -64,20 +64,20 @@ function returnedDugga(data)
 			if(window.location.protocol === "https:"){
 					filename=filename.replace("http://", "https://");
 			}else{
-					filename=filename.replace("https://", "http://");				
+					filename=filename.replace("https://", "http://");
 			}
-			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='800px' type='application/pdf'></iframe>"; 
+			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='800px' type='application/pdf'></iframe>";
 		}else {
-			// UNK 
+			// UNK
 		}
 
 		var linkeddugga=duggaParams["linkeddugga"];
 		for (var duggas in data["files"]) {
 		    // skip loop if the property is from prototype
 		    if (!data["files"].hasOwnProperty(duggas)) continue;
-		
+
 				if (duggas == parseInt(linkeddugga)){
-					
+
 					for (var i=0;i<data["files"][duggas].length;i++){
 						//alert(data["files"][duggas][i]);
 						var obj = data["files"][duggas][i];
@@ -91,7 +91,7 @@ function returnedDugga(data)
 							$("#feedback-header").html("Feedback on "+filename+" submitted: "+ obj["updtime"]);
 							$("#report-header").html(filename+" submitted: "+ obj["updtime"]);
 						}
-					}					
+					}
 				}
 		}
 
@@ -99,7 +99,7 @@ function returnedDugga(data)
     /*
     for (){
 			if (duggaParams["reportField"]===)
-    $("#linkedreport").html(<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" /> ) 
+    $("#linkedreport").html(<embed src="'+filepath+filename+fileseq+'.'+fileext+'" width="100%" height="100%" type="application/pdf" /> )
     }
 		*/
 		//alert(linkeddugga);
@@ -115,13 +115,13 @@ function returnedDugga(data)
 
 		}
 		if (typeof duggaFiles !== "undefined"){
-			for (var version=0; version < duggaFiles.length;version++){				
+			for (var version=0; version < duggaFiles.length;version++){
 				if (duggaFiles[version].kind == "3"){
 					if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
-					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;					
+					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;
 					}
 				}
-			}							
+			}
 		}
 
 		if (data["answer"] == null || data["answer"] !== "UNK") {
@@ -139,18 +139,18 @@ function returnedDugga(data)
             fb="<table style='width:100%;border:1px solid #000;table-layout:fixed'><caption>Previous feedback</caption><thead><tr><th></th></tr></thead><tbody>";
     				for (var k=feedbackArr.length-1;k>=0;k--){
       					var fb_tmp = feedbackArr[k].split("%%");
-      					if (k==feedbackArr.length-1){						
+      					if (k==feedbackArr.length-1){
       						fb="<pre style='width:98%;padding:2px;white-space:pre-wrap'>"+fb_tmp[1]+"</pre>"+fb;
       					} else {
-      						fb+="<tr><td><pre style='margin-left:6px;white-space:pre-wrap;color:rgba(0,0,0,0.5)'>"+fb_tmp[1]+"</pre></td></tr>";						
+      						fb+="<tr><td><pre style='margin-left:6px;white-space:pre-wrap;color:rgba(0,0,0,0.5)'>"+fb_tmp[1]+"</pre></td></tr>";
       					}
-    				} 
-    				fb += "</tbody></table>";          
+    				}
+    				fb += "</tbody></table>";
         } else if (feedbackArr.length == 1){
             var fb_tmp = feedbackArr[0].split("%%");
             fb="<pre style='width:98%;padding:2px;white-space:pre-wrap'>"+fb_tmp[1]+"</pre>"
         }
-				document.getElementById('tomten').innerHTML = fb;					
+				document.getElementById('tomten').innerHTML = fb;
 		}
 
 
@@ -170,7 +170,7 @@ function reset()
 
 }
 
-function saveClick() 
+function saveClick()
 {
 	Timer.stopTimer();
 
@@ -200,9 +200,9 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
           document.getElementById('duggaTime').innerHTML=userStats[0];
       		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
       		document.getElementById('duggaClicks').innerHTML=userStats[2];
-      		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];	
+      		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
       		$("#duggaStats").css("display","block");
-      		$("#duggaStats").draggable({ handle:'.loginBoxheader'});	      
+      		$("#duggaStats").draggable({ handle:'.loginBoxheader'});
       }
 	}
 
@@ -213,9 +213,9 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	} else {
 		duggaParams = jQuery.parseJSON(param);
 		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='800px' type='application/pdf'>";
+				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&moment="+inParams['moment']+"&fname="+duggaParams["filelink"]+"' width='100%' height='800px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
-			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
+			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&moment="+inParams['moment']+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
         		$("#snus").html(result);
         		// Placeholder code
 				var pl = duggaParams.placeholders;
@@ -232,7 +232,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 								}
 							}
 						}
-					}					
+					}
 				}
     		}});
 		}else if(duggaParams["type"]==="link"){
@@ -240,25 +240,25 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			if(window.location.protocol === "https:"){
 					filename=filename.replace("http://", "https://");
 			}else{
-					filename=filename.replace("https://", "http://");				
+					filename=filename.replace("https://", "http://");
 			}
-			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' min-height='800px' type='application/pdf'></iframe>"; 
+			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' min-height='800px' type='application/pdf'></iframe>";
 		}else {
-			// UNK 
+			// UNK
 		}
 		$("#snus").parent().find(".instructions-content").slideToggle("slow");
 
 		var duggaFiles = [];
 		if (moment != null) {
 			duggaFiles = files[moment];
-		} 
+		}
 		var linkeddugga=duggaParams["linkeddugga"];
 		for (var duggas in files) {
 		    // skip loop if the property is from prototype
 		    if (!files.hasOwnProperty(duggas)) continue;
-		
+
 				if (duggas == parseInt(linkeddugga)){
-					
+
 					for (var i=0;i<files[duggas].length;i++){
 						var obj = files[duggas][i];
 						if (obj["fieldnme"]==duggaParams["reportField"]){
@@ -271,7 +271,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 							$("#feedback-header").html("Feedback on "+filename+" submitted: "+ obj["updtime"]);
 							$("#report-header").html(filename+" submitted: "+ obj["updtime"]);
 						}
-					}					
+					}
 				}
 		}
 /*
@@ -288,13 +288,13 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		// This is in show facit marking view NOT official running version!
 		// ----------------========#############========----------------
 /*
-		for (var version=0; version < duggaFiles.length;version++){				
+		for (var version=0; version < duggaFiles.length;version++){
 				if (duggaFiles[version].kind == "3"){
 					if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
-					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;					
+					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;
 					}
 				}
-		}			
+		}
 */
 		// Bring up the feedback tools
 		document.getElementById('markMenuPlaceholder').style.display = "block";
@@ -307,18 +307,18 @@ if (feedback !== undefined && feedback !== "UNK" && feedback !== ""){
 	for (var k=feedbackArr.length-1;k>=0;k--){
 		var fb_tmp = feedbackArr[k].split("%%");
 		fb+="<tr><td style='border-right:2px dotted #aaa;padding-right:6px'>"+fb_tmp[0]+"</td><td><pre style='white-space:pre-wrap;'>"+fb_tmp[1]+"</pre></td></tr>";
-	} 		
+	}
 }
 fb += "</tbody></table>";
 if (document.getElementById('tomten')){
 		document.getElementById('tomten').innerHTML = fb;
 }
 
-	
+
 	}
 }
 
-function closeFacit() 
+function closeFacit()
 {
 	clearInterval(tickInterval);
 	running = false;
@@ -348,7 +348,7 @@ function createFileUploadArea(fileuploadfileds){
 				form +="<input name='uploadedfile[]' type='file' multiple='multiple' onchange='this.form.submit();'/>";
 				form +="<input type='hidden' name='kind' value='1' />";
 		}
-		
+
 		form +="<input type='submit' name='okGo' value='Upload'>";
 		form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 		form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
@@ -357,7 +357,7 @@ function createFileUploadArea(fileuploadfileds){
 		form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
 		form +="<input type='hidden' name='field' value='"+fieldname+"' />";
 		form +="</form>";
-		
+
 		str += "<div style='border:1px solid #614875; margin: 5px auto;'>";
 		str += "<div class='loginBoxheader'>";
 		if (type === "pdf"){
@@ -381,14 +381,14 @@ function createFileUploadArea(fileuploadfileds){
 			str += "</tr>";
 			str += "</table>";
 			str += "</div>"
-			str += "</div>"			
+			str += "</div>"
 		}
 		str += "</div>";
 		str += "<div style='padding:5px;'>";
 		str +="<div id='"+fieldname+"Instruction' style='font-style: italic;'></div>"
 		str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'>&lt;Submission history&gt;</div>";
-		if (type !== "text"){	
-			str +="New submission:<br/>"; 
+		if (type !== "text"){
+			str +="New submission:<br/>";
 			str +="<table>";
 			str +="<tr>";
 			str +="<td id='"+fieldname+"'>";
@@ -407,5 +407,5 @@ function createFileUploadArea(fileuploadfileds){
 		str += "</div>"
 
 	}
-	document.getElementById("tomten").innerHTML=str;	
+	document.getElementById("tomten").innerHTML=str;
 }
