@@ -306,12 +306,10 @@ function createDugga()
 	AJAXService("ADDUGGA",{cid:cid,autograde:autograde,gradesys:gradesys,nme:nme,template:template,release:release,deadline:deadline,deadline2:deadline2,deadline3:deadline3,coursevers:coursevers},"DUGGA");
 }
 
-function deleteDugga()
+function deleteDugga(did)
 {
-    did=$("#did").val();
-    AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+    if(confirm("Do you really want to delete this dugga?"))AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
     $("#editDugga").css("display","none");
-    //$("#overlay").css("display","none");
 }
 
 
@@ -663,7 +661,7 @@ function returnedDugga(data) {
 
 // Rendring specific cells
 function renderCell(col,celldata,cellid) {
-
+	var list = celldata.split();
 	// Translating autograding from integers to show the data like yes/no.
 	if (col == "autograde"){
 		if(celldata == "0"){
@@ -688,6 +686,13 @@ function renderCell(col,celldata,cellid) {
 		else{
 			celldata = "Undefined";
 		}
+	}
+
+	// Placing a clickable trashcan in its designated column
+
+	else if (col == "trashcan"){
+		did = JSON.parse(celldata);
+		celldata = "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg' onclick='deleteDugga(did)'>"
 	}
 	return "<div id='" + cellid + "'>" + celldata + "</div>";
 }
