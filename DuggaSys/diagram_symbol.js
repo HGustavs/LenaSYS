@@ -288,14 +288,14 @@ function Symbol(kind) {
         c.bl.y += tolerance;
         c.br.x += tolerance;
         c.br.y += tolerance;
-        
+
         if (!this.entityhover(mx, my, c)) {
           return false;
         }
 
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
     }
-      
+
     this.entityhover = function(mx, my, c){
         if(!c){
              c = this.corners();
@@ -658,7 +658,6 @@ this.drawERAttribute = function(x1, y1, x2, y2){
     drawOval(x1, y1, x2, y2);
 
     ctx.fill();
-    makeShadow();
 
     //drawing a multivalue attribute
     if (this.key_type == 'Multivalue') {
@@ -679,6 +678,7 @@ this.drawERAttribute = function(x1, y1, x2, y2){
         ctx.strokeStyle = this.strokeColor;
 
     }
+    makeShadow();
     ctx.stroke();
 
     ctx.fillStyle = this.fontColor;
