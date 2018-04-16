@@ -82,11 +82,30 @@ window.onclick = function (event) {
 
 function createPieChart() {
   var canvas = document.getElementById("pieChart");
-  var c = canvas.getContext("2d");
+  var ctx = canvas.getContext("2d");
   var width = canvas.width;
   var height = canvas.height;
-  c.fillStyle = "#000";
-  c.fillRect(0, 0, width, height);
+
+  var lastend = 0;
+  var data = [33, 33, 33]; // If you add more data values make sure you add more colors
+  var myTotal = 0; // Automatically calculated so don't touch
+  var myColor = ['red', 'green', 'Yellow']; // Colors of each slice
+
+  for (var e = 0; e < data.length; e++) {
+    myTotal += data[e];
+  }
+
+  for (var i = 0; i < data.length; i++) {
+    ctx.fillStyle = myColor[i];
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2, canvas.height / 2);
+    // Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
+    ctx.arc(canvas.width / 2, canvas.height / 2, canvas.height / 2, lastend, lastend
+      + (Math.PI * 2 * (data[i] / myTotal)), false);
+    ctx.lineTo(canvas.width / 2, canvas.height / 2);
+    ctx.fill();
+    lastend += Math.PI * 2 * (data[i] / myTotal);
+  }
 }
 
 // Draw the content of the SwimContent container
