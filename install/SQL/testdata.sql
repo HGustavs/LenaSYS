@@ -127,16 +127,18 @@ INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES 
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (331,"MA113G","Algebra och logik",'UNK','12331','HT15');
 
 /* Insert tests */
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (1,2,1,2,'Bitdugga1','dugga1','2015-01-01 00:00:00','2015-01-30 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (2,2,1,2,'Bitdugga2','dugga1','2015-01-08 00:00:00','2015-01-25 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (3,2,1,2,'colordugga1','dugga2','2015-01-01 00:00:00','2015-01-20 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (4,2,1,2,'colordugga2','dugga2','2015-01-08 00:00:00','2015-01-18 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (5,2,1,2,'linjedugga1','dugga3','2015-01-01 00:00:00','2015-02-10 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (6,2,1,2,'linjedugga2','dugga3','2015-01-01 00:00:00','2015-02-15 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (7,2,1,2,'dugga1','dugga4','2015-01-01 00:00:00','2015-02-05 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (8,2,1,2,'dugga2','dugga4','2015-02-01 00:00:00','2015-02-20 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (9,2,1,2,'Quiz','kryss','2015-01-01 00:00:00','2015-02-19 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (10,2,1,2,'Rapport','generic_dugga_file_receive','2015-01-01 00:00:00','2015-02-19 00:00:00',NOW(),2);
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (1,2,1,2,'Bitdugga1','dugga1','2015-01-01 00:00:00','2015-01-30 15:30:00',NOW(),2,"97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (2,2,1,2,'Bitdugga2','dugga1','2015-01-08 00:00:00','2015-01-25 15:30:00',NOW(),2,"97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (3,2,1,2,'colordugga1','dugga2','2015-01-01 00:00:00','2015-01-20 15:30:00',NOW(),2,"97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (4,2,1,2,'colordugga2','dugga2','2015-01-08 00:00:00','2015-01-18 15:30:00',NOW(),2,"97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (5,2,1,2,'linjedugga1','dugga3','2015-01-01 00:00:00','2015-02-10 15:30:00',NOW(),2,"97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (6,2,1,2,'linjedugga2','dugga3','2015-01-01 00:00:00','2015-02-15 15:30:00',NOW(),2,"97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (7,2,1,2,'dugga1','dugga4','2015-01-01 00:00:00','2015-02-05 15:30:00',NOW(),2,"97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (8,2,1,2,'dugga2','dugga4','2015-02-01 00:00:00','2015-02-20 15:30:00',NOW(),2,"97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (9,2,1,2,'Quiz','kryss','2015-01-01 00:00:00','2015-02-19 15:30:00',NOW(),2,"97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (10,2,1,2,'Rapport','generic_dugga_file_receive','2015-01-01 00:00:00','2015-02-19 15:30:00',NOW(),2,"97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (11,2,1,2,'HTML CSS Testdugga','html_css_dugga','2015-01-01 00:00:00','2015-02-19 15:30:00',NOW(),2,"97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (12,2,1,2,'Clipping masking testdugga','clipping_masking_dugga','2015-01-01 00:00:00','2015-02-19 15:30:00',NOW(),2,"97732");
 
 /* Insert variants of tests */
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (1,1,'{\"tal\":\"2\"}','{"danswer":\"00000010 0 2\"}',NOW(),2);
@@ -160,6 +162,8 @@ INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (18
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (19,9,'{question\"Which of these are examples of actual shaders?: A\"B32shader, 554shader: B\"Context shaders, Shadow shaders and Block shaders: C\"Vertex shaders, Pixel shaders and Geometry shaders}','C',NOW(),2);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (20,9,'{question\"Points, lines and curves are examples of geometrical...: A\"Primitives: B\"Substitutes: C\"Formations: D\"Partitions}','A',NOW(),2);
 INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (21,10,'{\"type\":\"md\",\"filelink\":\"minimikrav_m2.md\", \"submissions\":[{\"fieldname\":\"InlPHPDocument\",\"type\":\"pdf\",\"instruction\":\"Your report as a .pdf document.\"},{\"fieldname\":\"InlPHPZip\",\"type\":\"zip\", \"instruction\":\"Zip your project folder and submit the file here.\"}]}', NOW(),2);
+INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (22,11,'{\"instructions\" : \"Målet med denna duggan är att du skall skapa den html- och css-kod som krävs för att återskapa det du ser i target-fönstret.\", \"target\" : \"cssdugga-site-1.png\", \"target-text\" : \"1) Skall tåla att storleken på skärmen påverkas. 2) Sidan får inte bli mindre i x-led än att alla knappar,Sture 1-5, i #eilert syns. 3) Endast span-element i body skall användas, Inga andra placeholder-element eller övriga container-element är tillåtna 4) Float får ej användas 5) html och css skall klara validering 6) Internal css style skall användas\"}', NOW(),2);
+INSERT INTO variant (vid,quizID,param,modified,creator) VALUES (23,12,'{\"target\":\"test.png\"}', NOW(),2);
 
 /* Insert items on coursepage */
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,rowcolor) VALUES (1001,1,'PHP examples','UNK',1,1,1,1,'45656',0);
@@ -216,6 +220,12 @@ INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,mo
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2030,2,'Quiz 1','9',3,13,1,1,'97731',2029,2,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2031,2,'Report 1HP', '',4,14,2,1,'97731',2031,2,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2032,2,'Report submission','10',3,15,2,1,'97731',2031,2,1,0);
+
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2033,2,'HTML and CSS 1HP', '',4,15,2,1,'97732',2033,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2034,2,'Random css dugga','11',3,16,2,1,'97732',2033,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2035,2,'Clipping', '',4,17,2,1,'97732',2035,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2036,2,'Random clipping dugga','12',3,18,2,1,'97732',2035,2,1,0);
+
 
 /* Insert access for users */
 INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1010,1,'0.0',1,'R',0,'', 45656);
@@ -786,10 +796,11 @@ INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("Shader_Ex2.html",3,1,
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("Shader_Ex2.js",3,1,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("Shader_Ex2.txt",2,1,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("minimikrav_m2.md",3,2,0);
-
+INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("test.png",3,2,0);
+INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("cssdugga-site-1.png",3,2,0);
 
 /* Creation of new dugga (MINIMAL needs more fixing..) */
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (12,5,1,1,'DUGANNN','dugga1','2015-02-01 00:00:00','2015-02-25 00:00:00',NOW(),6);
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (13,5,1,1,'DUGANNN','dugga1','2015-02-01 00:00:00','2015-02-25 00:00:00',NOW(),6);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (24,12,'{\"tal\":\"33\"}','{"danswer":\"7\"}',NOW(),6);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode) VALUES (3001,5,'Bitdugga 1HP','12',3,100,6,1,'1339',3,1);
 
