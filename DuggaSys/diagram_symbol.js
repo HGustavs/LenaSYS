@@ -288,19 +288,19 @@ function Symbol(kind) {
         c.bl.y += tolerance;
         c.br.x += tolerance;
         c.br.y += tolerance;
-
-        if (!this.entityhover(mx, my)) {
+        
+        if (!this.entityhover(mx, my, c)) {
           return false;
         }
 
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
     }
-
-
-
-    this.entityhover = function(mx,my){
+      
+    this.entityhover = function(mx, my, c){
+        if(!c){
+             c = this.corners();
+        }
         //we have correct points in the four corners of a square.
-        var c = this.corners();
         if(mx > c.tl.x && mx < c.tr.x){
             if(my > c.tl.y && my < c.bl.y){
                 return true;
