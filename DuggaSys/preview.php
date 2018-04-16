@@ -198,7 +198,8 @@
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****'); 
             }
             function cursiveText() {
-                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
+                //$('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
+                $('#mrkdwntxt').insertAtCaret('____');
             }
 
 
