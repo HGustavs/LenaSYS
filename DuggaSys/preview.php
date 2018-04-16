@@ -43,6 +43,7 @@
                 border: solid rgb(200,200,200);
                 background-color: #FFFFFF;
                 word-wrap: break-word;
+                overflow-y: scroll;
                 width: 490px;
                 height: 550px;
                 position: relative;
@@ -77,14 +78,14 @@
                 background-color: #775886;
                 color: #FFFFFF;
                 font-size: 14px;
-                padding: 0px 5px 0px 5px; 
+                padding: 0px 5px 0px 5px;
             }
             .prevNav {
                 background-color: #775886;
                 height: 30px;
                 color: #FFF;
                 padding: 0px 5px 0px 5px;
-                line-height: 25px; 
+                line-height: 25px;
             }
             .markNav {
                 background-color: #775886;
@@ -160,7 +161,7 @@
 
         </style>
         <script>
-            
+
             function onload() {
                 $(".PreviewWindow").hide();
                 $('#select-header').hide();
@@ -168,15 +169,15 @@
             function showPreview() {
                 $(".PreviewWindow").show();
             }
-                                
+
             function saveCode() {
-                
+
             }
             function cancelPreview() {
-                $(".PreviewWindow").hide();     
+                $(".PreviewWindow").hide();
             }
             function saveMarkdown() {
-                
+
             }
             function showPreview(str) {
                 $(".PreviewWindow").show();
@@ -199,8 +200,8 @@
             function cursiveText() {
                 $('#mrkdwntxt').append("__");
             }
-            
-            
+
+
             function showDropdown() {
                 $('#select-header').show();
             }
@@ -218,14 +219,14 @@
                 $('#mrkdwntxt').append("### ");
             }
 
-    
+
             $(document).ready(function(){
                $(".headerType").click(function(){
                     $("#select-header").toggle();
                     $("#select-header").addClass("show-dropdown-content");
                 });
             });
-            
+
             //Hide dropdown if click is outside the div
             $(document).mouseup(function(e) {
                 var container = $("#select-header");
@@ -267,7 +268,7 @@
                 <div class="markTextPrev">
                     <div class="prevSpan">
                         <span id="markdown"></span>
-                    </div>    
+                    </div>
                 </div>
             </div>
             <div class="OptionButtons">
@@ -279,6 +280,6 @@
         <?php
 		  //echo $_GET['prev'];
         //?>
-        
+
     </body>
 </html>
