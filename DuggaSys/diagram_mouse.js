@@ -82,7 +82,7 @@ function mousemoveevt(ev, t) {
         if (movobj != -1) {
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
-                   if (snapToGrid) {
+                  /* if (snapToGrid) {
                         if (diagram[i].kind == 1) {
                             var firstPoint = points[diagram[i].segments[0].pa];
                         } else {
@@ -97,8 +97,12 @@ function mousemoveevt(ev, t) {
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                         currentMouseCoordinateX -= deltatlx;
                         currentMouseCoordinateY -= deltatly;
+                    }*/
+                    if(snapToGrid){
+                        currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
+                        currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                     }
-                
+                    
                     diagram[i].move(currentMouseCoordinateX - oldMouseCoordinateX, currentMouseCoordinateY - oldMouseCoordinateY);
                 }
             }
