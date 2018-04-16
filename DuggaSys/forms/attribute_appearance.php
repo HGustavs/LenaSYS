@@ -3,7 +3,7 @@ Attribute name:</br>
 Attribute type: </br>
 <select onclick="changeObjectAppearance('attributeType');" id='object_type'>
     "<option value='Primary key'>Primary key</option>
-    "<option value='Normal' selected="true">Normal</option>
+    "<option value='normal' selected="true">Normal</option>
     "<option value='Multivalue'>Multivalue</option>
     "<option value='Composite'>Composite</option>
     "<option value='Drive'>Derive</option>
