@@ -263,26 +263,20 @@ function closeEditVariant()
 {
 	$("#editVariant").css("display","none");
 }
+
+
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-	function confirmBox(temp){	
-		if (temp == 1 || temp == 2 || temp == 3){
-			decider = temp;
-			$("#sectionConfirmBox").css("display","flex");
-		}else if(temp == 4){
-			console.log(decider);
-		    if (decider == 1){
-		    	deleteDugga();
-		    }
-		   	else if (decider == 2){
-		    	createDugga();
-		    }
-		    else if (decider == 3){
-		    	updateDugga();
-		    }
-		    $("#sectionConfirmBox").css("display","none");
-		    decider = 0;
-		}
+function confirmBox(operation, item = null) {
+	if(operation == "openConfirmBox") {
+		active_lid = item ? $(item).parents('table').attr('value') : null;
+		$("#sectionConfirmBox").css("display","flex");
+	} else if (operation == "deleteItem") {
+		deleteItem(active_lid);
+		$("#sectionConfirmBox").css("display","none");
+	} else if (operation == "closeConfirmBox") {
+		$("#sectionConfirmBox").css("display","none");
 	}
+}
 
 function createDugga()
 {
@@ -317,7 +311,7 @@ function deleteDugga(did)
 function validateName(){
 	var retValue = false;
 	var nme=document.getElementById("name");
-	
+
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)){
 		$('#tooltipTxt').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
@@ -359,7 +353,7 @@ function updateDugga()
 }
 
 function closeEditDugga()
-{	
+{
 	$("#editDugga").css("display","none");
 	document.getElementById("name").style.backgroundColor = "#fff";  // Resets color for name input
 	$('#submitBtn').removeAttr('disabled');  						 // Resets submit button to its default form
@@ -637,7 +631,7 @@ function returnedDugga(data) {
         null,
         null,
         [],
-        [],				
+        [],
         "",
         null,
         null,
@@ -696,7 +690,7 @@ function renderCell(col,celldata,cellid) {
 		return str;
 	}
 	return celldata;
-	
+
 }
 // End of rendering the table.
 
