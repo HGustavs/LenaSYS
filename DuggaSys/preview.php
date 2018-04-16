@@ -195,7 +195,8 @@
             }
 
             function boldText() {
-                $('#mrkdwntxt').append('****');
+                //$('#mrkdwntxt').append('****');
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****'); 
             }
             function cursiveText() {
                 $('#mrkdwntxt').append('____');
