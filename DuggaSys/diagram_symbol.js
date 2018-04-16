@@ -15,7 +15,7 @@ function Symbol(kind) {
     this.textsize = 14;             // 14 pixels text size is default
     this.symbolColor = '#ffffff';   // change background colors on entities
     this.strokeColor = '#000000';   // change standard line color
-    this.font = "Arial"             // set the standard font
+    this.font = "Arial";             // set the standard font
     this.lineWidth = 2;
     this.name = "New Class";        // Default name is new class
     this.key_type = "normal";       // Defult key tyoe for a class.
