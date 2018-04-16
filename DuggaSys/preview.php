@@ -195,11 +195,10 @@
             }
 
             function boldText() {
-                //$('#mrkdwntxt').append('****');
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****'); 
             }
             function cursiveText() {
-                $('#mrkdwntxt').append('____');
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
             }
 
 
@@ -211,13 +210,14 @@
             }
 
             function headerVal1() {
-                $('#mrkdwntxt').append('# ');
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'# ');
+
             }
             function headerVal2() {
-                $('#mrkdwntxt').append('## ');
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'## ');
             }
             function headerVal3() {
-                $('#mrkdwntxt').append('### ');
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'### ');
             }
 
 
