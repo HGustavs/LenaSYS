@@ -9,6 +9,7 @@ var filez;
 var variant = [];
 var submissionRow = 0;
 var decider;
+var itemToDelete;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -266,12 +267,13 @@ function closeEditVariant()
 
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-function confirmBox(operation, item = null) {
+function confirmBox(operation, item) {
+	console.log(operation, item);
 	if(operation == "openConfirmBox") {
-		active_lid = item ? $(item).parents('table').attr('value') : null;
+		itemToDelete = item; // save the item to delete in this variable
 		$("#sectionConfirmBox").css("display","flex");
 	} else if (operation == "deleteItem") {
-		deleteItem(active_lid);
+		deleteDugga(itemToDelete);
 		$("#sectionConfirmBox").css("display","none");
 	} else if (operation == "closeConfirmBox") {
 		$("#sectionConfirmBox").css("display","none");
@@ -302,8 +304,9 @@ function createDugga()
 
 function deleteDugga(did)
 {
-    if(confirm("Do you really want to delete this dugga?"))AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
-    $("#editDugga").css("display","none");
+//    if(confirm("Do you really want to delete this dugga?"))AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+	AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+	$("#editDugga").css("display","none");
 }
 
 
@@ -686,7 +689,7 @@ function renderCell(col,celldata,cellid) {
 	else if (col == "trashcan"){
 		object=JSON.parse(celldata);
 	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-		str+=" onclick='deleteDugga(\""+object+"\");' >";
+		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
 		return str;
 	}
 	return celldata;
