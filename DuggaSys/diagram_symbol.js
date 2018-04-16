@@ -287,14 +287,22 @@ function Symbol(kind) {
         c.bl.y += tolerance;
         c.br.x += tolerance;
         c.br.y += tolerance;
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 51383d651349342e7eae56c176aeaac793d6570d
         if (!this.entityhover(mx, my, c)) {
           return false;
         }
 
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
     }
+<<<<<<< HEAD
 
+=======
+      
+>>>>>>> 51383d651349342e7eae56c176aeaac793d6570d
     this.entityhover = function(mx, my, c){
         if(!c){
              c = this.corners();
