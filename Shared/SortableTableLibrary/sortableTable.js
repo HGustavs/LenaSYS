@@ -8,6 +8,16 @@ var sortableTable = {
     edit_tableid:null,
 }
 
+function searchKeyUp(e) {
+	// look for window.event in case event isn't passed in
+    e = e || window.event;
+    if (e.keyCode == 13) {
+        document.getElementById('searchbutton').click();
+        return false;
+    }
+    return true;
+}
+
 function keypressHandler(event) {    
     if (event.keyCode == 13) {
         updateCellInternal();
@@ -119,8 +129,6 @@ function rowDeHighlightInternal(event,row) {
 		}
     }    
 }
-
-var searchterm = "";
 
 function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions,renderColumnFilter,rowFilter,colsumList,rowsumList,rowsumHeading,sumFunc,freezePane,highlightRow,deHighlightRow,showEditCell,updateCell,hasmagic) {
 	// Private members

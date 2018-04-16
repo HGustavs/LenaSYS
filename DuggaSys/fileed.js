@@ -216,7 +216,22 @@ function renderCell(col,celldata,cellid) {
 	return celldata;
 }
 
-var myTable;
+//--------------------------------------------------------------------------
+// rowFilter
+// ---------------
+//  Callback function that filters rows in the table
+//--------------------------------------------------------------------------
+var searchterm = "";
+function rowFilter(row) {
+	for (key in row) {
+		if (row[key] != null) {
+			if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+		}
+	}
+	return false;
+}
+
+var fileLink;
 //----------------------------------------
 // Renderer <- ran after the ajax call(ajax is started after initialation of this file) is successful
 //----------------------------------------
@@ -238,7 +253,7 @@ function returnedFile(data)
     	tblfoot:[]
     }
 
-    myTable = new SortableTable(
+    fileLink = new SortableTable(
 		tabledata,
 		"fileLink",
 		null,
@@ -246,7 +261,7 @@ function returnedFile(data)
         renderCell,
         null,
         null,
-        null,
+        rowFilter,
         [],
         [],				
         "",
@@ -259,7 +274,7 @@ function returnedFile(data)
 		true
 	);
 
-	myTable.renderTable();
+	fileLink.renderTable();
 
 	if(data['debug']!="NONE!") alert(data['debug']);
 	makeAllSortable();
@@ -421,34 +436,22 @@ function searchcontent(){
 	    $rows.filter(":visible:odd").css('background','#ccc');
 	    $rows.filter(":visible:even").css('background','#eae8eb');
 	});
-}  
+}
 
 //excuted onclick button for switching to "one" table - functionality that filters in table 
 function keyUpSearch() {
-	var $rows2 = $('#allcontent_body tr');
+	var $searchedRows = $('#fileLink tr');
 	$('#searchinput').keyup(function() {
 	    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 	    
-	    $rows2.show().filter(function() {
+	    $searchedRows.show().filter(function() {
 	        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
 	        return !~text.indexOf(val);
 	    }).hide();
-	    $rows2.filter(":visible:odd").css('background','#ccc');
-	    $rows2.filter(":visible:even").css('background','#eae8eb');
+	    $searchedRows.filter(":visible:odd").css('background','#ccc');
+	    $searchedRows.filter(":visible:even").css('background','#eae8eb');
 	});
-}
-
-function searchKeyPress(e)
-{
-    // look for window.event in case event isn't passed in
-    e = e || window.event;
-    if (e.keyCode == 13)
-    {
-        document.getElementById('searchbutton').click();
-        return false;
-    }
-    return true;
-} */
+}  */
 
 function deleteFile(fileid,filename){
 	if (confirm("Do you really want to delete the file/link: "+filename)){
