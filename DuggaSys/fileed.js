@@ -204,7 +204,12 @@ function renderCell(col,celldata,cellid) {
 		str+=" onclick='deleteFile(\""+obj.fileid+"\",\""+obj.filename+"\");' >";
 		return str;
 	} else if (col == "filename") {
-	    return "<div>" + list[0] + "</div>";
+		var link = celldata.split('://');
+		if(link[0] == "https" || link[0] == "http"){
+			return "<a href='" + celldata + "' target='_blank'>" + celldata + "</a>";
+		}else{
+			return "<div>" + list[0] + "</div>";
+		}
 	} else if (col == "extension") {
 	    return "<div>" + list[1] + "</div>";
 	} else if (col == "markdown") {
