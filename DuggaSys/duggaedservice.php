@@ -188,8 +188,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
             $error=$query->errorInfo();
             $debug="Error deleting dugga".$error[2];
         }
-	}
-
+    }
 }
 
 //------------------------------------------------------------------------------------------------
@@ -242,6 +241,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			'quizFile' => $row['quizFile'],
 			'deadline' => $row['deadline'],				
       		'qrelease' => $row['qrelease'],
+      		'qstart' => $row['qstart'],
 			'modified' => $row['modified'],
 			'cogwheel' => $row['id'],
 			'trashcan' => $row['id']

@@ -397,7 +397,8 @@ function showSaveButton(){
 //  $("#overlay").css("display","none");
 }
 
-function selectDugga(did,name,autograde,gradesys,template,qstart,deadline,deadline2,deadline3,release){
+function selectDugga(qid){
+	AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers'], qid:this.qid},"GETQUIZ");
 	$("#editDugga").css("display","flex");
 		//$("#overlay").css("display","block");
 	$("#did").val(did); // Set Variant ID
@@ -605,6 +606,22 @@ function showVariantz(param){
     }
 }
 
+function returnedQuiz(data) {
+	var quiz = data;
+	quiz = quiz['entries'][0];
+
+	$("#did").val(quiz['arrow']);
+	$("#name").val(quiz['qname']);
+	$("#autograde").val(quiz['autograde']);
+	$("#gradesys").val(quiz['gradesystem']);
+	$("#template").val(quiz['quizFile']);
+	$("#qstart").val(quiz['qstart']);
+	$("#deadline").val(quiz['deadline']);
+	$("#deadline2").val("");
+	$("#deadline3").val("");
+  	$("#release").val(quiz['qrelease']);
+}
+
 
 // Start of rendering the table
 var myTable;
@@ -663,8 +680,6 @@ function returnedDugga(data) {
 // Rendring specific cells
 function renderCell(col,celldata,cellid) {
 	list+= celldata + " ";
-	var dataGrej = list.split(",");
-	console.log(list[0][0]);
 	
 	// Translating autograding from integers to show the data like yes/no.
 	if (col == "autograde"){
