@@ -716,7 +716,7 @@ function renderCell(col,celldata,cellid) {
 		object=JSON.parse(celldata);
 		list+= ",";
 	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-		str+=" onclick='deleteDugga(\""+object+"\");' >";
+		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
 		return str;
 	}
 	return celldata;
