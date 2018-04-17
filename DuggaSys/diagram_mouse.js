@@ -2,6 +2,7 @@
 ----- THIS FILE HANDLES ALL MOUSEEVENTS IN THE DIAGRAM -----
 */
 
+
 // Function for the zoom in and zoom out in the canvas element
 function zoomInMode() {
     var oldZoom = zoomValue;
@@ -80,6 +81,7 @@ function mousemoveevt(ev, t) {
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1) {
+            uimode = "Moved";
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
                   /* if (snapToGrid) {
@@ -92,7 +94,7 @@ function mousemoveevt(ev, t) {
                         var tly = (Math.round(firstPoint.y / gridSize) * gridSize);
                         var deltatlx = firstPoint.x - tlx;
                         var deltatly = firstPoint.y - tly;
-                                                
+
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                         currentMouseCoordinateX -= deltatlx;
@@ -102,7 +104,7 @@ function mousemoveevt(ev, t) {
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                     }
-                    
+
                     diagram[i].move(currentMouseCoordinateX - oldMouseCoordinateX, currentMouseCoordinateY - oldMouseCoordinateY);
                 }
             }
@@ -194,6 +196,11 @@ function mousemoveevt(ev, t) {
 }
 
 function mousedownevt(ev) {
+
+    if(uimode == "Moved" && !ctrlIsClicked && md != 4){
+        uimode = "normal";
+        md = 0;
+    }
     if (uimode == "CreateLine") {
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
@@ -210,6 +217,10 @@ function mousedownevt(ev) {
             } else {
                 p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
             }
+            
+            //Get which kind of symbol mousedownevt execute on
+            symbolStartKind = diagram[lineStartObj].symbolkind;
+
         }
     } else if (sel.distance < tolerance) {
         md = 2;
@@ -264,7 +275,7 @@ function mousedownevt(ev) {
 }
 
 function mouseupevt(ev) {
-    
+
   /*  if (snapToGrid) {
         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
@@ -297,9 +308,12 @@ function mouseupevt(ev) {
                 p2 = diagram[hovobj].centerPoint;
             } else if (diagram[hovobj].symbolkind == 5) {
                 p2 = diagram[hovobj].middleDivider;
-            } else {
+            } else{
                 p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
             }
+            //Get which kind of symbol mouseupevt execute on
+            symbolEndKind = diagram[hovobj].symbolkind;
+
             if (lineStartObj == -1) {
                 // Start line on empty
                 diagram[hovobj].connectorTop.push({from:p2, to:p1});
@@ -325,7 +339,6 @@ function mouseupevt(ev) {
         erAttributeA.name = "Attr" + diagram.length;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
-
         erAttributeA.centerPoint = p3;
         erAttributeA.object_type = "";
         erAttributeA.fontColor = "#000";
@@ -348,21 +361,24 @@ function mouseupevt(ev) {
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-    } else if (uimode == "CreateLine" && md == 4) {
-        /* Code for making a line */
-        erLineA = new Symbol(4);
-        erLineA.name = "Line" + diagram.length;
-        erLineA.topLeft = p1;
+    } else if (uimode == "CreateLine" && md == 4){ 
+        /* Code for making a line, except if you try to draw a line from entity to entity or relation to relation */
+        if(((symbolStartKind != symbolEndKind || symbolStartKind == 2 && symbolEndKind == 2))){
+            erLineA = new Symbol(4);
+            erLineA.name = "Line" + diagram.length
+            erLineA.topLeft = p1;
 
-        erLineA.object_type = "";
-        erLineA.bottomRight = p2;
-        erLineA.centerPoint = p3;
-        diagram.push(erLineA);
-        //selecting the newly created enitity and open the dialogmenu.
-        lastSelectedObject = diagram.length -1;
-        diagram[lastSelectedObject].targeted = true;
-        updateGraphics();
-        //diagram.createAritySymbols(diagram[lastSelectedObject]);
+            erLineA.object_type = "";
+            erLineA.bottomRight = p2;
+            erLineA.centerPoint = p3;
+            diagram.push(erLineA);
+            //selecting the newly created enitity and open the dialogmenu.
+            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = true;
+            updateGraphics();
+            //diagram.createAritySymbols(diagram[lastSelectedObject]);
+        }  
+    
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5);
         erRelationA.name = "Relation" + diagram.length;
@@ -374,11 +390,18 @@ function mouseupevt(ev) {
         //selecting the newly created relation and open the dialog menu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-    } else if (md == 4 && !(uimode == "CreateFigure") &&
-               !(uimode == "CreateLine") && !(uimode == "CreateEREntity") &&
-               !(uimode == "CreateERAttr" ) && !(uimode == "CreateClass" ) &&
-               !(uimode == "MoveAround" ) && !(uimode == "CreateERRelation")) {
-            diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+    } else if (md == 4 && uimode == "normal") {
+        diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+    }
+    else if(uimode != "Moved" && !ctrlIsClicked && md != 4) {
+        //Unselects every object.
+        for(var i = 0; i < diagram.length; i++){
+            diagram[i].targeted = false;
+        }
+        //Sets the clicked object as targeted
+        selected_objects = [];
+        selected_objects.push(diagram[lastSelectedObject]);
+        diagram[lastSelectedObject].targeted = true;
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
@@ -386,6 +409,7 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
+
 
 }
 

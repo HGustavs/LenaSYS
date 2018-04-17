@@ -8,6 +8,16 @@ var sortableTable = {
     edit_tableid:null,
 }
 
+function searchKeyUp(e) {
+	// look for window.event in case event isn't passed in
+    e = e || window.event;
+    if (e.keyCode == 13) {
+        document.getElementById('searchbutton').click();
+        return false;
+    }
+    return true;
+}
+
 function keypressHandler(event) {    
     if (event.keyCode == 13) {
         updateCellInternal();
@@ -120,8 +130,6 @@ function rowDeHighlightInternal(event,row) {
     }    
 }
 
-var searchterm = "";
-
 function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions,renderColumnFilter,rowFilter,colsumList,rowsumList,rowsumHeading,sumFunc,freezePane,highlightRow,deHighlightRow,showEditCell,updateCell,hasmagic) {
 	// Private members
 	var result = 0;
@@ -158,11 +166,10 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
   	this.hasMagicHeadings = hasmagic;
 
 	// Local variable that contains html code for main table and local variable that contains magic headings table
-	var str = "<table style='border-collapse: collapse;' id='"+tableid+"_tbl' class='list list--nomargin'>";
-	var	mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;margin-top:50px;border-bottom:none;' class='list' id='"+tableid+"_tbl_mh'>";
-	var mhvstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;' id='"+tableid+"_tbl_mhv'>";
-	var mhfstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;top:0px;z-index:3000;' id='"+tableid+"_tbl_mhf'>";
-
+	var str = "";
+	var mhstr = "";
+	var mhvstr = "";
+	var mhfstr = "";
 	
     tbl.cleanHead = [];
     
@@ -181,6 +188,12 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	}
 	
 	this.reRender = function() {
+		// Local variable that contains html code for main table and local variable that contains magic headings table
+		str = "<table style='border-collapse: collapse;' id='"+tableid+"_tbl' class='list list--nomargin'>";
+		mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;margin-top:50px;border-bottom:none;' class='list' id='"+tableid+"_tbl_mh'>";
+		mhvstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;' id='"+tableid+"_tbl_mhv'>";
+		mhfstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;top:0px;z-index:3000;' id='"+tableid+"_tbl_mhf'>";
+
 		if(searchterm != null) {
 			console.log(searchterm);
 		}
@@ -359,7 +372,6 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		mhvstr+= "</table>";
 
 		this.magicHeader();
-
 	}
 
 	this.toggleColumn = function(col) {

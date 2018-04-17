@@ -7,6 +7,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title>Preview</title>
         <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+        <link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet">
         <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
         <script src="../Shared/js/jquery-1.11.0.min.js"></script>
         <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
@@ -169,23 +170,26 @@
             function showPreview() {
                 $(".PreviewWindow").show();
             }
-
-            function saveCode() {
-
-            }
             function cancelPreview() {
                 $(".PreviewWindow").hide();
             }
             function saveMarkdown() {
 
             }
-            function showPreview(str) {
+
+            function loadPreview(fileUrl) {
+                var fileContent = getFIleContents(fileUrl);
+                document.getElementById("mrkdwntxt").value = fileContent;
+                updatePreview(fileContent);
                 $(".PreviewWindow").show();
+            }
+
+            function updatePreview(str) {
                 //This function is triggered when key is pressed down in the input field
                 if(str.length == 0){
-                    //Here we check if the input field is empty (str.length == 0).
-                    // If it is, clear the content of the txtHint placeholder
-                    // and exit the function.
+                    /*Here we check if the input field is empty (str.length == 0).
+                      If it is, clear the content of the txtHint placeholder
+                      and exit the function.*/
                     document.getElementById("markdown").innerHTML = " ";
                     return;
                 }
@@ -193,14 +197,28 @@
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
                 };
             }
+            function getFIleContents(fileUrl){
+              var result = null;
+              $.ajax({
+                url: fileUrl,
+                type: 'get',
+                dataType: 'html',
+                async: false,
+                success: function(data) {
+                  result = data;
+                }
+            });
+              return result;
+            }
+
 
             function boldText() {
-                $('#mrkdwntxt').append("****");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****');
             }
             function cursiveText() {
-                $('#mrkdwntxt').append("__");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
+                
             }
-
 
             function showDropdown() {
                 $('#select-header').show();
@@ -210,13 +228,14 @@
             }
 
             function headerVal1() {
-                $('#mrkdwntxt').append("# ");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'# ');
+
             }
             function headerVal2() {
-                $('#mrkdwntxt').append("## ");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'## ');
             }
             function headerVal3() {
-                $('#mrkdwntxt').append("### ");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'### ');
             }
 
 
@@ -239,9 +258,8 @@
     </head>
     <body onload="onload()">
 
-
         <div class="Header">Markdown preview</div>
-        <button id="Preview" onclick="showPreview()">Preview</button>
+            <button id="Preview" onclick="loadPreview('../courses/2/minimikrav_m2.md')">Preview</button>
         <div class="PreviewWindow">
             <div class="PrevHead">This is the preview window
             </div>
@@ -260,14 +278,16 @@
                     <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
                 </div>
                 <div class="markText">
-                    <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
+                    <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
                 </div>
             </div>
             <div class="MarkdownPrev">
                 <div class="prevNav">Markdown Preview</div>
                 <div class="markTextPrev">
                     <div class="prevSpan">
-                        <span id="markdown"></span>
+                        <div class="descbox">
+                            <span id="markdown"></span>
+                        </div>
                     </div>
                 </div>
             </div>
