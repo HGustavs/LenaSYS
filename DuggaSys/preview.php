@@ -196,7 +196,7 @@
 
             function boldText() {
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'**');
-                $('#mrkdwntxt').focus();
+                setCaretToPos($("#mrkdwntxt") [0], this);
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'**');
                 //$("#mrkdwntxt").val("**").focus().val("**");
             }
