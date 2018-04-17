@@ -213,7 +213,7 @@
                 
                 
                 // text before cursor/highlighted text + special character + text after cursor/highlighted text
-                value = value.slice() + specialChar + value.slice(insertStartPoint) + specialChar + value.slice(insertEndPoint);
+                value = value.slice() + specialChar + value.slice(0, insertStartPoint) + specialChar + value.slice(insertEndPoint);
                 textarea.value = value;
             }
             function setSelectionRange(input, selectionStart, selectionEnd) {
