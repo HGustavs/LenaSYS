@@ -635,7 +635,7 @@ function returnedDugga(data) {
     		qrelease:"Result date",
     		modified:"Last modified",
     		cogwheel:"*",
-    		trashcan:"-"
+    		trashcan:"<input type='button' value='+' class='submit-button-newitem' onclick=''>"
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
