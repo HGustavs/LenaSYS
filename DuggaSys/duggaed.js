@@ -401,7 +401,7 @@ function selectDugga(qid){
 	AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers'], qid:this.qid},"GETQUIZ");
 	$("#editDugga").css("display","flex");
 		//$("#overlay").css("display","block");
-	$("#did").val(did); // Set Variant ID
+	$("#did").val(qid); // Set Variant ID
 	$("#name").val(name); // Set Dugga name
 	$("#qstart").val(qstart); // Set Start date name
 	$("#deadline").val(deadline); // Set Deadline date name
@@ -608,7 +608,12 @@ function showVariantz(param){
 
 function returnedQuiz(data) {
 	var quiz = data;
-	quiz = quiz['entries'][0];
+    var did = $('#did').val();
+    quiz['entries'].forEach(function(element) {
+        if(element['arrow'] == did) {
+            quiz = element;
+        }
+    });
 
 	$("#did").val(quiz['arrow']);
 	$("#name").val(quiz['qname']);
