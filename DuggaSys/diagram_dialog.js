@@ -168,19 +168,19 @@ function addCardinality(side){
 
   var x;
   var y;
-  var val;
+  var val = document.getElementById(side).value;;
 
   if(side == "rightSide"){
     x = points[diagram[lastSelectedObject].bottomRight].x;
     y = points[diagram[lastSelectedObject].bottomRight].y;
     console.log("iX: " + x + "\nY: " + y);
+    diagram[lastSelectedObject].cardinality[1] = ({"x": x, "y": y, "value": val, "side": side});
   }else{
     console.log(points[diagram[lastSelectedObject].topLeft].x);
     x = points[diagram[lastSelectedObject].topLeft].x;
     y = points[diagram[lastSelectedObject].topLeft].y;
     console.log("X: " + x + "\nY: " + y);
+    diagram[lastSelectedObject].cardinality[0] = ({"x": x, "y": y, "value": val, "side": side});
   }
 
-  val = document.getElementById(side).value;
-  diagram[lastSelectedObject].cardinality.push({"x": x, "y": y, "value": val, "side": side});
 }
