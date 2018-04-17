@@ -1395,11 +1395,11 @@ filez = data;
 
   var tabledata = {
   	tblhead,
-    tblbody: data['entries'],
+    tblbody: data['sortableTable'],
     tblfoot:[]
   }
   
-	console.log(tabledata);
+	//console.log(tabledata);
 	console.log(data);
   myTable = new SortableTable(
     tabledata,
@@ -1457,7 +1457,7 @@ function renderCell(col,celldata,cellid) {
     obj = JSON.parse(celldata);
 
     str = "<p>";
-    str += obj.hej;
+    str += obj.username;
     str += "</p>";
     console.log(col);
     console.log(celldata);
