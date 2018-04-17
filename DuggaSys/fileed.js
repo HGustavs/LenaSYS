@@ -110,14 +110,13 @@ function createLink()
 {
 		$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' /></td>");
 		$("#addFile").css("display","flex");
-		$("#filey").css("display","none");
-		$("#linky").css("display","block");
+		$(".filePopUp").css("display","none");
+		$(".linkPopUp").css("display","block");
 		$("#selecty").css("display","none");
 		//$("#overlay").css("display","block");
 		$("#kind").val("LINK");
 		$("#cid").val(querystring['cid']);
 		$("#coursevers").val(querystring['coursevers']);
-		
 }
 //----------------------------------------
 // createFile(kind) <- gets the files that exists and puts them as options under a select tag.
@@ -146,8 +145,8 @@ function createFile(kind) {
 	}
 
 	$("#addFile").css("display","flex");
-	$("#filey").css("display","block");
-	$("#linky").css("display","none");
+	$(".filePopUp").css("display","block");
+	$(".linkPopUp").css("display","none");
 	//$("#overlay").css("display","block");
 	if (kind != "LFILE") $("#selecty").css("display","block");
 	$("#kind").val(kind);
@@ -160,7 +159,7 @@ function validateForm()
 	var result;
 
 	//Validation for links
-	if($("#linky").css('display') == 'block'){
+	if($(".linkPopUp").css('display') == 'block'){
 			//Check if the link starts with http:// or https://
 			if(document.getElementById('uploadedlink').value.substr(0,7).toLowerCase() == "http://"){
 				result = true;
