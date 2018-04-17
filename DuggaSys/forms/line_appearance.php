@@ -5,14 +5,14 @@ Line type: </br>
     <option value='Derived'>Derived</option>
 </select></br>
 Left side: <br/>
-<select onchange="addCardinality(leftSide);" id="leftSide">
+<select onchange="addCardinality('leftSide');" id="leftSide">
   <option value="None">None</option>
   <option value="1">1</option>
   <option value="N">N</option>
   <option value="M">M</option>
 </select><br/>
 Right side: <br/>
-<select onchange="addCardinality(rightSide);" id="rightSide">
+<select onchange="addCardinality('rightSide');" id="rightSide">
   <option value="None">None</option>
   <option value="1">1</option>
   <option value="N">N</option>
