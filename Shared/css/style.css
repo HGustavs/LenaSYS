@@ -2730,7 +2730,7 @@ ul.hamburgerList button.menuButton {
 }
 
 .dateSize{
-   width: 100px;
+   width: 150px;
 }
 
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
@@ -2755,7 +2755,7 @@ ul.hamburgerList button.menuButton {
     -moz-transition: opacity 300ms, width 300ms, margin 300ms;
     -o-transition: opacity 300ms, width 300ms, margin 300ms;
   }
-  
+
   .dateSize{
 	  width: 50px;
   }
@@ -2825,7 +2825,7 @@ ul.hamburgerList button.menuButton {
 	display: flex;
 	text-align: center;
 	}
-	
+
 	#Sectionlist .course {
     font-size: 20px;
   }
@@ -2903,7 +2903,7 @@ ul.hamburgerList button.menuButton {
     display: flex;
     text-align: center;
   }
-  
+
   #Sectionlist .course {
     font-size: 16px;
   }
@@ -3046,4 +3046,3 @@ ul.hamburgerList button.menuButton {
        -ms-user-select: none;
            user-select: none;
 }
-

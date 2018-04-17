@@ -1296,8 +1296,6 @@ function returnedSection(data)
 	toggleArrows();
 	menuState.idCounter = 0;
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
-	$('.dateSize').css("width","150");
-
 }
 function showHighscore(did, lid)
 {
