@@ -29,8 +29,8 @@ function Symbol(kind) {
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
     this.cardinality = [
-      {"x": null, "y": null, "value": null},
-      {"x": null, "y": null, "value": null}
+      {"x": null, "y": null, "value": null, "side": null},
+      {"x": null, "y": null, "value": null, "side": null}
     ];
 
     // Connector arrays - for connecting and sorting relationships between diagram objects
@@ -712,21 +712,26 @@ this.drawEntity = function(x1, y1, x2, y2){
     ctx.clip();
     ctx.stroke();
 
-    //Print arity and entity name
-    ctx.fillStyle = this.fontColor;
-    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-    ctx.font = parseInt(textsize) + "px " + this.font;
-    for (var i = 0; i < this.arity.length; i++) {
-        for (var j = 0; j < this.arity[i].length; j++) {
-            var arity = this.arity[i][j];
-            ctx.textAlign = arity.align;
-            ctx.textBaseline = arity.baseLine;
-            ctx.fillText(arity.text, arity.x, arity.y);
-        }
-    }
 }
 
 this.drawLine = function(x1, y1, x2, y2){
+
+    //Checks if there is cardinality set on this object
+    if((this.cardinality[0].x != null && this.cardinality[0].y != null) ||
+        (this.cardinality[1].x != null && this.cardinality[1].y != null)){
+        //Updates the x and y position depending on which side the cardinality is on
+        if(this.cardinality[0].side == 'leftSide'){
+            this.cardinality[0].x = x1;
+            this.cardinality[0].y = y1;
+            ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+        } else if(this.cardinality[1].side == 'rightSide'){
+            this.cardinality[1].x = x2;
+            this.cardinality[1].y = y2;
+            ctx.fillText(this.cardinality[1].value, this.cardinality[1].x, this.cardinality[1].y);
+        }
+    }
+
+
     ctx.lineWidth = this.lineWidth;
     if (this.key_type == "Forced") {
         //Draw a thick black line
@@ -744,6 +749,7 @@ this.drawLine = function(x1, y1, x2, y2){
         ctx.lineWidth = this.lineWidth * 2;
         ctx.setLineDash([5, 4]);
     }
+
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
