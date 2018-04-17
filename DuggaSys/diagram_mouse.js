@@ -401,16 +401,6 @@ function mouseupevt(ev) {
 
 }
 
-function cleanUp(){
-    console.log("lineStartObj: " + lineStartObj);
-    console.log("hovobj: " + hovobj);
-        points[p1] = points[p2] = "";
-        if(lineStartObj > -1) diagram[lineStartObj].removePointFromConnector(p1);
-        if(hovobj > -1) diagram[hovobj].removePointFromConnector(p2);
-    
-
-}
-
 function doubleclick(ev) {
     var posistionX = (sx + xPos);
     var posistionY = (sy + yPos);
