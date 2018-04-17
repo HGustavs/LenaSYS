@@ -179,6 +179,14 @@ var points = [
 // returns index of that point
 //--------------------------------------------------------------------
 points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
+    //If we have an unused index we use it first
+    for(var i = 0; i < points.length; i++){
+        if(points[i] == ""){
+            points[i] = {x:xCoordinate, y:yCoordinate, isSelected:isSelected};
+            return i;
+        }
+    }
+    
     this.push({x:xCoordinate, y:yCoordinate, isSelected:isSelected});
     return this.length - 1;
 }
