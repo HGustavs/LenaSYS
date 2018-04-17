@@ -290,7 +290,7 @@
                         </div>
 
                     <span id="boldText" onclick="changeText('**')" title="Bold"><b>B</b></span>
-                    <span id="cursiveText" onclick="changeText('____')" title="Italic"><i>i</i></span>
+                    <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
                 </div>
                 <div class="markText">
                     <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
