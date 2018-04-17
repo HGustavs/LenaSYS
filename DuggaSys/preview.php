@@ -195,17 +195,13 @@
             }
 
             function boldText() {
-                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'**');
-                setCaretToPos($("#mrkdwntxt") [0], 2);
-                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'**');
-                //$("#mrkdwntxt").val("**").focus().val("**");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****');
             }
             function cursiveText() {
-                var cursor = setCaretToPos();
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
-                setCaretToPos($("#mrkdwntxt") [0], 2);
+                
             }
-            function changeText(specialChar) {
+            /*function changeText(specialChar) {
                 const textarea = document.getElementById('mrkdwntxt');
                 const insertStartPoint = textarea.selectionStart;
                 const insertEndPoint = textarea.selectionEnd;
@@ -232,7 +228,7 @@
 
             function setCaretToPos(input, pos) {
                 setSelectionRange(input, pos, pos);
-            }
+            }*/
 
             /*$("#mrkdwntxt").click(function() {
                 setCaretToPos($("#mrkdwntxt")[0], 0)
