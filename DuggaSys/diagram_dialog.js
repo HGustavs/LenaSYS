@@ -15,12 +15,14 @@ function openAppearanceDialogMenu() {
      * Opens the dialog menu for appearance.
      */
     var form = showMenu();
+    appearanceMenuOpen = true;
     objectAppearanceMenu(form);
 }
 function closeAppearanceDialogMenu() {
     /*
      * Closes the dialog menu for appearance.
      */
+    appearanceMenuOpen = false;
     globalAppearanceValue = 0;
     hashFunction();
     $("#appearance").hide();
@@ -76,14 +78,29 @@ function loadFormIntoElement(element, dir){
         element.innerHTML = file.responseText;
         if(globalAppearanceValue == 0){
             document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-            document.getElementById('object_type').value = diagram[lastSelectedObject].key_type;
-            document.getElementById('symbolColor').value = diagram[lastSelectedObject].symbolColor;
-            document.getElementById('font').value = diagram[lastSelectedObject].font;
-            document.getElementById('fontColor').value = diagram[lastSelectedObject].fontColor;
-            document.getElementById('TextSize').value = diagram[lastSelectedObject].sizeOftext;
+            setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
+            setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
+            setSelectedOption('font', diagram[lastSelectedObject].font);
+            setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
+            setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+            setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
         }
     }
     file.send();
+}
+
+function setSelectedOption(type, value){
+  if(type != null){
+    for(var i = 0; i < document.getElementById(type).options.length; i++){
+      if(value == document.getElementById(type).options[i].value){
+        document.getElementById(type).value = value;
+        document.getElementById(type).options[i].selected = "true";
+        break;
+      }else{
+        document.getElementById(type).options[i].selected = "false";
+      }
+    }
+  }
 }
 
 //--------------------------------------------------------------------

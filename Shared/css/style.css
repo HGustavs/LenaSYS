@@ -1569,6 +1569,7 @@ input.large-button {
   color:#fff;
   line-height:28px;
   font-weight: bold;
+  padding: 5px;
 }
 
 .innertable {
