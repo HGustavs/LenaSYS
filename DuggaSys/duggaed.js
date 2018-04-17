@@ -9,6 +9,7 @@ var filez;
 var variant = [];
 var submissionRow = 0;
 var decider;
+var itemToDelete;
 var list = "";
 
 
