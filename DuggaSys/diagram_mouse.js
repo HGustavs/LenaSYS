@@ -290,7 +290,6 @@ function mouseupevt(ev) {
             p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
             if (lineStartObj == -1) {
                 // Start line on empty
-                // Start line on empty
                 // Just draw a normal line
             } else {
                 // Start line on object
