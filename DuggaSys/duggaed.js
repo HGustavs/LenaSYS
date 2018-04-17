@@ -283,10 +283,10 @@ function confirmBox(operation, item) {
 
 function createDugga()
 {
-	decider = "createDugga";
 	var did=$("#did").val();
 	var nme=$("#name").val();
 	var autograde=$("#autograde").val();
+	var qstart=$("#qstart").val();
 	var gradesys=$("#gradesys").val();
 	var template=$("#template").val();
 	var release=$("#release").val();
@@ -377,16 +377,12 @@ function hideLoginPopup()
 function showSubmitButton(){
   $(".submitDugga").css("display","inline-block");
   $(".updateDugga").css("display","none");
-  $(".deleteDugga").css("display","none");
-  $(".closeDugga").css("display","inline-block");
   //$("#overlay").css("display","block");
 }
 
 function showSaveButton(){
   $(".submitDugga").css("display","none");
   $(".updateDugga").css("display","block");
-  $(".deleteDugga").css("display","block");
-  //$(".closeDugga").css("display","none");
 //  $("#overlay").css("display","none");
 }
 
@@ -434,11 +430,15 @@ function selectDugga(qid){
 
 function newDugga()
 {
-	document.getElementById('name').value='New Dugga';
-	document.getElementById('release').value='2017-05-15';
-	document.getElementById('deadline').value='2017-07-31';
-	document.getElementById('deadline2').value='';
-	document.getElementById('deadline3').value='';
+	$("#editDugga").css("display","none");
+	document.getElementById('name').value='';
+	document.getElementById('name').placeholder='Empty dugga';
+	document.getElementById('qstart').value='';
+	document.getElementById('qstart').placeholder='YYYY-MM-DD';
+	document.getElementById('release').value='';
+	document.getElementById('release').placeholder='YYYY-MM-DD';
+	document.getElementById('deadline').value='';
+	document.getElementById('deadline').placeholder='YYYY-MM-DD';
 	//----------------------------------------------------
 	// Set Autograde
 	//----------------------------------------------------
@@ -598,6 +598,7 @@ function showVariantz(param){
     }
 }
 
+// Storing the celldata for future use. (Needed when editing and such)
 function returnedQuiz(data) {
 	var quiz = data;
     var did = $('#did').val();
@@ -606,8 +607,6 @@ function returnedQuiz(data) {
             quiz = element;
         }
     });
-
-    
 	$("#did").val(quiz['arrow']);
 	$("#name").val(quiz['qname']);
 	$("#autograde").val(quiz['autograde']);
@@ -631,11 +630,12 @@ function returnedDugga(data) {
     		autograde:"Autograde",
     		gradesystem:"Gradesystem",
     		quizFile:"Template",
+    		qstart:"Startdate",
     		deadline:"Deadline",
     		qrelease:"Result date",
     		modified:"Last modified",
     		cogwheel:"*",
-    		trashcan:"-"
+    		trashcan:"<input type='button' value='+' class='submit-button-newitem' onclick='showSubmitButton(); newDugga()'>"
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
@@ -707,7 +707,7 @@ function renderCell(col,celldata,cellid) {
 	else if (col == "cogwheel"){
 		object=JSON.parse(celldata);
 	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Cogwheel.svg' ";
-		str+=" onclick='selectDugga(\""+object+"\");' >";
+		str+=" onclick='showSaveButton(); selectDugga(\""+object+"\");' >";
 		return str;
 	}
 
