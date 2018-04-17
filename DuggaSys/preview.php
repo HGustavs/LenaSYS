@@ -170,10 +170,6 @@
             function showPreview() {
                 $(".PreviewWindow").show();
             }
-
-            function saveCode() {
-
-            }
             function cancelPreview() {
                 $(".PreviewWindow").hide();
             }
@@ -217,12 +213,12 @@
 
 
             function boldText() {
-                $('#mrkdwntxt').append("****");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****');
             }
             function cursiveText() {
-                $('#mrkdwntxt').append("__");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
+                
             }
-
 
             function showDropdown() {
                 $('#select-header').show();
@@ -232,13 +228,14 @@
             }
 
             function headerVal1() {
-                $('#mrkdwntxt').append("# ");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'# ');
+
             }
             function headerVal2() {
-                $('#mrkdwntxt').append("## ");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'## ');
             }
             function headerVal3() {
-                $('#mrkdwntxt').append("### ");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'### ');
             }
 
 
@@ -260,6 +257,7 @@
         </script>
     </head>
     <body onload="onload()">
+
         <div class="Header">Markdown preview</div>
             <button id="Preview" onclick="loadPreview('../courses/2/minimikrav_m2.md')">Preview</button>
         <div class="PreviewWindow">
