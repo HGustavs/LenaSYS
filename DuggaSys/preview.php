@@ -181,10 +181,9 @@
 
             }
 
-            function loadPreview() {
-                var fileContent = getFIleContents("../courses/2/minimikrav_m2.md");
+            function loadPreview(fileUrl) {
+                var fileContent = getFIleContents(fileUrl);
                 document.getElementById("mrkdwntxt").value = fileContent;
-                console.log(fileContent);
                 updatePreview(fileContent);
                 $(".PreviewWindow").show();
             }
@@ -261,10 +260,8 @@
         </script>
     </head>
     <body onload="onload()">
-
-
         <div class="Header">Markdown preview</div>
-            <button id="Preview" onclick="loadPreview()">Preview</button>
+            <button id="Preview" onclick="loadPreview('../courses/2/minimikrav_m2.md')">Preview</button>
         <div class="PreviewWindow">
             <div class="PrevHead">This is the preview window
             </div>

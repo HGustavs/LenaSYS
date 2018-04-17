@@ -352,15 +352,12 @@ function markdownBlock(inString)
       inString = inString.replace(/\ {3}/gm,"<br><br>");
       inString = inString.replace(/\ {2}/gm,"<br>");
     */
-
     inString = inString.replace(/(\r\n){3}/gm,"<br><br>");
-    inString = inString.replace(/(\r\n)/gm,"<br>");
+    inString = inString.replace(/(\r\n){2}/gm,"<br>");
     inString = inString.replace(/(\n){3}/gm,"<br><br>");
-    inString = inString.replace(/(\n)/gm,"<br>");
+    inString = inString.replace(/(\n){2}/gm,"<br>");
     inString = inString.replace(/(\r){3}/gm,"<br><br>");
-    inString = inString.replace(/(\r)/gm,"<br>");
-
-
+    inString = inString.replace(/(\r){2}/gm,"<br>");
     // Hyperlink !!!
     // !!!url,text to show!!!
     inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
