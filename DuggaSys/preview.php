@@ -169,15 +169,8 @@
             function showPreview() {
                 $(".PreviewWindow").show();
             }
-
-            function saveCode() {
-
-            }
             function cancelPreview() {
                 $(".PreviewWindow").hide();
-            }
-            function saveMarkdown() {
-
             }
             function showPreview(str) {
                 $(".PreviewWindow").show();
@@ -201,38 +194,6 @@
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
                 
             }
-            /*function changeText(specialChar) {
-                const textarea = document.getElementById('mrkdwntxt');
-                const insertStartPoint = textarea.selectionStart;
-                const insertEndPoint = textarea.selectionEnd;
-                let value = textarea.value;
-                
-                
-                // text before cursor/highlighted text + special character + text after cursor/highlighted text
-                value = specialChar + value.slice(0, insertStartPoint) + specialChar + value.slice(insertEndPoint);
-                textarea.value = value;
-            }
-            function setSelectionRange(input, selectionStart, selectionEnd) {
-                if (input.setSelectionRange) {
-                    input.focus();
-                    input.setSelectionRange(selectionStart, selectionEnd);
-                } 
-                else if (input.createTextRange) {
-                    var range = input.createTextRange();
-                    range.collapse(true);
-                    range.moveEnd('character', selectionEnd);
-                    range.moveStart('character', selectionStart);
-                    range.select();
-                }
-            }
-
-            function setCaretToPos(input, pos) {
-                setSelectionRange(input, pos, pos);
-            }*/
-
-            /*$("#mrkdwntxt").click(function() {
-                setCaretToPos($("#mrkdwntxt")[0], 0)
-            });*/
 
             function showDropdown() {
                 $('#select-header').show();
