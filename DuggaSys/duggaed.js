@@ -11,6 +11,7 @@ var submissionRow = 0;
 var decider;
 var list = "";
 
+
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
 $(function() {
@@ -264,26 +265,20 @@ function closeEditVariant()
 {
 	$("#editVariant").css("display","none");
 }
+
+
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-	function confirmBox(temp){	
-		if (temp == 1 || temp == 2 || temp == 3){
-			decider = temp;
-			$("#sectionConfirmBox").css("display","flex");
-		}else if(temp == 4){
-			console.log(decider);
-		    if (decider == 1){
-		    	deleteDugga();
-		    }
-		   	else if (decider == 2){
-		    	createDugga();
-		    }
-		    else if (decider == 3){
-		    	updateDugga();
-		    }
-		    $("#sectionConfirmBox").css("display","none");
-		    decider = 0;
-		}
+function confirmBox(operation, item) {
+	if(operation == "openConfirmBox") {
+		itemToDelete = item; // save the item to delete in this variable
+		$("#sectionConfirmBox").css("display","flex");
+	} else if (operation == "deleteItem") {
+		deleteDugga(itemToDelete);
+		$("#sectionConfirmBox").css("display","none");
+	} else if (operation == "closeConfirmBox") {
+		$("#sectionConfirmBox").css("display","none");
 	}
+}
 
 function createDugga()
 {
@@ -309,8 +304,9 @@ function createDugga()
 
 function deleteDugga(did)
 {
-    if(confirm("Do you really want to delete this dugga?"))AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
-    $("#editDugga").css("display","none");
+//    if(confirm("Do you really want to delete this dugga?"))AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+	AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+	$("#editDugga").css("display","none");
 }
 
 
@@ -318,7 +314,7 @@ function deleteDugga(did)
 function validateName(){
 	var retValue = false;
 	var nme=document.getElementById("name");
-	
+
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)){
 		$('#tooltipTxt').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
@@ -354,13 +350,12 @@ function updateDugga()
 
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,qstart:qstart,deadline:deadline,deadline2:deadline2,deadline3:deadline3,release:release,coursevers:querystring['coursevers']},"DUGGA");
 
-	console.log(deadline);
 
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,release:release,deadline:deadline,deadline2:deadline2,deadline3:deadline3,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function closeEditDugga()
-{	
+{
 	$("#editDugga").css("display","none");
 	document.getElementById("name").style.backgroundColor = "#fff";  // Resets color for name input
 	$('#submitBtn').removeAttr('disabled');  						 // Resets submit button to its default form
@@ -655,7 +650,7 @@ function returnedDugga(data) {
         null,
         null,
         [],
-        [],				
+        [],
         "",
         null,
         null,
@@ -726,7 +721,7 @@ function renderCell(col,celldata,cellid) {
 	}
 	return celldata;
 }
-// End of rendering the table
+// End of rendering the table.
 
 function parseParameters(str){
 	return str;
@@ -741,9 +736,6 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 		    showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer),null,null,null);
 	  })
 	  .fail(function( jqxhr, settings, exception ) {
-      	console.log(jqxhr);
-      	console.log(settings);
-      	console.log(exception);
       	eval(script);
       	showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer));
 	});
@@ -865,4 +857,15 @@ $(document).ready(function(){
 	$('#createjson').click(function(){
 		$('#parameter').val(createJSONString($('#jsonform').serializeArray()));
 	});
+});
+
+$(window).load(function() {
+	//There is an issue with using this code, it generates errors that stop execution
+      $(window).keyup(function(event){
+      	if(event.keyCode == 27) {
+         	closeWindows();
+         // closeSelect();
+          	showSaveButton();
+        }
+      });
 });
