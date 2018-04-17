@@ -202,7 +202,7 @@
             }
             function cursiveText() {
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
-                setCaretToPos($("#mrkdwntxt") [0], 2, 2);
+                setCaretToPos($("#mrkdwntxt") [0], 2);
             }
             function changeText(specialChar) {
                 const textarea = document.getElementById('mrkdwntxt');
@@ -211,7 +211,7 @@
                 let value = textarea.value;
  
                 // text before cursor/highlighted text + special character + text after cursor/highlighted text
-                value = specialChar + value.slice(this, insertStartPoint) + specialChar + value.slice(insertEndPoint);
+                value = specialChar + value.slice(insertStartPoint) + specialChar + value.slice(insertEndPoint);
                 textarea.value = value;
             }
             function setSelectionRange(input, selectionStart, selectionEnd) {
