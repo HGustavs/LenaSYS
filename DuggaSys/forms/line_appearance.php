@@ -5,18 +5,18 @@ Line type: </br>
     <option value='Derived'>Derived</option>
 </select></br>
 Left side: <br/>
-<select onclick="" id="leftSide">
-  <option value="none">None</option>
-  <option value="one">1</option>
-  <option value="n">N</option>
-  <option value="m">M</option>
-</select>
+<select onchange="addCardinality(leftSide);" id="leftSide">
+  <option value="None">None</option>
+  <option value="1">1</option>
+  <option value="N">N</option>
+  <option value="M">M</option>
+</select><br/>
 Right side: <br/>
-<select onclick="" id="rihtSide">
-  <option value="none">None</option>
-  <option value="one">1</option>
-  <option value="n">N</option>
-  <option value="m">M</option>
+<select onchange="addCardinality(rightSide);" id="rightSide">
+  <option value="None">None</option>
+  <option value="1">1</option>
+  <option value="N">N</option>
+  <option value="M">M</option>
 </select>
 </select><br/>
 <!--Line colors:<br>

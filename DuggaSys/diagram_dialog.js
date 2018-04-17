@@ -162,3 +162,22 @@ function changeObjectAppearance(object_type){
     }
     updateGraphics();
 }
+
+//previous developers called cardinality for arity
+function addCardinality(side){
+   //diagram[lastSelectedObject].points[]
+   var val = document.getElementById(side).options[selectedIndex].value;
+   if(side == "rightSide"){
+   var x = points[this.bottomRight].x;
+   var y = points[this.bottomRight].y;
+   diagram[lastSelectedObject].arity.push([
+       {text:val, x:x-50, y:y, align:"end", baseLine:"bottom"}
+   ]);
+  }else{
+    var x = points[diagram[lastSelectedObject].topLeft].x;
+    var y = points[diagram[lastSelectedObject].topLeft].y;
+    diagram[lastSelectedObject].arity.push([
+        {text:val, x:x+50, y:y, align:"end", baseLine:"bottom"}
+    ]);
+  }
+}
