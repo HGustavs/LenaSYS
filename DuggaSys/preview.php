@@ -200,6 +200,7 @@
             }
             function cursiveText() {
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
+                setCaretTopos($("#mrkdwntxt") [0], 2);
             }
             function changeText(specialChar) {
                 const textarea = document.getElementById('mrkdwntxt');
@@ -272,7 +273,7 @@
     <body onload="onload()">
 
 
-        <div class="Header">Markdown preview</div>
+        <div class="Header">Markdown preview hello</div>
         <button id="Preview" onclick="showPreview()">Preview</button>
         <div class="PreviewWindow">
             <div class="PrevHead">This is the preview window
