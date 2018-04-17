@@ -175,7 +175,7 @@ function addCardinality(side){
     console.log("X: " + x + "\nY: " + y);
   }
   var val = document.getElementById(side).value;
-  diagram[lastSelectedObject].cardinality[0] = x;
-  diagram[lastSelectedObject].cardinality[1] = y;
-  diagram[lastSelectedObject].cardinality[2] = val;
+  diagram[lastSelectedObject].cardinality[side][0] = x;
+  diagram[lastSelectedObject].cardinality[side][1] = y;
+  diagram[lastSelectedObject].cardinality[side][2] = val;
 }
