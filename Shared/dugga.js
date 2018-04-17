@@ -409,7 +409,6 @@ function AJAXService(opt,apara,kind)
 				console.log("Your input contained nothing in " + key);
 		}
 	}
-        console.log(para);
 
 	if(kind=="COURSE"){
 			$.ajax({
