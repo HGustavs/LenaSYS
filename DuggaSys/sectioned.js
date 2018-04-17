@@ -505,13 +505,13 @@ function closeSelect()
 	$(".item").css("border","none");
 	$(".item").css("box-shadow","none");
 	$("#editSection").css("display","none");
-	
+
 	defaultNewItem();
 }
 
 
 function defaultNewItem(){
-	
+
 	$('#saveBtn').removeAttr('disabled');  							 		// Resets save button to its default form
 	$('#submitBtn').removeAttr('disabled');									// Resets submit button to its default form
 	document.getElementById("sectionname").style.backgroundColor = "#fff"; 	// Resets color for name input
@@ -1136,7 +1136,7 @@ function returnedSection(data)
 				if(data['writeaccess']){
 					str+="<td style='width:32" + "px;";
 
-              		if(parseInt(item['kind']) === 0) { 
+              		if(parseInt(item['kind']) === 0) {
   						str+=
                             "' class='header"+blorf+"'>"
                             + "<img id='dorf' class='margin-4'"
@@ -1296,8 +1296,9 @@ function returnedSection(data)
 	toggleArrows();
 	menuState.idCounter = 0;
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
-}
+	$('.dateSize').css("width","150");
 
+}
 function showHighscore(did, lid)
 {
 	AJAXService("GET", {did:did, lid:lid}, "DUGGAHIGHSCORE");
