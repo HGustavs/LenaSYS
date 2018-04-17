@@ -1373,7 +1373,7 @@ input.hide-moments-button {
 
 input.fileed-button {
     background-color:#614875;
-    margin: 0 0 0 8px;
+    margin: 0 0 4px 8px;
     float: right;
 }
 
@@ -1486,6 +1486,10 @@ input.large-button {
     border-color: transparent transparent transparent black;
 }
 
+#uploadedfile{
+  width: 300px;
+  float: left;
+}
 
 /* File upload form */
 
