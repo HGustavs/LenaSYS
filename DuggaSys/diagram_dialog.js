@@ -182,5 +182,5 @@ function addCardinality(side){
   }
 
   val = document.getElementById(side).value;
-  diagram[lastSelectedObject].cardinality.push({"x": x, "y": y, "side": side});
+  diagram[lastSelectedObject].cardinality.push({"x": x, "y": y, "value": val, "side": side});
 }
