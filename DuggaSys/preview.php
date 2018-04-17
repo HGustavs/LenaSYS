@@ -200,7 +200,7 @@
             }
             function cursiveText() {
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
-                setCaretTopos($("#mrkdwntxt") [0], 2);
+                setCaretToPos($("#mrkdwntxt") [0], 2);
             }
             function changeText(specialChar) {
                 const textarea = document.getElementById('mrkdwntxt');
