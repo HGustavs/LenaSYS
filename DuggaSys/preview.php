@@ -180,8 +180,15 @@
             function saveMarkdown() {
 
             }
-            function showPreview(str) {
+
+            function loadPreview(fileUrl) {
+                var fileContent = getFIleContents(fileUrl);
+                document.getElementById("mrkdwntxt").value = fileContent;
+                updatePreview(fileContent);
                 $(".PreviewWindow").show();
+            }
+
+            function updatePreview(str) {
                 //This function is triggered when key is pressed down in the input field
                 if(str.length == 0){
                     /*Here we check if the input field is empty (str.length == 0).
@@ -194,6 +201,20 @@
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
                 };
             }
+            function getFIleContents(fileUrl){
+              var result = null;
+              $.ajax({
+                url: fileUrl,
+                type: 'get',
+                dataType: 'html',
+                async: false,
+                success: function(data) {
+                  result = data;
+                }
+            });
+              return result;
+            }
+
 
             function boldText() {
                 $('#mrkdwntxt').append("****");
@@ -239,10 +260,8 @@
         </script>
     </head>
     <body onload="onload()">
-
-
         <div class="Header">Markdown preview</div>
-            <button id="Preview" onclick="showPreview()">Preview</button>
+            <button id="Preview" onclick="loadPreview('../courses/2/minimikrav_m2.md')">Preview</button>
         <div class="PreviewWindow">
             <div class="PrevHead">This is the preview window
             </div>
@@ -261,7 +280,7 @@
                     <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
                 </div>
                 <div class="markText">
-                    <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
+                    <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
                 </div>
             </div>
             <div class="MarkdownPrev">
@@ -271,7 +290,7 @@
                         <div class="descbox">
                             <span id="markdown"></span>
                         </div>
-                    </div>    
+                    </div>
                 </div>
             </div>
             <div class="OptionButtons">
