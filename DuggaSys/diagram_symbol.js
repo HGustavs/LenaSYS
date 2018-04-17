@@ -718,20 +718,17 @@ this.drawEntity = function(x1, y1, x2, y2){
 }
 
 this.drawLine = function(x1, y1, x2, y2){
-
     //Checks if there is cardinality set on this object
     if((this.cardinality[0].x != null && this.cardinality[0].y != null) ||
         (this.cardinality[1].x != null && this.cardinality[1].y != null)){
         //Updates the x and y position depending on which side the cardinality is on
-        if(this.cardinality[0].side == 'leftSide'){
-            this.cardinality[0].x = x1;
-            this.cardinality[0].y = y1;
-            ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
-        } else if(this.cardinality[1].side == 'rightSide'){
-            this.cardinality[1].x = x2;
-            this.cardinality[1].y = y2;
-            ctx.fillText(this.cardinality[1].value, this.cardinality[1].x, this.cardinality[1].y);
-        }
+        this.cardinality[0].x = x1 > x2 ? x2+10 : x2-10;
+        this.cardinality[0].y = y1 > y2 ? y2+10 : y2-10;
+        ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+
+        this.cardinality[1].x = x1 > x2 ? x1-10 : x1+10;
+        this.cardinality[1].y = y1 > y2 ? y1-10 : y1+10;
+        ctx.fillText(this.cardinality[1].value, this.cardinality[1].x, this.cardinality[1].y);
     }
 
 
