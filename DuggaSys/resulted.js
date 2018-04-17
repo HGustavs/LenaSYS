@@ -1445,7 +1445,7 @@ function renderCell(col,celldata,cellid) {
     //console.log(obj);
 
     str = "<p style='font-size:12px;line-height:12px;'>";
-    str +=  obj.firstname + " " + obj.lastname + "<br>";
+    str += obj.firstname + " " + obj.lastname + "<br>";
     str += obj.username + " / " + obj.class + "<br>";
     str += obj.ssn + "<br>";
     str += obj.teacher + "</p>";
@@ -1454,14 +1454,13 @@ function renderCell(col,celldata,cellid) {
 
   }else {
     //return "<div id='" + cellid + "'>" + celldata + "</div>";
+    
     obj = JSON.parse(celldata);
-
-    str = "<p>";
-    str += obj.username;
-    str += "</p>";
-    console.log(col);
-    console.log(celldata);
-    console.log(cellid);
+    str = "<div id='" + cellid + "'>";
+      str += "<img class='Uc gradeImg' src='../Shared/icons/Uc.png'/>";
+      str += "<img class='Gc gradeImg' src='../Shared/icons/Gc.png'/>";
+      str += "<img class='fist gradeImg' src='../Shared/icons/FistV.png'/>";
+    str += "</div>";
     return str;
   }
   return celldata;
