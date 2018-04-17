@@ -722,7 +722,7 @@ this.drawLine = function(x1, y1, x2, y2){
     if((this.cardinality[0].x != null && this.cardinality[0].y != null) ||
         (this.cardinality[1].x != null && this.cardinality[1].y != null)){
         //Updates the x and y position depending on which side the cardinality is on
-        ctx.fillStyle = '#000';
+        ctx.fillStyle = '#000'; 
 
         this.cardinality[0].x = x1 > x2 ? x2+10 : x2-10;
         this.cardinality[0].y = y1 > y2 ? y2+10 : y2-10;
