@@ -196,7 +196,7 @@
 
             function boldText() {
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'**');
-                setCaretToPos($("#mrkdwntxt") [0], this);
+                setCaretToPos($("#mrkdwntxt") [0], 2);
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'**');
                 //$("#mrkdwntxt").val("**").focus().val("**");
             }
@@ -211,7 +211,7 @@
                 let value = textarea.value;
  
                 // text before cursor/highlighted text + special character + text after cursor/highlighted text
-                value = specialChar + value.slice(0, insertStartPoint) + specialChar + value.slice(insertEndPoint);
+                value = specialChar + value.slice(this, insertStartPoint) + specialChar + value.slice(insertEndPoint);
                 textarea.value = value;
             }
             function setSelectionRange(input, selectionStart, selectionEnd) {
@@ -291,7 +291,7 @@
                             <span id="h3" onclick="selected();headerVal3()" value="H3">Header 3</span>
                         </div>
 
-                    <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
+                    <span id="boldText" onclick="changeText(**)" title="Bold"><b>B</b></span>
                     <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
                 </div>
                 <div class="markText">
