@@ -9,7 +9,9 @@ var filez;
 var variant = [];
 var submissionRow = 0;
 var decider;
-var itemToDelete; // used for when deleting tests
+var itemToDelete;
+var list = "";
+
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -342,15 +344,12 @@ function updateDugga()
 	var template=$("#template").val();
 	var qstart=$("#qstart").val();
 	var deadline=$("#deadline").val();
-
 	var deadline2=$("#deadline2").val();
 	var deadline3=$("#deadline3").val();
   	var release=$("#release").val();
 
+
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,qstart:qstart,deadline:deadline,deadline2:deadline2,deadline3:deadline3,release:release,coursevers:querystring['coursevers']},"DUGGA");
-
-
-	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,release:release,deadline:deadline,deadline2:deadline2,deadline3:deadline3,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function closeEditDugga()
@@ -391,15 +390,15 @@ function showSaveButton(){
 //  $("#overlay").css("display","none");
 }
 
-function selectDugga(did,name,autograde,gradesys,template,qstart,deadline,deadline2,deadline3,release){
+function selectDugga(qid){
+	AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers'], qid:this.qid},"GETQUIZ");
+
 	$("#editDugga").css("display","flex");
 		//$("#overlay").css("display","block");
-	$("#did").val(did); // Set Variant ID
+	$("#did").val(qid); // Set Variant ID
 	$("#name").val(name); // Set Dugga name
 	$("#qstart").val(qstart); // Set Start date name
 	$("#deadline").val(deadline); // Set Deadline date name
-	$("#deadline2").val(deadline2); // Set Deadline date name
-	$("#deadline3").val(deadline3); // Set Deadline date name
 	$("#release").val(release); // Set Release date name
 
 	//----------------------------------------------------
@@ -599,6 +598,26 @@ function showVariantz(param){
     }
 }
 
+function returnedQuiz(data) {
+	var quiz = data;
+    var did = $('#did').val();
+    quiz['entries'].forEach(function(element) {
+        if(element['arrow'] == did) {
+            quiz = element;
+        }
+    });
+
+    
+	$("#did").val(quiz['arrow']);
+	$("#name").val(quiz['qname']);
+	$("#autograde").val(quiz['autograde']);
+	$("#gradesys").val(quiz['gradesystem']);
+	$("#template").val(quiz['quizFile']);
+	$("#qstart").val(quiz['qstart'] ? quiz['qstart'] : "null");
+	$("#deadline").val(quiz['deadline']);
+  	$("#release").val(quiz['qrelease']);
+}
+
 
 // Start of rendering the table
 var myTable;
@@ -656,7 +675,8 @@ function returnedDugga(data) {
 
 // Rendring specific cells
 function renderCell(col,celldata,cellid) {
-	var list = celldata.split();
+	list+= celldata + " ";
+	
 	// Translating autograding from integers to show the data like yes/no.
 	if (col == "autograde"){
 		if(celldata == "0"){
@@ -682,16 +702,24 @@ function renderCell(col,celldata,cellid) {
 			celldata = "Undefined";
 		}
 	}
+	
+	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
+	else if (col == "cogwheel"){
+		object=JSON.parse(celldata);
+	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Cogwheel.svg' ";
+		str+=" onclick='selectDugga(\""+object+"\");' >";
+		return str;
+	}
 
 	// Placing a clickable trash can in its designated column and implementing the code behind it.
 	else if (col == "trashcan"){
 		object=JSON.parse(celldata);
+		list+= ",";
 	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
 		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
 		return str;
 	}
 	return celldata;
-
 }
 // End of rendering the table.
 
