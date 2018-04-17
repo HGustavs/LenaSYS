@@ -119,7 +119,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		if($deadline=="null") $query->bindValue(':deadline', null,PDO::PARAM_INT);
 		else $query->bindParam(':deadline', $deadline);
 
-    if($release=="null") $query->bindValue(':release', null,PDO::PARAM_INT);
+        if($release=="null") $query->bindValue(':release', null,PDO::PARAM_INT);
 		else $query->bindParam(':release', $release);
 		
 		if(!$query->execute()) {
@@ -188,8 +188,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
             $error=$query->errorInfo();
             $debug="Error deleting dugga".$error[2];
         }
-	}
-
+    }
 }
 
 //------------------------------------------------------------------------------------------------
@@ -236,15 +235,16 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		$entry = array(
 			'variants' => $mass,
 			'arrow' => $row['id'],
-			'name' => $row['qname'],
+			'qname' => $row['qname'],
 			'autograde' => $row['autograde'],
-			'gradesys' => $row['gradesystem'],
-			'template' => $row['quizFile'],
+			'gradesystem' => $row['gradesystem'],
+			'quizFile' => $row['quizFile'],
 			'deadline' => $row['deadline'],				
-      		'release' => $row['qrelease'],	
+      		'qrelease' => $row['qrelease'],
+      		'qstart' => $row['qstart'],
 			'modified' => $row['modified'],
 			'cogwheel' => $row['id'],
-			'trashcan' => $row['id']			
+			'trashcan' => $row['id']
 			);
 
 		array_push($entries, $entry);

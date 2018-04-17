@@ -8,12 +8,12 @@ var sortableTable = {
     edit_tableid:null,
 }
 
-function keypressHandler(event) {    
+function keypressHandler(event) {
     if (event.keyCode == 13) {
         updateCellInternal();
     } else if(event.keyCode == 27) {
         clearUpdateCellInternal();
-    }      
+    }
 }
 
 function defaultRowFilter() {
@@ -22,17 +22,17 @@ function defaultRowFilter() {
 
 // Global sorting function global
 function sortableInternalSort(a,b) {
-	let ret = 0;		
+	let ret = 0;
     //let colname = currentTable.tbl.tblhead.indexOf(currentTable.sortcolumn);
     let colname = sortableTable.currentTable.getSortcolumnNum();
-		
+
 	if (sortableTable.currentTable.ascending) {
-		//alert("Compare: "+a+" "+b);			
+		//alert("Compare: "+a+" "+b);
 		ret = compare(a[colname],b[colname]);
 	} else {
 		//alert("Compare: "+b+" "+a);
 		ret = compare(b[colname],a[colname]);
-	}		
+	}
 	return ret;
 }
 
@@ -54,7 +54,7 @@ function updateCellInternal() {
 }
 
 // clickedInternal
-function clickedInternal(event,clickdobj) {    
+function clickedInternal(event,clickdobj) {
 	if (sortableTable.currentTable.showEditCell != null) {
 		let cellelement = event.target.closest("td");
 		let arr = cellelement.className.split("-");
@@ -64,18 +64,18 @@ function clickedInternal(event,clickdobj) {
 		var columnname = arr[1];
 		var columnno = arr[2];
 		var rowno = parseInt(barr[1]);
-		var tableid = barr[0];    
+		var tableid = barr[0];
 		var str = "";
 		sortableTable.edit_rowno = rowno;
 		sortableTable.edit_columnno = columnno;
 		sortableTable.edit_columnname = columnname;
-		sortableTable.edit_tableid = tableid;    
+		sortableTable.edit_tableid = tableid;
 
 		var rowdata = sortableTable.currentTable.getRow(rowno);
 		var coldata = rowdata[columnno];
 
 		str += "<div id='input-container' style='flex-grow:1'>";
-		str += sortableTable.currentTable.showEditCell(coldata,rowno,rowelement,cellelement,columnname,columnno,rowdata,coldata,tableid);		
+		str += sortableTable.currentTable.showEditCell(coldata,rowno,rowelement,cellelement,columnname,columnno,rowdata,coldata,tableid);
 		str += "</div>";
 		str += "<img id='popovertick' class='icon' src='Icon_Tick.svg' onclick='updateCellInternal();'>";
 		str += "<img id='popovercross' class='icon' src='Icon_Cross.svg' onclick='clearUpdateCellInternal();'>";
@@ -92,7 +92,7 @@ function clickedInternal(event,clickdobj) {
 		popoverelement.style.top = Math.round(lmnt.top+yscroll)+"px";
 		popoverelement.style.minHeight = (Math.round(lmnt.height)-5)+"px";
 		popoverelement.style.maxWidth = (Math.round(lmnt.width)+0)+"px";
-		popoverelement.style.display = "flex";	
+		popoverelement.style.display = "flex";
 	}
 }
 
@@ -103,9 +103,9 @@ function rowHighlightInternal(event,row) {
 	let centerel = event.target.closest("td");
 	for (let i = 0; i < sortableTable.sortableTables.length; i++) {
 		if (sortableTable.sortableTables[i].highlightRow != null) {
-			sortableTable.sortableTables[i].highlightRow(row.id,rowno,centerel.className,centerel);				
+			sortableTable.sortableTables[i].highlightRow(row.id,rowno,centerel.className,centerel);
 		}
-    }    
+    }
 }
 
 // We call all deHighlights in order to allow hover of non-active tables
@@ -117,7 +117,7 @@ function rowDeHighlightInternal(event,row) {
 		if (sortableTable.sortableTables[i].deHighlightRow != null) {
 			sortableTable.sortableTables[i].deHighlightRow(row.id,rowno,centerel.className,centerel);
 		}
-    }    
+    }
 }
 
 var searchterm = "";
@@ -136,7 +136,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	var renderColumnFilter = renderColumnFilter;
 
 	if (rowFilter == null) {
-		var rowFilter = defaultRowFilter;		
+		var rowFilter = defaultRowFilter;
 	} else {
 		var rowFilter = rowFilter;
 	}
@@ -156,27 +156,24 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	this.ascending = false;
 	this.tableid = tableid;
   	this.hasMagicHeadings = hasmagic;
-	
+
     tbl.cleanHead = [];
-    
+
     for (let i = 0; i < tbl.tblhead.length; i++){
-        tbl.cleanHead.push(tbl.tblhead[i].toLowerCase().replace(/[^a-zA-Z0-9]+/g, ""));      
-    }    
-								
+        tbl.cleanHead.push(tbl.tblhead[i].toLowerCase().replace(/[^a-zA-Z0-9]+/g, ""));
+    }
+
     sortableTable.sortableTables.push(this);
-    
+
 	this.renderTable = function() {
 		this.reRender();
 	}
-	
+
 	this.getRow = function(rowno) {
 		return tbl.tblbody[rowno];
 	}
-	
+
 	this.reRender = function() {
-		if(searchterm != null) {
-			console.log(searchterm);
-		}
 
 		// Assign currently active table
 		sortableTable.currentTable = this;
@@ -192,16 +189,16 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		if (columnfilter == null) {
 			isFirstVisit = true;
 			columnfilter = [];
-		} 
+		}
 
 		var filterstr = "";
 		for (let colname in tbl.tblhead) {
 				var col = tbl.tblhead[colname];
 				if (isFirstVisit) {
 					columnfilter.push(col);
-				} 
+				}
 				if (renderColumnFilter != null) {
-					filterstr += renderColumnFilter(col,columnfilter.indexOf(col) >- 1);							
+					filterstr += renderColumnFilter(col,columnfilter.indexOf(col) >- 1);
 				}
 		}
 
@@ -256,8 +253,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 					// 	}
 					// }
 					if (colname != "move") {
-						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+col+"</th>";											
-						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+col+"</th>";		
+						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+col+"</th>";
+						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+col+"</th>";
 					}
 				}
 			}
@@ -272,7 +269,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				mhstr += "<th id='"+rowsumHeading+"_"+tableid+"_tbl_mh' class='"+tableid+" freeze_vertical'>"+renderSortOptions(rowsumHeading,-1)+"</th>";
 			}
 		}
-		
+
 		str += "</tr></thead>";
 		mhstr += "</tr></thead></table>";
 		mhfstr += "</tr></thead></table>";
@@ -285,20 +282,20 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 			if (rowFilter(row)) {
 				// Keep row sum total here
 				var rowsum = 0;
-				
+
 				str += "<tr id='"+tableid+"_"+rowno+"' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 				mhvstr += "<tr id='"+tableid+"_"+rowno+"_mvh' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 
 				result++;
 
 				for (let colnamez in row) {
-					//Counter for freeze here							
+					//Counter for freeze here
 					// If we show this column...
 					if (columnfilter[colnamez] != null) {
 						// This condition is true if column is in summing list and in that case perform the sum like a BOSS
 						if (colsumList.indexOf(colnamez) >- 1) {
 							if (typeof(sumContent[colnamez]) == "undefined") sumContent[colnamez] = 0;
-							sumContent[colnamez] += sumFunc(colnamez,col);		
+							sumContent[colnamez] += sumFunc(colnamez,col);
 						}
 
 						if (rowsumList.indexOf(colnamez) >- 1) {
@@ -309,11 +306,11 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 						str += "<td id='"+cellid+"' onclick='clickedInternal(event,this);' class='"+tableid+"-"+colnamez+"'>"+renderCell(colnamez,tbl.tblbody[rowno][colnamez],cellid)+"</td>";
 
 						// if (colnamez <= freezePaneIndex) {
-						// 	mhvstr+="<td id='"+cellid+"' >"+renderCell(col,colnamez,cellid)+"</td>";                      
+						// 	mhvstr+="<td id='"+cellid+"' >"+renderCell(col,colnamez,cellid)+"</td>";
 						// }
 					}
 				}
-				
+
 				if (rowsumList.length > 0) {
 					str += "<td>"+rowsum+"</td>";
 				}
@@ -335,7 +332,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				if (columnfilter.indexOf(colnamez) >- 1) {
 					if (colsumList.indexOf(colnamez) >- 1) {
 						// If writing sum - just write it
-						str += "<td>"+sumContent[colnamez]+"</td>";						
+						str += "<td>"+sumContent[colnamez]+"</td>";
 					} else {
 						if (tbl.tblfoot[col] != "UNK") {
 							str += "<td>"+colnamez+"</td>";
@@ -348,26 +345,26 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 
 			str+= "</tr></tfoot>";
 		}
-		
+
 		str += "</table>";
 		mhvstr+= "</table>";
 
 		// Assign table and magic headings table(s)
-		if (this.hasMagicHeadings) {					 
+		if (this.hasMagicHeadings) {
 			document.getElementById(tableid).innerHTML = str+mhstr+mhvstr+mhfstr;
 			document.getElementById(tableid+"_tbl_mh").style.width=document.getElementById(tableid+"_tbl").getBoundingClientRect().width+"px";
-			document.getElementById(tableid+"_tbl_mh").style.boxSizing = "border-box";          
+			document.getElementById(tableid+"_tbl_mh").style.boxSizing = "border-box";
 			children=document.getElementById(tableid+"_tbl").getElementsByTagName('TH');
-			
+
 			for (i = 0; i < children.length; i++) {
 				document.getElementById(children[i].id+"_mh").style.width = children[i].getBoundingClientRect().width;
-				document.getElementById(children[i].id+"_mh").style.boxSizing = "border-box";          
+				document.getElementById(children[i].id+"_mh").style.boxSizing = "border-box";
 			}
 
 			document.getElementById(tableid+"_tbl_mhf").style.width = Math.round(document.getElementById(tableid+"_tbl_mhv").getBoundingClientRect().width)+"px";
 			document.getElementById(tableid+"_tbl_mhf").style.boxSizing = "border-box";
 			children=document.getElementById(tableid+"_tbl_mhv").getElementsByTagName('TH');
-			
+
 			for (i = 0; i < children.length; i++) {
 				document.getElementById(children[i].id.slice(0, -1)+"f").style.width = children[i].getBoundingClientRect().width;
 				document.getElementById(children[i].id.slice(0, -1)+"f").style.boxSizing = "border-box";
@@ -396,30 +393,30 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	this.toggleSortStatus = function(col,kind) {
 		// Assign currently active table
 		sortableTable.currentTable = this;
-		
+
 		sortcolumn = col;
-		sortkind = kind;		
-		
+		sortkind = kind;
+
 		this.ascending =! this.ascending;
-		
+
 		// Sort the body of the table again
 		tbl.tblbody.sort(sortableInternalSort);
-						
+
 		this.reRender();
 	}
-    
+
     this.getSortcolumn = function() {
         return sortcolumn;
-    } 
+    }
 
     this.getSortcolumnNum = function() {
         return tbl.tblhead.indexOf(sortcolumn);
-    } 
-    
+    }
+
     this.getSortkind = function() {
         return sortkind;
-    }    
-    
+    }
+
 	// Simpler magic heading v. III
 	setInterval(freezePaneHandler,30);
 
@@ -446,7 +443,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 						document.getElementById(table.tableid+"_tbl_mhv").style.display = "table";
 					}
 					else {
-						document.getElementById(table.tableid+"_tbl_mhv").style.display = "none";							
+						document.getElementById(table.tableid+"_tbl_mhv").style.display = "none";
 					}
 
 					// Fixed
@@ -460,7 +457,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 			}
 		}
 	}
-	
+
     this.updateCell = function() {
     	alert("hej");
         console.log(sortableTable.edit_rowno,sortableTable.edit_columnno,sortableTable.edit_columnname,sortableTable.edit_tableid);
@@ -474,13 +471,13 @@ function showVariant(param){
     var duggaId="#dugga" + param;
     var arrowId="#arrow" + param;
     var index = variant.indexOf(param);
-    
-    
+
+
     if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) { // Check if dugga row and corresponding variant
         if(!isInArray(variant, param)){
              variant.push(param);
         }
-        
+
         if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
             $(variantId).hide();
             $(duggaId).removeClass("selectedtr");
@@ -488,13 +485,13 @@ function showVariant(param){
             if (index > -1) {
                variant.splice(index, 1);
             }
-            
+
         } else {
             $(duggaId).addClass("selectedtr");
             $(variantId).slideDown();
             $(arrowId).html("&#x25BC;");
         }
-        
+
         $(variantId).css("border-bottom", "1px solid gray");
     }
 }

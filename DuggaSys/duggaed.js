@@ -9,6 +9,9 @@ var filez;
 var variant = [];
 var submissionRow = 0;
 var decider;
+var itemToDelete;
+var list = "";
+
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -263,26 +266,20 @@ function closeEditVariant()
 {
 	$("#editVariant").css("display","none");
 }
+
+
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-	function confirmBox(temp){	
-		if (temp == 1 || temp == 2 || temp == 3){
-			decider = temp;
-			$("#sectionConfirmBox").css("display","flex");
-		}else if(temp == 4){
-			console.log(decider);
-		    if (decider == 1){
-		    	deleteDugga();
-		    }
-		   	else if (decider == 2){
-		    	createDugga();
-		    }
-		    else if (decider == 3){
-		    	updateDugga();
-		    }
-		    $("#sectionConfirmBox").css("display","none");
-		    decider = 0;
-		}
+function confirmBox(operation, item) {
+	if(operation == "openConfirmBox") {
+		itemToDelete = item; // save the item to delete in this variable
+		$("#sectionConfirmBox").css("display","flex");
+	} else if (operation == "deleteItem") {
+		deleteDugga(itemToDelete);
+		$("#sectionConfirmBox").css("display","none");
+	} else if (operation == "closeConfirmBox") {
+		$("#sectionConfirmBox").css("display","none");
 	}
+}
 
 function createDugga()
 {
@@ -306,12 +303,11 @@ function createDugga()
 	AJAXService("ADDUGGA",{cid:cid,autograde:autograde,gradesys:gradesys,nme:nme,template:template,release:release,deadline:deadline,deadline2:deadline2,deadline3:deadline3,coursevers:coursevers},"DUGGA");
 }
 
-function deleteDugga()
+function deleteDugga(did)
 {
-    did=$("#did").val();
-    AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
-    $("#editDugga").css("display","none");
-    //$("#overlay").css("display","none");
+//    if(confirm("Do you really want to delete this dugga?"))AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+	AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
+	$("#editDugga").css("display","none");
 }
 
 
@@ -319,7 +315,7 @@ function deleteDugga()
 function validateName(){
 	var retValue = false;
 	var nme=document.getElementById("name");
-	
+
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)){
 		$('#tooltipTxt').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
@@ -348,20 +344,16 @@ function updateDugga()
 	var template=$("#template").val();
 	var qstart=$("#qstart").val();
 	var deadline=$("#deadline").val();
-
 	var deadline2=$("#deadline2").val();
 	var deadline3=$("#deadline3").val();
   	var release=$("#release").val();
 
+
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,qstart:qstart,deadline:deadline,deadline2:deadline2,deadline3:deadline3,release:release,coursevers:querystring['coursevers']},"DUGGA");
-
-	console.log(deadline);
-
-	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,release:release,deadline:deadline,deadline2:deadline2,deadline3:deadline3,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function closeEditDugga()
-{	
+{
 	$("#editDugga").css("display","none");
 	document.getElementById("name").style.backgroundColor = "#fff";  // Resets color for name input
 	$('#submitBtn').removeAttr('disabled');  						 // Resets submit button to its default form
@@ -394,19 +386,19 @@ function showSaveButton(){
   $(".submitDugga").css("display","none");
   $(".updateDugga").css("display","block");
   $(".deleteDugga").css("display","block");
-  $(".closeDugga").css("display","none");
+  //$(".closeDugga").css("display","none");
 //  $("#overlay").css("display","none");
 }
 
-function selectDugga(did,name,autograde,gradesys,template,qstart,deadline,deadline2,deadline3,release){
+function selectDugga(qid){
+	AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers'], qid:this.qid},"GETQUIZ");
+
 	$("#editDugga").css("display","flex");
 		//$("#overlay").css("display","block");
-	$("#did").val(did); // Set Variant ID
+	$("#did").val(qid); // Set Variant ID
 	$("#name").val(name); // Set Dugga name
 	$("#qstart").val(qstart); // Set Start date name
 	$("#deadline").val(deadline); // Set Deadline date name
-	$("#deadline2").val(deadline2); // Set Deadline date name
-	$("#deadline3").val(deadline3); // Set Deadline date name
 	$("#release").val(release); // Set Release date name
 
 	//----------------------------------------------------
@@ -606,6 +598,26 @@ function showVariantz(param){
     }
 }
 
+function returnedQuiz(data) {
+	var quiz = data;
+    var did = $('#did').val();
+    quiz['entries'].forEach(function(element) {
+        if(element['arrow'] == did) {
+            quiz = element;
+        }
+    });
+
+    
+	$("#did").val(quiz['arrow']);
+	$("#name").val(quiz['qname']);
+	$("#autograde").val(quiz['autograde']);
+	$("#gradesys").val(quiz['gradesystem']);
+	$("#template").val(quiz['quizFile']);
+	$("#qstart").val(quiz['qstart'] ? quiz['qstart'] : "null");
+	$("#deadline").val(quiz['deadline']);
+  	$("#release").val(quiz['qrelease']);
+}
+
 
 // Start of rendering the table
 var myTable;
@@ -615,12 +627,12 @@ function returnedDugga(data) {
     var tabledata = {
     	tblhead:{
     		arrow:"->",
-    		name:"Name",
+    		qname:"Name",
     		autograde:"Autograde",
-    		gradesys:"Gradesystem",
-    		template:"Template",
+    		gradesystem:"Gradesystem",
+    		quizFile:"Template",
     		deadline:"Deadline",
-    		release:"Result date",
+    		qrelease:"Result date",
     		modified:"Last modified",
     		cogwheel:"*",
     		trashcan:"-"
@@ -639,7 +651,7 @@ function returnedDugga(data) {
         null,
         null,
         [],
-        [],				
+        [],
         "",
         null,
         null,
@@ -661,12 +673,55 @@ function returnedDugga(data) {
 
 }
 
-// Rendring a specific cell
+// Rendring specific cells
 function renderCell(col,celldata,cellid) {
-		return "<div id='" + cellid + "'>" + celldata + "</div>";
+	list+= celldata + " ";
+	
+	// Translating autograding from integers to show the data like yes/no.
+	if (col == "autograde"){
+		if(celldata == "0"){
+			celldata = "No";
+		}else if(celldata == "1"){
+			celldata = "Yes";
+		}
+		else{
+			celldata = "Undefined";
+		}
+	}
+
+	// Translating gradsystem from integers so that it shows the possible grades.
+	else if (col == "gradesystem"){
+		if(celldata == "1"){
+			celldata = "U-G-VG";
+		}else if(celldata == "2"){
+			celldata = "U-G"
+		}else if(celldata == "3"){
+			celldata = "U-3-4-5"
+		}
+		else{
+			celldata = "Undefined";
+		}
+	}
+	
+	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
+	else if (col == "cogwheel"){
+		object=JSON.parse(celldata);
+	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Cogwheel.svg' ";
+		str+=" onclick='selectDugga(\""+object+"\");' >";
+		return str;
+	}
+
+	// Placing a clickable trash can in its designated column and implementing the code behind it.
+	else if (col == "trashcan"){
+		object=JSON.parse(celldata);
+		list+= ",";
+	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
+		return str;
+	}
 	return celldata;
 }
-// End of rendering the table
+// End of rendering the table.
 
 function parseParameters(str){
 	return str;
@@ -681,9 +736,6 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 		    showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer),null,null,null);
 	  })
 	  .fail(function( jqxhr, settings, exception ) {
-      	console.log(jqxhr);
-      	console.log(settings);
-      	console.log(exception);
       	eval(script);
       	showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer));
 	});
@@ -805,4 +857,15 @@ $(document).ready(function(){
 	$('#createjson').click(function(){
 		$('#parameter').val(createJSONString($('#jsonform').serializeArray()));
 	});
+});
+
+$(window).load(function() {
+	//There is an issue with using this code, it generates errors that stop execution
+      $(window).keyup(function(event){
+      	if(event.keyCode == 27) {
+         	closeWindows();
+         // closeSelect();
+          	showSaveButton();
+        }
+      });
 });
