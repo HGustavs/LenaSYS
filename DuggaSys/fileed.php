@@ -41,8 +41,8 @@ pdoConnect();
 			</button>
 		</div>
   
-    	<input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/>
-		<input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("GFILE");'/>
+    	<input class='submit-button fileed-button' type='button' value='Add Link' onclick='showLinkPopUp();'/>
+		<input class='submit-button fileed-button' type='button' value='Add File' onclick='showFilePopUp();'/>
 
 		<div id="fileLink" style='width:100%;'></div>
 	<!-- content END -->
@@ -60,18 +60,37 @@ pdoConnect();
       			<div class='cursorPointer' onclick='closeAddFile();'>x</div>
       		</div>
       		<form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
-      			<div style='padding:5px;'>
+      			<div>
       				<input type='hidden' id='cid' name='cid' value='Toddler' />
       				<input type='hidden' id='coursevers' name='coursevers' value='Toddler' />
       				<input type='hidden' id='kind' name='kind' value='Toddler' />
-      				<div class='inputwrapper filePopUp'><span>Upload File:</span><input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" /></div>
-      				<div class='inputwrapper linkPopUp'><span>URL:</span><input style="width:380px" id ="uploadedlink" class="textinput" name="link" placeholder="https://facebook.com" type="text" /></div>
+      				<div class='inputwrapper filePopUp'>
+      					<span>Upload File:</span>
+      					<input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" />
+      				</div>
+      				<div class='filePopUp'>
+      					<div>
+	      					<input type='radio' name='fileRB' value='GFILE' id='globalFileRB' />
+	      					<label>Global</label>
+	      				</div>
+	      				<div>
+	      					<input type='radio' name='fileRB' value='LFILE' id='localFileRB' />
+	      					<label>Local</label>
+	      				</div>
+	      				<div>
+	      					<input type='radio' name='fileRB' value='MFILE' id='couseLocalFileRB' />
+	      					<label>Course local</label>
+	      				</div>
+      				</div>
+      				<div class='inputwrapper linkPopUp'>
+      					<span>URL:</span>
+      					<input style="width:380px" id ="uploadedlink" class="textinput" name="link" placeholder="https://facebook.com" type="text" />
+      				</div>
       			</div> 
-      			<div style='padding:5px;'>
-      				<td><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>
-      			</div> 
-      			<div style ='padding:5px; display:none;' id='errormessage'>
-      			</div> 
+				<div id='uploadbuttonname'>
+					<input id='file-submit-button' class='submit-button' type="submit" onclick="setFileKind();uploadFile(fileKind);" />
+				</div>
+      			<div style ='display:none;' id='errormessage'></div> 
       		</form>
       </div>
 	</div>
