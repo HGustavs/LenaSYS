@@ -303,12 +303,18 @@ p {
 
 .markdownIcon, .trashcanIcon {
   vertical-align: middle;
-  margin: 4px auto;
+  margin: 5px auto;
 }
 
 .markdownIcon {
   width: 16px;
   height: 16px;
+}
+
+.iconBox {
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 #Sectionlist .example {
@@ -1566,7 +1572,7 @@ input.large-button {
 
 .list td {
   border-right:2px solid #dbd0d8;
-  padding-left:8px;
+  padding: 0 8px 0 8px;
 }
 
 .list th {

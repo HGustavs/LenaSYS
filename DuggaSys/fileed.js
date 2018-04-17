@@ -105,9 +105,8 @@ $(document).on('click','.last',function(e) {
      e.stopPropagation();
   });
 
-
 function showLinkPopUp() {
-	$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' /></td>");
+	$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' />");
 	$("#addFile").css("display","flex");
 	$(".filePopUp").css("display","none");
 	$(".linkPopUp").css("display","block");
@@ -121,6 +120,7 @@ function showLinkPopUp() {
 //		       ,options can be used to overwrite existing files later on
 //----------------------------------------
 function showFilePopUp() {
+  $("#uploadbuttonname").html("<input id='file-submit-button' class='submit-button' type='submit' value='Upload file' onclick='setFileKind();uploadFile(fileKind);' />");
 	$("#selecty").css("display","block");
 	$("#addFile").css("display","flex");
 	$(".filePopUp").css("display","block");
@@ -150,7 +150,7 @@ function uploadFile(kind) {
 	} else if (kind == "LFILE" || kind == "LINK") {
 		$("#selecty").css("display","none");				
 	}
-
+  
 	$("#kind").val(kind);
 	$("#cid").val(querystring['cid']);
 	$("#coursevers").val(querystring['coursevers']);
@@ -199,13 +199,13 @@ function hideLoginPopup()
 
 function renderCell(col,celldata,cellid) {
 	var list=celldata.split('.');
+	var link = celldata.split('://');
 	if (col == "trashcan"){
 		obj=JSON.parse(celldata);
-	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-		str+=" onclick='deleteFile(\""+obj.fileid+"\",\""+obj.filename+"\");' >";
+	    str="<div class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+		str+=" onclick='deleteFile(\""+obj.fileid+"\",\""+obj.filename+"\");' ></div>";
 		return str;
 	} else if (col == "filename") {
-		var link = celldata.split('://');
 		if(link[0] == "https" || link[0] == "http"){
 			return "<a href='" + celldata + "' target='_blank'>" + celldata + "</a>";
 		}else{
@@ -213,11 +213,11 @@ function renderCell(col,celldata,cellid) {
 		}
 	} else if (col == "extension") {
 	    return "<div>" + list[1] + "</div>";
-	} else if (col == "markdown") {
-		if(list[1] == "md"){
-			str="<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' >";
-		}else{
+	} else if (col == "editor") {
+		if(link[0] == "https" || link[0] == "http"){
 			str="";
+		}else{
+			str="<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
 		}
 		return str;
 	}
@@ -255,7 +255,7 @@ function returnedFile(data)
     		filesize:"Size",
     		uploaddate:"Upload date",
     		trashcan:"Delete",
-    		markdown:"MD editor"
+    		editor:"Editor"
     	},
     	tblbody: data['entries'],
     	tblfoot:[]

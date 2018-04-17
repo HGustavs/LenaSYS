@@ -162,3 +162,24 @@ function changeObjectAppearance(object_type){
     }
     updateGraphics();
 }
+
+//previous developers called cardinality for arity
+function addCardinality(side){
+
+  var x;
+  var y;
+  var val = document.getElementById(side).value;;
+
+//rightside assigns it's values to the array with index 1, leftside with index 0
+  if(side == "rightSide"){
+    x = points[diagram[lastSelectedObject].bottomRight].x;
+    y = points[diagram[lastSelectedObject].bottomRight].y;
+    console.log("iX: " + x + "\nY: " + y);
+    diagram[lastSelectedObject].cardinality[1] = ({"x": x, "y": y, "value": val, "side": side});
+  }else{
+    x = points[diagram[lastSelectedObject].topLeft].x;
+    y = points[diagram[lastSelectedObject].topLeft].y;
+    diagram[lastSelectedObject].cardinality[0] = ({"x": x, "y": y, "value": val, "side": side});
+  }
+
+}
