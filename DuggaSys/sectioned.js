@@ -505,13 +505,18 @@ function closeSelect()
 	$(".item").css("border","none");
 	$(".item").css("box-shadow","none");
 	$("#editSection").css("display","none");
-
-	$('#saveBtn').removeAttr('disabled');  							 		                // Resets save button to its default form
-	$('#submitBtn').removeAttr('disabled');									                // Resets submit button to its default form
-	document.getElementById("sectionname").style.backgroundColor = "#fff";  // Resets color for name input
-	$('#tooltipTxt').css("display","none");							 		                // Resets tooltip text to its default form
+	
+	defaultNewItem();
 }
 
+
+function defaultNewItem(){
+	
+	$('#saveBtn').removeAttr('disabled');  							 		// Resets save button to its default form
+	$('#submitBtn').removeAttr('disabled');									// Resets submit button to its default form
+	document.getElementById("sectionname").style.backgroundColor = "#fff"; 	// Resets color for name input
+	$('#tooltipTxt').hide();							 		           	// Resets tooltip text to its default form
+}
 
 
 function showCreateVersion()
@@ -751,7 +756,7 @@ function returnedSection(data)
 			+ "\"" + momentexists + "\","
 			+ "\"" + item['gradesys'] + "\","
 			+ "\"" + item['highscoremode'] + "\","
-			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\")'>";
+			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
 	} else {
 		str += "</tr></table>";
 	}
@@ -786,7 +791,7 @@ function returnedSection(data)
 			+ "\"" + momentexists + "\","
 			+ "\"" + item['gradesys'] + "\","
 			+ "\"" + item['highscoremode'] + "\","
-			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\")'>";
+			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
         str += "</div>";
     }
 
@@ -1131,7 +1136,7 @@ function returnedSection(data)
 				if(data['writeaccess']){
 					str+="<td style='width:32" + "px;";
 
-              		if(parseInt(item['kind']) === 0) {
+              		if(parseInt(item['kind']) === 0) { 
   						str+=
                             "' class='header"+blorf+"'>"
                             + "<img id='dorf' class='margin-4'"
@@ -1148,7 +1153,7 @@ function returnedSection(data)
                             + "\""+item['comments']+"\""
                             + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
-					} else if(parseInt(item['kind']) === 1) {
+					} else if(parseInt(item['kind']) === 1) { // Section
 						str+=
                             "' class='section"+blorf+"'>"
                             + "<img id='dorf' class='margin-4'"
@@ -1165,7 +1170,7 @@ function returnedSection(data)
                             + "\""+item['comments']+"\""
                             + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
-					} else if(parseInt(item['kind']) === 4) {
+					} else if(parseInt(item['kind']) === 4) { // Moment
 						str+=
                             "' class='moment"+blorf+"'>"
                             + "<img id='dorf' class='margin-4'"
@@ -1182,7 +1187,7 @@ function returnedSection(data)
                             + "\""+item['comments']+"\""
                             + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
-					} else {
+					} else { 								// Dugga
 						str+=
                             "' ><img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
@@ -1455,8 +1460,9 @@ function addOrRemoveFromArray(elementID, array) {
 	}
 }
 
-// Function to prevent collapsing when clicking icons
+
 $(document).ready(function(){
+	// Function to prevent collapsing when clicking icons
 	$(document).on('click','#corf',function(e) {
 		e.stopPropagation();
 	});
