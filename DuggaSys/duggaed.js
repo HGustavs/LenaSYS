@@ -598,6 +598,7 @@ function showVariantz(param){
     }
 }
 
+// Storing the celldata for future use. (Needed when editing and such)
 function returnedQuiz(data) {
 	var quiz = data;
     var did = $('#did').val();
@@ -606,8 +607,6 @@ function returnedQuiz(data) {
             quiz = element;
         }
     });
-
-    
 	$("#did").val(quiz['arrow']);
 	$("#name").val(quiz['qname']);
 	$("#autograde").val(quiz['autograde']);
