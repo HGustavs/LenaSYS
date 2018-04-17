@@ -195,7 +195,8 @@
             }
 
             function boldText() {
-                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****'); 
+                //$('#mrkdwntxt').val($('#mrkdwntxt').val()+'****'); 
+                $("textarea").val("**").focus().val("**");
             }
             function cursiveText() {
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
@@ -210,6 +211,27 @@
                 value = value.slice(0, insertStartPoint) + specialChar + value.slice(insertEndPoint);
                 textarea.value = value;
             }
+            function setSelectionRange(input, selectionStart, selectionEnd) {
+                if (input.setSelectionRange) {
+                    input.focus();
+                    input.setSelectionRange(selectionStart, selectionEnd);
+                } 
+                else if (input.createTextRange) {
+                    var range = input.createTextRange();
+                    range.collapse(true);
+                    range.moveEnd('character', selectionEnd);
+                    range.moveStart('character', selectionStart);
+                    range.select();
+                }
+            }
+
+            function setCaretToPos(input, pos) {
+                setSelectionRange(input, pos, pos);
+            }
+
+            /*$("#mrkdwntxt").click(function() {
+                setCaretToPos($("#mrkdwntxt")[0], 0)
+            });*/
 
             function showDropdown() {
                 $('#select-header').show();
