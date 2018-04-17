@@ -9,77 +9,18 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
-/**
- *  Generate and executes queries
- *
- * @param $migrationArray   Array of columns
- * @param $version          Version to execute
- * @return array            Message for each migration
- */
-function parser($migrationArray, $version) {
-    $message = array();
-
-	foreach($migrationArray as $key => $value) {
-		if ($value['version'] === $version) {
-            foreach ($value[0] as $col) {
-                // Get the type of action to do
-                $type = $col[0];
-                $col = array_slice($col, 1);
-
-                if ($type == 'create') {
-                    $keyString = !isset($col[4]) ? "" :", " . $col[4] ;
-                    $query = "CREATE TABLE IF NOT EXISTS $col[0]($col[1] $col[2] $col[3] $keyString) ENGINE=InnoDB;";
-                    $message[] = queryExecute($query);
-                } else if ($type == 'column') {
-                    $modifier = queryExecute("SELECT ".$col[1]." FROM " . $col[0]) == "Success" ? "MODIFY COLUMN" : "ADD" ;
-                    $query = "ALTER TABLE $col[0] $modifier $col[1] $col[2] $col[3];";
-                    $message[] = queryExecute($query);
-
-                    // Execute query to add foreign keys
-                    if (count($col) >= 5) {
-                        $message[] = queryExecute("ALTER TABLE $col[0] ADD $col[4]");
-                    }
-
-                } else if ($type == 'insert') {
-
-                    // Check wich syntax should be used to make the query string
-                    if (count($col) <= 1){
-                        $query = stripslashes($col[0]);
-                        $message[] = queryExecute($query);
-                    } else {
-                        $keys = implode(", ", array_keys($col['values']));
-                        $values = implode("', '", $col['values']);
-                        $query = "INSERT INTO $col[0]($keys) VALUES ('$values')";
-                        $message[] = queryExecute($query);    
-                    }                    
-                }
-            }
-		}
-	}
-	return $message;
+if(isset($_SESSION['uid'])){
+    $userid=$_SESSION['uid'];
+}else{
+    $userid="guest";
 }
 
-/**
- *  Execute a query to database
- *
- * @param $query    Query to be executed
- * @return string
- */
-function queryExecute($query) {
-    global $pdo;
-
-    $stmt = $pdo->prepare($query);
-    if ($stmt->execute()) {
-        return "Success";
-    } else {
-        return $stmt->errorInfo()[2];
-    }
-}
-
+$version = getOP('version');
+$messages = isset($_SESSION['migration-message']) ? $_SESSION['migration-message'] : [] ;
 $migrationArray = array(
     [
-
         'version' => 'v0.01',
+        'description' => 'Installation tables.',
         [
             ['create', 'user', 'uid', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT', 'PRIMARY KEY(uid)'],
             ['column', 'user', 'username', 'varchar(80)', 'NOT NULL'],
@@ -372,6 +313,7 @@ $migrationArray = array(
     ],
     [
         'version' => 'v0.02',
+        'description' => 'Seeding the database with basic test data.',
         [
             ['insert', 'INSERT INTO user (uid, username, firstname, lastname, ssn, password, lastupdated, newpassword, creator, superuser, email, class, totalHp, securityquestion, securityquestionanswer, requestedpasswordchange) VALUES (1, \'Grimling\', \'Johan\', \'Grimling\', \'810101-5567\', \'$2y$10$u886VEwTO/ohXer5b6zI7.1kUhVF0LMxHmibvz0mShL6dYKi4vZhe\', \'2018-04-10 09:10:06\', 0, 1, 1, null, null, null, null, null, 0); '],
             ['insert', 'INSERT INTO user (uid, username, firstname, lastname, ssn, password, lastupdated, newpassword, creator, superuser, email, class, totalHp, securityquestion, securityquestionanswer, requestedpasswordchange) VALUES (2, \'Toddler\', \'Toddler\', \'Kong\', \'444444-5447\', \'$2y$10$u886VEwTO/ohXer5b6zI7.1kUhVF0LMxHmibvz0mShL6dYKi4vZhe\', \'2018-04-10 16:10:50\', 0, 1, 1, null, null, null, null, null, 0); '],
@@ -2200,40 +2142,160 @@ $migrationArray = array(
             ['insert', 'INSERT INTO user_usergroup (uid, ugid) VALUES (209, 1); '],
             ['insert', 'INSERT INTO user_usergroup (uid, ugid) VALUES (212, 1); '],
             ['insert', 'INSERT INTO user_usergroup (uid, ugid) VALUES (100, 2); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (202, 303, 2.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (203, 303, 2.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (200, 302, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (201, 302, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (202, 302, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (203, 302, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (201, 303, 5.0); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (200, 304, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (202, 304, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (200, 305, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (201, 305, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (202, 305, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (203, 305, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (200, 306, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (200, 307, 5.0); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (201, 307, 5.0); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (200, 308, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (200, 309, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (200, 310, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (201, 310, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (200, 311, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (201, 311, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (201, 315, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (201, 316, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (201, 317, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (201, 318, 7.5); '],
-            ['insert', 'INSERT INTO studentresultCourse (username, cid, hp) VALUES (201, 320, 30.0); '],
-
         ],
-    ]
+    ],
+    [
+        'version' => 'v0.03',
+        'description' => 'New user named roger',
+        [
+            ['insert', 'user', 'values' => ['username' =>  'Roger', 'firstname' => 'Roger', 'lastname' =>  'Rogersson','superuser' => 1, 'creator' => 1, 'password' => '$2y$10$u886VEwTO/ohXer5b6zI7.1kUhVF0LMxHmibvz0mShL6dYKi4vZhe']]
+        ],
+    ],
 );
 
-$messages = parser($migrationArray, "v0.02");
+if (isSuperUser($userid) && strcmp($version, "UNK")) {
+    /**
+     *  Generate and executes queries
+     *
+     * @param $migrationArray   Array of columns
+     * @param $version          Version to execute
+     * @return array            Message for each migration
+     */
+    function parser($migrationArray, $version)
+    {
+        $message = array();
 
-foreach ($messages as $m) {
-    echo "$m <br>";
+        $iterator = 0;
+        foreach ($migrationArray as $key => $value) {
+            if ($value['version'] === $version) {
+                foreach ($value[0] as $col) {
+                    // Get the type of action to do
+                    $type = $col[0];
+                    $col = array_slice($col, 1);
+
+                    if ($type == 'create') {
+                        $keyString = !isset($col[4]) ? "" : ", " . $col[4];
+                        $query = "CREATE TABLE IF NOT EXISTS $col[0]($col[1] $col[2] $col[3] $keyString) ENGINE=InnoDB;";
+                        $message[]  = array(
+                            'id' => $iterator,
+                            'info' => "CREATE $col[0] - ",
+                            'message' => queryExecute($query),
+                        );
+                    } else if ($type == 'column') {
+                        $modifier = queryExecute("SELECT " . $col[1] . " FROM " . $col[0]) == "Success" ? "MODIFY COLUMN" : "ADD";
+                        $query = "ALTER TABLE $col[0] $modifier $col[1] $col[2] $col[3];";
+                        $message[]  = array(
+                            'id' => $iterator,
+                            'info' => "ALTER $modifier $col[0] - ",
+                            'message' => queryExecute($query),
+                        );
+
+                        // Execute query to add foreign keys
+                        if (count($col) >= 5) {
+                            $message[]  = array(
+                                'id' => $iterator,
+                                'info' => "KEY ADD $col[0] - ",
+                                'message' => queryExecute("ALTER TABLE $col[0] ADD $col[4]"),
+                            );
+                        }
+                    } else if ($type == 'insert') {
+                        // Check wich syntax should be used to make the query string
+                        if (count($col) <= 1) {
+                            $query = stripslashes($col[0]);
+                            $query_parts = explode(" ", $query);
+
+                            $message[]  = array(
+                                'id' => $iterator,
+                                'info' => "INSERT INTO $query_parts[2] - ",
+                                'message' => queryExecute($query),
+                            );
+                        } else {
+                            $keys = implode(", ", array_keys($col['values']));
+                            $values = implode("', '", $col['values']);
+                            $query = "INSERT INTO $col[0]($keys) VALUES ('$values')";
+                            $message[] = array(
+                                'id' => $iterator,
+                                'info' => "INSERT INTO $col[0] - ",
+                                'message' => queryExecute($query),
+                            );
+                        }
+                    }
+                    $iterator++;
+                }
+            }
+        }
+        return $message;
+    }
+
+    /**
+     *  Execute a query to database
+     *
+     * @param $query    Query to be executed
+     * @return string
+     */
+    function queryExecute($query) {
+        global $pdo;
+
+        $stmt = $pdo->prepare($query);
+        if ($stmt->execute()) {
+            return "Success";
+        } else {
+            return $stmt->errorInfo()[2];
+        }
+    }
+
+    $messages = parser($migrationArray, $version);
+    $_SESSION['migration-message'] = $messages;
+    header('Location: ./migration.php');
 }
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title id = "sectionedPageTitle">Migration - LenaSYS</title>
+
+    <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+    <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+
+    <script src="../Shared/js/jquery-1.11.0.min.js"></script>
+    <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+    <script src="../Shared/dugga.js"></script>
+</head>
+<body>
+    <?php
+        $noup = "Migration";
+        include '../Shared/navheader.php';
+    ?>
+
+    <div id="content">
+        <?php if (isSuperUser($userid)): ?>
+            <form action="?" method="POST" class="migration-form">
+                <div class="migration-row">
+                    <select name="version">
+                        <?php foreach($migrationArray as $key => $value): ?>
+                            <option value="<?= $value['version'] ?>"><?= $value['version'] ?> - <?= $value['description'] ?> </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <input type="submit" value="Migrate">
+                </div>
+            </form>
+            <div class="scrollable migration-status">
+                <?php foreach($messages as $m): ?>
+                        <p><?= $m['info'] ?> Status: <span class="<?= strcmp($m['message'], "Success") ? "danger" : "success" ?>"><?=  $m['message'] ?></span></p>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <h2>Only superusers are able to migrate.</h2>
+        <?php endif; ?>
+    </div>
+    <?php
+        include '../Shared/loginbox.php';
+    ?>
+</body>
+</html>
+
