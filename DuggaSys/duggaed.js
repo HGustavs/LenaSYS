@@ -386,7 +386,7 @@ function showSaveButton(){
   $(".submitDugga").css("display","none");
   $(".updateDugga").css("display","block");
   $(".deleteDugga").css("display","block");
-  $(".closeDugga").css("display","none");
+  //$(".closeDugga").css("display","none");
 //  $("#overlay").css("display","none");
 }
 
