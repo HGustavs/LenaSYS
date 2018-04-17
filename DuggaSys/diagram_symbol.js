@@ -28,7 +28,10 @@ function Symbol(kind) {
     this.shadowOffsetX = 3;         // The horizontal distance of the shadow for the object.
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
-    this.cardinality;
+    this.cardinality = [
+      "leftSide": {"x": null, "y": null, "value": null},
+      "rightSide": {"x": null, "y": null, "value": null}
+    ];
 
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
