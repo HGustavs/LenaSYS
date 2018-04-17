@@ -293,7 +293,7 @@
                             <span id="h3" onclick="selected();headerVal3()" value="H3">Header 3</span>
                         </div>
 
-                    <span id="boldText" onclick="changeText('**')" title="Bold"><b>B</b></span>
+                    <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
                     <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
                 </div>
                 <div class="markText">
