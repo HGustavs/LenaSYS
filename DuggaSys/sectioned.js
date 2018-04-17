@@ -407,7 +407,7 @@ function validateName(){
 
 	var nme=document.getElementById("sectionname");
 
-	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)){
+	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d(),.]+$/)){
 		$('#tooltipTxt').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
 		$('#submitBtn').removeAttr('disabled');
