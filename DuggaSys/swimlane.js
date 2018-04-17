@@ -1,3 +1,6 @@
+//is called swinlane beacause of a drowning symbolic(if deadline is missed).
+//This was once shown by a swinlane icon buts is now replaced by a clock icon.
+
 var querystring = parseGet(); // Get the current courseid and coursevers
 var courseId = querystring['courseid'];
 var courseVers = querystring['coursevers'];
@@ -79,7 +82,8 @@ window.onclick = function (event) {
 // -------------
 // Renderer
 // -------------
-
+//this function prints the pie Chart in swimlane that shows a brief overview over then
+//students quiz/tests.
 function createPieChart() {
   var c = document.getElementById('pieChart');
   var ctx = c.getContext('2d');
@@ -88,15 +92,15 @@ function createPieChart() {
 
   var totalQuizes = 10;
   var passedQuizes = 5;
-  var notPassedQuizes = 2;
-  var notGradedQuizes = totalQuizes - (passedQuizes + notPassedQuizes);
+  var failedQuizes = 2;
+  var notGradedQuizes = totalQuizes - (passedQuizes + failedQuizes);
 
-  var lastend = -1.57;
-  var data = [90, 10, 10]; // If you add more data values make sure you add more colors
-  var myTotal = 0; // Automatically calculated so don't touch
+  var lastend = 0;//calculates where the chart starts, don't change
+  var data = [passedQuizes, notGradedQuizes, failedQuizes]; // green,yellow,red fields
+  var myTotal = 0; // Automatically calculated so don't change
   var colors = {
     'passed': '#4CAF50',    // Green
-    'notPassed': '#FFEB3B', // Yellow
+    'failed': '#FFEB3B', // Yellow
     'notGraded': '#F44336'  // Red
   }
 
@@ -104,25 +108,33 @@ function createPieChart() {
     myTotal += data[e];
   }
 
+
   for (var i = 0; i < data.length; i++) {
-    
+
     if(i == 0) {
       ctx.fillStyle = colors['passed'];
     } else if(i == 1) {
-      ctx.fillStyle = colors['notPassed'];
+      ctx.fillStyle = colors['failed'];
     } else {
       ctx.fillStyle = colors['notGraded'];
     }
-    
+
+
     ctx.beginPath();
-    ctx.moveTo(width / 2, height / 2);
+    //Parameter for moveTo: x,y
+    ctx.moveTo(50, height / 2);
     // Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
-    ctx.arc(width / 2, height / 2, height / 2, lastend, lastend
+    ctx.arc(50, height / 2, height / 2, lastend,lastend
       + (Math.PI * 2 * (data[i] / myTotal)), false);
-    ctx.lineTo(width / 2, height / 2);
+      //Parameter for lineTo: x,y
+    ctx.lineTo(50, height / 2);
     ctx.fill();
-    lastend += Math.PI * 2 * (data[i] / myTotal);
+    lastend += Math.PI * 2 * (data[i] / myTotal);//dont change
   }
+  ctx.font = "10px Arial";
+    ctx.fillStyle = "black";
+  ctx.fillText("Hello World",width/3,10);
+
 }
 
 // Draw the content of the SwimContent container
@@ -139,7 +151,7 @@ function swimlaneDrawLanes() {
      and a pie chart giving an overview of course progress by a student. */
   str+="<div style='background-color:#FFF; height:100px;'>";
   // str+="<p>Swim lane description</p>";
-  str+="<canvas id='pieChart' width='75px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
+  str+="<canvas id='pieChart' width='300px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
   str+="</div>";
 
   str+="<svg style='width:100%;height:100%;position:absolute;pointer-events:none;'>";
@@ -267,6 +279,7 @@ function swimlaneDrawLanes() {
     str += "</div>";
 
   swimContent.innerHTML=str;
+  createPieChart();
 }
 function swimlaneDrawLanes2() {
   var info = swimlaneInformation['information'];
