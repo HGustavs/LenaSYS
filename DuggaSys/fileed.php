@@ -35,8 +35,8 @@ pdoConnect();
 		<button class="switchContent" onclick="switchcontent();keyUpSearch()" type="button">Switch to One table</button>
 	
 		<div id="searchBar">
-			<input id="searchinput" type="text" name="search" placeholder="Search.." onkeyup="searchterm = document.getElementById('searchinput').value;fileLink.renderTable();">
-			<button id="searchbutton" class="switchContent" onclick="return searchKeyDown(event)" type="button">
+			<input id="searchinput" type="text" name="search" placeholder="Search.." onkeyup="searchterm=document.getElementById('searchinput').value;searchKeyUp(event);fileLink.renderTable();">
+			<button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
 				<img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
 			</button>
 		</div>

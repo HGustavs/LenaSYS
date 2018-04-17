@@ -281,7 +281,7 @@ function returnedFile(data)
 }
 
 window.onresize = function() {
-	myTable.magicHeader();
+	fileLink.magicHeader();
 }  
 
 function formatBytes(bytes,decimals) {
@@ -436,7 +436,7 @@ function searchcontent(){
 	    $rows.filter(":visible:odd").css('background','#ccc');
 	    $rows.filter(":visible:even").css('background','#eae8eb');
 	});
-}
+} 
 
 //excuted onclick button for switching to "one" table - functionality that filters in table 
 function keyUpSearch() {
