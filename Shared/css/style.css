@@ -303,12 +303,18 @@ p {
 
 .markdownIcon, .trashcanIcon {
   vertical-align: middle;
-  margin: 4px auto;
+  margin: 5px auto;
 }
 
 .markdownIcon {
   width: 16px;
   height: 16px;
+}
+
+.iconBox {
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
 #Sectionlist .example {
@@ -1373,7 +1379,7 @@ input.hide-moments-button {
 
 input.fileed-button {
     background-color:#614875;
-    margin: 0 0 0 8px;
+    margin: 0 0 4px 8px;
     float: right;
 }
 
@@ -1486,6 +1492,10 @@ input.large-button {
     border-color: transparent transparent transparent black;
 }
 
+#uploadedfile{
+  width: 300px;
+  float: left;
+}
 
 /* File upload form */
 
@@ -1561,7 +1571,7 @@ input.large-button {
 
 .list td {
   border-right:2px solid #dbd0d8;
-  padding-left:8px;
+  padding: 0 8px 0 8px;
 }
 
 .list th {
@@ -1569,6 +1579,7 @@ input.large-button {
   color:#fff;
   line-height:28px;
   font-weight: bold;
+  padding: 5px;
 }
 
 .innertable {

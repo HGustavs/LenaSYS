@@ -71,7 +71,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
     			'filesize' => $row['filesize'],
     			'uploaddate' => $row['uploaddate'],
           'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']]),
-          'markdown' => $row['filename']
+          'editor' => $row['filename']
   		);
 
   		array_push($entries, $entry);

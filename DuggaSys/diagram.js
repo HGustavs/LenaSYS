@@ -90,6 +90,7 @@ var diagramNumber = 0;                  // Is used for localStorage so that undo
 var diagramNumberUndo = 0;              // Is used for localStorage and undo
 var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
+var appearanceMenuOpen = false;         // True if appearance menu is open
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
@@ -98,7 +99,7 @@ var ctrlIsClicked = false;
 
 function keyDownHandler(e){
     var key = e.keyCode;
-    if(key == 46 || key == 8){
+    if((key == 46 || key == 8) && !appearanceMenuOpen){
         eraseSelectedObject();
     } else if(key == 32){
         //Use space for movearound
@@ -178,6 +179,14 @@ var points = [
 // returns index of that point
 //--------------------------------------------------------------------
 points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
+    //If we have an unused index we use it first
+    for(var i = 0; i < points.length; i++){
+        if(points[i] == ""){
+            points[i] = {x:xCoordinate, y:yCoordinate, isSelected:isSelected};
+            return i;
+        }
+    }
+    
     this.push({x:xCoordinate, y:yCoordinate, isSelected:isSelected});
     return this.length - 1;
 }

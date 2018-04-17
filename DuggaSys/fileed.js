@@ -110,14 +110,13 @@ function createLink()
 {
 		$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' /></td>");
 		$("#addFile").css("display","flex");
-		$("#filey").css("display","none");
-		$("#linky").css("display","block");
+		$(".filePopUp").css("display","none");
+		$(".linkPopUp").css("display","block");
 		$("#selecty").css("display","none");
 		//$("#overlay").css("display","block");
 		$("#kind").val("LINK");
 		$("#cid").val(querystring['cid']);
 		$("#coursevers").val(querystring['coursevers']);
-		
 }
 //----------------------------------------
 // createFile(kind) <- gets the files that exists and puts them as options under a select tag.
@@ -146,8 +145,8 @@ function createFile(kind) {
 	}
 
 	$("#addFile").css("display","flex");
-	$("#filey").css("display","block");
-	$("#linky").css("display","none");
+	$(".filePopUp").css("display","block");
+	$(".linkPopUp").css("display","none");
 	//$("#overlay").css("display","block");
 	if (kind != "LFILE") $("#selecty").css("display","block");
 	$("#kind").val(kind);
@@ -160,7 +159,7 @@ function validateForm()
 	var result;
 
 	//Validation for links
-	if($("#linky").css('display') == 'block'){
+	if($(".linkPopUp").css('display') == 'block'){
 			//Check if the link starts with http:// or https://
 			if(document.getElementById('uploadedlink').value.substr(0,7).toLowerCase() == "http://"){
 				result = true;
@@ -198,25 +197,47 @@ function hideLoginPopup()
 
 function renderCell(col,celldata,cellid) {
 	var list=celldata.split('.');
+	var link = celldata.split('://');
 	if (col == "trashcan"){
 		obj=JSON.parse(celldata);
-	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-		str+=" onclick='deleteFile(\""+obj.fileid+"\",\""+obj.filename+"\");' >";
+	    str="<div class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+		str+=" onclick='deleteFile(\""+obj.fileid+"\",\""+obj.filename+"\");' ></div>";
 		return str;
+	} else if (col == "filename") {
+		if(link[0] == "https" || link[0] == "http"){
+			return "<a href='" + celldata + "' target='_blank'>" + celldata + "</a>";
+		}else{
+			return "<div>" + list[0] + "</div>";
+		}
 	} else if (col == "extension") {
 	    return "<div>" + list[1] + "</div>";
-	} else if (col == "markdown") {
-		if(list[1] == "md"){
-			str="<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' >";
-		}else{
+	} else if (col == "editor") {
+		if(link[0] == "https" || link[0] == "http"){
 			str="";
+		}else{
+			str="<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
 		}
 		return str;
 	}
 	return celldata;
 }
 
-var myTable;
+//--------------------------------------------------------------------------
+// rowFilter
+// ---------------
+//  Callback function that filters rows in the table
+//--------------------------------------------------------------------------
+var searchterm = "";
+function rowFilter(row) {
+	for (key in row) {
+		if (row[key] != null) {
+			if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+		}
+	}
+	return false;
+}
+
+var fileLink;
 //----------------------------------------
 // Renderer <- ran after the ajax call(ajax is started after initialation of this file) is successful
 //----------------------------------------
@@ -232,13 +253,13 @@ function returnedFile(data)
     		filesize:"Size",
     		uploaddate:"Upload date",
     		trashcan:"Delete",
-    		markdown:"MD editor"
+    		editor:"Editor"
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
     }
 
-    myTable = new SortableTable(
+    fileLink = new SortableTable(
 		tabledata,
 		"fileLink",
 		null,
@@ -246,7 +267,7 @@ function returnedFile(data)
         renderCell,
         null,
         null,
-        null,
+        rowFilter,
         [],
         [],				
         "",
@@ -256,14 +277,18 @@ function returnedFile(data)
 		null,
 		null,
         null,
-		false
+		true
 	);
 
-	myTable.renderTable();
+	fileLink.renderTable();
 
 	if(data['debug']!="NONE!") alert(data['debug']);
 	makeAllSortable();
 }
+
+window.onresize = function() {
+	fileLink.magicHeader();
+}  
 
 function formatBytes(bytes,decimals) {
    if(bytes == 0) return '0 Bytes';
@@ -417,34 +442,22 @@ function searchcontent(){
 	    $rows.filter(":visible:odd").css('background','#ccc');
 	    $rows.filter(":visible:even").css('background','#eae8eb');
 	});
-}  
+} 
 
 //excuted onclick button for switching to "one" table - functionality that filters in table 
 function keyUpSearch() {
-	var $rows2 = $('#allcontent_body tr');
+	var $searchedRows = $('#fileLink tr');
 	$('#searchinput').keyup(function() {
 	    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 	    
-	    $rows2.show().filter(function() {
+	    $searchedRows.show().filter(function() {
 	        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
 	        return !~text.indexOf(val);
 	    }).hide();
-	    $rows2.filter(":visible:odd").css('background','#ccc');
-	    $rows2.filter(":visible:even").css('background','#eae8eb');
+	    $searchedRows.filter(":visible:odd").css('background','#ccc');
+	    $searchedRows.filter(":visible:even").css('background','#eae8eb');
 	});
-}
-
-function searchKeyPress(e)
-{
-    // look for window.event in case event isn't passed in
-    e = e || window.event;
-    if (e.keyCode == 13)
-    {
-        document.getElementById('searchbutton').click();
-        return false;
-    }
-    return true;
-} */
+}  */
 
 function deleteFile(fileid,filename){
 	if (confirm("Do you really want to delete the file/link: "+filename)){
