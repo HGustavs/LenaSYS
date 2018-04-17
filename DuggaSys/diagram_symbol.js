@@ -712,6 +712,9 @@ this.drawEntity = function(x1, y1, x2, y2){
     ctx.clip();
     ctx.stroke();
 
+    ctx.fillStyle = this.fontColor;
+    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+    ctx.font = parseInt(textsize) + "px " + this.font;
 }
 
 this.drawLine = function(x1, y1, x2, y2){
