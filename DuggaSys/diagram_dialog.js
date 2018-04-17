@@ -165,23 +165,17 @@ function changeObjectAppearance(object_type){
 
 //previous developers called cardinality for arity
 function addCardinality(side){
-   //diagram[lastSelectedObject].points[]
-   console.log(side);
-   var val = document.getElementById(side).value;
-   //console.log("In here");
-   if(side == "rightSide"){
-   var x = points[diagram[lastSelectedObject].bottomRight].x;
-   var y = points[diagram[lastSelectedObject].bottomRight].y;
-   console.log("iX: " + x + "\nY: " + y);
-   diagram[lastSelectedObject].arity.push([
-       {text:val, x:x-50, y:y, align:"end", baseLine:"bottom"}
-   ]);
+  if(side == "rightSide"){
+    var x = points[diagram[lastSelectedObject].bottomRight].x;
+    var y = points[diagram[lastSelectedObject].bottomRight].y;
+    console.log("iX: " + x + "\nY: " + y);
   }else{
     var x = points[diagram[lastSelectedObject].topLeft].x;
     var y = points[diagram[lastSelectedObject].topLeft].y;
     console.log("X: " + x + "\nY: " + y);
-    diagram[lastSelectedObject].arity.push([
-        {text:val, x:x+50, y:y, align:"end", baseLine:"bottom"}
-    ]);
   }
+  var val = document.getElementById(side).value;
+  diagram[lastSelectedObject].cardinality[0] = x;
+  diagram[lastSelectedObject].cardinality[1] = y;
+  diagram[lastSelectedObject].cardinality[2] = val;
 }

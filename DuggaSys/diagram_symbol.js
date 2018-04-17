@@ -28,6 +28,7 @@ function Symbol(kind) {
     this.shadowOffsetX = 3;         // The horizontal distance of the shadow for the object.
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
+    this.cardinality = [];
 
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
@@ -288,14 +289,14 @@ function Symbol(kind) {
         c.bl.y += tolerance;
         c.br.x += tolerance;
         c.br.y += tolerance;
-        
+
         if (!this.entityhover(mx, my, c)) {
           return false;
         }
 
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
     }
-      
+
     this.entityhover = function(mx, my, c){
         if(!c){
              c = this.corners();
