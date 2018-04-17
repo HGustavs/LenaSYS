@@ -343,12 +343,6 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 			// Create array entry for each course participant
 
 			$entry = array(
-				/*'firstnamelastnamessn' => json_encode([	'username' => $row['username'],
-														'firstname' => $row['firstname'],
-														'lastname' => $row['lastname'],
-														'class' => $row['class'],
-														'ssn' => $row['ssn'],
-														'teacher' => $row['teacher']]),*/
 				'cid' => (int)$row['cid'],
 				'uid' => (int)$row['uid'],
 				'username' => $row['username'],
@@ -359,8 +353,6 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 				'access' => $row['access'],
 				'teacher' => $row['teacher']
 			);
-			// build the dynamic content for the cells
-			$entry['Rapport 1HP'] = json_encode(['hej' => 'hejjhg']);
 /*
 			$entry = array(
 				'cid' => (int)$row['cid'],
@@ -603,6 +595,9 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			$sortableTableContent[$line['entryname']] = json_encode(['username' => $row['username']]);
 		}
 		array_push($sortableTable, $sortableTableContent);
+		/* Temporary code reference f16linli, b16nilpe
+		// build the dynamic content for the cells
+		$entry['Rapport 1HP'] = json_encode(['hej' => 'hejjhg']); */
 	}
 
 $array = array(
