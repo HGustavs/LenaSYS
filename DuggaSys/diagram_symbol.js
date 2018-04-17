@@ -28,6 +28,11 @@ function Symbol(kind) {
     this.shadowOffsetX = 3;         // The horizontal distance of the shadow for the object.
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
+    this.cardinality = [
+      {"x": null, "y": null, "value": null, "side": null},
+      {"x": null, "y": null, "value": null, "side": null}
+    ];
+
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -707,43 +712,57 @@ function Symbol(kind) {
         ctx.clip();
         ctx.stroke();
 
-        //Print arity and entity name
-        ctx.fillStyle = this.fontColor;
-        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-        ctx.font = parseInt(textsize) + "px " + this.font;
-        for (var i = 0; i < this.arity.length; i++) {
-            for (var j = 0; j < this.arity[i].length; j++) {
-                var arity = this.arity[i][j];
-                ctx.textAlign = arity.align;
-                ctx.textBaseline = arity.baseLine;
-                ctx.fillText(arity.text, arity.x, arity.y);
-            }
-        }
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x1, y2);
+    ctx.lineTo(x1, y1);
+    ctx.closePath();
+    makeShadow();
+    ctx.clip();
+    ctx.stroke();
+
+    ctx.fillStyle = this.fontColor;
+    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+    ctx.font = parseInt(textsize) + "px " + this.font;
+}
+
+this.drawLine = function(x1, y1, x2, y2){
+    //Checks if there is cardinality set on this object
+    if((this.cardinality[0].x != null && this.cardinality[0].y != null) ||
+        (this.cardinality[1].x != null && this.cardinality[1].y != null)){
+        //Updates the x and y position depending on which side the cardinality is on
+        ctx.fillStyle = '#000'; 
+
+        this.cardinality[0].x = x1 > x2 ? x2+10 : x2-10;
+        this.cardinality[0].y = y1 > y2 ? y2+10 : y2-10;
+        ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+
+        this.cardinality[1].x = x1 > x2 ? x1-10 : x1+10;
+        this.cardinality[1].y = y1 > y2 ? y1-10 : y1+10;
+        ctx.fillText(this.cardinality[1].value, this.cardinality[1].x, this.cardinality[1].y);
     }
 
-    this.drawLine = function(x1, y1, x2, y2){
-        ctx.lineWidth = this.lineWidth;
-        if (this.key_type == "Forced") {
-            //Draw a thick black line
-            ctx.lineWidth = this.lineWidth*3;
-            ctx.beginPath();
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
 
-            //Draw a white line in the middle to simulate space (2 line illusion).
-            ctx.lineWidth = this.lineWidth;
-            ctx.strokeStyle = "#fff";
-        }
-        else if (this.key_type == "Derived") {
-            ctx.lineWidth = this.lineWidth * 2;
-            ctx.setLineDash([5, 4]);
-        }
+    ctx.lineWidth = this.lineWidth;
+    if (this.key_type == "Forced") {
+        //Draw a thick black line
+        ctx.lineWidth = this.lineWidth*3;
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
     }
+    else if (this.key_type == "Derived") {
+        ctx.lineWidth = this.lineWidth * 2;
+        ctx.setLineDash([5, 4]);
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+}
 
     this.drawRelation = function(x1, y1, x2, y2){
         var midx = points[this.middleDivider].x;
