@@ -195,7 +195,9 @@
             }
 
             function boldText() {
-                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'**').focus().val($('#mrkdwntxt').val()+'**'); 
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'**');
+                $('#mrkdwntxt').focus();
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'**');
                 //$("#mrkdwntxt").val("**").focus().val("**");
             }
             function cursiveText() {
