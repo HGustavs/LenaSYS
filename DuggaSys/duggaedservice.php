@@ -119,7 +119,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		if($deadline=="null") $query->bindValue(':deadline', null,PDO::PARAM_INT);
 		else $query->bindParam(':deadline', $deadline);
 
-    if($release=="null") $query->bindValue(':release', null,PDO::PARAM_INT);
+        if($release=="null") $query->bindValue(':release', null,PDO::PARAM_INT);
 		else $query->bindParam(':release', $release);
 		
 		if(!$query->execute()) {

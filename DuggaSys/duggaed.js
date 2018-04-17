@@ -350,9 +350,6 @@ function updateDugga()
 
 
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,qstart:qstart,deadline:deadline,deadline2:deadline2,deadline3:deadline3,release:release,coursevers:querystring['coursevers']},"DUGGA");
-
-
-	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,release:release,deadline:deadline,deadline2:deadline2,deadline3:deadline3,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function closeEditDugga()
@@ -395,14 +392,13 @@ function showSaveButton(){
 
 function selectDugga(qid){
 	AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers'], qid:this.qid},"GETQUIZ");
+
 	$("#editDugga").css("display","flex");
 		//$("#overlay").css("display","block");
 	$("#did").val(qid); // Set Variant ID
 	$("#name").val(name); // Set Dugga name
 	$("#qstart").val(qstart); // Set Start date name
 	$("#deadline").val(deadline); // Set Deadline date name
-	$("#deadline2").val(deadline2); // Set Deadline date name
-	$("#deadline3").val(deadline3); // Set Deadline date name
 	$("#release").val(release); // Set Release date name
 
 	//----------------------------------------------------
@@ -611,15 +607,14 @@ function returnedQuiz(data) {
         }
     });
 
+    
 	$("#did").val(quiz['arrow']);
 	$("#name").val(quiz['qname']);
 	$("#autograde").val(quiz['autograde']);
 	$("#gradesys").val(quiz['gradesystem']);
 	$("#template").val(quiz['quizFile']);
-	$("#qstart").val(quiz['qstart']);
+	$("#qstart").val(quiz['qstart'] ? quiz['qstart'] : "null");
 	$("#deadline").val(quiz['deadline']);
-	$("#deadline2").val("");
-	$("#deadline3").val("");
   	$("#release").val(quiz['qrelease']);
 }
 
@@ -713,7 +708,6 @@ function renderCell(col,celldata,cellid) {
 		object=JSON.parse(celldata);
 	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Cogwheel.svg' ";
 		str+=" onclick='selectDugga(\""+object+"\");' >";
-		console.log(object);
 		return str;
 	}
 
