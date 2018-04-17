@@ -92,16 +92,18 @@ function createPieChart() {
 
   var totalQuizes = 10;
   var passedQuizes = 5;
-  var failedQuizes = 2;
-  var notGradedQuizes = totalQuizes - (passedQuizes + failedQuizes);
+  var failedQuizes = 1;
+  var notGradedQuizes = 1;
+  var notSubmitted = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
 
-  var lastend = 0;//calculates where the chart starts, don't change
-  var data = [passedQuizes, notGradedQuizes, failedQuizes]; // green,yellow,red fields
+  var lastend = -1.57;//calculates where the chart starts, don't change
+  var data = [passedQuizes, notGradedQuizes, failedQuizes, notSubmitted]; // green,yellow,red,grey fields
   var myTotal = 0; // Automatically calculated so don't change
   var colors = {
-    'passed': '#4CAF50',    // Green
-    'failed': '#FFEB3B', // Yellow
-    'notGraded': '#F44336'  // Red
+    'passed': '#4CAF50',        // Green
+    'notGraded': '#FFEB3B',     // Yellow
+    'failed': '#F44336',        // Red
+    'notSubmitted': '#607D8B'   //grey
   }
 
   for (var e = 0; e < data.length; e++) {
@@ -114,26 +116,41 @@ function createPieChart() {
     if(i == 0) {
       ctx.fillStyle = colors['passed'];
     } else if(i == 1) {
+      ctx.fillStyle = colors['notGraded'];
+    } else if(i == 2) {
       ctx.fillStyle = colors['failed'];
     } else {
-      ctx.fillStyle = colors['notGraded'];
+      ctx.fillStyle = colors['notSubmitted'];
     }
-
 
     ctx.beginPath();
     //Parameter for moveTo: x,y
     ctx.moveTo(50, height / 2);
     // Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
     ctx.arc(50, height / 2, height / 2, lastend,lastend
-      + (Math.PI * 2 * (data[i] / myTotal)), false);
-      //Parameter for lineTo: x,y
+    + (Math.PI * 2 * (data[i] / myTotal)), false);
+    //Parameter for lineTo: x,y
     ctx.lineTo(50, height / 2);
     ctx.fill();
     lastend += Math.PI * 2 * (data[i] / myTotal);//dont change
   }
-  ctx.font = "10px Arial";
+  //text input:
+    ctx.font = "10px Arial";
     ctx.fillStyle = "black";
-  ctx.fillText("Hello World",width/3,10);
+    ctx.fillText("Passed("+ 100*( passedQuizes / totalQuizes)  + "%)",width/3,10);
+
+    ctx.font = "10px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText("Failed("+ 100*( failedQuizes / totalQuizes)  + "%)",width/3,30);
+
+    ctx.font = "10px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText("Not Graded("+ 100*(  notGradedQuizes / totalQuizes)  + "%)",width/3,50);
+
+    ctx.font = "10px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText("Not Submitted("+ 100*(  notSubmitted / totalQuizes) + "%)",width/3,70);
+
 
 }
 
