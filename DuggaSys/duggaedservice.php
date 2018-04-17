@@ -239,9 +239,9 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			'autograde' => $row['autograde'],
 			'gradesystem' => $row['gradesystem'],
 			'quizFile' => $row['quizFile'],
+			'qstart' => $row['qstart'],
 			'deadline' => $row['deadline'],				
       		'qrelease' => $row['qrelease'],
-      		'qstart' => $row['qstart'],
 			'modified' => $row['modified'],
 			'cogwheel' => $row['id'],
 			'trashcan' => $row['id']
