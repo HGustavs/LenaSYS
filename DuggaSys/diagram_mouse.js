@@ -2,6 +2,7 @@
 ----- THIS FILE HANDLES ALL MOUSEEVENTS IN THE DIAGRAM -----
 */
 
+
 // Function for the zoom in and zoom out in the canvas element
 function zoomInMode() {
     var oldZoom = zoomValue;
@@ -210,6 +211,10 @@ function mousedownevt(ev) {
             } else {
                 p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
             }
+            
+            //Get which kind of symbol mousedownevt execute on
+            symbolStartKind = diagram[lineStartObj].symbolkind;
+
         }
     } else if (sel.distance < tolerance) {
         md = 2;
@@ -285,6 +290,7 @@ function mouseupevt(ev) {
             p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
             if (lineStartObj == -1) {
                 // Start line on empty
+                // Start line on empty
                 // Just draw a normal line
             } else {
                 // Start line on object
@@ -297,9 +303,12 @@ function mouseupevt(ev) {
                 p2 = diagram[hovobj].centerPoint;
             } else if (diagram[hovobj].symbolkind == 5) {
                 p2 = diagram[hovobj].middleDivider;
-            } else {
+            } else{
                 p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
             }
+            //Get which kind of symbol mouseupevt execute on
+            symbolEndKind = diagram[hovobj].symbolkind;
+
             if (lineStartObj == -1) {
                 // Start line on empty
                 diagram[hovobj].connectorTop.push({from:p2, to:p1});
@@ -325,7 +334,6 @@ function mouseupevt(ev) {
         erAttributeA.name = "Attr" + diagram.length;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
-
         erAttributeA.centerPoint = p3;
         erAttributeA.object_type = "";
         erAttributeA.fontColor = "#000";
@@ -348,21 +356,24 @@ function mouseupevt(ev) {
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-    } else if (uimode == "CreateLine" && md == 4) {
-        /* Code for making a line */
-        erLineA = new Symbol(4);
-        erLineA.name = "Line" + diagram.length;
-        erLineA.topLeft = p1;
+    } else if (uimode == "CreateLine" && md == 4){ 
+        /* Code for making a line, except if you try to draw a line from entity to entity or relation to relation */
+        if(((symbolStartKind != symbolEndKind || symbolStartKind == 2 && symbolEndKind == 2))){
+            erLineA = new Symbol(4);
+            erLineA.name = "Line" + diagram.length
+            erLineA.topLeft = p1;
 
-        erLineA.object_type = "";
-        erLineA.bottomRight = p2;
-        erLineA.centerPoint = p3;
-        diagram.push(erLineA);
-        //selecting the newly created enitity and open the dialogmenu.
-        lastSelectedObject = diagram.length -1;
-        diagram[lastSelectedObject].targeted = true;
-        updateGraphics();
-        //diagram.createAritySymbols(diagram[lastSelectedObject]);
+            erLineA.object_type = "";
+            erLineA.bottomRight = p2;
+            erLineA.centerPoint = p3;
+            diagram.push(erLineA);
+            //selecting the newly created enitity and open the dialogmenu.
+            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = true;
+            updateGraphics();
+            //diagram.createAritySymbols(diagram[lastSelectedObject]);
+        }  
+    
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5);
         erRelationA.name = "Relation" + diagram.length;
@@ -386,6 +397,17 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
+
+
+}
+
+function cleanUp(){
+    console.log("lineStartObj: " + lineStartObj);
+    console.log("hovobj: " + hovobj);
+        points[p1] = points[p2] = "";
+        if(lineStartObj > -1) diagram[lineStartObj].removePointFromConnector(p1);
+        if(hovobj > -1) diagram[hovobj].removePointFromConnector(p2);
+    
 
 }
 

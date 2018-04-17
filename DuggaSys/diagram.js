@@ -92,6 +92,10 @@ var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
 
+var symbolStartKind;                    // Is used to store which kind of object you start on
+var symbolEndKind;                      // Is used to store which kind of object you end on
+
+
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
 
