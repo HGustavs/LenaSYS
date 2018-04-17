@@ -27,9 +27,9 @@ function displaymessage(){
 // Show the hamburger menu
 function bigMac() {
   $(".hamburgerMenu").toggle();
-  bigMacSymbol();
 }
 
+/*
 // Toggle the '≡' and '⨯' depending on if burger menu is up or not
 function bigMacSymbol() {
   if($(".hamburgerMenu").css('display') == 'block') {
@@ -40,6 +40,7 @@ function bigMacSymbol() {
     document.getElementById("hamburgerIcon").title = "Open hamburger menu";
   }
 }
+*/
 
 $(document).ready(function(){
     $(".messagebox").hover(function(){
@@ -716,7 +717,7 @@ function returnedSection(data)
 
         //Hamburger menu for navigation
         str+="<td class='hamburger'>";
-        str+="<nav tabindex='0' class='package'><input id='hamburgerIcon' type='button' value='&equiv;' class='submit-button hamburger' title='Open hamburger menu'  onClick='bigMac(); bigMacSymbol();'></nav>";
+        str+="<div tabindex='0' class='package'><div id='hamburgerIcon' class='submit-button hamburger' onclick='hamburgerChange(this); bigMac();'><div class='container'><div class='bar1'></div><div class='bar2'></div><div class='bar3'></div></div></div></div>";
         str+="<div class='hamburgerMenu'>";
         str+="<ul class='hamburgerList'>";
         str+="<li class='editVers'><button class='submit-button menuButton editVers ' onclick='closeWindows(); bigMacSymbol(); showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");' title='Edit the selected version'>Edit Version</button></li>";
@@ -1455,6 +1456,12 @@ function addOrRemoveFromArray(elementID, array) {
 	if(!exists) {
 		array.push(elementID);
 	}
+}
+
+// Changes hamburger manu state
+
+function hamburgerChange(x) {
+    x.classList.toggle("change");
 }
 
 

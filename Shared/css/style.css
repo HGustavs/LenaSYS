@@ -1289,6 +1289,25 @@ input.submit-button {
   float:left;
 }
 
+
+div.submit-button {
+  background-color:#614875;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  border:0px;
+  width:30px;
+  height:30px;
+  color:#fff;
+  cursor:pointer;
+  margin-top:6px;
+  margin-bottom:2px;
+  margin-left:4px;
+  font-size:14px;
+  transition:1s background-color;
+  float:left;
+  border-radius: 4px;
+}
+
+
 input.submit-button-newitem {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-weight: bold;
@@ -1378,12 +1397,20 @@ input.submit-button:hover {
   border-radius:2px;
 }
 
+div.submit-button:hover {
+  background-color:#7B5A96;
+  border-radius: 2px;
+}
 
 input.fileed-button:hover {
     background-color:#91859b;
 }
 
 input.submit-button:disabled {
+  opacity: 0.3;
+}
+
+div.submit-button:disabled {
   opacity: 0.3;
 }
 
@@ -2670,7 +2697,7 @@ table.navheader div.hamburgerMenu {
   pointer-events: none;
   position: absolute;
   margin-top: 50px;
-  margin-left: 50px;
+  margin-left: 5px;
   z-index: 1;
   background-color: #ccc;
   border: 2px solid #999;
@@ -2704,6 +2731,37 @@ ul.hamburgerList button.menuButton {
   padding: 0px 0px 0px 0px;
 }
 
+
+
+.container {
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.bar1, .bar2, .bar3 {
+    width: 17px;
+    height: 3px;
+    background-color: #fff;
+    margin: 3px 0;
+    transition: 0.4s;
+}
+
+.change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-5px, 4px);
+    transform: rotate(-45deg) translate(-5px, 4px);
+    width: 20px;
+}
+
+.change .bar2 {opacity: 0;}
+
+.change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-6px, -2px);
+    transform: rotate(45deg) translate(-4px, -4px);
+    width: 20px;
+}
+
+
 /* moment date and course version */
 
 .dateField {
@@ -2732,6 +2790,7 @@ ul.hamburgerList button.menuButton {
 .dateSize{
    width: 150px;
 }
+
 
 @media only screen and (max-width: 1085px), only screen and (max-device-width: 1085px) {
   /* moment date and course version */
@@ -2935,6 +2994,26 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
+  
+  	table.navheader input.hamburger {
+	  position: absolute;
+	  top: 66px;
+	  right: 10px;
+	}
+	
+	table.navheader div.hamburger {
+	  position: absolute;
+	  top: 66px;
+	  right: 10px;
+	}
+	
+	table.navheader div.hamburgerMenu {
+	  right: 10px;
+	  top: 110px;
+	  margin-top: 0px;
+	  margin-left: 0px;
+	}
+	
 }
 
 @media only screen and (max-width: 320px), only screen and (max-device-width: 320px) {
