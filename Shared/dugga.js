@@ -91,9 +91,9 @@ function resetFields(){
 	$("#showsecurityquestion #answer").css("background-color", "rgb(255, 255, 255)");
 
   //Hides error messages
-	$("#login #message").html("<div class='alert danger'></div>");
-	$("#newpassword #message2").html("<div class='alert danger'></div>");
-	$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
+  displayAlertText("#login #message", "");
+  displayAlertText("#newpassword #message2", "");
+  displayAlertText("#showsecurityquestion #message3", "");
 }
 
 //----------------------------------------------------------------------------------
@@ -577,7 +577,7 @@ function AJAXService(opt,apara,kind)
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
 		if(showing == 1){
-			processLogin();
+			loginBarrier();
 		}else if(showing == 0){
 			resetPasswordBarrier();
 		}else if(showing == 2){
@@ -655,16 +655,16 @@ function processResetPasswordCheckUsername(result) {
 				toggleloginnewpass();
 			}else{
 				if(typeof result.reason != "undefined") {
-					$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
+          displayAlertText("#newpassword #message2", result.reason);
 				} else {
-					$("#newpassword #message2").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>" + result['getname']  + "</div>");
+          displayAlertText("#newpassword #message2", result['getname']);
 				}
 				$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
 		}
 	});
 	}else {
-		$("#newpassword #message2").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>" + "You have exceeded the maximum <br> amount of tries within 5 min" + "</div>");
+    displayAlertText("#newpassword #message2", "You have exceeded the maximum <br /> amount of tries within 5 min");
 		$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 	}
 }
@@ -718,29 +718,47 @@ function processResetPasswordCheckSecurityAnswer(result) {
                   toggleloginnewpass();
                 }else{
                   $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
-                  $("#showsecurityquestion #message3").html("<div class='alert danger'>Something went wrong</div>");
+                  displayAlertText("#showsecurityquestion #message3", "Something went wrong");
                 }
               }
             });
           }else{
             if(typeof result.reason != "undefined") {
-              $("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
+              displayAlertText("#showsecurityquestion #message3", result.reason);
             } else {
               //update database here.
-              $("#showsecurityquestion #message3").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong answer</div>");
+              displayAlertText("#showsecurityquestion #message3", "Wrong answer");
             }
             $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 6, 0.2)");
         }
       }
     });
   } else {
-    $("#showsecurityquestion #message3").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>You have exceeded the maximum <br> amount of tries within 5 min</div>");
+    displayAlertText("#showsecurityquestion #message3", "You have exceeded the maximum <br> amount of tries within 5 min");
   }
 }
 
-function processLogin() {
-    /*
+function loginBarrier() {
+  var username = $("#login #username").val();
 
+  $.ajax({
+		type:"POST",
+		url: "../DuggaSys/accessedservice.php",
+		data: {
+      username: username,
+			opt: "LOGINATTEMPT"
+		},
+		success:function(data) {
+			var result = JSON.parse(data);
+			result = result.queryResult;
+			processLogin(result);
+		}
+	});
+}
+
+function processLogin(result) {
+
+    /*
     var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
@@ -789,61 +807,69 @@ function processLogin() {
 		});
 
     */
-		var username = $("#login #username").val();
-		var saveuserlogin = $("#login #saveuserlogin").val();
-		var password = $("#login #password").val();
-		if (saveuserlogin==1){
-        	saveuserlogin = 'on';
-    	}else{
-        	saveuserlogin = 'off';
-    	}
 
-		$.ajax({
-			type:"POST",
-			url: "../Shared/loginlogout.php",
-			data: {
-				username: username,
-				saveuserlogin: saveuserlogin,
-				password: password,
-				opt: "LOGIN"
-			},
-			success:function(data) {
-				var result = JSON.parse(data);
-				if(result['login'] == "success") {
-          hideLoginPopup();
-          /*
-                    if(result['securityquestion'] != null) {
-                        localStorage.setItem("securityquestion", "set");
-                    } else {
-                        setSecurityNotifaction("on");
-                    }
-            */
-					setExpireCookie();
-					setExpireCookieLogOut();
+    if (result <= 5) {
+      var username = $("#login #username").val();
+  		var saveuserlogin = $("#login #saveuserlogin").val();
+  		var password = $("#login #password").val();
+  		if (saveuserlogin==1){
+          	saveuserlogin = 'on';
+      }else{
+          	saveuserlogin = 'off';
+      }
 
-					// Fake a second login, this will reload the page and enable chrome and firefox to save username and password
-					//$("#loginForm").submit();
-          reloadPage();
-				}else{
-          alert("Login failed!");
-					if(typeof result.reason != "undefined") {
-						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
-					} else {
-						$("#login #message").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong username or password! </div>");
+  		$.ajax({
+  			type:"POST",
+  			url: "../Shared/loginlogout.php",
+  			data: {
+  				username: username,
+  				saveuserlogin: saveuserlogin,
+  				password: password,
+  				opt: "LOGIN"
+  			},
+  			success:function(data) {
+  				var result = JSON.parse(data);
+  				if(result['login'] == "success") {
+            hideLoginPopup();
+            /*
+                      if(result['securityquestion'] != null) {
+                          localStorage.setItem("securityquestion", "set");
+                      } else {
+                          setSecurityNotifaction("on");
+                      }
+              */
+  					setExpireCookie();
+  					setExpireCookieLogOut();
 
-					}
+  					// Fake a second login, this will reload the page and enable chrome and firefox to save username and password
+  					//$("#loginForm").submit();
+            reloadPage();
+  				}else{
+  					if(typeof result.reason != "undefined") {
+              displayAlertText("#login #message", result.reason);
+  					} else {
+              displayAlertText("#login #message", "Wrong username or password");
+  					}
 
 
-					$("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
-					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
-          closeWindows();
-				}
+  					$("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
+  					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
+            //closeWindows();
+  				}
 
-			},
-			error:function() {
-				console.log("error");
-			}
-		});
+  			},
+  			error:function() {
+  				console.log("error");
+  			}
+  		});
+    } else {
+      displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
+    }
+}
+
+
+function displayAlertText(selector, text){
+  $(selector).html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>"+text+"</div>");
 }
 
 function processLogout() {
@@ -872,7 +898,7 @@ function showLoginPopup()
 	$("input#password").css("background-color", "rgba(255, 255, 255, 1)");
 
 	// Reset warning, if applicable
-	$("#login #message").html("<div class='alert danger'></div>");
+  displayAlertText("#login #message", "");
 
 	window.addEventListener("keypress", loginEventHandler, false);
 }
