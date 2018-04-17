@@ -811,6 +811,7 @@ function returnedSection(data)
 
 	if(retdata["writeaccess"]) {
 		str += "</tr></table>";
+/*
 		str +=
 			"<input type='button' class='fab' value='+' title='New Item'"
 			+ " onclick='selectItem("
@@ -823,6 +824,20 @@ function returnedSection(data)
 			+ "\"" + item['gradesys'] + "\","
 			+ "\"" + item['highscoremode'] + "\","
 			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
+*/
+			
+		str += "<div class='zoom'>"
+		str += "<a class='zoom-fab zoom-btn-large' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
+		str += "<ul class='zoom-list'>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-motd scale-transition scale-out' data-tooltip='Message of the day'><i class='material-icons'>format_quote</i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-heading scale-transition scale-out' data-tooltip='Heading'><i class='heading-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-section scale-transition scale-out' data-tooltip='Section'><i class='section-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-moment scale-transition scale-out' data-tooltip='Moment'><i class='moment-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-test scale-transition scale-out' data-tooltip='Test'><i class='test-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-link scale-transition scale-out' data-tooltip='Link'><i class='material-icons'>link</i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-code scale-transition scale-out' data-tooltip='Code'><i class='code-icon'></i></a></li>"
+		str += "</ul>"
+		str += "</div>";
 	} else {
 		str += "</tr></table>";
 	}
@@ -1535,9 +1550,16 @@ function addOrRemoveFromArray(elementID, array) {
 }
 
 // Changes hamburger manu state
-
 function hamburgerChange(x) {
     x.classList.toggle("change");
+}
+
+// Toggles action bubbles when pressing the FAB button
+function toggleFabButton(){
+  $('.zoom-btn-sm').toggleClass('scale-out');
+  if (!$('.zoom-card').hasClass('scale-out')) {
+    $('.zoom-card').toggleClass('scale-out');
+  }
 }
 
 
