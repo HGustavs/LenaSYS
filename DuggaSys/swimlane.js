@@ -81,28 +81,45 @@ window.onclick = function (event) {
 // -------------
 
 function createPieChart() {
-  var canvas = document.getElementById("pieChart");
-  var ctx = canvas.getContext("2d");
-  var width = canvas.width;
-  var height = canvas.height;
+  var c = document.getElementById('pieChart');
+  var ctx = c.getContext('2d');
+  var width = c.width;
+  var height = c.height;
 
-  var lastend = 0;
-  var data = [33, 33, 33]; // If you add more data values make sure you add more colors
+  var totalQuizes = 10;
+  var passedQuizes = 5;
+  var notPassedQuizes = 2;
+  var notGradedQuizes = totalQuizes - (passedQuizes + notPassedQuizes);
+
+  var lastend = -1.57;
+  var data = [90, 10, 10]; // If you add more data values make sure you add more colors
   var myTotal = 0; // Automatically calculated so don't touch
-  var myColor = ['red', 'green', 'Yellow']; // Colors of each slice
+  var colors = {
+    'passed': '#4CAF50',    // Green
+    'notPassed': '#FFEB3B', // Yellow
+    'notGraded': '#F44336'  // Red
+  }
 
   for (var e = 0; e < data.length; e++) {
     myTotal += data[e];
   }
 
   for (var i = 0; i < data.length; i++) {
-    ctx.fillStyle = myColor[i];
+    
+    if(i == 0) {
+      ctx.fillStyle = colors['passed'];
+    } else if(i == 1) {
+      ctx.fillStyle = colors['notPassed'];
+    } else {
+      ctx.fillStyle = colors['notGraded'];
+    }
+    
     ctx.beginPath();
-    ctx.moveTo(canvas.width / 2, canvas.height / 2);
+    ctx.moveTo(width / 2, height / 2);
     // Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
-    ctx.arc(canvas.width / 2, canvas.height / 2, canvas.height / 2, lastend, lastend
+    ctx.arc(width / 2, height / 2, height / 2, lastend, lastend
       + (Math.PI * 2 * (data[i] / myTotal)), false);
-    ctx.lineTo(canvas.width / 2, canvas.height / 2);
+    ctx.lineTo(width / 2, height / 2);
     ctx.fill();
     lastend += Math.PI * 2 * (data[i] / myTotal);
   }
@@ -115,17 +132,25 @@ function swimlaneDrawLanes() {
   var userResults = swimlaneInformation['userresults'];
   var bgcol="#EEE";
   var str = "";
+
   str+="<div id='swimlanebox' class='swimlanebox'>";
+
+  /* The next div is a container div containing a description of the swim lanes
+     and a pie chart giving an overview of course progress by a student. */
+  str+="<div style='background-color:#FFF; height:100px;'>";
+  // str+="<p>Swim lane description</p>";
+  str+="<canvas id='pieChart' width='75px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
+  str+="</div>";
+
   str+="<svg style='width:100%;height:100%;position:absolute;pointer-events:none;'>";
   str+="<line stroke-dasharray='5,5' x1='75' y1='" + (35 + info['weekprog'] * 70) + "' x2='" + (3000) + "' y2='" + (35 + info['weekprog'] * 70) + "' style='stroke:rgb(203,63,65); stroke-width:2;' />";
   str+="</svg>";
-  str+="<table><thead><tr style='height:70px;background-color:#FFF'>"
-  str+="<th>";
-  str+="<canvas id='pieChart' width='75px' height='75px'></canvas>"; // Contains pie chart. // str+="&nbsp;";
-  str+="</th>";
+  str+="<table><thead><tr style='height:70px;background-color:#FFF'><th>&nbsp;</th>"
+
   var colspan=0;
   var count=false;
   var tmpname;
+
   for (var i=0; i<moments.length; i++) {
     var moment = moments[i];
     if (moment['kind']==4){
