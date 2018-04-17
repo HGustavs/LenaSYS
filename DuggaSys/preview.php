@@ -196,7 +196,7 @@
 
             function boldText() {
                 //$('#mrkdwntxt').val($('#mrkdwntxt').val()+'****'); 
-                $("textarea").val("**").focus().val("**");
+                $("#mrkdwntxt").val("**").focus().val("**");
             }
             function cursiveText() {
                 $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
