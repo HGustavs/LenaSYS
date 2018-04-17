@@ -65,7 +65,6 @@ $(document).ready(function(){
 function showSubmitButton(){
   $(".submitDugga").css("display","inline-block");
   $(".updateDugga").css("display","none");
-  $(".deleteDugga").css("display","none");
   $(".closeDugga").css("display","inline-block");
 
 }
@@ -73,9 +72,7 @@ function showSubmitButton(){
 function showSaveButton(){
   $(".submitDugga").css("display","none");
   $(".updateDugga").css("display","block");
-  $(".deleteDugga").css("display","block");
-  $(".closeDugga").css("display","none");
-
+  $(".closeDugga").css("display","block");
 }
 
 function editSectionDialogTitle(title) {
@@ -505,13 +502,13 @@ function closeSelect()
 	$(".item").css("border","none");
 	$(".item").css("box-shadow","none");
 	$("#editSection").css("display","none");
-	
+
 	defaultNewItem();
 }
 
 
 function defaultNewItem(){
-	
+
 	$('#saveBtn').removeAttr('disabled');  							 		// Resets save button to its default form
 	$('#submitBtn').removeAttr('disabled');									// Resets submit button to its default form
 	document.getElementById("sectionname").style.backgroundColor = "#fff"; 	// Resets color for name input
@@ -1136,7 +1133,7 @@ function returnedSection(data)
 				if(data['writeaccess']){
 					str+="<td style='width:32" + "px;";
 
-              		if(parseInt(item['kind']) === 0) { 
+              		if(parseInt(item['kind']) === 0) {
   						str+=
                             "' class='header"+blorf+"'>"
                             + "<img id='dorf' class='margin-4'"
