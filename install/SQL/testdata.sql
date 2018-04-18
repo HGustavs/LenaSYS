@@ -137,6 +137,8 @@ INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (8,2,1,2,'dugga2','dugga4','2015-02-01 00:00:00','2015-02-20 00:00:00',NOW(),2);
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (9,2,1,2,'Quiz','kryss','2015-01-01 00:00:00','2015-02-19 00:00:00',NOW(),2);
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (10,2,1,2,'Rapport','generic_dugga_file_receive','2015-01-01 00:00:00','2015-02-19 00:00:00',NOW(),2);
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (11,2,1,2,'HTML CSS Testdugga','html_css_dugga','2015-01-01 00:00:00','2015-02-19 15:30:00',NOW(),2,"97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (12,2,1,2,'Clipping masking testdugga','clipping_masking_dugga','2015-01-01 00:00:00','2015-02-19 15:30:00',NOW(),2,"97732");
 
 /* Insert variants of tests */
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (1,1,'{\"tal\":\"2\"}','{"danswer":\"00000010 0 2\"}',NOW(),2);
@@ -216,6 +218,11 @@ INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,mo
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2030,2,'Quiz 1','9',3,13,1,1,'97731',2029,2,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2031,2,'Report 1HP', '',4,14,2,1,'97731',2031,2,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2032,2,'Report submission','10',3,15,2,1,'97731',2031,2,1,0);
+
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2033,2,'HTML and CSS 1HP', '',4,15,2,1,'97732',2033,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2034,2,'Random css dugga','11',3,16,2,1,'97732',2033,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2035,2,'Clipping', '',4,17,2,1,'97732',2035,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2036,2,'Random clipping dugga','12',3,18,2,1,'97732',2035,2,1,0);
 
 /* Insert access for users */
 INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1010,1,'0.0',1,'R',0,'', 45656);
@@ -786,10 +793,11 @@ INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("Shader_Ex2.html",3,1,
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("Shader_Ex2.js",3,1,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("Shader_Ex2.txt",2,1,0);
 INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("minimikrav_m2.md",3,2,0);
-
+INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("test.png",3,2,0);
+INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("cssdugga-site-1.png",3,2,0);
 
 /* Creation of new dugga (MINIMAL needs more fixing..) */
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (12,5,1,1,'DUGANNN','dugga1','2015-02-01 00:00:00','2015-02-25 00:00:00',NOW(),6);
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (13,5,1,1,'DUGANNN','dugga1','2015-02-01 00:00:00','2015-02-25 00:00:00',NOW(),6);
 INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (24,12,'{\"tal\":\"33\"}','{"danswer":\"7\"}',NOW(),6);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode) VALUES (3001,5,'Bitdugga 1HP','12',3,100,6,1,'1339',3,1);
 
@@ -819,4 +827,3 @@ INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, 
 VALUES (218,2,'97732',10,1,'InlPHPDocument','submissions/2/97732/10/Andersson_Anna_a99annan/','Utbildningsplan_WEBUG','pdf','application/pdf',1,'2016','2018-04-09 14:29:37');
 INSERT INTO submission (uid, cid, vers, did, seq, fieldnme, filepath, filename, extension, mime, kind, segment, updtime)
 VALUES (218,2,'97732',10,1,'InlPHPZip','submissions/2/97732/10/Andersson_Anna_a99annan/','coursesyspw.php4','zip','application/zip',1,'2016','2018-04-09 14:29:37');
-
