@@ -12,10 +12,11 @@ pdoConnect();
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Section Editor</title>
+	<title id = "sectionedPageTitle">Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
@@ -42,38 +43,42 @@ pdoConnect();
 
 	<!-- Edit Section Dialog START -->
 	<div id='editSection' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style='width:460px;'>
-      		<div class='loginBoxheader'>
-      			<h3 id='editSectionDialogTitle'>Edit Item</h3>
-      			<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
-      		</div>
-      		<div style='padding:5px;'>
-      			<input type='hidden' id='lid' value='Toddler' />
-      			<div id='inputwrapper-name' class='inputwrapper'>
-	      			<span>Name:</span>
-	      			<div class="tooltipDugga">
-		      			<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
-		      		</div>
-	      			<input type='text' class='textinput' id='sectionname' value='sectionname' onkeyup="validateName();" onchange="validateName();" />
-      			</div>
-      			<div id='inputwrapper-type' class='inputwrapper'><span>Type:</span><select id='type' onchange='changedType();'></select></div>
-      			<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
-      			<div id='inputwrapper-gradesystem' class='inputwrapper'><span>GradeSystem:</span><select id='gradesys' ></select></div>
-      			<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
-      			<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
-      			<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
-      			<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
-      			<div id='inputwrapper-messagebox' class='messagebox' style='display:none;color:red;font-style:italic;text-align:center'>Create a Dugga before you can use it for a test. </div>
+		<div class='loginBox' style='width:460px;'>
+			<div class='loginBoxheader'>
+				<h3 id='editSectionDialogTitle'>Edit Item</h3>
+				<div class='cursorPointer' onclick='closeWindows(); closeSelect();showSaveButton();'>x</div>
+			</div>
+			<div style='padding:5px;'>
+				<input type='hidden' id='lid' value='Toddler' />
+				<div id='inputwrapper-name' class='inputwrapper'>
+					<span>Name:</span>
+					<div class="tooltipDugga">
+						<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
+					</div>
+					<input type='text' class='textinput' id='sectionname' value='sectionname' onkeyup="validateName();" onchange="validateName();" />
+				</div>
+				<div id='inputwrapper-type' class='inputwrapper'>
+					<span>Type:</span>
+					<div class="tooltipDuggaType">
+						<span id="tooltipType" style="display: none;" class="tooltipDuggaTypeTxt">Create a Dugga before you can use it for a test.</span>
+				</div>
+				<select id='type' value='type'  onchange='changedType();validateType();'></select></div>
+				<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
+				<div id='inputwrapper-gradesystem' class='inputwrapper'><span>GradeSystem:</span><select id='gradesys' ></select></div>
+				<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
+				<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
+				<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
+				<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
+			</div>
 
-      		<!-- Error message, no duggas present-->
-      		<div style='padding:5px;'>
-      			<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
-      			<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows();' />
-      			<input id="submitBtn" style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
-      			<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' />
-
-          </div>
-      </div>
+			<!-- Error message, no duggas present-->
+			<div style='padding:5px;'>
+				<input style='display:none; float:left;' class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteItem();' />
+				<input style='display:block; float:left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeWindows(); closeSelect();' />
+				<input id="submitBtn" style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='newItem(); showSaveButton();' />
+				<input id="saveBtn" style='float:right;' class='submit-button updateDugga' type='button' value='Save' onclick='updateItem();' />
+			</div>
+		</div>
 	</div>
 	<!-- Edit Section Dialog END -->
 
@@ -98,21 +103,21 @@ pdoConnect();
       <!-- New Version Dialog START -->
 	<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
-      		<div class='loginBoxheader'>
-      			<h3>New Course Version</h3>
-      			<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
-      		</div>
-      		<div style='padding:5px;'>
-      			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-      			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
-            <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='startdate' value='' /></div>
-            <div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='' /></div>
-      			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
-      			<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
-      		</div>
-      		<div style='padding:5px;'>
-      			<input class='submit-button' type='button' value='Create' title='Create new version' onclick='createVersion();' />
-      		</div>
+		<div class='loginBoxheader'>
+			<h3>New Course Version</h3>
+			<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
+		</div>
+		<div style='padding:5px;'>
+			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
+			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
+			<div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='startdate' value='' /></div>
+			<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='' /></div>
+			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
+			<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
+		</div>
+		<div style='padding:5px;'>
+			<input class='submit-button' type='button' value='Create' title='Create new version' onclick='createVersion();' />
+		</div>
       </div>
 	</div>
 	<!-- New Verison Dialog END -->
@@ -120,40 +125,37 @@ pdoConnect();
 	<!-- Edit Version Dialog START -->
 	<div id='editCourseVersion' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
-      		<div class='loginBoxheader'>
-      			<h3>Edit Course Version</h3>
-      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
-      		</div>
-      		<div style='padding:5px;'>
-      			<input type='hidden' id='cid' value='Toddler' />
-      			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
-      			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' disabled /></div>
-      			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
-      			<div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='estartdate' value='' /></div>
-      			<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='eenddate' value='' /></div>
-      		</div>
-      		<div style='padding:5px;'>
-      			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateVersion();' />
-      		</div>
+		<div class='loginBoxheader'>
+			<h3>Edit Course Version</h3>
+			<div class='cursorPointer' onclick='closeWindows();'>x</div>
+		</div>
+		<div style='padding:5px;'>
+			<input type='hidden' id='cid' value='Toddler' />
+			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
+			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' disabled /></div>
+			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
+			<div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='estartdate' value='' /></div>
+			<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='eenddate' value='' /></div>
+		</div>
+		<div style='padding:5px;'>
+			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateVersion();' />
+		</div>
       </div>
 	</div>
 	<!-- Edit Version Dialog END -->
 
 	<!-- HighscoreBox START -->
 	<div id='HighscoreBox' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style='width:500px;'>
-      		<div class='loginBoxheader'>
-      			<h3>Highscore</h3>
-      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
-      		</div>
-      		<table id ='HighscoreTable' width='100%'>
-      			<tr>
-
-      			</tr>
-      		</table>
-      </div>
+		<div class='loginBox' style='width:500px;'>
+			<div class='loginBoxheader'>
+				<h3>Highscore</h3>
+				<div class='cursorPointer' onclick='closeWindows();'>x</div>
+			</div>
+			<table id ='HighscoreTable' width='100%'>
+				<tr></tr>
+			</table>
+		</div>
 	</div>
 	<!-- HighscoreBox END -->
-
 </body>
 </html>
