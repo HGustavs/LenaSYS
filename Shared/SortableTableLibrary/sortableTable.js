@@ -306,7 +306,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				result++;
 
 				for (let colnamez in row) {
-					//Counter for freeze here
+
+					//Counter for freeze here							
 					// If we show this column...
 					if (columnfilter[colnamez] != null) {
 						// This condition is true if column is in summing list and in that case perform the sum like a BOSS
