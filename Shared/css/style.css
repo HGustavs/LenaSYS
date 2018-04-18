@@ -1493,6 +1493,7 @@ input.large-button {
 }
 
 #uploadedfile{
+  margin: 2px 0 0 5px;
   width: 300px;
   float: left;
 }
@@ -1936,6 +1937,10 @@ span.arrow {
 .no-radius:hover{
     background-color:#7B5A96;
     border-radius: 0;
+}
+
+#file-submit-button {
+  margin:15px 0 18px 0; 
 }
 
 #feedbackTable table {

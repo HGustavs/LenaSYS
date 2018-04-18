@@ -105,25 +105,34 @@ $(document).on('click','.last',function(e) {
      e.stopPropagation();
   });
 
-
-function createLink()
-{
-		$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' /></td>");
-		$("#addFile").css("display","flex");
-		$(".filePopUp").css("display","none");
-		$(".linkPopUp").css("display","block");
-		$("#selecty").css("display","none");
-		//$("#overlay").css("display","block");
-		$("#kind").val("LINK");
-		$("#cid").val(querystring['cid']);
-		$("#coursevers").val(querystring['coursevers']);
+function showLinkPopUp() {
+	$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' />");
+	$("#addFile").css("display","flex");
+	$(".filePopUp").css("display","none");
+	$(".linkPopUp").css("display","block");
+	$("#selecty").css("display","none");
+	$("#kind").val("LINK");
+	$("#cid").val(querystring['cid']);
+	$("#coursevers").val(querystring['coursevers']);
 }
 //----------------------------------------
-// createFile(kind) <- gets the files that exists and puts them as options under a select tag.
+// showFilePopup(kind) <- gets the files that exists and puts them as options under a select tag.
 //		       ,options can be used to overwrite existing files later on
 //----------------------------------------
-function createFile(kind) {
-	$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload File' /></td>");
+function showFilePopUp() {
+  $("#uploadbuttonname").html("<input id='file-submit-button' class='submit-button' type='submit' value='Upload file' onclick='setFileKind();uploadFile(fileKind);' />");
+	$("#selecty").css("display","block");
+	$("#addFile").css("display","flex");
+	$(".filePopUp").css("display","block");
+	$(".linkPopUp").css("display","none");
+}
+
+var fileKind = "";
+function setFileKind() {
+	fileKind = document.querySelector('input[name=\"fileRB\"]:checked').value;
+}
+
+function uploadFile(kind) {
 	if (kind == "MFILE") {
 		var str = "<option>NONE</option>";
 		for (i = 0; i < filez['lfiles'].length; i++) {
@@ -131,24 +140,17 @@ function createFile(kind) {
 			if (item != ".." && item != ".") str += "<option>" + item + "</option>";
 		}
 		$("#selectedfile").html(str);
-		$("#selecty").css("display","block");				
 	} else if (kind == "GFILE") {
 		var str = "<option>NONE</option>";
 		for (i = 0; i < filez['gfiles'].length; i++) {
 			var item = filez['gfiles'][i];
 			if (item != ".." && item != ".") str += "<option>" + item + "</option>";
 		}
-		$("#selectedfile").html(str);		
-		$("#selecty").css("display","block");				
+		$("#selectedfile").html(str);			
 	} else if (kind == "LFILE" || kind == "LINK") {
 		$("#selecty").css("display","none");				
 	}
-
-	$("#addFile").css("display","flex");
-	$(".filePopUp").css("display","block");
-	$(".linkPopUp").css("display","none");
-	//$("#overlay").css("display","block");
-	if (kind != "LFILE") $("#selecty").css("display","block");
+  
 	$("#kind").val(kind);
 	$("#cid").val(querystring['cid']);
 	$("#coursevers").val(querystring['coursevers']);
@@ -390,7 +392,8 @@ function searchcontent(){
     "<th>Upload date & time</th>" +
     "<th>File size</th>" +
     "<th>File Kind</th>" +
-    "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile(\"GFILE\");'/></th></tr>";
+    "<th class='last'><input class='submit-button fileed-button' type='button' value='Add File' onclick='showFilePopup
+   (\"GFILE\");'/></th></tr>";
 	str+="</thead><tbody id='searchresults_body'>";
 	for(i=0;i<searchdata.length;i++){
 		item = searchdata[i];
