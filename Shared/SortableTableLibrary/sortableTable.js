@@ -193,10 +193,6 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;margin-top:50px;border-bottom:none;' class='list' id='"+tableid+"_tbl_mh'>";
 		mhvstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;' id='"+tableid+"_tbl_mhv'>";
 		mhfstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;top:0px;z-index:3000;' id='"+tableid+"_tbl_mhf'>";
-
-		if(searchterm != null) {
-			console.log(searchterm);
-		}
     
 		// Assign currently active table
 		sortableTable.currentTable = this;
