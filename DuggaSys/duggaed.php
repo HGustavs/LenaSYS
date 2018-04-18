@@ -19,7 +19,7 @@ pdoConnect();
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
 	<script src="duggaed.js"></script>
-  <script src="../Shared/SortableTableLibrary/sortableTable.js"></script> 
+  <script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
   <script src="timer.js"></script>
   <script src="clickcounter.js"></script>
 </head>
@@ -38,11 +38,13 @@ pdoConnect();
 
 	<!-- Login Dialog START -->
 	<?php
-		include '../Shared/loginbox.php';
+	 include '../Shared/loginbox.php';
 	?>
 	<!-- Login Dialog END -->
-  <div id="quiz" onchange='leFunk()' style='width:100%; border: 2px solid green;'></div>
-	<!-- Edit Dugga Dialog START -->
+
+  <div id="quiz" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the table within. -->
+
+  <!-- Edit Dugga Dialog START -->
 	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
       		<div class='loginBoxheader'>
@@ -61,46 +63,42 @@ pdoConnect();
       			<div class='inputwrapper'><span>Auto-grade:</span><select id='autograde'><option value='0'>Hidden</option><option value='1'>Public</option></select></div>
       			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'><option value='1'>U-G-VG</option><option value='2'>U-G</option><option value='3'>U-3-4-5</option></select></div>
       			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
-            <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='qstart' value='None' /></div>
-
-      			<div class='inputwrapper'><span>First  Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='None' /></div>
+            <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='qstart' value='' /></div>
+      			<div class='inputwrapper'><span>First  Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='' /></div>
 						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
 						<div class='inputwrapper'><span>Second Deadline :</span><input class='textinput datepicker' type='text' id='deadline2' value='None' /></div>
 						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
 						<div class='inputwrapper'><span> Third Deadline :</span><input class='textinput datepicker' type='text' id='deadline3' value='None' /></div>
 						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
-
-
             <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
       		</div>
       		<div style='padding:5px;'>
-      			<input style='float:left; 'class='submit-button deleteDugga' type='button' value='Delete' onclick='deleteDugga();' />
-      			<input style='display:none; float:none;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeEditDugga(); showSaveButton();' />
-      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='createDugga();showSaveButton();' />
+      			<input style='float left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeEditDugga();' />
+      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='createDugga();' />
       			<input style='float:right; 'class='submit-button updateDugga' type='button' value='Save' onclick='updateDugga();' />
-
       		</div>
       </div>
 	</div>
 	<!-- Edit Dugga Dialog END -->
 
-  <!-- Confirm Section Dialog START -->  
+  <!-- Confirm Section Dialog START -->
       <div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
             <div class='loginBox' style='width:460px;'>
                   <div class='loginBoxheader'>
                         <h3>Confirm your update</h3>
-                        <div class="cursorPointer" onclick='confirmBox(5);' title="Close window">x</div>
+                        <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
                   </div>
                   <div style='text-align: center;'>
                         <h4>Are you sure you want to make this happen?</h4>
                   </div>
                   <div style='display:flex; align-items:center; justify-content: center;'>
-                        <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox(4);' />
-                        <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox(5);' />
+                        <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
+                        <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
                   </div>
             </div>
       </div>
-  <!-- Confirm Section Dialog START -->  
+  <!-- Confirm Section Dialog START -->
+
 	<!-- Edit Variant Dialog START -->
 	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style="width:80%;">

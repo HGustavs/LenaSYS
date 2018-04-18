@@ -570,6 +570,14 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedAnalysis
 		});
+	} else if(kind=="GETQUIZ") {
+		$.ajax({
+			url: "duggaedservice.php",
+			type:"POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedQuiz
+		})
 	}
 }
 
@@ -1127,6 +1135,7 @@ $(window).load(function() {
       $(window).keyup(function(event){
       	if(event.keyCode == 27) {
           closeWindows();
+         // closeSelect();
           showSaveButton();
         }
       });
