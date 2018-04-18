@@ -8,6 +8,16 @@ var sortableTable = {
     edit_tableid:null,
 }
 
+function searchKeyUp(e) {
+	// look for window.event in case event isn't passed in
+    e = e || window.event;
+    if (e.keyCode == 13) {
+        document.getElementById('searchbutton').click();
+        return false;
+    }
+    return true;
+}
+
 function keypressHandler(event) {    
     if (event.keyCode == 13) {
         updateCellInternal();
@@ -120,8 +130,6 @@ function rowDeHighlightInternal(event,row) {
     }    
 }
 
-var searchterm = "";
-
 function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions,renderColumnFilter,rowFilter,colsumList,rowsumList,rowsumHeading,sumFunc,freezePane,highlightRow,deHighlightRow,showEditCell,updateCell,hasmagic) {
 	// Private members
 	var result = 0;
@@ -148,7 +156,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	var freezePane = freezePane;
 	var freezePaneArr = [];
 
-	// Publick Callback Declarations
+	// Public Callback Declarations
 	this.highlightRow = highlightRow;
 	this.deHighlightRow = deHighlightRow;
 	this.showEditCell = showEditCell;
@@ -156,6 +164,12 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	this.ascending = false;
 	this.tableid = tableid;
   	this.hasMagicHeadings = hasmagic;
+
+	// Local variable that contains html code for main table and local variable that contains magic headings table
+	var str = "";
+	var mhstr = "";
+	var mhvstr = "";
+	var mhfstr = "";
 	
     tbl.cleanHead = [];
     
@@ -174,6 +188,12 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	}
 	
 	this.reRender = function() {
+		// Local variable that contains html code for main table and local variable that contains magic headings table
+		str = "<table style='border-collapse: collapse;' id='"+tableid+"_tbl' class='list list--nomargin'>";
+		mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;margin-top:50px;border-bottom:none;' class='list' id='"+tableid+"_tbl_mh'>";
+		mhvstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;' id='"+tableid+"_tbl_mhv'>";
+		mhfstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;top:0px;z-index:3000;' id='"+tableid+"_tbl_mhf'>";
+
 		if(searchterm != null) {
 			console.log(searchterm);
 		}
@@ -209,12 +229,6 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 			document.getElementById(filterid).innerHTML = filterstr;
 		}
 
-		// Local variable that contains html code for main table and local variable that contains magic headings table
-		var str = "<table style='border-collapse: collapse;' id='"+tableid+"_tbl' class='list list--nomargin'>";
-		var	mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;' id='"+tableid+"_tbl_mh'>";
-		var mhvstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;' id='"+tableid+"_tbl_mhv'>";
-		var mhfstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;top:0px;z-index:3000;' id='"+tableid+"_tbl_mhf'>";
-
 		str += "<caption>"+caption+"</caption>";
 
 		// Make headings Clean Contains headings using only A-Z a-z 0-9 ... move to function removes lines of code and removes redundant code/data!?
@@ -222,21 +236,10 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	    mhstr += "<thead id='"+tableid+"_tblhead_mh'><tr>";
 	    mhvstr += "<thead id='"+tableid+"_tblhead_mhv'><tr>";
 	    mhfstr += "<thead id='"+tableid+"_tblhead_mhf'><tr>";
-		
-	    if (tableid == "quiz") {
-	    	str += "<th></th><th class='name'>Name</th>";
-	    }
 
 		//var freezePaneIndex = tbl.tblhead.indexOf(freezePane);
-//for (var key in arr_jq_TabContents) {
-//    console.log(arr_jq_TabContents[key]);
 		for(var colname in tbl.tblhead) {
-		// for (let colname = 0; colname < tbl.tblhead.length; colname++) {
 			var col = tbl.tblhead[colname];
-			//var cleancol = tbl.cleanHead[colname];
-			
-			// If column is visible
-			
 
 			if (columnfilter[colname] != null) {
 				if (this.renderSortOptions != null) {
@@ -284,14 +287,6 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 			}
 		}
 
-		if (tableid == "fileLink") {
-			str += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
-			mhstr += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
-			mhfstr += "<th class='last'><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>";
-		} else if (tableid == "quiz") {
-			str += "<th></th><th></th>";
-		}
-		
 		str += "</tr></thead>";
 		mhstr += "</tr></thead></table>";
 		mhfstr += "</tr></thead></table>";
@@ -316,9 +311,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				result++;
 
 				for (let colnamez in row) {
-					// col = row[colnamez];
-  			// 		cleancol = tbl.cleanHead[col];
-														
+					//Counter for freeze here							
 					// If we show this column...
 					if (columnfilter[colnamez] != null) {
 						// This condition is true if column is in summing list and in that case perform the sum like a BOSS
@@ -342,50 +335,6 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				
 				if (rowsumList.length > 0) {
 					str += "<td>"+rowsum+"</td>";
-				}
-
-				if (rowno != "move" && tableid == "fileLink") {
-					str+="<td style='padding:4px;'>";
-					str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-					str+=" onclick='deleteFile(\""+row['fileid']+"\",\""+row['filename']+"\");' >";
-					str+="</td>";
-
-					mhvstr+="<td style='padding:4px;'>";
-					mhvstr+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Trashcan.svg' ";
-					mhvstr+=" onclick='deleteFile(\""+row['fileid']+"\",\""+row['filename']+"\");' >";
-					mhvstr+="</td>";
-				}else if(rowno != "move" && tableid == "user"){
-					      // Create cogwheel
-					str+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-					str+=" onclick='selectUser(\""+row['uid']+"\",\""+row['username']+"\",\""+row['ssn']+"\",\""+row['firstname']+"\",\""+row['lastname']+"\",\""+row['access']+"\",\""+row['class']+"\");'></td>";
-					str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+row['username']+" ?\")) resetPw(\""+row['uid']+"\",\""+row['username']+"\"); return false;' style='float:none;'></td>";
-					str+="</tr>";
-
-					mhvstr+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-					mhvstr+=" onclick='selectUser(\""+row['uid']+"\",\""+row['username']+"\",\""+row['ssn']+"\",\""+row['firstname']+"\",\""+row['lastname']+"\",\""+row['access']+"\",\""+row['class']+"\");'></td>";
-					mhvstr+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+row['username']+" ?\")) resetPw(\""+row['uid']+"\",\""+row['username']+"\"); return false;' style='float:none;'></td>";
-					mhvstr+="</tr>";
-				}else if(rowno != "move" && tableid == "quiz"){
-					      // Create cogwheel
-					str+="<td style='padding:4px;'>";
-					str+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-					str+=" onclick=' showVariantz("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
-					str+="</td>";
-					str+="<td style='padding:4px;'>";
-					str+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-					str+=" onclick='selectDugga(\""+row['did']+"\",\""+row['name']+"\",\""+row['autograde']+"\",\""+row['gradesystem']+"\",\""+row['template']+"\",\""+row['qstart']+"\",\""+row['deadline']+"\",\""+row['release']+"\");' >";
-					str+="</td>";
-
-					mhvstr+="<td style='padding:4px;'>";
-					mhvstr+="<img id='plorf' style='float:left;margin-right:4px;' src='../Shared/icons/PlusU.svg' ";
-					mhvstr+=" onclick=' showVariantz("+rowno+"); addVariant(\""+querystring['cid']+"\",\""+row['did']+"\");'>";
-					mhvstr+="</td>";
-					mhvstr+="<td style='padding:4px;'>";
-					mhvstr+="<img id='dorf' style='float:right;margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
-					mhvstr+=" onclick='selectDugga(\""+row['did']+"\",\""+row['name']+"\",\""+row['autograde']+"\",\""+row['gradesystem']+"\",\""+row['template']+"\",\""+row['qstart']+"\",\""+row['deadline']+"\",\""+row['release']+"\");' >";
-					mhvstr+="</td>";
-
-
 				}
 
 				str += "</tr>";
@@ -422,30 +371,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		str += "</table>";
 		mhvstr+= "</table>";
 
-		// Assign table and magic headings table(s)
-		if (this.hasMagicHeadings) {					 
-			document.getElementById(tableid).innerHTML = str+mhstr+mhvstr+mhfstr;
-			document.getElementById(tableid+"_tbl_mh").style.width=document.getElementById(tableid+"_tbl").getBoundingClientRect().width+"px";
-			document.getElementById(tableid+"_tbl_mh").style.boxSizing = "border-box";          
-			children=document.getElementById(tableid+"_tbl").getElementsByTagName('TH');
-			
-			for (i = 0; i < children.length; i++) {
-				document.getElementById(children[i].id+"_mh").style.width = children[i].getBoundingClientRect().width;
-				document.getElementById(children[i].id+"_mh").style.boxSizing = "border-box";          
-			}
-
-			document.getElementById(tableid+"_tbl_mhf").style.width = Math.round(document.getElementById(tableid+"_tbl_mhv").getBoundingClientRect().width)+"px";
-			document.getElementById(tableid+"_tbl_mhf").style.boxSizing = "border-box";
-			children=document.getElementById(tableid+"_tbl_mhv").getElementsByTagName('TH');
-			
-			for (i = 0; i < children.length; i++) {
-				document.getElementById(children[i].id.slice(0, -1)+"f").style.width = children[i].getBoundingClientRect().width;
-				document.getElementById(children[i].id.slice(0, -1)+"f").style.boxSizing = "border-box";
-			}
-		} else {
-			document.getElementById(tableid).innerHTML = str;
-		}
-
+		this.magicHeader();
 	}
 
 	this.toggleColumn = function(col) {
@@ -488,7 +414,33 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
     
     this.getSortkind = function() {
         return sortkind;
-    }    
+    } 
+
+	this.magicHeader = function() {
+		// Assign table and magic headings table(s)
+		if (this.hasMagicHeadings) {					 
+			document.getElementById(tableid).innerHTML = str+mhstr+mhvstr+mhfstr;
+			document.getElementById(tableid+"_tbl_mh").style.width=document.getElementById(tableid+"_tbl").getBoundingClientRect().width+"px";
+			document.getElementById(tableid+"_tbl_mh").style.boxSizing = "border-box";          
+			children=document.getElementById(tableid+"_tbl").getElementsByTagName('TH');
+			
+			for (i = 0; i < children.length; i++) {
+				document.getElementById(children[i].id+"_mh").style.width = children[i].getBoundingClientRect().width+"px";
+				document.getElementById(children[i].id+"_mh").style.boxSizing = "border-box";          
+			}
+
+			document.getElementById(tableid+"_tbl_mhf").style.width = Math.round(document.getElementById(tableid+"_tbl_mhv").getBoundingClientRect().width)+"px";
+			document.getElementById(tableid+"_tbl_mhf").style.boxSizing = "border-box";
+			children=document.getElementById(tableid+"_tbl_mhv").getElementsByTagName('TH');
+			
+			for (i = 0; i < children.length; i++) {
+				document.getElementById(children[i].id.slice(0, -1)+"f").style.width = children[i].getBoundingClientRect().width+"px";
+				document.getElementById(children[i].id.slice(0, -1)+"f").style.boxSizing = "border-box";
+			}
+		} else {
+			document.getElementById(tableid).innerHTML = str;
+		}
+	} 
     
 	// Simpler magic heading v. III
 	setInterval(freezePaneHandler,30);
@@ -503,7 +455,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 					var thetabhead = document.getElementById(table.tableid+"_tblhead").getBoundingClientRect();
 					// If top is negative and top+height is positive draw mh otherwise hide
 					// Vertical
-					if (thetabhead.top < 0 && thetab.bottom > 0) {
+					if (thetabhead.top < 50 && thetab.bottom > 0) {
 						document.getElementById(table.tableid+"_tbl_mh").style.left = thetab.left+"px";
 						document.getElementById(table.tableid+"_tbl_mh").style.display = "table";
 					}
