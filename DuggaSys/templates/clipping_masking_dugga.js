@@ -132,7 +132,6 @@ function show(){
 // -----------------------------------------------------------------------------------------------
 function returnedDugga(data)
 {
-	console.log(data);
 		dataV = data;
 		if (data['debug'] != "NONE!") { alert(data['debug']); }
 		if (data['param'] == "UNK") {
