@@ -1,6 +1,6 @@
 Line type: </br>
 <select onclick="changeObjectAppearance('lineType');" id='object_type'>
-    <option value='Normal'>Normal</option>
+    <option value='normal'>Normal</option>
     <option value='Forced'>Forced</option>
     <option value='Derived'>Derived</option>
 </select></br>

@@ -108,8 +108,8 @@ function loadLineForm(element, dir){
               tempRightSide = diagram[lastSelectedObject].cardinality[1].value;
             }
             setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
-            setSelectedOption('leftSide', diagram[lastSelectedObject].cardinality[0].value);
-            setSelectedOption('rightSide', diagram[lastSelectedObject].cardinality[1].value);
+            setSelectedOption('leftSide', tempLeftSide);
+            setSelectedOption('rightSide', tempRightSide);
         }
     }
     file.send();
