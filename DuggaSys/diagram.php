@@ -301,7 +301,12 @@
             </div>
             <div class='table-wrap'>
                 <div style="padding: 20px">
-                    <input type="file" id="importFile" />
+                    <div>
+                        <input type="file" id="importFile" accept=".txt, text/plain" />
+                    </div>
+                    <div id="importError" style="margin-top: 10px; color: red; display:none;">
+                        <span>Only .txt-files allowed</span>
+                    </div>
                 </div>
             </div>
         </div>

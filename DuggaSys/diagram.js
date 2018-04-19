@@ -557,9 +557,16 @@ function closeImportDialog() {
 
 // Import file
 function importFile(e) {
-    closeImportDialog();
     var file = e.target.files[0];
     if (!file) return;
+    var extension = file.name.split(".").pop().toLowerCase();
+    if (extension != "txt") {
+        $("#importError").show();
+        return;
+    }
+    $("#importError").hide();
+    closeImportDialog();
+
     var reader = new FileReader();
     reader.onload = function(e) {
         var fileContent = e.target.result;
