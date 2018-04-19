@@ -217,7 +217,7 @@ function mousedownevt(ev) {
             } else {
                 p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
             }
-            
+
             //Get which kind of symbol mousedownevt execute on
             symbolStartKind = diagram[lineStartObj].symbolkind;
 
@@ -361,7 +361,7 @@ function mouseupevt(ev) {
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-    } else if (uimode == "CreateLine" && md == 4){ 
+    } else if (uimode == "CreateLine" && md == 4){
         /* Code for making a line, except if you try to draw a line from entity to entity or relation to relation */
         if(((symbolStartKind != symbolEndKind || symbolStartKind == 2 && symbolEndKind == 2))){
             erLineA = new Symbol(4);
@@ -375,10 +375,11 @@ function mouseupevt(ev) {
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
+            openAppearanceDialogMenu('line_appearance');
             updateGraphics();
             //diagram.createAritySymbols(diagram[lastSelectedObject]);
-        }  
-    
+        }
+
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5);
         erRelationA.name = "Relation" + diagram.length;

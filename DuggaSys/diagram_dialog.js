@@ -102,8 +102,6 @@ function loadLineForm(element, dir){
       if(globalAppearanceValue == 0){
         var tempLeftSide = diagram[lastSelectedObject].cardinality[0].value == "" ?
         "None" : diagram[lastSelectedObject].cardinality[0].value;
-        var tempRightSide = diagram[lastSelectedObject].cardinality[1].value == "" ?
-        "None" : diagram[lastSelectedObject].cardinality[1].value;
 
         setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
         setSelectedOption('leftSide', tempLeftSide);
@@ -195,15 +193,18 @@ function addCardinality(){
     var val = document.getElementById('cardinality').value;
 
     if(val == "None") val = "";
-
+    if(diagram[lastSelectedObject].cardinality[0].value != "")
+    {
+        diagram[lastSelectedObject].cardinality[0].value = val;
+    }
     if(hovobj != -1 && hovobj.symbolkind == 3) {
         x = points[diagram[hovobj].topLeft].x;
         y = points[diagram[hovobj].topLeft].y;
-        diagram[hovobj].cardinality[0] = ({"x": x, "y": y, "value": val, "side": side});
+        diagram[hovobj].cardinality[0] = ({"x": x, "y": y, "value": val});
     }
     if(diagram[lineStartObj].symbolkind == 3 && hovobj.symbolkind == 5){
         x = points[diagram[lineStartObj].topLeft].x;
         y = points[diagram[lineStartObj].topLeft].y;
-        diagram[lineStartObj].cardinality[0] = ({"x": x, "y": y, "value": val, "side": side});
+        diagram[lineStartObj].cardinality[0] = ({"x": x, "y": y, "value": val});
     }
 }
