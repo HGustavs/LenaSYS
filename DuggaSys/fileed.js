@@ -261,7 +261,16 @@ function renderCell(col,celldata,cellid) {
 		if (link[0] == "https" || link[0] == "http") {
 			return "<a href='" + celldata + "' target='_blank'>" + celldata + "</a>";
 		} else {
-			return "<div>" + list[0] + "</div>";
+			// Goes through the previously split parts of the file name
+			// and adds dots to keep the actual file name correct
+			var listStr = "";
+			for (var i = 0; i < list.length - 1; i++) {
+				listStr += list[i];
+				if (i != list.length - 2) {
+					listStr += ".";
+				}
+			}
+			return "<div>" + listStr + "</div>";
 		}
 	} else if (col == "extension") {
 	    return "<div>" + list[list.length - 1] + "</div>";
