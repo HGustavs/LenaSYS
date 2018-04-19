@@ -96,7 +96,7 @@ function loadLineForm(element, dir){
     file.onreadystatechange = function(){
         element.innerHTML = file.responseText;
         if(globalAppearanceValue == 0){
-            setSelectedOption('object_type', diagram[lastSelectedObject].keyType);
+            setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
             setSelectedOption('leftSide', diagram[lastSelectedObject].cardinality[0].value);
             setSelectedOption('rightSide', diagram[lastSelectedObject].cardinality[1].value);
         }
@@ -178,7 +178,6 @@ function changeObjectAppearance(object_type){
     updateGraphics();
 }
 
-//previous developers called cardinality for arity
 function addCardinality(side){
 
   var x;
