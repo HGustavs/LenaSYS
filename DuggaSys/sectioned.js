@@ -742,42 +742,42 @@ function returnedSection(data)
         str+="</div></td>";
         //Buttons for version editing
         str+=
-							"<td class='editVers' style='display: inline-block;'><div class='editVers menuButton'>"
-						+	"<button type='button' class='submit-button no-radius' style='width:35px;"
-						+	"margin-left:0px' title='Edit the selected version'"
-						+	"onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""
-						+	startdate+"\",\""+enddate+"\");'>"
-						+	"<img id='versionCog' style='margin-top:6px' "
-						+	"src='../Shared/icons/CogwheelWhite.svg'></button></div></td>";
+		 "<td class='editVers' style='display: inline-block;'><div class='editVers menuButton'>"
+		+"<button type='button' class='submit-button no-radius' style='width:35px;"
+		+"margin-left:0px' title='Edit the selected version'"
+		+"onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""
+		+startdate+"\",\""+enddate+"\");'>"
+		+"<img id='versionCog' style='margin-top:6px' "
+		+"src='../Shared/icons/CogwheelWhite.svg'></button></div></td>";
 
         str+=
-							"<td class='newVers' style='display: inline-block;'><div class='newVers menuButton'>"
-						+	"<button type='button' value='New version' style='width:35px; margin-left:0px;"
-						+	"border-top-right-radius:3px; border-bottom-right-radius:3px;' class='submit-button no-radius'"
-						+	"title='Create a new version of this course' onclick='showCreateVersion();'>"
-						+	"<img id='versionPlus' style='margin-top:6px' "
-						+	"src='../Shared/icons/PlusS.svg'></button></div></td>";
+		 "<td class='newVers' style='display: inline-block;'><div class='newVers menuButton'>"
+		+"<button type='button' value='New version' style='width:35px; margin-left:0px;"
+		+"border-top-right-radius:3px; border-bottom-right-radius:3px;' class='submit-button no-radius'"
+		+"title='Create a new version of this course' onclick='showCreateVersion();'>"
+		+"<img id='versionPlus' style='margin-top:6px' "
+		+"src='../Shared/icons/PlusS.svg'></button></div></td>";
 
         //Hamburger menu for navigation
         str+="<td class='hamburger'>";
-				str	+=
-						  "<div tabindex='0' class='package'><div id='hamburgerIcon' "
-						+ "class='submit-button hamburger' onclick='hamburgerChange(this);"
-						+ "bigMac();'><div class='container'><div class='bar1'></div><div "
-						+ "class='bar2'></div><div class='bar3'></div></div></div></div>";
+	str+=
+		 "<div tabindex='0' class='package'><div id='hamburgerIcon' "
+		+ "class='submit-button hamburger' onclick='hamburgerChange(this);"
+		+ "bigMac();'><div class='container'><div class='bar1'></div><div "
+		+ "class='bar2'></div><div class='bar3'></div></div></div></div>";
 
         str+="<div class='hamburgerMenu'>";
         str+="<ul class='hamburgerList'>";
-        str	+=
-							"<li class='editVers'><button class='submit-button menuButton editVers '"
-						+	"onclick='closeWindows(); hamburgerChange(this); showEditVersion(\""+querystring['coursevers']
-						+	"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");' "
-						+	"title='Edit the selected version'>Edit Version</button></li>";
+        str+=
+		 "<li class='editVers'><button class='submit-button menuButton editVers '"
+		+"onclick='closeWindows(); hamburgerChange(this); showEditVersion(\""+querystring['coursevers']
+		+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");' "
+		+"title='Edit the selected version'>Edit Version</button></li>";
 
-        str	+=
-							"<li class='newVers'><button class='submit-button menuButton newVers'"
-						+	"onclick='closeWindows();  hamburgerChange(this); showCreateVersion();'"
-						+	"title='Create a new version of this course'>New Version</button></li>";
+        str+=
+		"<li class='newVers'><button class='submit-button menuButton newVers'"
+		+"onclick='closeWindows();  hamburgerChange(this); showCreateVersion();'"
+		+"title='Create a new version of this course'>New Version</button></li>";
 
 				str+="<li class='hamburgerSeparator'><hr></li>";
 				str+=
