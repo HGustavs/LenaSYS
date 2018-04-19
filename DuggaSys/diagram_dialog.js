@@ -71,48 +71,47 @@ function dimDialogMenu(dim) {
 }
 
 function loadFormIntoElement(element, dir){
-    //Ajax
-    var file = new XMLHttpRequest();
-    file.open('GET', dir);
-    file.onreadystatechange = function(){
-        element.innerHTML = file.responseText;
-        if(globalAppearanceValue == 0){
-            document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-            setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
-            setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
-            setSelectedOption('font', diagram[lastSelectedObject].font);
-            setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
-            setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
-            setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
-        }
+  //Ajax
+  var file = new XMLHttpRequest();
+  file.open('GET', dir);
+  file.onreadystatechange = function(){
+
+    if(file.readyState === 4){
+      element.innerHTML = file.responseText;
+      if(globalAppearanceValue == 0){
+        document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+        setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
+        setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
+        setSelectedOption('font', diagram[lastSelectedObject].font);
+        setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
+        setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+        setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
+      }
     }
-    file.send();
+  }
+  file.send();
 }
 
 function loadLineForm(element, dir){
-    //Ajax
-    var file = new XMLHttpRequest();
-    file.open('GET', dir);
-    file.onreadystatechange = function(){
-        element.innerHTML = file.responseText;
-        if(globalAppearanceValue == 0){
-          var tempLeftSide, tempRightSide;
-            if(diagram[lastSelectedObject].cardinality[0].value == ""){
-              tempLeftSide = "None";
-            }else{
-              tempLeftSide = diagram[lastSelectedObject].cardinality[0].value;
-            }
-            if(diagram[lastSelectedObject].cardinality[1].value == ""){
-              tempRightSide = "None";
-            }else{
-              tempRightSide = diagram[lastSelectedObject].cardinality[1].value;
-            }
-            setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
-            setSelectedOption('leftSide', tempLeftSide);
-            setSelectedOption('rightSide', tempRightSide);
-        }
+  //Ajax
+  var file = new XMLHttpRequest();
+  file.open('GET', dir);
+  file.onreadystatechange = function(){
+    if(file.readyState === 4){
+      element.innerHTML = file.responseText;
+      if(globalAppearanceValue == 0){
+        var tempLeftSide = diagram[lastSelectedObject].cardinality[0].value == "" ?
+        "None" : diagram[lastSelectedObject].cardinality[0].value;
+        var tempRightSide = diagram[lastSelectedObject].cardinality[1].value == "" ?
+        "None" : diagram[lastSelectedObject].cardinality[1].value;
+
+        setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
+        setSelectedOption('leftSide', tempLeftSide);
+        setSelectedOption('rightSide', tempRightSide);
+      }
     }
-    file.send();
+  }
+  file.send();
 }
 
 function setSelectedOption(type, value){
@@ -201,7 +200,6 @@ function addCardinality(side){
   if(side == "rightSide"){
     x = points[diagram[lastSelectedObject].bottomRight].x;
     y = points[diagram[lastSelectedObject].bottomRight].y;
-    console.log("iX: " + x + "\nY: " + y);
     diagram[lastSelectedObject].cardinality[1] = ({"x": x, "y": y, "value": val, "side": side});
   }else{
     x = points[diagram[lastSelectedObject].topLeft].x;
