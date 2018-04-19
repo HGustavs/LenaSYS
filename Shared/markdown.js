@@ -407,13 +407,13 @@ function markdownBlock(inString)
     return inString;
 }
 
-function previewOnload() {
+/*function previewOnload() {
     $(".PreviewWindow").css("display","none");
     $('#select-header').css("display","none");
-}
+}*/
 
 function showPreview() {
-    $(".PreviewWindow").show();
+    $(".PreviewWindow").css("display", "block");
 }
 
 function cancelPreview() {

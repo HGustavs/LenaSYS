@@ -249,10 +249,6 @@ function hideLoginPopup() {
 //----------------------------------------------------------------------------
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
-/*function openPrevWindow() {
-    $(".PreviewWindow").show();
-    console.log('show prev window');
-}*/
 
 function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
