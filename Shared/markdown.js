@@ -410,11 +410,12 @@ function markdownBlock(inString)
 function previewOnload() {
     $(".PreviewWindow").hide();
     $('#select-header').hide();
+    console.log('prev onload');
 }
 
-function showPreview() {
+/*function showPreview() {
     $(".PreviewWindow").show();
-}
+}*/
 
 function cancelPreview() {
     $(".PreviewWindow").hide();

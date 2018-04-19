@@ -251,6 +251,7 @@ function hideLoginPopup() {
 //----------------------------------------------------------------------------
 function openPrevWindow() {
     $(".PreviewWindow").show();
+    console.log('show prev window');
 }
 
 function renderCell(col,celldata,cellid) {
