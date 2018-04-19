@@ -100,12 +100,11 @@ function loadLineForm(element, dir){
     if(file.readyState === 4){
       element.innerHTML = file.responseText;
       if(globalAppearanceValue == 0){
-        var tempLeftSide = diagram[lastSelectedObject].cardinality[0].value == "" ?
+        var tempCardinality = diagram[lastSelectedObject].cardinality[0].value == "" ?
         "None" : diagram[lastSelectedObject].cardinality[0].value;
 
         setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
-        setSelectedOption('leftSide', tempLeftSide);
-        setSelectedOption('rightSide', tempRightSide);
+        setSelectedOption('cardinality', tempCardinality);
       }
     }
   }

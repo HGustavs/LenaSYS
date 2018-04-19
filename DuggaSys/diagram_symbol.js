@@ -691,7 +691,15 @@ function Symbol(kind) {
 
     this.drawEntity = function(x1, y1, x2, y2){
         ctx.fillStyle = this.symbolColor;
+        //Checks if there is cardinality set on this object
+        if(this.cardinality[0].x != null && this.cardinality[0].y != null){
+            //Updates the x and y position depending on which side the cardinality is on
+            ctx.fillStyle = '#000';
 
+            //this.cardinality[0].x = x1 > x2 ? x2+10 : x2-10;
+            //this.cardinality[0].y = y1 > y2 ? y2+10 : y2-10;
+            ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+        }
         ctx.beginPath();
         if (this.key_type == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
@@ -700,7 +708,7 @@ function Symbol(kind) {
             ctx.lineTo(x1 - 5, y2 + 5);
             ctx.lineTo(x1 - 5, y1 - 5);
         }
-
+        
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y1);
         ctx.lineTo(x2, y2);
@@ -711,33 +719,12 @@ function Symbol(kind) {
         ctx.clip();
         ctx.stroke();
 
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y1);
-    ctx.lineTo(x2, y2);
-    ctx.lineTo(x1, y2);
-    ctx.lineTo(x1, y1);
-    ctx.closePath();
-    makeShadow();
-    ctx.clip();
-    ctx.stroke();
-
-    ctx.fillStyle = this.fontColor;
-    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-    ctx.font = parseInt(textsize) + "px " + this.font;
-}
-
-this.drawLine = function(x1, y1, x2, y2){
-    //Checks if there is cardinality set on this object
-    if(this.cardinality[0].x != null && this.cardinality[0].y != null){
-        //Updates the x and y position depending on which side the cardinality is on
-        ctx.fillStyle = '#000';
-
-        this.cardinality[0].x = x1 > x2 ? x2+10 : x2-10;
-        this.cardinality[0].y = y1 > y2 ? y2+10 : y2-10;
-        ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+        ctx.fillStyle = this.fontColor;
+        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        ctx.font = parseInt(textsize) + "px " + this.font;
     }
 
-
+this.drawLine = function(x1, y1, x2, y2){
     ctx.lineWidth = this.lineWidth;
     if (this.key_type == "Forced") {
         //Draw a thick black line
