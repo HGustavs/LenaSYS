@@ -2,9 +2,31 @@ var querystring=parseGet();
 var retdata;
 var newversid;
 var active_lid;
+var str;
+var data;
+var idCounter;
+var coursename;
+var coursecode;
+var menuState;
+var item;
+var retValue;
+var iitem;
+var versname;
+var courseid;
+var cid;
+var versid;
+var makeactive;
+var startdate;
+var enddate;
+var lid;
+var coursevers;
+var iistr;
+var kind;
+
+
 
 // Stores everything that relates to collapsable menus and their state.
-var menuState = {
+	menuState = {
 	idCounter: 0, 		/* Used to give elements unique ids. This might? brake
 						   because an element is not guaranteed to recieve the
 						   same id every time. */
@@ -126,7 +148,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 		// Account for rest of moments!
 		for(var i=0;i<retdata['entries'].length;i++){
-			var item=retdata['entries'][i];
+			item=retdata['entries'][i];
 			if(item['kind']==4){
 				if(parseInt(moment)==parseInt(item['lid'])) str+="<option selected='selected' value='"+item['lid']+"'>"+item['entryname']+"</option>";
 				else str+="<option value='"+item['lid']+"'>"+item['entryname']+"</option>";
@@ -229,7 +251,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	}else if(kind==2){
 		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
-			var iitem=retdata['codeexamples'][ii];
+			iitem=retdata['codeexamples'][ii];
 			if(xelink==iitem['exampleid']){
 				iistr+="<option selected='selected' value='"+iitem['exampleid']+"'>"+iitem['examplename']+"</option>";
 			}else{
@@ -246,7 +268,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	}else if(kind==3){
 		$("#inputwrapper-tabs").css("display","none");
 		for(var ii=0;ii<retdata['duggor'].length;ii++){
-			var iitem=retdata['duggor'][ii];
+			iitem=retdata['duggor'][ii];
 			if(xelink==iitem['id']){
 				iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
 			}else{
@@ -271,7 +293,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['links'].length;ii++){
-			var iitem=retdata['links'][ii];
+			iitem=retdata['links'][ii];
 			if(xelink==iitem['filename']){
 				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";
 			}else{
@@ -315,7 +337,7 @@ function changedType()
 
 	}else if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
-			var iitem=retdata['codeexamples'][ii];
+			iitem=retdata['codeexamples'][ii];
 			if(xelink==iitem['exampleid']){
 				iistr+="<option selected='selected' value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
 			}else{
@@ -331,7 +353,7 @@ function changedType()
 
 	}else if(kind==3){
 		for(var ii=0;ii<retdata['duggor'].length;ii++){
-			var iitem=retdata['duggor'][ii];
+			iitem=retdata['duggor'][ii];
 			if(xelink==iitem['id']){
 				iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
 			}else{
@@ -357,7 +379,7 @@ function changedType()
 
 		for(var ii=0;ii<retdata['links'].length;ii++){
 
-			var iitem=retdata['links'][ii];
+			iitem=retdata['links'][ii];
 
 			// filter file extension
 			var ext = iitem.filename.split('.').pop().toLowerCase();
@@ -395,7 +417,7 @@ function confirmBox(operation, item = null) {
 
 function deleteItem(item_lid= null)
 {
-	var lid = item_lid ? item_lid : $("#lid").val() ;
+	lid = item_lid ? item_lid : $("#lid").val() ;
 	AJAXService("DEL",{lid:lid},"SECTION");
 	$("#editSection").css("display","none");
 }
@@ -403,7 +425,7 @@ function deleteItem(item_lid= null)
 
 // Checks if the title name includes any invalid characters
 function validateName(){
-	var retValue = false;
+	retValue = false;
 
 	var nme=document.getElementById("sectionname");
 
@@ -424,7 +446,7 @@ function validateName(){
 }
 
 function validateType(){
-	var retValue = false;
+	retValue = false;
 	kind=$("#type").val();
 	var nme=document.getElementById("type");
 
@@ -438,7 +460,7 @@ function validateType(){
 		nme.style.backgroundColor = "#f57";
 		//the line of code above changes the selected element AND the list's background color.
 		//the for loop changes the list's background color back to white so only the selected item shows up as red.
-		for(i = 0; i < nme.options.length; i++){
+		for(var i = 0; i < nme.options.length; i++){
 			nme.options[i].style.backgroundColor = "#fff";
 		}
 	}else{
@@ -455,16 +477,16 @@ function validateType(){
 
 function updateItem()
 {
-	tabs=$("#tabs").val();
+	var tabs=$("#tabs").val();
 	lid=$("#lid").val();
 	kind=$("#type").val();
-	link=$("#link").val();
-	highscoremode=$("#highscoremode").val();
-	sectionname=$("#sectionname").val();
-	visibility=$("#visib").val();
-	moment=$("#moment").val();
-	gradesys=$("#gradesys").val();
-	comments=$("#comments").val();
+	var link=$("#link").val();
+	var highscoremode=$("#highscoremode").val();
+	var sectionname=$("#sectionname").val();
+	var visibility=$("#visib").val();
+	var moment=$("#moment").val();
+	var gradesys=$("#gradesys").val();
+	var comments=$("#comments").val();
 	// Storing tabs in gradesys column!
 	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
 	AJAXService("UPDATE",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comments:comments},"SECTION");
@@ -493,7 +515,7 @@ function newItem()
   visibility=$("#visib").val();
   moment=$("#moment").val();
   gradesys=$("#gradesys").val();
-  comment=$("#deadlinecomment").val();
+  var comment=$("#deadlinecomment").val();
   // Storing tabs in gradesys column!
   if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
   AJAXService("NEW",{lid:lid,kind:kind,link:link,sectname:sectionname,visibility:visibility,moment:moment,gradesys:gradesys,highscoremode:highscoremode,comment:comment},"SECTION");
@@ -522,19 +544,19 @@ function showCreateVersion()
 
 function createVersion(){
 
-  var cid = querystring['courseid'];
-	var versid = $("#versid").val();
-  newversid=versid;
-	var versname = $("#versname").val();
-	var coursecode = $("#course-coursecode").text();
-	var courseid = $("#course-courseid").text();
-	var coursename = $("#course-coursename").text();
-	var makeactive = $("#makeactive").is(':checked');
-	var coursevers = $("#course-coursevers").text();
+	cid = querystring['courseid'];
+	versid = $("#versid").val();
+    newversid=versid;
+	versname = $("#versname").val();
+	coursecode = $("#course-coursecode").text();
+	courseid = $("#course-courseid").text();
+	coursename = $("#course-coursename").text();
+	makeactive = $("#makeactive").is(':checked');
+	coursevers = $("#course-coursevers").text();
 	var copycourse = $("#copyvers").val();
 	var comments = $("#comments").val();
-  var startdate = $("#startdate").val();
-  var enddate = $("#enddate").val();
+	startdate = $("#startdate").val();
+	enddate = $("#enddate").val();
 
 	if (versid=="" || versname=="") {
 		alert("Version Name and Version ID must be entered!");
@@ -593,15 +615,15 @@ function showEditVersion(versid, versname, startdate, enddate)
 }
 
 function updateVersion(){
-	var cid = $("#cid").val();
-	var versid = $("#eversid").val();
-	var versname = $("#eversname").val();
-  var startdate = $("#estartdate").val();
-  var enddate = $("#eenddate").val();
-	var coursecode = $("#course-coursecode").text();
-	var makeactive = $("#emakeactive").is(':checked');
-  var startdate = $("#estartdate").val();
-  var enddate = $("#eenddate").val();
+	cid = $("#cid").val();
+	versid = $("#eversid").val();
+	versname = $("#eversname").val();
+	startdate = $("#estartdate").val();
+	enddate = $("#eenddate").val();
+	coursecode = $("#course-coursecode").text();
+	makeactive = $("#emakeactive").is(':checked');
+	startdate = $("#estartdate").val();
+	enddate = $("#eenddate").val();
 
 	AJAXService("UPDATEVRS", {
 		cid : cid,
@@ -630,7 +652,7 @@ function goToVersion(selected)
 }
 
 function accessCourse() {
-	var coursevers = $("#course-coursevers").text();
+	coursevers = $("#course-coursevers").text();
 	window.location.href = "accessed.php?cid=" + querystring['courseid']+"&coursevers="+coursevers;
 	resetinputs();
 	//resets all inputs
@@ -650,7 +672,7 @@ function returnedSection(data)
 		// Fill section list with information
     var versionname="";
     if (retdata['versions'].length > 0) {
-      for ( j = 0; j < retdata['versions'].length; j++) {
+      for (var j = 0; j < retdata['versions'].length; j++) {
         var itemz = retdata['versions'][j];
         if (retdata['courseid'] == itemz['cid']) {
           var vversz = itemz['vers'];
@@ -668,11 +690,11 @@ function returnedSection(data)
 
     if(data['writeaccess']) {
 // Retrieve start and end dates for a version, if there are such, else set to null
-      var startdate = null;
-      var enddate = null;
+      startdate = null;
+      enddate = null;
       if (retdata['versions'].length > 0) {
-        for ( i = 0; i < retdata['versions'].length; i++) {
-          var item = retdata['versions'][i];
+        for (var i = 0; i < retdata['versions'].length; i++) {
+          item = retdata['versions'][i];
           if (retdata['courseid'] == item['cid'] && retdata['coursevers'] == item['vers']) {
             startdate = item['startdate'];
             enddate = item['enddate'];
@@ -685,8 +707,8 @@ function returnedSection(data)
       var sstr ="<select class='course-dropdown' onchange='goToVersion(this)'>";
       var ssstr ="<select class='course-dropdown'>";
     	if (retdata['versions'].length > 0) {
-            for ( i = 0; i < retdata['versions'].length; i++) {
-                var item = retdata['versions'][i];
+            for (var i = 0; i < retdata['versions'].length; i++) {
+                item = retdata['versions'][i];
                 if (retdata['courseid'] == item['cid']) {
                     var vvers = item['vers'];
                     var vname = item['versname'];
@@ -759,7 +781,7 @@ function returnedSection(data)
       // hide som elements if to narrow
     var hiddenInline = "";
     if($(window).width() < 480) {
-      showInline = false;
+      var showInline = false;
       hiddenInline = "none";
     } else {
       showInline = true;
@@ -803,8 +825,8 @@ function returnedSection(data)
 		// For now we only have two kinds of sections
 		if (data['entries'].length > 0) {
 			var kk=0;
-			for(i=0;i<data['entries'].length;i++){
-				var item=data['entries'][i];
+			for(var i=0;i<data['entries'].length;i++){
+				item=data['entries'][i];
 				var deadline = item['deadline'];
 				var released = item['release'];
 
@@ -878,7 +900,7 @@ function returnedSection(data)
 							var submitted;
 							var lastSubmit = null;
 
-							for(jjj=0;jjj<data['results'].length;jjj++){
+							for(var jjj=0;jjj<data['results'].length;jjj++){
 								var lawtem=data['results'][jjj];
 								if((lawtem['moment']==item['lid'])){
 									grady=lawtem['grade'];
@@ -1245,8 +1267,8 @@ function returnedSection(data)
 			str="";
 			$("#Sectionlist").find(".item").each(function(i) {
 				if(i>0) str+=",";
-				ido=$(this).attr('id');
-				phld=$(this).attr('placeholder')
+				var ido=$(this).attr('id');
+				var phld=$(this).attr('placeholder')
 				str+=i+"XX"+ido.substr(1)+"XX"+phld;
 
 			});
@@ -1309,8 +1331,8 @@ function returnedHighscore(data){
 	str += "</tr>";
 
 	if (data['highscores'].length > 0) {
-		for(i=0;i<data['highscores'].length;i++){
-			var item=data['highscores'][i];
+		for(var i=0;i<data['highscores'].length;i++){
+			item=data['highscores'][i];
 			if(!isNaN(data["user"][0]) && data["user"][0] === i){
 				str += "<tr class='highscoreUser'>"
 			}else{
