@@ -759,7 +759,7 @@ function returnedSection(data)
 			+"src='../Shared/icons/PlusS.svg'></button></div></td>";
 
         //Hamburger menu for navigation
-        str+="<td class='hamburger'>";
+    	str+="<td class='hamburger'>";
 		str+=
 			 "<div tabindex='0' class='package'><div id='hamburgerIcon' "
 			+ "class='submit-button hamburger' onclick='hamburgerChange(this);"
