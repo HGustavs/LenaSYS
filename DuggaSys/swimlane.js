@@ -86,6 +86,7 @@ window.onclick = function (event) {
 // This function prints the pie Chart in the swimlane that shows a brief overview
 // over the student's quizes/tests.
 function createPieChart() {
+  console.log(swimlaneInformation);
   var c = document.getElementById('pieChart');
   var ctx = c.getContext('2d');
   var width = c.width;
@@ -93,12 +94,37 @@ function createPieChart() {
   var pieChartRadius = height / 2;
   var overviewBlockSize = 11;
 
-  var totalQuizes = 20;
-  var passedQuizes = 11;
-  var notGradedQuizes = 5;
-  var failedQuizes = 1;
-  var notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
+  // var totalQuizes = 20;
+  // var passedQuizes = 11;
+  // var notGradedQuizes = 5;
+  // var failedQuizes = 1;
+  // var notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
 
+  var totalQuizes = 0;
+  var passedQuizes = 0;
+  var notGradedQuizes = 0;
+  var failedQuizes = 0;
+  var notSubmittedQuizes = 0;
+
+  for(var i = 0; i < swimlaneInformation['moments'].length; i++) {
+    if(swimlaneInformation['moments'][i].kind == "3") {
+      totalQuizes++;
+    }
+  }
+
+  for(var i = 0; i < swimlaneInformation['userresults'].length; i++) {
+    if(swimlaneInformation['userresults'][i].grade == "green") {
+      passedQuizes++;
+    } else if(swimlaneInformation['userresults'][i].grade == "yellow") {
+      notGradedQuizes++;
+    }
+    else {
+      failedQuizes++;
+    }
+  }
+
+  notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
+  
   // PCT = Percentage
   var passedPCT = 100 * (passedQuizes / totalQuizes);
   var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
