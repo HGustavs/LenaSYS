@@ -196,12 +196,12 @@ function addCardinality(){
     {
         diagram[lastSelectedObject].cardinality[0].value = val;
     }
-    if(hovobj != -1 && hovobj.symbolkind == 3) {
+    if(hovobj != -1 && diagram[hovobj].symbolkind == 3) {
         x = points[diagram[hovobj].topLeft].x;
         y = points[diagram[hovobj].topLeft].y;
         diagram[hovobj].cardinality[0] = ({"x": x, "y": y, "value": val});
     }
-    if(diagram[lineStartObj].symbolkind == 3 && hovobj.symbolkind == 5){
+    if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5){
         x = points[diagram[lineStartObj].topLeft].x;
         y = points[diagram[lineStartObj].topLeft].y;
         diagram[lineStartObj].cardinality[0] = ({"x": x, "y": y, "value": val});
