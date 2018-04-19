@@ -81,81 +81,9 @@ function returnedFile(data) {
 	);
 
 	fileLink.renderTable();
+	fileLink.makeAllSortable();
 
 	if(data['debug']!="NONE!") alert(data['debug']);
-	//makeAllSortable();
-}
-
-//----------------------------------------------------------------
-// makeSortable(table) <- Makes a table sortable and also allows
-//						  the table to collapse when user double
-//						  clicks on table head.
-//----------------------------------------------------------------
-function makeSortable(table) {
-	var DELAY = 200;
-	var clicks = 0;
-	var timer = null;
-	var th = table.tHead, i;
-	th && (th = th.rows[0]) && (th = th.cells);
-	if (th) i = th.length;
-	else return; // if no `<thead>` then do nothing
-	while (--i >= 0) (function (i) {
-		var dir = 1;
-		th[i].addEventListener('click', function (e) {
-			clicks++;
-			if(clicks === 1) {
-				timer = setTimeout(function () {
-					sortTable(table, i, (dir = 1 - dir));
-					clicks = 0;
-                }, DELAY);
-            } else {
-                clearTimeout(timer);
-                $(this).closest('table').find('tbody').fadeToggle(500,'linear'); //perform double-click action
-                if ($(this).closest('tr').find('.arrowRight').css('display') == 'none') {
-    	            $(this).closest('tr').find('.arrowRight').delay(200).slideToggle(300,'linear');
-    	            $(this).closest('tr').find('.arrowComp').slideToggle(300,'linear');
-				} else if ($(this).closest('tr').find('.arrowComp').css('display') == 'none') {
-					$(this).closest('tr').find('.arrowRight').slideToggle(300,'linear');
-    	            $(this).closest('tr').find('.arrowComp').delay(200).slideToggle(300,'linear');
-				} else {
-					$(this).closest('tr').find('.arrowRight').slideToggle(300,'linear'); 
-					$(this).closest('tr').find('.arrowComp').slideToggle(300,'linear');
-				}
-                clicks = 0; //after action performed, reset counter
-            }
-        });
-        th[i].addEventListener('dblclick', function(e) {
-            e.preventDefault();
-        })
-    }(i));
-}
-
-//---------------------------------------------------------------------------
-// makeAllSortable(parent) <- Makes all tables within given scope sortable.
-//---------------------------------------------------------------------------
-function makeAllSortable(parent) {
-	parent = parent || document.body;
-	var t = parent.getElementsByTagName('table'), i = t.length;
-	while (--i >= 0) makeSortable(t[i]);
-}
-
-//-----------------------------------------------------------------
-// sortTable(table, col, reverse) <- Sorts table based on given
-//									 column and whether or not to
-//								     reverse the sorting.
-//-----------------------------------------------------------------
-function sortTable(table, col, reverse) {
-    var tb = table.tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
-        tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
-        i;
-    reverse = -((+reverse) || -1);
-    tr = tr.sort(function (a, b) { // sort rows
-		return reverse // `-1 *` if want opposite order
-		* (a.cells[col].textContent.trim() // using `.textContent.trim()` for test
-            .localeCompare(b.cells[col].textContent.trim())
-        );
-    });
-    for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
 }
 
 function showLinkPopUp() {
@@ -261,10 +189,19 @@ function renderCell(col,celldata,cellid) {
 		if (link[0] == "https" || link[0] == "http") {
 			return "<a href='" + celldata + "' target='_blank'>" + celldata + "</a>";
 		} else {
-			return "<div>" + list[0] + "</div>";
+			// Goes through the previously split parts of the file name
+			// and adds dots to keep the actual file name correct
+			var listStr = "";
+			for (var i = 0; i < list.length - 1; i++) {
+				listStr += list[i];
+				if (i != list.length - 2) {
+					listStr += ".";
+				}
+			}
+			return "<div>" + listStr + "</div>";
 		}
 	} else if (col == "extension") {
-	    return "<div>" + list[1] + "</div>";
+	    return "<div>" + list[list.length - 1] + "</div>";
 	} else if (col == "editor") {
 		if(link[0] == "https" || link[0] == "http"){
 			str = "";
