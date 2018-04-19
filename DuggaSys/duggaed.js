@@ -10,8 +10,6 @@ var variant = [];
 var submissionRow = 0;
 var decider;
 var itemToDelete;
-var list = "";
-
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -661,19 +659,19 @@ function returnedDugga(data) {
         null,
 		false
 	);
-	var tabledata2 = {
+	var tabledata = {
     	tblhead:{
-    		variants:"ID",
+    		vid:"ID",
     		param:"quizID",
     		variantanswer:"param",
     		modified:"modified",
     		disabled:"disabled",
     	},
-    	tblbody: data['entries'],
+    	tblbody: data['entries'][0].variants,
     	tblfoot:[]
     }
 	myTable2 = new SortableTable(
-		tabledata2,
+		tabledata,
 		"variant",
 		null,
 		"",
@@ -706,14 +704,17 @@ function returnedDugga(data) {
 }
 
 // Rendring specific cells
-function renderCell(col,celldata,cellid) {
-	list+= celldata + " ";
-	
+function renderCell(col,celldata,cellid) {	
 	// Placing a clickable icon in its designated column that opens a window for acess to variants.
 	if (col == "arrow"){
+		// console.log(filez.entries[0].variants);
+		// console.log(filez.entries);
+
+
+
 		object=JSON.parse(celldata);
 	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Arrow.svg' ";
-		str+=" onclick='showSaveButton(); selectVariant(\""+object+"\");' >";
+		str+=" onclick='selectVariant();' >";
 		return str;
 	}
 	
@@ -754,7 +755,6 @@ function renderCell(col,celldata,cellid) {
 	// Placing a clickable trash can in its designated column and implementing the code behind it.
 	else if (col == "trashcan"){
 		object=JSON.parse(celldata);
-		list+= ",";
 	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
 		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
 		return str;

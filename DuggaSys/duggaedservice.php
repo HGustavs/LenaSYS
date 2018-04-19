@@ -251,7 +251,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 	}
 	$dir    = './templates';
 	$giles = scandir($dir);
-	$files =array();
+	$files=array();
 	foreach ($giles as $value){
 		if(endsWith($value,".html")){
 			array_push($files,substr ( $value , 0, strlen($value)-5 ));
@@ -261,7 +261,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 }
 
 $array = array(
-	'mass' => $mass,
 	'entries' => $entries,
 	'debug' => $debug,
 	'files' => $files,

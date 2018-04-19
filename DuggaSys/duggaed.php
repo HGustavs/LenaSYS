@@ -98,7 +98,7 @@ pdoConnect();
             </div>
       </div>
   <!-- Confirm Section Dialog START -->
-
+  
 	<!-- Edit Variant Dialog START -->
 	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style="width:80%;">
