@@ -293,19 +293,22 @@
         </div>
     </div>
     <!-- The import menu. Default state is display: none; -->
-    <div id="import" class='loginBoxContainer' style='height:auto; margin-top:0; display: none;'>
+    <div id="import" class='loginBoxContainer importDiagram'>
         <div class='loginBox'>
             <div class='loginBoxheader'>
                 <h3>Import</h3>
                 <div class='cursorPointer' onclick='closeImportDialog();'>x</div>
             </div>
             <div class='table-wrap'>
-                <div style="padding: 20px">
+                <div class="importWrap">
                     <div>
                         <input type="file" id="importFile" accept=".txt, text/plain" />
                     </div>
-                    <div id="importError" style="margin-top: 10px; color: red; display:none;">
+                    <div id="importError" class="importError">
                         <span>Only .txt-files allowed</span>
+                    </div>
+                    <div id="importButtonWrap" class="importButtonWrap">
+                        <input type="submit" id="file-submit-button" class="submit-button uploadButton" onclick="importFile();" value="Upload diagram" />
                     </div>
                 </div>
             </div>

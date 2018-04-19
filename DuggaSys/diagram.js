@@ -544,7 +544,6 @@ function toggleGrid() {
 // Opens the dialog menu for import
 function openImportDialog() {
     $("#import").css("display", "flex");
-
 }
 
 // Closes the dialog menu for import.
@@ -553,8 +552,8 @@ function closeImportDialog() {
 }
 
 // Import file
-function importFile(e) {
-    var file = e.target.files[0];
+function importFile() {
+    var file = document.getElementById("importFile").files[0];
     if (!file) return;
     var extension = file.name.split(".").pop().toLowerCase();
     if (extension != "txt") {
