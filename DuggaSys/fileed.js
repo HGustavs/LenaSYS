@@ -249,6 +249,10 @@ function hideLoginPopup() {
 //----------------------------------------------------------------------------
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
+function openPrevWindow() {
+    $(".PreviewWindow").show();
+}
+
 function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
 	var link = celldata.split('://');
@@ -269,7 +273,7 @@ function renderCell(col,celldata,cellid) {
 		if(link[0] == "https" || link[0] == "http"){
 			str = "";
 		} else {
-			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
+			str = "<div class='iconBox'><img id='dorf' onclick="openPrevWindow()" class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
 		}
 		return str;
 	}
