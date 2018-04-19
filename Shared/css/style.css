@@ -3544,3 +3544,139 @@ ul.hamburgerList button.menuButton {
 
 .scale-transition.scale-in { transform: scale(1); }
 
+/* --------------================################================-------------- *
+ *                               Markdown preview                              *
+ * --------------================################================-------------- */
+
+ .PreviewWindow {
+    height: 635px;
+    width: 900px;
+    margin: 0px auto;
+    border: solid rgb(200,200,200);
+    background-color: rgb(240,240,240);
+    box-shadow: 0px 5px 10px grey;
+}
+.Markdown {
+    border: solid rgb(200,200,200);
+    background-color: #FFFFFF;
+    width: 350px;
+    height: 550px;
+    position: relative;
+    margin: 20px 10px 10px 10px;
+    float: left;
+}
+.MarkdownPrev {
+    border: solid rgb(200,200,200);
+    background-color: #FFFFFF;
+    word-wrap: break-word;
+    overflow-y: scroll;
+    width: 490px;
+    height: 550px;
+    position: relative;
+    margin: 20px 10px 10px 10px;
+    float: right;
+}
+.OptionButtons {
+    top: 585px;
+    position: relative;
+    margin: 0px 10px 0px 10px;
+    height: 40px;
+    width: 355px;
+}
+.prevSpan {
+    max-width: 100%;
+}
+#button-cancel {
+    position: absolute;
+    left: 235px;
+}
+#button-save {
+    position: absolute;
+    left: 305px;
+}
+#button-close {
+    float: right;
+    position: relative;
+    margin: 0px 10px 0px 0px;
+}
+ .PrevHead {
+    height: 20px;
+    background-color: #775886;
+    color: #FFFFFF;
+    font-size: 14px;
+    padding: 0px 5px 0px 5px;
+}
+.prevNav {
+    background-color: #775886;
+    height: 30px;
+    color: #FFF;
+    padding: 0px 5px 0px 5px;
+    line-height: 25px;
+}
+.markNav {
+    background-color: #775886;
+    height: 30px;
+    color: #FFF;
+    padding: 0px 5px 0px 5px;
+    line-height: 25px;
+}
+#mrkdwntxt {
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px #888 inset;
+    resize: none;
+    margin: 10px 4px 0px 4px;
+}
+#boldText {
+    cursor: pointer;
+    margin-left: 10px;
+}
+#cursiveText {
+    cursor: pointer;
+    margin-left: 10px;
+}
+#headerType1 {
+    cursor: pointer;
+    color: #000;
+    font-size: 13px;
+    padding: 5px 5px 5px 5px;
+    background-color: #fff;
+}
+#headerType1:hover {
+    background-color: rgb(200,200,200);
+}
+#headerType2 {
+    cursor: pointer;
+    color: #000;
+    font-size: 12px;
+    padding: 5px 5px 5px 9px;
+    background-color: #fff;
+}
+#headerType2:hover {
+    background-color: rgb(200,200,200);
+}
+#headerType3 {
+    cursor: pointer;
+    color: #000;
+    font-size: 11px;
+    padding: 8px 5px 5px 13px;
+    background-color: #fff;
+}
+#headerType3:hover {
+    background-color: rgb(200,200,200);
+}
+.headerType {
+    cursor: pointer;
+    margin-left: 150px;
+}
+
+.show-dropdown-content {
+    display: block;
+}
+#select-header {
+    max-width: 63px;
+    position: absolute;
+    z-index: 2000;
+    right: 75px;
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.3);
+}
