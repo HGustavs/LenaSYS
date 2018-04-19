@@ -197,9 +197,6 @@ function hideLoginPopup()
 // ---------------
 //  Callback function that renders a specific cell in the table
 //--------------------------------------------------------------------------
-function test(hej){
-	console.log(obj.filename);
-}
 
 function renderCell(col,celldata,cellid) {
 	var list=celldata.split('.');
@@ -218,26 +215,14 @@ function renderCell(col,celldata,cellid) {
 	} else if (col == "extension") {
 	    return "<div>" + list[1] + "</div>";
 	} else if (col == "editor") {
-		/*return celldata;
 		if(link[0] == "https" || link[0] == "http"){
 			str="";
 		}else{
-			obj = JSON.parse(celldata);
-			if(obj.kind == '2'){	// IF kind == 2 return ../courses/global/*/
-				str="<div class='iconBox' onclick='console.log(celldata)'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
-               // console.log(obj.filename);
-           /* }else if(obj.kind == '3'){	// IF kind == 3 return ../courses/<COURSE_ID>/<FILENAME>
-                //str="<div class='iconBox' onclick='console.log(obj.cid && obj.filename)'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
+				var tempStr = celldata;
+				str="<div class='iconBox' onclick='console.log(tempStr)'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
 
-			}else if(obj.kind == '4'){	// IF kind == 4 return ../courses/<COURSE_ID>/<VERSION_ID>/<FILENAME>
-
-			}else{
-                str = "Not recognized";
-            }
-			//str="<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
-			str = obj.filename;
 		}
-		return str;*/
+		//return str;
 	}
 	return celldata;
 }
