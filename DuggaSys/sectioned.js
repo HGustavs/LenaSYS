@@ -1556,10 +1556,14 @@ function hamburgerChange(x) {
 
 // Toggles action bubbles when pressing the FAB button
 function toggleFabButton(){
-  $('.zoom-btn-sm').toggleClass('scale-out');
-  if (!$('.zoom-card').hasClass('scale-out')) {
-    $('.zoom-card').toggleClass('scale-out');
-  }
+	if (!$('.zoom-btn-sm').hasClass('scale-out')) {		
+		$('.zoom-btn-sm').toggleClass('scale-out');
+		$('.zoom-list').delay(100).fadeOut(0);
+	}
+	else {
+		$('.zoom-list').fadeIn(0);
+		$('.zoom-btn-sm').toggleClass('scale-out');
+	}
 }
 
 
