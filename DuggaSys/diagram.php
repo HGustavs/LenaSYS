@@ -27,7 +27,7 @@
     <script src="diagram_dialog.js"></script>
     <script src="diagram_toolbox.js"></script>
 
-    /*/this script fix so that the drop down menus close after you have clicked on something on them./*/
+    <!--this script fix so that the drop down menus close after you have clicked on something on them.-->
     <script>
         $(document).ready(function(){
             $(".drop-down-item").click(function(){
@@ -211,7 +211,7 @@
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-text">
-                            <a href="#">Select multiple objects</a>	
+                            <a href="#">Select multiple objects</a>
                            <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
                         </div>
                     </div>
