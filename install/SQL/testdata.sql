@@ -127,16 +127,16 @@ INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES 
 INSERT INTO vers (cid,coursecode,coursename,coursenamealt,vers,versname) VALUES (331,"MA113G","Algebra och logik",'UNK','12331','HT15');
 
 /* Insert tests */
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (1,2,1,2,'Bitdugga1','dugga1','2015-01-01 00:00:00','2015-01-30 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (2,2,1,2,'Bitdugga2','dugga1','2015-01-08 00:00:00','2015-01-25 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (3,2,1,2,'colordugga1','dugga2','2015-01-01 00:00:00','2015-01-20 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (4,2,1,2,'colordugga2','dugga2','2015-01-08 00:00:00','2015-01-18 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (5,2,1,2,'linjedugga1','dugga3','2015-01-01 00:00:00','2015-02-10 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (6,2,1,2,'linjedugga2','dugga3','2015-01-01 00:00:00','2015-02-15 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (7,2,1,2,'dugga1','dugga4','2015-01-01 00:00:00','2015-02-05 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (8,2,1,2,'dugga2','dugga4','2015-02-01 00:00:00','2015-02-20 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (9,2,1,2,'Quiz','kryss','2015-01-01 00:00:00','2015-02-19 00:00:00',NOW(),2);
-INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (10,2,1,2,'Rapport','generic_dugga_file_receive','2015-01-01 00:00:00','2015-02-19 00:00:00',NOW(),2);
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (1,2,1,2,'Bitdugga1','dugga1','2015-01-01 00:00:00','2015-01-30 15:30:00',NOW(),2, "97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (2,2,1,2,'Bitdugga2','dugga1','2015-01-08 00:00:00','2015-01-25 15:30:00',NOW(),2, "97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (3,2,1,2,'colordugga1','dugga2','2015-01-01 00:00:00','2015-01-20 15:30:00',NOW(),2, "97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (4,2,1,2,'colordugga2','dugga2','2015-01-08 00:00:00','2015-01-18 15:30:00',NOW(),2, "97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (5,2,1,2,'linjedugga1','dugga3','2015-01-01 00:00:00','2015-02-10 15:30:00',NOW(),2, "97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (6,2,1,2,'linjedugga2','dugga3','2015-01-01 00:00:00','2015-02-15 15:30:00',NOW(),2, "97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (7,2,1,2,'dugga1','dugga4','2015-01-01 00:00:00','2015-02-05 15:30:00',NOW(),2, "97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (8,2,1,2,'dugga2','dugga4','2015-02-01 00:00:00','2015-02-20 15:30:00',NOW(),2, "97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (9,2,1,2,'Quiz','kryss','2015-01-01 00:00:00','2015-02-19 15:30:00',NOW(),2, "97732");
+INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (10,2,1,2,'Rapport','generic_dugga_file_receive','2015-01-01 00:00:00','2015-02-19 15:30:00',NOW(),2, "97732");
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (11,2,1,2,'HTML CSS Testdugga','html_css_dugga','2015-01-01 00:00:00','2015-02-19 15:30:00',NOW(),2,"97732");
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) VALUES (12,2,1,2,'Clipping masking testdugga','clipping_masking_dugga','2015-01-01 00:00:00','2015-02-19 15:30:00',NOW(),2,"97732");
 
