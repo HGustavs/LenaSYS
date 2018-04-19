@@ -96,6 +96,17 @@ function loadLineForm(element, dir){
     file.onreadystatechange = function(){
         element.innerHTML = file.responseText;
         if(globalAppearanceValue == 0){
+          var tempLeftSide, tempRightSide;
+            if(diagram[lastSelectedObject].cardinality[0].value == ""){
+              tempLeftSide = "None";
+            }else{
+              tempLeftSide = diagram[lastSelectedObject].cardinality[0].value;
+            }
+            if(diagram[lastSelectedObject].cardinality[1].value == ""){
+              tempRightSide = "None";
+            }else{
+              tempRightSide = diagram[lastSelectedObject].cardinality[1].value;
+            }
             setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
             setSelectedOption('leftSide', diagram[lastSelectedObject].cardinality[0].value);
             setSelectedOption('rightSide', diagram[lastSelectedObject].cardinality[1].value);
