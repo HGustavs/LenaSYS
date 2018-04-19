@@ -762,7 +762,7 @@ function returnedSection(data)
     	str+="<td class='hamburger'>";
 		str+=
 			 "<div tabindex='0' class='package'><div id='hamburgerIcon' "
-			+ "class='submit-button hamburger' onclick='hamburgerChange(this);"
+			+ "class='submit-button hamburger' onclick='hamburgerChange();"
 			+ "bigMac();'><div class='container'><div class='bar1'></div><div "
 			+ "class='bar2'></div><div class='bar3'></div></div></div></div>";
 
@@ -770,13 +770,13 @@ function returnedSection(data)
         str+="<ul class='hamburgerList'>";
         str+=
 			 "<li class='editVers'><button class='submit-button menuButton editVers '"
-			+"onclick='closeWindows(); hamburgerChange(this); showEditVersion(\""+querystring['coursevers']
+			+"onclick='closeWindows(); hamburgerChange(); showEditVersion(\""+querystring['coursevers']
 			+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");' "
 			+"title='Edit the selected version'>Edit Version</button></li>";
 
         str+=
 			"<li class='newVers'><button class='submit-button menuButton newVers'"
-			+"onclick='closeWindows();  hamburgerChange(this); showCreateVersion();'"
+			+"onclick='closeWindows();  hamburgerChange(); showCreateVersion();'"
 			+"title='Create a new version of this course'>New Version</button></li>";
 
 		str+="<li class='hamburgerSeparator'><hr></li>";
@@ -1572,7 +1572,19 @@ function addOrRemoveFromArray(elementID, array) {
 }
 
 // Finds all ancestors to the element with classname Hamburger and toggles them.
-function hamburgerChange(x) {
+// added some if-statements so escapePress wont always toggle
+function hamburgerChange(operation='click') {
+	if(operation == "escapePress"){
+		if(findAncestor(document.getElementById("hamburgerIcon"), "change") != null){
+			toggleHamburger();
+		}
+	}else{
+			toggleHamburger();
+	}
+}
+
+function toggleHamburger(){
+	var x = document.getElementById("hamburgerIcon");
 	findAncestor(x, "hamburger").classList.toggle("change");
 }
 
@@ -1606,6 +1618,7 @@ $(window).load(function() {
           closeWindows();
           closeSelect();
           showSaveButton();
+		  hamburgerChange("escapePress");
         }
       });
 });
