@@ -10,6 +10,9 @@ var variant = [];
 var submissionRow = 0;
 var decider;
 var itemToDelete;
+var str;
+var parentQuiz = 0;
+var hej;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -48,9 +51,6 @@ $(function() {
     dateFormat: "yy-mm-dd"
   });
 });
-//----------------------------------------
-// Commands:
-//----------------------------------------
 
 // Adds a submission row in Edit Variant
 function addSubmissionRow() {
@@ -116,18 +116,20 @@ function createJSONString(formData) {
 	return jsonStr;
 }
 
+function openVariant(columnValue){
+	parentQuiz = columnValue;
+	showVariantDisableButton();
+	showVariantSubmitButton();
+	console.log(parentQuiz);
+	myTable2.renderTable();
+	$("#editVariant").css("display","flex"); //Display variant-window
+}
 function selectVariant(vid,param,answer,template,dis)
 {
 	$("#editVariant").css("display","flex"); // Display edit dialog
-	//$("#overlay").css("display","block");
 	$("#vid").val(vid); // Set Variant ID
 	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
 	$("#variantanswer").val(decodeURIComponent(answer)); // Set Variant answer
-	if(dis.localeCompare("1")===0){
-		$("#toggleVariantButton").val("Enable");
-	} else {
-		$("#toggleVariantButton").val("Disable");
-	}
 
 	//Parse JSON to add data to forms again
 	var data = $("#parameter").val();
@@ -145,7 +147,7 @@ function selectVariant(vid,param,answer,template,dis)
 
 		if(result["submissions"]!=undefined){
 			//Adds more submission rows if necessary
-			for(i = 0; i < result["submissions"].length; i++){
+			for(var i = 0; i < result["submissions"].length; i++){
 				if(i > 0 && i <= submissionRow) {
 					addSubmissionRow();
 				}
@@ -166,19 +168,19 @@ function selectVariant(vid,param,answer,template,dis)
 function closeVariant(){
 	//Hides error message
 	$("#submissionError").css("display", "none");
-	for(i=0; i<submissionRow; i++){
+	for(var i=0; i<submissionRow; i++){
 		$("#fieldname"+i).css("background-color", "white");
 	}
 	//Removes data from forms, going back to original style
 	$("#type").val("md");
 	$("#filelink").val("");
-	for(i = 0; i < 100; i++){
+	for(var i = 0; i < 100; i++){
 		$("#submissionType"+i).val("pdf");
 		$("#fieldname"+i).val("");
 		$("#instruction"+i).val("");
 	}
 	//Removes all submission rows
-	for(i=0; i < submissionRow; i++){
+	for(var i=0; i < submissionRow; i++){
 		$("#submissionType"+i).parent().remove();
 	}
 	submissionRow=0;
@@ -194,19 +196,7 @@ function deleteVariant()
 	//$("#overlay").css("display","none");
 }
 
-function toggleVariant()
-{
-	var vid=$("#vid").val();
-	if ($("#toggleVariantButton").val()==="Disable") {
-		if(confirm("Do you really want to disable this Variant?")) AJAXService("TOGGLEVARI",{cid:querystring['cid'],vid:vid,disabled:"1",coursevers:querystring['coursevers']},"DUGGA");
-	} else {
-		if(confirm("Do you really want to enable this Variant?")) AJAXService("TOGGLEVARI",{cid:querystring['cid'],vid:vid,disabled:"0",coursevers:querystring['coursevers']},"DUGGA");
-	}
-	$("#editVariant").css("display","none");
-	//$("#overlay").css("display","none");
-}
-
-function addVariant(cid,qid)
+function createVariant(cid,qid)
 {
 	AJAXService("ADDVARI",{cid:cid,qid:qid,coursevers:querystring['coursevers']},"DUGGA");
 }
@@ -226,7 +216,7 @@ function updateVariant()
 	var value = [];
 
 	//If the same fieldname has been input more than once
-	for(i=0; i<fieldnames.length; i++){
+	for(var i=0; i<fieldnames.length; i++){
 		if(fieldnames[i]==fieldnames[i+1]){
 			correct = "no";
 			value.push(fieldnames[i]);
@@ -236,8 +226,8 @@ function updateVariant()
 	//If wrong fieldnames (same name used more than once)
 	if(correct=="no"){
 		$("#submissionError").css("display", "block");
-		for(i=0; i<rows; i++){
-			for(j=0; j<value.length; j++){
+		for(var i=0; i<rows; i++){
+			for(var j=0; j<value.length; j++){
 				if($("#fieldname"+i).val()==value[j]){
 					$("#fieldname"+i).css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
@@ -372,17 +362,36 @@ function hideLoginPopup()
 	//$("#overlay").css("display","none");
 }
 
-function showSubmitButton(){
-  $(".submitDugga").css("display","inline-block");
-  $(".updateDugga").css("display","none");
-  //$("#overlay").css("display","block");
+function showDuggaSubmitButton(){
+  $("#submitDugga").css("display","block");
+  $("#updateDugga").css("display","none");
 }
 
-function showSaveButton(){
-  $(".submitDugga").css("display","none");
-  $(".updateDugga").css("display","block");
-//  $("#overlay").css("display","none");
+function showDuggaSaveButton(){
+  $("#submitDugga").css("display","none");
+  $("#updateDugga").css("display","block");
 }
+
+function showVariantSubmitButton(){
+  $("#submitVariant").css("display","block");
+  $("#updateVariant").css("display","none");
+}
+
+function showVariantSaveButton(){
+  $("#submitVariant").css("display","none");
+  $("#updateVariant").css("display","block");
+}
+
+function showVariantEnableButton(){
+  $("#enableVariant").css("display","block");
+  $("#disableVariant").css("display","none");
+}
+
+function showVariantDisableButton(){
+  $("#enableVariant").css("display","none");
+  $("#disableVariant").css("display","block");
+}
+
 
 function selectDugga(qid){
 	AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers'], qid:this.qid},"GETQUIZ");
@@ -485,81 +494,13 @@ function addSubmissionRow() {
 	submissionRow++;
 }
 
-function selectVariant(vid,param,answer,template,dis)
-{
-
-	$("#editVariant").css("display","flex"); // Display edit dialog
-	//$("#overlay").css("display","block");
-	$("#vid").val(vid); // Set Variant ID
-	//var pparam = parseParameters(param);
-	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
-	//var panswer = parseParameters(answer);
-	$("#variantanswer").val(decodeURIComponent(answer)); // Set Variant answer
-	if(dis.localeCompare("1")===0){
-		$("#toggleVariantButton").val("Enable"); // Set Variant answer
-	} else {
-		$("#toggleVariantButton").val("Disable"); // Set Variant answer
-	}
-
-	//Parse JSON to add data to forms again
-	var data = $("#parameter").val();
-	if(data == "" || data == "UNK"){}
-	else{
-		var result = JSON.parse(data);
-		//Adds data to forms
-		if(result["type"]!=undefined){
-			$("#type").val(result["type"]);
-		}
-
-		if(result["filelink"]!=undefined){
-			$("#filelink").val(result["filelink"]);
-		}
-
-		if(result["submissions"]!=undefined){
-			//Adds more submission rows if necessary
-			for(i = 0; i < result["submissions"].length; i++){
-				if(i > 0 && i <= submissionRow) {
-					addSubmissionRow();
-				}
-				if(result["submissions"][i]["type"]!=undefined){
-					$("#submissionType"+i).val(result["submissions"][i]["type"]);
-				}
-				if(result["submissions"][i]["fieldname"]!=undefined){
-					$("#fieldname"+i).val(result["submissions"][i]["fieldname"]);
-				}
-				if(result["submissions"][i]["instruction"]!=undefined){
-					$("#instruction"+i).val(result["submissions"][i]["instruction"]);
-				}
-			}
-		}
-	}
-
-}
-
-function closeVariant(){
-	//Removes data from forms, going back to original style
-	$("#type").val("md");
-	$("#filelink").val("");
-	for(i = 0; i < 100; i++){
-		$("#submissionType"+i).val("pdf");
-		$("#fieldname"+i).val("");
-		$("#instruction"+i).val("");
-	}
-	//Removes all submission rows
-	for(i=0; i < submissionRow; i++){
-		$("#submissionType"+i).parent().remove();
-	}
-	submissionRow=0;
-	//Adds one submission row so that one is visible next time it's opened
-	addSubmissionRow();
-}
-
 function isInArray(array, search)
 {
     return array.indexOf(search) >= 0;
 }
 
 function showVariant(param){
+	var param = param;
     var variantId="#variantInfo" + param;
     var duggaId="#dugga" + param;
     var arrowId="#arrow" + param;
@@ -624,7 +565,7 @@ function returnedDugga(data) {
 
     var tabledata = {
     	tblhead:{
-    		arrow:"->",
+    		arrow:"",
     		qname:"Name",
     		autograde:"Autograde",
     		gradesystem:"Gradesystem",
@@ -633,8 +574,8 @@ function returnedDugga(data) {
     		deadline:"Deadline",
     		qrelease:"Result date",
     		modified:"Last modified",
-    		cogwheel:"*",
-    		trashcan:"<input type='button' value='+' class='submit-button-newitem' onclick='showSubmitButton(); newDugga()'>"
+    		cogwheel:"",
+    		trashcan:"<input type='button' value='+' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga()'>"
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
@@ -659,19 +600,19 @@ function returnedDugga(data) {
         null,
 		false
 	);
-	var tabledata = {
+	var tabledata2 = {
     	tblhead:{
-    		vid:"ID",
-    		param:"quizID",
-    		variantanswer:"param",
-    		modified:"modified",
-    		disabled:"disabled",
+    		param:"Parameter",
+    		variantanswer:"Answer",
+    		modified:"Modified",
+    		disabled:"",
+    		vid:""
     	},
-    	tblbody: data['entries'][0].variants,
+    	tblbody: data['entries'][parentQuiz].variants, //"ParentQuiz" returns the right value, but the table gets created in a to early stage.
     	tblfoot:[]
     }
 	myTable2 = new SortableTable(
-		tabledata,
+		tabledata2,
 		"variant",
 		null,
 		"",
@@ -690,14 +631,12 @@ function returnedDugga(data) {
         null,
 		false
 	);
-
     myTable.renderTable();
-    myTable2.renderTable();
 
 	$("content").html();
 	var result = 0;
 	filez = data['files'];
-	duggaPages = data['duggaPages'];
+	var duggaPages = data['duggaPages'];
 
 	str="";
 
@@ -707,14 +646,10 @@ function returnedDugga(data) {
 function renderCell(col,celldata,cellid) {	
 	// Placing a clickable icon in its designated column that opens a window for acess to variants.
 	if (col == "arrow"){
-		// console.log(filez.entries[0].variants);
-		// console.log(filez.entries);
-
-
-
-		object=JSON.parse(celldata);
-	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Arrow.svg' ";
-		str+=" onclick='selectVariant();' >";
+		object=JSON.parse(cellid.match(/\d+/));
+		console.log(object);
+	    str="<img id='dorf' src='../Shared/icons/Arrow.svg' ";
+		str+=" onclick='openVariant(\""+object+"\");'>";
 		return str;
 	}
 	
@@ -747,17 +682,41 @@ function renderCell(col,celldata,cellid) {
 	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
 	else if (col == "cogwheel"){
 		object=JSON.parse(celldata);
-	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Cogwheel.svg' ";
-		str+=" onclick='showSaveButton(); selectDugga(\""+object+"\");' >";
+	    str="<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
+		str+=" onclick='showDuggaSaveButton(); selectDugga(\""+object+"\");' >";
 		return str;
 	}
 
 	// Placing a clickable trash can in its designated column and implementing the code behind it.
 	else if (col == "trashcan"){
 		object=JSON.parse(celldata);
-	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+	    str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
 		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
 		return str;
+	}
+
+	// Placing a clickable trash can in its designated column and implementing the code behind it.
+	else if (col == "vid"){
+		object=JSON.parse(celldata);
+	    str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
+		str+=" onclick='' >";
+		return str;
+	}
+
+	//Translating the integers behind "disabled"
+	else if (col == "disabled"){
+		object=JSON.parse(celldata);
+	    str="<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
+		str+=" onclick='' >";
+		return str;
+		if(celldata == "0"){
+			// LET IT BE ENABLED
+		}else if(celldata == "1"){
+			// MAKE IT DISABLED
+		}
+		else{
+			celldata = "Undefined";
+		}
 	}
 	return celldata;
 }
@@ -905,7 +864,7 @@ $(window).load(function() {
       	if(event.keyCode == 27) {
          	closeWindows();
          // closeSelect();
-          	showSaveButton();
+          	showDuggaSaveButton();
         }
       });
 });

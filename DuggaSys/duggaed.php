@@ -73,9 +73,9 @@ pdoConnect();
             <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
       		</div>
       		<div style='padding:5px;'>
-      			<input style='float left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeEditDugga();' />
-      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='createDugga();' />
-      			<input style='float:right; 'class='submit-button updateDugga' type='button' value='Save' onclick='updateDugga();' />
+      			<input id='closeDugga' class='submit-button' style='display:block; float:left;' type='button' value='Cancel' onclick='closeEditDugga();' />
+      			<input id='submitDugga' class='submit-button' style='display:none; float:right;' type='button' value='Submit' onclick='createDugga();' />
+      			<input id='updateDugga' class='submit-button' style='display:none; float:right;' type='button' value='Save' onclick='updateDugga();' />
       		</div>
       </div>
 	</div>
@@ -98,7 +98,7 @@ pdoConnect();
             </div>
       </div>
   <!-- Confirm Section Dialog START -->
-  
+
 	<!-- Edit Variant Dialog START -->
 	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style="width:80%;">
@@ -169,9 +169,11 @@ pdoConnect();
           			</div>
           		</div>
           		<div style='padding:5px;'>
-          			<input class='submit-button' type='button' value='Delete' onclick='deleteVariant();' />
-          			<input id="toggleVariantButton" class='submit-button' type='button' value='Disable' onclick='toggleVariant();' />
-          			<input class='submit-button' type='button' value='Save' onclick='updateVariant();' />
+                <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel' onclick='closeVariant();'/>
+          			<input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit' onclick='createVariant();'/> 
+                <input id='updateVariant' class='submit-button' style='display:none; float:right' type='button' value='Save' onclick='updateVariant();'/>
+                <input id='disableVariant' class='submit-button' style='display:none; float:right' type='button' value='Disable' onclick='showVariantEnableButton(); disableVariant();'/>
+                <input id='enableVariant' class='submit-button' style='display:none; float:right' type='button' value='Enable' onclick='showVariantDisableButton(); enableVariant();'/>
           		</div>
           </div>
 	</div>
