@@ -145,7 +145,7 @@ function makeAllSortable(parent) {
 //								     reverse the sorting.
 //-----------------------------------------------------------------
 function sortTable(table, col, reverse) {
-    var tb = table.tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
+    var tb = document.getElementById('fileLink_tbl').tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
         tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
         i;
     reverse = -((+reverse) || -1);
