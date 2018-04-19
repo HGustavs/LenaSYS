@@ -544,11 +544,28 @@ function toggleGrid() {
 // Opens the dialog menu for import
 function openImportDialog() {
     $("#import").css("display", "flex");
+    $("#importFile").change(function(e) {
+        importFile(e);
+    });
 }
 
 // Closes the dialog menu for import.
 function closeImportDialog() {
     $("#import").css("display", "none");
+    $("#importFile").off("change");
+}
+
+// Import file
+function importFile(e) {
+    closeImportDialog();
+    var file = e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var fileContent = e.target.result;
+        LoadImport(fileContent);
+    };
+    reader.readAsText(file, "UTF-8");
 }
 
 // Function that is used for the resize
