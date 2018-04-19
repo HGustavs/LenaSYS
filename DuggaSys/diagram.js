@@ -376,10 +376,15 @@ diagram.itemClicked = function() {
 // isHovered - Executes isHovered methond in all diagram objects
 // (currently only of kind==2 && symbolkind == 4 (aka. lines))
 //--------------------------------------------------------------------
-diagram.checkForHover = function(xCoordinate, yCoordinate) {
-    for (var i = 0; i < this.length; i++) {
+diagram.checkForHover = function(posX, posY) {
+    var hovered = false;
+    for (var i = this.length - 1; i >= 0; i--) {
         if (this[i].kind == 2) {
-            this[i].isHovered = this[i].checkForHover(xCoordinate, yCoordinate);
+            if (hovered) this[i].isHovered = false;
+            else {
+                this[i].isHovered = this[i].checkForHover(posX, posY);
+                hovered = this[i].isHovered;
+            }
         }
     }
 }
