@@ -427,6 +427,15 @@ function selectDugga(qid){
 	$("#template").html(str);
 }
 
+function editDialogTitle(title){
+	// Change title of the edit section dialog
+	if(title == "newItem"){
+		document.getElementById("editDialogTitle").innerHTML = "New Item";
+	}else if(title == "editItem"){
+		document.getElementById("editDialogTitle").innerHTML = "Edit Item";
+	}
+}
+
 
 function newDugga()
 {
@@ -635,7 +644,8 @@ function returnedDugga(data) {
     		qrelease:"Result date",
     		modified:"Last modified",
     		cogwheel:"*",
-    		trashcan:"<input type='button' value='+' class='submit-button-newitem' onclick='showSubmitButton(); newDugga()'>"
+    		trashcan:"<input type='button' value='+' class='submit-button-newitem'"
+				+"onclick='showSubmitButton(); editDialogTitle(\"newItem\"); newDugga();'>"
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
@@ -676,7 +686,7 @@ function returnedDugga(data) {
 // Rendring specific cells
 function renderCell(col,celldata,cellid) {
 	list+= celldata + " ";
-	
+
 	// Translating autograding from integers to show the data like yes/no.
 	if (col == "autograde"){
 		if(celldata == "0"){
@@ -702,12 +712,14 @@ function renderCell(col,celldata,cellid) {
 			celldata = "Undefined";
 		}
 	}
-	
+
 	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
 	else if (col == "cogwheel"){
 		object=JSON.parse(celldata);
-	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Cogwheel.svg' ";
-		str+=" onclick='showSaveButton(); selectDugga(\""+object+"\");' >";
+	    str=
+					"<img id='dorf' class='trashcanIcon' src='../Shared/icons/Cogwheel.svg' "
+					+ " onclick='showSaveButton(); editDialogTitle(\"editItem\"); "
+					+ "	selectDugga(\""+object+"\");' >";
 		return str;
 	}
 
