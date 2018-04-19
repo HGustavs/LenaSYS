@@ -52,8 +52,8 @@ function returnedFile(data) {
     		extension:"Extension",
     		filesize:"Size",
     		uploaddate:"Upload date",
-    		trashcan:"Delete",
-    		editor:"Editor"
+    		editor:"",
+    		trashcan:""
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
@@ -65,7 +65,7 @@ function returnedFile(data) {
 		null,
 		"",
         renderCell,
-        null,
+        renderSortOptions,
         null,
         rowFilter,
         [],
@@ -83,8 +83,21 @@ function returnedFile(data) {
 	fileLink.renderTable();
 
 	if(data['debug']!="NONE!") alert(data['debug']);
-	makeAllSortable();
+	//makeAllSortable();
 } 
+
+function renderSortOptions(col,status) {
+	str = "";
+
+	if (status ==- 1) {
+		str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+	} else if (status == 0) {
+		str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "&#x25bc;</span>";
+	} else {
+		str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "&#x25b2;</span>";
+	}
+	return str;
+}
 
 //----------------------------------------------------------------
 // makeSortable(table) <- Makes a table sortable and also allows
@@ -253,6 +266,7 @@ function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
 	var link = celldata.split('://');
 	if (col == "trashcan") {
+		$( "td:eq( cellid )" ).css( "color", "red" );
 		obj = JSON.parse(celldata);
 	    str = "<div class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
 		str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></div>";

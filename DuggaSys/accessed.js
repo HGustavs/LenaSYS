@@ -317,6 +317,9 @@ function returnedAccess(data) {
 	makeAllSortable();
 }
 
+window.onresize = function() {
+	myTable.magicHeader();
+}  
 
 //----------------------------------------
 // makeAllSortable(parent) <- Makes all tables within given scope sortable.
