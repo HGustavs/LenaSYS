@@ -89,6 +89,21 @@ function loadFormIntoElement(element, dir){
     file.send();
 }
 
+function loadLineForm(element, dir){
+    //Ajax
+    var file = new XMLHttpRequest();
+    file.open('GET', dir);
+    file.onreadystatechange = function(){
+        element.innerHTML = file.responseText;
+        if(globalAppearanceValue == 0){
+            setSelectedOption('object_type', diagram[lastSelectedObject].keyType);
+            setSelectedOption('leftSide', diagram[lastSelectedObject].cardinality[0].value);
+            setSelectedOption('rightSide', diagram[lastSelectedObject].cardinality[1].value);
+        }
+    }
+    file.send();
+}
+
 function setSelectedOption(type, value){
   if(type != null){
     for(var i = 0; i < document.getElementById(type).options.length; i++){
@@ -132,7 +147,7 @@ function objectAppearanceMenu(form) {
         loadFormIntoElement(form, 'forms/entity_appearance.php');
     }
     if (diagram[lastSelectedObject].symbolkind == 4) {
-        loadFormIntoElement(form, 'forms/line_appearance.php');
+        loadLineForm(form, 'forms/line_appearance.php');
     }
     if (diagram[lastSelectedObject].symbolkind == 5) {
         loadFormIntoElement(form, 'forms/relation_appearance.php');
