@@ -828,7 +828,7 @@ function returnedSection(data)
 			
 		str += "<div class='zoom'>"
 		str += "<a class='zoom-fab zoom-btn-large' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
-		str += "<ul class='zoom-list'>"
+		str += "<ul class='zoom-list' style='display: none;'>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-motd scale-transition scale-out' data-tooltip='Message of the day'><i class='material-icons'>format_quote</i></a></li>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-heading scale-transition scale-out' data-tooltip='Heading'><i class='heading-icon'></i></a></li>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-section scale-transition scale-out' data-tooltip='Section'><i class='section-icon'></i></a></li>"
@@ -1556,10 +1556,14 @@ function hamburgerChange(x) {
 
 // Toggles action bubbles when pressing the FAB button
 function toggleFabButton(){
-  $('.zoom-btn-sm').toggleClass('scale-out');
-  if (!$('.zoom-card').hasClass('scale-out')) {
-    $('.zoom-card').toggleClass('scale-out');
-  }
+	if (!$('.zoom-btn-sm').hasClass('scale-out')) {		
+		$('.zoom-btn-sm').toggleClass('scale-out');
+		$('.zoom-list').delay(100).fadeOut(0);
+	}
+	else {
+		$('.zoom-list').fadeIn(0);
+		$('.zoom-btn-sm').toggleClass('scale-out');
+	}
 }
 
 
