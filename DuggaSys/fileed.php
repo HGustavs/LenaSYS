@@ -18,6 +18,7 @@ pdoConnect();
 	<script src="../Shared/dugga.js"></script>
 	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script> 
 	<script src="fileed.js"></script>
+    <script src="../Shared/markdown.js"></script>
 </head>
 <body onload="setupSort();previewOnload()">
 	<?php 
