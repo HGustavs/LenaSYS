@@ -694,14 +694,15 @@ function Symbol(kind) {
         if(this.cardinality[0].x != null && this.cardinality[0].y != null){
             //Updates the x and y position depending on which side the cardinality is on
             ctx.fillStyle = '#000';
-            var connectedObj = this.cardinality[0].connectedObj;
-            var connectedMiddle = diagram[connectedObj].middleDivider;
-            var xConnected = points[connectedMiddle].x;
-            var yConnected = points[connectedMiddle].y;
-            var entityCenter = points[this.centerPoint];
+            var p1 = this.cardinality[0].p1;
+            var p2 = this.cardinality[0].p2;
+            var p1x = points[p1].x;
+            var p1y = points[p1].y;
+            var p2x = points[p2].x;
+            var p2y = points[p2].y;
 
-            this.cardinality[0].x = xConnected > entityCenter ? entityCenter + 50 : entityCenter - 50;
-            this.cardinality[0].y = yConnected > entityCenter ? entityCenter + 50 : entityCenter - 50;
+            this.cardinality[0].x = p1x > p2x ? p1x : p2x;
+            this.cardinality[0].y = p1y > p2y ? p1y : p2y;
 
             ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
         }
