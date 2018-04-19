@@ -695,8 +695,9 @@ function Symbol(kind) {
             //Updates the x and y position depending on which side the cardinality is on
             ctx.fillStyle = '#000';
             var connectedObj = this.cardinality[0].connectedObj;
-            var xConnected = diagram[connectedObj].x;
-            var yConnected = diagram[connectedObj].y;
+            var connectedMiddle = diagram[connectedObj].middleDivider;
+            var xConnected = points[connectedMiddle].x;
+            var yConnected = points[connectedMiddle].y;
 
             this.cardinality[0].x = xConnected > x1 ? x1 + 50 : x1 - 50;
             this.cardinality[0].y = yConnected > y1 ? y1 + 50 : y1 - 50;
