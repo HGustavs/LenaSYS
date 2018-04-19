@@ -544,20 +544,16 @@ function toggleGrid() {
 // Opens the dialog menu for import
 function openImportDialog() {
     $("#import").css("display", "flex");
-    $("#importFile").change(function(e) {
-        importFile(e);
-    });
 }
 
 // Closes the dialog menu for import.
 function closeImportDialog() {
     $("#import").css("display", "none");
-    $("#importFile").off("change");
 }
 
 // Import file
-function importFile(e) {
-    var file = e.target.files[0];
+function importFile() {
+    var file = document.getElementById("importFile").files[0];
     if (!file) return;
     var extension = file.name.split(".").pop().toLowerCase();
     if (extension != "txt") {
