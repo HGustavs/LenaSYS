@@ -698,9 +698,10 @@ function Symbol(kind) {
             var connectedMiddle = diagram[connectedObj].middleDivider;
             var xConnected = points[connectedMiddle].x;
             var yConnected = points[connectedMiddle].y;
+            var entityCenter = points[this.centerPoint];
 
-            this.cardinality[0].x = xConnected > x1 ? x1 + 50 : x1 - 50;
-            this.cardinality[0].y = yConnected > y1 ? y1 + 50 : y1 - 50;
+            this.cardinality[0].x = xConnected > entityCenter ? entityCenter + 50 : entityCenter - 50;
+            this.cardinality[0].y = yConnected > entityCenter ? entityCenter + 50 : entityCenter - 50;
 
             ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
         }
