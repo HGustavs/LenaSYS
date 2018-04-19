@@ -413,9 +413,9 @@ function previewOnload() {
     console.log('prev onload');
 }
 
-/*function showPreview() {
+function showPreview() {
     $(".PreviewWindow").show();
-}*/
+}
 
 function cancelPreview() {
     $(".PreviewWindow").hide();

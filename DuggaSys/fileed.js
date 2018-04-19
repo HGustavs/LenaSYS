@@ -249,10 +249,10 @@ function hideLoginPopup() {
 //----------------------------------------------------------------------------
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
-function openPrevWindow() {
+/*function openPrevWindow() {
     $(".PreviewWindow").show();
     console.log('show prev window');
-}
+}*/
 
 function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
@@ -275,7 +275,7 @@ function renderCell(col,celldata,cellid) {
 			str = "";
 		} else {
 			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += " onclick='openPrevWindow()'></div>";
+            str += " onclick='showPreview()'></div>";
 		}
 		return str;
 	}
