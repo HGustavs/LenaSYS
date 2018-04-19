@@ -83,6 +83,7 @@ function makeAllSortable(parent) {
 	while (--i >= 0) makeSortable(t[i]);
 }
 
+//when pressed
 //----------------------------------------
 // sortTable(table, col, reverse) <- Sorts table based on given column and whether or not to
 //									reverse the sorting.
@@ -196,6 +197,9 @@ function hideLoginPopup()
 // ---------------
 //  Callback function that renders a specific cell in the table
 //--------------------------------------------------------------------------
+function test(hej){
+	console.log(hej);
+}
 
 function renderCell(col,celldata,cellid) {
 	var list=celldata.split('.');
@@ -217,7 +221,19 @@ function renderCell(col,celldata,cellid) {
 		if(link[0] == "https" || link[0] == "http"){
 			str="";
 		}else{
-			str="<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
+			obj = JSON.parse(celldata);
+			if(obj.kind == '2'){	// IF kind == 2 return ../courses/global/<FILENAME>
+				str="<div class='iconBox' onclick='test(obj.filename)' ><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
+
+            } else if(obj.kind == '3'){	// IF kind == 3 return ../courses/<COURSE_ID>/<FILENAME>
+
+			}else if(obj.kind == '4'){	// IF kind == 4 return ../courses/<COURSE_ID>/<VERSION_ID>/<FILENAME>
+
+			}else{
+                str = "Not recognized";
+            }
+			//str="<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
+			//str = obj.filename;
 		}
 		return str;
 	}

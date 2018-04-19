@@ -65,16 +65,17 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
       // En till foreach om man vill hämta flera objekt i en cell occh kcikamg med till rendercell
 
       $entry = array(
-    			'fileid' => $row['fileid'],
-    			'filename' => $row['filename'],
-          'extension' => $row['filename'],
-    			'filesize' => $row['filesize'],
-    			'uploaddate' => $row['uploaddate'],
+		  'fileid' => $row['fileid'],
+		  'fileid' => $row['fileid'],
+		  'filename' => $row['filename'],
+		  'extension' => $row['filename'],
+		  'filesize' => $row['filesize'],
+		  'uploaddate' => $row['uploaddate'],
           'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']]),
-          'editor' => $row['filename']
+          'editor' => json_encode(['filename' => $row['filename'],'kind' => $row['kind'], 'cid' => $cid, 'vers' => $coursevers])
   		);
 
-  		array_push($entries, $entry);
+  		array_push($entries, $entry); //lägger till längst bak i arrayerna entries och entry
   	}
 
   	// Start traversing the filesystem from LenaSYS root
