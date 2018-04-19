@@ -218,11 +218,10 @@ function renderCell(col,celldata,cellid) {
 		if(link[0] == "https" || link[0] == "http"){
 			str="";
 		}else{
-				var tempStr = celldata;
-				str="<div class='iconBox' onclick='console.log(tempStr)'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
-
+			 //For the markdown preview use the row below
+			str="<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
 		}
-		//return str;
+		return str;
 	}
 	return celldata;
 }
