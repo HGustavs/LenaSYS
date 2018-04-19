@@ -408,9 +408,8 @@ function markdownBlock(inString)
 }
 
 function previewOnload() {
-    $(".PreviewWindow").hide();
-    $('#select-header').hide();
-    console.log('prev onload');
+    $(".PreviewWindow").css("display","none");
+    $('#select-header').css("display","none");
 }
 
 function showPreview() {
