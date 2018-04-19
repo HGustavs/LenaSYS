@@ -21,7 +21,7 @@ pdoConnect();
     <script src="../Shared/markdown.js"></script>
 
 </head>
-<body onload="setupSort();previewOnload()">
+<body onload="previewOnload();setupSort()">
 	<?php 
 		$noup="SECTION";
 		include '../Shared/navheader.php';
