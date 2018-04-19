@@ -31,7 +31,7 @@ pdoConnect();
 	?>
 
 	<!-- content START -->
-	<div id="content">
+	<div id="content" style="padding-bottom: 125px;">
 		<!-- Section List -->
 		<div id='Sectionlist'></div>
 	</div>
