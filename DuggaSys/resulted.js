@@ -1031,7 +1031,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
                     var newGradeExpirePlusOneDay = newDateObj.getTime();
 
 					// Compair the gradeExpire value to the current time, if no grade is set, we can always set it no matter the last change
-					if(newGradeExpirePlusOneDay > currentTimeGetTime){
+					if(newGradeExpirePlusOneDay > currentTimeGetTime || (($(e.target ).hasClass("Gc"))  || ($(e.target ).hasClass("VGc")) || ($(e.target ).hasClass("Uh")))){
 						//The user must press the ctrl-key to activate if-statement
 						if(event.ctrlKey || event.metaKey){
 							changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
@@ -1284,9 +1284,6 @@ function saveResponse()
 
 function returnedResults(data)
 {
-
-  testSortable(data);
-
   if (data.gradeupdated === true){
       // Update background color
       $("#u"+data.duggauser+"_d"+data.duggaid).removeClass("dugga-fail dugga-pending dugga-assigned dugga-unassigned");
@@ -1375,93 +1372,4 @@ function miniMode(){
   } else {
     $(".gradeImg").css("display", "block");
   }
-}
-
-
-var myTable;
-//----------------------------------------
-// Renderer
-//----------------------------------------
-
-
-function testSortable(data){
-filez = data;
-  
-  //build the dynamic headers
-  let tblhead = {firstnamelastnamessn:"Fname/Lname/SSN"};
-  data['moments'].forEach(function(entry) {
-  	tblhead[entry['entryname']] = entry['entryname'];
-  });
-
-  var tabledata = {
-  	tblhead,
-    tblbody: data['sortableTable'],
-    tblfoot:[]
-  }
-  
-	//console.log(tabledata);
-	console.log(data);
-  myTable = new SortableTable(
-    tabledata,
-    "resultTable",
-    null,
-    "",
-    renderCell,
-    null,
-    null,
-    null,
-    [],
-    [],       
-    "",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    false
-  );
-
-  myTable.renderTable();
-
-  if(data['debug']!="NONE!") alert(data['debug']);
-
-  makeAllSortable();
-}
-
-
-//----------------------------------------
-// makeAllSortable(parent) <- Makes all tables within given scope sortable.
-//----------------------------------------
-function makeAllSortable(parent) {
-  parent = parent || document.body;
-  var t = parent.getElementsByTagName('table'), i = t.length;
-  //while (--i >= 0) makeSortable(t[i]);
-}
-
-function renderCell(col,celldata,cellid) {
-  if (col == "firstnamelastnamessn"){
-    obj=JSON.parse(celldata);
-    //console.log(obj);
-
-    str = "<p style='font-size:12px;line-height:12px;'>";
-    str += obj.firstname + " " + obj.lastname + "<br>";
-    str += obj.username + " / " + obj.class + "<br>";
-    str += obj.ssn + "<br>";
-    str += obj.teacher + "</p>";
-    
-    return str;
-
-  }else {
-    //return "<div id='" + cellid + "'>" + celldata + "</div>";
-    
-    obj = JSON.parse(celldata);
-    str = "<div id='" + cellid + "'>";
-      str += "<img class='Uc gradeImg' src='../Shared/icons/Uc.png'/>";
-      str += "<img class='Gc gradeImg' src='../Shared/icons/Gc.png'/>";
-      str += "<img class='fist gradeImg' src='../Shared/icons/FistV.png'/>";
-    str += "</div>";
-    return str;
-  }
-  return celldata;
 }

@@ -51,7 +51,7 @@ var activePoint = null;             // This point indicates what point is being 
 var p1 = null;                      // When creating a new figure, these two variables are used ...
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
 var p3 = null;                      // Middlepoint/centerPoint
-var snapToGrid = false;              // Will the clients actions snap to grid
+var snapToGrid = true;              // Will the clients actions snap to grid
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
@@ -90,11 +90,6 @@ var diagramNumber = 0;                  // Is used for localStorage so that undo
 var diagramNumberUndo = 0;              // Is used for localStorage and undo
 var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
-var appearanceMenuOpen = false;         // True if appearance menu is open
-
-var symbolStartKind;                    // Is used to store which kind of object you start on
-var symbolEndKind;                      // Is used to store which kind of object you end on
-
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
@@ -103,14 +98,10 @@ var ctrlIsClicked = false;
 
 function keyDownHandler(e){
     var key = e.keyCode;
-    if((key == 46 || key == 8) && !appearanceMenuOpen){
+    if(key == 46 || key == 8){
         eraseSelectedObject();
     } else if(key == 32){
         //Use space for movearound
-        if (e.stopPropagation) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
         if(uimode != "MoveAround"){
             activateMovearound();
         } else{
@@ -183,14 +174,6 @@ var points = [
 // returns index of that point
 //--------------------------------------------------------------------
 points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
-    //If we have an unused index we use it first
-    for(var i = 0; i < points.length; i++){
-        if(points[i] == ""){
-            points[i] = {x:xCoordinate, y:yCoordinate, isSelected:isSelected};
-            return i;
-        }
-    }
-    
     this.push({x:xCoordinate, y:yCoordinate, isSelected:isSelected});
     return this.length - 1;
 }
@@ -220,7 +203,6 @@ points.drawPoints = function() {
         }
     }
 }
-
 
 //--------------------------------------------------------------------
 // closestPoint - Returns the distance and index of the point closest
@@ -261,19 +243,22 @@ var diagram = [];
 //--------------------------------------------------------------------
 diagram.draw = function() {
     this.adjustPoints();
-    //Draws all lines first so that they appear behind the object instead
-    for(var i = 0; i < this.length; i++){
-        if(this[i].symbolkind == 4){
-            this[i].draw();
-        }
-    }
+    // Render figures
     for (var i = 0; i < this.length; i++) {
         if (this[i].kind == 1) {
             this[i].draw(1, 1);
         }
-        else if(this[i].kind == 2 && this[i].symbolkind != 4){
+    }
+    // Render Lines
+    for (var i = 0; i < this.length; i++) {
+        if (this[i].symbolkind == 4) {
             this[i].draw();
         }
+    }
+    for (var i = 0; i < this.length; i++) {
+        if (this[i].kind == 2 && !(this[i].symbolkind == 4)) {
+            this[i].draw();
+       }
     }
 }
 
@@ -653,7 +638,6 @@ $(document).ready(function(){
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
         $("#moveButton").removeClass("pressed").addClass("unpressed");
-        $("#moveButton").css("visibility", "hidden");
         if ($(this).hasClass("pressed")){
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             uimode = "normal";
@@ -672,6 +656,7 @@ function setType() {
     var elementVal = document.getElementById('object_type').value;
 
     diagram[lastSelectedObject].key_type = elementVal;
+
     updateGraphics();
 }
 
@@ -705,6 +690,33 @@ function dimDialogMenu(dim) {
         $("#appearance").css("display", "none");
     }
 }
+
+/*
+THIS FUNCTION IS NOT USED RIGHT NOW! MIGHT BE USED AT A LATER STAGE
+
+function Consolemode(action) {
+    if(action == 1) {
+        document.getElementById('Hide Console').style.display = "none";
+        document.getElementById('Show Console').style.display = "block";
+        document.getElementById('Show Console').style = "position: fixed; right: 0; bottom: 0px;";
+        document.getElementById('valuesCanvas').style.bottom = "0";
+        heightWindow = (window.innerHeight - 120);
+        canvas.setAttribute("height", heightWindow);
+        $("#consloe").hide();
+        updateGraphics();
+    }
+    if(action == 2) {
+        document.getElementById('Hide Console').style.display = "block";
+        document.getElementById('Show Console').style.display = "none";
+        document.getElementById('Hide Console').style = "position: fixed; right: 0; bottom: 133px;";
+        heightWindow = (window.innerHeight - 244);
+        canvas.setAttribute("height", heightWindow);
+        document.getElementById('valuesCanvas').style.bottom = "130px";
+        $("#consloe").show();
+        updateGraphics();
+    }
+}
+*/
 
 function connectedObjects(line) {
     var privateObjects = [];
@@ -749,9 +761,14 @@ function drawGrid() {
     if (sy < 0) quadrantY = sy;
     else quadrantY = -sy;
 
-    for (var i = 0 + quadrantX; i < quadrantX + (widthWindow / zoomValue); i++) {
-        if (i % 5 == 0) ctx.strokeStyle = "rgb(208, 208, 220)"; //This is a "thick" line
-        else ctx.strokeStyle = "rgb(238, 238, 250)";
+
+    for (var i = 0 + quadrantX; i < quadrantX + widthWindow; i++) {
+        if (i % 5 == 0) { //This is a "thick" line
+            ctx.strokeStyle = "rgb(208, 208, 220)";
+        }
+        else {
+            ctx.strokeStyle = "rgb(238, 238, 250)";
+        }
         ctx.beginPath();
         ctx.moveTo(i * gridSize, 0 + sy);
         ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + sy);
@@ -785,8 +802,6 @@ var consloe = {};
 consloe.log = function(gobBluth) {
     document.getElementById("consloe").innerHTML = ((JSON.stringify(gobBluth) + "<br>") + document.getElementById("consloe").innerHTML);
 }
-
-
 
 //debugMode this function show and hides crosses and the consol.
 var ghostingCrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
@@ -951,7 +966,7 @@ function setRefreshTime() {
 }
 function align(mode){
     for(var i = 0; i < diagram.length; i++){
-        if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1){
+        if(diagram[i].targeted == true){
             selected_objects.push(diagram[i]);
         }
     }
@@ -1088,7 +1103,7 @@ function distribute(axis){
     var selected_objects = [];
 
     for(var i = 0; i < diagram.length; i++){
-        if(diagram[i].targeted == true  && selected_objects.indexOf(diagram[i]) > -1){
+        if(diagram[i].targeted == true){
             selected_objects.push(diagram[i]);
         }
     }
@@ -1175,3 +1190,50 @@ function globalStrokeColor() {
             diagram[i].strokeColor = document.getElementById('StrokeColor').value;
     }
 }
+
+/*
+
+THIS FUNCTION SAVES EVERYTHING CORRECTLY. THE PROBLEM IS THAT IT DOES'T
+REWRITE THE DIAGRAM AS IT SHOULD. IF THAT GETS FIXED, THE REDO AND UNDO
+SHOULD WORK!
+
+function diagramLocalStorage(){
+    var diagramNumberStorage = localStorage.getItem("diagramNumber");
+    diagramNumberStorage++;
+    for(var i = 0; i < diagramNumberStorage; i++){
+        localStorage.removeItem("diagram"+i);
+    }
+    diagramCode = localStorage.getItem("localdiagram");
+    localStorage.setItem("diagram"+diagramNumber, diagramCode);
+}
+
+function saveLocalStorage(e){
+    var oldDiagram = localStorage.getItem("diagram"+diagramNumber);
+    diagramCode = localStorage.getItem("localdiagram");
+    diagramNumber++;
+    diagramNumberUndo = diagramNumber;
+    diagramNumberRedo = diagramNumber;
+    localStorage.setItem("diagramNumber", diagramNumber);
+    localStorage.setItem("diagram"+diagramNumber, diagramCode);
+}
+
+function undoDiagram(){
+    diagramNumberUndo--;
+    if (diagramNumberUndo > 0) {
+        var diagramUndo = localStorage.getItem("diagram"+diagramNumberUndo);
+        localStorage.setItem("localdiagram", diagramUndo);
+        loadDiagram();
+    }
+}
+
+function redoDiagram(){
+    var a = [], b = [], c = [];
+    diagramNumberRedo++;
+    if (diagramNumberRedo<diagramNumber) {
+        var diagramRedo = localStorage.getItem("diagram"+diagramNumberRedo);
+        localStorage.setItem("localdiagram", diagramUndo);
+        loadDiagram();
+    }
+}
+
+*/

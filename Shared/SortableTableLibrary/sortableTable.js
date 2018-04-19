@@ -8,17 +8,7 @@ var sortableTable = {
     edit_tableid:null,
 }
 
-function searchKeyUp(e) {
-	// look for window.event in case event isn't passed in
-    e = e || window.event;
-    if (e.keyCode == 13) {
-        document.getElementById('searchbutton').click();
-        return false;
-    }
-    return true;
-}
-
-function keypressHandler(event) {    
+function keypressHandler(event) {
     if (event.keyCode == 13) {
         updateCellInternal();
     } else if(event.keyCode == 27) {
@@ -130,6 +120,8 @@ function rowDeHighlightInternal(event,row) {
     }
 }
 
+var searchterm = "";
+
 function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions,renderColumnFilter,rowFilter,colsumList,rowsumList,rowsumHeading,sumFunc,freezePane,highlightRow,deHighlightRow,showEditCell,updateCell,hasmagic) {
 	// Private members
 	var result = 0;
@@ -156,7 +148,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	var freezePane = freezePane;
 	var freezePaneArr = [];
 
-	// Public Callback Declarations
+	// Publick Callback Declarations
 	this.highlightRow = highlightRow;
 	this.deHighlightRow = deHighlightRow;
 	this.showEditCell = showEditCell;
@@ -164,12 +156,6 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	this.ascending = false;
 	this.tableid = tableid;
   	this.hasMagicHeadings = hasmagic;
-
-	// Local variable that contains html code for main table and local variable that contains magic headings table
-	var str = "";
-	var mhstr = "";
-	var mhvstr = "";
-	var mhfstr = "";
 
     tbl.cleanHead = [];
 
@@ -188,12 +174,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	}
 
 	this.reRender = function() {
-		// Local variable that contains html code for main table and local variable that contains magic headings table
-		str = "<table style='border-collapse: collapse;' id='"+tableid+"_tbl' class='list list--nomargin'>";
-		mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;margin-top:50px;border-bottom:none;' class='list' id='"+tableid+"_tbl_mh'>";
-		mhvstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;' id='"+tableid+"_tbl_mhv'>";
-		mhfstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;top:0px;z-index:3000;' id='"+tableid+"_tbl_mhf'>";
-    
+
 		// Assign currently active table
 		sortableTable.currentTable = this;
 
@@ -224,6 +205,12 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		if (renderColumnFilter != null) {
 			document.getElementById(filterid).innerHTML = filterstr;
 		}
+
+		// Local variable that contains html code for main table and local variable that contains magic headings table
+		var str = "<table style='border-collapse: collapse;' id='"+tableid+"_tbl' class='list list--nomargin'>";
+		var	mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;' id='"+tableid+"_tbl_mh'>";
+		var mhvstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;' id='"+tableid+"_tbl_mhv'>";
+		var mhfstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;top:0px;z-index:3000;' id='"+tableid+"_tbl_mhf'>";
 
 		str += "<caption>"+caption+"</caption>";
 
@@ -302,8 +289,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				result++;
 
 				for (let colnamez in row) {
-
-					//Counter for freeze here							
+					//Counter for freeze here
 					// If we show this column...
 					if (columnfilter[colnamez] != null) {
 						// This condition is true if column is in summing list and in that case perform the sum like a BOSS
@@ -363,7 +349,30 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		str += "</table>";
 		mhvstr+= "</table>";
 
-		this.magicHeader();
+		// Assign table and magic headings table(s)
+		if (this.hasMagicHeadings) {
+			document.getElementById(tableid).innerHTML = str+mhstr+mhvstr+mhfstr;
+			document.getElementById(tableid+"_tbl_mh").style.width=document.getElementById(tableid+"_tbl").getBoundingClientRect().width+"px";
+			document.getElementById(tableid+"_tbl_mh").style.boxSizing = "border-box";
+			children=document.getElementById(tableid+"_tbl").getElementsByTagName('TH');
+
+			for (i = 0; i < children.length; i++) {
+				document.getElementById(children[i].id+"_mh").style.width = children[i].getBoundingClientRect().width;
+				document.getElementById(children[i].id+"_mh").style.boxSizing = "border-box";
+			}
+
+			document.getElementById(tableid+"_tbl_mhf").style.width = Math.round(document.getElementById(tableid+"_tbl_mhv").getBoundingClientRect().width)+"px";
+			document.getElementById(tableid+"_tbl_mhf").style.boxSizing = "border-box";
+			children=document.getElementById(tableid+"_tbl_mhv").getElementsByTagName('TH');
+
+			for (i = 0; i < children.length; i++) {
+				document.getElementById(children[i].id.slice(0, -1)+"f").style.width = children[i].getBoundingClientRect().width;
+				document.getElementById(children[i].id.slice(0, -1)+"f").style.boxSizing = "border-box";
+			}
+		} else {
+			document.getElementById(tableid).innerHTML = str;
+		}
+
 	}
 
 	this.toggleColumn = function(col) {
@@ -406,34 +415,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 
     this.getSortkind = function() {
         return sortkind;
-    } 
+    }
 
-	this.magicHeader = function() {
-		// Assign table and magic headings table(s)
-		if (this.hasMagicHeadings) {					 
-			document.getElementById(tableid).innerHTML = str+mhstr+mhvstr+mhfstr;
-			document.getElementById(tableid+"_tbl_mh").style.width=document.getElementById(tableid+"_tbl").getBoundingClientRect().width+"px";
-			document.getElementById(tableid+"_tbl_mh").style.boxSizing = "border-box";          
-			children=document.getElementById(tableid+"_tbl").getElementsByTagName('TH');
-			
-			for (i = 0; i < children.length; i++) {
-				document.getElementById(children[i].id+"_mh").style.width = children[i].getBoundingClientRect().width+"px";
-				document.getElementById(children[i].id+"_mh").style.boxSizing = "border-box";          
-			}
-
-			document.getElementById(tableid+"_tbl_mhf").style.width = Math.round(document.getElementById(tableid+"_tbl_mhv").getBoundingClientRect().width)+"px";
-			document.getElementById(tableid+"_tbl_mhf").style.boxSizing = "border-box";
-			children=document.getElementById(tableid+"_tbl_mhv").getElementsByTagName('TH');
-			
-			for (i = 0; i < children.length; i++) {
-				document.getElementById(children[i].id.slice(0, -1)+"f").style.width = children[i].getBoundingClientRect().width+"px";
-				document.getElementById(children[i].id.slice(0, -1)+"f").style.boxSizing = "border-box";
-			}
-		} else {
-			document.getElementById(tableid).innerHTML = str;
-		}
-	} 
-    
 	// Simpler magic heading v. III
 	setInterval(freezePaneHandler,30);
 
@@ -447,7 +430,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 					var thetabhead = document.getElementById(table.tableid+"_tblhead").getBoundingClientRect();
 					// If top is negative and top+height is positive draw mh otherwise hide
 					// Vertical
-					if (thetabhead.top < 50 && thetab.bottom > 0) {
+					if (thetabhead.top < 0 && thetab.bottom > 0) {
 						document.getElementById(table.tableid+"_tbl_mh").style.left = thetab.left+"px";
 						document.getElementById(table.tableid+"_tbl_mh").style.display = "table";
 					}

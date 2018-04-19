@@ -56,5 +56,4 @@ This tests a few different types of list combinations
     * item stig
     * item hilding
   3. item egon
-    
-    hjh
+  

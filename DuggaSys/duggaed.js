@@ -9,9 +9,7 @@ var filez;
 var variant = [];
 var submissionRow = 0;
 var decider;
-var itemToDelete;
-var list = "";
-
+var itemToDelete; // used for when deleting tests
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -283,10 +281,10 @@ function confirmBox(operation, item) {
 
 function createDugga()
 {
+	decider = "createDugga";
 	var did=$("#did").val();
 	var nme=$("#name").val();
 	var autograde=$("#autograde").val();
-	var qstart=$("#qstart").val();
 	var gradesys=$("#gradesys").val();
 	var template=$("#template").val();
 	var release=$("#release").val();
@@ -344,12 +342,15 @@ function updateDugga()
 	var template=$("#template").val();
 	var qstart=$("#qstart").val();
 	var deadline=$("#deadline").val();
+
 	var deadline2=$("#deadline2").val();
 	var deadline3=$("#deadline3").val();
   	var release=$("#release").val();
 
-
 	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,qstart:qstart,deadline:deadline,deadline2:deadline2,deadline3:deadline3,release:release,coursevers:querystring['coursevers']},"DUGGA");
+
+
+	AJAXService("SAVDUGGA",{cid:querystring['cid'],qid:did,nme:nme,autograde:autograde,gradesys:gradesys,template:template,release:release,deadline:deadline,deadline2:deadline2,deadline3:deadline3,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function closeEditDugga()
@@ -377,24 +378,28 @@ function hideLoginPopup()
 function showSubmitButton(){
   $(".submitDugga").css("display","inline-block");
   $(".updateDugga").css("display","none");
+  $(".deleteDugga").css("display","none");
+  $(".closeDugga").css("display","inline-block");
   //$("#overlay").css("display","block");
 }
 
 function showSaveButton(){
   $(".submitDugga").css("display","none");
   $(".updateDugga").css("display","block");
+  $(".deleteDugga").css("display","block");
+  $(".closeDugga").css("display","none");
 //  $("#overlay").css("display","none");
 }
 
-function selectDugga(qid){
-	AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers'], qid:this.qid},"GETQUIZ");
-
+function selectDugga(did,name,autograde,gradesys,template,qstart,deadline,deadline2,deadline3,release){
 	$("#editDugga").css("display","flex");
 		//$("#overlay").css("display","block");
-	$("#did").val(qid); // Set Variant ID
+	$("#did").val(did); // Set Variant ID
 	$("#name").val(name); // Set Dugga name
 	$("#qstart").val(qstart); // Set Start date name
 	$("#deadline").val(deadline); // Set Deadline date name
+	$("#deadline2").val(deadline2); // Set Deadline date name
+	$("#deadline3").val(deadline3); // Set Deadline date name
 	$("#release").val(release); // Set Release date name
 
 	//----------------------------------------------------
@@ -430,15 +435,11 @@ function selectDugga(qid){
 
 function newDugga()
 {
-	$("#editDugga").css("display","none");
-	document.getElementById('name').value='';
-	document.getElementById('name').placeholder='Empty dugga';
-	document.getElementById('qstart').value='';
-	document.getElementById('qstart').placeholder='YYYY-MM-DD';
-	document.getElementById('release').value='';
-	document.getElementById('release').placeholder='YYYY-MM-DD';
-	document.getElementById('deadline').value='';
-	document.getElementById('deadline').placeholder='YYYY-MM-DD';
+	document.getElementById('name').value='New Dugga';
+	document.getElementById('release').value='2017-05-15';
+	document.getElementById('deadline').value='2017-07-31';
+	document.getElementById('deadline2').value='';
+	document.getElementById('deadline3').value='';
 	//----------------------------------------------------
 	// Set Autograde
 	//----------------------------------------------------
@@ -598,25 +599,6 @@ function showVariantz(param){
     }
 }
 
-// Storing the celldata for future use. (Needed when editing and such)
-function returnedQuiz(data) {
-	var quiz = data;
-    var did = $('#did').val();
-    quiz['entries'].forEach(function(element) {
-        if(element['arrow'] == did) {
-            quiz = element;
-        }
-    });
-	$("#did").val(quiz['arrow']);
-	$("#name").val(quiz['qname']);
-	$("#autograde").val(quiz['autograde']);
-	$("#gradesys").val(quiz['gradesystem']);
-	$("#template").val(quiz['quizFile']);
-	$("#qstart").val(quiz['qstart'] ? quiz['qstart'] : "null");
-	$("#deadline").val(quiz['deadline']);
-  	$("#release").val(quiz['qrelease']);
-}
-
 
 // Start of rendering the table
 var myTable;
@@ -630,12 +612,11 @@ function returnedDugga(data) {
     		autograde:"Autograde",
     		gradesystem:"Gradesystem",
     		quizFile:"Template",
-    		qstart:"Startdate",
     		deadline:"Deadline",
     		qrelease:"Result date",
     		modified:"Last modified",
     		cogwheel:"*",
-    		trashcan:"<input type='button' value='+' class='submit-button-newitem' onclick='showSubmitButton(); newDugga()'>"
+    		trashcan:"-"
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
@@ -675,8 +656,7 @@ function returnedDugga(data) {
 
 // Rendring specific cells
 function renderCell(col,celldata,cellid) {
-	list+= celldata + " ";
-	
+	var list = celldata.split();
 	// Translating autograding from integers to show the data like yes/no.
 	if (col == "autograde"){
 		if(celldata == "0"){
@@ -702,24 +682,16 @@ function renderCell(col,celldata,cellid) {
 			celldata = "Undefined";
 		}
 	}
-	
-	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
-	else if (col == "cogwheel"){
-		object=JSON.parse(celldata);
-	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Cogwheel.svg' ";
-		str+=" onclick='showSaveButton(); selectDugga(\""+object+"\");' >";
-		return str;
-	}
 
 	// Placing a clickable trash can in its designated column and implementing the code behind it.
 	else if (col == "trashcan"){
 		object=JSON.parse(celldata);
-		list+= ",";
 	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
 		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
 		return str;
 	}
 	return celldata;
+
 }
 // End of rendering the table.
 

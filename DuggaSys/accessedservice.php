@@ -86,16 +86,6 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$error=$query->errorInfo();
 					$debug="Error updating user".$error[2];
 				}
-	}else if(strcmp($opt,"EXAMINER")==0){
-				$query = $pdo->prepare("UPDATE user_course set teacher=:val WHERE uid=:uid AND cid=:cid;");
-				$query->bindParam(':uid', $uid);
-				$query->bindParam(':cid', $cid);
-				$query->bindParam(':val', $val);
-
-				if(!$query->execute()) {
-					$error=$query->errorInfo();
-					$debug="Error updating user".$error[2];
-				}
 	}else if(strcmp($opt,"CHPWD")==0){
 				$query = $pdo->prepare("UPDATE user set password=:pwd, requestedpasswordchange=0 where uid=:uid;");
 				$query->bindParam(':uid', $uid);
@@ -235,31 +225,6 @@ if(strcmp($opt,"CHECKSECURITYANSWER")==0) {
 	}
 }
 
-if(strcmp($opt,"LOGINATTEMPT")==0) {
-	$log_db = new PDO('sqlite:../../log/loglena4.db');
-	$IP = getIP();
-	$currentTime = round(microtime(true) * 1000);
-	$timeInterval = 300000; // five minutes
-
-	$query = $GLOBALS['log_db']->prepare("SELECT COUNT(*) FROM serviceLogEntries
-											WHERE info LIKE 'LOGINATTEMPT%'
-											AND info LIKE '%{$username}%'
-											AND IP = :IP
-											AND eventType = '6'
-											AND timestamp > :currentTime - :timeInterval");
-	$query->bindParam(':IP', $IP);
-	$query->bindParam(':currentTime', $currentTime);
-	$query->bindParam(':timeInterval', $timeInterval);
-
-	if(!$query->execute()) {
-		$error=$query->errorInfo();
-		$debug="Error counting rows".$error[2];
-	} else {
-		$result = $query->fetch(PDO::FETCH_ASSOC);
-		$queryResult = $result['COUNT(*)'];
-	}
-}
-
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
@@ -272,32 +237,23 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		$error=$query->errorInfo();
 		$debug="Error reading user entries".$error[2];
 	}
-  $result = $query->fetchAll(PDO::FETCH_ASSOC);
-  // Adds all teachers for course to array
-  $examiners = array();
-  foreach($result as $row){
-    if($row['access'] == 'W') {
-      array_push($examiners, $row);
-    }
-  }
-	foreach($result as $row){
-      // Adds current student to array
-      array_push($examiners, $row);
+
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$entry = array(
+				'uid' => $row['uid'],
 				'username' => $row['username'],
-				'ssn' => $row['ssn'],
+				'access' => $row['access'],
 				'firstname' => $row['firstname'],
 				'lastname' => $row['lastname'],
+				'ssn' => $row['ssn'],
 				'class' => $row['class'],
 				'modified' => $row['modified'],
+				'newly' => $row['newly'],
 				'teacher' => $row['teacher'],
-        'examiner' => $examiners,
-				'vers' => json_encode(['vers' => $row['vers'], 'uid' => $row['uid']]),
-				'access' => json_encode(['access' => $row['access'], 'uid' => $row['uid']]),
-				'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid']])
+				'vers' => $row['vers'],
+				'requestedpasswordchange' => $row['requestedpasswordchange']
 			);
 			array_push($entries, $entry);
-      array_pop($examiners);
 	}
 }
 
