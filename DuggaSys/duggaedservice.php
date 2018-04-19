@@ -194,7 +194,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
-
+$mass=array();
 $entries=array();
 $files=array();
 $duggaPages = array();
@@ -249,7 +249,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 		array_push($entries, $entry);
 	}
-
 	$dir    = './templates';
 	$giles = scandir($dir);
 	$files =array();
@@ -259,10 +258,10 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			$duggaPages[substr ( $value , 0, strlen($value)-5 )] = file_get_contents("templates/".$value);
 		}		
 	}
-
 }
 
 $array = array(
+	'mass' => $mass,
 	'entries' => $entries,
 	'debug' => $debug,
 	'files' => $files,

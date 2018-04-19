@@ -620,6 +620,7 @@ function returnedQuiz(data) {
 
 // Start of rendering the table
 var myTable;
+var myTable2;
 function returnedDugga(data) {
 	filez = data;
 
@@ -640,7 +641,6 @@ function returnedDugga(data) {
     	tblbody: data['entries'],
     	tblfoot:[]
     }
-
     myTable = new SortableTable(
 		tabledata,
 		"quiz",
@@ -661,8 +661,40 @@ function returnedDugga(data) {
         null,
 		false
 	);
+	var tabledata2 = {
+    	tblhead:{
+    		variants:"ID",
+    		param:"quizID",
+    		variantanswer:"param",
+    		modified:"modified",
+    		disabled:"disabled",
+    	},
+    	tblbody: data['entries'],
+    	tblfoot:[]
+    }
+	myTable2 = new SortableTable(
+		tabledata2,
+		"variant",
+		null,
+		"",
+        renderCell,
+        null,
+        null,
+        null,
+        [],
+        [],
+        "",
+        null,
+        null,
+		null,
+		null,
+		null,
+        null,
+		false
+	);
 
     myTable.renderTable();
+    myTable2.renderTable();
 
 	$("content").html();
 	var result = 0;
@@ -677,8 +709,16 @@ function returnedDugga(data) {
 function renderCell(col,celldata,cellid) {
 	list+= celldata + " ";
 	
+	// Placing a clickable icon in its designated column that opens a window for acess to variants.
+	if (col == "arrow"){
+		object=JSON.parse(celldata);
+	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Arrow.svg' ";
+		str+=" onclick='showSaveButton(); selectVariant(\""+object+"\");' >";
+		return str;
+	}
+	
 	// Translating autograding from integers to show the data like yes/no.
-	if (col == "autograde"){
+	else if (col == "autograde"){
 		if(celldata == "0"){
 			celldata = "No";
 		}else if(celldata == "1"){

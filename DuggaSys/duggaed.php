@@ -42,7 +42,7 @@ pdoConnect();
 	?>
 	<!-- Login Dialog END -->
 
-  <div id="quiz" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the table within. -->
+  <div id="quiz" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the quiz-table within. -->
 
   <!-- Edit Dugga Dialog START -->
 	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
@@ -106,7 +106,8 @@ pdoConnect();
       			<h3>Edit Variant</h3>
       			<div class='cursorPointer' onclick='closeWindows();closeVariant();'>x</div>
       		</div>
-          <div class='loginBoxbody'>
+          <div class='loginBoxbody'>       
+           <div id="variant" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the variant-table within. -->
           		<div style='padding:5px;display:flex;'>
           			<input type='hidden' id='vid' value='Toddler' />
           			<div id="leftDivDialog">
