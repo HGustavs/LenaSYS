@@ -1,3 +1,6 @@
+//is called swinlane beacause of a drowning symbolic(if deadline is missed).
+//This was once shown by a swinlane icon buts is now replaced by a clock icon.
+
 var querystring = parseGet(); // Get the current courseid and coursevers
 var courseId = querystring['courseid'];
 var courseVers = querystring['coursevers'];
@@ -79,6 +82,85 @@ window.onclick = function (event) {
 // -------------
 // Renderer
 // -------------
+//this function prints the pie Chart in swimlane that shows a brief overview over then
+//students quiz/tests.
+function createPieChart() {
+  var c = document.getElementById('pieChart');
+  var ctx = c.getContext('2d');
+  var width = c.width;
+  var height = c.height;
+  var pieChartRadius = height / 2;
+  var overviewBlockSize = 11;
+
+  var totalQuizes = 10;
+  var passedQuizes = 5;
+  var notGradedQuizes = 1;
+  var failedQuizes = 1;
+  var notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
+
+  var lastend = -1.57;//calculates where the chart starts, don't change
+  var data = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes]; // green,yellow,red,grey fields
+  var colors = {
+    'passedQuizes': '#00E676',        // Green
+    'notGradedQuizes': '#FFEB3B',     // Yellow
+    'failedQuizes': '#E53935',        // Red
+    'notSubmittedQuizes': '#BDBDBD'   // Grey
+  }
+
+  for (var i = 0; i < data.length; i++) {
+
+    if(i == 0) {
+      ctx.fillStyle = colors['passedQuizes'];
+    } else if(i == 1) {
+      ctx.fillStyle = colors['notGradedQuizes'];
+    } else if(i == 2) {
+      ctx.fillStyle = colors['failedQuizes'];
+    } else {
+      ctx.fillStyle = colors['notSubmittedQuizes'];
+    }
+
+    ctx.beginPath();
+    // Parameter for moveTo: x,y
+    ctx.moveTo(pieChartRadius, height / 2);
+    
+    // Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
+    ctx.arc(pieChartRadius, height / 2, height / 2, lastend,lastend
+    + (Math.PI * 2 * (data[i] / totalQuizes)), false);
+
+    //Parameter for lineTo: x,y
+    ctx.lineTo(pieChartRadius, height / 2);
+    ctx.fill();
+
+    lastend += Math.PI * 2 * (data[i] / totalQuizes);
+  }
+
+    // Pie chart overview
+    ctx.save();
+    ctx.translate(pieChartRadius*2 + 20, 2);
+
+    ctx.fillStyle = colors['passedQuizes'];
+    ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
+
+    ctx.fillStyle = colors['notGradedQuizes'];
+    ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
+
+    ctx.fillStyle = colors['failedQuizes'];
+    ctx.fillRect(0, 40, overviewBlockSize, overviewBlockSize);
+
+    ctx.fillStyle = colors['notSubmittedQuizes'];
+    ctx.fillRect(0, 60, overviewBlockSize, overviewBlockSize);
+
+    ctx.font = "12px Arial";
+    ctx.fillStyle = "#000";
+
+    ctx.translate(20, 10);
+    ctx.fillText("Passed (" + 100*(passedQuizes / totalQuizes) + "%)", 0, 0);
+    ctx.fillText("Not Graded (" + 100*(notGradedQuizes / totalQuizes) + "%)", 0, 20);
+    ctx.fillText("Failed (" + 100*(failedQuizes / totalQuizes) + "%)", 0, 40);
+    ctx.fillText("Not Submitted (" + 100*(notSubmittedQuizes / totalQuizes) + "%)", 0, 60);
+
+    ctx.restore();
+}
 
 // Draw the content of the SwimContent container
 function swimlaneDrawLanes() {
@@ -87,14 +169,25 @@ function swimlaneDrawLanes() {
   var userResults = swimlaneInformation['userresults'];
   var bgcol="#EEE";
   var str = "";
+
   str+="<div id='swimlanebox' class='swimlanebox'>";
+
+  /* The next div is a container div containing a description of the swim lanes
+     and a pie chart giving an overview of course progress by a student. */
+  str+="<div style='background-color:#FFF; height:100px;'>";
+  str+="<canvas id='pieChart' width='250px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
+  // str+="<div><p>Swim lane description</p></div>";
+  str+="</div>";
+
   str+="<svg style='width:100%;height:100%;position:absolute;pointer-events:none;'>";
   str+="<line stroke-dasharray='5,5' x1='75' y1='" + (35 + info['weekprog'] * 70) + "' x2='" + (3000) + "' y2='" + (35 + info['weekprog'] * 70) + "' style='stroke:rgb(203,63,65); stroke-width:2;' />";
   str+="</svg>";
-  str += "<table><thead><tr style='height:70px;background-color:#FFF'><th>&nbsp;</th>";
+  str+="<table><thead><tr style='height:70px;background-color:#FFF'><th>&nbsp;</th>"
+
   var colspan=0;
   var count=false;
   var tmpname;
+
   for (var i=0; i<moments.length; i++) {
     var moment = moments[i];
     if (moment['kind']==4){
@@ -211,6 +304,7 @@ function swimlaneDrawLanes() {
     str += "</div>";
 
   swimContent.innerHTML=str;
+  createPieChart();
 }
 function swimlaneDrawLanes2() {
   var info = swimlaneInformation['information'];
