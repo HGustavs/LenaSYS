@@ -827,7 +827,7 @@ function returnedSection(data)
 */
 			
 		str += "<div class='zoom'>"
-		str += "<a class='zoom-fab zoom-btn-large' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
+		str += "<a class='zoom-fab zoom-btn-large noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
 		str += "<ul class='zoom-list' style='display: none;'>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-motd scale-transition scale-out' data-tooltip='Message of the day'><i class='material-icons'>format_quote</i></a></li>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-heading scale-transition scale-out' data-tooltip='Heading'><i class='heading-icon'></i></a></li>"
