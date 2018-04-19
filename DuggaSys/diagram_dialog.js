@@ -199,11 +199,11 @@ function addCardinality(){
     if(hovobj != -1 && diagram[hovobj].symbolkind == 3) {
         x = points[diagram[hovobj].topLeft].x;
         y = points[diagram[hovobj].topLeft].y;
-        diagram[hovobj].cardinality[0] = ({"x": x, "y": y, "value": val});
+        diagram[hovobj].cardinality[0] = ({"x": x, "y": y, "value": val, "connectedObj" : lineStartObj});
     }
     if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5){
         x = points[diagram[lineStartObj].topLeft].x;
         y = points[diagram[lineStartObj].topLeft].y;
-        diagram[lineStartObj].cardinality[0] = ({"x": x, "y": y, "value": val});
+                diagram[lineStartObj].cardinality[0] = ({"x": x, "y": y, "value": val, "connectedObj" : hovobj});
     }
 }

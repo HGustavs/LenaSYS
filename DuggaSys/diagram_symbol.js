@@ -29,7 +29,7 @@ function Symbol(kind) {
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
     this.cardinality = [
-      {"x": null, "y": null, "value": ""}
+      {"x": null, "y": null, "value": "", "connectedObj": null}
     ];
 
     // Connector arrays - for connecting and sorting relationships between diagram objects
@@ -690,16 +690,20 @@ function Symbol(kind) {
     }
 
     this.drawEntity = function(x1, y1, x2, y2){
-        ctx.fillStyle = this.symbolColor;
         //Checks if there is cardinality set on this object
         if(this.cardinality[0].x != null && this.cardinality[0].y != null){
             //Updates the x and y position depending on which side the cardinality is on
             ctx.fillStyle = '#000';
+            var connectedObj = this.cardinality[0].connectedObj;
+            var xConnected = diagram[connectedObj].x;
+            var yConnected = diagram[connectedObj].y;
 
-            //this.cardinality[0].x = x1 > x2 ? x2+10 : x2-10;
-            //this.cardinality[0].y = y1 > y2 ? y2+10 : y2-10;
+            this.cardinality[0].x = xConnected > x1 ? x1 + 50 : x1 - 50;
+            this.cardinality[0].y = yConnected > y1 ? y1 + 50 : y1 - 50;
+
             ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
         }
+        ctx.fillStyle = this.symbolColor;
         ctx.beginPath();
         if (this.key_type == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
@@ -708,7 +712,7 @@ function Symbol(kind) {
             ctx.lineTo(x1 - 5, y2 + 5);
             ctx.lineTo(x1 - 5, y1 - 5);
         }
-        
+
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y1);
         ctx.lineTo(x2, y2);

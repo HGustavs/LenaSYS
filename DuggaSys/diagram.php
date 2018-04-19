@@ -28,6 +28,7 @@
     <script src="diagram_toolbox.js"></script>
 
     <!--this script fix so that the drop down menus close after you have clicked on something on them.-->
+    <br/>
     <script>
         $(document).ready(function(){
             $(".drop-down-item").click(function(){
