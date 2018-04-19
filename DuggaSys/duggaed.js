@@ -430,9 +430,9 @@ function selectDugga(qid){
 function editSectionDialogTitle(title){
 	// Change title of the edit section dialog
 	if(title == "newItem"){
-		document.getElementById("editSectionDialogTitle").innerHTML = "New Item";
+		document.getElementById("editDialogTitle").innerHTML = "New Item";
 	}else if(title == "editItem"){
-		document.getElementById("editSectionDialogTitle").innerHTML = "Edit Item";
+		document.getElementById("editDialogTitle").innerHTML = "Edit Item";
 	}
 }
 
@@ -645,7 +645,7 @@ function returnedDugga(data) {
     		modified:"Last modified",
     		cogwheel:"*",
     		trashcan:"<input type='button' value='+' class='submit-button-newitem'"
-				+"onclick='showSubmitButton(); editSectionDialogTitle(\"newItem\"); newDugga();'>"
+				+"onclick='showSubmitButton(); editDialogTitle(\"newItem\"); newDugga();'>"
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
@@ -718,7 +718,7 @@ function renderCell(col,celldata,cellid) {
 		object=JSON.parse(celldata);
 	    str=
 					"<img id='dorf' class='trashcanIcon' src='../Shared/icons/Cogwheel.svg' "
-					+ " onclick='showSaveButton(); editSectionDialogTitle(\"editItem\"); "
+					+ " onclick='showSaveButton(); editDialogTitle(\"editItem\"); "
 					+ "	selectDugga(\""+object+"\");' >";
 		return str;
 	}
