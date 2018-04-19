@@ -778,7 +778,6 @@ function clearCanvas() {
     for (var i = 0; i < points.length;) {
         points.pop();
     }
-    Save();
     updateGraphics();
 }
 
