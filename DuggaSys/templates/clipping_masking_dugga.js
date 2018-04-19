@@ -37,6 +37,7 @@ var dataV;
 
 function setup()
 {
+	inParams = parseGet();
 		canvas = document.getElementById('a');
 		if (canvas) {
 				context = canvas.getContext("2d");
@@ -61,7 +62,7 @@ function setup()
 
 function show(){
     // Fetch target image
-    document.getElementById("target-img").src="showdoc.php?cid=2&fname="+duggaParams.target;
+    document.getElementById("target-img").src="showdoc.php?cid=" + inParams['cid'] + "&fname="+duggaParams.target;
 
     // Insert saved dugga answer
     document.getElementById("operationList").innerHTML="";
