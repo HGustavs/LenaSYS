@@ -190,7 +190,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
             return i;
         }
     }
-    
+
     this.push({x:xCoordinate, y:yCoordinate, isSelected:isSelected});
     return this.length - 1;
 }
@@ -518,7 +518,6 @@ function initializeCanvas() {
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
-    getUploads();
     // generateExampleCode();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
@@ -539,24 +538,6 @@ function toggleGrid() {
         snapToGrid = true;
     } else {
         snapToGrid = false;
-    }
-}
-
-function getUploads() {
-    var fileID = document.getElementById('fileid');
-    document.getElementById('buttonid').addEventListener('click', openDialog);
-    function openDialog() {
-        fileID.click();
-    }
-    fileID.addEventListener('change', submitFile);
-    function submitFile() {
-        var reader = new FileReader();
-        var file = document.getElementById('fileid').files[0];
-        reader.readAsText(file, "UTF-8");
-        reader.onload = function (evt) {
-            a = evt.currentTarget.result;
-            LoadFile();
-        }
     }
 }
 
