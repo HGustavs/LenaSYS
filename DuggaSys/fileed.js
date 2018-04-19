@@ -65,7 +65,7 @@ function returnedFile(data) {
 		null,
 		"",
         renderCell,
-        renderSortOptions,
+        null,
         null,
         rowFilter,
         [],
@@ -84,19 +84,6 @@ function returnedFile(data) {
 
 	if(data['debug']!="NONE!") alert(data['debug']);
 	//makeAllSortable();
-} 
-
-function renderSortOptions(col,status) {
-	str = "";
-
-	if (status ==- 1) {
-		str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
-	} else if (status == 0) {
-		str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "&#x25bc;</span>";
-	} else {
-		str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "&#x25b2;</span>";
-	}
-	return str;
 }
 
 //----------------------------------------------------------------
@@ -266,7 +253,6 @@ function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
 	var link = celldata.split('://');
 	if (col == "trashcan") {
-		$( "td:eq( cellid )" ).css( "color", "red" );
 		obj = JSON.parse(celldata);
 	    str = "<div class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
 		str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></div>";
