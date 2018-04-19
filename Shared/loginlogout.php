@@ -33,7 +33,10 @@ if($opt=="REFRESH"){
 		// Default values
 		$res = array("login" => "failed");
 		
-		if(login($username, $password, $savelogin)){
+		if(failedLoginCount($_SERVER['REMOTE_ADDR'])>=10){
+			$res["login"] = "failed";
+			$res["reason"] = "Too many failed attempts, try again later";
+		}else if(login($username, $password, $savelogin)){
 			// Successfully logged in, return user name
 			$res["login"] = "success";
 			$res["username"] = $username;

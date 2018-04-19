@@ -75,11 +75,6 @@ function changeVersion(cid,uid,val)
 	AJAXService("VERSION",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
 }
 
-function changeExaminer(cid,uid,val)
-{
-	AJAXService("EXAMINER",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
-}
-
 // Sets values in the "cogwheel popup"
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
 function selectUser(uid,username,ssn,firstname,lastname,access,className)
@@ -211,44 +206,11 @@ var bool = true;
  */
 
 function renderCell(col,celldata,cellid) {
-	if (col == "requestedpasswordchange"){
-		obj=JSON.parse(celldata);
-		str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
-		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
-    str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
-    return str;
-	}else if(col == "examiner"){
-    if(celldata[celldata.length - 1]['access'] == 'W'){
-      str = "none";
-    }else{
-      str = "<select onChange='changeExaminer(\""+querystring['cid']+"\",\""+celldata[celldata.length - 1]['uid']+"\",this.value);' onclick='return false;'>";
-      for(var i = 0; i < celldata.length - 1; i++){
-        str+="<option ";
-        if(celldata[i]['username'] === celldata[celldata.length - 1]['teacher']) {
-          str+="selected='selected' ";
-        }
-        str+="value='"+celldata[i]['username']+"'>"+celldata[i]['username']+"</option>";
-      }
-      str+="</select>";
-    } 
-    return str;
-  }else if(col == "access"){
-    obj=JSON.parse(celldata);
-    str = "<select onChange='changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);' onclick='return false;'>";
-    str+="<option value='W'" + (obj.access == 'W' ? " selected='selected'" : "") + ">Teacher</option>";
-    str+="<option value='R'" + (obj.access == 'R' ? " selected='selected'" : "") + ">Student</option>";
-    str+="<option value=null"+ (obj.access == 'null' || obj.access == null ? " selected='selected'" : "") + ">none</option>";
-    str+="</select>";
-    return str;
-	}else if(col == "vers"){
-    obj=JSON.parse(celldata);
-    str = "<select onChange='changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);' onclick='return false;'>";
-    for(var i = 0; i < filez['courses'].length; i++){
-      str+="<option value='"+filez['courses'][i]['vers']+"'" + (obj.vers == filez['courses'][i]['vers'] ? " selected='selected'" : "") + ">"+filez['courses'][i]['vers']+"</option>";
-    }
-    str+="</select>";
-    return str;
-	}else {
+	if (col == "Trumma"){
+	    return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
+	} else if (col == "Pnr") {
+	    return "<div>" + celldata + "</div>";
+	} else {
 		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
 	return celldata;
@@ -272,18 +234,18 @@ var myTable;
 
 function returnedAccess(data) {
 	filez = data;
+
 	var tabledata = {
 		tblhead:{
 			username:"User",
-			ssn:"SSN",
 			firstname:"First name",
 			lastname:"Last name",
-			class:"Class",
-			modified:"Added",
-			examiner:"Examiner",
-      vers:"Version",
-			access:"Access",
-			requestedpasswordchange:"Password"
+			ssn:"SSN",
+			//class:"Class",
+			lastupdated:"Added",
+			vers:"Version",
+			teacher:"Teacher",
+			requestedpasswordchange:""
 		},
 		tblbody: data['entries'],
 		tblfoot:[]
@@ -307,24 +269,127 @@ function returnedAccess(data) {
 		null,
 		null,
 	    null,
-		true
+		false
 	);
 
 	myTable.renderTable();
+
+  // Defining arrays for later use
+  var teachs = [];
+  var userClass = [];
+  dataInfo = data;
+	// Fill section list with information
+	str="";
+	if (data['entries'].length > 0) {
+		keyUpSearch();
+		str+="<table class='list' style='margin:0px; padding:0px; border:1px solid #ccc; border-top:0px;'>";
+      str+="<tr><th class='first' onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:140px; cursor: pointer; position:sticky; top:141px;'>Username</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer; position:sticky; top:141px;'>SSN</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer; position:sticky; top:141px;'>First Name</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; cursor: pointer; position:sticky; top:141px;'>Last Name</th>" +
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer; position:sticky; top:141px;'>Class</th>" +
+			/*"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:150px; cursor: pointer;'>Teacher</th>" +*/
+			"<th onclick='sortData($( this ).text())' style='text-align:left; padding-left:8px; width:100px; cursor: pointer; position:sticky; top:141px;'>Added</th>" +
+          	"<th style='text-align:left; padding-left:8px; width:90px; position:sticky; top:141px;'>Version</th>" +
+		  	"<th style='text-align:left; padding-left:8px; width:90px; position:sticky; top:141px;'>Access</th>" +
+			"<th style='text-align:left; padding-left:8px; width:90px; position:sticky; top:141px;'>Settings</th>" +
+			"<th class='last' style='text-align:left; padding-left:8px; width:120px; position:sticky; top:141px;'>Password</th></tr><tbody id='accesstable_body'>";
+		for(i=0;i<data['entries'].length;i++){
+			var item=data['entries'][i];
+
+			// If this 
+			if(item['requestedpasswordchange']==1){
+					str+="<tr style='background:#ff0000;'>";
+			}else if(parseFloat(item['newly'])<10){
+					str+="<tr style='background:#efd;'>";						
+			}else{
+					str+="<tr>";			
+			}
+			
+
+			str+="<td>"+item['username']+"</td>";
+			str+="<td>"+item['ssn']+"</td>";
+			str+="<td>"+item['firstname']+"</td>";
+			str+="<td>"+item['lastname']+"</td>";
+			str+="<td>"+item['class']+"</td>";
+/*
+			// Place array value in a temporary vairable
+			var teacher = item['teacher'];
+			// Check if the value is null (replace won't work with null)
+			if( teacher !== null){
+				// Place spaces in the string when a lowercase is followed by a uppercase
+				teacher = teacher.replace(/([a-z])([A-Z])/g, '$1 $2');
+			}
+			str+="<td>"+teacher+"</td>";
+*/
+			str+="<td>"+item['modified'].substr(0,10)+"</td>";
+
+			// Select box for Version
+			str+="<td valign='center'><select onChange='changeVersion(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
+            for(var j = 0; j < data['courses'].length; j++){
+                str+="<option ";
+                if(item['vers'] === data['courses'][j]['vers']) {
+                    str+="selected='selected' ";
+                }
+                str+="value='"+data['courses'][j]['vers']+"'>"+data['courses'][j]['vers']+"</option>";
+            }
+			str+="</select>";
+			
+			// Select box for Access
+			str+="<td valign='center'><select onChange='changeAccess(\""+querystring['cid']+"\",\""+item['uid']+"\",this.value);' onclick='return false;' id='"+item['uid']+"'>";
+				if(item['access']=="R"){
+					str+="<option selected='selected' value='R'>Student</option>";
+				}else{
+					str+="<option value='R'>Student</option>";
+				}
+				if(item['access']=="W"){
+					str+="<option selected='selected' value='W'>Teacher</option>";
+				}else{
+					str+="<option value='W'>Teacher</option>";
+				}
+				if(item['access']=="N"){ 
+					str+="<option selected='selected' value='N'>None</option>"
+				}else{ 
+					str+="<option value='N'>None</option>";
+				}
+			str+="</select>";
+			
+			// Loops through the "teachers" data array and stores the name of all teachers in a new array
+      /*
+			for(j=0; j<data['teachers'].length;j++){
+				var items=data['teachers'][j];
+				teachs[j] = items['firstname']+" "+items['lastname'];
+			}
+      */
+			// Loops through the "classes" data array and stores all the classes in a new array
+			/*
+      for(h=0; h<data['classes'].length;h++){
+				var itemc=data['classes'][h];
+				userClass[h] = itemc['class'];
+			}
+      */
+      /*
+			// Convert our arrays to strings where each field is separated with /t, this is necessary to keep structure when we send it to another function
+			var teacherstring = teachs.join("/t");
+			var classString = userClass.join("/t");
+      
+
+			// Create cogwheel
+			str+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+			str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\",\""+item['class']+"\",\""+teacherstring+"\",\""+classString+"\");'></td>";
+			*/
+      // Create cogwheel
+			str+="<td><img id='dorf' style='float:none; margin-right:4px;' src='../Shared/icons/Cogwheel.svg' ";
+			str+=" onclick='selectUser(\""+item['uid']+"\",\""+item['username']+"\",\""+item['ssn']+"\",\""+item['firstname']+"\",\""+item['lastname']+"\",\""+item['access']+"\",\""+item['class']+"\");'></td>";
+			str+="<td><input class='submit-button' type='button' value='Reset PW' onclick='if(confirm(\"Reset Password for "+item['username']+" ?\")) resetPw(\""+item['uid']+"\",\""+item['username']+"\"); return false;' style='float:none;'></td>";
+			str+="</tr>";
+		}
+		str+="</tbody></table>";
+	}
+	var slist=document.getElementById("accessedcontent");
+	slist.innerHTML=str;
 	
 	if(data['debug']!="NONE!") alert(data['debug']);
-
-	makeAllSortable();
-}
-
-
-//----------------------------------------
-// makeAllSortable(parent) <- Makes all tables within given scope sortable.
-//----------------------------------------
-function makeAllSortable(parent) {
-	parent = parent || document.body;
-	var t = parent.getElementsByTagName('table'), i = t.length;
-	//while (--i >= 0) makeSortable(t[i]);
 }
 
 //excuted onclick button for quick searching in table

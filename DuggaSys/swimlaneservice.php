@@ -1,6 +1,4 @@
 <?php
-//is called swinlane beacause of a drowning symbolic(if deadline is missed).
-//This was once shown by a swinlane icon buts is now replaced by a clock icon.
 //-----------------------------------------------------
 // Swimlaneservice - Reads data for the Swimlane
 //-----------------------------------------------------
