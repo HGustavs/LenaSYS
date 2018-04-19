@@ -82,8 +82,9 @@ window.onclick = function (event) {
 // -------------
 // Renderer
 // -------------
-//this function prints the pie Chart in swimlane that shows a brief overview over then
-//students quiz/tests.
+
+// This function prints the pie Chart in the swimlane that shows a brief overview
+// over the student's quizes/tests.
 function createPieChart() {
   var c = document.getElementById('pieChart');
   var ctx = c.getContext('2d');
@@ -92,14 +93,26 @@ function createPieChart() {
   var pieChartRadius = height / 2;
   var overviewBlockSize = 11;
 
-  var totalQuizes = 10;
-  var passedQuizes = 5;
-  var notGradedQuizes = 1;
+  var totalQuizes = 20;
+  var passedQuizes = 11;
+  var notGradedQuizes = 5;
   var failedQuizes = 1;
   var notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
 
+  // PCT = Percentage
+  var passedPCT = 100 * (passedQuizes / totalQuizes);
+  var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
+  var failedPCT = 100 * (failedQuizes / totalQuizes);
+  var notSubmittedPCT = 100 * (notSubmittedQuizes / totalQuizes);
+
+  // Only use 2 decimal places and round up if necessary
+  passedPCT = Math.round(passedPCT * 100) / 100;
+  notGradedPCT = Math.round(notGradedPCT * 100) / 100;
+  failedPCT = Math.round(failedPCT * 100) / 100;
+  notSubmittedPCT = Math.round(notSubmittedPCT * 100) / 100;
+
   var lastend = -1.57;//calculates where the chart starts, don't change
-  var data = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes]; // green,yellow,red,grey fields
+  var data = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes]; // Green, Yellow, Red and Grey fields
   var colors = {
     'passedQuizes': '#00E676',        // Green
     'notGradedQuizes': '#FFEB3B',     // Yellow
@@ -120,7 +133,6 @@ function createPieChart() {
     }
 
     ctx.beginPath();
-    // Parameter for moveTo: x,y
     ctx.moveTo(pieChartRadius, height / 2);
     
     // Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
@@ -134,32 +146,32 @@ function createPieChart() {
     lastend += Math.PI * 2 * (data[i] / totalQuizes);
   }
 
-    // Pie chart overview
-    ctx.save();
-    ctx.translate(pieChartRadius*2 + 20, 2);
+  // Pie chart overview
+  ctx.save();
+  ctx.translate(pieChartRadius*2 + 20, 2);
 
-    ctx.fillStyle = colors['passedQuizes'];
-    ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
+  ctx.fillStyle = colors['passedQuizes'];
+  ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
 
-    ctx.fillStyle = colors['notGradedQuizes'];
-    ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
+  ctx.fillStyle = colors['notGradedQuizes'];
+  ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
 
-    ctx.fillStyle = colors['failedQuizes'];
-    ctx.fillRect(0, 40, overviewBlockSize, overviewBlockSize);
+  ctx.fillStyle = colors['failedQuizes'];
+  ctx.fillRect(0, 40, overviewBlockSize, overviewBlockSize);
 
-    ctx.fillStyle = colors['notSubmittedQuizes'];
-    ctx.fillRect(0, 60, overviewBlockSize, overviewBlockSize);
+  ctx.fillStyle = colors['notSubmittedQuizes'];
+  ctx.fillRect(0, 60, overviewBlockSize, overviewBlockSize);
 
-    ctx.font = "12px Arial";
-    ctx.fillStyle = "#000";
+  ctx.font = "12px Arial";
+  ctx.fillStyle = "#000";
 
-    ctx.translate(20, 10);
-    ctx.fillText("Passed (" + 100*(passedQuizes / totalQuizes) + "%)", 0, 0);
-    ctx.fillText("Not Graded (" + 100*(notGradedQuizes / totalQuizes) + "%)", 0, 20);
-    ctx.fillText("Failed (" + 100*(failedQuizes / totalQuizes) + "%)", 0, 40);
-    ctx.fillText("Not Submitted (" + 100*(notSubmittedQuizes / totalQuizes) + "%)", 0, 60);
+  ctx.translate(20, 10);
+  ctx.fillText("Passed (" + passedPCT + "%)", 0, 0);
+  ctx.fillText("Not Graded (" + notGradedPCT + "%)", 0, 20);
+  ctx.fillText("Failed (" + failedPCT + "%)", 0, 40);
+  ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 0, 60);
 
-    ctx.restore();
+  ctx.restore();
 }
 
 // Draw the content of the SwimContent container
