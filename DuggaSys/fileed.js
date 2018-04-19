@@ -52,8 +52,8 @@ function returnedFile(data) {
     		extension:"Extension",
     		filesize:"Size",
     		uploaddate:"Upload date",
-    		trashcan:"Delete",
-    		editor:"Editor"
+    		editor:"",
+    		trashcan:""
     	},
     	tblbody: data['entries'],
     	tblfoot:[]

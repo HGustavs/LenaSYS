@@ -19,7 +19,7 @@ pdoConnect();
 	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script> 
 	<script src="fileed.js"></script>
 </head>
-<body onload="setupSort();">
+<body>
 	<?php 
 		$noup="SECTION";
 		include '../Shared/navheader.php';
