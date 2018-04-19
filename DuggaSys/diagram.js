@@ -774,6 +774,7 @@ function clearCanvas() {
     while (diagram.length > 0) {
         diagram[diagram.length - 1].erase();
         diagram.pop();
+        c.pop();
     }
     for (var i = 0; i < points.length;) {
         points.pop();
