@@ -101,6 +101,7 @@ function getImage() {
 }
 
 function Save() {
+    c = [];
     for (var i = 0; i < diagram.length; i++) {
         c[i] = diagram[i].constructor.name;
         c[i] = c[i].replace(/"/g,"");
