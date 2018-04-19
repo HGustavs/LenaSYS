@@ -121,7 +121,7 @@
 
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" id="buttonid" value='getImage'>Import</a>
+                            <a href="#" id="buttonid" onclick="openImportDialog();" value='getImage'>Import</a>
                         </div>
 
 
@@ -211,7 +211,7 @@
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-text">
-                            <a href="#">Select multiple objects</a>	
+                            <a href="#">Select multiple objects</a>
                            <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
                         </div>
                     </div>
@@ -289,6 +289,20 @@
             </div>
             <div class='table-wrap'>
                 <div id="f01"></div>
+            </div>
+        </div>
+    </div>
+    <!-- The import menu. Default state is display: none; -->
+    <div id="import" class='loginBoxContainer' style='height:auto; margin-top:0; display: none;'>
+        <div class='loginBox'>
+            <div class='loginBoxheader'>
+                <h3>Import</h3>
+                <div class='cursorPointer' onclick='closeImportDialog();'>x</div>
+            </div>
+            <div class='table-wrap'>
+                <div style="padding: 20px">
+                    <input type="file" id="importFile" />
+                </div>
             </div>
         </div>
     </div>
