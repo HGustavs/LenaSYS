@@ -761,10 +761,10 @@ function returnedSection(data)
         //Hamburger menu for navigation
         str+="<td class='hamburger'>";
 				str	+=
-							"<div tabindex='0' class='package'><div id='hamburgerIcon' "
-						+	"class='submit-button hamburger' onclick='hamburgerChange(this);"
-						+	"bigMac();'><div class='container'><div class='bar1'></div><div "
-						+	"class='bar2'></div><div class='bar3'></div></div></div></div>";
+						  "<div tabindex='0' class='package'><div id='hamburgerIcon' "
+						+ "class='submit-button hamburger' onclick='hamburgerChange(this);"
+						+ "bigMac();'><div class='container'><div class='bar1'></div><div "
+						+ "class='bar2'></div><div class='bar3'></div></div></div></div>";
 
         str+="<div class='hamburgerMenu'>";
         str+="<ul class='hamburgerList'>";
@@ -885,7 +885,7 @@ function returnedSection(data)
     if(retdata["writeaccess"]){
         str += "<div id='course-newitem' style='display: flex;'>";
 		str +=
-			"<input type='button' value='+' class='submit-button-newitem' title='New Item'"
+		  "<input type='button' value='+' class='submit-button-newitem' title='New Item'"
 			+ " onclick='selectItem("
 			+ "\"" + item['lid'] + "\","
 			+ "\"New Item\","
