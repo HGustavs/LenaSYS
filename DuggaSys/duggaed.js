@@ -427,7 +427,7 @@ function selectDugga(qid){
 	$("#template").html(str);
 }
 
-function editSectionDialogTitle(title){
+function editDialogTitle(title){
 	// Change title of the edit section dialog
 	if(title == "newItem"){
 		document.getElementById("editDialogTitle").innerHTML = "New Item";
