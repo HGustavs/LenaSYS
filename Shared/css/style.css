@@ -890,6 +890,7 @@ input {
 
 .loginBox .inputwrapper input, .loginBox .inputwrapper select{
   float:right;
+  width: 195px;
 }
 
 .loginBox .inputwrapper input[type="checkbox"]{
@@ -898,7 +899,7 @@ input {
 }
 
 .loginBox select {
-  width: 216px;
+  width: 195px;
   height: 30px;
   line-height: 18px;
   color: #6f6f6f;
