@@ -544,13 +544,12 @@ function toggleGrid() {
 // Opens the dialog menu for import
 function openImportDialog() {
     $("#import").css("display", "flex");
-    
+
 }
 
 // Closes the dialog menu for import.
 function closeImportDialog() {
     $("#import").css("display", "none");
-    $("#importFile").off("change");
 }
 
 // Import file
