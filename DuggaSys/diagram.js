@@ -190,7 +190,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
             return i;
         }
     }
-    
+
     this.push({x:xCoordinate, y:yCoordinate, isSelected:isSelected});
     return this.length - 1;
 }
@@ -518,7 +518,6 @@ function initializeCanvas() {
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
-    getUploads();
     // generateExampleCode();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
@@ -542,22 +541,38 @@ function toggleGrid() {
     }
 }
 
-function getUploads() {
-    var fileID = document.getElementById('fileid');
-    document.getElementById('buttonid').addEventListener('click', openDialog);
-    function openDialog() {
-        fileID.click();
+// Opens the dialog menu for import
+function openImportDialog() {
+    $("#import").css("display", "flex");
+    $("#importFile").change(function(e) {
+        importFile(e);
+    });
+}
+
+// Closes the dialog menu for import.
+function closeImportDialog() {
+    $("#import").css("display", "none");
+    $("#importFile").off("change");
+}
+
+// Import file
+function importFile(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var extension = file.name.split(".").pop().toLowerCase();
+    if (extension != "txt") {
+        $("#importError").show();
+        return;
     }
-    fileID.addEventListener('change', submitFile);
-    function submitFile() {
-        var reader = new FileReader();
-        var file = document.getElementById('fileid').files[0];
-        reader.readAsText(file, "UTF-8");
-        reader.onload = function (evt) {
-            a = evt.currentTarget.result;
-            LoadFile();
-        }
-    }
+    $("#importError").hide();
+    closeImportDialog();
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var fileContent = e.target.result;
+        LoadImport(fileContent);
+    };
+    reader.readAsText(file, "UTF-8");
 }
 
 // Function that is used for the resize
