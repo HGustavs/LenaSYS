@@ -86,7 +86,6 @@ window.onclick = function (event) {
 // This function prints the pie Chart in the swimlane that shows a brief overview
 // over the student's quizes/tests.
 function createPieChart() {
-  console.log(swimlaneInformation);
   var c = document.getElementById('pieChart');
   var ctx = c.getContext('2d');
   var width = c.width;
@@ -94,35 +93,32 @@ function createPieChart() {
   var pieChartRadius = height / 2;
   var overviewBlockSize = 11;
 
-  // var totalQuizes = 20;
-  // var passedQuizes = 11;
-  // var notGradedQuizes = 5;
-  // var failedQuizes = 1;
-  // var notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
-
   var totalQuizes = 0;
   var passedQuizes = 0;
   var notGradedQuizes = 0;
   var failedQuizes = 0;
   var notSubmittedQuizes = 0;
 
+  // Calculate total quizes.
   for(var i = 0; i < swimlaneInformation['moments'].length; i++) {
     if(swimlaneInformation['moments'][i].kind == "3") {
       totalQuizes++;
     }
   }
 
+  // Calculate passed, failed and not graded quizes.
   for(var i = 0; i < swimlaneInformation['userresults'].length; i++) {
     if(swimlaneInformation['userresults'][i].grade == "green") {
       passedQuizes++;
     } else if(swimlaneInformation['userresults'][i].grade == "yellow") {
-      notGradedQuizes++;
+      failedQuizes++;
     }
     else {
-      failedQuizes++;
+      notGradedQuizes++;
     }
   }
 
+  // Calculate non submitted quizes.
   notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
   
   // PCT = Percentage
@@ -137,8 +133,9 @@ function createPieChart() {
   failedPCT = Math.round(failedPCT * 100) / 100;
   notSubmittedPCT = Math.round(notSubmittedPCT * 100) / 100;
 
-  var lastend = -1.57;//calculates where the chart starts, don't change
-  var data = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes]; // Green, Yellow, Red and Grey fields
+  var lastend = -1.57; /* Chart start point. -1.57 is a quarter the number of
+                          radians in a circle, i.e. start at 12 o'clock */
+  var data = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
   var colors = {
     'passedQuizes': '#00E676',        // Green
     'notGradedQuizes': '#FFEB3B',     // Yellow
@@ -288,7 +285,7 @@ function swimlaneDrawLanes() {
               color = "fill='rgb(0, 255, 0)'/>";
               hasGrade = true;
               break;
-            } else if(grade == "yellow") {
+            } else if(grade == "yellow") { // Yellow appears to be failed
               color = "fill='rgb(255,0,0)'/>";
               hasGrade = true;
               break;
