@@ -264,7 +264,7 @@ function renderCell(col,celldata,cellid) {
 			return "<div>" + list[0] + "</div>";
 		}
 	} else if (col == "extension") {
-	    return "<div>" + list[1] + "</div>";
+	    return "<div>" + list[list.length - 1] + "</div>";
 	} else if (col == "editor") {
 		if(link[0] == "https" || link[0] == "http"){
 			str = "";
