@@ -62,7 +62,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
   	}
     
   	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){  		
-      // En till foreach om man vill hämta flera objekt i en cell occh kcikamg med till rendercell
+      // En till foreach om man vill hämta flera objekt i en cell och skicka med till rendercell
 
         $filekind = $row['kind'];
         $filename = $row['filename'];
@@ -87,7 +87,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		  'filesize' => $row['filesize'],
 		  'uploaddate' => $row['uploaddate'],
           'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']]),
-          //'editor' => json_encode(['filename' => $row['filename'],'kind' => $row['kind'], 'cid' => $cid, 'vers' => $coursevers])
 		  'editor' => $filePath
 
   		);
