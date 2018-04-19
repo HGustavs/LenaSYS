@@ -79,7 +79,8 @@ function loadFormIntoElement(element, dir){
     if(file.readyState === 4){
       element.innerHTML = file.responseText;
       if(globalAppearanceValue == 0){
-        document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+        document.getElementById('nametext').value = diagram[last
+          ectedObject].name;
         setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
         setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
         setSelectedOption('font', diagram[lastSelectedObject].font);
@@ -168,8 +169,8 @@ function objectAppearanceMenu(form) {
 }
 function changeObjectAppearance(object_type){
     /*
-     * USES DIALOG TO CHANGE OBJECT APPEARANCE
-     */
+    * USES DIALOG TO CHANGE OBJECT APPEARANCE
+    */
 
     if (diagram[lastSelectedObject].symbolkind == 4) {
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
@@ -188,23 +189,22 @@ function changeObjectAppearance(object_type){
     updateGraphics();
 }
 
-function addCardinality(side){
+function addCardinality(){
 
-  var x;
-  var y;
-  var val = document.getElementById(side).value;
+    var x;
+    var y;
+    var val = document.getElementById('cardinality').value;
 
-  if(val == "None") val = "";
+    if(val == "None") val = "";
 
-//rightside assigns it's values to the array with index 1, leftside with index 0
-  if(side == "rightSide"){
-    x = points[diagram[lastSelectedObject].bottomRight].x;
-    y = points[diagram[lastSelectedObject].bottomRight].y;
-    diagram[lastSelectedObject].cardinality[1] = ({"x": x, "y": y, "value": val, "side": side});
-  }else{
-    x = points[diagram[lastSelectedObject].topLeft].x;
-    y = points[diagram[lastSelectedObject].topLeft].y;
-    diagram[lastSelectedObject].cardinality[0] = ({"x": x, "y": y, "value": val, "side": side});
-  }
-
+    if(hovobj != -1 && hovobj.symbolkind == 3) {
+        x = points[diagram[hovobj].topLeft].x;
+        y = points[diagram[hovobj].topLeft].y;
+        diagram[hovobj].cardinality[0] = ({"x": x, "y": y, "value": val, "side": side});
+    }
+    if(diagram[lineStartObj].symbolkind == 3 && hovobj.symbolkind == 5){
+        x = points[diagram[lineStartObj].topLeft].x;
+        y = points[diagram[lineStartObj].topLeft].y;
+        diagram[lineStartObj].cardinality[0] = ({"x": x, "y": y, "value": val, "side": side});
+    }
 }
