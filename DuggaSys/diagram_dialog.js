@@ -184,8 +184,8 @@ function addCardinality(side){
   var y;
   var val = document.getElementById(side).value;
 
-  if(val == "None") val = null;
-  
+  if(val == "None") val = "";
+
 //rightside assigns it's values to the array with index 1, leftside with index 0
   if(side == "rightSide"){
     x = points[diagram[lastSelectedObject].bottomRight].x;
