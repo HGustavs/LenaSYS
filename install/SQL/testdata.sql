@@ -800,7 +800,7 @@ INSERT INTO fileLink (filename,kind,cid,isGlobal) VALUES ("cssdugga-site-1.png",
 
 /* Creation of new dugga (MINIMAL needs more fixing..) */
 INSERT INTO quiz (id,cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator) VALUES (13,5,1,1,'DUGANNN','dugga1','2015-02-01 00:00:00','2015-02-25 00:00:00',NOW(),6);
-INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (24,12,'{\"tal\":\"33\"}','{"danswer":\"7\"}',NOW(),6);
+INSERT INTO variant (vid,quizID,param,variantanswer,modified,creator) VALUES (24,13,'{\"tal\":\"33\"}','{"danswer":\"7\"}',NOW(),6);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,gradesystem,highscoremode) VALUES (3001,5,'Bitdugga 1HP','12',3,100,6,1,'1339',3,1);
 
 INSERT INTO `usergroup` (`ugid`, `lid`, `name`, `created`, `lastupdated`) VALUES (NULL, '2001', 'Festargruppen', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
