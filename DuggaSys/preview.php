@@ -178,7 +178,7 @@
             }
 
             function loadPreview(fileUrl) {
-                var fileContent = getFIleContents(fileUrl);
+                var fileContent = getFileContents(fileUrl);
                 document.getElementById("mrkdwntxt").value = fileContent;
                 updatePreview(fileContent);
                 $(".PreviewWindow").show();
@@ -197,7 +197,7 @@
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
                 };
             }
-            function getFIleContents(fileUrl){
+            function getFileContents(fileUrl){
               var result = null;
               $.ajax({
                 url: fileUrl,
@@ -259,15 +259,8 @@
     <body onload="onload()">
 
         <div class="Header">Markdown preview</div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <button id="Preview" onclick="showPreview()">Preview</button>
-=======
             <button id="Preview" onclick="loadPreview('../courses/2/minimikrav_m2.md')">Preview</button>
->>>>>>> 5a71650d2094606ff37635d2865b9a131fb0f857
-=======
-            <button id="Preview" onclick="loadPreview('../courses/2/minimikrav_m2.md')">Preview</button>
->>>>>>> 5a71650d2094606ff37635d2865b9a131fb0f857
+
         <div class="PreviewWindow">
             <div class="PrevHead">This is the preview window
             </div>
@@ -296,15 +289,7 @@
                         <div class="descbox">
                             <span id="markdown"></span>
                         </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    </div>    
-=======
                     </div>
->>>>>>> 5a71650d2094606ff37635d2865b9a131fb0f857
-=======
-                    </div>
->>>>>>> 5a71650d2094606ff37635d2865b9a131fb0f857
                 </div>
             </div>
             <div class="OptionButtons">
