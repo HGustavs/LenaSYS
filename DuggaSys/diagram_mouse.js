@@ -300,12 +300,13 @@ function mouseupevt(ev) {
 
             //Check if you not start on a line and not end on a line, if then, set point1 and point2   
             if(symbolStartKind != 4 && symbolEndKind != 4){
+                var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == 2) {
                     p1 = diagram[lineStartObj].centerPoint;
                 } else if (diagram[lineStartObj].symbolkind == 5) {
                     p1 = diagram[lineStartObj].middleDivider;
                 } else {
-                    p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                    createNewPoint = true;
                 }  
                 
                 //Code for making sure enitities not connect to the same attribute multiple times
@@ -321,6 +322,7 @@ function mouseupevt(ev) {
                     } 
                 }
                 if(okToMakeLine){
+                    if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     if (diagram[hovobj].symbolkind == 2) {
                         p2 = diagram[hovobj].centerPoint;
                     } else if (diagram[hovobj].symbolkind == 5) {
