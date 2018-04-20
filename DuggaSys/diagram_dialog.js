@@ -199,7 +199,5 @@ function changeCardinality(){
 
     //Setting existing cardinality value on line
     if(val == "None") val = "";
-    if(diagram[lastSelectedObject].cardinality[0].value == ""){
-        diagram[lastSelectedObject].cardinality[0].value = val;
-    }
+    diagram[lastSelectedObject].cardinality[0].value = val;
 }
