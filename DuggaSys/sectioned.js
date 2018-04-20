@@ -1591,17 +1591,11 @@ $(window).load(function() {
 
 $(document).mouseup(function (e)
 {
-    var container = new Array();
-    container.push($('.zoom'));
-    //container.push($('.zoom-list'));
-    
-    $.each(container, function(key, value) {
-        if (!$(value).is(e.target) // if the target of the click isn't the container...
-            && $(value).has(e.target).length === 0) // ... nor a descendant of the container
-        {
-	        //alert("waht");
-            $('.zoom-btn-sm').toggleClass('scale-out');
-			$('.zoom-list').delay(100).fadeOut(0);
-        }
-    });
+    if (!$('.zoom').is(e.target) // if the target of the click isn't the container...
+        && $('.zoom').has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        //alert("waht");
+        $('.zoom-btn-sm').toggleClass('scale-out');
+		$('.zoom-list').delay(100).fadeOut(0);
+    }
 });
