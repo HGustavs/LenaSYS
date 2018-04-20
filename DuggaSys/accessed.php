@@ -24,7 +24,7 @@
 <body>
 
 	<?php
-		$noup=true;
+		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
 
