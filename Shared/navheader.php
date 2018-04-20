@@ -11,9 +11,6 @@
 			if(isset($_GET['coursevers'])){
 					$_SESSION['coursevers']=$_GET['coursevers'];
 			}
-      if(isset($_GET['moment'])){
-					$_SESSION['moment']=$_GET['moment'];
-			}
 
 			// Always show home button which links to course homepage
 			echo "<td class='navButt' id='home' title='Home'><a class='navButt' href='../DuggaSys/courseed.php'><img src='../Shared/icons/Home.svg'></a></td>";

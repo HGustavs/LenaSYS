@@ -359,11 +359,6 @@
 		}else{
 			$userid="UNK";
 		}
-		if(isset($_SESSION['moment'])){
-			$moment=$_SESSION['moment'];
-		}else{
-			$moment="UNK";
-		}
 
 		// Get visibility from course table
 		$courseVisibility;
@@ -378,13 +373,27 @@
 
 		// Read visibility of dugga (listentry)
 		$duggaVisibility;
-		$query = $pdo->prepare("SELECT visible FROM listentries WHERE cid=:cid and lid=:moment");
+		$query = $pdo->prepare("SELECT visible FROM listentries, variant
+														WHERE listentries.cid=:cid
+														AND listentries.link=variant.quizID
+														AND (replace(replace(variant.param, ': ', ':'), ' :', ':') LIKE :target
+														OR replace(replace(variant.param, ': ', ':'), ' :', ':') LIKE :filelink)");
 		$query->bindParam(':cid', $cid);
-		$query->bindParam(':moment', $moment);
+		$query->bindValue(':target', ("%\"target\":\"$fname\"%"));
+		$query->bindValue(':filelink', "%\"filelink\":\"$fname\"%");
 		$result = $query->execute();
-		if($row = $query->fetch(PDO::FETCH_ASSOC)){
-		    $duggaVisibility = $row['visible'];
+		if($result){
+			foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+				$visible = $row['visible'];
+				if((!isset($duggaVisibility) || $duggaVisibility == 0 || $duggaVisibility == 2) &&
+								!($visible == 2 && $duggaVisibility != 0)) {
+					$duggaVisibility = $visible;
+					if($duggaVisibility == 1) break;
+				}
+			}
 		}
+		
+	echo (string) $duggaVisibility;
 
 		$hr = false;
 		if (checklogin()) {
@@ -398,7 +407,7 @@
 		  $hr = true;
 		}
 
-		if($hr){
+		if(false){
 			// If we have access rights, read the file securely to document
 			if(is_numeric($fid)){
 				// Check if it is a number or a filename
