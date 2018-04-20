@@ -321,11 +321,13 @@ function mouseupevt(ev) {
                 var ok = true;
                 if(symbolEndKind == 3 && symbolStartKind == 2){
                     if(diagram[hovobj].hasConnector(p2)){
+                        console.log("endkind 3 has connector to p2")
                         ok = false;
                     }
                     
                 } else if(symbolEndKind == 2 && symbolStartKind == 3){
                        if(diagram[lineStartObj].hasConnector(p2)){
+                           console.log("startkind 3 has connector to p2")
                         ok = false;
                     } 
                 }
