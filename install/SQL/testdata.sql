@@ -221,10 +221,10 @@ INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,mo
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2031,2,'Report 1HP', '',4,14,2,1,'97731',2031,2,1,0);
 INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2032,2,'Report submission','10',3,15,2,1,'97731',2031,2,1,0);
 
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2033,2,'HTML and CSS 1HP', '',4,15,2,1,'97732',2033,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2034,2,'Random css dugga','11',3,16,2,1,'97732',2033,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2035,2,'Clipping', '',4,17,2,1,'97732',2035,2,1,0);
-INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2036,2,'Random clipping dugga','12',3,18,2,1,'97732',2035,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2033,2,'HTML and CSS 1HP', '',4,16,2,1,'97732',2033,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2034,2,'Random css dugga','11',3,17,2,1,'97732',2033,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2035,2,'Clipping', '',4,18,2,1,'97732',2035,2,1,0);
+INSERT INTO listentries (lid,cid,entryname,link,kind,pos,creator,visible,vers,moment,gradesystem,highscoremode,rowcolor) VALUES (2036,2,'Random clipping dugga','12',3,19,2,1,'97732',2035,2,1,0);
 
 /* Insert access for users */
 INSERT INTO user_course (uid,cid,result,creator,access,period,term,vers) VALUES (1010,1,'0.0',1,'R',0,'', 45656);
