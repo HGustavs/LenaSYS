@@ -309,16 +309,6 @@ function mouseupevt(ev) {
                     p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                 }  
                 
-                
-                if (diagram[hovobj].symbolkind == 2) {
-                    p2 = diagram[hovobj].centerPoint;
-                } else if (diagram[hovobj].symbolkind == 5) {
-                    p2 = diagram[hovobj].middleDivider;
-                } else{
-                    console.log("addpoints 2");
-                    p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                }
-                
                 //Code for making sure enitities not connect to the same attribute multiple times
                 var ok = true;
                 if(symbolEndKind == 3 && symbolStartKind == 2){
@@ -333,9 +323,18 @@ function mouseupevt(ev) {
                         ok = false;
                     } 
                 }
-                    
-                // Start line on object
                 if(ok){
+                    if (diagram[hovobj].symbolkind == 2) {
+                        p2 = diagram[hovobj].centerPoint;
+                    } else if (diagram[hovobj].symbolkind == 5) {
+                        p2 = diagram[hovobj].middleDivider;
+                    } else{
+                        console.log("addpoints 2");
+                        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                    }
+
+                    // Start line on object
+                
                     diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
                     diagram[hovobj].connectorTop.push({from:p2, to:p1});
                 }
