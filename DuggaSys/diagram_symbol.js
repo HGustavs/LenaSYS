@@ -262,7 +262,7 @@ function Symbol(kind) {
     }
 
     //return true if connector contains a certain point
-    this.hasConnector(point){
+    this.hasConnector = function(point) {
         for (var i = 0; i < this.connectorTop.length; i++) {
             if(connectorTop[i].to == point || connectorTop[i].from == point){
                 return true;
