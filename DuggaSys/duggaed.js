@@ -13,6 +13,7 @@ var itemToDelete;
 var str;
 var parentQuiz = 0;
 var hej;
+var globalData;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -116,14 +117,6 @@ function createJSONString(formData) {
 	return jsonStr;
 }
 
-function openVariant(columnValue){
-	parentQuiz = columnValue;
-	showVariantDisableButton();
-	showVariantSubmitButton();
-	console.log(parentQuiz);
-	myTable2.renderTable();
-	$("#editVariant").css("display","flex"); //Display variant-window
-}
 function selectVariant(vid,param,answer,template,dis)
 {
 	$("#editVariant").css("display","flex"); // Display edit dialog
@@ -560,8 +553,46 @@ function returnedQuiz(data) {
 // Start of rendering the table
 var myTable;
 var myTable2;
+function openVariant(clickedElement) {
+	var tabledata2 = {
+    	tblhead:{
+    		param:"Parameter",
+    		variantanswer:"Answer",
+    		modified:"Modified",
+    		disabled:"",
+    		vid:""
+    	},
+    	tblbody: globalData['entries'][clickedElement].variants, //"ParentQuiz" returns the right value, but the table gets created in a to early stage.
+    	tblfoot:[]
+    }
+	myTable2 = new SortableTable(
+		tabledata2,
+		"variant",
+		null,
+		"",
+        renderCell,
+        null,
+        null,
+        null,
+        [],
+        [],
+        "",
+        null,
+        null,
+		null,
+		null,
+		null,
+        null,
+		false
+	);
+	showVariantDisableButton();
+	showVariantSubmitButton();
+	myTable2.renderTable();
+	$("#editVariant").css("display","flex"); //Display variant-window
+}
 function returnedDugga(data) {
 	filez = data;
+	globalData = data;
 
     var tabledata = {
     	tblhead:{
@@ -600,37 +631,6 @@ function returnedDugga(data) {
         null,
 		false
 	);
-	var tabledata2 = {
-    	tblhead:{
-    		param:"Parameter",
-    		variantanswer:"Answer",
-    		modified:"Modified",
-    		disabled:"",
-    		vid:""
-    	},
-    	tblbody: data['entries'][parentQuiz].variants, //"ParentQuiz" returns the right value, but the table gets created in a to early stage.
-    	tblfoot:[]
-    }
-	myTable2 = new SortableTable(
-		tabledata2,
-		"variant",
-		null,
-		"",
-        renderCell,
-        null,
-        null,
-        null,
-        [],
-        [],
-        "",
-        null,
-        null,
-		null,
-		null,
-		null,
-        null,
-		false
-	);
     myTable.renderTable();
 
 	$("content").html();
@@ -646,10 +646,9 @@ function returnedDugga(data) {
 function renderCell(col,celldata,cellid) {	
 	// Placing a clickable icon in its designated column that opens a window for acess to variants.
 	if (col == "arrow"){
-		object=JSON.parse(cellid.match(/\d+/));
-		console.log(object);
+		clickedElement=JSON.parse(cellid.match(/\d+/));
 	    str="<img id='dorf' src='../Shared/icons/Arrow.svg' ";
-		str+=" onclick='openVariant(\""+object+"\");'>";
+		str+=" onclick='openVariant(\""+clickedElement+"\");'>";
 		return str;
 	}
 	
