@@ -1173,7 +1173,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 		var foundfile=null;
 		var oldfile="";
 		var tab="<table class='previewTable'>";
-		tab+="<thead><tr><th>Preview</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>"
+		tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>"
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
 			for (var i=filez.length-1;i>=0;i--){
@@ -1184,9 +1184,9 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							tab+="<td>";
 							// Button for making / viewing feedback - note - only button for given feedback to students.
 							if (ctype == "link"){
-									tab+="<a href='"+filez[i].content+"' ><button>P</button></a>";
+									tab+="<a href='"+filez[i].content+"' ><img src='../Shared/icons/file_download.svg' /></a>";
 							} else {
-									tab+="<a href='"+filelink+"' ><button>P</button></a>";
+									tab+="<a href='"+filelink+"' ><img src='../Shared/icons/file_download.svg' /></a>";
 							}
 							tab+="</td>";
 							tab+="<td>";
