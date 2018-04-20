@@ -185,20 +185,21 @@ function changeObjectAppearance(object_type){
     updateGraphics();
 }
 
-function addCardinality(){
-  var val = document.getElementById('cardinality').value;
+function createCardinality(){
+    //Setting cardinality on new line
+    if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3){
+      diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
+    }
+    else if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5) {
+      diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
+    }
+}
+function changeCardinality(){
+    var val = document.getElementById('cardinality').value;
 
-  //Setting existing cardinality value on line
-  if(val == "None") val = "";
-  if(diagram[lastSelectedObject].cardinality[0].value == ""){
-      diagram[lastSelectedObject].cardinality[0].value = val;
-  }
-
-  //Setting cardinality on new line
-  if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3){
-    diagram[diagram.length-1].cardinality[0] = ({"value": val, "isCorrectSide": false});
-  }
-  else if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5) {
-    diagram[diagram.length-1].cardinality[0] = ({"value": val, "isCorrectSide": true});
-  }
+    //Setting existing cardinality value on line
+    if(val == "None") val = "";
+    if(diagram[lastSelectedObject].cardinality[0].value == ""){
+        diagram[lastSelectedObject].cardinality[0].value = val;
+    }
 }

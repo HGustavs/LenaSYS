@@ -374,7 +374,7 @@ function mouseupevt(ev) {
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
-            addCardinality();
+            createCardinality();
             updateGraphics();
             //diagram.createAritySymbols(diagram[lastSelectedObject]);
         }
