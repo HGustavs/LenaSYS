@@ -29,7 +29,7 @@ function Symbol(kind) {
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
     this.cardinality = [
-      {"x": null, "y": null, "value": "", "connectedObj": null}
+      {"value": ""}
     ];
 
     // Connector arrays - for connecting and sorting relationships between diagram objects
@@ -690,22 +690,6 @@ function Symbol(kind) {
     }
 
     this.drawEntity = function(x1, y1, x2, y2){
-        //Checks if there is cardinality set on this object
-        if(this.cardinality[0].x != null && this.cardinality[0].y != null){
-            //Updates the x and y position depending on which side the cardinality is on
-            ctx.fillStyle = '#000';
-            var p1 = this.cardinality[0].p1;
-            var p2 = this.cardinality[0].p2;
-            var p1x = points[p1].x;
-            var p1y = points[p1].y;
-            var p2x = points[p2].x;
-            var p2y = points[p2].y;
-
-            this.cardinality[0].x = p1x > p2x ? p1x-10 : p1x+10;
-            this.cardinality[0].y = p1y > p2y ? p1y-10: p1y+10;
-
-            ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
-        }
         ctx.fillStyle = this.symbolColor;
         ctx.beginPath();
         if (this.key_type == "Weak") {
@@ -732,6 +716,18 @@ function Symbol(kind) {
     }
 
 this.drawLine = function(x1, y1, x2, y2){
+    //Checks if there is cardinality set on this object
+    if(this.cardinality[0].value != ""){
+        //Updates x and y position
+        ctx.fillStyle = '#000';
+
+        this.cardinality[0].x = x1 > x2 ? x1-10 : x1+10;
+        this.cardinality[0].y = y1 > y2 ? y1-10 : y1+10;
+
+        ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+    }
+
+
     ctx.lineWidth = this.lineWidth;
     if (this.key_type == "Forced") {
         //Draw a thick black line

@@ -191,19 +191,16 @@ function addCardinality(){
     var y;
     var val = document.getElementById('cardinality').value;
 
+    //Setting existing cardinality value on line
     if(val == "None") val = "";
-    if(diagram[lastSelectedObject].cardinality[0].value != "")
-    {
+    if(diagram[lastSelectedObject].cardinality[0].value != ""){
         diagram[lastSelectedObject].cardinality[0].value = val;
     }
-    if(hovobj != -1 && diagram[hovobj].symbolkind == 3) {
-        x = points[diagram[hovobj].topLeft].x;
-        y = points[diagram[hovobj].topLeft].y;
-        diagram[hovobj].cardinality[0] = ({"x": x, "y": y, "value": val, "p1": p2, "p2": p1});
+
+    //Setting cardinality on new line
+    if((diagram[hovobj].symbolkind == 5 && diagram[hovobj].symbolkind == 3)
+    || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5) {
+        diagram[diagram.length-1].cardinality[0] = ({"value": val});
     }
-    if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5){
-        x = points[diagram[lineStartObj].topLeft].x;
-        y = points[diagram[lineStartObj].topLeft].y;
-                diagram[lineStartObj].cardinality[0] = ({"x": x, "y": y, "value": val, "p1": p1, "p2": p2});
-    }
+
 }
