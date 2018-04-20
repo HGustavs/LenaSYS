@@ -200,6 +200,8 @@ function renderCell(col,celldata,cellid) {
 			}
 			return "<div>" + listStr + "</div>";
 		}
+	} else if (col == "filesize") {
+		celldata = formatBytes(celldata, 0);
 	} else if (col == "extension") {
 	    return "<div>" + list[list.length - 1] + "</div>";
 	} else if (col == "editor") {
