@@ -623,199 +623,200 @@ function toggleSortDir(col){
 
 function process()
 {
-    // Read dropdown from local storage
-    clist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
-    if (clist){
-        clist=clist.split("**");
-    }
+	// Read dropdown from local storage
+	clist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
+	if (clist){
+		clist=clist.split("**");
+	}
 
-    // Create temporary list that complies with dropdown
-    momtmp=new Array;
-    var momname = "Moment unavailable";
-    for(var l=0;l<moments.length;l++){
-        if (moments[l].kind===4){
-            momname = moments[l].entryname;
-        }
-        moments[l].momname = momname;
-    }
+	// Create temporary list that complies with dropdown
+	momtmp=new Array;
+	var momname = "Moment unavailable";
+	for(var l=0;l<moments.length;l++){
+		if (moments[l].kind===4){
+			momname = moments[l].entryname;
+		}
+		moments[l].momname = momname;
+	}
 
-    // Create temporary list that complies with dropdown
-    momtmp=new Array;
-    for(var l=0;l<moments.length;l++){
-        if (clist !== null ){
-            index=clist.indexOf("hdr"+moments[l].lid+"check");
-            if(clist[index+1]=="true"){
-                momtmp.push(moments[l]);
-            }
-        } else {
-            /* default to show every moment/dugga */
-            momtmp.push(moments[l]);
-        }
-    }
+	// Create temporary list that complies with dropdown
+	momtmp=new Array;
+	for(var l=0;l<moments.length;l++){
+		if (clist !== null ){
+			index=clist.indexOf("hdr"+moments[l].lid+"check");
+			if(clist[index+1]=="true"){
+				momtmp.push(moments[l]);
+			}
+		} else {
+		/* default to show every moment/dugga */
+			momtmp.push(moments[l]);
+		}
+	}
 
-    // Reconstitute table
-    students=new Array;
-    for(i=0;i<entries.length;i++){
+	// Reconstitute table
+	students=new Array;
+	for(i=0;i<entries.length;i++){
 
-      var uid=entries[i].uid;
+		var uid=entries[i].uid;
 
-    // Loop through all teacher names and store the appropriate name in a variable
-    for(j=0; j<teacher.length;j++){
-        var tuid=teacher[j].tuid;
-    if(uid==tuid){
-      var setTeacher = teacher[j].teacher;
-      }
-    }
-    if(setTeacher !== null){
-        // Place spaces in the string when a lowercase is followed by a uppercase
-        setTeacher = setTeacher.replace(/([a-z])([A-Z])/g, '$1 $2');
-      }
+		// Loop through all teacher names and store the appropriate name in a variable
+		for(j=0; j<teacher.length;j++){
+			var tuid=teacher[j].tuid;
+			if(uid==tuid){
+				var setTeacher = teacher[j].teacher;
+			}
+		}
+		if(setTeacher !== null){
+			// Place spaces in the string when a lowercase is followed by a uppercase
+			setTeacher = setTeacher.replace(/([a-z])([A-Z])/g, '$1 $2');
+		}
 
-          // All results of this student
-          var res=results[uid];
-          var restmp=new Array;
+		// All results of this student
+		var res=results[uid];
+		var restmp=new Array;
 
-          if (typeof res != 'undefined'){
-              // Pre-filter result list for a student for lightning-fast access
-              for(var k=0;k<res.length;k++){
-                  restmp[res[k].dugga]=res[k];
-              }
-          }
-          var student=new Array;
-          // Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-          student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class,access:entries[i].access,setTeacher});
-          // Now we have a sparse array with results for each moment for current student... thus no need to loop through it
-          for(var j=0;j<momtmp.length;j++){
-              // If it is a feedback quiz -- we have special handling.
-              if(momtmp[j].quizfile=="feedback_dugga"){
-                  var momentresult=restmp[momtmp[j].lid];
-                  // If moment result does not exist... either make "empty" student result or push mark
-                  if(typeof momentresult!='undefined'){
-                      student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire});
-                  }else{
-                      student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, userAnswer:"UNK", quizfile:momtmp[j].quizfile, gradeExpire:momentresult.gradeExpire});
-                  }
-              }else{
-                  var momentresult=restmp[momtmp[j].lid];
-                  // If moment result does not exist... either make "empty" student result or push mark
-                  if(typeof momentresult!='undefined'){
-                      student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant,quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire});
-                  }else{
-                      student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile});
-                  }
-              }
-          }
-          students.push(student);
-    }
-    // Update dropdown list
-    var dstr="";
+		if (typeof res != 'undefined'){
+			// Pre-filter result list for a student for lightning-fast access
+			for(var k=0;k<res.length;k++){
+				restmp[res[k].dugga]=res[k];
+			}
+		}
+		var student=new Array;
+		// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
+		student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class,access:entries[i].access,setTeacher});
+		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
+		for(var j=0;j<momtmp.length;j++){
+			// If it is a feedback quiz -- we have special handling.
+			if(momtmp[j].quizfile=="feedback_dugga"){
+				var momentresult=restmp[momtmp[j].lid];
+				// If moment result does not exist... either make "empty" student result or push mark
+				if(typeof momentresult!='undefined'){
+					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire});
+				}else{
+					student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, userAnswer:"UNK", quizfile:momtmp[j].quizfile, gradeExpire:momentresult.gradeExpire});
+				}
+			}else{
+				var momentresult=restmp[momtmp[j].lid];
+				// If moment result does not exist... either make "empty" student result or push mark
+				if(typeof momentresult!='undefined'){
+					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant,quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire});
+				}else{
+					student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile});
+				}
+			}
+		}
+		students.push(student);
+	}
+	// Update dropdown list
+    
+	var dstr="";
 
-      dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 
-      var activeMoment = 0;
-      for(var j=0;j<moments.length;j++){
+	var activeMoment = 0;
+	for(var j=0;j<moments.length;j++){
 
-        var lid=moments[j].lid;
-        var name=moments[j].entryname;
-        dstr+="<div class='checkbox-dugga";
-        if (moments[j].visible == 0) {dstr +=" checkhidden";}
+		var lid=moments[j].lid;
+		var name=moments[j].entryname;
+		dstr+="<div class='checkbox-dugga";
+		if (moments[j].visible == 0) {dstr +=" checkhidden";}
 
-        if (moments[j].kind == 4) {dstr +=" checkmoment";}
+		if (moments[j].kind == 4) {dstr +=" checkmoment";}
 
-        dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
-              if (moments[j].kind == 4) {
-                    duggaArray.push( [] );
-                    var idAddString = "hdr"+lid+"check";
-                  dstr+=" onclick='checkMomentParts(" + activeMoment + ", \"" + idAddString + "\"); toggleAll();'";
-                    activeMoment++;
-                } else {
-                var idAddString = "hdr"+lid+"check";
-                    if(activeMoment>0){
-                        duggaArray[activeMoment-1].push(idAddString);
-                    }else{
-                        duggaArray[activeMoment].push(idAddString);
-                    }
-        }
+		dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
+		if (moments[j].kind == 4) {
+			duggaArray.push( [] );
+			var idAddString = "hdr"+lid+"check";
+			dstr+=" onclick='checkMomentParts(" + activeMoment + ", \"" + idAddString + "\"); toggleAll();'";
+			activeMoment++;
+		} else {
+			var idAddString = "hdr"+lid+"check";
+			if(activeMoment>0){
+				duggaArray[activeMoment-1].push(idAddString);
+			}else{
+				duggaArray[activeMoment].push(idAddString);
+			}
+		}
 
-        if (clist){
-            index=clist.indexOf("hdr"+lid+"check");
-            if(index>-1){
-                if(clist[index+1]=="true"){
-                    dstr+=" checked ";
-                }
-            }
-        } else {
-            /* default to check every visible dugga/moment */
-            if (moments[j].visible != 0) dstr+=" checked ";
-        }
-        dstr+=">";
-        dstr+= "<label class='headerlabel' id='hdr"+lid;
-        dstr+="' for='hdr"+lid+"check' ";
-        dstr+=">"+name+"</label></div>";
-    }
-    // Filter for teachers.
-    dstr+="<div class='checkbox-dugga checkmoment'>";
-    dstr+="<input type='checkbox' class='headercheck' name='showTeachers' value='0' id='showteachers'";
-    if(clist){
-      index=clist.indexOf("showteachers");
-      if(index>-1){
-        if(clist[index+1]=="true"){
-          dstr+=" checked";
-        }
-      }
-    }
-    dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>";
+		if (clist){
+			index=clist.indexOf("hdr"+lid+"check");
+			if(index>-1){
+ 				if(clist[index+1]=="true"){
+ 					dstr+=" checked ";
+ 				}
+ 			}
+ 		} else {
+ 			/* default to check every visible dugga/moment */
+ 			if (moments[j].visible != 0) dstr+=" checked ";
+ 		}
+ 		dstr+=">";
+ 		dstr+= "<label class='headerlabel' id='hdr"+lid;
+ 		dstr+="' for='hdr"+lid+"check' ";
+ 		dstr+=">"+name+"</label></div>";
+ 	}
+	// Filter for teachers.
+	dstr+="<div class='checkbox-dugga checkmoment'>";
+	dstr+="<input type='checkbox' class='headercheck' name='showTeachers' value='0' id='showteachers'";
+	if(clist){
+		index=clist.indexOf("showteachers");
+		if(index>-1){
+			if(clist[index+1]=="true"){
+				dstr+=" checked";
+			}
+		}
+	}
+	dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>";
 
-    // Filter for only showing pending
-    dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
-    if (onlyPending){ dstr+=" checked"; }
-    dstr+="><label class='headerlabel' for='pending'>Only pending</label></div>";
+	// Filter for only showing pending
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
+	if (onlyPending){ dstr+=" checked"; }
+	dstr+="><label class='headerlabel' for='pending'>Only pending</label></div>";
 
-    // Filter for mini mode
-    dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='minimode' value='0' id='minimode' onchange='miniMode()'>";
-    dstr+="<label class='headerlabel' for='minimode'>Mini mode</label></div>";
+	// Filter for mini mode
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='minimode' value='0' id='minimode' onchange='miniMode()'>";
+	dstr+="<label class='headerlabel' for='minimode'>Mini mode</label></div>";
 
-  dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
+	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
 
-  document.getElementById("dropdownc").innerHTML=dstr;
-  var dstr="";
+	document.getElementById("dropdownc").innerHTML=dstr;
+	var dstr="";
 
-  // Sorting
-    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir1'>Sort ascending</label><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='-1' id='sortdir0'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
-  dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
-  dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
-  dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";
-    dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >Class</label></div>";
-    dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(4)' value='0' id='sortcol0_4'><label class='headerlabel' for='sortcol0_4' >Teacher</label></div>";
+	// Sorting
+	dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888'><input type='radio' class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir1'>Sort ascending</label><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='-1' id='sortdir0'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
+	dstr+="<div class='checkbox-dugga'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(0)' value='0' id='sortcol0_0'><label class='headerlabel' for='sortcol0_0' >Firstname</label></div>";
+	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(1)' value='0' id='sortcol0_1'><label class='headerlabel' for='sortcol0_1' >Lastname</label></div>";
+	dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(2)' value='0' id='sortcol0_2'><label class='headerlabel' for='sortcol0_2' >SSN</label></div>";
+	dstr+="<div class='checkbox-dugga' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(3)' value='0' id='sortcol0_3'><label class='headerlabel' for='sortcol0_3' >Class</label></div>";
+	dstr+="<div class='checkbox-dugga' style='border-bottom:1px solid #888;' ><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(4)' value='0' id='sortcol0_4'><label class='headerlabel' for='sortcol0_4' >Teacher</label></div>";
 
-    dstr+="<table><tr><td>";
-    for(var j=0;j<momtmp.length;j++){
-        var lid=moments[j].lid;
-        var name=momtmp[j].entryname;
-        var truncatedname=name;
-        if(truncatedname.length>12){
-                    truncatedname=momtmp[j].entryname.slice(0, 3)+"..."+momtmp[j].entryname.slice(momtmp[j].entryname.length-8);
-        }
+	dstr+="<table><tr><td>";
+	for(var j=0;j<momtmp.length;j++){
+		var lid=moments[j].lid;
+		var name=momtmp[j].entryname;
+		var truncatedname=name;
+		if(truncatedname.length>12){
+			truncatedname=momtmp[j].entryname.slice(0, 3)+"..."+momtmp[j].entryname.slice(momtmp[j].entryname.length-8);
+		}
 
 
-        dstr+="<div class='checkbox-dugga checknarrow ";
-        if (moments[j].visible == 0){
-            dstr+="checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol"+(j+1)+"' value='"+(j+1)+"'><label class='headerlabel' title='"+name+"' for='sortcol"+(j+1)+"' >"+truncatedname+"</label></div>";
-        }else{
-            dstr+="'><input name='sortcol' type='radio' class='sortradio' id='sortcol"+(j+1)+"' onclick='sorttype(-1)' value='"+(j+1)+"'><label class='headerlabel' title='"+name+"' for='sortcol"+(j+1)+"' >"+truncatedname+"</label></div>";
-        }
-    }
-    dstr+="</td><td style='vertical-align:top;'>";
-    dstr+="<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(0)' id='sorttype0' value='0'><label class='headerlabel' for='sorttype0' >FIFO</label></div>";
-    dstr+="<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(1)' id='sorttype1' value='1'><label class='headerlabel' for='sorttype1' >Grade</label></div>";
-    dstr+="<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(2)' id='sorttype2' value='2'><label class='headerlabel' for='sorttype2' >Submitted</label></div>";
-    dstr+="<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(3)' id='sorttype3' value='3'><label class='headerlabel' for='sorttype3' >Marked</label></div>";
-    dstr+="</td></tr></table>";
-    dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaves()'>Sort</button></div>"
-    document.getElementById("dropdowns").innerHTML=dstr;
+		dstr+="<div class='checkbox-dugga checknarrow ";
+		if (moments[j].visible == 0){
+			dstr+="checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol"+(j+1)+"' value='"+(j+1)+"'><label class='headerlabel' title='"+name+"' for='sortcol"+(j+1)+"' >"+truncatedname+"</label></div>";
+		}else{
+			dstr+="'><input name='sortcol' type='radio' class='sortradio' id='sortcol"+(j+1)+"' onclick='sorttype(-1)' value='"+(j+1)+"'><label class='headerlabel' title='"+name+"' for='sortcol"+(j+1)+"' >"+truncatedname+"</label></div>";
+		}
+	}
+	dstr+="</td><td style='vertical-align:top;'>";
+	dstr+="<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(0)' id='sorttype0' value='0'><label class='headerlabel' for='sorttype0' >FIFO</label></div>";
+	dstr+="<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(1)' id='sorttype1' value='1'><label class='headerlabel' for='sorttype1' >Grade</label></div>";
+	dstr+="<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(2)' id='sorttype2' value='2'><label class='headerlabel' for='sorttype2' >Submitted</label></div>";
+	dstr+="<div class='checkbox-dugga checknarrow' ><input name='sorttype' type='radio' class='sortradio' onclick='sorttype(3)' id='sorttype3' value='3'><label class='headerlabel' for='sorttype3' >Marked</label></div>";
+	dstr+="</td></tr></table>";
+	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leaves()'>Sort</button></div>"
+	document.getElementById("dropdowns").innerHTML=dstr;
 
-    resort();
-    //console.log(performance.now()-tim);
+	resort();
+	//console.log(performance.now()-tim);
 }
 
 function hoverc()
@@ -1285,7 +1286,7 @@ function saveResponse()
 function returnedResults(data)
 {
 
-  testSortable(data);
+  
 
   if (data.gradeupdated === true){
       // Update background color
@@ -1367,6 +1368,7 @@ function returnedResults(data)
   }
   // Upgrade the most bottom row with amount of ungraded duggas per column.
   updateAmountOfUngraded();
+  testSortable(data);
 }
 
 function miniMode(){
@@ -1383,50 +1385,70 @@ var myTable;
 // Renderer
 //----------------------------------------
 
+function buildDynamicHeaders(data) {
+  let tblhead = {0:"Fname/Lname/SSN"};
+  data['moments'].forEach(function(entry) {
+  	tblhead[entry['lid']] = entry['entryname'];
+  });
+  return tblhead;
+}
+
+function buildStudentInfo() {
+	let studentInfo = new Array;
+	students.forEach(function(entry) {
+		if(entry.length > 1) {
+			var row = {0:entry[0]};
+			for(i = 1; i < entry.length; i++) {
+				row[entry[i]['lid']] = entry[i];
+			}
+			studentInfo[entry[1]['uid']] = row;
+		}
+	});
+	return studentInfo;
+	
+}
 
 function testSortable(data){
-filez = data;
   
-  //build the dynamic headers
-  let tblhead = {firstnamelastnamessn:"Fname/Lname/SSN"};
-  data['moments'].forEach(function(entry) {
-  	tblhead[entry['entryname']] = entry['entryname'];
-  });
+	let tblhead = buildDynamicHeaders(data);
+	let studentInfo = buildStudentInfo();
 
-  var tabledata = {
-  	tblhead,
-    tblbody: data['sortableTable'],
-    tblfoot:[]
-  }
-  
-	//console.log(tabledata);
+	var tabledata = {
+		tblhead,
+		tblbody: studentInfo,
+		tblfoot:[]
+	}
+  console.log(studentInfo);
 	console.log(data);
-  myTable = new SortableTable(
-    tabledata,
-    "resultTable",
-    null,
-    "",
-    renderCell,
-    null,
-    null,
-    null,
-    [],
-    [],       
-    "",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    false
-  );
+	console.log(students);
+	console.log(tblhead);
+	console.log(tabledata.tblbody);
+	myTable = new SortableTable(
+		tabledata,
+		"resultTable",
+		null,
+		"",
+		renderCell,
+		null,
+		null,
+		null,
+		[],
+		[],       
+		"",
+		null,
+		null,
+		null,
+		null,
+		null,
+		null,
+		false
+	);
+	myTable.renderTable();
 
-  myTable.renderTable();
+	if(data['debug']!="NONE!") alert(data['debug']);
 
-  if(data['debug']!="NONE!") alert(data['debug']);
-
-  makeAllSortable();
+	makeAllSortable();
+	//console.log(data);
 }
 
 
@@ -1440,27 +1462,33 @@ function makeAllSortable(parent) {
 }
 
 function renderCell(col,celldata,cellid) {
-  if (col == "firstnamelastnamessn"){
-    obj=JSON.parse(celldata);
+	
+	//console.log(celldata);
+  if (col == 0){
+    /*obj=JSON.parse(celldata);
     //console.log(obj);
-
+		
     str = "<p style='font-size:12px;line-height:12px;'>";
     str += obj.firstname + " " + obj.lastname + "<br>";
     str += obj.username + " / " + obj.class + "<br>";
     str += obj.ssn + "<br>";
-    str += obj.teacher + "</p>";
-    
+    str += obj.teacher + "</p>";*/
+    console.log(col);
+    //str = celldata.grade;
+    //console.log(celldata);
+    str = celldata.grade;
     return str;
 
   }else {
     //return "<div id='" + cellid + "'>" + celldata + "</div>";
     
-    obj = JSON.parse(celldata);
+   /* obj = JSON.parse(celldata);
     str = "<div id='" + cellid + "'>";
       str += "<img class='Uc gradeImg' src='../Shared/icons/Uc.png'/>";
       str += "<img class='Gc gradeImg' src='../Shared/icons/Gc.png'/>";
       str += "<img class='fist gradeImg' src='../Shared/icons/FistV.png'/>";
-    str += "</div>";
+    str += "</div>";*/
+    str = celldata.lid;
     return str;
   }
   return celldata;
