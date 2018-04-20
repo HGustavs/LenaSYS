@@ -1594,3 +1594,16 @@ $(window).load(function() {
         }
       });
 });
+
+
+$(document).mouseup(function (e)
+{
+    if (!$('.zoom').is(e.target) // if the target of the click isn't the container...
+        && $('.zoom').has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        if (!$('.zoom-btn-sm').hasClass('scale-out')) {		
+			$('.zoom-btn-sm').toggleClass('scale-out');
+			$('.zoom-list').delay(100).fadeOut(0);
+		}
+    }
+});
