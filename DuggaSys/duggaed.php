@@ -42,7 +42,7 @@ pdoConnect();
 	?>
 	<!-- Login Dialog END -->
 
-  <div id="quiz" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the table within. -->
+  <div id="quiz" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the quiz-table within. -->
 
   <!-- Edit Dugga Dialog START -->
 	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
@@ -64,18 +64,18 @@ pdoConnect();
       			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'><option value='1'>U-G-VG</option><option value='2'>U-G</option><option value='3'>U-3-4-5</option></select></div>
       			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
             <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='qstart' value='' /></div>
-      			<div class='inputwrapper'><span>First  Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='' /></div>
-						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
-						<div class='inputwrapper'><span>Second Deadline :</span><input class='textinput datepicker' type='text' id='deadline2' value='None' /></div>
-						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
-						<div class='inputwrapper'><span> Third Deadline :</span><input class='textinput datepicker' type='text' id='deadline3' value='None' /></div>
-						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
+      			<div class='inputwrapper'><span>1st Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span>2nd Deadline :</span><input class='textinput datepicker' type='text' id='deadline2' value='None' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span>3rd Deadline :</span><input class='textinput datepicker' type='text' id='deadline3' value='None' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
             <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
       		</div>
       		<div style='padding:5px;'>
-      			<input style='float left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeEditDugga();' />
-      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='createDugga();' />
-      			<input style='float:right; 'class='submit-button updateDugga' type='button' value='Save' onclick='updateDugga();' />
+      			<input id='closeDugga' class='submit-button' style='display:block; float:left;' type='button' value='Cancel' onclick='closeEditDugga();' />
+      			<input id='submitDugga' class='submit-button' style='display:none; float:right;' type='button' value='Submit' onclick='createDugga();' />
+      			<input id='updateDugga' class='submit-button' style='display:none; float:right;' type='button' value='Save' onclick='updateDugga();' />
       		</div>
       </div>
 	</div>
@@ -104,9 +104,10 @@ pdoConnect();
       <div class='loginBox' style="width:80%;">
       		<div class='loginBoxheader'>
       			<h3>Edit Variant</h3>
-      			<div class='cursorPointer' onclick='closeWindows();closeVariant();'>x</div>
+      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
-          <div class='loginBoxbody'>
+          <div class='loginBoxbody'>       
+           <div id="variant" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the variant-table within. -->
           		<div style='padding:5px;display:flex;'>
           			<input type='hidden' id='vid' value='Toddler' />
           			<div id="leftDivDialog">
@@ -128,7 +129,7 @@ pdoConnect();
           									<option value="pdf">PDF</option>
           									<option value="html">HTML</option>
           								</select>
-          								<input type="text" name="filelink" id="filelink" placeholder="File link" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;">
+          								<input id="filelink" type="text" name="filelink" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;">
           							</div>
           						</fieldset>
           					</div>
@@ -136,7 +137,7 @@ pdoConnect();
                       <div id="duggaExtraParamForm">
                         <fieldset style="width:90%">
                           <legend>Extra parameters</legend>
-                              <textarea id='extraparam' placeholder='Extra dugga parameters in valid JSON' rows="5" style=""></textarea>
+                              <textarea id='extraparam' rows="5" style=""></textarea>
                         </fieldset>
                       </div>
                     </div>
@@ -159,18 +160,29 @@ pdoConnect();
           			<div id="rightDivDialog">
                     <fieldset style="width:90%">
                         <legend>Generated Param JSON</legend>
-                				<div style='min-height:120px'><textarea id='parameter' placeholder='Variant Param' rows="5" style="min-height:100px"></textarea></div>
+                				<div id='parameter' style='min-height:120px'>
+                          <textarea id='variantparameterText' rows="5" style="min-height:100px"></textarea>
+                        </div>
                     </fieldset>
                     <fieldset style="width:90%">
                         <legend>Answer</legend>
-                				<div style='min-height:120px'><textarea id='variantanswer' placeholder='Variant Param' rows="5" style="min-height:100px"></textarea></div>
+                				<div id='variantanswer' style='min-height:120px'>
+                          <textarea id='variantanswerText' rows="5" style="min-height:100px"></textarea>
+                        </div>
                     </fieldset>
           			</div>
           		</div>
           		<div style='padding:5px;'>
-          			<input class='submit-button' type='button' value='Delete' onclick='deleteVariant();' />
-          			<input id="toggleVariantButton" class='submit-button' type='button' value='Disable' onclick='toggleVariant();' />
-          			<input class='submit-button' type='button' value='Save' onclick='updateVariant();' />
+                <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel' 
+                onclick='closeWindows();'/>
+          			<input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit' 
+                onclick='showVariantSaveButton(); createVariant();'/> 
+                <input id='updateVariant' class='submit-button' style='display:none; float:right' type='button' value='Save' 
+                onclick='showVariantSubmitButton(); updateVariant();'/>
+                <input id='disableVariant' class='submit-button' style='display:none; float:right' type='button' value='Disable' 
+                onclick='showVariantEnableButton(); disableVariant();'/>
+                <input id='enableVariant' class='submit-button' style='display:none; float:right' type='button' value='Enable' 
+                onclick='showVariantDisableButton(); enableVariant();'/>
           		</div>
           </div>
 	</div>
