@@ -29,19 +29,6 @@ function bigMac() {
   $(".hamburgerMenu").toggle();
 }
 
-/*
-// Toggle the '≡' and '⨯' depending on if burger menu is up or not
-function bigMacSymbol() {
-	if($(".hamburgerMenu").css('display') == 'block') {
-		$("#hamburgerIcon").val("⨯");
-		document.getElementById("hamburgerIcon").title = "Close hamburger menu";
-	} else {
-		$("#hamburgerIcon").val("≡");
-		document.getElementById("hamburgerIcon").title = "Open hamburger menu";
-	}
-}
-*/
-
 $(document).ready(function(){
 	$(".messagebox").hover(function(){
         $("#testbutton").css("background-color", "red");
@@ -297,9 +284,9 @@ function participationList(){
 	alert("ParticipationList");
 }
 
-function changedType()
+function changedType(value)
 {
-	kind=$("#type").val();
+	kind=value;
 	iistr="";
 
 	if(kind==0){
@@ -722,7 +709,7 @@ function returnedSection(data)
                 if (retdata['courseid'] == item['cid']) {
                     var vvers = item['vers'];
                     var vname = item['versname'];
-                    sstr += "<option value='?courseid=" + retdata['courseid'] 
+                    sstr += "<option value='?courseid=" + retdata['courseid']
 					+ "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
                     ssstr += "<option value='" + vvers + "'";
                     if(retdata['coursevers']==vvers){
@@ -741,101 +728,108 @@ function returnedSection(data)
         document.getElementById("copyvers").innerHTML=ssstr;
         str+="</div></td>";
         //Buttons for version editing
-        str+="<td class='editVers' style='display: inline-block;'><div class='editVers menuButton'>"
-		+"<button type='button' class='submit-button no-radius' style='width:35px;"
-		+"margin-left:0px' title='Edit the selected version'"
-		+"onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""
-		+startdate+"\",\""+enddate+"\");'>"
-		+"<img id='versionCog' style='margin-top:6px' src='../Shared/icons/CogwheelWhite.svg'></button></div></td>";
+        str+=
+			"<td class='editVers' style='display: inline-block;'><div class='editVers menuButton'>"
+			+"<button type='button' class='submit-button no-radius' style='width:35px;"
+			+"margin-left:0px' title='Edit the selected version'"
+			+"onclick='showEditVersion(\""+querystring['coursevers']+"\",\""+versionname+"\",\""
+			+startdate+"\",\""+enddate+"\");'>"
+			+"<img id='versionCog' style='margin-top:6px' "
+			+"src='../Shared/icons/CogwheelWhite.svg'></button></div></td>";
 
-        str+="<td class='newVers' style='display: inline-block;'><div class='newVers menuButton'>"
-		+"<button type='button' value='New version' style='width:35px; margin-left:0px;"
-		+"border-top-right-radius:3px; border-bottom-right-radius:3px;' class='submit-button no-radius'"
-		+"title='Create a new version of this course' onclick='showCreateVersion();'>"
-		+"<img id='versionPlus' style='margin-top:6px' src='../Shared/icons/PlusS.svg'></button></div></td>";
+        str+=
+		 	"<td class='newVers' style='display: inline-block;'><div class='newVers menuButton'>"
+			+"<button type='button' value='New version' style='width:35px; margin-left:0px;"
+			+"border-top-right-radius:3px; border-bottom-right-radius:3px;' class='submit-button no-radius'"
+			+"title='Create a new version of this course' onclick='showCreateVersion();'>"
+			+"<img id='versionPlus' style='margin-top:6px' "
+			+"src='../Shared/icons/PlusS.svg'></button></div></td>";
 
         //Hamburger menu for navigation
-        str+="<td class='hamburger'>";
-        str+="<nav tabindex='0' class='package'><input id='hamburgerIcon' type='button'"
-		+"value='&equiv;' class='submit-button hamburger' title='Open hamburger menu'"  
-		+"onClick='bigMac(); bigMacSymbol();'></nav>";
+    	str+="<td class='hamburger'>";
+		str+=
+			 "<div tabindex='0' class='package'><div id='hamburgerIcon' "
+			+ "class='submit-button hamburger' onclick='hamburgerChange();"
+			+ "bigMac();'><div class='container'><div class='bar1'></div><div "
+			+ "class='bar2'></div><div class='bar3'></div></div></div></div>";
+
         str+="<div class='hamburgerMenu'>";
         str+="<ul class='hamburgerList'>";
-        str+="<li class='editVers'><button class='submit-button menuButton editVers '" 
-		+"onclick='closeWindows(); bigMacSymbol(); showEditVersion(\""+querystring['coursevers']
-		+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");' title='Edit the selected version'>Edit Version</button></li>";
-        str+="<li class='newVers'><button class='submit-button menuButton newVers'" 
-		+"onclick='closeWindows(); bigMacSymbol(); showCreateVersion();'" 
-		+"title='Create a new version of this course'>New Version</button></li>";
+        str+=
+			 "<li class='editVers'><button class='submit-button menuButton editVers '"
+			+"onclick='closeWindows(); hamburgerChange(); showEditVersion(\""+querystring['coursevers']
+			+"\",\""+versionname+"\",\""+startdate+"\",\""+enddate+"\");' "
+			+"title='Edit the selected version'>Edit Version</button></li>";
+
+        str+=
+			"<li class='newVers'><button class='submit-button menuButton newVers'"
+			+"onclick='closeWindows();  hamburgerChange(); showCreateVersion();'"
+			+"title='Create a new version of this course'>New Version</button></li>";
+
 		str+="<li class='hamburgerSeparator'><hr></li>";
-		str+="<li class='results'><button class='submit-button menuButton results'" 
-		+"onclick='closeWindows(); changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="
-		+querystring['coursevers']+"\")' title='Edit student results'>Results</button></li>";       
-        str+="<li class='tests'><button class='submit-button menuButton tests'" 
-		+"onclick='closeWindows(); changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="
-		+querystring['coursevers']+"\")' title='Show tests'>Tests</button></li>";
-        str+="<li class='files'><button class='submit-button menuButton files'" 
-		+"onclick='closeWindows(); changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="
-		+querystring['coursevers']+"\")' title='Show files'>Files</button></li>";
-        str+="<li class='access'><button class='submit-button menuButton access'" 
-		+"onclick='closeWindows(); accessCourse();' title='Give students access to the selected version'>Access</button></li>";
-        str+="<li class='contribution'><button class='submit-button menuButton analysis'" 
-		+"onclick='closeWindows(); changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="
-		+querystring['coursevers']+"\")' title='Access Contribution page'>Contribution</button></li>";
+		str+=
+			"<li class='results'><button class='submit-button menuButton results'"
+			+"onclick='closeWindows(); changeURL(\"resulted.php?cid="+querystring['courseid']+"&coursevers="
+			+querystring['coursevers']+"\")' title='Edit student results'>Results</button></li>";
+        str+=
+			"<li class='tests'><button class='submit-button menuButton tests'"
+			+"onclick='closeWindows(); changeURL(\"duggaed.php?cid="+querystring['courseid']+"&coursevers="
+			+querystring['coursevers']+"\")' title='Show tests'>Tests</button></li>";
+        str+=
+			"<li class='files'><button class='submit-button menuButton files'"
+			+"onclick='closeWindows(); changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="
+			+querystring['coursevers']+"\")' title='Show files'>Files</button></li>";
+        str+=
+			"<li class='access'><button class='submit-button menuButton access'"
+			+"onclick='closeWindows(); accessCourse();' "
+			+"title='Give students access to the selected version'>Access</button></li>";
+        str+=
+			"<li class='contribution'><button class='submit-button menuButton analysis'"
+			+"onclick='closeWindows(); changeURL(\"stats.php?cid="+querystring['courseid']+"&coursevers="
+			+querystring['coursevers']+"\")' title='Access Contribution page'>Contribution</button></li>";
         str+="</ul>";
         str+="</div";
-        str+="</nav>";
         str+="</td>";
 
         //Navigation menu
-        str+="<td class='results menuButton' style='display: inline-block;'>"
-		+"<div class='results menuButton'><input type='button' value='Results' class='submit-button'" 
-		+"title='Edit student results' onclick='changeURL(\"resulted.php?cid="
-		+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></div></td>";
-        str+="<td class='tests menuButton' style='display: inline-block;'>"
-		+"<div class='tests menuButton'><input type='button' value='Tests' class='submit-button'" 
-		+"id='testbutton' title='Show tests' onclick='changeURL(\"duggaed.php?cid="
-		+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
-        str+="<td class='files menuButton' style='display: inline-block;'>"
-		+"<div class='files menuButton'><input type='button' value='Files' class='submit-button'" 
-		+"title='Show files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="
-		+querystring['coursevers']+"\")'/></div></td>";
-    	str+="<td class='access menuButton' style='display: inline-block;'>"
-		+"<div class='access menuButton'><input type='button' value='Access' class='submit-button'" 
-		+"title='Give students access to the selected version' onclick='accessCourse();'/></div></td>";
-        str+="<td class='contribution menuButton' style='display: inline-block;'>"
-		+"<div class='contribution menuButton'><input type='button' value='Contribution'" 
-		+"class='submit-button' title='Access contribution page' onclick='changeURL(\"stats.php?cid="
-		+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+        str+=
+			"<td class='results menuButton' style='display: inline-block;'>"
+			+"<div class='results menuButton'><input type='button' value='Results' class='submit-button'"
+			+"title='Edit student results' onclick='changeURL(\"resulted.php?cid="
+			+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")' /></div></td>";
+        str+=
+			"<td class='tests menuButton' style='display: inline-block;'>"
+			+"<div class='tests menuButton'><input type='button' value='Tests' class='submit-button'"
+			+"id='testbutton' title='Show tests' onclick='changeURL(\"duggaed.php?cid="
+			+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
+        str+=
+			"<td class='files menuButton' style='display: inline-block;'>"
+			+"<div class='files menuButton'><input type='button' value='Files' class='submit-button'"
+			+"title='Show files' onclick='changeURL(\"fileed.php?cid="+querystring['courseid']+"&coursevers="
+			+querystring['coursevers']+"\")'/></div></td>";
+    	str+=
+			"<td class='access menuButton' style='display: inline-block;'>"
+			+"<div class='access menuButton'><input type='button' value='Access' class='submit-button'"
+			+"title='Give students access to the selected version' onclick='accessCourse();'/></div></td>";
+        str+=
+			"<td class='contribution menuButton' style='display: inline-block;'>"
+			+"<div class='contribution menuButton'><input type='button' value='Contribution'"
+			+"class='submit-button' title='Access contribution page' onclick='changeURL(\"stats.php?cid="
+			+querystring['courseid']+"&coursevers="+querystring['coursevers']+"\")'/></div></td>";
 	} else {/* No version selector for students */}
 
 	if(retdata["writeaccess"]) {
 		str += "</tr></table>";
-/*
-		str +=
-			"<input type='button' class='fab' value='+' title='New Item'"
-			+ " onclick='selectItem("
-			+ "\"" + item['lid'] + "\","
-			+ "\"New Item\","
-			+ "\"" + item['kind'] + "\","
-			+ "\"" + item['visible'] + "\","
-			+ "\"" + item['link'] + "\","
-			+ "\"" + momentexists + "\","
-			+ "\"" + item['gradesys'] + "\","
-			+ "\"" + item['highscoremode'] + "\","
-			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
-*/
-			
 		str += "<div class='zoom'>"
-		str += "<a class='zoom-fab zoom-btn-large' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
-		str += "<ul class='zoom-list'>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-motd scale-transition scale-out' data-tooltip='Message of the day'><i class='material-icons'>format_quote</i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-heading scale-transition scale-out' data-tooltip='Heading'><i class='heading-icon'></i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-section scale-transition scale-out' data-tooltip='Section'><i class='section-icon'></i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-moment scale-transition scale-out' data-tooltip='Moment'><i class='moment-icon'></i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-test scale-transition scale-out' data-tooltip='Test'><i class='test-icon'></i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-link scale-transition scale-out' data-tooltip='Link'><i class='material-icons'>link</i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-code scale-transition scale-out' data-tooltip='Code'><i class='code-icon'></i></a></li>"
+		str += "<a class='zoom-fab zoom-btn-large noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
+		str += "<ul class='zoom-list' style='display: none;'>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-motd scale-transition scale-out' data-tooltip='Message of the day' onclick='alert(\"Under construction\")'><i class='material-icons'>format_quote</i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-heading scale-transition scale-out' data-tooltip='Heading' onclick='selectItem(\"undefined\",\"New Item\",\"0\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='heading-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-section scale-transition scale-out' data-tooltip='Section' onclick='selectItem(\"undefined\",\"New Item\",\"1\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='section-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-moment scale-transition scale-out' data-tooltip='Moment' onclick='selectItem(\"undefined\",\"New Item\",\"4\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='moment-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-test scale-transition scale-out' data-tooltip='Test' onclick='selectItem(\"undefined\",\"New Item\",\"3\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='test-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-link scale-transition scale-out' data-tooltip='Link' onclick='selectItem(\"undefined\",\"New Item\",\"5\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>link</i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-code scale-transition scale-out' data-tooltip='Code' onclick='selectItem(\"undefined\",\"New Item\",\"2\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='code-icon'></i></a></li>"
 		str += "</ul>"
 		str += "</div>";
 	} else {
@@ -854,7 +848,7 @@ function returnedSection(data)
 
     str+="<div class='course' style='display: flex;align-items: center; justify-content: flex-end;'>";
     str+="<div style='flex-grow:1'>"
-    str+="<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;" 
+    str+="<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;"
 	+"margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>"+data.coursename+"</span>";
     str+="<span id='course-coursecode' style='margin-right:10px;'>"+data.coursecode+"</span>";
     str+="<span id='course-versname' class='courseVersionField'>"+versionname+"</span>";
@@ -863,7 +857,7 @@ function returnedSection(data)
     if(retdata["writeaccess"]){
         str += "<div id='course-newitem' style='display: flex;'>";
 		str +=
-			"<input type='button' value='+' class='submit-button-newitem' title='New Item'"
+		  "<input type='button' value='+' class='submit-button-newitem' title='New Item'"
 			+ " onclick='selectItem("
 			+ "\"" + item['lid'] + "\","
 			+ "\"New Item\","
@@ -1074,7 +1068,7 @@ function returnedSection(data)
 					kk++;
 				}else if(parseInt(item['kind']) === 3 ){						// Dugga
 					if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
-						str+="<td style='width:20px;'><img style=';' title='Highscore'" 
+						str+="<td style='width:20px;'><img style=';' title='Highscore'"
 						+"src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
 					}
 					str += "<td ";
@@ -1185,8 +1179,8 @@ function returnedSection(data)
 
 					// create a warning if the dugga is submitted after the set deadline
 					if ((status === "pending")&&(dateTimeSubmitted>deadline)){
-						str+="<td style='width:25px;'><img style='width:25px; padding-top:3px'" 
-						+"title='This dugga is not guaranteed to be marked due to submition after deadline.'" 
+						str+="<td style='width:25px;'><img style='width:25px; padding-top:3px'"
+						+"title='This dugga is not guaranteed to be marked due to submition after deadline.'"
 						+"src='../Shared/icons/warningTriangle.svg'/></td>";
 					}else{
 
@@ -1194,7 +1188,7 @@ function returnedSection(data)
 				}
 
 				// Add generic td for deadlines if one exists
-				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")) {	
+				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")) {
 					var dl = deadline.split(" ");
 					var timeFilterAndFormat = "00:00:00"; // time to filter away
 					var yearFormat = "0000-";
@@ -1549,17 +1543,33 @@ function addOrRemoveFromArray(elementID, array) {
 	}
 }
 
-// Changes hamburger manu state
-function hamburgerChange(x) {
-    x.classList.toggle("change");
+// Finds all ancestors to the element with classname Hamburger and toggles them.
+// added some if-statements so escapePress wont always toggle
+function hamburgerChange(operation='click') {
+	if(operation == "escapePress"){
+		if(findAncestor(document.getElementById("hamburgerIcon"), "change") != null){
+			toggleHamburger();
+		}
+	}else{
+			toggleHamburger();
+	}
+}
+
+function toggleHamburger(){
+	var x = document.getElementById("hamburgerIcon");
+	findAncestor(x, "hamburger").classList.toggle("change");
 }
 
 // Toggles action bubbles when pressing the FAB button
 function toggleFabButton(){
-  $('.zoom-btn-sm').toggleClass('scale-out');
-  if (!$('.zoom-card').hasClass('scale-out')) {
-    $('.zoom-card').toggleClass('scale-out');
-  }
+	if (!$('.zoom-btn-sm').hasClass('scale-out')) {
+		$('.zoom-btn-sm').toggleClass('scale-out');
+		$('.zoom-list').delay(100).fadeOut(0);
+	}
+	else {
+		$('.zoom-list').fadeIn(0);
+		$('.zoom-btn-sm').toggleClass('scale-out');
+	}
 }
 
 
@@ -1580,6 +1590,20 @@ $(window).load(function() {
           closeWindows();
           closeSelect();
           showSaveButton();
+		  hamburgerChange("escapePress");
         }
       });
+});
+
+
+$(document).mouseup(function (e)
+{
+    if (!$('.zoom').is(e.target) // if the target of the click isn't the container...
+        && $('.zoom').has(e.target).length === 0) // ... nor a descendant of the container
+    {
+        if (!$('.zoom-btn-sm').hasClass('scale-out')) {		
+			$('.zoom-btn-sm').toggleClass('scale-out');
+			$('.zoom-list').delay(100).fadeOut(0);
+		}
+    }
 });

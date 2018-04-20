@@ -48,7 +48,7 @@ pdoConnect();
 	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
       		<div class='loginBoxheader'>
-      			<h3>Edit Dugga</h3>
+      			<h3 id="editDialogTitle">Edit Dugga</h3>
       			<div class='cursorPointer' onclick='closeEditDugga();'>x</div>
       		</div>
       		<div style='padding:5px;'>
@@ -64,12 +64,12 @@ pdoConnect();
       			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'><option value='1'>U-G-VG</option><option value='2'>U-G</option><option value='3'>U-3-4-5</option></select></div>
       			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
             <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='qstart' value='' /></div>
-      			<div class='inputwrapper'><span>First  Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='' /></div>
-						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
-						<div class='inputwrapper'><span>Second Deadline :</span><input class='textinput datepicker' type='text' id='deadline2' value='None' /></div>
-						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
-						<div class='inputwrapper'><span> Third Deadline :</span><input class='textinput datepicker' type='text' id='deadline3' value='None' /></div>
-						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
+      			<div class='inputwrapper'><span>1st Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span>2nd Deadline :</span><input class='textinput datepicker' type='text' id='deadline2' value='None' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span>3rd Deadline :</span><input class='textinput datepicker' type='text' id='deadline3' value='None' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
             <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
       		</div>
       		<div style='padding:5px;'>

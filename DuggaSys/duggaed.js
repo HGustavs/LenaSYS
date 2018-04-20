@@ -426,6 +426,15 @@ function selectDugga(qid){
 	$("#template").html(str);
 }
 
+function editDialogTitle(title){
+	// Change title of the edit section dialog
+	if(title == "newItem"){
+		document.getElementById("editDialogTitle").innerHTML = "New Item";
+	}else if(title == "editItem"){
+		document.getElementById("editDialogTitle").innerHTML = "Edit Item";
+	}
+}
+
 
 function newDugga()
 {
@@ -688,19 +697,20 @@ function renderCell(col,celldata,cellid) {
 			celldata = "Undefined";
 		}
 	}
-	
+
 	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
 	else if (col == "cogwheel"){
 		object=JSON.parse(celldata);
-	    str="<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
+	  str="<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
 		str+=" onclick='showDuggaSaveButton(); selectDugga(\""+object+"\");' >";
+
 		return str;
 	}
 
 	// Placing a clickable trash can in its designated column and implementing the code behind it.
 	else if (col == "trashcan"){
 		object=JSON.parse(celldata);
-	    str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
+	  str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
 		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
 		return str;
 	}
