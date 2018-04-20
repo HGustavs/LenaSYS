@@ -320,8 +320,8 @@ function mouseupevt(ev) {
                 //Code for making sure enitities not connect to the same attribute multiple times
                 var ok = true;
                 if(symbolEndKind == 3 && symbolStartKind == 2){
-                    if(diagram[hovobj].hasConnector(p2)){
-                        console.log("endkind 3 has connector to p2")
+                    if(diagram[hovobj].hasConnector(p1)){
+                        console.log("endkind 3 has connector to p1")
                         ok = false;
                     }
                     
