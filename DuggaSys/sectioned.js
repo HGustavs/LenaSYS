@@ -391,13 +391,10 @@ function deleteItem(item_lid= null)
 	$("#editSection").css("display","none");
 }
 
-
 // Checks if the title name includes any invalid characters
 function validateName(){
 	var retValue = false;
-
 	var nme=document.getElementById("sectionname");
-
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d(),.]+$/)){
 		$('#tooltipTxt').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
@@ -410,7 +407,6 @@ function validateName(){
 		$('#submitBtn').attr('disabled','disabled');
 		nme.style.backgroundColor = "#f57";
 	}
-
 	return retValue;
 }
 
@@ -418,14 +414,10 @@ function validateType(){
 	var retValue = false;
 	kind=$("#type").val();
 	var nme=document.getElementById("type");
-
-
-
 	if (retdata['duggor'].length == 0 && kind == 3){
 		$('#tooltipType').fadeIn();
 		$('#saveBtn').attr('disabled','disabled');
 		$('#submitBtn').attr('disabled','disabled');
-
 		nme.style.backgroundColor = "#f57";
 		//the line of code above changes the selected element AND the list's background color.
 		//the for loop changes the list's background color back to white so only the selected item shows up as red.
@@ -439,10 +431,8 @@ function validateType(){
 		nme.style.backgroundColor = "#fff";
 		retValue = true;
 	}
-
 	return retValue;
 }
-
 
 function updateItem()
 {
@@ -476,7 +466,6 @@ function updateItem()
 }
 
 // Create New Dugga/Example
-
 function createLink()
 {
 	alert("CREATE!");
@@ -517,7 +506,6 @@ function closeSelect()
 	$(".item").css("border","none");
 	$(".item").css("box-shadow","none");
 	$("#editSection").css("display","none");
-
 	defaultNewItem();
 }
 
@@ -954,11 +942,11 @@ function returnedSection(data)
 				}
 
 					// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment
-					var temp = parseInt(item['kind']);
-					if(temp === 3|| temp === 4 || temp === 6){
+					var itemKind = parseInt(item['kind']);
+					if(itemKind === 3|| itemKind === 4 || itemKind === 6){
 
 						// Styling for quiz row e.g. add a tab spacer
-						if(parseInt(item['kind']) === 3) str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
+						if(itemKind === 3) str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
 						var grady=-1;
 						var status ="";
 						var marked;
@@ -983,7 +971,7 @@ function returnedSection(data)
 									marked = null;
 								}
 
-								if(parseInt(item['kind']) === 3  || parseInt(item['kind']) === 6){
+								if(itemKind === 3  || itemKind === 6){
 									if (lawtem["useranswer"] !== null && submitted !== null && marked === null) {
 										status="pending";
 									}
@@ -1001,9 +989,9 @@ function returnedSection(data)
 								}
 							}
 						}
-						if (parseInt(item['kind']) === 3  || parseInt(item['kind']) === 6){
+						if (itemKind === 3  || itemKind === 6){
 							str+="<td class='LightBox"+blorf+"'>";
-						} else if ((parseInt(item['kind']) === 4)){
+						} else if (itemKind === 4){
 							str+="<td class='LightBoxFilled"+blorf+"'>";
 						}
 						if((grady==-1 || grady == 0 || grady==null) && status==="") {
@@ -1025,32 +1013,34 @@ function returnedSection(data)
 
 				// Make tabs to align each section element
 				// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link
-				if(parseInt(item['kind']) === 0 || parseInt(item['kind']) === 1 || parseInt(item['kind']) === 2 || parseInt(item['kind']) === 5 ){
-						if (parseInt(item['gradesys']) > 0 && parseInt(item['gradesys']) < 4){
-								for (var numSpacers = 0; numSpacers < parseInt(item['gradesys']);numSpacers++){
-									str+="<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td>";
-								}
-						} else if (parseInt(item['gradesys']) == 4){
-								str+="<td class='LightBox'><div class='spacerEnd'></div></td>";
-						}else if (parseInt(item['gradesys']) == 5){
-								str+="<td class='LightBox'><div class='spacerLeft'></div></td><td class='LightBox'><div class='spacerEnd'></div></td>";
-						}else if (parseInt(item['gradesys']) == 6){
-								str+="<td class='LightBox'><div class='spacerLeft'></div></td>"
-								+"<td class='LightBox'><div class='spacerLeft'></div></td><td class='LightBox'><div class='spacerEnd'></div></td>";
-						}
+				if(itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 ){
+					var itemGradesys = parseInt(item['gradesys']);
+
+					if (itemGradesys > 0 && itemGradesys < 4){
+							for (var numSpacers = 0; numSpacers < itemGradesys;numSpacers++){
+								str+="<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td>";
+							}
+					} else if (itemGradesys == 4){
+							str+="<td class='LightBox'><div class='spacerEnd'></div></td>";
+					}else if (itemGradesys == 5){
+							str+="<td class='LightBox'><div class='spacerLeft'></div></td><td class='LightBox'><div class='spacerEnd'></div></td>";
+					}else if (itemGradesys == 6){
+							str+="<td class='LightBox'><div class='spacerLeft'></div></td>"
+							+"<td class='LightBox'><div class='spacerLeft'></div></td><td class='LightBox'><div class='spacerEnd'></div></td>";
+					}
 				}
 
 
 				// kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
-				if(parseInt(item['kind']) === 0 ){									// Header
+				if(itemKind === 0 ){									// Header
 					// Styling for header row
 					str+="</td><td class='header item"+blorf+"' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
 					kk=0;
-				}else if(parseInt(item['kind']) === 1 ){						// Section
+				}else if(itemKind === 1 ){						// Section
 					// Styling for Section row
 					str+="<td class='section item"+blorf+"' placeholder='"+momentexists+"'id='I"+item['lid']+"' style='cursor:pointer;' ";
 					kk=0;
-				}else if(parseInt(item['kind']) === 2 ){						// Code Example
+				}else if(itemKind === 2 ){						// Code Example
 					str+="<td";
 
 					if(kk==0){
@@ -1067,8 +1057,8 @@ function returnedSection(data)
 						}
 					}
 					kk++;
-				}else if(parseInt(item['kind']) === 3  || parseInt(item['kind']) === 6){						// Dugga
-					if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
+				}else if(itemKind === 3  || itemKind === 6){						// Dugga
+					if(item['highscoremode'] != 0 && itemKind == 3) {
 						str+="<td style='width:20px;'><img style=';' title='Highscore'"
 						+"src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
 					}
@@ -1079,14 +1069,14 @@ function returnedSection(data)
 						str+=" class='example item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 					}
 					kk++;
-				}else if(parseInt(item['kind']) === 4 ){					// Moment
+				}else if(itemKind === 4 ){					// Moment
 					//new moment bool equals true
 					momentexists = item['lid'];
 
 					// Styling for moment row
 					str+="<td class='moment item"+blorf+"' placeholder='"+momentexists+"' id='I"+item['lid']+"' style='cursor:pointer;' ";
 					kk=0;
-				}else if(parseInt(item['kind']) === 5 ){					// Link
+				}else if(itemKind === 5 ){					// Link
 					str+="<td";
 					if(kk%2==0){
 						str+=" class='example item' placeholder='"+momentexists+"'id='I"+item['lid']+"' ";
@@ -1100,13 +1090,13 @@ function returnedSection(data)
 				str+=">";
 
 				// Content of Section Item
-				if (parseInt(item['kind']) == 0) { // Header
+				if (itemKind == 0) { // Header
 					str +=
 						"<span style='padding-left:5px;' title='"
 						+ item['entryname'] + "'>" + item['entryname'] + "</span>";
 				}
 
-				else if (parseInt(item['kind']) == 1) { // Section
+				else if (itemKind == 1) { // Section
 					str +=
 						"<div class='ellipsis nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
@@ -1120,7 +1110,7 @@ function returnedSection(data)
 						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
-				else if (parseInt(item['kind']) == 4) { // Moment
+				else if (itemKind == 4) { // Moment
 					str+="<div class='ellipsis nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span>"
@@ -1133,7 +1123,7 @@ function returnedSection(data)
 						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
-				else if (parseInt(item['kind']) == 2) { // Code Example
+				else if (itemKind == 2) { // Code Example
 					str +=
 						"<div class='ellipsis nowrap'><span><a class='" + blorf
 						+ "' style='margin-left:15px;' href='codeviewer.php?exampleid="
@@ -1142,7 +1132,7 @@ function returnedSection(data)
 						+ item['entryname'] + "'>" + item['entryname'] + "</a></span></div>";
 				}
 
-				else if (parseInt(item['kind']) == 3) { // Test Title
+				else if (itemKind == 3) { // Test Title
 					str +=
 						"<div class='ellipsis nowrap'><a class='" + blorf
 						+ "' style='cursor:pointer;margin-left:15px;' "
@@ -1156,7 +1146,7 @@ function returnedSection(data)
 						+ item['entryname'] + "</span></span></a></div>";
 				}
 
-				else if(parseInt(item['kind']) == 5){ // Link
+				else if(itemKind == 5){ // Link
 					if(item['link'].substring(0,4) === "http") {
 						str +=
 						"<a class='" + blorf + "' style='cursor:pointer;margin-left:15px;' href="
@@ -1168,7 +1158,7 @@ function returnedSection(data)
 							+ "&coursevers=" + querystring['coursevers'] + "&fname="
 							+ item['link'] + "\");' >" + item['entryname'] + "</a>";
 					}
-				}else if(parseInt(item['kind']) == 6){ // Group
+				}else if(itemKind == 6){ // Group
 					console.log("asd");
 					str+=
 					"<div class='ellipsis nowrap'><a class='" + blorf
@@ -1197,7 +1187,7 @@ function returnedSection(data)
 				}
 
 				// Add generic td for deadlines if one exists
-				if((parseInt(item['kind']) === 3)&&(deadline!== null || deadline==="undefined")) {
+				if((itemKind === 3)&&(deadline!== null || deadline==="undefined")) {
 					var dl = deadline.split(" ");
 					var timeFilterAndFormat = "00:00:00"; // time to filter away
 					var yearFormat = "0000-";
@@ -1225,7 +1215,7 @@ function returnedSection(data)
 				if(data['writeaccess']){
 					str+="<td style='width:32" + "px;";
 
-              		if(parseInt(item['kind']) === 0) {
+              		if(itemKind === 0) {
   						str+=
                             "' class='header"+blorf+"'>"
                             + "<img id='dorf' class='margin-4'"
@@ -1242,7 +1232,7 @@ function returnedSection(data)
                             + "\""+item['comments']+"\","
                             + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
-					} else if(parseInt(item['kind']) === 1) { // Section
+					} else if(itemKind === 1) { // Section
 						str+=
                             "' class='section"+blorf+"'>"
                             + "<img id='dorf' class='margin-4'"
@@ -1259,7 +1249,7 @@ function returnedSection(data)
                             + "\""+item['comments']+"\""
                             + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
-					} else if(parseInt(item['kind']) === 4) { // Moment
+					} else if(itemKind === 4) { // Moment
 						str+=
                             "' class='moment"+blorf+"'>"
                             + "<img id='dorf' class='margin-4'"
@@ -1276,7 +1266,7 @@ function returnedSection(data)
                             + "\""+item['comments']+"\""
                             + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
-						} else if(parseInt(item['kind']) === 3) { 	// Dugga
+						} else if(itemKind === 3) { 	// Dugga
 						str+=
                             "' ><img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
@@ -1292,7 +1282,7 @@ function returnedSection(data)
                             + "\""+item['comments']+"\""
                             + "); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"'  /></td>";
-					} else if(parseInt(item['kind']) === 6){	// Group
+					} else if(itemKind === 6){	// Group
 						str+=
                             "' ><img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
@@ -1315,22 +1305,22 @@ function returnedSection(data)
 				if(data['writeaccess']) {
 					str+="<td style='width:36" + "px;";
 
-					if(parseInt(item['kind']) === 0) {
+					if(itemKind === 0) {
 						str+=
 							"' class='header"+blorf+"'>"
 							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
-					} else if(parseInt(item['kind']) === 1) {
+					} else if(itemKind === 1) {
 						str+=
 							"' class='section"+blorf+"'>"
 							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
-					} else if(parseInt(item['kind']) === 4) {
+					} else if(itemKind === 4) {
 						str+=
 							"' class='moment"+blorf+"'>"
 							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
-					} else if(parseInt(item['kind']) === 6){
+					} else if(itemKind === 6){
 						str+=
 							"' class='group"+blorf+"'>"
 							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
@@ -1502,7 +1492,7 @@ function saveArrowIds(clickedElement) {
 /* Hide all child elements to the moment and section elements in the
    hiddenElements array. */
 function hideCollapsedMenus() {
-	$('.header, .section, .code, .test, .link').show();
+	$('.header, .section, .code, .test, .link, .group').show();
 	for(var i = 0; i < menuState.hiddenElements.length; i++) {
 		var ancestor = findAncestor($("#"+menuState.hiddenElements[i])[0], "moment");
 		if((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
