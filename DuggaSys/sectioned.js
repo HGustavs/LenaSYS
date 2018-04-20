@@ -76,7 +76,6 @@ function editSectionDialogTitle(title) {
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
 {
 	xelink=elink;
-
 	// Display Select Marker
 	$(".item").css("border","none");
 	$(".item").css("box-shadow","none");
@@ -169,7 +168,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	else str+="<option value='2'>Login</option>";
 	$("#visib").html(str);
 
-	// Add hichscore mode options
+	// Add highscore mode options
 	str = "";
 	if(highscoremode==0) str +="<option selected='selected' value ='0'>None</option>"
 	else str +="<option value ='0'>None</option>";
@@ -204,11 +203,24 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	// Show dialog
 	iistr="";
 
+	// Set Group options
+	str="";
+	str +="<option value ='0'>1</option>";
+	str +="<option value ='1'>2</option>";
+	str +="<option value ='2'>3</option>";
+	str +="<option value ='2'>4</option>";
+	str +="<option value ='2'>5</option>";
+	$("#numberOfGroups").html(str);
+
+
 	$("#inputwrapper-tabs").css("display","none");
 	$("#inputwrapper-link").css("display","none");
 	$("#inputwrapper-gradesystem").css("display","none");
+	$("#inputwrapper-moment").css("display","none");
 	$("#inputwrapper-highscore").css("display","none");
 	$("#inputwrapper-comments").css("display","none");
+	$("#inputwrapper-numberOfGroups").css("display", "none");
+
 
 	// Header
 	if(kind==0){
@@ -270,7 +282,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	// Group
 	}else if(kind==6){
-		console.log("Type is group");
+		$("#inputwrapper-numberOfGroups").css("display","block");
 	}
 	$("#editSection").css("display","flex");
 }
@@ -284,20 +296,22 @@ function changedType(value)
 	kind=value;
 	iistr="";
 
+	$("#inputwrapper-link").css("display","none");
+	$("#inputwrapper-gradesystem").css("display","none");
+	$("#inputwrapper-highscore").css("display","none");
+	$("#inputwrapper-moment").css("display","none");
+	$("#inputwrapper-tabs").css("display","none");
+	$("#inputwrapper-comments").css("display","none");
+	$("#inputwrapper-numberOfGroups").css("display", "none");
+
+
+	//Header
 	if(kind==0){
-		$("#inputwrapper-link").css("display","none");
-		$("#inputwrapper-gradesystem").css("display","none");
-		$("#inputwrapper-highscore").css("display","none");
-		$("#inputwrapper-tabs").css("display","none");
-		$("#inputwrapper-comments").css("display","none");
 
+	//Section
 	}else if(kind==1){
-		$("#inputwrapper-link").css("display","none");
-		$("#inputwrapper-gradesystem").css("display","none");
-		$("#inputwrapper-highscore").css("display","none");
-		$("#inputwrapper-tabs").css("display","none");
-		$("#inputwrapper-comments").css("display","none");
 
+	//Code
 	}else if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
@@ -309,11 +323,9 @@ function changedType(value)
 		}
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
-		$("#inputwrapper-gradesystem").css("display","none");
-		$("#inputwrapper-highscore").css("display","none");
 		$("#inputwrapper-tabs").css("display","block");
-		$("#inputwrapper-comments").css("display","none");
 
+	//Dugga
 	}else if(kind==3){
 		for(var ii=0;ii<retdata['duggor'].length;ii++){
 			var iitem=retdata['duggor'][ii];
@@ -327,16 +339,13 @@ function changedType(value)
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
-		$("#inputwrapper-tabs").css("display","none");
 		$("#inputwrapper-comments").css("display","block");
 
+	//Moment
 	}else if(kind==4){
-		$("#inputwrapper-link").css("display","none");
 		$("#inputwrapper-gradesystem").css("display","block");
-		$("#inputwrapper-highscore").css("display","none");
-		$("#inputwrapper-tabs").css("display","none");
-		$("#inputwrapper-comments").css("display","none");
 
+	//Link
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
 
@@ -358,10 +367,9 @@ function changedType(value)
 		}
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
-		$("#inputwrapper-gradesystem").css("display","none");
-		$("#inputwrapper-highscore").css("display","none");
-		$("#inputwrapper-comments").css("display","none");
-
+	}else if(kind==6){
+		console.log("Changing type to group");
+		$("#inputwrapper-numberOfGroups").css("display", "block");
 	}
 }
 
@@ -476,10 +484,9 @@ function createLink()
 	alert("CREATE!");
 }
 
+
 function newItem()
 {
-
-
   tabs=$("#tabs").val();
   lid=$("#lid").val();
   kind=$("#type").val();
@@ -1219,7 +1226,7 @@ function returnedSection(data)
                             + "\""+momentexists+"\","
                             + "\""+item['gradesys']+"\","
                             + "\""+item['highscoremode']+"\","
-                            + "\""+item['comments']+"\""
+                            + "\""+item['comments']+"\","
                             + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
 					} else if(parseInt(item['kind']) === 1) { // Section
@@ -1256,7 +1263,23 @@ function returnedSection(data)
                             + "\""+item['comments']+"\""
                             + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
-					} else { 								// Dugga
+						} else if(parseInt(item['kind']) === 3) { 	// Dugga
+						str+=
+                            "' ><img id='dorf' class='margin-4'"
+                            + " src='../Shared/icons/Cogwheel.svg'"
+                            + " onclick='selectItem("
+                            + "\""+item['lid']+"\","
+                            + "\""+item['entryname']+"\","
+                            + "\""+item['kind']+"\","
+                            + "\""+item['visible']+"\","
+                            + "\""+item['link']+"\","
+                            + "\""+momentexists+"\","
+                            + "\""+item['gradesys']+"\","
+                            + "\""+item['highscoremode']+"\","
+                            + "\""+item['comments']+"\""
+                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + " title='Edit "+item['entryname']+"'  /></td>";
+					} else if(parseInt(item['kind']) === 6){	// Group
 						str+=
                             "' ><img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
