@@ -19,60 +19,75 @@ pdoConnect();
 	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script> 
 	<script src="fileed.js"></script>
 </head>
-<body onload="setupSort();">
+<body>
 	<?php 
 		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
 
 	<!-- content START -->
-	<div id="content" >
-	
+	<div id="content">
 		<div class='titles' style='padding-top:10px;'>
 			<h1 style='flex:1;text-align:center;'>Files</h1>
 		</div>
-    
-		<button class="switchContent" onclick="switchcontent();keyUpSearch()" type="button">Switch to One table</button>
-	
 		<div id="searchBar">
-			<input id="searchinput" type="text" name="search" placeholder="Search.." onkeypress="return searchKeyPress(event);searchterm = document.getElementById('lookingGlass').value;fileLink.renderTable();">
-			<button id="searchbutton" class="switchContent" onclick="searchcontent();keyUpSearch()" type="button">
+			<input id="searchinput" type="text" name="search" placeholder="Search.." onkeyup="searchterm=document.getElementById('searchinput').value;searchKeyUp(event);fileLink.renderTable();">
+			<button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
 				<img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
 			</button>
 		</div>
-  
-    <input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/>
-		<input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("GFILE");'/>
-
-		<div id="fileLink" style='width:100%; border: 5px solid green;'></div>
-	<!-- content END -->
+    	<input class='submit-button fileed-button' type='button' value='Add Link' onclick='showLinkPopUp();'/>
+		<input class='submit-button fileed-button' type='button' value='Add File' onclick='showFilePopUp();'/>
+		<div id="fileLink" style='width:100%;'></div>
+		<!-- content END -->
 	
-	<?php 
-		include '../Shared/loginbox.php';
-	?>
+		<?php 
+			include '../Shared/loginbox.php';
+		?>
 
-	<!-- Add File Dialog START -->
-	<div id='addFile' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style='width:464px;'>
-      		<div class='loginBoxheader'>
-      			<h3>Add File/Link</h3>
-      			<div class='cursorPointer' onclick='closeAddFile();'>x</div>
+		<!-- Add File Dialog START -->
+		<div id='addFile' class='loginBoxContainer' style='display:none;'>
+      		<div class='loginBox' style='width:464px;'>
+	      		<div class='loginBoxheader' style='cursor:default;'>
+	      			<h3 class="filePopUp">Add File</h3>
+	      			<h3 class="linkPopUp">Add Link</h3>
+	      			<div class='cursorPointer' onclick='closeAddFile();'>x</div>
+	      		</div>
+      			<form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
+      				<div>
+	      				<input type='hidden' id='cid' name='cid' value='Toddler' />
+	      				<input type='hidden' id='coursevers' name='coursevers' value='Toddler' />
+	      				<input type='hidden' id='kind' name='kind' value='Toddler' />
+	      				<div class='inputwrapper filePopUp'>
+	      					<span>Upload File:</span>
+	      					<input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" />
+	      				</div>
+      					<div class='filePopUp'>
+	      					<div>
+		      					<input type='radio' name='fileRB' value='GFILE' id='globalFileRB' />
+		      					<label>Global</label>
+		      				</div>
+		      				<div>
+		      					<input type='radio' name='fileRB' value='LFILE' id='localFileRB' />
+		      					<label>Local</label>
+		      				</div>
+		      				<div>
+		      					<input type='radio' name='fileRB' value='MFILE' id='couseLocalFileRB' />
+		      					<label>Course local</label>
+		      				</div>
+      					</div>
+	      				<div class='inputwrapper linkPopUp'>
+	      					<span>URL:</span>
+	      					<input style="width:380px" id ="uploadedlink" class="textinput" name="link" placeholder="https://facebook.com" type="text" />
+	      				</div>
+      				</div> 
+					<div id='uploadbuttonname'>
+						<input id='file-submit-button' class='submit-button' type="submit" onclick="setFileKind();uploadFile(fileKind);" />
+					</div>
+      				<div style ='display:none;' id='errormessage'></div> 
+      			</form>
       		</div>
-      		<form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
-      			<div style='padding:5px;'>
-      				<input type='hidden' id='cid' name='cid' value='Toddler' />
-      				<input type='hidden' id='coursevers' name='coursevers' value='Toddler' />
-      				<input type='hidden' id='kind' name='kind' value='Toddler' />
-      				<div id="linky" class='inputwrapper'><span>URL:</span><input style="width:380px" id ="uploadedlink" class="textinput" name="link" placeholder="https://facebook.com" type="text" /></div>
-      				<div id="filey" class='inputwrapper'><span>Upload File:</span><input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" /></div>
-      			</div> 
-      			<div style='padding:5px;'>
-      				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>
-      			</div> 
-      			<div style ='padding:5px; display:none;' id='errormessage'>
-      			</div> 
-      		</form>
-      </div>
+		</div>
 	</div>
 	<!-- Edit File Dialog END -->
 </body>

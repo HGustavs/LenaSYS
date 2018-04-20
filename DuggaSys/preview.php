@@ -44,6 +44,7 @@
                 border: solid rgb(200,200,200);
                 background-color: #FFFFFF;
                 word-wrap: break-word;
+                overflow-y: scroll;
                 width: 490px;
                 height: 550px;
                 position: relative;
@@ -78,14 +79,14 @@
                 background-color: #775886;
                 color: #FFFFFF;
                 font-size: 14px;
-                padding: 0px 5px 0px 5px; 
+                padding: 0px 5px 0px 5px;
             }
             .prevNav {
                 background-color: #775886;
                 height: 30px;
                 color: #FFF;
                 padding: 0px 5px 0px 5px;
-                line-height: 25px; 
+                line-height: 25px;
             }
             .markNav {
                 background-color: #775886;
@@ -161,7 +162,7 @@
 
         </style>
         <script>
-            
+
             function onload() {
                 $(".PreviewWindow").hide();
                 $('#select-header').hide();
@@ -169,18 +170,21 @@
             function showPreview() {
                 $(".PreviewWindow").show();
             }
-                                
-            function saveCode() {
-                
-            }
             function cancelPreview() {
-                $(".PreviewWindow").hide();     
+                $(".PreviewWindow").hide();
             }
             function saveMarkdown() {
-                
+
             }
-            function showPreview(str) {
+
+            function loadPreview(fileUrl) {
+                var fileContent = getFIleContents(fileUrl);
+                document.getElementById("mrkdwntxt").value = fileContent;
+                updatePreview(fileContent);
                 $(".PreviewWindow").show();
+            }
+
+            function updatePreview(str) {
                 //This function is triggered when key is pressed down in the input field
                 if(str.length == 0){
                     /*Here we check if the input field is empty (str.length == 0).
@@ -193,15 +197,29 @@
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
                 };
             }
+            function getFIleContents(fileUrl){
+              var result = null;
+              $.ajax({
+                url: fileUrl,
+                type: 'get',
+                dataType: 'html',
+                async: false,
+                success: function(data) {
+                  result = data;
+                }
+            });
+              return result;
+            }
+
 
             function boldText() {
-                $('#mrkdwntxt').append("****");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****');
             }
             function cursiveText() {
-                $('#mrkdwntxt').append("__");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
+                
             }
-            
-            
+
             function showDropdown() {
                 $('#select-header').show();
             }
@@ -210,23 +228,24 @@
             }
 
             function headerVal1() {
-                $('#mrkdwntxt').append("# ");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'# ');
+
             }
             function headerVal2() {
-                $('#mrkdwntxt').append("## ");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'## ');
             }
             function headerVal3() {
-                $('#mrkdwntxt').append("### ");
+                $('#mrkdwntxt').val($('#mrkdwntxt').val()+'### ');
             }
 
-    
+
             $(document).ready(function(){
                $(".headerType").click(function(){
                     $("#select-header").toggle();
                     $("#select-header").addClass("show-dropdown-content");
                 });
             });
-            
+
             //Hide dropdown if click is outside the div
             $(document).mouseup(function(e) {
                 var container = $("#select-header");
@@ -239,9 +258,12 @@
     </head>
     <body onload="onload()">
 
-
         <div class="Header">Markdown preview</div>
+<<<<<<< HEAD
             <button id="Preview" onclick="showPreview()">Preview</button>
+=======
+            <button id="Preview" onclick="loadPreview('../courses/2/minimikrav_m2.md')">Preview</button>
+>>>>>>> 5a71650d2094606ff37635d2865b9a131fb0f857
         <div class="PreviewWindow">
             <div class="PrevHead">This is the preview window
             </div>
@@ -260,7 +282,7 @@
                     <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
                 </div>
                 <div class="markText">
-                    <textarea id="mrkdwntxt" onkeyup="showPreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
+                    <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
                 </div>
             </div>
             <div class="MarkdownPrev">
@@ -270,7 +292,11 @@
                         <div class="descbox">
                             <span id="markdown"></span>
                         </div>
+<<<<<<< HEAD
                     </div>    
+=======
+                    </div>
+>>>>>>> 5a71650d2094606ff37635d2865b9a131fb0f857
                 </div>
             </div>
             <div class="OptionButtons">
@@ -282,6 +308,6 @@
         <?php
 		  //echo $_GET['prev'];
         //?>
-        
+
     </body>
 </html>

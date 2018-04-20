@@ -44,9 +44,6 @@
 				//needs to calculate if the user has access to this button before writing out
 			?>		
 		</div>
-		<div id="accessedcontent" style="padding-top:0px">
-			
-		</div>
 	</div>
 	<div id="user" style='width:100%; border: 2px solid green;'></div>
 	<!--- Edit Section Dialog END --->

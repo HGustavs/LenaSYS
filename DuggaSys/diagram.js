@@ -90,6 +90,11 @@ var diagramNumber = 0;                  // Is used for localStorage so that undo
 var diagramNumberUndo = 0;              // Is used for localStorage and undo
 var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
+var appearanceMenuOpen = false;         // True if appearance menu is open
+
+var symbolStartKind;                    // Is used to store which kind of object you start on
+var symbolEndKind;                      // Is used to store which kind of object you end on
+
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
@@ -98,7 +103,7 @@ var ctrlIsClicked = false;
 
 function keyDownHandler(e){
     var key = e.keyCode;
-    if(key == 46 || key == 8){
+    if((key == 46 || key == 8) && !appearanceMenuOpen){
         eraseSelectedObject();
     } else if(key == 32){
         //Use space for movearound
@@ -178,6 +183,14 @@ var points = [
 // returns index of that point
 //--------------------------------------------------------------------
 points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
+    //If we have an unused index we use it first
+    for(var i = 0; i < points.length; i++){
+        if(points[i] == ""){
+            points[i] = {x:xCoordinate, y:yCoordinate, isSelected:isSelected};
+            return i;
+        }
+    }
+
     this.push({x:xCoordinate, y:yCoordinate, isSelected:isSelected});
     return this.length - 1;
 }
@@ -348,27 +361,32 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
 // itemClicked - Returns the index of the first clicked item
 //--------------------------------------------------------------------
 diagram.itemClicked = function() {
-    if(uimode == "MoveAround"){
-        return -1;
-    }
-    for (var i = this.length - 1; i >= 0; i--) {
-        if (this[i].isClicked(currentMouseCoordinateX, currentMouseCoordinateY)) {
-            return i;
-        }
-    }
-    return -1;
+    if(uimode == "MoveAround") return -1;
+    var obj = this.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
+    if (typeof obj !== 'undefined' && obj != -1) return this.indexOf(obj);
+    else return -1;
 }
 
 //--------------------------------------------------------------------
 // isHovered - Executes isHovered methond in all diagram objects
 // (currently only of kind==2 && symbolkind == 4 (aka. lines))
 //--------------------------------------------------------------------
-diagram.checkForHover = function(xCoordinate, yCoordinate) {
+diagram.checkForHover = function(posX, posY) {
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 2) {
-            this[i].isHovered = this[i].checkForHover(xCoordinate, yCoordinate);
-        }
+        if (this[i].kind == 2) this[i].isHovered = false;
     }
+    var hoveredObjects = this.filter(symbol => symbol.checkForHover(posX, posY));
+    if (hoveredObjects.length <= 0) return -1;
+    hoveredObjects.sort(function(a, b) {
+        if (a.symbolkind != 4 && b.symbolkind != 4) return 0;
+        else if (a.symbolkind == 4 && b.symbolkind != 4) return -1;
+        else if (a.symbolkind != 4 && b.symbolkind == 4) return 1;
+        else return 0;
+    });
+    if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind == 2) {
+        hoveredObjects[hoveredObjects.length - 1].isHovered = true;
+    }
+    return hoveredObjects[hoveredObjects.length - 1];
 }
 
 //--------------------------------------------------------------------
@@ -505,7 +523,6 @@ function initializeCanvas() {
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
-    getUploads();
     // generateExampleCode();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
@@ -529,22 +546,34 @@ function toggleGrid() {
     }
 }
 
-function getUploads() {
-    var fileID = document.getElementById('fileid');
-    document.getElementById('buttonid').addEventListener('click', openDialog);
-    function openDialog() {
-        fileID.click();
+// Opens the dialog menu for import
+function openImportDialog() {
+    $("#import").css("display", "flex");
+}
+
+// Closes the dialog menu for import.
+function closeImportDialog() {
+    $("#import").css("display", "none");
+}
+
+// Import file
+function importFile() {
+    var file = document.getElementById("importFile").files[0];
+    if (!file) return;
+    var extension = file.name.split(".").pop().toLowerCase();
+    if (extension != "txt") {
+        $("#importError").show();
+        return;
     }
-    fileID.addEventListener('change', submitFile);
-    function submitFile() {
-        var reader = new FileReader();
-        var file = document.getElementById('fileid').files[0];
-        reader.readAsText(file, "UTF-8");
-        reader.onload = function (evt) {
-            a = evt.currentTarget.result;
-            LoadFile();
-        }
-    }
+    $("#importError").hide();
+    closeImportDialog();
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var fileContent = e.target.result;
+        LoadImport(fileContent);
+    };
+    reader.readAsText(file, "UTF-8");
 }
 
 // Function that is used for the resize
@@ -762,8 +791,8 @@ function clearCanvas() {
         diagram[diagram.length - 1].erase();
         diagram.pop();
     }
-    for (var i = 0; i < points.length; i++) {
-        points[i]="";
+    for (var i = 0; i < points.length;) {
+        points.pop();
     }
     updateGraphics();
 }

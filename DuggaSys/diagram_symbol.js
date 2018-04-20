@@ -13,12 +13,13 @@ function Symbol(kind) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textsize = 14;             // 14 pixels text size is default
-    this.symbolColor = '#fff';      // change background colors on entities
-    this.strokeColor = '#000';      // change standard line color
+    this.symbolColor = '#ffffff';   // change background colors on entities
+    this.strokeColor = '#000000';   // change standard line color
+    this.font = "Arial";             // set the standard font
     this.lineWidth = 2;
     this.name = "New Class";        // Default name is new class
-    this.key_type = "none";          // Defult key tyoe for a class.
-    this.sizeOftext = "none";        // Used to set size of text.
+    this.key_type = "normal";       // Defult key tyoe for a class.
+    this.sizeOftext = "Tiny";       // Used to set size of text.
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
@@ -27,6 +28,10 @@ function Symbol(kind) {
     this.shadowOffsetX = 3;         // The horizontal distance of the shadow for the object.
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
+    this.cardinality = [
+      {"x": null, "y": null, "value": null, "side": null},
+      {"x": null, "y": null, "value": null, "side": null}
+    ];
 
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
@@ -288,18 +293,18 @@ function Symbol(kind) {
         c.br.x += tolerance;
         c.br.y += tolerance;
 
-        if (!this.entityhover(mx, my)) {
+        if (!this.entityhover(mx, my, c)) {
           return false;
         }
 
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
     }
 
-    
-    
-    this.entityhover = function(mx,my){
+    this.entityhover = function(mx, my, c){
+        if(!c){
+             c = this.corners();
+        }
         //we have correct points in the four corners of a square.
-        var c = this.corners();
         if(mx > c.tl.x && mx < c.tr.x){
             if(my > c.tl.y && my < c.bl.y){
                 return true;
@@ -319,7 +324,7 @@ function Symbol(kind) {
                 br = {x:p2.x, y:p2.y};
                 tr = {x:br.x, y:tl.y};
                 bl = {x:tl.x, y:br.y};
-            }else{ 
+            }else{
                 //we are in the bottomleft
                 tr = {x:p2.x, y:p2.y};
                 bl = {x:p1.x, y:p1.y};
@@ -535,19 +540,19 @@ function Symbol(kind) {
         }
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.strokeColor;
 
-     
-        
+
+
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-        
-        
+
+
 
         ctx.save();
-        ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
+        ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
 
         if(this.symbolkind == 1){
             this.drawUML(x1, y1, x2, y2);
@@ -566,23 +571,23 @@ function Symbol(kind) {
         }
 
         ctx.restore();
-        ctx.setLineDash([]);  
-        
-        
+        ctx.setLineDash([]);
+
+
         //Highlighting points when targeted, makes it easier to resize
         if(this.targeted && this.symbolkind != 5){
             ctx.beginPath();
             ctx.arc(x1,y1,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
-               
+
             ctx.beginPath();
             ctx.arc(x2,y2,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
         }
-        
-        
+
+
     }
     this.drawUML = function(x1, y1, x2, y2)
     {
@@ -649,53 +654,63 @@ function Symbol(kind) {
         ctx.stroke();
     }
 
-this.drawERAttribute = function(x1, y1, x2, y2){
-    ctx.fillStyle = this.symbolColor;
-    ctx.lineWidth = this.lineWidth;
-    //This is a temporary solution to the black symbol problem
+    this.drawERAttribute = function(x1, y1, x2, y2){
+        ctx.fillStyle = this.symbolColor;
+        ctx.lineWidth = this.lineWidth;
+        //This is a temporary solution to the black symbol problem
 
-    drawOval(x1, y1, x2, y2);
+        drawOval(x1, y1, x2, y2);
 
-    ctx.fill();
-    makeShadow();
+        ctx.fill();
+        makeShadow();
 
-    //drawing a multivalue attribute
-    if (this.key_type == 'Multivalue') {
+        //drawing a multivalue attribute
+        if (this.key_type == 'Multivalue') {
+            ctx.stroke();
+            drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
+        }
+        //drawing an derived attribute
+        else if (this.key_type == 'Drive') {
+            ctx.setLineDash([5, 4]);
+        }
+        else if (this.key_type == 'Primary key') {
+            ctx.stroke();
+            var linelength = ctx.measureText(this.name).width;
+            ctx.beginPath(1);
+            ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+            ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+            ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+            ctx.strokeStyle = this.strokeColor;
+
+        }
         ctx.stroke();
-        drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
+
+        ctx.fillStyle = this.fontColor;
+        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        ctx.clip();
     }
-    //drawing an derived attribute
-    else if (this.key_type == 'Drive') {
-        ctx.setLineDash([5, 4]);
-    }
-    else if (this.key_type == 'Primary key') {
+
+    this.drawEntity = function(x1, y1, x2, y2){
+        ctx.fillStyle = this.symbolColor;
+
+        ctx.beginPath();
+        if (this.key_type == "Weak") {
+            ctx.moveTo(x1 - 5, y1 - 5);
+            ctx.lineTo(x2 + 5, y1 - 5);
+            ctx.lineTo(x2 + 5, y2 + 5);
+            ctx.lineTo(x1 - 5, y2 + 5);
+            ctx.lineTo(x1 - 5, y1 - 5);
+        }
+
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineTo(x1, y2);
+        ctx.lineTo(x1, y1);
+        ctx.closePath();
+        makeShadow();
+        ctx.clip();
         ctx.stroke();
-        var linelength = ctx.measureText(this.name).width;
-        ctx.beginPath(1);
-        ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-        ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-        ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-        ctx.strokeStyle = this.strokeColor;
-
-    }
-    ctx.stroke();
-
-    ctx.fillStyle = this.fontColor;
-    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-    ctx.clip();
-}
-
-this.drawEntity = function(x1, y1, x2, y2){
-    ctx.fillStyle = this.symbolColor;
-
-    ctx.beginPath();
-    if (this.key_type == "Weak") {
-        ctx.moveTo(x1 - 5, y1 - 5);
-        ctx.lineTo(x2 + 5, y1 - 5);
-        ctx.lineTo(x2 + 5, y2 + 5);
-        ctx.lineTo(x1 - 5, y2 + 5);
-        ctx.lineTo(x1 - 5, y1 - 5);
-    }
 
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y1);
@@ -707,21 +722,28 @@ this.drawEntity = function(x1, y1, x2, y2){
     ctx.clip();
     ctx.stroke();
 
-    //Print arity and entity name
     ctx.fillStyle = this.fontColor;
     ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
     ctx.font = parseInt(textsize) + "px " + this.font;
-    for (var i = 0; i < this.arity.length; i++) {
-        for (var j = 0; j < this.arity[i].length; j++) {
-            var arity = this.arity[i][j];
-            ctx.textAlign = arity.align;
-            ctx.textBaseline = arity.baseLine;
-            ctx.fillText(arity.text, arity.x, arity.y);
-        }
-    }
 }
 
 this.drawLine = function(x1, y1, x2, y2){
+    //Checks if there is cardinality set on this object
+    if((this.cardinality[0].x != null && this.cardinality[0].y != null) ||
+        (this.cardinality[1].x != null && this.cardinality[1].y != null)){
+        //Updates the x and y position depending on which side the cardinality is on
+        ctx.fillStyle = '#000'; 
+
+        this.cardinality[0].x = x1 > x2 ? x2+10 : x2-10;
+        this.cardinality[0].y = y1 > y2 ? y2+10 : y2-10;
+        ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+
+        this.cardinality[1].x = x1 > x2 ? x1-10 : x1+10;
+        this.cardinality[1].y = y1 > y2 ? y1-10 : y1+10;
+        ctx.fillText(this.cardinality[1].value, this.cardinality[1].x, this.cardinality[1].y);
+    }
+
+
     ctx.lineWidth = this.lineWidth;
     if (this.key_type == "Forced") {
         //Draw a thick black line
@@ -730,49 +752,46 @@ this.drawLine = function(x1, y1, x2, y2){
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
-
-        //Draw a white line in the middle to simulate space (2 line illusion).
-        ctx.lineWidth = this.lineWidth;
-        ctx.strokeStyle = "#fff";
     }
     else if (this.key_type == "Derived") {
         ctx.lineWidth = this.lineWidth * 2;
         ctx.setLineDash([5, 4]);
     }
+
     ctx.beginPath();
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.stroke();
 }
 
-this.drawRelation = function(x1, y1, x2, y2){
-    var midx = points[this.middleDivider].x;
-    var midy = points[this.middleDivider].y;
-    ctx.beginPath();
-    if (this.key_type == 'Weak') {
-        ctx.lineWidth = this.lineWidth;
-        ctx.moveTo(midx, y1 + 5);
-        ctx.lineTo(x2 - 9, midy + 0);
-        ctx.lineTo(midx + 0, y2 - 5);
-        ctx.lineTo(x1 + 9, midy + 0);
-        ctx.lineTo(midx + 0, y1 + 5);
+    this.drawRelation = function(x1, y1, x2, y2){
+        var midx = points[this.middleDivider].x;
+        var midy = points[this.middleDivider].y;
+        ctx.beginPath();
+        if (this.key_type == 'Weak') {
+            ctx.lineWidth = this.lineWidth;
+            ctx.moveTo(midx, y1 + 5);
+            ctx.lineTo(x2 - 9, midy + 0);
+            ctx.lineTo(midx + 0, y2 - 5);
+            ctx.lineTo(x1 + 9, midy + 0);
+            ctx.lineTo(midx + 0, y1 + 5);
+        }
+        ctx.moveTo(midx, y1);
+        ctx.lineTo(x2, midy);
+        ctx.lineTo(midx, y2);
+        ctx.lineTo(x1, midy);
+        ctx.lineTo(midx, y1);
+
+        ctx.fillStyle = this.symbolColor;
+        makeShadow();
+        ctx.fill();
+        ctx.closePath();
+        ctx.clip();
+
+        ctx.stroke();
+        ctx.fillStyle = this.fontColor;
+        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
     }
-    ctx.moveTo(midx, y1);
-    ctx.lineTo(x2, midy);
-    ctx.lineTo(midx, y2);
-    ctx.lineTo(x1, midy);
-    ctx.lineTo(midx, y1);
-
-    ctx.fillStyle = this.symbolColor;
-    makeShadow();
-    ctx.fill();
-    ctx.closePath();
-    ctx.clip();
-
-    ctx.stroke();
-    ctx.fillStyle = this.fontColor;
-    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-}
 
 }
 

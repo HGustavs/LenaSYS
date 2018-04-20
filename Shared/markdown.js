@@ -347,16 +347,29 @@ function markdownBlock(inString)
     inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" />');
 
     // Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
+<<<<<<< HEAD
     // markdown below does not work correctly
 
+=======
+    // markdown below does not work with the original code, but it does work with spaces
+
+
+    /* This works:
+      inString = inString.replace(/\ {3}/gm,"<br><br>");
+      inString = inString.replace(/\ {2}/gm,"<br>");
+    */
+>>>>>>> 5a71650d2094606ff37635d2865b9a131fb0f857
     inString = inString.replace(/(\r\n){3}/gm,"<br><br>");
     inString = inString.replace(/(\r\n){2}/gm,"<br>");
     inString = inString.replace(/(\n){3}/gm,"<br><br>");
     inString = inString.replace(/(\n){2}/gm,"<br>");
     inString = inString.replace(/(\r){3}/gm,"<br><br>");
     inString = inString.replace(/(\r){2}/gm,"<br>");
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 5a71650d2094606ff37635d2865b9a131fb0f857
     // Hyperlink !!!
     // !!!url,text to show!!!
     inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
