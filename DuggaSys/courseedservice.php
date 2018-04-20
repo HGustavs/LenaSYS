@@ -127,7 +127,7 @@ if(checklogin()){
 					$error=$query->errorInfo();
 					$debug="Error updating entries".$error[2];
 				}
-        				
+
 				// Duplicate duggas and dugga variants
 				$duggalist=array();
 				$query = $pdo->prepare("SELECT * from quiz WHERE cid=:cid AND vers = :oldvers;");
@@ -162,7 +162,7 @@ if(checklogin()){
 											if(!$ruery->execute()) {
 												$error=$ruery->errorInfo();
 												$debug.="Error updating entry".$error[2];
-											}						
+											}
 									}
 							}
 						}
@@ -209,7 +209,7 @@ if(checklogin()){
 													$debug.="Error duplicating boxes".$error[2];
 												}
 										}
-										
+
 										// Make duplicate of improws for current code example and bind to the new copy
 										$pruery = $pdo->prepare("SELECT * FROM improw WHERE exampleid=:oldexampleid;");
 										$pruery->bindParam(':oldexampleid', $key);
@@ -227,10 +227,10 @@ if(checklogin()){
 														if(!$qruery->execute()) {
 															$error=$qruery->errorInfo();
 															$debug.="Error duplicating improws".$error[2];
-														}													
+														}
 												}
 										}
-										
+
 										// Make duplicate of impwordlist for current code example and bind to the new copy
 										$zruery = $pdo->prepare("SELECT * FROM impwordlist WHERE exampleid=:oldexampleid;");
 										$zruery->bindParam(':oldexampleid', $key);
@@ -247,9 +247,9 @@ if(checklogin()){
 														if(!$zzqruery->execute()) {
 															$error=$zzqruery->errorInfo();
 															$debug.="Error duplicating impwords: ".$error[2];
-														}													
+														}
 												}
-										}																													
+										}
 								}
 						}
 				}
@@ -330,7 +330,7 @@ if(checklogin()){
 						}
 
 				}
-        
+
         if($makeactive==="true"){
             $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
             $query->bindParam(':cid', $cid);
@@ -339,9 +339,9 @@ if(checklogin()){
             if(!$query->execute()) {
               $error=$query->errorInfo();
               $debug="Error updating entries".$error[2];
-            }          
+            }
         }
-				
+
 			}else if(strcmp($opt,"UPDATE")===0){
 			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
 
@@ -428,8 +428,8 @@ if(!$query->execute()) {
 			if (isset ($userCourse[$row['cid']])){
 					if ($userCourse[$row['cid']] == "W") $writeAccess = true;
 			}
-			if ($isSuperUserVar || 
-					$row['visibility']==1 || 
+			if ($isSuperUserVar ||
+					$row['visibility']==1 ||
 					($row['visibility']==2 && (isset ($userCourse[$row['cid']] ))) ||
 					($row['visibility']==0 && $writeAccess)){
 					$isRegisteredToCourse = false;
@@ -451,7 +451,7 @@ if(!$query->execute()) {
 							'registered' => $isRegisteredToCourse
 							)
 						);
-				}			
+				}
 		}
 }
 
@@ -485,10 +485,10 @@ if(!$query->execute()) {
 	$debug="Error reading settings".$error[2];
 }else{
 	$motd="UNK";
-	$readonly=false;		
+	$readonly=false;
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$motd=$row["motd"];
-		$readonly=$row["readonly"];				
+		$readonly=$row["readonly"];
 	}
 }
 
