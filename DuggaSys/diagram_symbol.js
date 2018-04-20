@@ -571,8 +571,6 @@ function Symbol(kind) {
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
 
-
-
         ctx.save();
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
