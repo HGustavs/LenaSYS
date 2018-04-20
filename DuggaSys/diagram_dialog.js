@@ -193,14 +193,14 @@ function addCardinality(){
 
     //Setting existing cardinality value on line
     if(val == "None") val = "";
-    if(diagram[lastSelectedObject].cardinality[0].value != ""){
+    if(diagram[lastSelectedObject].cardinality[0].value != null){
         diagram[lastSelectedObject].cardinality[0].value = val;
     }
 
     //Setting cardinality on new line
     if((diagram[hovobj].symbolkind == 5 && diagram[hovobj].symbolkind == 3)
     || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5) {
-        diagram[diagram.length-1].cardinality[0] = ({"value": val});
+        diagram[diagram.length-1].cardinality[0] = ("value": val});
     }
 
 }
