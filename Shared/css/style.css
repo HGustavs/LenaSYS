@@ -112,6 +112,10 @@ h6 {
 }
 
 
+.hideTableArrow {
+  display:none !important;
+}
+
 
 hr {
   border: 0;
@@ -1643,6 +1647,7 @@ input.large-button {
   line-height:28px;
   font-weight: bold;
   padding: 5px;
+  cursor: pointer;
 }
 
 .innertable {
