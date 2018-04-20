@@ -5,7 +5,7 @@ Line type: </br>
     <option value='Derived'>Derived</option>
 </select></br>
 Cardinality: <br/>
-<select onchange="" id="cardinality">
+<select onchange="changeCardinality()" id="cardinality">
   <option value="None">None</option>
   <option value="1">1</option>
   <option value="N">N</option>
