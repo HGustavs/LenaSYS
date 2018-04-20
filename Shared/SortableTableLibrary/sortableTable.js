@@ -252,8 +252,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,sortkind);
 
 						if (col != "" && col != null) {
-							str += " <img id='"+colname+"_"+tableid+"_desc_sortdiricon' style='float:right;margin-top:5px;' class='hideTableArrow' src='../Shared/icons/desc_white.svg'>";
-							str += " <img id='"+colname+"_"+tableid+"_asc_sortdiricon' style='float:right;margin-top:5px;'class='hideTableArrow' src='../Shared/icons/asc_white.svg'></th>";
+							str += " <img id='"+colname+"_"+tableid+"_desc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/desc_white.svg'>";
+							str += " <img id='"+colname+"_"+tableid+"_asc_sortdiricon' style='float:right;margin-top:7px;'class='hideTableArrow' src='../Shared/icons/asc_white.svg'></th>";
 						} else {
 							str += "</th>";
 						}
@@ -278,8 +278,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+col+"</th>";
 
 						if (col != "" && col != null) {
-							str += " <img id='"+colname+"_"+tableid+"_desc_sortdiricon' style='float:right;margin-top:5px;' class='hideTableArrow' src='../Shared/icons/desc_white.svg'>";
-							str += " <img id='"+colname+"_"+tableid+"_asc_sortdiricon' style='float:right;margin-top:5px;' class='hideTableArrow' src='../Shared/icons/asc_white.svg'></th>";
+							str += " <img id='"+colname+"_"+tableid+"_desc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/desc_white.svg'>";
+							str += " <img id='"+colname+"_"+tableid+"_asc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/asc_white.svg'></th>";
 						} else {
 							str += "</th>";
 						}
@@ -562,8 +562,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	        childrenTR = th.children[0],
 	        childrenTH = childrenTR.children[col],
 	        imgDesc = childrenTH.children[0],
-	        imgAsc = childrenTH.children[1],
-	        i;
+	        imgAsc = childrenTH.children[1];
 
 	    reverse = -((+reverse) || -1);
 	    tr = tr.sort(function (a, b) { // sort rows
@@ -573,17 +572,22 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	        );
 	    });
 
-	    var lista1 = $(childrenTH).prevAll("th").children("img").addClass("hideTableArrow");
-	    var lista2 = $(":nth-child(1)").nextAll("th").children("img").addClass("hideTableArrow");
-
+	    // Looping through all images in the heading to hide them
+	    for (var i = 0; i < childrenTR.children.length; i++) {
+	    	var tempChild = childrenTR.children[i];
+	    	for (var y = 0; y < tempChild.children.length; y++) {
+	    		tempChild.children[y].classList.add("hideTableArrow");
+	    	}
+	    }
+	    
+	    // Showing descending/ascending arrows to indicate how the table is sorted
 	    if (reverse == 1) {
 	    	imgDesc.classList.remove("hideTableArrow");
 	    } else if (reverse == -1) {
 	    	imgAsc.classList.remove("hideTableArrow");
 	    }
 
-	    //document.getElementById(tHead[col] + tableid + "_desc_sortdiricon").style.display = "block;"
-	    for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
+	    for(var i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
 	}
 }
 
