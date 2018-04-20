@@ -194,7 +194,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 //------------------------------------------------------------------------------------------------
 // Retrieve Information
 //------------------------------------------------------------------------------------------------
-
+$mass=array();
 $entries=array();
 $files=array();
 $duggaPages = array();
@@ -227,6 +227,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 				'variantanswer' => html_entity_decode($rowz['variantanswer']),
 				'modified' => $rowz['modified'],
 				'disabled' => $rowz['disabled'],
+				'cogwheelVariant' => $rowz['vid'],
+				'trashcanVariant' => $rowz['vid'],
 				);
 
 			array_push($mass, $entryz);
@@ -249,17 +251,15 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 		array_push($entries, $entry);
 	}
-
 	$dir    = './templates';
 	$giles = scandir($dir);
-	$files =array();
+	$files=array();
 	foreach ($giles as $value){
 		if(endsWith($value,".html")){
 			array_push($files,substr ( $value , 0, strlen($value)-5 ));
 			$duggaPages[substr ( $value , 0, strlen($value)-5 )] = file_get_contents("templates/".$value);
 		}
 	}
-
 }
 
 $array = array(
