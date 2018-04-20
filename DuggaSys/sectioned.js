@@ -153,8 +153,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	if(kind==5) str+="<option selected='selected' value='5'>Link</option>"
 	else str+="<option value='5'>Link</option>";
 
-	if(kind==6) str+="<option selected='selected' value='6'>Group</option"
-	else str+="<option value='6'>Group</option'";
+	if(kind==6) str+="<option selected='selected' value='6'>Group</option>"
+	else str+="<option value='6'>Group</option>'";
 
 	$("#type").html(str);
 
@@ -212,6 +212,11 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	str +="<option value ='2'>5</option>";
 	$("#numberOfGroups").html(str);
 
+	str="";
+	str +="<option value ='0'>Seminar Group</option>";
+	str +="<option value ='1'>Group Task</option>";
+	str +="<option value ='2'>Project Task</option>";
+	$("#groupType").html(str);
 
 	$("#inputwrapper-tabs").css("display","none");
 	$("#inputwrapper-link").css("display","none");
@@ -220,6 +225,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	$("#inputwrapper-highscore").css("display","none");
 	$("#inputwrapper-comments").css("display","none");
 	$("#inputwrapper-numberOfGroups").css("display", "none");
+	$("#inputwrapper-groupType").css("display", "none");
 
 
 	// Header
@@ -283,6 +289,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	// Group
 	}else if(kind==6){
 		$("#inputwrapper-numberOfGroups").css("display","block");
+		$("#inputwrapper-groupType").css("display", "block");
 	}
 	$("#editSection").css("display","flex");
 }
@@ -305,14 +312,8 @@ function changedType(value)
 	$("#inputwrapper-numberOfGroups").css("display", "none");
 
 
-	//Header
-	if(kind==0){
-
-	//Section
-	}else if(kind==1){
-
-	//Code
-	}else if(kind==2){
+	//Header(kind==0) and Section(kind==1) wont add any boxes, so no if-statements are needed for them.
+	if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
 			if(xelink==iitem['exampleid']){
@@ -348,11 +349,8 @@ function changedType(value)
 	//Link
 	}else if(kind==5){
 		$("#inputwrapper-tabs").css("display","block");
-
 		for(var ii=0;ii<retdata['links'].length;ii++){
-
 			var iitem=retdata['links'][ii];
-
 			// filter file extension
 			var ext = iitem.filename.split('.').pop().toLowerCase();
 			var validExts = ['js', 'md', 'php', 'html', 'css', 'htm', 'html', 'pdf', 'png', 'jpg', 'txt'];
@@ -368,8 +366,8 @@ function changedType(value)
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
 	}else if(kind==6){
-		console.log("Changing type to group");
 		$("#inputwrapper-numberOfGroups").css("display", "block");
+		$("#inputwrapper-groupType").css("display", "block");
 	}
 }
 
@@ -923,6 +921,12 @@ function returnedSection(data)
 						+ menuState.idCounter
 						+ data.coursecode
 						+ "' class='link' style='display:block'>";
+				} else if(parseInt(item['kind']) === 6){
+					str+=
+						"<div id='group"
+						+ menuState.idCounter
+						+ data.coursecode
+						+ "' class='group' style='display:block'>";
 				}
 				menuState.idCounter++;
 				// All are visible according to database
@@ -938,19 +942,20 @@ function returnedSection(data)
 				}
 				str+=" >";
 
-					var blorf="";
-					if (parseInt(item['visible']) === 0){
-							blorf=" hidden";
-					}else if(parseInt(item['visible']) === 3){
-							blorf=" deleted";
-					}else if(parseInt(item['visible']) === 2){
-							blorf=" login";
-					}else{
-							blorf="";
-					}
+				var blorf="";
+				if (parseInt(item['visible']) === 0){
+						blorf=" hidden";
+				}else if(parseInt(item['visible']) === 3){
+						blorf=" deleted";
+				}else if(parseInt(item['visible']) === 2){
+						blorf=" login";
+				}else{
+						blorf="";
+				}
 
 					// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment
-					if(parseInt(item['kind']) === 3|| parseInt(item['kind']) === 4){
+					var temp = parseInt(item['kind']);
+					if(temp === 3|| temp === 4 || temp === 6){
 
 						// Styling for quiz row e.g. add a tab spacer
 						if(parseInt(item['kind']) === 3) str+="<td style='width:36px;'><div class='spacerLeft'></div></td>";
@@ -978,7 +983,7 @@ function returnedSection(data)
 									marked = null;
 								}
 
-								if(parseInt(item['kind']) === 3){
+								if(parseInt(item['kind']) === 3  || parseInt(item['kind']) === 6){
 									if (lawtem["useranswer"] !== null && submitted !== null && marked === null) {
 										status="pending";
 									}
@@ -996,7 +1001,7 @@ function returnedSection(data)
 								}
 							}
 						}
-						if (parseInt(item['kind']) === 3){
+						if (parseInt(item['kind']) === 3  || parseInt(item['kind']) === 6){
 							str+="<td class='LightBox"+blorf+"'>";
 						} else if ((parseInt(item['kind']) === 4)){
 							str+="<td class='LightBoxFilled"+blorf+"'>";
@@ -1062,7 +1067,7 @@ function returnedSection(data)
 						}
 					}
 					kk++;
-				}else if(parseInt(item['kind']) === 3 ){						// Dugga
+				}else if(parseInt(item['kind']) === 3  || parseInt(item['kind']) === 6){						// Dugga
 					if(item['highscoremode'] != 0 && parseInt(item['kind']) == 3) {
 						str+="<td style='width:20px;'><img style=';' title='Highscore'"
 						+"src='../Shared/icons/top10.png' onclick='showHighscore(\""+item['link']+"\",\""+item['lid']+"\")'/></td>";
@@ -1137,7 +1142,7 @@ function returnedSection(data)
 						+ item['entryname'] + "'>" + item['entryname'] + "</a></span></div>";
 				}
 
-				else if (parseInt(item['kind']) == 3 ) { // Test Title
+				else if (parseInt(item['kind']) == 3) { // Test Title
 					str +=
 						"<div class='ellipsis nowrap'><a class='" + blorf
 						+ "' style='cursor:pointer;margin-left:15px;' "
@@ -1163,6 +1168,14 @@ function returnedSection(data)
 							+ "&coursevers=" + querystring['coursevers'] + "&fname="
 							+ item['link'] + "\");' >" + item['entryname'] + "</a>";
 					}
+				}else if(parseInt(item['kind']) == 6){ // Group
+					console.log("asd");
+					str+=
+					"<div class='ellipsis nowrap'><a class='" + blorf
+					+ "' style='cursor:pointer;margin-left:15px;'"
+					+ "onClick='alert(\"There should be some group functionality here\");'"
+					+ 'title=' + item['entryname'] + '><span><span>' + item['entryname']
+					+ "</span></span></a></div>";
 				}
 
 				str+="</td>";
@@ -1315,6 +1328,11 @@ function returnedSection(data)
 					} else if(parseInt(item['kind']) === 4) {
 						str+=
 							"' class='moment"+blorf+"'>"
+							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
+							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
+					} else if(parseInt(item['kind']) === 6){
+						str+=
+							"' class='group"+blorf+"'>"
 							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					} else {
