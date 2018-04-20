@@ -375,7 +375,8 @@ function mouseupevt(ev) {
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
-            if(symbolEndKind == 3 || symbolEndKind == 5) openAppearanceDialogMenu('line_appearance');
+            if((symbolEndKind == 3 || symbolEndKind == 5) && (symbolStartKind == 3 || symbolStartKind == 5)) 
+              openAppearanceDialogMenu('line_appearance');
             updateGraphics();
             //diagram.createAritySymbols(diagram[lastSelectedObject]);
         }

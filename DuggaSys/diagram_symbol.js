@@ -29,7 +29,7 @@ function Symbol(kind) {
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
     this.cardinality = [
-      {"value": null}
+      {"value": null, "isCorrectSide": null}
     ];
 
     // Connector arrays - for connecting and sorting relationships between diagram objects
@@ -720,10 +720,16 @@ this.drawLine = function(x1, y1, x2, y2){
     if(this.cardinality[0].value != "" && this.cardinality[0].value != null){
         //Updates x and y position
         ctx.fillStyle = '#000';
-
-        this.cardinality[0].x = x1 > x2 ? x1-10 : x1+10;
-        this.cardinality[0].y = y1 > y2 ? y1-10 : y1+10;
-
+        if(this.cardinality[0].isCorrectSide)
+        {
+            this.cardinality[0].x = x1 > x2 ? x1-10 : x1+10;
+            this.cardinality[0].y = y1 > y2 ? y1-10 : y1+10;
+        }
+        else
+        {
+            this.cardinality[0].x = x2 > x1 ? x2-10 : x2+10;
+            this.cardinality[0].y = y2 > y1 ? y2-10 : y2+10;
+        }
         ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
     }
 
