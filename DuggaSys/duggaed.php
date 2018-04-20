@@ -64,17 +64,17 @@ pdoConnect();
       			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'><option value='1'>U-G-VG</option><option value='2'>U-G</option><option value='3'>U-3-4-5</option></select></div>
       			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
             <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='qstart' value='' /></div>
-      			<div class='inputwrapper'><span>First  Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='' /></div>
-						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
-						<div class='inputwrapper'><span>Second Deadline :</span><input class='textinput datepicker' type='text' id='deadline2' value='None' /></div>
-						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
-						<div class='inputwrapper'><span> Third Deadline :</span><input class='textinput datepicker' type='text' id='deadline3' value='None' /></div>
-						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
+      			<div class='inputwrapper'><span>1st Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span>2nd Deadline :</span><input class='textinput datepicker' type='text' id='deadline2' value='None' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span>3rd Deadline :</span><input class='textinput datepicker' type='text' id='deadline3' value='None' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
             <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
       		</div>
       		<div style='padding:5px;'>
       			<input style='float left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeEditDugga();' />
-      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='createDugga();' />
+      			<input style='display:none; float:right;' class='submit-button submitDugga' type='button' value='Submit' onclick='createDugga();' />
       			<input style='float:right; 'class='submit-button updateDugga' type='button' value='Save' onclick='updateDugga();' />
       		</div>
       </div>
