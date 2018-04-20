@@ -218,7 +218,7 @@ function renderCell(col,celldata,cellid) {
 		if(link[0] == "https" || link[0] == "http"){
 			str="";
 		}else{
-			 //For the markdown preview use the row below
+			 //For the markdown preview use the code-row below
 			str="<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
 		}
 		return str;
