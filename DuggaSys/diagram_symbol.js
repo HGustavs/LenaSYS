@@ -546,13 +546,6 @@ function Symbol(kind) {
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
 
-
-        //Checks if this symbol is allowed to have cardinality, if it doesnt, null and return
-        if(this.symbolkind != 5 && this.symbolkind != 3){
-            this.cardinality[0].value = null;
-            return;
-        }
-
         ctx.save();
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
