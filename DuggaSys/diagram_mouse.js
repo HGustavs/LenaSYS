@@ -80,7 +80,8 @@ function mousemoveevt(ev, t) {
         points[sel.index].y = currentMouseCoordinateY;
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
-        if (movobj != -1 && movobj != 4 && movobj != 6) {
+        console.log("movobj: " + movobj);
+        if (movobj != -1 && movobj != 4 && movobj != 6 && movobj != 5) {
             uimode = "Moved";
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
