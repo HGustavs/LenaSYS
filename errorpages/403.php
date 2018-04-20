@@ -5,8 +5,9 @@
 include_once "../Shared/basic.php";
 //pdoConnect();
 /*
-$noup="NONE";
-*/
+   $noup="NONE";
+ */
+logUnknownServiceRequest();
 ?>
 <!DOCTYPE html>
 <html>
