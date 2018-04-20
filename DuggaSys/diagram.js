@@ -377,15 +377,18 @@ diagram.itemClicked = function() {
 // (currently only of kind==2 && symbolkind == 4 (aka. lines))
 //--------------------------------------------------------------------
 diagram.checkForHover = function(posX, posY) {
-    var hovered = false;
-    for (var i = this.length - 1; i >= 0; i--) {
-        if (this[i].kind == 2) {
-            if (hovered) this[i].isHovered = false;
-            else {
-                this[i].isHovered = this[i].checkForHover(posX, posY);
-                hovered = this[i].isHovered;
-            }
-        }
+    for (var i = 0; i < this.length; i++) {
+        if (this[i].kind == 2) this[i].isHovered = false;
+    }
+    var hoveredObjects = this.filter(symbol => symbol.checkForHover(posX, posY));
+    hoveredObjects.sort(function(a, b) {
+        if (a.symbolkind != 4 && b.symbolkind != 4) return 0;
+        else if (a.symbolkind == 4 && b.symbolkind != 4) return -1;
+        else if (a.symbolkind != 4 && b.symbolkind == 4) return 1;
+        else return 0;
+    });
+    if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind == 2) {
+        hoveredObjects[hoveredObjects.length - 1].isHovered = true;
     }
 }
 
