@@ -3218,6 +3218,7 @@ ul.hamburgerList button.menuButton {
   bottom: 45px;
   right: 24px;
   height: 70px;
+  z-index: 500;
 }
 
 .zoom-fab {
