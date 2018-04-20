@@ -63,7 +63,7 @@ pdoConnect();
 						<span id="tooltipType" style="display: none;" class="tooltipDuggaTypeTxt">Create a Dugga before you can use it for a test.</span>
 				</div> <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box. 
 							If they don't, change the width of loginbox select in the CSS file -->
-				<select id='type' value='type'  onchange='changedType();validateType();'></select></div>
+				<select id='type' value='type'  onchange='changedType(document.getElementById("type").value);validateType();'></select></div>
 				<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
 				<div id='inputwrapper-gradesystem' class='inputwrapper'><span>Grade system:</span><select id='gradesys' ></select></div>
 				<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
