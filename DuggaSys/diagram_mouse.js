@@ -300,28 +300,41 @@ function mouseupevt(ev) {
 
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
             if(symbolStartKind != 4 && symbolEndKind != 4){
+                var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == 2) {
                     p1 = diagram[lineStartObj].centerPoint;
                 } else if (diagram[lineStartObj].symbolkind == 5) {
                     p1 = diagram[lineStartObj].middleDivider;
                 } else {
-                    p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                    createNewPoint = true;
+                }  
+                
+                //Code for making sure enitities not connect to the same attribute multiple times
+                //okToMakeLine is a flag for this
+                var okToMakeLine= true;
+                if(symbolEndKind == 3 && symbolStartKind == 2){
+                    if(diagram[hovobj].hasConnector(p1)){
+                        okToMakeLine= false;
+                    }
+                } else if(symbolEndKind == 2 && symbolStartKind == 3){
+                    if(diagram[lineStartObj].hasConnector(p2)){
+                        okToMakeLine= false;
+                    } 
                 }
-
-                if (diagram[hovobj].symbolkind == 2) {
-                    p2 = diagram[hovobj].centerPoint;
-                } else if (diagram[hovobj].symbolkind == 5) {
-                    p2 = diagram[hovobj].middleDivider;
-                } else{
-                    p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                }
-
-                  // Start line on object
-                diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
-                diagram[hovobj].connectorTop.push({from:p2, to:p1});
-
+                if(okToMakeLine){
+                    if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                    if (diagram[hovobj].symbolkind == 2) {
+                        p2 = diagram[hovobj].centerPoint;
+                    } else if (diagram[hovobj].symbolkind == 5) {
+                        p2 = diagram[hovobj].middleDivider;
+                    } else{
+                        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                    }
+                    diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
+                    diagram[hovobj].connectorTop.push({from:p2, to:p1});
                 }
             }
+        }
     }
     if (uimode == "CreateClass" && md == 4) {
         classB = new Symbol(1);
@@ -362,7 +375,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
     } else if (uimode == "CreateLine" && md == 4){
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)) && (symbolStartKind != 4 && symbolEndKind != 4)){
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine){
             erLineA = new Symbol(4);
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;

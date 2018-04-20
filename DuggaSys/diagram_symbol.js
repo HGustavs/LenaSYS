@@ -260,6 +260,31 @@ function Symbol(kind) {
         this.sortConnector(this.connectorBottom, 2, x1, x2, y2);
     }
 
+    //return true if connector contains a certain point
+    this.hasConnector = function(point) {
+        for (var i = 0; i < this.connectorTop.length; i++) {
+            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
+                return true;
+            }
+        }
+        for(var i = 0; i < this.connectorRight.length; i++) {
+            if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
+                return true;
+            }
+        }
+        for (var i = 0; i < this.connectorBottom.length; i++) {
+            if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
+                return true;
+            }
+        }
+        for (var i = 0; i < this.connectorLeft.length; i++) {
+            if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
+                return true;
+            }
+        }
+    }
+    
+    
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
