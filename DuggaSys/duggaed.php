@@ -104,7 +104,7 @@ pdoConnect();
       <div class='loginBox' style="width:80%;">
       		<div class='loginBoxheader'>
       			<h3>Edit Variant</h3>
-      			<div class='cursorPointer' onclick='closeWindows();closeVariant();'>x</div>
+      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
           <div class='loginBoxbody'>       
            <div id="variant" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the variant-table within. -->
@@ -129,7 +129,7 @@ pdoConnect();
           									<option value="pdf">PDF</option>
           									<option value="html">HTML</option>
           								</select>
-          								<input type="text" name="filelink" id="filelink" placeholder="File link" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;">
+          								<input id="filelink" type="text" name="filelink" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;">
           							</div>
           						</fieldset>
           					</div>
@@ -137,7 +137,7 @@ pdoConnect();
                       <div id="duggaExtraParamForm">
                         <fieldset style="width:90%">
                           <legend>Extra parameters</legend>
-                              <textarea id='extraparam' placeholder='Extra dugga parameters in valid JSON' rows="5" style=""></textarea>
+                              <textarea id='extraparam' rows="5" style=""></textarea>
                         </fieldset>
                       </div>
                     </div>
@@ -160,20 +160,29 @@ pdoConnect();
           			<div id="rightDivDialog">
                     <fieldset style="width:90%">
                         <legend>Generated Param JSON</legend>
-                				<div style='min-height:120px'><textarea id='parameter' placeholder='Variant Param' rows="5" style="min-height:100px"></textarea></div>
+                				<div id='parameter' style='min-height:120px'>
+                          <textarea id='variantparameterText' rows="5" style="min-height:100px"></textarea>
+                        </div>
                     </fieldset>
                     <fieldset style="width:90%">
                         <legend>Answer</legend>
-                				<div style='min-height:120px'><textarea id='variantanswer' placeholder='Variant Param' rows="5" style="min-height:100px"></textarea></div>
+                				<div id='variantanswer' style='min-height:120px'>
+                          <textarea id='variantanswerText' rows="5" style="min-height:100px"></textarea>
+                        </div>
                     </fieldset>
           			</div>
           		</div>
           		<div style='padding:5px;'>
-                <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel' onclick='closeVariant();'/>
-          			<input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit' onclick='createVariant();'/> 
-                <input id='updateVariant' class='submit-button' style='display:none; float:right' type='button' value='Save' onclick='updateVariant();'/>
-                <input id='disableVariant' class='submit-button' style='display:none; float:right' type='button' value='Disable' onclick='showVariantEnableButton(); disableVariant();'/>
-                <input id='enableVariant' class='submit-button' style='display:none; float:right' type='button' value='Enable' onclick='showVariantDisableButton(); enableVariant();'/>
+                <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel' 
+                onclick='closeWindows();'/>
+          			<input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit' 
+                onclick='showVariantSaveButton(); createVariant();'/> 
+                <input id='updateVariant' class='submit-button' style='display:none; float:right' type='button' value='Save' 
+                onclick='showVariantSubmitButton(); updateVariant();'/>
+                <input id='disableVariant' class='submit-button' style='display:none; float:right' type='button' value='Disable' 
+                onclick='showVariantEnableButton(); disableVariant();'/>
+                <input id='enableVariant' class='submit-button' style='display:none; float:right' type='button' value='Enable' 
+                onclick='showVariantDisableButton(); enableVariant();'/>
           		</div>
           </div>
 	</div>

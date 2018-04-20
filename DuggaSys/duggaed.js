@@ -119,7 +119,6 @@ function createJSONString(formData) {
 
 function selectVariant(vid,param,answer,template,dis)
 {
-	$("#editVariant").css("display","flex"); // Display edit dialog
 	$("#vid").val(vid); // Set Variant ID
 	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
 	$("#variantanswer").val(decodeURIComponent(answer)); // Set Variant answer
@@ -556,11 +555,13 @@ var myTable2;
 function openVariant(clickedElement) {
 	var tabledata2 = {
     	tblhead:{
+    		vid:"",
     		param:"Parameter",
     		variantanswer:"Answer",
     		modified:"Modified",
-    		disabled:"",
-    		vid:""
+    		disabled:"Disabled/Enabled",
+    		cogwheelVariant: "",
+    		trashcanVariant: ""
     	},
     	tblbody: globalData['entries'][clickedElement].variants, //"ParentQuiz" returns the right value, but the table gets created in a to early stage.
     	tblfoot:[]
@@ -588,6 +589,14 @@ function openVariant(clickedElement) {
 	showVariantDisableButton();
 	showVariantSubmitButton();
 	myTable2.renderTable();
+	document.getElementById('filelink').value='';
+	document.getElementById('filelink').placeholder='File link';
+	document.getElementById('extraparam').value='';
+	document.getElementById('extraparam').placeholder='Extra dugga parameters in valid JSON';
+	document.getElementById('variantparameterText').value='';
+	document.getElementById('variantparameterText').placeholder='Undefied JSON parameter';
+	document.getElementById('variantanswerText').value='';
+	document.getElementById('variantanswerText').placeholder='Undefied JSON answer';
 	$("#editVariant").css("display","flex"); //Display variant-window
 }
 function returnedDugga(data) {
@@ -644,10 +653,12 @@ function returnedDugga(data) {
 
 // Rendring specific cells
 function renderCell(col,celldata,cellid) {	
+	
+	// DUGGA-TABLE start
 	// Placing a clickable icon in its designated column that opens a window for acess to variants.
 	if (col == "arrow"){
 		clickedElement=JSON.parse(cellid.match(/\d+/));
-	    str="<img id='dorf' src='../Shared/icons/Arrow.svg' ";
+	    str="<img id='dorf' src='../Shared/icons/right_primary.svg' ";
 		str+=" onclick='openVariant(\""+clickedElement+"\");'>";
 		return str;
 	}
@@ -693,30 +704,47 @@ function renderCell(col,celldata,cellid) {
 		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
 		return str;
 	}
+	// DUGGA-TABLE END
 
-	// Placing a clickable trash can in its designated column and implementing the code behind it.
+	// VARIANT-TABLE start
+	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "vid"){
-		object=JSON.parse(celldata);
-	    str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
-		str+=" onclick='' >";
+	    str="<img id='dorf' src='../Shared/icons/right_primary.svg' ";
+		str+=" onclick='getVariantPreview();'>";
 		return str;
 	}
 
-	//Translating the integers behind "disabled"
+	//Translating the integers behind "disabled" to say disabled or enabler. Also making it look that way.
 	else if (col == "disabled"){
-		object=JSON.parse(celldata);
-	    str="<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
-		str+=" onclick='' >";
-		return str;
 		if(celldata == "0"){
-			// LET IT BE ENABLED
+			celldata = "Enabled";
+			//MAKE IT LOOK ENABLED
 		}else if(celldata == "1"){
-			// MAKE IT DISABLED
+			celldata = "Disabled";
+			// MAKE IT LOOK DISABLED
 		}
 		else{
 			celldata = "Undefined";
 		}
 	}
+
+	// Placing a clickable cogwheel in its designated column that select a variant to be edited.
+	else if (col == "cogwheelVariant"){
+		object=JSON.parse(celldata);
+	    str="<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
+		str+=" onclick='selectVariant()' >";
+		return str;
+	}
+
+	// Placing a clickable trash can in its designated column and implementing the code behind it.
+	else if (col == "trashcanVariant"){
+		object=JSON.parse(celldata);
+	    str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
+		str+=" onclick='deleteVariant()' >";
+		return str;
+	}
+	// VARIANT-TABLE end
+
 	return celldata;
 }
 // End of rendering the table.

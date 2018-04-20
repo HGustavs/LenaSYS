@@ -222,12 +222,13 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		foreach($queryz->fetchAll(PDO::FETCH_ASSOC) as $rowz){
 
 			$entryz = array(
+				'vid' => $rowz['vid'],
 				'param' => html_entity_decode($rowz['param']),
 				'variantanswer' => html_entity_decode($rowz['variantanswer']),
 				'modified' => $rowz['modified'],
 				'disabled' => $rowz['disabled'],
-				'vid' => $rowz['vid'],
-				'vid' => $rowz['vid'],
+				'cogwheelVariant' => $rowz['vid'],
+				'trashcanVariant' => $rowz['vid'],
 				);
 
 			array_push($mass, $entryz);
