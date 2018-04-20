@@ -365,12 +365,14 @@ function sortTable(table, col, reverse) {
         i;
     reverse = -((+reverse) || -1);
     tr = tr.sort(function (a, b) { // sort rows
-			//console.log(a.cells[col].textContent.trim());
 			try{
 				return reverse // `-1 *` if want opposite order
 			 	* (a.cells[col].textContent.trim()
 	          .localeCompare(b.cells[col].textContent.trim()));
-			} catch(e){}
+			} catch(e){
+				//TODO Fix this
+				// Sometimes b is undefined -> enters this catch block
+			}
     });
     for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
 }
