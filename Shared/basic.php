@@ -273,16 +273,16 @@ function logDuggaLoadEvent($cid, $vers, $quizid, $type) {
 }
 
 //------------------------------------------------------------------------------------------------
-// Log that an unknown(404) page tried to be requested.
+// Log that an error occurred when trying to access a service. Error-type example: "unknown service(404)"
 //------------------------------------------------------------------------------------------------
 
-function logUnknownServiceRequest(){
-    $unknown_service_request = $_SERVER['REQUEST_URI'];
-    $service_db_entry = "unknown service(404): $unknown_service_request";
+function logServiceRequestError($error_type){
+    $service_request = $_SERVER['REQUEST_URI'];
+    $service_entry = "$error_type: $service_request";
     logServiceEvent(
 	$log_uuid,
 	EventTypes::ServiceServerStart,
-	$service_db_entry,
+	$service_entry,
 	$userid,
 	$info);
 }

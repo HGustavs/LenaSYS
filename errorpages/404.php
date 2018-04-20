@@ -7,7 +7,8 @@ include_once "../Shared/basic.php";
 /*
    $noup="NONE";
  */
-logUnknownServiceRequest();
+$error_type = "unknown service(404)";
+logServiceRequestError($error_type);
 ?>
 
 <!DOCTYPE html>
