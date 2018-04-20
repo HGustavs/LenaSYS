@@ -337,7 +337,7 @@ function mouseupevt(ev) {
                     diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
                     diagram[hovobj].connectorTop.push({from:p2, to:p1});
                 }else{
-                    p2 = "";
+                    points[p2] = "";
                 }
             }
         }
