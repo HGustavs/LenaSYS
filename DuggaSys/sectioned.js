@@ -1596,14 +1596,23 @@ $(window).load(function() {
 });
 
 
+// Detects clicks
 $(document).mouseup(function (e)
 {
-    if (!$('.zoom').is(e.target) // if the target of the click isn't the container...
+	// Click outside the FAB list
+    if ($('.zoom-list').is(':visible') && !$('.zoom').is(e.target) // if the target of the click isn't the container...
         && $('.zoom').has(e.target).length === 0) // ... nor a descendant of the container
     {
         if (!$('.zoom-btn-sm').hasClass('scale-out')) {		
 			$('.zoom-btn-sm').toggleClass('scale-out');
 			$('.zoom-list').delay(100).fadeOut(0);
 		}
+    }
+    // Click outside the loginBox
+    else if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
+        && $('.loginBox').has(e.target).length === 0) // ... nor a descendant of the container
+    {
+	    closeWindows();
+        closeSelect();
     }
 });
