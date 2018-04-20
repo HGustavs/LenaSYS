@@ -23,4 +23,4 @@ Cardinality: <br/>
     <option value='#ffffff'>White</option>
     <option value='#000000'>Black</option>
 </select><br>-->
-<button type='submit' class='submit-button' onclick="changeObjectAppearance('lineType'); setType(form); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>OK</button>
+<button type='submit' class='submit-button' onclick="changeObjectAppearance('lineType'); setType(form); addCardinality(); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>OK</button>

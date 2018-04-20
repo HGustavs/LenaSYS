@@ -195,7 +195,7 @@ function addCardinality(){
   }
 
   //Setting cardinality on new line
-  if((diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3){
+  if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3){
     diagram[diagram.length-1].cardinality[0] = ({"value": val, "isCorrectSide": false});
   }
   else if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5) {
