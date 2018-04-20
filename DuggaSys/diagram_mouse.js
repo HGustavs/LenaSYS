@@ -379,7 +379,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
     } else if (uimode == "CreateLine" && md == 4){ 
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)) && (symbolStartKind != 4 && symbolEndKind != 4)){
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)) && (symbolStartKind != 4 && symbolEndKind != 4) && ok){
             erLineA = new Symbol(4);
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
