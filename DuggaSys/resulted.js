@@ -14,7 +14,7 @@ var allowedRegradeTime = 24*60*60*1000;
 //var benchmarkData = performance.timing; // Will be updated after onload event
 //var ajaxStart;
 //var tim;
-
+var studentInfo = new Array;
 var students=new Array;
 var momtmp=new Array;
 var sortcolumn=1;
@@ -1394,7 +1394,7 @@ function buildDynamicHeaders(data) {
 }
 
 function buildStudentInfo() {
-	let studentInfo = new Array;
+	
 	students.forEach(function(entry) {
 		if(entry.length > 1) {
 			var row = {0:entry[0]};
@@ -1409,9 +1409,9 @@ function buildStudentInfo() {
 }
 
 function testSortable(data){
-  
+  studentInfo = new Array;
 	let tblhead = buildDynamicHeaders(data);
-	let studentInfo = buildStudentInfo();
+	studentInfo = buildStudentInfo();
 
 	var tabledata = {
 		tblhead,
@@ -1462,33 +1462,23 @@ function makeAllSortable(parent) {
 }
 
 function renderCell(col,celldata,cellid) {
-	
-	//console.log(celldata);
-  if (col == 0){
-    /*obj=JSON.parse(celldata);
-    //console.log(obj);
-		
-    str = "<p style='font-size:12px;line-height:12px;'>";
-    str += obj.firstname + " " + obj.lastname + "<br>";
-    str += obj.username + " / " + obj.class + "<br>";
-    str += obj.ssn + "<br>";
-    str += obj.teacher + "</p>";*/
-    console.log(col);
-    //str = celldata.grade;
-    //console.log(celldata);
+	if (col == 0){
     str = celldata.grade;
+    str += "<div id='" + cellid + "'></div>";
     return str;
 
-  }else {
-    //return "<div id='" + cellid + "'>" + celldata + "</div>";
-    
-   /* obj = JSON.parse(celldata);
-    str = "<div id='" + cellid + "'>";
-      str += "<img class='Uc gradeImg' src='../Shared/icons/Uc.png'/>";
-      str += "<img class='Gc gradeImg' src='../Shared/icons/Gc.png'/>";
-      str += "<img class='fist gradeImg' src='../Shared/icons/FistV.png'/>";
-    str += "</div>";*/
-    str = celldata.lid;
+  } else {
+    str = "<div id='" + cellid + "', class='gradeContainer'>";
+    if(celldata.ishere===true){
+      if (celldata.grade === null ) {
+        str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+    } else if (celldata.grade === -1 ) {
+        str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+    } else {
+        str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+    }
+  } 
+  str += "</div>"
     return str;
   }
   return celldata;
