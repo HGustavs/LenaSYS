@@ -350,7 +350,7 @@ function makeSortable(table) {
 					$(this).closest('tr').find('.arrowRight').slideToggle(300,'linear');
 					$(this).closest('tr').find('.arrowComp').slideToggle(300,'linear');
 				}
-	      clicks = 0;             //after action performed, reset counter
+	      clicks = 0;
 	    }
   	});
     th[i].addEventListener('dblclick', function (e) {
@@ -365,10 +365,12 @@ function sortTable(table, col, reverse) {
         i;
     reverse = -((+reverse) || -1);
     tr = tr.sort(function (a, b) { // sort rows
-			console.log(b.cells[col].textContent.trim());
-			return reverse // `-1 *` if want opposite order
-		 	* (a.cells[col].textContent.trim() // using `.textContent.trim()` for test
-          .localeCompare(b.cells[col].textContent.trim()));
+			//console.log(a.cells[col].textContent.trim());
+			try{
+				return reverse // `-1 *` if want opposite order
+			 	* (a.cells[col].textContent.trim()
+	          .localeCompare(b.cells[col].textContent.trim()));
+			} catch(e){}
     });
     for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
 }
