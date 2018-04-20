@@ -29,19 +29,6 @@ function bigMac() {
   $(".hamburgerMenu").toggle();
 }
 
-/*
-// Toggle the '≡' and '⨯' depending on if burger menu is up or not
-function  mbol() {
-	if($(".hamburgerMenu").css('display') == 'block') {
-		$("#hamburgerIcon").val("⨯");
-		document.getElementById("hamburgerIcon").title = "Close hamburger menu";
-	} else {
-		$("#hamburgerIcon").val("≡");
-		document.getElementById("hamburgerIcon").title = "Open hamburger menu";
-	}
-}
-*/
-
 $(document).ready(function(){
 	$(".messagebox").hover(function(){
         $("#testbutton").css("background-color", "red");
@@ -297,9 +284,9 @@ function participationList(){
 	alert("ParticipationList");
 }
 
-function changedType()
+function changedType(value)
 {
-	kind=$("#type").val();
+	kind=value;
 	iistr="";
 
 	if(kind==0){
@@ -833,31 +820,16 @@ function returnedSection(data)
 
 	if(retdata["writeaccess"]) {
 		str += "</tr></table>";
-/*
-		str +=
-			"<input type='button' class='fab' value='+' title='New Item'"
-			+ " onclick='selectItem("
-			+ "\"" + item['lid'] + "\","
-			+ "\"New Item\","
-			+ "\"" + item['kind'] + "\","
-			+ "\"" + item['visible'] + "\","
-			+ "\"" + item['link'] + "\","
-			+ "\"" + momentexists + "\","
-			+ "\"" + item['gradesys'] + "\","
-			+ "\"" + item['highscoremode'] + "\","
-			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
-*/
-
 		str += "<div class='zoom'>"
 		str += "<a class='zoom-fab zoom-btn-large noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
 		str += "<ul class='zoom-list' style='display: none;'>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-motd scale-transition scale-out' data-tooltip='Message of the day'><i class='material-icons'>format_quote</i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-heading scale-transition scale-out' data-tooltip='Heading'><i class='heading-icon'></i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-section scale-transition scale-out' data-tooltip='Section'><i class='section-icon'></i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-moment scale-transition scale-out' data-tooltip='Moment'><i class='moment-icon'></i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-test scale-transition scale-out' data-tooltip='Test'><i class='test-icon'></i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-link scale-transition scale-out' data-tooltip='Link'><i class='material-icons'>link</i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-code scale-transition scale-out' data-tooltip='Code'><i class='code-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-motd scale-transition scale-out' data-tooltip='Message of the day' onclick='alert(\"Under construction\")'><i class='material-icons'>format_quote</i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-heading scale-transition scale-out' data-tooltip='Heading' onclick='selectItem(\"undefined\",\"New Item\",\"0\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='heading-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-section scale-transition scale-out' data-tooltip='Section' onclick='selectItem(\"undefined\",\"New Item\",\"1\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='section-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-moment scale-transition scale-out' data-tooltip='Moment' onclick='selectItem(\"undefined\",\"New Item\",\"4\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='moment-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-test scale-transition scale-out' data-tooltip='Test' onclick='selectItem(\"undefined\",\"New Item\",\"3\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='test-icon'></i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-link scale-transition scale-out' data-tooltip='Link' onclick='selectItem(\"undefined\",\"New Item\",\"5\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>link</i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-code scale-transition scale-out' data-tooltip='Code' onclick='selectItem(\"undefined\",\"New Item\",\"2\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='code-icon'></i></a></li>"
 		str += "</ul>"
 		str += "</div>";
 	} else {
