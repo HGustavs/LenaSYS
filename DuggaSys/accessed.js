@@ -17,13 +17,13 @@ function importUsers()
 	for (var i=0; i<myArr.length; i++){
 			newUsersArr.push(myArr[i].split("\t"));
 	}
-	var newUserJSON = JSON.stringify(newUsersArr);	
+	var newUserJSON = JSON.stringify(newUsersArr);
 
 	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
 	hideImportUsersPopup();
 }
 
-function addSingleUser() 
+function addSingleUser()
 {
 	var newUser = new Array();
 	newUser.push($("#addSsn").val());
@@ -137,14 +137,14 @@ function selectUser(uid,username,ssn,firstname,lastname,access,className)
     		}
 	};
 
-*/	
-	// Set Name		
+*/
+	// Set Name
 	$("#firstname").val(firstname);
 	$("#lastname").val(lastname);
-		
+
 	// Set User name
 	$("#usrnme").val(username);
-		
+
 	//Set SSN
 	$("#ussn").val(ssn);
 	if (className != "null" || className != "UNK") {$("#class").val(className);}
@@ -152,7 +152,7 @@ function selectUser(uid,username,ssn,firstname,lastname,access,className)
 
 	// Displays the cogwheel box
 	$("#editUsers").css("display","flex");
-	
+
 	//$("#overlay").css("display","block");
 }
 
@@ -167,7 +167,7 @@ function updateUser()
 	var teach=$("#teacher").val();
 
 	AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,className:className,cid:querystring['cid'],coursevers:querystring['coursevers'],teacher:teach},"ACCESS");
-	
+
 	$("#editUsers").css("display","none");
 	//$("#overlay").css("display","none");
 }
@@ -182,7 +182,7 @@ function resetPw(uid,username)
 	rnd=randomstring();
 
 	window.location="mailto:"+username+"@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20"+rnd+"%0A%0A/LENASys Administrators";
-	
+
 	AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd,coursevers:querystring['coursevers']},"ACCESS");
 }
 
@@ -230,7 +230,7 @@ function renderCell(col,celldata,cellid) {
         str+="value='"+celldata[i]['username']+"'>"+celldata[i]['username']+"</option>";
       }
       str+="</select>";
-    } 
+    }
     return str;
   }else if(col == "access"){
     obj=JSON.parse(celldata);
@@ -252,17 +252,6 @@ function renderCell(col,celldata,cellid) {
 		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
 	return celldata;
-}
-
-function sortData(column){
-    if(bool) {
-        dataInfo['entries'].sort(propComparator(column));
-    }
-    else{
-        dataInfo['entries'].sort(propComparator(column)).reverse();
-	}
-    returnedAccess(dataInfo);
-    bool = !bool;
 }
 
 var myTable;
@@ -299,7 +288,7 @@ function returnedAccess(data) {
 	    null,
 	    null,
 	    [],
-	    [],				
+	    [],
 	    "",
 	    null,
 	    null,
@@ -311,7 +300,7 @@ function returnedAccess(data) {
 	);
 
 	myTable.renderTable();
-	
+
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	makeAllSortable();
@@ -324,7 +313,64 @@ function returnedAccess(data) {
 function makeAllSortable(parent) {
 	parent = parent || document.body;
 	var t = parent.getElementsByTagName('table'), i = t.length;
-	//while (--i >= 0) makeSortable(t[i]);
+	while (--i >= 0) makeSortable(t[i]);
+}
+
+//----------------------------------------
+// makeSortable(table) <- Makes a table sortable and also allows the table to collapse when
+// 						user double clicks on table head.
+//----------------------------------------
+function makeSortable(table) {
+	var DELAY = 200;
+	var clicks = 0;
+	var timer = null;
+	var th = table.tHead, i;
+	th && (th = th.rows[0]) && (th = th.cells);
+	if (th) i = th.length;
+	else return; // if no `<thead>` then do nothing
+	while (--i >= 0) (function (i) {
+		var dir = 1;
+		th[i].addEventListener('click', function (e) {
+			clicks++;
+			if(clicks === 1) {
+				timer = setTimeout(function () {
+					sortTable(table, i, (dir = 1 - dir));
+					clicks = 0;
+				}, DELAY);
+	    } else {
+	    	clearTimeout(timer);
+	      $(this).closest('table').find('tbody').fadeToggle(500,'linear'); //perform double-click action
+	      if($(this).closest('tr').find('.arrowRight').css('display') == 'none'){
+	    		$(this).closest('tr').find('.arrowRight').delay(200).slideToggle(300,'linear');
+	    		$(this).closest('tr').find('.arrowComp').slideToggle(300,'linear');
+				} else if ($(this).closest('tr').find('.arrowComp').css('display') == 'none'){
+					$(this).closest('tr').find('.arrowRight').slideToggle(300,'linear');
+	    	  $(this).closest('tr').find('.arrowComp').delay(200).slideToggle(300,'linear');
+				} else {
+					$(this).closest('tr').find('.arrowRight').slideToggle(300,'linear');
+					$(this).closest('tr').find('.arrowComp').slideToggle(300,'linear');
+				}
+	      clicks = 0;             //after action performed, reset counter
+	    }
+  	});
+    th[i].addEventListener('dblclick', function (e) {
+    	e.preventDefault();
+    })
+  }(i));
+}
+
+function sortTable(table, col, reverse) {
+    var tb = table.tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
+        tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
+        i;
+    reverse = -((+reverse) || -1);
+    tr = tr.sort(function (a, b) { // sort rows
+			console.log(b.cells[col].textContent.trim());
+			return reverse // `-1 *` if want opposite order
+		 	* (a.cells[col].textContent.trim() // using `.textContent.trim()` for test
+          .localeCompare(b.cells[col].textContent.trim()));
+    });
+    for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
 }
 
 //excuted onclick button for quick searching in table
