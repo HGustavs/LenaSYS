@@ -100,8 +100,6 @@ function parseMarkdown(inString)
 
     //One line break
      inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
-    //Two line breaks
-     inString=inString.replace(/(\r\n|\n|\r){4}/gm,"<br><br>");
 
     // Split on code or console block
     var codearray=inString.split(/\~{3}|\=\|\=/);
