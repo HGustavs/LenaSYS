@@ -94,7 +94,7 @@ pdoConnect();
 	<!-- Edit File Dialog END -->
     <!-- Markdown-preview functionality START -->
     <div class="PreviewWindow">
-        <div class="PrevHead">This is the preview window test
+        <div class="PrevHead">This is the preview window
         </div>
         <div class="Markdown">
             <div class="markNav">Markdown

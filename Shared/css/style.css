@@ -3555,8 +3555,16 @@ ul.hamburgerList button.menuButton {
     border: solid rgb(200,200,200);
     background-color: rgb(240,240,240);
     box-shadow: 0px 5px 10px grey;
-    z-index: 1000;
+    z-index: 12000;
     display: none;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 220px;
+    position: absolute;
+     
+     
 }
 .Markdown {
     border: solid rgb(200,200,200);
@@ -3603,20 +3611,20 @@ ul.hamburgerList button.menuButton {
 }
  .PrevHead {
     height: 20px;
-    background-color: #775886;
+    background-color: #614875;
     color: #FFFFFF;
     font-size: 14px;
     padding: 0px 5px 0px 5px;
 }
 .prevNav {
-    background-color: #775886;
+    background-color: #614875;
     height: 30px;
     color: #FFF;
     padding: 0px 5px 0px 5px;
     line-height: 25px;
 }
 .markNav {
-    background-color: #775886;
+    background-color: #614875;
     height: 30px;
     color: #FFF;
     padding: 0px 5px 0px 5px;

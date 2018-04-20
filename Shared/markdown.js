@@ -407,11 +407,6 @@ function markdownBlock(inString)
     return inString;
 }
 
-/*function previewOnload() {
-    $(".PreviewWindow").css("display","none");
-    $('#select-header').css("display","none");
-}*/
-
 function showPreview() {
     $(".PreviewWindow").css("display", "block");
 }
