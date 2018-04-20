@@ -702,7 +702,7 @@ function Symbol(kind) {
             var p2y = points[p2].y;
 
             this.cardinality[0].x = p1x > p2x ? p1x-10 : p1x+10;
-            this.cardinality[0].y = p1y > p2y ? p1y-10: p2y+10;
+            this.cardinality[0].y = p1y > p2y ? p1y-10: p1y+10;
 
             ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
         }
