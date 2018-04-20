@@ -9,27 +9,27 @@
 <html>
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Access Editor</title>
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
-	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script> 
+	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
 	<script src="accessed.js"></script>
 
 </head>
 <body>
-	
-	<?php 
-		$noup=true;
+
+	<?php
+		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
-		
+
 	<!-- content START -->
-	<div id="wrappall" style="border-top:0px">
+		<div id="wrappall" style="border-top:0px;width:-moz-fit-content; width: fit-content;">
 		<div id="newbutton">
 			<?PHP
 				echo "<div class='titles' style='position:sticky;top:50px;z-index:100;background:#ffffff;padding-top:20px;padding-bottom:20px;margin-top:0px;'>";
@@ -42,20 +42,20 @@
 				echo "<input id='searchinput' type='text' name='search' placeholder='Search...' >";
 				echo "</div>";
 				//needs to calculate if the user has access to this button before writing out
-			?>		
+			?>
 		</div>
 	</div>
-	<div id="user" style='width:100%; border: 2px solid green;'></div>
+	<div id="user" style='width:100%;'></div>
 	<!--- Edit Section Dialog END --->
-	
-	<?php 
+
+	<?php
 		include '../Shared/loginbox.php';
 	?>
-	
+
 	<!-- Import Users Dialog START -->
 	<div id='importUsers' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
-      		<div class='loginBoxheader'> 
+      		<div class='loginBoxheader'>
       			<h3>Import users</h3>
       			<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
@@ -78,28 +78,28 @@
 	<!-- Add User Dialog START -->
 	<div id='createUser' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
-      		<div class='loginBoxheader'> 
+      		<div class='loginBoxheader'>
       			<h3>Add user</h3>
       			<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
       		<div style='padding:5px;'>
       			<input type='hidden' id='uid' value='Toddler' /></td>
       			<div class='inputwrapper'><span>SSN:</span><input placeholder="999102-5571" class='textinput' type='text' id='addSsn'/></div>
-      			<div class='inputwrapper'><span>First Name:</span><input placeholder="Greger" class='textinput' type='text' id='addFirstname'/></div>	
+      			<div class='inputwrapper'><span>First Name:</span><input placeholder="Greger" class='textinput' type='text' id='addFirstname'/></div>
       			<div class='inputwrapper'><span>Last Name:</span><input placeholder="Gregersson" class='textinput' type='text' id='addLastname'/></div>
       			<div class='inputwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></input></div>
       			<div class='inputwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></input></div>
       			<div class='inputwrapper'><span>PID:</span><input placeholder="WEBUG" class='textinput' id='addPid'></input></div>
       			<div class='inputwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></input></div>
       			<div class='inputwrapper'><span>Email:</span><input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail'></input></div>
-      			
-      		</div> 
+
+      		</div>
       		<div style='padding:5px;'>
       			<input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
-      		</div> 
+      		</div>
       </div>
 	</div>
-	
+
 	<!-- Add User Dialog END -->
 	<!-- Edit User Dialog START -->
 	<div id='editUsers' class='loginBoxContainer' style='display:none;'>
@@ -108,7 +108,7 @@
       			<h3>Edit Users</h3>
       			<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
-      					
+
       		<div style='padding:5px;'>
       			<input type='hidden' id='uid' value='Toddler' /></td>
       			<div class='inputwrapper'><span>UserName:</span><input class='textinput' type='text' id='usrnme' value='User Name' /></div>
@@ -117,12 +117,12 @@
       			<div class='inputwrapper'><span>Last Name:</span><input class='textinput' type='text' id='lastname' value='Last Name' /></div>
       			<!--<div class='inputwrapper'><span>Teacher:</span><select  id='teacher' value='Teacher' ></select></div>-->
       			<div class='inputwrapper'><span>Study program, Start year:</span><select id='class' value='Class'></select></div>
-      		</div> 
+      		</div>
       		<div style='padding:5px;'>
       			<input class='submit-button' type='button' value='Save' title='Save changes' onclick='updateUser();' />
-      		</div> 
+      		</div>
       </div>
-	</div> 
+	</div>
 	<!-- Edit User Dialog END -->
 </body>
 </html>

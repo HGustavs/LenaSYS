@@ -221,37 +221,41 @@ function renderCell(col,celldata,cellid) {
     if(celldata[celldata.length - 1]['access'] == 'W'){
       str = "none";
     }else{
-      str = "<select onChange='changeExaminer(\""+querystring['cid']+"\",\""+celldata[celldata.length - 1]['uid']+"\",this.value);' onclick='return false;'>";
+      var teacher = celldata[celldata.length - 1]['teacher'];
+      var items = new Array();
+      items.push("unassigned");
       for(var i = 0; i < celldata.length - 1; i++){
-        str+="<option ";
-        if(celldata[i]['username'] === celldata[celldata.length - 1]['teacher']) {
-          str+="selected='selected' ";
-        }
-        str+="value='"+celldata[i]['username']+"'>"+celldata[i]['username']+"</option>";
+        items.push(celldata[i]['username']);
       }
-      str+="</select>";
-    }
+
+      str = makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+celldata[celldata.length - 1]['uid']+"\",this.value);", items, items, teacher);
+    } 
     return str;
   }else if(col == "access"){
     obj=JSON.parse(celldata);
-    str = "<select onChange='changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);' onclick='return false;'>";
-    str+="<option value='W'" + (obj.access == 'W' ? " selected='selected'" : "") + ">Teacher</option>";
-    str+="<option value='R'" + (obj.access == 'R' ? " selected='selected'" : "") + ">Student</option>";
-    str+="<option value=null"+ (obj.access == 'null' || obj.access == null ? " selected='selected'" : "") + ">none</option>";
-    str+="</select>";
+    str = makeDropdown("changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", new Array("W", "R", "null"), new Array("Teacher", "Student", "none"), obj.access);
     return str;
 	}else if(col == "vers"){
     obj=JSON.parse(celldata);
-    str = "<select onChange='changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);' onclick='return false;'>";
+    var items = new Array();
     for(var i = 0; i < filez['courses'].length; i++){
-      str+="<option value='"+filez['courses'][i]['vers']+"'" + (obj.vers == filez['courses'][i]['vers'] ? " selected='selected'" : "") + ">"+filez['courses'][i]['vers']+"</option>";
+      items.push(filez['courses'][i]['vers']);
     }
-    str+="</select>";
+    str = makeDropdown("changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.vers);
     return str;
 	}else {
 		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
 	return celldata;
+}
+
+function makeDropdown(onChange, values, items, selected){
+  str = "<select onChange='"+onChange+"' onclick='return false;'>";
+  for(var i = 0; i < values.length; i++){
+    str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
+  }
+  str+="</select>";
+  return str;
 }
 
 function sortData(column){
