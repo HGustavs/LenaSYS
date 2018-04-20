@@ -195,33 +195,32 @@ function mousemoveevt(ev, t) {
     }
 }
 
+
 function mousedownevt(ev) {
 
     if(uimode == "Moved" && !ctrlIsClicked && md != 4){
         uimode = "normal";
         md = 0;
     }
+
     if (uimode == "CreateLine") {
+        
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
-        sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+        //If you start on canvas or not
         if (hovobj == -1) {
-            p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+            md = 0;
         } else {
+            sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+            //Store which object you are hovering over in lineStartObj
             lineStartObj = hovobj;
-            if (diagram[lineStartObj].symbolkind == 2) {
-                p1 = diagram[lineStartObj].centerPoint;
-            } else if (diagram[lineStartObj].symbolkind == 5) {
-                p1 = diagram[lineStartObj].middleDivider;
-            } else {
-                p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-            }
-            
+
             //Get which kind of symbol mousedownevt execute on
             symbolStartKind = diagram[lineStartObj].symbolkind;
 
         }
+        
     } else if (sel.distance < tolerance) {
         md = 2;
     } else if (movobj != -1) {
@@ -290,39 +289,39 @@ function mouseupevt(ev) {
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
     if (uimode == "CreateLine" && md == 4) {
-        sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-        if (hovobj == -1) {
-            // End line on empty
-            p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-            if (lineStartObj == -1) {
-                // Start line on empty
-                // Just draw a normal line
-            } else {
-                // Start line on object
-                diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
-                lineStartObj = -1;
-            }
-        } else {
-            // End line on object
-            if (diagram[hovobj].symbolkind == 2) {
-                p2 = diagram[hovobj].centerPoint;
-            } else if (diagram[hovobj].symbolkind == 5) {
-                p2 = diagram[hovobj].middleDivider;
-            } else{
-                p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-            }
-            //Get which kind of symbol mouseupevt execute on
-            symbolEndKind = diagram[hovobj].symbolkind;
+        //Check if you release on canvas or try to draw a line from entity to entity
+         if (hovobj == -1 || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 3) {
+            md = 0;
+         }else{
+              //Get which kind of symbol mouseupevt execute on
+             symbolEndKind = diagram[hovobj].symbolkind;
 
-            if (lineStartObj == -1) {
-                // Start line on empty
-                diagram[hovobj].connectorTop.push({from:p2, to:p1});
-            } else {
-                // Start line on object
+             sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+
+            //Check if you not start on a line and not end on a line, if then, set point1 and point2   
+            if(symbolStartKind != 4 && symbolEndKind != 4){
+                if (diagram[lineStartObj].symbolkind == 2) {
+                    p1 = diagram[lineStartObj].centerPoint;
+                } else if (diagram[lineStartObj].symbolkind == 5) {
+                    p1 = diagram[lineStartObj].middleDivider;
+                } else {
+                    p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                }  
+
+                if (diagram[hovobj].symbolkind == 2) {
+                    p2 = diagram[hovobj].centerPoint;
+                } else if (diagram[hovobj].symbolkind == 5) {
+                    p2 = diagram[hovobj].middleDivider;
+                } else{
+                    p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                }
+
+                  // Start line on object
                 diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
                 diagram[hovobj].connectorTop.push({from:p2, to:p1});
+
+                }
             }
-        }
     }
     if (uimode == "CreateClass" && md == 4) {
         classB = new Symbol(1);
@@ -362,8 +361,8 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
     } else if (uimode == "CreateLine" && md == 4){ 
-        /* Code for making a line, except if you try to draw a line from entity to entity or relation to relation */
-        if(((symbolStartKind != symbolEndKind || symbolStartKind == 2 && symbolEndKind == 2))){
+        //Code for making a line, if start and end object are different, except attributes
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)) && (symbolStartKind != 4 && symbolEndKind != 4)){
             erLineA = new Symbol(4);
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
@@ -376,8 +375,8 @@ function mouseupevt(ev) {
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
             updateGraphics();
-            //diagram.createAritySymbols(diagram[lastSelectedObject]);
-        }  
+            //diagram.createAritySymbols(diagram[lastSelectedObject]);  
+        }       
     
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5);
@@ -401,7 +400,8 @@ function mouseupevt(ev) {
         //Sets the clicked object as targeted
         selected_objects = [];
         selected_objects.push(diagram[lastSelectedObject]);
-        diagram[lastSelectedObject].targeted = true;
+        //You have to target an object when you start to draw
+        if(md != 0) diagram[lastSelectedObject].targeted = true;
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
@@ -409,7 +409,7 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
-
+    
 
 }
 
