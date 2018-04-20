@@ -260,7 +260,11 @@
 
         <div class="Header">Markdown preview</div>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <button id="Preview" onclick="showPreview()">Preview</button>
+=======
+            <button id="Preview" onclick="loadPreview('../courses/2/minimikrav_m2.md')">Preview</button>
+>>>>>>> 5a71650d2094606ff37635d2865b9a131fb0f857
 =======
             <button id="Preview" onclick="loadPreview('../courses/2/minimikrav_m2.md')">Preview</button>
 >>>>>>> 5a71650d2094606ff37635d2865b9a131fb0f857
@@ -293,7 +297,11 @@
                             <span id="markdown"></span>
                         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
                     </div>    
+=======
+                    </div>
+>>>>>>> 5a71650d2094606ff37635d2865b9a131fb0f857
 =======
                     </div>
 >>>>>>> 5a71650d2094606ff37635d2865b9a131fb0f857
