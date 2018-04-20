@@ -93,22 +93,22 @@ function loadFormIntoElement(element, dir){
 }
 
 function loadLineForm(element, dir){
-  //Ajax
-  var file = new XMLHttpRequest();
-  file.open('GET', dir);
-  file.onreadystatechange = function(){
-    if(file.readyState === 4){
-      element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0){
-        var tempCardinality = diagram[lastSelectedObject].cardinality[0].value == "" ?
-        "None" : diagram[lastSelectedObject].cardinality[0].value;
+    //Ajax
+    var file = new XMLHttpRequest();
+    file.open('GET', dir);
+    file.onreadystatechange = function(){
+        if(file.readyState === 4){
+            element.innerHTML = file.responseText;
+            if(globalAppearanceValue == 0){
+                var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value
+                var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
 
-        setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
-        setSelectedOption('cardinality', tempCardinality);
-      }
+                setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
+                setSelectedOption('cardinality', tempCardinality);
+            }
+        }
     }
-  }
-  file.send();
+    file.send();
 }
 
 function setSelectedOption(type, value){
