@@ -374,8 +374,7 @@ function mouseupevt(ev) {
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
-            if((symbolStartKind == 5 && symbolEndKind == 3) || (symbolStartKind == 3 && symbolEndKind == 5))
-                openAppearanceDialogMenu('line_appearance');
+            addCardinality();
             updateGraphics();
             //diagram.createAritySymbols(diagram[lastSelectedObject]);
         }
