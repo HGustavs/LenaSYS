@@ -204,7 +204,7 @@ function mousedownevt(ev) {
     }
 
     if (uimode == "CreateLine") {
-        
+
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
@@ -220,7 +220,7 @@ function mousedownevt(ev) {
             symbolStartKind = diagram[lineStartObj].symbolkind;
 
         }
-        
+
     } else if (sel.distance < tolerance) {
         md = 2;
     } else if (movobj != -1) {
@@ -298,7 +298,7 @@ function mouseupevt(ev) {
 
              sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
-            //Check if you not start on a line and not end on a line, if then, set point1 and point2   
+            //Check if you not start on a line and not end on a line, if then, set point1 and point2
             if(symbolStartKind != 4 && symbolEndKind != 4){
                 if (diagram[lineStartObj].symbolkind == 2) {
                     p1 = diagram[lineStartObj].centerPoint;
@@ -306,7 +306,7 @@ function mouseupevt(ev) {
                     p1 = diagram[lineStartObj].middleDivider;
                 } else {
                     p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-                }  
+                }
 
                 if (diagram[hovobj].symbolkind == 2) {
                     p2 = diagram[hovobj].centerPoint;
@@ -360,7 +360,7 @@ function mouseupevt(ev) {
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
-    } else if (uimode == "CreateLine" && md == 4){ 
+    } else if (uimode == "CreateLine" && md == 4){
         //Code for making a line, if start and end object are different, except attributes
         if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)) && (symbolStartKind != 4 && symbolEndKind != 4)){
             erLineA = new Symbol(4);
@@ -374,10 +374,11 @@ function mouseupevt(ev) {
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
+            createCardinality();
             updateGraphics();
-            //diagram.createAritySymbols(diagram[lastSelectedObject]);  
-        }       
-    
+            //diagram.createAritySymbols(diagram[lastSelectedObject]);
+        }
+
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5);
         erRelationA.name = "Relation" + diagram.length;
@@ -409,7 +410,7 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
-    
+
 
 }
 
