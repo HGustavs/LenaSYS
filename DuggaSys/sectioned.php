@@ -1,8 +1,8 @@
 <?php
-session_start();
-include_once "../../coursesyspw.php";
-include_once "../Shared/sessions.php";
-pdoConnect();
+	session_start();
+	include_once "../../coursesyspw.php";
+	include_once "../Shared/sessions.php";
+	pdoConnect();
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +12,7 @@ pdoConnect();
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title id = "sectionedPageTitle">Section Editor</title>
+	<title id="sectionedPageTitle">Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
@@ -61,9 +61,10 @@ pdoConnect();
 					<span>Type:</span>
 					<div class="tooltipDuggaType">
 						<span id="tooltipType" style="display: none;" class="tooltipDuggaTypeTxt">Create a Dugga before you can use it for a test.</span>
-				</div> <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box. 
+					</div> <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box. 
 							If they don't, change the width of loginbox select in the CSS file -->
-				<select id='type' value='type'  onchange='changedType();validateType();'></select></div>
+				<select id='type' value='type'  onchange='changedType();validateType();'></select>
+				</div>
 				<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
 				<div id='inputwrapper-gradesystem' class='inputwrapper'><span>Grade system:</span><select id='gradesys' ></select></div>
 				<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
@@ -83,25 +84,25 @@ pdoConnect();
 	</div>
 	<!-- Edit Section Dialog END -->
 
-      <!-- Confirm Section Dialog START -->
-      <div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
-            <div class='loginBox' style='width:460px;'>
-                  <div class='loginBoxheader'>
-                        <h3>Confirm deletion</h3>
-                        <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
-                  </div>
-                  <div style='text-align: center;'>
-                        <h4>Are you sure you want to delete this item?</h4>
-                  </div>
-                  <div style='display:flex; align-items:center; justify-content: center;'>
-                        <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
-                        <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
-                  </div>
-            </div>
-      </div>
-      <!-- Confirm Edit Section Dialog END -->
+	<!-- Confirm Section Dialog START -->
+	<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox' style='width:460px;'>
+			  <div class='loginBoxheader'>
+					<h3>Confirm deletion</h3>
+					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+			  </div>
+			  <div style='text-align: center;'>
+					<h4>Are you sure you want to delete this item?</h4>
+			  </div>
+			  <div style='display:flex; align-items:center; justify-content: center;'>
+					<input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
+					<input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+			  </div>
+		</div>
+	</div>
+	<!-- Confirm Edit Section Dialog END -->
 
-      <!-- New Version Dialog START -->
+	<!-- New Version Dialog START -->
 	<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
 		<div class='loginBoxheader'>
