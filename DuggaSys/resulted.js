@@ -1385,9 +1385,9 @@ var myTable;
 // Renderer
 //----------------------------------------
 
-function buildDynamicHeaders(data) {
+function buildDynamicHeaders() {
   let tblhead = {0:"Fname/Lname/SSN"};
-  data['moments'].forEach(function(entry) {
+  moments.forEach(function(entry) {
   	tblhead[entry['lid']] = entry['entryname'];
   });
   return tblhead;
@@ -1410,7 +1410,7 @@ function buildStudentInfo() {
 
 function testSortable(data){
   studentInfo = new Array;
-	let tblhead = buildDynamicHeaders(data);
+	let tblhead = buildDynamicHeaders();
 	studentInfo = buildStudentInfo();
 
 	var tabledata = {
@@ -1418,11 +1418,11 @@ function testSortable(data){
 		tblbody: studentInfo,
 		tblfoot:[]
 	}
+	console.log("studentInfo:");
   console.log(studentInfo);
-	console.log(data);
+  console.log("students:")
 	console.log(students);
-	console.log(tblhead);
-	console.log(tabledata.tblbody);
+	
 	myTable = new SortableTable(
 		tabledata,
 		"resultTable",
