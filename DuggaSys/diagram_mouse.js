@@ -305,6 +305,7 @@ function mouseupevt(ev) {
                 } else if (diagram[lineStartObj].symbolkind == 5) {
                     p1 = diagram[lineStartObj].middleDivider;
                 } else {
+                    console.log("addpoints 1");
                     p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                 }  
                 
@@ -314,6 +315,7 @@ function mouseupevt(ev) {
                 } else if (diagram[hovobj].symbolkind == 5) {
                     p2 = diagram[hovobj].middleDivider;
                 } else{
+                    console.log("addpoints 2");
                     p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                 }
                 
@@ -336,8 +338,6 @@ function mouseupevt(ev) {
                 if(ok){
                     diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
                     diagram[hovobj].connectorTop.push({from:p2, to:p1});
-                }else{
-                    points[p2] = "";
                 }
             }
         }
