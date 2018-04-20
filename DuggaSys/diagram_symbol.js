@@ -264,22 +264,22 @@ function Symbol(kind) {
     //return true if connector contains a certain point
     this.hasConnector = function(point) {
         for (var i = 0; i < this.connectorTop.length; i++) {
-            if(connectorTop[i].to == point || connectorTop[i].from == point){
+            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
                 return true;
             }
         }
         for(var i = 0; i < this.connectorRight.length; i++) {
-            if(connectorRight[i].to == point || connectorRight[i].from == point){
+            if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
                 return true;
             }
         }
         for (var i = 0; i < this.connectorBottom.length; i++) {
-            if(connectorBottom[i].to == point || connectorBottom[i].from == point){
+            if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
                 return true;
             }
         }
         for (var i = 0; i < this.connectorLeft.length; i++) {
-            if(connectorLeft[i].to == point || connectorLeft[i].from == point){
+            if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
                 return true;
             }
         }
