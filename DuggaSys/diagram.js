@@ -361,15 +361,10 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
 // itemClicked - Returns the index of the first clicked item
 //--------------------------------------------------------------------
 diagram.itemClicked = function() {
-    if(uimode == "MoveAround"){
-        return -1;
-    }
-    for (var i = this.length - 1; i >= 0; i--) {
-        if (this[i].isClicked(currentMouseCoordinateX, currentMouseCoordinateY)) {
-            return i;
-        }
-    }
-    return -1;
+    if(uimode == "MoveAround") return -1;
+    var obj = this.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
+    if (typeof obj !== 'undefined' && obj != -1) return this.indexOf(obj);
+    else return -1;
 }
 
 //--------------------------------------------------------------------
@@ -381,6 +376,7 @@ diagram.checkForHover = function(posX, posY) {
         if (this[i].kind == 2) this[i].isHovered = false;
     }
     var hoveredObjects = this.filter(symbol => symbol.checkForHover(posX, posY));
+    if (hoveredObjects.length <= 0) return -1;
     hoveredObjects.sort(function(a, b) {
         if (a.symbolkind != 4 && b.symbolkind != 4) return 0;
         else if (a.symbolkind == 4 && b.symbolkind != 4) return -1;
@@ -390,6 +386,7 @@ diagram.checkForHover = function(posX, posY) {
     if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind == 2) {
         hoveredObjects[hoveredObjects.length - 1].isHovered = true;
     }
+    return hoveredObjects[hoveredObjects.length - 1];
 }
 
 //--------------------------------------------------------------------
