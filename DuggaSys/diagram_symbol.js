@@ -718,6 +718,12 @@ function Symbol(kind) {
 this.drawLine = function(x1, y1, x2, y2){
     //Checks if there is cardinality set on this object
     if(this.cardinality[0].value != "" && this.cardinality[0].value != null){
+
+        //Checks if this symbol is allowed to have cardinality, if it doesnt, null and return
+        if(this.symbolkind != 5 || this.symbolkind != 3){
+            this.cardinality[0].value = null;
+            return;
+        }
         //Updates x and y position
         ctx.fillStyle = '#000';
         if(this.cardinality[0].isCorrectSide)
