@@ -249,7 +249,15 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 						}
 					}
 					if (col == sortcolumn) {
-						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
+						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,sortkind);
+
+						if (col != "" && col != null) {
+							str += " <img id='"+colname+"_"+tableid+"_desc_sortdiricon' style='float:right;display:none;' src='../Shared/icons/desc_white.svg'>";
+							str += " <img id='"+colname+"_"+tableid+"_asc_sortdiricon' style='float:right;display:none;' src='../Shared/icons/asc_white.svg'></th>";
+						} else {
+							str += "</th>";
+						}
+
 						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
 					} else {
 						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
@@ -266,8 +274,15 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 					// 	}
 					// }
 					if (colname != "move") {
-						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+col+"</th>";
+						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+col;
 						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+col+"</th>";
+
+						if (col != "" && col != null) {
+							str += " <img id='"+colname+"_"+tableid+"_desc_sortdiricon' style='float:right;display:none;' src='../Shared/icons/desc_white.svg'>";
+							str += " <img id='"+colname+"_"+tableid+"_asc_sortdiricon' style='float:right;display:none;' src='../Shared/icons/asc_white.svg'></th>";
+						} else {
+							str += "</th>";
+						}
 					}
 				}
 			}
@@ -543,7 +558,13 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	function sortTable(table, col, reverse) {
 	    var tb = document.getElementById(tableid + "_tbl").tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
 	        tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
+	        th = document.getElementById(tableid + "_tbl").tHead,
+	        childrenTR = th.children[0],
+	        childrenTH = childrenTR.children[col],
+	        imgDesc = childrenTH.children[0],
+	        imgAsc = childrenTH.children[1],
 	        i;
+
 	    reverse = -((+reverse) || -1);
 	    tr = tr.sort(function (a, b) { // sort rows
 			return reverse // `-1 *` if want opposite order
@@ -551,6 +572,19 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	            .localeCompare(b.cells[col].textContent.trim())
 	        );
 	    });
+
+	    var lista1 = $(childrenTH).prevAll("th").children("img").addClass("hejhejhejhej");
+	    var lista2 = $(":nth-child(1)").nextAll("th").children("img").addClass("hejhejhejhej");
+
+	    if (reverse == 1) {
+	    	imgDesc.classList.remove("hejhejhejhej");
+	    	imgDesc.style.display = "block";
+	    } else if (reverse == -1) {
+	    	imgAsc.classList.remove("hejhejhejhej");
+	    	imgAsc.style.display = "block";
+	    }
+
+	    //document.getElementById(tHead[col] + tableid + "_desc_sortdiricon").style.display = "block;"
 	    for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
 	}
 }
