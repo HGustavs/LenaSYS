@@ -17,6 +17,7 @@ function Symbol(kind) {
     this.strokeColor = '#000000';   // change standard line color
     this.font = "Arial";             // set the standard font
     this.lineWidth = 2;
+    this.fontColor = '#000000';
     this.name = "New Class";        // Default name is new class
     this.key_type = "normal";       // Defult key tyoe for a class.
     this.sizeOftext = "Tiny";       // Used to set size of text.
@@ -283,8 +284,8 @@ function Symbol(kind) {
             }
         }
     }
-    
-    
+
+
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
@@ -615,10 +616,29 @@ function Symbol(kind) {
     {
         var midy = points[this.middleDivider].y;
         ctx.font = "bold " + parseInt(textsize) + "px Arial";
+
         // Clear Class Box
         ctx.fillStyle = "#fff";
-        ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+        ctx.lineWidth = this.lineWidth;
+        // Box
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineTo(x1, y2);
+        ctx.lineTo(x1, y1);
+        makeShadow();
+        ctx.closePath();
+        // Top Divider
+        ctx.moveTo(x1, y1 + (this.textsize * 1.5));
+        ctx.lineTo(x2, y1 + (this.textsize * 1.5));
+        // Middie Divider
+        ctx.moveTo(x1, midy);
+        ctx.lineTo(x2, midy);
+        ctx.stroke();
+        ctx.clip();
 
+        ctx.fillStyle = this.fontColor;
         // Write Class Name
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -636,44 +656,14 @@ function Symbol(kind) {
         ctx.textAlign = "start";
         ctx.textBaseline = "top";
         ctx.font = parseInt(this.textsize) + "px Arial";
-        // Clipping of text and drawing of attributes
-        ctx.beginPath();
-        ctx.moveTo(x1, y1 + (this.textsize * 1.5));
-        ctx.lineTo(x2, y1 + (this.textsize * 1.5));
-        ctx.lineTo(x2, midy);
-        ctx.lineTo(x1, midy);
-        ctx.lineTo(x1, y1 + (this.textsize * 1.5));
-        ctx.clip();
+
         for (var i = 0; i < this.attributes.length; i++) {
             ctx.fillText(this.attributes[i].visibility + " " + this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
         }
-        // Clipping of text and drawing of methods
-        ctx.beginPath();
-        ctx.moveTo(x1, midy);
-        ctx.lineTo(x2, midy);
-        ctx.lineTo(x2, y2);
-        ctx.lineTo(x1, y2);
-        ctx.lineTo(x1, midy);
-        ctx.clip();
-        ctx.textAlign = "start";
-        ctx.textBaseline = "top";
+
         for (var i = 0; i < this.operations.length; i++) {
             ctx.fillText(this.operations[i].visibility + " " + this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
         }
-        // Box
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y1);
-        ctx.lineTo(x2, y2);
-        ctx.lineTo(x1, y2);
-        ctx.lineTo(x1, y1);
-        // Top Divider
-        ctx.moveTo(x1, y1 + (this.textsize * 1.5));
-        ctx.lineTo(x2, y1 + (this.textsize * 1.5));
-        // Middie Divider
-        ctx.moveTo(x1, midy);
-        ctx.lineTo(x2, midy);
-        ctx.stroke();
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2){
@@ -738,47 +728,47 @@ function Symbol(kind) {
         ctx.font = parseInt(textsize) + "px " + this.font;
     }
 
-this.drawLine = function(x1, y1, x2, y2){
-    //Checks if there is cardinality set on this object
-    if(this.cardinality[0].value != "" && this.cardinality[0].value != null){
-        //Updates x and y position
-        ctx.fillStyle = '#000';
-        if(this.cardinality[0].isCorrectSide)
-        {
-            this.cardinality[0].x = x1 > x2 ? x1-10 : x1+10;
-            this.cardinality[0].y = y1 > y2 ? y1-10 : y1+10;
+    this.drawLine = function(x1, y1, x2, y2){
+        //Checks if there is cardinality set on this object
+        if(this.cardinality[0].value != "" && this.cardinality[0].value != null){
+            //Updates x and y position
+            ctx.fillStyle = '#000';
+            if(this.cardinality[0].isCorrectSide)
+            {
+                this.cardinality[0].x = x1 > x2 ? x1-10 : x1+10;
+                this.cardinality[0].y = y1 > y2 ? y1-10 : y1+10;
+            }
+            else
+            {
+                this.cardinality[0].x = x2 > x1 ? x2-10 : x2+10;
+                this.cardinality[0].y = y2 > y1 ? y2-10 : y2+10;
+            }
+            ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
         }
-        else
-        {
-            this.cardinality[0].x = x2 > x1 ? x2-10 : x2+10;
-            this.cardinality[0].y = y2 > y1 ? y2-10 : y2+10;
-        }
-        ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
-    }
 
 
-    ctx.lineWidth = this.lineWidth;
-    if (this.key_type == "Forced") {
-        //Draw a thick black line
-        ctx.lineWidth = this.lineWidth*3;
+        ctx.lineWidth = this.lineWidth;
+        if (this.key_type == "Forced") {
+            //Draw a thick black line
+            ctx.lineWidth = this.lineWidth*3;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            //Draw a white line in the middle to simulate space (2 line illusion);
+            ctx.lineWidth = this.lineWidth;
+            ctx.strokeStyle = "#fff";
+        }
+        else if (this.key_type == "Derived") {
+            ctx.lineWidth = this.lineWidth * 2;
+            ctx.setLineDash([5, 4]);
+        }
+
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
-        //Draw a white line in the middle to simulate space (2 line illusion);
-        ctx.lineWidth = this.lineWidth;
-        ctx.strokeStyle = "#fff";
     }
-    else if (this.key_type == "Derived") {
-        ctx.lineWidth = this.lineWidth * 2;
-        ctx.setLineDash([5, 4]);
-    }
-
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-}
 
     this.drawRelation = function(x1, y1, x2, y2){
         var midx = points[this.middleDivider].x;
