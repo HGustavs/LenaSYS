@@ -75,7 +75,7 @@ if(checklogin()){
 			$query->bindParam(':lid', $sectid);
 
 			if(!$query->execute()) {
-				$debug="Error updating entries";
+				$debug=$query->errorInfo()[2];
 			}
 		}else if(strcmp($opt,"NEW")===0){
 
