@@ -316,6 +316,10 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
         ey = sy;
         sy = tempEndY;
     }
+
+    tempSelection = [];
+    if (ctrlIsClicked) tempSelection = selected_objects;
+
     for (var i = 0; i < this.length; i++) {
         if (this[i].kind == 1) {
             var tempPoints = [];
@@ -349,11 +353,44 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
                 sy < tempBottomRightY && ey > tempBottomRightY) {
-                this[i].targeted = true;
-            } else {
-                this[i].targeted = false;
+                tempSelection.push(this[i]);
             }
         }
+    }
+    this.selectObjects(tempSelection);
+}
+
+diagram.selectObjects = function(objArray) {
+    selected_objects = [];
+    selected_objects.push.apply(selected_objects, objArray);
+    this.updateTargeted();
+}
+
+diagram.selectObject = function(obj) {
+    selected_objects = [];
+    selected_objects.push(obj);
+    this.updateTargeted();
+}
+
+diagram.deselectObjects = function(objArray) {
+    selected_objects = selected_objects.filter(function(obj) {
+        return objArray.indexOf(obj) < 0;
+    });
+    this.updateTargeted();
+}
+
+diagram.deselectObject = function(obj) {
+    var index = selected_objects.indexOf(obj);
+    if (index >= 0) selected_objects.splice(index, 1);
+    this.updateTargeted();
+}
+
+diagram.updateTargeted = function() {
+    for (var i = 0; i < this.length; i++) {
+        this[i].targeted = false;
+    }
+    for (var i = 0; i < selected_objects.length; i++) {
+        selected_objects[i].targeted = true;
     }
 }
 
@@ -644,7 +681,7 @@ function eraseSelectedObject() {
     //Issue: Need to remove the crosses
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].targeted == true) {
-            diagram[i].targeted = false;
+            this.deselectObject(diagram[i]);
             eraseObject(diagram[i]);
             i = -1;
             //To avoid removing the same index twice, lastSelectedObject is reset

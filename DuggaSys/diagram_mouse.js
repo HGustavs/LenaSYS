@@ -227,49 +227,22 @@ function mousedownevt(ev) {
         md = 3;
         lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
         var last = diagram[lastSelectedObject];
+
+        tempSelection = [];
+        if (ctrlIsClicked) tempSelection.push.apply(tempSelection, selected_objects);
+
         if (last.targeted == false && uimode != "MoveAround") {
-            for (var i = 0; i < diagram.length; i++) {
-                diagram[i].targeted = false;
-            }
-            // Will add multiple selected diagram objects if the
-            // CTRL/CMD key is currently active
-            if (ctrlIsClicked) {
-                if(selected_objects.indexOf(last) < 0){
-                    selected_objects.push(last);
-                    last.targeted = true;
-                }
-                for (var i = 0; i < selected_objects.length; i++) {
-                    if (selected_objects[i].targeted == false) {
-                        if(selected_objects.indexOf(last) < 0){
-                            selected_objects.push(last);
-                        }
-                        selected_objects[i].targeted = true;
-                    }
-                }
-            } else {
-                selected_objects = [];
-                selected_objects.push(last);
-                last.targeted = true;
-            }
+            tempSelection.push(last);
+            diagram.selectObjects(tempSelection);
         } else if(uimode != "MoveAround"){
             if(ctrlIsClicked){
-                var index = selected_objects.indexOf(last);
-                if(index > -1){
-                    selected_objects.splice(index, 1);
-                }
-                last.targeted = false;
+                diagram.deselectObject(last);
             }
         }
     } else {
         md = 4; // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
-        if(uimode != "MoveAround"){
-            for (var i = 0; i < selected_objects.length; i++) {
-                selected_objects[i].targeted = false;
-            }
-            selected_objects = [];
-        }
     }
 }
 
@@ -307,8 +280,8 @@ function mouseupevt(ev) {
                     p1 = diagram[lineStartObj].middleDivider;
                 } else {
                     createNewPoint = true;
-                }  
-                
+                }
+
                 //Code for making sure enitities not connect to the same attribute multiple times
                 //okToMakeLine is a flag for this
                 var okToMakeLine= true;
@@ -319,7 +292,7 @@ function mouseupevt(ev) {
                 } else if(symbolEndKind == 2 && symbolStartKind == 3){
                     if(diagram[lineStartObj].hasConnector(p2)){
                         okToMakeLine= false;
-                    } 
+                    }
                 }
                 if(okToMakeLine){
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
@@ -358,7 +331,7 @@ function mouseupevt(ev) {
         diagram.push(erAttributeA);
         //selecting the newly created attribute and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
-        diagram[lastSelectedObject].targeted = true;
+        diagram.selectObject(diagram[lastSelectedObject]);
     } else if (uimode == "CreateEREntity" && md == 4) {
         erEnityA = new Symbol(3);
         erEnityA.name = "Entity" + diagram.length;
@@ -372,7 +345,7 @@ function mouseupevt(ev) {
         diagram.push(erEnityA);
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
-        diagram[lastSelectedObject].targeted = true;
+        diagram.selectObject(diagram[lastSelectedObject]);
     } else if (uimode == "CreateLine" && md == 4){
         //Code for making a line, if start and end object are different, except attributes
         if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine){
@@ -386,7 +359,7 @@ function mouseupevt(ev) {
             diagram.push(erLineA);
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;
-            diagram[lastSelectedObject].targeted = true;
+            diagram.selectObject(diagram[lastSelectedObject]);
             createCardinality();
             updateGraphics();
             //diagram.createAritySymbols(diagram[lastSelectedObject]);
@@ -402,20 +375,18 @@ function mouseupevt(ev) {
         diagram.push(erRelationA);
         //selecting the newly created relation and open the dialog menu.
         lastSelectedObject = diagram.length -1;
-        diagram[lastSelectedObject].targeted = true;
+        diagram.selectObject(diagram[lastSelectedObject]);
     } else if (md == 4 && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
     }
     else if(uimode != "Moved" && !ctrlIsClicked && md != 4) {
         //Unselects every object.
-        for(var i = 0; i < diagram.length; i++){
-            diagram[i].targeted = false;
-        }
+        diagram.deselectObjects(selected_objects);
         //Sets the clicked object as targeted
         selected_objects = [];
         selected_objects.push(diagram[lastSelectedObject]);
         //You have to target an object when you start to draw
-        if(md != 0) diagram[lastSelectedObject].targeted = true;
+        diagram.selectObject(diagram[lastSelectedObject]);
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
