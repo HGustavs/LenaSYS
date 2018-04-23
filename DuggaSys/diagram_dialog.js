@@ -49,10 +49,10 @@ function clickEnterOnDialogMenu(ev) {
      */
     $(document).keypress(function (ev) {
         var container = $("#appearance");
-        if (ev.which == 13) {
+        if (ev.which == 13 && appearanceMenuOpen) {
             globalAppearanceValue = 0;
             closeAppearanceDialogMenu();
-
+            
             // Is called in the separate appearance php-files at the buttons.
             // Called here since an enter press doesn't relate to any element
             changeObjectAppearance();
