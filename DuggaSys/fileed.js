@@ -1,11 +1,11 @@
 /********************************************************************************
-   Documentation 
+   Documentation
 *********************************************************************************
 
 This file displays the result of each student with access under this course, the teacher can grade students
 in this page.
 
-Execution order: 
+Execution order:
 #1 returnedFile() is first function to be called this then invokes returned() callback through AJAX
 #2 the other funtions are executed and used as eventlisteners, e.g waiting for the user to do something before they are started
 -------------==============######## Documentation End ###########==============-------------
@@ -27,7 +27,7 @@ AJAXService("GET",{cid:querystring['cid']},"FILE");
 
 window.onresize = function() {
 	fileLink.magicHeader();
-} 
+}
 
 $(document).on('click','.last',function(e) {
     e.stopPropagation();
@@ -70,7 +70,7 @@ function returnedFile(data) {
         null,
         rowFilter,
         [],
-        [],				
+        [],
         "",
         null,
         null,
@@ -130,11 +130,11 @@ function uploadFile(kind) {
 			var item = filez['gfiles'][i];
 			if (item != ".." && item != ".") str += "<option>" + item + "</option>";
 		}
-		$("#selectedfile").html(str);			
+		$("#selectedfile").html(str);
 	} else if (kind == "LFILE" || kind == "LINK") {
-		$("#selecty").css("display","none");				
+		$("#selecty").css("display","none");
 	}
-  
+
 	$("#kind").val(kind);
 	$("#cid").val(querystring['cid']);
 	$("#coursevers").val(querystring['coursevers']);
@@ -147,7 +147,7 @@ function closeAddFile() {
 //------------------------------------------------------------------
 // validateForm <- Validates the file that is going to be uploaded
 //------------------------------------------------------------------
-function validateForm() {	
+function validateForm() {
 	var result;
 	//Validation for links
 	if ($(".linkPopUp").css('display') == 'block') {
@@ -164,7 +164,7 @@ function validateForm() {
 		}
 	} else {
 		result = true;
-	} 
+	}
 	return result;
 }
 
@@ -183,6 +183,7 @@ function hideLoginPopup() {
 function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
 	var link = celldata.split('://');
+	var str="";
 	if (col == "trashcan") {
 		obj = JSON.parse(celldata);
 	    str = "<div class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
@@ -210,11 +211,12 @@ function renderCell(col,celldata,cellid) {
 	} else if (col == "editor") {
 		if(link[0] == "https" || link[0] == "http"){
 			str = "";
-		} else {
+		}else if (list[3] == "md" || list[3] == "txt"){
 			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += " onclick='loadPreview(\"" + celldata + "\")'></div>";
+            str += "onclick='loadPreview(\"" + celldata + "\")'></div>";
 		}
 		return str;
+		
 	} else if (col == "kind") {
 		return convertFileKind(celldata);
 	}
