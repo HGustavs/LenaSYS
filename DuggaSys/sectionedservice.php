@@ -75,7 +75,15 @@ if(checklogin()){
 			$query->bindParam(':lid', $sectid);
 
 			if(!$query->execute()) {
-				$debug=$query->errorInfo()[2];
+				$debug=
+					"SQLSTATE error code: \n"
+					.$query->errorInfo()[0]
+
+					."\n\nDriver-specific error code: \n"
+					.$query->errorInfo()[1]
+					
+					."\n\nDriver-specific error message: \n"
+					.$query->errorInfo()[2];
 			}
 		}else if(strcmp($opt,"NEW")===0){
 
