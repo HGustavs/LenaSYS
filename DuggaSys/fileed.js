@@ -143,6 +143,10 @@ function closeAddFile() {
 	$("#addFile").css("display","none");
 }
 
+function closePreview() {
+	$(".previewWindow").css("display","none");
+}
+
 //------------------------------------------------------------------
 // validateForm <- Validates the file that is going to be uploaded
 //------------------------------------------------------------------
