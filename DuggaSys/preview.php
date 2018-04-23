@@ -169,7 +169,7 @@
             }
 
             function loadPreview(fileUrl) {
-                var fileContent = getFIleContents(fileUrl);
+                var fileContent = getFileContents(fileUrl);
                 document.getElementById("mrkdwntxt").value = fileContent;
                 updatePreview(fileContent);
                 $(".PreviewWindow").show();
@@ -188,7 +188,7 @@
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
                 };
             }
-            function getFIleContents(fileUrl){
+            function getFileContents(fileUrl){
               var result = null;
               $.ajax({
                 url: fileUrl,
@@ -251,6 +251,7 @@
 
         <div class="Header">Markdown preview</div>
             <button id="Preview" onclick="loadPreview('../courses/2/minimikrav_m2.md')">Preview</button>
+
         <div class="PreviewWindow">
             <div class="PrevHead">This is the preview window
             </div>

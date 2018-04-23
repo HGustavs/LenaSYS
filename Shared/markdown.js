@@ -98,6 +98,9 @@ function parseMarkdown(inString)
     // append '&&&' to all console block indicators '=|='
     inString = inString.replace(/^\=\|\=(\r\n|\n|\r)/gm, '=|=&&&');
 
+    //One line break
+     inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
+
     // Split on code or console block
     var codearray=inString.split(/\~{3}|\=\|\=/);
     var str="";
@@ -345,19 +348,15 @@ function markdownBlock(inString)
     inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" />');
 
     // Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
-    // markdown below does not work with the original code, but it does work with spaces
+    // markdown below does not work correctly
 
-
-    /* This works:
-      inString = inString.replace(/\ {3}/gm,"<br><br>");
-      inString = inString.replace(/\ {2}/gm,"<br>");
-    */
     inString = inString.replace(/(\r\n){3}/gm,"<br><br>");
     inString = inString.replace(/(\r\n){2}/gm,"<br>");
     inString = inString.replace(/(\n){3}/gm,"<br><br>");
     inString = inString.replace(/(\n){2}/gm,"<br>");
     inString = inString.replace(/(\r){3}/gm,"<br><br>");
     inString = inString.replace(/(\r){2}/gm,"<br>");
+
     // Hyperlink !!!
     // !!!url,text to show!!!
     inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
