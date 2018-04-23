@@ -8,12 +8,10 @@ var querystring=parseGet();
 var filez;
 var variant = [];
 var submissionRow = 0;
-var decider;
-var itemToDelete;
 var str;
-var parentQuiz = 0;
-var hej;
 var globalData;
+var itemToDelete;
+var typeOfItem;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -180,12 +178,9 @@ function closeVariant(){
 	addSubmissionRow();
 }
 
-function deleteVariant()
+function deleteVariant(vid)
 {
-	var vid=$("#vid").val();
-	if(confirm("Do you really want to delete this Variant?")) AJAXService("DELVARI",{cid:querystring['cid'],vid:vid,coursevers:querystring['coursevers']},"DUGGA");
-	$("#editVariant").css("display","none");
-	//$("#overlay").css("display","none");
+	AJAXService("DELVARI",{cid:querystring['cid'],vid:vid,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function createVariant(cid,qid)
@@ -249,13 +244,20 @@ function closeEditVariant()
 
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-function confirmBox(operation, item) {
+function confirmBox(operation, item, type) {
 	if(operation == "openConfirmBox") {
+		typeOfItem = type;
 		itemToDelete = item; // save the item to delete in this variable
 		$("#sectionConfirmBox").css("display","flex");
 	} else if (operation == "deleteItem") {
+		if(typeOfItem == "dugga"){
 		deleteDugga(itemToDelete);
 		$("#sectionConfirmBox").css("display","none");
+		}
+		else if(typeOfItem == "variant"){
+		deleteVariant(itemToDelete);
+		$("#sectionConfirmBox").css("display","none");
+		}
 	} else if (operation == "closeConfirmBox") {
 		$("#sectionConfirmBox").css("display","none");
 	}
@@ -285,7 +287,6 @@ function createDugga()
 
 function deleteDugga(did)
 {
-//    if(confirm("Do you really want to delete this dugga?"))AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
 	AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
 	$("#editDugga").css("display","none");
 }
@@ -500,43 +501,43 @@ function isInArray(array, search)
     return array.indexOf(search) >= 0;
 }
 
-function showVariant(param){
-	var param = param;
-    var variantId="#variantInfo" + param;
-    var duggaId="#dugga" + param;
-    var arrowId="#arrow" + param;
-    var index = variant.indexOf(param);
+// function showVariant(param){
+// 	var param = param;
+//     var variantId="#variantInfo" + param;
+//     var duggaId="#dugga" + param;
+//     var arrowId="#arrow" + param;
+//     var index = variant.indexOf(param);
 
 
-    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) { // Check if dugga row and corresponding variant
-        if(!isInArray(variant, param)){
-             variant.push(param);
-        }
+//     if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) { // Check if dugga row and corresponding variant
+//         if(!isInArray(variant, param)){
+//              variant.push(param);
+//         }
 
-        if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
-            $(variantId).hide();
-            $(duggaId).removeClass("selectedtr");
-            $(arrowId).html("&#9658;");
-            if (index > -1) {
-               variant.splice(index, 1);
-            }
+//         if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
+//             $(variantId).hide();
+//             $(duggaId).removeClass("selectedtr");
+//             $(arrowId).html("&#9658;");
+//             if (index > -1) {
+//                variant.splice(index, 1);
+//             }
 
-        } else {
-            $(duggaId).addClass("selectedtr");
-            $(variantId).slideDown();
-            $(arrowId).html("&#x25BC;");
-        }
+//         } else {
+//             $(duggaId).addClass("selectedtr");
+//             $(variantId).slideDown();
+//             $(arrowId).html("&#x25BC;");
+//         }
 
-        $(variantId).css("border-bottom", "1px solid gray");
-    }
-}
+//         $(variantId).css("border-bottom", "1px solid gray");
+//     }
+// }
 
-function showVariantz(param){
-    var index = variant.indexOf(param);
-    if(!isInArray(variant, param)){
-         variant.push(param);
-    }
-}
+// function showVariantz(param){
+//     var index = variant.indexOf(param);
+//     if(!isInArray(variant, param)){
+//          variant.push(param);
+//     }
+// }
 
 // Storing the celldata for future use. (Needed when editing and such)
 function returnedQuiz(data) {
@@ -561,7 +562,7 @@ function returnedQuiz(data) {
 // Start of rendering the table
 var myTable;
 var myTable2;
-function openVariant(clickedElement) {
+function renderVariant(clickedElement) {
 	var tabledata2 = {
     	tblhead:{
     		vid:"",
@@ -572,7 +573,7 @@ function openVariant(clickedElement) {
     		cogwheelVariant: "",
     		trashcanVariant: ""
     	},
-    	tblbody: globalData['entries'][clickedElement].variants, //"ParentQuiz" returns the right value, but the table gets created in a to early stage.
+    	tblbody: globalData['entries'][clickedElement].variants, 
     	tblfoot:[]
     }
 	myTable2 = new SortableTable(
@@ -595,18 +596,8 @@ function openVariant(clickedElement) {
         null,
 		false
 	);
-	showVariantDisableButton();
-	showVariantSubmitButton();
 	myTable2.renderTable();
-	document.getElementById('filelink').value='';
-	document.getElementById('filelink').placeholder='File link';
-	document.getElementById('extraparam').value='';
-	document.getElementById('extraparam').placeholder='Extra dugga parameters in valid JSON';
-	document.getElementById('variantparameterText').value='';
-	document.getElementById('variantparameterText').placeholder='Undefied JSON parameter';
-	document.getElementById('variantanswerText').value='';
-	document.getElementById('variantanswerText').placeholder='Undefied JSON answer';
-	$("#editVariant").css("display","flex"); //Display variant-window
+	openVariant();
 }
 function returnedDugga(data) {
 	filez = data;
@@ -668,7 +659,7 @@ function renderCell(col,celldata,cellid) {
 	if (col == "arrow"){
 		clickedElement=JSON.parse(cellid.match(/\d+/));
 	    str="<img id='dorf' src='../Shared/icons/right_primary.svg' ";
-		str+=" onclick='openVariant(\""+clickedElement+"\");'>";
+		str+=" onclick='renderVariant(\""+clickedElement+"\");'>";
 		return str;
 	}
 	
@@ -711,7 +702,7 @@ function renderCell(col,celldata,cellid) {
 	else if (col == "trashcan"){
 		object=JSON.parse(celldata);
 	  str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
-		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
+		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\",\"dugga\");' >";
 		return str;
 	}
 	// DUGGA-TABLE END
@@ -746,11 +737,11 @@ function renderCell(col,celldata,cellid) {
 		return str;
 	}
 
-	// Placing a clickable trash can in its designated column and implementing the code behind it.
+	// Placing a clickable trashcan can in its designated column and implementing the code behind it.
 	else if (col == "trashcanVariant"){
 		object=JSON.parse(celldata);
 	    str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
-		str+=" onclick='deleteVariant()' >";
+		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\",\"variant\");' >";
 		return str;
 	}
 	// VARIANT-TABLE end
@@ -761,6 +752,20 @@ function renderCell(col,celldata,cellid) {
 
 function parseParameters(str){
 	return str;
+}
+
+function openVariant(){
+	showVariantDisableButton();
+	showVariantSubmitButton();
+	document.getElementById('filelink').value='';
+	document.getElementById('filelink').placeholder='File link';
+	document.getElementById('extraparam').value='';
+	document.getElementById('extraparam').placeholder='Extra dugga parameters in valid JSON';
+	document.getElementById('variantparameterText').value='';
+	document.getElementById('variantparameterText').placeholder='Undefied JSON parameter';
+	document.getElementById('variantanswerText').value='';
+	document.getElementById('variantanswerText').placeholder='Undefied JSON answer';
+	$("#editVariant").css("display","flex"); //Display variant-window
 }
 
 function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
