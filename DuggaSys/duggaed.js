@@ -8,12 +8,10 @@ var querystring=parseGet();
 var filez;
 var variant = [];
 var submissionRow = 0;
-var decider;
-var itemToDelete;
 var str;
-var parentQuiz = 0;
-var hej;
 var globalData;
+var itemToDelete;
+var typeOfItem;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -180,19 +178,9 @@ function closeVariant(){
 	addSubmissionRow();
 }
 
-// function deleteDugga(did)
-// {
-// 	AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
-// 	$("#editDugga").css("display","none");
-// }
-
-
 function deleteVariant(vid)
 {
-	if(confirm("Do you really want to delete this variant?"))AJAXService("DELVARI",{cid:querystring['cid'],vid:vid,coursevers:querystring['coursevers']},"DUGGA");
-	$("#editVariant").css("display","none");
-	window.location.reload();
-	openVariant();
+	AJAXService("DELVARI",{cid:querystring['cid'],vid:vid,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function createVariant(cid,qid)
@@ -256,13 +244,20 @@ function closeEditVariant()
 
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-function confirmBox(operation, item) {
+function confirmBox(operation, item, type) {
 	if(operation == "openConfirmBox") {
+		typeOfItem = type;
 		itemToDelete = item; // save the item to delete in this variable
 		$("#sectionConfirmBox").css("display","flex");
 	} else if (operation == "deleteItem") {
+		if(typeOfItem == "dugga"){
 		deleteDugga(itemToDelete);
 		$("#sectionConfirmBox").css("display","none");
+		}
+		else if(typeOfItem == "variant"){
+		deleteVariant(itemToDelete);
+		$("#sectionConfirmBox").css("display","none");
+		}
 	} else if (operation == "closeConfirmBox") {
 		$("#sectionConfirmBox").css("display","none");
 	}
@@ -578,7 +573,7 @@ function renderVariant(clickedElement) {
     		cogwheelVariant: "",
     		trashcanVariant: ""
     	},
-    	tblbody: globalData['entries'][clickedElement].variants, //"ParentQuiz" returns the right value, but the table gets created in a to early stage.
+    	tblbody: globalData['entries'][clickedElement].variants, 
     	tblfoot:[]
     }
 	myTable2 = new SortableTable(
@@ -707,7 +702,7 @@ function renderCell(col,celldata,cellid) {
 	else if (col == "trashcan"){
 		object=JSON.parse(celldata);
 	  str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
-		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
+		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\",\"dugga\");' >";
 		return str;
 	}
 	// DUGGA-TABLE END
@@ -746,7 +741,7 @@ function renderCell(col,celldata,cellid) {
 	else if (col == "trashcanVariant"){
 		object=JSON.parse(celldata);
 	    str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
-		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
+		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\",\"variant\");' >";
 		return str;
 	}
 	// VARIANT-TABLE end
