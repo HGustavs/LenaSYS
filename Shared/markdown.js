@@ -406,12 +406,12 @@ function markdownBlock(inString)
     return inString;
 }
 
-function showPreview() {
-    $(".previewWindow").css("display", "block");
-}
-
 function cancelPreview() {
     $(".previewWindow").hide();
+}
+
+function previewContainer() {
+    $(".previewWindowContainer").css("display", "block");
 }
 
 function loadPreview(fileUrl) {

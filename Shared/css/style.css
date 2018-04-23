@@ -3552,6 +3552,16 @@ ul.hamburgerList button.menuButton {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
+ .previewWindowContainer {
+    background-color: rgba(0,0,0,6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 8000;
+    display: none;
+ }
 
  .previewWindow {
     height: 635px;
@@ -3568,8 +3578,6 @@ ul.hamburgerList button.menuButton {
     margin-right: auto;
     top: 220px;
     position: absolute;
-     
-     
 }
 .markdown {
     border: solid rgb(200,200,200);
