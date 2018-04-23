@@ -1159,7 +1159,6 @@ function returnedSection(data)
 							+ item['link'] + "\");' >" + item['entryname'] + "</a>";
 					}
 				}else if(itemKind == 6){ // Group
-					console.log("asd");
 					str+=
 					"<div class='ellipsis nowrap'><a class='" + blorf
 					+ "' style='cursor:pointer;margin-left:15px;'"
