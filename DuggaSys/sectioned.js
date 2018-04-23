@@ -1641,10 +1641,23 @@ $(window).load(function() {
           closeSelect();
           showSaveButton();
 		  hamburgerChange("escapePress");
-        }
+		  document.activeElement.blur(); // to lose focus from the newItem button when pressing enter
+	  	}else if(event.keyCode == 13){
+		  var saveButtonDisplay = ($('#saveBtn').css('display'));
+		  var editSectionDisplay = ($('#editSection').css('display'));
+		  var submitButtonDisplay = ($('#submitBtn').css('display'));
+		  var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
+		  if(saveButtonDisplay == 'block' && editSectionDisplay == 'flex'){
+			  updateItem();
+		  }else if(submitButtonDisplay == 'block' && editSectionDisplay == 'flex'){
+			  newItem();
+			  showSaveButton();
+		  }else if(deleteButtonDisplay == 'flex'){
+			  confirmBox("deleteItem");
+		  }
+	  	}
       });
 });
-
 
 // Detects clicks
 $(document).mouseup(function (e)
@@ -1665,5 +1678,6 @@ $(document).mouseup(function (e)
     {
 	    closeWindows();
         closeSelect();
+		showSaveButton();
     }
 });
