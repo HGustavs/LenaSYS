@@ -93,10 +93,10 @@ pdoConnect();
 	</div>
 	<!-- Edit File Dialog END -->
     <!-- Markdown-preview functionality START -->
-    <div class="PreviewWindow">
-        <div class="PrevHead">This is the preview window
+    <div class="previewWindow">
+        <div class="prevHead">This is the preview window
         </div>
-        <div class="Markdown">
+        <div class="markdown">
             <div class="markNav">Markdown
                 <span class="headerType" title="Header">aA&#9663;</span>
                     <div id="select-header">
@@ -111,7 +111,7 @@ pdoConnect();
                 <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
             </div>
         </div>
-        <div class="MarkdownPrev">
+        <div class="markdownPrev">
             <div class="prevNav">Markdown Preview</div>
             <div class="markTextPrev">
                 <div class="prevSpan">
@@ -121,7 +121,7 @@ pdoConnect();
                 </div>
             </div>
         </div>
-        <div class="OptionButtons">
+        <div class="optionButtons">
             <button id="button-save" onclick="saveMarkdown()">Save</button>
             <button id="button-cancel" onclick="">Cancel</button>
         </div>
