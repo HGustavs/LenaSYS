@@ -82,7 +82,7 @@ pdoConnect();
 	<!-- Edit Dugga Dialog END -->
 
   <!-- Confirm Section Dialog START -->
-      <div id='sectionConfirmBox' class='loginBoxContainer' style='display:none; z-index: 9999;'>
+      <div id='sectionConfirmBox' class='loginBoxContainer' style='display:none; z-index: 9999; '>
             <div class='loginBox' style='width:460px;'>
                   <div class='loginBoxheader'>
                         <h3>Confirm your update</h3>
