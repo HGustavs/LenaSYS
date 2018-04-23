@@ -85,7 +85,7 @@ pdoConnect();
 		<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none; z-index: 9999;'>
 	        <div class='loginBox' style='width:460px;'>
 				<div class='loginBoxheader'>
-				    <h3>Confirm your update</h3>
+				    <h3>Confirm deletion</h3>
 				    <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 				</div>
 				<div style='text-align: center;'>
