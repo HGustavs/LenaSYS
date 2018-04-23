@@ -75,7 +75,9 @@ function setup(){
 
 function redrawtable()
 {
+/*
   str="";
+
 
   str+="<div class='titles' style='padding-bottom:10px;'>";
     str+="<h1 style='flex:1;text-align:center;'>Results</h1>";
@@ -89,10 +91,12 @@ function redrawtable()
   str += "<div id='sideDecker' style='position:absolute;left:50px;margin-top:43px;display:none;width:175px;'>";
   str += "<table class='markinglist' style='table-layout: fixed;'>";
   str += "<tbody>";
+
     var row=1;
     for(var i=0;i<students.length;i++){
       var isTeacher = false; // Will be true if a member of the course has "W" access
       var strx = "";
+
       // Check if row is even/uneven and add corresponding class, this creates the "striped" pattern in the table
       if(row % 2 == 1){
         strx+="<tr class='fumo hi'>";
@@ -101,6 +105,8 @@ function redrawtable()
         strx+="<tr class='fumo lo'>";
       }
       strx +="<td id='row"+row+"' class='rownoMagic'><div>"+row+"</div></td>"
+
+
       var student=students[i];
       for(var j=0;j<student.length;j++){
         if(student[j].access == "W") { // Member is a teacher
@@ -114,7 +120,10 @@ function redrawtable()
         strx +="'>"+student[j].grade+"</td>";
         }
       }
-      strx +="</tr>"
+
+ 
+     strx +="</tr>" 
+
 
       if(!onlyPending && (showTeachers || (!showTeachers && !isTeacher))) {
         str+=strx;
@@ -124,12 +133,15 @@ function redrawtable()
 
   // Append row for amount of ungraded duggas
   if(!onlyPending && (showTeachers || (!showTeachers && !isTeacher))) {
+
     if(row % 2 == 1){
       str+="<tr class='fumo hi'>";
     }
     else{
       str+="<tr class='fumo lo'>";
     }
+
+
     str +="<td id='row"+row+"' class='rownoMagic'><div>"+row+"</div></td>"
     str +="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
     str +=" style='padding-left:6px;background-color: #614875; color: white; font-size: 12px;"+"'";
@@ -137,10 +149,13 @@ function redrawtable()
     str +="'>Amount of ungraded assignments</td>";
     str +="</tr>";
     row++;
+
   }
+
   str += "</tbody>";
   str += "</table>";
   str += "</div>";
+
 
 
   str += "<div id='upperDecker' style='position:absolute;left:8px;display:none;'>";
@@ -148,6 +163,8 @@ function redrawtable()
   str += "<thead>";
   str += "<tr class='markinglist-header'>";
   str += "<th id='header' class='rowno idField' style='width: 28px;'><span>#</span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
+
+ 
   if (momtmp.length > 0){
     // Make first header row!
     //    No such header for magic heading - by design
@@ -161,13 +178,17 @@ function redrawtable()
       }
     }
   }
+
+
   str+="<th style='width: 100%'></th>"; // Padding cell, to make sure the other fields are compressed to a bare minimum
   str+="</tr>";
   str += "</thead>"
   str += "</table>"
   str += "</div>"
 
+
   // Redraw main result table
+
   str+="<table class='markinglist' id='markinglist'>";
   str+="<thead>";
   str+="<tr class='markinglist-header'>";
@@ -175,11 +196,13 @@ function redrawtable()
   str+="";
   str+="</th>";
 
+
     // Make first header row!
     var colsp=1;
     var colpos=1;
 
     // Only write out this part if momtmp array is not empty
+    
     if (momtmp.length > 0){
       var momname=momtmp[0].momname;
       for(var j=1;j<momtmp.length;j++){
@@ -205,11 +228,14 @@ function redrawtable()
       }
     }
 
+
     // Make second header row if momtmp array is empty
+   
     if (momtmp.length === 0){
       str+="</tr><tr class='markinglist-header'>";
       str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
     }
+
 
     str+="<th style='width: 100%'></th>"; // Padding cell, to make sure the other fields are compressed to a bare minimum
     str+="</tr></thead><tbody>";
@@ -221,38 +247,57 @@ function redrawtable()
       var isTeacher = false; // Will be true if a member of the course has "W" access
       var strt="";
       // Check if row is even/uneven and add corresponding class, this creates the "striped" pattern in the table
+      
       if(row % 2 == 1){
         strt+="<tr class='fumo hi'>";
       }
       else{
         strt+="<tr class='fumo lo'>";
       }
+
+
       strt+="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>";
+
       student = students[i];
       for(var j=0;j<student.length;j++){
         if(student[j].access == "W") { // Member is a teacher
           isTeacher = true;
         }
+
         strt+="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
         // Mark the cell if it is a teacher, first iteration: changing background color to bright yellow to indicate something
         strt+=" style='padding-left:6px;"+((student[j].access=="W")?" background-color: #ffff90;":"")+"'";
         strt+=" id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data c"+j;
+
         if(j==0){
+          
           strt+="'>"+student[j].grade+"</td>";
+
         } else {
+          
           if(student[j].kind==4){ strt+=" dugga-moment"; }
+          
           // color based on pass,fail,pending,assigned,unassigned
           if (student[j].grade === 1 && student[j].needMarking === false) {strt += " dugga-fail";}
+          
           else if (student[j].grade > 1) {strt += " dugga-pass";}
+          
           else if (student[j].needMarking === true) {strt+= " dugga-pending"; onlyPending=false;}
-          else if (student[j].grade === 0 ) {strt += " dugga-assigned";}
+          
+          else if (student[j].grade === 0 ) {strt += " dugga-assigned";}          
           else {strt += " dugga-unassigned";}
+
+
           strt += "'>";
           strt += "<div class='gradeContainer";
+
+         
           if(student[j].ishere===false){
             strt += " grading-hidden";
           }
           strt += "'>";
+
+          
           if (student[j].grade === null ){
             strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'I', student[j].qvariant, student[j].quizId);
           } else if (student[j].grade === -1 ){
@@ -260,20 +305,29 @@ function redrawtable()
           }else {
             strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'U', student[j].qvariant, student[j].quizId);
           }
+
+          
           strt += "<img id='korf' class='fist gradeImg";
+
+          
           if(student[j].userAnswer===null && !(student[j].quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
             strt += " grading-hidden";
           }
           strt +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\",\"" + student[j].qvariant + "\",\"" + student[j].quizId + "\");' />";
           strt += "</div>";
+          
+
 
       strt += "<div class='text-center'>";
         if(student[j].ishere===true && student[j].timesGraded!==0){
           strt += "Times Graded: " + student[j].timesGraded;
         }
       strt += "</div>";
+      
 
+          
           strt += "<div class='text-center'"
+          
 
 		  for (var p = 0; p < moments.length; p++){
 			  if (moments[p].link == student[j].quizId){
@@ -283,23 +337,33 @@ function redrawtable()
 					break;
 			  }
 		  }
+		  
 
 		  strt += ">";
+		  
 
           if (student[j].submitted.getTime() !== timeZero.getTime()){
             strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();
           }
+
+         
           strt += "</div></td>";
+          
         }
       }
+
       strt+="</tr>"
+      
       // Only show teachers if the showTeacher variable is set (should be off by default)
+     
       if(!onlyPending && (showTeachers || (!showTeachers && !isTeacher))) {
         str+=strt;
         row++;
       }
+     
     }
-    document.getElementById("content").innerHTML=str;
+    //document.getElementById("content").innerHTML=str;
+
     str = '';
 
     // Row for amount of yellow assignments
@@ -307,10 +371,12 @@ function redrawtable()
     str +="<td id='row"+row+"' class='rowno'><div>"+row+"</div></td>"; // Row number
 
     // Description of row
+
     str +="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
     str +=" style='padding-left:6px;background-color: #614875; color: white; font-size: 12px;"+"'";
     str +=" class='result-data c"+j;
     str +="'>Amount of ungraded assignments</td>";
+   
     for(var j=0;j<student.length - 1;j++) {
       str +="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
       // Mark the cell if it is a teacher, first iteration: changing background color to bright yellow to indicate something
@@ -318,8 +384,10 @@ function redrawtable()
       str +=" id='c" + String(j + 1) + "-ungraded-duggas' class='result-data c"+ String(j + 1);
       str +="'>";
 
+
       var ungradedForColumn = 0;
       var columnValues = document.getElementsByClassName('c' + String(j + 1));
+      
       for(var i = 0; i < columnValues.length; i++) {
         if($(columnValues[i]).hasClass("dugga-pending") || $(columnValues[i]).hasClass("dugga-assigned")) {
           ungradedForColumn++;
@@ -327,15 +395,18 @@ function redrawtable()
       }
 
       str += ungradedForColumn;
-      str += "</td>";
+      str += "</td>";     
     }
     row++;
     $("#markinglist tbody").append(str);
     idField();
+*/
+
 }
 
 // Updates the amount of ungraded duggas per column.
 function updateAmountOfUngraded() {
+/*
   var columnValues = document.getElementsByClassName('c' + String(j + 1));
 
   for(var j=0;j<students.length;j++) {
@@ -349,23 +420,28 @@ function updateAmountOfUngraded() {
           ungradedForColumn++;
         }
       }
-      document.getElementById("c" + (String(i + 1) + "-ungraded-duggas")).innerHTML = ungradedForColumn;
+      //document.getElementById("c" + (String(i + 1) + "-ungraded-duggas")).innerHTML = ungradedForColumn;
     }
     break;
   }
+*/  
 }
 
+/*
 function idField() {
   $(".idField").css("width", $(".realIdField").css("width"));
 }
+*/
 
 function cellIn(ev)
 {
+/*	
     var greger=ev.target;
 
     if(greger.nodeName!="TD") greger=greger.parentElement;
     if(greger.nodeName!="TD") greger=greger.parentElement; /* These are two by design */
 
+/*
     var bodyRect = document.body.getBoundingClientRect(),
     gregerRect = greger.getBoundingClientRect(),
     offset   = gregerRect.top - bodyRect.top;
@@ -392,12 +468,15 @@ function cellIn(ev)
 
     $("#horizhighlight").css("height",greger.offsetHeight-4+"px");
     $("#horizhighlight").css("width",$("#markinglist").outerWidth()+"px");
+*/
 }
 
 function cellOut(ev)
 {
+/*	
     $("#horizhighlight").css("display","none");
     $("#verthighlight").css("display","none");
+*/    
 }
 
 // Resort based on our paramters:
@@ -409,6 +488,7 @@ function cellOut(ev)
 // All parameters are stored in local storage.
 function resort()
 {
+/*
     // Read sorting config from localStorage
     var sortdir=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
     if (sortdir === null || sortdir === undefined){dir=1;}
@@ -588,12 +668,14 @@ function resort()
      $("#header"+columno).append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
      $("#header"+columno+"magic").append("<img id='sortdiricon' src='../Shared/icons/desc_primary.svg'/>");
    }
+   */
 }
 
 // If col and current col are equal we flip sort order otherwise we
 // change to selected column and always start with desc FIFO order for col 1->
 // col 0 get special treatment and is by default sorted on lastname.
 function toggleSortDir(col){
+/*	
     var dir = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
     var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
 
@@ -619,6 +701,7 @@ function toggleSortDir(col){
     }
     resort();
     magicHeading();
+*/    
 }
 
 function process()
@@ -894,7 +977,7 @@ function toggleAll() {
     }
   }
 
-  selectToggle.checked = anyChecked;
+//  selectToggle.checked = anyChecked;
 }
 
 function checkMomentParts(pos, id) {
@@ -954,6 +1037,7 @@ function sorttype(t){
 
 function magicHeading()
 {
+	/*
     // Display Magic Headings when scrolling
     if(window.pageYOffset+15>$("#subheading").offset().top){
         $("#upperDecker").css("display","block");
@@ -984,6 +1068,7 @@ function magicHeading()
     // Position Magic Headings
     $("#upperDecker").css("top",(window.pageYOffset+48)+"px");
     $("#sideDecker").css("left",(window.pageXOffset)+"px");
+    */
 }
 
 $(function()
@@ -1127,6 +1212,7 @@ function hoverResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 
 function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid)
 {
+
     $("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
 
     var menu = "<div class='' style='width:100px;display:block;'>";
@@ -1150,6 +1236,7 @@ function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
     document.getElementById('markMenuPlaceholder').innerHTML=menu;
 
     AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid, coursevers : vers }, "RESULT");
+    
 }
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire)
@@ -1284,10 +1371,8 @@ function saveResponse()
 //----------------------------------------
 
 function returnedResults(data)
-{
-
-  
-
+{  
+console.log(data);
   if (data.gradeupdated === true){
       // Update background color
       $("#u"+data.duggauser+"_d"+data.duggaid).removeClass("dugga-fail dugga-pending dugga-assigned dugga-unassigned");
@@ -1327,6 +1412,7 @@ function returnedResults(data)
       } else {
         alert("Error updating result");
       }
+      testSortable(data);
   } else {
 
     entries=data.entries;
@@ -1364,11 +1450,12 @@ function returnedResults(data)
     } else {
         // Process and render filtered data
       process();
+  		testSortable(data);
     }
   }
   // Upgrade the most bottom row with amount of ungraded duggas per column.
   updateAmountOfUngraded();
-  testSortable(data);
+
 }
 
 function miniMode(){
@@ -1441,7 +1528,7 @@ function testSortable(data){
 		null,
 		null,
 		null,
-		false
+		true
 	);
 	myTable.renderTable();
 
