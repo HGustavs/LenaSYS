@@ -406,3 +406,92 @@ function markdownBlock(inString)
 
     return inString;
 }
+
+function showPreview() {
+    $(".previewWindow").css("display", "block");
+}
+
+function cancelPreview() {
+    $(".previewWindow").hide();
+}
+
+function loadPreview(fileUrl) {
+    var fileContent = getFIleContents(fileUrl);
+    document.getElementById("mrkdwntxt").value = fileContent;
+    updatePreview(fileContent);
+    $(".previewWindow").show();
+}
+
+function updatePreview(str) {
+    //This function is triggered when key is pressed down in the input field
+    if(str.length == 0){
+        /*Here we check if the input field is empty (str.length == 0).
+          If it is, clear the content of the txtHint placeholder
+          and exit the function.*/
+        document.getElementById("markdown").innerHTML = " ";
+        return;
+    }
+    else {
+        document.getElementById("markdown").innerHTML=parseMarkdown(str);
+    };
+}
+
+function getFIleContents(fileUrl){
+    var result = null;
+    $.ajax({
+        url: fileUrl,
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        success: function(data) {
+            result = data;
+        }
+    });
+    return result;
+}
+
+
+function boldText() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****');
+}
+
+function cursiveText() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
+}
+
+function showDropdown() {
+    $('#select-header').show();
+}
+
+function selected() {
+    $('#select-header').hide();
+}
+
+function headerVal1() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'# ');
+
+}
+
+function headerVal2() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'## ');
+}
+function headerVal3() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'### ');
+}
+
+
+$(document).ready(function(){
+   $(".headerType").click(function(){
+        $("#select-header").toggle();
+        $("#select-header").addClass("show-dropdown-content");
+    });
+});
+
+//Hide dropdown if click is outside the div
+$(document).mouseup(function(e) {
+    var container = $("#select-header");
+
+    if (!container.is(e.target) && container.has(e.target).length === 0) {
+        container.hide();
+    }
+});

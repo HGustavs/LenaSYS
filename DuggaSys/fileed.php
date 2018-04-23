@@ -18,6 +18,8 @@ pdoConnect();
 	<script src="../Shared/dugga.js"></script>
 	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script> 
 	<script src="fileed.js"></script>
+    <script src="../Shared/markdown.js"></script>
+
 </head>
 <body>
 	<?php 
@@ -90,5 +92,42 @@ pdoConnect();
 		</div>
 	</div>
 	<!-- Edit File Dialog END -->
+    <!-- Markdown-preview functionality START -->
+    <div class="previewWindow">
+        <div class="prevHead">This is the preview window
+        </div>
+        <div class="markdown">
+            <div class="markNav">Markdown
+                <span class="headerType" title="Header">aA&#9663;</span>
+                    <div id="select-header">
+                        <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
+                        <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
+                        <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
+                    </div>
+                <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
+                <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
+            </div>
+            <div class="markText">
+                <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
+            </div>
+        </div>
+        <div class="markdownPrev">
+            <div class="prevNav">Markdown Preview</div>
+            <div class="markTextPrev">
+                <div class="prevSpan">
+                    <div class="descbox">
+                        <span id="markdown"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="optionButtons">
+            <button id="button-save" onclick="saveMarkdown()">Save</button>
+            <button id="button-cancel" onclick="">Cancel</button>
+        </div>
+        <button id="button-close" onclick="cancelPreview()">Close</button>
+    </div>
+    <!-- Markdown-preview functionality END -->
+
 </body>
 </html>
