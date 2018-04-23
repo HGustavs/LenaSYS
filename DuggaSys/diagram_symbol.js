@@ -674,13 +674,13 @@ function Symbol(kind) {
         //This is a temporary solution to the black symbol problem
 
 
-        //drawing a multivalue attribute
+        // Drawing a multivalue attribute
         if (this.key_type == 'Multivalue') {
-            ctx.stroke();
             drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
             ctx.stroke();
             makeShadow();
             drawOval(x1, y1, x2, y2);
+        // Drawing a normal attribute
         } else {
             drawOval(x1, y1, x2, y2);
 
