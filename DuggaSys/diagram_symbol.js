@@ -673,18 +673,23 @@ function Symbol(kind) {
         ctx.lineWidth = this.lineWidth;
         //This is a temporary solution to the black symbol problem
 
-        drawOval(x1, y1, x2, y2);
-
-        ctx.fill();
-        makeShadow();
 
         //drawing a multivalue attribute
         if (this.key_type == 'Multivalue') {
             ctx.stroke();
             drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
+            ctx.stroke();
+            makeShadow();
+            drawOval(x1, y1, x2, y2);
+        } else {
+            drawOval(x1, y1, x2, y2);
+
+            ctx.fill();
+            makeShadow();
         }
+
         //drawing an derived attribute
-        else if (this.key_type == 'Drive') {
+        if (this.key_type == 'Drive') {
             ctx.setLineDash([5, 4]);
         }
         else if (this.key_type == 'Primary key') {
