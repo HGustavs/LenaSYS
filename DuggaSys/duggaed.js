@@ -746,7 +746,7 @@ function renderCell(col,celldata,cellid) {
 	else if (col == "trashcanVariant"){
 		object=JSON.parse(celldata);
 	    str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
-		str+=" onclick='deleteVariant(\""+object+"\")' >";
+		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
 		return str;
 	}
 	// VARIANT-TABLE end
