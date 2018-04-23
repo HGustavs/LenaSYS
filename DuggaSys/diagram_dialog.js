@@ -71,19 +71,41 @@ function dimDialogMenu(dim) {
 }
 
 function loadFormIntoElement(element, dir){
+  //Ajax
+  var file = new XMLHttpRequest();
+  file.open('GET', dir);
+  file.onreadystatechange = function(){
+
+    if(file.readyState === 4){
+      element.innerHTML = file.responseText;
+      if(globalAppearanceValue == 0){
+        document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+        setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
+        setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
+        setSelectedOption('font', diagram[lastSelectedObject].font);
+        setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
+        setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+        setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
+      }
+    }
+  }
+  file.send();
+}
+
+function loadLineForm(element, dir){
     //Ajax
     var file = new XMLHttpRequest();
     file.open('GET', dir);
     file.onreadystatechange = function(){
-        element.innerHTML = file.responseText;
-        if(globalAppearanceValue == 0){
-            document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-            setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
-            setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
-            setSelectedOption('font', diagram[lastSelectedObject].font);
-            setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
-            setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
-            setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
+        if(file.readyState === 4){
+            element.innerHTML = file.responseText;
+            if(globalAppearanceValue == 0){
+                var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value
+                var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
+
+                setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
+                setSelectedOption('cardinality', tempCardinality);
+            }
         }
     }
     file.send();
@@ -132,7 +154,7 @@ function objectAppearanceMenu(form) {
         loadFormIntoElement(form, 'forms/entity_appearance.php');
     }
     if (diagram[lastSelectedObject].symbolkind == 4) {
-        loadFormIntoElement(form, 'forms/line_appearance.php');
+        loadLineForm(form, 'forms/line_appearance.php');
     }
     if (diagram[lastSelectedObject].symbolkind == 5) {
         loadFormIntoElement(form, 'forms/relation_appearance.php');
@@ -143,8 +165,8 @@ function objectAppearanceMenu(form) {
 }
 function changeObjectAppearance(object_type){
     /*
-     * USES DIALOG TO CHANGE OBJECT APPEARANCE
-     */
+    * USES DIALOG TO CHANGE OBJECT APPEARANCE
+    */
 
     if (diagram[lastSelectedObject].symbolkind == 4) {
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
@@ -163,23 +185,21 @@ function changeObjectAppearance(object_type){
     updateGraphics();
 }
 
-//previous developers called cardinality for arity
-function addCardinality(side){
+function createCardinality(){
+    //Setting cardinality on new line
+    if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3){
+      diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
+    }
+    else if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5) {
+      diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
+    }
+}
+function changeCardinality(){
+    var val = document.getElementById('cardinality').value;
 
-  var x;
-  var y;
-  var val = document.getElementById(side).value;;
-
-//rightside assigns it's values to the array with index 1, leftside with index 0
-  if(side == "rightSide"){
-    x = points[diagram[lastSelectedObject].bottomRight].x;
-    y = points[diagram[lastSelectedObject].bottomRight].y;
-    console.log("iX: " + x + "\nY: " + y);
-    diagram[lastSelectedObject].cardinality[1] = ({"x": x, "y": y, "value": val, "side": side});
-  }else{
-    x = points[diagram[lastSelectedObject].topLeft].x;
-    y = points[diagram[lastSelectedObject].topLeft].y;
-    diagram[lastSelectedObject].cardinality[0] = ({"x": x, "y": y, "value": val, "side": side});
-  }
-
+    //Setting existing cardinality value on line
+    if(val == "None") val = "";
+    if(diagram[lastSelectedObject].cardinality[0].value != null){
+        diagram[lastSelectedObject].cardinality[0].value = val;
+}
 }

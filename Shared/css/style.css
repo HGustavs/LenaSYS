@@ -112,6 +112,10 @@ h6 {
 }
 
 
+.hideTableArrow {
+  display:none !important;
+}
+
 
 hr {
   border: 0;
@@ -1643,6 +1647,7 @@ input.large-button {
   line-height:28px;
   font-weight: bold;
   padding: 5px;
+  cursor: pointer;
 }
 
 .innertable {
@@ -2006,7 +2011,7 @@ span.arrow {
 }
 
 #file-submit-button {
-  margin:15px 0 18px 0; 
+  margin:15px 0 18px 0;
 }
 
 #feedbackTable table {
@@ -3019,26 +3024,26 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
-  
+
   	table.navheader input.hamburger {
 	  position: absolute;
 	  top: 66px;
 	  right: 10px;
 	}
-	
+
 	table.navheader div.hamburger {
 	  position: absolute;
 	  top: 66px;
 	  right: 10px;
 	}
-	
+
 	table.navheader div.hamburgerMenu {
 	  right: 10px;
 	  top: 110px;
 	  margin-top: 0px;
 	  margin-left: 0px;
 	}
-	
+
 }
 
 @media only screen and (max-width: 320px), only screen and (max-device-width: 320px) {
@@ -3242,7 +3247,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-motd:hover { background-color: #b560d3; }
 
-.zoom-btn-motd:before { 
+.zoom-btn-motd:before {
 	top: 2%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3277,7 +3282,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-heading:hover { background-color: #d0599a; }
 
-.zoom-btn-heading:before { 
+.zoom-btn-heading:before {
 	top: 16%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3312,7 +3317,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-section:hover { background-color: #d16a72; }
 
-.zoom-btn-section:before { 
+.zoom-btn-section:before {
 	top: 30%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3347,7 +3352,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-moment:hover { background-color: #d78b50; }
 
-.zoom-btn-moment:before { 
+.zoom-btn-moment:before {
 	top: 45%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3382,7 +3387,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-test:hover { background-color: #ddae37; }
 
-.zoom-btn-test:before { 
+.zoom-btn-test:before {
 	top: 59%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3417,7 +3422,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-link:hover { background-color: #b8cd4e; }
 
-.zoom-btn-link:before { 
+.zoom-btn-link:before {
 	top: 73%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3452,7 +3457,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-code:hover { background-color: #83ae55; }
 
-.zoom-btn-code:before { 
+.zoom-btn-code:before {
 	top: 87%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3544,3 +3549,175 @@ ul.hamburgerList button.menuButton {
 
 .scale-transition.scale-in { transform: scale(1); }
 
+/* --------------================################================-------------- *
+ *                               Markdown preview                              *
+ * --------------================################================-------------- */
+
+ .previewWindow {
+    height: 635px;
+    width: 900px;
+    margin: 0px auto;
+    border: solid rgb(200,200,200);
+    background-color: rgb(240,240,240);
+    box-shadow: 0px 5px 10px grey;
+    z-index: 12000;
+    display: none;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 220px;
+    position: absolute;
+     
+     
+}
+.markdown {
+    border: solid rgb(200,200,200);
+    background-color: #FFFFFF;
+    width: 350px;
+    height: 550px;
+    position: relative;
+    margin: 20px 10px 10px 10px;
+    float: left;
+}
+.markdownPrev {
+    border: solid rgb(200,200,200);
+    background-color: #FFFFFF;
+    word-wrap: break-word;
+    overflow-y: scroll;
+    width: 490px;
+    height: 550px;
+    position: relative;
+    margin: 20px 10px 10px 10px;
+    float: right;
+}
+.optionButtons {
+    top: 585px;
+    position: relative;
+    margin: 0px 10px 0px 10px;
+    height: 40px;
+    width: 355px;
+}
+.prevSpan {
+    max-width: 100%;
+}
+#button-cancel {
+    position: absolute;
+    left: 235px;
+}
+#button-save {
+    position: absolute;
+    left: 305px;
+}
+#button-close {
+    float: right;
+    position: relative;
+    margin: 0px 10px 0px 0px;
+}
+ .prevHead {
+    height: 20px;
+    background-color: #614875;
+    color: #FFFFFF;
+    font-size: 14px;
+    padding: 0px 5px 0px 5px;
+}
+.prevNav {
+    background-color: #614875;
+    height: 30px;
+    color: #FFF;
+    padding: 0px 5px 0px 5px;
+    line-height: 25px;
+}
+.markNav {
+    background-color: #614875;
+    height: 30px;
+    color: #FFF;
+    padding: 0px 5px 0px 5px;
+    line-height: 25px;
+}
+#mrkdwntxt {
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px #888 inset;
+    resize: none;
+    margin: 10px 4px 0px 4px;
+}
+#boldText {
+    cursor: pointer;
+    margin-left: 10px;
+}
+#cursiveText {
+    cursor: pointer;
+    margin-left: 10px;
+}
+#headerType1 {
+    cursor: pointer;
+    color: #000;
+    font-size: 13px;
+    padding: 5px 5px 5px 5px;
+    background-color: #fff;
+}
+#headerType1:hover {
+    background-color: rgb(200,200,200);
+}
+#headerType2 {
+    cursor: pointer;
+    color: #000;
+    font-size: 12px;
+    padding: 5px 5px 5px 9px;
+    background-color: #fff;
+}
+#headerType2:hover {
+    background-color: rgb(200,200,200);
+}
+#headerType3 {
+    cursor: pointer;
+    color: #000;
+    font-size: 11px;
+    padding: 8px 5px 5px 13px;
+    background-color: #fff;
+}
+#headerType3:hover {
+    background-color: rgb(200,200,200);
+}
+.headerType {
+    cursor: pointer;
+    margin-left: 150px;
+}
+
+.show-dropdown-content {
+    display: block;
+}
+#select-header {
+    max-width: 63px;
+    position: absolute;
+    z-index: 2000;
+    right: 75px;
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.3);
+}
+
+/* Import diagram */
+.importDiagram {
+    height: auto !important;
+    margin-top: 0 !important;
+    display: none;
+}
+
+.importDiagram .importWrap {
+    padding: 20px;
+}
+
+.importDiagram .importError {
+    margin-top: 10px;
+    color: red;
+    display: none;
+}
+
+.importDiagram .importButtonWrap {
+    margin-top: 10px;
+}
+
+.importDiagram .uploadButton {
+    width: auto;
+    padding: 0 15px;
+}

@@ -29,8 +29,7 @@ function Symbol(kind) {
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
     this.cardinality = [
-      {"x": null, "y": null, "value": null, "side": null},
-      {"x": null, "y": null, "value": null, "side": null}
+      {"value": null, "isCorrectSide": null}
     ];
 
     // Connector arrays - for connecting and sorting relationships between diagram objects
@@ -261,6 +260,31 @@ function Symbol(kind) {
         this.sortConnector(this.connectorBottom, 2, x1, x2, y2);
     }
 
+    //return true if connector contains a certain point
+    this.hasConnector = function(point) {
+        for (var i = 0; i < this.connectorTop.length; i++) {
+            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
+                return true;
+            }
+        }
+        for(var i = 0; i < this.connectorRight.length; i++) {
+            if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
+                return true;
+            }
+        }
+        for (var i = 0; i < this.connectorBottom.length; i++) {
+            if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
+                return true;
+            }
+        }
+        for (var i = 0; i < this.connectorLeft.length; i++) {
+            if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
+                return true;
+            }
+        }
+    }
+    
+    
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
@@ -547,8 +571,6 @@ function Symbol(kind) {
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
 
-
-
         ctx.save();
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -692,7 +714,6 @@ function Symbol(kind) {
 
     this.drawEntity = function(x1, y1, x2, y2){
         ctx.fillStyle = this.symbolColor;
-
         ctx.beginPath();
         if (this.key_type == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
@@ -712,35 +733,27 @@ function Symbol(kind) {
         ctx.clip();
         ctx.stroke();
 
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y1);
-    ctx.lineTo(x2, y2);
-    ctx.lineTo(x1, y2);
-    ctx.lineTo(x1, y1);
-    ctx.closePath();
-    makeShadow();
-    ctx.clip();
-    ctx.stroke();
-
-    ctx.fillStyle = this.fontColor;
-    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-    ctx.font = parseInt(textsize) + "px " + this.font;
-}
+        ctx.fillStyle = this.fontColor;
+        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        ctx.font = parseInt(textsize) + "px " + this.font;
+    }
 
 this.drawLine = function(x1, y1, x2, y2){
     //Checks if there is cardinality set on this object
-    if((this.cardinality[0].x != null && this.cardinality[0].y != null) ||
-        (this.cardinality[1].x != null && this.cardinality[1].y != null)){
-        //Updates the x and y position depending on which side the cardinality is on
-        ctx.fillStyle = '#000'; 
-
-        this.cardinality[0].x = x1 > x2 ? x2+10 : x2-10;
-        this.cardinality[0].y = y1 > y2 ? y2+10 : y2-10;
+    if(this.cardinality[0].value != "" && this.cardinality[0].value != null){
+        //Updates x and y position
+        ctx.fillStyle = '#000';
+        if(this.cardinality[0].isCorrectSide)
+        {
+            this.cardinality[0].x = x1 > x2 ? x1-10 : x1+10;
+            this.cardinality[0].y = y1 > y2 ? y1-10 : y1+10;
+        }
+        else
+        {
+            this.cardinality[0].x = x2 > x1 ? x2-10 : x2+10;
+            this.cardinality[0].y = y2 > y1 ? y2-10 : y2+10;
+        }
         ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
-
-        this.cardinality[1].x = x1 > x2 ? x1-10 : x1+10;
-        this.cardinality[1].y = y1 > y2 ? y1-10 : y1+10;
-        ctx.fillText(this.cardinality[1].value, this.cardinality[1].x, this.cardinality[1].y);
     }
 
 
@@ -752,6 +765,9 @@ this.drawLine = function(x1, y1, x2, y2){
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
+        //Draw a white line in the middle to simulate space (2 line illusion);
+        ctx.lineWidth = this.lineWidth;
+        ctx.strokeStyle = "#fff";
     }
     else if (this.key_type == "Derived") {
         ctx.lineWidth = this.lineWidth * 2;

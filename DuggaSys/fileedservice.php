@@ -86,9 +86,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		  'extension' => $row['filename'],
 		  'filesize' => $row['filesize'],
 		  'uploaddate' => $row['uploaddate'],
-          'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']]),
-		  'editor' => $filePath
-
+      'editor' => $filePath,
+      'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']])
   		);
 
   		array_push($entries, $entry);
