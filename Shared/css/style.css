@@ -1022,6 +1022,11 @@ input {
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
   margin-left: -2px;
+  background-color: transparent;
+}
+
+.loginboxTr{
+  background-color: inherit !important;
 }
 
 #loginBoxTitle{
