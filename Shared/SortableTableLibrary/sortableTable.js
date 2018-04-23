@@ -562,10 +562,19 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	        childrenTR = th.children[0],
 	        childrenTH = childrenTR.children[col],
 	        imgDesc = childrenTH.children[0],
-	        imgAsc = childrenTH.children[1];
+	        imgAsc = childrenTH.children[1],
+	        reg = /^\d+$/;
 
 	    reverse = -((+reverse) || -1);
 	    tr = tr.sort(function (a, b) { // sort rows
+	    	// Checks if the text content is a single number
+	    	if (a.cells[col].textContent.match(reg)) {
+	    		if (a.cells[col].textContent.length < 2) {
+	    			// Adds a 0 to the beginning of the number so that the
+	    			// sorting can work properly
+					a.cells[col].textContent = "0" + a.cells[col].textContent;
+	    		}
+	    	}
 			return reverse // `-1 *` if want opposite order
 			* (a.cells[col].textContent.trim() // using `.textContent.trim()` for test
 	            .localeCompare(b.cells[col].textContent.trim())
@@ -587,7 +596,15 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	    	imgAsc.classList.remove("hideTableArrow");
 	    }
 
-	    for(var i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
+	    for (var i = 0; i < tr.length; i++) {
+	    	// Removes the 0 that is previously added for the proper sorting
+	    	for (var x = 0; x < tr[i].children.length; x++) {
+		    	if (tr[i].children[x].textContent.charAt(0) == "0" && tr[i].children[x].textContent.length == 2) {
+		    		tr[i].children[x].textContent = tr[i].children[x].textContent.substr(1);
+		    	}
+	    	}
+	    	tb.appendChild(tr[i]); // append each row in order
+	    }
 	}
 }
 
