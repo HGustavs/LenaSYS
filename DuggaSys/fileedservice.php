@@ -68,6 +68,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
     			'fileid' => $row['fileid'],
     			'filename' => $row['filename'],
           'extension' => $row['filename'],
+          'kind' => $row['kind'],
     			'filesize' => $row['filesize'],
     			'uploaddate' => $row['uploaddate'],
           'editor' => $row['filename'],

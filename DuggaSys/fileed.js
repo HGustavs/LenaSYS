@@ -50,6 +50,7 @@ function returnedFile(data) {
     		fileid:"File ID",
     		filename:"File name",
     		extension:"Extension",
+    		kind:"Kind",
     		filesize:"Size",
     		uploaddate:"Upload date",
     		editor:"",
@@ -211,6 +212,8 @@ function renderCell(col,celldata,cellid) {
 			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ></div>";
 		}
 		return str;
+	} else if (col == "kind") {
+		return convertFileKind(celldata);
 	}
 	return celldata;
 }
