@@ -8,10 +8,10 @@ var querystring=parseGet();
 var filez;
 var variant = [];
 var submissionRow = 0;
-var decider;
+var str;
+var globalData;
 var itemToDelete;
-var list = "";
-
+var typeOfItem;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -50,9 +50,6 @@ $(function() {
     dateFormat: "yy-mm-dd"
   });
 });
-//----------------------------------------
-// Commands:
-//----------------------------------------
 
 // Adds a submission row in Edit Variant
 function addSubmissionRow() {
@@ -120,16 +117,9 @@ function createJSONString(formData) {
 
 function selectVariant(vid,param,answer,template,dis)
 {
-	$("#editVariant").css("display","flex"); // Display edit dialog
-	//$("#overlay").css("display","block");
 	$("#vid").val(vid); // Set Variant ID
 	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
 	$("#variantanswer").val(decodeURIComponent(answer)); // Set Variant answer
-	if(dis.localeCompare("1")===0){
-		$("#toggleVariantButton").val("Enable");
-	} else {
-		$("#toggleVariantButton").val("Disable");
-	}
 
 	//Parse JSON to add data to forms again
 	var data = $("#parameter").val();
@@ -147,7 +137,7 @@ function selectVariant(vid,param,answer,template,dis)
 
 		if(result["submissions"]!=undefined){
 			//Adds more submission rows if necessary
-			for(i = 0; i < result["submissions"].length; i++){
+			for(var i = 0; i < result["submissions"].length; i++){
 				if(i > 0 && i <= submissionRow) {
 					addSubmissionRow();
 				}
@@ -168,19 +158,19 @@ function selectVariant(vid,param,answer,template,dis)
 function closeVariant(){
 	//Hides error message
 	$("#submissionError").css("display", "none");
-	for(i=0; i<submissionRow; i++){
+	for(var i=0; i<submissionRow; i++){
 		$("#fieldname"+i).css("background-color", "white");
 	}
 	//Removes data from forms, going back to original style
 	$("#type").val("md");
 	$("#filelink").val("");
-	for(i = 0; i < 100; i++){
+	for(var i = 0; i < 100; i++){
 		$("#submissionType"+i).val("pdf");
 		$("#fieldname"+i).val("");
 		$("#instruction"+i).val("");
 	}
 	//Removes all submission rows
-	for(i=0; i < submissionRow; i++){
+	for(var i=0; i < submissionRow; i++){
 		$("#submissionType"+i).parent().remove();
 	}
 	submissionRow=0;
@@ -188,27 +178,12 @@ function closeVariant(){
 	addSubmissionRow();
 }
 
-function deleteVariant()
+function deleteVariant(vid)
 {
-	var vid=$("#vid").val();
-	if(confirm("Do you really want to delete this Variant?")) AJAXService("DELVARI",{cid:querystring['cid'],vid:vid,coursevers:querystring['coursevers']},"DUGGA");
-	$("#editVariant").css("display","none");
-	//$("#overlay").css("display","none");
+	AJAXService("DELVARI",{cid:querystring['cid'],vid:vid,coursevers:querystring['coursevers']},"DUGGA");
 }
 
-function toggleVariant()
-{
-	var vid=$("#vid").val();
-	if ($("#toggleVariantButton").val()==="Disable") {
-		if(confirm("Do you really want to disable this Variant?")) AJAXService("TOGGLEVARI",{cid:querystring['cid'],vid:vid,disabled:"1",coursevers:querystring['coursevers']},"DUGGA");
-	} else {
-		if(confirm("Do you really want to enable this Variant?")) AJAXService("TOGGLEVARI",{cid:querystring['cid'],vid:vid,disabled:"0",coursevers:querystring['coursevers']},"DUGGA");
-	}
-	$("#editVariant").css("display","none");
-	//$("#overlay").css("display","none");
-}
-
-function addVariant(cid,qid)
+function createVariant(cid,qid)
 {
 	AJAXService("ADDVARI",{cid:cid,qid:qid,coursevers:querystring['coursevers']},"DUGGA");
 }
@@ -228,7 +203,7 @@ function updateVariant()
 	var value = [];
 
 	//If the same fieldname has been input more than once
-	for(i=0; i<fieldnames.length; i++){
+	for(var i=0; i<fieldnames.length; i++){
 		if(fieldnames[i]==fieldnames[i+1]){
 			correct = "no";
 			value.push(fieldnames[i]);
@@ -238,8 +213,8 @@ function updateVariant()
 	//If wrong fieldnames (same name used more than once)
 	if(correct=="no"){
 		$("#submissionError").css("display", "block");
-		for(i=0; i<rows; i++){
-			for(j=0; j<value.length; j++){
+		for(var i=0; i<rows; i++){
+			for(var j=0; j<value.length; j++){
 				if($("#fieldname"+i).val()==value[j]){
 					$("#fieldname"+i).css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
@@ -269,13 +244,20 @@ function closeEditVariant()
 
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
-function confirmBox(operation, item) {
+function confirmBox(operation, item, type) {
 	if(operation == "openConfirmBox") {
+		typeOfItem = type;
 		itemToDelete = item; // save the item to delete in this variable
 		$("#sectionConfirmBox").css("display","flex");
 	} else if (operation == "deleteItem") {
+		if(typeOfItem == "dugga"){
 		deleteDugga(itemToDelete);
 		$("#sectionConfirmBox").css("display","none");
+		}
+		else if(typeOfItem == "variant"){
+		deleteVariant(itemToDelete);
+		$("#sectionConfirmBox").css("display","none");
+		}
 	} else if (operation == "closeConfirmBox") {
 		$("#sectionConfirmBox").css("display","none");
 	}
@@ -305,7 +287,6 @@ function createDugga()
 
 function deleteDugga(did)
 {
-//    if(confirm("Do you really want to delete this dugga?"))AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
 	AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
 	$("#editDugga").css("display","none");
 }
@@ -374,17 +355,36 @@ function hideLoginPopup()
 	//$("#overlay").css("display","none");
 }
 
-function showSubmitButton(){
-  $(".submitDugga").css("display","inline-block");
-  $(".updateDugga").css("display","none");
-  //$("#overlay").css("display","block");
+function showDuggaSubmitButton(){
+  $("#submitDugga").css("display","block");
+  $("#updateDugga").css("display","none");
 }
 
-function showSaveButton(){
-  $(".submitDugga").css("display","none");
-  $(".updateDugga").css("display","block");
-//  $("#overlay").css("display","none");
+function showDuggaSaveButton(){
+  $("#submitDugga").css("display","none");
+  $("#updateDugga").css("display","block");
 }
+
+function showVariantSubmitButton(){
+  $("#submitVariant").css("display","block");
+  $("#updateVariant").css("display","none");
+}
+
+function showVariantSaveButton(){
+  $("#submitVariant").css("display","none");
+  $("#updateVariant").css("display","block");
+}
+
+function showVariantEnableButton(){
+  $("#enableVariant").css("display","block");
+  $("#disableVariant").css("display","none");
+}
+
+function showVariantDisableButton(){
+  $("#enableVariant").css("display","none");
+  $("#disableVariant").css("display","block");
+}
+
 
 function selectDugga(qid){
 	AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers'], qid:this.qid},"GETQUIZ");
@@ -496,116 +496,48 @@ function addSubmissionRow() {
 	submissionRow++;
 }
 
-function selectVariant(vid,param,answer,template,dis)
-{
-
-	$("#editVariant").css("display","flex"); // Display edit dialog
-	//$("#overlay").css("display","block");
-	$("#vid").val(vid); // Set Variant ID
-	//var pparam = parseParameters(param);
-	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
-	//var panswer = parseParameters(answer);
-	$("#variantanswer").val(decodeURIComponent(answer)); // Set Variant answer
-	if(dis.localeCompare("1")===0){
-		$("#toggleVariantButton").val("Enable"); // Set Variant answer
-	} else {
-		$("#toggleVariantButton").val("Disable"); // Set Variant answer
-	}
-
-	//Parse JSON to add data to forms again
-	var data = $("#parameter").val();
-	if(data == "" || data == "UNK"){}
-	else{
-		var result = JSON.parse(data);
-		//Adds data to forms
-		if(result["type"]!=undefined){
-			$("#type").val(result["type"]);
-		}
-
-		if(result["filelink"]!=undefined){
-			$("#filelink").val(result["filelink"]);
-		}
-
-		if(result["submissions"]!=undefined){
-			//Adds more submission rows if necessary
-			for(i = 0; i < result["submissions"].length; i++){
-				if(i > 0 && i <= submissionRow) {
-					addSubmissionRow();
-				}
-				if(result["submissions"][i]["type"]!=undefined){
-					$("#submissionType"+i).val(result["submissions"][i]["type"]);
-				}
-				if(result["submissions"][i]["fieldname"]!=undefined){
-					$("#fieldname"+i).val(result["submissions"][i]["fieldname"]);
-				}
-				if(result["submissions"][i]["instruction"]!=undefined){
-					$("#instruction"+i).val(result["submissions"][i]["instruction"]);
-				}
-			}
-		}
-	}
-
-}
-
-function closeVariant(){
-	//Removes data from forms, going back to original style
-	$("#type").val("md");
-	$("#filelink").val("");
-	for(i = 0; i < 100; i++){
-		$("#submissionType"+i).val("pdf");
-		$("#fieldname"+i).val("");
-		$("#instruction"+i).val("");
-	}
-	//Removes all submission rows
-	for(i=0; i < submissionRow; i++){
-		$("#submissionType"+i).parent().remove();
-	}
-	submissionRow=0;
-	//Adds one submission row so that one is visible next time it's opened
-	addSubmissionRow();
-}
-
 function isInArray(array, search)
 {
     return array.indexOf(search) >= 0;
 }
 
-function showVariant(param){
-    var variantId="#variantInfo" + param;
-    var duggaId="#dugga" + param;
-    var arrowId="#arrow" + param;
-    var index = variant.indexOf(param);
+// function showVariant(param){
+// 	var param = param;
+//     var variantId="#variantInfo" + param;
+//     var duggaId="#dugga" + param;
+//     var arrowId="#arrow" + param;
+//     var index = variant.indexOf(param);
 
 
-    if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) { // Check if dugga row and corresponding variant
-        if(!isInArray(variant, param)){
-             variant.push(param);
-        }
+//     if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) { // Check if dugga row and corresponding variant
+//         if(!isInArray(variant, param)){
+//              variant.push(param);
+//         }
 
-        if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
-            $(variantId).hide();
-            $(duggaId).removeClass("selectedtr");
-            $(arrowId).html("&#9658;");
-            if (index > -1) {
-               variant.splice(index, 1);
-            }
+//         if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
+//             $(variantId).hide();
+//             $(duggaId).removeClass("selectedtr");
+//             $(arrowId).html("&#9658;");
+//             if (index > -1) {
+//                variant.splice(index, 1);
+//             }
 
-        } else {
-            $(duggaId).addClass("selectedtr");
-            $(variantId).slideDown();
-            $(arrowId).html("&#x25BC;");
-        }
+//         } else {
+//             $(duggaId).addClass("selectedtr");
+//             $(variantId).slideDown();
+//             $(arrowId).html("&#x25BC;");
+//         }
 
-        $(variantId).css("border-bottom", "1px solid gray");
-    }
-}
+//         $(variantId).css("border-bottom", "1px solid gray");
+//     }
+// }
 
-function showVariantz(param){
-    var index = variant.indexOf(param);
-    if(!isInArray(variant, param)){
-         variant.push(param);
-    }
-}
+// function showVariantz(param){
+//     var index = variant.indexOf(param);
+//     if(!isInArray(variant, param)){
+//          variant.push(param);
+//     }
+// }
 
 // Storing the celldata for future use. (Needed when editing and such)
 function returnedQuiz(data) {
@@ -629,12 +561,51 @@ function returnedQuiz(data) {
 
 // Start of rendering the table
 var myTable;
+var myTable2;
+function renderVariant(clickedElement) {
+	var tabledata2 = {
+    	tblhead:{
+    		vid:"",
+    		param:"Parameter",
+    		variantanswer:"Answer",
+    		modified:"Modified",
+    		disabled:"Disabled/Enabled",
+    		cogwheelVariant: "",
+    		trashcanVariant: ""
+    	},
+    	tblbody: globalData['entries'][clickedElement].variants, 
+    	tblfoot:[]
+    }
+	myTable2 = new SortableTable(
+		tabledata2,
+		"variant",
+		null,
+		"",
+        renderCell,
+        null,
+        null,
+        null,
+        [],
+        [],
+        "",
+        null,
+        null,
+		null,
+		null,
+		null,
+        null,
+		false
+	);
+	myTable2.renderTable();
+	openVariant();
+}
 function returnedDugga(data) {
 	filez = data;
+	globalData = data;
 
     var tabledata = {
     	tblhead:{
-    		arrow:"->",
+    		arrow:"",
     		qname:"Name",
     		autograde:"Autograde",
     		gradesystem:"Gradesystem",
@@ -643,14 +614,12 @@ function returnedDugga(data) {
     		deadline:"Deadline",
     		qrelease:"Result date",
     		modified:"Last modified",
-    		cogwheel:"*",
-    		trashcan:"<input type='button' value='+' class='submit-button-newitem'"
-				+"onclick='showSubmitButton(); editDialogTitle(\"newItem\"); newDugga();'>"
+    		cogwheel:"",
+    		trashcan:"<input type='button' value='+' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga()'>"
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
     }
-
     myTable = new SortableTable(
 		tabledata,
 		"quiz",
@@ -671,24 +640,31 @@ function returnedDugga(data) {
         null,
 		false
 	);
-
     myTable.renderTable();
 
 	$("content").html();
 	var result = 0;
 	filez = data['files'];
-	duggaPages = data['duggaPages'];
+	var duggaPages = data['duggaPages'];
 
 	str="";
 
 }
 
 // Rendring specific cells
-function renderCell(col,celldata,cellid) {
-	list+= celldata + " ";
-
+function renderCell(col,celldata,cellid) {	
+	
+	// DUGGA-TABLE start
+	// Placing a clickable icon in its designated column that opens a window for acess to variants.
+	if (col == "arrow"){
+		clickedElement=JSON.parse(cellid.match(/\d+/));
+	    str="<img id='dorf' src='../Shared/icons/right_primary.svg' ";
+		str+=" onclick='renderVariant(\""+clickedElement+"\");'>";
+		return str;
+	}
+	
 	// Translating autograding from integers to show the data like yes/no.
-	if (col == "autograde"){
+	else if (col == "autograde"){
 		if(celldata == "0"){
 			celldata = "No";
 		}else if(celldata == "1"){
@@ -716,27 +692,80 @@ function renderCell(col,celldata,cellid) {
 	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
 	else if (col == "cogwheel"){
 		object=JSON.parse(celldata);
-	    str=
-					"<img id='dorf' class='trashcanIcon' src='../Shared/icons/Cogwheel.svg' "
-					+ " onclick='showSaveButton(); editDialogTitle(\"editItem\"); "
-					+ "	selectDugga(\""+object+"\");' >";
+	  str="<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
+		str+=" onclick='showDuggaSaveButton(); selectDugga(\""+object+"\");' >";
+
 		return str;
 	}
 
 	// Placing a clickable trash can in its designated column and implementing the code behind it.
 	else if (col == "trashcan"){
 		object=JSON.parse(celldata);
-		list+= ",";
-	    str="<img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\");' >";
+	  str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
+		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\",\"dugga\");' >";
 		return str;
 	}
+	// DUGGA-TABLE END
+
+	// VARIANT-TABLE start
+	// Placing a clickable arrow in its designated column for previewing the variant.
+	else if (col == "vid"){
+	    str="<img id='dorf' src='../Shared/icons/right_primary.svg' ";
+		str+=" onclick='getVariantPreview();'>";
+		return str;
+	}
+
+	//Translating the integers behind "disabled" to say disabled or enabler. Also making it look that way.
+	else if (col == "disabled"){
+		if(celldata == "0"){
+			celldata = "Enabled";
+			//MAKE IT LOOK ENABLED
+		}else if(celldata == "1"){
+			celldata = "Disabled";
+			// MAKE IT LOOK DISABLED
+		}
+		else{
+			celldata = "Undefined";
+		}
+	}
+
+	// Placing a clickable cogwheel in its designated column that select a variant to be edited.
+	else if (col == "cogwheelVariant"){
+		object=JSON.parse(celldata);
+	    str="<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
+		str+=" onclick='selectVariant()' >";
+		return str;
+	}
+
+	// Placing a clickable trashcan can in its designated column and implementing the code behind it.
+	else if (col == "trashcanVariant"){
+		object=JSON.parse(celldata);
+	    str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
+		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\",\"variant\");' >";
+		return str;
+	}
+	// VARIANT-TABLE end
+
 	return celldata;
 }
 // End of rendering the table.
 
 function parseParameters(str){
 	return str;
+}
+
+function openVariant(){
+	showVariantDisableButton();
+	showVariantSubmitButton();
+	document.getElementById('filelink').value='';
+	document.getElementById('filelink').placeholder='File link';
+	document.getElementById('extraparam').value='';
+	document.getElementById('extraparam').placeholder='Extra dugga parameters in valid JSON';
+	document.getElementById('variantparameterText').value='';
+	document.getElementById('variantparameterText').placeholder='Undefied JSON parameter';
+	document.getElementById('variantanswerText').value='';
+	document.getElementById('variantanswerText').placeholder='Undefied JSON answer';
+	$("#editVariant").css("display","flex"); //Display variant-window
 }
 
 function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
@@ -877,7 +906,7 @@ $(window).load(function() {
       	if(event.keyCode == 27) {
          	closeWindows();
          // closeSelect();
-          	showSaveButton();
+          	showDuggaSaveButton();
         }
       });
 });

@@ -811,12 +811,12 @@ function returnedSection(data)
 		str += "<div class='zoom'>"
 		str += "<a class='zoom-fab zoom-btn-large noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
 		str += "<ul class='zoom-list' style='display: none;'>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-motd scale-transition scale-out' data-tooltip='Message of the day' onclick='alert(\"Under construction\")'><i class='material-icons'>format_quote</i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-motd scale-transition scale-out noselect' data-tooltip='Message of the day' onclick='alert(\"Under construction\")'><i class='material-icons'>format_quote</i></a></li>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-heading scale-transition scale-out' data-tooltip='Heading' onclick='selectItem(\"undefined\",\"New Item\",\"0\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='heading-icon'></i></a></li>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-section scale-transition scale-out' data-tooltip='Section' onclick='selectItem(\"undefined\",\"New Item\",\"1\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='section-icon'></i></a></li>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-moment scale-transition scale-out' data-tooltip='Moment' onclick='selectItem(\"undefined\",\"New Item\",\"4\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='moment-icon'></i></a></li>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-test scale-transition scale-out' data-tooltip='Test' onclick='selectItem(\"undefined\",\"New Item\",\"3\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='test-icon'></i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-link scale-transition scale-out' data-tooltip='Link' onclick='selectItem(\"undefined\",\"New Item\",\"5\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>link</i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-link scale-transition scale-out noselect' data-tooltip='Link' onclick='selectItem(\"undefined\",\"New Item\",\"5\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>link</i></a></li>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-code scale-transition scale-out' data-tooltip='Code' onclick='selectItem(\"undefined\",\"New Item\",\"2\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='code-icon'></i></a></li>"
 		str += "</ul>"
 		str += "</div>";
@@ -1647,14 +1647,24 @@ $(window).load(function() {
 });
 
 
+// Detects clicks
 $(document).mouseup(function (e)
 {
-    if (!$('.zoom').is(e.target) // if the target of the click isn't the container...
+	// Click outside the FAB list
+    if ($('.zoom-list').is(':visible') && !$('.zoom').is(e.target) // if the target of the click isn't the container...
         && $('.zoom').has(e.target).length === 0) // ... nor a descendant of the container
     {
         if (!$('.zoom-btn-sm').hasClass('scale-out')) {
-			$('.zoom-btn-sm').toggleClass('scale-out');
-			$('.zoom-list').delay(100).fadeOut(0);
-		}
+          $('.zoom-btn-sm').toggleClass('scale-out');
+          $('.zoom-list').delay(100).fadeOut(0);
+		    }
+    }
+
+    // Click outside the loginBox
+    else if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
+        && $('.loginBox').has(e.target).length === 0) // ... nor a descendant of the container
+    {
+	    closeWindows();
+        closeSelect();
     }
 });
