@@ -1249,7 +1249,39 @@ function returnedSection(data)
                             + "\""+item['comments']+"\""
                             + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
-					} else if(itemKind === 4) { // Moment
+					} else if(itemKind === 2) { // code
+						str+=
+                            "' ><img id='dorf' class='margin-4'"
+                            + " src='../Shared/icons/Cogwheel.svg'"
+                            + " onclick='selectItem("
+                            + "\""+item['lid']+"\","
+                            + "\""+item['entryname']+"\","
+                            + "\""+item['kind']+"\","
+                            + "\""+item['visible']+"\","
+                            + "\""+item['link']+"\","
+                            + "\""+momentexists+"\","
+                            + "\""+item['gradesys']+"\","
+                            + "\""+item['highscoremode']+"\","
+                            + "\""+item['comments']+"\""
+                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + " title='Edit "+item['entryname']+"'  /></td>";
+					}else if(itemKind === 3) { 	// Dugga
+						str+=
+							"' ><img id='dorf' class='margin-4'"
+							+ " src='../Shared/icons/Cogwheel.svg'"
+							+ " onclick='selectItem("
+							+ "\""+item['lid']+"\","
+							+ "\""+item['entryname']+"\","
+							+ "\""+item['kind']+"\","
+							+ "\""+item['visible']+"\","
+							+ "\""+item['link']+"\","
+							+ "\""+momentexists+"\","
+							+ "\""+item['gradesys']+"\","
+							+ "\""+item['highscoremode']+"\","
+							+ "\""+item['comments']+"\""
+							+ "); editSectionDialogTitle(\"editItem\")'"
+							+ " title='Edit "+item['entryname']+"'  /></td>";
+					}else if(itemKind === 4) { // Moment
 						str+=
                             "' class='moment"+blorf+"'>"
                             + "<img id='dorf' class='margin-4'"
@@ -1266,7 +1298,7 @@ function returnedSection(data)
                             + "\""+item['comments']+"\""
                             + "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"' /></td>";
-						} else if(itemKind === 3) { 	// Dugga
+					}else if(itemKind === 5) { 	// Link
 						str+=
                             "' ><img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
@@ -1282,7 +1314,7 @@ function returnedSection(data)
                             + "\""+item['comments']+"\""
                             + "); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"'  /></td>";
-					} else if(itemKind === 6){	// Group
+					}else if(itemKind === 6){	// Group
 						str+=
                             "' ><img id='dorf' class='margin-4'"
                             + " src='../Shared/icons/Cogwheel.svg'"
