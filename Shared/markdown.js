@@ -98,6 +98,9 @@ function parseMarkdown(inString)
     // append '&&&' to all console block indicators '=|='
     inString = inString.replace(/^\=\|\=(\r\n|\n|\r)/gm, '=|=&&&');
 
+    //One line break
+     inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
+
     // Split on code or console block
     var codearray=inString.split(/\~{3}|\=\|\=/);
     var str="";
@@ -345,19 +348,15 @@ function markdownBlock(inString)
     inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" />');
 
     // Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
-    // markdown below does not work with the original code, but it does work with spaces
+    // markdown below does not work correctly
 
-
-    /* This works:
-      inString = inString.replace(/\ {3}/gm,"<br><br>");
-      inString = inString.replace(/\ {2}/gm,"<br>");
-    */
     inString = inString.replace(/(\r\n){3}/gm,"<br><br>");
     inString = inString.replace(/(\r\n){2}/gm,"<br>");
     inString = inString.replace(/(\n){3}/gm,"<br><br>");
     inString = inString.replace(/(\n){2}/gm,"<br>");
     inString = inString.replace(/(\r){3}/gm,"<br><br>");
     inString = inString.replace(/(\r){2}/gm,"<br>");
+
     // Hyperlink !!!
     // !!!url,text to show!!!
     inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
@@ -406,3 +405,92 @@ function markdownBlock(inString)
 
     return inString;
 }
+
+function showPreview() {
+    $(".previewWindow").css("display", "block");
+}
+
+function cancelPreview() {
+    $(".previewWindow").hide();
+}
+
+function loadPreview(fileUrl) {
+    var fileContent = getFIleContents(fileUrl);
+    document.getElementById("mrkdwntxt").value = fileContent;
+    updatePreview(fileContent);
+    $(".previewWindow").show();
+}
+
+function updatePreview(str) {
+    //This function is triggered when key is pressed down in the input field
+    if(str.length == 0){
+        /*Here we check if the input field is empty (str.length == 0).
+          If it is, clear the content of the txtHint placeholder
+          and exit the function.*/
+        document.getElementById("markdown").innerHTML = " ";
+        return;
+    }
+    else {
+        document.getElementById("markdown").innerHTML=parseMarkdown(str);
+    };
+}
+
+function getFIleContents(fileUrl){
+    var result = null;
+    $.ajax({
+        url: fileUrl,
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        success: function(data) {
+            result = data;
+        }
+    });
+    return result;
+}
+
+
+function boldText() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****');
+}
+
+function cursiveText() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
+}
+
+function showDropdown() {
+    $('#select-header').show();
+}
+
+function selected() {
+    $('#select-header').hide();
+}
+
+function headerVal1() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'# ');
+
+}
+
+function headerVal2() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'## ');
+}
+function headerVal3() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'### ');
+}
+
+
+$(document).ready(function(){
+   $(".headerType").click(function(){
+        $("#select-header").toggle();
+        $("#select-header").addClass("show-dropdown-content");
+    });
+});
+
+//Hide dropdown if click is outside the div
+$(document).mouseup(function(e) {
+    var container = $("#select-header");
+
+    if (!container.is(e.target) && container.has(e.target).length === 0) {
+        container.hide();
+    }
+});
