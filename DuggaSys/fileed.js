@@ -47,7 +47,6 @@ function returnedFile(data) {
 
     var tabledata = {
     	tblhead:{
-    		fileid:"File ID",
     		filename:"File name",
     		extension:"Extension",
     		kind:"Kind",
