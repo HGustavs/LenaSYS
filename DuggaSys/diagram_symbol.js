@@ -382,7 +382,7 @@ function Symbol(kind) {
     // Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
-            if(this.symbolkind != 4){
+        if(this.symbolkind != 4){
             points[this.topLeft].x += movex;
             points[this.topLeft].y += movey;
             points[this.bottomRight].x += movex;
