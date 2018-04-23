@@ -877,7 +877,7 @@ function processLogin(result) {
 
 
 function displayAlertText(selector, text){
-  $(selector).html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>"+text+"</div>");
+  $(selector).html("<div class='alert' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>"+text+"</div>");
 }
 
 function processLogout() {
