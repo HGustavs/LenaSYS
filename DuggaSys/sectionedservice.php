@@ -76,12 +76,10 @@ if(checklogin()){
 
 			if(!$query->execute()) {
 				$debug=
-					"SQLSTATE error code: \n"
-					.$query->errorInfo()[0]
+					"SQLSTATE error code: ".$query->errorInfo()[0]
 
-					."\n\nDriver-specific error code: \n"
-					.$query->errorInfo()[1]
-					
+					."\n\nDriver-specific error code: ".$query->errorInfo()[1]
+
 					."\n\nDriver-specific error message: \n"
 					.$query->errorInfo()[2];
 			}
