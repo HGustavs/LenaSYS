@@ -80,6 +80,7 @@ function returnedFile(data) {
 		true
 	);
 
+
 	fileLink.renderTable();
 	fileLink.makeAllSortable();
 
@@ -210,7 +211,7 @@ function renderCell(col,celldata,cellid) {
 			str = "";
 		} else {
 			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += " onclick='showPreview()'></div>";
+            str += " onclick='loadPreview(\"" + celldata + "\")'></div>";
 		}
 		return str;
 	}

@@ -62,16 +62,32 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
   	}
     
   	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){  		
-      // En till foreach om man vill hämta flera objekt i en cell occh kcikamg med till rendercell
+      // En till foreach om man vill hämta flera objekt i en cell och skicka med till rendercell
+
+        $filekind = $row['kind'];
+        $filename = $row['filename'];
+		if($filekind==2){
+            // Global
+            $filePath = "../courses/global/".$filename;
+        }else if($filekind==3){
+            // Course Local
+            $filePath = "../courses/".$cid."/".$filename;
+        }else if($filekind==4){
+            // Local
+            $filePath = "../courses/".$cid."/".$coursevers."/".$filename;
+        }else {
+            $filePath = "UNK";
+        }
 
       $entry = array(
-    			'fileid' => $row['fileid'],
-    			'filename' => $row['filename'],
-          'extension' => $row['filename'],
-    			'filesize' => $row['filesize'],
-    			'uploaddate' => $row['uploaddate'],
-          'editor' => $row['filename'],
-          'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']])
+		  'fileid' => $row['fileid'],
+		  'fileid' => $row['fileid'],
+		  'filename' => $row['filename'],
+		  'extension' => $row['filename'],
+		  'filesize' => $row['filesize'],
+		  'uploaddate' => $row['uploaddate'],
+      'editor' => $filePath,
+      'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']])
   		);
 
   		array_push($entries, $entry);
