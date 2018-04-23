@@ -307,8 +307,8 @@ function mouseupevt(ev) {
                     p1 = diagram[lineStartObj].middleDivider;
                 } else {
                     createNewPoint = true;
-                }  
-                
+                }
+
                 //Code for making sure enitities not connect to the same attribute multiple times
                 //okToMakeLine is a flag for this
                 var okToMakeLine= true;
@@ -319,7 +319,7 @@ function mouseupevt(ev) {
                 } else if(symbolEndKind == 2 && symbolStartKind == 3){
                     if(diagram[lineStartObj].hasConnector(p2)){
                         okToMakeLine= false;
-                    } 
+                    }
                 }
                 if(okToMakeLine){
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
@@ -346,6 +346,8 @@ function mouseupevt(ev) {
 
         classB.middleDivider = p3;
         diagram.push(classB);
+        lastSelectedObject = diagram.length -1;
+        diagram[lastSelectedObject].targeted = true;
     } else if (uimode == "CreateERAttr" && md == 4) {
         erAttributeA = new Symbol(2);
         erAttributeA.name = "Attr" + diagram.length;
