@@ -61,7 +61,8 @@
 					<span>Type:</span>
 					<div class="tooltipDuggaType">
 						<span id="tooltipType" style="display: none;" class="tooltipDuggaTypeTxt">Create a Dugga before you can use it for a test.</span>
-					</div> <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box. 
+				</div> <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
+
 							If they don't, change the width of loginbox select in the CSS file -->
 				  <select id='type' value='type' onchange='changedType(document.getElementById("type").value);validateType();'></select>
         </div>
@@ -71,6 +72,9 @@
 				<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 				<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
 				<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
+				<div id='inputwrapper-numberOfGroups' class='inputwrapper'><span>Number of Groups:</span><select id='numberOfGroups'></select></div>
+				<div id='inputwrapper-groupType' class='inputwrapper'><span>Group Type:</span><select id='groupType'></select></div>
+
 			</div>
 
 			<!-- Error message, no duggas present-->
