@@ -211,12 +211,12 @@ function renderCell(col,celldata,cellid) {
 	} else if (col == "editor") {
 		if(link[0] == "https" || link[0] == "http"){
 			str = "";
-		}else if (list[3] == "md" || list[3] == "txt"){
+		}else if (list[list.length-1] == "md" || list[list.length-1] == "txt"){
 			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadPreview(\"" + celldata + "\")'></div>";
 		}
 		return str;
-		
+
 	} else if (col == "kind") {
 		return convertFileKind(celldata);
 	}
