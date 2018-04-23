@@ -1596,11 +1596,14 @@ $(window).load(function() {
 		  var saveButtonDisplay = ($('#saveBtn').css('display'));
 		  var editSectionDisplay = ($('#editSection').css('display'));
 		  var submitButtonDisplay = ($('#submitBtn').css('display'));
+		  var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
 		  if(saveButtonDisplay == 'block' && editSectionDisplay == 'flex'){
 			  updateItem();
 		  }else if(submitButtonDisplay == 'block' && editSectionDisplay == 'flex'){
 			  newItem();
 			  showSaveButton();
+		  }else if(deleteButtonDisplay == 'flex'){
+			  confirmBox("deleteItem");
 		  }
 	  	}
       });
