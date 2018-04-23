@@ -1423,7 +1423,6 @@ function returnedSection(data)
 		showCreateVersion();
 
 	}
-	if(data['debug']!="NONE!") alert(data['debug']);
 	getHiddenElements();
 	hideCollapsedMenus();
 	getArrowElements();
