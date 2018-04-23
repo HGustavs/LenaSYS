@@ -38,6 +38,9 @@ $coursevers = getOP('coursevers');
 $cogwheel = getOP('id');
 $trashcan = getOP('id');
 
+$coursecode=getOP('coursecode');
+$coursename=getOP('coursename');
+
 $debug="NONE!";
 
 $log_uuid = getOP('log_uuid');
@@ -198,6 +201,16 @@ $mass=array();
 $entries=array();
 $files=array();
 $duggaPages = array();
+
+$query = $pdo->prepare("SELECT coursename FROM course WHERE cid=:cid LIMIT 1");
+$query->bindParam(':cid', $cid);
+
+$coursename = "Coursename not found";
+$coursecode = "Coursecode not found!";
+
+$coursename = $query->fetch();
+
+
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qstart,deadline,qrelease,modified,vers FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;");
@@ -228,7 +241,9 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 				'modified' => $rowz['modified'],
 				'disabled' => $rowz['disabled'],
 				'cogwheelVariant' => $rowz['vid'],
-				'trashcanVariant' => $rowz['vid'],
+				'trashcanVariant' => $rowz['vid']
+				//'coursecode' => $rowz['coursecode'],
+				//'coursename' => $rowz['coursename']
 				);
 
 			array_push($mass, $entryz);
@@ -247,6 +262,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			'modified' => $row['modified'],
 			'cogwheel' => $row['id'],
 			'trashcan' => $row['id']
+			//'coursecode' => $row['coursecode'],
+			//'coursename' => $row['coursename']
 			);
 
 		array_push($entries, $entry);
@@ -262,11 +279,17 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 	}
 }
 
+
+
 $array = array(
 	'entries' => $entries,
 	'debug' => $debug,
 	'files' => $files,
-	'duggaPages' => $duggaPages
+	'duggaPages' => $duggaPages,
+	'coursecode' => $coursecode,	
+	'coursename' => $coursename,
+	
+
 );
 
 echo json_encode($array);
