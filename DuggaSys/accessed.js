@@ -9,6 +9,115 @@ AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},
 // Commands:
 //----------------------------------------
 
+function setup()
+{
+	/*    Add filter icon in the navheader   */
+	var filt ="";
+	filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'>";
+	filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
+	filt+="<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+	filt+="</div>";
+	filt+="</span></td>";
+	$("#menuHook").before(filt);
+
+	var dropdownOptions = "";
+	dropdownOptions+="<div class='checkbox-accessed accessedLine'><input type='checkbox' checked class='headercheck' id='selectAll' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed accessedLine'></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption'  id='selectUser' onclick='filter(0);'><label class='headerlabel'>User</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectSSN' onclick='filter(1);'><label class='headerlabel'>SSN</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectFN' onclick='filter(2);'><label class='headerlabel'>First Name</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectLN' onclick='filter(3);'><label class='headerlabel'>Last Name</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectClass' onclick='filter(4);'><label class='headerlabel'>Class</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectAdded' onclick='filter(5);'><label class='headerlabel'>Added</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectExaminer' onclick='filter(6);'><label class='headerlabel'>Examiner</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectVersion' onclick='filter(7);'><label class='headerlabel'>Version</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectAccess' onclick='filter(8);'><label class='headerlabel'>Access</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectPassword' onclick='filter(9);'><label class='headerlabel'>Password</label></div>";
+	$("#dropdownc").append(dropdownOptions);
+
+
+	/*    Add sort icon in the navheader   */
+	var sort ="";
+	sort+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
+	sort+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+	sort+="<div id='dropdowns' class='dropdown-list-container'>";
+	sort+="</div>";
+	sort+="</span></td>";
+	$("#menuHook").before(sort);
+
+	dropdownOptions = "";
+	dropdownOptions+="<div class='checkbox-accessed accessedLine'></div>";
+	dropdownOptions+="<div class='checkbox-accessed' style='border-bottom:1px solid #888'><input type='radio' checked class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir1'>Sort ascending</label><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='-1' id='sortdir0'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck'  id='selectUser' onclick='sorttype(0);'><label class='headerlabel'>User</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectSSN' onclick='sorttype(1);'><label class='headerlabel'>SSN</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectFN' onclick='sorttype(2);'><label class='headerlabel'>First Name</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectLN' onclick='sorttype(3);'><label class='headerlabel'>Last Name</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectClass' onclick='sorttype(4);'><label class='headerlabel'>Class</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='h+eadercheck' id='selectAdded' onclick='sorttype(5);'><label class='headerlabel'>Added</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectExaminer' onclick='sorttype(6);'><label class='headerlabel'>Examiner</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectVersion' onclick='sorttype(7);'><label class='headerlabel'>Version</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' checked class='headercheck' id='selectAccess' onclick='sorttype(8);'><label class='headerlabel'>Access</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectPassword' onclick='sorttype(9);'><label class='headerlabel'>Password</label></div>";
+	$("#dropdowns").append(dropdownOptions);
+}
+
+function hoverc()
+{
+    $('#dropdowns').css('display','none');
+    $('#dropdownc').css('display','block');
+}
+
+function leavec()
+{
+		$('#dropdownc').css('display','none');
+}
+
+function hovers()
+{
+    $('#dropdownc').css('display','none');
+    $('#dropdowns').css('display','block');
+}
+
+function leaves()
+{
+		$('#dropdowns').css('display','none');
+}
+
+function filter(type)
+{
+
+}
+
+function toggleSortDir(type)
+{
+
+}
+
+function sorttype(type)
+{
+
+}
+
+function checkedAll()
+{
+	// Current state
+	var accessedElements = document.getElementsByClassName("selectoption");
+	var selectToggle = document.getElementById('selectAll');
+
+	// Yes, there is at lease one element checked, so default is clear
+	if(!selectToggle.checked) {
+		selectToggle.checked = false;
+		for (var i =0; i < accessedElements.length; i++) {
+			accessedElements[i].checked = false;
+		}
+	} else { // There are no element(s) checked, so set all
+		selectToggle.checked = true;
+		for (var i =0; i < accessedElements.length; i++) {
+			accessedElements[i].checked = true;
+		}
+	}
+}
+
 function importUsers()
 {
 	var newUsersArr = new Array();
@@ -229,7 +338,7 @@ function renderCell(col,celldata,cellid) {
       }
 
       str = makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+celldata[celldata.length - 1]['uid']+"\",this.value);", items, items, teacher);
-    } 
+    }
     return str;
   }else if(col == "access"){
     obj=JSON.parse(celldata);
