@@ -9,6 +9,49 @@ AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},
 // Commands:
 //----------------------------------------
 
+function setup()
+{
+	/*    Add filter icon in the navheader   */
+	var filt ="";
+	filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'>";
+	filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
+	filt+="<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+	filt+="</div>";
+	filt+="</span></td>";
+	$("#menuHook").before(filt);
+
+	/*    Add sort icon in the navheader   */
+	var sort ="";
+	sort+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
+	sort+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+	sort+="<div id='dropdowns' class='dropdown-list-container'>";
+	sort+="</div>";
+	sort+="</span></td>";
+	$("#menuHook").before(sort);
+}
+
+function hoverc()
+{
+    $('#dropdowns').css('display','none');
+    $('#dropdownc').css('display','block');
+}
+
+function leavec()
+{
+		$('#dropdownc').css('display','none');
+}
+
+function hovers()
+{
+    $('#dropdownc').css('display','none');
+    $('#dropdowns').css('display','block');
+}
+
+function leaves()
+{
+		$('#dropdowns').css('display','none');
+}
+
 function importUsers()
 {
 	var newUsersArr = new Array();
@@ -229,7 +272,7 @@ function renderCell(col,celldata,cellid) {
       }
 
       str = makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+celldata[celldata.length - 1]['uid']+"\",this.value);", items, items, teacher);
-    } 
+    }
     return str;
   }else if(col == "access"){
     obj=JSON.parse(celldata);
