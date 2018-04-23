@@ -1591,10 +1591,20 @@ $(window).load(function() {
           closeSelect();
           showSaveButton();
 		  hamburgerChange("escapePress");
-        }
+		  document.activeElement.blur(); // to lose focus from the newItem button when pressing enter
+	  	}else if(event.keyCode == 13){
+		  var saveButtonDisplay = ($('#saveBtn').css('display'));
+		  var editSectionDisplay = ($('#editSection').css('display'));
+		  var submitButtonDisplay = ($('#submitBtn').css('display'));
+		  if(saveButtonDisplay == 'block' && editSectionDisplay == 'flex'){
+			  updateItem();
+		  }else if(submitButtonDisplay == 'block' && editSectionDisplay == 'flex'){
+			  newItem();
+			  showSaveButton();
+		  }
+	  	}
       });
 });
-
 
 // Detects clicks
 $(document).mouseup(function (e)
@@ -1603,7 +1613,7 @@ $(document).mouseup(function (e)
     if ($('.zoom-list').is(':visible') && !$('.zoom').is(e.target) // if the target of the click isn't the container...
         && $('.zoom').has(e.target).length === 0) // ... nor a descendant of the container
     {
-        if (!$('.zoom-btn-sm').hasClass('scale-out')) {		
+        if (!$('.zoom-btn-sm').hasClass('scale-out')) {
 			$('.zoom-btn-sm').toggleClass('scale-out');
 			$('.zoom-list').delay(100).fadeOut(0);
 		}
@@ -1614,5 +1624,6 @@ $(document).mouseup(function (e)
     {
 	    closeWindows();
         closeSelect();
+		showSaveButton();
     }
 });
