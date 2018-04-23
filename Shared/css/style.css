@@ -3548,7 +3548,7 @@ ul.hamburgerList button.menuButton {
  *                               Markdown preview                              *
  * --------------================################================-------------- */
 
- .PreviewWindow {
+ .previewWindow {
     height: 635px;
     width: 900px;
     margin: 0px auto;
@@ -3566,7 +3566,7 @@ ul.hamburgerList button.menuButton {
      
      
 }
-.Markdown {
+.markdown {
     border: solid rgb(200,200,200);
     background-color: #FFFFFF;
     width: 350px;
@@ -3575,7 +3575,7 @@ ul.hamburgerList button.menuButton {
     margin: 20px 10px 10px 10px;
     float: left;
 }
-.MarkdownPrev {
+.markdownPrev {
     border: solid rgb(200,200,200);
     background-color: #FFFFFF;
     word-wrap: break-word;
@@ -3586,7 +3586,7 @@ ul.hamburgerList button.menuButton {
     margin: 20px 10px 10px 10px;
     float: right;
 }
-.OptionButtons {
+.optionButtons {
     top: 585px;
     position: relative;
     margin: 0px 10px 0px 10px;
@@ -3609,7 +3609,7 @@ ul.hamburgerList button.menuButton {
     position: relative;
     margin: 0px 10px 0px 0px;
 }
- .PrevHead {
+ .prevHead {
     height: 20px;
     background-color: #614875;
     color: #FFFFFF;
