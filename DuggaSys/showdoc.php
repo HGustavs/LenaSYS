@@ -371,7 +371,7 @@
 		    $debug="Error reading dugga visibility";
 		}
 
-		// Read visibility of dugga (listentry)
+		// Read visibility of file
 		$duggaVisibility;
 		$query = $pdo->prepare("SELECT visible FROM listentries, variant
 														WHERE listentries.cid=:cid
@@ -379,35 +379,42 @@
 														AND (replace(replace(variant.param, ': ', ':'), ' :', ':') LIKE :target
 														OR replace(replace(variant.param, ': ', ':'), ' :', ':') LIKE :filelink)");
 		$query->bindParam(':cid', $cid);
-		$query->bindValue(':target', ("%\"target\":\"$fname\"%"));
+		$query->bindValue(':target', "%\"target\":\"$fname\"%");
 		$query->bindValue(':filelink', "%\"filelink\":\"$fname\"%");
 		$result = $query->execute();
 		if($result){
 			foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
 				$visible = $row['visible'];
-				if((!isset($duggaVisibility) || $duggaVisibility == 0 || $duggaVisibility == 2) &&
-								!($visible == 2 && $duggaVisibility != 0)) {
-					$duggaVisibility = $visible;
-					if($duggaVisibility == 1) break;
+				if(!isset($duggaVisibility)) $duggaVisibility = $visible;
+				// Set permission to hidden
+				if ($visible == 0 && ($duggaVisibility != 1 && $duggaVisibility != 2)){
+					$duggaVisibility = 0;
+				}
+				// Set permission to private
+				if ($visible == 2 && $duggaVisibility == 0){
+					$duggaVisibility = 2;
+				}
+				// Set permission to public
+				if ($visible == 1 && $duggaVisibility != 1){
+					$duggaVisibility = 1;
+					break;
 				}
 			}
 		}
-		
-	echo (string) $duggaVisibility;
 
-		$hr = false;
+		$access = false;
 		if (checklogin()) {
 		  if (((hasAccess($userid, $cid, 'r')) &&
 		      ($duggaVisibility == 1 || $duggaVisibility == 2)&&
 		      ($courseVisibility == 1 || $courseVisibility == 2)) ||
 		      isSuperUser($userid)) {
-		    $hr = true;
+		    $access = true;
 		  }
 		} else if ($duggaVisibility == 1 && $courseVisibility == 1) {
-		  $hr = true;
+		  $access = true;
 		}
 
-		if(false){
+		if($access){
 			// If we have access rights, read the file securely to document
 			if(is_numeric($fid)){
 				// Check if it is a number or a filename
