@@ -211,7 +211,7 @@ function renderCell(col,celldata,cellid) {
 			str = "";
 		} else {
 			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += " onclick='loadPreview(celldata)'></div>";
+            str += " onclick='loadPreview(\"" + celldata + "\")'></div>";
 		}
 		return str;
 	}
