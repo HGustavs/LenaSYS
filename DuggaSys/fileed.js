@@ -50,6 +50,7 @@ function returnedFile(data) {
     		fileid:"File ID",
     		filename:"File name",
     		extension:"Extension",
+    		kind:"Kind",
     		filesize:"Size",
     		uploaddate:"Upload date",
     		editor:"",
@@ -214,6 +215,8 @@ function renderCell(col,celldata,cellid) {
             str += " onclick='loadPreview(\"" + celldata + "\")'></div>";
 		}
 		return str;
+	} else if (col == "kind") {
+		return convertFileKind(celldata);
 	}
 	return celldata;
 }

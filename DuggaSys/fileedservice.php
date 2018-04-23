@@ -80,14 +80,14 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
         }
 
       $entry = array(
-		  'fileid' => $row['fileid'],
-		  'fileid' => $row['fileid'],
-		  'filename' => $row['filename'],
-		  'extension' => $row['filename'],
-		  'filesize' => $row['filesize'],
-		  'uploaddate' => $row['uploaddate'],
-      'editor' => $filePath,
-      'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']])
+    			'fileid' => $row['fileid'],
+    			'filename' => $row['filename'],
+          'extension' => $row['filename'],
+          'kind' => $row['kind'],
+    			'filesize' => $row['filesize'],
+    			'uploaddate' => $row['uploaddate'],
+          'editor' => $filePath,
+          'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']])
   		);
 
   		array_push($entries, $entry);
