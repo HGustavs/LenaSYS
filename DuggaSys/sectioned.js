@@ -153,8 +153,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	if(kind==5) str+="<option selected='selected' value='5'>Link</option>"
 	else str+="<option value='5'>Link</option>";
 
-	if(kind==6) str+="<option selected='selected' value='6'>Group</option>"
-	else str+="<option value='6'>Group</option>'";
+	if(kind==6) str+="<option selected='selected' value='6'>Group Activity</option>"
+	else str+="<option value='6'>Group Acvitity</option>'";
 
 	$("#type").html(str);
 
