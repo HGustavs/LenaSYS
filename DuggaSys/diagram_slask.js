@@ -298,3 +298,48 @@ diagram.updateArity = function() {
         arity1.baseLine = "top";
     }
 */
+
+/*
+
+//These functions caused the problem with shaking objects when they were moved around in the canvas.
+function mouseupevt(ev) {
+
+    if (snapToGrid) {
+        currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
+        currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
+    }
+
+    if (md == 1 || md == 2 || md == 0 && uimode != " ") {
+        if (snapToGrid) {
+            currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
+            currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
+        }
+    }
+
+function mousemoveevt(ev, t) {
+
+
+    if (snapToGrid) {
+        if (diagram[i].kind == 1) {
+            var firstPoint = points[diagram[i].segments[0].pa];
+        } else {
+            var firstPoint = points[diagram[i].topLeft];
+        }
+        var tlx = (Math.round(firstPoint.x / gridSize) * gridSize);
+        var tly = (Math.round(firstPoint.y / gridSize) * gridSize);
+        var deltatlx = firstPoint.x - tlx;
+        var deltatly = firstPoint.y - tly;
+
+        currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
+        currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
+        currentMouseCoordinateX -= deltatlx;
+        currentMouseCoordinateY -= deltatly;
+    }
+                    
+*/     
+
+
+
+
+
+
