@@ -308,13 +308,8 @@ function mouseupevt(ev) {
                     } else{
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     }
-                    if(diagram[lineStartObj].symbolkind != 3){
-                        diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
-                        diagram[hovobj].connectorTop.push({from:p2, to:p1});
-                    }else{
-                        diagram[lineStartObj].connectorTop.push({from:p2, to:p1});
-                        diagram[hovobj].connectorTop.push({from:p1, to:p2});
-                    }
+                    diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
+                    diagram[hovobj].connectorTop.push({from:p2, to:p1});
                 }
             }
         }
