@@ -200,44 +200,17 @@ function mousedownevt(ev) {
         }
 
     } else if (sel.distance < tolerance) {
+        for (var i = 0; i < diagram.length; i++) {
+            if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
+                md = 3;
+                handleSelect();
+                return;
+            }
+        }
         md = 2;
     } else if (movobj != -1) {
         md = 3;
-        lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
-        var last = diagram[lastSelectedObject];
-        if (last.targeted == false && uimode != "MoveAround") {
-            for (var i = 0; i < diagram.length; i++) {
-                diagram[i].targeted = false;
-            }
-            // Will add multiple selected diagram objects if the
-            // CTRL/CMD key is currently active
-            if (ctrlIsClicked) {
-                if(selected_objects.indexOf(last) < 0){
-                    selected_objects.push(last);
-                    last.targeted = true;
-                }
-                for (var i = 0; i < selected_objects.length; i++) {
-                    if (selected_objects[i].targeted == false) {
-                        if(selected_objects.indexOf(last) < 0){
-                            selected_objects.push(last);
-                        }
-                        selected_objects[i].targeted = true;
-                    }
-                }
-            } else {
-                selected_objects = [];
-                selected_objects.push(last);
-                last.targeted = true;
-            }
-        } else if(uimode != "MoveAround"){
-            if(ctrlIsClicked){
-                var index = selected_objects.indexOf(last);
-                if(index > -1){
-                    selected_objects.splice(index, 1);
-                }
-                last.targeted = false;
-            }
-        }
+        handleSelect();
     } else {
         md = 4; // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
@@ -247,6 +220,44 @@ function mousedownevt(ev) {
                 selected_objects[i].targeted = false;
             }
             selected_objects = [];
+        }
+    }
+}
+
+function handleSelect() {
+    lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
+    var last = diagram[lastSelectedObject];
+    if (last.targeted == false && uimode != "MoveAround") {
+        for (var i = 0; i < diagram.length; i++) {
+            diagram[i].targeted = false;
+        }
+        // Will add multiple selected diagram objects if the
+        // CTRL/CMD key is currently active
+        if (ctrlIsClicked) {
+            if(selected_objects.indexOf(last) < 0){
+                selected_objects.push(last);
+                last.targeted = true;
+            }
+            for (var i = 0; i < selected_objects.length; i++) {
+                if (selected_objects[i].targeted == false) {
+                    if(selected_objects.indexOf(last) < 0){
+                        selected_objects.push(last);
+                    }
+                    selected_objects[i].targeted = true;
+                }
+            }
+        } else {
+            selected_objects = [];
+            selected_objects.push(last);
+            last.targeted = true;
+        }
+    } else if(uimode != "MoveAround"){
+        if(ctrlIsClicked){
+            var index = selected_objects.indexOf(last);
+            if(index > -1){
+                selected_objects.splice(index, 1);
+            }
+            last.targeted = false;
         }
     }
 }
@@ -398,9 +409,11 @@ function mouseupevt(ev) {
         }
         //Sets the clicked object as targeted
         selected_objects = [];
-        selected_objects.push(diagram[lastSelectedObject]);
-        //You have to target an object when you start to draw
-        if(md != 0) diagram[lastSelectedObject].targeted = true;
+        if (lastSelectedObject >= 0) {
+            selected_objects.push(diagram[lastSelectedObject]);
+            //You have to target an object when you start to draw
+            if(md != 0) diagram[lastSelectedObject].targeted = true;
+        }
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
