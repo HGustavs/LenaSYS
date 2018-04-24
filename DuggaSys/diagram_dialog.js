@@ -120,10 +120,11 @@ function loadUMLForm(element, dir){
       if(file.readyState === 4){
           element.innerHTML = file.responseText;
           if(globalAppearanceValue == 0){
-            var attributesText;
-            var oprationsText;
+            var attributesText = "";
+            var operationsText = "";
             var attributesTextArea = document.getElementById('UMLAttributes');
             var operationsTextArea = document.getElementById('UMLOperations');
+            console.log(diagram[lastSelectedObject].attributes[0].text);
             for(var i = 0; i < diagram[lastSelectedObject].attributes.length;i++){
               attributesText += diagram[lastSelectedObject].attributes[i].visibility + " " +
                                 diagram[lastSelectedObject].attributes[i].text + "\n";
@@ -132,6 +133,9 @@ function loadUMLForm(element, dir){
               operationsText += diagram[lastSelectedObject].operations[i].visibility + " " +
                                 diagram[lastSelectedObject].operations[i].text + "\n";
             }
+            console.log(attributesText);
+
+            document.getElementById('nametext').value = diagram[lastSelectedObject].name;
             attributesTextArea.value = attributesText;
             operationsTextArea.value = operationsText;
           }
