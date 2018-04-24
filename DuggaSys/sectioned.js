@@ -1689,7 +1689,7 @@ $(document).mouseup(function (e)
     // Click outside the loginBox
     else if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
         && $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
-		&& (!isClickedElementBox))
+		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
 	{
 	    closeWindows();
         closeSelect();
