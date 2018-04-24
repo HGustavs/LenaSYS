@@ -474,32 +474,32 @@ function createLink()
 
 function newItem()
 {
-  tabs=$("#tabs").val();
-  lid=$("#lid").val();
-  kind=$("#type").val();
-  link=$("#link").val();
-  highscoremode=$("#highscoremode").val();
-  sectionname=$("#sectionname").val();
-  visibility=$("#visib").val();
-  moment=$("#moment").val();
-  gradesys=$("#gradesys").val();
-  comment=$("#deadlinecomment").val();
+	tabs=$("#tabs").val();
+	lid=$("#lid").val();
+	kind=$("#type").val();
+	link=$("#link").val();
+	highscoremode=$("#highscoremode").val();
+	sectionname=$("#sectionname").val();
+	visibility=$("#visib").val();
+	moment=$("#moment").val();
+	gradesys=$("#gradesys").val();
+	comment=$("#comments").val();
 
-  // Storing tabs in gradesys column!
-  if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
-  AJAXService(
-		"NEW",{
-			lid:lid,
-			kind:kind,
-			link:link,
-			sectname:sectionname,
-			visibility:visibility,
-			moment:moment,
-			gradesys:gradesys,
-			highscoremode:highscoremode,
-			comment:comment
-		},"SECTION");
-  $("#editSection").css("display","none");
+	// Storing tabs in gradesys column!
+	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
+	AJAXService(
+			"NEW",{
+				lid:lid,
+				kind:kind,
+				link:link,
+				sectname:sectionname,
+				visibility:visibility,
+				moment:moment,
+				gradesys:gradesys,
+				highscoremode:highscoremode,
+				comment:comment
+			},"SECTION");
+	$("#editSection").css("display","none");
 }
 
 function closeSelect()
@@ -650,7 +650,6 @@ var momentexists=0;
 var resave = false;
 function returnedSection(data)
 {
-	console.log(data);
 	retdata=data;
 	if(data['debug']!="NONE!") alert(data['debug']);
 
