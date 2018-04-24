@@ -642,6 +642,7 @@ function eraseObject(object) {
                         || (object.hasConnector(line.topLeft) && object.symbolkind == 3)
                         || (object.hasConnector(line.bottomRight) && object.symbolkind == 3)
             );
+            console.log("Lines to delete: " + objectsToDelete.length);
         }else{
             diagram.filter(symbol => symbol.symbolkind == 3)
                 .filter(entity =>
