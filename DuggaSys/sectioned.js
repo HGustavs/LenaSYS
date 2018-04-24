@@ -156,7 +156,6 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	if(kind==6) str+="<option selected='selected' value='6'>Group Activity</option>"
 	else str+="<option value='6'>Group Activity</option>'";
-    console.log(kind);
     if(kind==7) str+="<option selected='selected' value='7'>Message</option>"
     else str+="<option value='7'>Message</option>";
 
@@ -1102,7 +1101,7 @@ function returnedSection(data)
 						str+=" class='example item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 					}
 					kk++;
-				}else if(itemKind === 7){
+				}else if(itemKind === 7){ //Message
 						str+= " <td class='section-message item' placeholder='" + momentexists + "' id='I"+item['lid'] + "' ";
 				}
 
@@ -1185,7 +1184,7 @@ function returnedSection(data)
 					+ "onClick='alert(\"There should be some group functionality here\");'"
 					+ 'title=' + item['entryname'] + '><span><span>' + item['entryname']
 					+ "</span></span></a></div>";
-				}else if(itemKind == 7){ // Group
+				}else if(itemKind == 7){ // Message
                     str +=
                         "<span style='padding-left:5px;' title='"
                         + item['entryname'] + "'>" + item['entryname'] + "</span>";
