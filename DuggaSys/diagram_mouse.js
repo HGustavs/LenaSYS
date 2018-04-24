@@ -200,15 +200,25 @@ function mousedownevt(ev) {
         }
 
     } else if (sel.distance < tolerance) {
-        if(!ctrlIsClicked) {
+        lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
+        if (lastSelectedObject < 0) return;
+        var index = selected_objects.indexOf(diagram[lastSelectedObject]);
+        if (ctrlIsClicked) {
+            if (index < 0) {
+                diagram[lastSelectedObject].targeted = true;
+                selected_objects.push(diagram[lastSelectedObject]);
+            } else {
+                diagram[lastSelectedObject].targeted = false;
+                selected_objects.splice(index, 1);
+                return;
+            }
+        } else {
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
             }
-        }
-        lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
-        if (lastSelectedObject >= 0) {
+            selected_objects = [];
             diagram[lastSelectedObject].targeted = true;
-            if (selected_objects.indexOf(diagram[lastSelectedObject]) < 0) selected_objects.push(diagram[lastSelectedObject]);
+            selected_objects.push(diagram[lastSelectedObject]);
         }
         for (var i = 0; i < diagram.length; i++) {
             if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
