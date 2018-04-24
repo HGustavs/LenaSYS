@@ -419,25 +419,25 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.emptyConnectors = function () {
         for (var i = 0; i < this.connectorTop.length; i++) {
-            points[this.connectorTop[i].to] = "";
+            //points[this.connectorTop[i].to] = "";
             points[this.connectorTop[i].from] = "";
             this.connectorTop.splice(i, 1);
             i--;
         }
         for(var i = 0; i < this.connectorRight.length; i++) {
-            points[this.connectorRight[i].to] = "";
+            //points[this.connectorRight[i].to] = "";
             points[this.connectorRight[i].from] = "";
             this.connectorRight.splice(i, 1);
             i--;
         }
         for (var i = 0; i < this.connectorBottom.length; i++) {
-            points[this.connectorBottom[i].to] = "";
+            //points[this.connectorBottom[i].to] = "";
             points[this.connectorBottom[i].from] = "";
             this.connectorBottom.splice(i, 1);
             i--;
         }
         for (var i = 0; i < this.connectorLeft.length; i++) {
-            points[this.connectorLeft[i].to] = "";
+            //points[this.connectorLeft[i].to] = "";
             points[this.connectorLeft[i].from] = "";
             this.connectorLeft.splice(i, 1);
             i--;
