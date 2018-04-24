@@ -418,15 +418,16 @@ function doubleclick(ev) {
 
 function resize() {
     if (uimode == "CreateClass" && md == 4) {
-        if (currentMouseCoordinateX >= startMouseCoordinateX && (currentMouseCoordinateX - startMouseCoordinateX) < classTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX + classTemplate.width;
-        } else if (currentMouseCoordinateX < startMouseCoordinateX && (startMouseCoordinateX - currentMouseCoordinateX) < classTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX - classTemplate.width;
+        if (currentMouseCoordinateX < startMouseCoordinateX) {
+            var tempX = currentMouseCoordinateX;
+            currentMouseCoordinateX = startMouseCoordinateX;
+            startMouseCoordinateX = tempX;
+
         }
-        if (currentMouseCoordinateY >= startMouseCoordinateY && (currentMouseCoordinateY - startMouseCoordinateY) < classTemplate.width) {
-            currentMouseCoordinateY = startMouseCoordinateY + classTemplate.height;
-        } else if (currentMouseCoordinateY < startMouseCoordinateY && (startMouseCoordinateY - currentMouseCoordinateY) < classTemplate.height) {
-            currentMouseCoordinateY = startMouseCoordinateY - classTemplate.height;
+        if (currentMouseCoordinateY < startMouseCoordinateY) {
+            var tempY = currentMouseCoordinateY;
+            currentMouseCoordinateY = startMouseCoordinateY;
+            startMouseCoordinateY = tempY;
         }
     } else if (uimode == "CreateERAttr" && md == 4) {
         if (currentMouseCoordinateX >= startMouseCoordinateX && (currentMouseCoordinateX - startMouseCoordinateX) < attributeTemplate.width) {
