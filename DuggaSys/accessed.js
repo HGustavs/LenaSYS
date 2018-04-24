@@ -23,18 +23,17 @@ function setup()
 	var dropdownOptions = "";
 	dropdownOptions+="<div class='checkbox-accessed accessedLine'><input type='checkbox' checked class='headercheck' id='selectAll' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 	dropdownOptions+="<div class='checkbox-accessed accessedLine'></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption'  id='selectUser' onclick='filter(0);'><label class='headerlabel'>User</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectSSN' onclick='filter(1);'><label class='headerlabel'>SSN</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectFN' onclick='filter(2);'><label class='headerlabel'>First Name</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectLN' onclick='filter(3);'><label class='headerlabel'>Last Name</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectClass' onclick='filter(4);'><label class='headerlabel'>Class</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectAdded' onclick='filter(5);'><label class='headerlabel'>Added</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectExaminer' onclick='filter(6);'><label class='headerlabel'>Examiner</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectVersion' onclick='filter(7);'><label class='headerlabel'>Version</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectAccess' onclick='filter(8);'><label class='headerlabel'>Access</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectPassword' onclick='filter(9);'><label class='headerlabel'>Password</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption'  id='selectusername' onclick='filter(\"username\");'><label class='headerlabel'>User</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectssn' onclick='filter(\"ssn\");'><label class='headerlabel'>SSN</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectfirstname' onclick='filter(\"firstname\");'><label class='headerlabel'>First Name</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectlastname' onclick='filter(\"lastname\");'><label class='headerlabel'>Last Name</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectclass' onclick='filter(\"class\");'><label class='headerlabel'>Class</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectmodified' onclick='filter(\"modified\");'><label class='headerlabel'>Added</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectexaminer' onclick='filter(\"examiner\");'><label class='headerlabel'>Examiner</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectvers' onclick='filter(\"vers\");'><label class='headerlabel'>Version</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectaccess' onclick='filter(\"access\");'><label class='headerlabel'>Access</label></div>";
+	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectrequestedpasswordchange' onclick='filter(\"requestedpasswordchange\");'><label class='headerlabel'>Password</label></div>";
 	$("#dropdownc").append(dropdownOptions);
-
 
 	/*    Add sort icon in the navheader   */
 	var sort ="";
@@ -83,9 +82,21 @@ function leaves()
 		$('#dropdowns').css('display','none');
 }
 
-function filter(type)
+function filter(name)
 {
-
+	if (document.getElementById("select" + name).checked){
+		var arr = document.getElementsByClassName("user-" + name);
+		document.getElementById(name + "_user_tbl").style.display = "table-cell";
+		for (var i = 0; i < arr.length; i++){
+			arr[i].style.display = "table-cell";
+		}
+	} else {
+		var arr = document.getElementsByClassName("user-" + name);
+		document.getElementById(name + "_user_tbl").style.display = "none";
+		for (var i = 0; i < arr.length; i++){
+			arr[i].style.display = "none";
+		}
+	}
 }
 
 function toggleSortDir(type)
@@ -109,11 +120,13 @@ function checkedAll()
 		selectToggle.checked = false;
 		for (var i =0; i < accessedElements.length; i++) {
 			accessedElements[i].checked = false;
+			filter(accessedElements[i].getAttribute('id').replace("select", ""));
 		}
 	} else { // There are no element(s) checked, so set all
 		selectToggle.checked = true;
 		for (var i =0; i < accessedElements.length; i++) {
 			accessedElements[i].checked = true;
+			filter(accessedElements[i].getAttribute('id').replace("select", ""));
 		}
 	}
 }
@@ -406,7 +419,9 @@ var myTable;
 //----------------------------------------
 
 function returnedAccess(data) {
+	setup();
 	filez = data;
+
 	var tabledata = {
 		tblhead:{
 			username:"User",
