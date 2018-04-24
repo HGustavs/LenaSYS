@@ -634,7 +634,6 @@ function eraseObject(object) {
     if (object.kind == 2) {
         if(object.symbolkind != 4){
             var lines = diagram.filter(symbol => symbol.symbolkind == 4);
-            console.log("lines " + lines.length);
             objectsToDelete = lines.filter(
                 line => line.topLeft == object.middleDivider
                         || line.topLeft == object.centerPoint
@@ -643,7 +642,6 @@ function eraseObject(object) {
                         || (object.hasConnector(line.topLeft) && object.symbolkind == 3)
                         || (object.hasConnector(line.bottomRight) && object.symbolkind == 3)
             );
-            console.log("commonlines " + objectsToDelete.length);
         }else{
             diagram.filter(symbol => symbol.symbolkind == 3)
                 .filter(entity =>
