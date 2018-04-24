@@ -927,6 +927,12 @@ function returnedSection(data)
 						+ menuState.idCounter
 						+ data.coursecode
 						+ "' class='group' style='display:block'>";
+				}else if(parseInt(item['kind']) === 7){
+					str+=
+						"<div id='group"
+						+ menuState.idCounter
+						+ data.coursecode
+						+ "' class='group' style='display:block'>";
 				}
 				menuState.idCounter++;
 				// All are visible according to database
