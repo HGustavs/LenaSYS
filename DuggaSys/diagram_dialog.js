@@ -23,6 +23,7 @@ function closeAppearanceDialogMenu() {
      * Closes the dialog menu for appearance.
      */
     appearanceMenuOpen = false;
+    classAppearanceOpen = false;
     globalAppearanceValue = 0;
     hashFunction();
     $("#appearance").hide();
@@ -49,7 +50,7 @@ function clickEnterOnDialogMenu(ev) {
      */
     $(document).keypress(function (ev) {
         var container = $("#appearance");
-        if (ev.which == 13 && appearanceMenuOpen) {
+        if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen) {
             globalAppearanceValue = 0;
             closeAppearanceDialogMenu();
 
@@ -145,6 +146,7 @@ function objectAppearanceMenu(form) {
 
     form.innerHTML = "No item selected<type='text'>";
     if (diagram[lastSelectedObject].symbolkind == 1) {
+        classAppearanceOpen = true;
         loadFormIntoElement(form, 'forms/class_appearance.php');
     }
     if (diagram[lastSelectedObject].symbolkind == 2) {
@@ -169,6 +171,12 @@ function changeObjectAppearance(object_type){
     */
     if(diagram[lastSelectedObject].symbolkind == 1){//UML-class appearance
           diagram[lastSelectedObject].name = document.getElementById('nametext').value;
+          /*KOD FÖR ATT LÄSA FRÅN TEXTAREA RAD FÖR RAD.
+          * var lines = $('#UMLAttributes').val().split('\n');
+          * for(var i = 0;i < lines.length;i++){
+          *   //code here using lines[i] which will give you each line
+          * }
+          */
     } else if (diagram[lastSelectedObject].symbolkind == 4) {
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
     } else if (diagram[lastSelectedObject].kind == 1){
