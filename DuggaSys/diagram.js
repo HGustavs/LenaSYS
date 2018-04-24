@@ -645,10 +645,14 @@ function eraseObject(object) {
             );
             console.log("commonlines " + objectsToDelete.length);
         }else{
-            diagram.filter(symbol => symbol.symbolkind == 3).forEach(ent => {
-                ent.removePointFromConnector(object.topLeft);
-                ent.removePointFromConnector(object.bottomRight);
-            });
+            diagram.filter(symbol => symbol.symbolkind == 3)
+                .filter(entity =>
+                        entity.hasConnector(object.topLeft)
+                        && entity.hasConnector(object.bottomRight))
+                    .forEach(ent => {
+                        ent.removePointFromConnector(object.topLeft);
+                        ent.removePointFromConnector(object.bottomRight);
+                    });
         }
         object.erase();
         diagram.eraseLines(object, object.getLines());
