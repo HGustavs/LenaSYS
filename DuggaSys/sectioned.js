@@ -311,7 +311,7 @@ function changedType(value)
 	$("#inputwrapper-tabs").css("display","none");
 	$("#inputwrapper-comments").css("display","none");
 	$("#inputwrapper-numberOfGroups").css("display", "none");
-
+	$("#inputwrapper-groupType").css("display", "none");
 
 	//Header(kind==0) and Section(kind==1) wont add any boxes, so no if-statements are needed for them.
 	if(kind==2){
