@@ -93,6 +93,7 @@ pdoConnect();
 	</div>
 	<!-- Edit File Dialog END -->
     <!-- Markdown-preview functionality START -->
+    <div class="previewWindowContainer"></div>
     <div class="previewWindow">
     	<div class="loginBoxheader">
         	<h3>This is the preview window</h3>

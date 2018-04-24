@@ -411,13 +411,16 @@ function showPreview() {
 }
 
 function cancelPreview() {
+
     $(".previewWindow").hide();
+    $(".previewWindowContainer").css("display", "none");
 }
 
 function loadPreview(fileUrl) {
     var fileContent = getFIleContents(fileUrl);
     document.getElementById("mrkdwntxt").value = fileContent;
     updatePreview(fileContent);
+    $(".previewWindowContainer").css("display", "block");
     $(".previewWindow").show();
 }
 
