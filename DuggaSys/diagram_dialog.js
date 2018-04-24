@@ -52,7 +52,7 @@ function clickEnterOnDialogMenu(ev) {
         if (ev.which == 13 && appearanceMenuOpen) {
             globalAppearanceValue = 0;
             closeAppearanceDialogMenu();
-            
+
             // Is called in the separate appearance php-files at the buttons.
             // Called here since an enter press doesn't relate to any element
             changeObjectAppearance();
@@ -167,8 +167,9 @@ function changeObjectAppearance(object_type){
     /*
     * USES DIALOG TO CHANGE OBJECT APPEARANCE
     */
-
-    if (diagram[lastSelectedObject].symbolkind == 4) {
+    if(diagram[lastSelectedObject].symbolkind == 1){//UML-class appearance
+          diagram[lastSelectedObject].name = document.getElementById('nametext').value;
+    } else if (diagram[lastSelectedObject].symbolkind == 4) {
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
     } else if (diagram[lastSelectedObject].kind == 1){
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
