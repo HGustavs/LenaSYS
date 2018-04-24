@@ -39,7 +39,7 @@
 				echo "<input class='submit-button' type='button' value='Add user' onclick='showCreateUserPopup();'/>";
 				echo "<input class='submit-button' type='button' value='Import user(s)' onclick='showImportUsersPopup();'/>";
 				echo "</div>";
-				echo "<input id='searchinput' type='text' name='search' placeholder='Search...' >";
+				echo "<input id='searchinput' type='text' name='search' placeholder='Search...'style='Top: -8px;position: relative;margin-left: 20px; border: 1px solid #ccc;' >";
 				echo "</div>";
 				//needs to calculate if the user has access to this button before writing out
 			?>
