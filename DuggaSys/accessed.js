@@ -345,7 +345,6 @@ function returnedAccess(data) {
 	);
 
 	myTable.renderTable();
-	console.log(data);
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	makeAllSortable();
@@ -361,10 +360,6 @@ function makeAllSortable(parent) {
 	//while (--i >= 0) makeSortable(t[i]);
 }
 
-function resizeInput(input){
-	console.log("#"+input);
-	$("#"+input).attr('size', $("#"+input).val().length);
-}
 
 //excuted onclick button for quick searching in table
 function keyUpSearch() {
