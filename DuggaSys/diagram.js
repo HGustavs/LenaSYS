@@ -635,12 +635,17 @@ function eraseObject(object) {
         if(object.symbolkind != 4){
             var lines = diagram.filter(symbol => symbol.symbolkind == 4);
             console.log("lines " + lines.length);
-            objectsToDelete = lines.filter(line => line.topLeft == object.middleDivider || line.topLeft == object.centerPoint
-                                                    || line.bottomRight == object.middleDivider || line.bottomRight == object.centerPoint
-                                                    || object.hasConnector(line.topLeft) || object.hasConnector(line.bottomRight));
+            objectsToDelete = lines.filter(
+                line => line.topLeft == object.middleDivider
+                        || line.topLeft == object.centerPoint
+                        || line.bottomRight == object.middleDivider
+                        || line.bottomRight == object.centerPoint
+                        || (object.hasConnector(line.topLeft) && object.symbolkind == 3)
+                        || (object.hasConnector(line.bottomRight) && object.symbolkind == 3)
+            );
             console.log("commonlines " + objectsToDelete.length);
         }else{
-            var entities = diagram.filter(symbol => symbol.symbolkind == 3).forEach(ent => {
+            diagram.filter(symbol => symbol.symbolkind == 3).forEach(ent => {
                 ent.removePointFromConnector(object.topLeft);
                 ent.removePointFromConnector(object.bottomRight);
             });
