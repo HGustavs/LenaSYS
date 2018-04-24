@@ -17,13 +17,13 @@ function importUsers()
 	for (var i=0; i<myArr.length; i++){
 			newUsersArr.push(myArr[i].split("\t"));
 	}
-	var newUserJSON = JSON.stringify(newUsersArr);	
+	var newUserJSON = JSON.stringify(newUsersArr);
 
 	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
 	hideImportUsersPopup();
 }
 
-function addSingleUser() 
+function addSingleUser()
 {
 	var newUser = new Array();
 	newUser.push($("#addSsn").val());
@@ -79,6 +79,23 @@ function changeExaminer(cid,uid,val)
 {
 	AJAXService("EXAMINER",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
 }
+function changeUsername(uid,id)
+{
+	AJAXService("USERNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
+}
+function changeSSN(uid,id)
+{
+	AJAXService("SSN",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
+}
+function changeFirstname(uid,id)
+{
+	AJAXService("FIRSTNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
+}
+function changeLastname(uid,id)
+{
+	AJAXService("LASTNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
+}
+
 
 // Sets values in the "cogwheel popup"
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
@@ -137,14 +154,14 @@ function selectUser(uid,username,ssn,firstname,lastname,access,className)
     		}
 	};
 
-*/	
-	// Set Name		
+*/
+	// Set Name
 	$("#firstname").val(firstname);
 	$("#lastname").val(lastname);
-		
+
 	// Set User name
 	$("#usrnme").val(username);
-		
+
 	//Set SSN
 	$("#ussn").val(ssn);
 	if (className != "null" || className != "UNK") {$("#class").val(className);}
@@ -152,7 +169,7 @@ function selectUser(uid,username,ssn,firstname,lastname,access,className)
 
 	// Displays the cogwheel box
 	$("#editUsers").css("display","flex");
-	
+
 	//$("#overlay").css("display","block");
 }
 
@@ -167,7 +184,7 @@ function updateUser()
 	var teach=$("#teacher").val();
 
 	AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,className:className,cid:querystring['cid'],coursevers:querystring['coursevers'],teacher:teach},"ACCESS");
-	
+
 	$("#editUsers").css("display","none");
 	//$("#overlay").css("display","none");
 }
@@ -182,7 +199,7 @@ function resetPw(uid,username)
 	rnd=randomstring();
 
 	window.location="mailto:"+username+"@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20"+rnd+"%0A%0A/LENASys Administrators";
-	
+
 	AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd,coursevers:querystring['coursevers']},"ACCESS");
 }
 
@@ -230,7 +247,7 @@ function renderCell(col,celldata,cellid) {
         str+="value='"+celldata[i]['username']+"'>"+celldata[i]['username']+"</option>";
       }
       str+="</select>";
-    } 
+    }
     return str;
   }else if(col == "access"){
     obj=JSON.parse(celldata);
@@ -248,6 +265,23 @@ function renderCell(col,celldata,cellid) {
     }
     str+="</select>";
     return str;
+	}else if (col == "username") {
+		obj = JSON.parse(celldata);
+		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeUsername("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.username+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
+		return str;
+	}else if (col == "ssn") {
+		obj = JSON.parse(celldata);
+		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeSSN("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.ssn+"\" size=13 onclick='return false;'>";
+		return str;
+	}else if (col == "firstname") {
+		obj = JSON.parse(celldata);
+		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeFirstname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.firstname+"\" size=8 onclick='return false;'>";
+		return str;
+	}else if (col == "lastname") {
+		obj = JSON.parse(celldata);
+		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
+		return str;
+
 	}else {
 		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
@@ -299,7 +333,7 @@ function returnedAccess(data) {
 	    null,
 	    null,
 	    [],
-	    [],				
+	    [],
 	    "",
 	    null,
 	    null,
@@ -311,7 +345,7 @@ function returnedAccess(data) {
 	);
 
 	myTable.renderTable();
-	
+	console.log(data);
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	makeAllSortable();
@@ -325,6 +359,11 @@ function makeAllSortable(parent) {
 	parent = parent || document.body;
 	var t = parent.getElementsByTagName('table'), i = t.length;
 	//while (--i >= 0) makeSortable(t[i]);
+}
+
+function resizeInput(input){
+	console.log("#"+input);
+	$("#"+input).attr('size', $("#"+input).val().length);
 }
 
 //excuted onclick button for quick searching in table
