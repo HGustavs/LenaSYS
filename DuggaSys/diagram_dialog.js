@@ -112,6 +112,29 @@ function loadLineForm(element, dir){
     file.send();
 }
 
+function loadUMLForm(){
+  var file = new XMLHttpRequest();
+  file.open('GET', dir);
+  file.onreadystatechange = function(){
+      if(file.readyState === 4){
+          element.innerHTML = file.responseText;
+          if(globalAppearanceValue == 0){
+            var attributesText;
+            var oprationsText;
+            for(var i = 0; i < diagram[lastSelectedObject].attributes.length;i++){
+              attributesText += diagram[lastSelectedObject].attributes[i].visibility + " " +
+                                diagram[lastSelectedObject].attributes[i].text + "\n";
+            }
+            for(var i = 0; i < diagram[lastSelectedObject].operations.length;i++){
+              operationsText += diagram[lastSelectedObject].operations[i].visibility + " " +
+                                diagram[lastSelectedObject].operations[i].text + "\n";
+            }
+          }
+      }
+  }
+  file.send();
+}
+
 function setSelectedOption(type, value){
   if(type != null){
     for(var i = 0; i < document.getElementById(type).options.length; i++){
