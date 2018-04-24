@@ -85,6 +85,7 @@ $(window).load(function() {
       });
 });
 
+// DUGGA FUNCTIONS start
 function newDugga(){
 	$("#editDugga").css("display","none");
 	document.getElementById('name').value='';
@@ -210,7 +211,9 @@ function deleteDugga(did){
 	AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
 	$("#editDugga").css("display","none");
 }
+// DUGGA FUNCTIONS end
 
+// VARIANT FUNCTIONS start
 function newVariant(){
 	showVariantDisableButton();
 	showVariantSubmitButton();
@@ -262,8 +265,9 @@ function updateVariant(){
 function deleteVariant(vid){
 	AJAXService("DELVARI",{cid:querystring['cid'],vid:vid,coursevers:querystring['coursevers']},"DUGGA");
 }
+// VARIANT FUNCTIONS end
 
-// Displaying and hidding the dynamic comfirmbox for the section edit dialog
+// Displaying and hidding the dynamic comfirmbox for deleting-items in duggaED
 function confirmBox(operation, item, type) {
 	if(operation == "openConfirmBox") {
 		typeOfItem = type;
@@ -551,61 +555,6 @@ function editDialogTitle(title){
 	}
 }
 
-// Adds a submission row in Edit Variant
-function addSubmissionRow() {
-	$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>"+
-					"<select name='type' id='submissionType"+submissionRow+"' style='width:65px;'>"+
-						"<option value='pdf'>PDF</option>"+
-						"<option value='zip'>Zip</option>"+
-						"<option value='link'>Link</option>"+
-						"<option value='text'>Text</option>"+
-					"</select>"+
-					"<input type='text' name='fieldname' id='fieldname"+submissionRow+"' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
-					"<input type='text' name='instruction' id='instruction"+submissionRow+"' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
-					"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>"+
-				 "</div>");
-	submissionRow++;
-}
-
-function isInArray(array, search){
-    return array.indexOf(search) >= 0;
-}
-
-function parseParameters(str){
-	return str;
-}
-
-function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
-	$("#MarkCont").html(duggaPages[template]);
-
-	$.getScript("templates/"+template+".js")
-	  .done(function( script, textStatus ) {
-        alert("snus");
-		    showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer),null,null,null);
-	  })
-	  .fail(function( jqxhr, settings, exception ) {
-      	eval(script);
-      	showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer));
-	});
-
-	$("#resultpopover").css("display", "flex");
-}
-
-
-function displayfield(res){
-	$("#autogradeselect"+res).css("display","block");
-}
-
-function changename(didd,num){
-	var yes = didd;
-	$("#did").val(yes);
-	var name =  $("#duggav"+num).val();
-	$("#name").val(name);
-	var nme=$("#name").val();
-	var did=$("#did").val();
-
-	AJAXService("UPDATEDNAME",{cid:querystring['cid'],qid:did,nme:nme,coursevers:querystring['coursevers']},"DUGGA");
-}
 
 // Checks if the title name includes any invalid characters
 function validateName(){
@@ -627,63 +576,22 @@ function validateName(){
 	return retValue;
 }
 
-function changeauto(didd,num){
-	var yes = didd;
-	$("#did").val(yes);
-	var auto =  $("#duggav"+num).val();
-	$("#autograde").val(auto);
-	var autograde=$("#autograde").val();
-	var did=$("#did").val();
-	var autograde=$("#autograde").val();
-
-	AJAXService("UPDATEAUTO",{cid:querystring['cid'],qid:did,autograde:autograde,coursevers:querystring['coursevers']},"DUGGA");
+// Adds a submission row in Edit Variant
+function addSubmissionRow() {
+	$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>"+
+					"<select name='type' id='submissionType"+submissionRow+"' style='width:65px;'>"+
+						"<option value='pdf'>PDF</option>"+
+						"<option value='zip'>Zip</option>"+
+						"<option value='link'>Link</option>"+
+						"<option value='text'>Text</option>"+
+					"</select>"+
+					"<input type='text' name='fieldname' id='fieldname"+submissionRow+"' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='text' name='instruction' id='instruction"+submissionRow+"' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>"+
+				 "</div>");
+	submissionRow++;
 }
 
-function changegrade(didd,num){
-	var yes = didd;
-	$("#did").val(yes);
-	var auto =  $("#duggav"+num).val();
-	$("#gradesys").val(auto);
-	var did=$("#did").val();
-	var gradesys=$("#gradesys").val();
-
-	AJAXService("UPDATEGRADE",{cid:querystring['cid'],qid:did,gradesys:gradesys,coursevers:querystring['coursevers']},"DUGGA");
-}
-
-function changefile(didd,num){
-	str="";
-	for(var j=0;j<filez.length;j++){
-			filen=filez[j];
-			if(filen!=".."&&filen!="."){
-					if(template==filen) str+="<option selected='selected' value='"+filen+"'>"+filen+"</option>"
-					else str+="<option value='"+filen+"'>"+filen+"</option>"
-			}
-	}
-	$("#template").html(str);
-	var yes = didd;
-	$("#did").val(yes);
-	var templates =  $("#duggav"+num).val();
-	$("#template").val(templates);
-	var did=$("#did").val();
-	var template=$("#template").val();
-
-	AJAXService("UPDATETEMPLATE",{cid:querystring['cid'],qid:did,template:template,coursevers:querystring['coursevers']},"DUGGA");
-}
-
-function closePreview(){
-	$("#resultpopover").css("display", "none");
-	$("#overlay").css("display", "none");
-	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
-}
-
-
-/**
-* @TODO Make it possible to allow for no submission fields, or omission of any other field.
-* @TODO Add the free text field submission.
-* This function demands specific names on the form fields, elaborate on this
-* @param formData an array of the "Edit Variant: Param" form.
-* @return a JSON string
-*/
 function createJSONString(formData) {
 	// Init the JSON string variable
 	var jsonStr = "{";
@@ -723,3 +631,91 @@ function createJSONString(formData) {
 
 	return jsonStr;
 }
+
+function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
+	$("#MarkCont").html(duggaPages[template]);
+
+	$.getScript("templates/"+template+".js")
+	  .done(function( script, textStatus ) {
+        alert("snus");
+		    showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer),null,null,null);
+	  })
+	  .fail(function( jqxhr, settings, exception ) {
+      	eval(script);
+      	showFacit(decodeURIComponent(duggaVariantParam),"UNK",decodeURIComponent(duggaVariantAnswer));
+	});
+
+	$("#resultpopover").css("display", "flex");
+}
+
+// function isInArray(array, search){
+//     return array.indexOf(search) >= 0;
+// }
+
+// function parseParameters(str){
+// 	return str;
+// }
+
+// function displayfield(res){
+// 	$("#autogradeselect"+res).css("display","block");
+// }
+
+// function changename(didd,num){
+// 	var yes = didd;
+// 	$("#did").val(yes);
+// 	var name =  $("#duggav"+num).val();
+// 	$("#name").val(name);
+// 	var nme=$("#name").val();
+// 	var did=$("#did").val();
+
+// 	AJAXService("UPDATEDNAME",{cid:querystring['cid'],qid:did,nme:nme,coursevers:querystring['coursevers']},"DUGGA");
+// }
+
+// function changeauto(didd,num){
+// 	var yes = didd;
+// 	$("#did").val(yes);
+// 	var auto =  $("#duggav"+num).val();
+// 	$("#autograde").val(auto);
+// 	var autograde=$("#autograde").val();
+// 	var did=$("#did").val();
+// 	var autograde=$("#autograde").val();
+
+// 	AJAXService("UPDATEAUTO",{cid:querystring['cid'],qid:did,autograde:autograde,coursevers:querystring['coursevers']},"DUGGA");
+// }
+
+// function changegrade(didd,num){
+// 	var yes = didd;
+// 	$("#did").val(yes);
+// 	var auto =  $("#duggav"+num).val();
+// 	$("#gradesys").val(auto);
+// 	var did=$("#did").val();
+// 	var gradesys=$("#gradesys").val();
+
+// 	AJAXService("UPDATEGRADE",{cid:querystring['cid'],qid:did,gradesys:gradesys,coursevers:querystring['coursevers']},"DUGGA");
+// }
+
+// function changefile(didd,num){
+// 	str="";
+// 	for(var j=0;j<filez.length;j++){
+// 			filen=filez[j];
+// 			if(filen!=".."&&filen!="."){
+// 					if(template==filen) str+="<option selected='selected' value='"+filen+"'>"+filen+"</option>"
+// 					else str+="<option value='"+filen+"'>"+filen+"</option>"
+// 			}
+// 	}
+// 	$("#template").html(str);
+// 	var yes = didd;
+// 	$("#did").val(yes);
+// 	var templates =  $("#duggav"+num).val();
+// 	$("#template").val(templates);
+// 	var did=$("#did").val();
+// 	var template=$("#template").val();
+
+// 	AJAXService("UPDATETEMPLATE",{cid:querystring['cid'],qid:did,template:template,coursevers:querystring['coursevers']},"DUGGA");
+// }
+
+// function closePreview(){
+// 	$("#resultpopover").css("display", "none");
+// 	$("#overlay").css("display", "none");
+// 	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
+// }
