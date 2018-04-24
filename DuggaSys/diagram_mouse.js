@@ -200,7 +200,15 @@ function mousedownevt(ev) {
         }
 
     } else if (sel.distance < tolerance) {
+        for (var i = 0; i < selected_objects.length; i++) {
+            selected_objects[i].targeted = false;
+        }
+        selected_objects = [];
         lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
+        if (lastSelectedObject >= 0) {
+            diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
+        }
         for (var i = 0; i < diagram.length; i++) {
             if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
                 md = 3;
