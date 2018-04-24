@@ -631,8 +631,14 @@ function getConnectedLines(object) {
 function eraseObject(object) {
     canvas.style.cursor = "default";
     if (object.kind == 2) {
+        var lines = this.prototype.filter(symbol => symbol.symbolkind == 4);
+        var linesWithCommonPoints = lines.prototype.filter(line => line.topLeft == object.topLeft
+                                                           || line.topLeft == object.bottomRight
+                                                           || line.bottomRight == object.topLeft
+                                                           || line.bottomRight == object.bottomRight);
         object.erase();
         diagram.eraseLines(object, object.getLines());
+        linesWithCommonPoints.forEach(eraseObject);
     } else if (object.kind == 1) {
         object.erase();
     }
