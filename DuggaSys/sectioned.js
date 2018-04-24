@@ -112,7 +112,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		for(var i=0;i<retdata['entries'].length;i++){
 			var item=retdata['entries'][i];
 			if(item['kind']==4){
-				if(parseInt(moment)==parseInt(item['lid'])) str+="<option selected='selected'"
+				if(parseInt(moment)==parseInt(item['lid'])) str+="<option selected='selected' "
 				+"value='"+item['lid']+"'>"+item['entryname']+"</option>";
 				else str+="<option value='"+item['lid']+"'>"+item['entryname']+"</option>";
 			}
@@ -484,6 +484,7 @@ function newItem()
   moment=$("#moment").val();
   gradesys=$("#gradesys").val();
   comment=$("#deadlinecomment").val();
+
   // Storing tabs in gradesys column!
   if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
   AJAXService(
@@ -649,6 +650,7 @@ var momentexists=0;
 var resave = false;
 function returnedSection(data)
 {
+	console.log(data);
 	retdata=data;
 	if(data['debug']!="NONE!") alert(data['debug']);
 
@@ -854,7 +856,7 @@ function returnedSection(data)
 			+ "\"" + item['link'] + "\","
 			+ "\"" + momentexists + "\","
 			+ "\"" + item['gradesys'] + "\","
-			+ "\"" + item['highscoremode'] + "\","
+			+ "\"" + item['highscoremode'] + "\", null"
 			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
         str += "</div>";
     }
