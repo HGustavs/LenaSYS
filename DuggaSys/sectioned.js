@@ -1662,6 +1662,7 @@ $(window).load(function() {
 // Detects clicks
 $(document).mouseup(function (e)
 {
+	console.log(document.activeElement);
 	// Click outside the FAB list
     if ($('.zoom-list').is(':visible') && !$('.zoom').is(e.target) // if the target of the click isn't the container...
         && $('.zoom').has(e.target).length === 0) // ... nor a descendant of the container
@@ -1674,8 +1675,9 @@ $(document).mouseup(function (e)
 
     // Click outside the loginBox
     else if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
-        && $('.loginBox').has(e.target).length === 0) // ... nor a descendant of the container
-    {
+        && $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
+		&& (document.activeElement.id != "sectionname"))
+	{
 	    closeWindows();
         closeSelect();
 		showSaveButton();
