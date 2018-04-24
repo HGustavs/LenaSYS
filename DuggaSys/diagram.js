@@ -633,10 +633,9 @@ function eraseObject(object) {
     if (object.kind == 2) {
         var lines = diagram.filter(symbol => symbol.symbolkind == 4);
         console.log("lines " + lines.length);
-        var linesWithCommonPoints = lines.filter(line => line.topLeft == object.topLeft
-                                                           || line.topLeft == object.bottomRight
-                                                           || line.bottomRight == object.topLeft
-                                                           || line.bottomRight == object.bottomRight);
+        var linesWithCommonPoints = lines.filter(line => line.topLeft == object.middleDivider || line.topLeft == object.centerPoint
+                                                      || line.bottomRight == object.middleDivider || line.bottomRight == object.centerPoint
+                                                      || object.hasConnector(line.topLeft) || object.hasConnector || (line.bottomRight));
         console.log("commonlines " + linesWithCommonPoints.length);
         object.erase();
         diagram.eraseLines(object, object.getLines());
