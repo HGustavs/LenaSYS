@@ -808,16 +808,32 @@ function returnedSection(data)
 
 	if(retdata["writeaccess"]) {
 		str += "</tr></table>";
-		str += "<div class='zoom'>"
-		str += "<a class='zoom-fab zoom-btn-large noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
-		str += "<ul class='zoom-list' style='display: none;'>"
+		
+		str += "<div class='fab-container'>"
+		str += "<a class='zoom-fab zoom-fab-large noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
+		str += "<ul class='zoom-list' style='margin: 0; padding: 0; display: none;'>"
+		
+		// Message of the day button
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-motd scale-transition scale-out noselect' data-tooltip='Message of the day' onclick='alert(\"Under construction\")'><i class='material-icons'>format_quote</i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-heading scale-transition scale-out' data-tooltip='Heading' onclick='selectItem(\"undefined\",\"New Item\",\"0\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='heading-icon'></i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-section scale-transition scale-out' data-tooltip='Section' onclick='selectItem(\"undefined\",\"New Item\",\"1\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='section-icon'></i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-moment scale-transition scale-out' data-tooltip='Moment' onclick='selectItem(\"undefined\",\"New Item\",\"4\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='moment-icon'></i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-test scale-transition scale-out' data-tooltip='Test' onclick='selectItem(\"undefined\",\"New Item\",\"3\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='test-icon'></i></a></li>"
+		
+		//Heading button
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-heading scale-transition scale-out' data-tooltip='Heading' onclick='selectItem(\"undefined\",\"New Item\",\"0\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
+		
+		//Section button
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-section scale-transition scale-out' data-tooltip='Section' onclick='selectItem(\"undefined\",\"New Item\",\"1\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>"
+		
+		// Moment button
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-moment scale-transition scale-out' data-tooltip='Moment' onclick='selectItem(\"undefined\",\"New Item\",\"4\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>"
+		
+		// Test button
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-test scale-transition scale-out' data-tooltip='Test' onclick='selectItem(\"undefined\",\"New Item\",\"3\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>"
+		
+		// Link button
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-link scale-transition scale-out noselect' data-tooltip='Link' onclick='selectItem(\"undefined\",\"New Item\",\"5\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>link</i></a></li>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-code scale-transition scale-out' data-tooltip='Code' onclick='selectItem(\"undefined\",\"New Item\",\"2\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='code-icon'></i></a></li>"
+		
+		//Code button
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-code scale-transition scale-out' data-tooltip='Code' onclick='selectItem(\"undefined\",\"New Item\",\"2\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>"
+		
 		str += "</ul>"
 		str += "</div>";
 	} else {
@@ -1612,6 +1628,7 @@ function toggleHamburger(){
 
 // Toggles action bubbles when pressing the FAB button
 function toggleFabButton(){
+
 	if (!$('.zoom-btn-sm').hasClass('scale-out')) {
 		$('.zoom-btn-sm').toggleClass('scale-out');
 		$('.zoom-list').delay(100).fadeOut(0);
@@ -1663,8 +1680,8 @@ $(window).load(function() {
 $(document).mouseup(function (e)
 {
 	// Click outside the FAB list
-    if ($('.zoom-list').is(':visible') && !$('.zoom').is(e.target) // if the target of the click isn't the container...
-        && $('.zoom').has(e.target).length === 0) // ... nor a descendant of the container
+    if ($('.zoom-list').is(':visible') && !$('.fab-container').is(e.target) // if the target of the click isn't the container...
+        && $('.fab-container').has(e.target).length === 0) // ... nor a descendant of the container
     {
         if (!$('.zoom-btn-sm').hasClass('scale-out')) {
           $('.zoom-btn-sm').toggleClass('scale-out');
