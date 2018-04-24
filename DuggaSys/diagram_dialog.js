@@ -202,13 +202,22 @@ function changeObjectAppearance(object_type){
     * USES DIALOG TO CHANGE OBJECT APPEARANCE
     */
     if(diagram[lastSelectedObject].symbolkind == 1){//UML-class appearance
-          diagram[lastSelectedObject].name = document.getElementById('nametext').value;
-          /*KOD FÖR ATT LÄSA FRÅN TEXTAREA RAD FÖR RAD.
-          * var lines = $('#UMLAttributes').val().split('\n');
-          * for(var i = 0;i < lines.length;i++){
-          *   //code here using lines[i] which will give you each line
-          * }
-          */
+        diagram[lastSelectedObject].name = document.getElementById('nametext').value;
+        var attributeLines = $('#UMLAttributes').val().split('\n');
+        var operationLines = $('#UMLOperations').val().split('\n');
+        diagram[lastSelectedObject].attributes = [];
+        diagram[lastSelectedObject].operations = [];
+
+        //Splits and inserts visibility and text for attributes and operations
+        for(var i = 0;i < attributeLines.length;i++){
+          var tempString = attributeLines[i].split(' ');
+          attributes.push({visibility:tempString[0], text:tempString[1]});
+        }
+        for(var i = 0; i < operationLines.lenth; i++){
+          var tempString = operationLines[i].split(' ');
+          operations.push({visibility:tempString[0], text:tempString[1]});
+        }
+
     } else if (diagram[lastSelectedObject].symbolkind == 4) {
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
     } else if (diagram[lastSelectedObject].kind == 1){
