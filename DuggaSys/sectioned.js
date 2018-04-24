@@ -734,7 +734,7 @@ function returnedSection(data)
 			+"src='../Shared/icons/PlusS.svg'></button></div></td>";
 
         //Hamburger menu for navigation
-    	str+="<td class='hamburger'>";
+    	str+="<td class='hamburger hamburgerClickable'>";
 		str+=
 			 "<div tabindex='0' class='package'><div id='hamburgerIcon' "
 			+ "class='submit-button hamburger' onclick='hamburgerChange();"
@@ -1596,12 +1596,12 @@ function addOrRemoveFromArray(elementID, array) {
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation='click') {
-	if(operation == "escapePress"){
+	if(operation != "click"){
 		if(findAncestor(document.getElementById("hamburgerIcon"), "change") != null){
 			toggleHamburger();
 		}
 	}else{
-			toggleHamburger();
+		toggleHamburger();
 	}
 }
 
@@ -1669,7 +1669,7 @@ $(document).mouseup(function (e)
         if (!$('.zoom-btn-sm').hasClass('scale-out')) {
           $('.zoom-btn-sm').toggleClass('scale-out');
           $('.zoom-list').delay(100).fadeOut(0);
-		    }
+	  	}
     }
 
     // Click outside the loginBox
@@ -1679,5 +1679,13 @@ $(document).mouseup(function (e)
 	    closeWindows();
         closeSelect();
 		showSaveButton();
-    }
+    }else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')){
+		hamburgerChange("notAClick");
+		closeWindows();
+		closeSelect();
+		showSaveButton();
+	}
+
+
+
 });
