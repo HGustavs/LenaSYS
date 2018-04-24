@@ -202,13 +202,21 @@ $entries=array();
 $files=array();
 $duggaPages = array();
 
-$query = $pdo->prepare("SELECT coursename FROM course WHERE cid=:cid LIMIT 1");
+$query = $pdo->prepare("SELECT coursename,coursecode,cid FROM course WHERE cid=:cid LIMIT 1");
 $query->bindParam(':cid', $cid);
 
-$coursename = "Coursename not found";
+$coursename = "Course not Found!";
 $coursecode = "Coursecode not found!";
 
-$coursename = $query->fetch();
+if($query->execute()) {
+	foreach($query->fetchAll() as $row) {
+		$coursename=$row['coursename'];
+		$coursecode=$row['coursecode'];
+	}
+} else {
+	$error=$query->errorInfo();
+	$debug="Error reading entries".$error[2];
+}
 
 
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
@@ -242,8 +250,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 				'disabled' => $rowz['disabled'],
 				'cogwheelVariant' => $rowz['vid'],
 				'trashcanVariant' => $rowz['vid']
-				//'coursecode' => $rowz['coursecode'],
-				//'coursename' => $rowz['coursename']
 				);
 
 			array_push($mass, $entryz);
@@ -262,8 +268,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			'modified' => $row['modified'],
 			'cogwheel' => $row['id'],
 			'trashcan' => $row['id']
-			//'coursecode' => $row['coursecode'],
-			//'coursename' => $row['coursename']
 			);
 
 		array_push($entries, $entry);
@@ -286,8 +290,8 @@ $array = array(
 	'debug' => $debug,
 	'files' => $files,
 	'duggaPages' => $duggaPages,
-	'coursecode' => $coursecode,	
-	'coursename' => $coursename,
+	'coursecode' => $coursecode,
+	'coursename' => $coursename
 	
 
 );
