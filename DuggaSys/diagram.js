@@ -632,10 +632,12 @@ function eraseObject(object) {
     canvas.style.cursor = "default";
     if (object.kind == 2) {
         var lines = diagram.filter(symbol => symbol.symbolkind == 4);
+        console.log("lines " + lines.length);
         var linesWithCommonPoints = lines.filter(line => line.topLeft == object.topLeft
                                                            || line.topLeft == object.bottomRight
                                                            || line.bottomRight == object.topLeft
                                                            || line.bottomRight == object.bottomRight);
+        console.log("commonlines " + linesWithCommonPoints.length);
         object.erase();
         diagram.eraseLines(object, object.getLines());
         linesWithCommonPoints.forEach(eraseObject);
