@@ -277,7 +277,6 @@ function logDuggaLoadEvent($cid, $vers, $quizid, $type) {
 //------------------------------------------------------------------------------------------------
 
 function logServiceRequestError($error_type, $eventType){
-
     // Set the variables userid, log_uuid and info. Needed for logServiceEvent().
     if(isset($_SESSION['uid'])){
         $userid=$_SESSION['uid'];
