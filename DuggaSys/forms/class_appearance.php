@@ -4,4 +4,4 @@ Class name: </br>
     <option value='normal'>Normal</option>
 </select></br>-->
 <!--setType();-->
-<button type='submit' class='submit-button' onclick="changeObjectAppearance('classType');  changeName(); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>Ok</button>
+<button type='submit' class='submit-button' onclick="changeObjectAppearance('classType'); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>Ok</button>
