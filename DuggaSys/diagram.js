@@ -630,16 +630,19 @@ function getConnectedLines(object) {
 
 function eraseObject(object) {
     canvas.style.cursor = "default";
-    var linesWithCommonPoints = [];
+    var objectsToDelete = [];
     if (object.kind == 2) {
         if(object.symbolkind != 4){
             var lines = diagram.filter(symbol => symbol.symbolkind == 4);
             console.log("lines " + lines.length);
-            linesWithCommonPoints = lines.filter(line => line.topLeft == object.middleDivider || line.topLeft == object.centerPoint
+            objectsToDelete = lines.filter(line => line.topLeft == object.middleDivider || line.topLeft == object.centerPoint
                                                       || line.bottomRight == object.middleDivider || line.bottomRight == object.centerPoint);
-            console.log("commonlines " + linesWithCommonPoints.length);
+            console.log("commonlines " + objectsToDelete.length);
         }else{
-            
+            var entities = diagram.filter(symbol => symbol.symbolkind == 3).forEach(ent => {
+                ent.removePointFromConnector(object.topLeft);
+                ent.removePointFromConnector(object.bottomRight);
+            });
         }
         object.erase();
         diagram.eraseLines(object, object.getLines());
@@ -647,7 +650,7 @@ function eraseObject(object) {
         object.erase();
     }
     diagram.deleteObject(object);
-    linesWithCommonPoints.forEach(eraseObject);
+    objectsToDelete.forEach(eraseObject);
     updateGraphics();
 }
 
