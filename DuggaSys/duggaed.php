@@ -82,21 +82,21 @@ pdoConnect();
 	<!-- Edit Dugga Dialog END -->
 
   <!-- Confirm Section Dialog START -->
-      <div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
-            <div class='loginBox' style='width:460px;'>
-                  <div class='loginBoxheader'>
-                        <h3>Confirm your update</h3>
-                        <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
-                  </div>
-                  <div style='text-align: center;'>
-                        <h4>Are you sure you want to make this happen?</h4>
-                  </div>
-                  <div style='display:flex; align-items:center; justify-content: center;'>
-                        <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
-                        <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
-                  </div>
-            </div>
-      </div>
+		<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none; z-index: 9999;'>
+	        <div class='loginBox' style='width:460px;'>
+				<div class='loginBoxheader'>
+				    <h3>Confirm deletion</h3>
+				    <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+				</div>
+				<div style='text-align: center;'>
+				    <h4>Are you sure you want to delete this item?</h4>
+				</div>
+				<div style='display:flex; align-items:center; justify-content: center;'>
+				    <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
+				    <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+				</div>
+	        </div>
+		</div>
   <!-- Confirm Section Dialog START -->
 
 	<!-- Edit Variant Dialog START -->
@@ -106,7 +106,7 @@ pdoConnect();
       			<h3>Edit Variant</h3>
       			<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
-          <div class='loginBoxbody'>       
+          <div class='loginBoxbody'>
            <div id="variant" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the variant-table within. -->
           		<div style='padding:5px;display:flex;'>
           			<input type='hidden' id='vid' value='Toddler' />
@@ -173,15 +173,15 @@ pdoConnect();
           			</div>
           		</div>
           		<div style='padding:5px;'>
-                <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel' 
+                <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel'
                 onclick='closeWindows();'/>
-          			<input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit' 
-                onclick='showVariantSaveButton(); createVariant();'/> 
-                <input id='updateVariant' class='submit-button' style='display:none; float:right' type='button' value='Save' 
+          			<input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit'
+                onclick='showVariantSaveButton(); createVariant();'/>
+                <input id='updateVariant' class='submit-button' style='display:none; float:right' type='button' value='Save'
                 onclick='showVariantSubmitButton(); updateVariant();'/>
-                <input id='disableVariant' class='submit-button' style='display:none; float:right' type='button' value='Disable' 
+                <input id='disableVariant' class='submit-button' style='display:none; float:right' type='button' value='Disable'
                 onclick='showVariantEnableButton(); disableVariant();'/>
-                <input id='enableVariant' class='submit-button' style='display:none; float:right' type='button' value='Enable' 
+                <input id='enableVariant' class='submit-button' style='display:none; float:right' type='button' value='Enable'
                 onclick='showVariantDisableButton(); enableVariant();'/>
           		</div>
           </div>

@@ -75,7 +75,12 @@ if(checklogin()){
 			$query->bindParam(':lid', $sectid);
 
 			if(!$query->execute()) {
-				$debug="Error updating entries";
+				$debug=
+					"The item could not be deleted. See information below:"
+					."\n\nSQLSTATE error code: ".$query->errorInfo()[0]
+					."\n\nDriver-specific error code: ".$query->errorInfo()[1]
+					."\n\nDriver-specific error message: \n"
+					.$query->errorInfo()[2];
 			}
 		}else if(strcmp($opt,"NEW")===0){
 
