@@ -192,26 +192,26 @@ function Symbol(kind) {
         } else if (this.symbolkind == 1) {
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
-            // If middle divider is below y2 set y2 to middle divider
-            if (points[this.middleDivider].y > points[this.bottomRight].y) {
-                points[this.bottomRight].y = points[this.middleDivider].y;
+
+            if(points[this.bottomRight].y-points[this.topLeft].y < classTemplate.height){
+                points[this.topLeft].y = points[this.middleDivider].y - (classTemplate.height/2);
+                points[this.bottomRight].y = points[this.middleDivider].y + (classTemplate.height/2);
             }
-            // If bottom right is below 0 set bottom right to top left
-            if (hw < 0) {
-                points[this.bottomRight].x = points[this.topLeft].x + 150;
+            if(points[this.bottomRight].y < points[this.middleDivider].y || points[this.topLeft].y > points[this.middleDivider].y){
+                points[this.middleDivider].y = points[this.topLeft].y + (classTemplate.height/2);
             }
-            // If top left is below middle divider set top left to middle divider
-            if (points[this.topLeft].y > points[this.middleDivider].y) {
-                points[this.topLeft].y = points[this.middleDivider].y;
+            if(points[this.bottomRight].x-points[this.topLeft].x < classTemplate.width){
+                points[this.topLeft].x = points[this.middleDivider].x - (classTemplate.width/2);
+                points[this.bottomRight].x = points[this.middleDivider].x + (classTemplate.width/2);
             }
         } else if (this.symbolkind == 5){
-            // Static size of relation. Makes resizing of relation impossible.
-            points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
-            points[this.topLeft].y = points[this.middleDivider].y-relationTemplate.height/2;
-            points[this.bottomRight].x = points[this.middleDivider].x+relationTemplate.width/2;
-            points[this.bottomRight].y = points[this.middleDivider].y+relationTemplate.height/2;
+                // Static size of relation. Makes resizing of relation impossible.
+                points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
+                points[this.topLeft].y = points[this.middleDivider].y-relationTemplate.height/2;
+                points[this.bottomRight].x = points[this.middleDivider].x+relationTemplate.width/2;
+                points[this.bottomRight].y = points[this.middleDivider].y+relationTemplate.height/2;
+            }
         }
-    }
 
     //--------------------------------------------------------------------
     // Sorts the connector
