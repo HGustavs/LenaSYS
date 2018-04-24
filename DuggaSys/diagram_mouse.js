@@ -68,10 +68,6 @@ function mousemoveevt(ev, t) {
         updateActivePoint();
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
-    } else if (md == 2) {
-        // If mouse is pressed down and at a point in selected object - move that point
-        points[sel.index].x = currentMouseCoordinateX;
-        points[sel.index].y = currentMouseCoordinateY;
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
@@ -198,9 +194,6 @@ function mousedownevt(ev) {
             symbolStartKind = diagram[lineStartObj].symbolkind;
 
         }
-
-    } else if (sel.distance < tolerance) {
-        md = 2;
     } else if (movobj != -1) {
         md = 3;
         lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
