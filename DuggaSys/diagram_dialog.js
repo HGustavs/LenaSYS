@@ -112,7 +112,8 @@ function loadLineForm(element, dir){
     file.send();
 }
 
-function loadUMLForm(){
+//Loads the appearance menu for UML-class
+function loadUMLForm(element, dir){
   var file = new XMLHttpRequest();
   file.open('GET', dir);
   file.onreadystatechange = function(){
@@ -121,6 +122,8 @@ function loadUMLForm(){
           if(globalAppearanceValue == 0){
             var attributesText;
             var oprationsText;
+            var attributesTextArea = document.getElementById('UMLAttributes');
+            var operationsTextArea = document.getElementById('UMLOperations');
             for(var i = 0; i < diagram[lastSelectedObject].attributes.length;i++){
               attributesText += diagram[lastSelectedObject].attributes[i].visibility + " " +
                                 diagram[lastSelectedObject].attributes[i].text + "\n";
@@ -129,6 +132,8 @@ function loadUMLForm(){
               operationsText += diagram[lastSelectedObject].operations[i].visibility + " " +
                                 diagram[lastSelectedObject].operations[i].text + "\n";
             }
+            attributesTextArea.value = attributesText;
+            operationsTextArea.value = operationsText;
           }
       }
   }
@@ -170,7 +175,7 @@ function objectAppearanceMenu(form) {
     form.innerHTML = "No item selected<type='text'>";
     if (diagram[lastSelectedObject].symbolkind == 1) {
         classAppearanceOpen = true;
-        loadFormIntoElement(form, 'forms/class_appearance.php');
+        loadUMLForm(form, 'forms/class_appearance.php');
     }
     if (diagram[lastSelectedObject].symbolkind == 2) {
         loadFormIntoElement(form, 'forms/attribute_appearance.php');
