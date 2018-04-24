@@ -21,7 +21,7 @@
 	<script src="accessed.js"></script>
 
 </head>
-<body onload="setup();">
+<body>
 
 	<?php
 		$noup="SECTION";
@@ -29,7 +29,7 @@
 	?>
 
 	<!-- content START -->
-		<div id="wrappall" style="border-top:0px;width:-moz-fit-content; width: fit-content;">
+		<div id="wrappall" style="border-top:0px;display:table; table-layout:auto;">
 		<div id="newbutton">
 			<?PHP
 				echo "<div class='titles' style='position:sticky;top:50px;z-index:100;background:#ffffff;padding-top:20px;padding-bottom:20px;margin-top:0px;'>";
