@@ -480,8 +480,10 @@ function isInArray(array, search)
 
 // Storing the celldata for future use. (Needed when editing and such)
 function returnedQuiz(data) {
+	
 	quizData = data;
 	var quiz = data;
+	
     var did = $('#did').val();
     quiz['entries'].forEach(function(element) {
         if(element['arrow'] == did) {
@@ -500,9 +502,14 @@ function returnedQuiz(data) {
 
 
 // Start of rendering the table
+
 var myTable;
 var myTable2;
+
+	
+
 function renderVariant(clickedElement) {
+
 	var tabledata2 = {
     	tblhead:{
     		vid:"",
@@ -587,7 +594,7 @@ function returnedDugga(data) {
 	var result = 0;
 	filez = data['files'];
 	var duggaPages = data['duggaPages'];
-
+	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 	str="";
 
 }
