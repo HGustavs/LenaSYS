@@ -1949,6 +1949,12 @@ span.arrow {
   background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
 }
 
+#resultTable td{
+  height: 1px;
+  padding: 0px;
+  border-right: 2px solid #dbd0d8;
+  border-bottom: 2px solid #dbd0d8;
+}
 /* End DuggaSys resulted*/
 /**************************/
 
@@ -2123,7 +2129,6 @@ span.arrow {
 }
 
 .dugga-pass {
-	border-left: 2px solid rgb(219, 208, 216);
 	background-color: rgb(221, 255, 238);
 }
 
@@ -2132,7 +2137,6 @@ span.arrow {
 }
 
 .dugga-pending {
-	border-left: 2px solid rgb(219, 208, 216);
 	background-color: rgb(255, 255, 221);
 }
 
@@ -2141,7 +2145,6 @@ span.arrow {
 }
 
 .dugga-fail {
-	border-left: 2px solid rgb(219, 208, 216);
 	background-color: rgb(255, 170, 170);
 }
 
@@ -2150,7 +2153,6 @@ span.arrow {
 }
 
 .dugga-assigned {
-	border-left: 2px solid rgb(219, 208, 216);
 	background-color: rgb(248, 232, 248);
 }
 .dugga-assigned-highlighted {
@@ -2158,7 +2160,7 @@ span.arrow {
 }
 
 .dugga-unassigned {
-	border-left: 2px solid rgb(219, 208, 216);
+  min-width:140px;
 }
 
 .dugga-unassigned-highlighted {

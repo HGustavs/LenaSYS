@@ -722,8 +722,9 @@ function process()
 		moments[l].momname = momname;
 	}
 
+/*
 	// Create temporary list that complies with dropdown
-	momtmp=new Array;
+  momtmp=new Array;
 	for(var l=0;l<moments.length;l++){
 		if (clist !== null ){
 			index=clist.indexOf("hdr"+moments[l].lid+"check");
@@ -731,10 +732,17 @@ function process()
 				momtmp.push(moments[l]);
 			}
 		} else {
-		/* default to show every moment/dugga */
+		// default to show every moment/dugga
 			momtmp.push(moments[l]);
 		}
 	}
+*/
+  
+  // Replaces the loop above in order to prevent filtering which is currently not working.
+  momtmp=new Array;
+  for(var l=0;l<moments.length;l++){
+    momtmp.push(moments[l]);
+  }
 
 	// Reconstitute table
 	students=new Array;
@@ -790,9 +798,9 @@ function process()
 		}
 		students.push(student);
 	}
+
 	// Update dropdown list
-    
-	var dstr="";
+  var dstr="";
 
 	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 
@@ -976,7 +984,6 @@ function toggleAll() {
       break;
     }
   }
-
 //  selectToggle.checked = anyChecked;
 }
 
@@ -1549,29 +1556,65 @@ function makeAllSortable(parent) {
 }
 
 function renderCell(col,celldata,cellid) {
-	if (col == 0){
+	// First column (Fname/Lname/SSN)
+  if (col == 0){
     str = celldata.grade;
-    str += "<div id='" + cellid + "'></div>";
     return str;
 
   } else {
-    str = "<div id='" + cellid + "', class='gradeContainer'>";
+    // color based on pass,fail,pending,assigned,unassigned
+    str = "<div style='height:100%;' class='";
+      if(celldata.kind==4) { str += "dugga-moment"; }
+      if (celldata.grade === 1 && celldata.needMarking === false) {str += "dugga-fail";}
+      else if (celldata.grade > 1) {str += " dugga-pass";}
+      else if (celldata.needMarking === true) {str += " dugga-pending"; onlyPending=false;}
+      else if (celldata.grade === 0 ) {str += " dugga-assigned";}          
+      else {str += " dugga-unassigned";}
+    str += "'>";
+    
+    // Creation of grading buttons
     if(celldata.ishere===true){
-      if (celldata.grade === null ) {
-        str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
-      } else if (celldata.grade === -1 ) {
-        str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
-      } else {
-        str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
-      }
-      str += "<img id='korf' class='fist gradeImg";
+      str += "<div class='gradeContainer'>";
+        if (celldata.grade === null ) {
+          str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+        } else if (celldata.grade === -1 ) {
+          str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+        } else {
+          str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+        }
+        str += "<img id='korf' class='fist gradeImg";
           if(celldata.userAnswer===null && !(celldata.quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
             str += " grading-hidden";
           }
-          str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");' />";
+          str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
+        str += "/>";
+      str += "</div>"
+
+      // Print submitted time and change color to red if passed deadline
+      str += "<div class='text-center'"
+        for (var p = 0; p < moments.length; p++){
+          if (moments[p].link == celldata.quizId){
+            if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)){
+              str += " style='color:red;'";
+            }
+            break;
+          }
+        }
+        str += ">";
+        if (celldata.submitted.getTime() !== timeZero.getTime()){
+          str += celldata.submitted.toLocaleDateString()+ " " + celldata.submitted.toLocaleTimeString();
+        }
+      str += "</div>";
+
+      // Print times graded
+      str += "<div class='text-center'>";
+        if(celldata.ishere===true && celldata.timesGraded!==0){
+          str += "Times Graded: " + celldata.timesGraded;
+        }
+      str += "</div>"
     } 
-  str += "</div>"
+    str += "</div>"
     return str;
   }
-  return celldata;
+return celldata;
 }
