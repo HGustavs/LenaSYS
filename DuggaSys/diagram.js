@@ -632,11 +632,15 @@ function eraseObject(object) {
     canvas.style.cursor = "default";
     var linesWithCommonPoints = [];
     if (object.kind == 2) {
-        var lines = diagram.filter(symbol => symbol.symbolkind == 4);
-        console.log("lines " + lines.length);
-        linesWithCommonPoints = lines.filter(line => line.topLeft == object.middleDivider || line.topLeft == object.centerPoint
-                                                  || line.bottomRight == object.middleDivider || line.bottomRight == object.centerPoint);
-        console.log("commonlines " + linesWithCommonPoints.length);
+        if(object.symbolkind != 4){
+            var lines = diagram.filter(symbol => symbol.symbolkind == 4);
+            console.log("lines " + lines.length);
+            linesWithCommonPoints = lines.filter(line => line.topLeft == object.middleDivider || line.topLeft == object.centerPoint
+                                                      || line.bottomRight == object.middleDivider || line.bottomRight == object.centerPoint);
+            console.log("commonlines " + linesWithCommonPoints.length);
+        }else{
+            
+        }
         object.erase();
         diagram.eraseLines(object, object.getLines());
     } else if (object.kind == 1) {
