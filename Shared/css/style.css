@@ -1022,6 +1022,11 @@ input {
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
   margin-left: -2px;
+  background-color: transparent;
+}
+
+.loginboxTr{
+  background-color: inherit !important;
 }
 
 #loginBoxTitle{
@@ -2006,7 +2011,7 @@ span.arrow {
 }
 
 #file-submit-button {
-  margin:15px 0 18px 0; 
+  margin:15px 0 18px 0;
 }
 
 #feedbackTable table {
@@ -2279,6 +2284,20 @@ span.arrow {
 }
 
 .checkmoment {
+  border-top: 1px solid #888;
+  font-weight: bold;
+}
+
+.checkbox-accessed {
+  font-size:16px;
+  max-width:280px;
+  overflow-x:hidden;
+  overflow-y: auto;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+}
+
+.accessedLine {
   border-top: 1px solid #888;
   font-weight: bold;
 }
@@ -3019,26 +3038,26 @@ ul.hamburgerList button.menuButton {
     height: 26px;
     opacity: 1.0;
   }
-  
+
   	table.navheader input.hamburger {
 	  position: absolute;
 	  top: 66px;
 	  right: 10px;
 	}
-	
+
 	table.navheader div.hamburger {
 	  position: absolute;
 	  top: 66px;
 	  right: 10px;
 	}
-	
+
 	table.navheader div.hamburgerMenu {
 	  right: 10px;
 	  top: 110px;
 	  margin-top: 0px;
 	  margin-left: 0px;
 	}
-	
+
 }
 
 @media only screen and (max-width: 320px), only screen and (max-device-width: 320px) {
@@ -3242,7 +3261,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-motd:hover { background-color: #b560d3; }
 
-.zoom-btn-motd:before { 
+.zoom-btn-motd:before {
 	top: 2%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3277,7 +3296,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-heading:hover { background-color: #d0599a; }
 
-.zoom-btn-heading:before { 
+.zoom-btn-heading:before {
 	top: 16%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3312,7 +3331,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-section:hover { background-color: #d16a72; }
 
-.zoom-btn-section:before { 
+.zoom-btn-section:before {
 	top: 30%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3347,7 +3366,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-moment:hover { background-color: #d78b50; }
 
-.zoom-btn-moment:before { 
+.zoom-btn-moment:before {
 	top: 45%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3382,7 +3401,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-test:hover { background-color: #ddae37; }
 
-.zoom-btn-test:before { 
+.zoom-btn-test:before {
 	top: 59%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3417,7 +3436,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-link:hover { background-color: #b8cd4e; }
 
-.zoom-btn-link:before { 
+.zoom-btn-link:before {
 	top: 73%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3452,7 +3471,7 @@ ul.hamburgerList button.menuButton {
 
 .zoom-btn-code:hover { background-color: #83ae55; }
 
-.zoom-btn-code:before { 
+.zoom-btn-code:before {
 	top: 87%;
 	font-weight: 600;
 	border-radius: 2px;
@@ -3543,4 +3562,3 @@ ul.hamburgerList button.menuButton {
 }
 
 .scale-transition.scale-in { transform: scale(1); }
-
