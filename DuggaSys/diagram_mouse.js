@@ -200,9 +200,7 @@ function mousedownevt(ev) {
         }
 
     } else if (sel.distance < tolerance) {
-        for (var i = 0; i < diagram.length; i++) {
-            if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) return;
-        }
+        lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
         md = 2;
     } else if (movobj != -1) {
         md = 3;
@@ -401,9 +399,11 @@ function mouseupevt(ev) {
         }
         //Sets the clicked object as targeted
         selected_objects = [];
-        selected_objects.push(diagram[lastSelectedObject]);
-        //You have to target an object when you start to draw
-        if(md != 0) diagram[lastSelectedObject].targeted = true;
+        if (lastSelectedObject >= 0) {
+            selected_objects.push(diagram[lastSelectedObject]);
+            //You have to target an object when you start to draw
+            if(md != 0) diagram[lastSelectedObject].targeted = true;
+        }
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
