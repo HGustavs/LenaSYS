@@ -639,8 +639,8 @@ function eraseObject(object) {
                         || line.topLeft == object.centerPoint
                         || line.bottomRight == object.middleDivider
                         || line.bottomRight == object.centerPoint
-                        || (object.hasConnector(line.topLeft) && object.symbolkind == 3)
-                        || (object.hasConnector(line.bottomRight) && object.symbolkind == 3)
+                        || (object.hasConnectorFromPoint(line.topLeft) && object.symbolkind == 3)
+                        || (object.hasConnectorFromPoint(line.bottomRight) && object.symbolkind == 3)
             );
             console.log("Lines to delete: " + objectsToDelete.length);
         }else{

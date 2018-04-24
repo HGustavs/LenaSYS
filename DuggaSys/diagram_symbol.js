@@ -284,6 +284,29 @@ function Symbol(kind) {
             }
         }
     }
+    
+    this.hasConnectorFromPoint = function(point) {
+        for (var i = 0; i < this.connectorTop.length; i++) {
+            if(this.connectorTop[i].from == point){
+                return true;
+            }
+        }
+        for(var i = 0; i < this.connectorRight.length; i++) {
+            if(this.connectorRight[i].from == point){
+                return true;
+            }
+        }
+        for (var i = 0; i < this.connectorBottom.length; i++) {
+            if(this.connectorBottom[i].from == point){
+                return true;
+            }
+        }
+        for (var i = 0; i < this.connectorLeft.length; i++) {
+            if(this.connectorLeft[i].from == point){
+                return true;
+            }
+        }
+    }
 
 
     //--------------------------------------------------------------------
