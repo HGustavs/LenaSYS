@@ -176,7 +176,7 @@ function mousemoveevt(ev, t) {
 
 function mousedownevt(ev) {
 
-    if(uimode == "Moved" && !ctrlIsClicked && md != 4){
+    if(uimode == "Moved" && md != 4){
         uimode = "normal";
         md = 0;
     }
