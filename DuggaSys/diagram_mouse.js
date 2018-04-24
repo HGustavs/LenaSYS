@@ -201,6 +201,12 @@ function mousedownevt(ev) {
 
     } else if (sel.distance < tolerance) {
         lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
+        for (var i = 0; i < diagram.length; i++) {
+            if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
+                md = 3;
+                return;
+            }
+        }
         md = 2;
     } else if (movobj != -1) {
         md = 3;
