@@ -637,7 +637,7 @@ function eraseObject(object) {
             console.log("lines " + lines.length);
             objectsToDelete = lines.filter(line => line.topLeft == object.middleDivider || line.topLeft == object.centerPoint
                                                     || line.bottomRight == object.middleDivider || line.bottomRight == object.centerPoint
-                                                    || object.hasConnector(line.topLeft) || object.hasConnector(bottomRight));
+                                                    || object.hasConnector(line.topLeft) || object.hasConnector(line.bottomRight));
             console.log("commonlines " + objectsToDelete.length);
         }else{
             var entities = diagram.filter(symbol => symbol.symbolkind == 3).forEach(ent => {
