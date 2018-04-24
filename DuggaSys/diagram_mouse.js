@@ -74,7 +74,7 @@ function mousemoveevt(ev, t) {
         points[sel.index].y = currentMouseCoordinateY;
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
-        if (movobj != -1) {
+        if (movobj != -1 ) {
             uimode = "Moved";
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
@@ -252,6 +252,11 @@ function mousedownevt(ev) {
 }
 
 function mouseupevt(ev) {
+
+  /*  if (snapToGrid) {
+        currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
+        currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
+    }*/
     // Code for creating a new class
     if (md == 4 && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
         resize();
