@@ -115,44 +115,21 @@ function createJSONString(formData) {
 	return jsonStr;
 }
 
-function selectVariant(vid,param,answer,template,dis)
-{
-	$("#vid").val(vid); // Set Variant ID
-	$("#parameter").val(decodeURIComponent(param)); // Set Variant parameter
-	$("#variantanswer").val(decodeURIComponent(answer)); // Set Variant answer
-
-	//Parse JSON to add data to forms again
-	var data = $("#parameter").val();
-	if(data == "" || data == "UNK"){}
-	else{
-		var result = JSON.parse(data);
-		//Adds data to forms
-		if(result["type"]!=undefined){
-			$("#type").val(result["type"]);
-		}
-
-		if(result["filelink"]!=undefined){
-			$("#filelink").val(result["filelink"]);
-		}
-
-		if(result["submissions"]!=undefined){
-			//Adds more submission rows if necessary
-			for(var i = 0; i < result["submissions"].length; i++){
-				if(i > 0 && i <= submissionRow) {
-					addSubmissionRow();
-				}
-				if(result["submissions"][i]["type"]!=undefined){
-					$("#submissionType"+i).val(result["submissions"][i]["type"]);
-				}
-				if(result["submissions"][i]["fieldname"]!=undefined){
-					$("#fieldname"+i).val(result["submissions"][i]["fieldname"]);
-				}
-				if(result["submissions"][i]["instruction"]!=undefined){
-					$("#instruction"+i).val(result["submissions"][i]["instruction"]);
-				}
+function selectVariant(vid) {
+	var target_variant;
+	globalData['entries'].forEach(element => {
+		var tempVariant = element['variants'];
+		tempVariant.forEach(variant => {
+			if (variant['vid'] == vid) {
+				target_variant = variant;
 			}
-		}
-	}
+		});
+	});
+
+	showVariantSaveButton();
+	$("#vid").val(target_variant['vid']); // Set Variant ID
+	$("#variantparameterText").val(target_variant['param']); // Set Variant ID
+	$("#variantanswerText").val(target_variant['variantanswer']); // Set Variant ID
 }
 
 function closeVariant(){
@@ -190,51 +167,13 @@ function createVariant(cid,qid)
 
 function updateVariant()
 {
-	var fieldnames = [];
-	var rows = $(".fieldnameRows").length;
+	var vid=$("#vid").val();
+	var answer=$("#variantanswerText").val();
+	var parameter=$("#variantparameterText").val();
 
-	$(".fieldnameRows").each(function(){
-		fieldnames.push($(this).val());
-		$(this).css("background-color", "white");
-	});
-	fieldnames.sort();
+	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
 
-	var correct;
-	var value = [];
-
-	//If the same fieldname has been input more than once
-	for(var i=0; i<fieldnames.length; i++){
-		if(fieldnames[i]==fieldnames[i+1]){
-			correct = "no";
-			value.push(fieldnames[i]);
-		}
-	}
-
-	//If wrong fieldnames (same name used more than once)
-	if(correct=="no"){
-		$("#submissionError").css("display", "block");
-		for(var i=0; i<rows; i++){
-			for(var j=0; j<value.length; j++){
-				if($("#fieldname"+i).val()==value[j]){
-					$("#fieldname"+i).css("background-color", "rgba(255, 0, 6, 0.2)");
-				}
-			}
-		}
-	}
-	//If correct input in forms, close box
-	else{
-		$('#parameter').val(createJSONString($('#jsonform').serializeArray()));
-		$("#editVariant").css("display","none");
-		//$("#overlay").css("display","none");
-
-		var vid=$("#vid").val();
-		var answer=$("#variantanswer").val();
-		var parameter=$("#parameter").val();
-
-		AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
-
-		closeVariant();
-	}
+	closeVariant();
 }
 
 function closeEditVariant()
@@ -541,6 +480,7 @@ function isInArray(array, search)
 
 // Storing the celldata for future use. (Needed when editing and such)
 function returnedQuiz(data) {
+	quizData = data;
 	var quiz = data;
     var did = $('#did').val();
     quiz['entries'].forEach(function(element) {
@@ -599,6 +539,7 @@ function renderVariant(clickedElement) {
 	myTable2.renderTable();
 	openVariant();
 }
+
 function returnedDugga(data) {
 	filez = data;
 	globalData = data;
@@ -733,7 +674,7 @@ function renderCell(col,celldata,cellid) {
 	else if (col == "cogwheelVariant"){
 		object=JSON.parse(celldata);
 	    str="<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
-		str+=" onclick='selectVariant()' >";
+		str+=" onclick='selectVariant("+object+")' >";
 		return str;
 	}
 
