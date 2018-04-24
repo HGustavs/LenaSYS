@@ -3218,7 +3218,7 @@ ul.hamburgerList button.menuButton {
 
 
 /* FAB container */
-.fab-container {
+.fixed-action-button {
   position: fixed;
   bottom: 45px;
   right: 24px;
@@ -3226,13 +3226,9 @@ ul.hamburgerList button.menuButton {
 }
 
 /* Small FAB buttons */
-.zoom-fab {
+.btn-floating {
   display: inline-block;
-  width: 40px;
-  height: 40px;
-  line-height: 53px;
   border-radius: 50%;
-  background-color: #fecc56;
   vertical-align: middle;
   text-decoration: none;
   text-align: center;
@@ -3240,24 +3236,37 @@ ul.hamburgerList button.menuButton {
   -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2);
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14),0 3px 1px -2px rgba(0,0,0,0.12),0 1px 5px 0 rgba(0,0,0,0.2);
   cursor: pointer;
-  color: #614875;
 }
 
-.zoom-fab:hover {
-  background-color: #ffd369;
+.fab-btn:hover {
   -webkit-box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14),0 1px 7px 0 rgba(0,0,0,0.12),0 3px 1px -1px rgba(0,0,0,0.2);
   box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14),0 1px 7px 0 rgba(0,0,0,0.12),0 3px 1px -1px rgba(0,0,0,0.2);
 }
 
+.fab-btn-sm {
+  width: 40px;
+  height: 40px;
+  line-height: 53px;
+
+}
+
+
 /* Large FAB button */
-.zoom-fab-large {
+.fab-btn-lg {
   width: 56px;
   height: 56px;
   line-height: 66px;
+  background-color: #fecc56;
+  color: #614875;
+
+}
+
+.fab-btn-lg:hover {
+	background-color: #ffd369;
 }
 
 /* FAB bubble list container */
-.zoom-list {
+.fab-btn-list {
     position: absolute;
 	left: auto;
 	width: 100%;
@@ -3266,7 +3275,7 @@ ul.hamburgerList button.menuButton {
 	bottom: 55px;
 }
 
-.zoom-list li {
+.fab-btn-list li {
   display: inline-block;
   margin-bottom: 15px;
 }
@@ -3321,40 +3330,127 @@ ul.hamburgerList button.menuButton {
 	transform-origin: right center 0;
 }
 
-/*=============================================================================================*/
-/* FAB action buttons background (Edit here to change the background color for each FAB button)*/
-/*=============================================================================================*/
-
-/* Message of the day button */
-.zoom-btn-motd { background-color: #a844cc; color: white; }
-.zoom-btn-motd:hover { background-color: #b560d3; }
+/*===============================*/
+/* FAB action buttons background */
+/*===============================*/
 
 
-/* Heading button */
-.zoom-btn-heading { background-color: #cb438d; }
-.zoom-btn-heading:hover { background-color: #d0599a; }
+/* First item */
+li:nth-last-child(1) a {
+  background-color: #6ead2a;
+  color: white;
+}
 
+li:nth-last-child(1) a:hover {
+  background-color: #83ae55;
+  color: white;
+}
 
-/* Section button */
-.zoom-btn-section { background-color: #d14d58; }
-.zoom-btn-section:hover { background-color: #d16a72; }
+/* Second item */
+li:nth-last-child(2) a {
+	background-color: #adc726;
+  color: white;
+  
+}
 
+li:nth-last-child(2) a:hover {
+  background-color: #b8cd4e;
+  color: white;
+}
 
-/* Moment button */
-.zoom-btn-moment { background-color: #dc7e34; }
-.zoom-btn-moment:hover { background-color: #d78b50; }
+/* Third item */
+li:nth-last-child(3) a {
+	background-color: #e9a901;
+  color: white;
+  
+}
 
-/* Test button */
-.zoom-btn-test { background-color: #e9a901; }
-.zoom-btn-test:hover { background-color: #ddae37; }
+li:nth-last-child(3) a:hover {
+  background-color: #ddae37;
+  color: white;
+}
 
+/* Fourth item */
+li:nth-last-child(4) a {
+	background-color: #dc7e34;
+  color: white;
+  
+}
 
-/* Link button */
-.zoom-btn-link { background-color: #adc726; color: white; }
-.zoom-btn-link:hover { background-color: #b8cd4e; }
+li:nth-last-child(4) a:hover {
+  background-color: #d78b50;
+  color: white;
+}
 
+/* Fifth item */
+li:nth-last-child(5) a {
+	background-color: #d14d58;
+  color: white;
+  
+}
 
-/* Code button */
-.zoom-btn-code { background-color: #6ead2a; }
-.zoom-btn-code:hover { background-color: #83ae55; }
+li:nth-last-child(5) a:hover {
+  background-color: #d16a72;
+  color: white;
+}
 
+/* Sixth item */
+li:nth-last-child(6) a {
+	background-color: #cb438d;
+  color: white;
+  
+}
+
+li:nth-last-child(6) a:hover {
+  background-color: #d0599a;
+  color: white;
+}
+
+/* Seventh item */
+li:nth-last-child(7) a {
+	background-color: #a844cc;
+  color: white;
+  
+}
+
+li:nth-last-child(7) a:hover {
+  background-color: #b560d3;
+  color: white;
+}
+
+/* Eighth item */
+li:nth-last-child(8) a {
+	background-color: #6f34dc;
+  color: white;
+  
+}
+
+li:nth-last-child(8) a:hover {
+  background-color: #7e4ed7;
+  color: white;
+}
+
+/* Ninth item */
+li:nth-last-child(9) a {
+	background-color: #1f65cd;
+  color: white;
+  
+}
+
+li:nth-last-child(9) a:hover {
+  background-color: #487fd1;
+  color: white;
+}
+
+/* Tenth item */
+li:nth-last-child(10) a {
+	background-color: blue;
+  color: white;
+  
+}
+
+li:nth-last-child(10) a:hover {
+	background-color: pink;
+  color: white;
+  
+}
