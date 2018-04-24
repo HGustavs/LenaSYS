@@ -75,7 +75,7 @@ pdoConnect();
       		<div style='padding:5px;'>
       			<input id='closeDugga' class='submit-button' style='display:block; float:left;' type='button' value='Cancel' onclick='closeEditDugga();' />
       			<input id='submitDugga' class='submit-button' style='display:none; float:right;' type='button' value='Submit' onclick='createDugga();' />
-      			<input id='updateDugga' class='submit-button' style='display:none; float:right;' type='button' value='Save' onclick='updateDugga();' />
+      			<input id='saveDugga' class='submit-button' style='display:none; float:right;' type='button' value='Save' onclick='updateDugga();' />
       		</div>
       </div>
 	</div>
@@ -176,13 +176,13 @@ pdoConnect();
                 <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel'
                 onclick='closeWindows();'/>
           			<input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit'
-                onclick='showVariantSaveButton(); createVariant();'/>
+                onclick='createVariant(); showVariantSaveButton();'/>
                 <input id='saveVariant' class='submit-button' style='display:none; float:right' type='button' value='Save'
                 onclick='updateVariant(); showVariantSubmitButton();'/>
                 <input id='disableVariant' class='submit-button' style='display:none; float:right' type='button' value='Disable'
-                onclick='showVariantEnableButton(); disableVariant();'/>
+                onclick='disableVariant(); showVariantEnableButton(); '/>
                 <input id='enableVariant' class='submit-button' style='display:none; float:right' type='button' value='Enable'
-                onclick='showVariantDisableButton(); enableVariant();'/>
+                onclick='enableVariant(); showVariantDisableButton();'/>
           		</div>
           </div>
 	</div>
