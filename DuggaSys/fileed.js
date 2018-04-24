@@ -145,6 +145,7 @@ function closeAddFile() {
 
 function closePreview() {
 	$(".previewWindow").css("display","none");
+    $(".previewWindowContainer").css("display", "none");
 }
 
 //------------------------------------------------------------------
