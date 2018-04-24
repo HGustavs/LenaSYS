@@ -1111,19 +1111,19 @@ function returnedSection(data)
 				}
 
 				else if (itemKind == 4) { // Moment
-	
-				if(item['gradesys'] == 0){
-					strz="";
-				}
-				else if(item['gradesys'] == 1){
-					strz="(U-G-VG)";
-				}
-				else if(item['gradesys'] == 2){
-					strz="(U-G)";
-				}
-				else if(item['gradesys'] == 3){
-					strz="(U-3-4-5)";
-				}
+
+					if(item['gradesys'] == 0){
+						strz="";
+					}
+					else if(item['gradesys'] == 1){
+						strz="(U-G-VG)";
+					}
+					else if(item['gradesys'] == 2){
+						strz="(U-G)";
+					}
+					else if(item['gradesys'] == 3){
+						strz="(U-3-4-5)";
+					}
 					str+="<div class='ellipsis nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span>"
