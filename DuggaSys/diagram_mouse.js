@@ -242,7 +242,7 @@ function mousedownevt(ev) {
         md = 4; // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
-        if(uimode != "MoveAround"){
+        if(uimode != "MoveAround" && !ctrlIsClicked){
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
             }
@@ -326,6 +326,7 @@ function mouseupevt(ev) {
         diagram.push(classB);
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
+        selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateERAttr" && md == 4) {
         erAttributeA = new Symbol(2);
         erAttributeA.name = "Attr" + diagram.length;
@@ -339,6 +340,7 @@ function mouseupevt(ev) {
         //selecting the newly created attribute and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
+        selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateEREntity" && md == 4) {
         erEnityA = new Symbol(3);
         erEnityA.name = "Entity" + diagram.length;
@@ -353,6 +355,7 @@ function mouseupevt(ev) {
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
+        selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateLine" && md == 4){
         //Code for making a line, if start and end object are different, except attributes
         if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine){
@@ -367,6 +370,7 @@ function mouseupevt(ev) {
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
             createCardinality();
             updateGraphics();
             //diagram.createAritySymbols(diagram[lastSelectedObject]);
@@ -383,6 +387,7 @@ function mouseupevt(ev) {
         //selecting the newly created relation and open the dialog menu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
+        selected_objects.push(diagram[lastSelectedObject]);
     } else if (md == 4 && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
     }

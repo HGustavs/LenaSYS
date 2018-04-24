@@ -336,6 +336,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                 this[i].targeted = false;
             }
         } else {
+            var index = selected_objects.indexOf(this[i]);
             var tempTopLeftX = points[this[i].topLeft].x;
             var tempTopLeftY = points[this[i].topLeft].y;
             var tempBottomRightX = points[this[i].bottomRight].x;
@@ -350,9 +351,13 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
                 sy < tempBottomRightY && ey > tempBottomRightY) {
-                this[i].targeted = true;
-            } else {
+                if (index < 0) {
+                    this[i].targeted = true;
+                    selected_objects.push(this[i]);
+                }
+            } else if(!ctrlIsClicked) {
                 this[i].targeted = false;
+                if (index >= 0) selected_objects.splice(index, 1);
             }
         }
     }
