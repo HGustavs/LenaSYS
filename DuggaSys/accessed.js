@@ -188,6 +188,23 @@ function changeExaminer(cid,uid,val)
 {
 	AJAXService("EXAMINER",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
 }
+function changeUsername(uid,id)
+{
+	AJAXService("USERNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
+}
+function changeSSN(uid,id)
+{
+	AJAXService("SSN",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
+}
+function changeFirstname(uid,id)
+{
+	AJAXService("FIRSTNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
+}
+function changeLastname(uid,id)
+{
+	AJAXService("LASTNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
+}
+
 
 // Sets values in the "cogwheel popup"
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
@@ -351,6 +368,23 @@ function renderCell(col,celldata,cellid) {
     }
     str = makeDropdown("changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.vers);
     return str;
+	}else if (col == "username") {
+		obj = JSON.parse(celldata);
+		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeUsername("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.username+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
+		return str;
+	}else if (col == "ssn") {
+		obj = JSON.parse(celldata);
+		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeSSN("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.ssn+"\" size=13 onclick='return false;'>";
+		return str;
+	}else if (col == "firstname") {
+		obj = JSON.parse(celldata);
+		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeFirstname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.firstname+"\" size=8 onclick='return false;'>";
+		return str;
+	}else if (col == "lastname") {
+		obj = JSON.parse(celldata);
+		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
+		return str;
+
 	}else {
 		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
@@ -412,7 +446,7 @@ function returnedAccess(data) {
 	);
 
 	myTable.renderTable();
-
+  
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	makeAllSortable();
@@ -493,6 +527,7 @@ function sortTable(table, col, reverse) {
     });
     for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
 }
+
 
 //excuted onclick button for quick searching in table
 function keyUpSearch() {

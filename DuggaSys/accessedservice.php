@@ -96,6 +96,42 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$error=$query->errorInfo();
 					$debug="Error updating user".$error[2];
 				}
+	}else if(strcmp($opt,"USERNAME")==0){
+				$query = $pdo->prepare("UPDATE user set username=:val WHERE uid=:uid");
+				$query->bindParam(':uid', $uid);
+				$query->bindParam(':val', $val);
+
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating user".$error[2];
+				}
+	}else if(strcmp($opt,"SSN")==0){
+				$query = $pdo->prepare("UPDATE user set ssn=:val WHERE uid=:uid");
+				$query->bindParam(':uid', $uid);
+				$query->bindParam(':val', $val);
+
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating user".$error[2];
+				}
+	}else if(strcmp($opt,"FIRSTNAME")==0){
+				$query = $pdo->prepare("UPDATE user set firstname=:val WHERE uid=:uid");
+				$query->bindParam(':uid', $uid);
+				$query->bindParam(':val', $val);
+
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating user".$error[2];
+				}
+	}else if(strcmp($opt,"LASTNAME")==0){
+				$query = $pdo->prepare("UPDATE user set lastname=:val WHERE uid=:uid");
+				$query->bindParam(':uid', $uid);
+				$query->bindParam(':val', $val);
+
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating user".$error[2];
+				}
 	}else if(strcmp($opt,"CHPWD")==0){
 				$query = $pdo->prepare("UPDATE user set password=:pwd, requestedpasswordchange=0 where uid=:uid;");
 				$query->bindParam(':uid', $uid);
@@ -284,10 +320,10 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
       // Adds current student to array
       array_push($examiners, $row);
 			$entry = array(
-				'username' => $row['username'],
-				'ssn' => $row['ssn'],
-				'firstname' => $row['firstname'],
-				'lastname' => $row['lastname'],
+				'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
+				'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),
+				'firstname' => json_encode(['firstname' => $row['firstname'], 'uid' => $row['uid']]),
+				'lastname' => json_encode(['lastname' => $row['lastname'], 'uid' => $row['uid']]),
 				'class' => $row['class'],
 				'modified' => $row['modified'],
 				'teacher' => $row['teacher'],
