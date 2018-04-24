@@ -21,7 +21,7 @@
 	<script src="accessed.js"></script>
 
 </head>
-<body onload="setup();">
+<body>
 
 	<?php
 		$noup="SECTION";
