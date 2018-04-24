@@ -645,13 +645,35 @@ function getConnectedLines(object) {
 
 function eraseObject(object) {
     canvas.style.cursor = "default";
+    var objectsToDelete = [];
     if (object.kind == 2) {
+        if(object.symbolkind != 4){
+            var lines = diagram.filter(symbol => symbol.symbolkind == 4);
+            objectsToDelete = lines.filter(
+                line => line.topLeft == object.middleDivider
+                        || line.topLeft == object.centerPoint
+                        || line.bottomRight == object.middleDivider
+                        || line.bottomRight == object.centerPoint
+                        || (object.hasConnectorFromPoint(line.topLeft) && object.symbolkind == 3)
+                        || (object.hasConnectorFromPoint(line.bottomRight) && object.symbolkind == 3)
+            );
+        }else{
+            diagram.filter(symbol => symbol.symbolkind == 3)
+                .filter(entity =>
+                        entity.hasConnector(object.topLeft)
+                        && entity.hasConnector(object.bottomRight))
+                    .forEach(ent => {
+                        ent.removePointFromConnector(object.topLeft);
+                        ent.removePointFromConnector(object.bottomRight);
+                    });
+        }
         object.erase();
         diagram.eraseLines(object, object.getLines());
     } else if (object.kind == 1) {
         object.erase();
     }
     diagram.deleteObject(object);
+    objectsToDelete.forEach(eraseObject);
     updateGraphics();
 }
 
