@@ -12,7 +12,6 @@ var str;
 var globalData;
 var itemToDelete;
 var typeOfItem;
-var variantData;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -116,14 +115,7 @@ function createJSONString(formData) {
 	return jsonStr;
 }
 
-function returnedVariant(data) {
-	variantData = data;
-	console.log(data);
-}
-
 function selectVariant(vid) {
-	console.log(globalData);
-
 	var target_variant;
 	globalData['entries'].forEach(element => {
 		var tempVariant = element['variants'];
