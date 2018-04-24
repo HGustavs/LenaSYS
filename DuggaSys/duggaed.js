@@ -14,7 +14,6 @@ var str;
 var globalData;
 var itemToDelete;
 var typeOfItem;
-var workINprogress;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -258,7 +257,6 @@ function updateVariant(){
 	var parameter=$("#variantparameterText").val();
 
 	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
-	renderVariant(workINprogress);
 }
 
 function deleteVariant(vid){
@@ -361,9 +359,6 @@ function returnedDugga(data) {
 
 // Table for variants
 function renderVariant(clickedElement) {
-	workINprogress = clickedElement;
-	console.log(workINprogress);
-  
 	var tabledata2 = {
     	tblhead:{
     		vid:"",
