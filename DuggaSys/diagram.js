@@ -351,9 +351,19 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
                 sy < tempBottomRightY && ey > tempBottomRightY) {
-                if (index < 0) {
-                    this[i].targeted = true;
-                    selected_objects.push(this[i]);
+                if (ctrlIsClicked) {
+                    if (index >= 0) {
+                        this[i].targeted = false;
+                        selected_objects.splice(index, 1);
+                    } else {
+                        this[i].targeted = true;
+                        selected_objects.push(this[i]);
+                    }
+                } else {
+                    if (index < 0) {
+                        this[i].targeted = true;
+                        selected_objects.push(this[i]);
+                    }
                 }
             } else if(!ctrlIsClicked) {
                 this[i].targeted = false;
