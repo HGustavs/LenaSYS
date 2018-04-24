@@ -2,6 +2,7 @@ var querystring=parseGet();
 var retdata;
 var newversid;
 var active_lid;
+var isClickedElementBox = false;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -75,7 +76,7 @@ function editSectionDialogTitle(title) {
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
 {
-	xelink=elink;
+    xelink=elink;
 	// Display Select Marker
 	$(".item").css("border","none");
 	$(".item").css("box-shadow","none");
@@ -112,7 +113,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		for(var i=0;i<retdata['entries'].length;i++){
 			var item=retdata['entries'][i];
 			if(item['kind']==4){
-				if(parseInt(moment)==parseInt(item['lid'])) str+="<option selected='selected'"
+				if(parseInt(moment)==parseInt(item['lid'])) str+="<option selected='selected' "
 				+"value='"+item['lid']+"'>"+item['entryname']+"</option>";
 				else str+="<option value='"+item['lid']+"'>"+item['entryname']+"</option>";
 			}
@@ -155,6 +156,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	if(kind==6) str+="<option selected='selected' value='6'>Group Activity</option>"
 	else str+="<option value='6'>Group Activity</option>'";
+    if(kind==7) str+="<option selected='selected' value='7'>Message</option>"
+    else str+="<option value='7'>Message</option>";
 
 	$("#type").html(str);
 
@@ -291,6 +294,12 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-numberOfGroups").css("display","block");
 		$("#inputwrapper-groupType").css("display", "block");
 	}
+    // Message
+	else if(kind ==7){
+        $("#inputwrapper-tabs").css("display","block");
+	}
+
+
 	$("#editSection").css("display","flex");
 }
 
@@ -310,7 +319,7 @@ function changedType(value)
 	$("#inputwrapper-tabs").css("display","none");
 	$("#inputwrapper-comments").css("display","none");
 	$("#inputwrapper-numberOfGroups").css("display", "none");
-
+	$("#inputwrapper-groupType").css("display", "none");
 
 	//Header(kind==0) and Section(kind==1) wont add any boxes, so no if-statements are needed for them.
 	if(kind==2){
@@ -369,6 +378,8 @@ function changedType(value)
 		$("#inputwrapper-numberOfGroups").css("display", "block");
 		$("#inputwrapper-groupType").css("display", "block");
 	}
+	//Message
+
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
@@ -485,7 +496,7 @@ function newItem()
   gradesys=$("#gradesys").val();
   comment=$("#deadlinecomment").val();
   // Storing tabs in gradesys column!
-  if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
+  if (kind==0||kind==1||kind==2||kind==5 || kind == 7) gradesys=tabs;
   AJAXService(
 		"NEW",{
 			lid:lid,
@@ -734,7 +745,7 @@ function returnedSection(data)
 			+"src='../Shared/icons/PlusS.svg'></button></div></td>";
 
         //Hamburger menu for navigation
-    	str+="<td class='hamburger'>";
+    	str+="<td class='hamburger hamburgerClickable'>";
 		str+=
 			 "<div tabindex='0' class='package'><div id='hamburgerIcon' "
 			+ "class='submit-button hamburger' onclick='hamburgerChange();"
@@ -870,7 +881,7 @@ function returnedSection(data)
 			+ "\"" + item['link'] + "\","
 			+ "\"" + momentexists + "\","
 			+ "\"" + item['gradesys'] + "\","
-			+ "\"" + item['highscoremode'] + "\","
+			+ "\"" + item['highscoremode'] + "\", null"
 			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
         str += "</div>";
     }
@@ -926,6 +937,12 @@ function returnedSection(data)
 						+ data.coursecode
 						+ "' class='link' style='display:block'>";
 				} else if(parseInt(item['kind']) === 6){
+					str+=
+						"<div id='group"
+						+ menuState.idCounter
+						+ data.coursecode
+						+ "' class='group' style='display:block'>";
+				}else if(parseInt(item['kind']) === 7){
 					str+=
 						"<div id='group"
 						+ menuState.idCounter
@@ -1100,6 +1117,8 @@ function returnedSection(data)
 						str+=" class='example item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 					}
 					kk++;
+				}else if(itemKind === 7){ //Message
+						str+= " <td class='section-message item' placeholder='" + momentexists + "' id='I"+item['lid'] + "' ";
 				}
 
 				// Close Information
@@ -1127,10 +1146,23 @@ function returnedSection(data)
 				}
 
 				else if (itemKind == 4) { // Moment
+
+					if(item['gradesys'] == 0){
+						strz="";
+					}
+					else if(item['gradesys'] == 1){
+						strz="(U-G-VG)";
+					}
+					else if(item['gradesys'] == 2){
+						strz="(U-G)";
+					}
+					else if(item['gradesys'] == 3){
+						strz="(U-3-4-5)";
+					}
 					str+="<div class='ellipsis nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span>"
-						+ item['entryname'] + "</span>"
+						+ item['entryname'] + " " + strz + " " + "</span>"
 						+ "<img src='../Shared/icons/desc_complement.svg'"
 						+ "id='arrowComp" + menuState.idCounter++ + data.coursecode
 						+ "' class='arrowComp' style='display:inline-block;'>"
@@ -1181,7 +1213,11 @@ function returnedSection(data)
 					+ "onClick='alert(\"There should be some group functionality here\");'"
 					+ 'title=' + item['entryname'] + '><span><span>' + item['entryname']
 					+ "</span></span></a></div>";
-				}
+				}else if(itemKind == 7){ // Message
+                    str +=
+                        "<span style='padding-left:5px;' title='"
+                        + item['entryname'] + "'>" + item['entryname'] + "</span>";
+                }
 
 				str+="</td>";
 
@@ -1346,6 +1382,23 @@ function returnedSection(data)
                             + "); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"'  /></td>";
 					}
+                    else if(itemKind === 7){	// Message
+                        str+=
+                            "' ><img id='dorf' class='margin-4'"
+                            + " src='../Shared/icons/Cogwheel.svg'"
+                            + " onclick='selectItem("
+                            + "\""+item['lid']+"\","
+                            + "\""+item['entryname']+"\","
+                            + "\""+item['kind']+"\","
+                            + "\""+item['visible']+"\","
+                            + "\""+item['link']+"\","
+                            + "\""+momentexists+"\","
+                            + "\""+item['gradesys']+"\","
+                            + "\""+item['highscoremode']+"\","
+                            + "\""+item['comments']+"\""
+                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + " title='Edit "+item['entryname']+"'  /></td>";
+                    }
 				}
 
 				// trashcan
@@ -1612,12 +1665,12 @@ function addOrRemoveFromArray(elementID, array) {
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation='click') {
-	if(operation == "escapePress"){
+	if(operation != "click"){
 		if(findAncestor(document.getElementById("hamburgerIcon"), "change") != null){
 			toggleHamburger();
 		}
 	}else{
-			toggleHamburger();
+		toggleHamburger();
 	}
 }
 
@@ -1677,6 +1730,19 @@ $(window).load(function() {
 });
 
 // Detects clicks
+$(document).mousedown(function(e){
+	var box = $(e.target);
+	if(box[0].classList.contains("loginBox")){ // is the clicked element a loginbox?
+		isClickedElementBox = true;
+	} else if	((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
+				&& (findAncestor(box[0], "loginBox").classList.contains("loginBox"))){
+		isClickedElementBox = true;
+	}else{
+		isClickedElementBox = false;
+	}
+});
+
+
 $(document).mouseup(function (e)
 {
 	// Click outside the FAB list
@@ -1687,14 +1753,24 @@ $(document).mouseup(function (e)
           $('.fab-btn-sm').toggleClass('scale-out');
           $('.fab-btn-list').delay(100).fadeOut(0);
 		    }
+
     }
 
     // Click outside the loginBox
     else if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
-        && $('.loginBox').has(e.target).length === 0) // ... nor a descendant of the container
-    {
+        && $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
+		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
+	{
 	    closeWindows();
         closeSelect();
 		showSaveButton();
-    }
+    }else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')){
+		hamburgerChange("notAClick");
+		closeWindows();
+		closeSelect();
+		showSaveButton();
+	}
+
+
+
 });
