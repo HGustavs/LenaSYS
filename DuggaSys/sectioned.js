@@ -2,6 +2,7 @@ var querystring=parseGet();
 var retdata;
 var newversid;
 var active_lid;
+var isClickedElementBox = false;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -1660,9 +1661,21 @@ $(window).load(function() {
 });
 
 // Detects clicks
+$(document).mousedown(function(e){
+	var box = $(e.target);
+	if(box[0].classList.contains("loginBox")){ // is the clicked element a loginbox?
+		isClickedElementBox = true;
+	} else if	((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
+				&& (findAncestor(box[0], "loginBox").classList.contains("loginBox"))){
+		isClickedElementBox = true;
+	}else{
+		isClickedElementBox = false;
+	}
+});
+
+
 $(document).mouseup(function (e)
 {
-	console.log(document.activeElement);
 	// Click outside the FAB list
     if ($('.zoom-list').is(':visible') && !$('.zoom').is(e.target) // if the target of the click isn't the container...
         && $('.zoom').has(e.target).length === 0) // ... nor a descendant of the container
@@ -1676,7 +1689,7 @@ $(document).mouseup(function (e)
     // Click outside the loginBox
     else if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
         && $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
-		&& (document.activeElement.id != "sectionname"))
+		&& (!isClickedElementBox))
 	{
 	    closeWindows();
         closeSelect();
