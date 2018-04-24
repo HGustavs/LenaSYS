@@ -12,6 +12,7 @@ var str;
 var globalData;
 var itemToDelete;
 var typeOfItem;
+var workINprogress;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"DUGGA");
 
@@ -132,29 +133,6 @@ function selectVariant(vid) {
 	$("#variantanswerText").val(target_variant['variantanswer']); // Set Variant ID
 }
 
-function closeVariant(){
-	//Hides error message
-	$("#submissionError").css("display", "none");
-	for(var i=0; i<submissionRow; i++){
-		$("#fieldname"+i).css("background-color", "white");
-	}
-	//Removes data from forms, going back to original style
-	$("#type").val("md");
-	$("#filelink").val("");
-	for(var i = 0; i < 100; i++){
-		$("#submissionType"+i).val("pdf");
-		$("#fieldname"+i).val("");
-		$("#instruction"+i).val("");
-	}
-	//Removes all submission rows
-	for(var i=0; i < submissionRow; i++){
-		$("#submissionType"+i).parent().remove();
-	}
-	submissionRow=0;
-	//Adds one submission row so that one is visible next time it's opened
-	addSubmissionRow();
-}
-
 function deleteVariant(vid)
 {
 	AJAXService("DELVARI",{cid:querystring['cid'],vid:vid,coursevers:querystring['coursevers']},"DUGGA");
@@ -170,15 +148,8 @@ function updateVariant()
 	var vid=$("#vid").val();
 	var answer=$("#variantanswerText").val();
 	var parameter=$("#variantparameterText").val();
-
 	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
-
-	closeVariant();
-}
-
-function closeEditVariant()
-{
-	$("#editVariant").css("display","none");
+	renderVariant(workINprogress);
 }
 
 
@@ -306,12 +277,12 @@ function showDuggaSaveButton(){
 
 function showVariantSubmitButton(){
   $("#submitVariant").css("display","block");
-  $("#updateVariant").css("display","none");
+  $("#saveVariant").css("display","none");
 }
 
 function showVariantSaveButton(){
   $("#submitVariant").css("display","none");
-  $("#updateVariant").css("display","block");
+  $("#saveVariant").css("display","block");
 }
 
 function showVariantEnableButton(){
@@ -440,44 +411,6 @@ function isInArray(array, search)
     return array.indexOf(search) >= 0;
 }
 
-// function showVariant(param){
-// 	var param = param;
-//     var variantId="#variantInfo" + param;
-//     var duggaId="#dugga" + param;
-//     var arrowId="#arrow" + param;
-//     var index = variant.indexOf(param);
-
-
-//     if (document.getElementById("variantInfo"+param) && document.getElementById("dugga"+param)) { // Check if dugga row and corresponding variant
-//         if(!isInArray(variant, param)){
-//              variant.push(param);
-//         }
-
-//         if($(duggaId).hasClass("selectedtr")){ // Add a class to dugga if it is not already set and hide/show variant based on class.
-//             $(variantId).hide();
-//             $(duggaId).removeClass("selectedtr");
-//             $(arrowId).html("&#9658;");
-//             if (index > -1) {
-//                variant.splice(index, 1);
-//             }
-
-//         } else {
-//             $(duggaId).addClass("selectedtr");
-//             $(variantId).slideDown();
-//             $(arrowId).html("&#x25BC;");
-//         }
-
-//         $(variantId).css("border-bottom", "1px solid gray");
-//     }
-// }
-
-// function showVariantz(param){
-//     var index = variant.indexOf(param);
-//     if(!isInArray(variant, param)){
-//          variant.push(param);
-//     }
-// }
-
 // Storing the celldata for future use. (Needed when editing and such)
 function returnedQuiz(data) {
 	
@@ -509,7 +442,9 @@ var myTable2;
 	
 
 function renderVariant(clickedElement) {
-
+	workINprogress = clickedElement;
+	console.log(workINprogress);
+  
 	var tabledata2 = {
     	tblhead:{
     		vid:"",
@@ -640,7 +575,7 @@ function renderCell(col,celldata,cellid) {
 	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
 	else if (col == "cogwheel"){
 		object=JSON.parse(celldata);
-	  str="<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
+	  	str="<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
 		str+=" onclick='showDuggaSaveButton(); selectDugga(\""+object+"\");' >";
 
 		return str;
@@ -649,7 +584,7 @@ function renderCell(col,celldata,cellid) {
 	// Placing a clickable trash can in its designated column and implementing the code behind it.
 	else if (col == "trashcan"){
 		object=JSON.parse(celldata);
-	  str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
+	  	str="<img id='dorf' src='../Shared/icons/Trashcan.svg' ";
 		str+=" onclick='confirmBox(\"openConfirmBox\",\""+object+"\",\"dugga\");' >";
 		return str;
 	}
