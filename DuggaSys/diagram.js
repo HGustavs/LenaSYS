@@ -91,6 +91,7 @@ var diagramNumberUndo = 0;              // Is used for localStorage and undo
 var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
+var classAppearanceOpen = false;
 
 var symbolStartKind;                    // Is used to store which kind of object you start on
 var symbolEndKind;                      // Is used to store which kind of object you end on

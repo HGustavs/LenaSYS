@@ -23,6 +23,7 @@ function closeAppearanceDialogMenu() {
      * Closes the dialog menu for appearance.
      */
     appearanceMenuOpen = false;
+    classAppearanceOpen = false;
     globalAppearanceValue = 0;
     hashFunction();
     $("#appearance").hide();
@@ -49,7 +50,7 @@ function clickEnterOnDialogMenu(ev) {
      */
     $(document).keypress(function (ev) {
         var container = $("#appearance");
-        if (ev.which == 13 && appearanceMenuOpen) {
+        if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen) {
             globalAppearanceValue = 0;
             closeAppearanceDialogMenu();
 
@@ -111,6 +112,38 @@ function loadLineForm(element, dir){
     file.send();
 }
 
+//Loads the appearance menu for UML-class
+function loadUMLForm(element, dir){
+  var file = new XMLHttpRequest();
+  file.open('GET', dir);
+  file.onreadystatechange = function(){
+    if(file.readyState === 4){
+      element.innerHTML = file.responseText;
+      if(globalAppearanceValue == 0){
+        var attributesText = "";
+        var operationsText = "";
+        var attributesTextArea = document.getElementById('UMLAttributes');
+        var operationsTextArea = document.getElementById('UMLOperations');
+        for(var i = 0; i < diagram[lastSelectedObject].attributes.length;i++){
+          attributesText += diagram[lastSelectedObject].attributes[i].visibility + " " +
+          diagram[lastSelectedObject].attributes[i].text;
+          if(i < diagram[lastSelectedObject].attributes.length - 1) attributesText += "\n";
+        }
+        for(var i = 0; i < diagram[lastSelectedObject].operations.length;i++){
+          operationsText += diagram[lastSelectedObject].operations[i].visibility + " " +
+          diagram[lastSelectedObject].operations[i].text
+          if(i < diagram[lastSelectedObject].operations.length - 1) operationsText += "\n";
+        }
+
+        document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+        attributesTextArea.value = attributesText;
+        operationsTextArea.value = operationsText;
+      }
+    }
+  }
+  file.send();
+}
+
 function setSelectedOption(type, value){
   if(type != null){
     for(var i = 0; i < document.getElementById(type).options.length; i++){
@@ -145,7 +178,8 @@ function objectAppearanceMenu(form) {
 
     form.innerHTML = "No item selected<type='text'>";
     if (diagram[lastSelectedObject].symbolkind == 1) {
-        loadFormIntoElement(form, 'forms/class_appearance.php');
+        classAppearanceOpen = true;
+        loadUMLForm(form, 'forms/class_appearance.php');
     }
     if (diagram[lastSelectedObject].symbolkind == 2) {
         loadFormIntoElement(form, 'forms/attribute_appearance.php');
@@ -168,7 +202,22 @@ function changeObjectAppearance(object_type){
     * USES DIALOG TO CHANGE OBJECT APPEARANCE
     */
     if(diagram[lastSelectedObject].symbolkind == 1){//UML-class appearance
-          diagram[lastSelectedObject].name = document.getElementById('nametext').value;
+      diagram[lastSelectedObject].name = document.getElementById('nametext').value;
+      var attributeLines = $('#UMLAttributes').val().split('\n');
+      var operationLines = $('#UMLOperations').val().split('\n');
+      diagram[lastSelectedObject].attributes = [];
+      diagram[lastSelectedObject].operations = [];
+
+      //Splits and inserts visibility and text for attributes and operations
+      for(var i = 0;i < attributeLines.length;i++){
+        var tempString = attributeLines[i].split(' ');
+        diagram[lastSelectedObject].attributes.push({visibility:tempString[0], text:tempString[1]});
+      }
+      for(var i = 0; i < operationLines.length; i++){
+        var tempString = operationLines[i].split(' ');
+        diagram[lastSelectedObject].operations.push({visibility:tempString[0], text:tempString[1]});
+      }
+
     } else if (diagram[lastSelectedObject].symbolkind == 4) {
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
     } else if (diagram[lastSelectedObject].kind == 1){
