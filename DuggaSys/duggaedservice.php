@@ -202,6 +202,8 @@ $entries=array();
 $files=array();
 $duggaPages = array();
 
+//fethces the coursecode and coursename so they can be used as title on the browser tab.
+//The variable is used in duggaed.js with the 'sectionedPageTitle' id
 $query = $pdo->prepare("SELECT coursename,coursecode,cid FROM course WHERE cid=:cid LIMIT 1");
 $query->bindParam(':cid', $cid);
 
