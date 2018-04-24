@@ -76,7 +76,7 @@ function editSectionDialogTitle(title) {
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
 {
-	xelink=elink;
+    xelink=elink;
 	// Display Select Marker
 	$(".item").css("border","none");
 	$(".item").css("box-shadow","none");
@@ -156,6 +156,8 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	if(kind==6) str+="<option selected='selected' value='6'>Group Activity</option>"
 	else str+="<option value='6'>Group Activity</option>'";
+    if(kind==7) str+="<option selected='selected' value='7'>Message</option>"
+    else str+="<option value='7'>Message</option>";
 
 	$("#type").html(str);
 
@@ -292,6 +294,12 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		$("#inputwrapper-numberOfGroups").css("display","block");
 		$("#inputwrapper-groupType").css("display", "block");
 	}
+    // Message
+	else if(kind ==7){
+        $("#inputwrapper-tabs").css("display","block");
+	}
+
+
 	$("#editSection").css("display","flex");
 }
 
@@ -370,6 +378,8 @@ function changedType(value)
 		$("#inputwrapper-numberOfGroups").css("display", "block");
 		$("#inputwrapper-groupType").css("display", "block");
 	}
+	//Message
+
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
@@ -475,32 +485,31 @@ function createLink()
 
 function newItem()
 {
-	tabs=$("#tabs").val();
-	lid=$("#lid").val();
-	kind=$("#type").val();
-	link=$("#link").val();
-	highscoremode=$("#highscoremode").val();
-	sectionname=$("#sectionname").val();
-	visibility=$("#visib").val();
-	moment=$("#moment").val();
-	gradesys=$("#gradesys").val();
-	comment=$("#comments").val();
-
-	// Storing tabs in gradesys column!
-	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
-	AJAXService(
-			"NEW",{
-				lid:lid,
-				kind:kind,
-				link:link,
-				sectname:sectionname,
-				visibility:visibility,
-				moment:moment,
-				gradesys:gradesys,
-				highscoremode:highscoremode,
-				comment:comment
-			},"SECTION");
-	$("#editSection").css("display","none");
+  tabs=$("#tabs").val();
+  lid=$("#lid").val();
+  kind=$("#type").val();
+  link=$("#link").val();
+  highscoremode=$("#highscoremode").val();
+  sectionname=$("#sectionname").val();
+  visibility=$("#visib").val();
+  moment=$("#moment").val();
+  gradesys=$("#gradesys").val();
+  comment=$("#deadlinecomment").val();
+  // Storing tabs in gradesys column!
+  if (kind==0||kind==1||kind==2||kind==5 || kind == 7) gradesys=tabs;
+  AJAXService(
+		"NEW",{
+			lid:lid,
+			kind:kind,
+			link:link,
+			sectname:sectionname,
+			visibility:visibility,
+			moment:moment,
+			gradesys:gradesys,
+			highscoremode:highscoremode,
+			comment:comment
+		},"SECTION");
+  $("#editSection").css("display","none");
 }
 
 function closeSelect()
@@ -813,7 +822,7 @@ function returnedSection(data)
 		str += "<div class='zoom'>"
 		str += "<a class='zoom-fab zoom-btn-large noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
 		str += "<ul class='zoom-list' style='display: none;'>"
-		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-motd scale-transition scale-out noselect' data-tooltip='Message of the day' onclick='alert(\"Under construction\")'><i class='material-icons'>format_quote</i></a></li>"
+		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-motd scale-transition scale-out' data-tooltip='Message of the day' onclick='selectItem(\"undefined\",\"New Message\",\"7\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>format_quote</i></a></li>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-heading scale-transition scale-out' data-tooltip='Heading' onclick='selectItem(\"undefined\",\"New Item\",\"0\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='heading-icon'></i></a></li>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-section scale-transition scale-out' data-tooltip='Section' onclick='selectItem(\"undefined\",\"New Item\",\"1\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='section-icon'></i></a></li>"
 		str += "<li><a class='zoom-fab zoom-btn-sm zoom-btn-moment scale-transition scale-out' data-tooltip='Moment' onclick='selectItem(\"undefined\",\"New Item\",\"4\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='moment-icon'></i></a></li>"
@@ -912,6 +921,12 @@ function returnedSection(data)
 						+ data.coursecode
 						+ "' class='link' style='display:block'>";
 				} else if(parseInt(item['kind']) === 6){
+					str+=
+						"<div id='group"
+						+ menuState.idCounter
+						+ data.coursecode
+						+ "' class='group' style='display:block'>";
+				}else if(parseInt(item['kind']) === 7){
 					str+=
 						"<div id='group"
 						+ menuState.idCounter
@@ -1086,6 +1101,8 @@ function returnedSection(data)
 						str+=" class='example item' placeholder='"+momentexists+"' id='I"+item['lid']+"' ";
 					}
 					kk++;
+				}else if(itemKind === 7){ //Message
+						str+= " <td class='section-message item' placeholder='" + momentexists + "' id='I"+item['lid'] + "' ";
 				}
 
 				// Close Information
@@ -1167,7 +1184,11 @@ function returnedSection(data)
 					+ "onClick='alert(\"There should be some group functionality here\");'"
 					+ 'title=' + item['entryname'] + '><span><span>' + item['entryname']
 					+ "</span></span></a></div>";
-				}
+				}else if(itemKind == 7){ // Message
+                    str +=
+                        "<span style='padding-left:5px;' title='"
+                        + item['entryname'] + "'>" + item['entryname'] + "</span>";
+                }
 
 				str+="</td>";
 
@@ -1332,6 +1353,23 @@ function returnedSection(data)
                             + "); editSectionDialogTitle(\"editItem\")'"
                             + " title='Edit "+item['entryname']+"'  /></td>";
 					}
+                    else if(itemKind === 7){	// Message
+                        str+=
+                            "' ><img id='dorf' class='margin-4'"
+                            + " src='../Shared/icons/Cogwheel.svg'"
+                            + " onclick='selectItem("
+                            + "\""+item['lid']+"\","
+                            + "\""+item['entryname']+"\","
+                            + "\""+item['kind']+"\","
+                            + "\""+item['visible']+"\","
+                            + "\""+item['link']+"\","
+                            + "\""+momentexists+"\","
+                            + "\""+item['gradesys']+"\","
+                            + "\""+item['highscoremode']+"\","
+                            + "\""+item['comments']+"\""
+                            + "); editSectionDialogTitle(\"editItem\")'"
+                            + " title='Edit "+item['entryname']+"'  /></td>";
+                    }
 				}
 
 				// trashcan
