@@ -7,8 +7,9 @@ include_once "../Shared/basic.php";
 /*
    $noup="NONE";
  */
+
 $error_type = "unknown service(404)";
-logServiceRequestError($error_type);
+logServiceRequestError($error_type, EventTypes::FileNotFound);
 ?>
 
 <!DOCTYPE html>

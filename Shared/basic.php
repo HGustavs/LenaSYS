@@ -276,12 +276,24 @@ function logDuggaLoadEvent($cid, $vers, $quizid, $type) {
 // Log that an error occurred when trying to access a service. Error-type example: "unknown service(404)"
 //------------------------------------------------------------------------------------------------
 
-function logServiceRequestError($error_type){
+function logServiceRequestError($error_type, $eventType){
+
+    // Set the variables userid, log_uuid and info. Needed for logServiceEvent().
+    if(isset($_SESSION['uid'])){
+        $userid=$_SESSION['uid'];
+    }else{
+        $userid="UNK";
+    }
+    $log_uuid = getOP('log_uuid');
+    $info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
+
+    // Construct the service entry.
     $service_request = $_SERVER['REQUEST_URI'];
     $service_entry = "$error_type: $service_request";
+
     logServiceEvent(
 	$log_uuid,
-	EventTypes::ServiceServerStart,
+	$EventType,
 	$service_entry,
 	$userid,
 	$info);
@@ -302,6 +314,8 @@ abstract class EventTypes {
 	const ServiceClientEnd = 8;
 	const Logout = 9;
 	const pageLoad = 10;
+    const FileNotFound = 11;
+    const PermissionDenied = 12;    
 }
 
 //------------------------------------------------------------------------------------------------
