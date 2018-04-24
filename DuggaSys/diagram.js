@@ -103,7 +103,8 @@ var ctrlIsClicked = false;
 
 function keyDownHandler(e){
     var key = e.keyCode;
-    if((key == 46 || key == 8) && !appearanceMenuOpen){
+    if(appearanceMenuOpen) return;
+    if((key == 46 || key == 8)){
         eraseSelectedObject();
     } else if(key == 32){
         //Use space for movearound
