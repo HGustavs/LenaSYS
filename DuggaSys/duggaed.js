@@ -229,12 +229,11 @@ function newVariant(){
 }
 
 function createVariant(){ //removed qid and cid
-
+	var qid = $("#did").val();
 	var answer=$("#variantanswerText").val();
 	var parameter=$("#variantparameterText").val();
-
-	AJAXService("ADDVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
-	// AJAXService("ADDVARI",{cid:cid,qid:qid,coursevers:querystring['coursevers']},"DUGGA");
+	
+	AJAXService("ADDVARI",{cid:querystring['cid'],qid:qid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function selectVariant(vid) {
@@ -291,6 +290,7 @@ function confirmBox(operation, item, type) {
 function returnedQuiz(data) {
 	quizData = data;
 	var quiz = data;
+	
 	
     var did = $('#did').val();
     quiz['entries'].forEach(function(element) {
@@ -398,6 +398,7 @@ function renderVariant(clickedElement) {
 	);
 	myTable2.renderTable();
 	newVariant();
+	$('#did').val(globalData['entries'][clickedElement].arrow);
 }
 
 // Rendring specific cells

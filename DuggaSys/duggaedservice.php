@@ -71,11 +71,14 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		}catch (PDOException $e){
 						// Error handling to $debug
 		}
+
 	}else if(strcmp($opt,"ADDVARI")===0){
-		$querystring="INSERT INTO variant(quizID,creator,disabled) VALUES (:qid,:uid,0)";
+		$querystring="INSERT INTO variant(quizID,creator,disabled, param, variantanswer) VALUES (:qid,:uid,0, :param, :variantanswer)";
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':qid', $qid);
 		$stmt->bindParam(':uid', $userid);
+		$stmt->bindParam(':param', $param);
+		$stmt->bindParam(':variantanswer', $answer);
 
 		if(!$stmt->execute()) {
 			$error=$stmt->errorInfo();
