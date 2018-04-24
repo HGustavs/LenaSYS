@@ -2,6 +2,7 @@ var querystring=parseGet();
 var retdata;
 var newversid;
 var active_lid;
+var isClickedElementBox = false;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -112,7 +113,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 		for(var i=0;i<retdata['entries'].length;i++){
 			var item=retdata['entries'][i];
 			if(item['kind']==4){
-				if(parseInt(moment)==parseInt(item['lid'])) str+="<option selected='selected'"
+				if(parseInt(moment)==parseInt(item['lid'])) str+="<option selected='selected' "
 				+"value='"+item['lid']+"'>"+item['entryname']+"</option>";
 				else str+="<option value='"+item['lid']+"'>"+item['entryname']+"</option>";
 			}
@@ -319,7 +320,7 @@ function changedType(value)
 	$("#inputwrapper-tabs").css("display","none");
 	$("#inputwrapper-comments").css("display","none");
 	$("#inputwrapper-numberOfGroups").css("display", "none");
-
+	$("#inputwrapper-groupType").css("display", "none");
 
 	//Header(kind==0) and Section(kind==1) wont add any boxes, so no if-statements are needed for them.
 	if(kind==2){
@@ -745,7 +746,7 @@ function returnedSection(data)
 			+"src='../Shared/icons/PlusS.svg'></button></div></td>";
 
         //Hamburger menu for navigation
-    	str+="<td class='hamburger'>";
+    	str+="<td class='hamburger hamburgerClickable'>";
 		str+=
 			 "<div tabindex='0' class='package'><div id='hamburgerIcon' "
 			+ "class='submit-button hamburger' onclick='hamburgerChange();"
@@ -865,7 +866,7 @@ function returnedSection(data)
 			+ "\"" + item['link'] + "\","
 			+ "\"" + momentexists + "\","
 			+ "\"" + item['gradesys'] + "\","
-			+ "\"" + item['highscoremode'] + "\","
+			+ "\"" + item['highscoremode'] + "\", null"
 			+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
         str += "</div>";
     }
@@ -1630,12 +1631,12 @@ function addOrRemoveFromArray(elementID, array) {
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation='click') {
-	if(operation == "escapePress"){
+	if(operation != "click"){
 		if(findAncestor(document.getElementById("hamburgerIcon"), "change") != null){
 			toggleHamburger();
 		}
 	}else{
-			toggleHamburger();
+		toggleHamburger();
 	}
 }
 
@@ -1694,6 +1695,19 @@ $(window).load(function() {
 });
 
 // Detects clicks
+$(document).mousedown(function(e){
+	var box = $(e.target);
+	if(box[0].classList.contains("loginBox")){ // is the clicked element a loginbox?
+		isClickedElementBox = true;
+	} else if	((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
+				&& (findAncestor(box[0], "loginBox").classList.contains("loginBox"))){
+		isClickedElementBox = true;
+	}else{
+		isClickedElementBox = false;
+	}
+});
+
+
 $(document).mouseup(function (e)
 {
 	// Click outside the FAB list
@@ -1703,15 +1717,24 @@ $(document).mouseup(function (e)
         if (!$('.zoom-btn-sm').hasClass('scale-out')) {
           $('.zoom-btn-sm').toggleClass('scale-out');
           $('.zoom-list').delay(100).fadeOut(0);
-		    }
+	  	}
     }
 
     // Click outside the loginBox
     else if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
-        && $('.loginBox').has(e.target).length === 0) // ... nor a descendant of the container
-    {
+        && $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
+		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
+	{
 	    closeWindows();
         closeSelect();
 		showSaveButton();
-    }
+    }else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')){
+		hamburgerChange("notAClick");
+		closeWindows();
+		closeSelect();
+		showSaveButton();
+	}
+
+
+
 });

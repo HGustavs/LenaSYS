@@ -38,6 +38,9 @@ $coursevers = getOP('coursevers');
 $cogwheel = getOP('id');
 $trashcan = getOP('id');
 
+$coursecode=getOP('coursecode');
+$coursename=getOP('coursename');
+
 $debug="NONE!";
 
 $log_uuid = getOP('log_uuid');
@@ -198,6 +201,26 @@ $mass=array();
 $entries=array();
 $files=array();
 $duggaPages = array();
+
+//fethces the coursecode and coursename so they can be used as title on the browser tab.
+//The variable is used in duggaed.js with the 'sectionedPageTitle' id
+$query = $pdo->prepare("SELECT coursename,coursecode,cid FROM course WHERE cid=:cid LIMIT 1");
+$query->bindParam(':cid', $cid);
+
+$coursename = "Course not Found!";
+$coursecode = "Coursecode not found!";
+
+if($query->execute()) {
+	foreach($query->fetchAll() as $row) {
+		$coursename=$row['coursename'];
+		$coursecode=$row['coursecode'];
+	}
+} else {
+	$error=$query->errorInfo();
+	$debug="Error reading entries".$error[2];
+}
+
+
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qstart,deadline,qrelease,modified,vers FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;");
@@ -228,7 +251,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 				'modified' => $rowz['modified'],
 				'disabled' => $rowz['disabled'],
 				'cogwheelVariant' => $rowz['vid'],
-				'trashcanVariant' => $rowz['vid'],
+				'trashcanVariant' => $rowz['vid']
 				);
 
 			array_push($mass, $entryz);
@@ -262,11 +285,17 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 	}
 }
 
+
+
 $array = array(
 	'entries' => $entries,
 	'debug' => $debug,
 	'files' => $files,
-	'duggaPages' => $duggaPages
+	'duggaPages' => $duggaPages,
+	'coursecode' => $coursecode,
+	'coursename' => $coursename
+	
+
 );
 
 echo json_encode($array);

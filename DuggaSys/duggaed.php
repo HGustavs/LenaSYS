@@ -10,7 +10,7 @@ pdoConnect();
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Dugga editor</title>
+	<title id="sectionedPageTitle">Dugga editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
   <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
@@ -177,8 +177,8 @@ pdoConnect();
                 onclick='closeWindows();'/>
           			<input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit'
                 onclick='showVariantSaveButton(); createVariant();'/>
-                <input id='updateVariant' class='submit-button' style='display:none; float:right' type='button' value='Save'
-                onclick='showVariantSubmitButton(); updateVariant();'/>
+                <input id='saveVariant' class='submit-button' style='display:none; float:right' type='button' value='Save'
+                onclick='updateVariant(); showVariantSubmitButton();'/>
                 <input id='disableVariant' class='submit-button' style='display:none; float:right' type='button' value='Disable'
                 onclick='showVariantEnableButton(); disableVariant();'/>
                 <input id='enableVariant' class='submit-button' style='display:none; float:right' type='button' value='Enable'
