@@ -110,7 +110,6 @@ pdoConnect();
 								padding-top:50px;
 								padding-bottom:50px;
 								text-align:center;
-								
 								top:0;'> 
 									Result
 		</h3>

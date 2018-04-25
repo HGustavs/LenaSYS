@@ -1519,10 +1519,10 @@ function renderCell(col,celldata,cellid) {
     str = "<div style='height:100%;' class='";
       if(celldata.kind==4) { str += "dugga-moment "; }
       if (celldata.grade === 1) {str += "dugga-fail";}
-      else if (celldata.grade > 1) {str += " dugga-pass";}
-      else if (celldata.needMarking === true) {str += " dugga-pending"; onlyPending=false;}
-      else if (celldata.grade === 0 ) {str += " dugga-assigned";}          
-      else {str += " dugga-unassigned";}
+      else if (celldata.grade > 1) {str += "dugga-pass";}
+      else if (celldata.needMarking === true) {str += "dugga-pending"; onlyPending=false;}
+      else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
+      else {str += "dugga-unassigned";}
     str += "'>";
     
     // Creation of grading buttons
