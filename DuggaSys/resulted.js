@@ -1219,31 +1219,27 @@ function hoverResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 
 function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid)
 {
-
-    $("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
-
-    var menu = "<div class='' style='width:100px;display:block;'>";
-    menu += "<div class='loginBoxheader'>";
-    menu += "<h3>Grade</h3>";
-    menu += "</div>";
-    menu += "<table>";
-    menu += "<tr><td>";
-    if ((foundgrade === null && submitted === null )) {
-      menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I", parseInt(qvariant), parseInt(qid));
-    }else if (foundgrade == -1){
-      menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "IFeedback", parseInt(qvariant), parseInt(qid));
-    }else if (foundgrade !== null){
-      menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "U", parseInt(qvariant), parseInt(qid));
-    }else {
-      menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "U", parseInt(qvariant), parseInt(qid));
-    }
-    menu += "</td></tr>";
-    menu += "</table>";
-    menu += "</div> <!-- Menu Dialog END -->";
-    document.getElementById('markMenuPlaceholder').innerHTML=menu;
-
-    AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid, coursevers : vers }, "RESULT");
-    
+	$("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
+	var menu = "<div class='' style='width:100px;display:block;'>";
+	menu += "<div class='loginBoxheader'>";
+	menu += "<h3>Grade</h3>";
+	menu += "</div>";
+	menu += "<table>";
+	menu += "<tr><td>";
+	if ((foundgrade === null && submitted === null )) {
+		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I", parseInt(qvariant), parseInt(qid));
+	}else if (foundgrade == -1){
+		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "IFeedback", parseInt(qvariant), parseInt(qid));
+	}else if (foundgrade !== null){
+		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), parseInt(foundgrade), "U", parseInt(qvariant), parseInt(qid));
+	}else {
+		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "U", parseInt(qvariant), parseInt(qid));
+	}
+	menu += "</td></tr>";
+	menu += "</table>";
+	menu += "</div> <!-- Menu Dialog END -->";
+	document.getElementById('markMenuPlaceholder').innerHTML=menu;
+	AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid, coursevers : vers }, "RESULT");
 }
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire)
@@ -1378,48 +1374,25 @@ function saveResponse()
 //----------------------------------------
 
 function returnedResults(data)
-{  
-console.log(data);
+{
   if (data.gradeupdated === true){
-      // Update background color
-      $("#u"+data.duggauser+"_d"+data.duggaid).removeClass("dugga-fail dugga-pending dugga-assigned dugga-unassigned");
-      if (data.results != "1"){
-          $("#u"+data.duggauser+"_d"+data.duggaid).addClass("dugga-pass");
-      } else {
-          $("#u"+data.duggauser+"_d"+data.duggaid).addClass("dugga-fail");
-      }
-      // Find the array row for updated grade in our local data structure "students"
-      var rowpos=-1;
-      var dpos=-1;
-      for (var t=0;t<students.length;t++){
-          if (students[t][1].uid == data.duggauser) {
-              rowpos=t;
-              for (var j=0;j<students[t].length;j++){
-                  if (students[t][j].lid == data.duggaid){
-                    dpos=j;
-                    students[t][j].grade = parseInt(data.results);
-                    break;
-                  }
-              }
-              break;
+    // Find the array row for updated grade in our local data structure "students"
+    var rowpos=-1;
+    var dpos=-1;
+    for (var t=0;t<students.length;t++){
+      if (students[t][1].uid == data.duggauser) {
+        rowpos=t;
+        for (var j=0;j<students[t].length;j++){
+          if (students[t][j].lid == data.duggaid){
+            dpos=j;
+            students[t][j].grade = parseInt(data.results);
+            break;
           }
-      }
-
-      if(rowpos !== -1){
-        // Regenerate the marking buttons to reflect the new grade
-        var tst = makeSelect(students[rowpos][dpos].gradeSystem, querystring['cid'], students[rowpos][dpos].vers, parseInt(data.duggaid), parseInt(data.duggauser), parseInt(data.results), 'U', null, null);
-        tst += "<img id='korf' class='fist gradeImg";
-        //console.log(students[rowpos][dpos]);
-        if(students[rowpos][dpos].userAnswer===null){
-          tst += " grading-hidden";
         }
-        tst +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + students[rowpos][dpos].vers + "\",\"" + students[rowpos][dpos].lid + "\",\"" + students[rowpos][0].firstname + "\",\"" + students[rowpos][0].lastname + "\",\"" + students[rowpos][dpos].uid + "\",\"" + students[rowpos][dpos].submitted + "\",\"" + students[rowpos][dpos].marked + "\",\"" + students[rowpos][dpos].grade + "\",\"" + students[rowpos][dpos].gradeSystem + "\",\"" + students[rowpos][dpos].lid + "\");' />";
-
-        $("#u"+data.duggauser+"_d"+data.duggaid+" > .gradeContainer").html(tst);
-      } else {
-        alert("Error updating result");
+        break;
       }
-      testSortable(data);
+    }
+    createSortableTable(data);
   } else {
 
     entries=data.entries;
@@ -1457,12 +1430,11 @@ console.log(data);
     } else {
         // Process and render filtered data
       process();
-  		testSortable(data);
+  		createSortableTable(data);
     }
   }
   // Upgrade the most bottom row with amount of ungraded duggas per column.
   updateAmountOfUngraded();
-
 }
 
 function miniMode(){
@@ -1488,7 +1460,6 @@ function buildDynamicHeaders() {
 }
 
 function buildStudentInfo() {
-	
 	students.forEach(function(entry) {
 		if(entry.length > 1) {
 			var row = {0:entry[0]};
@@ -1499,10 +1470,9 @@ function buildStudentInfo() {
 		}
 	});
 	return studentInfo;
-	
 }
 
-function testSortable(data){
+function createSortableTable(data){
   studentInfo = new Array;
 	let tblhead = buildDynamicHeaders();
 	studentInfo = buildStudentInfo();
@@ -1512,10 +1482,6 @@ function testSortable(data){
 		tblbody: studentInfo,
 		tblfoot:[]
 	}
-	console.log("studentInfo:");
-  console.log(studentInfo);
-  console.log("students:")
-	console.log(students);
 	
 	myTable = new SortableTable(
 		tabledata,
@@ -1542,7 +1508,6 @@ function testSortable(data){
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	makeAllSortable();
-	//console.log(data);
 }
 
 

@@ -303,7 +303,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 //------------------------------------------------------------------------------------------------
 
 // Don't retreive all results if request was for a single dugga or a grade update
-if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
+if(strcmp($opt,"CHGR")!==0){
 	if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 		// Users connected to the current course version
 		/*
