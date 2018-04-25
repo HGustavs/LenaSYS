@@ -5,9 +5,12 @@
 include_once "../Shared/basic.php";
 //pdoConnect();
 /*
-$noup="NONE";
-*/
+   $noup="NONE";
+ */
+$error_type = "permission denied(403)";
+logServiceRequestError($error_type, EventTypes::PermissionDenied);
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
