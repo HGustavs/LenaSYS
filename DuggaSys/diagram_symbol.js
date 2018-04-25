@@ -17,6 +17,7 @@ function Symbol(kind) {
     this.strokeColor = '#000000';   // change standard line color
     this.font = "Arial";             // set the standard font
     this.lineWidth = 2;
+    this.fontColor = '#000000';
     this.name = "New Class";        // Default name is new class
     this.key_type = "normal";       // Defult key tyoe for a class.
     this.sizeOftext = "Tiny";       // Used to set size of text.
@@ -29,8 +30,7 @@ function Symbol(kind) {
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
     this.cardinality = [
-      {"x": null, "y": null, "value": null, "side": null},
-      {"x": null, "y": null, "value": null, "side": null}
+      {"value": null, "isCorrectSide": null}
     ];
 
     // Connector arrays - for connecting and sorting relationships between diagram objects
@@ -192,26 +192,26 @@ function Symbol(kind) {
         } else if (this.symbolkind == 1) {
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
-            // If middle divider is below y2 set y2 to middle divider
-            if (points[this.middleDivider].y > points[this.bottomRight].y) {
-                points[this.bottomRight].y = points[this.middleDivider].y;
+
+            if(points[this.bottomRight].y-points[this.topLeft].y < classTemplate.height){
+                points[this.topLeft].y = points[this.middleDivider].y - (classTemplate.height/2);
+                points[this.bottomRight].y = points[this.middleDivider].y + (classTemplate.height/2);
             }
-            // If bottom right is below 0 set bottom right to top left
-            if (hw < 0) {
-                points[this.bottomRight].x = points[this.topLeft].x + 150;
+            if(points[this.bottomRight].y < points[this.middleDivider].y || points[this.topLeft].y > points[this.middleDivider].y){
+                points[this.middleDivider].y = points[this.topLeft].y + (classTemplate.height/2);
             }
-            // If top left is below middle divider set top left to middle divider
-            if (points[this.topLeft].y > points[this.middleDivider].y) {
-                points[this.topLeft].y = points[this.middleDivider].y;
+            if(points[this.bottomRight].x-points[this.topLeft].x < classTemplate.width){
+                points[this.topLeft].x = points[this.middleDivider].x - (classTemplate.width/2);
+                points[this.bottomRight].x = points[this.middleDivider].x + (classTemplate.width/2);
             }
         } else if (this.symbolkind == 5){
-            // Static size of relation. Makes resizing of relation impossible.
-            points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
-            points[this.topLeft].y = points[this.middleDivider].y-relationTemplate.height/2;
-            points[this.bottomRight].x = points[this.middleDivider].x+relationTemplate.width/2;
-            points[this.bottomRight].y = points[this.middleDivider].y+relationTemplate.height/2;
+                // Static size of relation. Makes resizing of relation impossible.
+                points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
+                points[this.topLeft].y = points[this.middleDivider].y-relationTemplate.height/2;
+                points[this.bottomRight].x = points[this.middleDivider].x+relationTemplate.width/2;
+                points[this.bottomRight].y = points[this.middleDivider].y+relationTemplate.height/2;
+            }
         }
-    }
 
     //--------------------------------------------------------------------
     // Sorts the connector
@@ -260,6 +260,54 @@ function Symbol(kind) {
         this.sortConnector(this.connectorTop, 2, x1, x2, y1);
         this.sortConnector(this.connectorBottom, 2, x1, x2, y2);
     }
+
+    //return true if connector contains a certain point
+    this.hasConnector = function(point) {
+        for (var i = 0; i < this.connectorTop.length; i++) {
+            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
+                return true;
+            }
+        }
+        for(var i = 0; i < this.connectorRight.length; i++) {
+            if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
+                return true;
+            }
+        }
+        for (var i = 0; i < this.connectorBottom.length; i++) {
+            if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
+                return true;
+            }
+        }
+        for (var i = 0; i < this.connectorLeft.length; i++) {
+            if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
+                return true;
+            }
+        }
+    }
+    
+    this.hasConnectorFromPoint = function(point) {
+        for (var i = 0; i < this.connectorTop.length; i++) {
+            if(this.connectorTop[i].from == point){
+                return true;
+            }
+        }
+        for(var i = 0; i < this.connectorRight.length; i++) {
+            if(this.connectorRight[i].from == point){
+                return true;
+            }
+        }
+        for (var i = 0; i < this.connectorBottom.length; i++) {
+            if(this.connectorBottom[i].from == point){
+                return true;
+            }
+        }
+        for (var i = 0; i < this.connectorLeft.length; i++) {
+            if(this.connectorLeft[i].from == point){
+                return true;
+            }
+        }
+    }
+
 
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
@@ -358,21 +406,23 @@ function Symbol(kind) {
     // Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
-        points[this.topLeft].x += movex;
-        points[this.topLeft].y += movey;
-        points[this.bottomRight].x += movex;
-        points[this.bottomRight].y += movey;
-        if (this.symbolkind == 1 || this.symbolkind == 5) {
-            points[this.middleDivider].x += movex;
-            points[this.middleDivider].y += movey;
-        } else if (this.symbolkind == 2) {
-            points[this.centerPoint].x += movex;
-            points[this.centerPoint].y += movey;
-        } else if (this.symbolkind == 3) {
-            for (var i = 0; i < this.arity.length; i++) {
-                for (var j = 0; j < this.arity[i].length; j++) {
-                    this.arity[i][j].x += movex;
-                    this.arity[i][j].y += movey;
+        if(this.symbolkind != 4){
+            points[this.topLeft].x += movex;
+            points[this.topLeft].y += movey;
+            points[this.bottomRight].x += movex;
+            points[this.bottomRight].y += movey;
+            if (this.symbolkind == 1 || this.symbolkind == 5) {
+                points[this.middleDivider].x += movex;
+                points[this.middleDivider].y += movey;
+            } else if (this.symbolkind == 2) {
+                points[this.centerPoint].x += movex;
+                points[this.centerPoint].y += movey;
+            } else if (this.symbolkind == 3) {
+                for (var i = 0; i < this.arity.length; i++) {
+                    for (var j = 0; j < this.arity[i].length; j++) {
+                        this.arity[i][j].x += movex;
+                        this.arity[i][j].y += movey;
+                    }
                 }
             }
         }
@@ -392,18 +442,26 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.emptyConnectors = function () {
         for (var i = 0; i < this.connectorTop.length; i++) {
+            //points[this.connectorTop[i].to] = "";
+            points[this.connectorTop[i].from] = "";
             this.connectorTop.splice(i, 1);
             i--;
         }
         for(var i = 0; i < this.connectorRight.length; i++) {
+            //points[this.connectorRight[i].to] = "";
+            points[this.connectorRight[i].from] = "";
             this.connectorRight.splice(i, 1);
             i--;
         }
         for (var i = 0; i < this.connectorBottom.length; i++) {
+            //points[this.connectorBottom[i].to] = "";
+            points[this.connectorBottom[i].from] = "";
             this.connectorBottom.splice(i, 1);
             i--;
         }
         for (var i = 0; i < this.connectorLeft.length; i++) {
+            //points[this.connectorLeft[i].to] = "";
+            points[this.connectorLeft[i].from] = "";
             this.connectorLeft.splice(i, 1);
             i--;
         }
@@ -428,6 +486,8 @@ function Symbol(kind) {
         var broken = false;
         for(var i = 0; i < this.connectorTop.length; i++){
             if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
+                if(this.connectorTop[i].to == point) points[this.connectorTop[i].to] = "";
+                else points[this.connectorTop[i].from] = "";
                 this.connectorTop.splice(i,1);
                 broken = true;
                 break;
@@ -436,18 +496,24 @@ function Symbol(kind) {
         if(!broken){
             for(var i = 0; i < this.connectorBottom.length; i++){
                 if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
+                    if(this.connectorBottom[i].to == point) points[this.connectorBottom[i].to] = "";
+                    else points[this.connectorBottom[i].from] = "";
                     this.connectorBottom.splice(i,1);
                     break;
                 }
             }
             for(var i = 0; i < this.connectorRight.length; i++){
                 if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
+                    if(this.connectorRight[i].to == point) points[this.connectorRight[i].to] = "";
+                    else points[this.connectorRight[i].from] = "";
                     this.connectorRight.splice(i,1);
                     break;
                 }
             }
             for(var i = 0; i < this.connectorLeft.length; i++){
                 if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
+                    if(this.connectorLeft[i].to == point) points[this.connectorLeft[i].to] = "";
+                    else points[this.connectorLeft[i].from] = "";
                     this.connectorLeft.splice(i,1);
                     break;
                 }
@@ -547,8 +613,6 @@ function Symbol(kind) {
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
 
-
-
         ctx.save();
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -593,10 +657,29 @@ function Symbol(kind) {
     {
         var midy = points[this.middleDivider].y;
         ctx.font = "bold " + parseInt(textsize) + "px Arial";
+
         // Clear Class Box
         ctx.fillStyle = "#fff";
-        ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+        ctx.lineWidth = this.lineWidth;
+        // Box
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y1);
+        ctx.lineTo(x2, y2);
+        ctx.lineTo(x1, y2);
+        ctx.lineTo(x1, y1);
+        makeShadow();
+        ctx.closePath();
+        // Top Divider
+        ctx.moveTo(x1, y1 + (this.textsize * 1.5));
+        ctx.lineTo(x2, y1 + (this.textsize * 1.5));
+        // Middie Divider
+        ctx.moveTo(x1, midy);
+        ctx.lineTo(x2, midy);
+        ctx.stroke();
+        ctx.clip();
 
+        ctx.fillStyle = this.fontColor;
         // Write Class Name
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -614,44 +697,14 @@ function Symbol(kind) {
         ctx.textAlign = "start";
         ctx.textBaseline = "top";
         ctx.font = parseInt(this.textsize) + "px Arial";
-        // Clipping of text and drawing of attributes
-        ctx.beginPath();
-        ctx.moveTo(x1, y1 + (this.textsize * 1.5));
-        ctx.lineTo(x2, y1 + (this.textsize * 1.5));
-        ctx.lineTo(x2, midy);
-        ctx.lineTo(x1, midy);
-        ctx.lineTo(x1, y1 + (this.textsize * 1.5));
-        ctx.clip();
+
         for (var i = 0; i < this.attributes.length; i++) {
             ctx.fillText(this.attributes[i].visibility + " " + this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
         }
-        // Clipping of text and drawing of methods
-        ctx.beginPath();
-        ctx.moveTo(x1, midy);
-        ctx.lineTo(x2, midy);
-        ctx.lineTo(x2, y2);
-        ctx.lineTo(x1, y2);
-        ctx.lineTo(x1, midy);
-        ctx.clip();
-        ctx.textAlign = "start";
-        ctx.textBaseline = "top";
+
         for (var i = 0; i < this.operations.length; i++) {
             ctx.fillText(this.operations[i].visibility + " " + this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
         }
-        // Box
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y1);
-        ctx.lineTo(x2, y2);
-        ctx.lineTo(x1, y2);
-        ctx.lineTo(x1, y1);
-        // Top Divider
-        ctx.moveTo(x1, y1 + (this.textsize * 1.5));
-        ctx.lineTo(x2, y1 + (this.textsize * 1.5));
-        // Middie Divider
-        ctx.moveTo(x1, midy);
-        ctx.lineTo(x2, midy);
-        ctx.stroke();
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2){
@@ -659,18 +712,23 @@ function Symbol(kind) {
         ctx.lineWidth = this.lineWidth;
         //This is a temporary solution to the black symbol problem
 
-        drawOval(x1, y1, x2, y2);
 
-        ctx.fill();
-        makeShadow();
-
-        //drawing a multivalue attribute
+        // Drawing a multivalue attribute
         if (this.key_type == 'Multivalue') {
-            ctx.stroke();
             drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
+            ctx.stroke();
+            makeShadow();
+            drawOval(x1, y1, x2, y2);
+        // Drawing a normal attribute
+        } else {
+            drawOval(x1, y1, x2, y2);
+
+            ctx.fill();
+            makeShadow();
         }
+
         //drawing an derived attribute
-        else if (this.key_type == 'Drive') {
+        if (this.key_type == 'Drive') {
             ctx.setLineDash([5, 4]);
         }
         else if (this.key_type == 'Primary key') {
@@ -692,7 +750,6 @@ function Symbol(kind) {
 
     this.drawEntity = function(x1, y1, x2, y2){
         ctx.fillStyle = this.symbolColor;
-
         ctx.beginPath();
         if (this.key_type == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
@@ -712,57 +769,52 @@ function Symbol(kind) {
         ctx.clip();
         ctx.stroke();
 
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y1);
-    ctx.lineTo(x2, y2);
-    ctx.lineTo(x1, y2);
-    ctx.lineTo(x1, y1);
-    ctx.closePath();
-    makeShadow();
-    ctx.clip();
-    ctx.stroke();
-
-    ctx.fillStyle = this.fontColor;
-    ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-    ctx.font = parseInt(textsize) + "px " + this.font;
-}
-
-this.drawLine = function(x1, y1, x2, y2){
-    //Checks if there is cardinality set on this object
-    if((this.cardinality[0].x != null && this.cardinality[0].y != null) ||
-        (this.cardinality[1].x != null && this.cardinality[1].y != null)){
-        //Updates the x and y position depending on which side the cardinality is on
-        ctx.fillStyle = '#000'; 
-
-        this.cardinality[0].x = x1 > x2 ? x2+10 : x2-10;
-        this.cardinality[0].y = y1 > y2 ? y2+10 : y2-10;
-        ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
-
-        this.cardinality[1].x = x1 > x2 ? x1-10 : x1+10;
-        this.cardinality[1].y = y1 > y2 ? y1-10 : y1+10;
-        ctx.fillText(this.cardinality[1].value, this.cardinality[1].x, this.cardinality[1].y);
+        ctx.fillStyle = this.fontColor;
+        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        ctx.font = parseInt(textsize) + "px " + this.font;
     }
 
+    this.drawLine = function(x1, y1, x2, y2){
+        //Checks if there is cardinality set on this object
+        if(this.cardinality[0].value != "" && this.cardinality[0].value != null){
+            //Updates x and y position
+            ctx.fillStyle = '#000';
+            if(this.cardinality[0].isCorrectSide)
+            {
+                this.cardinality[0].x = x1 > x2 ? x1-10 : x1+10;
+                this.cardinality[0].y = y1 > y2 ? y1-10 : y1+10;
+            }
+            else
+            {
+                this.cardinality[0].x = x2 > x1 ? x2-10 : x2+10;
+                this.cardinality[0].y = y2 > y1 ? y2-10 : y2+10;
+            }
+            ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+        }
 
-    ctx.lineWidth = this.lineWidth;
-    if (this.key_type == "Forced") {
-        //Draw a thick black line
-        ctx.lineWidth = this.lineWidth*3;
+
+        ctx.lineWidth = this.lineWidth;
+        if (this.key_type == "Forced") {
+            //Draw a thick black line
+            ctx.lineWidth = this.lineWidth*3;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            //Draw a white line in the middle to simulate space (2 line illusion);
+            ctx.lineWidth = this.lineWidth;
+            ctx.strokeStyle = "#fff";
+        }
+        else if (this.key_type == "Derived") {
+            ctx.lineWidth = this.lineWidth * 2;
+            ctx.setLineDash([5, 4]);
+        }
+
         ctx.beginPath();
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
     }
-    else if (this.key_type == "Derived") {
-        ctx.lineWidth = this.lineWidth * 2;
-        ctx.setLineDash([5, 4]);
-    }
-
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-}
 
     this.drawRelation = function(x1, y1, x2, y2){
         var midx = points[this.middleDivider].x;

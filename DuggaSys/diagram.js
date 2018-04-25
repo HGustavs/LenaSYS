@@ -91,6 +91,7 @@ var diagramNumberUndo = 0;              // Is used for localStorage and undo
 var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
+var classAppearanceOpen = false;
 
 var symbolStartKind;                    // Is used to store which kind of object you start on
 var symbolEndKind;                      // Is used to store which kind of object you end on
@@ -103,7 +104,8 @@ var ctrlIsClicked = false;
 
 function keyDownHandler(e){
     var key = e.keyCode;
-    if((key == 46 || key == 8) && !appearanceMenuOpen){
+    if(appearanceMenuOpen) return;
+    if((key == 46 || key == 8)){
         eraseSelectedObject();
     } else if(key == 32){
         //Use space for movearound
@@ -190,7 +192,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
             return i;
         }
     }
-    
+
     this.push({x:xCoordinate, y:yCoordinate, isSelected:isSelected});
     return this.length - 1;
 }
@@ -335,6 +337,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                 this[i].targeted = false;
             }
         } else {
+            var index = selected_objects.indexOf(this[i]);
             var tempTopLeftX = points[this[i].topLeft].x;
             var tempTopLeftY = points[this[i].topLeft].y;
             var tempBottomRightX = points[this[i].bottomRight].x;
@@ -349,9 +352,23 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
                 sy < tempBottomRightY && ey > tempBottomRightY) {
-                this[i].targeted = true;
-            } else {
+                if (ctrlIsClicked) {
+                    if (index >= 0) {
+                        this[i].targeted = false;
+                        selected_objects.splice(index, 1);
+                    } else {
+                        this[i].targeted = true;
+                        selected_objects.push(this[i]);
+                    }
+                } else {
+                    if (index < 0) {
+                        this[i].targeted = true;
+                        selected_objects.push(this[i]);
+                    }
+                }
+            } else if(!ctrlIsClicked) {
                 this[i].targeted = false;
+                if (index >= 0) selected_objects.splice(index, 1);
             }
         }
     }
@@ -361,27 +378,32 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
 // itemClicked - Returns the index of the first clicked item
 //--------------------------------------------------------------------
 diagram.itemClicked = function() {
-    if(uimode == "MoveAround"){
-        return -1;
-    }
-    for (var i = this.length - 1; i >= 0; i--) {
-        if (this[i].isClicked(currentMouseCoordinateX, currentMouseCoordinateY)) {
-            return i;
-        }
-    }
-    return -1;
+    if(uimode == "MoveAround") return -1;
+    var obj = this.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
+    if (typeof obj !== 'undefined' && obj != -1) return this.indexOf(obj);
+    else return -1;
 }
 
 //--------------------------------------------------------------------
 // isHovered - Executes isHovered methond in all diagram objects
 // (currently only of kind==2 && symbolkind == 4 (aka. lines))
 //--------------------------------------------------------------------
-diagram.checkForHover = function(xCoordinate, yCoordinate) {
+diagram.checkForHover = function(posX, posY) {
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 2) {
-            this[i].isHovered = this[i].checkForHover(xCoordinate, yCoordinate);
-        }
+        if (this[i].kind == 2) this[i].isHovered = false;
     }
+    var hoveredObjects = this.filter(symbol => symbol.checkForHover(posX, posY));
+    if (hoveredObjects.length <= 0) return -1;
+    hoveredObjects.sort(function(a, b) {
+        if (a.symbolkind != 4 && b.symbolkind != 4) return 0;
+        else if (a.symbolkind == 4 && b.symbolkind != 4) return -1;
+        else if (a.symbolkind != 4 && b.symbolkind == 4) return 1;
+        else return 0;
+    });
+    if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind == 2) {
+        hoveredObjects[hoveredObjects.length - 1].isHovered = true;
+    }
+    return hoveredObjects[hoveredObjects.length - 1];
 }
 
 //--------------------------------------------------------------------
@@ -518,7 +540,6 @@ function initializeCanvas() {
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
-    getUploads();
     // generateExampleCode();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
@@ -542,22 +563,34 @@ function toggleGrid() {
     }
 }
 
-function getUploads() {
-    var fileID = document.getElementById('fileid');
-    document.getElementById('buttonid').addEventListener('click', openDialog);
-    function openDialog() {
-        fileID.click();
+// Opens the dialog menu for import
+function openImportDialog() {
+    $("#import").css("display", "flex");
+}
+
+// Closes the dialog menu for import.
+function closeImportDialog() {
+    $("#import").css("display", "none");
+}
+
+// Import file
+function importFile() {
+    var file = document.getElementById("importFile").files[0];
+    if (!file) return;
+    var extension = file.name.split(".").pop().toLowerCase();
+    if (extension != "txt") {
+        $("#importError").show();
+        return;
     }
-    fileID.addEventListener('change', submitFile);
-    function submitFile() {
-        var reader = new FileReader();
-        var file = document.getElementById('fileid').files[0];
-        reader.readAsText(file, "UTF-8");
-        reader.onload = function (evt) {
-            a = evt.currentTarget.result;
-            LoadFile();
-        }
-    }
+    $("#importError").hide();
+    closeImportDialog();
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var fileContent = e.target.result;
+        LoadImport(fileContent);
+    };
+    reader.readAsText(file, "UTF-8");
 }
 
 // Function that is used for the resize
@@ -613,13 +646,35 @@ function getConnectedLines(object) {
 
 function eraseObject(object) {
     canvas.style.cursor = "default";
+    var objectsToDelete = [];
     if (object.kind == 2) {
+        if(object.symbolkind != 4){
+            var lines = diagram.filter(symbol => symbol.symbolkind == 4);
+            objectsToDelete = lines.filter(
+                line => line.topLeft == object.middleDivider
+                        || line.topLeft == object.centerPoint
+                        || line.bottomRight == object.middleDivider
+                        || line.bottomRight == object.centerPoint
+                        || (object.hasConnectorFromPoint(line.topLeft) && object.symbolkind == 3)
+                        || (object.hasConnectorFromPoint(line.bottomRight) && object.symbolkind == 3)
+            );
+        }else{
+            diagram.filter(symbol => symbol.symbolkind == 3)
+                .filter(entity =>
+                        entity.hasConnector(object.topLeft)
+                        && entity.hasConnector(object.bottomRight))
+                    .forEach(ent => {
+                        ent.removePointFromConnector(object.topLeft);
+                        ent.removePointFromConnector(object.bottomRight);
+                    });
+        }
         object.erase();
         diagram.eraseLines(object, object.getLines());
     } else if (object.kind == 1) {
         object.erase();
     }
     diagram.deleteObject(object);
+    objectsToDelete.forEach(eraseObject);
     updateGraphics();
 }
 
@@ -648,7 +703,7 @@ function setMode(mode){ //"CreateClass" yet to be implemented in .php
 }
 
 $(document).ready(function(){
-    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton").click(function(){
+    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton").click(function(){
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
@@ -775,8 +830,8 @@ function clearCanvas() {
         diagram[diagram.length - 1].erase();
         diagram.pop();
     }
-    for (var i = 0; i < points.length; i++) {
-        points[i]="";
+    for (var i = 0; i < points.length;) {
+        points.pop();
     }
     updateGraphics();
 }
