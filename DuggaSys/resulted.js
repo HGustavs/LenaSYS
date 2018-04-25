@@ -1501,23 +1501,11 @@ function createSortableTable(data){
 		null,
 		null,
 		null,
-		true
+		false
 	);
 	myTable.renderTable();
 
 	if(data['debug']!="NONE!") alert(data['debug']);
-
-	makeAllSortable();
-}
-
-
-//----------------------------------------
-// makeAllSortable(parent) <- Makes all tables within given scope sortable.
-//----------------------------------------
-function makeAllSortable(parent) {
-  parent = parent || document.body;
-  var t = parent.getElementsByTagName('table'), i = t.length;
-  //while (--i >= 0) makeSortable(t[i]);
 }
 
 function renderCell(col,celldata,cellid) {
@@ -1530,7 +1518,7 @@ function renderCell(col,celldata,cellid) {
     // color based on pass,fail,pending,assigned,unassigned
     str = "<div style='height:100%;' class='";
       if(celldata.kind==4) { str += "dugga-moment"; }
-      if (celldata.grade === 1 && celldata.needMarking === false) {str += "dugga-fail";}
+      if (celldata.grade === 1) {str += "dugga-fail";}
       else if (celldata.grade > 1) {str += " dugga-pass";}
       else if (celldata.needMarking === true) {str += " dugga-pending"; onlyPending=false;}
       else if (celldata.grade === 0 ) {str += " dugga-assigned";}          
