@@ -1026,6 +1026,11 @@ input {
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
   margin-left: -2px;
+  background-color: transparent;
+}
+
+.loginboxTr{
+  background-color: inherit !important;
 }
 
 #loginBoxTitle{
@@ -1954,6 +1959,12 @@ span.arrow {
   background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
 }
 
+#resultTable td{
+  height: 1px;
+  padding: 0px;
+  border-right: 2px solid #dbd0d8;
+  border-bottom: 2px solid #dbd0d8;
+}
 /* End DuggaSys resulted*/
 /**************************/
 
@@ -2128,7 +2139,6 @@ span.arrow {
 }
 
 .dugga-pass {
-	border-left: 2px solid rgb(219, 208, 216);
 	background-color: rgb(221, 255, 238);
 }
 
@@ -2137,7 +2147,6 @@ span.arrow {
 }
 
 .dugga-pending {
-	border-left: 2px solid rgb(219, 208, 216);
 	background-color: rgb(255, 255, 221);
 }
 
@@ -2146,7 +2155,6 @@ span.arrow {
 }
 
 .dugga-fail {
-	border-left: 2px solid rgb(219, 208, 216);
 	background-color: rgb(255, 170, 170);
 }
 
@@ -2155,7 +2163,6 @@ span.arrow {
 }
 
 .dugga-assigned {
-	border-left: 2px solid rgb(219, 208, 216);
 	background-color: rgb(248, 232, 248);
 }
 .dugga-assigned-highlighted {
@@ -2163,7 +2170,7 @@ span.arrow {
 }
 
 .dugga-unassigned {
-	border-left: 2px solid rgb(219, 208, 216);
+  min-width:140px;
 }
 
 .dugga-unassigned-highlighted {
@@ -2284,6 +2291,20 @@ span.arrow {
 }
 
 .checkmoment {
+  border-top: 1px solid #888;
+  font-weight: bold;
+}
+
+.checkbox-accessed {
+  font-size:16px;
+  max-width:280px;
+  overflow-x:hidden;
+  overflow-y: auto;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+}
+
+.accessedLine {
   border-top: 1px solid #888;
   font-weight: bold;
 }
@@ -3730,3 +3751,4 @@ ul.hamburgerList button.menuButton {
     width: auto;
     padding: 0 15px;
 }
+
