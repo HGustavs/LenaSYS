@@ -1516,7 +1516,6 @@ function renderCell(col,celldata,cellid) {
 
   } else {
     // color based on pass,fail,pending,assigned,unassigned
-    console.log(celldata.grade);
     str = "<div style='height:100%;' class='";
       if(celldata.kind==4) { str += "dugga-moment "; }
       if (celldata.grade === 1) {str += "dugga-fail";}
