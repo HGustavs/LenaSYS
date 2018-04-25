@@ -39,7 +39,7 @@ pdoConnect();
 		include '../Shared/navheader.php';
 	?>
 
-	<div id="content"></div>
+	<!-- <div id="content"></div> -->
 
 	<?php
 		include '../Shared/loginbox.php';
@@ -57,6 +57,7 @@ pdoConnect();
 
   <!-- -------------------=============####### Preview Popover #######=============------------------- -->
 
+  
 	<div id='previewpopover' class='previewPopover' style='display:none;'>
 		<div class='loginBoxheader'>
 			<h3 style='width:100%;' id='Nameof'>Document Preview</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
@@ -104,7 +105,17 @@ pdoConnect();
 		</div>
 	</div>
 
-	<div id="resultTable" style='width:fit-content; border: 2px solid green; white-space: nowrap;'></div>
+		<h3 style='	width:100%;
+								margin-top:50px;
+								padding-top:50px;
+								padding-bottom:50px;
+								text-align:center;
+								
+								top:0;'> 
+									Result
+		</h3>
+		<div id="resultTable" style='width:fit-content; border: 2px solid green; white-space: nowrap;'>	
+		</div>
 
 </body>
 </html>
