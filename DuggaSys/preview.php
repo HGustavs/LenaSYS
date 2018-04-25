@@ -22,15 +22,6 @@
                 background-color: rgb(240,240,240);
                 box-shadow: 0px 5px 10px grey;
             }
-            .Header {
-                width: 100%;
-                height: 50px;
-                background-color: #775886;
-                color: #FFFFFF;
-                text-align: center;
-                font-size: 24px;
-                line-height: 50px;
-            }
             .Markdown {
                 border: solid rgb(200,200,200);
                 background-color: #FFFFFF;
@@ -109,34 +100,34 @@
                 cursor: pointer;
                 margin-left: 10px;
             }
-            #h1 {
+            #headerType1 {
                 cursor: pointer;
                 color: #000;
                 font-size: 13px;
                 padding: 5px 5px 5px 5px;
                 background-color: #fff;
             }
-            #h1:hover {
+            #headerType1:hover {
                 background-color: rgb(200,200,200);
             }
-            #h2 {
+            #headerType2 {
                 cursor: pointer;
                 color: #000;
                 font-size: 12px;
                 padding: 5px 5px 5px 9px;
                 background-color: #fff;
             }
-            #h2:hover {
+            #headerType2:hover {
                 background-color: rgb(200,200,200);
             }
-            #h3 {
+            #headerType3 {
                 cursor: pointer;
                 color: #000;
                 font-size: 11px;
                 padding: 8px 5px 5px 13px;
                 background-color: #fff;
             }
-            #h3:hover {
+            #headerType3:hover {
                 background-color: rgb(200,200,200);
             }
             .headerType {
@@ -178,7 +169,7 @@
             }
 
             function loadPreview(fileUrl) {
-                var fileContent = getFIleContents(fileUrl);
+                var fileContent = getFileContents(fileUrl);
                 document.getElementById("mrkdwntxt").value = fileContent;
                 updatePreview(fileContent);
                 $(".PreviewWindow").show();
@@ -197,7 +188,7 @@
                     document.getElementById("markdown").innerHTML=parseMarkdown(str);
                 };
             }
-            function getFIleContents(fileUrl){
+            function getFileContents(fileUrl){
               var result = null;
               $.ajax({
                 url: fileUrl,
@@ -260,6 +251,7 @@
 
         <div class="Header">Markdown preview</div>
             <button id="Preview" onclick="loadPreview('../courses/2/minimikrav_m2.md')">Preview</button>
+
         <div class="PreviewWindow">
             <div class="PrevHead">This is the preview window
             </div>

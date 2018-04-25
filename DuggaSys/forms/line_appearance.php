@@ -1,23 +1,15 @@
 Line type: </br>
 <select onclick="changeObjectAppearance('lineType');" id='object_type'>
-    <option value='Normal'>Normal</option>
+    <option value='normal'>Normal</option>
     <option value='Forced'>Forced</option>
     <option value='Derived'>Derived</option>
 </select></br>
-Left side: <br/>
-<select onchange="addCardinality('leftSide');" id="leftSide">
+Cardinality: <br/>
+<select onchange="changeCardinality()" id="cardinality">
   <option value="None">None</option>
   <option value="1">1</option>
   <option value="N">N</option>
   <option value="M">M</option>
-</select><br/>
-Right side: <br/>
-<select onchange="addCardinality('rightSide');" id="rightSide">
-  <option value="None">None</option>
-  <option value="1">1</option>
-  <option value="N">N</option>
-  <option value="M">M</option>
-</select>
 </select><br/>
 <!--Line colors:<br>
 <select onclick="changeObjectAppearance('attributeType');" id='AttributeLineColor'>
@@ -31,4 +23,4 @@ Right side: <br/>
     <option value='#ffffff'>White</option>
     <option value='#000000'>Black</option>
 </select><br>-->
-<button type='submit' class='submit-button' onclick="changeObjectAppearance('lineType'); setType(form); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>OK</button>
+<button type='submit' class='submit-button' onclick="changeObjectAppearance('lineType'); setType(form); changeCardinality(); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>OK</button>

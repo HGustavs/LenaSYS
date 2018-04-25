@@ -303,7 +303,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 //------------------------------------------------------------------------------------------------
 
 // Don't retreive all results if request was for a single dugga or a grade update
-if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
+if(strcmp($opt,"CHGR")!==0){
 	if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 		// Users connected to the current course version
 		/*
@@ -579,27 +579,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 }
 
-	//Adds content for the sortable table
-	$sortableTable = array();
-	foreach($entries as $row) {
-		$sortableTableContent = array(
-			'firstnamelastnamessn' => json_encode([	'username' => $row['username'],
-														'firstname' => $row['firstname'],
-														'lastname' => $row['lastname'],
-														'class' => $row['class'],
-														'ssn' => $row['ssn'],
-														'teacher' => $row['teacher']])
-		);
-		//This adds the content for each cell that correspond to the header in the sortable table order
-		foreach($gentries as $line) {
-			$sortableTableContent[$line['entryname']] = json_encode(['username' => $row['username']]);
-		}
-		array_push($sortableTable, $sortableTableContent);
-		/* Temporary code reference f16linli, b16nilpe
-		// build the dynamic content for the cells
-		$entry['Rapport 1HP'] = json_encode(['hej' => 'hejjhg']); */
-	}
-
 $array = array(
 	'entries' => $entries,
 	'moments' => $gentries,
@@ -621,8 +600,7 @@ $array = array(
 	'moment' => $listentry,
 	'files' => $files,
 	'gradeupdated' => $gradeupdated,
-	'benchmark' => $benchmark,
-	'sortableTable' => $sortableTable
+	'benchmark' => $benchmark
 );
 
 echo json_encode($array);

@@ -112,6 +112,10 @@ h6 {
 }
 
 
+.hideTableArrow {
+  display:none !important;
+}
+
 
 hr {
   border: 0;
@@ -1033,6 +1037,11 @@ input {
   border-collapse: collapse;
   font-family: Roboto, Arial Narrow;
   margin-left: -2px;
+  background-color: transparent;
+}
+
+.loginboxTr{
+  background-color: inherit !important;
 }
 
 #loginBoxTitle{
@@ -1654,6 +1663,7 @@ input.large-button {
   line-height:28px;
   font-weight: bold;
   padding: 5px;
+  cursor: pointer;
 }
 
 .innertable {
@@ -1960,6 +1970,12 @@ span.arrow {
   background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
 }
 
+#resultTable td{
+  height: 1px;
+  padding: 0px;
+  border-right: 2px solid #dbd0d8;
+  border-bottom: 2px solid #dbd0d8;
+}
 /* End DuggaSys resulted*/
 /**************************/
 
@@ -2134,7 +2150,6 @@ span.arrow {
 }
 
 .dugga-pass {
-	border-left: 2px solid rgb(219, 208, 216);
 	background-color: rgb(221, 255, 238);
 }
 
@@ -2143,7 +2158,6 @@ span.arrow {
 }
 
 .dugga-pending {
-	border-left: 2px solid rgb(219, 208, 216);
 	background-color: rgb(255, 255, 221);
 }
 
@@ -2152,7 +2166,6 @@ span.arrow {
 }
 
 .dugga-fail {
-	border-left: 2px solid rgb(219, 208, 216);
 	background-color: rgb(255, 170, 170);
 }
 
@@ -2161,7 +2174,6 @@ span.arrow {
 }
 
 .dugga-assigned {
-	border-left: 2px solid rgb(219, 208, 216);
 	background-color: rgb(248, 232, 248);
 }
 .dugga-assigned-highlighted {
@@ -2169,7 +2181,7 @@ span.arrow {
 }
 
 .dugga-unassigned {
-	border-left: 2px solid rgb(219, 208, 216);
+  min-width:140px;
 }
 
 .dugga-unassigned-highlighted {
@@ -2290,6 +2302,20 @@ span.arrow {
 }
 
 .checkmoment {
+  border-top: 1px solid #888;
+  font-weight: bold;
+}
+
+.checkbox-accessed {
+  font-size:16px;
+  max-width:280px;
+  overflow-x:hidden;
+  overflow-y: auto;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+}
+
+.accessedLine {
   border-top: 1px solid #888;
   font-weight: bold;
 }
@@ -3249,7 +3275,6 @@ ul.hamburgerList button.menuButton {
   width: 40px;
   height: 40px;
   line-height: 53px;
-
 }
 
 
@@ -3281,7 +3306,6 @@ ul.hamburgerList button.menuButton {
   display: inline-block;
   margin-bottom: 15px;
 }
-
 
 .fab-icon {
 	display: inline-block;
@@ -3352,7 +3376,6 @@ li:nth-last-child(1) a:hover {
 li:nth-last-child(2) a {
 	background-color: #adc726;
   color: white;
-  
 }
 
 li:nth-last-child(2) a:hover {
@@ -3376,7 +3399,6 @@ li:nth-last-child(3) a:hover {
 li:nth-last-child(4) a {
 	background-color: #dc7e34;
   color: white;
-  
 }
 
 li:nth-last-child(4) a:hover {
@@ -3455,4 +3477,186 @@ li:nth-last-child(10) a:hover {
 	background-color: pink;
   color: white;
   
+}
+
+/* --------------================################================-------------- *
+ *                               Markdown preview                              *
+ * --------------================################================-------------- */
+
+.previewWindowContainer {
+  background-color: rgba(0,0,0,0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8000;
+  display: none;
+}
+
+ .previewWindow {
+    height: 635px;
+    width: 900px;
+    margin: 0px auto;
+    border: solid rgb(200,200,200);
+    background-color: rgb(240,240,240);
+    box-shadow: 0px 5px 10px grey;
+    z-index: 12000;
+    display: none;
+    left: 0;
+    right: 0;
+    top: 220px;
+    position: absolute;
+     
+     
+}
+.markdown {
+    border: solid rgb(200,200,200);
+    background-color: #FFFFFF;
+    width: 350px;
+    height: 550px;
+    position: relative;
+    margin: 20px 10px 10px 10px;
+    float: left;
+}
+.markdownPrev {
+    border: solid rgb(200,200,200);
+    background-color: #FFFFFF;
+    word-wrap: break-word;
+    overflow-y: scroll;
+    width: 490px;
+    height: 550px;
+    position: relative;
+    margin: 20px 10px 10px 10px;
+    float: right;
+}
+.optionButtons {
+    top: 585px;
+    position: relative;
+    margin: 0px 10px 0px 10px;
+    height: 40px;
+    width: 355px;
+}
+.prevSpan {
+    max-width: 100%;
+}
+#button-cancel {
+    position: absolute;
+    left: 235px;
+}
+#button-save {
+    position: absolute;
+    left: 305px;
+}
+#button-close {
+    float: right;
+    position: relative;
+    margin: 0px 10px 0px 0px;
+}
+ .prevHead {
+    height: 20px;
+    background-color: #614875;
+    color: #FFFFFF;
+    font-size: 14px;
+    padding: 0px 5px 0px 5px;
+}
+.prevNav {
+    background-color: #614875;
+    height: 30px;
+    color: #FFF;
+    padding: 0px 5px 0px 5px;
+    line-height: 25px;
+}
+.markNav {
+    background-color: #614875;
+    height: 30px;
+    color: #FFF;
+    padding: 0px 5px 0px 5px;
+    line-height: 25px;
+}
+#mrkdwntxt {
+    border-radius: 8px;
+    box-shadow: 2px 2px 4px #888 inset;
+    resize: none;
+    margin: 10px 4px 0px 4px;
+}
+#boldText {
+    cursor: pointer;
+    margin-left: 10px;
+}
+#cursiveText {
+    cursor: pointer;
+    margin-left: 10px;
+}
+#headerType1 {
+    cursor: pointer;
+    color: #000;
+    font-size: 13px;
+    padding: 5px 5px 5px 5px;
+    background-color: #fff;
+}
+#headerType1:hover {
+    background-color: rgb(200,200,200);
+}
+#headerType2 {
+    cursor: pointer;
+    color: #000;
+    font-size: 12px;
+    padding: 5px 5px 5px 9px;
+    background-color: #fff;
+}
+#headerType2:hover {
+    background-color: rgb(200,200,200);
+}
+#headerType3 {
+    cursor: pointer;
+    color: #000;
+    font-size: 11px;
+    padding: 8px 5px 5px 13px;
+    background-color: #fff;
+}
+#headerType3:hover {
+    background-color: rgb(200,200,200);
+}
+.headerType {
+    cursor: pointer;
+    margin-left: 150px;
+}
+
+.show-dropdown-content {
+    display: block;
+}
+#select-header {
+    max-width: 63px;
+    position: absolute;
+    z-index: 2000;
+    right: 75px;
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.3);
+}
+
+/* Import diagram */
+.importDiagram {
+    height: auto !important;
+    margin-top: 0 !important;
+    display: none;
+}
+
+.importDiagram .importWrap {
+    padding: 20px;
+}
+
+.importDiagram .importError {
+    margin-top: 10px;
+    color: red;
+    display: none;
+}
+
+.importDiagram .importButtonWrap {
+    margin-top: 10px;
+}
+
+.importDiagram .uploadButton {
+    width: auto;
+    padding: 0 15px;
 }

@@ -101,6 +101,7 @@ function getImage() {
 }
 
 function Save() {
+    c = [];
     for (var i = 0; i < diagram.length; i++) {
         c[i] = diagram[i].constructor.name;
         c[i] = c[i].replace(/"/g,"");
@@ -118,6 +119,11 @@ function SaveFile(el) {
     el.setAttribute("href", "data:" + data);
     el.setAttribute("download", "diagram.txt");
     updateGraphics();
+}
+
+function LoadImport(fileContent) {
+    a = fileContent;
+    Load();
 }
 
 function LoadFile() {
@@ -180,9 +186,10 @@ function Load() {
         diagram[i] = b.diagram[i];
     }
     // Points fix
-    for (var i = 0; i < b.points.length; i++) {
-        b.points[i] = Object.assign(new Path, b.points[i]);
-    }
+    // Currently unused, reimplement this when figures are reimplemented
+    /*for (var i = 0; i < b.points.length; i++) {
+        //b.points[i] = Object.assign(new Path, b.points[i]);
+    }*/
     points.length = b.points.length;
     for (var i = 0; i < b.points.length; i++) {
         points[i] = b.points[i];

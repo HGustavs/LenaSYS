@@ -12,32 +12,32 @@
 			</div>
 			<form action="" id="loginForm" method="post">
 				<table class="loginBoxTable">
-					<tr>
+					<tr class="loginboxTr">
 						<td>
 							<label id="loginBoxTitle">Sign in</label>
 						</td>
 					</tr>
-					<tr>
+					<tr  class="loginboxTr">
 						<td>
 							<input id="username" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
 						</td>
 					</tr>
-					<tr>
+					<tr class="loginboxTr">
 						<td>
 							<input id="password" placeholder="Password" class='form-control textinput' type='password' style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
 						</td>
 					</tr>
-					<tr>
+					<tr class="loginboxTr">
 						<td class="nowrap">
 							<label class='text forgotPw' onclick='toggleloginnewpass();' title='Retrieve a new password'>Forgot Password?</label>
 						</td>
 					</tr>
-					<tr>
+					<tr class="loginboxTr">
 						<td>
 							<input type='button' class='buttonLoginBox' onclick="loginBarrier();" value='Login' title='Login'>
 						</td>
 					</tr>
-					<tr>
+					<tr class="loginboxTr">
 						<!-- Message displayed when using wrong password or username -->
 						<td id="message";></td>
 					</tr>
@@ -56,17 +56,17 @@
 							<label id="loginBoxTitle">Enter your username to reset the password</label>
 						</td>
 					</tr>
-					<tr>
+					<tr class="loginboxTr">
 						<td>
 							<input id="usernamereset" placeholder="Username" class='form-control textinput' type='text' autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
 						</td>
 					</tr>
-					<tr>
+					<tr class="loginboxTr">
 						<td>
 							<input type='button' class='buttonLoginBox' onclick="resetPasswordBarrier();" value='Continue' style='margin-top: 10px;' title='Continue'>
 						</td>
 					</tr>
-					<tr>
+					<tr class="loginboxTr">
 						<!-- Message displayed when using wrong password or username -->
 						<td id="message2";></td>
 					</tr>
@@ -90,7 +90,7 @@
 							<label id="loginBoxTitle">Please answer your security question</label>
 						</td>
 					</tr>
-					<tr>
+					<tr class="loginboxTr">
 						<td style='padding-top: 14px;'>
 							<label style='font-size: 14px;'> Question: </label>
 							<label id="displaysecurityquestion" class="text">Placeholder question</label>
@@ -101,7 +101,7 @@
 							<input id="answer" class='form-control textinput' type='password' placeholder="Answer" autofocus  style='width: 260px; height: 35px; margin: 8px 0; border: 1px solid #a3a3a3;'>
 						</td>
 					</tr>
-					<tr>
+					<tr class="loginboxTr">
 						<td>
 							<input type='button' class='buttonLoginBox' onclick="enterSecurityQuestionBarrier();" value='Check answer' style='margin-top: 10px;' title='Check answer'>
 						</td>
