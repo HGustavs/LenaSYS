@@ -217,7 +217,10 @@ function changeLastname(uid,id)
 {
 	AJAXService("LASTNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
 }
-
+function changeClass(cid,uid,val)
+{
+	AJAXService("CLASS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
+}
 
 // Sets values in the "cogwheel popup"
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
@@ -397,9 +400,18 @@ function renderCell(col,celldata,cellid) {
 		obj = JSON.parse(celldata);
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
 		return str;
-
+	}else if(col == "class"){
+    obj=JSON.parse(celldata);
+    var items = new Array();
+		// Every user doesn't have a class
+		items.push("null");
+    for(var i = 0; i < filez['classes'].length; i++){
+      items.push(filez['classes'][i]['class']);
+    }
+    str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
+		return str;
 	}else {
-		return "<div id='" + cellid + "'>" + celldata + "</div>";
+		return "<div id='" + cellid + "'>" + celldata +  "</div>";
 	}
 	return celldata;
 }
@@ -461,7 +473,7 @@ function returnedAccess(data) {
 	);
 
 	myTable.renderTable();
-  
+
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	makeAllSortable();
