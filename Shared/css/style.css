@@ -3387,7 +3387,7 @@ li:nth-last-child(2) a:hover {
 li:nth-last-child(3) a {
 	background-color: #e9a901;
   color: white;
-  
+
 }
 
 li:nth-last-child(3) a:hover {
@@ -3410,7 +3410,7 @@ li:nth-last-child(4) a:hover {
 li:nth-last-child(5) a {
 	background-color: #d14d58;
   color: white;
-  
+
 }
 
 li:nth-last-child(5) a:hover {
@@ -3422,7 +3422,7 @@ li:nth-last-child(5) a:hover {
 li:nth-last-child(6) a {
 	background-color: #cb438d;
   color: white;
-  
+
 }
 
 li:nth-last-child(6) a:hover {
@@ -3434,7 +3434,7 @@ li:nth-last-child(6) a:hover {
 li:nth-last-child(7) a {
 	background-color: #a844cc;
   color: white;
-  
+
 }
 
 li:nth-last-child(7) a:hover {
@@ -3446,7 +3446,7 @@ li:nth-last-child(7) a:hover {
 li:nth-last-child(8) a {
 	background-color: #6f34dc;
   color: white;
-  
+
 }
 
 li:nth-last-child(8) a:hover {
@@ -3458,7 +3458,7 @@ li:nth-last-child(8) a:hover {
 li:nth-last-child(9) a {
 	background-color: #1f65cd;
   color: white;
-  
+
 }
 
 li:nth-last-child(9) a:hover {
@@ -3470,13 +3470,13 @@ li:nth-last-child(9) a:hover {
 li:nth-last-child(10) a {
 	background-color: blue;
   color: white;
-  
+
 }
 
 li:nth-last-child(10) a:hover {
 	background-color: pink;
   color: white;
-  
+
 }
 
 /* --------------================################================-------------- *
@@ -3507,8 +3507,8 @@ li:nth-last-child(10) a:hover {
     right: 0;
     top: 220px;
     position: absolute;
-     
-     
+
+
 }
 .markdown {
     border: solid rgb(200,200,200);
@@ -3529,6 +3529,19 @@ li:nth-last-child(10) a:hover {
     position: relative;
     margin: 20px 10px 10px 10px;
     float: right;
+}
+.markdownPrev pre{
+    font-family: Hack, MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 10px;
+    line-height: 12px;
+    white-space: pre;
+    white-space: pre-wrap;
+    background: #ffffff;
+    display: inline-block;
+    padding: 1em;
+    margin: 0.5em 0px;
+    border: 1px solid #bebab0;
+    box-shadow: 1px 1px 2px #666;
 }
 .optionButtons {
     top: 585px;
