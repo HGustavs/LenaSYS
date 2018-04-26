@@ -3484,7 +3484,7 @@ li:nth-last-child(10) a:hover {
  * --------------================################================-------------- */
  @media (max-width: 800px) {
     .previewWindow {
-        height: 635px;
+        height: 500px;
         width: 900px;
      }
      .markdown {
