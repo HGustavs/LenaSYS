@@ -57,10 +57,15 @@
                     <div class="application-header">
                         <div id="toolbar-minimize"  onclick="toggleToolbarMinimize();">
                             <img id="minimizeArrow" class="toolbarMaximized" src="../Shared/icons/arrow.svg">
+                          </div>
+                          <h3>Toolbar</h3>
                         </div>
-                        <h3>Toolbar</h3>
-                    </div>
-                    <div class='application-toolbar'>
+                        <div class='application-toolbar'>
+                          <div id="toolbar-switcher">
+                            <div id="toolbarLeftArrow"> << </div>
+                            <div id="toolbarTypeText"> ALL </div>
+                            <div id="toolbarRightArrow"> >> </div>
+                          </div>
                         <h4 class="label">Tools</h4>
                         <div class="toolbar-drawer">
                             <div class="tooltipdialog">
