@@ -76,6 +76,7 @@ function editSectionDialogTitle(title) {
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
 {
+	if(kind == "undefined") kind = 0;
     xelink=elink;
 	// Display Select Marker
 	$(".item").css("border","none");
@@ -232,12 +233,12 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 
 	// Header
-	if(kind==0){
-					// right now its empty, but keeping this for future buttons and stuff
+	if(kind==0 || kind == "undefined"){
+		$("#inputwrapper-tabs").css("display","none");
+
 	// Section
 	}else if(kind==1){
 					// right now its empty, but keeping this for future buttons and stuff
-
 	// Code
 	}else if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
@@ -323,7 +324,12 @@ function changedType(value)
 	$("#inputwrapper-groupType").css("display", "none");
 
 	//Header(kind==0) and Section(kind==1) wont add any boxes, so no if-statements are needed for them.
-	if(kind==2){
+	if(kind==0){
+		$("#inputwrapper-tabs").css("display","none");
+	}else if(kind == 1){
+		// right now its empty, but keeping this for future buttons and stuff
+	}
+	else if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
 			if(xelink==iitem['exampleid']){
@@ -873,6 +879,11 @@ function returnedSection(data)
     str+="</div>";
     // If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign
     if(retdata["writeaccess"]){
+		if(item['kind'] == undefined){
+			item['kind'] = 0;
+			// Need to change it to a zero so it will default to type Header when creating new item.
+		}
+
         str += "<div id='course-newitem' style='display: flex;'>";
 		str +=
 		  "<input type='button' value='+' class='submit-button-newitem' title='New Item'"
