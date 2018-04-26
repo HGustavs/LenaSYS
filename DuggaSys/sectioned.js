@@ -826,7 +826,7 @@ function returnedSection(data)
 		str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
 
 		// Message of the day button
-		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='alert(\"Under construction\")'><i class='material-icons'>format_quote</i></a></li>"
+		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message of the day' onclick='selectItem(\"undefined\",\"New Item\",\"7\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>format_quote</i></a></li>"
 
 		//Heading button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='selectItem(\"undefined\",\"New Item\",\"0\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
@@ -1047,7 +1047,7 @@ function returnedSection(data)
 
 				// Make tabs to align each section element
 				// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link
-				if(itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7 ){
+				if(itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 || itemKind === 7 ){
 					var itemGradesys = parseInt(item['gradesys']);
 
 					if (itemGradesys > 0 && itemGradesys < 4){
