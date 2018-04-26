@@ -37,7 +37,7 @@ pdoConnect();
 				<img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
 			</button>
 		</div>
-		<div id="fileLink" style='width:100%;'></div>
+		<div id="fileLink" style='width:100%;margin-bottom: 30px;'></div>
 		<!-- content END -->
 	
 		<?php 
@@ -50,7 +50,7 @@ pdoConnect();
 	      		<div class='loginBoxheader' style='cursor:default;'>
 	      			<h3 class="fileHeadline" id="mFileHeadline">Add Course Local File</h3>
 	      			<h3 class="fileHeadline" id="gFileHeadline">Add Global File</h3>
-	      			<h3 class="fileHeadline" id="lFileHeadline">Add Local File</h3>
+	      			<h3 class="fileHeadline" id="lFileHeadline">Add Version Local File</h3>
 	      			<h3 class="linkPopUp">Add Link</h3>
 	      			<div class='cursorPointer' onclick='closeAddFile();'>x</div>
 	      		</div>
@@ -118,10 +118,10 @@ pdoConnect();
     <!-- Markdown-preview functionality END -->
     <!--Fab-button-->
 		<div class="fixed-action-button">
-			<a class="btn-floating fab-btn-lg noselect" id="fabBtn" onclick="toggleFabButton();"><img src="../Shared/icons/add-icon.svg"></a>
+			<a class="btn-floating fab-btn-lg noselect" id="fabBtn"><img id="fabBtnImg" src="../Shared/icons/add-icon.svg"></a>
 			<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
 				<li><a class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File' onclick="showFilePopUp('GFILE');"><img class="fab-icon" src="../Shared/icons/global-icon.svg"></a></li>
-				<li><a class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Local File' onclick="showFilePopUp('LFILE');"><img class="fab-icon" src="../Shared/icons/local-icon.svg"></a></li>
+				<li><a class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File' onclick="showFilePopUp('LFILE');"><img class="fab-icon" src="../Shared/icons/version_local-icon.svg"></a></li>
 				<li><a class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Course Local File' onclick="showFilePopUp('MFILE');"><img class="fab-icon" src="../Shared/icons/course_local-icon.svg"></a></li>
 				<li><a class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link" onclick="showLinkPopUp();"><img class="fab-icon" src="../Shared/icons/link-icon.svg"></a></li>
 			</ol>
