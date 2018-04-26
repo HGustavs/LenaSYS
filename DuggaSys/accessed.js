@@ -350,10 +350,11 @@ var bool = true;
  */
 
 function renderCell(col,celldata,cellid) {
-	if (col == "requestedpasswordchange"){
+	if(col == "requestedpasswordchange") {
 		obj=JSON.parse(celldata);
 		str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
 		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
+<<<<<<< HEAD
     str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
     return str;
 	}else if(col == "examiner"){
@@ -399,6 +400,44 @@ function renderCell(col,celldata,cellid) {
 		return str;
 
 	}else {
+=======
+    	str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
+    	return str;
+	} else if(col == "examiner") {
+		if(celldata[celldata.length - 1]['access'] == 'W') {
+			str = "none";
+		} else {
+			str = "<select onChange='changeExaminer(\""+querystring['cid']+"\",\""+celldata[celldata.length - 1]['uid']+"\",this.value);' onclick='return false;'>";
+			for(var i = 0; i < celldata.length - 1; i++) {
+				str+="<option ";
+				if(celldata[i]['username'] === celldata[celldata.length - 1]['teacher']) {
+					str+="selected='selected' ";
+				}
+				str+="value='"+celldata[i]['username']+"'>"+celldata[i]['username']+"</option>";
+			}
+			str+="</select>";
+		}
+		return str;
+	} else if(col == "access") {
+		obj=JSON.parse(celldata);
+		str = "<select onChange='changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);' onclick='return false;'>";
+		str+="<option value='W'" + (obj.access == 'W' ? " selected='selected'" : "") + ">Teacher</option>";
+		str+="<option value='R'" + (obj.access == 'R' ? " selected='selected'" : "") + ">Student</option>";
+		str+="<option value=null"+ (obj.access == 'null' || obj.access == null ? " selected='selected'" : "") + ">none</option>";
+		str+="</select>";
+		return str;
+	} else if(col == "vers") {
+		obj=JSON.parse(celldata);
+		str = "<select onChange='changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);' onclick='return false;'>";
+		for(var i = 0; i < filez['courses'].length; i++){
+			str+="<option value='"+filez['courses'][i]['vers']+"'" + (obj.vers == filez['courses'][i]['vers'] ? " selected='selected'" : "") + ">"+filez['courses'][i]['vers']+"</option>";
+		}
+		str+="</select>";
+		return str;
+	} else if(col == "groups") {
+		return "<span>" + celldata + "</span>";
+	} else {
+>>>>>>> #4169
 		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
 	return celldata;
@@ -431,8 +470,9 @@ function returnedAccess(data) {
 			class:"Class",
 			modified:"Added",
 			examiner:"Examiner",
-      vers:"Version",
-			access:"Access",
+        	vers:"Version",
+            access:"Access",
+        	groups:"Group(s)",
 			requestedpasswordchange:"Password"
 		},
 		tblbody: data['entries'],
