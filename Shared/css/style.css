@@ -3574,8 +3574,8 @@ ul.hamburgerList button.menuButton {
     display: none;
     left: 0;
     right: 0;
-    top: 220px;
-    position: absolute;
+    top: 100px;
+    position: fixed;
 }
 .markdown {
     border: solid rgb(200,200,200);
