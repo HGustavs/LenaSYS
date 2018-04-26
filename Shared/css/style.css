@@ -2032,8 +2032,8 @@ span.arrow {
     border-radius: 0;
 }
 
-#file-submit-button {
-  margin:15px 0 18px 0;
+.fileed-submit-button {
+  margin:15px 0 18px 0 !important;
 }
 
 #feedbackTable table {
@@ -2128,21 +2128,20 @@ span.arrow {
 .fab {
   position:fixed;
   width:50px;
-   height:50px;
-   border-radius:25px;
-   box-shadow:0px 0px 15px #888;
-   bottom:35px;
-   right:50px;
-   font-size:24px;
-   text-align:center;
-   background-color:#fecc56;
-   color:#614875;
-   z-index:4000;
-   border:0;
-   outline: none;
-   cursor: pointer;
-   padding-left: 7px;
-   padding-top: 1px;
+  height:50px;
+  border-radius:25px;
+  box-shadow:0px 0px 15px #888;
+  bottom:35px;
+  right:50px;
+  font-size:24px;
+  text-align:center;
+  background-color:#fecc56;
+  color:#614875;
+  z-index:4000;
+  border:0;
+  outline: none;
+  cursor: pointer;
+  padding: 1px 0 0 7px;
  }
 
 .fab:hover {
@@ -2551,6 +2550,8 @@ table {
   display: inline-flex;
   height: 24px;
   border-radius: 5px;
+  margin: 0 2px 7px 0;
+  float: right;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
 }
 
@@ -3246,7 +3247,7 @@ ul.hamburgerList button.menuButton {
 /* FAB container */
 .fixed-action-button {
   position: fixed;
-  bottom: 45px;
+  bottom: 24px;
   right: 24px;
   z-index: 500;
 }
@@ -3282,7 +3283,7 @@ ul.hamburgerList button.menuButton {
 .fab-btn-lg {
   width: 56px;
   height: 56px;
-  line-height: 66px;
+  line-height: 70px;
   background-color: #fecc56;
   color: #614875;
 
@@ -3294,7 +3295,7 @@ ul.hamburgerList button.menuButton {
 
 /* FAB bubble list container */
 .fab-btn-list {
-    position: absolute;
+  position: absolute;
 	left: auto;
 	width: 100%;
 	list-style: none;

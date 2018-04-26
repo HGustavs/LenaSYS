@@ -82,14 +82,14 @@ function returnedFile(data) {
 
 
 	fileLink.renderTable();
-	fileLink.makeAllSortable();
 
 	if(data['debug']!="NONE!") alert(data['debug']);
 }
 
 function showLinkPopUp() {
-	$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' />");
+	$("#uploadbuttonname").html("<input class='submit-button fileed-submit-button' type='submit' value='Upload URL' />");
 	$("#addFile").css("display","flex");
+	$(".fileHeadline").css("display","none");
 	$(".filePopUp").css("display","none");
 	$(".linkPopUp").css("display","block");
 	$("#selecty").css("display","none");
@@ -98,21 +98,22 @@ function showLinkPopUp() {
 	$("#coursevers").val(querystring['coursevers']);
 }
 
-function showFilePopUp() {
-    $("#uploadbuttonname").html("<input id='file-submit-button' class='submit-button' type='submit' " +
-    	"value='Upload file' onclick='setFileKind();uploadFile(fileKind);' />");
+function showFilePopUp(fileKind) {
+    $("#uploadbuttonname").html("<input class='submit-button fileed-submit-button' type='submit' " +
+    	"value='Upload file' onclick='uploadFile(\"" + fileKind + "\");'/>");
+    $(".fileHeadline").css("display","none");
+    $(".filePopUp").css("display","block");
 	$("#selecty").css("display","block");
 	$("#addFile").css("display","flex");
-	$(".filePopUp").css("display","block");
 	$(".linkPopUp").css("display","none");
-}
 
-//---------------------------------------------------
-// setFileKind <- Sets the file kind based on which
-// 				  radio button the user has pressed
-//---------------------------------------------------
-function setFileKind() {
-	fileKind = document.querySelector('input[name=\"fileRB\"]:checked').value;
+    if (fileKind == "MFILE") {
+    	$("#mFileHeadline").css("display","block");
+    } else if (fileKind == "LFILE") {
+		$("#lFileHeadline").css("display","block");
+    } else if (fileKind == "GFILE") {
+		$("#gFileHeadline").css("display","block");
+    }
 }
 
 function uploadFile(kind) {
@@ -263,6 +264,30 @@ function convertFileKind(kind){
 	}
 	return retString;
 }
+
+// Toggles action bubbles when pressing the FAB button
+function toggleFabButton(){
+
+	if (!$('.fab-btn-sm').hasClass('scale-out')) {
+		$('.fab-btn-sm').toggleClass('scale-out');
+		$('.fab-btn-list').delay(100).fadeOut(0);
+	}
+	else {
+		$('.fab-btn-list').fadeIn(0);
+		$('.fab-btn-sm').toggleClass('scale-out');
+	}
+}
+
+$(document).mouseup(function(e) {
+	// Click outside the FAB list
+    if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target)// if the target of the click isn't the container...
+        && $('.fixed-action-button').has(e.target).length === 0) {// ... nor a descendant of the container
+		if (!$('.fab-btn-sm').hasClass('scale-out')) {
+			$('.fab-btn-sm').toggleClass('scale-out');
+			$('.fab-btn-list').delay(100).fadeOut(0);
+		}
+	}
+});
 
 function deleteFile(fileid,filename) {
 	if (confirm("Do you really want to delete the file/link: " + filename)) {
