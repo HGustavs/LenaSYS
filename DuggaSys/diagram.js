@@ -669,10 +669,10 @@ function eraseObject(object) {
                     });
             var removeTopleft = diagram
                 .filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5)
-                .filter(symbol => symbol.centerPoint == object.topLeft).length == 0;
+                .filter(symbol => symbol.centerPoint == object.topLeft || symbol.middleDivider == object.topLeft).length == 0;
             var removeBottomright = diagram
                 .filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5)
-                .filter(symbol => symbol.centerPoint == object.bottomRight).length == 0;
+                .filter(symbol => symbol.centerPoint == object.bottomRight || symbol.middleDivider == object.bottomRight).length == 0;
             if(removeTopleft) points[object.topLeft] = "";
             if(removeBottomright) points[object.bottomRight] = "";
         }
