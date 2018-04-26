@@ -746,8 +746,9 @@ function Symbol(kind) {
         if (this.key_type == 'Drive') {
             ctx.setLineDash([5, 4]);
         }
-        else if (this.key_type == 'Primary key') {
+        else if (this.key_type == 'Primary key' || this.key_type == 'Partial key') {
             ctx.stroke();
+            this.key_type == 'Partial key' ? ctx.setLineDash([1, 2]) : ctx.setLineDash([]);
             var linelength = ctx.measureText(this.name).width;
             ctx.beginPath(1);
             ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
@@ -761,6 +762,7 @@ function Symbol(kind) {
         ctx.fillStyle = this.fontColor;
         ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         ctx.clip();
+        ctx.setLineDash([]);
     }
 
     this.drawEntity = function(x1, y1, x2, y2){
