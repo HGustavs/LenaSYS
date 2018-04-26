@@ -292,7 +292,7 @@ function mouseupevt(ev) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == 2) {
                     p1 = diagram[lineStartObj].centerPoint;
-                } else if (diagram[lineStartObj].symbolkind == 5) {
+                } else if (diagram[lineStartObj].symbolkind == 5 || diagram[lineStartObj].symbolkind == 1) {
                     p1 = diagram[lineStartObj].middleDivider;
                 } else {
                     createNewPoint = true;
@@ -318,7 +318,7 @@ function mouseupevt(ev) {
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     if (diagram[hovobj].symbolkind == 2) {
                         p2 = diagram[hovobj].centerPoint;
-                    } else if (diagram[hovobj].symbolkind == 5) {
+                    } else if (diagram[hovobj].symbolkind == 5 || diagram[hovobj].symbolkind == 1) {
                         p2 = diagram[hovobj].middleDivider;
                     } else{
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
