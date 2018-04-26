@@ -277,10 +277,6 @@ function updateVariant(){
 	}else if($('#enableVariant').is(':visible')){
 		disabled = '1';
 	}
-	console.log(vid);
-	console.log(disabled);
-	console.log(answer);
-	console.log(parameter);
 
 	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,disabled:disabled,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
 }
@@ -489,18 +485,21 @@ function renderCell(col,celldata,cellid) {
 		return str;
 	}
 
-	//Translating the integers behind "disabled" to say disabled or enabler. Also making it look that way.
+	//Translating the integers behind "disabled" to say disabled or enabled. Also making it look that way.
 	else if (col == "disabled"){
 		if(celldata == "0"){
 			celldata = "Enabled";
-			//MAKE IT LOOK ENABLED
+			str="<span style='color:black;'>"+celldata+"</span>";
 		}else if(celldata == "1"){
 			celldata = "Disabled";
-			// MAKE IT LOOK DISABLED
+			// $("#"+tempRow).css('opacity', '0.5' );
+			str="<span style='color:red;'>"+celldata+"</span>";
 		}
 		else{
 			celldata = "Undefined";
+			str="<span style='color:black; opacity:0.5;'>"+celldata+"</span>";
 		}
+		return str;
 	}
 
 	// Placing a clickable cogwheel in its designated column that select a variant to be edited.
