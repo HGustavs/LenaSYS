@@ -1136,6 +1136,7 @@ input {
   display: flex;
   text-align: center;
   padding:0 3px;
+  line-height: 20px;
 }
 .toolbarArrows{
   width:20%;
@@ -1474,6 +1475,7 @@ div.submit-button:disabled {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
+  margin: 5px 0;
 }
 
 .buttonsStyle img,

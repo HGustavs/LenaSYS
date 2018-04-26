@@ -80,17 +80,14 @@
                                 <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute">
                                     <img src="../Shared/icons/diagram_create_attribute.svg">
                                 </button>
-                            </div><br>
                             <div class="tooltipdialog">
                                 <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle unpressed' data="Create Entity">
                                     <img src="../Shared/icons/diagram_create_entity.svg">
                                 </button>
-                            </div><br>
                             <div class="tooltipdialog">
                                 <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed' data="Create Relation">
                                     <img src="../Shared/icons/diagram_create_relation.svg">
                                 </button>
-                            </div><br>
                             <div class="tooltipdialog">
                                 <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle unpressed' data="Create Class">
                                     <img src="../Shared/icons/diagram_create_class.svg">
