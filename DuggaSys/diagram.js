@@ -648,6 +648,7 @@ function eraseObject(object) {
     canvas.style.cursor = "default";
     var objectsToDelete = [];
     if (object.kind == 2) {
+        //None lines
         if(object.symbolkind != 4){
             var lines = diagram.filter(symbol => symbol.symbolkind == 4);
             objectsToDelete = lines.filter(
@@ -658,21 +659,27 @@ function eraseObject(object) {
                         || (object.hasConnectorFromPoint(line.topLeft) && object.symbolkind == 3)
                         || (object.hasConnectorFromPoint(line.bottomRight) && object.symbolkind == 3)
             );
+        //lines
         }else{
-            diagram.filter(symbol => symbol.symbolkind == 3)
-                .filter(entity =>
-                        entity.hasConnector(object.topLeft)
-                        && entity.hasConnector(object.bottomRight))
-                    .forEach(ent => {
-                        ent.removePointFromConnector(object.topLeft);
-                        ent.removePointFromConnector(object.bottomRight);
+            diagram.filter(
+                symbol => symbol.symbolkind == 3)
+                    .filter(entity =>   entity.hasConnector(object.topLeft)
+                                     && entity.hasConnector(object.bottomRight))
+                    .forEach(entity => {
+                        entity.removePointFromConnector(object.topLeft);
+                        entity.removePointFromConnector(object.bottomRight);
                     });
-            var removeTopleft = diagram
-                .filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5)
-                .filter(symbol => symbol.centerPoint == object.topLeft || symbol.middleDivider == object.topLeft).length == 0;
-            var removeBottomright = diagram
-                .filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5)
-                .filter(symbol => symbol.centerPoint == object.bottomRight || symbol.middleDivider == object.bottomRight).length == 0;
+            
+            var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5);
+            //Check if the line has a common point with a centerpoint of attributes or relations.
+            var removeTopleft = attributesAndRelations
+                        .filter(symbol => symbol.centerPoint == object.topLeft
+                                       || symbol.middleDivider == object.topLeft
+                               ).length == 0;
+            var removeBottomright = attributesAndRelations
+                        .filter(symbol => symbol.centerPoint == object.bottomRight
+                                        || symbol.middleDivider == object.bottomRight
+                               ).length == 0;
             if(removeTopleft) points[object.topLeft] = "";
             if(removeBottomright) points[object.bottomRight] = "";
         }
