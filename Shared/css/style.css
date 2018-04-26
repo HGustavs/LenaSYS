@@ -3485,6 +3485,7 @@ li:nth-last-child(10) a:hover {
  @media only screen and (max-height: 800px) {
     .previewWindow {
         height: 500px;
+        background-color: red;
      }
      .markdown {
          height: 400px;
