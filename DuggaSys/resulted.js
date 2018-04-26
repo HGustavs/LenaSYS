@@ -121,8 +121,8 @@ function redrawtable()
         }
       }
 
- 
-     strx +="</tr>" 
+
+     strx +="</tr>"
 
 
       if(!onlyPending && (showTeachers || (!showTeachers && !isTeacher))) {
@@ -164,7 +164,7 @@ function redrawtable()
   str += "<tr class='markinglist-header'>";
   str += "<th id='header' class='rowno idField' style='width: 28px;'><span>#</span></th><th onclick='toggleSortDir(0);' class='result-header dugga-result-subheadermagic' id='header0magic'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
 
- 
+
   if (momtmp.length > 0){
     // Make first header row!
     //    No such header for magic heading - by design
@@ -202,7 +202,7 @@ function redrawtable()
     var colpos=1;
 
     // Only write out this part if momtmp array is not empty
-    
+
     if (momtmp.length > 0){
       var momname=momtmp[0].momname;
       for(var j=1;j<momtmp.length;j++){
@@ -230,7 +230,7 @@ function redrawtable()
 
 
     // Make second header row if momtmp array is empty
-   
+
     if (momtmp.length === 0){
       str+="</tr><tr class='markinglist-header'>";
       str+="<th  id='header' class='rowno'><span>#</span></th><th class='result-header dugga-result-subheader' id='header0' onclick='toggleSortDir(0);'><div class='dugga-result-subheader-div' title='Firstname/Lastname/SSN'>Fname/Lname/SSN</div></th>"
@@ -247,7 +247,7 @@ function redrawtable()
       var isTeacher = false; // Will be true if a member of the course has "W" access
       var strt="";
       // Check if row is even/uneven and add corresponding class, this creates the "striped" pattern in the table
-      
+
       if(row % 2 == 1){
         strt+="<tr class='fumo hi'>";
       }
@@ -270,34 +270,34 @@ function redrawtable()
         strt+=" id='u"+student[j].uid+"_d"+student[j].lid+"' class='result-data c"+j;
 
         if(j==0){
-          
+
           strt+="'>"+student[j].grade+"</td>";
 
         } else {
-          
+
           if(student[j].kind==4){ strt+=" dugga-moment"; }
-          
+
           // color based on pass,fail,pending,assigned,unassigned
           if (student[j].grade === 1 && student[j].needMarking === false) {strt += " dugga-fail";}
-          
+
           else if (student[j].grade > 1) {strt += " dugga-pass";}
-          
+
           else if (student[j].needMarking === true) {strt+= " dugga-pending"; onlyPending=false;}
-          
-          else if (student[j].grade === 0 ) {strt += " dugga-assigned";}          
+
+          else if (student[j].grade === 0 ) {strt += " dugga-assigned";}
           else {strt += " dugga-unassigned";}
 
 
           strt += "'>";
           strt += "<div class='gradeContainer";
 
-         
+
           if(student[j].ishere===false){
             strt += " grading-hidden";
           }
           strt += "'>";
 
-          
+
           if (student[j].grade === null ){
             strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'I', student[j].qvariant, student[j].quizId);
           } else if (student[j].grade === -1 ){
@@ -306,16 +306,16 @@ function redrawtable()
             strt += makeSelect(student[j].gradeSystem, querystring['cid'], student[j].vers, student[j].lid, student[j].uid, student[j].grade, 'U', student[j].qvariant, student[j].quizId);
           }
 
-          
+
           strt += "<img id='korf' class='fist gradeImg";
 
-          
+
           if(student[j].userAnswer===null && !(student[j].quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
             strt += " grading-hidden";
           }
           strt +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + student[j].vers + "\",\"" + student[j].lid + "\",\"" + student[0].firstname + "\",\"" + student[0].lastname + "\",\"" + student[j].uid + "\",\"" + student[j].submitted + "\",\"" + student[j].marked + "\",\"" + student[j].grade + "\",\"" + student[j].gradeSystem + "\",\"" + student[j].lid + "\",\"" + student[j].qvariant + "\",\"" + student[j].quizId + "\");' />";
           strt += "</div>";
-          
+
 
 
       strt += "<div class='text-center'>";
@@ -323,11 +323,11 @@ function redrawtable()
           strt += "Times Graded: " + student[j].timesGraded;
         }
       strt += "</div>";
-      
 
-          
+
+
           strt += "<div class='text-center'"
-          
+
 
 		  for (var p = 0; p < moments.length; p++){
 			  if (moments[p].link == student[j].quizId){
@@ -337,30 +337,30 @@ function redrawtable()
 					break;
 			  }
 		  }
-		  
+
 
 		  strt += ">";
-		  
+
 
           if (student[j].submitted.getTime() !== timeZero.getTime()){
             strt+=student[j].submitted.toLocaleDateString()+ " " + student[j].submitted.toLocaleTimeString();
           }
 
-         
+
           strt += "</div></td>";
-          
+
         }
       }
 
       strt+="</tr>"
-      
+
       // Only show teachers if the showTeacher variable is set (should be off by default)
-     
+
       if(!onlyPending && (showTeachers || (!showTeachers && !isTeacher))) {
         str+=strt;
         row++;
       }
-     
+
     }
     //document.getElementById("content").innerHTML=str;
 
@@ -376,7 +376,7 @@ function redrawtable()
     str +=" style='padding-left:6px;background-color: #614875; color: white; font-size: 12px;"+"'";
     str +=" class='result-data c"+j;
     str +="'>Amount of ungraded assignments</td>";
-   
+
     for(var j=0;j<student.length - 1;j++) {
       str +="<td onmouseover='cellIn(event);' onmouseout='cellOut(event);'";
       // Mark the cell if it is a teacher, first iteration: changing background color to bright yellow to indicate something
@@ -387,7 +387,7 @@ function redrawtable()
 
       var ungradedForColumn = 0;
       var columnValues = document.getElementsByClassName('c' + String(j + 1));
-      
+
       for(var i = 0; i < columnValues.length; i++) {
         if($(columnValues[i]).hasClass("dugga-pending") || $(columnValues[i]).hasClass("dugga-assigned")) {
           ungradedForColumn++;
@@ -395,7 +395,7 @@ function redrawtable()
       }
 
       str += ungradedForColumn;
-      str += "</td>";     
+      str += "</td>";
     }
     row++;
     $("#markinglist tbody").append(str);
@@ -424,7 +424,7 @@ function updateAmountOfUngraded() {
     }
     break;
   }
-*/  
+*/
 }
 
 /*
@@ -435,7 +435,7 @@ function idField() {
 
 function cellIn(ev)
 {
-/*	
+/*
     var greger=ev.target;
 
     if(greger.nodeName!="TD") greger=greger.parentElement;
@@ -473,10 +473,10 @@ function cellIn(ev)
 
 function cellOut(ev)
 {
-/*	
+/*
     $("#horizhighlight").css("display","none");
     $("#verthighlight").css("display","none");
-*/    
+*/
 }
 
 // Resort based on our paramters:
@@ -675,7 +675,7 @@ function resort()
 // change to selected column and always start with desc FIFO order for col 1->
 // col 0 get special treatment and is by default sorted on lastname.
 function toggleSortDir(col){
-/*	
+/*
     var dir = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortdir");
     var ocol=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-sortcol");
 
@@ -701,7 +701,7 @@ function toggleSortDir(col){
     }
     resort();
     magicHeading();
-*/    
+*/
 }
 
 function process()
@@ -737,7 +737,7 @@ function process()
 		}
 	}
 */
-  
+
   // Replaces the loop above in order to prevent filtering which is currently not working.
   momtmp=new Array;
   for(var l=0;l<moments.length;l++){
@@ -1482,7 +1482,7 @@ function createSortableTable(data){
 		tblbody: studentInfo,
 		tblfoot:[]
 	}
-	
+
 	myTable = new SortableTable(
 		tabledata,
 		"resultTable",
@@ -1493,7 +1493,7 @@ function createSortableTable(data){
 		null,
 		null,
 		[],
-		[],       
+		[],
 		"",
 		null,
 		null,
@@ -1524,7 +1524,7 @@ function renderCell(col,celldata,cellid) {
       else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
       else {str += "dugga-unassigned";}
     str += "'>";
-    
+
     // Creation of grading buttons
     if(celldata.ishere===true){
       str += "<div class='gradeContainer'>";
@@ -1565,9 +1565,21 @@ function renderCell(col,celldata,cellid) {
           str += "Times Graded: " + celldata.timesGraded;
         }
       str += "</div>"
-    } 
+    }
     str += "</div>"
     return str;
   }
 return celldata;
+}
+
+function ListTeachers() {
+
+  $.ajax({
+      type: "GET",
+      url: "../Shared/SQL/init_db.sql",
+      data: {cid: cid , teacher: teacher},
+      success: function(result) {
+          alert(result.d);
+  }
+
 }
