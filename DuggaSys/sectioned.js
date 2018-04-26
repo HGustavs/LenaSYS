@@ -519,6 +519,7 @@ function newItem()
 			comment:comment
 		},"SECTION");
   $("#editSection").css("display","none");
+  setTimeout(function() { scrollToBottom (); }, 100);  // Scroll the page to the bottom after the object is created, the delay is there because the function runs quicker than the database update
 }
 
 function closeSelect()
@@ -836,7 +837,7 @@ function returnedSection(data)
 		// Group activity button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='selectItem(\"undefined\",\"New Item\",\"6\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>"
 
-		// Message of the day button
+		// Message button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='selectItem(\"undefined\",\"New Item\",\"7\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>format_quote</i></a></li>"
 
 		//Heading button
@@ -1788,6 +1789,12 @@ $(document).mouseup(function (e)
 		showSaveButton();
 	}
 
-
-
 });
+
+
+// Function that scrolls the page to the bottom
+function scrollToBottom () {
+	var scrollingElement = (document.scrollingElement || document.body)
+	scrollingElement.scrollTop = scrollingElement.scrollHeight;
+}
+
