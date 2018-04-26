@@ -9,6 +9,7 @@ AJAXService("get",{userid:"HGustavs"},"CONTRIBUTION");
 //----------------------------------------
 
 function renderRankTable(){
+  if(contribDataArr.length == 0) return;
   var str="<table class='fumho'><tr><th></th><th onclick='sortRank(0);'>login</th><th onclick='sortRank(2);'>alleventranks</th><th onclick='sortRank(3);'>allcommentranks</th><th onclick='sortRank(4);'>LOC rank</th><th onclick='sortRank(5);'>Commit rank</th></tr>";
   for (var j=0; j<contribDataArr.length;j++){
       str+="<tr>";
@@ -337,8 +338,9 @@ function returnedSection(data)
             }
         }
     }
-
     for (var stud in contribData){
+        // If the position in the array is not a object, continue
+        if(!(typeof contribData[stud] === "object")) continue;
         contribDataArr.push(contribData[stud]);
     }
     document.getElementById('content').innerHTML=str;
