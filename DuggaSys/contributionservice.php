@@ -27,7 +27,7 @@ $draught=false;
 
 
 if(checklogin() && isSuperUser($_SESSION['uid'])) {
-    $gituser = getOP('userid');    
+    $gituser = getOP('userid');
     $query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2018-03-25" and blamedate<"2019-01-01" union select author as usr from event where eventtime>"2018-03-25" and eventtime<"2019-01-01" union select author as usr from issue where issuetime>"2018-03-25" and issuetime<"2019-01-08") order by usr;');
     if(!$query->execute()) {
         $error=$query->errorInfo();
@@ -37,7 +37,7 @@ if(checklogin() && isSuperUser($_SESSION['uid'])) {
     foreach($rows as $row){
         if(strlen($row['usr'])<9) array_push($allusers, $row['usr']);
     }
-    
+
     $draught=true;
 }else{
     if(isset($_SESSION['uid'])){
@@ -56,10 +56,10 @@ if(isset($_SESSION['uid'])){
 	$firstname=$_SESSION['firstname'];
 }else{
 	$userid=1;
-	$loginname="UNK";		
+	$loginname="UNK";
 	$lastname="UNK";
 	$firstname="UNK";
-} 	
+}
 
 //$debug=print_r($_SESSION,true);
 
@@ -84,7 +84,7 @@ foreach($rows as $row){
         $commitrank=$i;
         $commitrankno=$row['rowk'];
     }
-    
+
     if($draught) array_push($allcommitranks, $row);
 
     $i++;
@@ -104,7 +104,7 @@ foreach($rows as $row){
         $rowrank=$i;
         $rowrankno=$row['rowk'];
     }
-    
+
     if($draught) array_push($allrowranks, $row);
 
     $i++;
@@ -124,9 +124,9 @@ foreach($rows as $row){
         $eventrank=$i;
         $eventrankno=$row['rowk'];
     }
-    
+
     if($draught) array_push($alleventranks, $row);
-    
+
     $i++;
 }
 
@@ -146,7 +146,7 @@ foreach($rows as $row){
     }
 
     if($draught) array_push($allcommentranks, $row);
-    
+
     $i++;
 }
 
@@ -183,7 +183,7 @@ foreach($rows as $row){
         $overallrank=$i;
         $overallrankno=$row['davegrowl'];
     }
-    
+
     if($draught) array_push($alltotalranks, $row);
 
     $i++;
@@ -195,7 +195,7 @@ SELECT sum(rowk),author FROM (SELECT count(*) as rowk, author FROM event where e
 */
 
 do{
-         
+
 		// Number of issues created by user during the interval
 		$issues= array();
     $currentweekdate=date('Y-m-d', $currentweek);
@@ -207,7 +207,7 @@ do{
         }
 		$query->bindParam(':gituser', $gituser);
 		$query->bindParam(':issuefrom', $currentweekdate);
-		$query->bindParam(':issueto', $currentweekenddate );				
+		$query->bindParam(':issueto', $currentweekenddate );
 		$query->execute();
         $rows = $query->fetchAll();
 		foreach($rows as $row){
@@ -215,15 +215,15 @@ do{
 					'issueno' => $row['issueno'],
 					'title' => $row['title']
 				);
-				array_push($issues, $issue);				
+				array_push($issues, $issue);
 		}
 
 		// Event count of the various kinds of events during interval
 		$events = array();
-		$query = $log_db->prepare("SELECT kind,count(kind) as cnt FROM event WHERE event.author=:gituser AND eventtime>:eventfrom AND eventtime<:eventto GROUP BY kind");
+		$query = $log_db->prepare("SELECT kind,count(kind) as cnt FROM event WHERE kind!='comment' AND event.author=:gituser AND eventtime>:eventfrom AND eventtime<:eventto GROUP BY kind");
 		$query->bindParam(':gituser', $gituser);
 		$query->bindParam(':eventfrom', $currentweekdate);
-		$query->bindParam(':eventto', $currentweekenddate );				
+		$query->bindParam(':eventto', $currentweekenddate );
         if(!$query->execute()) {
             $error=$query->errorInfo();
             $debug="Error reading entries".$error[2];
@@ -235,15 +235,15 @@ do{
 					'kind' => $row['kind'],
 					'cnt' => $row['cnt']
 				);
-				array_push($events, $event);				
+				array_push($events, $event);
 		}
-    
+
 		// Number of comments posted by the user during the interval
 		$comments= array();
 		$query = $log_db->prepare('SELECT * FROM event WHERE author=:gituser AND eventtime>:eventfrom AND eventtime<:eventto AND kind="comment"');
 		$query->bindParam(':gituser', $gituser);
 		$query->bindParam(':eventfrom', $currentweekdate);
-		$query->bindParam(':eventto', $currentweekenddate );	
+		$query->bindParam(':eventto', $currentweekenddate );
     if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error reading entries".$error[2];
@@ -254,7 +254,7 @@ do{
 					'issueno' => $row['issueno'],
 					'content' => $row['content']
 				);
-				array_push($comments, $comment);				
+				array_push($comments, $comment);
 		}
 
 		// Number of commits made by the user during the interval
@@ -262,7 +262,7 @@ do{
 		$query = $log_db->prepare('SELECT message,cid,author FROM commitgit WHERE author=:gituser AND thedate>:eventfrom AND thedate<:eventto');
 		$query->bindParam(':gituser', $gituser);
 		$query->bindParam(':eventfrom', $currentweekdate);
-		$query->bindParam(':eventto', $currentweekenddate );	
+		$query->bindParam(':eventto', $currentweekenddate );
     if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error reading entries".$error[2];
@@ -274,13 +274,13 @@ do{
 					'cid' => $row['cid']
 				);
 				array_push($commits, $commit);
-		}	
-	
+		}
+
 		// Number of lines changed in each file during interval
 		$files= array();
         $query = $log_db->prepare('SELECT sum(rowcnt) as rowk, * FROM Bfile,Blame where Blame.fileid=Bfile.id and blameuser=:gituser and blamedate>:blamefrom and blamedate<:blameto GROUP BY filename');
 		$query->bindParam(':blamefrom', $currentweekdate);
-		$query->bindParam(':blameto', $currentweekenddate );				
+		$query->bindParam(':blameto', $currentweekenddate );
 		$query->bindParam(':gituser', $gituser);
         if(!$query->execute()) {
             $error=$query->errorInfo();
@@ -293,17 +293,17 @@ do{
 					'filename' => $row['filename'],
 					'lines' => $row['rowk']
 				);
-				array_push($files, $file);				
+				array_push($files, $file);
 		}
-		
+
 		$week = array(
 			'weekno' => $weekno,
 			'weekstart' => $currentweekdate,
 			'weekend' => $currentweekenddate,
-			'events' => $events,			
-			'issues' => $issues,			
-			'comments' => $comments,	
-			'commits' => $commits,			
+			'events' => $events,
+			'issues' => $issues,
+			'comments' => $comments,
+			'commits' => $commits,
 			'files' => $files
 		);
 
@@ -337,7 +337,7 @@ $array = array(
     'allcommentranks' => $allcommentranks,
     'allcommitranks' => $allcommitranks,
     'githubuser' => $gituser
-    
+
 );
 
 echo json_encode($array);
