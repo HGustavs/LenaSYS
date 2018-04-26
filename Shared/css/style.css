@@ -1153,9 +1153,13 @@ input {
 }
 #toolbarLeftArrow{
   style="transform: rotate(-90deg);
+  width: 50%;
+  filter:invert(100%);
 }
 #toolbarRightArrow{
-  style="transform: rotate(90deg);
+  transform: rotate(90deg);
+  width: 50%;
+  filter:invert(100%);
 }
 
 /* --------------================################================-------------- *
