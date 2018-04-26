@@ -408,17 +408,15 @@ function markdownBlock(inString)
 
 function cancelPreview() {
     $(".previewWindow").hide();
-}
-
-function previewContainer() {
-    $(".previewWindowContainer").css("display", "block");
+    $(".previewWindowContainer").css("display", "none");
 }
 
 function loadPreview(fileUrl) {
+    $(".previewWindow").show();
+    $(".previewWindowContainer").css("display", "block");
     var fileContent = getFIleContents(fileUrl);
     document.getElementById("mrkdwntxt").value = fileContent;
     updatePreview(fileContent);
-    $(".previewWindow").show();
 }
 
 function updatePreview(str) {
