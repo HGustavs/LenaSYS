@@ -3552,6 +3552,18 @@ ul.hamburgerList button.menuButton {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
+ @media (max-width: 800px) {
+    .previewWindow {
+        height: 635px;
+        width: 900px;
+     }
+     .markdown {
+         height: 400px;
+     }
+     markdownPrev {
+         height: 400px;
+     }
+ }
  .previewWindowContainer {
     background-color: rgba(0,0,0,0.6);
     position: fixed;
