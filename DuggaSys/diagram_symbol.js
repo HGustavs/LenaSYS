@@ -518,9 +518,9 @@ function Symbol(kind) {
         if(broken) {
             var pointRemovedFromEntity = 
                 diagram.filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5)
-                       .filter(symbol => symbol.centerPoint == point)
-                       .length == 0;
-            if(pointRemovedFromEntity){
+                       .filter(symbol => symbol.centerPoint == point).length;
+            console.log(pointRemovedFromEntity);
+            if(pointRemovedFromEntity == 0){
                 points[point] == "";
                 console.log("Removed point in connector");
             }
