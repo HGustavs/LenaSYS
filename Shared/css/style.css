@@ -3655,6 +3655,12 @@ li:nth-last-child(10) a:hover {
      .markdownPrev {
          height: 400px;
      }
+    #mrkdwntxt {
+        height: 300px;
+    }
+    .optionButtons {
+        top: 436px;
+    }
  }
 
 /* Import diagram */
