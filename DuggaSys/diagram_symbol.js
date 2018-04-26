@@ -486,8 +486,6 @@ function Symbol(kind) {
         var broken = false;
         for(var i = 0; i < this.connectorTop.length; i++){
             if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
-                if(this.connectorTop[i].to == point) points[this.connectorTop[i].to] = "";
-                else points[this.connectorTop[i].from] = "";
                 this.connectorTop.splice(i,1);
                 broken = true;
                 break;
@@ -496,28 +494,33 @@ function Symbol(kind) {
         if(!broken){
             for(var i = 0; i < this.connectorBottom.length; i++){
                 if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
-                    if(this.connectorBottom[i].to == point) points[this.connectorBottom[i].to] = "";
-                    else points[this.connectorBottom[i].from] = "";
                     this.connectorBottom.splice(i,1);
+                    broken = true;
                     break;
                 }
             }
             for(var i = 0; i < this.connectorRight.length; i++){
                 if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
-                    if(this.connectorRight[i].to == point) points[this.connectorRight[i].to] = "";
-                    else points[this.connectorRight[i].from] = "";
+                    
                     this.connectorRight.splice(i,1);
+                    broken = true;
                     break;
                 }
             }
             for(var i = 0; i < this.connectorLeft.length; i++){
                 if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
-                    if(this.connectorLeft[i].to == point) points[this.connectorLeft[i].to] = "";
-                    else points[this.connectorLeft[i].from] = "";
                     this.connectorLeft.splice(i,1);
+                    broken = true;
                     break;
                 }
             }
+        }
+        if(broken) {
+            var pointRemovedFromEntity = 
+                diagram.filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5)
+                       .filter(symbol => symbol.middleDivider == point || symbol.centerPoint == point)
+                       .length == 0;
+            if(pointRemovedFromEntity) points[point] == "";
         }
     }
     this.getPoints = function() {
