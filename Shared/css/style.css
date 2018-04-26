@@ -3652,7 +3652,7 @@ li:nth-last-child(10) a:hover {
      .markdown {
          height: 400px;
      }
-     markdownPrev {
+     .markdownPrev {
          height: 400px;
      }
  }
