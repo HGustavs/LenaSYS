@@ -232,8 +232,14 @@ function createVariant(){ //removed qid and cid
 	var qid = $("#did").val();
 	var answer=$("#variantanswerText").val();
 	var parameter=$("#variantparameterText").val();
-	
-	AJAXService("ADDVARI",{cid:querystring['cid'],qid:qid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
+	var disabled;
+	if($('#disableVariant').is(':visible')){
+		disabled = '0';
+	}else if($('#enableVariant').is(':visible')){
+		disabled = '1';
+	}
+
+	AJAXService("ADDVARI",{cid:querystring['cid'],qid:qid,disabled:disabled,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function selectVariant(vid) {
@@ -248,17 +254,35 @@ function selectVariant(vid) {
 	});
 
 	showVariantSaveButton();
+
 	$("#vid").val(target_variant['vid']); // Set Variant ID
 	$("#variantparameterText").val(target_variant['param']); // Set Variant ID
 	$("#variantanswerText").val(target_variant['variantanswer']); // Set Variant ID
+	var disabled = (target_variant['disabled']);
+	if(disabled == '0'){
+		showVariantDisableButton();
+	}
+	else if(disabled == '1'){
+		showVariantEnableButton();
+	}
 }
 
 function updateVariant(){
 	var vid=$("#vid").val();
 	var answer=$("#variantanswerText").val();
 	var parameter=$("#variantparameterText").val();
+	var disabled;
+	if($('#disableVariant').is(':visible')){
+		disabled = '0';
+	}else if($('#enableVariant').is(':visible')){
+		disabled = '1';
+	}
+	console.log(vid);
+	console.log(disabled);
+	console.log(answer);
+	console.log(parameter);
 
-	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
+	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,disabled:disabled,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function deleteVariant(vid){
