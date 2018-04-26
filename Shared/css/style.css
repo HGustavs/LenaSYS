@@ -1125,6 +1125,34 @@ input {
 .toolbarMaximized{
     transform: rotate(180deg);
 }
+#toolbar-switcher{
+  height:20px;
+  display: flex;
+  text-align: center;
+  padding:0 3px;
+  line-height: 20px;
+}
+.toolbarArrows{
+  width:20%;
+  background: #614875;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#toolbarTypeText{
+  width:60%;
+  background-color: #f1f1f1;
+  border: 1px solid #eaeaea;
+}
+#toolbarLeftArrow{
+  transform: rotate(-90deg);
+  width: 50%;
+  filter:invert(100%);
+}
+#toolbarRightArrow{
+  transform: rotate(90deg);
+  width: 50%;
+  filter:invert(100%);
+}
 
 /* --------------================################================-------------- *
  *                            END TOOLBOX/APPLICATION                           *
@@ -1449,6 +1477,7 @@ div.submit-button:disabled {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
+  margin: 5px auto;
 }
 
 .buttonsStyle img,
