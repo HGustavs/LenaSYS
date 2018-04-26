@@ -3647,7 +3647,6 @@ li:nth-last-child(10) a:hover {
 @media only screen and (max-height: 800px) and (max-width: 1400px) {
     .previewWindow {
         height: 500px;
-        background-color: red;
      }
      .markdown {
          height: 400px;
@@ -3656,7 +3655,7 @@ li:nth-last-child(10) a:hover {
          height: 400px;
      }
     #mrkdwntxt {
-        height: 300px;
+        height: 350px;
     }
     .optionButtons {
         top: 436px;
