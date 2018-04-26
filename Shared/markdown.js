@@ -407,6 +407,7 @@ function markdownBlock(inString)
 }
 
 function cancelPreview() {
+
     $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
 }

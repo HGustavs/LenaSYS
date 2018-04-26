@@ -91,6 +91,7 @@ var diagramNumberUndo = 0;              // Is used for localStorage and undo
 var diagramNumberRedo = 0;              // Is used for localStorage and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
+var classAppearanceOpen = false;
 
 var symbolStartKind;                    // Is used to store which kind of object you start on
 var symbolEndKind;                      // Is used to store which kind of object you end on
@@ -103,7 +104,8 @@ var ctrlIsClicked = false;
 
 function keyDownHandler(e){
     var key = e.keyCode;
-    if((key == 46 || key == 8) && !appearanceMenuOpen){
+    if(appearanceMenuOpen) return;
+    if((key == 46 || key == 8)){
         eraseSelectedObject();
     } else if(key == 32){
         //Use space for movearound
@@ -335,6 +337,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                 this[i].targeted = false;
             }
         } else {
+            var index = selected_objects.indexOf(this[i]);
             var tempTopLeftX = points[this[i].topLeft].x;
             var tempTopLeftY = points[this[i].topLeft].y;
             var tempBottomRightX = points[this[i].bottomRight].x;
@@ -349,9 +352,23 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
                 sy < tempBottomRightY && ey > tempBottomRightY) {
-                this[i].targeted = true;
-            } else {
+                if (ctrlIsClicked) {
+                    if (index >= 0) {
+                        this[i].targeted = false;
+                        selected_objects.splice(index, 1);
+                    } else {
+                        this[i].targeted = true;
+                        selected_objects.push(this[i]);
+                    }
+                } else {
+                    if (index < 0) {
+                        this[i].targeted = true;
+                        selected_objects.push(this[i]);
+                    }
+                }
+            } else if(!ctrlIsClicked) {
                 this[i].targeted = false;
+                if (index >= 0) selected_objects.splice(index, 1);
             }
         }
     }
@@ -629,13 +646,35 @@ function getConnectedLines(object) {
 
 function eraseObject(object) {
     canvas.style.cursor = "default";
+    var objectsToDelete = [];
     if (object.kind == 2) {
+        if(object.symbolkind != 4){
+            var lines = diagram.filter(symbol => symbol.symbolkind == 4);
+            objectsToDelete = lines.filter(
+                line => line.topLeft == object.middleDivider
+                        || line.topLeft == object.centerPoint
+                        || line.bottomRight == object.middleDivider
+                        || line.bottomRight == object.centerPoint
+                        || (object.hasConnectorFromPoint(line.topLeft) && object.symbolkind == 3)
+                        || (object.hasConnectorFromPoint(line.bottomRight) && object.symbolkind == 3)
+            );
+        }else{
+            diagram.filter(symbol => symbol.symbolkind == 3)
+                .filter(entity =>
+                        entity.hasConnector(object.topLeft)
+                        && entity.hasConnector(object.bottomRight))
+                    .forEach(ent => {
+                        ent.removePointFromConnector(object.topLeft);
+                        ent.removePointFromConnector(object.bottomRight);
+                    });
+        }
         object.erase();
         diagram.eraseLines(object, object.getLines());
     } else if (object.kind == 1) {
         object.erase();
     }
     diagram.deleteObject(object);
+    objectsToDelete.forEach(eraseObject);
     updateGraphics();
 }
 

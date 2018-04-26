@@ -59,12 +59,6 @@ function mousemoveevt(ev, t) {
         currentMouseCoordinateX = (((ev.offsetX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.offsetY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
     }
-  /*  if (md == 1 || md == 2 || md == 0 && uimode != " ") {
-        if (snapToGrid) {
-            currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
-            currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
-        }
-    }*/
     if (md == 0) {
         // Select a new point only if mouse is not already moving a point or selection box
         sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
@@ -80,26 +74,10 @@ function mousemoveevt(ev, t) {
         points[sel.index].y = currentMouseCoordinateY;
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
-        if (movobj != -1 && movobj != 4 && movobj != 6 && movobj != 5) {
+        if (movobj != -1 ) {
             uimode = "Moved";
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true) {
-                  /* if (snapToGrid) {
-                        if (diagram[i].kind == 1) {
-                            var firstPoint = points[diagram[i].segments[0].pa];
-                        } else {
-                            var firstPoint = points[diagram[i].topLeft];
-                        }
-                        var tlx = (Math.round(firstPoint.x / gridSize) * gridSize);
-                        var tly = (Math.round(firstPoint.y / gridSize) * gridSize);
-                        var deltatlx = firstPoint.x - tlx;
-                        var deltatly = firstPoint.y - tly;
-
-                        currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
-                        currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
-                        currentMouseCoordinateX -= deltatlx;
-                        currentMouseCoordinateY -= deltatly;
-                    }*/
                     if(snapToGrid){
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
@@ -198,7 +176,7 @@ function mousemoveevt(ev, t) {
 
 function mousedownevt(ev) {
 
-    if(uimode == "Moved" && !ctrlIsClicked && md != 4){
+    if(uimode == "Moved" && md != 4){
         uimode = "normal";
         md = 0;
     }
@@ -222,53 +200,64 @@ function mousedownevt(ev) {
         }
 
     } else if (sel.distance < tolerance) {
+        for (var i = 0; i < diagram.length; i++) {
+            if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
+                md = 3;
+                handleSelect();
+                return;
+            }
+        }
         md = 2;
     } else if (movobj != -1) {
         md = 3;
-        lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
-        var last = diagram[lastSelectedObject];
-        if (last.targeted == false && uimode != "MoveAround") {
-            for (var i = 0; i < diagram.length; i++) {
-                diagram[i].targeted = false;
-            }
-            // Will add multiple selected diagram objects if the
-            // CTRL/CMD key is currently active
-            if (ctrlIsClicked) {
-                if(selected_objects.indexOf(last) < 0){
-                    selected_objects.push(last);
-                    last.targeted = true;
-                }
-                for (var i = 0; i < selected_objects.length; i++) {
-                    if (selected_objects[i].targeted == false) {
-                        if(selected_objects.indexOf(last) < 0){
-                            selected_objects.push(last);
-                        }
-                        selected_objects[i].targeted = true;
-                    }
-                }
-            } else {
-                selected_objects = [];
-                selected_objects.push(last);
-                last.targeted = true;
-            }
-        } else if(uimode != "MoveAround"){
-            if(ctrlIsClicked){
-                var index = selected_objects.indexOf(last);
-                if(index > -1){
-                    selected_objects.splice(index, 1);
-                }
-                last.targeted = false;
-            }
-        }
+        handleSelect();
     } else {
         md = 4; // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
-        if(uimode != "MoveAround"){
+        if(uimode != "MoveAround" && !ctrlIsClicked){
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
             }
             selected_objects = [];
+        }
+    }
+}
+
+function handleSelect() {
+    lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
+    var last = diagram[lastSelectedObject];
+    if (last.targeted == false && uimode != "MoveAround") {
+        for (var i = 0; i < diagram.length; i++) {
+            diagram[i].targeted = false;
+        }
+        // Will add multiple selected diagram objects if the
+        // CTRL/CMD key is currently active
+        if (ctrlIsClicked) {
+            if(selected_objects.indexOf(last) < 0){
+                selected_objects.push(last);
+                last.targeted = true;
+            }
+            for (var i = 0; i < selected_objects.length; i++) {
+                if (selected_objects[i].targeted == false) {
+                    if(selected_objects.indexOf(last) < 0){
+                        selected_objects.push(last);
+                    }
+                    selected_objects[i].targeted = true;
+                }
+            }
+        } else {
+            selected_objects = [];
+            selected_objects.push(last);
+            last.targeted = true;
+        }
+    } else if(uimode != "MoveAround"){
+        if(ctrlIsClicked){
+            var index = selected_objects.indexOf(last);
+            if(index > -1){
+                selected_objects.splice(index, 1);
+            }
+            last.targeted = false;
         }
     }
 }
@@ -348,6 +337,7 @@ function mouseupevt(ev) {
         diagram.push(classB);
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
+        selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateERAttr" && md == 4) {
         erAttributeA = new Symbol(2);
         erAttributeA.name = "Attr" + diagram.length;
@@ -361,6 +351,7 @@ function mouseupevt(ev) {
         //selecting the newly created attribute and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
+        selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateEREntity" && md == 4) {
         erEnityA = new Symbol(3);
         erEnityA.name = "Entity" + diagram.length;
@@ -375,6 +366,7 @@ function mouseupevt(ev) {
         //selecting the newly created enitity and open the dialogmenu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
+        selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateLine" && md == 4){
         //Code for making a line, if start and end object are different, except attributes
         if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine){
@@ -389,6 +381,7 @@ function mouseupevt(ev) {
             //selecting the newly created enitity and open the dialogmenu.
             lastSelectedObject = diagram.length -1;
             diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
             createCardinality();
             updateGraphics();
             //diagram.createAritySymbols(diagram[lastSelectedObject]);
@@ -405,6 +398,7 @@ function mouseupevt(ev) {
         //selecting the newly created relation and open the dialog menu.
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
+        selected_objects.push(diagram[lastSelectedObject]);
     } else if (md == 4 && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
     }
@@ -415,9 +409,11 @@ function mouseupevt(ev) {
         }
         //Sets the clicked object as targeted
         selected_objects = [];
-        selected_objects.push(diagram[lastSelectedObject]);
-        //You have to target an object when you start to draw
-        if(md != 0) diagram[lastSelectedObject].targeted = true;
+        if (lastSelectedObject >= 0) {
+            selected_objects.push(diagram[lastSelectedObject]);
+            //You have to target an object when you start to draw
+            if(md != 0) diagram[lastSelectedObject].targeted = true;
+        }
     }
     document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
@@ -440,15 +436,16 @@ function doubleclick(ev) {
 
 function resize() {
     if (uimode == "CreateClass" && md == 4) {
-        if (currentMouseCoordinateX >= startMouseCoordinateX && (currentMouseCoordinateX - startMouseCoordinateX) < classTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX + classTemplate.width;
-        } else if (currentMouseCoordinateX < startMouseCoordinateX && (startMouseCoordinateX - currentMouseCoordinateX) < classTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX - classTemplate.width;
+        if (currentMouseCoordinateX < startMouseCoordinateX) {
+            var tempX = currentMouseCoordinateX;
+            currentMouseCoordinateX = startMouseCoordinateX;
+            startMouseCoordinateX = tempX;
+
         }
-        if (currentMouseCoordinateY >= startMouseCoordinateY && (currentMouseCoordinateY - startMouseCoordinateY) < classTemplate.width) {
-            currentMouseCoordinateY = startMouseCoordinateY + classTemplate.height;
-        } else if (currentMouseCoordinateY < startMouseCoordinateY && (startMouseCoordinateY - currentMouseCoordinateY) < classTemplate.height) {
-            currentMouseCoordinateY = startMouseCoordinateY - classTemplate.height;
+        if (currentMouseCoordinateY < startMouseCoordinateY) {
+            var tempY = currentMouseCoordinateY;
+            currentMouseCoordinateY = startMouseCoordinateY;
+            startMouseCoordinateY = tempY;
         }
     } else if (uimode == "CreateERAttr" && md == 4) {
         if (currentMouseCoordinateX >= startMouseCoordinateX && (currentMouseCoordinateX - startMouseCoordinateX) < attributeTemplate.width) {

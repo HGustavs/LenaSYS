@@ -95,7 +95,9 @@ pdoConnect();
     <!-- Markdown-preview functionality START -->
     <div class="previewWindowContainer"></div>
     <div class="previewWindow">
-        <div class="prevHead">This is the preview window
+    	<div class="loginBoxheader">
+        	<h3>This is the preview window</h3>
+        	<div style="cursor:pointer;" onclick="closePreview();">x</div>
         </div>
         <div class="markdown">
             <div class="markNav">Markdown

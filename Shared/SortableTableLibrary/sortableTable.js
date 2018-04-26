@@ -143,6 +143,11 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	var renderSortOptions = renderSortOptions;
 	var renderColumnFilter = renderColumnFilter;
 
+	// Keeps track of the last picked sorting order
+	var tableSort;
+	var colSort;
+	var reverseSort;
+
 	if (rowFilter == null) {
 		var rowFilter = defaultRowFilter;
 	} else {
@@ -250,15 +255,17 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 					}
 					if (col == sortcolumn) {
 						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,sortkind);
+						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+renderSortOptions(col,sortkind);
 
 						if (col != "" && col != null) {
 							str += " <img id='"+colname+"_"+tableid+"_desc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/desc_white.svg'>";
 							str += " <img id='"+colname+"_"+tableid+"_asc_sortdiricon' style='float:right;margin-top:7px;'class='hideTableArrow' src='../Shared/icons/asc_white.svg'></th>";
+							mhstr += " <img id='"+colname+"_"+tableid+"_mh_desc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/desc_white.svg'>";
+							mhstr += " <img id='"+colname+"_"+tableid+"_mh_asc_sortdiricon' style='float:right;margin-top:7px;'class='hideTableArrow' src='../Shared/icons/asc_white.svg'></th>";
 						} else {
 							str += "</th>";
+							mhstr += "</th>";
 						}
-
-						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
 					} else {
 						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
 						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
@@ -275,13 +282,16 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 					// }
 					if (colname != "move") {
 						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+col;
-						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+col+"</th>";
+						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+col;
 
 						if (col != "" && col != null) {
 							str += " <img id='"+colname+"_"+tableid+"_desc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/desc_white.svg'>";
 							str += " <img id='"+colname+"_"+tableid+"_asc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/asc_white.svg'></th>";
+							mhstr += " <img id='"+colname+"_"+tableid+"_mh_desc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/desc_white.svg'>";
+							mhstr += " <img id='"+colname+"_"+tableid+"_mh_asc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/asc_white.svg'></th>";
 						} else {
 							str += "</th>";
+							mhstr += "</th>";
 						}
 					}
 				}
@@ -447,6 +457,10 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		} else {
 			document.getElementById(tableid).innerHTML = str;
 		}
+
+		if (tableSort != null) {
+			sortTable(tableSort, colSort, reverseSort);
+		}
 	} 
     
 	// Simpler magic heading v. III
@@ -556,6 +570,10 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	//								     reverse the sorting.
 	//-----------------------------------------------------------------
 	function sortTable(table, col, reverse) {
+		tableSort = table;
+		colSort = col;
+		reverseSort = reverse;
+
 	    var tb = document.getElementById(tableid + "_tbl").tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
 	        tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
 	        th = document.getElementById(tableid + "_tbl").tHead,
@@ -564,6 +582,13 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	        imgDesc = childrenTH.children[0],
 	        imgAsc = childrenTH.children[1],
 	        reg = /^\d+$/;
+
+	    // Magic header specific variables
+	    var th_mh = document.getElementById(tableid + "_tbl_mh").tHead,
+	        childrenTR_mh = th_mh.children[0],
+	        childrenTH_mh = childrenTR_mh.children[col],
+	        imgDesc_mh = childrenTH_mh.children[0],
+	        imgAsc_mh = childrenTH_mh.children[1];
 
 	    reverse = -((+reverse) || -1);
 	    tr = tr.sort(function (a, b) { // sort rows
@@ -584,16 +609,20 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	    // Looping through all images in the heading to hide them
 	    for (var i = 0; i < childrenTR.children.length; i++) {
 	    	var tempChild = childrenTR.children[i];
+	    	var tempChild_mh = childrenTR_mh.children[i];
 	    	for (var y = 0; y < tempChild.children.length; y++) {
 	    		tempChild.children[y].classList.add("hideTableArrow");
+	    		tempChild_mh.children[y].classList.add("hideTableArrow");
 	    	}
 	    }
 	    
 	    // Showing descending/ascending arrows to indicate how the table is sorted
 	    if (reverse == 1) {
 	    	imgDesc.classList.remove("hideTableArrow");
+	    	imgDesc_mh.classList.remove("hideTableArrow");
 	    } else if (reverse == -1) {
 	    	imgAsc.classList.remove("hideTableArrow");
+	    	imgAsc_mh.classList.remove("hideTableArrow");
 	    }
 
 	    for (var i = 0; i < tr.length; i++) {
