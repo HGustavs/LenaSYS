@@ -3482,10 +3482,9 @@ li:nth-last-child(10) a:hover {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
- @media screen and (max-height: 800px) {
+ @media only screen and (max-height: 800px) {
     .previewWindow {
         height: 500px;
-        width: 900px;
      }
      .markdown {
          height: 400px;
