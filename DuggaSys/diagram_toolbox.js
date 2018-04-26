@@ -1,3 +1,5 @@
+var val = 0;
+
 function initToolbox(){
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
@@ -19,7 +21,6 @@ function toggleToolbarMinimize(){
 
 //function for switching the toolbar state (All, ER, UML)
 function switchToolbar(direction){
-  var val = document.getElementById('toolbar-switcher').value;
   var text = ["All", "ER", "UML"];
   if(direction == 'left'){
     val = val <= 2 ? 2 : val--;
@@ -34,6 +35,8 @@ function switchToolbar(direction){
   }else{
     $(".tooltipDialog").show();
   }
+
+  document.getElementById('toolbar-switcher').value = val;
 }
 
 
