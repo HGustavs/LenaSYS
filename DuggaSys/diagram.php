@@ -62,9 +62,13 @@
                         </div>
                         <div class='application-toolbar'>
                           <div id="toolbar-switcher">
-                            <div class="toolbarArrows" id="toolbarLeftArrow" onclick="switchToolbar('left');"> << </div>
-                            <div id="toolbarTypeText"> ALL </div>
-                            <div class="toolbarArrows" id="toolbarRightArrow" onclick="switchToolbar('right');"> >> </div>
+                            <div class="toolbarArrows" onclick="switchToolbar('left');">
+                              <img id="toolbarLeftArrow" src="../Shared/icons/arrow.svg">
+                            </div>
+                            <div id="toolbarTypeText">All</div>
+                            <div class="toolbarArrows" onclick="switchToolbar('right');">
+                              <img id="toolbarRightArrow" src="../Shared/icons/arrow.svg">
+                            </div>
                           </div>
                         <h4 class="label">Tools</h4>
                         <div class="toolbar-drawer">
