@@ -350,7 +350,7 @@ var bool = true;
  */
 
 function renderCell(col,celldata,cellid) {
-	if (col == "requestedpasswordchange"){
+	if(col == "requestedpasswordchange") {
 		obj=JSON.parse(celldata);
 		str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
 		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
@@ -397,8 +397,9 @@ function renderCell(col,celldata,cellid) {
 		obj = JSON.parse(celldata);
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
 		return str;
-
-	}else {
+	} else if(col == "groups") {
+		return "<span>" + celldata + "</span>";
+	} else {
 		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
 	return celldata;
@@ -431,8 +432,9 @@ function returnedAccess(data) {
 			class:"Class",
 			modified:"Added",
 			examiner:"Examiner",
-      vers:"Version",
-			access:"Access",
+        	vers:"Version",
+            access:"Access",
+        	groups:"Group(s)",
 			requestedpasswordchange:"Password"
 		},
 		tblbody: data['entries'],
@@ -461,7 +463,7 @@ function returnedAccess(data) {
 	);
 
 	myTable.renderTable();
-  
+
 	if(data['debug']!="NONE!") alert(data['debug']);
 
 	makeAllSortable();
