@@ -132,7 +132,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$error=$query->errorInfo();
 					$debug="Error updating user".$error[2];
 				}
-	}else if(strcmp($opt,"LASTNAME")==0){
+	}else if(strcmp($opt,"CLASS")==0){
 				$query = $pdo->prepare("UPDATE user set class=:val WHERE uid=:uid");
 				$query->bindParam(':uid', $uid);
 				$query->bindParam(':val', $val);
