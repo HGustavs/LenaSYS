@@ -193,17 +193,30 @@ function Symbol(kind) {
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
 
-            if(points[this.bottomRight].y-points[this.topLeft].y < classTemplate.height){
-                points[this.topLeft].y = points[this.middleDivider].y - (classTemplate.height/2);
-                points[this.bottomRight].y = points[this.middleDivider].y + (classTemplate.height/2);
+            if(this.attributes.length > 0){
+                //Height of text + padding
+                var attrHeight = (this.attributes.length*14)+35;
+                points[this.topLeft].y = y1;
+                points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
             }
-            if(points[this.bottomRight].y < points[this.middleDivider].y || points[this.topLeft].y > points[this.middleDivider].y){
-                points[this.middleDivider].y = points[this.topLeft].y + (classTemplate.height/2);
+            if(this.operations.length > 0){
+                var opHeight = (this.operations.length*14)+15;
+                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
+
+            }//Finding the longest string
+            var longestStr = "";
+            for(var i = 0; i < this.operations.length; i++){
+                if(this.operations[i].text.length > longestStr.length)
+                    longestStr = this.operations[i].visibility + " " + this.operations[i].text;
             }
-            if(points[this.bottomRight].x-points[this.topLeft].x < classTemplate.width){
-                points[this.topLeft].x = points[this.middleDivider].x - (classTemplate.width/2);
-                points[this.bottomRight].x = points[this.middleDivider].x + (classTemplate.width/2);
+            for(var i = 0; i < this.attributes.length; i++){
+                if(this.attributes[i].text.length > longestStr.length)
+                    longestStr = this.attributes[i].visibility + " " + this.attributes[i].text;
             }
+            //Measures the length and sets the width of the object to this.
+            ctx.font = "14px Arial";
+            var strLen = ctx.measureText(longestStr).width;
+            points[this.bottomRight].x = points[this.topLeft].x + strLen + 15;
         } else if (this.symbolkind == 5){
                 // Static size of relation. Makes resizing of relation impossible.
                 points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
@@ -284,7 +297,14 @@ function Symbol(kind) {
             }
         }
     }
-    
+
+    this.connectorCountFromSymbol = function(symbol) {
+        var tmp = this.connectorTop.concat(this.connectorBottom, this.connectorLeft, this.connectorRight);
+        tmp = tmp.filter(c => c.to == symbol.topLeft || c.to == symbol.bottomRight || c.to == symbol.centerPoint || c.to == symbol.middleDivider ||
+            c.from == symbol.topLeft || c.from == symbol.bottomRight || c.from == symbol.centerPoint || c.from == symbol.middleDivider);
+        return tmp.length;
+    }
+
     this.hasConnectorFromPoint = function(point) {
         for (var i = 0; i < this.connectorTop.length; i++) {
             if(this.connectorTop[i].from == point){
@@ -486,8 +506,6 @@ function Symbol(kind) {
         var broken = false;
         for(var i = 0; i < this.connectorTop.length; i++){
             if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
-                if(this.connectorTop[i].to == point) points[this.connectorTop[i].to] = "";
-                else points[this.connectorTop[i].from] = "";
                 this.connectorTop.splice(i,1);
                 broken = true;
                 break;
@@ -496,25 +514,22 @@ function Symbol(kind) {
         if(!broken){
             for(var i = 0; i < this.connectorBottom.length; i++){
                 if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
-                    if(this.connectorBottom[i].to == point) points[this.connectorBottom[i].to] = "";
-                    else points[this.connectorBottom[i].from] = "";
                     this.connectorBottom.splice(i,1);
+                    broken = true;
                     break;
                 }
             }
             for(var i = 0; i < this.connectorRight.length; i++){
                 if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
-                    if(this.connectorRight[i].to == point) points[this.connectorRight[i].to] = "";
-                    else points[this.connectorRight[i].from] = "";
                     this.connectorRight.splice(i,1);
+                    broken = true;
                     break;
                 }
             }
             for(var i = 0; i < this.connectorLeft.length; i++){
                 if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
-                    if(this.connectorLeft[i].to == point) points[this.connectorLeft[i].to] = "";
-                    else points[this.connectorLeft[i].from] = "";
                     this.connectorLeft.splice(i,1);
+                    broken = true;
                     break;
                 }
             }

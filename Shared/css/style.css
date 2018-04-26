@@ -111,12 +111,6 @@ h6 {
   padding:0px;
 }
 
-
-.hideTableArrow {
-  display:none !important;
-}
-
-
 hr {
   border: 0;
   border-bottom: 1px dashed #ccc;
@@ -1131,6 +1125,34 @@ input {
 .toolbarMaximized{
     transform: rotate(180deg);
 }
+#toolbar-switcher{
+  height:20px;
+  display: flex;
+  text-align: center;
+  padding:0 3px;
+  line-height: 20px;
+}
+.toolbarArrows{
+  width:20%;
+  background: #614875;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#toolbarTypeText{
+  width:60%;
+  background-color: #f1f1f1;
+  border: 1px solid #eaeaea;
+}
+#toolbarLeftArrow{
+  transform: rotate(-90deg);
+  width: 50%;
+  filter:invert(100%);
+}
+#toolbarRightArrow{
+  transform: rotate(90deg);
+  width: 50%;
+  filter:invert(100%);
+}
 
 /* --------------================################================-------------- *
  *                            END TOOLBOX/APPLICATION                           *
@@ -1455,6 +1477,7 @@ div.submit-button:disabled {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
+  margin: 5px auto;
 }
 
 .buttonsStyle img,
@@ -1663,7 +1686,6 @@ input.large-button {
   line-height:28px;
   font-weight: bold;
   padding: 5px;
-  cursor: pointer;
 }
 
 .innertable {
@@ -1725,6 +1747,17 @@ input.large-button {
 
 #plorf {
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+.sortingArrow {
+  position: relative;
+  margin-left: 7px;
+  top: 3px;
+}
+
+.sortableHeading {
+  display: block;
+  cursor: pointer;
 }
 
 .list#testTable input, .list#testTable select, .list#testTable label {
@@ -3388,7 +3421,7 @@ li:nth-last-child(2) a:hover {
 li:nth-last-child(3) a {
 	background-color: #e9a901;
   color: white;
-  
+
 }
 
 li:nth-last-child(3) a:hover {
@@ -3411,7 +3444,7 @@ li:nth-last-child(4) a:hover {
 li:nth-last-child(5) a {
 	background-color: #d14d58;
   color: white;
-  
+
 }
 
 li:nth-last-child(5) a:hover {
@@ -3423,7 +3456,7 @@ li:nth-last-child(5) a:hover {
 li:nth-last-child(6) a {
 	background-color: #cb438d;
   color: white;
-  
+
 }
 
 li:nth-last-child(6) a:hover {
@@ -3435,7 +3468,7 @@ li:nth-last-child(6) a:hover {
 li:nth-last-child(7) a {
 	background-color: #a844cc;
   color: white;
-  
+
 }
 
 li:nth-last-child(7) a:hover {
@@ -3447,7 +3480,7 @@ li:nth-last-child(7) a:hover {
 li:nth-last-child(8) a {
 	background-color: #6f34dc;
   color: white;
-  
+
 }
 
 li:nth-last-child(8) a:hover {
@@ -3459,7 +3492,7 @@ li:nth-last-child(8) a:hover {
 li:nth-last-child(9) a {
 	background-color: #1f65cd;
   color: white;
-  
+
 }
 
 li:nth-last-child(9) a:hover {
@@ -3471,18 +3504,29 @@ li:nth-last-child(9) a:hover {
 li:nth-last-child(10) a {
 	background-color: blue;
   color: white;
-  
+
 }
 
 li:nth-last-child(10) a:hover {
 	background-color: pink;
   color: white;
-  
+
 }
 
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
+ 
+ .previewWindowContainer {
+    background-color: rgba(0,0,0,0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 8000;
+    display: none;
+ }
 
 .previewWindowContainer {
   background-color: rgba(0,0,0,0.6);
@@ -3506,10 +3550,8 @@ li:nth-last-child(10) a:hover {
     display: none;
     left: 0;
     right: 0;
-    top: 220px;
-    position: absolute;
-     
-     
+    top: 100px;
+    position: fixed;
 }
 .markdown {
     border: solid rgb(200,200,200);
@@ -3530,6 +3572,19 @@ li:nth-last-child(10) a:hover {
     position: relative;
     margin: 20px 10px 10px 10px;
     float: right;
+}
+.markdownPrev pre{
+    font-family: Hack, MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 10px;
+    line-height: 12px;
+    white-space: pre;
+    white-space: pre-wrap;
+    background: #ffffff;
+    display: inline-block;
+    padding: 1em;
+    margin: 0.5em 0px;
+    border: 1px solid #bebab0;
+    box-shadow: 1px 1px 2px #666;
 }
 .optionButtons {
     top: 585px;
@@ -3635,6 +3690,24 @@ li:nth-last-child(10) a:hover {
     background-color: rgba(0, 0, 0, 0);
     box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.3);
 }
+
+@media only screen and (max-height: 800px) and (max-width: 1400px) {
+    .previewWindow {
+        height: 500px;
+     }
+     .markdown {
+         height: 400px;
+     }
+     .markdownPrev {
+         height: 400px;
+     }
+    #mrkdwntxt {
+        height: 350px;
+    }
+    .optionButtons {
+        top: 436px;
+    }
+ }
 
 /* Import diagram */
 .importDiagram {
