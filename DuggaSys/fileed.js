@@ -65,7 +65,7 @@ function returnedFile(data) {
 		null,
 		"",
         renderCell,
-        null,
+        renderSortOptions,
         null,
         rowFilter,
         [],
@@ -210,7 +210,7 @@ function renderCell(col,celldata,cellid) {
 			return "<div>" + listStr + "</div>";
 		}
 	} else if (col == "filesize") {
-		celldata = formatBytes(celldata, 0);
+		return formatBytes(celldata, 0);
 	} else if (col == "extension") {
 	    return "<div>" + list[list.length - 1] + "</div>";
 	} else if (col == "editor") {
@@ -239,6 +239,61 @@ function rowFilter(row) {
 	}
 	return false;
 }
+
+//--------------------------------------------------------------------------
+// renderSortOptions
+// ---------------
+//  Callback function that renders the col filter div
+//--------------------------------------------------------------------------
+		
+function renderSortOptions(col,status) {
+	str = "";
+
+	if (status ==- 1) {
+		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+	} else if (status == 0) {
+		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+	} else {
+		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+	}
+	return str;
+}
+			
+//--------------------------------------------------------------------------
+// compare
+// ---------------
+//  Callback function with different compare alternatives for the column sort
+//--------------------------------------------------------------------------
+function compare(a,b) {
+	let col = sortableTable.currentTable.getSortcolumn();
+	var tempA = a;
+	var tempB = b;
+
+	if (col == "File name") {
+		tempA = tempA.toUpperCase();
+		tempB = tempB.toUpperCase();
+	} else if (col == "Extension") {
+		tempA = tempA.split('.');
+		tempB = tempB.split('.');
+
+		tempA = tempA[tempA.length-1];
+		tempB = tempB[tempB.length-1];
+	} else if (col == "Kind") {
+		tempA = convertFileKind(tempA);
+		tempB = convertFileKind(tempB);
+	} else if (col == "Size") {
+		tempA = parseInt(tempA);
+		tempB = parseInt(tempB);
+	}
+
+	if (tempA > tempB) {
+		return 1;
+	} else if (tempA < tempB) {
+		return -1;
+	} else {
+		return 0;
+	}
+}	
 
 function formatBytes(bytes,decimals) {
    if (bytes == 0) return '0 Bytes';
