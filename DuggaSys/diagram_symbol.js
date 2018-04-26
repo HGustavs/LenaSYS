@@ -203,11 +203,20 @@ function Symbol(kind) {
                 var opHeight = (this.operations.length*14)+15;
                 points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
 
+            }//Finding the longest string
+            var longestStr = "";
+            for(var i = 0; i < this.operations.length; i++){
+                if(this.operations[i].text.length > longestStr.length)
+                    longestStr = this.operations[i].visibility + " " + this.operations[i].text;
             }
-            if(points[this.bottomRight].x-points[this.topLeft].x < classTemplate.width){
-                points[this.topLeft].x = points[this.middleDivider].x - (classTemplate.width/2);
-                points[this.bottomRight].x = points[this.middleDivider].x + (classTemplate.width/2);
+            for(var i = 0; i < this.attributes.length; i++){
+                if(this.attributes[i].text.length > longestStr.length)
+                    longestStr = this.attributes[i].visibility + " " + this.attributes[i].text;
             }
+            //Measures the length and sets the width of the object to this.
+            ctx.font = "14px Arial";
+            var strLen = ctx.measureText(longestStr).width;
+            points[this.bottomRight].x = points[this.topLeft].x + strLen + 15;
         } else if (this.symbolkind == 5){
                 // Static size of relation. Makes resizing of relation impossible.
                 points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
