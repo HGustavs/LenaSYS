@@ -578,6 +578,14 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedQuiz
 		})
+	} else if (kind=="GETVARIANT") {
+		$.ajax({
+			url: "duggaedservice.php",
+			type: "POST", 
+			data: "opt="+opt+para,
+			dataType:"Json",
+			success: returnedVariant
+		});
 	}
 }
 

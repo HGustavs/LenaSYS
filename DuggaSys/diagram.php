@@ -27,7 +27,8 @@
     <script src="diagram_dialog.js"></script>
     <script src="diagram_toolbox.js"></script>
 
-    /*/this script fix so that the drop down menus close after you have clicked on something on them./*/
+    <!--this script fix so that the drop down menus close after you have clicked on something on them.-->
+    <br/>
     <script>
         $(document).ready(function(){
             $(".drop-down-item").click(function(){
@@ -84,6 +85,11 @@
                                 <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed' data="Create Relation">
                                     <img src="../Shared/icons/diagram_create_relation.svg">
                                 </button>
+                            </div><br>
+                            <div class="tooltipdialog">
+                                <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle unpressed' data="Create Class">
+                                    <img src="../Shared/icons/diagram_create_class.svg">
+                                </button>
                             </div>
                         </div>
                         <!--
@@ -121,7 +127,7 @@
 
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" id="buttonid" value='getImage'>Import</a>
+                            <a href="#" id="buttonid" onclick="openImportDialog();" value='getImage'>Import</a>
                         </div>
 
 
@@ -211,7 +217,7 @@
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-text">
-                            <a href="#">Select multiple objects</a>	
+                            <a href="#">Select multiple objects</a>
                            <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
                         </div>
                     </div>
@@ -289,6 +295,28 @@
             </div>
             <div class='table-wrap'>
                 <div id="f01"></div>
+            </div>
+        </div>
+    </div>
+    <!-- The import menu. Default state is display: none; -->
+    <div id="import" class='loginBoxContainer importDiagram'>
+        <div class='loginBox'>
+            <div class='loginBoxheader'>
+                <h3>Import</h3>
+                <div class='cursorPointer' onclick='closeImportDialog();'>x</div>
+            </div>
+            <div class='table-wrap'>
+                <div class="importWrap">
+                    <div>
+                        <input type="file" id="importFile" accept=".txt, text/plain" />
+                    </div>
+                    <div id="importError" class="importError">
+                        <span>Only .txt-files allowed</span>
+                    </div>
+                    <div id="importButtonWrap" class="importButtonWrap">
+                        <input type="submit" id="file-submit-button" class="submit-button uploadButton" onclick="importFile();" value="Upload diagram" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>

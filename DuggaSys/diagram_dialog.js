@@ -23,6 +23,7 @@ function closeAppearanceDialogMenu() {
      * Closes the dialog menu for appearance.
      */
     appearanceMenuOpen = false;
+    classAppearanceOpen = false;
     globalAppearanceValue = 0;
     hashFunction();
     $("#appearance").hide();
@@ -49,7 +50,7 @@ function clickEnterOnDialogMenu(ev) {
      */
     $(document).keypress(function (ev) {
         var container = $("#appearance");
-        if (ev.which == 13) {
+        if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen) {
             globalAppearanceValue = 0;
             closeAppearanceDialogMenu();
 
@@ -71,22 +72,76 @@ function dimDialogMenu(dim) {
 }
 
 function loadFormIntoElement(element, dir){
+  //Ajax
+  var file = new XMLHttpRequest();
+  file.open('GET', dir);
+  file.onreadystatechange = function(){
+
+    if(file.readyState === 4){
+      element.innerHTML = file.responseText;
+      if(globalAppearanceValue == 0){
+        document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+        setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
+        setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
+        setSelectedOption('font', diagram[lastSelectedObject].font);
+        setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
+        setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+        setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
+      }
+    }
+  }
+  file.send();
+}
+
+function loadLineForm(element, dir){
     //Ajax
     var file = new XMLHttpRequest();
     file.open('GET', dir);
     file.onreadystatechange = function(){
-        element.innerHTML = file.responseText;
-        if(globalAppearanceValue == 0){
-            document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-            setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
-            setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
-            setSelectedOption('font', diagram[lastSelectedObject].font);
-            setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
-            setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
-            setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
+        if(file.readyState === 4){
+            element.innerHTML = file.responseText;
+            if(globalAppearanceValue == 0){
+                var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value
+                var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
+
+                setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
+                setSelectedOption('cardinality', tempCardinality);
+            }
         }
     }
     file.send();
+}
+
+//Loads the appearance menu for UML-class
+function loadUMLForm(element, dir){
+  var file = new XMLHttpRequest();
+  file.open('GET', dir);
+  file.onreadystatechange = function(){
+    if(file.readyState === 4){
+      element.innerHTML = file.responseText;
+      if(globalAppearanceValue == 0){
+        var attributesText = "";
+        var operationsText = "";
+        var attributesTextArea = document.getElementById('UMLAttributes');
+        var operationsTextArea = document.getElementById('UMLOperations');
+        for(var i = 0; i < diagram[lastSelectedObject].attributes.length;i++){
+          attributesText += diagram[lastSelectedObject].attributes[i].visibility + " " +
+          diagram[lastSelectedObject].attributes[i].text;
+          if(i < diagram[lastSelectedObject].attributes.length - 1) attributesText += "\n";
+        }
+        for(var i = 0; i < diagram[lastSelectedObject].operations.length;i++){
+          operationsText += diagram[lastSelectedObject].operations[i].visibility + " " +
+          diagram[lastSelectedObject].operations[i].text
+          if(i < diagram[lastSelectedObject].operations.length - 1) operationsText += "\n";
+        }
+
+        document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+        attributesTextArea.value = attributesText;
+        operationsTextArea.value = operationsText;
+      }
+    }
+  }
+  file.send();
 }
 
 function setSelectedOption(type, value){
@@ -123,7 +178,8 @@ function objectAppearanceMenu(form) {
 
     form.innerHTML = "No item selected<type='text'>";
     if (diagram[lastSelectedObject].symbolkind == 1) {
-        loadFormIntoElement(form, 'forms/class_appearance.php');
+        classAppearanceOpen = true;
+        loadUMLForm(form, 'forms/class_appearance.php');
     }
     if (diagram[lastSelectedObject].symbolkind == 2) {
         loadFormIntoElement(form, 'forms/attribute_appearance.php');
@@ -132,7 +188,7 @@ function objectAppearanceMenu(form) {
         loadFormIntoElement(form, 'forms/entity_appearance.php');
     }
     if (diagram[lastSelectedObject].symbolkind == 4) {
-        loadFormIntoElement(form, 'forms/line_appearance.php');
+        loadLineForm(form, 'forms/line_appearance.php');
     }
     if (diagram[lastSelectedObject].symbolkind == 5) {
         loadFormIntoElement(form, 'forms/relation_appearance.php');
@@ -143,10 +199,26 @@ function objectAppearanceMenu(form) {
 }
 function changeObjectAppearance(object_type){
     /*
-     * USES DIALOG TO CHANGE OBJECT APPEARANCE
-     */
+    * USES DIALOG TO CHANGE OBJECT APPEARANCE
+    */
+    if(diagram[lastSelectedObject].symbolkind == 1){//UML-class appearance
+      diagram[lastSelectedObject].name = document.getElementById('nametext').value;
+      var attributeLines = $('#UMLAttributes').val().split('\n');
+      var operationLines = $('#UMLOperations').val().split('\n');
+      diagram[lastSelectedObject].attributes = [];
+      diagram[lastSelectedObject].operations = [];
 
-    if (diagram[lastSelectedObject].symbolkind == 4) {
+      //Splits and inserts visibility and text for attributes and operations
+      for(var i = 0;i < attributeLines.length;i++){
+        var tempString = attributeLines[i].split(' ');
+        diagram[lastSelectedObject].attributes.push({visibility:tempString[0], text:tempString[1]});
+      }
+      for(var i = 0; i < operationLines.length; i++){
+        var tempString = operationLines[i].split(' ');
+        diagram[lastSelectedObject].operations.push({visibility:tempString[0], text:tempString[1]});
+      }
+
+    } else if (diagram[lastSelectedObject].symbolkind == 4) {
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
     } else if (diagram[lastSelectedObject].kind == 1){
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
@@ -163,23 +235,21 @@ function changeObjectAppearance(object_type){
     updateGraphics();
 }
 
-//previous developers called cardinality for arity
-function addCardinality(side){
+function createCardinality(){
+    //Setting cardinality on new line
+    if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3){
+      diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
+    }
+    else if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5) {
+      diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
+    }
+}
+function changeCardinality(){
+    var val = document.getElementById('cardinality').value;
 
-  var x;
-  var y;
-  var val = document.getElementById(side).value;;
-
-//rightside assigns it's values to the array with index 1, leftside with index 0
-  if(side == "rightSide"){
-    x = points[diagram[lastSelectedObject].bottomRight].x;
-    y = points[diagram[lastSelectedObject].bottomRight].y;
-    console.log("iX: " + x + "\nY: " + y);
-    diagram[lastSelectedObject].cardinality[1] = ({"x": x, "y": y, "value": val, "side": side});
-  }else{
-    x = points[diagram[lastSelectedObject].topLeft].x;
-    y = points[diagram[lastSelectedObject].topLeft].y;
-    diagram[lastSelectedObject].cardinality[0] = ({"x": x, "y": y, "value": val, "side": side});
-  }
-
+    //Setting existing cardinality value on line
+    if(val == "None") val = "";
+    if(diagram[lastSelectedObject].cardinality[0].value != null){
+        diagram[lastSelectedObject].cardinality[0].value = val;
+}
 }

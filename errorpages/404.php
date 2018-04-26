@@ -27,6 +27,6 @@ $noup="NONE";
 </head>
 <body>
 <h1>404 - File not found</h1>
-
+	<a href="/DuggaSys/courseed.php">Go to start</a>
 </body>
 </html>

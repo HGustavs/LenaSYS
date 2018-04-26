@@ -143,6 +143,11 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	var renderSortOptions = renderSortOptions;
 	var renderColumnFilter = renderColumnFilter;
 
+	// Keeps track of the last picked sorting order
+	var tableSort;
+	var colSort;
+	var reverseSort;
+
 	if (rowFilter == null) {
 		var rowFilter = defaultRowFilter;
 	} else {
@@ -249,8 +254,18 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 						}
 					}
 					if (col == sortcolumn) {
-						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
-						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+renderSortOptions(col,sortkind)+"</th>";
+						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,sortkind);
+						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+renderSortOptions(col,sortkind);
+
+						if (col != "" && col != null) {
+							str += " <img id='"+colname+"_"+tableid+"_desc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/desc_white.svg'>";
+							str += " <img id='"+colname+"_"+tableid+"_asc_sortdiricon' style='float:right;margin-top:7px;'class='hideTableArrow' src='../Shared/icons/asc_white.svg'></th>";
+							mhstr += " <img id='"+colname+"_"+tableid+"_mh_desc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/desc_white.svg'>";
+							mhstr += " <img id='"+colname+"_"+tableid+"_mh_asc_sortdiricon' style='float:right;margin-top:7px;'class='hideTableArrow' src='../Shared/icons/asc_white.svg'></th>";
+						} else {
+							str += "</th>";
+							mhstr += "</th>";
+						}
 					} else {
 						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
 						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+renderSortOptions(col,-1)+"</th>";
@@ -266,8 +281,18 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 					// 	}
 					// }
 					if (colname != "move") {
-						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+col+"</th>";
-						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+col+"</th>";
+						str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'>"+col;
+						mhstr += "<th id='"+colname+"_"+tableid+"_tbl_mh' class='"+tableid+"'>"+col;
+
+						if (col != "" && col != null) {
+							str += " <img id='"+colname+"_"+tableid+"_desc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/desc_white.svg'>";
+							str += " <img id='"+colname+"_"+tableid+"_asc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/asc_white.svg'></th>";
+							mhstr += " <img id='"+colname+"_"+tableid+"_mh_desc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/desc_white.svg'>";
+							mhstr += " <img id='"+colname+"_"+tableid+"_mh_asc_sortdiricon' style='float:right;margin-top:7px;' class='hideTableArrow' src='../Shared/icons/asc_white.svg'></th>";
+						} else {
+							str += "</th>";
+							mhstr += "</th>";
+						}
 					}
 				}
 			}
@@ -432,6 +457,10 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		} else {
 			document.getElementById(tableid).innerHTML = str;
 		}
+
+		if (tableSort != null) {
+			sortTable(tableSort, colSort, reverseSort);
+		}
 	} 
     
 	// Simpler magic heading v. III
@@ -481,6 +510,131 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
         tbl.tblbody[sortableTable.edit_rowno][sortableTable.edit_columnno] = updateCellCallback(sortableTable.edit_rowno,sortableTable.edit_columnno,sortableTable.edit_columnname,sortableTable.edit_tableid);
         this.renderTable();
     }
+
+    //---------------------------------------------------------------------------
+	// makeAllSortable(parent) <- Makes all tables within given scope sortable.
+	//---------------------------------------------------------------------------
+	this.makeAllSortable = function(parent) {
+		parent = parent || document.body;
+		var t = parent.getElementsByTagName('table'), i = t.length;
+		while (--i >= 0) makeSortable(t[i]);
+	}
+
+    //----------------------------------------------------------------
+	// makeSortable(table) <- Makes a table sortable and also allows
+	//						  the table to collapse when user double
+	//						  clicks on table head.
+	//----------------------------------------------------------------
+	function makeSortable(table) {
+		var DELAY = 200;
+		var clicks = 0;
+		var timer = null;
+		var th = table.tHead, i;
+		th && (th = th.rows[0]) && (th = th.cells);
+		if (th) i = th.length;
+		else return; // if no `<thead>` then do nothing
+		while (--i >= 0) (function (i) {
+			var dir = 1;
+			th[i].addEventListener('click', function (e) {
+				clicks++;
+				if(clicks === 1) {
+					timer = setTimeout(function () {
+						sortTable(table, i, (dir = 1 - dir));
+						clicks = 0;
+	                }, DELAY);
+	            } else {
+	                clearTimeout(timer);
+	                $(this).closest('table').find('tbody').fadeToggle(500,'linear'); //perform double-click action
+	                if ($(this).closest('tr').find('.arrowRight').css('display') == 'none') {
+	    	            $(this).closest('tr').find('.arrowRight').delay(200).slideToggle(300,'linear');
+	    	            $(this).closest('tr').find('.arrowComp').slideToggle(300,'linear');
+					} else if ($(this).closest('tr').find('.arrowComp').css('display') == 'none') {
+						$(this).closest('tr').find('.arrowRight').slideToggle(300,'linear');
+	    	            $(this).closest('tr').find('.arrowComp').delay(200).slideToggle(300,'linear');
+					} else {
+						$(this).closest('tr').find('.arrowRight').slideToggle(300,'linear'); 
+						$(this).closest('tr').find('.arrowComp').slideToggle(300,'linear');
+					}
+	                clicks = 0; //after action performed, reset counter
+	            }
+	        });
+	        th[i].addEventListener('dblclick', function(e) {
+	            e.preventDefault();
+	        })
+	    }(i));
+	}
+
+	//-----------------------------------------------------------------
+	// sortTable(table, col, reverse) <- Sorts table based on given
+	//									 column and whether or not to
+	//								     reverse the sorting.
+	//-----------------------------------------------------------------
+	function sortTable(table, col, reverse) {
+		tableSort = table;
+		colSort = col;
+		reverseSort = reverse;
+
+	    var tb = document.getElementById(tableid + "_tbl").tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
+	        tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
+	        th = document.getElementById(tableid + "_tbl").tHead,
+	        childrenTR = th.children[0],
+	        childrenTH = childrenTR.children[col],
+	        imgDesc = childrenTH.children[0],
+	        imgAsc = childrenTH.children[1],
+	        reg = /^\d+$/;
+
+	    // Magic header specific variables
+	    var th_mh = document.getElementById(tableid + "_tbl_mh").tHead,
+	        childrenTR_mh = th_mh.children[0],
+	        childrenTH_mh = childrenTR_mh.children[col],
+	        imgDesc_mh = childrenTH_mh.children[0],
+	        imgAsc_mh = childrenTH_mh.children[1];
+
+	    reverse = -((+reverse) || -1);
+	    tr = tr.sort(function (a, b) { // sort rows
+	    	// Checks if the text content is a single number
+	    	if (a.cells[col].textContent.match(reg)) {
+	    		if (a.cells[col].textContent.length < 2) {
+	    			// Adds a 0 to the beginning of the number so that the
+	    			// sorting can work properly
+					a.cells[col].textContent = "0" + a.cells[col].textContent;
+	    		}
+	    	}
+			return reverse // `-1 *` if want opposite order
+			* (a.cells[col].textContent.trim() // using `.textContent.trim()` for test
+	            .localeCompare(b.cells[col].textContent.trim())
+	        );
+	    });
+
+	    // Looping through all images in the heading to hide them
+	    for (var i = 0; i < childrenTR.children.length; i++) {
+	    	var tempChild = childrenTR.children[i];
+	    	var tempChild_mh = childrenTR_mh.children[i];
+	    	for (var y = 0; y < tempChild.children.length; y++) {
+	    		tempChild.children[y].classList.add("hideTableArrow");
+	    		tempChild_mh.children[y].classList.add("hideTableArrow");
+	    	}
+	    }
+	    
+	    // Showing descending/ascending arrows to indicate how the table is sorted
+	    if (reverse == 1) {
+	    	imgDesc.classList.remove("hideTableArrow");
+	    	imgDesc_mh.classList.remove("hideTableArrow");
+	    } else if (reverse == -1) {
+	    	imgAsc.classList.remove("hideTableArrow");
+	    	imgAsc_mh.classList.remove("hideTableArrow");
+	    }
+
+	    for (var i = 0; i < tr.length; i++) {
+	    	// Removes the 0 that is previously added for the proper sorting
+	    	for (var x = 0; x < tr[i].children.length; x++) {
+		    	if (tr[i].children[x].textContent.charAt(0) == "0" && tr[i].children[x].textContent.length == 2) {
+		    		tr[i].children[x].textContent = tr[i].children[x].textContent.substr(1);
+		    	}
+	    	}
+	    	tb.appendChild(tr[i]); // append each row in order
+	    }
+	}
 }
 
 function showVariant(param){
