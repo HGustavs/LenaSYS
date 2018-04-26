@@ -10,7 +10,7 @@ pdoConnect();
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Dugga editor</title>
+	<title id="sectionedPageTitle">Dugga editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
   <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
@@ -42,13 +42,13 @@ pdoConnect();
 	?>
 	<!-- Login Dialog END -->
 
-  <div id="quiz" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the table within. -->
+  <div id="quiz" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the quiz-table within. -->
 
   <!-- Edit Dugga Dialog START -->
 	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
       		<div class='loginBoxheader'>
-      			<h3>Edit Dugga</h3>
+      			<h3 id="editDialogTitle">Edit Dugga</h3>
       			<div class='cursorPointer' onclick='closeEditDugga();'>x</div>
       		</div>
       		<div style='padding:5px;'>
@@ -64,39 +64,39 @@ pdoConnect();
       			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'><option value='1'>U-G-VG</option><option value='2'>U-G</option><option value='3'>U-3-4-5</option></select></div>
       			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
             <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='qstart' value='' /></div>
-      			<div class='inputwrapper'><span>First  Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='' /></div>
-						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
-						<div class='inputwrapper'><span>Second Deadline :</span><input class='textinput datepicker' type='text' id='deadline2' value='None' /></div>
-						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
-						<div class='inputwrapper'><span> Third Deadline :</span><input class='textinput datepicker' type='text' id='deadline3' value='None' /></div>
-						<div class='inputwrapper'><span> Comment for Deadline:</span><input class='textinput'type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
+      			<div class='inputwrapper'><span>1st Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span>2nd Deadline :</span><input class='textinput datepicker' type='text' id='deadline2' value='None' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span>3rd Deadline :</span><input class='textinput datepicker' type='text' id='deadline3' value='None' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
             <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
       		</div>
       		<div style='padding:5px;'>
-      			<input style='float left;' class='submit-button closeDugga' type='button' value='Cancel' onclick='closeEditDugga();' />
-      			<input style='margin-left:220px; display:none; float:none;' class='submit-button submitDugga' type='button' value='Submit' onclick='createDugga();' />
-      			<input style='float:right; 'class='submit-button updateDugga' type='button' value='Save' onclick='updateDugga();' />
+      			<input id='closeDugga' class='submit-button' style='display:block; float:left;' type='button' value='Cancel' onclick='closeEditDugga();' />
+      			<input id='submitDugga' class='submit-button' style='display:none; float:right;' type='button' value='Submit' onclick='createDugga();' />
+      			<input id='saveDugga' class='submit-button' style='display:none; float:right;' type='button' value='Save' onclick='updateDugga();' />
       		</div>
       </div>
 	</div>
 	<!-- Edit Dugga Dialog END -->
 
   <!-- Confirm Section Dialog START -->
-      <div id='sectionConfirmBox' class='loginBoxContainer' style='display:none;'>
-            <div class='loginBox' style='width:460px;'>
-                  <div class='loginBoxheader'>
-                        <h3>Confirm your update</h3>
-                        <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
-                  </div>
-                  <div style='text-align: center;'>
-                        <h4>Are you sure you want to make this happen?</h4>
-                  </div>
-                  <div style='display:flex; align-items:center; justify-content: center;'>
-                        <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
-                        <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
-                  </div>
-            </div>
-      </div>
+		<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none; z-index: 9999;'>
+	        <div class='loginBox' style='width:460px;'>
+				<div class='loginBoxheader'>
+				    <h3>Confirm deletion</h3>
+				    <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+				</div>
+				<div style='text-align: center;'>
+				    <h4>Are you sure you want to delete this item?</h4>
+				</div>
+				<div style='display:flex; align-items:center; justify-content: center;'>
+				    <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
+				    <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+				</div>
+	        </div>
+		</div>
   <!-- Confirm Section Dialog START -->
 
 	<!-- Edit Variant Dialog START -->
@@ -104,9 +104,10 @@ pdoConnect();
       <div class='loginBox' style="width:80%;">
       		<div class='loginBoxheader'>
       			<h3>Edit Variant</h3>
-      			<div class='cursorPointer' onclick='closeWindows();closeVariant();'>x</div>
+      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
           <div class='loginBoxbody'>
+           <div id="variant" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the variant-table within. -->
           		<div style='padding:5px;display:flex;'>
           			<input type='hidden' id='vid' value='Toddler' />
           			<div id="leftDivDialog">
@@ -128,7 +129,7 @@ pdoConnect();
           									<option value="pdf">PDF</option>
           									<option value="html">HTML</option>
           								</select>
-          								<input type="text" name="filelink" id="filelink" placeholder="File link" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;">
+          								<input id="filelink" type="text" name="filelink" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;">
           							</div>
           						</fieldset>
           					</div>
@@ -136,7 +137,7 @@ pdoConnect();
                       <div id="duggaExtraParamForm">
                         <fieldset style="width:90%">
                           <legend>Extra parameters</legend>
-                              <textarea id='extraparam' placeholder='Extra dugga parameters in valid JSON' rows="5" style=""></textarea>
+                              <textarea id='extraparam' rows="5" style=""></textarea>
                         </fieldset>
                       </div>
                     </div>
@@ -159,18 +160,29 @@ pdoConnect();
           			<div id="rightDivDialog">
                     <fieldset style="width:90%">
                         <legend>Generated Param JSON</legend>
-                				<div style='min-height:120px'><textarea id='parameter' placeholder='Variant Param' rows="5" style="min-height:100px"></textarea></div>
+                				<div id='parameter' style='min-height:120px'>
+                          <textarea id='variantparameterText' rows="5" style="min-height:100px"></textarea>
+                        </div>
                     </fieldset>
                     <fieldset style="width:90%">
                         <legend>Answer</legend>
-                				<div style='min-height:120px'><textarea id='variantanswer' placeholder='Variant Param' rows="5" style="min-height:100px"></textarea></div>
+                				<div id='variantanswer' style='min-height:120px'>
+                          <textarea id='variantanswerText' rows="5" style="min-height:100px"></textarea>
+                        </div>
                     </fieldset>
           			</div>
           		</div>
           		<div style='padding:5px;'>
-          			<input class='submit-button' type='button' value='Delete' onclick='deleteVariant();' />
-          			<input id="toggleVariantButton" class='submit-button' type='button' value='Disable' onclick='toggleVariant();' />
-          			<input class='submit-button' type='button' value='Save' onclick='updateVariant();' />
+                <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel'
+                onclick='closeWindows();'/>
+          			<input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit'
+                onclick='createVariant(); showVariantSaveButton();'/>
+                <input id='saveVariant' class='submit-button' style='display:none; float:right' type='button' value='Save'
+                onclick='updateVariant(); showVariantSubmitButton();'/>
+                <input id='disableVariant' class='submit-button' style='display:none; float:right' type='button' value='Disable'
+                onclick='disableVariant(); showVariantEnableButton(); '/>
+                <input id='enableVariant' class='submit-button' style='display:none; float:right' type='button' value='Enable'
+                onclick='enableVariant(); showVariantDisableButton();'/>
           		</div>
           </div>
 	</div>

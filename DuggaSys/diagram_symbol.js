@@ -192,26 +192,26 @@ function Symbol(kind) {
         } else if (this.symbolkind == 1) {
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
-            // If middle divider is below y2 set y2 to middle divider
-            if (points[this.middleDivider].y > points[this.bottomRight].y) {
-                points[this.bottomRight].y = points[this.middleDivider].y;
+
+            if(points[this.bottomRight].y-points[this.topLeft].y < classTemplate.height){
+                points[this.topLeft].y = points[this.middleDivider].y - (classTemplate.height/2);
+                points[this.bottomRight].y = points[this.middleDivider].y + (classTemplate.height/2);
             }
-            // If bottom right is below 0 set bottom right to top left
-            if (hw < 0) {
-                points[this.bottomRight].x = points[this.topLeft].x + 150;
+            if(points[this.bottomRight].y < points[this.middleDivider].y || points[this.topLeft].y > points[this.middleDivider].y){
+                points[this.middleDivider].y = points[this.topLeft].y + (classTemplate.height/2);
             }
-            // If top left is below middle divider set top left to middle divider
-            if (points[this.topLeft].y > points[this.middleDivider].y) {
-                points[this.topLeft].y = points[this.middleDivider].y;
+            if(points[this.bottomRight].x-points[this.topLeft].x < classTemplate.width){
+                points[this.topLeft].x = points[this.middleDivider].x - (classTemplate.width/2);
+                points[this.bottomRight].x = points[this.middleDivider].x + (classTemplate.width/2);
             }
         } else if (this.symbolkind == 5){
-            // Static size of relation. Makes resizing of relation impossible.
-            points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
-            points[this.topLeft].y = points[this.middleDivider].y-relationTemplate.height/2;
-            points[this.bottomRight].x = points[this.middleDivider].x+relationTemplate.width/2;
-            points[this.bottomRight].y = points[this.middleDivider].y+relationTemplate.height/2;
+                // Static size of relation. Makes resizing of relation impossible.
+                points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
+                points[this.topLeft].y = points[this.middleDivider].y-relationTemplate.height/2;
+                points[this.bottomRight].x = points[this.middleDivider].x+relationTemplate.width/2;
+                points[this.bottomRight].y = points[this.middleDivider].y+relationTemplate.height/2;
+            }
         }
-    }
 
     //--------------------------------------------------------------------
     // Sorts the connector
@@ -280,6 +280,29 @@ function Symbol(kind) {
         }
         for (var i = 0; i < this.connectorLeft.length; i++) {
             if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
+                return true;
+            }
+        }
+    }
+    
+    this.hasConnectorFromPoint = function(point) {
+        for (var i = 0; i < this.connectorTop.length; i++) {
+            if(this.connectorTop[i].from == point){
+                return true;
+            }
+        }
+        for(var i = 0; i < this.connectorRight.length; i++) {
+            if(this.connectorRight[i].from == point){
+                return true;
+            }
+        }
+        for (var i = 0; i < this.connectorBottom.length; i++) {
+            if(this.connectorBottom[i].from == point){
+                return true;
+            }
+        }
+        for (var i = 0; i < this.connectorLeft.length; i++) {
+            if(this.connectorLeft[i].from == point){
                 return true;
             }
         }
@@ -419,18 +442,26 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.emptyConnectors = function () {
         for (var i = 0; i < this.connectorTop.length; i++) {
+            //points[this.connectorTop[i].to] = "";
+            points[this.connectorTop[i].from] = "";
             this.connectorTop.splice(i, 1);
             i--;
         }
         for(var i = 0; i < this.connectorRight.length; i++) {
+            //points[this.connectorRight[i].to] = "";
+            points[this.connectorRight[i].from] = "";
             this.connectorRight.splice(i, 1);
             i--;
         }
         for (var i = 0; i < this.connectorBottom.length; i++) {
+            //points[this.connectorBottom[i].to] = "";
+            points[this.connectorBottom[i].from] = "";
             this.connectorBottom.splice(i, 1);
             i--;
         }
         for (var i = 0; i < this.connectorLeft.length; i++) {
+            //points[this.connectorLeft[i].to] = "";
+            points[this.connectorLeft[i].from] = "";
             this.connectorLeft.splice(i, 1);
             i--;
         }
@@ -455,6 +486,8 @@ function Symbol(kind) {
         var broken = false;
         for(var i = 0; i < this.connectorTop.length; i++){
             if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
+                if(this.connectorTop[i].to == point) points[this.connectorTop[i].to] = "";
+                else points[this.connectorTop[i].from] = "";
                 this.connectorTop.splice(i,1);
                 broken = true;
                 break;
@@ -463,18 +496,24 @@ function Symbol(kind) {
         if(!broken){
             for(var i = 0; i < this.connectorBottom.length; i++){
                 if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
+                    if(this.connectorBottom[i].to == point) points[this.connectorBottom[i].to] = "";
+                    else points[this.connectorBottom[i].from] = "";
                     this.connectorBottom.splice(i,1);
                     break;
                 }
             }
             for(var i = 0; i < this.connectorRight.length; i++){
                 if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
+                    if(this.connectorRight[i].to == point) points[this.connectorRight[i].to] = "";
+                    else points[this.connectorRight[i].from] = "";
                     this.connectorRight.splice(i,1);
                     break;
                 }
             }
             for(var i = 0; i < this.connectorLeft.length; i++){
                 if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
+                    if(this.connectorLeft[i].to == point) points[this.connectorLeft[i].to] = "";
+                    else points[this.connectorLeft[i].from] = "";
                     this.connectorLeft.splice(i,1);
                     break;
                 }

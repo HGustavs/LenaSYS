@@ -75,14 +75,19 @@ if(checklogin()){
 			$query->bindParam(':lid', $sectid);
 
 			if(!$query->execute()) {
-				$debug="Error updating entries";
+				$debug=
+					"The item could not be deleted. See information below:"
+					."\n\nSQLSTATE error code: ".$query->errorInfo()[0]
+					."\n\nDriver-specific error code: ".$query->errorInfo()[1]
+					."\n\nDriver-specific error message: \n"
+					.$query->errorInfo()[2];
 			}
 		}else if(strcmp($opt,"NEW")===0){
 
 			// Insert a new code example and update variables accordingly.
 			if($link==-1){
 
-          $query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
+					$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
 
 					$query2->bindParam(':cid', $courseid);
 					$query2->bindParam(':cversion', $coursevers);
@@ -97,15 +102,17 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 			}
 
-      $query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment)");
+			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment, :gradesys, :highscoremode)");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':link', $link);
 			$query->bindParam(':kind', $kind);
+			$query->bindParam(':gradesys', $gradesys);
 			$query->bindParam(':comment', $comment);
 			$query->bindParam(':visible', $visibility);
+			$query->bindParam(':highscoremode', $highscoremode);
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -162,7 +169,7 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 			}
 
-      $query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments WHERE lid=:lid;");
+			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':comments', $comments);
