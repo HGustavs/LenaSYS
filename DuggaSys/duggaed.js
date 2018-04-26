@@ -56,7 +56,7 @@ $(function() {
 // Needed for button clicks
 $(document).ready(function(){
 
-	addSubmissionRow();
+	addVariantSubmissionRow();
 
 	$(document).on('click','.delButton', function(){
 		if($(this).parent().parent().children().length > 1) {
@@ -66,7 +66,7 @@ $(document).ready(function(){
 	});
 
 	$('#addfieldname').click(function(){
-		addSubmissionRow();
+		addVariantSubmissionRow();
 	});
 
 	$('#createjson').click(function(){
@@ -87,7 +87,7 @@ $(window).load(function() {
 
 // DUGGA FUNCTIONS start
 function newDugga(){
-	$("#editDugga").css("display","none");
+	document.getElementById("editDuggaTitle").innerHTML = "New dugga";
 	document.getElementById('name').value='';
 	document.getElementById('name').placeholder='Empty dugga';
 	document.getElementById('qstart').value='';
@@ -152,6 +152,7 @@ function createDugga(){
 function selectDugga(qid){
 	AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers'], qid:this.qid},"GETQUIZ");
 
+	document.getElementById("editDuggaTitle").innerHTML = "Edit dugga";
 	$("#editDugga").css("display","flex");
 		//$("#overlay").css("display","block");
 	$("#did").val(qid); // Set Variant ID
@@ -211,6 +212,26 @@ function deleteDugga(did){
 	AJAXService("DELDU",{cid:querystring['cid'],qid:did,coursevers:querystring['coursevers']},"DUGGA");
 	$("#editDugga").css("display","none");
 }
+
+// Checks if the title name includes any invalid characters
+function validateDuggaName(){
+	var retValue = false;
+	var nme=document.getElementById("name");
+
+	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)){
+		$('#tooltipTxt').fadeOut();
+		$('#saveBtn').removeAttr('disabled');
+		$('#submitBtn').removeAttr('disabled');
+		nme.style.backgroundColor = "#fff";
+		retValue = true;
+	}else{
+		$('#tooltipTxt').fadeIn();
+		$('#submitBtn').attr('disabled','disabled');
+		$('#saveBtn').attr('disabled','disabled');
+		nme.style.backgroundColor = "#f57";
+	}
+	return retValue;
+}
 // DUGGA FUNCTIONS end
 
 // VARIANT FUNCTIONS start
@@ -228,7 +249,7 @@ function newVariant(){
 	$("#editVariant").css("display","flex"); //Display variant-window
 }
 
-function createVariant(){ //removed qid and cid
+function createVariant(){
 	var qid = $("#did").val();
 	var answer=$("#variantanswerText").val();
 	var parameter=$("#variantparameterText").val();
@@ -248,9 +269,10 @@ function selectVariant(vid) {
 	});
 
 	showVariantSaveButton();
+	var qid = $("#did").val();
 	$("#vid").val(target_variant['vid']); // Set Variant ID
-	$("#variantparameterText").val(target_variant['param']); // Set Variant ID
-	$("#variantanswerText").val(target_variant['variantanswer']); // Set Variant ID
+	$("#variantparameterText").val(target_variant['param']); // Set Variant parameter
+	$("#variantanswerText").val(target_variant['variantanswer']); // Set Variant answer
 }
 
 function updateVariant(){
@@ -264,6 +286,69 @@ function updateVariant(){
 function deleteVariant(vid){
 	AJAXService("DELVARI",{cid:querystring['cid'],vid:vid,coursevers:querystring['coursevers']},"DUGGA");
 }
+
+// Update the title of the variant editor to refer to the dugga that "owns" the variants
+function updateVariantTitle(number){
+	number++;
+	document.getElementById("editVariantTitle").innerHTML = "Variants from quiz " + number;
+}
+
+// Adds a submission row
+function addVariantSubmissionRow() {
+	$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>"+
+					"<select name='type' id='submissionType"+submissionRow+"' style='width:65px;'>"+
+						"<option value='pdf'>PDF</option>"+
+						"<option value='zip'>Zip</option>"+
+						"<option value='link'>Link</option>"+
+						"<option value='text'>Text</option>"+
+					"</select>"+
+					"<input type='text' name='fieldname' id='fieldname"+submissionRow+"' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='text' name='instruction' id='instruction"+submissionRow+"' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
+					"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>"+
+				 "</div>");
+	submissionRow++;
+}
+
+function createJSONString(formData) {
+	// Init the JSON string variable
+	var jsonStr = "{";
+
+	// Get the first static fields
+	jsonStr += '"' + formData[0]['name'] + '":"' + formData[0]['value'] + '",';
+	jsonStr += '"' + formData[1]['name'] + '":"' + formData[1]['value'] + '",';
+  if(document.getElementById("extraparam").value !== ""){
+      jsonStr+=document.getElementById("extraparam").value+",";
+  }
+	jsonStr += '"submissions":[';
+
+	// Handle the dynamic amount of submission types
+	for(var i = 2; i < formData.length; i++) {
+		if(i % 3 == 2) {
+			// The start of a new submissions field, prepend with curly bracket
+			jsonStr += "{";
+		}
+		// Input the values of the array. This parses the option-select first, then the textfield. But if the text field is empty, then do not write it to JSON.
+		if(formData[i]['value'].length > 0) {
+			jsonStr += '"' + formData[i]['name'] + '":"' + formData[i]['value'] + '",';
+		}
+		if(i % 3 == 1) {
+			// This submission field is complete, prepare for next
+			// Remove the last comma
+			jsonStr = jsonStr.substr(0, jsonStr.length-1);
+			// Prepare for next submissions array element.
+			jsonStr += "},";
+		}
+	}
+	// Remove the last comma
+	jsonStr = jsonStr.substr(0, jsonStr.length-1);
+	// Append the end of the submissions array.
+	jsonStr += ']'; // The end of the submissions array.
+	// Here, the freetext field handling should be added as it comes after the submissions array.
+	jsonStr += '}'; // The end of the JSON-string.
+
+	return jsonStr;
+}
+
 // VARIANT FUNCTIONS end
 
 // Displaying and hidding the dynamic comfirmbox for deleting-items in duggaED
@@ -363,6 +448,7 @@ function returnedDugga(data) {
 
 // Table for variants
 function renderVariant(clickedElement) {
+	updateVariantTitle (clickedElement);
 	var tabledata2 = {
     	tblhead:{
     		vid:"",
@@ -547,92 +633,6 @@ function showVariantDisableButton(){
 }
 //END OF closers and openers
 
-function editDialogTitle(title){
-	// Change title of the edit section dialog
-	if(title == "newItem"){
-		document.getElementById("editDialogTitle").innerHTML = "New Item";
-	}else if(title == "editItem"){
-		document.getElementById("editDialogTitle").innerHTML = "Edit Item";
-	}
-}
-
-
-// Checks if the title name includes any invalid characters
-function validateName(){
-	var retValue = false;
-	var nme=document.getElementById("name");
-
-	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)){
-		$('#tooltipTxt').fadeOut();
-		$('#saveBtn').removeAttr('disabled');
-		$('#submitBtn').removeAttr('disabled');
-		nme.style.backgroundColor = "#fff";
-		retValue = true;
-	}else{
-		$('#tooltipTxt').fadeIn();
-		$('#submitBtn').attr('disabled','disabled');
-		$('#saveBtn').attr('disabled','disabled');
-		nme.style.backgroundColor = "#f57";
-	}
-	return retValue;
-}
-
-// Adds a submission row in Edit Variant
-function addSubmissionRow() {
-	$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>"+
-					"<select name='type' id='submissionType"+submissionRow+"' style='width:65px;'>"+
-						"<option value='pdf'>PDF</option>"+
-						"<option value='zip'>Zip</option>"+
-						"<option value='link'>Link</option>"+
-						"<option value='text'>Text</option>"+
-					"</select>"+
-					"<input type='text' name='fieldname' id='fieldname"+submissionRow+"' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
-					"<input type='text' name='instruction' id='instruction"+submissionRow+"' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>"+
-					"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>"+
-				 "</div>");
-	submissionRow++;
-}
-
-function createJSONString(formData) {
-	// Init the JSON string variable
-	var jsonStr = "{";
-
-	// Get the first static fields
-	jsonStr += '"' + formData[0]['name'] + '":"' + formData[0]['value'] + '",';
-	jsonStr += '"' + formData[1]['name'] + '":"' + formData[1]['value'] + '",';
-  if(document.getElementById("extraparam").value !== ""){
-      jsonStr+=document.getElementById("extraparam").value+",";
-  }
-	jsonStr += '"submissions":[';
-
-	// Handle the dynamic amount of submission types
-	for(var i = 2; i < formData.length; i++) {
-		if(i % 3 == 2) {
-			// The start of a new submissions field, prepend with curly bracket
-			jsonStr += "{";
-		}
-		// Input the values of the array. This parses the option-select first, then the textfield. But if the text field is empty, then do not write it to JSON.
-		if(formData[i]['value'].length > 0) {
-			jsonStr += '"' + formData[i]['name'] + '":"' + formData[i]['value'] + '",';
-		}
-		if(i % 3 == 1) {
-			// This submission field is complete, prepare for next
-			// Remove the last comma
-			jsonStr = jsonStr.substr(0, jsonStr.length-1);
-			// Prepare for next submissions array element.
-			jsonStr += "},";
-		}
-	}
-	// Remove the last comma
-	jsonStr = jsonStr.substr(0, jsonStr.length-1);
-	// Append the end of the submissions array.
-	jsonStr += ']'; // The end of the submissions array.
-	// Here, the freetext field handling should be added as it comes after the submissions array.
-	jsonStr += '}'; // The end of the JSON-string.
-
-	return jsonStr;
-}
-
 function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 	$("#MarkCont").html(duggaPages[template]);
 
@@ -648,6 +648,13 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 
 	$("#resultpopover").css("display", "flex");
 }
+
+function closePreview(){
+	$("#resultpopover").css("display", "none");
+	$("#overlay").css("display", "none");
+	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
+}
+
 
 // function isInArray(array, search){
 //     return array.indexOf(search) >= 0;
@@ -715,8 +722,3 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template){
 // 	AJAXService("UPDATETEMPLATE",{cid:querystring['cid'],qid:did,template:template,coursevers:querystring['coursevers']},"DUGGA");
 // }
 
-// function closePreview(){
-// 	$("#resultpopover").css("display", "none");
-// 	$("#overlay").css("display", "none");
-// 	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
-// }
