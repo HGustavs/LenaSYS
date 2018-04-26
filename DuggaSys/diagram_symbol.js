@@ -193,12 +193,16 @@ function Symbol(kind) {
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
 
-            if(points[this.bottomRight].y-points[this.topLeft].y < classTemplate.height){
-                points[this.topLeft].y = points[this.middleDivider].y - (classTemplate.height/2);
-                points[this.bottomRight].y = points[this.middleDivider].y + (classTemplate.height/2);
+            if(this.attributes.length > 0){
+                //Height of text + padding
+                var attrHeight = (this.attributes.length*14)+35;
+                points[this.topLeft].y = y1;
+                points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
             }
-            if(points[this.bottomRight].y < points[this.middleDivider].y || points[this.topLeft].y > points[this.middleDivider].y){
-                points[this.middleDivider].y = points[this.topLeft].y + (classTemplate.height/2);
+            if(this.operations.length > 0){
+                var opHeight = (this.operations.length*14)+15;
+                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
+
             }
             if(points[this.bottomRight].x-points[this.topLeft].x < classTemplate.width){
                 points[this.topLeft].x = points[this.middleDivider].x - (classTemplate.width/2);
@@ -284,7 +288,7 @@ function Symbol(kind) {
             }
         }
     }
-    
+
     this.hasConnectorFromPoint = function(point) {
         for (var i = 0; i < this.connectorTop.length; i++) {
             if(this.connectorTop[i].from == point){
