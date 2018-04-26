@@ -3482,18 +3482,7 @@ li:nth-last-child(10) a:hover {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
- @media only screen and (max-height: 800px) {
-    .previewWindow {
-        height: 500px;
-        background-color: red;
-     }
-     .markdown {
-         height: 400px;
-     }
-     markdownPrev {
-         height: 400px;
-     }
- }
+ 
  .previewWindowContainer {
     background-color: rgba(0,0,0,0.6);
     position: fixed;
@@ -3654,6 +3643,19 @@ li:nth-last-child(10) a:hover {
     background-color: rgba(0, 0, 0, 0);
     box-shadow: 0px 10px 20px rgba(0,0,0,0.19), 0px 6px 6px rgba(0,0,0,0.3);
 }
+
+@media only screen and (max-height: 800px) and (max-width: 1400px) {
+    .previewWindow {
+        height: 500px;
+        background-color: red;
+     }
+     .markdown {
+         height: 400px;
+     }
+     markdownPrev {
+         height: 400px;
+     }
+ }
 
 /* Import diagram */
 .importDiagram {
