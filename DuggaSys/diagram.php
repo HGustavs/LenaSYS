@@ -61,7 +61,7 @@
                           <h3>Toolbar</h3>
                         </div>
                         <div class='application-toolbar'>
-                          <div id="toolbar-switcher" value="0">
+                          <div id="toolbar-switcher">
                             <div class="toolbarArrows" id="toolbarLeftArrow" onclick="switchToolbar('left');"> << </div>
                             <div id="toolbarTypeText"> ALL </div>
                             <div class="toolbarArrows" id="toolbarRightArrow" onclick="switchToolbar('right');"> >> </div>
@@ -80,14 +80,17 @@
                                 <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute">
                                     <img src="../Shared/icons/diagram_create_attribute.svg">
                                 </button>
+                            </div>
                             <div class="tooltipdialog">
                                 <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle unpressed' data="Create Entity">
                                     <img src="../Shared/icons/diagram_create_entity.svg">
                                 </button>
+                            </div>
                             <div class="tooltipdialog">
                                 <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed' data="Create Relation">
                                     <img src="../Shared/icons/diagram_create_relation.svg">
                                 </button>
+                            </div>
                             <div class="tooltipdialog">
                                 <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle unpressed' data="Create Class">
                                     <img src="../Shared/icons/diagram_create_class.svg">
