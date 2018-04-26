@@ -1143,8 +1143,6 @@ input {
   background: #614875;
   border-radius: 5px;
   cursor: pointer;
-  font-weight: bold;
-  color: white;
 }
 #toolbarTypeText{
   width:60%;
@@ -1152,7 +1150,7 @@ input {
   border: 1px solid #eaeaea;
 }
 #toolbarLeftArrow{
-  style="transform: rotate(-90deg);
+  transform: rotate(-90deg);
   width: 50%;
   filter:invert(100%);
 }
