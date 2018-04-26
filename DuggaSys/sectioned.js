@@ -221,7 +221,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	str +="<option value ='2'>Project Task</option>";
 	$("#groupType").html(str);
 
-	$("#inputwrapper-tabs").css("display","none");
+	$("#inputwrapper-tabs").css("display","block");
 	$("#inputwrapper-link").css("display","none");
 	$("#inputwrapper-gradesystem").css("display","none");
 	$("#inputwrapper-moment").css("display","none");
@@ -233,15 +233,13 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	// Header
 	if(kind==0){
-		$("#inputwrapper-tabs").css("display","block");
-
+					// right now its empty, but keeping this for future buttons and stuff
 	// Section
 	}else if(kind==1){
-		$("#inputwrapper-tabs").css("display","block");
+					// right now its empty, but keeping this for future buttons and stuff
 
 	// Code
 	}else if(kind==2){
-		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
 			if(xelink==iitem['exampleid']){
@@ -265,6 +263,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 			}
 		}
 		$("#link").html(iistr);
+		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
@@ -272,11 +271,11 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	// Moment
 	}else if(kind==4){
+		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
 		$("#inputwrapper-gradesystem").css("display","block");
 
 	// Link
 	}else if(kind==5){
-		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
 			if(xelink==iitem['filename']){
@@ -293,11 +292,13 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	}else if(kind==6){
 		$("#inputwrapper-numberOfGroups").css("display","block");
 		$("#inputwrapper-groupType").css("display", "block");
+		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
 	}
     // Message
-	else if(kind ==7){
-        $("#inputwrapper-tabs").css("display","block");
+	else if(kind==7){
+		// right now its empty, but keeping this for future buttons and stuff
 	}
+
 
 
 	$("#editSection").css("display","flex");
@@ -312,11 +313,11 @@ function changedType(value)
 	kind=value;
 	iistr="";
 
+	$("#inputwrapper-tabs").css("display","block");
 	$("#inputwrapper-link").css("display","none");
 	$("#inputwrapper-gradesystem").css("display","none");
 	$("#inputwrapper-highscore").css("display","none");
 	$("#inputwrapper-moment").css("display","none");
-	$("#inputwrapper-tabs").css("display","none");
 	$("#inputwrapper-comments").css("display","none");
 	$("#inputwrapper-numberOfGroups").css("display", "none");
 	$("#inputwrapper-groupType").css("display", "none");
@@ -333,7 +334,6 @@ function changedType(value)
 		}
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
-		$("#inputwrapper-tabs").css("display","block");
 
 	//Dugga
 	}else if(kind==3){
@@ -346,6 +346,7 @@ function changedType(value)
 			}
 		}
 		$("#link").html(iistr);
+		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
@@ -354,10 +355,10 @@ function changedType(value)
 	//Moment
 	}else if(kind==4){
 		$("#inputwrapper-gradesystem").css("display","block");
+		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
 
 	//Link
 	}else if(kind==5){
-		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
 			// filter file extension
@@ -377,8 +378,9 @@ function changedType(value)
 	}else if(kind==6){	//Group-activity
 		$("#inputwrapper-numberOfGroups").css("display", "block");
 		$("#inputwrapper-groupType").css("display", "block");
-	}else if(kind==7){	//Message
-		$("#inputwrapper-tabs").css("display","block");
+		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
+	}else if(kind==7){
+		// right now its empty, but keeping this for future buttons and stuff
 	}
 }
 
