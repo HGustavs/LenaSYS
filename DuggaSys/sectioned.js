@@ -374,12 +374,12 @@ function changedType(value)
 		}
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
-	}else if(kind==6){
+	}else if(kind==6){	//Group-activity
 		$("#inputwrapper-numberOfGroups").css("display", "block");
 		$("#inputwrapper-groupType").css("display", "block");
+	}else if(kind==7){	//Message
+		$("#inputwrapper-tabs").css("display","block");
 	}
-	//Message
-
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
@@ -458,7 +458,7 @@ function updateItem()
 	gradesys=$("#gradesys").val();
 	comments=$("#comments").val();
 	// Storing tabs in gradesys column!
-	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
+	if (kind==0||kind==1||kind==2||kind==5 || kind==7) gradesys=tabs;
 	AJAXService(
 		"UPDATE",{
 			lid:lid,
@@ -495,8 +495,9 @@ function newItem()
   moment=$("#moment").val();
   gradesys=$("#gradesys").val();
   comment=$("#deadlinecomment").val();
-  // Storing tabs in gradesys column!
-  if (kind==0||kind==1||kind==2||kind==5 || kind == 7) gradesys=tabs;
+
+	// Storing tabs in gradesys column!
+  if (kind==0||kind==1||kind==2||kind==5||kind==7) gradesys=tabs;
   AJAXService(
 		"NEW",{
 			lid:lid,
@@ -819,32 +820,32 @@ function returnedSection(data)
 
 	if(retdata["writeaccess"]) {
 		str += "</tr></table>";
-		
+
 		str += "<div class='fixed-action-button'>"
 		str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
 		str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
-		
+
 		// Message of the day button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message of the day' onclick='selectItem(\"undefined\",\"New Item\",\"7\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>format_quote</i></a></li>"
-		
+
 		//Heading button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='selectItem(\"undefined\",\"New Item\",\"0\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
-		
+
 		//Section button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='selectItem(\"undefined\",\"New Item\",\"1\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>"
-		
+
 		// Moment button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='selectItem(\"undefined\",\"New Item\",\"4\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>"
-		
+
 		// Test button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='selectItem(\"undefined\",\"New Item\",\"3\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>"
-		
+
 		// Link button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='selectItem(\"undefined\",\"New Item\",\"5\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>link</i></a></li>"
-		
+
 		//Code button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='selectItem(\"undefined\",\"New Item\",\"2\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>"
-		
+
 		str += "</ol>"
 		str += "</div>";
 	} else {
@@ -1046,7 +1047,7 @@ function returnedSection(data)
 
 				// Make tabs to align each section element
 				// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link
-				if(itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 ){
+				if(itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 || itemKind === 7 ){
 					var itemGradesys = parseInt(item['gradesys']);
 
 					if (itemGradesys > 0 && itemGradesys < 4){
