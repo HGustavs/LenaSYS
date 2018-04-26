@@ -17,6 +17,26 @@ function toggleToolbarMinimize(){
     }
 }
 
+//function for switching the toolbar state (All, ER, UML)
+function switchToolbar(direction){
+  var val = document.getElementById('toolbar-switcher').value;
+  var text = ["All", "ER", "UML"];
+  if(direction == 'left'){
+    val = val <= 2 ? 2 : val--;
+  }else if(direction == 'right'){
+    val = val >= 2 ? 0 : val++;
+  }
+  document.getElementById('toolbarTypeText').innerHTML = text[val];
+
+  //hides irrelevant buttons, and shows relevant buttons
+  if(val == 1){
+    $(".tooltipDialog").hide();
+  }else{
+    $(".tooltipDialog").show();
+  }
+}
+
+
 $( function() {
     $( "#diagram-toolbar" ).draggable();
 } );

@@ -61,10 +61,10 @@
                           <h3>Toolbar</h3>
                         </div>
                         <div class='application-toolbar'>
-                          <div id="toolbar-switcher">
-                            <div id="toolbarLeftArrow"> << </div>
+                          <div id="toolbar-switcher" value="0">
+                            <div class="toolbarArrows" id="toolbarLeftArrow" onclick="switchToolbar('left');"> << </div>
                             <div id="toolbarTypeText"> ALL </div>
-                            <div id="toolbarRightArrow"> >> </div>
+                            <div class="toolbarArrows" id="toolbarRightArrow" onclick="switchToolbar('right');"> >> </div>
                           </div>
                         <h4 class="label">Tools</h4>
                         <div class="toolbar-drawer">

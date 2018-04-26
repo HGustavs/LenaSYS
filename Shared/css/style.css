@@ -1136,20 +1136,17 @@ input {
   display: flex;
   text-align: center;
 }
-#toolbarLeftArrow{
-  width:20%;
+.toolbarArrows{
   background: #614875;
-  border-radius: 8px;
-  cursor:pointer;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
 }
 #toolbarTypeText{
   width:60%;
-}
-#toolbarRightArrow{
-  width:20%;
-  background: #614875;
-  border-radius: 8px;
-  cursor:pointer;
+  background-color: #f1f1f1;
+  border: 1px solid #eaeaea;
 }
 
 /* --------------================################================-------------- *
