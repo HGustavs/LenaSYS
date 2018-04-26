@@ -111,12 +111,6 @@ h6 {
   padding:0px;
 }
 
-
-.hideTableArrow {
-  display:none !important;
-}
-
-
 hr {
   border: 0;
   border-bottom: 1px dashed #ccc;
@@ -1663,7 +1657,6 @@ input.large-button {
   line-height:28px;
   font-weight: bold;
   padding: 5px;
-  cursor: pointer;
 }
 
 .innertable {
@@ -1725,6 +1718,17 @@ input.large-button {
 
 #plorf {
     box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+.sortingArrow {
+  position: relative;
+  margin-left: 7px;
+  top: 3px;
+}
+
+.sortableHeading {
+  display: block;
+  cursor: pointer;
 }
 
 .list#testTable input, .list#testTable select, .list#testTable label {
