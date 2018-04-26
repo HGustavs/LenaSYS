@@ -518,7 +518,7 @@ function Symbol(kind) {
         if(broken) {
             var pointRemovedFromEntity = 
                 diagram.filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5)
-                       .filter(symbol => symbol.middleDivider == point || symbol.centerPoint == point)
+                       .filter(symbol => symbol.centerPoint == point)
                        .length == 0;
             if(pointRemovedFromEntity){
                 points[point] == "";
