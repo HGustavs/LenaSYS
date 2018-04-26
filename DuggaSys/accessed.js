@@ -18,7 +18,7 @@ function setup()
 	filt+="<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 	filt+="</div>";
 	filt+="</span></td>";
-	$("#menuHook").before(filt);
+	$("#menuHook").html(filt);
 
 	var dropdownOptions = "";
 	dropdownOptions+="<div class='checkbox-accessed accessedLine'><input type='checkbox' checked class='headercheck' id='selectAll' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
@@ -33,16 +33,16 @@ function setup()
 	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectvers' onclick='filter(\"vers\");'><label class='headerlabel'>Version</label></div>";
 	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectaccess' onclick='filter(\"access\");'><label class='headerlabel'>Access</label></div>";
 	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectrequestedpasswordchange' onclick='filter(\"requestedpasswordchange\");'><label class='headerlabel'>Password</label></div>";
-	$("#dropdownc").append(dropdownOptions);
+	$("#dropdownc").html(dropdownOptions);
 
 	/*    Add sort icon in the navheader   */
-	var sort ="";
+	var sort = "";
 	sort+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
 	sort+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
 	sort+="<div id='dropdowns' class='dropdown-list-container'>";
 	sort+="</div>";
 	sort+="</span></td>";
-	$("#menuHook").before(sort);
+	$("#menuHook").append(sort);
 
 	dropdownOptions = "";
 	dropdownOptions+="<div class='checkbox-accessed accessedLine'></div>";
@@ -57,7 +57,7 @@ function setup()
 	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectVersion' onclick='sorttype(7);'><label class='headerlabel'>Version</label></div>";
 	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' checked class='headercheck' id='selectAccess' onclick='sorttype(8);'><label class='headerlabel'>Access</label></div>";
 	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectPassword' onclick='sorttype(9);'><label class='headerlabel'>Password</label></div>";
-	$("#dropdowns").append(dropdownOptions);
+	$("#dropdowns").html(dropdownOptions);
 }
 
 function hoverc()
