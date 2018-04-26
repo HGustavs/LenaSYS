@@ -289,6 +289,13 @@ function Symbol(kind) {
         }
     }
 
+    this.connectorCountFromSymbol = function(symbol) {
+        var tmp = this.connectorTop.concat(this.connectorBottom, this.connectorLeft, this.connectorRight);
+        tmp = tmp.filter(c => c.to == symbol.topLeft || c.to == symbol.bottomRight || c.to == symbol.centerPoint || c.to == symbol.middleDivider ||
+            c.from == symbol.topLeft || c.from == symbol.bottomRight || c.from == symbol.centerPoint || c.from == symbol.middleDivider);
+        return tmp.length;
+    }
+
     this.hasConnectorFromPoint = function(point) {
         for (var i = 0; i < this.connectorTop.length; i++) {
             if(this.connectorTop[i].from == point){
