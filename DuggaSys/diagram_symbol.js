@@ -501,7 +501,6 @@ function Symbol(kind) {
             }
             for(var i = 0; i < this.connectorRight.length; i++){
                 if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
-                    
                     this.connectorRight.splice(i,1);
                     broken = true;
                     break;
@@ -513,16 +512,6 @@ function Symbol(kind) {
                     broken = true;
                     break;
                 }
-            }
-        }
-        if(broken) {
-            var pointRemovedFromEntity = 
-                diagram.filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5)
-                       .filter(symbol => symbol.centerPoint == point).length;
-            console.log(pointRemovedFromEntity);
-            if(pointRemovedFromEntity == 0){
-                points[point] == "";
-                console.log("Removed point in connector");
             }
         }
     }
