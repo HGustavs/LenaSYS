@@ -176,13 +176,13 @@ pdoConnect();
                 <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel'
                 onclick='closeWindows();'/>
           			<input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit'
-                onclick='createVariant(); showVariantSaveButton();'/>
+                onclick='createVariant();'/>
                 <input id='saveVariant' class='submit-button' style='display:none; float:right' type='button' value='Save'
                 onclick='updateVariant(); showVariantSubmitButton();'/>
-                <input id='disableVariant' class='submit-button' style='display:none; float:right' type='button' value='Disable'
-                onclick='disableVariant(); showVariantEnableButton(); '/>
-                <input id='enableVariant' class='submit-button' style='display:none; float:right' type='button' value='Enable'
-                onclick='enableVariant(); showVariantDisableButton();'/>
+                <input id='disableVariant' class='submit-button disableEnable' style='display:none; float:right' type='button' value='Disable'
+                onclick='showVariantEnableButton(); '/>
+                <input id='enableVariant' class='submit-button disableEnable' style='display:none; float:right' type='button' value='Enable'
+                onclick='showVariantDisableButton();'/>
           		</div>
           </div>
 	</div>

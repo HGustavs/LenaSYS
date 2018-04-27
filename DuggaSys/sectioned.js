@@ -76,6 +76,7 @@ function editSectionDialogTitle(title) {
 
 function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscoremode,comments)
 {
+	if(kind == "undefined") kind = 0;
     xelink=elink;
 	// Display Select Marker
 	$(".item").css("border","none");
@@ -221,7 +222,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	str +="<option value ='2'>Project Task</option>";
 	$("#groupType").html(str);
 
-	$("#inputwrapper-tabs").css("display","none");
+	$("#inputwrapper-tabs").css("display","block");
 	$("#inputwrapper-link").css("display","none");
 	$("#inputwrapper-gradesystem").css("display","none");
 	$("#inputwrapper-moment").css("display","none");
@@ -232,16 +233,14 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 
 	// Header
-	if(kind==0){
-		$("#inputwrapper-tabs").css("display","block");
+	if(kind==0 || kind == "undefined"){
+		$("#inputwrapper-tabs").css("display","none");
 
 	// Section
 	}else if(kind==1){
-		$("#inputwrapper-tabs").css("display","block");
-
+					// right now its empty, but keeping this for future buttons and stuff
 	// Code
 	}else if(kind==2){
-		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
 			if(xelink==iitem['exampleid']){
@@ -265,6 +264,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 			}
 		}
 		$("#link").html(iistr);
+		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
@@ -272,11 +272,11 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 
 	// Moment
 	}else if(kind==4){
+		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
 		$("#inputwrapper-gradesystem").css("display","block");
 
 	// Link
 	}else if(kind==5){
-		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
 			if(xelink==iitem['filename']){
@@ -293,11 +293,13 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	}else if(kind==6){
 		$("#inputwrapper-numberOfGroups").css("display","block");
 		$("#inputwrapper-groupType").css("display", "block");
+		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
 	}
     // Message
-	else if(kind ==7){
-        $("#inputwrapper-tabs").css("display","block");
+	else if(kind==7){
+		// right now its empty, but keeping this for future buttons and stuff
 	}
+
 
 
 	$("#editSection").css("display","flex");
@@ -312,17 +314,22 @@ function changedType(value)
 	kind=value;
 	iistr="";
 
+	$("#inputwrapper-tabs").css("display","block");
 	$("#inputwrapper-link").css("display","none");
 	$("#inputwrapper-gradesystem").css("display","none");
 	$("#inputwrapper-highscore").css("display","none");
 	$("#inputwrapper-moment").css("display","none");
-	$("#inputwrapper-tabs").css("display","none");
 	$("#inputwrapper-comments").css("display","none");
 	$("#inputwrapper-numberOfGroups").css("display", "none");
 	$("#inputwrapper-groupType").css("display", "none");
 
 	//Header(kind==0) and Section(kind==1) wont add any boxes, so no if-statements are needed for them.
-	if(kind==2){
+	if(kind==0){
+		$("#inputwrapper-tabs").css("display","none");
+	}else if(kind == 1){
+		// right now its empty, but keeping this for future buttons and stuff
+	}
+	else if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
 			if(xelink==iitem['exampleid']){
@@ -333,7 +340,6 @@ function changedType(value)
 		}
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
-		$("#inputwrapper-tabs").css("display","block");
 
 	//Dugga
 	}else if(kind==3){
@@ -346,6 +352,7 @@ function changedType(value)
 			}
 		}
 		$("#link").html(iistr);
+		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
 		$("#inputwrapper-link").css("display","block");
 		$("#inputwrapper-gradesystem").css("display","block");
 		$("#inputwrapper-highscore").css("display","block");
@@ -354,10 +361,10 @@ function changedType(value)
 	//Moment
 	}else if(kind==4){
 		$("#inputwrapper-gradesystem").css("display","block");
+		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
 
 	//Link
 	}else if(kind==5){
-		$("#inputwrapper-tabs").css("display","block");
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
 			// filter file extension
@@ -374,12 +381,13 @@ function changedType(value)
 		}
 		$("#link").html(iistr);
 		$("#inputwrapper-link").css("display","block");
-	}else if(kind==6){
+	}else if(kind==6){	//Group-activity
 		$("#inputwrapper-numberOfGroups").css("display", "block");
 		$("#inputwrapper-groupType").css("display", "block");
+		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
+	}else if(kind==7){
+		// right now its empty, but keeping this for future buttons and stuff
 	}
-	//Message
-
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
@@ -458,7 +466,7 @@ function updateItem()
 	gradesys=$("#gradesys").val();
 	comments=$("#comments").val();
 	// Storing tabs in gradesys column!
-	if (kind==0||kind==1||kind==2||kind==5) gradesys=tabs;
+	if (kind==0||kind==1||kind==2||kind==5 || kind==7) gradesys=tabs;
 	AJAXService(
 		"UPDATE",{
 			lid:lid,
@@ -495,8 +503,9 @@ function newItem()
   moment=$("#moment").val();
   gradesys=$("#gradesys").val();
   comment=$("#deadlinecomment").val();
-  // Storing tabs in gradesys column!
-  if (kind==0||kind==1||kind==2||kind==5 || kind == 7) gradesys=tabs;
+
+	// Storing tabs in gradesys column!
+  if (kind==0||kind==1||kind==2||kind==5||kind==7) gradesys=tabs;
   AJAXService(
 		"NEW",{
 			lid:lid,
@@ -510,6 +519,7 @@ function newItem()
 			comment:comment
 		},"SECTION");
   $("#editSection").css("display","none");
+  setTimeout(function() { scrollToBottom (); }, 100);  // Scroll the page to the bottom after the object is created, the delay is there because the function runs quicker than the database update
 }
 
 function closeSelect()
@@ -819,32 +829,35 @@ function returnedSection(data)
 
 	if(retdata["writeaccess"]) {
 		str += "</tr></table>";
-		
+
 		str += "<div class='fixed-action-button'>"
 		str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
 		str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
 		
-		// Message of the day button
-		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message of the day' onclick='alert(\"Under construction\")'><i class='material-icons'>format_quote</i></a></li>"
-		
+		// Group activity button
+		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='selectItem(\"undefined\",\"New Item\",\"6\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>"
+
+		// Message button
+		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='selectItem(\"undefined\",\"New Item\",\"7\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>format_quote</i></a></li>"
+
 		//Heading button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='selectItem(\"undefined\",\"New Item\",\"0\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
-		
+
 		//Section button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='selectItem(\"undefined\",\"New Item\",\"1\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>"
-		
+
 		// Moment button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='selectItem(\"undefined\",\"New Item\",\"4\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>"
-		
+
 		// Test button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='selectItem(\"undefined\",\"New Item\",\"3\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>"
-		
+
 		// Link button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='selectItem(\"undefined\",\"New Item\",\"5\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>link</i></a></li>"
-		
+
 		//Code button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='selectItem(\"undefined\",\"New Item\",\"2\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>"
-		
+
 		str += "</ol>"
 		str += "</div>";
 	} else {
@@ -870,6 +883,11 @@ function returnedSection(data)
     str+="</div>";
     // If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign
     if(retdata["writeaccess"]){
+		if(item['kind'] == undefined){
+			item['kind'] = 0;
+			// Need to change it to a zero so it will default to type Header when creating new item.
+		}
+
         str += "<div id='course-newitem' style='display: flex;'>";
 		str +=
 		  "<input type='button' value='+' class='submit-button-newitem' title='New Item'"
@@ -1046,7 +1064,7 @@ function returnedSection(data)
 
 				// Make tabs to align each section element
 				// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link
-				if(itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 ){
+				if(itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 || itemKind === 7 ){
 					var itemGradesys = parseInt(item['gradesys']);
 
 					if (itemGradesys > 0 && itemGradesys < 4){
@@ -1771,6 +1789,12 @@ $(document).mouseup(function (e)
 		showSaveButton();
 	}
 
-
-
 });
+
+
+// Function that scrolls the page to the bottom
+function scrollToBottom () {
+	var scrollingElement = (document.scrollingElement || document.body)
+	scrollingElement.scrollTop = scrollingElement.scrollHeight;
+}
+

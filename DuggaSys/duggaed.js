@@ -253,8 +253,14 @@ function createVariant(){
 	var qid = $("#did").val();
 	var answer=$("#variantanswerText").val();
 	var parameter=$("#variantparameterText").val();
-	
-	AJAXService("ADDVARI",{cid:querystring['cid'],qid:qid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
+	var disabled;
+	if($('#disableVariant').is(':visible')){
+		disabled = '0';
+	}else if($('#enableVariant').is(':visible')){
+		disabled = '1';
+	}
+
+	AJAXService("ADDVARI",{cid:querystring['cid'],qid:qid,disabled:disabled,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function selectVariant(vid) {
@@ -269,18 +275,32 @@ function selectVariant(vid) {
 	});
 
 	showVariantSaveButton();
-	var qid = $("#did").val();
+  
 	$("#vid").val(target_variant['vid']); // Set Variant ID
-	$("#variantparameterText").val(target_variant['param']); // Set Variant parameter
-	$("#variantanswerText").val(target_variant['variantanswer']); // Set Variant answer
+	$("#variantparameterText").val(target_variant['param']); // Set Variant ID
+	$("#variantanswerText").val(target_variant['variantanswer']); // Set Variant ID
+	
+  var disabled = (target_variant['disabled']);
+	if(disabled == '0'){
+		showVariantDisableButton();
+	}
+	else if(disabled == '1'){
+		showVariantEnableButton();
+	}
 }
 
 function updateVariant(){
 	var vid=$("#vid").val();
 	var answer=$("#variantanswerText").val();
 	var parameter=$("#variantparameterText").val();
+	var disabled;
+	if($('#disableVariant').is(':visible')){
+		disabled = '0';
+	}else if($('#enableVariant').is(':visible')){
+		disabled = '1';
+	}
 
-	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
+	AJAXService("SAVVARI",{cid:querystring['cid'],vid:vid,disabled:disabled,variantanswer:answer,parameter:parameter,coursevers:querystring['coursevers']},"DUGGA");
 }
 
 function deleteVariant(vid){
@@ -550,18 +570,21 @@ function renderCell(col,celldata,cellid) {
 		return str;
 	}
 
-	//Translating the integers behind "disabled" to say disabled or enabler. Also making it look that way.
+	//Translating the integers behind "disabled" to say disabled or enabled. Also making it look that way.
 	else if (col == "disabled"){
 		if(celldata == "0"){
 			celldata = "Enabled";
-			//MAKE IT LOOK ENABLED
+			str="<span style='color:black;'>"+celldata+"</span>";
 		}else if(celldata == "1"){
 			celldata = "Disabled";
-			// MAKE IT LOOK DISABLED
+			// $("#"+tempRow).css('opacity', '0.5' );
+			str="<span style='color:red;'>"+celldata+"</span>";
 		}
 		else{
 			celldata = "Undefined";
+			str="<span style='color:black; opacity:0.5;'>"+celldata+"</span>";
 		}
+		return str;
 	}
 
 	// Placing a clickable cogwheel in its designated column that select a variant to be edited.
