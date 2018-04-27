@@ -221,150 +221,95 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	str += "<option value ='2'>Project Task</option>";
 	$("#groupType").html(str);
 
-	$("#inputwrapper-tabs").css("display", "block");
-	$("#inputwrapper-link").css("display", "none");
-	$("#inputwrapper-gradesystem").css("display", "none");
-	$("#inputwrapper-moment").css("display", "none");
-	$("#inputwrapper-highscore").css("display", "none");
-	$("#inputwrapper-comments").css("display", "none");
-	$("#inputwrapper-numberOfGroups").css("display", "none");
-	$("#inputwrapper-groupType").css("display", "none");
+	$("#inputwrapper-tabs").css("display","block");
+	$("#inputwrapper-link").css("display","block");
+	$("#inputwrapper-gradesystem").css("display","block");
+	$("#inputwrapper-moment").css("display","block");
+	$("#inputwrapper-highscore").css("display","block");
+	$("#inputwrapper-comments").css("display","block");
+	$("#inputwrapper-numberOfGroups").css("display", "block");
+	$("#inputwrapper-groupType").css("display", "block");
 
-
-	// Header
-	if (kind == 0 || kind == "undefined") {
-		$("#inputwrapper-tabs").css("display", "none");
-
-		// Section
-	} else if (kind == 1) {
-		// right now its empty, but keeping this for future buttons and stuff
-		// Code
-	} else if (kind == 2) {
-		for (var ii = 0; ii < retdata['codeexamples'].length; ii++) {
-			var iitem = retdata['codeexamples'][ii];
-			if (xelink == iitem['exampleid']) {
-				iistr += "<option selected='selected' value='" + iitem['exampleid'] + "'>"
-					+ iitem['examplename'] + "</option>";
-			} else {
-				iistr += "<option value='" + iitem['exampleid'] + "'>" + iitem['examplename'] + "</option>";
+	// Code
+	if(kind==2){
+		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
+			var iitem=retdata['codeexamples'][ii];
+			if(xelink==iitem['exampleid']){
+				iistr+="<option selected='selected' value='"+iitem['exampleid']+"'>"
+				+iitem['examplename']+"</option>";
+			}else{
+				iistr+="<option value='"+iitem['exampleid']+"'>"+iitem['examplename']+"</option>";
 			}
 		}
 		$("#link").html(iistr);
-		$("#inputwrapper-link").css("display", "block");
 
-		// Dugga
-	} else if (kind == 3) {
-		for (var ii = 0; ii < retdata['duggor'].length; ii++) {
-			var iitem = retdata['duggor'][ii];
-			if (xelink == iitem['id']) {
-				iistr += "<option selected='selected' value='" + iitem['id'] + "'>" + iitem['qname'] + "</option>";
-			} else {
-				iistr += "<option value='" + iitem['id'] + "'>" + iitem['qname'] + "</option>";
+	// Dugga
+	}else if(kind==3){
+		for(var ii=0;ii<retdata['duggor'].length;ii++){
+			var iitem=retdata['duggor'][ii];
+			if(xelink==iitem['id']){
+			iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+			}else{
+				iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
 			}
 		}
 		$("#link").html(iistr);
-		$("#inputwrapper-tabs").css("display", "none"); // hiding tabs, since they don't work at tests at the moment
-		$("#inputwrapper-link").css("display", "block");
-		$("#inputwrapper-gradesystem").css("display", "block");
-		$("#inputwrapper-highscore").css("display", "block");
-		$("#inputwrapper-comments").css("display", "block");
 
-		// Moment
-	} else if (kind == 4) {
-		$("#inputwrapper-tabs").css("display", "none"); // hiding tabs, since they don't work at tests at the moment
-		$("#inputwrapper-gradesystem").css("display", "block");
-
-		// Link
-	} else if (kind == 5) {
-		for (var ii = 0; ii < retdata['links'].length; ii++) {
-			var iitem = retdata['links'][ii];
-			if (xelink == iitem['filename']) {
-				iistr += "<option selected='selected' value='" + iitem['filename'] + "'>"
-					+ iitem['filename'] + "</option>";
-			} else {
-				iistr += "<option value='" + iitem['filename'] + "'>" + iitem['filename'] + "</option>";
+	// Link
+	}else if(kind==5){
+		for(var ii=0;ii<retdata['links'].length;ii++){
+			var iitem=retdata['links'][ii];
+			if(xelink==iitem['filename']){
+				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"
+				+iitem['filename']+"</option>";
+			}else{
+				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";
 			}
-		}
+  		}
 		$("#link").html(iistr);
-		$("#inputwrapper-link").css("display", "block");
-
-		// Group
-	} else if (kind == 6) {
-		$("#inputwrapper-numberOfGroups").css("display", "block");
-		$("#inputwrapper-groupType").css("display", "block");
-		$("#inputwrapper-tabs").css("display", "none"); // hiding tabs, since they don't work at tests at the moment
 	}
-	// Message
-	else if (kind == 7) {
-		// right now its empty, but keeping this for future buttons and stuff
-	}
+	$("#editSection").css("display","flex");
 
-
-
-	$("#editSection").css("display", "flex");
 }
 
 function participationList() {
 	alert("ParticipationList");
 }
 
-function changedType(value) {
-	kind = value;
-	iistr = "";
 
-	$("#inputwrapper-tabs").css("display", "block");
-	$("#inputwrapper-link").css("display", "none");
-	$("#inputwrapper-gradesystem").css("display", "none");
-	$("#inputwrapper-highscore").css("display", "none");
-	$("#inputwrapper-moment").css("display", "none");
-	$("#inputwrapper-comments").css("display", "none");
-	$("#inputwrapper-numberOfGroups").css("display", "none");
-	$("#inputwrapper-groupType").css("display", "none");
+function changedType(value)
+{
+	kind=value;
+	iistr="";
 
-	//Header(kind==0) and Section(kind==1) wont add any boxes, so no if-statements are needed for them.
-	if (kind == 0) {
-		$("#inputwrapper-tabs").css("display", "none");
-	} else if (kind == 1) {
-		// right now its empty, but keeping this for future buttons and stuff
-	}
-	else if (kind == 2) {
-		for (var ii = 0; ii < retdata['codeexamples'].length; ii++) {
-			var iitem = retdata['codeexamples'][ii];
-			if (xelink == iitem['exampleid']) {
-				iistr += "<option selected='selected' value='" + iitem['exampleid'] + "'>" + iitem['sectionname'] + "</option>";
-			} else {
-				iistr += "<option value='" + iitem['exampleid'] + "'>" + iitem['sectionname'] + "</option>";
+	//Code
+	if(kind==2){
+		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
+			var iitem=retdata['codeexamples'][ii];
+			if(xelink==iitem['exampleid']){
+				iistr+="<option selected='selected' value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
+			}else{
+				iistr+="<option value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
 			}
 		}
 		$("#link").html(iistr);
-		$("#inputwrapper-link").css("display", "block");
 
-		//Dugga
-	} else if (kind == 3) {
-		for (var ii = 0; ii < retdata['duggor'].length; ii++) {
-			var iitem = retdata['duggor'][ii];
-			if (xelink == iitem['id']) {
-				iistr += "<option selected='selected' value='" + iitem['id'] + "'>" + iitem['qname'] + "</option>";
-			} else {
-				iistr += "<option value='" + iitem['id'] + "'>" + iitem['qname'] + "</option>";
+	//Dugga
+	}else if(kind==3){
+		for(var ii=0;ii<retdata['duggor'].length;ii++){
+			var iitem=retdata['duggor'][ii];
+			if(xelink==iitem['id']){
+				iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
+			}else{
+				iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
 			}
 		}
 		$("#link").html(iistr);
-		$("#inputwrapper-tabs").css("display", "none"); // hiding tabs, since they don't work at tests at the moment
-		$("#inputwrapper-link").css("display", "block");
-		$("#inputwrapper-gradesystem").css("display", "block");
-		$("#inputwrapper-highscore").css("display", "block");
-		$("#inputwrapper-comments").css("display", "block");
 
-		//Moment
-	} else if (kind == 4) {
-		$("#inputwrapper-gradesystem").css("display", "block");
-		$("#inputwrapper-tabs").css("display", "none"); // hiding tabs, since they don't work at tests at the moment
-
-		//Link
-	} else if (kind == 5) {
-		for (var ii = 0; ii < retdata['links'].length; ii++) {
-			var iitem = retdata['links'][ii];
+	//Link
+	}else if(kind==5){
+		for(var ii=0;ii<retdata['links'].length;ii++){
+			var iitem=retdata['links'][ii];
 			// filter file extension
 			var ext = iitem.filename.split('.').pop().toLowerCase();
 			var validExts = ['js', 'md', 'php', 'html', 'css', 'htm', 'html', 'pdf', 'png', 'jpg', 'txt'];
@@ -378,13 +323,6 @@ function changedType(value) {
 			}
 		}
 		$("#link").html(iistr);
-		$("#inputwrapper-link").css("display", "block");
-	} else if (kind == 6) {	//Group-activity
-		$("#inputwrapper-numberOfGroups").css("display", "block");
-		$("#inputwrapper-groupType").css("display", "block");
-		$("#inputwrapper-tabs").css("display", "none"); // hiding tabs, since they don't work at tests at the moment
-	} else if (kind == 7) {
-		// right now its empty, but keeping this for future buttons and stuff
 	}
 }
 
@@ -671,6 +609,7 @@ function returnedSection(data) {
 			for (j = 0; j < retdata['versions'].length; j++) {
 				var itemz = retdata['versions'][j];
 				if (retdata['courseid'] == itemz['cid']) {
+
 					var vversz = itemz['vers'];
 					var vnamez = itemz['versname'];
 					if (retdata['coursevers'] == vversz) {
@@ -1786,4 +1725,3 @@ function scrollToBottom() {
 	var scrollingElement = (document.scrollingElement || document.body)
 	scrollingElement.scrollTop = scrollingElement.scrollHeight;
 }
-
