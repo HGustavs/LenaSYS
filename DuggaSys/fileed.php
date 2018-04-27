@@ -43,11 +43,11 @@ pdoConnect();
 			</div>
 			<div class="sortingBtn">
 				<input type="radio" name="sortKind" value="CourseLocal" onclick="count=0;searchterm='course local';searchKeyUp(event);fileLink.renderTable();"/>
-				<label name="sortCLocal">Course Local</label>
+				<label name="sortCLocal">Course local</label>
 			</div>
 			<div class="sortingBtn">
 				<input type="radio" name="sortKind" value="VersionLocal" onclick="count=0;searchterm='version local';searchKeyUp(event);fileLink.renderTable();"/>
-				<label name="sortVLocal">Version Local</label>
+				<label name="sortVLocal">Version local</label>
 			</div>
 			<div class="sortingBtn">
 				<input type="radio" name="sortKind" value="Links" onclick="count=0;searchterm='link';searchKeyUp(event);fileLink.renderTable();"/>
