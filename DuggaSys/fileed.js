@@ -372,6 +372,7 @@ $(document).mouseup(function(e) {
 	} else {
 		toggleFabButton();
 	}
+	return false;
 });
 
 
