@@ -223,24 +223,16 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 	$("#groupType").html(str);
 
 	$("#inputwrapper-tabs").css("display","block");
-	$("#inputwrapper-link").css("display","none");
-	$("#inputwrapper-gradesystem").css("display","none");
-	$("#inputwrapper-moment").css("display","none");
-	$("#inputwrapper-highscore").css("display","none");
-	$("#inputwrapper-comments").css("display","none");
-	$("#inputwrapper-numberOfGroups").css("display", "none");
-	$("#inputwrapper-groupType").css("display", "none");
+	$("#inputwrapper-link").css("display","block");
+	$("#inputwrapper-gradesystem").css("display","block");
+	$("#inputwrapper-moment").css("display","block");
+	$("#inputwrapper-highscore").css("display","block");
+	$("#inputwrapper-comments").css("display","block");
+	$("#inputwrapper-numberOfGroups").css("display", "block");
+	$("#inputwrapper-groupType").css("display", "block");
 
-
-	// Header
-	if(kind==0 || kind == "undefined"){
-		$("#inputwrapper-tabs").css("display","none");
-
-	// Section
-	}else if(kind==1){
-					// right now its empty, but keeping this for future buttons and stuff
 	// Code
-	}else if(kind==2){
+	if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
 			if(xelink==iitem['exampleid']){
@@ -251,7 +243,6 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 			}
 		}
 		$("#link").html(iistr);
-		$("#inputwrapper-link").css("display","block");
 
 	// Dugga
 	}else if(kind==3){
@@ -264,16 +255,6 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 			}
 		}
 		$("#link").html(iistr);
-		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
-		$("#inputwrapper-link").css("display","block");
-		$("#inputwrapper-gradesystem").css("display","block");
-		$("#inputwrapper-highscore").css("display","block");
-		$("#inputwrapper-comments").css("display","block");
-
-	// Moment
-	}else if(kind==4){
-		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
-		$("#inputwrapper-gradesystem").css("display","block");
 
 	// Link
 	}else if(kind==5){
@@ -287,21 +268,7 @@ function selectItem(lid,entryname,kind,evisible,elink,moment,gradesys,highscorem
 			}
 		}
 		$("#link").html(iistr);
-		$("#inputwrapper-link").css("display","block");
-
-	// Group
-	}else if(kind==6){
-		$("#inputwrapper-numberOfGroups").css("display","block");
-		$("#inputwrapper-groupType").css("display", "block");
-		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
 	}
-    // Message
-	else if(kind==7){
-		// right now its empty, but keeping this for future buttons and stuff
-	}
-
-
-
 	$("#editSection").css("display","flex");
 }
 
@@ -314,22 +281,8 @@ function changedType(value)
 	kind=value;
 	iistr="";
 
-	$("#inputwrapper-tabs").css("display","block");
-	$("#inputwrapper-link").css("display","none");
-	$("#inputwrapper-gradesystem").css("display","none");
-	$("#inputwrapper-highscore").css("display","none");
-	$("#inputwrapper-moment").css("display","none");
-	$("#inputwrapper-comments").css("display","none");
-	$("#inputwrapper-numberOfGroups").css("display", "none");
-	$("#inputwrapper-groupType").css("display", "none");
-
-	//Header(kind==0) and Section(kind==1) wont add any boxes, so no if-statements are needed for them.
-	if(kind==0){
-		$("#inputwrapper-tabs").css("display","none");
-	}else if(kind == 1){
-		// right now its empty, but keeping this for future buttons and stuff
-	}
-	else if(kind==2){
+	//Code
+	if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
 			if(xelink==iitem['exampleid']){
@@ -339,7 +292,6 @@ function changedType(value)
 			}
 		}
 		$("#link").html(iistr);
-		$("#inputwrapper-link").css("display","block");
 
 	//Dugga
 	}else if(kind==3){
@@ -352,16 +304,6 @@ function changedType(value)
 			}
 		}
 		$("#link").html(iistr);
-		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
-		$("#inputwrapper-link").css("display","block");
-		$("#inputwrapper-gradesystem").css("display","block");
-		$("#inputwrapper-highscore").css("display","block");
-		$("#inputwrapper-comments").css("display","block");
-
-	//Moment
-	}else if(kind==4){
-		$("#inputwrapper-gradesystem").css("display","block");
-		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
 
 	//Link
 	}else if(kind==5){
@@ -380,13 +322,6 @@ function changedType(value)
 			}
 		}
 		$("#link").html(iistr);
-		$("#inputwrapper-link").css("display","block");
-	}else if(kind==6){	//Group-activity
-		$("#inputwrapper-numberOfGroups").css("display", "block");
-		$("#inputwrapper-groupType").css("display", "block");
-		$("#inputwrapper-tabs").css("display","none"); // hiding tabs, since they don't work at tests at the moment
-	}else if(kind==7){
-		// right now its empty, but keeping this for future buttons and stuff
 	}
 }
 
@@ -833,7 +768,7 @@ function returnedSection(data)
 		str += "<div class='fixed-action-button'>"
 		str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
 		str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
-		
+
 		// Group activity button
 		str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='selectItem(\"undefined\",\"New Item\",\"6\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>"
 
@@ -1797,4 +1732,3 @@ function scrollToBottom () {
 	var scrollingElement = (document.scrollingElement || document.body)
 	scrollingElement.scrollTop = scrollingElement.scrollHeight;
 }
-
