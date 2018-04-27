@@ -340,8 +340,8 @@ $(document).mouseup(function(e) {
 		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
 			clearTimeout(pressTimer);
 			showFilePopUp('MFILE');
-			return false;
 	    }
+	    return false;
     }
 	// Click outside the FAB list
     if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target)// if the target of the click isn't the container...
@@ -371,8 +371,16 @@ $(document).mouseup(function(e) {
 		}
 	} else {
 		toggleFabButton();
+		if (e.target.id == "gFabBtn" || e.target.id == "gFabBtnImg") {
+	    	showFilePopUp('GFILE');
+	    } else if (e.target.id == "lFabBtn" || e.target.id == "lFabBtnImg") {
+	    	showFilePopUp('LFILE');
+	    } else if (e.target.id == "mFabBtn" || e.target.id == "mFabBtnImg") {
+	    	showFilePopUp('MFILE');
+	    } else if (e.target.id == "linkFabBtn" || e.target.id == "linkFabBtnImg") {
+	    	showLinkPopUp();
+	    }
 	}
-	return false;
 });
 
 

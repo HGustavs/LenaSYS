@@ -121,10 +121,10 @@ pdoConnect();
 		<div class="fixed-action-button">
 			<a class="btn-floating fab-btn-lg noselect" id="fabBtn"><img id="fabBtnImg" src="../Shared/icons/add-icon.svg"></a>
 			<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
-				<li><a class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File' onclick="showFilePopUp('GFILE');"><img class="fab-icon" src="../Shared/icons/global-icon.svg"></a></li>
-				<li><a class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File' onclick="showFilePopUp('LFILE');"><img class="fab-icon" src="../Shared/icons/version_local-icon.svg"></a></li>
-				<li><a class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Course Local File' onclick="showFilePopUp('MFILE');"><img class="fab-icon" src="../Shared/icons/course_local-icon.svg"></a></li>
-				<li><a class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link" onclick="showLinkPopUp();"><img class="fab-icon" src="../Shared/icons/link-icon.svg"></a></li>
+				<li><a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File'><img id="gFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg"></a></li>
+				<li><a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File'><img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg"></a></li>
+				<li><a id="mFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Course Local File'><img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg"></a></li>
+				<li><a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link"><img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg"></a></li>
 			</ol>
 		</div>"
 </body>
