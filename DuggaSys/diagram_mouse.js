@@ -338,6 +338,7 @@ function mouseupevt(ev) {
         classB.bottomRight = p2;
 
         classB.middleDivider = p3;
+        classB.centerPoint = p3;
         diagram.push(classB);
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
@@ -373,7 +374,7 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateLine" && md == 4){
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine){
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine){
             erLineA = new Symbol(4);
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
