@@ -34,23 +34,23 @@ pdoConnect();
 		</div>
 		<div id="sortingBar">
 			<div class="sortingBtn" style="margin-left:2px;">
-				<input type="radio" name="sortKind" value="All" checked onclick="searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
+				<input type="radio" name="sortKind" value="All" checked onclick="count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
 				<label name="sortAll">All files</label>
 			</div>
 			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="Global" onclick="searchterm='global';searchKeyUp(event);fileLink.renderTable();"/>
+				<input type="radio" name="sortKind" value="Global" onclick="count=0;searchterm='global';searchKeyUp(event);fileLink.renderTable();"/>
 				<label name="sortGlobal">Global</label>
 			</div>
 			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="CourseLocal" onclick="searchterm='course local';searchKeyUp(event);fileLink.renderTable();"/>
+				<input type="radio" name="sortKind" value="CourseLocal" onclick="count=0;searchterm='course local';searchKeyUp(event);fileLink.renderTable();"/>
 				<label name="sortCLocal">Course Local</label>
 			</div>
 			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="VersionLocal" onclick="searchterm='version local';searchKeyUp(event);fileLink.renderTable();"/>
+				<input type="radio" name="sortKind" value="VersionLocal" onclick="count=0;searchterm='version local';searchKeyUp(event);fileLink.renderTable();"/>
 				<label name="sortVLocal">Version Local</label>
 			</div>
 			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="Links" onclick="searchterm='link';searchKeyUp(event);fileLink.renderTable();"/>
+				<input type="radio" name="sortKind" value="Links" onclick="count=0;searchterm='link';searchKeyUp(event);fileLink.renderTable();"/>
 				<label name="sortLinks">Links</label>
 			</div>
 		</div>
