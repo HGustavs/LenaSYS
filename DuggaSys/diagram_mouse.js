@@ -292,8 +292,6 @@ function mouseupevt(ev) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == 2) {
                     p1 = diagram[lineStartObj].centerPoint;
-                } else if (diagram[lineStartObj].symbolkind == 5) {
-                    p1 = diagram[lineStartObj].middleDivider;
                 } else {
                     createNewPoint = true;
                 }
@@ -313,13 +311,13 @@ function mouseupevt(ev) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
                 } else if(symbolEndKind == 5 && symbolStartKind == 3) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
+                } else if(symbolEndKind == 5 && symbolStartKind == 5){
+                    okToMakeLine = false;
                 }
                 if(okToMakeLine){
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     if (diagram[hovobj].symbolkind == 2) {
                         p2 = diagram[hovobj].centerPoint;
-                    } else if (diagram[hovobj].symbolkind == 5) {
-                        p2 = diagram[hovobj].middleDivider;
                     } else{
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     }
@@ -378,7 +376,6 @@ function mouseupevt(ev) {
             erLineA = new Symbol(4);
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
-
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
             erLineA.centerPoint = p3;
@@ -397,7 +394,7 @@ function mouseupevt(ev) {
         erRelationA.name = "Relation" + diagram.length;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
-        erRelationA.middleDivider = p3;
+        erRelationA.centerPoint = p3;
 
         diagram.push(erRelationA);
         //selecting the newly created relation and open the dialog menu.
