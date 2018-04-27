@@ -213,7 +213,7 @@ function renderCell(col,celldata,cellid) {
 					listStr += ".";
 				}
 			}
-			return "<div>" + listStr + "</div>";
+			return "<div style='cursor:pointer;' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+celldata+"\")'>" + listStr + "</div>";
 		}
 	} else if (col == "filesize") {
 		return formatBytes(celldata, 0);
