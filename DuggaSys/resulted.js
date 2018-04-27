@@ -1400,6 +1400,7 @@ function returnedResults(data)
     versions=data.versions;
     results=data.results;
     teacher=data.teachers;
+    courseteachers=data.courseteachers;
 
     //tim=performance.now();
 
@@ -1570,16 +1571,4 @@ function renderCell(col,celldata,cellid) {
     return str;
   }
 return celldata;
-}
-
-function ListTeachers() {
-
-  $.ajax({
-      type: "GET",
-      url: "../Shared/SQL/init_db.sql",
-      data: {cid: cid , teacher: teacher},
-      success: function(result) {
-          alert(result.d);
-  }
-
 }
