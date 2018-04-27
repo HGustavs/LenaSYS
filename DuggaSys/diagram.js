@@ -508,7 +508,7 @@ diagram.updateLineRelations = function() {
 //--------------------------------------------------------------------
 diagram.sortConnectors = function() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1) {
+        if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
             diagram[i].sortAllConnectors();
         }
     }
@@ -519,7 +519,7 @@ diagram.sortConnectors = function() {
 //--------------------------------------------------------------------
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 1) {
+        if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
             diagram[i].quadrants();
         }
     }
