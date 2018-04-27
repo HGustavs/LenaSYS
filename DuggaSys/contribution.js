@@ -9,6 +9,7 @@ AJAXService("get",{userid:"HGustavs"},"CONTRIBUTION");
 //----------------------------------------
 
 function renderRankTable(){
+  if(contribDataArr.length == 0) return;
   var str="<table class='fumho'><tr><th></th><th onclick='sortRank(0);'>login</th><th onclick='sortRank(2);'>alleventranks</th><th onclick='sortRank(3);'>allcommentranks</th><th onclick='sortRank(4);'>LOC rank</th><th onclick='sortRank(5);'>Commit rank</th></tr>";
   for (var j=0; j<contribDataArr.length;j++){
       str+="<tr>";
@@ -202,7 +203,7 @@ function returnedSection(data)
 						str+="<div class='contribcontent'>";
 
 						if(week.commits.length>0){
-								str+="<div class='createissue'>Made "+week.commits.length+" commits.</div>";
+								str+="<div class='createissue'>Made "+week.commits.length+" commit(s).</div>";
 								for(j=0;j<week.commits.length;j++){
 										var message=week.commits[j].message;
 										var hash=week.commits[j].cid;
@@ -212,7 +213,7 @@ function returnedSection(data)
 
 
 						if(week.issues.length>0){
-								str+="<div class='createissue'>Creeated "+week.issues.length+" issues.</div>";
+								str+="<div class='createissue'>Creeated "+week.issues.length+" issue(s).</div>";
 								for(j=0;j<week.issues.length;j++){
 										var issue=week.issues[j];
 										var issuestr=issue.issueno+" "+issue.title;
@@ -222,7 +223,7 @@ function returnedSection(data)
 						}
 
 						if(week.comments.length>0){
-								str+="<div class='createissue'>Made "+week.comments.length+" comments.</div>";
+								str+="<div class='createissue'>Made "+week.comments.length+" comment(s).</div>";
 								for(j=0;j<week.comments.length;j++){
 										var comment=week.comments[j];
 										var issuestr=comment.issueno+" "+comment.content;
@@ -232,12 +233,15 @@ function returnedSection(data)
 						}
 
 						if(week.events.length>0){
-								str+="<div class='createissue'>Performed "+week.events.length+" events.</div>";
-								for(j=0;j<week.events.length;j++){
-										var eve=week.events[j];
-										str+="<div class='contentissue'>"+eve.kind+" "+eve.cnt+"</div>";
-								}
-
+              let totalAmountEvents = 0;
+              for(let j=0;j<week.events.length;j++){
+                totalAmountEvents += parseInt(week.events[j].cnt);
+              }
+							str+="<div class='createissue'>Performed "+totalAmountEvents+" event(s).</div>";
+							for(let j=0;j<week.events.length;j++){
+									var eve=week.events[j];
+									str+="<div class='contentissue'>"+eve.kind+" "+eve.cnt+"</div>";
+							}
 						}
 
 						str+="</div>";
@@ -337,8 +341,9 @@ function returnedSection(data)
             }
         }
     }
-
     for (var stud in contribData){
+        // If the position in the array is not a object, continue
+        if(!(typeof contribData[stud] === "object")) continue;
         contribDataArr.push(contribData[stud]);
     }
     document.getElementById('content').innerHTML=str;
