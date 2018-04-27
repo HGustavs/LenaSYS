@@ -20,7 +20,6 @@ pdoConnect();
 	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script> 
 	<script src="fileed.js"></script>
     <script src="../Shared/markdown.js"></script>
-
 </head>
 <body>
 	<?php 
@@ -39,9 +38,7 @@ pdoConnect();
 				<img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
 			</button>
 		</div>
-    	<input class='submit-button fileed-button' type='button' value='Add Link' onclick='showLinkPopUp();'/>
-		<input class='submit-button fileed-button' type='button' value='Add File' onclick='showFilePopUp();'/>
-		<div id="fileLink" style='width:100%;'></div>
+		<div id="fileLink" style='width:100%;margin-bottom: 30px;'></div>
 		<!-- content END -->
 	
 		<?php 
@@ -52,7 +49,9 @@ pdoConnect();
 		<div id='addFile' class='loginBoxContainer' style='display:none;'>
       		<div class='loginBox' style='width:464px;'>
 	      		<div class='loginBoxheader' style='cursor:default;'>
-	      			<h3 class="filePopUp">Add File</h3>
+	      			<h3 class="fileHeadline" id="mFileHeadline">Add Course Local File</h3>
+	      			<h3 class="fileHeadline" id="gFileHeadline">Add Global File</h3>
+	      			<h3 class="fileHeadline" id="lFileHeadline">Add Version Local File</h3>
 	      			<h3 class="linkPopUp">Add Link</h3>
 	      			<div class='cursorPointer' onclick='closeAddFile();'>x</div>
 	      		</div>
@@ -65,27 +64,13 @@ pdoConnect();
 	      					<span>Upload File:</span>
 	      					<input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" />
 	      				</div>
-      					<div class='filePopUp'>
-	      					<div>
-		      					<input type='radio' name='fileRB' value='GFILE' id='globalFileRB' />
-		      					<label>Global</label>
-		      				</div>
-		      				<div>
-		      					<input type='radio' name='fileRB' value='LFILE' id='localFileRB' />
-		      					<label>Local</label>
-		      				</div>
-		      				<div>
-		      					<input type='radio' name='fileRB' value='MFILE' id='couseLocalFileRB' />
-		      					<label>Course local</label>
-		      				</div>
-      					</div>
 	      				<div class='inputwrapper linkPopUp'>
 	      					<span>URL:</span>
 	      					<input style="width:380px" id ="uploadedlink" class="textinput" name="link" placeholder="https://facebook.com" type="text" />
 	      				</div>
       				</div> 
 					<div id='uploadbuttonname'>
-						<input id='file-submit-button' class='submit-button' type="submit" onclick="setFileKind();uploadFile(fileKind);" />
+						<input class='submit-button fileed-submit-button' type="submit" onclick="uploadFile(fileKind);" />
 					</div>
       				<div style ='display:none;' id='errormessage'></div> 
       			</form>
@@ -132,6 +117,15 @@ pdoConnect();
         <button id="button-close" onclick="cancelPreview()">Close</button>
     </div>
     <!-- Markdown-preview functionality END -->
-
+    <!--Fab-button-->
+		<div class="fixed-action-button">
+			<a class="btn-floating fab-btn-lg noselect" id="fabBtn"><img id="fabBtnImg" src="../Shared/icons/add-icon.svg"></a>
+			<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
+				<li><a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File'><img id="gFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg"></a></li>
+				<li><a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File'><img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg"></a></li>
+				<li><a id="mFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Course Local File'><img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg"></a></li>
+				<li><a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link"><img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg"></a></li>
+			</ol>
+		</div>"
 </body>
 </html>
