@@ -188,7 +188,6 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
     //If we have an unused index we use it first
     for(var i = 0; i < points.length; i++){
         if(points[i] == ""){
-            console.log("New point");
             points[i] = {x:xCoordinate, y:yCoordinate, isSelected:isSelected};
             return i;
         }
