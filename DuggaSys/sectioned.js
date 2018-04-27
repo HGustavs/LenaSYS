@@ -994,20 +994,36 @@ function returnedSection(data) {
 
 				// Make tabs to align each section element
 				// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link
-				if (itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 || itemKind === 7) {
+				if(itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 || itemKind === 7 ){
 					var itemGradesys = parseInt(item['gradesys']);
+					var itemVisible = item['visible'];
 
-					if (itemGradesys > 0 && itemGradesys < 4) {
-						for (var numSpacers = 0; numSpacers < itemGradesys; numSpacers++) {
-							str += "<td style='width:36px;overflow:hidden;'><div class='spacerLeft'></div></td>";
+					if (itemGradesys > 0 && itemGradesys < 4){
+						for (var numSpacers = 0; numSpacers < itemGradesys;numSpacers++){
+							str+=
+								"<td style='width:36px;overflow:hidden;"
+								+addColorsToTabSections(itemKind, itemVisible) + "'>"
+								+"<div class='spacerLeft'></div></td>";
 						}
-					} else if (itemGradesys == 4) {
-						str += "<td class='LightBox'><div class='spacerEnd'></div></td>";
-					} else if (itemGradesys == 5) {
-						str += "<td class='LightBox'><div class='spacerLeft'></div></td><td class='LightBox'><div class='spacerEnd'></div></td>";
-					} else if (itemGradesys == 6) {
-						str += "<td class='LightBox'><div class='spacerLeft'></div></td>"
-							+ "<td class='LightBox'><div class='spacerLeft'></div></td><td class='LightBox'><div class='spacerEnd'></div></td>";
+					} else if (itemGradesys == 4){
+						str+="<td style='" + addColorsToTabSections(itemKind, itemVisible) + "'"
+						+"class='LightBox'><div class='spacerEnd'></div></td>";
+					}else if (itemGradesys == 5){
+						str+="<td style='" + addColorsToTabSections(itemKind, itemVisible) + "'"
+						+"class='LightBox'><div class='spacerLeft'></div></td>"
+
+						str+= "<td style='" + addColorsToTabSections(itemKind, itemVisible) + "'"
+						+"class='LightBox'><div class='spacerEnd'></div></td>";
+
+					}else if (itemGradesys == 6){
+						str+="<td style='" + addColorsToTabSections(itemKind, itemVisible) + "'"
+						+"class='LightBox'><div class='spacerLeft'></div></td>"
+
+						str+="<td style='" + addColorsToTabSections(itemKind, itemVisible) + "'"
+						+"class='LightBox'><div class='spacerLeft'></div></td>"
+
+						str+="<td style='" + addColorsToTabSections(itemKind, itemVisible) + "'"
+						+"class='LightBox'><div class='spacerEnd'></div></td>";
 					}
 				}
 
@@ -1638,6 +1654,19 @@ function toggleFabButton() {
 		$('.fab-btn-sm').toggleClass('scale-out');
 	}
 }
+
+function addColorsToTabSections(kind, visible){
+	var retStr = "";
+	if(kind == 1){
+		retStr += "background-color:#927b9e;";
+		if(visible == 0){
+			retStr += "opacity:0.3;";
+		}
+	}
+	return retStr;
+}
+
+
 
 
 $(document).ready(function () {
