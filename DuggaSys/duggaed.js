@@ -289,7 +289,7 @@ function deleteVariant(vid){
 
 // Update the title of the variant editor to refer to the dugga that "owns" the variants
 function updateVariantTitle(number){
-	document.getElementById("editVariantTitle").innerHTML = "Variants for the " + globalData['entries'][number].qname + " dugga";
+	document.getElementById("editVariantTitle").innerHTML = "Variants for: " + globalData['entries'][number].qname;
 }
 
 // Adds a submission row
