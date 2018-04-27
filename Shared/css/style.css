@@ -323,10 +323,15 @@ p {
   height: 16px;
 }
 
-.iconBox {
+.iconBox, .counterBox {
   text-align: center;
   margin: 0;
   padding: 0;
+}
+
+.counterBox {
+  font-size: 20px;
+  color: #614875;
 }
 
 #Sectionlist .example {

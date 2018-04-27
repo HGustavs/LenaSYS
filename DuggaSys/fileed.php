@@ -126,6 +126,6 @@ pdoConnect();
 				<li><a id="mFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Course Local File'><img id="mFabBtnImg" class="fab-icon" src="../Shared/icons/course_local-icon.svg"></a></li>
 				<li><a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect" data-tooltip="Add Link"><img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg"></a></li>
 			</ol>
-		</div>"
+		</div>
 </body>
 </html>

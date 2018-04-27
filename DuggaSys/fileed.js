@@ -24,6 +24,7 @@ var fileKind = "";
 var searchterm = "";
 var pressTimer;
 var fabListIsVisible = true;
+var count = 0;
 
 AJAXService("GET",{cid:querystring['cid']},"FILE");
 
@@ -49,6 +50,7 @@ function returnedFile(data) {
 
     var tabledata = {
     	tblhead:{
+    		counter:"",
     		filename:"File name",
     		extension:"Extension",
     		kind:"Kind",
@@ -191,7 +193,9 @@ function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
 	var link = celldata.split('://');
 	var str="";
-	if (col == "trashcan") {
+	if (col == "counter") {
+		return "<div class='counterBox'>" + ++count + "</div>";
+	} if (col == "trashcan") {
 		obj = JSON.parse(celldata);
 	    str = "<div class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
 		str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></div>";
@@ -270,6 +274,10 @@ function compare(a,b) {
 	let col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
 	var tempB = b;
+
+	// Needed so that the counter starts from 0
+	// everytime we sort the table
+	count = 0;
 
 	if (col == "File name") {
 		tempA = tempA.toUpperCase();
