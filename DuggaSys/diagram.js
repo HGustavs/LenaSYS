@@ -188,6 +188,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
     //If we have an unused index we use it first
     for(var i = 0; i < points.length; i++){
         if(points[i] == ""){
+            console.log("New point");
             points[i] = {x:xCoordinate, y:yCoordinate, isSelected:isSelected};
             return i;
         }
@@ -508,7 +509,7 @@ diagram.updateLineRelations = function() {
 //--------------------------------------------------------------------
 diagram.sortConnectors = function() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3) {
+        if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5) {
             diagram[i].sortAllConnectors();
         }
     }
@@ -519,7 +520,7 @@ diagram.sortConnectors = function() {
 //--------------------------------------------------------------------
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3) {
+        if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5) {
             diagram[i].quadrants();
         }
     }
