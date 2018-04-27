@@ -1170,7 +1170,7 @@ function returnedSection(data) {
 					}
 					str += "<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
-						+ item['entryname'] + "'><span class='ellipsis listentires-span'>"
+						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
 						+ item['entryname'] + " " + strz + " " + "</span>"
 						+ "<img src='../Shared/icons/desc_complement.svg'"
 						+ "id='arrowComp" + menuState.idCounter++ + data.coursecode
