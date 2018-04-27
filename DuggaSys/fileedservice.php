@@ -80,6 +80,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
         }
 
       $entry = array(
+          'counter' => $row['filename'],
     			'filename' => $row['filename'],
           'extension' => $row['filename'],
           'kind' => $row['kind'],
