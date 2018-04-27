@@ -319,6 +319,7 @@ function mouseupevt(ev) {
                     } else{
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     }
+                    console.log("ok to make line and we push connectors");
                     diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
                     diagram[hovobj].connectorTop.push({from:p2, to:p1});
                 }
