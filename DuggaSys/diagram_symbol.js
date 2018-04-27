@@ -190,6 +190,8 @@ function Symbol(kind) {
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
         } else if (this.symbolkind == 1) {
+            points[this.centerPoint].x = x1 + hw;
+            points[this.centerPoint].y = y1 + hh;
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
 
@@ -219,10 +221,10 @@ function Symbol(kind) {
             points[this.bottomRight].x = points[this.topLeft].x + strLen + 15;
         } else if (this.symbolkind == 5){
                 // Static size of relation. Makes resizing of relation impossible.
-                points[this.topLeft].x = points[this.middleDivider].x-relationTemplate.width/2;
-                points[this.topLeft].y = points[this.middleDivider].y-relationTemplate.height/2;
-                points[this.bottomRight].x = points[this.middleDivider].x+relationTemplate.width/2;
-                points[this.bottomRight].y = points[this.middleDivider].y+relationTemplate.height/2;
+                points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
+                points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
+                points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
+                points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;
             }
         }
 
@@ -230,7 +232,12 @@ function Symbol(kind) {
     // Sorts the connector
     //--------------------------------------------------------------------
     this.sortConnector = function (connector, direction, start, end, otherside) {
-        var delta = (end - start) / (connector.length + 1);
+        if(this.symbolkind != 5){
+            var delta = (end - start) / (connector.length + 1);
+        } else {
+            var delta = (end - start) / 2;
+        }
+        
         if (direction == 1) {
             // Vertical connector
             connector.sort(function(a, b) {
@@ -238,9 +245,16 @@ function Symbol(kind) {
                 var y2 = points[b.to].y;
                 return y1 - y2;
             });
-            var ycc = start;
+            if(this.symbolkind != 5) {
+                var ycc = start;
+            } else {
+                var ycc = start + delta;
+            }
+            
             for (var i = 0; i < connector.length; i++) {
-                ycc += delta;
+                if(this.symbolkind != 5){
+                    ycc += delta;
+                } 
                 points[connector[i].from].y = ycc;
                 points[connector[i].from].x = otherside;
             }
@@ -250,10 +264,17 @@ function Symbol(kind) {
                 var x2 = points[b.to].x;
                 return x1 - x2;
             });
-            var ycc = start;
+            if(this.symbolkind != 5) {
+                var ycc = start;
+            } else {
+                var ycc = start + delta;
+            }
             for (var i = 0; i < connector.length; i++) {
-                ycc += delta;
-                points[connector[i].from].y = otherside;
+                if(this.symbolkind != 5) {
+                    ycc += delta;
+                }
+                
+                points[connector[i].from].y = otherside ;
                 points[connector[i].from].x = ycc;
             }
         }
@@ -431,10 +452,10 @@ function Symbol(kind) {
             points[this.topLeft].y += movey;
             points[this.bottomRight].x += movex;
             points[this.bottomRight].y += movey;
-            if (this.symbolkind == 1 || this.symbolkind == 5) {
+            if (this.symbolkind == 1) {
                 points[this.middleDivider].x += movex;
                 points[this.middleDivider].y += movey;
-            } else if (this.symbolkind == 2) {
+            } else if (this.symbolkind == 2 || this.symbolkind == 5) {
                 points[this.centerPoint].x += movex;
                 points[this.centerPoint].y += movey;
             } else if (this.symbolkind == 3) {
@@ -583,7 +604,6 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.getLines = function() {
         var privatePoints = this.getPoints();
-
         var lines = diagram.getLineObjects();
         var objectLines = [];
         for (var i = 0; i < lines.length; i++) {
@@ -746,18 +766,18 @@ function Symbol(kind) {
         if (this.key_type == 'Drive') {
             ctx.setLineDash([5, 4]);
         }
-        else if (this.key_type == 'Primary key') {
+        else if (this.key_type == 'Primary key' || this.key_type == 'Partial key') {
             ctx.stroke();
+            this.key_type == 'Partial key' ? ctx.setLineDash([5, 4]) : ctx.setLineDash([]);
             var linelength = ctx.measureText(this.name).width;
             ctx.beginPath(1);
-            ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-            ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+            ctx.moveTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
             ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
             ctx.strokeStyle = this.strokeColor;
 
         }
         ctx.stroke();
-
+        ctx.setLineDash([]);
         ctx.fillStyle = this.fontColor;
         ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         ctx.clip();
@@ -832,8 +852,8 @@ function Symbol(kind) {
     }
 
     this.drawRelation = function(x1, y1, x2, y2){
-        var midx = points[this.middleDivider].x;
-        var midy = points[this.middleDivider].y;
+        var midx = points[this.centerPoint].x;
+        var midy = points[this.centerPoint].y;
         ctx.beginPath();
         if (this.key_type == 'Weak') {
             ctx.lineWidth = this.lineWidth;
