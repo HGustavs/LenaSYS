@@ -73,10 +73,13 @@ function setup(){
   AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "RESULT");
 }
 
+
 function resort(){
+
 }
 
 function toggleSortDir(col){
+
 }
 
 function process()
@@ -112,7 +115,7 @@ function process()
 		}
 	}
 */
-  
+
   // Replaces the loop above in order to prevent filtering which is currently not working.
   momtmp=new Array;
   for(var l=0;l<moments.length;l++){
@@ -706,6 +709,7 @@ function returnedResults(data)
     versions=data.versions;
     results=data.results;
     teacher=data.teachers;
+    courseteachers=data.courseteachers;
 
     //tim=performance.now();
 
@@ -786,7 +790,7 @@ function createSortableTable(data){
 		tblbody: studentInfo,
 		tblfoot:[]
 	}
-	
+
 	myTable = new SortableTable(
 		tabledata,
 		"resultTable",
@@ -797,7 +801,7 @@ function createSortableTable(data){
 		null,
 		null,
 		[],
-		[],       
+		[],
 		"",
 		null,
 		null,
@@ -828,7 +832,7 @@ function renderCell(col,celldata,cellid) {
       else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
       else {str += "dugga-unassigned";}
     str += "'>";
-    
+
     // Creation of grading buttons
     if(celldata.ishere===true){
       str += "<div class='gradeContainer'>";
@@ -869,7 +873,7 @@ function renderCell(col,celldata,cellid) {
           str += "Times Graded: " + celldata.timesGraded;
         }
       str += "</div>"
-    } 
+    }
     str += "</div>"
     return str;
   }
