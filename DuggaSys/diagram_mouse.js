@@ -311,6 +311,8 @@ function mouseupevt(ev) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
                 } else if(symbolEndKind == 5 && symbolStartKind == 3) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
+                } else if(symbolEndKind == 5 && symbolStartKind == 5){
+                    okToMakeLine = false;
                 }
                 if(okToMakeLine){
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
