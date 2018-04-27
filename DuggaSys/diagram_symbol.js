@@ -766,18 +766,18 @@ function Symbol(kind) {
         if (this.key_type == 'Drive') {
             ctx.setLineDash([5, 4]);
         }
-        else if (this.key_type == 'Primary key') {
+        else if (this.key_type == 'Primary key' || this.key_type == 'Partial key') {
             ctx.stroke();
+            this.key_type == 'Partial key' ? ctx.setLineDash([5, 4]) : ctx.setLineDash([]);
             var linelength = ctx.measureText(this.name).width;
             ctx.beginPath(1);
-            ctx.moveTo(x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-            ctx.lineTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
+            ctx.moveTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
             ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
             ctx.strokeStyle = this.strokeColor;
 
         }
         ctx.stroke();
-
+        ctx.setLineDash([]);
         ctx.fillStyle = this.fontColor;
         ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         ctx.clip();
