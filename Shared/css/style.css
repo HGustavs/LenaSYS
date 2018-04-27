@@ -1608,6 +1608,14 @@ input.large-button {
   float: left;
 }
 
+#openFile {
+  cursor: pointer;
+}
+
+#openFile:hover {
+  color: #7B5A96;
+}
+
 /* File upload form */
 
 .inputfile {
