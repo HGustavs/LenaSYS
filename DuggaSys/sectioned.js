@@ -830,7 +830,7 @@ function returnedSection(data) {
 				+ "\"" + momentexists + "\","
 				+ "\"" + item['gradesys'] + "\","
 				+ "\"" + item['highscoremode'] + "\", null"
-				+ "); showSubmitButton(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
+				+ "); showSubmitButton(); validateType(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
 			str += "</div>";
 		}
 
@@ -1294,7 +1294,7 @@ function returnedSection(data) {
 							+ "\"" + item['gradesys'] + "\","
 							+ "\"" + item['highscoremode'] + "\","
 							+ "\"" + item['comments'] + "\""
-							+ "); editSectionDialogTitle(\"editItem\")'"
+							+ "); validateType(); editSectionDialogTitle(\"editItem\")'"
 							+ " title='Edit " + item['entryname'] + "'  /></td>";
 					} else if (itemKind === 4) { // Moment
 						str +=
