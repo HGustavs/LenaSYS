@@ -662,12 +662,12 @@ function eraseObject(object) {
         //lines
         }else{
             diagram.filter(
-                symbol => symbol.symbolkind == 3)
-                    .filter(entity =>   entity.hasConnector(object.topLeft)
-                                     && entity.hasConnector(object.bottomRight))
-                    .forEach(entity => {
-                        entity.removePointFromConnector(object.topLeft);
-                        entity.removePointFromConnector(object.bottomRight);
+                symbol => symbol.symbolkind == 3 || symbol.symbolkind == 5)
+                    .filter(symbol =>   symbol.hasConnector(object.topLeft)
+                                     && symbol.hasConnector(object.bottomRight))
+                    .forEach(symbol => {
+                        symbol.removePointFromConnector(object.topLeft);
+                        symbol.removePointFromConnector(object.bottomRight);
                     });
 
             var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5);
