@@ -190,6 +190,8 @@ function Symbol(kind) {
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
         } else if (this.symbolkind == 1) {
+            points[this.centerPoint]
+
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
 

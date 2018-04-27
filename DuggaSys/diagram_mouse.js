@@ -338,6 +338,7 @@ function mouseupevt(ev) {
         classB.bottomRight = p2;
 
         classB.middleDivider = p3;
+        classB.centerPoint = p3;
         diagram.push(classB);
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
