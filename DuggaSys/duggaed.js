@@ -12,6 +12,7 @@ var myTable;
 var myTable2;
 var str;
 var globalData;
+var globalVariant;
 var itemToDelete;
 var typeOfItem;
 
@@ -392,9 +393,7 @@ function confirmBox(operation, item, type) {
 
 // Storing the celldata for future use. (Needed when editing and such)
 function returnedQuiz(data) {
-	quizData = data;
 	var quiz = data;
-
 
 	var did = $('#did').val();
 	quiz['entries'].forEach(function (element) {
@@ -463,10 +462,13 @@ function returnedDugga(data) {
 	var duggaPages = data['duggaPages'];
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 	str = "";
+
+	renderVariant(globalVariant);
 }
 
 // Table for variants
 function renderVariant(clickedElement) {
+	globalVariant = clickedElement;
 	updateVariantTitle(clickedElement);
 	var tabledata2 = {
 		tblhead: {
