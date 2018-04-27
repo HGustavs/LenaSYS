@@ -86,7 +86,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			$debug="Error updating entries".$error[2];
 		}
 	}else if(strcmp($opt,"SAVVARI")===0){
-		$query = $pdo->prepare("UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer WHERE vid=:vid;");
+		$query = $pdo->prepare("UPDATE variant SET disabled=:disabled,param=:param,variantanswer=:variantanswer WHERE vid=:vid");
 		$query->bindParam(':vid', $vid);
 		$query->bindParam(':disabled', $disabled);
 		$query->bindParam(':param', $param);
