@@ -32,6 +32,28 @@ pdoConnect();
 		<div class='titles' style='padding-top:10px;'>
 			<h1 style='flex:1;text-align:center;'>Files</h1>
 		</div>
+		<div id="sortingBar">
+			<div class="sortingBtn" style="margin-left:2px;">
+				<input type="radio" name="sortKind" value="All" checked onclick="searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
+				<label name="sortAll">All files</label>
+			</div>
+			<div class="sortingBtn">
+				<input type="radio" name="sortKind" value="Global" onclick="searchterm='global';searchKeyUp(event);fileLink.renderTable();"/>
+				<label name="sortGlobal">Global</label>
+			</div>
+			<div class="sortingBtn">
+				<input type="radio" name="sortKind" value="CourseLocal" onclick="searchterm='course local';searchKeyUp(event);fileLink.renderTable();"/>
+				<label name="sortCLocal">Course Local</label>
+			</div>
+			<div class="sortingBtn">
+				<input type="radio" name="sortKind" value="VersionLocal" onclick="searchterm='version local';searchKeyUp(event);fileLink.renderTable();"/>
+				<label name="sortVLocal">Version Local</label>
+			</div>
+			<div class="sortingBtn">
+				<input type="radio" name="sortKind" value="Links" onclick="searchterm='link';searchKeyUp(event);fileLink.renderTable();"/>
+				<label name="sortLinks">Links</label>
+			</div>
+		</div>
 		<div id="searchBar">
 			<input id="searchinput" type="text" name="search" placeholder="Search.." onkeyup="searchterm=document.getElementById('searchinput').value;searchKeyUp(event);fileLink.renderTable();">
 			<button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">

@@ -2582,6 +2582,22 @@ table {
 }
 /*end, styling for contribution.php*/
 
+#sortingBar {
+  width: 50%;
+  position: relative;
+  top: 28px;
+}
+
+.sortingBtn {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.sortingBtn input {
+  font-size: 12px;
+  position: relative;
+  bottom: 2px;
+}
 
 /* styling for the search bar in fileed.php */
 #searchBar {

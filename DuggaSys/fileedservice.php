@@ -66,16 +66,23 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
         $filekind = $row['kind'];
         $filename = $row['filename'];
-		if($filekind==2){
+
+        if ($filekind == 1) {
+            $filePath = "UNK";
+            $filekind = "Link";
+		    } else if ($filekind == 2) {
             // Global
             $filePath = "../courses/global/".$filename;
-        }else if($filekind==3){
+            $filekind = "Global";
+        } else if ($filekind == 3) {
             // Course Local
             $filePath = "../courses/".$cid."/".$filename;
-        }else if($filekind==4){
-            // Local
+            $filekind = "Course local";
+        } else if ($filekind == 4) {
+            // Version Local
             $filePath = "../courses/".$cid."/".$coursevers."/".$filename;
-        }else {
+            $filekind = "Version local";
+        } else {
             $filePath = "UNK";
         }
 
@@ -83,7 +90,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
           'counter' => $row['filename'],
     			'filename' => $row['filename'],
           'extension' => $row['filename'],
-          'kind' => $row['kind'],
+          'kind' => $filekind,
     			'filesize' => $row['filesize'],
     			'uploaddate' => $row['uploaddate'],
           'editor' => $filePath,
