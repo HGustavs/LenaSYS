@@ -462,15 +462,16 @@ function returnedDugga(data) {
 	var duggaPages = data['duggaPages'];
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 	str = "";
-
+	if (globalVariant){
 	renderVariant(globalVariant);
+	}
 }
 
 // Table for variants
 function renderVariant(clickedElement) {
 	globalVariant = clickedElement;
 	updateVariantTitle(clickedElement);
-	var tabledata2 = {
+	var tabledata = {
 		tblhead: {
 			vid: "",
 			param: "Parameter",
@@ -484,7 +485,7 @@ function renderVariant(clickedElement) {
 		tblfoot: []
 	}
 	myTable2 = new SortableTable(
-		tabledata2,
+		tabledata,
 		"variant",
 		null,
 		"",
