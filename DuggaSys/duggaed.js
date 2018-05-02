@@ -264,31 +264,6 @@ function createVariant() {
 	AJAXService("ADDVARI", { cid: querystring['cid'], qid: qid, disabled: disabled, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
-function findAncestor (el, name, type) {
-	// console.log(el);
-	// console.log(name);
-	// console.log(type);
-	if(type == 'className') {
-		while ((el = el.parentElement) && !el.classList.contains(name));
-    	return el;
-	} else if(type == 'elName') {
-		while ((el = el.parentElement) && el.nodeName != name);
-    	return el;
-	}
-	return null;
-}
-
-function markSelected(el) {
-	var activetbl = findAncestor(el, 'TABLE', 'elName');
-	var activetr = findAncestor(el, 'TR', 'elName');
-	var allRows = activetbl.getElementsByTagName('tr');
-	
-	for(let row of allRows) {
-		row.removeAttribute('style');
-	}
-	activetr.style.backgroundColor = '#b39fc6';
-}
-
 function selectVariant(vid) {
 	var target_variant;
 	globalData['entries'].forEach(element => {
@@ -392,6 +367,20 @@ function createJSONString(formData) {
 	jsonStr += '}'; // The end of the JSON-string.
 
 	return jsonStr;
+}
+/*
+	This function marks the selected variant when editing by changing the
+	background color of the table row.
+*/
+function markSelected(el) {
+	var activetbl = findAncestor(el, 'TABLE', 'elName');
+	var activetr = findAncestor(el, 'TR', 'elName');
+	var allRows = activetbl.getElementsByTagName('tr');
+	
+	for(let row of allRows) {
+		row.removeAttribute('style');
+	}
+	activetr.style.backgroundColor = '#b39fc6';
 }
 
 // VARIANT FUNCTIONS end
@@ -702,6 +691,24 @@ function closePreview() {
 	$("#resultpopover").css("display", "none");
 	$("#overlay").css("display", "none");
 	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
+}
+
+/*
+	This function finds the first ancestor element of the element passed in as an argument.
+	el: the element whose ancestor should be found.
+	name: the class or element name of the ancestor, i.e. 'myclass' or 'DIV'
+		(all element names must be in capital letters)
+	type: search for ancestor by class or element name
+*/
+function findAncestor (el, name, type) {
+	if(type == 'className') {
+		while ((el = el.parentElement) && !el.classList.contains(name));
+    	return el;
+	} else if(type == 'elName') {
+		while ((el = el.parentElement) && el.nodeName != name);
+    	return el;
+	}
+	return null;
 }
 
 
