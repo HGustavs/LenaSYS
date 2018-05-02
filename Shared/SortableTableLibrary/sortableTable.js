@@ -194,6 +194,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	}
 
 	this.reRender = function() {
+		this.rowIndex = 0;
 		// Local variable that contains html code for main table and local variable that contains magic headings table
 		str = "<table style='border-collapse: collapse;' id='"+tableid+"_tbl' class='list list--nomargin'>";
 		mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;margin-top:50px;border-bottom:none;' class='list' id='"+tableid+"_tbl_mh'>";

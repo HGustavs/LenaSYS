@@ -24,7 +24,6 @@ var fileKind = "";
 var searchterm = "";
 var pressTimer;
 var fabListIsVisible = true;
-var count = 0;
 
 AJAXService("GET",{cid:querystring['cid']},"FILE");
 
@@ -193,8 +192,9 @@ function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
 	var link = celldata.split('://');
 	var str="";
+
 	if (col == "counter") {
-		return "<div class='counterBox'>" + ++count + "</div>";
+		return "<div class='counterBox'>" + ++fileLink.rowIndex + "</div>";
 	} if (col == "trashcan") {
 		obj = JSON.parse(celldata);
 	    str = "<div class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
@@ -285,10 +285,6 @@ function compare(a,b) {
 	let col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
 	var tempB = b;
-
-	// Needed so that the counter starts from 0
-	// everytime we sort the table
-	count = 0;
 
 	if (col == "File name") {
 		tempA = tempA.toUpperCase();
