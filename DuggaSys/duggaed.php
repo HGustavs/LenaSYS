@@ -101,91 +101,90 @@ pdoConnect();
 
 	<!-- Edit Variant Dialog START -->
 	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style="width:80%;">
-      		<div class='loginBoxheader'>
-      			<h3 id="editVariantTitle">Edit Variant</h3>
-      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
-      		</div>
-          <div class='loginBoxbody' style='width:100%; height:100%;''>
-             <div id="variant" style='width:100%; border: 2px solid green; background-color: white;'></div> <!-- A div to place the variant-table within. -->
-          		<div id='editDiv' style='padding:5px;display:flex;'>
-          			<input type='hidden' id='vid' value='Toddler' />
-          			<div id="leftDivDialog">
-          				<form name="jsonform" id="jsonform" style="padding:0;">
-          					<!-- Error message -->
-          					<div id="submissionError" style="display:none;height:80px;">
-          						<fieldset style="width:90%;border-color:red;">
-          							<legend style="color:red"><b>Warning!</b></legend>
-          							<p style="color:red">Each submission name needs to be unique.</p>
-          						</fieldset>
-          					</div>
-          					<!-- Instruction for assignment -->
-          					<div>
-          						<fieldset style="width:90%">
-          							<legend>Instruction file</legend>
-          							<div style="display:flex;flex-wrap:nowrap;flex-direction:row;">
-          								<select name="type" id="type" style="flex:1">
-          									<option value="md">Markdown</option>
-          									<option value="pdf">PDF</option>
-          									<option value="html">HTML</option>
-          								</select>
-          								<input id="filelink" type="text" name="filelink" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;">
-          							</div>
-          						</fieldset>
-          					</div>
-                    <div>
-                      <div id="duggaExtraParamForm">
-                        <fieldset style="width:90%">
-                          <legend>Extra parameters</legend>
-                              <textarea id='extraparam' rows="5" style=""></textarea>
-                        </fieldset>
-                      </div>
-                    </div>
-                    <!-- Submissions for dugga -->
-          					<div>
-          						<div id="duggaSubmissionForm">
-          							<fieldset style="width:90%">
-          								<legend>Submission types</legend>
-          								<div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;overflow:auto;"></div>
-          							</fieldset>
+    <div class='loginBox' style="width:80%;">
+      <div class='loginBoxheader'>
+        <h3 id="editVariantTitle">Edit Variant</h3>
+        <div class='cursorPointer' onclick='closeWindows();'>x</div>
+      </div>
 
-          							<input type="button" class="submit-button" name="addfieldname" id="addfieldname" value="+" style="width:32px;"></button>
-          							<input type="button" class="submit-button" name="createjson" id="createjson" value="Create JSON" style=""></button>
-          						</div>
-          					</div>
-                  <!-- Submissions for dugga -->
-          			<!-- End of leftDivDialog -->
+      <div class='loginBoxbody' style='width:100%; height:100%;''>
+        <div id='upperDiv'>
+          <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; background-color: white;'></div> <!-- A div to place the variant-table within. -->
+        </div>
+        <div id='editVariantDiv' style="display:flex";>
+          <input type='hidden' id='vid' value='Toddler'/>
+            <div id="leftDivDialog" style="width: 50%; height:100%; display: inline-block;">
+                <div id="submissionError" style="display:none;height:80px;">
+                  <fieldset style="width:90%;border-color:red;">
+                    <legend style="color:red"><b>Warning!</b></legend>
+                    <p style="color:red">Each submission name needs to be unique.</p>
+                  </fieldset>
                 </div>
-          			<!-- JSON and answer fields -->
-          			<div id="rightDivDialog">
+                    <!-- Instruction for assignment -->
+                <div>
+                  <fieldset style="width:90%">
+                    <legend>Instruction file</legend>
+                    <div style="display:flex;flex-wrap:nowrap;flex-direction:row;">
+                      <select name="type" id="type" style="flex:1">
+                        <option value="md">Markdown</option>
+                        <option value="pdf">PDF</option>
+                        <option value="html">HTML</option>
+                      </select>
+                      <input id="filelink" type="text" name="filelink" style="flex:2;margin-left:5px;" onkeydown="if (event.keyCode == 13) return false;">
+                    </div>
+                  </fieldset>
+                </div>
+                <div>
+                  <div id="duggaExtraParamForm">
                     <fieldset style="width:90%">
-                        <legend>Generated Param JSON</legend>
-                				<div id='parameter' style='min-height:120px'>
-                          <textarea id='variantparameterText' rows="5" style="min-height:100px"></textarea>
-                        </div>
+                      <legend>Extra parameters</legend>
+                      <textarea id='extraparam' rows="5" style=""></textarea>
                     </fieldset>
+                  </div>
+                </div>
+                    <!-- Submissions for dugga -->
+                <div>
+                  <div id="duggaSubmissionForm">
                     <fieldset style="width:90%">
-                        <legend>Answer</legend>
-                				<div id='variantanswer' style='min-height:120px'>
-                          <textarea id='variantanswerText' rows="5" style="min-height:100px"></textarea>
-                        </div>
+                      <legend>Submission types</legend>
+                      <div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;overflow:auto;"></div>
                     </fieldset>
-          			</div>
-          		</div>
-              <div id='buttonDiv' style='padding:5px;'>
-                <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel'
-                onclick='closeWindows();'/>
-                <input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit'
-                onclick='createVariant();'/>
-                <input id='saveVariant' class='submit-button' style='display:none; float:right' type='button' value='Save'
-                onclick='updateVariant(); showVariantSubmitButton();'/>
-                <input id='disableVariant' class='submit-button disableEnable' style='display:none; float:right' type='button' value='Disable'
-                onclick='showVariantEnableButton(); '/>
-                <input id='enableVariant' class='submit-button disableEnable' style='display:none; float:right' type='button' value='Enable'
-                onclick='showVariantDisableButton();'/>
-              </div>
+                    <input type="button" class="submit-button" name="addfieldname" id="addfieldname" value="+" style="width:32px;"></button>
+                    <input type="button" class="submit-button" name="createjson" id="createjson" value="Create JSON" style=""></button>
+                  </div>
+                    </div>
+                  <!-- Submissions for dugga -->
+                <!-- End of leftDivDialog -->
+            </div>
+            <div id="rightDivDialog" style="width: 50%; height:100%; display: inline-block;">
+              <fieldset style="width:90%">
+                <legend>Generated Param JSON</legend>
+                <div id='parameter' style='min-height:120px'>
+                  <textarea id='variantparameterText' rows="5" style="min-height:100px"></textarea>
+                </div>
+              </fieldset>
+              <fieldset style="width:90%">
+                <legend>Answer</legend>
+                  <div id='variantanswer' style='min-height:120px'>
+                    <textarea id='variantanswerText' rows="5" style="min-height:100px"></textarea>
+                  </div>
+              </fieldset>
+            </div>
           </div>
-	</div>
+          <div id='buttonVariantDiv' style='padding:5px';>
+            <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel'
+              onclick='closeWindows();'/>
+            <input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit'
+              onclick='createVariant();'/>
+            <input id='saveVariant' class='submit-button' style='display:none; float:right' type='button' value='Save'
+              onclick='updateVariant(); showVariantSubmitButton();'/>
+            <input id='disableVariant' class='submit-button disableEnable' style='display:none; float:right' type='button' value='Disable'
+              onclick='showVariantEnableButton(); '/>
+            <input id='enableVariant' class='submit-button disableEnable' style='display:none; float:right' type='button' value='Enable'
+              onclick='showVariantDisableButton();'/>
+          </div>
+        </div>
+     </div>
 	<!-- Edit Variant Dialog END -->
 
 	<!-- Result Dialog START -->
