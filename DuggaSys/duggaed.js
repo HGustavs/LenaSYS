@@ -154,7 +154,6 @@ function createDugga() {
 	var deadline = $("#deadline").val();
 	var cid = querystring['cid'];
 	var coursevers = querystring['coursevers'];
-	window.location.reload();
 	$("#editDugga").css("display", "none");
 	//$("#overlay").css("display","none");
 
@@ -475,7 +474,7 @@ function returnedDugga(data) {
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 	str = "";
 	if (globalVariant){
-	renderVariant(globalVariant);
+		renderVariant(globalVariant);
 	}
 }
 
