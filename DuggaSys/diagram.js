@@ -508,7 +508,7 @@ diagram.updateLineRelations = function() {
 //--------------------------------------------------------------------
 diagram.sortConnectors = function() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3) {
+        if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
             diagram[i].sortAllConnectors();
         }
     }
@@ -519,7 +519,7 @@ diagram.sortConnectors = function() {
 //--------------------------------------------------------------------
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 3) {
+        if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
             diagram[i].quadrants();
         }
     }
@@ -648,6 +648,7 @@ function eraseObject(object) {
     canvas.style.cursor = "default";
     var objectsToDelete = [];
     if (object.kind == 2) {
+        //None lines
         if(object.symbolkind != 4){
             var lines = diagram.filter(symbol => symbol.symbolkind == 4);
             objectsToDelete = lines.filter(
@@ -655,18 +656,32 @@ function eraseObject(object) {
                         || line.topLeft == object.centerPoint
                         || line.bottomRight == object.middleDivider
                         || line.bottomRight == object.centerPoint
-                        || (object.hasConnectorFromPoint(line.topLeft) && object.symbolkind == 3)
-                        || (object.hasConnectorFromPoint(line.bottomRight) && object.symbolkind == 3)
+                        || (object.hasConnectorFromPoint(line.topLeft) && (object.symbolkind == 3 || object.symbolkind == 5))
+                        || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == 3 || object.symbolkind == 5))
             );
+        //lines
         }else{
-            diagram.filter(symbol => symbol.symbolkind == 3)
-                .filter(entity =>
-                        entity.hasConnector(object.topLeft)
-                        && entity.hasConnector(object.bottomRight))
-                    .forEach(ent => {
-                        ent.removePointFromConnector(object.topLeft);
-                        ent.removePointFromConnector(object.bottomRight);
+            diagram.filter(
+                symbol => symbol.symbolkind == 3 || symbol.symbolkind == 5)
+                    .filter(symbol =>   symbol.hasConnector(object.topLeft)
+                                     && symbol.hasConnector(object.bottomRight))
+                    .forEach(symbol => {
+                        symbol.removePointFromConnector(object.topLeft);
+                        symbol.removePointFromConnector(object.bottomRight);
                     });
+
+            var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5);
+            //Check if the line has a common point with a centerpoint of attributes or relations.
+            var removeTopleft = attributesAndRelations
+                        .filter(symbol => symbol.centerPoint == object.topLeft
+                                       || symbol.middleDivider == object.topLeft
+                               ).length == 0;
+            var removeBottomright = attributesAndRelations
+                        .filter(symbol => symbol.centerPoint == object.bottomRight
+                                        || symbol.middleDivider == object.bottomRight
+                               ).length == 0;
+            if(removeTopleft) points[object.topLeft] = "";
+            if(removeBottomright) points[object.bottomRight] = "";
         }
         object.erase();
         diagram.eraseLines(object, object.getLines());

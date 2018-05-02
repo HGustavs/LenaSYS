@@ -1,3 +1,5 @@
+var val = 0;
+
 function initToolbox(){
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
@@ -16,6 +18,42 @@ function toggleToolbarMinimize(){
         $("#minimizeArrow").removeClass("toolbarMinimized").addClass("toolbarMaximized");
     }
 }
+
+//function for switching the toolbar state (All, ER, UML)
+function switchToolbar(direction){
+  var text = ["All", "ER", "UML"];
+  if(direction == 'left'){
+    val--;
+    if(val < 0){
+      val = 2;
+    }
+  }else if(direction == 'right'){
+    val++;
+    if(val > 2){
+      val = 0;
+    }
+  }
+  document.getElementById('toolbarTypeText').innerHTML = text[val];
+
+  //hides irrelevant buttons, and shows relevant buttons
+  if(val == 1){
+    $(".buttonsStyle").hide();
+    $("#linebutton").show();
+    $("#attributebutton").show();
+    $("#entitybutton").show();
+    $("#relationbutton").show();
+  }else if( val == 2){
+    $(".buttonsStyle").hide();
+    $("#linebutton").show();
+    $("#classbutton").show();
+  }
+  else{
+    $(".buttonsStyle").show();
+  }
+
+  document.getElementById('toolbar-switcher').value = val;
+}
+
 
 $( function() {
     $( "#diagram-toolbar" ).draggable();

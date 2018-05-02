@@ -22,6 +22,9 @@ var querystring = parseGet();
 var filez, fileLink;
 var fileKind = "";
 var searchterm = "";
+var pressTimer;
+var fabListIsVisible = true;
+var count = 0;
 
 AJAXService("GET",{cid:querystring['cid']},"FILE");
 
@@ -47,6 +50,7 @@ function returnedFile(data) {
 
     var tabledata = {
     	tblhead:{
+    		counter:"",
     		filename:"File name",
     		extension:"Extension",
     		kind:"Kind",
@@ -65,7 +69,7 @@ function returnedFile(data) {
 		null,
 		"",
         renderCell,
-        null,
+        renderSortOptions,
         null,
         rowFilter,
         [],
@@ -82,14 +86,14 @@ function returnedFile(data) {
 
 
 	fileLink.renderTable();
-	fileLink.makeAllSortable();
 
 	if(data['debug']!="NONE!") alert(data['debug']);
 }
 
 function showLinkPopUp() {
-	$("#uploadbuttonname").html("<input class='submit-button' type='submit' value='Upload URL' />");
+	$("#uploadbuttonname").html("<input class='submit-button fileed-submit-button' type='submit' value='Upload URL' />");
 	$("#addFile").css("display","flex");
+	$(".fileHeadline").css("display","none");
 	$(".filePopUp").css("display","none");
 	$(".linkPopUp").css("display","block");
 	$("#selecty").css("display","none");
@@ -98,21 +102,22 @@ function showLinkPopUp() {
 	$("#coursevers").val(querystring['coursevers']);
 }
 
-function showFilePopUp() {
-    $("#uploadbuttonname").html("<input id='file-submit-button' class='submit-button' type='submit' " +
-    	"value='Upload file' onclick='setFileKind();uploadFile(fileKind);' />");
+function showFilePopUp(fileKind) {
+    $("#uploadbuttonname").html("<input class='submit-button fileed-submit-button' type='submit' " +
+    	"value='Upload file' onclick='uploadFile(\"" + fileKind + "\");'/>");
+    $(".fileHeadline").css("display","none");
+    $(".filePopUp").css("display","block");
 	$("#selecty").css("display","block");
 	$("#addFile").css("display","flex");
-	$(".filePopUp").css("display","block");
 	$(".linkPopUp").css("display","none");
-}
 
-//---------------------------------------------------
-// setFileKind <- Sets the file kind based on which
-// 				  radio button the user has pressed
-//---------------------------------------------------
-function setFileKind() {
-	fileKind = document.querySelector('input[name=\"fileRB\"]:checked').value;
+    if (fileKind == "MFILE") {
+    	$("#mFileHeadline").css("display","block");
+    } else if (fileKind == "LFILE") {
+		$("#lFileHeadline").css("display","block");
+    } else if (fileKind == "GFILE") {
+		$("#gFileHeadline").css("display","block");
+    }
 }
 
 function uploadFile(kind) {
@@ -188,7 +193,9 @@ function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
 	var link = celldata.split('://');
 	var str="";
-	if (col == "trashcan") {
+	if (col == "counter") {
+		return "<div class='counterBox'>" + ++count + "</div>";
+	} if (col == "trashcan") {
 		obj = JSON.parse(celldata);
 	    str = "<div class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
 		str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></div>";
@@ -206,10 +213,10 @@ function renderCell(col,celldata,cellid) {
 					listStr += ".";
 				}
 			}
-			return "<div>" + listStr + "</div>";
+			return "<div id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+celldata+"\")'>" + listStr + "</div>";
 		}
 	} else if (col == "filesize") {
-		celldata = formatBytes(celldata, 0);
+		return formatBytes(celldata, 0);
 	} else if (col == "extension") {
 	    return "<div>" + list[list.length - 1] + "</div>";
 	} else if (col == "editor") {
@@ -221,8 +228,6 @@ function renderCell(col,celldata,cellid) {
 		}
 		return str;
 
-	} else if (col == "kind") {
-		return convertFileKind(celldata);
 	}
 	return celldata;
 }
@@ -238,6 +243,62 @@ function rowFilter(row) {
 	}
 	return false;
 }
+
+//--------------------------------------------------------------------------
+// renderSortOptions
+// ---------------
+//  Callback function that renders the col filter div
+//--------------------------------------------------------------------------
+		
+function renderSortOptions(col,status) {
+	str = "";
+
+	if (status ==- 1) {
+		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+	} else if (status == 0) {
+		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+	} else {
+		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+	}
+	return str;
+}
+			
+//--------------------------------------------------------------------------
+// compare
+// ---------------
+//  Callback function with different compare alternatives for the column sort
+//--------------------------------------------------------------------------
+function compare(a,b) {
+	let col = sortableTable.currentTable.getSortcolumn();
+	var tempA = a;
+	var tempB = b;
+
+	// Needed so that the counter starts from 0
+	// everytime we sort the table
+	count = 0;
+
+	if (col == "File name") {
+		tempA = tempA.toUpperCase();
+		tempB = tempB.toUpperCase();
+	} else if (col == "Extension") {
+		tempA = tempA.split('.');
+		tempB = tempB.split('.');
+
+		tempA = tempA[tempA.length-1];
+		tempB = tempB[tempB.length-1];
+	} else if (col == "Size") {
+		tempA = parseInt(tempA);
+		tempB = parseInt(tempB);
+	}
+
+	if (tempA > tempB) {
+		return 1;
+	} else if (tempA < tempB) {
+		return -1;
+	} else {
+		return 0;
+	}
+}	
 
 function formatBytes(bytes,decimals) {
    if (bytes == 0) return '0 Bytes';
@@ -263,6 +324,68 @@ function convertFileKind(kind){
 	}
 	return retString;
 }
+
+// Toggles action bubbles when pressing the FAB button
+function toggleFabButton() {
+	if (!$('.fab-btn-sm').hasClass('scale-out')) {
+		$('.fab-btn-sm').toggleClass('scale-out');
+		$('.fab-btn-list').delay(100).fadeOut(0);
+	} else {
+		$('.fab-btn-list').fadeIn(0);
+		$('.fab-btn-sm').toggleClass('scale-out');
+	}
+}
+
+$(document).mouseup(function(e) {
+	// The "Add Course Local File" popup should appear on
+	// a "fast click" if the fab list isn't visible
+	if (!$('.fab-btn-list').is(':visible')) {
+		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
+			clearTimeout(pressTimer);
+			showFilePopUp('MFILE');
+	    }
+	    return false;
+    }
+	// Click outside the FAB list
+    if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target)// if the target of the click isn't the container...
+        && $('.fixed-action-button').has(e.target).length === 0) {// ... nor a descendant of the container
+		if (!$('.fab-btn-sm').hasClass('scale-out')) {
+			$('.fab-btn-sm').toggleClass('scale-out');
+			$('.fab-btn-list').delay(100).fadeOut(0);
+		}
+	} else if ($('.fab-btn-list').is(':visible') && $('.fixed-action-button').is(e.target)) {
+		if (!$('.fab-btn-sm').hasClass('scale-out')) {
+			$('.fab-btn-sm').toggleClass('scale-out');
+			$('.fab-btn-list').fadeOut(0);
+		}
+	}
+}).mousedown(function(e) {
+	// If the fab list is visible, there should be no timeout to toggle the list
+	if ($('.fab-btn-list').is(':visible')) {
+		fabListIsVisible = false;
+	} else {
+		fabListIsVisible = true;
+	}
+	if (fabListIsVisible) {
+		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
+			pressTimer = window.setTimeout(function() {
+				toggleFabButton();
+			}, 500);
+		}
+	} else {
+		toggleFabButton();
+		if (e.target.id == "gFabBtn" || e.target.id == "gFabBtnImg") {
+	    	showFilePopUp('GFILE');
+	    } else if (e.target.id == "lFabBtn" || e.target.id == "lFabBtnImg") {
+	    	showFilePopUp('LFILE');
+	    } else if (e.target.id == "mFabBtn" || e.target.id == "mFabBtnImg") {
+	    	showFilePopUp('MFILE');
+	    } else if (e.target.id == "linkFabBtn" || e.target.id == "linkFabBtnImg") {
+	    	showLinkPopUp();
+	    }
+	}
+});
+
 
 function deleteFile(fileid,filename) {
 	if (confirm("Do you really want to delete the file/link: " + filename)) {
