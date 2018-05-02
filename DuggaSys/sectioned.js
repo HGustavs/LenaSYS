@@ -354,12 +354,15 @@ function validateName() {
 		$('#saveBtn').removeAttr('disabled');
 		$('#submitBtn').removeAttr('disabled');
 		nme.style.backgroundColor = "#fff";
+		saveButtonDisplay = 'block';
+		submitButtonDisplay = 'block';
 		retValue = true;
 	} else {
 		$('#tooltipTxt').fadeIn();
 		$('#saveBtn').attr('disabled', 'disabled');
 		$('#submitBtn').attr('disabled', 'disabled');
 		nme.style.backgroundColor = "#f57";
+		
 	}
 	return retValue;
 }
@@ -1690,17 +1693,18 @@ $(window).load(function () {
 			document.activeElement.blur(); // to lose focus from the newItem button when pressing enter
 		} else if (event.keyCode == 13) {
 			//Remember that keycode 13 = enter button
+			document.activeElement.blur();
 			var saveButtonDisplay = ($('#saveBtn').css('display'));
 			var editSectionDisplay = ($('#editSection').css('display'));
 			var submitButtonDisplay = ($('#submitBtn').css('display'));
 			var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
-			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && validateName() == 'true' && validateType() == 'true') {
 				updateItem();
-			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && validateName() == 'true' && validateType() == 'true') {
 				newItem();
 				showSaveButton();
 			} 
-			document.activeElement.blur();
+			
 		}
 	});
 });
