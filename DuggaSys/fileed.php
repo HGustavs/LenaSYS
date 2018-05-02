@@ -140,8 +140,8 @@ pdoConnect();
     </div>
     <!-- Markdown-preview functionality END -->
     <!--Fab-button-->
-		<div class="fixed-action-button">
-			<a class="btn-floating fab-btn-lg noselect" id="fabBtn"><img id="fabBtnImg" src="../Shared/icons/add-icon.svg"></a>
+		<div class="fixed-action-button" id="fabButton">
+			<a class="btn-floating fab-btn-lg noselect" id="fabBtn" ><img id="fabBtnImg" src="../Shared/icons/add-icon.svg"></a>
 			<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
 				<li><a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File'><img id="gFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg"></a></li>
 				<li><a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File'><img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg"></a></li>
