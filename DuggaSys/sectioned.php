@@ -106,6 +106,23 @@
 	</div>
 	<!-- Confirm Edit Section Dialog END -->
 
+	<!-- Confirm No Tests Dialog START -->
+	<div id='noTestsConfirmBox' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox' style='width:460px;'>
+			  <div class='loginBoxheader'>
+					<h3>Confirm</h3>
+					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+			  </div>
+			  <div style='text-align: center;'>
+					<h4>Create a Dugga before you can use it for a test.</h4>
+			  </div>
+			  <div style='display:flex; align-items:center; justify-content: center;'>
+					<input style='margin-right: 5%;' class='submit-button' type='button' value='OK' title='OK' onclick='confirmBox("closeConfirmBox");'/>
+			  </div>
+		</div>
+	</div>
+	<!-- Confirm No Tests Dialog END -->
+
 	<!-- New Version Dialog START -->
 	<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
