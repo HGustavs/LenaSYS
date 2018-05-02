@@ -347,6 +347,7 @@ function deleteItem(item_lid = null) {
 }
 
 // Checks if the title name includes any invalid characters
+
 function validateName() {
 	var name = document.getElementById("sectionname");
 	if (isNameValid() && isTypeValid()){ // if both are valid, show buttons
@@ -377,12 +378,9 @@ function isNameValid(){
 	return false;
 }
 
+
+
 function isTypeValid(){
-
-
-function validateType() {
-	var retValue = false;
-
 	kind = $("#type").val();
 	var nme = document.getElementById("type");
 	if(retdata['duggor'].length == 0 && kind == 3){
@@ -414,6 +412,7 @@ function validateType() {
 		}
 	}
 }
+
 
 function updateItem() {
 	tabs = $("#tabs").val();
@@ -1735,13 +1734,13 @@ $(window).load(function () {
 			var editSectionDisplay = ($('#editSection').css('display'));
 			var submitButtonDisplay = ($('#submitBtn').css('display'));
 			var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
-			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isValidName() && isValidType()) {
+			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
 				updateItem();
-			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isValidName() && isValidType()) {
+			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
 				newItem();
 				showSaveButton();
-			} 
-			
+			}
+
 		}
 	});
 });
