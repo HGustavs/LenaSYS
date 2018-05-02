@@ -520,6 +520,38 @@ function renderVariant(clickedElement) {
 	myTable2.renderTable();
 	newVariant();
 	$('#did').val(globalData['entries'][clickedElement].arrow);
+	mytable2Styling();
+}
+
+function mytable2Styling() {
+	var loginBox = findAncestor(document.getElementById('variant'), 'loginBox', 'className');
+	var loginBoxHeader = null;
+
+	var loginBoxHeight = null;
+	var loginBoxHeaderHeight = null;
+	var editVariantHeight = null;
+	var remainingSpace = null;
+	
+	for(var i = 0; i < loginBox.children.length; i++) {
+		if($(loginBox.children[i]).hasClass('loginBoxheader')) {
+			loginBoxHeader = loginBox.children[i];
+			break;
+		}
+	}
+
+	loginBoxHeight = $(loginBox).outerHeight();
+	loginBoxHeaderHeight = $(loginBoxHeader).outerHeight();
+	editVariantHeight = $("#editVariantDiv").outerHeight();
+
+	remainingSpace = loginBoxHeight - (loginBoxHeaderHeight + editVariantHeight);
+
+	// console.log(containerHeight);
+	// console.log(containerHeaderHeight);
+	// console.log(editVariantHeight);
+	// console.log(remainingVariantsHeight);
+
+	document.getElementById('variant').style.maxHeight = remainingSpace + 'px';
+	document.getElementById('variant').style.overflow = 'auto';
 }
 
 // Rendring specific cells
@@ -701,6 +733,20 @@ function closePreview() {
 	$("#resultpopover").css("display", "none");
 	$("#overlay").css("display", "none");
 	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
+}
+
+function findAncestor (el, name, type) {
+	// console.log(el);
+	// console.log(name);
+	// console.log(type);
+	if(type == 'className') {
+		while ((el = el.parentElement) && !el.classList.contains(name));
+    	return el;
+	} else if(type == 'elName') {
+		while ((el = el.parentElement) && el.nodeName != name);
+    	return el;
+	}
+	return null;
 }
 
 
