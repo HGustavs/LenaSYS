@@ -415,7 +415,7 @@ function renderCell(col,celldata,cellid) {
     for(var i = 0; i < filez['classes'].length; i++){
       items.push(filez['classes'][i]['class']);
     }
-    str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
+    str = makeDatalist("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
     str += "<div style='display:none;'>" + obj.class + "</div>";
 		return str;
 	} else if(col == "groups") {
@@ -433,6 +433,17 @@ function makeDropdown(onChange, values, items, selected){
   }
   str+="</select>";
   return str;
+}
+
+function makeDatalist(onChange, values, items, selected){
+    str = "<input id=classInput list='classes' onChange='"+onChange+"' onclick='return false;' placeholder="+selected+">";
+    str+= "<datalist id='classes'>";
+    for(var i = 0; i < values.length; i++){
+	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
+    }
+    str+="</datalist>";
+    str+="</input>";
+    return str;
 }
 
 var myTable;
