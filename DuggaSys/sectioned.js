@@ -790,29 +790,29 @@ function returnedSection(data) {
 			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
 			str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
 
-			// Group activity button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='selectItem(\"undefined\",\"New Item\",\"6\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>"
-
-			// Message button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='selectItem(\"undefined\",\"New Item\",\"7\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><i class='material-icons'>format_quote</i></a></li>"
-
 			//Heading button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='selectItem(\"undefined\",\"New Item\",\"0\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='fabValidateType(\"0\");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
 
 			//Section button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='selectItem(\"undefined\",\"New Item\",\"1\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='fabValidateType(\"1\");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>"
 
 			// Moment button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='selectItem(\"undefined\",\"New Item\",\"4\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='fabValidateType(\"2\");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>"
 
 			// Test button
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='fabValidateType(\"3\");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>"
 
 			// Link button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='selectItem(\"undefined\",\"New Item\",\"5\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><i class='material-icons'>link</i></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='fabValidateType(\"4\");'><i class='material-icons'>link</i></a></li>"
 
 			//Code button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='selectItem(\"undefined\",\"New Item\",\"2\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='fabValidateType(\"5\");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>"
+
+			// Group activity button
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='fabValidateType(\"6\");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>"
+
+			// Message button
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='fabValidateType(\"7\");'><i class='material-icons'>format_quote</i></a></li>"
 
 			str += "</ol>"
 			str += "</div>";
@@ -1670,29 +1670,49 @@ function toggleHamburger() {
 
 // Toggles action bubbles when pressing the FAB button
 function toggleFabButton() {
-
 	if (!$('.fab-btn-sm').hasClass('scale-out')) {
 		$('.fab-btn-sm').toggleClass('scale-out');
 		$('.fab-btn-list').delay(100).fadeOut(0);
-	}
-	else {
+	} else {
 		$('.fab-btn-list').fadeIn(0);
 		$('.fab-btn-sm').toggleClass('scale-out');
 	}
 }
 
+
 function fabValidateType(kind) {
-	if (kind == 3){
+	if (kind == 0){
+		selectItem("undefined","New Item","0","undefined","undefined","0","undefined","undefined");
+		newItem();
+	}	else if (kind == 1){
+		selectItem("undefined","New Item","1","undefined","undefined","0","undefined","undefined");
+		newItem();
+	}	else if (kind == 2){
+		selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 3){
 		if (retdata['duggor'].length == 0){
 			toggleFabButton();
 			$("#noTestsConfirmBox").css("display", "flex");
-		}
-		else {
+		} else {
 			selectItem("undefined","New Item","3","undefined","undefined","0","undefined","undefined");
 			newItem();
 		}
+	} else if (kind == 4){
+		selectItem("undefined","New Item","4","undefined","undefined","0","undefined","undefined");
+		newItem();
+	}	else if (kind == 5){
+		selectItem("undefined","New Item","5","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 6){
+		selectItem("undefined","New Item","6","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 7){
+		selectItem("undefined","New Item","7","undefined","undefined","0","undefined","undefined");
+		newItem();
 	}
 }
+
 
 function addColorsToTabSections(kind, visible){
 	var retStr = "";
