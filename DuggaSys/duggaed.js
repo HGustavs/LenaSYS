@@ -15,6 +15,7 @@ var globalData;
 var globalVariant;
 var itemToDelete;
 var typeOfItem;
+var duggaPages;
 
 AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
 
@@ -459,7 +460,7 @@ function returnedDugga(data) {
 	$("content").html();
 	var result = 0;
 	filez = data['files'];
-	var duggaPages = data['duggaPages'];
+	duggaPages = data['duggaPages'];
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 	str = "";
 
@@ -567,8 +568,21 @@ function renderCell(col, celldata, cellid) {
 	// VARIANT-TABLE cellstart
 	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "vid") {
+		// Get the page template
+		var page = globalData['entries'][globalVariant]['quizFile'];
+
+		// Get variant data for specific vid
+		var variantData;
+		globalData['entries'][globalVariant]['variants'].forEach(variant => {
+			if (variant.vid === celldata) {
+				variantData = variant;
+			}
+		});
+
 		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
-		str += " onclick='getVariantPreview();'>";
+		str += "onclick='getVariantPreview("
+		str += JSON.stringify(variantData['param'])+","+JSON.stringify(variantData['variantanswer'])+", \""+page+"\"";
+		str += ");'>";
 		return str;
 	}
 
@@ -662,7 +676,6 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template) {
 
 	$.getScript("templates/" + template + ".js")
 		.done(function (script, textStatus) {
-			alert("snus");
 			showFacit(decodeURIComponent(duggaVariantParam), "UNK", decodeURIComponent(duggaVariantAnswer), null, null, null);
 		})
 		.fail(function (jqxhr, settings, exception) {
