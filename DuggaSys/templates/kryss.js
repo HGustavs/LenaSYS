@@ -93,16 +93,16 @@ function returnedDugga(data)
 	console.log(data['param']);
 	var output ="";
 	if(data['debug']!="NONE!") alert(data['debug']);
-		
-		if(data['param']!="UNK"){
-			quiz(data['param']);
-			//Add onclick event 
-			if(querystring['highscoremode'] == 2) {
-				$("input:radio").click(function(){
-					ClickCounter.onClick();
-				});
-			}
-		}		
+
+	if(data['param']!="UNK"){
+		quiz(data['param']);
+		//Add onclick event 
+		if(querystring['highscoremode'] == 2) {
+			$("input:radio").click(function(){
+				ClickCounter.onClick();
+			});
+		}
+	}		
 }
 //----------------------------------------------------------------------------------
 // getCheckedBoxes: checks if all questions are answered and alerts each of them
