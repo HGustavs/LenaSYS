@@ -98,17 +98,28 @@ $(window).load(function () {
 	});
 });
 
+function clearEditForm() {
+	$('#name').val();
+	$('#name').attr('placeholder','Empty dugga');
+	$('#qstart').val();
+	$('#qstart').attr('placeholder', 'YYYY-MM-DD');
+	$('#release').val();
+	$('#release').attr('placeholder', 'YYYY-MM-DD');
+	$('#deadline').val();
+	$('#deadline').attr('placeholder', 'YYYY-MM-DD');
+}
+
 // DUGGA FUNCTIONS start
 function newDugga() {
-	document.getElementById("editDuggaTitle").innerHTML = "New dugga";
-	document.getElementById('name').value = '';
-	document.getElementById('name').placeholder = 'Empty dugga';
-	document.getElementById('qstart').value = '';
-	document.getElementById('qstart').placeholder = 'YYYY-MM-DD';
-	document.getElementById('release').value = '';
-	document.getElementById('release').placeholder = 'YYYY-MM-DD';
-	document.getElementById('deadline').value = '';
-	document.getElementById('deadline').placeholder = 'YYYY-MM-DD';
+	$("#editDuggaTitle").html("New dugga");
+	$('#name').val();
+	$('#name').attr('placeholder','Empty dugga');
+	$('#qstart').val();
+	$('#qstart').attr('placeholder', 'YYYY-MM-DD');
+	$('#release').val();
+	$('#release').attr('placeholder', 'YYYY-MM-DD');
+	$('#deadline').val();
+	$('#deadline').attr('placeholder', 'YYYY-MM-DD');
 	//----------------------------------------------------
 	// Set Autograde
 	//----------------------------------------------------
@@ -154,7 +165,6 @@ function createDugga() {
 	var deadline = $("#deadline").val();
 	var cid = querystring['cid'];
 	var coursevers = querystring['coursevers'];
-	window.location.reload();
 	$("#editDugga").css("display", "none");
 	//$("#overlay").css("display","none");
 
@@ -163,6 +173,7 @@ function createDugga() {
 }
 
 function selectDugga(qid) {
+	clearEditForm();
 	AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'], qid: this.qid }, "GETQUIZ");
 
 	document.getElementById("editDuggaTitle").innerHTML = "Edit dugga";
@@ -406,7 +417,6 @@ function confirmBox(operation, item, type) {
 // Storing the celldata for future use. (Needed when editing and such)
 function returnedQuiz(data) {
 	var quiz = data;
-	console.log(data['debug2']);
 
 	var did = $('#did').val();
 	quiz['entries'].forEach(function (element) {
@@ -414,12 +424,13 @@ function returnedQuiz(data) {
 			quiz = element;
 		}
 	});
+
 	$("#did").val(quiz['arrow']);
 	$("#name").val(quiz['qname']);
 	$("#autograde").val(quiz['autograde']);
 	$("#gradesys").val(quiz['gradesystem']);
 	$("#template").val(quiz['quizFile']);
-	$("#qstart").val(quiz['qstart'] ? quiz['qstart'] : "null");
+	$("#qstart").val(quiz['qstart']);
 	$("#deadline").val(quiz['deadline']);
 	$("#release").val(quiz['qrelease']);
 }
@@ -429,7 +440,6 @@ function returnedQuiz(data) {
 function returnedDugga(data) {
 	filez = data;
 	globalData = data;
-	console.log(data['debug']);
 
 	var tabledata = {
 		tblhead: {
