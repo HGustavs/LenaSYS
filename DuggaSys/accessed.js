@@ -353,7 +353,7 @@ var bool = true;
  */
 
 function renderCell(col,celldata,cellid) {
-	if (col == "requestedpasswordchange"){
+	if(col == "requestedpasswordchange") {
 		obj=JSON.parse(celldata);
 		str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
 		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
@@ -418,8 +418,10 @@ function renderCell(col,celldata,cellid) {
     str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
     str += "<div style='display:none;'>" + obj.class + "</div>";
 		return str;
-	}else {
-		return "<div id='" + cellid + "'>" + celldata +  "</div>";
+	} else if(col == "groups") {
+		return "<span>" + celldata + "</span>";
+	} else {
+		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
 	return celldata;
 }
@@ -451,8 +453,9 @@ function returnedAccess(data) {
 			class:"Class",
 			modified:"Added",
 			examiner:"Examiner",
-      vers:"Version",
-			access:"Access",
+        	vers:"Version",
+            access:"Access",
+        	groups:"Group(s)",
 			requestedpasswordchange:"Password"
 		},
 		tblbody: data['entries'],
@@ -479,10 +482,7 @@ function returnedAccess(data) {
 	    null,
 		true
 	);
-
-  myTable.renderTable();
-  myTable.makeAllSortable();
-
+	myTable.renderTable();
 	if(data['debug']!="NONE!") alert(data['debug']);
 }
 

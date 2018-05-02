@@ -48,17 +48,17 @@ pdoConnect();
 	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style='width:464px;'>
       		<div class='loginBoxheader'>
-      			<h3 id="editDialogTitle">Edit Dugga</h3>
+      			<h3 id="editDuggaTitle">Edit Dugga</h3>
       			<div class='cursorPointer' onclick='closeEditDugga();'>x</div>
       		</div>
       		<div style='padding:5px;'>
-      			<input type='hidden' id='did' value='Toddler' /></td>
+      			<input type='hidden' id='did' value='Toddler'/></td>
       			<div class='inputwrapper'>
 	      			<span>Name:</span>
 	      			<div class="tooltipDugga">
 		      			<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
 		      		</div>
-		      		<input class='textinput' type='text' id='name' value='New Dugga' onkeyup="validateName();" onchange="validateName();" />
+		      		<input class='textinput' type='text' id='name' value='New Dugga' onkeyup='validateDuggaName();' onchange='validateDuggaName();' />
 		      	</div>
       			<div class='inputwrapper'><span>Auto-grade:</span><select id='autograde'><option value='0'>Hidden</option><option value='1'>Public</option></select></div>
       			<div class='inputwrapper'><span>Grade System:</span><select id='gradesys'><option value='1'>U-G-VG</option><option value='2'>U-G</option><option value='3'>U-3-4-5</option></select></div>
@@ -103,7 +103,7 @@ pdoConnect();
 	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
       <div class='loginBox' style="width:80%;">
       		<div class='loginBoxheader'>
-      			<h3>Edit Variant</h3>
+      			<h3 id="editVariantTitle">Edit Variant</h3>
       			<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
           <div class='loginBoxbody'>
@@ -176,13 +176,13 @@ pdoConnect();
                 <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel'
                 onclick='closeWindows();'/>
           			<input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit'
-                onclick='createVariant(); showVariantSaveButton();'/>
+                onclick='createVariant();'/>
                 <input id='saveVariant' class='submit-button' style='display:none; float:right' type='button' value='Save'
                 onclick='updateVariant(); showVariantSubmitButton();'/>
-                <input id='disableVariant' class='submit-button' style='display:none; float:right' type='button' value='Disable'
-                onclick='disableVariant(); showVariantEnableButton(); '/>
-                <input id='enableVariant' class='submit-button' style='display:none; float:right' type='button' value='Enable'
-                onclick='enableVariant(); showVariantDisableButton();'/>
+                <input id='disableVariant' class='submit-button disableEnable' style='display:none; float:right' type='button' value='Disable'
+                onclick='showVariantEnableButton(); '/>
+                <input id='enableVariant' class='submit-button disableEnable' style='display:none; float:right' type='button' value='Enable'
+                onclick='showVariantDisableButton();'/>
           		</div>
           </div>
 	</div>
