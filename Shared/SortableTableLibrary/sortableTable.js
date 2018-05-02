@@ -296,14 +296,16 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		// Render table body
 		str += "<tbody id='"+tableid+"_body'>";
 		mhvstr += "<tbody id='"+tableid+"_mhvbody'>";
-		for (let rowno in tbl.tblbody) {
-			var row = tbl.tblbody[rowno];
+		
+		for (var i = 0; i < tbl.tblbody.length-1; i++) {
+			var row = tbl.tblbody[i];
+			
 			if (rowFilter(row)) {
 				// Keep row sum total here
 				var rowsum = 0;
 
-				str += "<tr id='"+tableid+"_"+rowno+"' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
-				mhvstr += "<tr id='"+tableid+"_"+rowno+"_mvh' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
+				str += "<tr id='"+tableid+"_"+i+"' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
+				mhvstr += "<tr id='"+tableid+"_"+i+"_mvh' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 
 				result++;
 
@@ -322,8 +324,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 							rowsum += sumFunc(colnamez,col);
 						}
 
-						let cellid = "r"+rowno+"_"+tableid+"_"+colnamez;
-						str += "<td id='"+cellid+"' onclick='clickedInternal(event,this);' class='"+tableid+"-"+colnamez+"'>"+renderCell(colnamez,tbl.tblbody[rowno][colnamez],cellid)+"</td>";
+						let cellid = "r"+i+"_"+tableid+"_"+colnamez;
+						str += "<td id='"+cellid+"' onclick='clickedInternal(event,this);' class='"+tableid+"-"+colnamez+"'>"+renderCell(colnamez,tbl.tblbody[i][colnamez],cellid)+"</td>";
 
 						// if (colnamez <= freezePaneIndex) {
 						// 	mhvstr+="<td id='"+cellid+"' >"+renderCell(col,colnamez,cellid)+"</td>";

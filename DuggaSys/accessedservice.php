@@ -132,6 +132,15 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$error=$query->errorInfo();
 					$debug="Error updating user".$error[2];
 				}
+	}else if(strcmp($opt,"CLASS")==0){
+				$query = $pdo->prepare("UPDATE user set class=:val WHERE uid=:uid");
+				$query->bindParam(':uid', $uid);
+				$query->bindParam(':val', $val);
+
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					$debug="Error updating user".$error[2];
+				}
 	}else if(strcmp($opt,"CHPWD")==0){
 				$query = $pdo->prepare("UPDATE user set password=:pwd, requestedpasswordchange=0 where uid=:uid;");
 				$query->bindParam(':uid', $uid);
@@ -324,12 +333,13 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),
 				'firstname' => json_encode(['firstname' => $row['firstname'], 'uid' => $row['uid']]),
 				'lastname' => json_encode(['lastname' => $row['lastname'], 'uid' => $row['uid']]),
-				'class' => $row['class'],
+				'class' => json_encode(['class' => $row['class'], 'uid' => $row['uid']]),
 				'modified' => $row['modified'],
 				'teacher' => $row['teacher'],
-        'examiner' => $examiners,
+        		'examiner' => $examiners,
 				'vers' => json_encode(['vers' => $row['vers'], 'uid' => $row['uid']]),
 				'access' => json_encode(['access' => $row['access'], 'uid' => $row['uid']]),
+				'groups' => 'PLACEHOLDER',
 				'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid']])
 			);
 			array_push($entries, $entry);

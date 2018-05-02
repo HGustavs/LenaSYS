@@ -213,7 +213,7 @@ function renderCell(col,celldata,cellid) {
 					listStr += ".";
 				}
 			}
-			return "<div>" + listStr + "</div>";
+			return "<div id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+celldata+"\")'>" + listStr + "</div>";
 		}
 	} else if (col == "filesize") {
 		return formatBytes(celldata, 0);
@@ -228,8 +228,6 @@ function renderCell(col,celldata,cellid) {
 		}
 		return str;
 
-	} else if (col == "kind") {
-		return convertFileKind(celldata);
 	}
 	return celldata;
 }
@@ -288,9 +286,6 @@ function compare(a,b) {
 
 		tempA = tempA[tempA.length-1];
 		tempB = tempB[tempB.length-1];
-	} else if (col == "Kind") {
-		tempA = convertFileKind(tempA);
-		tempB = convertFileKind(tempB);
 	} else if (col == "Size") {
 		tempA = parseInt(tempA);
 		tempB = parseInt(tempB);
