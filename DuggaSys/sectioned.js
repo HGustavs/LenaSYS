@@ -1689,6 +1689,7 @@ $(window).load(function () {
 			hamburgerChange("escapePress");
 			document.activeElement.blur(); // to lose focus from the newItem button when pressing enter
 		} else if (event.keyCode == 13) {
+			//Remember that keycode 13 = enter button
 			var saveButtonDisplay = ($('#saveBtn').css('display'));
 			var editSectionDisplay = ($('#editSection').css('display'));
 			var submitButtonDisplay = ($('#submitBtn').css('display'));
@@ -1698,9 +1699,8 @@ $(window).load(function () {
 			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
 				newItem();
 				showSaveButton();
-			} else if (deleteButtonDisplay == 'flex') {
-				confirmBox("deleteItem");
-			}
+			} 
+			document.activeElement.blur();
 		}
 	});
 });

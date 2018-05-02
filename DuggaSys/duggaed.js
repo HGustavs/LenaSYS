@@ -82,6 +82,17 @@ $(window).load(function () {
 			closeWindows();
 			// closeSelect();
 			showDuggaSaveButton();
+		}else if (event.keyCode == 13){
+			//Remember that keycode 13 = enter button
+			var saveButtonDisplay = ($('#saveDugga').css('display'));
+			var editSectionDisplay = ($('#editDugga').css('display'));
+			var submitButtonDisplay = ($('#submitDugga').css('display'));
+			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+				updateDugga();
+			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+				createDugga();
+			} 
+			document.activeElement.blur();
 		}
 	});
 });
