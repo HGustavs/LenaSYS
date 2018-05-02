@@ -306,7 +306,6 @@ function mouseupevt(ev) {
                 } else if(symbolEndKind == 2 && symbolStartKind == 3){
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0){
                         okToMakeLine= false;
-                        console.log("Flasify");
                     }
                 } else if(symbolEndKind == 3 && symbolStartKind == 5) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
