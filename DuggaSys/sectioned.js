@@ -3,6 +3,7 @@ var retdata;
 var newversid;
 var active_lid;
 var isClickedElementBox = false;
+var duggaCheck;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -1685,6 +1686,7 @@ function fabValidateType(kind) {
 	if (kind == 3){
 		if (retdata['duggor'].length == 0){
 			toggleFabButton();
+			duggaCheck = true;
 			$("#noTestsConfirmBox").css("display", "flex");
 		}
 		else {
@@ -1739,6 +1741,9 @@ $(window).load(function () {
 			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
 				newItem();
 				showSaveButton();
+			}else if(isTypeValid() && duggaCheck == true){
+				confirmBox("closeConfirmBox");
+				duggaCheck = false;
 			}
 
 		}
