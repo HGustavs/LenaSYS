@@ -88,9 +88,9 @@ $(window).load(function () {
 			var saveButtonDisplay = ($('#saveDugga').css('display'));
 			var editSectionDisplay = ($('#editDugga').css('display'));
 			var submitButtonDisplay = ($('#submitDugga').css('display'));
-			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid()) {
 				updateDugga();
-			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid()) {
 				createDugga();
 			} 
 			document.activeElement.blur();
@@ -226,6 +226,15 @@ function deleteDugga(did) {
 	$("#editDugga").css("display", "none");
 }
 
+function isNameValid(){
+	var nme = document.getElementById("name");
+
+	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d(),.]+$/)) {
+		return true;
+	}
+	return false;
+}
+
 // Checks if the title name includes any invalid characters
 function validateDuggaName() {
 	var retValue = false;
@@ -233,14 +242,14 @@ function validateDuggaName() {
 
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)) {
 		$('#tooltipTxt').fadeOut();
-		$('#saveBtn').removeAttr('disabled');
-		$('#submitBtn').removeAttr('disabled');
+		$('#saveDugga').removeAttr('disabled');
+		$('#submitDugga').removeAttr('disabled');
 		nme.style.backgroundColor = "#fff";
 		retValue = true;
 	} else {
 		$('#tooltipTxt').fadeIn();
-		$('#submitBtn').attr('disabled', 'disabled');
-		$('#saveBtn').attr('disabled', 'disabled');
+		$('#submitDugga').attr('disabled', 'disabled');
+		$('#saveDugga').attr('disabled', 'disabled');
 		nme.style.backgroundColor = "#f57";
 	}
 	return retValue;
