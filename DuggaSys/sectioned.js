@@ -1700,6 +1700,7 @@ $(window).load(function () {
 				newItem();
 				showSaveButton();
 			} 
+			document.activeElement.blur();
 		}
 	});
 });
