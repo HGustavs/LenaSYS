@@ -248,6 +248,7 @@ function updateSettings() {
 		var readonly = 0;
 		if ($("#readonly").val() == "yes"){
 			readonly = 1;
+			console.log(readonly);
 		}
 
 		// Show dialog
