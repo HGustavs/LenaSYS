@@ -82,6 +82,17 @@ $(window).load(function () {
 			closeWindows();
 			// closeSelect();
 			showDuggaSaveButton();
+		}else if (event.keyCode == 13){
+			//Remember that keycode 13 = enter button
+			var saveButtonDisplay = ($('#saveDugga').css('display'));
+			var editSectionDisplay = ($('#editDugga').css('display'));
+			var submitButtonDisplay = ($('#submitDugga').css('display'));
+			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+				updateDugga();
+			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+				createDugga();
+			} 
+			document.activeElement.blur();
 		}
 	});
 });
@@ -462,15 +473,16 @@ function returnedDugga(data) {
 	var duggaPages = data['duggaPages'];
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 	str = "";
-
+	if (globalVariant){
 	renderVariant(globalVariant);
+	}
 }
 
 // Table for variants
 function renderVariant(clickedElement) {
 	globalVariant = clickedElement;
 	updateVariantTitle(clickedElement);
-	var tabledata2 = {
+	var tabledata = {
 		tblhead: {
 			vid: "",
 			param: "Parameter",
@@ -484,7 +496,7 @@ function renderVariant(clickedElement) {
 		tblfoot: []
 	}
 	myTable2 = new SortableTable(
-		tabledata2,
+		tabledata,
 		"variant",
 		null,
 		"",
