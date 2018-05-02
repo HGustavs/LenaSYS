@@ -373,13 +373,14 @@ function createJSONString(formData) {
 	background color of the table row.
 */
 function markSelected(el) {
-	var activetbl = findAncestor(el, 'TABLE', 'elName');
-	var activetr = findAncestor(el, 'TR', 'elName');
+	var activeTable = findAncestor(el, 'TABLE', 'elName');
+	var activeTableRow = findAncestor(el, 'TR', 'elName');
 	var allRows = activetbl.getElementsByTagName('tr');
 	
 	for(let row of allRows) {
-		row.removeAttribute('style');
+		row.removeAttribute('style'); // Remove background color from previously marked rows.
 	}
+	
 	activetr.style.backgroundColor = '#b39fc6';
 }
 
