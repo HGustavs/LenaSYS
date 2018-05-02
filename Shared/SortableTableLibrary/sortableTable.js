@@ -35,7 +35,6 @@ function sortableInternalSort(a,b) {
 	let ret = 0;
     //let colname = currentTable.tbl.tblhead.indexOf(currentTable.sortcolumn);
     let colname = sortableTable.currentTable.getKeyByValue();
-    console.log(colname);
 
 	if (sortableTable.currentTable.ascending) {
 		//alert("Compare: "+a+" "+b);
@@ -298,7 +297,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		str += "<tbody id='"+tableid+"_body'>";
 		mhvstr += "<tbody id='"+tableid+"_mhvbody'>";
 		
-		for (var i = 0; i < tbl.tblbody.length-1; i++) {
+		for (var i = 0; i < tbl.tblbody.length; i++) {
 			var row = tbl.tblbody[i];
 			
 			if (rowFilter(row)) {
