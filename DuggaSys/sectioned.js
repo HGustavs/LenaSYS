@@ -348,49 +348,71 @@ function deleteItem(item_lid = null) {
 
 // Checks if the title name includes any invalid characters
 function validateName() {
-	var retValue = false;
-	var nme = document.getElementById("sectionname");
-	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d(),.]+$/)) {
+	var name = document.getElementById("sectionname");
+	if (isNameValid() && isTypeValid()){ // if both are valid, show buttons
 		$('#tooltipTxt').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
 		$('#submitBtn').removeAttr('disabled');
-		nme.style.backgroundColor = "#fff";
-		saveButtonDisplay = 'block';
-		submitButtonDisplay = 'block';
-		retValue = true;
-	} else {
-		$('#tooltipTxt').fadeIn();
+		name.style.backgroundColor = "#fff";
+
+	}else{ // if not, disable buttons
 		$('#saveBtn').attr('disabled', 'disabled');
 		$('#submitBtn').attr('disabled', 'disabled');
-		nme.style.backgroundColor = "#f57";
-		
+		if(!isNameValid()){
+			$('#tooltipTxt').fadeIn();
+			name.style.backgroundColor = "#f57";
+		} else { // test must not be valid, remove our own tooltip and error-color
+ 			$('#tooltipTxt').fadeOut();
+			name.style.backgroundColor = "#fff";
+		}
 	}
-	return retValue;
 }
+
+function isNameValid(){
+	var nme = document.getElementById("sectionname");
+
+	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d(),.]+$/)) {
+		return true;
+	}
+	return false;
+}
+
+function isTypeValid(){
 
 
 function validateType() {
 	var retValue = false;
+
 	kind = $("#type").val();
 	var nme = document.getElementById("type");
-	if (retdata['duggor'].length == 0 && kind == 3) {
-		$('#tooltipType').fadeIn();
-		$('#saveBtn').attr('disabled', 'disabled');
-		$('#submitBtn').attr('disabled', 'disabled');
-		nme.style.backgroundColor = "#f57";
-		//the line of code above changes the selected element AND the list's background color.
-		//the for loop changes the list's background color back to white so only the selected item shows up as red.
-		for (i = 0; i < nme.options.length; i++) {
-			nme.options[i].style.backgroundColor = "#fff";
-		}
-	} else {
+	if(retdata['duggor'].length == 0 && kind == 3){
+		return false;
+	}
+	return true;
+}
+
+function validateType() {
+	var type = document.getElementById("type");
+	if (isTypeValid() && isNameValid()){
 		$('#tooltipType').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
 		$('#submitBtn').removeAttr('disabled');
-		nme.style.backgroundColor = "#fff";
-		retValue = true;
+		type.style.backgroundColor = "#fff";
+	}else{
+		$('#saveBtn').attr('disabled', 'disabled');
+		$('#submitBtn').attr('disabled', 'disabled');
+		if(!isTypeValid()){
+			$('#tooltipType').fadeIn();
+			for (i = 0; i < type.options.length; i++) {
+				type.options[i].style.backgroundColor = "#fff";
+			}
+			type.style.backgroundColor = "#f57";
+
+		}else if(!isNameValid()){
+			$('#tooltipType').fadeOut();
+			type.style.backgroundColor = "#FFF";
+		}
 	}
-	return retValue;
 }
 
 function updateItem() {
@@ -1713,9 +1735,9 @@ $(window).load(function () {
 			var editSectionDisplay = ($('#editSection').css('display'));
 			var submitButtonDisplay = ($('#submitBtn').css('display'));
 			var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
-			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && validateName() == 'true' && validateType() == 'true') {
+			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isValidName() && isValidType()) {
 				updateItem();
-			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && validateName() == 'true' && validateType() == 'true') {
+			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isValidName() && isValidType()) {
 				newItem();
 				showSaveButton();
 			} 
