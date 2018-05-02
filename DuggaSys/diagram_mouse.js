@@ -292,8 +292,6 @@ function mouseupevt(ev) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == 2) {
                     p1 = diagram[lineStartObj].centerPoint;
-                } else if (diagram[lineStartObj].symbolkind == 5) {
-                    p1 = diagram[lineStartObj].middleDivider;
                 } else {
                     createNewPoint = true;
                 }
@@ -309,13 +307,17 @@ function mouseupevt(ev) {
                     if(diagram[lineStartObj].hasConnector(p2)){
                         okToMakeLine= false;
                     }
+                } else if(symbolEndKind == 3 && symbolStartKind == 5) {
+                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
+                } else if(symbolEndKind == 5 && symbolStartKind == 3) {
+                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
+                } else if(symbolEndKind == 5 && symbolStartKind == 5){
+                    okToMakeLine = false;
                 }
                 if(okToMakeLine){
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     if (diagram[hovobj].symbolkind == 2) {
                         p2 = diagram[hovobj].centerPoint;
-                    } else if (diagram[hovobj].symbolkind == 5) {
-                        p2 = diagram[hovobj].middleDivider;
                     } else{
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     }
@@ -334,6 +336,7 @@ function mouseupevt(ev) {
         classB.bottomRight = p2;
 
         classB.middleDivider = p3;
+        classB.centerPoint = p3;
         diagram.push(classB);
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
@@ -369,11 +372,10 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateLine" && md == 4){
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine){
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine){
             erLineA = new Symbol(4);
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
-
             erLineA.object_type = "";
             erLineA.bottomRight = p2;
             erLineA.centerPoint = p3;
@@ -392,7 +394,7 @@ function mouseupevt(ev) {
         erRelationA.name = "Relation" + diagram.length;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
-        erRelationA.middleDivider = p3;
+        erRelationA.centerPoint = p3;
 
         diagram.push(erRelationA);
         //selecting the newly created relation and open the dialog menu.

@@ -287,6 +287,7 @@ abstract class EventTypes {
 	const ServiceClientEnd = 8;
 	const Logout = 9;
 	const pageLoad = 10;
+    const PageNotFound = 11;
 }
 
 //------------------------------------------------------------------------------------------------

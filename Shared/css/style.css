@@ -105,10 +105,6 @@ h6 {
   padding: 0px;
 }
 
-.hideTableArrow {
-  display: none !important;
-}
-
 hr {
   border: 0;
   border-bottom: 1px dashed #ccc;
@@ -328,10 +324,15 @@ p {
   height: 16px;
 }
 
-.iconBox {
+.iconBox, .counterBox {
   text-align: center;
   margin: 0;
   padding: 0;
+}
+
+.counterBox {
+  font-size: 20px;
+  color: #614875;
 }
 
 #Sectionlist .example {
@@ -1141,6 +1142,34 @@ input {
 .toolbarMaximized {
   transform: rotate(180deg);
 }
+#toolbar-switcher{
+  height:20px;
+  display: flex;
+  text-align: center;
+  padding:0 3px;
+  line-height: 20px;
+}
+.toolbarArrows{
+  width:20%;
+  background: #614875;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#toolbarTypeText{
+  width:60%;
+  background-color: #f1f1f1;
+  border: 1px solid #eaeaea;
+}
+#toolbarLeftArrow{
+  transform: rotate(-90deg);
+  width: 50%;
+  filter:invert(100%);
+}
+#toolbarRightArrow{
+  transform: rotate(90deg);
+  width: 50%;
+  filter:invert(100%);
+}
 
 /* --------------================################================-------------- *
  *                            END TOOLBOX/APPLICATION                           *
@@ -1488,6 +1517,7 @@ div.submit-button:disabled {
   justify-content: center;
   align-items: center;
   border-radius: 8px;
+  margin: 5px auto;
 }
 
 .buttonsStyle img,
@@ -1613,6 +1643,14 @@ input.large-button {
   float: left;
 }
 
+#openFile {
+  cursor: pointer;
+}
+
+#openFile:hover {
+  color: #7B5A96;
+}
+
 /* File upload form */
 
 .inputfile {
@@ -1696,7 +1734,6 @@ input.large-button {
   line-height: 28px;
   font-weight: bold;
   padding: 5px;
-  cursor: pointer;
 }
 
 .innertable {
@@ -1762,10 +1799,19 @@ input.large-button {
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-.list#testTable input,
-.list#testTable select,
-.list#testTable label {
-  padding: 0px;
+.sortingArrow {
+  position: relative;
+  margin-left: 7px;
+  top: 3px;
+}
+
+.sortableHeading {
+  display: block;
+  cursor: pointer;
+}
+
+.list#testTable input, .list#testTable select, .list#testTable label {
+    padding:0px;
 }
 
 .list tbody tr:nth-child(odd) {
@@ -2093,8 +2139,8 @@ span.arrow {
   border-radius: 0;
 }
 
-#file-submit-button {
-  margin: 15px 0 18px 0;
+.fileed-submit-button {
+  margin:15px 0 18px 0 !important;
 }
 
 #feedbackTable table {
@@ -2187,24 +2233,23 @@ span.arrow {
 }
 
 .fab {
-  position: fixed;
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
-  box-shadow: 0px 0px 15px #888;
-  bottom: 35px;
-  right: 50px;
-  font-size: 24px;
-  text-align: center;
-  background-color: #fecc56;
-  color: #614875;
-  z-index: 4000;
-  border: 0;
+  position:fixed;
+  width:50px;
+  height:50px;
+  border-radius:25px;
+  box-shadow:0px 0px 15px #888;
+  bottom:35px;
+  right:50px;
+  font-size:24px;
+  text-align:center;
+  background-color:#fecc56;
+  color:#614875;
+  z-index:4000;
+  border:0;
   outline: none;
   cursor: pointer;
-  padding-left: 7px;
-  padding-top: 1px;
-}
+  padding: 1px 0 0 7px;
+ }
 
 .fab:hover {
   transform: scale(1.1);
@@ -2618,6 +2663,23 @@ table {
 }
 
 /*end, styling for contribution.php*/
+#sortingBar {
+  width: 50%;
+  position: relative;
+  top: 28px;
+}
+
+.sortingBtn {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.sortingBtn input {
+  font-size: 12px;
+  position: relative;
+  bottom: 2px;
+}
+
 
 /* styling for the search bar in fileed.php */
 
@@ -2625,7 +2687,9 @@ table {
   display: inline-flex;
   height: 24px;
   border-radius: 5px;
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  margin: 0 2px 7px 0;
+  float: right;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
 }
 
 #searchinput {
@@ -3347,7 +3411,7 @@ only screen and (max-device-width: 320px) {
 
 .fixed-action-button {
   position: fixed;
-  bottom: 45px;
+  bottom: 24px;
   right: 24px;
   z-index: 500;
 }
@@ -3384,7 +3448,7 @@ only screen and (max-device-width: 320px) {
 .fab-btn-lg {
   width: 56px;
   height: 56px;
-  line-height: 66px;
+  line-height: 70px;
   background-color: #fecc56;
   color: #614875;
 }
@@ -3591,6 +3655,17 @@ li:nth-last-child(10) a:hover {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
+ 
+ .previewWindowContainer {
+    background-color: rgba(0,0,0,0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 8000;
+    display: none;
+ }
 
 .previewWindowContainer {
   background-color: rgba(0, 0, 0, 0.6);
@@ -3603,19 +3678,19 @@ li:nth-last-child(10) a:hover {
   display: none;
 }
 
-.previewWindow {
-  height: 635px;
-  width: 900px;
-  margin: 0px auto;
-  border: solid rgb(200, 200, 200);
-  background-color: rgb(240, 240, 240);
-  box-shadow: 0px 5px 10px grey;
-  z-index: 12000;
-  display: none;
-  left: 0;
-  right: 0;
-  top: 220px;
-  position: absolute;
+ .previewWindow {
+    height: 635px;
+    width: 900px;
+    margin: 0px auto;
+    border: solid rgb(200,200,200);
+    background-color: rgb(240,240,240);
+    box-shadow: 0px 5px 10px grey;
+    z-index: 12000;
+    display: none;
+    left: 0;
+    right: 0;
+    top: 100px;
+    position: fixed;
 }
 
 .markdown {
@@ -3639,7 +3714,19 @@ li:nth-last-child(10) a:hover {
   margin: 20px 10px 10px 10px;
   float: right;
 }
-
+.markdownPrev pre{
+    font-family: Hack, MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 10px;
+    line-height: 12px;
+    white-space: pre;
+    white-space: pre-wrap;
+    background: #ffffff;
+    display: inline-block;
+    padding: 1em;
+    margin: 0.5em 0px;
+    border: 1px solid #bebab0;
+    box-shadow: 1px 1px 2px #666;
+}
 .optionButtons {
   top: 585px;
   position: relative;
@@ -3762,6 +3849,24 @@ li:nth-last-child(10) a:hover {
   background-color: rgba(0, 0, 0, 0);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
+
+@media only screen and (max-height: 800px) and (max-width: 1400px) {
+    .previewWindow {
+        height: 500px;
+     }
+     .markdown {
+         height: 400px;
+     }
+     .markdownPrev {
+         height: 400px;
+     }
+    #mrkdwntxt {
+        height: 350px;
+    }
+    .optionButtons {
+        top: 436px;
+    }
+ }
 
 /* Import diagram */
 

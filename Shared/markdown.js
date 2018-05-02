@@ -406,10 +406,6 @@ function markdownBlock(inString)
     return inString;
 }
 
-function showPreview() {
-    $(".previewWindow").css("display", "block");
-}
-
 function cancelPreview() {
 
     $(".previewWindow").hide();
@@ -417,11 +413,11 @@ function cancelPreview() {
 }
 
 function loadPreview(fileUrl) {
+    $(".previewWindow").show();
+    $(".previewWindowContainer").css("display", "block");
     var fileContent = getFIleContents(fileUrl);
     document.getElementById("mrkdwntxt").value = fileContent;
     updatePreview(fileContent);
-    $(".previewWindowContainer").css("display", "block");
-    $(".previewWindow").show();
 }
 
 function updatePreview(str) {

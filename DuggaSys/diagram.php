@@ -57,10 +57,19 @@
                     <div class="application-header">
                         <div id="toolbar-minimize"  onclick="toggleToolbarMinimize();">
                             <img id="minimizeArrow" class="toolbarMaximized" src="../Shared/icons/arrow.svg">
+                          </div>
+                          <h3>Toolbar</h3>
                         </div>
-                        <h3>Toolbar</h3>
-                    </div>
-                    <div class='application-toolbar'>
+                        <div class='application-toolbar'>
+                          <div id="toolbar-switcher">
+                            <div class="toolbarArrows" onclick="switchToolbar('left');">
+                              <img id="toolbarLeftArrow" src="../Shared/icons/arrow.svg">
+                            </div>
+                            <div id="toolbarTypeText">All</div>
+                            <div class="toolbarArrows" onclick="switchToolbar('right');">
+                              <img id="toolbarRightArrow" src="../Shared/icons/arrow.svg">
+                            </div>
+                          </div>
                         <h4 class="label">Tools</h4>
                         <div class="toolbar-drawer">
                             <div class="tooltipdialog">
@@ -75,17 +84,17 @@
                                 <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute">
                                     <img src="../Shared/icons/diagram_create_attribute.svg">
                                 </button>
-                            </div><br>
+                            </div>
                             <div class="tooltipdialog">
                                 <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle unpressed' data="Create Entity">
                                     <img src="../Shared/icons/diagram_create_entity.svg">
                                 </button>
-                            </div><br>
+                            </div>
                             <div class="tooltipdialog">
                                 <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed' data="Create Relation">
                                     <img src="../Shared/icons/diagram_create_relation.svg">
                                 </button>
-                            </div><br>
+                            </div>
                             <div class="tooltipdialog">
                                 <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle unpressed' data="Create Class">
                                     <img src="../Shared/icons/diagram_create_class.svg">
