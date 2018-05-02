@@ -107,7 +107,7 @@ pdoConnect();
         <div class='cursorPointer' onclick='closeWindows();'>x</div>
       </div>
 
-      <div class='loginBoxbody' style='width:100%; height:100%;''>
+      <div class='loginBoxbody' style='width:100%; height:100%;'>
         <div id='upperDiv'>
           <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; background-color: white;'></div> <!-- A div to place the variant-table within. -->
         </div>
