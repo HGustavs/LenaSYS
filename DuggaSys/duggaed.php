@@ -106,9 +106,9 @@ pdoConnect();
       			<h3 id="editVariantTitle">Edit Variant</h3>
       			<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
-          <div class='loginBoxbody'>
-           <div id="variant" style='width:100%; border: 2px solid green;'></div> <!-- A div to place the variant-table within. -->
-          		<div style='padding:5px;display:flex;'>
+          <div class='loginBoxbody' style='width:100%; height:100%;''>
+             <div id="variant" style='width:100%; border: 2px solid green; background-color: white;'></div> <!-- A div to place the variant-table within. -->
+          		<div id='editDiv' style='padding:5px;display:flex;'>
           			<input type='hidden' id='vid' value='Toddler' />
           			<div id="leftDivDialog">
           				<form name="jsonform" id="jsonform" style="padding:0;">
@@ -172,10 +172,10 @@ pdoConnect();
                     </fieldset>
           			</div>
           		</div>
-          		<div style='padding:5px;'>
+              <div id='buttonDiv' style='padding:5px;'>
                 <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel'
                 onclick='closeWindows();'/>
-          			<input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit'
+                <input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit'
                 onclick='createVariant();'/>
                 <input id='saveVariant' class='submit-button' style='display:none; float:right' type='button' value='Save'
                 onclick='updateVariant(); showVariantSubmitButton();'/>
@@ -183,7 +183,7 @@ pdoConnect();
                 onclick='showVariantEnableButton(); '/>
                 <input id='enableVariant' class='submit-button disableEnable' style='display:none; float:right' type='button' value='Enable'
                 onclick='showVariantDisableButton();'/>
-          		</div>
+              </div>
           </div>
 	</div>
 	<!-- Edit Variant Dialog END -->

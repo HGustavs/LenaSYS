@@ -430,7 +430,7 @@ function returnedDugga(data) {
 
 	var tabledata = {
 		tblhead: {
-			arrow: "",
+			did: "#",
 			qname: "Name",
 			autograde: "Autograde",
 			gradesystem: "Gradesystem",
@@ -439,6 +439,7 @@ function returnedDugga(data) {
 			deadline: "Deadline",
 			qrelease: "Result date",
 			modified: "Last modified",
+			arrow: "",
 			cogwheel: "",
 			trashcan: "<input type='button' value='+' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga()'>"
 		},
@@ -484,11 +485,12 @@ function renderVariant(clickedElement) {
 	updateVariantTitle(clickedElement);
 	var tabledata = {
 		tblhead: {
-			vid: "",
+			vid: "#",
 			param: "Parameter",
 			variantanswer: "Answer",
 			modified: "Modified",
 			disabled: "Disabled/Enabled",
+			arrowVariant: "",
 			cogwheelVariant: "",
 			trashcanVariant: ""
 		},
@@ -524,12 +526,9 @@ function renderVariant(clickedElement) {
 function renderCell(col, celldata, cellid) {
 
 	// DUGGA-TABLE cellstarts
-	// Placing a clickable icon in its designated column that opens a window for acess to variants.
-	if (col == "arrow") {
-		clickedElement = JSON.parse(cellid.match(/\d+/));
-		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
-		str += " onclick='renderVariant(\"" + clickedElement + "\");'>";
-		return str;
+	// Numbering the table.
+	if (col == "did") {
+		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
 	}
 
 	// Translating autograding from integers to show the data like yes/no.
@@ -558,6 +557,14 @@ function renderCell(col, celldata, cellid) {
 		}
 	}
 
+	// Placing a clickable icon in its designated column that opens a window for acess to variants.
+	else if (col == "arrow") {
+		clickedElement = JSON.parse(cellid.match(/\d+/));
+		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
+		str += " onclick='renderVariant(\"" + clickedElement + "\");'>";
+		return str;
+	}
+
 	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
 	else if (col == "cogwheel") {
 		object = JSON.parse(celldata);
@@ -579,9 +586,7 @@ function renderCell(col, celldata, cellid) {
 	// VARIANT-TABLE cellstart
 	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "vid") {
-		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
-		str += " onclick='getVariantPreview();'>";
-		return str;
+		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
 	}
 
 	//Translating the integers behind "disabled" to say disabled or enabled. Also making it look that way.
@@ -598,6 +603,13 @@ function renderCell(col, celldata, cellid) {
 			celldata = "Undefined";
 			str = "<span style='color:black; opacity:0.5;'>" + celldata + "</span>";
 		}
+		return str;
+	}
+
+	// Placing a clickable arrow in its designated column for previewing the variant.
+	else if (col == "arrowVariant") {
+		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
+		str += " onclick='getVariantPreview();'>";
 		return str;
 	}
 
