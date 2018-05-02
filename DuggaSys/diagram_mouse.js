@@ -300,11 +300,11 @@ function mouseupevt(ev) {
                 //okToMakeLine is a flag for this
                 var okToMakeLine= true;
                 if(symbolEndKind == 3 && symbolStartKind == 2){
-                    if(diagram[hovobj].hasConnector(p1)){
+                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0){
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == 2 && symbolStartKind == 3){
-                    if(diagram[lineStartObj].hasConnector(p2)){
+                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0){
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == 3 && symbolStartKind == 5) {
