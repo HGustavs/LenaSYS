@@ -406,6 +406,7 @@ function confirmBox(operation, item, type) {
 // Storing the celldata for future use. (Needed when editing and such)
 function returnedQuiz(data) {
 	var quiz = data;
+	console.log(data['debug2']);
 
 	var did = $('#did').val();
 	quiz['entries'].forEach(function (element) {
@@ -428,6 +429,7 @@ function returnedQuiz(data) {
 function returnedDugga(data) {
 	filez = data;
 	globalData = data;
+	console.log(data['debug']);
 
 	var tabledata = {
 		tblhead: {
