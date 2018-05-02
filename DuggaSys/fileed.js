@@ -236,12 +236,25 @@ function renderCell(col,celldata,cellid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-	for (key in row) {
-		if (row[key] != null) {
-			if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-		}
+	// Special searchterms used for filtering the table on fileKind
+	if(searchterm == "~~global~~"){
+        if (row["kind"].toUpperCase().indexOf("global".toUpperCase()) != -1) return true;
+	} else if(searchterm == "~~course~~"){
+        if (row["kind"].toUpperCase().indexOf("course local".toUpperCase()) != -1) return true;
+	} else if(searchterm == "~~version~~"){
+        if (row["kind"].toUpperCase().indexOf("version local".toUpperCase()) != -1) return true;
+	} else if(searchterm == "~~link~~") {
+        if (row["kind"].toUpperCase().indexOf("link".toUpperCase()) != -1) return true;
+	} else {
+	// Normal search 	
+        for (key in row) {
+            if (row[key] != null) {
+                if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+            }
+        }
 	}
-	return false;
+    return false;
+
 }
 
 //--------------------------------------------------------------------------
