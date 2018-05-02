@@ -92,6 +92,7 @@ $(window).load(function () {
 			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
 				createDugga();
 			} 
+			document.activeElement.blur();
 		}
 	});
 });
