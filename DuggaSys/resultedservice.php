@@ -579,6 +579,25 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 }
 
+$courseteachers=array();
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+	$query = $pdo->prepare("
+    SELECT DISTINCT teacher
+    FROM user_course where cid=$cid;
+  ");
+	$query->bindParam(':cid', $cid);
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		$debug="Error reading user entries".$error[2];
+	}
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$teacher = array(
+				'teacher' => $row['teacher'],
+			);
+			array_push($courseteachers, $teacher);
+		}
+}
+
 $array = array(
 	'entries' => $entries,
 	'moments' => $gentries,
@@ -586,6 +605,7 @@ $array = array(
 	'debug' => $debug,
 	'results' => $lentries,
 	'teachers' => $teachers,
+	'courseteachers' => $courseteachers,
 
 	'duggauser' => $duggauser,
 	'duggaentry' => $duggaentry,
@@ -606,4 +626,7 @@ $array = array(
 echo json_encode($array);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php",$userid,$info);
+
+
+
 ?>

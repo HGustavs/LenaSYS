@@ -22,7 +22,6 @@
 
 </head>
 <body>
-
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
@@ -31,7 +30,7 @@
 	<!-- content START -->
 		<div id="wrappall" style="border-top:0px;display:table; table-layout:auto;">
 		<div id="newbutton">
-			<?PHP
+			<?php
 				echo "<div class='titles' style='position:sticky;top:50px;z-index:100;background:#ffffff;padding-top:20px;padding-bottom:20px;margin-top:0px;'>";
 				echo "<h1 style='flex:10;text-align:center;'>Access</h1>";
 				echo "<div style='align-items: flex-end; display: flex; justify-content: space-between;'>";
@@ -39,13 +38,18 @@
 				echo "<input class='submit-button' type='button' value='Add user' onclick='showCreateUserPopup();'/>";
 				echo "<input class='submit-button' type='button' value='Import user(s)' onclick='showImportUsersPopup();'/>";
 				echo "</div>";
-				echo "<input id='searchinput' type='text' name='search' placeholder='Search...'style='Top: -8px;position: relative;margin-left: 20px; border: 1px solid #ccc;' >";
+				echo "<div id='searchBar' style='position:relative; top:-5px; left: 5px;'>";
+				echo "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById('searchinput').value;searchKeyUp(event);user.renderTable();'> ";
+				echo "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>";
+				echo "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>";
+				echo "</button>";
+				echo "</div>";
 				echo "</div>";
 				//needs to calculate if the user has access to this button before writing out
 			?>
-		</div>
 	</div>
-	<div id="user" style='width:100%;'></div>
+</div>
+	<div id='user' style='width:100%;'></div>
 	<!--- Edit Section Dialog END --->
 
 	<?php

@@ -18,7 +18,7 @@ function setup()
 	filt+="<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
 	filt+="</div>";
 	filt+="</span></td>";
-	$("#menuHook").before(filt);
+	$("#menuHook").html(filt);
 
 	var dropdownOptions = "";
 	dropdownOptions+="<div class='checkbox-accessed accessedLine'><input type='checkbox' checked class='headercheck' id='selectAll' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
@@ -33,16 +33,16 @@ function setup()
 	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectvers' onclick='filter(\"vers\");'><label class='headerlabel'>Version</label></div>";
 	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectaccess' onclick='filter(\"access\");'><label class='headerlabel'>Access</label></div>";
 	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectrequestedpasswordchange' onclick='filter(\"requestedpasswordchange\");'><label class='headerlabel'>Password</label></div>";
-	$("#dropdownc").append(dropdownOptions);
+	$("#dropdownc").html(dropdownOptions);
 
 	/*    Add sort icon in the navheader   */
-	var sort ="";
+	var sort = "";
 	sort+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
 	sort+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
 	sort+="<div id='dropdowns' class='dropdown-list-container'>";
 	sort+="</div>";
 	sort+="</span></td>";
-	$("#menuHook").before(sort);
+	$("#menuHook").append(sort);
 
 	dropdownOptions = "";
 	dropdownOptions+="<div class='checkbox-accessed accessedLine'></div>";
@@ -57,7 +57,7 @@ function setup()
 	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectVersion' onclick='sorttype(7);'><label class='headerlabel'>Version</label></div>";
 	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' checked class='headercheck' id='selectAccess' onclick='sorttype(8);'><label class='headerlabel'>Access</label></div>";
 	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectPassword' onclick='sorttype(9);'><label class='headerlabel'>Password</label></div>";
-	$("#dropdowns").append(dropdownOptions);
+	$("#dropdowns").html(dropdownOptions);
 }
 
 function hoverc()
@@ -217,7 +217,10 @@ function changeLastname(uid,id)
 {
 	AJAXService("LASTNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
 }
-
+function changeClass(cid,uid,val)
+{
+	AJAXService("CLASS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
+}
 
 // Sets values in the "cogwheel popup"
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
@@ -367,11 +370,13 @@ function renderCell(col,celldata,cellid) {
         items.push(celldata[i]['username']);
       }
       str = makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+celldata[celldata.length - 1]['uid']+"\",this.value);", items, items, teacher);
+      str += "<div style='display:none;'>" + teacher + "</div>";
     }
     return str;
   }else if(col == "access"){
     obj=JSON.parse(celldata);
     str = makeDropdown("changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", new Array("W", "R", "null"), new Array("Teacher", "Student", "none"), obj.access);
+    str += "<div style='display:none;'>" + obj.access + "</div>";
     return str;
 	}else if(col == "vers"){
     obj=JSON.parse(celldata);
@@ -380,26 +385,41 @@ function renderCell(col,celldata,cellid) {
       items.push(filez['courses'][i]['vers']);
     }
     str = makeDropdown("changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.vers);
+    str += "<div style='display:none;'>" + obj.vers + "</div>";
     return str;
 	}else if (col == "username") {
 		obj = JSON.parse(celldata);
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeUsername("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.username+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
+    str += "<div style='display:none;'>" + obj.username + "</div>";
 		return str;
 	}else if (col == "ssn") {
 		obj = JSON.parse(celldata);
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeSSN("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.ssn+"\" size=13 onclick='return false;'>";
+    str += "<div style='display:none;'>" + obj.ssn + "</div>";
 		return str;
 	}else if (col == "firstname") {
 		obj = JSON.parse(celldata);
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeFirstname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.firstname+"\" size=8 onclick='return false;'>";
+    str += "<div style='display:none;'>" + obj.firstname + "</div>";
 		return str;
 	}else if (col == "lastname") {
 		obj = JSON.parse(celldata);
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
+    str += "<div style='display:none;'>" + obj.lastname + "</div>";
 		return str;
-
+	}else if(col == "class"){
+    obj=JSON.parse(celldata);
+    var items = new Array();
+		// Every user doesn't have a class
+		items.push("null");
+    for(var i = 0; i < filez['classes'].length; i++){
+      items.push(filez['classes'][i]['class']);
+    }
+    str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
+    str += "<div style='display:none;'>" + obj.class + "</div>";
+		return str;
 	}else {
-		return "<div id='" + cellid + "'>" + celldata + "</div>";
+		return "<div id='" + cellid + "'>" + celldata +  "</div>";
 	}
 	return celldata;
 }
@@ -460,11 +480,10 @@ function returnedAccess(data) {
 		true
 	);
 
-	myTable.renderTable();
-  
-	if(data['debug']!="NONE!") alert(data['debug']);
+  myTable.renderTable();
+  myTable.makeAllSortable();
 
-	makeAllSortable();
+	if(data['debug']!="NONE!") alert(data['debug']);
 }
 
 window.onresize = function() {
@@ -472,77 +491,6 @@ window.onresize = function() {
 myTable.magicHeader();
 
 }
-
-//----------------------------------------
-// makeAllSortable(parent) <- Makes all tables within given scope sortable.
-//----------------------------------------
-function makeAllSortable(parent) {
-	parent = parent || document.body;
-	var t = parent.getElementsByTagName('table'), i = t.length;
-	while (--i >= 0) makeSortable(t[i]);
-}
-
-//----------------------------------------
-// makeSortable(table) <- Makes a table sortable and also allows the table to collapse when
-// 						user double clicks on table head.
-//----------------------------------------
-function makeSortable(table) {
-	var DELAY = 200;
-	var clicks = 0;
-	var timer = null;
-	var th = table.tHead, i;
-	th && (th = th.rows[0]) && (th = th.cells);
-	if (th) i = th.length;
-	else return; // if no `<thead>` then do nothing
-	while (--i >= 0) (function (i) {
-		var dir = 1;
-		th[i].addEventListener('click', function (e) {
-			clicks++;
-			if(clicks === 1) {
-				timer = setTimeout(function () {
-					sortTable(table, i, (dir = 1 - dir));
-					clicks = 0;
-				}, DELAY);
-	    } else {
-	    	clearTimeout(timer);
-	      $(this).closest('table').find('tbody').fadeToggle(500,'linear'); //perform double-click action
-	      if($(this).closest('tr').find('.arrowRight').css('display') == 'none'){
-	    		$(this).closest('tr').find('.arrowRight').delay(200).slideToggle(300,'linear');
-	    		$(this).closest('tr').find('.arrowComp').slideToggle(300,'linear');
-				} else if ($(this).closest('tr').find('.arrowComp').css('display') == 'none'){
-					$(this).closest('tr').find('.arrowRight').slideToggle(300,'linear');
-	    	  $(this).closest('tr').find('.arrowComp').delay(200).slideToggle(300,'linear');
-				} else {
-					$(this).closest('tr').find('.arrowRight').slideToggle(300,'linear');
-					$(this).closest('tr').find('.arrowComp').slideToggle(300,'linear');
-				}
-	      clicks = 0;
-	    }
-  	});
-    th[i].addEventListener('dblclick', function (e) {
-    	e.preventDefault();
-    })
-  }(i));
-}
-
-function sortTable(table, col, reverse) {
-    var tb = table.tBodies[0], // use `<tbody>` to ignore `<thead>` and `<tfoot>` rows
-        tr = Array.prototype.slice.call(tb.rows, 0), // put rows into array
-        i;
-    reverse = -((+reverse) || -1);
-    tr = tr.sort(function (a, b) { // sort rows
-			try{
-				return reverse // `-1 *` if want opposite order
-			 	* (a.cells[col].textContent.trim()
-	          .localeCompare(b.cells[col].textContent.trim()));
-			} catch(e){
-				//TODO Fix this
-				// Sometimes b is undefined -> enters this catch block
-			}
-    });
-    for(i = 0; i < tr.length; ++i) tb.appendChild(tr[i]); // append each row in order
-}
-
 
 //excuted onclick button for quick searching in table
 function keyUpSearch() {
