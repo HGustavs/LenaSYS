@@ -264,6 +264,22 @@ function createVariant() {
 	AJAXService("ADDVARI", { cid: querystring['cid'], qid: qid, disabled: disabled, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
+function findAncestor (el, name, type) {
+	if(type == "className") {
+		while ((el = el.parentElement) && !el.classList.contains(name));
+    	return el;
+	} else if(type == "elName") {
+		while ((el = el.parentElement) && el.nodeName != "TR");
+    	return el;
+	}
+	return null;
+}
+
+function markSelected(el) {
+	var activetr = findAncestor(el, "TR", "elName");
+	activetr.style.backgroundColor = "#b39fc6";
+}
+
 function selectVariant(vid) {
 	var target_variant;
 	globalData['entries'].forEach(element => {
@@ -593,7 +609,7 @@ function renderCell(col, celldata, cellid) {
 	else if (col == "cogwheelVariant") {
 		object = JSON.parse(celldata);
 		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
-		str += " onclick='selectVariant(" + object + ")' >";
+		str += " onclick='selectVariant(" + object + ");markSelected(this);' >";
 		return str;
 	}
 
