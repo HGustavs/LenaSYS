@@ -371,10 +371,8 @@ function isNameValid(){
 	var nme = document.getElementById("sectionname");
 
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d(),.]+$/)) {
-		console.log("namei s valid")
 		return true;
 	}
-	console.log("name is invalid");
 	return false;
 }
 
@@ -390,7 +388,6 @@ function isTypeValid(){
 function validateType() {
 	var type = document.getElementById("type");
 	if (isTypeValid() && isNameValid()){
-		console.log("type is valid");
 		$('#tooltipType').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
 		$('#submitBtn').removeAttr('disabled');
