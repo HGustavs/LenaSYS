@@ -265,19 +265,28 @@ function createVariant() {
 }
 
 function findAncestor (el, name, type) {
-	if(type == "className") {
+	// console.log(el);
+	// console.log(name);
+	// console.log(type);
+	if(type == 'className') {
 		while ((el = el.parentElement) && !el.classList.contains(name));
     	return el;
-	} else if(type == "elName") {
-		while ((el = el.parentElement) && el.nodeName != "TR");
+	} else if(type == 'elName') {
+		while ((el = el.parentElement) && el.nodeName != name);
     	return el;
 	}
 	return null;
 }
 
 function markSelected(el) {
-	var activetr = findAncestor(el, "TR", "elName");
-	activetr.style.backgroundColor = "#b39fc6";
+	var activetbl = findAncestor(el, 'TABLE', 'elName');
+	var activetr = findAncestor(el, 'TR', 'elName');
+	var allRows = activetbl.getElementsByTagName('tr');
+	
+	for(let row of allRows) {
+		row.removeAttribute('style');
+	}
+	activetr.style.backgroundColor = '#b39fc6';
 }
 
 function selectVariant(vid) {
