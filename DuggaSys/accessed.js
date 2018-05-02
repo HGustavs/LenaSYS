@@ -476,8 +476,8 @@ function returnedAccess(data) {
 	    "",
 	    null,
 	    null,
-		null,
-		null,
+		rowHighlightOn,
+		rowHighlightOff,
 		null,
 	    null,
 		true
@@ -490,6 +490,18 @@ window.onresize = function() {
 
 myTable.magicHeader();
 
+}
+
+function rowHighlightOn(rowid,rowno,colclass,centerel){
+    document.getElementById(rowid).style.borderTop="2px solid rgba(255,0,0,1)";
+		document.getElementById(rowid).style.borderBottom="2px solid rgba(255,0,0,1)";
+		centerel.style.backgroundImage="radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2))";
+}
+
+function rowHighlightOff(rowid,rowno,colclass,centerel){
+    document.getElementById(rowid).style.borderTop="";
+		document.getElementById(rowid).style.borderBottom="";
+		centerel.style.backgroundImage="none";
 }
 
 //excuted onclick button for quick searching in table
