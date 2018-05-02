@@ -375,13 +375,13 @@ function createJSONString(formData) {
 function markSelected(el) {
 	var activeTable = findAncestor(el, 'TABLE', 'elName');
 	var activeTableRow = findAncestor(el, 'TR', 'elName');
-	var allRows = activetbl.getElementsByTagName('tr');
+	var allRows = activeTable.getElementsByTagName('tr');
 	
 	for(let row of allRows) {
 		row.removeAttribute('style'); // Remove background color from previously marked rows.
 	}
 	
-	activetr.style.backgroundColor = '#b39fc6';
+	activeTableRow.style.backgroundColor = '#fbcd47';
 }
 
 // VARIANT FUNCTIONS end
