@@ -301,11 +301,13 @@ function mouseupevt(ev) {
                 var okToMakeLine= true;
                 if(symbolEndKind == 3 && symbolStartKind == 2){
                     if(diagram[hovobj].hasConnector(p1)){
+                        console.log("Flasify");
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == 2 && symbolStartKind == 3){
                     if(diagram[lineStartObj].hasConnector(p2)){
                         okToMakeLine= false;
+                                                console.log("Flasify");
                     }
                 } else if(symbolEndKind == 3 && symbolStartKind == 5) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
