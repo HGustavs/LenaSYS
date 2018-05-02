@@ -1684,10 +1684,10 @@ function fabValidateType(kind) {
 	if (kind == 0){
 		selectItem("undefined","New Item","0","undefined","undefined","0","undefined","undefined");
 		newItem();
-	}	else if (kind == 1){
+	} else if (kind == 1){
 		selectItem("undefined","New Item","1","undefined","undefined","0","undefined","undefined");
 		newItem();
-	}	else if (kind == 2){
+	} else if (kind == 2){
 		selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 3){
@@ -1701,7 +1701,7 @@ function fabValidateType(kind) {
 	} else if (kind == 4){
 		selectItem("undefined","New Item","4","undefined","undefined","0","undefined","undefined");
 		newItem();
-	}	else if (kind == 5){
+	} else if (kind == 5){
 		selectItem("undefined","New Item","5","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 6){
