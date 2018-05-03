@@ -112,14 +112,11 @@
                             </button>
                         </div>
                         -->
-                        <!--
-                        IS NOT IN USE YET
                         <h4 class="label">Undo/Redo</h4>
                         <div class="toolbar-drawer">
                             <button onclick='undoDiagram()'>Undo</button>
                             <button onclick='redoDiagram()'>Redo</button>
                         </div>
-                        -->
                     </div>
                 </div>
                 <div class="menu-drop-down">

@@ -87,8 +87,7 @@ var xPos = 0;
 var yPos = 0;
 var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not. This is used in diagram_dialog.js
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
-var diagramNumberUndo = 0;              // Is used for localStorage and undo
-var diagramNumberRedo = 0;              // Is used for localStorage and redo
+var diagramNumberHistory = 0;           // Is used for undo and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
 var classAppearanceOpen = false;
@@ -107,6 +106,7 @@ function keyDownHandler(e){
     if(appearanceMenuOpen) return;
     if((key == 46 || key == 8)){
         eraseSelectedObject();
+        SaveState();
     } else if(key == 32){
         //Use space for movearound
         if (e.stopPropagation) {
@@ -120,6 +120,8 @@ function keyDownHandler(e){
         }
         updateGraphics();
     }
+    else if (key == 90 && ctrlIsClicked) undoDiagram();
+    else if (key == 89 && ctrlIsClicked) redoDiagram();
     else if(key == 17 || key == 91)
     {
       ctrlIsClicked = true;
@@ -849,6 +851,7 @@ function clearCanvas() {
         points.pop();
     }
     updateGraphics();
+    SaveState();
 }
 
 var consloe = {};
@@ -1244,4 +1247,16 @@ function globalStrokeColor() {
     for (var i = 0; i < diagram.length; i++) {
             diagram[i].strokeColor = document.getElementById('StrokeColor').value;
     }
+}
+
+function undoDiagram() {
+    if (diagramNumberHistory > 1) diagramNumberHistory--;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (tmpDiagram != null) LoadImport(tmpDiagram);
+}
+
+function redoDiagram() {
+    if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (tmpDiagram != null) LoadImport(tmpDiagram);
 }

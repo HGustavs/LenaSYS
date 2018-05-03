@@ -112,6 +112,24 @@ function Save() {
     console.log("State is saved");
 }
 
+function SaveState() {
+    Save();
+    if (diagramNumberHistory < diagramNumber) {
+        diagramNumberHistory++;
+        diagramNumber = diagramNumberHistory;
+    } else {
+        diagramNumber++;
+        diagramNumberHistory = diagramNumber;
+    }
+    localStorage.setItem("diagram" + diagramNumber, a);
+    for (var key in localStorage) {
+        if (key.indexOf("diagram") != -1) {
+            var tmp = key.match(/\d+$/);
+            if (tmp > diagramNumberHistory) localStorage.removeItem(key);
+        }
+    }
+}
+
 function SaveFile(el) {
     Save();
     var data = "text/json;charset=utf-8," + encodeURIComponent(a);
