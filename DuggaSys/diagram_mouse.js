@@ -65,7 +65,6 @@ function mousemoveevt(ev, t) {
         // If mouse is not pressed highlight closest point
         points.clearAllSelects();
         movobj = diagram.itemClicked();
-        updateActivePoint();
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
