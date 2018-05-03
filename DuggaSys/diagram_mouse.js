@@ -69,6 +69,7 @@ function mousemoveevt(ev, t) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
         // If mouse is pressed down and at a point in selected object - move that point
+        console.log("setting point coordinate");
         sel.point.x = currentMouseCoordinateX;
         sel.point.y = currentMouseCoordinateY;
     } else if (md == 3) {
