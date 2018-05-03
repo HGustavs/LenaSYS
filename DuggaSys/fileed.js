@@ -225,7 +225,7 @@ function renderCell(col,celldata,cellid) {
 		} else if (list[list.length-1] == "md" || list[list.length-1] == "txt"){
 			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadPreview(\"" + celldata + "\")'></div>";
-		} else if (list[list.length-1] == "js" || "html" || "css" || "php"){
+		} else if (list[list.length-1] == "js" || list[list.length-1] == "html" || list[list.length-1] == "css" || list[list.length-1] == "php"){
             str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
         }
 		return str;
