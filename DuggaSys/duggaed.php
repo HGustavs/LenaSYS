@@ -65,11 +65,11 @@ pdoConnect();
       			<div class='inputwrapper'><span>Template:</span><select id='template'><option selected='selected' value=""><option value=""></option></select></div>
             <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='qstart' value='' /></div>
       			<div class='inputwrapper'><span>1st Deadline:</span><input class='textinput datepicker' type='text' id='deadline' value='' /></div>
-						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments1' placeholder='Deadline Comments' /></div>
 						<div class='inputwrapper'><span>2nd Deadline :</span><input class='textinput datepicker' type='text' id='deadline2' value='None' /></div>
-						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments2' placeholder='Deadline Comments' /></div>
 						<div class='inputwrapper'><span>3rd Deadline :</span><input class='textinput datepicker' type='text' id='deadline3' value='None' /></div>
-						<div class='inputwrapper'><span>Comment:</span><input class='textinput'type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
+						<div class='inputwrapper'><span>Comment:</span><input class='textinput' type='text' id='deadlinecomments3' placeholder='Deadline Comments' /></div>
             <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
       		</div>
       		<div style='padding:5px;'>
@@ -83,7 +83,7 @@ pdoConnect();
 
   <!-- Confirm Section Dialog START -->
 		<div id='sectionConfirmBox' class='loginBoxContainer' style='display:none; z-index: 9999;'>
-	        <div class='loginBox' style='width:460px;'>
+	    <div class='loginBox' style='width:460px;'>
 				<div class='loginBoxheader'>
 				    <h3>Confirm deletion</h3>
 				    <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
@@ -95,7 +95,7 @@ pdoConnect();
 				    <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
 				    <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
 				</div>
-	        </div>
+	    </div>
 		</div>
   <!-- Confirm Section Dialog START -->
 
@@ -111,7 +111,7 @@ pdoConnect();
         <div id='upperDiv'>
           <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; background-color: white;'></div> <!-- A div to place the variant-table within. -->
         </div>
-        <div id='editVariantDiv' style="display:flex";>
+        <div id='editVariantDiv' style="display:flex;">
           <input type='hidden' id='vid' value='Toddler'/>
             <div id="leftDivDialog" style="width: 50%; height:100%; display: inline-block;">
                 <div id="submissionError" style="display:none;height:80px;">
@@ -149,10 +149,10 @@ pdoConnect();
                       <legend>Submission types</legend>
                       <div id="submissions" style="display:flex;flex-wrap:wrap;flex-direction:row;overflow:auto;"></div>
                     </fieldset>
-                    <input type="button" class="submit-button" name="addfieldname" id="addfieldname" value="+" style="width:32px;"></button>
-                    <input type="button" class="submit-button" name="createjson" id="createjson" value="Create JSON" style=""></button>
+                    <input type="button" class="submit-button" name="addfieldname" id="addfieldname" value="+" style="width:32px;" />
+                    <input type="button" class="submit-button" name="createjson" id="createjson" value="Create JSON" />
                   </div>
-                    </div>
+                </div>
                   <!-- Submissions for dugga -->
                 <!-- End of leftDivDialog -->
             </div>
@@ -171,20 +171,16 @@ pdoConnect();
               </fieldset>
             </div>
           </div>
-          <div id='buttonVariantDiv' style='padding:5px';>
-            <input id='closeVariant' class='submit-button' style='display:block; float:left' type='button' value='Cancel'
-              onclick='closeWindows();'/>
-            <input id='submitVariant' class='submit-button' style='display:none; float:right' type='button' value='Submit'
-              onclick='createVariant();'/>
-            <input id='saveVariant' class='submit-button' style='display:none; float:right' type='button' value='Save'
-              onclick='updateVariant(); showVariantSubmitButton();'/>
-            <input id='disableVariant' class='submit-button disableEnable' style='display:none; float:right' type='button' value='Disable'
-              onclick='showVariantEnableButton(); '/>
-            <input id='enableVariant' class='submit-button disableEnable' style='display:none; float:right' type='button' value='Enable'
-              onclick='showVariantDisableButton();'/>
+          <div id='buttonVariantDiv' style='padding:5px;'>
+            <input id='closeVariant' class='submit-button' style='display:block; float:left;' type='button' value='Cancel' onclick='closeWindows();'>
+            <input id='submitVariant' class='submit-button' style='display:none; float:right;' type='button' value='Submit' onclick='createVariant();'>
+            <input id='saveVariant' class='submit-button' style='display:none; float:right;' type='button' value='Save' onclick='updateVariant(); showVariantSubmitButton();'>
+            <input id='disableVariant' class='submit-button disableEnable' style='display:none; float:right;' type='button' value='Disable' onclick='showVariantEnableButton();'>
+            <input id='enableVariant' class='submit-button disableEnable' style='display:none; float:right;' type='button' value='Enable' onclick='showVariantDisableButton();'>
           </div>
         </div>
      </div>
+  </div>
 	<!-- Edit Variant Dialog END -->
 
 	<!-- Result Dialog START -->

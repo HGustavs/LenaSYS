@@ -523,6 +523,10 @@ function renderVariant(clickedElement) {
 	mytable2Styling();
 }
 
+/*
+	Change styling of myTable2. The variants list will be scrollable, and its
+	size will change depending on the size of the login box, where it is placed.
+*/
 function mytable2Styling() {
 	var loginBox = findAncestor(document.getElementById('variant'), 'loginBox', 'className');
 	var loginBoxHeader = null;
@@ -532,6 +536,7 @@ function mytable2Styling() {
 	var editVariantHeight = null;
 	var remainingSpace = null;
 	
+	// Find the header of the login box
 	for(var i = 0; i < loginBox.children.length; i++) {
 		if($(loginBox.children[i]).hasClass('loginBoxheader')) {
 			loginBoxHeader = loginBox.children[i];
@@ -543,14 +548,16 @@ function mytable2Styling() {
 	loginBoxHeaderHeight = $(loginBoxHeader).outerHeight();
 	editVariantHeight = $("#editVariantDiv").outerHeight();
 
-	remainingSpace = loginBoxHeight - (loginBoxHeaderHeight + editVariantHeight);
+	// Remaining space for the scrollable variants list
+	remainingSpace = loginBoxHeight - (loginBoxHeaderHeight + editVariantHeight + 60);
 
-	// console.log(containerHeight);
-	// console.log(containerHeaderHeight);
-	// console.log(editVariantHeight);
-	// console.log(remainingVariantsHeight);
-
-	document.getElementById('variant').style.maxHeight = remainingSpace + 'px';
+	if(remainingSpace > 100) {
+		document.getElementById('variant').style.maxHeight = remainingSpace + 'px';
+	} else {
+		document.getElementById('variant').style.minHeight = '100px';
+		document.getElementById('variant').style.maxHeight = '100px';
+	}
+	
 	document.getElementById('variant').style.overflow = 'auto';
 }
 
