@@ -9,7 +9,7 @@ var filez;
 var variant = [];
 var submissionRow = 0;
 var myTable;
-var myTable2;
+var variantsTable;
 var str;
 var globalData;
 var globalVariant;
@@ -497,7 +497,7 @@ function renderVariant(clickedElement) {
 		tblbody: globalData['entries'][clickedElement].variants,
 		tblfoot: []
 	}
-	myTable2 = new SortableTable(
+	variantsTable = new SortableTable(
 		tabledata,
 		"variant",
 		null,
@@ -517,17 +517,17 @@ function renderVariant(clickedElement) {
 		null,
 		false
 	);
-	myTable2.renderTable();
+	variantsTable.renderTable();
 	newVariant();
 	$('#did').val(globalData['entries'][clickedElement].arrow);
-	mytable2Styling();
+	variantsTableStyling();
 }
 
 /*
-	Change styling of myTable2. The variants list will be scrollable, and its
+	Change the styling of variantsTable. The variants list will be scrollable, and its
 	size will change depending on the size of the login box, where it is placed.
 */
-function mytable2Styling() {
+function variantsTableStyling() {
 	var loginBox = findAncestor(document.getElementById('variant'), 'loginBox', 'className');
 	var loginBoxHeader = null;
 
