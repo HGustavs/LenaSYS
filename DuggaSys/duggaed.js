@@ -372,7 +372,7 @@ function createJSONString(formData) {
 	This function marks the selected variant when editing by changing the
 	background color of the table row.
 */
-function markSelected(el) {
+function markSelectedVariant(el) {
 	var activeTable = findAncestor(el, 'TABLE', 'elName');
 	var activeTableRow = findAncestor(el, 'TR', 'elName');
 	var allRows = activeTable.getElementsByTagName('tr');
@@ -608,7 +608,7 @@ function renderCell(col, celldata, cellid) {
 	else if (col == "cogwheelVariant") {
 		object = JSON.parse(celldata);
 		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
-		str += " onclick='selectVariant(" + object + ");markSelected(this);' >";
+		str += " onclick='selectVariant(" + object + ");markSelectedVariant(this);' >";
 		return str;
 	}
 
