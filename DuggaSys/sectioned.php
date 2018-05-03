@@ -72,9 +72,6 @@
 				<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 				<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
 				<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
-				<div id='inputwrapper-numberOfGroups' class='inputwrapper'><span>Number of Groups:</span><select id='numberOfGroups'></select></div>
-				<div id='inputwrapper-groupType' class='inputwrapper'><span>Group Type:</span><select id='groupType'></select></div>
-
 			</div>
 
 			<!-- Error message, no duggas present-->

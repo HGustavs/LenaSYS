@@ -209,29 +209,12 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	// Show dialog
 	iistr = "";
 
-	// Set Group options
-	str = "";
-	str += "<option value ='0'>1</option>";
-	str += "<option value ='1'>2</option>";
-	str += "<option value ='2'>3</option>";
-	str += "<option value ='2'>4</option>";
-	str += "<option value ='2'>5</option>";
-	$("#numberOfGroups").html(str);
-
-	str = "";
-	str += "<option value ='0'>Seminar Group</option>";
-	str += "<option value ='1'>Group Task</option>";
-	str += "<option value ='2'>Project Task</option>";
-	$("#groupType").html(str);
-
 	$("#inputwrapper-tabs").css("display","block");
 	$("#inputwrapper-link").css("display","block");
 	$("#inputwrapper-gradesystem").css("display","block");
 	$("#inputwrapper-moment").css("display","block");
 	$("#inputwrapper-highscore").css("display","block");
 	$("#inputwrapper-comments").css("display","block");
-	$("#inputwrapper-numberOfGroups").css("display", "block");
-	$("#inputwrapper-groupType").css("display", "block");
 
 	// Code
 	if(kind==2){
@@ -903,8 +886,6 @@ function returnedSection(data) {
 		str += "</div>";
 
 		str += "<div id='Sectionlistc' >";
-		//group-related variable
-		var groupitems = 0;
 
 		// For now we only have two kinds of sections
 		if (data['entries'].length > 0) {
