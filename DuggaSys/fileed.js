@@ -247,7 +247,14 @@ function rowFilter(row) {
 	// Normal search 	
         for (key in row) {
             if (row[key] != null) {
-                if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+            	if(key == "filesize"){
+            		if(formatBytes(parseInt(row[key]), 0).toUpperCase().indexOf(searchterm.toUpperCase()) != -1 &&
+						!(key == "counter" || key == "editor" || key == "trashcan")) return true;
+					//console.log(formatBytes(parseInt(row[key]), 0));
+				} else {
+                    if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1 &&
+                        !(key == "counter" || key == "editor" || key == "trashcan")) return true;
+                }
             }
         }
 	}
