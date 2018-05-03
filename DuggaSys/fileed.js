@@ -301,8 +301,18 @@ function compare(a,b) {
 		tempA = tempA[tempA.length-1];
 		tempB = tempB[tempB.length-1];
 	} else if (col == "Size") {
-		tempA = parseInt(tempA);
-		tempB = parseInt(tempB);
+		tempA = JSON.parse(tempA);
+		tempB = JSON.parse(tempB);
+		if(tempA.kind != "Link"){
+            tempA = parseInt(tempA.size);
+		} else {
+			tempA = -1;
+		}
+		if(tempB.kind != "Link") {
+            tempB = parseInt(tempB.size);
+		} else {
+			tempB = -1;
+		}
 	}
 
 	if (tempA > tempB) {
