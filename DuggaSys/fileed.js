@@ -60,7 +60,7 @@ function returnedFile(data) {
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
-    }
+    };
 
     fileLink = new SortableTable(
 		tabledata,
@@ -85,6 +85,10 @@ function returnedFile(data) {
 
 
 	fileLink.renderTable();
+
+	if(!data['access']) {
+        document.getElementById("fabButton").style.display = "none";
+	}
 
 	if(data['debug']!="NONE!") alert(data['debug']);
 }
