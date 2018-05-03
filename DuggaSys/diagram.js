@@ -268,6 +268,7 @@ diagram.closestPoint = function(mx, my){
     var distance = 50000000;
     var point;
     this.forEach(symbol => {
+        console.log(symbol.kind);
         [symbol.topLeft, symbol.bottomRight].forEach(corner => {
             var deltaX = mx - corner.x;
             var deltaY = my - corner.y;
