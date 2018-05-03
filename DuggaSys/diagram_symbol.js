@@ -697,16 +697,17 @@ function Symbol(kind) {
             ctx.arc(x2,y2,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
-            
-            ctx.beginPath();
-            ctx.arc(x1,y2,5,0,2*Math.PI,false);
-            ctx.fillStyle = '#F82';
-            ctx.fill();
+            if(this.symbolkind != 4){
+                ctx.beginPath();
+                ctx.arc(x1,y2,5,0,2*Math.PI,false);
+                ctx.fillStyle = '#F82';
+                ctx.fill();
 
-            ctx.beginPath();
-            ctx.arc(x2,y1,5,0,2*Math.PI,false);
-            ctx.fillStyle = '#F82';
-            ctx.fill();
+                ctx.beginPath();
+                ctx.arc(x2,y1,5,0,2*Math.PI,false);
+                ctx.fillStyle = '#F82';
+                ctx.fill();
+            }
         }
 
 
