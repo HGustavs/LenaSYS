@@ -200,6 +200,7 @@ function mousedownevt(ev) {
         }
 
     } else if (sel.distance < tolerance) {
+        console.log("we have the tolerance");
         for (var i = 0; i < diagram.length; i++) {
             /*if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
                 md = 3;
