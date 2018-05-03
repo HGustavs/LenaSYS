@@ -330,8 +330,8 @@ function mouseupevt(ev) {
     if (uimode == "CreateClass" && md == 4) {
         classB = new Symbol(1);
         classB.name = "New" + diagram.length;
-        classB.operations.push({visibility:"-", text:"makemore()"});
-        classB.attributes.push({visibility:"+", text:"height:Integer"});
+        classB.operations.push({text:"- makemore()"});
+        classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
         classB.bottomRight = p2;
 
