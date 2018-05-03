@@ -3788,7 +3788,7 @@ li:nth-last-child(10) a:hover {
 
 #boldText {
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 45px;
   position: relative;
   bottom: 10%;
 }
@@ -3913,7 +3913,7 @@ position: absolute;
 }
 .headerType {
   cursor: pointer;
-  margin-left: 20px;
+  margin-left: 30px;
   position: relative;
   bottom: 10%;
 }
@@ -3924,10 +3924,11 @@ position: absolute;
 
 #select-header {
   max-width: 63px;
-  position: absolute;
+  position: relative;
+  left:94%;
   z-index: 2000;
   right: 75px;
-  background-color: rgba(0, 0, 0, 0);
+  background-color:#fff;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
 

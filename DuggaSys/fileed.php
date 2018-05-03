@@ -109,6 +109,13 @@ pdoConnect();
         </div>
         <div class="markdown">
             <div class="markNav">Markdown
+                <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
+                <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
+                <span id="codeBlockText" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
+                <span id="lists" onclick="lists()" title="lists">&#9711;</span>
+                <span id="quoteText" onclick="quoteText()" title="quote">&#10078;</span>
+                <span id="link" onclick="linkText()" title="link"><img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg"></span>
+                <span id="img" onclick="externalImg()" title="Img"><img id="insert-photo" class="fab-icon" src="../shared/icons/insert-photo.svg"></span>
                 <span class="headerType" title="Header">aA&#9663;</span>
                     <div id="select-header">
                         <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
@@ -119,13 +126,6 @@ pdoConnect();
                         <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
 
                     </div>
-                <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
-                <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
-                <span id="codeBlockText" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
-                <span id="lists" onclick="lists()" title="lists">&#9711;</span>
-                <span id="quoteText" onclick="quoteText()" title="quote">&#10078;</span>
-                <span id="link" onclick="linkText()" title="link"><img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg"></span>
-                <span id="img" onclick="externalImg()" title="Img"><img id="insert-photo" class="fab-icon" src="../shared/icons/insert-photo.svg"></span>
             </div>
             <div class="markText">
                 <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>

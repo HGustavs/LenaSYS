@@ -458,6 +458,7 @@ function cursiveText() {
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
 }
 
 function showDropdown() {
@@ -506,6 +507,7 @@ function codeBlockText(){
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd= end + 4;
+    updatePreview(txtarea.value);
 }
 
 function boldText() {
@@ -517,6 +519,7 @@ function boldText() {
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
 }
 
 function linkText(){
@@ -528,6 +531,7 @@ function linkText(){
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd = end +12;
+    updatePreview(txtarea.value);
 }
 
 function externalImg(){
@@ -539,6 +543,7 @@ function externalImg(){
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd = end +11;
+    updatePreview(txtarea.value);
 }
 
 function quoteText(){
@@ -550,6 +555,7 @@ function quoteText(){
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
 }
 
 $(document).ready(function(){
