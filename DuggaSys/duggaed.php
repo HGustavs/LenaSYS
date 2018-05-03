@@ -124,7 +124,7 @@ pdoConnect();
                 <div>
                   <fieldset style="width:90%">
                     <legend>Instruction file</legend>
-                    <div style="display:flex;flex-wrap:nowrap;flex-direction:row;">
+                    <div style="display:flex;flex-wrap:wrap;flex-direction:row;">
                       <select name="type" id="type" style="flex:1">
                         <option value="md">Markdown</option>
                         <option value="pdf">PDF</option>
