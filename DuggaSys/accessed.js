@@ -2,6 +2,7 @@ var sessionkind=0;
 var querystring=parseGet();
 var versions;
 var dataInfo;
+var searchterm = "";
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 
@@ -469,6 +470,30 @@ function compare(a,b) {
 	}
 }	
 
+//----------------------------------------------------------------
+// rowFilter <- Callback function that filters rows in the table
+//----------------------------------------------------------------
+function rowFilter(row) {
+	for (key in row) {
+    if (key == "examiner"){
+      var examiners = JSON.parse(row[key])['examiners']
+      var teacher = examiners[examiners.length - 1]['teacher'];
+      if (teacher.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+    } else if (key == "access") {
+      var access = "none";
+      if (JSON.parse(row[key])['access'] == "W"){
+        access = "teacher";
+      } else if (JSON.parse(row[key])['access'] == "R"){
+        access = "student";
+      }
+			if (access.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+		} else if (row[key] != null) {
+			if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+		}
+	}
+	return false;
+}
+
 var myTable;
 //----------------------------------------
 // Renderer
@@ -494,7 +519,6 @@ function returnedAccess(data) {
 		tblbody: data['entries'],
 		tblfoot:[]
 	}
-
 	myTable = new SortableTable(
 		tabledata,
 		"user",
@@ -503,7 +527,7 @@ function returnedAccess(data) {
 	    renderCell,
 	    renderSortOptions,
 	    null,
-	    null,
+	    rowFilter,
 	    [],
 	    [],
 	    "",
