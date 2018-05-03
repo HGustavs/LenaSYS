@@ -114,9 +114,14 @@ function Save() {
 
 function SaveState() {
     Save();
-    diagramNumber++;
+    if (diagramNumberHistory < diagramNumber) {
+        diagramNumberHistory++;
+        diagramNumber = diagramNumberHistory;
+    } else {
+        diagramNumber++;
+        diagramNumberHistory = diagramNumber;
+    }
     localStorage.setItem("diagram" + diagramNumber, a);
-    diagramNumberHistory = diagramNumber;
     for (var key in localStorage) {
         if (key.indexOf("diagram") != -1) {
             var tmp = key.match(/\d+$/);

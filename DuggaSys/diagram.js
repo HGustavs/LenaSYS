@@ -120,6 +120,8 @@ function keyDownHandler(e){
         }
         updateGraphics();
     }
+    else if (key == 90 && ctrlIsClicked) undoDiagram();
+    else if (key == 89 && ctrlIsClicked) redoDiagram();
     else if(key == 17 || key == 91)
     {
       ctrlIsClicked = true;
