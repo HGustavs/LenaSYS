@@ -269,8 +269,8 @@ diagram.closestPoint = function(mx, my){
     var point;
     this.forEach(symbol => {
         [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
-            var deltaX = mx - corner.x;
-            var deltaY = my - corner.y;
+            var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
+            var deltaY = corner.fake ? my - corner.y.y : my - corner.y;
             var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
             if (hypotenuseElevatedBy2 < distance) {
                 distance = hypotenuseElevatedBy2;

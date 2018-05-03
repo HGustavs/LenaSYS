@@ -73,7 +73,7 @@ function mousemoveevt(ev, t) {
         if(!sel.point.fake){
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;
-        }else{
+        } else {
             sel.point.x.x = currentMouseCoordinateX;
             sel.point.y.y = currentMouseCoordinateY;
         }
