@@ -851,6 +851,7 @@ function clearCanvas() {
         points.pop();
     }
     updateGraphics();
+    SaveState();
 }
 
 var consloe = {};
