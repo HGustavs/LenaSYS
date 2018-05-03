@@ -695,6 +695,8 @@ function returnedResults(data)
           if (students[t][j].lid == data.duggaid){
             dpos=j;
             students[t][j].grade = parseInt(data.results);
+            students[t][j].gradeExpire = data.duggaexpire;
+            students[t][j].timesGraded = parseInt(data.duggatimesgraded);
             break;
           }
         }
