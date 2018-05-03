@@ -388,6 +388,21 @@ function createJSONString(formData) {
 
 	return jsonStr;
 }
+/*
+	This function marks the selected variant when editing by changing the
+	background color of the table row.
+*/
+function markSelectedVariant(el) {
+	var activeTable = findAncestor(el, 'TABLE', 'elName');
+	var activeTableRow = findAncestor(el, 'TR', 'elName');
+	var allRows = activeTable.getElementsByTagName('tr');
+	
+	for(let row of allRows) {
+		row.removeAttribute('style'); // Remove background color from previously marked rows.
+	}
+	
+	activeTableRow.style.backgroundColor = '#fbcd47';
+}
 
 // VARIANT FUNCTIONS end
 
@@ -627,7 +642,7 @@ function renderCell(col, celldata, cellid) {
 	else if (col == "cogwheelVariant") {
 		object = JSON.parse(celldata);
 		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
-		str += " onclick='selectVariant(" + object + ")' >";
+		str += " onclick='selectVariant(" + object + ");markSelectedVariant(this);' >";
 		return str;
 	}
 
@@ -710,6 +725,24 @@ function closePreview() {
 	$("#resultpopover").css("display", "none");
 	$("#overlay").css("display", "none");
 	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
+}
+
+/*
+	This function finds the first ancestor element of the element passed in as an argument.
+	el: the element whose ancestor should be found.
+	name: the class or element name of the ancestor, i.e. 'myclass' or 'DIV'
+		(all element names must be in capital letters)
+	type: search for ancestor by class or element name
+*/
+function findAncestor (el, name, type) {
+	if(type == 'className') {
+		while ((el = el.parentElement) && !el.classList.contains(name));
+    	return el;
+	} else if(type == 'elName') {
+		while ((el = el.parentElement) && el.nodeName != name);
+    	return el;
+	}
+	return null;
 }
 
 
