@@ -212,8 +212,15 @@ function renderCell(col,celldata,cellid) {
 			return "<div id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+celldata+"\")'>" + listStr + "</div>";
 		}
 	} else if (col == "filesize") {
-		return formatBytes(celldata, 0);
-	} else if (col == "extension") {
+        var obj = JSON.parse(celldata);
+        if(obj.kind == "Link") {
+            return "-";
+        }
+        return formatBytes(obj.size, 0);
+    } else if (col == "extension") {
+        if(link[0] == "https" || link[0] == "http"){
+            return "<div> - </div>";
+        }
 	    return "<div>" + list[list.length - 1] + "</div>";
 	} else if (col == "editor") {
 		if(link[0] == "https" || link[0] == "http"){
@@ -283,19 +290,37 @@ function compare(a,b) {
 	let col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
 	var tempB = b;
-
 	if (col == "File name") {
 		tempA = tempA.toUpperCase();
 		tempB = tempB.toUpperCase();
 	} else if (col == "Extension") {
+        var linkA = tempA.split("://");
+        var linkB = tempB.split("://");
 		tempA = tempA.split('.');
 		tempB = tempB.split('.');
-
-		tempA = tempA[tempA.length-1];
-		tempB = tempB[tempB.length-1];
+		if(linkA[0] == "https" || linkA[0] == "http"){
+			tempA = "-";
+		} else {
+            tempA = tempA[tempA.length-1];
+		}
+        if(linkB[0] == "https" || linkB[0] == "http"){
+            tempB = "-";
+        } else {
+            tempB = tempB[tempB.length-1];
+        }
 	} else if (col == "Size") {
-		tempA = parseInt(tempA);
-		tempB = parseInt(tempB);
+		tempA = JSON.parse(tempA);
+		tempB = JSON.parse(tempB);
+		if(tempA.kind != "Link"){
+            tempA = parseInt(tempA.size);
+		} else {
+			tempA = -1;
+		}
+		if(tempB.kind != "Link") {
+            tempB = parseInt(tempB.size);
+		} else {
+			tempB = -1;
+		}
 	}
 
 	if (tempA > tempB) {
