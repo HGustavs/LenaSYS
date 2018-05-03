@@ -805,8 +805,8 @@ function createSortableTable(data){
 		"",
 		null,
 		null,
-		null,
-		null,
+		rowHighlightOn,
+		rowHighlightOff,
 		null,
 		null,
 		false
@@ -878,4 +878,30 @@ function renderCell(col,celldata,cellid) {
     return str;
   }
 return celldata;
+}
+
+//--------------------------------------------------------------------------
+// rowHighlight
+// ---------------
+//  Callback function that highlights the currently hovered row
+//--------------------------------------------------------------------------
+
+function rowHighlightOn(rowid,rowno,colclass,centerel) {
+  document.getElementById(rowid).style.border = "3px solid rgba(97,72,117,1)";
+  var collist = document.getElementsByClassName(colclass);
+		for(let i=0;i<collist.length;i++){
+			collist[i].style.borderLeft="3px solid rgba(97,72,117,1)";
+			collist[i].style.borderRight="3px solid rgba(97,72,117,1)";
+		}
+  centerel.style.backgroundImage = "radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2))";
+}
+
+function rowHighlightOff(rowid,rowno,colclass,centerel) {
+  document.getElementById(rowid).style.border = "";
+  var collist = document.getElementsByClassName(colclass);
+		for(let i=0;i<collist.length;i++){
+			collist[i].style.borderLeft="";
+			collist[i].style.borderRight="";
+		}
+  centerel.style.backgroundImage = "none";
 }
