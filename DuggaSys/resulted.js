@@ -181,7 +181,7 @@ function process()
 	// Update dropdown list
   var dstr="";
 
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 
 	var activeMoment = 0;
 	for(var j=0;j<moments.length;j++){
@@ -193,7 +193,7 @@ function process()
 
 		if (moments[j].kind == 4) {dstr +=" checkmoment";}
 
-		dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
+		dstr+="'><input name='selectdugga' type='checkbox' disabled class='headercheck' id='hdr"+lid+"check'";
 		if (moments[j].kind == 4) {
 			duggaArray.push( [] );
 			var idAddString = "hdr"+lid+"check";
@@ -238,12 +238,12 @@ function process()
 	dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>";
 
 	// Filter for only showing pending
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='pending' value='0' id='pending'";
 	if (onlyPending){ dstr+=" checked"; }
 	dstr+="><label class='headerlabel' for='pending'>Only pending</label></div>";
 
 	// Filter for mini mode
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='minimode' value='0' id='minimode' onchange='miniMode()'>";
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='minimode' value='0' id='minimode' onchange='miniMode()'>";
 	dstr+="<label class='headerlabel' for='minimode'>Mini mode</label></div>";
 
 	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
