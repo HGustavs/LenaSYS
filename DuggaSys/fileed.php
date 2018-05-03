@@ -119,7 +119,7 @@ pdoConnect();
                 <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
             </div>
             <div class="markText">
-                <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
+                <textarea id="mrkdwntxt" oninput="updatePreview(value)" name="markdowntext" rows="32" cols="40"></textarea>
             </div>
         </div>
         <div class="markdownPrev">
