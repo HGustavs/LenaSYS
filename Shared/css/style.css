@@ -3948,7 +3948,7 @@ li:nth-last-child(10) a:hover {
   margin: 0px 10px 0px 0px;
 }
 
-#filecontent {
+#filecont {
   border-radius: 8px;
   box-shadow: 2px 2px 4px #888 inset;
   resize: none;
@@ -3962,7 +3962,7 @@ li:nth-last-child(10) a:hover {
   .editFileCode {
     height: 400px;
   }
-  #filecontent {
+  #filecont{
     height: 350px;
   }
   .optionButtons {
