@@ -3655,18 +3655,6 @@ li:nth-last-child(10) a:hover {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
- 
- .previewWindowContainer {
-    background-color: rgba(0,0,0,0.6);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 8000;
-    display: none;
- }
-
 .previewWindowContainer {
   background-color: rgba(0, 0, 0, 0.6);
   position: fixed;
@@ -3788,12 +3776,53 @@ li:nth-last-child(10) a:hover {
 
 #boldText {
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 45px;
+  position: relative;
+  bottom: 10%;
 }
 
 #cursiveText {
   cursor: pointer;
   margin-left: 10px;
+  position: relative;
+  bottom:10%;
+}
+
+#lists {
+  cursor: pointer;
+  color: #FFFFFF;
+  margin-left: 10px;
+  font-size: 12px;
+  position: relative;
+  bottom:15%;
+}
+#codeBlockText {
+    cursor: pointer;
+    margin-left: 10px;
+    position: relative;
+    bottom:10%;
+}
+#quoteText {
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 25px;
+    position: relative;
+    top:20%;
+}
+#img {
+    cursor: pointer;
+    margin-left: 10px;
+}
+#insert-photo {
+    position: absolute;
+    filter: invert(100%);
+}
+#link {
+    cursor: pointer;
+    margin-right: 15px;
+}
+#linkFabBtnImg {
+position: absolute;
 }
 
 #headerType1 {
@@ -3832,9 +3861,49 @@ li:nth-last-child(10) a:hover {
   background-color: rgb(200, 200, 200);
 }
 
+
+#headerType4 {
+  cursor: pointer;
+  color: #000;
+  font-size: 10px;
+  padding: 8px 5px 5px 13px;
+  background-color: #fff;
+}
+
+#headerType4:hover {
+  background-color: rgb(200, 200, 200);
+}
+
+
+#headerType5 {
+  cursor: pointer;
+  color: #000;
+  font-size: 9px;
+  padding: 8px 5px 5px 13px;
+  background-color: #fff;
+}
+
+#headerType5:hover {
+  background-color: rgb(200, 200, 200);
+}
+
+
+#headerType6 {
+  cursor: pointer;
+  color: #000;
+  font-size: 8px;
+  padding: 8px 5px 5px 13px;
+  background-color: #fff;
+}
+
+#headerType6:hover {
+  background-color: rgb(200, 200, 200);
+}
 .headerType {
   cursor: pointer;
-  margin-left: 150px;
+  margin-left: 30px;
+  position: relative;
+  bottom: 10%;
 }
 
 .show-dropdown-content {
@@ -3843,10 +3912,11 @@ li:nth-last-child(10) a:hover {
 
 #select-header {
   max-width: 63px;
-  position: absolute;
+  position: relative;
+  left:94%;
   z-index: 2000;
   right: 75px;
-  background-color: rgba(0, 0, 0, 0);
+  background-color:#fff;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
 
@@ -3867,6 +3937,119 @@ li:nth-last-child(10) a:hover {
         top: 436px;
     }
  }
+
+/* Import diagram */
+
+.importDiagram {
+  height: auto !important;
+  margin-top: 0 !important;
+  display: none;
+}
+
+.importDiagram .importWrap {
+  padding: 20px;
+}
+
+.importDiagram .importError {
+  margin-top: 10px;
+  color: red;
+  display: none;
+}
+
+.importDiagram .importButtonWrap {
+  margin-top: 10px;
+}
+
+.importDiagram .uploadButton {
+  width: auto;
+  padding: 0 15px;
+}
+
+/* --------------================################================-------------- *
+ *                               Edit file preview                              *
+ * --------------================################================-------------- */
+.editFileWindowContainer {
+  background-color: rgba(0,0,0,0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8000;
+  display: none;
+}
+
+.editFileWindow {
+  height: 635px;
+  width: 690px;
+  margin: 0px auto;
+  border: solid rgb(200,200,200);
+  background-color: rgb(240,240,240);
+  box-shadow: 0px 5px 10px grey;
+  z-index: 12000;
+  display: none;
+  left: 0;
+  right: 0;
+  top: 100px;
+  position: fixed;
+}
+
+.editFileCode {
+  border: solid rgb(200, 200, 200);
+  background-color: #FFFFFF;
+  width: 665px;
+  height: 550px;
+  position: relative;
+  margin: 20px 10px 10px 10px;
+  float: left;
+}
+
+.optionButtons {
+  top: 585px;
+  position: relative;
+  margin: 0px 10px 0px 10px;
+  height: 40px;
+  width: 355px;
+}
+
+
+#button-cancel {
+  position: absolute;
+  left: 5px;
+}
+
+#button-save {
+  position: absolute;
+  left: 75px;
+}
+
+#button-close {
+  float: right;
+  position: relative;
+  margin: 0px 10px 0px 0px;
+}
+
+#filecont {
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px #888 inset;
+  resize: none;
+  margin: 10px 4px 0px 4px;
+}
+
+@media only screen and (max-height: 800px) and (max-width: 1400px) {
+  .editFileWindow {
+    height: 500px;
+  }
+  .editFileCode {
+    height: 400px;
+  }
+  #filecont{
+    height: 350px;
+  }
+  .optionButtons {
+    top: 436px;
+  }
+}
 
 /* Import diagram */
 

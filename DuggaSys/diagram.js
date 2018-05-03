@@ -87,8 +87,7 @@ var xPos = 0;
 var yPos = 0;
 var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not. This is used in diagram_dialog.js
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
-var diagramNumberUndo = 0;              // Is used for localStorage and undo
-var diagramNumberRedo = 0;              // Is used for localStorage and redo
+var diagramNumberHistory = 0;           // Is used for undo and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
 var classAppearanceOpen = false;
@@ -110,6 +109,7 @@ function keyDownHandler(e){
     if(appearanceMenuOpen) return;
     if((key == 46 || key == 8)){
         eraseSelectedObject();
+        SaveState();
     } else if(key == 32){
         //Use space for movearound
         if (e.stopPropagation) {
@@ -141,7 +141,13 @@ function keyDownHandler(e){
         }
     }
 
-    
+    else if (key == 90 && ctrlIsClicked) undoDiagram();
+    else if (key == 89 && ctrlIsClicked) redoDiagram();
+    else if(key == 17 || key == 91)
+    {
+      ctrlIsClicked = true;
+    }
+
 }
 
 //--------------------------------------------------------------------
@@ -292,6 +298,8 @@ points.closestPoint = function(xCoordinate, yCoordinate) {
     return {distance:Math.sqrt(distance), index:index};
 }
 
+
+
 //--------------------------------------------------------------------
 // clearAllSelects - Clears all selects from the array "points"
 //--------------------------------------------------------------------
@@ -310,6 +318,24 @@ var diagram = [];
 //--------------------------------------------------------------------
 // draw - Executes draw methond in all diagram objects
 //--------------------------------------------------------------------
+
+diagram.closestPoint = function(mx, my){
+    var distance = 50000000;
+    var point;
+    this.forEach(symbol => {
+        [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
+            var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
+            var deltaY = corner.fake ? my - corner.y.y : my - corner.y;
+            var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
+            if (hypotenuseElevatedBy2 < distance) {
+                distance = hypotenuseElevatedBy2;
+                point = corner;
+            }
+        });
+    });
+    return {distance:Math.sqrt(distance), point:point};
+}
+
 diagram.draw = function() {
     this.adjustPoints();
     //Draws all lines first so that they appear behind the object instead
@@ -899,6 +925,7 @@ function clearCanvas() {
         points.pop();
     }
     updateGraphics();
+    SaveState();
 }
 
 var consloe = {};
@@ -1294,4 +1321,16 @@ function globalStrokeColor() {
     for (var i = 0; i < diagram.length; i++) {
             diagram[i].strokeColor = document.getElementById('StrokeColor').value;
     }
+}
+
+function undoDiagram() {
+    if (diagramNumberHistory > 1) diagramNumberHistory--;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (tmpDiagram != null) LoadImport(tmpDiagram);
+}
+
+function redoDiagram() {
+    if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (tmpDiagram != null) LoadImport(tmpDiagram);
 }

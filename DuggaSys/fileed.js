@@ -24,7 +24,6 @@ var fileKind = "";
 var searchterm = "";
 var pressTimer;
 var fabListIsVisible = true;
-var count = 0;
 
 AJAXService("GET",{cid:querystring['cid']},"FILE");
 
@@ -61,7 +60,7 @@ function returnedFile(data) {
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
-    }
+    };
 
     fileLink = new SortableTable(
 		tabledata,
@@ -86,6 +85,10 @@ function returnedFile(data) {
 
 
 	fileLink.renderTable();
+
+	if(!data['access']) {
+        document.getElementById("fabButton").style.display = "none";
+	}
 
 	if(data['debug']!="NONE!") alert(data['debug']);
 }
@@ -153,6 +156,11 @@ function closePreview() {
     $(".previewWindowContainer").css("display", "none");
 }
 
+function closeEditFile() {
+    $(".editFileWindow").css("display","none");
+    $(".editFileWindowContainer").css("display", "none");
+}
+
 //------------------------------------------------------------------
 // validateForm <- Validates the file that is going to be uploaded
 //------------------------------------------------------------------
@@ -177,14 +185,6 @@ function validateForm() {
 	return result;
 }
 
-function showLoginPopup() {
-	$("#loginBox").css("display","flex");
-}
-
-function hideLoginPopup() {
-	$("#loginBox").css("display","none");
-}
-
 //----------------------------------------------------------------------------
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
@@ -193,8 +193,9 @@ function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
 	var link = celldata.split('://');
 	var str="";
+
 	if (col == "counter") {
-		return "<div class='counterBox'>" + ++count + "</div>";
+		return "<div class='counterBox'>" + ++fileLink.rowIndex + "</div>";
 	} if (col == "trashcan") {
 		obj = JSON.parse(celldata);
 	    str = "<div class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
@@ -216,16 +217,26 @@ function renderCell(col,celldata,cellid) {
 			return "<div id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+celldata+"\")'>" + listStr + "</div>";
 		}
 	} else if (col == "filesize") {
-		return formatBytes(celldata, 0);
-	} else if (col == "extension") {
+        var obj = JSON.parse(celldata);
+        if(obj.kind == "Link") {
+            return "-";
+        }
+        return formatBytes(obj.size, 0);
+    } else if (col == "extension") {
+        if(link[0] == "https" || link[0] == "http"){
+            return "<div> - </div>";
+        }
 	    return "<div>" + list[list.length - 1] + "</div>";
 	} else if (col == "editor") {
 		if(link[0] == "https" || link[0] == "http"){
 			str = "";
-		}else if (list[list.length-1] == "md" || list[list.length-1] == "txt"){
+		} else if (list[list.length-1] == "md" || list[list.length-1] == "txt"){
 			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadPreview(\"" + celldata + "\")'></div>";
-		}
+		} else if (list[list.length-1] == "js" || list[list.length-1] == "html" || list[list.length-1] == "css" || list[list.length-1] == "php"){
+            str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
+            str += "onclick='loadFile(\"" + celldata + "\")'></div>";
+        }
 		return str;
 
 	}
@@ -236,12 +247,33 @@ function renderCell(col,celldata,cellid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-	for (key in row) {
-		if (row[key] != null) {
-			if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-		}
+	// Special searchterms used for filtering the table on fileKind
+	if(searchterm == "~~global~~"){
+        if (row["kind"].toUpperCase().indexOf("global".toUpperCase()) != -1) return true;
+	} else if(searchterm == "~~course~~"){
+        if (row["kind"].toUpperCase().indexOf("course local".toUpperCase()) != -1) return true;
+	} else if(searchterm == "~~version~~"){
+        if (row["kind"].toUpperCase().indexOf("version local".toUpperCase()) != -1) return true;
+	} else if(searchterm == "~~link~~") {
+        if (row["kind"].toUpperCase().indexOf("link".toUpperCase()) != -1) return true;
+	} else {
+        for (key in row) {
+            if (row[key] != null) {
+            	// Special search criteria for Size column
+            	if(key == "filesize"){
+            		var obj = JSON.parse(row[key]);
+            		if(formatBytes(parseInt(obj.size), 0).toUpperCase().indexOf(searchterm.toUpperCase()) != -1 &&
+						!(key == "counter" || key == "editor" || key == "trashcan")) return true;
+				// Normal search
+				} else {
+                    if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1 &&
+                        !(key == "counter" || key == "editor" || key == "trashcan")) return true;
+                }
+            }
+        }
 	}
-	return false;
+    return false;
+
 }
 
 //--------------------------------------------------------------------------
@@ -272,23 +304,37 @@ function compare(a,b) {
 	let col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
 	var tempB = b;
-
-	// Needed so that the counter starts from 0
-	// everytime we sort the table
-	count = 0;
-
 	if (col == "File name") {
 		tempA = tempA.toUpperCase();
 		tempB = tempB.toUpperCase();
 	} else if (col == "Extension") {
+        var linkA = tempA.split("://");
+        var linkB = tempB.split("://");
 		tempA = tempA.split('.');
 		tempB = tempB.split('.');
-
-		tempA = tempA[tempA.length-1];
-		tempB = tempB[tempB.length-1];
+		if(linkA[0] == "https" || linkA[0] == "http"){
+			tempA = "-";
+		} else {
+            tempA = tempA[tempA.length-1];
+		}
+        if(linkB[0] == "https" || linkB[0] == "http"){
+            tempB = "-";
+        } else {
+            tempB = tempB[tempB.length-1];
+        }
 	} else if (col == "Size") {
-		tempA = parseInt(tempA);
-		tempB = parseInt(tempB);
+		tempA = JSON.parse(tempA);
+		tempB = JSON.parse(tempB);
+		if(tempA.kind != "Link"){
+            tempA = parseInt(tempA.size);
+		} else {
+			tempA = -1;
+		}
+		if(tempB.kind != "Link") {
+            tempB = parseInt(tempB.size);
+		} else {
+			tempB = -1;
+		}
 	}
 
 	if (tempA > tempB) {
@@ -386,7 +432,6 @@ $(document).mouseup(function(e) {
 	}
 });
 
-
 function deleteFile(fileid,filename) {
 	if (confirm("Do you really want to delete the file/link: " + filename)) {
 		AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
@@ -394,3 +439,37 @@ function deleteFile(fileid,filename) {
 	/*Reloads window when deleteFile has been called*/
 	window.location.reload(true);
 }
+
+/*****************************************************************
+ * --------------------------------------------------------------*
+ * loadFile(), editFile(), cancelEditFile() and closeEditFile()  *
+ * makes it possible to open and edit or modify an existing 	 *
+ * file (js, css, html and php). Doesn't include markdown!		 *
+ * --------------------------------------------------------------*
+ *****************************************************************/
+
+function loadFile(fileUrl) {
+    $(".editFileWindow").show();
+    $(".editFileWindowContainer").css("display", "block");
+    var fileContent = getFIleContents(fileUrl);
+    document.getElementById("filecont").value = fileContent;
+    editFile(fileContent);
+}
+
+function editFile(str){
+        if(str.length == 0){
+            document.getElementById("filecont").innerHTML = " ";
+            return;
+        }
+        else {
+            document.getElementById("filecont").innerHTML=str;
+        };
+
+}
+function cancelEditFile() {
+    $(".editFileWindow").hide();
+    $(".editFileWindowContainer").css("display", "none");
+}
+
+
+
