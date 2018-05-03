@@ -336,6 +336,7 @@ function confirmBox(operation, item = null) {
 		$("#sectionConfirmBox").css("display", "none");
 	} else if (operation == "closeConfirmBox") {
 		$("#sectionConfirmBox").css("display", "none");
+		$("#noTestsConfirmBox").css("display", "none");
 	}
 }
 
@@ -346,47 +347,72 @@ function deleteItem(item_lid = null) {
 }
 
 // Checks if the title name includes any invalid characters
+
 function validateName() {
-	var retValue = false;
-	var nme = document.getElementById("sectionname");
-	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d(),.]+$/)) {
+	var name = document.getElementById("sectionname");
+	if (isNameValid() && isTypeValid()){ // if both are valid, show buttons
 		$('#tooltipTxt').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
 		$('#submitBtn').removeAttr('disabled');
-		nme.style.backgroundColor = "#fff";
-		retValue = true;
-	} else {
-		$('#tooltipTxt').fadeIn();
+		name.style.backgroundColor = "#fff";
+
+	}else{ // if not, disable buttons
 		$('#saveBtn').attr('disabled', 'disabled');
 		$('#submitBtn').attr('disabled', 'disabled');
-		nme.style.backgroundColor = "#f57";
+		if(!isNameValid()){
+			$('#tooltipTxt').fadeIn();
+			name.style.backgroundColor = "#f57";
+		} else { // test must not be valid, remove our own tooltip and error-color
+ 			$('#tooltipTxt').fadeOut();
+			name.style.backgroundColor = "#fff";
+		}
 	}
-	return retValue;
+}
+
+function isNameValid(){
+	var nme = document.getElementById("sectionname");
+
+	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d(),.]+$/)) {
+		return true;
+	}
+	return false;
+}
+
+
+
+function isTypeValid(){
+	kind = $("#type").val();
+	var nme = document.getElementById("type");
+	if(retdata['duggor'].length == 0 && kind == 3){
+		return false;
+	}
+	return true;
 }
 
 function validateType() {
-	var retValue = false;
-	kind = $("#type").val();
-	var nme = document.getElementById("type");
-	if (retdata['duggor'].length == 0 && kind == 3) {
-		$('#tooltipType').fadeIn();
-		$('#saveBtn').attr('disabled', 'disabled');
-		$('#submitBtn').attr('disabled', 'disabled');
-		nme.style.backgroundColor = "#f57";
-		//the line of code above changes the selected element AND the list's background color.
-		//the for loop changes the list's background color back to white so only the selected item shows up as red.
-		for (i = 0; i < nme.options.length; i++) {
-			nme.options[i].style.backgroundColor = "#fff";
-		}
-	} else {
+	var type = document.getElementById("type");
+	if (isTypeValid() && isNameValid()){
 		$('#tooltipType').fadeOut();
 		$('#saveBtn').removeAttr('disabled');
 		$('#submitBtn').removeAttr('disabled');
-		nme.style.backgroundColor = "#fff";
-		retValue = true;
+		type.style.backgroundColor = "#fff";
+	}else{
+		$('#saveBtn').attr('disabled', 'disabled');
+		$('#submitBtn').attr('disabled', 'disabled');
+		if(!isTypeValid()){
+			$('#tooltipType').fadeIn();
+			for (i = 0; i < type.options.length; i++) {
+				type.options[i].style.backgroundColor = "#fff";
+			}
+			type.style.backgroundColor = "#f57";
+
+		}else if(!isNameValid()){
+			$('#tooltipType').fadeOut();
+			type.style.backgroundColor = "#FFF";
+		}
 	}
-	return retValue;
 }
+
 
 function updateItem() {
 	tabs = $("#tabs").val();
@@ -764,29 +790,29 @@ function returnedSection(data) {
 			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
 			str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
 
-			// Group activity button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='selectItem(\"undefined\",\"New Item\",\"6\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>"
-
-			// Message button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='selectItem(\"undefined\",\"New Item\",\"7\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>format_quote</i></a></li>"
-
 			//Heading button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='selectItem(\"undefined\",\"New Item\",\"0\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='fabValidateType(\"0\");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
 
 			//Section button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='selectItem(\"undefined\",\"New Item\",\"1\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='fabValidateType(\"1\");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>"
 
 			// Moment button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='selectItem(\"undefined\",\"New Item\",\"4\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='fabValidateType(\"4\");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>"
 
 			// Test button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='selectItem(\"undefined\",\"New Item\",\"3\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='fabValidateType(\"3\");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>"
 
 			// Link button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='selectItem(\"undefined\",\"New Item\",\"5\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><i class='material-icons'>link</i></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='fabValidateType(\"5\");'><i class='material-icons'>link</i></a></li>"
 
 			//Code button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='selectItem(\"undefined\",\"New Item\",\"2\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\",);  newItem();'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='fabValidateType(\"2\");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>"
+
+			// Group activity button
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='fabValidateType(\"6\");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>"
+
+			// Message button
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='fabValidateType(\"7\");'><i class='material-icons'>format_quote</i></a></li>"
 
 			str += "</ol>"
 			str += "</div>";
@@ -1644,16 +1670,49 @@ function toggleHamburger() {
 
 // Toggles action bubbles when pressing the FAB button
 function toggleFabButton() {
-
 	if (!$('.fab-btn-sm').hasClass('scale-out')) {
 		$('.fab-btn-sm').toggleClass('scale-out');
 		$('.fab-btn-list').delay(100).fadeOut(0);
-	}
-	else {
+	} else {
 		$('.fab-btn-list').fadeIn(0);
 		$('.fab-btn-sm').toggleClass('scale-out');
 	}
 }
+
+//kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
+function fabValidateType(kind) {
+	if (kind == 0){
+		selectItem("undefined","New Header","0","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 1){
+		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 2){
+		selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 3){
+		if (retdata['duggor'].length == 0){
+			toggleFabButton();
+			$("#noTestsConfirmBox").css("display", "flex");
+		} else {
+			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined");
+			newItem();
+		}
+	} else if (kind == 4){
+		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 5){
+		selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 6){
+		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 7){
+		selectItem("undefined","New Message","7","undefined","undefined","0","undefined","undefined");
+		newItem();
+	}
+}
+
 
 function addColorsToTabSections(kind, visible){
 	var retStr = "";
@@ -1690,17 +1749,18 @@ $(window).load(function () {
 			document.activeElement.blur(); // to lose focus from the newItem button when pressing enter
 		} else if (event.keyCode == 13) {
 			//Remember that keycode 13 = enter button
+			document.activeElement.blur();
 			var saveButtonDisplay = ($('#saveBtn').css('display'));
 			var editSectionDisplay = ($('#editSection').css('display'));
 			var submitButtonDisplay = ($('#submitBtn').css('display'));
 			var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
-			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
 				updateItem();
-			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
 				newItem();
 				showSaveButton();
-			} 
-			document.activeElement.blur();
+			}
+
 		}
 	});
 });

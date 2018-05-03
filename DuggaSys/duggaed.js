@@ -15,6 +15,7 @@ var globalData;
 var globalVariant;
 var itemToDelete;
 var typeOfItem;
+var duggaPages;
 
 AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
 
@@ -87,9 +88,9 @@ $(window).load(function () {
 			var saveButtonDisplay = ($('#saveDugga').css('display'));
 			var editSectionDisplay = ($('#editDugga').css('display'));
 			var submitButtonDisplay = ($('#submitDugga').css('display'));
-			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid()) {
 				updateDugga();
-			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid()) {
 				createDugga();
 			} 
 			document.activeElement.blur();
@@ -153,7 +154,6 @@ function createDugga() {
 	var deadline = $("#deadline").val();
 	var cid = querystring['cid'];
 	var coursevers = querystring['coursevers'];
-	window.location.reload();
 	$("#editDugga").css("display", "none");
 	//$("#overlay").css("display","none");
 
@@ -225,6 +225,15 @@ function deleteDugga(did) {
 	$("#editDugga").css("display", "none");
 }
 
+function isNameValid(){
+	var nme = document.getElementById("name");
+
+	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d(),.]+$/)) {
+		return true;
+	}
+	return false;
+}
+
 // Checks if the title name includes any invalid characters
 function validateDuggaName() {
 	var retValue = false;
@@ -232,14 +241,14 @@ function validateDuggaName() {
 
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)) {
 		$('#tooltipTxt').fadeOut();
-		$('#saveBtn').removeAttr('disabled');
-		$('#submitBtn').removeAttr('disabled');
+		$('#saveDugga').removeAttr('disabled');
+		$('#submitDugga').removeAttr('disabled');
 		nme.style.backgroundColor = "#fff";
 		retValue = true;
 	} else {
 		$('#tooltipTxt').fadeIn();
-		$('#submitBtn').attr('disabled', 'disabled');
-		$('#saveBtn').attr('disabled', 'disabled');
+		$('#submitDugga').attr('disabled', 'disabled');
+		$('#saveDugga').attr('disabled', 'disabled');
 		nme.style.backgroundColor = "#f57";
 	}
 	return retValue;
@@ -379,6 +388,21 @@ function createJSONString(formData) {
 
 	return jsonStr;
 }
+/*
+	This function marks the selected variant when editing by changing the
+	background color of the table row.
+*/
+function markSelectedVariant(el) {
+	var activeTable = findAncestor(el, 'TABLE', 'elName');
+	var activeTableRow = findAncestor(el, 'TR', 'elName');
+	var allRows = activeTable.getElementsByTagName('tr');
+	
+	for(let row of allRows) {
+		row.removeAttribute('style'); // Remove background color from previously marked rows.
+	}
+	
+	activeTableRow.style.backgroundColor = '#fbcd47';
+}
 
 // VARIANT FUNCTIONS end
 
@@ -471,11 +495,11 @@ function returnedDugga(data) {
 	$("content").html();
 	var result = 0;
 	filez = data['files'];
-	var duggaPages = data['duggaPages'];
+	duggaPages = data['duggaPages'];
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 	str = "";
 	if (globalVariant){
-	renderVariant(globalVariant);
+		renderVariant(globalVariant);
 	}
 }
 
@@ -654,7 +678,7 @@ function renderCell(col, celldata, cellid) {
 	else if (col == "cogwheelVariant") {
 		object = JSON.parse(celldata);
 		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
-		str += " onclick='selectVariant(" + object + ")' >";
+		str += " onclick='selectVariant(" + object + ");markSelectedVariant(this);' >";
 		return str;
 	}
 
@@ -723,7 +747,6 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template) {
 
 	$.getScript("templates/" + template + ".js")
 		.done(function (script, textStatus) {
-			alert("snus");
 			showFacit(decodeURIComponent(duggaVariantParam), "UNK", decodeURIComponent(duggaVariantAnswer), null, null, null);
 		})
 		.fail(function (jqxhr, settings, exception) {
@@ -740,10 +763,14 @@ function closePreview() {
 	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
 }
 
+/*
+	This function finds the first ancestor element of the element passed in as an argument.
+	el: the element whose ancestor should be found.
+	name: the class or element name of the ancestor, i.e. 'myclass' or 'DIV'
+		(all element names must be in capital letters)
+	type: search for ancestor by class or element name
+*/
 function findAncestor (el, name, type) {
-	// console.log(el);
-	// console.log(name);
-	// console.log(type);
 	if(type == 'className') {
 		while ((el = el.parentElement) && !el.classList.contains(name));
     	return el;
