@@ -243,6 +243,8 @@ points.closestPoint = function(xCoordinate, yCoordinate) {
     return {distance:Math.sqrt(distance), index:index};
 }
 
+
+
 //--------------------------------------------------------------------
 // clearAllSelects - Clears all selects from the array "points"
 //--------------------------------------------------------------------
@@ -261,6 +263,25 @@ var diagram = [];
 //--------------------------------------------------------------------
 // draw - Executes draw methond in all diagram objects
 //--------------------------------------------------------------------
+
+diagram.closestPoint = function(mx, my){
+    var distance = 50000000;
+    var point;
+    this.forEach(symbol => {
+        var c = symbol.corners();
+        for(var corner in corners){
+            var deltaX = xCoordinate - corner.x;
+            var deltaY = yCoordinate - corner.y;
+            var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
+            if (hypotenuseElevatedBy2 < distance) {
+                distance = hypotenuseElevatedBy2;
+                point = corner;
+            }
+        }
+    });
+    return {distance:Math.sqrt(distance), point:point};
+}
+
 diagram.draw = function() {
     this.adjustPoints();
     //Draws all lines first so that they appear behind the object instead
