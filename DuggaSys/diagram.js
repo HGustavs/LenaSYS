@@ -271,8 +271,8 @@ diagram.closestPoint = function(mx, my){
         var c = symbol.corners();
         corners = [c.tl, c.tr, c.bl, c.br];
         for(var corner in corners){
-            var deltaX = xCoordinate - corner.x;
-            var deltaY = yCoordinate - corner.y;
+            var deltaX = mx - corner.x;
+            var deltaY = my - corner.y;
             var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
             if (hypotenuseElevatedBy2 < distance) {
                 distance = hypotenuseElevatedBy2;
