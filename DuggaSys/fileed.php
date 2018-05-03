@@ -119,7 +119,7 @@ pdoConnect();
                 <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
             </div>
             <div class="markText">
-                <textarea id="mrkdwntxt" oninput="updatePreview(value)" name="markdowntext" rows="32" cols="40"></textarea>
+                <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
             </div>
         </div>
         <div class="markdownPrev">
@@ -139,6 +139,27 @@ pdoConnect();
         <button id="button-close" onclick="cancelPreview()">Close</button>
     </div>
     <!-- Markdown-preview functionality END -->
+
+    <!-- Edit file functionality START -->
+    <div class="editFileWindowContainer"></div>
+    <div class="editFileWindow">
+        <div class="loginBoxheader">
+            <h3>This is the editor</h3>
+            <div style="cursor:pointer;" onclick="closeEditFile();">x</div>
+        </div>
+        <div class="editFileCode">
+            <div class="fileText">
+                <textarea id="filecontent" oninput="editFile(this.value)" name="filetext" rows="32" cols="79"></textarea>
+            </div>
+        </div>
+        <div class="optionButtons">
+            <button id="button-save" onclick="saveMarkdown()">Save</button>
+            <button id="button-cancel" onclick="">Cancel</button>
+        </div>
+        <button id="button-close" onclick="cancelEditFile()">Close</button>
+    </div>
+    <!-- Edit file functionality END -->
+
     <!--Fab-button-->
 		<div class="fixed-action-button" id="fabButton">
 			<a class="btn-floating fab-btn-lg noselect" id="fabBtn" ><img id="fabBtnImg" src="../Shared/icons/add-icon.svg"></a>

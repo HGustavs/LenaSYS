@@ -156,6 +156,11 @@ function closePreview() {
     $(".previewWindowContainer").css("display", "none");
 }
 
+function closeEditFile() {
+    $(".editFileWindow").css("display","none");
+    $(".editFileWindowContainer").css("display", "none");
+}
+
 //------------------------------------------------------------------
 // validateForm <- Validates the file that is going to be uploaded
 //------------------------------------------------------------------
@@ -230,6 +235,7 @@ function renderCell(col,celldata,cellid) {
             str += "onclick='loadPreview(\"" + celldata + "\")'></div>";
 		} else if (list[list.length-1] == "js" || list[list.length-1] == "html" || list[list.length-1] == "css" || list[list.length-1] == "php"){
             str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
+            str += "onclick='loadFile(\"" + celldata + "\")'></div>";
         }
 		return str;
 
@@ -418,7 +424,6 @@ $(document).mouseup(function(e) {
 	}
 });
 
-
 function deleteFile(fileid,filename) {
 	if (confirm("Do you really want to delete the file/link: " + filename)) {
 		AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
@@ -426,3 +431,37 @@ function deleteFile(fileid,filename) {
 	/*Reloads window when deleteFile has been called*/
 	window.location.reload(true);
 }
+
+/*****************************************************************
+ * --------------------------------------------------------------*
+ * loadFile(), editFile(), cancelEditFile() and closeEditFile()  *
+ * makes it possible to open and edit or modify an existing 	 *
+ * file (js, css, html and php). Doesn't include markdown!		 *
+ * --------------------------------------------------------------*
+ *****************************************************************/
+
+function loadFile(fileUrl) {
+    $(".editFileWindow").show();
+    $(".editFileWindowContainer").css("display", "block");
+    var fileContent = getFIleContents(fileUrl);
+    document.getElementById("filecontent").value = fileContent;
+    editFile(fileContent);
+}
+
+function editFile(str){
+        if(str.length == 0){
+            document.getElementById("filecont").innerHTML = " ";
+            return;
+        }
+        else {
+            document.getElementById("filecont").innerHTML=str;
+        };
+
+}
+function cancelEditFile() {
+    $(".editFileWindow").hide();
+    $(".editFileWindowContainer").css("display", "none");
+}
+
+
+

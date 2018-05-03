@@ -3655,17 +3655,6 @@ li:nth-last-child(10) a:hover {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
- 
- .previewWindowContainer {
-    background-color: rgba(0,0,0,0.6);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 8000;
-    display: none;
- }
 
 .previewWindowContainer {
   background-color: rgba(0, 0, 0, 0.6);
@@ -3867,6 +3856,119 @@ li:nth-last-child(10) a:hover {
         top: 436px;
     }
  }
+
+/* Import diagram */
+
+.importDiagram {
+  height: auto !important;
+  margin-top: 0 !important;
+  display: none;
+}
+
+.importDiagram .importWrap {
+  padding: 20px;
+}
+
+.importDiagram .importError {
+  margin-top: 10px;
+  color: red;
+  display: none;
+}
+
+.importDiagram .importButtonWrap {
+  margin-top: 10px;
+}
+
+.importDiagram .uploadButton {
+  width: auto;
+  padding: 0 15px;
+}
+
+/* --------------================################================-------------- *
+ *                               Edit file preview                              *
+ * --------------================################================-------------- */
+.editFileWindowContainer {
+  background-color: rgba(0,0,0,0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8000;
+  display: none;
+}
+
+.editFileWindow {
+  height: 635px;
+  width: 690px;
+  margin: 0px auto;
+  border: solid rgb(200,200,200);
+  background-color: rgb(240,240,240);
+  box-shadow: 0px 5px 10px grey;
+  z-index: 12000;
+  display: none;
+  left: 0;
+  right: 0;
+  top: 100px;
+  position: fixed;
+}
+
+.editFileCode {
+  border: solid rgb(200, 200, 200);
+  background-color: #FFFFFF;
+  width: 665px;
+  height: 550px;
+  position: relative;
+  margin: 20px 10px 10px 10px;
+  float: left;
+}
+
+.optionButtons {
+  top: 585px;
+  position: relative;
+  margin: 0px 10px 0px 10px;
+  height: 40px;
+  width: 355px;
+}
+
+
+#button-cancel {
+  position: absolute;
+  left: 5px;
+}
+
+#button-save {
+  position: absolute;
+  left: 75px;
+}
+
+#button-close {
+  float: right;
+  position: relative;
+  margin: 0px 10px 0px 0px;
+}
+
+#filecontent {
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px #888 inset;
+  resize: none;
+  margin: 10px 4px 0px 4px;
+}
+
+@media only screen and (max-height: 800px) and (max-width: 1400px) {
+  .editFileWindow {
+    height: 500px;
+  }
+  .editFileCode {
+    height: 400px;
+  }
+  #filecontent {
+    height: 350px;
+  }
+  .optionButtons {
+    top: 436px;
+  }
+}
 
 /* Import diagram */
 
