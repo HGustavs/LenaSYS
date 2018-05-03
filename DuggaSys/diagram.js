@@ -268,8 +268,8 @@ diagram.closestPoint = function(mx, my){
     var distance = 50000000;
     var point;
     this.forEach(symbol => {
-        var i = 0;
         [symbol.topLeft, symbol.bottomRight].forEach(corner => {
+            console.log("1");
             var deltaX = mx - corner.x;
             var deltaY = my - corner.y;
             var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
@@ -279,7 +279,6 @@ diagram.closestPoint = function(mx, my){
             }
         });
     });
-    console.log(point);
     return {distance:Math.sqrt(distance), point:point};
 }
 
