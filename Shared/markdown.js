@@ -99,7 +99,8 @@ function parseMarkdown(inString)
     inString = inString.replace(/^\=\|\=(\r\n|\n|\r)/gm, '=|=&&&');
 
     //One line break
-    inString=inString.replace(/(\n)$/gm, "</br>");
+     //inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
+     inString=inString.replace(/(\n)$/gm, "<br>");
 
     // Split on code or console block
     var codearray=inString.split(/\~{3}|\=\|\=/);
@@ -419,6 +420,7 @@ function loadPreview(fileUrl) {
     var fileContent = getFIleContents(fileUrl);
     document.getElementById("mrkdwntxt").value = fileContent;
     updatePreview(fileContent);
+    //updatePreview(document.getElementById("mrkdwntxt").value = fileContent);
 }
 
 function updatePreview(str) {
@@ -449,12 +451,16 @@ function getFIleContents(fileUrl){
     return result;
 }
 
-function boldText() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****');
-}
-
 function cursiveText() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
+    var txtarea = document.getElementById("mrkdwntxt");
+    var start = txtarea.selectionStart;
+    var end = txtarea.selectionEnd;
+    var sel = txtarea.value.substring(start, end);
+    var finText = txtarea.value.substring(0, start) + '__' + sel + '__' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
 }
 
 function showDropdown() {
@@ -476,6 +482,82 @@ function headerVal2() {
 
 function headerVal3() {
     $('#mrkdwntxt').val($('#mrkdwntxt').val()+'### ');
+}
+
+function headerVal4() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'#### ');
+}
+
+function headerVal5() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'##### ');
+}
+
+function headerVal6() {
+    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'###### ');
+}
+
+function lists(){
+    $('#mrkdwntxt').val($('#mrkdwntxt').val() + '* ');
+}
+
+function codeBlockText(){
+    var txtarea = document.getElementById("mrkdwntxt");
+    var start = txtarea.selectionStart;
+    var end = txtarea.selectionEnd;
+    var sel = txtarea.value.substring(start, end);
+    var finText = txtarea.value.substring(0, start) + '~~~\n\n' + sel + '~~~' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 4;
+    updatePreview(txtarea.value);
+}
+
+function boldText() {
+    var txtarea = document.getElementById("mrkdwntxt");
+    var start = txtarea.selectionStart;
+    var end = txtarea.selectionEnd;
+    var sel = txtarea.value.substring(start, end);
+    var finText = txtarea.value.substring(0, start) + '**' + sel + '**' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
+}
+
+function linkText(){
+    var txtarea = document.getElementById("mrkdwntxt");
+    var start = txtarea.selectionStart;
+    var end = txtarea.selectionEnd;
+    var sel = txtarea.value.substring(start,end);
+    var finText = txtarea.value.substring(0,start) + '!!!' + 'Link here, and link name here' + sel + '!!!' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd = end +12;
+    updatePreview(txtarea.value);
+}
+
+function externalImg(){
+    var txtarea = document.getElementById("mrkdwntxt");
+    var start = txtarea.selectionStart;
+    var end = txtarea.selectionEnd;
+    var sel = txtarea.value.substring(start,end);
+    var finText = txtarea.value.substring(0,start) + '|||' + 'img here, thumbnail in width px here,  full width here' + sel + '|||' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd = end +11;
+    updatePreview(txtarea.value);
+}
+
+function quoteText(){
+    var txtarea = document.getElementById("mrkdwntxt");
+    var start = txtarea.selectionStart;
+    var end = txtarea.selectionEnd;
+    var sel = txtarea.value.substring(start, end);
+    var finText = txtarea.value.substring(0, start) + '^ ' + sel + ' ^' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
 }
 
 $(document).ready(function(){
