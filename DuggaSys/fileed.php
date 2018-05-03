@@ -159,6 +159,7 @@ pdoConnect();
         <button id="button-close" onclick="cancelEditFile()">Close</button>
     </div>
     <!-- Edit file functionality END -->
+
     <!--Fab-button-->
 		<div class="fixed-action-button" id="fabButton">
 			<a class="btn-floating fab-btn-lg noselect" id="fabBtn" ><img id="fabBtnImg" src="../Shared/icons/add-icon.svg"></a>

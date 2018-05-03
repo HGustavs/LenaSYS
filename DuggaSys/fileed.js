@@ -155,6 +155,7 @@ function closePreview() {
 	$(".previewWindow").css("display","none");
     $(".previewWindowContainer").css("display", "none");
 }
+
 function closeEditFile() {
     $(".editFileWindow").css("display","none");
     $(".editFileWindowContainer").css("display", "none");
@@ -398,7 +399,6 @@ $(document).mouseup(function(e) {
 	}
 });
 
-
 function deleteFile(fileid,filename) {
 	if (confirm("Do you really want to delete the file/link: " + filename)) {
 		AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
@@ -406,6 +406,14 @@ function deleteFile(fileid,filename) {
 	/*Reloads window when deleteFile has been called*/
 	window.location.reload(true);
 }
+
+/*****************************************************************
+ * --------------------------------------------------------------*
+ * loadFile(), editFile(), cancelEditFile() and closeEditFile()  *
+ * makes it possible to open and edit or modify an existing 	 *
+ * file (js, css, html and php). Doesn't include markdown!		 *
+ * --------------------------------------------------------------*
+ *****************************************************************/
 
 function loadFile(fileUrl) {
     $(".editFileWindow").show();

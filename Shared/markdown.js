@@ -252,6 +252,7 @@ function handleLists(currentLine, prevLine, nextLine) {
     if(!isUnorderdList(nextLine) && isUnorderdList(currentLine) && !isOrderdList(nextLine) && !isTable(nextLine)) markdown += "</ul>"; // Close unordered list
     return markdown;
 }
+
 function handleTable(currentLine, prevLine, nextLine) {
     var markdown = "";
     var columns = currentLine.split('|').filter(function(v){return v !== '';});
@@ -448,7 +449,6 @@ function getFIleContents(fileUrl){
     return result;
 }
 
-
 function boldText() {
     $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****');
 }
@@ -473,10 +473,10 @@ function headerVal1() {
 function headerVal2() {
     $('#mrkdwntxt').val($('#mrkdwntxt').val()+'## ');
 }
+
 function headerVal3() {
     $('#mrkdwntxt').val($('#mrkdwntxt').val()+'### ');
 }
-
 
 $(document).ready(function(){
    $(".headerType").click(function(){
