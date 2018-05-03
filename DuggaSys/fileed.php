@@ -13,16 +13,16 @@ pdoConnect();
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>File editor</title>
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
+	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
-	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script> 
+	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
 	<script src="fileed.js"></script>
     <script src="../Shared/markdown.js"></script>
 </head>
 <body>
-	<?php 
+	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
@@ -62,8 +62,8 @@ pdoConnect();
 		</div>
 		<div id="fileLink" style='width:100%;margin-bottom: 30px;'></div>
 		<!-- content END -->
-	
-		<?php 
+
+		<?php
 			include '../Shared/loginbox.php';
 		?>
 
@@ -90,11 +90,11 @@ pdoConnect();
 	      					<span>URL:</span>
 	      					<input style="width:380px" id ="uploadedlink" class="textinput" name="link" placeholder="https://facebook.com" type="text" />
 	      				</div>
-      				</div> 
+      				</div>
 					<div id='uploadbuttonname'>
 						<input class='submit-button fileed-submit-button' type="submit" onclick="uploadFile(fileKind);" />
 					</div>
-      				<div style ='display:none;' id='errormessage'></div> 
+      				<div style ='display:none;' id='errormessage'></div>
       			</form>
       		</div>
 		</div>
@@ -114,9 +114,18 @@ pdoConnect();
                         <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
                         <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
                         <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
+                        <span id="headerType4" onclick="selected();headerVal4()" value="H4">Header 4</span>
+                        <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
+                        <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
+
                     </div>
                 <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
                 <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
+                <span id="codeBlockText" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
+                <span id="lists" onclick="lists()" title="lists">&#9711;</span>
+                <span id="quoteText" onclick="quoteText()" title="quote">&#10078;</span>
+                <span id="link" onclick="linkText()" title="link"><img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg"></span>
+                <span id="img" onclick="externalImg()" title="Img"><img id="insert-photo" class="fab-icon" src="../shared/icons/insert-photo.svg"></span>
             </div>
             <div class="markText">
                 <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext" rows="32" cols="40"></textarea>
