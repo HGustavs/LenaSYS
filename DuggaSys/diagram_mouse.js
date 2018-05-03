@@ -313,6 +313,8 @@ function mouseupevt(ev) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
                 } else if(symbolEndKind == 5 && symbolStartKind == 5){
                     okToMakeLine = false;
+                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)){
+                    okToMakeLine = false;
                 }
                 if(okToMakeLine){
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
