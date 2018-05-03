@@ -261,7 +261,8 @@ function rowFilter(row) {
         for (key in row) {
             if (row[key] != null) {
             	if(key == "filesize"){
-            		if(formatBytes(parseInt(row[key]), 0).toUpperCase().indexOf(searchterm.toUpperCase()) != -1 &&
+            		var obj = JSON.parse(row[key]);
+            		if(formatBytes(parseInt(obj.size), 0).toUpperCase().indexOf(searchterm.toUpperCase()) != -1 &&
 						!(key == "counter" || key == "editor" || key == "trashcan")) return true;
 					//console.log(formatBytes(parseInt(row[key]), 0));
 				} else {
