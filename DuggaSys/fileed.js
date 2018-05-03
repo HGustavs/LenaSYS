@@ -180,14 +180,6 @@ function validateForm() {
 	return result;
 }
 
-function showLoginPopup() {
-	$("#loginBox").css("display","flex");
-}
-
-function hideLoginPopup() {
-	$("#loginBox").css("display","none");
-}
-
 //----------------------------------------------------------------------------
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
