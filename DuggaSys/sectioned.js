@@ -3,6 +3,7 @@ var retdata;
 var newversid;
 var active_lid;
 var isClickedElementBox = false;
+var nameSet = false;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -75,6 +76,8 @@ function editSectionDialogTitle(title) {
 
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments) {
+	nameSet = false;
+	if (entryname == "undefined") entryname = "New Header";
 	if (kind == "undefined") kind = 0;
 	xelink = elink;
 	// Display Select Marker
@@ -282,8 +285,18 @@ function changedType(value)
 	kind=value;
 	iistr="";
 
+	if(kind==0){
+		if (!nameSet) {
+			$('#sectionname').val("New Header");
+		}
+	}
+	else if(kind==1){
+		if (!nameSet) {
+			$('#sectionname').val("New Section");
+		}
+	}
 	//Code
-	if(kind==2){
+	else if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
 			if(xelink==iitem['exampleid']){
@@ -293,6 +306,10 @@ function changedType(value)
 			}
 		}
 		$("#link").html(iistr);
+
+		if (!nameSet) {
+			$('#sectionname').val("New Code");
+		}
 
 	//Dugga
 	}else if(kind==3){
@@ -306,8 +323,15 @@ function changedType(value)
 		}
 		$("#link").html(iistr);
 
+		if (!nameSet) {
+			$('#sectionname').val("New Test");
+		}
+	} else if(kind==4){
+		if (!nameSet) {
+			$('#sectionname').val("New Moment");
+		}
 	//Link
-	}else if(kind==5){
+	} else if(kind==5){
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
 			// filter file extension
@@ -323,6 +347,18 @@ function changedType(value)
 			}
 		}
 		$("#link").html(iistr);
+
+		if (!nameSet) {
+			$('#sectionname').val("New Link");
+		}
+	} else if(kind==6){
+		if (!nameSet) {
+			$('#sectionname').val("New Group Activity");
+		}
+	} else if(kind==7){
+		if (!nameSet) {
+			$('#sectionname').val("New Message");
+		}
 	}
 }
 
@@ -349,6 +385,7 @@ function deleteItem(item_lid = null) {
 // Checks if the title name includes any invalid characters
 
 function validateName() {
+	nameSet = true;
 	var name = document.getElementById("sectionname");
 	if (isNameValid() && isTypeValid()){ // if both are valid, show buttons
 		$('#tooltipTxt').fadeOut();
@@ -849,7 +886,7 @@ function returnedSection(data) {
 				"<input type='button' value='+' class='submit-button-newitem' title='New Item'"
 				+ " onclick='selectItem("
 				+ "\"" + item['lid'] + "\","
-				+ "\"New Item\","
+				+ "\"" + item['entryname'] + "\","
 				+ "\"" + item['kind'] + "\","
 				+ "\"" + item['visible'] + "\","
 				+ "\"" + item['link'] + "\","
