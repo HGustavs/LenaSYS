@@ -155,6 +155,10 @@ function closePreview() {
 	$(".previewWindow").css("display","none");
     $(".previewWindowContainer").css("display", "none");
 }
+function closeEditFile() {
+    $(".editFileWindow").css("display","none");
+    $(".editFileWindowContainer").css("display", "none");
+}
 
 //------------------------------------------------------------------
 // validateForm <- Validates the file that is going to be uploaded
@@ -223,6 +227,7 @@ function renderCell(col,celldata,cellid) {
             str += "onclick='loadPreview(\"" + celldata + "\")'></div>";
 		} else if (list[list.length-1] == "js" || list[list.length-1] == "html" || list[list.length-1] == "css" || list[list.length-1] == "php"){
             str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
+            str += "onclick='loadFile(\"" + celldata + "\")'></div>";
         }
 		return str;
 
@@ -401,3 +406,29 @@ function deleteFile(fileid,filename) {
 	/*Reloads window when deleteFile has been called*/
 	window.location.reload(true);
 }
+
+function loadFile(fileUrl) {
+    $(".editFileWindow").show();
+    $(".editFileWindowContainer").css("display", "block");
+    var fileContent = getFIleContents(fileUrl);
+    document.getElementById("filecontent").value = fileContent;
+    editFile(fileContent);
+}
+
+function editFile(str){
+        if(str.length == 0){
+            document.getElementById("filecont").innerHTML = " ";
+            return;
+        }
+        else {
+            document.getElementById("filecont").innerHTML=str;
+        };
+
+}
+function cancelEditFile() {
+    $(".editFileWindow").hide();
+    $(".editFileWindowContainer").css("display", "none");
+}
+
+
+
