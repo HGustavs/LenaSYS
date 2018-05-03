@@ -30,7 +30,7 @@ function findPos(obj) {
 
 function updateActivePoint() {
     if (sel.distance <= tolerance) {
-        activePoint = sel.index;
+        activePoint = sel.point;
     } else {
         activePoint = null;
     }
@@ -61,17 +61,22 @@ function mousemoveevt(ev, t) {
     }
     if (md == 0) {
         // Select a new point only if mouse is not already moving a point or selection box
-        sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+        sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
         // If mouse is not pressed highlight closest point
         points.clearAllSelects();
         movobj = diagram.itemClicked();
-        updateActivePoint();
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
         // If mouse is pressed down and at a point in selected object - move that point
-        points[sel.index].x = currentMouseCoordinateX;
-        points[sel.index].y = currentMouseCoordinateY;
+        console.log("setting point coordinate");
+        if(!sel.point.fake){
+            sel.point.x = currentMouseCoordinateX;
+            sel.point.y = currentMouseCoordinateY;
+        } else {
+            sel.point.x.x = currentMouseCoordinateX;
+            sel.point.y.y = currentMouseCoordinateY;
+        }
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
@@ -190,7 +195,7 @@ function mousedownevt(ev) {
         if (hovobj == -1) {
             md = 0;
         } else {
-            sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+            sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             //Store which object you are hovering over in lineStartObj
             lineStartObj = hovobj;
 
@@ -200,12 +205,13 @@ function mousedownevt(ev) {
         }
 
     } else if (sel.distance < tolerance) {
+        console.log("we have the tolerance");
         for (var i = 0; i < diagram.length; i++) {
-            if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
+            /*if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
                 md = 3;
                 handleSelect();
                 return;
-            }
+            }*/
         }
         md = 2;
     } else if (movobj != -1) {
@@ -285,7 +291,7 @@ function mouseupevt(ev) {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
 
-             sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
             if(symbolStartKind != 4 && symbolEndKind != 4){
