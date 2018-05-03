@@ -141,31 +141,57 @@ function importUsers()
 	}
 	var newUserJSON = JSON.stringify(newUsersArr);
 
-	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
+	AJAXService("CLASS",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
 	hideImportUsersPopup();
 }
 
 function addSingleUser()
 {
-	var newUser = new Array();
-	newUser.push($("#addSsn").val());
-	newUser.push($("#addLastname").val() + ", " + $("#addFirstname").val());
-	newUser.push($("#addCid").val());
-	newUser.push($("#addNy").val());
-	newUser.push($("#addPid").val() + ', ' + $("#addTerm").val());
-	newUser.push($("#addEmail").val());
+    var newUser = new Array();
+    newUser.push($("#addSsn").val());
+    newUser.push($("#addLastname").val() + ", " + $("#addFirstname").val());
+    newUser.push($("#addCid").val());
+    newUser.push($("#addNy").val());
+    newUser.push($("#addPid").val() + ', ' + $("#addTerm").val());
+    newUser.push($("#addEmail").val());
 
-	var outerArr = new Array();
-	outerArr.push(newUser);
+    var outerArr = new Array();
+    outerArr.push(newUser);
 
-	var newUserJSON = JSON.stringify(outerArr);
-	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
-	hideCreateUserPopup();
+    var newUserJSON = JSON.stringify(outerArr);
+    AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
+    hideCreateUserPopup();
+}
+
+function addClass()
+{
+    var newClass = new Array();
+    newClass.push($("#addClass").val());
+    newClass.push($("#addResponsible").val());
+    newClass.push($("#addClassname").val());
+    newClass.push($("#addRegcode").val());
+    newClass.push($("#addClasscode").val());
+    newClass.push($("#addHp").val());
+    newClass.push($("#addTempo").val());
+    newClass.push($("#addHpProgress").val());
+
+    var outerArr = new Array();
+    outerArr.push(newClass);
+
+    var newClassJSON = JSON.stringify(outerArr);
+    AJAXService("ADDCLASS",{cid:querystring['cid'],newclass:newClassJSON,coursevers:querystring['coursevers']},"ACCESS");
+    hideCreateClassPopup();
 }
 
 function showCreateUserPopup()
 {
 	$("#createUser").css("display","flex");
+	//$("#overlay").css("display","block");
+}
+
+function showCreateClassPopup()
+{
+	$("#createClass").css("display","flex");
 	//$("#overlay").css("display","block");
 }
 
@@ -177,8 +203,14 @@ function showImportUsersPopup()
 
 function hideCreateUserPopup()
 {
-	$("#createUser").css("display","none");
-	//$("#overlay").css("display","none");
+    $("#createUser").css("display","none");
+    //$("#overlay").css("display","none");
+}
+
+function hideCreateClassPopup()
+{
+    $("#createClass").css("display","none");
+    //$("#overlay").css("display","none");
 }
 
 function hideImportUsersPopup()
@@ -226,106 +258,106 @@ function changeClass(cid,uid,val)
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
 function selectUser(uid,username,ssn,firstname,lastname,access,className)
 {
-	// Reverts the string to an array
-  /*
-	var teachs = teacherstring.split("/t");
-	var userClass = classString.split("/t");
-	// Sort the array to make navigation easier
-	teachs.sort();
-	userClass.sort();
+    // Reverts the string to an array
+    /*
+       var teachs = teacherstring.split("/t");
+       var userClass = classString.split("/t");
+       // Sort the array to make navigation easier
+       teachs.sort();
+       userClass.sort();
 
-	// Array with no spaces used for our IF case as option[value] does not work with spaces
-	var trimmed = $.map(teachs, function(value){
-		  return value.replace(/ /g, '');
-	});
+       // Array with no spaces used for our IF case as option[value] does not work with spaces
+       var trimmed = $.map(teachs, function(value){
+       return value.replace(/ /g, '');
+       });
 
-	// Loop through our array to put the teachers into an option in our select input
-	for(var i = 0; i < teachs.length; i++){
-		// If the teacher already exists in an option
-		if($("#teacher option[value="+ trimmed[i] +"]").length > 0){
-			// Loop through all of our options
-			$("#teacher option").each(function(){
+       // Loop through our array to put the teachers into an option in our select input
+       for(var i = 0; i < teachs.length; i++){
+       // If the teacher already exists in an option
+       if($("#teacher option[value="+ trimmed[i] +"]").length > 0){
+       // Loop through all of our options
+       $("#teacher option").each(function(){
 
-				// If a teacher no longer exists but the option for said teacher still exists
-				if ($.inArray(this.text, teachs) == -1)
-					{
-					  // Remove that option
-					  $(this).remove();
-					}
-				})
-		}
-		// If the teacher doesn't exist in an option
-		else{
-			// Create a new option where the value and text is the teachers name
-		    $('#teacher').append($('<option>', {
-   				value: trimmed[i],
-    			text: teachs[i]
-				}));
-    		}
-	};
+       // If a teacher no longer exists but the option for said teacher still exists
+       if ($.inArray(this.text, teachs) == -1)
+       {
+       // Remove that option
+       $(this).remove();
+       }
+       })
+       }
+       // If the teacher doesn't exist in an option
+       else{
+       // Create a new option where the value and text is the teachers name
+       $('#teacher').append($('<option>', {
+       value: trimmed[i],
+       text: teachs[i]
+       }));
+       }
+       };
 
-	// Loop through our array to put the classes into an option in our select input
-	for(var j = 0; j < userClass.length; j++){
-		// If the class already exists in an option
-		if($("#class option[value="+ userClass[j] +"]").length > 0){
-		}
-		// If the class doesn't exist in an option
-		else{
-			// Create a new option where the value and text is the classes name
-		    $('#class').append($('<option>', {
-   				value: userClass[j],
-    			text: userClass[j]
-				}));
-    		}
-	};
+       // Loop through our array to put the classes into an option in our select input
+       for(var j = 0; j < userClass.length; j++){
+       // If the class already exists in an option
+       if($("#class option[value="+ userClass[j] +"]").length > 0){
+       }
+       // If the class doesn't exist in an option
+       else{
+       // Create a new option where the value and text is the classes name
+       $('#class').append($('<option>', {
+       value: userClass[j],
+       text: userClass[j]
+       }));
+       }
+       };
 
-*/
-	// Set Name
-	$("#firstname").val(firstname);
-	$("#lastname").val(lastname);
+     */
+    // Set Name
+    $("#firstname").val(firstname);
+    $("#lastname").val(lastname);
 
-	// Set User name
-	$("#usrnme").val(username);
+    // Set User name
+    $("#usrnme").val(username);
 
-	//Set SSN
-	$("#ussn").val(ssn);
-	if (className != "null" || className != "UNK") {$("#class").val(className);}
-	$("#uid").val(uid);
+    //Set SSN
+    $("#ussn").val(ssn);
+    if (className != "null" || className != "UNK") {$("#class").val(className);}
+    $("#uid").val(uid);
 
-	// Displays the cogwheel box
-	$("#editUsers").css("display","flex");
+    // Displays the cogwheel box
+    $("#editUsers").css("display","flex");
 
-	//$("#overlay").css("display","block");
+    //$("#overlay").css("display","block");
 }
 
 function updateUser()
 {
-	var ussn=$("#ussn").val();
-	var usrnme=$("#usrnme").val();
-	var firstname=$("#firstname").val();
-	var lastname=$("#lastname").val();
-	var uid=$("#uid").val();
-	var className=$("#class").val();
-	var teach=$("#teacher").val();
+    var ussn=$("#ussn").val();
+    var usrnme=$("#usrnme").val();
+    var firstname=$("#firstname").val();
+    var lastname=$("#lastname").val();
+    var uid=$("#uid").val();
+    var className=$("#class").val();
+    var teach=$("#teacher").val();
 
-	AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,className:className,cid:querystring['cid'],coursevers:querystring['coursevers'],teacher:teach},"ACCESS");
+    AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,className:className,cid:querystring['cid'],coursevers:querystring['coursevers'],teacher:teach},"ACCESS");
 
-	$("#editUsers").css("display","none");
-	//$("#overlay").css("display","none");
+    $("#editUsers").css("display","none");
+    //$("#overlay").css("display","none");
 }
 
 function closeEdituser()
 {
-	$("#editUsers").css("display","none");
+    $("#editUsers").css("display","none");
 }
 
 function resetPw(uid,username)
 {
-	rnd=randomstring();
+    rnd=randomstring();
 
-	window.location="mailto:"+username+"@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20"+rnd+"%0A%0A/LENASys Administrators";
+    window.location="mailto:"+username+"@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20"+rnd+"%0A%0A/LENASys Administrators";
 
-	AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd,coursevers:querystring['coursevers']},"ACCESS");
+    AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd,coursevers:querystring['coursevers']},"ACCESS");
 }
 
 /**
@@ -334,16 +366,16 @@ function resetPw(uid,username)
  * @returns {Function} Sorting function with the correct property to fetch.
  */
 function propComparator(prop) {
-	var propt = prop.split(' ').join('').toLocaleLowerCase();
+    var propt = prop.split(' ').join('').toLocaleLowerCase();
     return function(a, b) {
-		if(!a[propt] || !b[propt]) {
+	if(!a[propt] || !b[propt]) {
             return 0;
         }
         else{
             var aName = a[propt].toLowerCase();
             var bName = b[propt].toLowerCase();
             return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-		}
+	}
     }
 }
 var bool = true;
@@ -353,97 +385,107 @@ var bool = true;
  */
 
 function renderCell(col,celldata,cellid) {
-	if(col == "requestedpasswordchange") {
-		obj=JSON.parse(celldata);
-		str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
-		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
-    str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
-    return str;
-	}else if(col == "examiner"){
-    if(celldata[celldata.length - 1]['access'] == 'W'){
-      str = "none";
-    }else{
-      var teacher = celldata[celldata.length - 1]['teacher'];
-      var items = new Array();
-      items.push("unassigned");
-      for(var i = 0; i < celldata.length - 1; i++){
-        items.push(celldata[i]['username']);
-      }
-      str = makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+celldata[celldata.length - 1]['uid']+"\",this.value);", items, items, teacher);
-      str += "<div style='display:none;'>" + teacher + "</div>";
-    }
-    return str;
-  }else if(col == "access"){
-    obj=JSON.parse(celldata);
-    str = makeDropdown("changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", new Array("W", "R", "null"), new Array("Teacher", "Student", "none"), obj.access);
-    str += "<div style='display:none;'>" + obj.access + "</div>";
-    return str;
-	}else if(col == "vers"){
-    obj=JSON.parse(celldata);
-    var items = new Array();
-    for(var i = 0; i < filez['courses'].length; i++){
-      items.push(filez['courses'][i]['vers']);
-    }
-    str = makeDropdown("changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.vers);
-    str += "<div style='display:none;'>" + obj.vers + "</div>";
-    return str;
-	}else if (col == "username") {
-		obj = JSON.parse(celldata);
-		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeUsername("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.username+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
-    str += "<div style='display:none;'>" + obj.username + "</div>";
-		return str;
-	}else if (col == "ssn") {
-		obj = JSON.parse(celldata);
-		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeSSN("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.ssn+"\" size=13 onclick='return false;'>";
-    str += "<div style='display:none;'>" + obj.ssn + "</div>";
-		return str;
-	}else if (col == "firstname") {
-		obj = JSON.parse(celldata);
-		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeFirstname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.firstname+"\" size=8 onclick='return false;'>";
-    str += "<div style='display:none;'>" + obj.firstname + "</div>";
-		return str;
-	}else if (col == "lastname") {
-		obj = JSON.parse(celldata);
-		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
-    str += "<div style='display:none;'>" + obj.lastname + "</div>";
-		return str;
-	}else if(col == "class"){
-    obj=JSON.parse(celldata);
-    var items = new Array();
-		// Every user doesn't have a class
-		items.push("null");
-    for(var i = 0; i < filez['classes'].length; i++){
-      items.push(filez['classes'][i]['class']);
-    }
-    str = makeDatalist("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
-    str += "<div style='display:none;'>" + obj.class + "</div>";
-		return str;
-	} else if(col == "groups") {
-		return "<span>" + celldata + "</span>";
-	} else {
-		return "<div id='" + cellid + "'>" + celldata + "</div>";
+    if(col == "requestedpasswordchange") {
+	obj=JSON.parse(celldata);
+	str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
+	str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
+	str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
+	return str;
+    }else if(col == "examiner"){
+	if(celldata[celldata.length - 1]['access'] == 'W'){
+	    str = "none";
+	}else{
+	    var teacher = celldata[celldata.length - 1]['teacher'];
+	    var items = new Array();
+	    items.push("unassigned");
+	    for(var i = 0; i < celldata.length - 1; i++){
+		items.push(celldata[i]['username']);
+	    }
+	    str = makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+celldata[celldata.length - 1]['uid']+"\",this.value);", items, items, teacher);
+	    str += "<div style='display:none;'>" + teacher + "</div>";
 	}
-	return celldata;
+	return str;
+    }else if(col == "access"){
+	obj=JSON.parse(celldata);
+	str = makeDropdown("changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", new Array("W", "R", "null"), new Array("Teacher", "Student", "none"), obj.access);
+	str += "<div style='display:none;'>" + obj.access + "</div>";
+	return str;
+    }else if(col == "vers"){
+	obj=JSON.parse(celldata);
+	var items = new Array();
+	for(var i = 0; i < filez['courses'].length; i++){
+	    items.push(filez['courses'][i]['vers']);
+	}
+	str = makeDropdown("changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.vers);
+	str += "<div style='display:none;'>" + obj.vers + "</div>";
+	return str;
+    }else if (col == "username") {
+	obj = JSON.parse(celldata);
+	str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeUsername("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.username+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
+	str += "<div style='display:none;'>" + obj.username + "</div>";
+	return str;
+    }else if (col == "ssn") {
+	obj = JSON.parse(celldata);
+	str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeSSN("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.ssn+"\" size=13 onclick='return false;'>";
+	str += "<div style='display:none;'>" + obj.ssn + "</div>";
+	return str;
+    }else if (col == "firstname") {
+	obj = JSON.parse(celldata);
+	str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeFirstname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.firstname+"\" size=8 onclick='return false;'>";
+	str += "<div style='display:none;'>" + obj.firstname + "</div>";
+	return str;
+    }else if (col == "lastname") {
+	obj = JSON.parse(celldata);
+	str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
+	str += "<div style='display:none;'>" + obj.lastname + "</div>";
+	return str;
+    }else if(col == "class"){
+	obj=JSON.parse(celldata);
+	var items = new Array();
+	// Every user doesn't have a class
+	items.push("null");
+	for(var i = 0; i < filez['classes'].length; i++){
+	    items.push(filez['classes'][i]['class']);
+	}
+	str = makeClassDatalist("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
+	str += "<div style='display:none;'>" + obj.class + "</div>";
+	return str;
+    } else if(col == "groups") {
+	return "<span>" + celldata + "</span>";
+    } else {
+	return "<div id='" + cellid + "'>" + celldata + "</div>";
+    }
+    return celldata;
 }
 
 function makeDropdown(onChange, values, items, selected){
-  str = "<select onChange='"+onChange+"' onclick='return false;'>";
-  for(var i = 0; i < values.length; i++){
-    str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
-  }
-  str+="</select>";
-  return str;
-}
-
-function makeDatalist(onChange, values, items, selected){
-    str = "<input id=classInput list='classes' onChange='"+onChange+"' onclick='return false;' placeholder="+selected+">";
-    str+= "<datalist id='classes'>";
+    str = "<select onChange='"+onChange+"' onclick='return false;'>";
     for(var i = 0; i < values.length; i++){
 	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
     }
+    str+="</select>";
+    return str;
+}
+
+function makeClassDatalist(onChange, values, items, selected){
+    str = "<input id=classInput list='classes' onChange='"+onChange+"' onclick='return false;' placeholder="+selected+" onInput='newClassSelected(this)'>";
+    str+= "<datalist id='classes'>";
+    for(var i = 0; i < values.length; i++){
+	str+="<option label='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
+    }
+
+    str+= "<option value='newClass'>&#x2795 New Class</option>";
+    
     str+="</datalist>";
     str+="</input>";
     return str;
+}
+
+function newClassSelected(val){
+    if(val.value=='newClass'){
+	showCreateClassPopup();
+	val.value = "";
+    }
 }
 
 var myTable;
