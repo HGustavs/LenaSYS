@@ -212,8 +212,15 @@ function renderCell(col,celldata,cellid) {
 			return "<div id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+celldata+"\")'>" + listStr + "</div>";
 		}
 	} else if (col == "filesize") {
-		return formatBytes(celldata, 0);
-	} else if (col == "extension") {
+        var obj = JSON.parse(celldata);
+        if(obj.kind == "Link") {
+            return "-";
+        }
+        return formatBytes(obj.size, 0);
+    } else if (col == "extension") {
+        if(link[0] == "https" || link[0] == "http"){
+            return "<div> - </div>";
+        }
 	    return "<div>" + list[list.length - 1] + "</div>";
 	} else if (col == "editor") {
 		if(link[0] == "https" || link[0] == "http"){
