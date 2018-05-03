@@ -148,9 +148,30 @@ pdoConnect();
         <button id="button-close" onclick="cancelPreview()">Close</button>
     </div>
     <!-- Markdown-preview functionality END -->
+
+    <!-- Edit file functionality START -->
+    <div class="editFileWindowContainer"></div>
+    <div class="editFileWindow">
+        <div class="loginBoxheader">
+            <h3>This is the editor</h3>
+            <div style="cursor:pointer;" onclick="closeEditFile();">x</div>
+        </div>
+        <div class="editFileCode">
+            <div class="fileText">
+                <textarea id="filecont" oninput="editFile(this.value)" name="filetext" rows="32" cols="79"></textarea>
+            </div>
+        </div>
+        <div class="optionButtons">
+            <button id="button-save" onclick="saveMarkdown()">Save</button>
+            <button id="button-cancel" onclick="">Cancel</button>
+        </div>
+        <button id="button-close" onclick="cancelEditFile()">Close</button>
+    </div>
+    <!-- Edit file functionality END -->
+
     <!--Fab-button-->
-		<div class="fixed-action-button">
-			<a class="btn-floating fab-btn-lg noselect" id="fabBtn"><img id="fabBtnImg" src="../Shared/icons/add-icon.svg"></a>
+		<div class="fixed-action-button" id="fabButton">
+			<a class="btn-floating fab-btn-lg noselect" id="fabBtn" ><img id="fabBtnImg" src="../Shared/icons/add-icon.svg"></a>
 			<ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
 				<li><a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Global File'><img id="gFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg"></a></li>
 				<li><a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Add Version Local File'><img id="lFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg"></a></li>

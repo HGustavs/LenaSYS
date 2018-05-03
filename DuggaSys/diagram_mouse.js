@@ -300,11 +300,11 @@ function mouseupevt(ev) {
                 //okToMakeLine is a flag for this
                 var okToMakeLine= true;
                 if(symbolEndKind == 3 && symbolStartKind == 2){
-                    if(diagram[hovobj].hasConnector(p1)){
+                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0){
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == 2 && symbolStartKind == 3){
-                    if(diagram[lineStartObj].hasConnector(p2)){
+                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0){
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == 3 && symbolStartKind == 5) {
@@ -312,6 +312,8 @@ function mouseupevt(ev) {
                 } else if(symbolEndKind == 5 && symbolStartKind == 3) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
                 } else if(symbolEndKind == 5 && symbolStartKind == 5){
+                    okToMakeLine = false;
+                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)){
                     okToMakeLine = false;
                 }
                 if(okToMakeLine){
@@ -330,8 +332,8 @@ function mouseupevt(ev) {
     if (uimode == "CreateClass" && md == 4) {
         classB = new Symbol(1);
         classB.name = "New" + diagram.length;
-        classB.operations.push({visibility:"-", text:"makemore()"});
-        classB.attributes.push({visibility:"+", text:"height:Integer"});
+        classB.operations.push({text:"- makemore()"});
+        classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
         classB.bottomRight = p2;
 
@@ -423,7 +425,7 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
-
+    SaveState();
 
 }
 

@@ -209,11 +209,11 @@ function Symbol(kind) {
             var longestStr = "";
             for(var i = 0; i < this.operations.length; i++){
                 if(this.operations[i].text.length > longestStr.length)
-                    longestStr = this.operations[i].visibility + " " + this.operations[i].text;
+                    longestStr = this.operations[i].text;
             }
             for(var i = 0; i < this.attributes.length; i++){
                 if(this.attributes[i].text.length > longestStr.length)
-                    longestStr = this.attributes[i].visibility + " " + this.attributes[i].text;
+                    longestStr = this.attributes[i].text;
             }
             //Measures the length and sets the width of the object to this.
             ctx.font = "14px Arial";
@@ -237,7 +237,7 @@ function Symbol(kind) {
         } else {
             var delta = (end - start) / 2;
         }
-        
+
         if (direction == 1) {
             // Vertical connector
             connector.sort(function(a, b) {
@@ -250,11 +250,11 @@ function Symbol(kind) {
             } else {
                 var ycc = start + delta;
             }
-            
+
             for (var i = 0; i < connector.length; i++) {
                 if(this.symbolkind != 5){
                     ycc += delta;
-                } 
+                }
                 points[connector[i].from].y = ycc;
                 points[connector[i].from].x = otherside;
             }
@@ -273,7 +273,7 @@ function Symbol(kind) {
                 if(this.symbolkind != 5) {
                     ycc += delta;
                 }
-                
+
                 points[connector[i].from].y = otherside ;
                 points[connector[i].from].x = ycc;
             }
@@ -320,10 +320,23 @@ function Symbol(kind) {
     }
 
     this.connectorCountFromSymbol = function(symbol) {
+        var count = 0;
         var tmp = this.connectorTop.concat(this.connectorBottom, this.connectorLeft, this.connectorRight);
-        tmp = tmp.filter(c => c.to == symbol.topLeft || c.to == symbol.bottomRight || c.to == symbol.centerPoint || c.to == symbol.middleDivider ||
-            c.from == symbol.topLeft || c.from == symbol.bottomRight || c.from == symbol.centerPoint || c.from == symbol.middleDivider);
-        return tmp.length;
+
+        if ((this.symbolkind == 3 && symbol.symbolkind == 5) || this.symbolkind == 5 && symbol.symbolkind == 3) {
+            var symbolTmp = symbol.connectorTop.concat(symbol.connectorBottom, symbol.connectorLeft, symbol.connectorRight);
+            for (var i = 0; i < symbolTmp.length; i++) {
+                for (var j = 0; j < tmp.length; j++) {
+                    if (symbolTmp[i].to == tmp[j].from) count++;
+                }
+            }
+        } else {
+            tmp = tmp.filter(c => c.to == symbol.topLeft || c.to == symbol.bottomRight || c.to == symbol.centerPoint || c.to == symbol.middleDivider ||
+                c.from == symbol.topLeft || c.from == symbol.bottomRight || c.from == symbol.centerPoint || c.from == symbol.middleDivider);
+            count = tmp.length;
+        }
+
+        return count;
     }
 
     this.hasConnectorFromPoint = function(point) {
@@ -734,11 +747,11 @@ function Symbol(kind) {
         ctx.font = parseInt(this.textsize) + "px Arial";
 
         for (var i = 0; i < this.attributes.length; i++) {
-            ctx.fillText(this.attributes[i].visibility + " " + this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
+            ctx.fillText(this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
         }
 
         for (var i = 0; i < this.operations.length; i++) {
-            ctx.fillText(this.operations[i].visibility + " " + this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
+            ctx.fillText(this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
         }
     }
 

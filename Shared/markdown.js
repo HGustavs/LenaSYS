@@ -101,6 +101,7 @@ function parseMarkdown(inString)
     //One line break
      //inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
      inString=inString.replace(/(\n)$/gm, "<br>");
+
     // Split on code or console block
     var codearray=inString.split(/\~{3}|\=\|\=/);
     var str="";
@@ -252,6 +253,7 @@ function handleLists(currentLine, prevLine, nextLine) {
     if(!isUnorderdList(nextLine) && isUnorderdList(currentLine) && !isOrderdList(nextLine) && !isTable(nextLine)) markdown += "</ul>"; // Close unordered list
     return markdown;
 }
+
 function handleTable(currentLine, prevLine, nextLine) {
     var markdown = "";
     var columns = currentLine.split('|').filter(function(v){return v !== '';});

@@ -51,6 +51,7 @@ $entries=array();
 $files=array();
 $lfiles =array();
 $gfiles =array();
+$access = False;
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
   	$query = $pdo->prepare("SELECT fileid,filename,kind, filesize, uploaddate FROM fileLink WHERE ((cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) OR isGlobal='1') ORDER BY filename;");
   	$query->bindParam(':cid', $cid);
@@ -91,7 +92,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
     			'filename' => $row['filename'],
           'extension' => $row['filename'],
           'kind' => $filekind,
-    			'filesize' => $row['filesize'],
+    			'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekind]) ,
     			'uploaddate' => $row['uploaddate'],
           'editor' => $filePath,
           'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']])
@@ -123,13 +124,16 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
       			}
     		}
   	}
+
+  	$access = True;
 }
 		
 $array = array(
   	'entries' => $entries,
   	'debug' => $debug,
   	'gfiles' => $gfiles,
-  	'lfiles' => $lfiles
+  	'lfiles' => $lfiles,
+	'access' => $access
 );
 
 echo json_encode($array);
