@@ -489,7 +489,7 @@ function renderVariant(clickedElement) {
 			param: "Parameter",
 			variantanswer: "Answer",
 			modified: "Modified",
-			disabled: "Disabled/Enabled",
+			disabled: "Status",
 			arrowVariant: "",
 			cogwheelVariant: "",
 			trashcanVariant: ""
