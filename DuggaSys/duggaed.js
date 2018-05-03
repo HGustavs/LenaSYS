@@ -99,7 +99,6 @@ $(window).load(function () {
 });
 
 function resetNameValidation() {
-	console.log("In");
 	var nme = document.getElementById("name");
 	$('#tooltipTxt').fadeOut();
 	nme.value = "";
@@ -117,6 +116,9 @@ function newDugga() {
 	document.getElementById('release').placeholder = 'YYYY-MM-DD';
 	document.getElementById('deadline').value = '';
 	document.getElementById('deadline').placeholder = 'YYYY-MM-DD';
+
+	// Set submitDugga button to disabled
+	$('#submitDugga').prop("disabled", true);
 	//----------------------------------------------------
 	// Set Autograde
 	//----------------------------------------------------
@@ -172,6 +174,7 @@ function createDugga() {
 function selectDugga(qid) {
 	// Ensures that name validation is not set at start when selecting a dugga
 	resetNameValidation();
+	$('#saveDugga').prop("disabled", false);
 
 	AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'], qid: this.qid }, "GETQUIZ");
 
