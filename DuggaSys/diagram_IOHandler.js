@@ -117,6 +117,12 @@ function SaveState() {
     diagramNumber++;
     localStorage.setItem("diagram" + diagramNumber, a);
     diagramNumberHistory = diagramNumber;
+    for (var key in localStorage) {
+        if (key.indexOf("diagram") != -1) {
+            var tmp = key.match(/\d+$/);
+            if (tmp > diagramNumberHistory) localStorage.removeItem(key);
+        }
+    }
 }
 
 function SaveFile(el) {
