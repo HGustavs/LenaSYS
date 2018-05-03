@@ -423,7 +423,7 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
-
+    SaveState();
 
 }
 

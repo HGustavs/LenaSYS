@@ -112,6 +112,13 @@ function Save() {
     console.log("State is saved");
 }
 
+function SaveState() {
+    Save();
+    diagramNumber++;
+    localStorage.setItem("diagram" + diagramNumber, a);
+    diagramNumberHistory = diagramNumber;
+}
+
 function SaveFile(el) {
     Save();
     var data = "text/json;charset=utf-8," + encodeURIComponent(a);
