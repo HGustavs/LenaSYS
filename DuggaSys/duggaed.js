@@ -81,7 +81,7 @@ $(window).load(function () {
 	$(window).keyup(function (event) {
 		if (event.keyCode == 27) {
 			closeWindows();
-			// closeSelect();
+			resetNameValidation();
 			showDuggaSaveButton();
 		}else if (event.keyCode == 13){
 			//Remember that keycode 13 = enter button
@@ -98,6 +98,13 @@ $(window).load(function () {
 	});
 });
 
+function resetNameValidation() {
+	var nme = document.getElementById("name");
+	$('#tooltipTxt').fadeOut();
+	nme.value = "";
+	nme.style.backgroundColor = "#fff";
+}
+
 // DUGGA FUNCTIONS start
 function newDugga() {
 	document.getElementById("editDuggaTitle").innerHTML = "New dugga";
@@ -109,6 +116,9 @@ function newDugga() {
 	document.getElementById('release').placeholder = 'YYYY-MM-DD';
 	document.getElementById('deadline').value = '';
 	document.getElementById('deadline').placeholder = 'YYYY-MM-DD';
+
+	// Set submitDugga button to disabled
+	$('#submitDugga').prop("disabled", true);
 	//----------------------------------------------------
 	// Set Autograde
 	//----------------------------------------------------
@@ -162,6 +172,10 @@ function createDugga() {
 }
 
 function selectDugga(qid) {
+	// Ensures that name validation is not set at start when selecting a dugga
+	resetNameValidation();
+	$('#saveDugga').prop("disabled", false);
+
 	AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'], qid: this.qid }, "GETQUIZ");
 
 	document.getElementById("editDuggaTitle").innerHTML = "Edit dugga";
@@ -699,8 +713,9 @@ function renderCell(col, celldata, cellid) {
 // START OF closers and openers
 function closeEditDugga() {
 	$("#editDugga").css("display", "none");
-	document.getElementById("name").style.backgroundColor = "#fff";  // Resets color for name input
-	$('#tooltipTxt').css("display", "none");							 // Resets tooltip text to its default form
+
+	// Resets the name validation
+	resetNameValidation();
 }
 
 function showLoginPopup() {
