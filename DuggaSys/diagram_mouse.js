@@ -61,7 +61,7 @@ function mousemoveevt(ev, t) {
     }
     if (md == 0) {
         // Select a new point only if mouse is not already moving a point or selection box
-        sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY).point;
+        sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
         // If mouse is not pressed highlight closest point
         points.clearAllSelects();
         movobj = diagram.itemClicked();
@@ -69,8 +69,8 @@ function mousemoveevt(ev, t) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
         // If mouse is pressed down and at a point in selected object - move that point
-        sel.x = currentMouseCoordinateX;
-        sel.y = currentMouseCoordinateY;
+        sel.point.x = currentMouseCoordinateX;
+        sel.point.y = currentMouseCoordinateY;
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
@@ -189,7 +189,7 @@ function mousedownevt(ev) {
         if (hovobj == -1) {
             md = 0;
         } else {
-            sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY).point;
+            sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             //Store which object you are hovering over in lineStartObj
             lineStartObj = hovobj;
 
@@ -284,7 +284,7 @@ function mouseupevt(ev) {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
 
-             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY).point;
+             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
             if(symbolStartKind != 4 && symbolEndKind != 4){
