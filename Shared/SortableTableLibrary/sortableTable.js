@@ -396,7 +396,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		sortcolumn = col;
 		sortkind = kind;
 
-		this.ascending = !this.ascending;
+		// Even kind numbers will sort in ascending order
+		this.ascending = kind % 2 === 0;
 
 		// Sort the body of the table again
 		tbl.tblbody.sort(sortableInternalSort);
