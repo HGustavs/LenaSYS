@@ -209,11 +209,11 @@ function Symbol(kind) {
             var longestStr = "";
             for(var i = 0; i < this.operations.length; i++){
                 if(this.operations[i].text.length > longestStr.length)
-                    longestStr = this.operations[i].visibility + " " + this.operations[i].text;
+                    longestStr = this.operations[i].text;
             }
             for(var i = 0; i < this.attributes.length; i++){
                 if(this.attributes[i].text.length > longestStr.length)
-                    longestStr = this.attributes[i].visibility + " " + this.attributes[i].text;
+                    longestStr = this.attributes[i].text;
             }
             //Measures the length and sets the width of the object to this.
             ctx.font = "14px Arial";
@@ -747,11 +747,11 @@ function Symbol(kind) {
         ctx.font = parseInt(this.textsize) + "px Arial";
 
         for (var i = 0; i < this.attributes.length; i++) {
-            ctx.fillText(this.attributes[i].visibility + " " + this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
+            ctx.fillText(this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
         }
 
         for (var i = 0; i < this.operations.length; i++) {
-            ctx.fillText(this.operations[i].visibility + " " + this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
+            ctx.fillText(this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
         }
     }
 
