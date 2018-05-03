@@ -269,16 +269,16 @@ diagram.closestPoint = function(mx, my){
     var point;
     this.forEach(symbol => {
         var c = symbol.corners();
-        corners = [c.tl, c.tr, c.bl, c.br];
-        for(var corner in corners){
+        [c.tl, c.tr, c.bl, c.br].forEach(corner => {
             var deltaX = mx - corner.x;
             var deltaY = my - corner.y;
             var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
             if (hypotenuseElevatedBy2 < distance) {
                 distance = hypotenuseElevatedBy2;
                 point = corner;
-            }
-        }
+            } 
+        });
+        
     });
     return {distance:Math.sqrt(distance), point:point};
 }
