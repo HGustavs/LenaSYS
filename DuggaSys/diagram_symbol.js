@@ -688,13 +688,24 @@ function Symbol(kind) {
 
         //Highlighting points when targeted, makes it easier to resize
         if(this.targeted && this.symbolkind != 5){
+            var c = this.corners();
             ctx.beginPath();
-            ctx.arc(x1,y1,5,0,2*Math.PI,false);
+            ctx.arc(c.tl.x,c.tl.y,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
 
             ctx.beginPath();
-            ctx.arc(x2,y2,5,0,2*Math.PI,false);
+            ctx.arc(c.br.x,c.br.y,5,0,2*Math.PI,false);
+            ctx.fillStyle = '#F82';
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(c.tr.x,x.tr.y,5,0,2*Math.PI,false);
+            ctx.fillStyle = '#F82';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(c.bl.x,c.bl.y,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
         }
