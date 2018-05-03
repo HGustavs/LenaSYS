@@ -797,16 +797,16 @@ function returnedSection(data) {
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='fabValidateType(\"1\");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>"
 
 			// Moment button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='fabValidateType(\"2\");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='fabValidateType(\"4\");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>"
 
 			// Test button
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='fabValidateType(\"3\");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>"
 
 			// Link button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='fabValidateType(\"4\");'><i class='material-icons'>link</i></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='fabValidateType(\"5\");'><i class='material-icons'>link</i></a></li>"
 
 			//Code button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='fabValidateType(\"5\");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='fabValidateType(\"2\");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>"
 
 			// Group activity button
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='fabValidateType(\"6\");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>"
@@ -1679,36 +1679,36 @@ function toggleFabButton() {
 	}
 }
 
-
+//kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function fabValidateType(kind) {
 	if (kind == 0){
-		selectItem("undefined","New Item","0","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Header","0","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 1){
-		selectItem("undefined","New Item","1","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 2){
-		selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 3){
 		if (retdata['duggor'].length == 0){
 			toggleFabButton();
 			$("#noTestsConfirmBox").css("display", "flex");
 		} else {
-			selectItem("undefined","New Item","3","undefined","undefined","0","undefined","undefined");
+			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined");
 			newItem();
 		}
 	} else if (kind == 4){
-		selectItem("undefined","New Item","4","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 5){
-		selectItem("undefined","New Item","5","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 6){
-		selectItem("undefined","New Item","6","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 7){
-		selectItem("undefined","New Item","7","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Message","7","undefined","undefined","0","undefined","undefined");
 		newItem();
 	}
 }
