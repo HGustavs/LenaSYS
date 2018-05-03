@@ -444,7 +444,7 @@ function loadFile(fileUrl) {
     $(".editFileWindow").show();
     $(".editFileWindowContainer").css("display", "block");
     var fileContent = getFIleContents(fileUrl);
-    document.getElementById("filecontent").value = fileContent;
+    document.getElementById("filecont").value = fileContent;
     editFile(fileContent);
 }
 

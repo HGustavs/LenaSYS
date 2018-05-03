@@ -149,7 +149,7 @@ pdoConnect();
         </div>
         <div class="editFileCode">
             <div class="fileText">
-                <textarea id="filecontent" oninput="editFile(this.value)" name="filetext" rows="32" cols="79"></textarea>
+                <textarea id="filecont" oninput="editFile(this.value)" name="filetext" rows="32" cols="79"></textarea>
             </div>
         </div>
         <div class="optionButtons">
