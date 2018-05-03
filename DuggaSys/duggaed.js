@@ -468,7 +468,7 @@ function returnedDugga(data) {
 
 	var tabledata = {
 		tblhead: {
-			did: "#",
+			did: "",
 			qname: "Name",
 			autograde: "Autograde",
 			gradesystem: "Gradesystem",
@@ -523,7 +523,7 @@ function renderVariant(clickedElement) {
 	updateVariantTitle(clickedElement);
 	var tabledata = {
 		tblhead: {
-			vid: "#",
+			vid: "",
 			param: "Parameter",
 			variantanswer: "Answer",
 			modified: "Modified",
@@ -635,7 +635,7 @@ function renderCell(col, celldata, cellid) {
 	// Placing a clickable icon in its designated column that opens a window for acess to variants.
 	else if (col == "arrow") {
 		clickedElement = JSON.parse(cellid.match(/\d+/));
-		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
+		str = "<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg'";
 		str += " onclick='renderVariant(\"" + clickedElement + "\");'>";
 		return str;
 	}
