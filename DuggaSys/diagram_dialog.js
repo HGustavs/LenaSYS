@@ -125,11 +125,11 @@ function loadUMLForm(element, dir){
         var attributesTextArea = document.getElementById('UMLAttributes');
         var operationsTextArea = document.getElementById('UMLOperations');
         for(var i = 0; i < diagram[lastSelectedObject].attributes.length;i++){
-          diagram[lastSelectedObject].attributes[i].text;
+          attributesText += diagram[lastSelectedObject].attributes[i].text;
           if(i < diagram[lastSelectedObject].attributes.length - 1) attributesText += "\n";
         }
         for(var i = 0; i < diagram[lastSelectedObject].operations.length;i++){
-          diagram[lastSelectedObject].operations[i].text
+          operationsText += diagram[lastSelectedObject].operations[i].text
           if(i < diagram[lastSelectedObject].operations.length - 1) operationsText += "\n";
         }
 
