@@ -290,16 +290,24 @@ function compare(a,b) {
 	let col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
 	var tempB = b;
-
 	if (col == "File name") {
 		tempA = tempA.toUpperCase();
 		tempB = tempB.toUpperCase();
 	} else if (col == "Extension") {
+        var linkA = tempA.split("://");
+        var linkB = tempB.split("://");
 		tempA = tempA.split('.');
 		tempB = tempB.split('.');
-
-		tempA = tempA[tempA.length-1];
-		tempB = tempB[tempB.length-1];
+		if(linkA[0] == "https" || linkA[0] == "http"){
+			tempA = "-";
+		} else {
+            tempA = tempA[tempA.length-1];
+		}
+        if(linkB[0] == "https" || linkB[0] == "http"){
+            tempB = "-";
+        } else {
+            tempB = tempB[tempB.length-1];
+        }
 	} else if (col == "Size") {
 		tempA = JSON.parse(tempA);
 		tempB = JSON.parse(tempB);
