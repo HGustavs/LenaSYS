@@ -353,6 +353,7 @@ var bool = true;
  */
 
 function renderCell(col,celldata,cellid) {
+  
 	if(col == "requestedpasswordchange") {
 		obj=JSON.parse(celldata);
 		str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
@@ -360,16 +361,17 @@ function renderCell(col,celldata,cellid) {
     str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
     return str;
 	}else if(col == "examiner"){
-    if(celldata[celldata.length - 1]['access'] == 'W'){
+    obj=JSON.parse(celldata)['examiners'];
+    if(obj[obj.length - 1]['access'] == 'W'){
       str = "none";
     }else{
-      var teacher = celldata[celldata.length - 1]['teacher'];
+      var teacher = obj[obj.length - 1]['teacher'];
       var items = new Array();
       items.push("unassigned");
-      for(var i = 0; i < celldata.length - 1; i++){
-        items.push(celldata[i]['username']);
+      for(var i = 0; i < obj.length - 1; i++){
+        items.push(obj[i]['username']);
       }
-      str = makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+celldata[celldata.length - 1]['uid']+"\",this.value);", items, items, teacher);
+      str = makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+obj[obj.length - 1]['uid']+"\",this.value);", items, items, teacher);
       str += "<div style='display:none;'>" + teacher + "</div>";
     }
     return str;
@@ -385,27 +387,22 @@ function renderCell(col,celldata,cellid) {
       items.push(filez['courses'][i]['vers']);
     }
     str = makeDropdown("changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.vers);
-    str += "<div style='display:none;'>" + obj.vers + "</div>";
     return str;
 	}else if (col == "username") {
 		obj = JSON.parse(celldata);
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeUsername("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.username+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
-    str += "<div style='display:none;'>" + obj.username + "</div>";
 		return str;
 	}else if (col == "ssn") {
 		obj = JSON.parse(celldata);
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeSSN("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.ssn+"\" size=13 onclick='return false;'>";
-    str += "<div style='display:none;'>" + obj.ssn + "</div>";
 		return str;
 	}else if (col == "firstname") {
 		obj = JSON.parse(celldata);
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeFirstname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.firstname+"\" size=8 onclick='return false;'>";
-    str += "<div style='display:none;'>" + obj.firstname + "</div>";
 		return str;
 	}else if (col == "lastname") {
 		obj = JSON.parse(celldata);
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
-    str += "<div style='display:none;'>" + obj.lastname + "</div>";
 		return str;
 	}else if(col == "class"){
     obj=JSON.parse(celldata);
@@ -416,7 +413,6 @@ function renderCell(col,celldata,cellid) {
       items.push(filez['classes'][i]['class']);
     }
     str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
-    str += "<div style='display:none;'>" + obj.class + "</div>";
 		return str;
 	} else if(col == "groups") {
 		return "<span>" + celldata + "</span>";
@@ -435,6 +431,44 @@ function makeDropdown(onChange, values, items, selected){
   return str;
 }
 
+function renderSortOptions(col,status) {
+	str = "";
+	if (status == -1) {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+	} else if (status == 0) {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+	} else {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+	}
+	return str;
+}
+
+function compare(a,b) {
+	let col = sortableTable.currentTable.getSortcolumn();
+	var tempA = a;
+	var tempB = b;
+  
+	// Needed so that the counter starts from 0
+	// everytime we sort the table
+	count = 0;
+	if (col == "Examiner") {
+		tempA = JSON.parse(tempA)['examiners'];
+		tempB = JSON.parse(tempB)['examiners'];
+    tempA = tempA[tempA.length - 1]['teacher'];
+    tempB = tempB[tempB.length - 1]['teacher'];
+	}
+
+  tempA = tempA.toUpperCase();
+  tempB = tempB.toUpperCase();
+	if (tempA > tempB) {
+		return 1;
+	} else if (tempA < tempB) {
+		return -1;
+	} else {
+		return 0;
+	}
+}	
+
 var myTable;
 //----------------------------------------
 // Renderer
@@ -443,7 +477,6 @@ var myTable;
 function returnedAccess(data) {
 	setup();
 	filez = data;
-
 	var tabledata = {
 		tblhead:{
 			username:"User",
@@ -468,7 +501,7 @@ function returnedAccess(data) {
 		null,
 		"",
 	    renderCell,
-	    null,
+	    renderSortOptions,
 	    null,
 	    null,
 	    [],
