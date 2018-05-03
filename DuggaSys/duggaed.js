@@ -72,7 +72,7 @@ $(document).ready(function () {
 	});
 
 	$('#createjson').click(function () {
-		$('#parameter').val(createJSONString($('#jsonform').serializeArray()));
+		$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	});
 });
 
@@ -350,58 +350,50 @@ function updateVariantTitle(number) {
 // Adds a submission row
 function addVariantSubmissionRow() {
 	$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>" +
-		"<select name='type' id='submissionType" + submissionRow + "' style='width:65px;'>" +
+		"<select name='s_type' id='submissionType' style='width:65px;'>" +
 		"<option value='pdf'>PDF</option>" +
 		"<option value='zip'>Zip</option>" +
 		"<option value='link'>Link</option>" +
 		"<option value='text'>Text</option>" +
 		"</select>" +
-		"<input type='text' name='fieldname' id='fieldname" + submissionRow + "' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>" +
-		"<input type='text' name='instruction' id='instruction" + submissionRow + "' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>" +
+		"<input type='text' name='s_fieldname' id='fieldname" + submissionRow + "' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>" +
+		"<input type='text' name='s_instruction' id='instruction" + submissionRow + "' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>" +
 		"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>" +
 		"</div>");
 	submissionRow++;
 }
 
 function createJSONString(formData) {
-	// Init the JSON string variable
-	var jsonStr = "{";
+	var submission_types = [];
+	var type, fieldname, instruction;
 
-	// Get the first static fields
-	jsonStr += '"' + formData[0]['name'] + '":"' + formData[0]['value'] + '",';
-	jsonStr += '"' + formData[1]['name'] + '":"' + formData[1]['value'] + '",';
-	if (document.getElementById("extraparam").value !== "") {
-		jsonStr += document.getElementById("extraparam").value + ",";
-	}
-	jsonStr += '"submissions":[';
+	formData.forEach(element => {
+		if (element.name == "s_type") type = element;
+		if (element.name == "s_fieldname") fieldname = element;
+		if (element.name == "s_instruction") instruction = element;
 
-	// Handle the dynamic amount of submission types
-	for (var i = 2; i < formData.length; i++) {
-		if (i % 3 == 2) {
-			// The start of a new submissions field, prepend with curly bracket
-			jsonStr += "{";
-		}
-		// Input the values of the array. This parses the option-select first, then the textfield. But if the text field is empty, then do not write it to JSON.
-		if (formData[i]['value'].length > 0) {
-			jsonStr += '"' + formData[i]['name'] + '":"' + formData[i]['value'] + '",';
-		}
-		if (i % 3 == 1) {
-			// This submission field is complete, prepare for next
-			// Remove the last comma
-			jsonStr = jsonStr.substr(0, jsonStr.length - 1);
-			// Prepare for next submissions array element.
-			jsonStr += "},";
-		}
-	}
-	// Remove the last comma
-	jsonStr = jsonStr.substr(0, jsonStr.length - 1);
-	// Append the end of the submissions array.
-	jsonStr += ']'; // The end of the submissions array.
-	// Here, the freetext field handling should be added as it comes after the submissions array.
-	jsonStr += '}'; // The end of the JSON-string.
+		if (type && fieldname && instruction) {
+			submission_types.push({
+				"type":type.value,
+				"fieldname":fieldname.value,
+				"instruction":instruction.value
+			});
 
-	return jsonStr;
+			type = undefined;
+			fieldname = undefined;
+			instruction = undefined;
+		}
+	});
+
+
+	return JSON.stringify({
+		"type":formData[0].value,
+		"filelink":formData[1].value,
+		"extraparam":$('#extraparam').val(),
+		"submissions":submission_types
+	});
 }
+
 /*
 	This function marks the selected variant when editing by changing the
 	background color of the table row.
