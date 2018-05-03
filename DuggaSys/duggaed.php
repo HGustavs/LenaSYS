@@ -109,7 +109,7 @@ pdoConnect();
 
       <div class='loginBoxbody' style='width:100%; height:100%;'>
         <div id='upperDiv'>
-          <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; background-color: white;'></div> <!-- A div to place the variant-table within. -->
+          <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; border-bottom: #7f7f7f solid 3px; background-color: white; overflow-y: auto; overflow-x: hidden; margin-bottom: 5px;'></div> <!-- A div to place the variant-table within. -->
         </div>
         <div id='editVariantDiv' style="display:flex;">
           <input type='hidden' id='vid' value='Toddler'/>

@@ -557,10 +557,6 @@ function variantsTableStyling() {
 		document.getElementById('variant').style.minHeight = '100px';
 		document.getElementById('variant').style.maxHeight = '100px';
 	}
-	
-	document.getElementById('variant').style.borderBottom = '#7f7f7f solid 2px';
-	document.getElementById('variant').style.marginBottom = '5px';
-	document.getElementById('variant').style.overflow = 'auto';
 }
 
 // Rendring specific cells
