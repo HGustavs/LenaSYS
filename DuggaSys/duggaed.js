@@ -709,7 +709,7 @@ function renderCell(col, celldata, cellid) {
 
 	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "arrowVariant") {
-		str = "<img id='dorf' src='../Shared/icons/playT.svg' ";
+		str = "<img id='dorf' src='../Shared/icons/PlayT.svg' ";
 		str += " onclick='getVariantPreview();'>";
 		return str;
 	}
