@@ -14,6 +14,7 @@ var allowedRegradeTime = 24*60*60*1000;
 //var benchmarkData = performance.timing; // Will be updated after onload event
 //var ajaxStart;
 //var tim;
+var searchterm = "";
 var studentInfo = new Array;
 var students=new Array;
 var momtmp=new Array;
@@ -314,6 +315,7 @@ function leavec()
     localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
 
   if(str!=old || onlyPending==opend) process();
+  myTable.renderTable();
   magicHeading();
 }
 
@@ -760,21 +762,22 @@ var myTable;
 //----------------------------------------
 
 function buildDynamicHeaders() {
-  let tblhead = {0:"Fname/Lname/SSN"};
+  let tblhead = {"FnameLnameSSN":"Fname/Lname/SSN"};
   moments.forEach(function(entry) {
-  	tblhead[entry['lid']] = entry['entryname'];
+  	tblhead["lid:"+entry['lid']] = entry['entryname'];
   });
   return tblhead;
 }
 
 function buildStudentInfo() {
+  let i = 0;
 	students.forEach(function(entry) {
 		if(entry.length > 1) {
-			var row = {0:entry[0]};
-			for(i = 1; i < entry.length; i++) {
-				row[entry[i]['lid']] = entry[i];
+			var row = {"FnameLnameSSN":entry[0]};
+			for(j = 1; j < entry.length; j++) {
+				row["lid:"+entry[j]['lid']] = entry[j];
 			}
-			studentInfo[entry[1]['uid']] = row;
+			studentInfo[i++] = row;
 		}
 	});
 	return studentInfo;
@@ -799,7 +802,7 @@ function createSortableTable(data){
 		renderCell,
 		null,
 		null,
-		null,
+		rowFilter,
 		[],
 		[],
 		"",
@@ -818,7 +821,7 @@ function createSortableTable(data){
 
 function renderCell(col,celldata,cellid) {
 	// First column (Fname/Lname/SSN)
-  if (col == 0){
+  if (col == "FnameLnameSSN"){
     str = celldata.grade;
     return str;
 
@@ -904,4 +907,22 @@ function rowHighlightOff(rowid,rowno,colclass,centerel) {
 			collist[i].style.borderRight="";
 		}
   centerel.style.backgroundImage = "none";
+}
+
+//----------------------------------------------------------------
+// rowFilter <- Callback function that filters rows in the table
+//----------------------------------------------------------------
+function rowFilter(row) {
+  // Custom filters that remove rows before an actual search
+  if (!showTeachers && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
+    
+  // Standard filtering based on searchterm
+  for (entry in row){
+    for (key in row[entry]) {
+      if (row[entry][key] != null) {
+        if (("" + row[entry][key]).toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+      }
+    }
+  }
+  return false;
 }
