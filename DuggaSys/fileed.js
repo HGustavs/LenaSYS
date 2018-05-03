@@ -257,14 +257,14 @@ function rowFilter(row) {
 	} else if(searchterm == "~~link~~") {
         if (row["kind"].toUpperCase().indexOf("link".toUpperCase()) != -1) return true;
 	} else {
-	// Normal search 	
         for (key in row) {
             if (row[key] != null) {
+            	// Special search criteria for Size column
             	if(key == "filesize"){
             		var obj = JSON.parse(row[key]);
             		if(formatBytes(parseInt(obj.size), 0).toUpperCase().indexOf(searchterm.toUpperCase()) != -1 &&
 						!(key == "counter" || key == "editor" || key == "trashcan")) return true;
-					//console.log(formatBytes(parseInt(row[key]), 0));
+				// Normal search
 				} else {
                     if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1 &&
                         !(key == "counter" || key == "editor" || key == "trashcan")) return true;
