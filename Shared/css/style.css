@@ -220,7 +220,7 @@ p {
   background-color: #fff;
   color: #434343;
   display: block;
-  padding-top: 1px;
+  padding-top: 1px;  
 }
 
 #Courselist a {
@@ -256,6 +256,10 @@ p {
   min-height: 30px;
   margin-right: 8px;
   padding-right: 8px;
+}
+
+#C326{
+    margin-bottom: 25px;
 }
 
 .hidden {
