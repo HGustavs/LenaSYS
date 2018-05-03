@@ -246,6 +246,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 				'variantanswer' => html_entity_decode($rowz['variantanswer']),
 				'modified' => $rowz['modified'],
 				'disabled' => $rowz['disabled'],
+				'arrowVariant' => $rowz['vid'],
 				'cogwheelVariant' => $rowz['vid'],
 				'trashcanVariant' => $rowz['vid']
 				);
@@ -255,7 +256,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
 		$entry = array(
 			'variants' => $mass,
-			'arrow' => $row['id'],
+			'did' => $row['id'],
 			'qname' => $row['qname'],
 			'autograde' => $row['autograde'],
 			'gradesystem' => $row['gradesystem'],
@@ -264,6 +265,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			'deadline' => $row['deadline'],
       		'qrelease' => $row['qrelease'],
 			'modified' => $row['modified'],
+			'arrow' => $row['id'],
 			'cogwheel' => $row['id'],
 			'trashcan' => $row['id']
 			);

@@ -9,7 +9,7 @@ var filez;
 var variant = [];
 var submissionRow = 0;
 var myTable;
-var myTable2;
+var variantsTable;
 var str;
 var globalData;
 var globalVariant;
@@ -454,7 +454,7 @@ function returnedDugga(data) {
 
 	var tabledata = {
 		tblhead: {
-			arrow: "",
+			did: "#",
 			qname: "Name",
 			autograde: "Autograde",
 			gradesystem: "Gradesystem",
@@ -463,6 +463,7 @@ function returnedDugga(data) {
 			deadline: "Deadline",
 			qrelease: "Result date",
 			modified: "Last modified",
+			arrow: "",
 			cogwheel: "",
 			trashcan: "<input type='button' value='+' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga()'>"
 		},
@@ -508,18 +509,19 @@ function renderVariant(clickedElement) {
 	updateVariantTitle(clickedElement);
 	var tabledata = {
 		tblhead: {
-			vid: "",
+			vid: "#",
 			param: "Parameter",
 			variantanswer: "Answer",
 			modified: "Modified",
-			disabled: "Disabled/Enabled",
+			disabled: "Status",
+			arrowVariant: "",
 			cogwheelVariant: "",
 			trashcanVariant: ""
 		},
 		tblbody: globalData['entries'][clickedElement].variants,
 		tblfoot: []
 	}
-	myTable2 = new SortableTable(
+	variantsTable = new SortableTable(
 		tabledata,
 		"variant",
 		null,
@@ -539,21 +541,55 @@ function renderVariant(clickedElement) {
 		null,
 		false
 	);
-	myTable2.renderTable();
+	variantsTable.renderTable();
 	newVariant();
 	$('#did').val(globalData['entries'][clickedElement].arrow);
+	variantsTableStyling();
+}
+
+/*
+	Change the styling of variantsTable. The variants list will be scrollable, and its
+	size will change depending on the size of the login box, where it is placed.
+*/
+function variantsTableStyling() {
+	var loginBox = findAncestor(document.getElementById('variant'), 'loginBox', 'className');
+	var loginBoxHeader = null;
+
+	var loginBoxHeight = null;
+	var loginBoxHeaderHeight = null;
+	var editVariantHeight = null;
+	var remainingSpace = null;
+	
+	// Find the header of the login box
+	for(var i = 0; i < loginBox.children.length; i++) {
+		if($(loginBox.children[i]).hasClass('loginBoxheader')) {
+			loginBoxHeader = loginBox.children[i];
+			break;
+		}
+	}
+
+	loginBoxHeight = $(loginBox).outerHeight();
+	loginBoxHeaderHeight = $(loginBoxHeader).outerHeight();
+	editVariantHeight = $("#editVariantDiv").outerHeight();
+
+	// Remaining space for the scrollable variants list
+	remainingSpace = loginBoxHeight - (loginBoxHeaderHeight + editVariantHeight + 60);
+
+	if(remainingSpace > 100) {
+		document.getElementById('variant').style.maxHeight = remainingSpace + 'px';
+	} else {
+		document.getElementById('variant').style.minHeight = '100px';
+		document.getElementById('variant').style.maxHeight = '100px';
+	}
 }
 
 // Rendring specific cells
 function renderCell(col, celldata, cellid) {
 
 	// DUGGA-TABLE cellstarts
-	// Placing a clickable icon in its designated column that opens a window for acess to variants.
-	if (col == "arrow") {
-		clickedElement = JSON.parse(cellid.match(/\d+/));
-		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
-		str += " onclick='renderVariant(\"" + clickedElement + "\");'>";
-		return str;
+	// Numbering the table.
+	if (col == "did") {
+		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
 	}
 
 	// Translating autograding from integers to show the data like yes/no.
@@ -582,6 +618,14 @@ function renderCell(col, celldata, cellid) {
 		}
 	}
 
+	// Placing a clickable icon in its designated column that opens a window for acess to variants.
+	else if (col == "arrow") {
+		clickedElement = JSON.parse(cellid.match(/\d+/));
+		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
+		str += " onclick='renderVariant(\"" + clickedElement + "\");'>";
+		return str;
+	}
+
 	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
 	else if (col == "cogwheel") {
 		object = JSON.parse(celldata);
@@ -603,22 +647,7 @@ function renderCell(col, celldata, cellid) {
 	// VARIANT-TABLE cellstart
 	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "vid") {
-		// Get the page template
-		var page = globalData['entries'][globalVariant]['quizFile'];
-
-		// Get variant data for specific vid
-		var variantData;
-		globalData['entries'][globalVariant]['variants'].forEach(variant => {
-			if (variant.vid === celldata) {
-				variantData = variant;
-			}
-		});
-
-		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
-		str += "onclick='getVariantPreview("
-		str += JSON.stringify(variantData['param'])+","+JSON.stringify(variantData['variantanswer'])+", \""+page+"\"";
-		str += ");'>";
-		return str;
+		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
 	}
 
 	//Translating the integers behind "disabled" to say disabled or enabled. Also making it look that way.
@@ -635,6 +664,13 @@ function renderCell(col, celldata, cellid) {
 			celldata = "Undefined";
 			str = "<span style='color:black; opacity:0.5;'>" + celldata + "</span>";
 		}
+		return str;
+	}
+
+	// Placing a clickable arrow in its designated column for previewing the variant.
+	else if (col == "arrowVariant") {
+		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
+		str += " onclick='getVariantPreview();'>";
 		return str;
 	}
 
