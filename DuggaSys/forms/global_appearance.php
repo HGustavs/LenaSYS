@@ -1,11 +1,3 @@
-<?php
-require_once('font_appearance.php');
-require_once('fontcolor_appearance.php');
-require_once('textsize_appearance.php');
-require_once('fillcolor_appearance.php');
-require_once('strokecolor_appearance.php');
-require_once('line-thickness_appearance.php');
-?>
 Font family:<br>
 <select id='font' onclick='globalFont(); hashfunction(); updategfx();'>
     <option value='Arial' selected>Arial</option>
