@@ -228,7 +228,6 @@ function copySymbol(symbol){
     var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
     var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
 
-    clone = new Symbol(symbol.symbolkind);
     if(symbol.symbolkind == 1){
         clone.name = "New" + diagram.length;
     }else if(symbol.symbolkind == 2){
