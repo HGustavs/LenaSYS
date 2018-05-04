@@ -509,7 +509,7 @@ function returnedDugga(data) {
 			modified: "Last modified",
 			arrow: "",
 			cogwheel: "",
-			trashcan: "<input type='button' value='+' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga()'>"
+			trashcan: "<input type='button' value='+' style='float:left;' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga()'>"
 		},
 		tblbody: data['entries'],
 		tblfoot: []
