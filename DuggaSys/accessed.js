@@ -252,7 +252,11 @@ function changeLastname(uid,id)
 }
 function changeClass(cid,uid,val)
 {
+    if(val!="newClass"){
 	AJAXService("CLASS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
+    }else if(val=="newClass"){
+	newClassSelected();
+    }
 }
 
 // Sets values in the "cogwheel popup"
@@ -464,26 +468,20 @@ function makeDropdown(onChange, values, items, selected){
 }
 
 function makeClassDatalist(onChange, values, items, selected){
-    str = "<input id=classInput list='classes' onChange='"+onChange+"' onclick='return false;' placeholder="+selected+" onInput='newClassSelected(this)'>";
-    str+= "<datalist id='classes'>";
+    str = "<select onChange='"+onChange+"' onclick='return false;'>";
+    str+= "<option value='null'></option>";
+
+    for(var i = 0; i < values.length; i++){
+	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
+    }
 
     str+= "<option value='newClass'>&#x2795 New Class</option>";
-    str+= "<option label='null'></option>";
-    
-    for(var i = 0; i < values.length; i++){
-	str+="<option label='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
-    }
-    
-    str+="</datalist>";
-    str+="</input>";
+    str+="</select>";
     return str;
 }
 
-function newClassSelected(val){
-    if(val.value=='newClass'){
+function newClassSelected(){
 	showCreateClassPopup();
-	val.value = "";
-    }
 }
 
 function renderSortOptions(col,status) {
