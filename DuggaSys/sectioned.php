@@ -60,9 +60,8 @@
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
 					<div class="tooltipDuggaType">
-						<span id="tooltipType" style="display: none;" class="tooltipDuggaTypeTxt">Create a Dugga before you can use it for a test.</span>
+						<span id="tooltipType" style="display: none;" class="tooltipDuggaTypeTxt"></span>
 				</div> <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
-
 							If they don't, change the width of loginbox select in the CSS file -->
 				  <select id='type' value='type' onchange='changedType(document.getElementById("type").value);validateType();'></select>
         </div>

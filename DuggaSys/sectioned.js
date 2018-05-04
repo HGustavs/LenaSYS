@@ -405,6 +405,10 @@ function isTypeValid(){
 	var nme = document.getElementById("type");
 	if(retdata['duggor'].length == 0 && kind == 3){
 		return false;
+	} else if (retdata['codeexamples'].length <= 1 && kind == 2){
+		return false;
+	} else if (retdata['links'].length == 0 && kind == 5){
+		return false;
 	}
 	return true;
 }
@@ -416,17 +420,24 @@ function validateType() {
 		$('#saveBtn').removeAttr('disabled');
 		$('#submitBtn').removeAttr('disabled');
 		type.style.backgroundColor = "#fff";
-	}else{
+	} else {
 		$('#saveBtn').attr('disabled', 'disabled');
 		$('#submitBtn').attr('disabled', 'disabled');
-		if(!isTypeValid()){
+		if (!isTypeValid()){
+			if (type.value == 2){ //Code
+				$("#tooltipType").html("Create a Code example before you can use it for a Code section.");
+			} else if (type.value == 3){ //Test
+				$("#tooltipType").html("Create a Dugga before you can use it for a Test section.");
+			} else if (type.value == 5){ // Link
+				$("#tooltipType").html("Create a Link before you can use it for a Link section.");
+			}
+
 			$('#tooltipType').fadeIn();
 			for (i = 0; i < type.options.length; i++) {
 				type.options[i].style.backgroundColor = "#fff";
 			}
 			type.style.backgroundColor = "#f57";
-
-		}else if(!isNameValid()){
+		} else if (!isNameValid()){
 			$('#tooltipType').fadeOut();
 			type.style.backgroundColor = "#FFF";
 		}
@@ -1229,8 +1240,8 @@ function returnedSection(data) {
 
 				str += "</td>";
 
-				
-				
+
+
 
 				// Add generic td for deadlines if one exists
 				if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
@@ -1256,7 +1267,7 @@ function returnedSection(data) {
 
 					str += "</div></td>";
 				}
-				
+
 				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
 				if (submitted) {
 					var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
@@ -1268,7 +1279,7 @@ function returnedSection(data) {
 						str += "<td style='width:25px;'><img style='width:25px; padding-top:3px'"
 							+ "title='This dugga is not guaranteed to be marked due to submition after deadline.'"
 							+ "src='../Shared/icons/warningTriangle.svg'/></td>";
-					} 
+					}
 				}
 
 				// Cog Wheel
