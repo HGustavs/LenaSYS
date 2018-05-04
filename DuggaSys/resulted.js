@@ -14,7 +14,6 @@ var allowedRegradeTime = 24*60*60*1000;
 //var benchmarkData = performance.timing; // Will be updated after onload event
 //var ajaxStart;
 //var tim;
-var searchterm = "";
 var studentInfo = new Array;
 var students=new Array;
 var momtmp=new Array;
@@ -915,14 +914,6 @@ function rowHighlightOff(rowid,rowno,colclass,centerel) {
 function rowFilter(row) {
   // Custom filters that remove rows before an actual search
   if (!showTeachers && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
-    
-  // Standard filtering based on searchterm
-  for (entry in row){
-    for (key in row[entry]) {
-      if (row[entry][key] != null) {
-        if (("" + row[entry][key]).toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-      }
-    }
-  }
-  return false;
+
+  return true;
 }
