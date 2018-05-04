@@ -48,7 +48,7 @@ function mousemoveevt(ev, t) {
     yPos = ev.clientY;
     oldMouseCoordinateX = currentMouseCoordinateX;
     oldMouseCoordinateY = currentMouseCoordinateY;
-    //hovobj = md == 1 && uimode == "normal" ? -1 : diagram.itemClicked();
+    hovobj = diagram.itemClicked();
     if (ev.pageX || ev.pageY == 0) { // Chrome
         currentMouseCoordinateX = (((ev.pageX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.pageY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
@@ -95,6 +95,7 @@ function mousemoveevt(ev, t) {
     if (md == 4 && uimode == "normal") {
             diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY, true);
     } else {
+        console.log("checking");
         diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     }
     updateGraphics();
