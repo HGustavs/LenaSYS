@@ -31,10 +31,10 @@
     <br/>
     <script>
         $(document).ready(function(){
-            $(".drop-down-item").click(function(){
+            $(".menu-drop-down > .drop-down-item").click(function(){
             $("a").slideUp(); });
 
-            $(".drop-down-item").click(function(){
+            $(".menu-drop-down > .drop-down-item").click(function(){
             $("a").slideDown(); });
 
             window.addEventListener('keypress', clickEnterOnDialogMenu);
