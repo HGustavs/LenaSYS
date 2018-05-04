@@ -130,14 +130,14 @@ function keyDownHandler(e){
         for(var i = 0; i < selected_objects.length; i++){
             cloneTempArray.push(selected_objects[i]);
         }
-   
+
     } else if(ctrlIsClicked && key == 86 ){
         //Ctrl + v
         for(var i = 0; i < cloneTempArray.length; i++){
             //Display cloned objects except lines
             if(cloneTempArray[i].symbolkind != 4){
                 copySymbol(cloneTempArray[i]);
-            } 
+            }
         }
     }
 
@@ -227,7 +227,7 @@ function copySymbol(symbol){
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
     var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
     var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
-    
+
     clone = new Symbol(symbol.symbolkind);
     if(symbol.symbolkind == 1){
         clone.name = "New" + diagram.length;
@@ -246,6 +246,10 @@ function copySymbol(symbol){
     clone.object_type = "";
     clone.fontColor = "#000";
     clone.font = "Arial";
+
+    clone.targeted = true;
+    symbol.targeted = false;
+
     diagram.push(clone);
 
     return diagram.length;
@@ -352,7 +356,7 @@ diagram.draw = function() {
             this[i].draw();
         }
     }
- 
+
 }
 
 //--------------------------------------------------------------------
