@@ -246,21 +246,21 @@ function copySymbol(symbol){
     clone.fontColor = "#000";
     clone.font = "Arial";
 
-
-    if(clone.connectorTop.length > 0 || clone.connectorBottom.length > 0
-    || clone.connectorRight.length > 0 || clone.connectorLeft.length > 0){
-        var newLine = new Symbol(4);
-        newLine.topLeft = clone.topLeft;
-        newLine.bottomRight = clone.bottomRight;
-        newLine.centerPoint = clone.centerPoint;
-        if(clone.bottomRight > clone.topLeft){
-            clone.connectorTop.push({from:topLeft, to:bottomRight});
-
-        }else{
-            clone.connectorTop.push({from:bottomRight, to:topLeft});
+    if(clone.symbolkind == 4){
+        var timesChanged;
+        for(var i = 0; i < diagram.length; i++){
+            if(timesChanged == 2) break;
+            if(diagram[i].connectorRight[0].from == clone.topLeft){
+                diagram[i].connectorRight[0].from = clone.topLeft;
+                diagram[i].connectorRight[0].to = clone.bottomRight;
+                timesChanged++;
+            }
+            else if(diagram[i].connectorRight[0].to == clone.topLeft){
+                diagram[i].connectorRight[0].from = clone.bottomRight;
+                diagram[i].connectorRight[0].to = clone.topLeft;
+                timesChanged++;
+            }
         }
-
-        diagram.push(newLine);
     }
 
     clone.targeted = true;
