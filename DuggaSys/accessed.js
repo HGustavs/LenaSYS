@@ -442,8 +442,6 @@ function renderCell(col,celldata,cellid) {
     }else if(col == "class"){
 	obj=JSON.parse(celldata);
 	var items = new Array();
-	// Every user doesn't have a class
-	items.push("null");
 	for(var i = 0; i < filez['classes'].length; i++){
 	    items.push(filez['classes'][i]['class']);
 	}
@@ -470,11 +468,13 @@ function makeDropdown(onChange, values, items, selected){
 function makeClassDatalist(onChange, values, items, selected){
     str = "<input id=classInput list='classes' onChange='"+onChange+"' onclick='return false;' placeholder="+selected+" onInput='newClassSelected(this)'>";
     str+= "<datalist id='classes'>";
+
+    str+= "<option value='newClass'>&#x2795 New Class</option>";
+    str+= "<option label='null'></option>";
+    
     for(var i = 0; i < values.length; i++){
 	str+="<option label='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
     }
-
-    str+= "<option value='newClass'>&#x2795 New Class</option>";
     
     str+="</datalist>";
     str+="</input>";
