@@ -610,7 +610,6 @@ function variantsTableStyling() {
 	if(remainingSpace > 100) {
 		document.getElementById('variant').style.maxHeight = remainingSpace + 'px';
 	} else {
-		document.getElementById('variant').style.minHeight = '100px';
 		document.getElementById('variant').style.maxHeight = '100px';
 	}
 }
