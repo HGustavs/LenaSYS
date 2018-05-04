@@ -435,7 +435,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
             if (sx < tempTopLeftX && ex > tempTopLeftX &&
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
-                sy < tempBottomRightY && ey > tempBottomRightY && !hover) {
+                sy < tempBottomRightY && ey > tempBottomRightY) {
                 if (ctrlIsClicked) {
                     if (index >= 0) {
                         this[i].targeted = false;
