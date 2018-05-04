@@ -31,7 +31,7 @@
 	?>
 
 	<!-- content START -->
-	<div id="content" style="padding-bottom: 125px;">
+	<div id="content">
 		<!-- Section List -->
 		<div id='Sectionlist'></div>
 	</div>
