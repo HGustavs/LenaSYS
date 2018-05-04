@@ -93,7 +93,7 @@ function mousemoveevt(ev, t) {
         }
     }
     if (md == 4 && uimode == "normal") {
-            diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY, true);
+        diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY, true);
     } else {
         diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     }
