@@ -96,6 +96,9 @@ var symbolStartKind;                    // Is used to store which kind of object
 var symbolEndKind;                      // Is used to store which kind of object you end on
 
 
+var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
+
+
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
 
@@ -119,13 +122,32 @@ function keyDownHandler(e){
             deactivateMovearound();
         }
         updateGraphics();
+    } else if(key == 17 || key == 91){
+        ctrlIsClicked = true;
+    } else if(ctrlIsClicked && key == 67){
+        //Ctrl + c
+        cloneTempArray = [];
+        for(var i = 0; i < selected_objects.length; i++){
+            cloneTempArray.push(selected_objects[i]);
+        }
+   
+    } else if(ctrlIsClicked && key == 86 ){
+        //Ctrl + v
+        for(var i = 0; i < cloneTempArray.length; i++){
+            //Display cloned objects except lines
+            if(cloneTempArray[i].symbolkind != 4){
+                copySymbol(cloneTempArray[i]);
+            } 
+        }
     }
+
     else if (key == 90 && ctrlIsClicked) undoDiagram();
     else if (key == 89 && ctrlIsClicked) redoDiagram();
     else if(key == 17 || key == 91)
     {
       ctrlIsClicked = true;
     }
+
 }
 
 //--------------------------------------------------------------------
@@ -197,6 +219,37 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 
     this.push({x:xCoordinate, y:yCoordinate, isSelected:isSelected});
     return this.length - 1;
+}
+
+//Clone an object
+function copySymbol(symbol){
+    var clone = Object.assign({}, symbol);
+    var topLeftClone = Object.assign({}, points[symbol.topLeft]);
+    var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
+    var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
+    
+    clone = new Symbol(symbol.symbolkind);
+    if(symbol.symbolkind == 1){
+        clone.name = "New" + diagram.length;
+    }else if(symbol.symbolkind == 2){
+        clone.name = "Attr" + diagram.length;
+    }else if(symbol.symbolkind == 3){
+        clone.name = "Entity" + diagram.length;
+    }else if(symbol.symbolkind == 4){
+        clone.name = "Line" + diagram.length;
+    }else{
+        clone.name = "Relation" + diagram.length;
+    }
+    clone.topLeft = points.push(topLeftClone) - 1;
+    clone.bottomRight = points.push(bottomRightClone) - 1;
+    clone.centerPoint = points.push(centerPointClone) - 1;
+    clone.object_type = "";
+    clone.fontColor = "#000";
+    clone.font = "Arial";
+    diagram.push(clone);
+
+    return diagram.length;
+
 }
 
 //--------------------------------------------------------------------
@@ -299,6 +352,7 @@ diagram.draw = function() {
             this[i].draw();
         }
     }
+ 
 }
 
 //--------------------------------------------------------------------
