@@ -1206,9 +1206,9 @@ input {
   background-color: rgb(240, 240, 240);
 }
 
-.document-settings>.menu-drop-down:hover>.drop-down {
+/*.document-settings>.menu-drop-down:hover>.drop-down {
   display: inline-block;
-}
+}*/
 
 .document-settings>.menu-drop-down>.drop-down>.export-drop-down-head:hover>.export-drop-down {
   display: inline-block;

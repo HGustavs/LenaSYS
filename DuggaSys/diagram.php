@@ -31,11 +31,14 @@
     <br/>
     <script>
         $(document).ready(function(){
-            $(".menu-drop-down > .drop-down-item").click(function(){
-            $("a").slideUp(); });
-
-            $(".menu-drop-down > .drop-down-item").click(function(){
-            $("a").slideDown(); });
+            $(".menu-drop-down").hover(function(){
+                $(this).find(".drop-down").show();
+            }, function(){
+                $(this).find(".drop-down").hide();
+            });
+            $(".drop-down-item").click(function(){
+                $(this).closest(".drop-down").hide();
+            });
 
             window.addEventListener('keypress', clickEnterOnDialogMenu);
         });
