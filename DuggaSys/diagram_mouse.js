@@ -93,7 +93,11 @@ function mousemoveevt(ev, t) {
             }
         }
     }
-    diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
+    if (md == 4 && uimode == "normal") {
+            diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
+    } else {
+        diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
+    }
     updateGraphics();
     // Draw select or create dotted box
     if (md == 4) {
