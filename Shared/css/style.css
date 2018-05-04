@@ -59,6 +59,7 @@ body {
 body {
   font-family: 'Roboto', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-y: scroll;
 }
 
@@ -1703,7 +1704,6 @@ input.large-button {
 .list {
   width: 100%;
   padding: 1px;
-  border-left: 2px solid #dbd0d8;
   border-bottom: 2px solid #dbd0d8;
   margin-top: 20px;
   font-size: 16px;
