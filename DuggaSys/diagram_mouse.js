@@ -69,7 +69,6 @@ function mousemoveevt(ev, t) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
         // If mouse is pressed down and at a point in selected object - move that point
-        console.log("setting point coordinate");
         if(!sel.point.fake){
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;
@@ -93,7 +92,11 @@ function mousemoveevt(ev, t) {
             }
         }
     }
-    diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
+    if (md == 4 && uimode == "normal") {
+            diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY, true);
+    } else {
+        diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
+    }
     updateGraphics();
     // Draw select or create dotted box
     if (md == 4) {
@@ -205,7 +208,6 @@ function mousedownevt(ev) {
         }
 
     } else if (sel.distance < tolerance) {
-        console.log("we have the tolerance");
         for (var i = 0; i < diagram.length; i++) {
             /*if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
                 md = 3;

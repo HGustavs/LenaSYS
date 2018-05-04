@@ -281,7 +281,7 @@ points.drawPoints = function() {
 
 //--------------------------------------------------------------------
 // closestPoint - Returns the distance and index of the point closest
-// to the coordinates passed as parameters.
+// to the cotargetItemsInsideSelectionBoxordinates passed as parameters.
 //--------------------------------------------------------------------
 points.closestPoint = function(xCoordinate, yCoordinate) {
     var distance = 50000000;
@@ -382,7 +382,7 @@ diagram.deleteObject = function(object) {
 // targetItemsInsideSelectionBox - Targets all items inside the
 // selection box (dragged by the user)
 //--------------------------------------------------------------------
-diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
+diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
     //ensure that an entity cannot scale below the minimum size
     if (sx > ex) {
         var tempEndX = ex;
@@ -407,10 +407,18 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                     pointsSelected++;
                 }
             }
-            if (pointsSelected >= tempPoints.length) {
-                this[i].targeted = true;
-            } else {
-                this[i].targeted = false;
+            if(!hover){
+                if (pointsSelected >= tempPoints.length) {
+                    this[i].targeted = true;
+                } else {
+                    this[i].targeted = false;
+                }
+            }else{
+                if (pointsSelected >= tempPoints.length) {
+                    this[i].isHovered = true;
+                } else {
+                    this[i].isHovered = false;
+                }
             }
         } else {
             var index = selected_objects.indexOf(this[i]);
@@ -428,22 +436,24 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
                 sy < tempBottomRightY && ey > tempBottomRightY) {
-                if (ctrlIsClicked) {
+                if (ctrlIsClicked && !hover) {
                     if (index >= 0) {
                         this[i].targeted = false;
                         selected_objects.splice(index, 1);
-                    } else {
+                    } else if(!hover){
                         this[i].targeted = true;
                         selected_objects.push(this[i]);
                     }
                 } else {
-                    if (index < 0) {
+                    if (index < 0 && !hover) {
                         this[i].targeted = true;
                         selected_objects.push(this[i]);
+                    } else if(hover){
+                        this[i].isHovered = true;
                     }
                 }
             } else if(!ctrlIsClicked) {
-                this[i].targeted = false;
+                if(!hover) this[i].targeted = false;
                 if (index >= 0) selected_objects.splice(index, 1);
             }
         }
