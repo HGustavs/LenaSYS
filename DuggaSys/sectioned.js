@@ -209,29 +209,12 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	// Show dialog
 	iistr = "";
 
-	// Set Group options
-	str = "";
-	str += "<option value ='0'>1</option>";
-	str += "<option value ='1'>2</option>";
-	str += "<option value ='2'>3</option>";
-	str += "<option value ='2'>4</option>";
-	str += "<option value ='2'>5</option>";
-	$("#numberOfGroups").html(str);
-
-	str = "";
-	str += "<option value ='0'>Seminar Group</option>";
-	str += "<option value ='1'>Group Task</option>";
-	str += "<option value ='2'>Project Task</option>";
-	$("#groupType").html(str);
-
 	$("#inputwrapper-tabs").css("display","block");
 	$("#inputwrapper-link").css("display","block");
 	$("#inputwrapper-gradesystem").css("display","block");
 	$("#inputwrapper-moment").css("display","block");
 	$("#inputwrapper-highscore").css("display","block");
 	$("#inputwrapper-comments").css("display","block");
-	$("#inputwrapper-numberOfGroups").css("display", "block");
-	$("#inputwrapper-groupType").css("display", "block");
 
 	// Code
 	if(kind==2){
@@ -372,7 +355,7 @@ function confirmBox(operation, item = null) {
 		$("#sectionConfirmBox").css("display", "none");
 	} else if (operation == "closeConfirmBox") {
 		$("#sectionConfirmBox").css("display", "none");
-		$("#noTestsConfirmBox").css("display", "none");
+		$("#noMaterialConfirmBox").css("display", "none");
 	}
 }
 
@@ -903,8 +886,6 @@ function returnedSection(data) {
 		str += "</div>";
 
 		str += "<div id='Sectionlistc' >";
-		//group-related variable
-		var groupitems = 0;
 
 		// For now we only have two kinds of sections
 		if (data['entries'].length > 0) {
@@ -1248,21 +1229,8 @@ function returnedSection(data) {
 
 				str += "</td>";
 
-				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
-				if (submitted) {
-					var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
-					var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
-					var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
-
-					// create a warning if the dugga is submitted after the set deadline
-					if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-						str += "<td style='width:25px;'><img style='width:25px; padding-top:3px'"
-							+ "title='This dugga is not guaranteed to be marked due to submition after deadline.'"
-							+ "src='../Shared/icons/warningTriangle.svg'/></td>";
-					} else {
-
-					}
-				}
+				
+				
 
 				// Add generic td for deadlines if one exists
 				if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
@@ -1287,6 +1255,20 @@ function returnedSection(data) {
 					}
 
 					str += "</div></td>";
+				}
+				
+				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
+				if (submitted) {
+					var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
+					var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
+					var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
+
+					// create a warning if the dugga is submitted after the set deadline
+					if ((status === "pending") && (dateTimeSubmitted > deadline)) {
+						str += "<td style='width:25px;'><img style='width:25px; padding-top:3px'"
+							+ "title='This dugga is not guaranteed to be marked due to submition after deadline.'"
+							+ "src='../Shared/icons/warningTriangle.svg'/></td>";
+					} 
 				}
 
 				// Cog Wheel
@@ -1725,12 +1707,19 @@ function fabValidateType(kind) {
 		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 2){
-		selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined");
-		newItem();
-	} else if (kind == 3){
-		if (retdata['duggor'].length == 0){
+		if(retdata['codeexamples'].length <= 1){ //Index 1 in the array has a hard coded code example.
 			toggleFabButton();
-			$("#noTestsConfirmBox").css("display", "flex");
+			$("#noMaterialText").html("Create a Code example before you can use it for a Code section.");
+			$("#noMaterialConfirmBox").css("display", "flex");
+		} else {
+			selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined");
+			newItem();
+		}
+	} else if (kind == 3){
+		if(retdata['duggor'].length == 0){
+			toggleFabButton();
+			$("#noMaterialText").html("Create a Dugga before you can use it for a Test section.");
+			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
 			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined");
 			newItem();
@@ -1739,8 +1728,14 @@ function fabValidateType(kind) {
 		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 5){
-		selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined");
-		newItem();
+		if(retdata['links'].length == 0){
+			toggleFabButton();
+			$("#noMaterialText").html("Create a Link before you can use it for a Link section.");
+			$("#noMaterialConfirmBox").css("display", "flex");
+		} else {
+			selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined");
+			newItem();
+		}
 	} else if (kind == 6){
 		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined");
 		newItem();
@@ -1791,11 +1786,14 @@ $(window).load(function () {
 			var editSectionDisplay = ($('#editSection').css('display'));
 			var submitButtonDisplay = ($('#submitBtn').css('display'));
 			var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
+			var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
 			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
 				updateItem();
 			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
 				newItem();
 				showSaveButton();
+			} else if (errorMissingMaterialDisplay == 'flex'){
+				closeWindows();
 			}
 
 		}
