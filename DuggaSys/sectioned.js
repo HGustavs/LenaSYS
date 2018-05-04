@@ -1229,21 +1229,8 @@ function returnedSection(data) {
 
 				str += "</td>";
 
-				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
-				if (submitted) {
-					var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
-					var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
-					var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
-
-					// create a warning if the dugga is submitted after the set deadline
-					if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-						str += "<td style='width:25px;'><img style='width:25px; padding-top:3px'"
-							+ "title='This dugga is not guaranteed to be marked due to submition after deadline.'"
-							+ "src='../Shared/icons/warningTriangle.svg'/></td>";
-					} else {
-
-					}
-				}
+				
+				
 
 				// Add generic td for deadlines if one exists
 				if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
@@ -1268,6 +1255,20 @@ function returnedSection(data) {
 					}
 
 					str += "</div></td>";
+				}
+				
+				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
+				if (submitted) {
+					var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
+					var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
+					var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
+
+					// create a warning if the dugga is submitted after the set deadline
+					if ((status === "pending") && (dateTimeSubmitted > deadline)) {
+						str += "<td style='width:25px;'><img style='width:25px; padding-top:3px'"
+							+ "title='This dugga is not guaranteed to be marked due to submition after deadline.'"
+							+ "src='../Shared/icons/warningTriangle.svg'/></td>";
+					} 
 				}
 
 				// Cog Wheel
