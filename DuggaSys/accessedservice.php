@@ -367,7 +367,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 				'class' => json_encode(['class' => $row['class'], 'uid' => $row['uid']]),
 				'modified' => $row['modified'],
 				'teacher' => $row['teacher'],
-        		'examiner' => $examiners,
+        'examiner' => json_encode(['examiners' => $examiners]),
 				'vers' => json_encode(['vers' => $row['vers'], 'uid' => $row['uid']]),
 				'access' => json_encode(['access' => $row['access'], 'uid' => $row['uid']]),
 				'groups' => 'PLACEHOLDER',

@@ -180,7 +180,7 @@ function process()
 	// Update dropdown list
   var dstr="";
 
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 
 	var activeMoment = 0;
 	for(var j=0;j<moments.length;j++){
@@ -192,7 +192,7 @@ function process()
 
 		if (moments[j].kind == 4) {dstr +=" checkmoment";}
 
-		dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
+		dstr+="'><input name='selectdugga' type='checkbox' disabled class='headercheck' id='hdr"+lid+"check'";
 		if (moments[j].kind == 4) {
 			duggaArray.push( [] );
 			var idAddString = "hdr"+lid+"check";
@@ -237,12 +237,12 @@ function process()
 	dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>";
 
 	// Filter for only showing pending
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='pending' value='0' id='pending'";
 	if (onlyPending){ dstr+=" checked"; }
 	dstr+="><label class='headerlabel' for='pending'>Only pending</label></div>";
 
 	// Filter for mini mode
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='minimode' value='0' id='minimode' onchange='miniMode()'>";
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='minimode' value='0' id='minimode' onchange='miniMode()'>";
 	dstr+="<label class='headerlabel' for='minimode'>Mini mode</label></div>";
 
 	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
@@ -314,6 +314,7 @@ function leavec()
     localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
 
   if(str!=old || onlyPending==opend) process();
+  myTable.renderTable();
   magicHeading();
 }
 
@@ -695,6 +696,8 @@ function returnedResults(data)
           if (students[t][j].lid == data.duggaid){
             dpos=j;
             students[t][j].grade = parseInt(data.results);
+            students[t][j].gradeExpire = data.duggaexpire;
+            students[t][j].timesGraded = parseInt(data.duggatimesgraded);
             break;
           }
         }
@@ -760,21 +763,22 @@ var myTable;
 //----------------------------------------
 
 function buildDynamicHeaders() {
-  let tblhead = {0:"Fname/Lname/SSN"};
+  let tblhead = {"FnameLnameSSN":"Fname/Lname/SSN"};
   moments.forEach(function(entry) {
-  	tblhead[entry['lid']] = entry['entryname'];
+  	tblhead["lid:"+entry['lid']] = entry['entryname'];
   });
   return tblhead;
 }
 
 function buildStudentInfo() {
+  let i = 0;
 	students.forEach(function(entry) {
 		if(entry.length > 1) {
-			var row = {0:entry[0]};
-			for(i = 1; i < entry.length; i++) {
-				row[entry[i]['lid']] = entry[i];
+			var row = {"FnameLnameSSN":entry[0]};
+			for(j = 1; j < entry.length; j++) {
+				row["lid:"+entry[j]['lid']] = entry[j];
 			}
-			studentInfo[entry[1]['uid']] = row;
+			studentInfo[i++] = row;
 		}
 	});
 	return studentInfo;
@@ -799,14 +803,14 @@ function createSortableTable(data){
 		renderCell,
 		null,
 		null,
-		null,
+		rowFilter,
 		[],
 		[],
 		"",
 		null,
 		null,
-		null,
-		null,
+		rowHighlightOn,
+		rowHighlightOff,
 		null,
 		null,
 		false
@@ -818,7 +822,7 @@ function createSortableTable(data){
 
 function renderCell(col,celldata,cellid) {
 	// First column (Fname/Lname/SSN)
-  if (col == 0){
+  if (col == "FnameLnameSSN"){
     str = celldata.grade;
     return str;
 
@@ -878,4 +882,40 @@ function renderCell(col,celldata,cellid) {
     return str;
   }
 return celldata;
+}
+
+//--------------------------------------------------------------------------
+// rowHighlight
+// ---------------
+//  Callback function that highlights the currently hovered row
+//--------------------------------------------------------------------------
+
+function rowHighlightOn(rowid,rowno,colclass,centerel) {
+  document.getElementById(rowid).style.border = "3px solid rgba(97,72,117,1)";
+  var collist = document.getElementsByClassName(colclass);
+		for(let i=0;i<collist.length;i++){
+			collist[i].style.borderLeft="3px solid rgba(97,72,117,1)";
+			collist[i].style.borderRight="3px solid rgba(97,72,117,1)";
+		}
+  centerel.style.backgroundImage = "radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2))";
+}
+
+function rowHighlightOff(rowid,rowno,colclass,centerel) {
+  document.getElementById(rowid).style.border = "";
+  var collist = document.getElementsByClassName(colclass);
+		for(let i=0;i<collist.length;i++){
+			collist[i].style.borderLeft="";
+			collist[i].style.borderRight="";
+		}
+  centerel.style.backgroundImage = "none";
+}
+
+//----------------------------------------------------------------
+// rowFilter <- Callback function that filters rows in the table
+//----------------------------------------------------------------
+function rowFilter(row) {
+  // Custom filters that remove rows before an actual search
+  if (!showTeachers && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
+
+  return true;
 }

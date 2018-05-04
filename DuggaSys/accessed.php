@@ -39,7 +39,7 @@
 				echo "<input class='submit-button' type='button' value='Import user(s)' onclick='showImportUsersPopup();'/>";
 				echo "</div>";
 				echo "<div id='searchBar' style='position:relative; top:-5px; left: 5px;'>";
-				echo "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById('searchinput').value;searchKeyUp(event);user.renderTable();'> ";
+				echo "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById(\"searchinput\").value;searchKeyUp(event);myTable.renderTable();'> ";
 				echo "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>";
 				echo "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>";
 				echo "</button>";

@@ -10,7 +10,7 @@ AJAXService("get",{userid:"HGustavs"},"CONTRIBUTION");
 
 function renderRankTable(){
   if(contribDataArr.length == 0) return;
-  var str="<table class='fumho'><tr><th></th><th onclick='sortRank(0);'>login</th><th onclick='sortRank(2);'>alleventranks</th><th onclick='sortRank(3);'>allcommentranks</th><th onclick='sortRank(4);'>LOC rank</th><th onclick='sortRank(5);'>Commit rank</th></tr>";
+  var str="<table class='fumho'><tr><th></th><th style='padding: 2px 10px;' onclick='sortRank(0);'>login</th><th style='padding: 2px 10px;' onclick='sortRank(2);'>alleventranks</th><th style='padding: 2px 10px;' onclick='sortRank(3);'>allcommentranks</th><th style='padding: 2px 10px;' onclick='sortRank(4);'>LOC rank</th><th style='padding: 2px 10px;' onclick='sortRank(5);'>Commit rank</th></tr>";
   for (var j=0; j<contribDataArr.length;j++){
       str+="<tr>";
       str+="<td>"+j+"</td>";
@@ -110,9 +110,9 @@ function returnedSection(data)
     str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
   	str+="<table class='fumho'>";
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
-	str+="<th style='padding-left:10px;padding-right:10px;'>Kind</th>";
-    str+="<th style='padding-left:10px;padding-right:10px;'>Number</th>";
-	str+="<th style='padding-left:10px;padding-right:10px;'>Ranking</th>";
+	str+="<th style='padding: 2px 10px;'>Kind</th>";
+    str+="<th style='padding: 2px 10px;'>Number</th>";
+	str+="<th style='padding: 2px 10px;'>Ranking</th>";
 	str+="</tr>";
 
     str+="<tr>";
@@ -150,9 +150,9 @@ function returnedSection(data)
 	str+="<table class='fumho'>";
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
 	str+="<th></th>";
-	str+="<th>Dates</th>";
-	str+="<th>Code Contribution</th>";
-	str+="<th>GitHub Contribution</th>";
+	str+="<th style='padding: 2px 10px;'>Dates</th>";
+	str+="<th style='padding: 2px 10px;'>Code Contribution</th>";
+	str+="<th style='padding: 2px 10px;'>GitHub Contribution</th>";
 	str+="</tr>";
 
 	var weeks=data.weeks;

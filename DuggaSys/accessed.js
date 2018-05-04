@@ -2,6 +2,7 @@ var sessionkind=0;
 var querystring=parseGet();
 var versions;
 var dataInfo;
+var searchterm = "";
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 
@@ -385,61 +386,58 @@ var bool = true;
  */
 
 function renderCell(col,celldata,cellid) {
-    if(col == "requestedpasswordchange") {
-	obj=JSON.parse(celldata);
-	str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
-	str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
-	str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
-	return str;
-    }else if(col == "examiner"){
-	if(celldata[celldata.length - 1]['access'] == 'W'){
-	    str = "none";
-	}else{
-	    var teacher = celldata[celldata.length - 1]['teacher'];
-	    var items = new Array();
-	    items.push("unassigned");
-	    for(var i = 0; i < celldata.length - 1; i++){
-		items.push(celldata[i]['username']);
-	    }
-	    str = makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+celldata[celldata.length - 1]['uid']+"\",this.value);", items, items, teacher);
-	    str += "<div style='display:none;'>" + teacher + "</div>";
-	}
-	return str;
-    }else if(col == "access"){
-	obj=JSON.parse(celldata);
-	str = makeDropdown("changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", new Array("W", "R", "null"), new Array("Teacher", "Student", "none"), obj.access);
-	str += "<div style='display:none;'>" + obj.access + "</div>";
-	return str;
-    }else if(col == "vers"){
-	obj=JSON.parse(celldata);
-	var items = new Array();
-	for(var i = 0; i < filez['courses'].length; i++){
-	    items.push(filez['courses'][i]['vers']);
-	}
-	str = makeDropdown("changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.vers);
-	str += "<div style='display:none;'>" + obj.vers + "</div>";
-	return str;
-    }else if (col == "username") {
-	obj = JSON.parse(celldata);
-	str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeUsername("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.username+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
-	str += "<div style='display:none;'>" + obj.username + "</div>";
-	return str;
-    }else if (col == "ssn") {
-	obj = JSON.parse(celldata);
-	str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeSSN("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.ssn+"\" size=13 onclick='return false;'>";
-	str += "<div style='display:none;'>" + obj.ssn + "</div>";
-	return str;
-    }else if (col == "firstname") {
-	obj = JSON.parse(celldata);
-	str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeFirstname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.firstname+"\" size=8 onclick='return false;'>";
-	str += "<div style='display:none;'>" + obj.firstname + "</div>";
-	return str;
-    }else if (col == "lastname") {
-	obj = JSON.parse(celldata);
-	str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
-	str += "<div style='display:none;'>" + obj.lastname + "</div>";
-	return str;
-    }else if(col == "class"){
+  
+	if(col == "requestedpasswordchange") {
+		obj=JSON.parse(celldata);
+		str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
+		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
+    str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
+    return str;
+	}else if(col == "examiner"){
+    obj=JSON.parse(celldata)['examiners'];
+    if(obj[obj.length - 1]['access'] == 'W'){
+      str = "none";
+    }else{
+      var teacher = obj[obj.length - 1]['teacher'];
+      var items = new Array();
+      items.push("unassigned");
+      for(var i = 0; i < obj.length - 1; i++){
+        items.push(obj[i]['username']);
+      }
+      str = makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+obj[obj.length - 1]['uid']+"\",this.value);", items, items, teacher);
+      str += "<div style='display:none;'>" + teacher + "</div>";
+    }
+    return str;
+  }else if(col == "access"){
+    obj=JSON.parse(celldata);
+    str = makeDropdown("changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", new Array("W", "R", "null"), new Array("Teacher", "Student", "none"), obj.access);
+    str += "<div style='display:none;'>" + obj.access + "</div>";
+    return str;
+	}else if(col == "vers"){
+    obj=JSON.parse(celldata);
+    var items = new Array();
+    for(var i = 0; i < filez['courses'].length; i++){
+      items.push(filez['courses'][i]['vers']);
+    }
+    str = makeDropdown("changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.vers);
+    return str;
+	}else if (col == "username") {
+		obj = JSON.parse(celldata);
+		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeUsername("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.username+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
+		return str;
+	}else if (col == "ssn") {
+		obj = JSON.parse(celldata);
+		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeSSN("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.ssn+"\" size=13 onclick='return false;'>";
+		return str;
+	}else if (col == "firstname") {
+		obj = JSON.parse(celldata);
+		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeFirstname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.firstname+"\" size=8 onclick='return false;'>";
+		return str;
+	}else if (col == "lastname") {
+		obj = JSON.parse(celldata);
+		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
+		return str;
+	}else if(col == "class"){
 	obj=JSON.parse(celldata);
 	var items = new Array();
 	for(var i = 0; i < filez['classes'].length; i++){
@@ -488,6 +486,68 @@ function newClassSelected(val){
     }
 }
 
+function renderSortOptions(col,status) {
+	str = "";
+	if (status == -1) {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+	} else if (status == 0) {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+	} else {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+	}
+	return str;
+}
+
+function compare(a,b) {
+	let col = sortableTable.currentTable.getSortcolumn();
+	var tempA = a;
+	var tempB = b;
+  
+	// Needed so that the counter starts from 0
+	// everytime we sort the table
+	count = 0;
+	if (col == "Examiner") {
+		tempA = JSON.parse(tempA)['examiners'];
+		tempB = JSON.parse(tempB)['examiners'];
+    tempA = tempA[tempA.length - 1]['teacher'];
+    tempB = tempB[tempB.length - 1]['teacher'];
+	}
+
+  tempA = tempA.toUpperCase();
+  tempB = tempB.toUpperCase();
+	if (tempA > tempB) {
+		return 1;
+	} else if (tempA < tempB) {
+		return -1;
+	} else {
+		return 0;
+	}
+}	
+
+//----------------------------------------------------------------
+// rowFilter <- Callback function that filters rows in the table
+//----------------------------------------------------------------
+function rowFilter(row) {
+	for (key in row) {
+    if (key == "examiner"){
+      var examiners = JSON.parse(row[key])['examiners']
+      var teacher = examiners[examiners.length - 1]['teacher'];
+      if (teacher.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+    } else if (key == "access") {
+      var access = "none";
+      if (JSON.parse(row[key])['access'] == "W"){
+        access = "teacher";
+      } else if (JSON.parse(row[key])['access'] == "R"){
+        access = "student";
+      }
+			if (access.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+		} else if (row[key] != null) {
+			if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+		}
+	}
+	return false;
+}
+
 var myTable;
 //----------------------------------------
 // Renderer
@@ -496,7 +556,6 @@ var myTable;
 function returnedAccess(data) {
 	setup();
 	filez = data;
-
 	var tabledata = {
 		tblhead:{
 			username:"User",
@@ -514,23 +573,22 @@ function returnedAccess(data) {
 		tblbody: data['entries'],
 		tblfoot:[]
 	}
-
 	myTable = new SortableTable(
 		tabledata,
 		"user",
 		null,
 		"",
 	    renderCell,
+	    renderSortOptions,
 	    null,
-	    null,
-	    null,
+	    rowFilter,
 	    [],
 	    [],
 	    "",
 	    null,
 	    null,
-		null,
-		null,
+		rowHighlightOn,
+		rowHighlightOff,
 		null,
 	    null,
 		true
@@ -543,6 +601,18 @@ window.onresize = function() {
 
 myTable.magicHeader();
 
+}
+
+function rowHighlightOn(rowid,rowno,colclass,centerel){
+    document.getElementById(rowid).style.borderTop="2px solid rgba(255,0,0,1)";
+		document.getElementById(rowid).style.borderBottom="2px solid rgba(255,0,0,1)";
+		centerel.style.backgroundImage="radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2))";
+}
+
+function rowHighlightOff(rowid,rowno,colclass,centerel){
+    document.getElementById(rowid).style.borderTop="";
+		document.getElementById(rowid).style.borderBottom="";
+		centerel.style.backgroundImage="none";
 }
 
 //excuted onclick button for quick searching in table
