@@ -228,6 +228,7 @@ function copySymbol(symbol){
     var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
     var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
 
+    clone = new Symbol(symbol.symbolkind);
     if(symbol.symbolkind == 1){
         clone.name = "New" + diagram.length;
     }else if(symbol.symbolkind == 2){
@@ -245,6 +246,17 @@ function copySymbol(symbol){
     clone.object_type = "";
     clone.fontColor = "#000";
     clone.font = "Arial";
+
+
+    if(clone.connectorTop.length > 0 || clone.connectorBottom.length > 0
+    || clone.connectorRight.length > 0 || clone.connectorLeft.length > 0){
+        var newLine = new Symbol(4);
+        newLine.topLeft = clone.topLeft;
+        newLine.bottomRight = clone.bottomRight;
+        newLine.centerPoint = clone.centerPoint;
+        diagram.push(newLine);
+    }
+
 
     clone.targeted = true;
     symbol.targeted = false;
