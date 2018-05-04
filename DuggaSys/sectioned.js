@@ -1260,11 +1260,8 @@ function returnedSection(data) {
 						str += "</div>";
 						str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length);
 					} else {
-						str += "<span class='dateField'>" + deadline.slice(0, yearFormat.length) + "</span>";
-						str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3);
-						str += "<span class='dateField'>"
-							+ deadline.slice(yearFormat.length + dateFormat.length + 1 + "timeFilterAndFormat.length-3,"
-								+ yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length) + "</span>";
+						str += "<span class='dateField'>" + deadline.slice(0, yearFormat.length);
+						str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3) + "</span>";
 					}
 
 					str += "</div></td>";
