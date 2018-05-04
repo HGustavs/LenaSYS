@@ -488,7 +488,7 @@ diagram.checkForHover = function(posX, posY) {
     });
     if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind == 2) {
         //We only want to set it to true when md is not in selectionbox mode
-        hoveredObjects[hoveredObjects.length - 1].isHovered = md != 4 && uimode != "normal";
+        hoveredObjects[hoveredObjects.length - 1].isHovered = md != 4 || uimode != "normal";
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }
