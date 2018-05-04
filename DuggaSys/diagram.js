@@ -487,7 +487,7 @@ diagram.checkForHover = function(posX, posY) {
         else return 0;
     });
     if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind == 2) {
-        hoveredObjects[hoveredObjects.length - 1].isHovered = true;
+        hoveredObjects[hoveredObjects.length - 1].isHovered = md != 4;
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }

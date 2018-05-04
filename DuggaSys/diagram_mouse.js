@@ -95,7 +95,6 @@ function mousemoveevt(ev, t) {
     if (md == 4 && uimode == "normal") {
             diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY, true);
     } else {
-        console.log("checking");
         diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     }
     updateGraphics();
