@@ -307,7 +307,6 @@ function newVariant() {
 	document.getElementById('variantparameterText').placeholder = 'Undefied JSON parameter';
 	document.getElementById('variantanswerText').value = '';
 	document.getElementById('variantanswerText').placeholder = 'Undefied JSON answer';
-	$("#editVariant").css("display", "flex"); //Display variant-window
 }
 
 function createVariant() {
@@ -371,6 +370,11 @@ function deleteVariant(vid) {
 // Update the title of the variant editor to refer to the dugga that "owns" the variants
 function updateVariantTitle(number) {
 	document.getElementById("editVariantTitle").innerHTML = "Variants for: " + globalData['entries'][number].qname;
+}
+
+// Opens the variant editor.
+function showVariantEditor() {
+	$("#editVariant").css("display", "flex"); //Display variant-window
 }
 
 // Adds a submission row
@@ -654,7 +658,7 @@ function renderCell(col, celldata, cellid) {
 	else if (col == "arrow") {
 		clickedElement = JSON.parse(cellid.match(/\d+/));
 		str = "<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg'";
-		str += " onclick='renderVariant(\"" + clickedElement + "\");'>";
+		str += " onclick='renderVariant(\"" + clickedElement + "\"); showVariantEditor();'>";
 		return str;
 	}
 
