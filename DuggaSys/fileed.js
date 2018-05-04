@@ -247,33 +247,58 @@ function renderCell(col,celldata,cellid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-	// Special searchterms used for filtering the table on fileKind
-	if(searchterm == "~~global~~"){
-        if (row["kind"].toUpperCase().indexOf("global".toUpperCase()) != -1) return true;
-	} else if(searchterm == "~~course~~"){
-        if (row["kind"].toUpperCase().indexOf("course local".toUpperCase()) != -1) return true;
-	} else if(searchterm == "~~version~~"){
-        if (row["kind"].toUpperCase().indexOf("version local".toUpperCase()) != -1) return true;
-	} else if(searchterm == "~~link~~") {
-        if (row["kind"].toUpperCase().indexOf("link".toUpperCase()) != -1) return true;
+	var regex = new RegExp('(.*)::(.*)');
+	var tempSearch = searchterm.match(regex);
+
+	// Specific column search
+	if(tempSearch != null && tempSearch.length > 1){
+		var colName = tempSearch[1].toLowerCase();
+		var searchName = tempSearch[2];
+		switch (colName) {
+			case "file name":
+				colName = "filename";
+				break;
+			case "extension":
+				colName = "extension";
+				break;
+			case "kind":
+				colName = "kind";
+				break;
+			case "size":
+				colName = "filesize";
+				break;
+			case "upload date":
+				colName = "uploaddate";
+				break;
+			default:
+				break;
+		}
+		if(colName == "filesize"){
+			if(fileSizeSearch(row, colName, searchName)) return true;
+		} else {
+            if(row[colName].toUpperCase().indexOf(searchName.toUpperCase()) != -1) return true;
+        }
 	} else {
-        for (key in row) {
-            if (row[key] != null) {
-            	// Special search criteria for Size column
-            	if(key == "filesize"){
-            		var obj = JSON.parse(row[key]);
-            		if(formatBytes(parseInt(obj.size), 0).toUpperCase().indexOf(searchterm.toUpperCase()) != -1 &&
+	// Search in all column except "counter", "editor", "trashcan"
+		for (key in row) {
+			if (row[key] != null) {
+				// Special search criteria for Size column
+				if(key == "filesize"){
+					if(fileSizeSearch(row, key, searchterm) &&
 						!(key == "counter" || key == "editor" || key == "trashcan")) return true;
-				// Normal search
 				} else {
-                    if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1 &&
-                        !(key == "counter" || key == "editor" || key == "trashcan")) return true;
-                }
-            }
+					if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1 &&
+						!(key == "counter" || key == "editor" || key == "trashcan")) return true;
+				}
+			}
         }
 	}
     return false;
+}
 
+function fileSizeSearch(row, colName, searchName){
+	var obj = JSON.parse(row[colName]);
+    return formatBytes(parseInt(obj.size), 0).toUpperCase().indexOf(searchName.toUpperCase()) != -1
 }
 
 //--------------------------------------------------------------------------
