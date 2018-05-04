@@ -452,10 +452,7 @@ function getFIleContents(fileUrl){
 }
 
 function cursiveText() {
-    var txtarea = document.getElementById("mrkdwntxt");
-    var start = txtarea.selectionStart;
-    var end = txtarea.selectionEnd;
-    var sel = txtarea.value.substring(start, end);
+    this.setCarotPosition();
     var finText = txtarea.value.substring(0, start) + '__' + sel + '__' + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.focus();
@@ -501,10 +498,7 @@ function lists(){
 }
 
 function codeBlockText(){
-    var txtarea = document.getElementById("mrkdwntxt");
-    var start = txtarea.selectionStart;
-    var end = txtarea.selectionEnd;
-    var sel = txtarea.value.substring(start, end);
+    this.setCarotPosition();
     var finText = txtarea.value.substring(0, start) + '~~~\n\n' + sel + '~~~' + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.focus();
@@ -513,10 +507,7 @@ function codeBlockText(){
 }
 
 function boldText() {
-    var txtarea = document.getElementById("mrkdwntxt");
-    var start = txtarea.selectionStart;
-    var end = txtarea.selectionEnd;
-    var sel = txtarea.value.substring(start, end);
+    this.setCarotPosition();
     var finText = txtarea.value.substring(0, start) + '**' + sel + '**' + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.focus();
@@ -525,22 +516,21 @@ function boldText() {
 }
 
 function linkText(){
-    var txtarea = document.getElementById("mrkdwntxt");
-    var start = txtarea.selectionStart;
-    var end = txtarea.selectionEnd;
-    var sel = txtarea.value.substring(start,end);
+    this.setCarotPosition();
     var finText = txtarea.value.substring(0,start) + '!!!' + 'Link here, and link name here' + sel + '!!!' + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd = end +12;
     updatePreview(txtarea.value);
 }
-
+function setCarotPosition(){
+    this.txtarea = document.getElementById("mrkdwntxt");
+    this.start = txtarea.selectionStart;
+    this.end = txtarea.selectionEnd;
+    this.sel = txtarea.value.substring(start,end);
+}
 function externalImg(){
-    var txtarea = document.getElementById("mrkdwntxt");
-    var start = txtarea.selectionStart;
-    var end = txtarea.selectionEnd;
-    var sel = txtarea.value.substring(start,end);
+    this.setCarotPosition();
     var finText = txtarea.value.substring(0,start) + '|||' + 'img here, thumbnail in width px here,  full width here' + sel + '|||' + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.focus();
@@ -549,10 +539,7 @@ function externalImg(){
 }
 
 function quoteText(){
-    var txtarea = document.getElementById("mrkdwntxt");
-    var start = txtarea.selectionStart;
-    var end = txtarea.selectionEnd;
-    var sel = txtarea.value.substring(start, end);
+    this.setCarotPosition();
     var finText = txtarea.value.substring(0, start) + '^ ' + sel + ' ^' + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.focus();
