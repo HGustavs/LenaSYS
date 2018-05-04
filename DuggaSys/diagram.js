@@ -435,7 +435,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
             if (sx < tempTopLeftX && ex > tempTopLeftX &&
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
-                sy < tempBottomRightY && ey > tempBottomRightY) {
+                sy < tempBottomRightY && ey > tempBottomRightY && !hover) {
                 if (ctrlIsClicked) {
                     if (index >= 0) {
                         this[i].targeted = false;
@@ -451,7 +451,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                     }
                 }
             } else if(!ctrlIsClicked) {
-                this[i].targeted = false;
+                if(!hover) this[i].targeted = false;
                 if (index >= 0) selected_objects.splice(index, 1);
             }
         }
