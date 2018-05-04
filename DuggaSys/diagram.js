@@ -440,14 +440,16 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                     if (index >= 0) {
                         this[i].targeted = false;
                         selected_objects.splice(index, 1);
-                    } else {
+                    } else if(!hover){
                         this[i].targeted = true;
                         selected_objects.push(this[i]);
                     }
                 } else {
-                    if (index < 0) {
+                    if (index < 0 && !hover) {
                         this[i].targeted = true;
                         selected_objects.push(this[i]);
+                    } else if(hover){
+                        this[i].isHovered = true;
                     }
                 }
             } else if(!ctrlIsClicked) {
