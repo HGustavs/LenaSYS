@@ -362,7 +362,7 @@ function Symbol(kind) {
         }
     }
 
-
+    
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
@@ -468,19 +468,21 @@ function Symbol(kind) {
             if (this.symbolkind == 1) {
                 points[this.middleDivider].x += movex;
                 points[this.middleDivider].y += movey;
-            } else if (this.symbolkind == 2 || this.symbolkind == 5) {
+            } else if (this.symbolkind == 2 || this.symbolkind == 5 || this.symbolkind == 3) {
                 points[this.centerPoint].x += movex;
                 points[this.centerPoint].y += movey;
-            } else if (this.symbolkind == 3) {
+            } /*else if (this.symbolkind == 3) {
                 for (var i = 0; i < this.arity.length; i++) {
                     for (var j = 0; j < this.arity[i].length; j++) {
                         this.arity[i][j].x += movex;
                         this.arity[i][j].y += movey;
                     }
                 }
-            }
+            }*/
         }
     }
+    
+    
 
     //--------------------------------------------------------------------
     // erase/delete
