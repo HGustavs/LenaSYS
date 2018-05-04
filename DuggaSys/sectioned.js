@@ -355,7 +355,7 @@ function confirmBox(operation, item = null) {
 		$("#sectionConfirmBox").css("display", "none");
 	} else if (operation == "closeConfirmBox") {
 		$("#sectionConfirmBox").css("display", "none");
-		$("#noTestsConfirmBox").css("display", "none");
+		$("#noMaterialConfirmBox").css("display", "none");
 	}
 }
 
@@ -1706,12 +1706,19 @@ function fabValidateType(kind) {
 		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 2){
-		selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined");
-		newItem();
-	} else if (kind == 3){
-		if (retdata['duggor'].length == 0){
+		if(retdata['codeexamples'].length <= 1){ //Index 1 in the array has a hard coded code example.
 			toggleFabButton();
-			$("#noTestsConfirmBox").css("display", "flex");
+			$("#noMaterialText").html("Create a Code example before you can use it for a Code section.");
+			$("#noMaterialConfirmBox").css("display", "flex");
+		} else {
+			selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined");
+			newItem();
+		}
+	} else if (kind == 3){
+		if(retdata['duggor'].length == 0){
+			toggleFabButton();
+			$("#noMaterialText").html("Create a Dugga before you can use it for a Test section.");
+			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
 			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined");
 			newItem();
@@ -1720,8 +1727,14 @@ function fabValidateType(kind) {
 		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 5){
-		selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined");
-		newItem();
+		if(retdata['links'].length == 0){
+			toggleFabButton();
+			$("#noMaterialText").html("Create a Link before you can use it for a Link section.");
+			$("#noMaterialConfirmBox").css("display", "flex");
+		} else {
+			selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined");
+			newItem();
+		}
 	} else if (kind == 6){
 		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined");
 		newItem();
@@ -1772,11 +1785,14 @@ $(window).load(function () {
 			var editSectionDisplay = ($('#editSection').css('display'));
 			var submitButtonDisplay = ($('#submitBtn').css('display'));
 			var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
+			var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
 			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
 				updateItem();
 			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
 				newItem();
 				showSaveButton();
+			} else if (errorMissingMaterialDisplay == 'flex'){
+				closeWindows();
 			}
 
 		}
