@@ -99,27 +99,21 @@ $(window).load(function () {
 });
 
 function clearEditForm() {
-	$('#name').val();
+	$('#name').val("New dugga");
 	$('#name').attr('placeholder','Empty dugga');
-	$('#qstart').val();
+	$('#qstart').val("");
 	$('#qstart').attr('placeholder', 'YYYY-MM-DD');
-	$('#release').val();
+	$('#release').val("");
 	$('#release').attr('placeholder', 'YYYY-MM-DD');
-	$('#deadline').val();
+	$('#deadline').val("");
 	$('#deadline').attr('placeholder', 'YYYY-MM-DD');
 }
 
 // DUGGA FUNCTIONS start
 function newDugga() {
 	$("#editDuggaTitle").html("New dugga");
-	$('#name').val();
-	$('#name').attr('placeholder','Empty dugga');
-	$('#qstart').val();
-	$('#qstart').attr('placeholder', 'YYYY-MM-DD');
-	$('#release').val();
-	$('#release').attr('placeholder', 'YYYY-MM-DD');
-	$('#deadline').val();
-	$('#deadline').attr('placeholder', 'YYYY-MM-DD');
+	clearEditForm();
+
 	//----------------------------------------------------
 	// Set Autograde
 	//----------------------------------------------------
