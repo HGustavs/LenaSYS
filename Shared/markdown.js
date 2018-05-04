@@ -469,28 +469,58 @@ function selected() {
 }
 
 function headerVal1() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'# ');
+    this.setCarotPosition()
+    var finText = txtarea.value.substring(0, start) + '# ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
 
 }
 
 function headerVal2() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'## ');
+    this.setCarotPosition()
+    var finText = txtarea.value.substring(0, start) + '## ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 3;
+    updatePreview(txtarea.value);
 }
 
 function headerVal3() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'### ');
+    this.setCarotPosition()
+    var finText = txtarea.value.substring(0, start) + '### ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 4;
+    updatePreview(txtarea.value);
 }
 
 function headerVal4() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'#### ');
+    this.setCarotPosition()
+    var finText = txtarea.value.substring(0, start) + '#### ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 5;
+    updatePreview(txtarea.value);
 }
 
 function headerVal5() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'##### ');
+    this.setCarotPosition()
+    var finText = txtarea.value.substring(0, start) + '##### ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 6;
+    updatePreview(txtarea.value);
 }
 
 function headerVal6() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'###### ');
+    this.setCarotPosition()
+    var finText = txtarea.value.substring(0, start) + '###### ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 7;
+    updatePreview(txtarea.value);
 }
 
 function lists(){
