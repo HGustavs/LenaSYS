@@ -1136,7 +1136,6 @@ $(window).load(function() {
       	if(event.keyCode == 27) {
           closeWindows();
          // closeSelect();
-          showSaveButton();
         }
       });
 });

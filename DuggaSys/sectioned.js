@@ -3,6 +3,7 @@ var retdata;
 var newversid;
 var active_lid;
 var isClickedElementBox = false;
+var nameSet = false;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -75,6 +76,8 @@ function editSectionDialogTitle(title) {
 
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments) {
+	nameSet = false;
+	if (entryname == "undefined") entryname = "New Header";
 	if (kind == "undefined") kind = 0;
 	xelink = elink;
 	// Display Select Marker
@@ -206,29 +209,12 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	// Show dialog
 	iistr = "";
 
-	// Set Group options
-	str = "";
-	str += "<option value ='0'>1</option>";
-	str += "<option value ='1'>2</option>";
-	str += "<option value ='2'>3</option>";
-	str += "<option value ='2'>4</option>";
-	str += "<option value ='2'>5</option>";
-	$("#numberOfGroups").html(str);
-
-	str = "";
-	str += "<option value ='0'>Seminar Group</option>";
-	str += "<option value ='1'>Group Task</option>";
-	str += "<option value ='2'>Project Task</option>";
-	$("#groupType").html(str);
-
 	$("#inputwrapper-tabs").css("display","block");
 	$("#inputwrapper-link").css("display","block");
 	$("#inputwrapper-gradesystem").css("display","block");
 	$("#inputwrapper-moment").css("display","block");
 	$("#inputwrapper-highscore").css("display","block");
 	$("#inputwrapper-comments").css("display","block");
-	$("#inputwrapper-numberOfGroups").css("display", "block");
-	$("#inputwrapper-groupType").css("display", "block");
 
 	// Code
 	if(kind==2){
@@ -282,8 +268,18 @@ function changedType(value)
 	kind=value;
 	iistr="";
 
+	if(kind==0){
+		if (!nameSet) {
+			$('#sectionname').val("New Header");
+		}
+	}
+	else if(kind==1){
+		if (!nameSet) {
+			$('#sectionname').val("New Section");
+		}
+	}
 	//Code
-	if(kind==2){
+	else if(kind==2){
 		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
 			var iitem=retdata['codeexamples'][ii];
 			if(xelink==iitem['exampleid']){
@@ -293,6 +289,10 @@ function changedType(value)
 			}
 		}
 		$("#link").html(iistr);
+
+		if (!nameSet) {
+			$('#sectionname').val("New Code");
+		}
 
 	//Dugga
 	}else if(kind==3){
@@ -306,8 +306,15 @@ function changedType(value)
 		}
 		$("#link").html(iistr);
 
+		if (!nameSet) {
+			$('#sectionname').val("New Test");
+		}
+	} else if(kind==4){
+		if (!nameSet) {
+			$('#sectionname').val("New Moment");
+		}
 	//Link
-	}else if(kind==5){
+	} else if(kind==5){
 		for(var ii=0;ii<retdata['links'].length;ii++){
 			var iitem=retdata['links'][ii];
 			// filter file extension
@@ -323,6 +330,18 @@ function changedType(value)
 			}
 		}
 		$("#link").html(iistr);
+
+		if (!nameSet) {
+			$('#sectionname').val("New Link");
+		}
+	} else if(kind==6){
+		if (!nameSet) {
+			$('#sectionname').val("New Group Activity");
+		}
+	} else if(kind==7){
+		if (!nameSet) {
+			$('#sectionname').val("New Message");
+		}
 	}
 }
 
@@ -349,6 +368,7 @@ function deleteItem(item_lid = null) {
 // Checks if the title name includes any invalid characters
 
 function validateName() {
+	nameSet = true;
 	var name = document.getElementById("sectionname");
 	if (isNameValid() && isTypeValid()){ // if both are valid, show buttons
 		$('#tooltipTxt').fadeOut();
@@ -790,29 +810,29 @@ function returnedSection(data) {
 			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
 			str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
 
-			// Group activity button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='selectItem(\"undefined\",\"New Item\",\"6\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>"
-
-			// Message button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='selectItem(\"undefined\",\"New Item\",\"7\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><i class='material-icons'>format_quote</i></a></li>"
-
 			//Heading button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='selectItem(\"undefined\",\"New Item\",\"0\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='fabValidateType(\"0\");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
 
 			//Section button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='selectItem(\"undefined\",\"New Item\",\"1\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='fabValidateType(\"1\");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>"
 
 			// Moment button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='selectItem(\"undefined\",\"New Item\",\"4\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='fabValidateType(\"4\");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>"
 
 			// Test button
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='fabValidateType(\"3\");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>"
 
 			// Link button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='selectItem(\"undefined\",\"New Item\",\"5\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><i class='material-icons'>link</i></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='fabValidateType(\"5\");'><i class='material-icons'>link</i></a></li>"
 
 			//Code button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='selectItem(\"undefined\",\"New Item\",\"2\",\"undefined\",\"undefined\",\"0\",\"undefined\",\"undefined\");  newItem();'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>"
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='fabValidateType(\"2\");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>"
+
+			// Group activity button
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='fabValidateType(\"6\");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>"
+
+			// Message button
+			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='fabValidateType(\"7\");'><i class='material-icons'>format_quote</i></a></li>"
 
 			str += "</ol>"
 			str += "</div>";
@@ -849,7 +869,7 @@ function returnedSection(data) {
 				"<input type='button' value='+' class='submit-button-newitem' title='New Item'"
 				+ " onclick='selectItem("
 				+ "\"" + item['lid'] + "\","
-				+ "\"New Item\","
+				+ "\"" + item['entryname'] + "\","
 				+ "\"" + item['kind'] + "\","
 				+ "\"" + item['visible'] + "\","
 				+ "\"" + item['link'] + "\","
@@ -866,8 +886,6 @@ function returnedSection(data) {
 		str += "</div>";
 
 		str += "<div id='Sectionlistc' >";
-		//group-related variable
-		var groupitems = 0;
 
 		// For now we only have two kinds of sections
 		if (data['entries'].length > 0) {
@@ -1670,29 +1688,49 @@ function toggleHamburger() {
 
 // Toggles action bubbles when pressing the FAB button
 function toggleFabButton() {
-
 	if (!$('.fab-btn-sm').hasClass('scale-out')) {
 		$('.fab-btn-sm').toggleClass('scale-out');
 		$('.fab-btn-list').delay(100).fadeOut(0);
-	}
-	else {
+	} else {
 		$('.fab-btn-list').fadeIn(0);
 		$('.fab-btn-sm').toggleClass('scale-out');
 	}
 }
 
+//kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function fabValidateType(kind) {
-	if (kind == 3){
+	if (kind == 0){
+		selectItem("undefined","New Header","0","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 1){
+		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 2){
+		selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 3){
 		if (retdata['duggor'].length == 0){
 			toggleFabButton();
 			$("#noTestsConfirmBox").css("display", "flex");
-		}
-		else {
-			selectItem("undefined","New Item","3","undefined","undefined","0","undefined","undefined");
+		} else {
+			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined");
 			newItem();
 		}
+	} else if (kind == 4){
+		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 5){
+		selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 6){
+		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined");
+		newItem();
+	} else if (kind == 7){
+		selectItem("undefined","New Message","7","undefined","undefined","0","undefined","undefined");
+		newItem();
 	}
 }
+
 
 function addColorsToTabSections(kind, visible){
 	var retStr = "";
