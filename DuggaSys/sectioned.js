@@ -936,10 +936,10 @@ function returnedSection(data) {
 						+ "' class='group' style='display:block'>";
 				} else if (parseInt(item['kind']) === 7) {
 					str +=
-						"<div id='group"
+						"<div id='message"
 						+ menuState.idCounter
 						+ data.coursecode
-						+ "' class='group' style='display:block'>";
+						+ "' class='message' style='display:block'>";
 				}
 				menuState.idCounter++;
 				// All are visible according to database
