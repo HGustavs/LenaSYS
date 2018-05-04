@@ -100,6 +100,16 @@ $(window).load(function () {
 	});
 });
 
+function clearEditForm() {
+	$('#name').val("New dugga");
+	$('#name').attr('placeholder','Empty dugga');
+	$('#qstart').val("");
+	$('#qstart').attr('placeholder', 'YYYY-MM-DD');
+	$('#release').val("");
+	$('#release').attr('placeholder', 'YYYY-MM-DD');
+	$('#deadline').val("");
+	$('#deadline').attr('placeholder', 'YYYY-MM-DD');
+}
 
 // Detects clicks
 $(document).mousedown(function (e) {
@@ -133,18 +143,12 @@ function resetNameValidation() {
 
 // DUGGA FUNCTIONS start
 function newDugga() {
-	document.getElementById("editDuggaTitle").innerHTML = "New dugga";
-	document.getElementById('name').value = '';
-	document.getElementById('name').placeholder = 'Empty dugga';
-	document.getElementById('qstart').value = '';
-	document.getElementById('qstart').placeholder = 'YYYY-MM-DD';
-	document.getElementById('release').value = '';
-	document.getElementById('release').placeholder = 'YYYY-MM-DD';
-	document.getElementById('deadline').value = '';
-	document.getElementById('deadline').placeholder = 'YYYY-MM-DD';
+	$("#editDuggaTitle").html("New dugga");
+	clearEditForm();
 
 	// Set submitDugga button to disabled
 	$('#submitDugga').prop("disabled", true);
+
 	//----------------------------------------------------
 	// Set Autograde
 	//----------------------------------------------------
@@ -198,6 +202,9 @@ function createDugga() {
 }
 
 function selectDugga(qid) {
+
+	clearEditForm();
+
 	// Ensures that name validation is not set at start when selecting a dugga
 	resetNameValidation();
 	$('#saveDugga').prop("disabled", false);
@@ -472,12 +479,13 @@ function returnedQuiz(data) {
 			quiz = element;
 		}
 	});
+
 	$("#did").val(quiz['arrow']);
 	$("#name").val(quiz['qname']);
 	$("#autograde").val(quiz['autograde']);
 	$("#gradesys").val(quiz['gradesystem']);
 	$("#template").val(quiz['quizFile']);
-	$("#qstart").val(quiz['qstart'] ? quiz['qstart'] : "null");
+	$("#qstart").val(quiz['qstart']);
 	$("#deadline").val(quiz['deadline']);
 	$("#release").val(quiz['qrelease']);
 }
