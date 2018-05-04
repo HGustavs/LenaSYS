@@ -405,7 +405,7 @@ function isTypeValid(){
 	var nme = document.getElementById("type");
 	if(retdata['duggor'].length == 0 && kind == 3){
 		return false;
-	} else if (retdata['codeexamples'].length >= 1 && kind == 2){
+	} else if (retdata['codeexamples'].length <= 1 && kind == 2){
 		return false;
 	} else if (retdata['links'].length == 0 && kind == 5){
 		return false;
