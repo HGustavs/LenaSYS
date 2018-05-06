@@ -414,12 +414,14 @@ function cancelPreview() {
     $(".previewWindowContainer").css("display", "none");
 }
 
-function loadPreview(fileUrl) {
+function loadPreview(fileUrl, fileName, fileKind) {
     $(".previewWindow").show();
     $(".previewWindowContainer").css("display", "block");
     var fileContent = getFIleContents(fileUrl);
     document.getElementById("mrkdwntxt").value = fileContent;
     updatePreview(fileContent);
+    $("#filename").val(fileName);
+    $("#kindz").val(fileKind);
     //updatePreview(document.getElementById("mrkdwntxt").value = fileContent);
 }
 
