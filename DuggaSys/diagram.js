@@ -254,7 +254,7 @@ function fixConnections(clones){
                 else if(clones[j].connectorTop[0].to == tempTopLeft){
                     toValue = lineArr[i].topLeft;
                 }
-                clones[j].connectorTop = new [{from:fromValue, to:toValue}];
+                clones[j].connectorTop[0] = {from:fromValue, to:toValue};
             }
             else if(clones[j].connectorBottom.length > 0){
                 if(clones[j].connectorBottom[0].from == tempBottomRight){
@@ -269,7 +269,7 @@ function fixConnections(clones){
                 else if(clones[j].connectorBottom[0].to == tempTopLeft){
                     toValue = lineArr[i].topLeft;
                 }
-                clones[j].connectorBottom = new [{from:fromValue, to:toValue}];
+                clones[j].connectorBottom[0] = {from:fromValue, to:toValue};
             }
             else if(clones[j].connectorLeft.length > 0){
                 if(clones[j].connectorLeft[0].from == tempBottomRight){
@@ -284,7 +284,7 @@ function fixConnections(clones){
                 else if(clones[j].connectorLeft[0].to == tempTopLeft){
                     toValue = lineArr[i].topLeft;
                 }
-                clones[j].connectorLeft = new [{from:fromValue, to:toValue}];
+                clones[j].connectorLeft[0] = {from:fromValue, to:toValue};
             }
             else if(clones[j].connectorRight.length > 0){
                 if(clones[j].connectorRight[0].from == tempBottomRight){
@@ -299,7 +299,7 @@ function fixConnections(clones){
                 else if(clones[j].connectorRight[0].to == tempTopLeft){
                     toValue = lineArr[i].topLeft;
                 }
-                clones[j].connectorRight = new [{from:fromValue, to:toValue}];
+                clones[j].connectorRight[0] = {from:fromValue, to:toValue};
             }
 
         }
@@ -313,10 +313,10 @@ function copySymbol(symbol){
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
     var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
     var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
-    var cloneConnTop = Object.assign({}, symbol.connectorTop);
-    var cloneConnBottom = Object.assign({}, symbol.connectorBottom);
-    var cloneConnLeft = Object.assign({}, symbol.connectorLeft);
-    var cloneConnRight = Object.assign({}, symbol.connectorRight);
+    var cloneConnTop = Object.assign([], symbol.connectorTop);
+    var cloneConnBottom = Object.assign([], symbol.connectorBottom);
+    var cloneConnLeft = Object.assign([], symbol.connectorLeft);
+    var cloneConnRight = Object.assign([], symbol.connectorRight);
 
 
     if(symbol.symbolkind == 1){
