@@ -148,6 +148,15 @@ function closeWindows(){
 	window.removeEventListener("keypress", loginEventHandler, false);
 }
 
+function closeOnEsc(){
+$(document).keydown(function(e) {
+     if (e.keyCode == 27) { // escape key maps to keycode `27`
+       status = 1;
+       showing = 0;
+       toggleloginnewpass();
+    }
+});
+}
 function changeCSS(cssFile, index)
 {
 		var cssLinkIndex = index;
@@ -578,7 +587,7 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedQuiz
 		})
-	} 
+	}
 }
 
 //Will handle enter key pressed when loginbox is showing
