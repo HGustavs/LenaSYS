@@ -1860,7 +1860,6 @@ $(document).mouseup(function (e) {
 });
 
 $(document).scroll(function(e){
-	console.log(retdata.coursecode);
 	localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
 });
 
