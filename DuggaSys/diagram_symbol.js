@@ -101,7 +101,6 @@ function Symbol(kind) {
     this.quadrants = function () {
         // Fix right connector box (1)
         var changed = false;
-        var anyChanged = false;
         var i = 0;
         while (i < this.connectorRight.length) {
             var xk = points[this.connectorRight[i].to].x;
