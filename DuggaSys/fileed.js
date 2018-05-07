@@ -248,52 +248,63 @@ function renderCell(col,celldata,cellid) {
 //----------------------------------------------------------------
 function rowFilter(row) {
 	var regex = new RegExp('(.*)::(.*)');
-	var tempSearch = searchterm.match(regex);
+	// Split the searchterm at each &&
+    var splitSearch = searchterm.split("&&");
 
-	// Specific column search
-	if(tempSearch != null && tempSearch.length > 1){
-		var colName = tempSearch[1].toLowerCase();
-		var searchName = tempSearch[2];
-		switch (colName) {
-			case "file name":
-				colName = "filename";
-				break;
-			case "extension":
-				colName = "extension";
-				break;
-			case "kind":
-				colName = "kind";
-				break;
-			case "size":
-				colName = "filesize";
-				break;
-			case "upload date":
-				colName = "uploaddate";
-				break;
-			default:
-				break;
-		}
-		if(colName == "filesize"){
-			if(fileSizeSearch(row, colName, searchName)) return true;
-		} else {
-            if(row[colName].toUpperCase().indexOf(searchName.toUpperCase()) != -1) return true;
+    var tempSearchTerm;
+    var columnToSearch;
+
+    // Loop through each searchterms. If there is a match set "match" to true.
+    // If "match" is false at the end of an iteration return false since there wasn't a match.
+    for(var i = 0; i < splitSearch.length; i++){
+        tempSearchTerm = splitSearch[i].trim().match(regex);
+        var match = false;
+        if(tempSearchTerm != null && tempSearchTerm.length > 1) {
+            columnToSearch = tempSearchTerm[1].toLowerCase();
+            tempSearchTerm = tempSearchTerm[2];
+            switch (columnToSearch) {
+                case "file name":
+                    columnToSearch = "filename";
+                    break;
+                case "extension":
+                    columnToSearch = "extension";
+                    break;
+                case "kind":
+                    columnToSearch = "kind";
+                    break;
+                case "size":
+                    columnToSearch = "filesize";
+                    break;
+                case "upload date":
+                    columnToSearch = "uploaddate";
+                    break;
+                default:
+                    break;
+            }
+            if(columnToSearch == "filesize"){
+                if(fileSizeSearch(row, columnToSearch, tempSearchTerm)) match = true;
+            } else {
+                if(row[columnToSearch].toUpperCase().indexOf(tempSearchTerm.toUpperCase()) != -1) match = true;
+            }
+        } else {
+            tempSearchTerm = splitSearch[i].trim();
+            for (var key in row) {
+                if (row[key] != null) {
+                    // Special search criteria for Size column
+                    if(key == "filesize"){
+                        if(fileSizeSearch(row, key, tempSearchTerm) &&
+                            !(key == "counter" || key == "editor" || key == "trashcan")) match = true;
+                    } else {
+                        if (row[key].toUpperCase().indexOf(tempSearchTerm.toUpperCase()) != -1 &&
+                            !(key == "counter" || key == "editor" || key == "trashcan")) match = true;
+                    }
+                }
+            }
+
         }
-	} else {
-	// Search in all column except "counter", "editor", "trashcan"
-		for (key in row) {
-			if (row[key] != null) {
-				// Special search criteria for Size column
-				if(key == "filesize"){
-					if(fileSizeSearch(row, key, searchterm) &&
-						!(key == "counter" || key == "editor" || key == "trashcan")) return true;
-				} else {
-					if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1 &&
-						!(key == "counter" || key == "editor" || key == "trashcan")) return true;
-				}
-			}
-        }
-	}
-    return false;
+        if(!match) return false;
+    }
+    return true;
 }
 
 function fileSizeSearch(row, colName, searchName){
@@ -306,7 +317,7 @@ function fileSizeSearch(row, colName, searchName){
 // ---------------
 //  Callback function that renders the col filter div
 //--------------------------------------------------------------------------
-		
+
 function renderSortOptions(col,status) {
 	str = "";
 
@@ -319,7 +330,7 @@ function renderSortOptions(col,status) {
 	}
 	return str;
 }
-			
+
 //--------------------------------------------------------------------------
 // compare
 // ---------------
@@ -369,7 +380,7 @@ function compare(a,b) {
 	} else {
 		return 0;
 	}
-}	
+}
 
 function formatBytes(bytes,decimals) {
    if (bytes == 0) return '0 Bytes';
@@ -477,7 +488,9 @@ function loadFile(fileUrl) {
     $(".editFileWindow").show();
     $(".editFileWindowContainer").css("display", "block");
     var fileContent = getFIleContents(fileUrl);
+	var fileName = fileUrl.split("/").pop().split(".")[0];
     document.getElementById("filecont").value = fileContent;
+	$(".fileName").html(fileName);
     editFile(fileContent);
 }
 
@@ -495,6 +508,3 @@ function cancelEditFile() {
     $(".editFileWindow").hide();
     $(".editFileWindowContainer").css("display", "none");
 }
-
-
-

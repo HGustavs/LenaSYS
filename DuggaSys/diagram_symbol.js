@@ -677,8 +677,9 @@ function Symbol(kind) {
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-
+    
         ctx.save();
+
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
@@ -759,7 +760,12 @@ function Symbol(kind) {
         // Write Class Name
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
+        if(ctx.measureText(this.name).width >= (x2-x1) - 2){
+            ctx.textAlign = "start";
+            ctx.fillText(this.name, x1 + 2 , y1 + (0.85 * this.textsize));
+        }else{
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
+        }
         if (this.key_type == 'Primary key') {
             var linelength = ctx.measureText(this.name).width;
             ctx.beginPath(1);
@@ -785,7 +791,7 @@ function Symbol(kind) {
 
     this.drawERAttribute = function(x1, y1, x2, y2){
         ctx.fillStyle = this.symbolColor;
-        ctx.lineWidth = this.lineWidth;
+        ctx.lineWidth = this.lineWidth + 2;
         //This is a temporary solution to the black symbol problem
 
 
@@ -802,6 +808,7 @@ function Symbol(kind) {
             ctx.fill();
             makeShadow();
         }
+        ctx.clip();
 
         //drawing an derived attribute
         if (this.key_type == 'Drive') {
@@ -820,8 +827,12 @@ function Symbol(kind) {
         ctx.stroke();
         ctx.setLineDash([]);
         ctx.fillStyle = this.fontColor;
-        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-        ctx.clip();
+        if(ctx.measureText(this.name).width > (x2-x1) - 4){
+            ctx.textAlign = "start";
+            ctx.fillText(this.name, x1 + 4 , (y1 + ((y2 - y1) * 0.5)));
+        }else{
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        }
     }
 
     this.drawEntity = function(x1, y1, x2, y2){
@@ -846,7 +857,13 @@ function Symbol(kind) {
         ctx.stroke();
 
         ctx.fillStyle = this.fontColor;
-        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+
+        if(ctx.measureText(this.name).width >= (x2-x1) - 5){
+            ctx.textAlign = "start";
+            ctx.fillText(this.name, x1 + 3 , (y1 + ((y2 - y1) * 0.5)));
+        }else{
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        }
         ctx.font = parseInt(textsize) + "px " + this.font;
     }
 
@@ -918,7 +935,12 @@ function Symbol(kind) {
 
         ctx.stroke();
         ctx.fillStyle = this.fontColor;
-        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        if(ctx.measureText(this.name).width >= (x2-x1) - 12){
+            ctx.textAlign = "start";
+            ctx.fillText(this.name, x1 + 10 , (y1 + ((y2 - y1) * 0.5)));
+        }else{
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        }
     }
 
 }

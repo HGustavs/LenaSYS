@@ -442,6 +442,7 @@ function doubleclick(ev) {
     var posistionY = (sy + yPos);
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
+        $(".loginBox").draggable();
         //console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
     }
 }
