@@ -687,7 +687,7 @@ function renderCell(col, celldata, cellid) {
 	// DUGGA-TABLE cellend
 
 	// VARIANT-TABLE cellstart
-	// Placing a clickable arrow in its designated column for previewing the variant.
+	// Numbering the variant table.
 	else if (col == "vid") {
 		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
 	}
@@ -711,7 +711,7 @@ function renderCell(col, celldata, cellid) {
 
 	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "arrowVariant") {
-		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
+		str = "<img id='dorf' src='../Shared/icons/PlayT.svg' ";
 		str += " onclick='getVariantPreview();'>";
 		return str;
 	}
