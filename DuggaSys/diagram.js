@@ -239,60 +239,67 @@ function fixConnections(clones){
 
         for(var j = 0; j < clones.length; j++){
             if(clones[j].connectorTop.length > 0){
+                var fromValue;
+                var toValue;
+
                 if(clones[j].connectorTop[0].from == tempBottomRight){
-                    clones[j].connectorTop[0].from = lineArr[i].bottomRight;
+                    fromValue = lineArr[i].bottomRight;
                 }
                 else if(clones[j].connectorTop[0].from == tempTopLeft){
-                    clones[j].connectorTop[0].from = lineArr[i].topLeft;
+                    fromValue = lineArr[i].topLeft;
                 }
                 if(clones[j].connectorTop[0].to == tempBottomRight){
-                    clones[j].connectorTop[0].to = lineArr[i].bottomRight;
+                    toValue = lineArr[i].bottomRight;
                 }
                 else if(clones[j].connectorTop[0].to == tempTopLeft){
-                    clones[j].connectorTop[0].to = lineArr[i].topLeft;
+                    toValue = lineArr[i].topLeft;
                 }
+                clones[j].connectorTop = new [{from:fromValue, to:toValue}];
             }
             else if(clones[j].connectorBottom.length > 0){
                 if(clones[j].connectorBottom[0].from == tempBottomRight){
-                    clones[j].connectorBottom[0].from = lineArr[i].bottomRight;
+                    fromValue = lineArr[i].bottomRight;
                 }
                 else if(clones[j].connectorBottom[0].from == tempTopLeft){
-                    clones[j].connectorBottom[0].from = lineArr[i].topLeft;
+                    fromValue = lineArr[i].topLeft;
                 }
                 if(clones[j].connectorBottom[0].to == tempBottomRight){
-                    clones[j].connectorBottom[0].to = lineArr[i].bottomRight;
+                    toValue = lineArr[i].bottomRight;
                 }
                 else if(clones[j].connectorBottom[0].to == tempTopLeft){
-                    clones[j].connectorBottom[0].to = lineArr[i].topLeft;
+                    toValue = lineArr[i].topLeft;
                 }
+                clones[j].connectorBottom = new [{from:fromValue, to:toValue}];
             }
             else if(clones[j].connectorLeft.length > 0){
                 if(clones[j].connectorLeft[0].from == tempBottomRight){
-                    clones[j].connectorLeft[0].from = lineArr[i].bottomRight;
+                    fromValue = lineArr[i].bottomRight;
                 }
-                else if(clones[j].connectorLeft[0].to == tempBottomRight){
-                    clones[j].connectorLeft[0].to = lineArr[i].bottomRight;
+                else if(clones[j].connectorLeft[0].from == tempTopLeft){
+                    fromValue = lineArr[i].topLeft;
                 }
-                if(clones[j].connectorLeft[0].from == tempTopLeft){
-                    clones[j].connectorLeft[0].from = lineArr[i].topLeft;
+                if(clones[j].connectorLeft[0].to == bottomRight){
+                    toValue = lineArr[i].bottomRight;
                 }
                 else if(clones[j].connectorLeft[0].to == tempTopLeft){
-                    clones[j].connectorLeft[0].to = lineArr[i].topLeft;
+                    toValue = lineArr[i].topLeft;
                 }
+                clones[j].connectorLeft = new [{from:fromValue, to:toValue}];
             }
             else if(clones[j].connectorRight.length > 0){
                 if(clones[j].connectorRight[0].from == tempBottomRight){
-                    clones[j].connectorRight[0].from = lineArr[i].bottomRight;
+                    fromValue = lineArr[i].bottomRight;
                 }
-                else if(clones[j].connectorRight[0].to == tempBottomRight){
-                    clones[j].connectorRight[0].to = lineArr[i].bottomRight;
+                else if(clones[j].connectorRight[0].from == tempTopLeft){
+                    fromValue = lineArr[i].topLeft;
                 }
-                if(clones[j].connectorRight[0].from == tempTopLeft){
-                    clones[j].connectorRight[0].from = lineArr[i].topLeft;
+                if(clones[j].connectorRight[0].to == tempBottomRight){
+                    toValue = lineArr[i].bottomRight;
                 }
                 else if(clones[j].connectorRight[0].to == tempTopLeft){
-                    clones[j].connectorRight[0].to = lineArr[i].topLeft;
+                    toValue = lineArr[i].topLeft;
                 }
+                clones[j].connectorRight = new [{from:fromValue, to:toValue}];
             }
 
         }
