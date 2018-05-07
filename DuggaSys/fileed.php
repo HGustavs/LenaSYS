@@ -34,7 +34,7 @@ pdoConnect();
 			<h1 style='flex:1;text-align:center;'>Files</h1>
 		</div>
 		<div id="sortingBar">
-			<div class="sortingBtn" style="margin-left:2px;">
+			<div id="sortAll" class="sortingBtn" style="margin-left:2px;">
 				<input type="radio" name="sortKind" value="All" checked onclick="count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
 				<label name="sortAll">All files</label>
 			</div>
