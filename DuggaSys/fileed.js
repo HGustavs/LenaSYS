@@ -27,9 +27,17 @@ var fabListIsVisible = true;
 
 AJAXService("GET",{cid:querystring['cid']},"FILE");
 
-window.onresize = function() {
+$(window).on('resize' = function() {
 	fileLink.magicHeader();
-}
+    
+    if($(window).width() < 650){
+        $('#SortingBar').addClass('SortingBarMobile');
+        $('#SortingBar').removeClass('SortingBar');
+    }else{
+        $('#SortingBar').addClass('SortingBar');
+        $('.SortingBar').removeClass('SortingBarMobile');
+    }
+    });
 
 $(document).on('click','.last',function(e) {
     e.stopPropagation();
