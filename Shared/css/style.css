@@ -2670,7 +2670,7 @@ table {
 }
 .sortingBtn {
   display: inline-block;
-  margin-left: 10px;
+  margin-left: 0px;
 }
 .sortingBtn input {
     font-size: 12px;
