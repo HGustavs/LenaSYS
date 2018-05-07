@@ -217,7 +217,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		}
 
 		var filterstr = "";
-		for (let colname in tbl.tblhead) {
+		for (var colname in tbl.tblhead) {
 				var col = tbl.tblhead[colname];
 				if (isFirstVisit) {
 					//columnfilter.push(col);
