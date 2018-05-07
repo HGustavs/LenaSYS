@@ -60,7 +60,11 @@ body {
   font-family: 'Roboto', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-y: scroll;
+<<<<<<< HEAD
+  width:100%;
+=======
   width: 100%;
+>>>>>>> f04368eeadb2fecf712157a3b210ff1636907819
   height: 100%;
 }
 
@@ -3670,8 +3674,8 @@ li:nth-last-child(10) a:hover {
 }
 
  .previewWindow {
-    height: 635px;
-    width: 900px;
+    height: 80%;
+    width: 80%;
     margin: 0px auto;
     border: solid rgb(200,200,200);
     background-color: rgb(240,240,240);
@@ -3687,10 +3691,10 @@ li:nth-last-child(10) a:hover {
 .markdown {
   border: solid rgb(200, 200, 200);
   background-color: #FFFFFF;
-  width: 350px;
-  height: 550px;
+  width: 40%;
+  height: 80%;
   position: relative;
-  margin: 20px 10px 10px 10px;
+  margin: 20px 10px 10px 8.5%;
   float: left;
 }
 
@@ -3699,10 +3703,10 @@ li:nth-last-child(10) a:hover {
   background-color: #FFFFFF;
   word-wrap: break-word;
   overflow-y: scroll;
-  width: 490px;
-  height: 550px;
+  width: 40%;
+  height: 80%;
   position: relative;
-  margin: 20px 10px 10px 10px;
+  margin: 20px 8.5% 10px 8px;
   float: right;
 }
 .markdownPrev pre{
@@ -3769,22 +3773,73 @@ li:nth-last-child(10) a:hover {
   padding: 0px 5px 0px 5px;
   line-height: 25px;
 }
-
+.markText {
+    height: 90%;
+}
 #mrkdwntxt {
   border-radius: 8px;
   box-shadow: 2px 2px 4px #888 inset;
   resize: none;
-  margin: 10px 4px 0px 4px;
+  width:90%;
+  height:100%;
+  margin: 10px auto;
+}
+textarea{
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 #boldText {
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 10%;
+  position: relative;
+  bottom: 10%;
 }
 
 #cursiveText {
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 3%;
+  position: relative;
+  bottom:10%;
+}
+
+#lists {
+  cursor: pointer;
+  color: #FFFFFF;
+  margin-left: 3%;
+  font-size: 12px;
+  position: relative;
+  bottom:15%;
+}
+#codeBlockText {
+    cursor: pointer;
+    margin-left: 3%;
+    position: relative;
+    bottom:10%;
+}
+#quoteText {
+    cursor: pointer;
+    margin-left: 3%;
+    font-size: 25px;
+    position: relative;
+    top:20%;
+}
+#img {
+    cursor: pointer;
+    margin-left: 6%;
+}
+#insert-photo {
+    position: absolute;
+    filter: invert(100%);
+}
+#link {
+    cursor: pointer;
+    margin-left: 4%;
+}
+#linkFabBtnImg {
+    position: absolute;
+    margin-left: 10px;
 }
 
 #headerType1 {
@@ -3825,7 +3880,9 @@ li:nth-last-child(10) a:hover {
 
 .headerType {
   cursor: pointer;
-  margin-left: 150px;
+  margin-left: 5%;
+  position: relative;
+  bottom: 10%;
 }
 
 .show-dropdown-content {
