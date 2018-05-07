@@ -2157,6 +2157,17 @@ $migrationArray = array(
         [
             ['column', 'quiz', 'qstart', 'datetime', ''],
         ],
+
+        'version' => 'v0.06',
+        'description' => 'New table for group and M-M between Group and User',
+        [
+            ['create', 'groups', 'groupID', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT', 'PRIMARY KEY(groupID)'],
+            ['column', 'groups', 'courseID', 'int', 'UNSIGNED NOT NULL', 'FOREIGN KEY(courseID) REFERENCES course(cid)'],
+            ['column', 'groups', 'groupName', 'varchar(80)', 'NOT NULL'],
+
+            ['create', 'user_group', 'groupID', 'int', 'UNSIGNED NOT NULL', 'FOREIGN KEY(groupID) REFERENCES groups(groupID)'],
+            ['column', 'user_group', 'userID', 'int', ' UNSIGNED NOT NULL', 'FOREIGN KEY(userID) REFERENCES user(uid)', 'PRIMARY KEY(groupID, userID'],
+        ],
     ],
 );
 
