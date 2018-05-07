@@ -317,7 +317,7 @@ function fileSizeSearch(row, colName, searchName){
 // ---------------
 //  Callback function that renders the col filter div
 //--------------------------------------------------------------------------
-		
+
 function renderSortOptions(col,status) {
 	str = "";
 
@@ -330,7 +330,7 @@ function renderSortOptions(col,status) {
 	}
 	return str;
 }
-			
+
 //--------------------------------------------------------------------------
 // compare
 // ---------------
@@ -380,7 +380,7 @@ function compare(a,b) {
 	} else {
 		return 0;
 	}
-}	
+}
 
 function formatBytes(bytes,decimals) {
    if (bytes == 0) return '0 Bytes';
@@ -488,7 +488,9 @@ function loadFile(fileUrl) {
     $(".editFileWindow").show();
     $(".editFileWindowContainer").css("display", "block");
     var fileContent = getFIleContents(fileUrl);
+	var fileName = fileUrl.split("/").pop().split(".")[0];
     document.getElementById("filecont").value = fileContent;
+	$(".fileName").html(fileName);
     editFile(fileContent);
 }
 
@@ -506,6 +508,3 @@ function cancelEditFile() {
     $(".editFileWindow").hide();
     $(".editFileWindowContainer").css("display", "none");
 }
-
-
-
