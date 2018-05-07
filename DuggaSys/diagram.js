@@ -300,8 +300,9 @@ function fixConnections(clones){
                 }
                 clones[j].connectorRight[0] = {from:fromValue, to:toValue};
             }
-            lineArr[i].centerPoint = clones[j].centerPoint;
-
+            var tempIndex = lineArr[i].bottomRight;
+            lineArr[i].bottomRight = clones[j].centerPoint;
+            lineArr[i].centerPoint = tempIndex;
         }
     }
     connectedClones = [];
@@ -339,17 +340,18 @@ function copySymbol(symbol){
     clone.connectorBottom = cloneConnBottom;
     clone.connectorLeft = cloneConnLeft;
     clone.connectorRight = cloneConnRight;
+
     if(clone.symbolkind != 4){
         clone.topLeft = points.push(topLeftClone) - 1;
         clone.bottomRight = points.push(bottomRightClone) - 1;
         clone.centerPoint = points.push(centerPointClone) - 1;
     }
-        clone.object_type = "";
-        clone.targeted = true;
+    clone.object_type = "";
+    clone.targeted = true;
 
-        diagram.push(clone);
-        return connectedClones;
-    }
+    diagram.push(clone);
+    return connectedClones;
+}
 
 //--------------------------------------------------------------------
 // drawPoints - Draws each of the points as a cross
