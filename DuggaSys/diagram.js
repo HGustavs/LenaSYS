@@ -139,6 +139,8 @@ function keyDownHandler(e){
                 copySymbol(cloneTempArray[i]);
             }
         }
+        updateGraphics();
+        SaveState();
     }
 
     else if (key == 90 && ctrlIsClicked) undoDiagram();
