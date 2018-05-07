@@ -233,7 +233,6 @@ function fixConnections(clones){
         var centerPointClone = Object.assign({}, points[lineArr[i].centerPoint]);
         var tempBottomRight = lineArr[i].bottomRight;
         var tempTopLeft = lineArr[i].topLeft;
-        lineArr[i].centerPoint = points.push(centerPointClone) - 1;
         lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
         lineArr[i].topLeft = points.push(topLeftClone) - 1;
 
@@ -301,6 +300,7 @@ function fixConnections(clones){
                 }
                 clones[j].connectorRight[0] = {from:fromValue, to:toValue};
             }
+            lineArr[i].centerPoint = clones[j].centerPoint;
 
         }
     }
