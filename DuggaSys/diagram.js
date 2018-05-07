@@ -97,7 +97,7 @@ var symbolEndKind;                      // Is used to store which kind of object
 
 
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
-
+var connectedClones = [];
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
@@ -268,7 +268,6 @@ function fixConnections(clones){
 
 //Clone an object
 function copySymbol(symbol){
-    var clonesWithConnections = [];
     var clone = Object.assign({}, symbol[i]);
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
     var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
@@ -288,7 +287,7 @@ function copySymbol(symbol){
 
     if(clone.connectorTop.length > 0 || clone.connectorBottom.length > 0
         || clone.connectorLeft.length > 0 || clone.connectorRight.length > 0){
-            clonesWithConnections.push(clone);
+            connectedClones.push(clone);
         }
 
         if(clone.symbolkind != 4){
@@ -300,7 +299,7 @@ function copySymbol(symbol){
         clone.targeted = true;
 
         diagram.push(clone);
-
+        return connectedClones;
     }
 
 //--------------------------------------------------------------------
