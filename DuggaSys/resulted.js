@@ -42,6 +42,8 @@ function setup(){
   filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
   filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
   filt+="<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+  filt+="<div id='columnfilter'></div>"
+  filt+="<div id='customfilter'></div>"
   filt+="</div>";
   filt+="</span></td>";
 
@@ -178,8 +180,8 @@ function process()
 	}
 
 	// Update dropdown list
+  /*
   var dstr="";
-
 	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
 
 	var activeMoment = 0;
@@ -215,7 +217,7 @@ function process()
  				}
  			}
  		} else {
- 			/* default to check every visible dugga/moment */
+ 			// default to check every visible dugga/moment
  			if (moments[j].visible != 0) dstr+=" checked ";
  		}
  		dstr+=">";
@@ -223,6 +225,9 @@ function process()
  		dstr+="' for='hdr"+lid+"check' ";
  		dstr+=">"+name+"</label></div>";
  	}
+  */
+
+  var dstr="";
 	// Filter for teachers.
 	dstr+="<div class='checkbox-dugga checkmoment'>";
 	dstr+="<input type='checkbox' class='headercheck' name='showTeachers' value='0' id='showteachers'";
@@ -247,7 +252,7 @@ function process()
 
 	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
 
-	document.getElementById("dropdownc").innerHTML=dstr;
+	document.getElementById("customfilter").innerHTML=dstr;
 	var dstr="";
 
 	// Sorting
@@ -798,11 +803,11 @@ function createSortableTable(data){
 	myTable = new SortableTable(
 		tabledata,
 		"resultTable",
-		null,
+		"columnfilter",
 		"",
 		renderCell,
 		null,
-		null,
+		renderColumnFilter,
 		rowFilter,
 		[],
 		[],
@@ -918,4 +923,18 @@ function rowFilter(row) {
   if (!showTeachers && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
 
   return true;
+}
+
+function renderColumnFilter(colname,col,status) {
+  str = "";
+  if (status) {
+    str = "<div class='checkbox-dugga'>";
+    str += "<input type='checkbox' checked onclick='myTable.toggleColumn(\"" + colname + "\",\"" + col + "\")'><label class='headerlabel'>" + col + "</label>";
+    str += "</div>"
+  } else {
+    str = "<div class='checkbox-dugga'>";
+    str += "<input type='checkbox' onclick='myTable.toggleColumn(\"" + colname + "\",\"" + col + "\")'><label class='headerlabel'>" + col + "</label>";
+    str += "</div>"
+  }
+  return str;
 }

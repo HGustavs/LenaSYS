@@ -134,7 +134,7 @@ function rowDeHighlightInternal(event,row) {
 function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions,renderColumnFilter,rowFilter,colsumList,rowsumList,rowsumHeading,sumFunc,freezePane,highlightRow,deHighlightRow,showEditCell,updateCell,hasmagic) {
 	// Private members
 	var result = 0;
-	var columnfilter = [];
+	var columnfilter = null;
 	var sortcolumn = "UNK";
 	var sortkind = -1;
 	var tbl = tbl;
@@ -204,8 +204,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		sortableTable.currentTable = this;
 
 		// Private array that contains names of filtered columns
-		// columnfilter = JSON.parse(localStorage.getrow(tableid+"_filtercolnames"));
-		columnfilter = tbl.tblhead;
+		columnfilter = JSON.parse(localStorage.getItem(tableid+"_filtercolnames"));
+		//columnfilter = tbl.tblhead;
 
 		// Local variable that contains summing array
 		var sumContent = [];
@@ -213,17 +213,18 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		let isFirstVisit = false;
 		if (columnfilter == null) {
 			isFirstVisit = true;
-			columnfilter = [];
+			columnfilter = {};
 		}
 
 		var filterstr = "";
-		for (let colname in tbl.tblhead) {
+		for (var colname in tbl.tblhead) {
 				var col = tbl.tblhead[colname];
 				if (isFirstVisit) {
-					columnfilter.push(col);
+					//columnfilter.push(col);
+					columnfilter[colname] = tbl.tblhead[colname];
 				}
 				if (renderColumnFilter != null) {
-					filterstr += renderColumnFilter(col,columnfilter.indexOf(col) >- 1);
+					filterstr += renderColumnFilter(colname,col,columnfilter[colname] != null);
 				}
 		}
 
@@ -374,17 +375,17 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		this.magicHeader();
 	}
 
-	this.toggleColumn = function(col) {
+	this.toggleColumn = function(colname,col) {
 		// Assign currently active table
 		sortableTable.currentTable = this;
 
-		if (columnfilter.indexOf(col) == -1) {
-			columnfilter.push(col);
+		if (columnfilter[colname] == null) {
+			columnfilter[colname] = tbl.tblhead[colname];
 		} else {
-			columnfilter.splice(columnfilter.indexOf(col),1);
+			columnfilter[colname] = null;
 		}
 
-		localStorage.setrow(tableid+"_filtercolnames", JSON.stringify(columnfilter));
+		localStorage.setItem(tableid+"_filtercolnames", JSON.stringify(columnfilter));
 
 		this.reRender();
 	}
