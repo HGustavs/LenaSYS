@@ -135,11 +135,11 @@ function keyDownHandler(e){
         //Ctrl + v
         //Display cloned objects except lines
         var connectedClones = [];
-        for(var i = 0; i < cloneTempArray; i++){
+        for(var i = 0; i < cloneTempArray.length; i++){
             cloneTempArray[i].targeted = false;
         }
-        for(var i = 0; i < cloneTempArray; i++){
-            connectedClones = copySymbol(cloneTempArray);
+        for(var i = 0; i < cloneTempArray.length; i++){
+            connectedClones = copySymbol(cloneTempArray[i]);
         }
         fixConnections(connectedClones);
     }
@@ -268,7 +268,7 @@ function fixConnections(clones){
 
 //Clone an object
 function copySymbol(symbol){
-    var clone = Object.assign({}, symbol[i]);
+    var clone = Object.assign({}, symbol);
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
     var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
     var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
