@@ -3964,9 +3964,10 @@ li:nth-last-child(10) a:hover {
 }
 
 textarea#filecont{
-  width: 96%;
+  width: 91%;
   height: 100%;
   display: block;
+  padding: 10px
 }
 
 @media only screen and (max-height: 800px) and (max-width: 1400px) {
@@ -3982,31 +3983,4 @@ textarea#filecont{
   .optionButtons {
     top: 436px;
   }
-}
-
-/* Import diagram */
-
-.importDiagram {
-  height: auto !important;
-  margin-top: 0 !important;
-  display: none;
-}
-
-.importDiagram .importWrap {
-  padding: 20px;
-}
-
-.importDiagram .importError {
-  margin-top: 10px;
-  color: red;
-  display: none;
-}
-
-.importDiagram .importButtonWrap {
-  margin-top: 10px;
-}
-
-.importDiagram .uploadButton {
-  width: auto;
-  padding: 0 15px;
 }
