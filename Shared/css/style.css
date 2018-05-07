@@ -3121,6 +3121,9 @@ only screen and (max-device-width: 650px) {
     #searchBar {
         margin-left: 15px;
     }
+    #searchinput{
+        width:170px;
+    }
   table.navheader td.access {
     margin-right: 0px;
     width: 0px;
