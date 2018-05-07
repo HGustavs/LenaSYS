@@ -1861,7 +1861,7 @@ $(document).mouseup(function (e) {
 
 $(document).scroll(function(e){
 	localStorage.setItem("scrollPosition", $(window).scrollTop());
-})
+});
 
 // Function that scrolls the page to the bottom
 function scrollToBottom() {
