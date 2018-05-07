@@ -98,7 +98,7 @@ $migrationArray = array(
             ['column', 'quiz', 'modified', 'timestamp', 'NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'],
             ['column', 'quiz', 'creator', 'int', ''],
             ['column', 'quiz', 'vers', 'varchar(8)', ''],
-            ['column', 'quiz', 'qstart', 'datetime', ''],
+            ['column', 'quiz', 'qstart', 'date', 'NULL DEFAULT NULL'],
 
             ['create', 'variant', 'vid', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT', 'PRIMARY KEY(vid)'],
             ['column', 'variant', 'quizID', 'int', '', 'FOREIGN KEY (quizID) REFERENCES quiz (id) ON DELETE CASCADE ON UPDATE CASCADE'],
@@ -2149,13 +2149,6 @@ $migrationArray = array(
         'description' => 'New user named roger',
         [
             ['insert', 'user', 'values' => ['username' =>  'Roger', 'firstname' => 'Roger', 'lastname' =>  'Rogersson','superuser' => 1, 'creator' => 1, 'password' => '$2y$10$u886VEwTO/ohXer5b6zI7.1kUhVF0LMxHmibvz0mShL6dYKi4vZhe']]
-        ],
-    ],
-    [
-        'version' => 'v0.04',
-        'description' => 'Update qstart',
-        [
-            ['column', 'quiz', 'qstart', 'datetime', ''],
         ],
     ],
 );

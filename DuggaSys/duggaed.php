@@ -114,7 +114,6 @@ pdoConnect();
         <div id='editVariantDiv' style="display:flex;">
           <input type='hidden' id='vid' value='Toddler'/>
             <div id="leftDivDialog" style="width: 50%; height:100%; display: inline-block;">
-              <form id="jsonForm" name="jsonForm">
                 <div id="submissionError" style="display:none;height:80px;">
                   <fieldset style="width:90%;border-color:red;">
                     <legend style="color:red"><b>Warning!</b></legend>
@@ -156,7 +155,6 @@ pdoConnect();
                 </div>
                   <!-- Submissions for dugga -->
                 <!-- End of leftDivDialog -->
-              </form>
             </div>
             <div id="rightDivDialog" style="width: 50%; height:100%; display: inline-block;">
               <fieldset style="width:90%">

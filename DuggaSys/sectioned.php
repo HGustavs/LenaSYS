@@ -72,6 +72,9 @@
 				<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
 				<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
 				<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
+				<div id='inputwrapper-numberOfGroups' class='inputwrapper'><span>Number of Groups:</span><select id='numberOfGroups'></select></div>
+				<div id='inputwrapper-groupType' class='inputwrapper'><span>Group Type:</span><select id='groupType'></select></div>
+
 			</div>
 
 			<!-- Error message, no duggas present-->
@@ -103,22 +106,22 @@
 	</div>
 	<!-- Confirm Edit Section Dialog END -->
 
-	<!-- Confirm Missing Material Dialog START -->
-	<div id='noMaterialConfirmBox' class='loginBoxContainer' style='display:none;'>
+	<!-- Confirm No Tests Dialog START -->
+	<div id='noTestsConfirmBox' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:460px;'>
 			  <div class='loginBoxheader'>
-					<h3>Error: Missing material</h3>
+					<h3>Confirm</h3>
 					<div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
 			  </div>
 			  <div style='text-align: center;'>
-					<h4 id="noMaterialText"></h4>
+					<h4>Create a Dugga before you can use it for a test.</h4>
 			  </div>
 			  <div style='display:flex; align-items:center; justify-content: center;'>
 					<input style='margin-right: 5%;' class='submit-button' type='button' value='OK' title='OK' onclick='confirmBox("closeConfirmBox");'/>
 			  </div>
 		</div>
 	</div>
-	<!-- Confirm Missing Material Dialog END -->
+	<!-- Confirm No Tests Dialog END -->
 
 	<!-- New Version Dialog START -->
 	<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>

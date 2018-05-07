@@ -50,9 +50,11 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php",
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
+
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
+
 	if(strcmp($opt,"ADDUGGA")===0){
-		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart) VALUES (:cid,:autograde,:gradesystem,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart)";
+		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers) VALUES (:cid,:autograde,:gradesystem,:qname,:template,:release,:deadline,:uid,:coursevers)";
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':cid', $cid);
 		$stmt->bindParam(':uid', $userid);
@@ -61,18 +63,15 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		$stmt->bindParam(':gradesystem', $gradesys);
 		$stmt->bindParam(':qname', $name);
 		$stmt->bindParam(':template', $template);
-
-		if ($deadline == "UNK") $deadline = null;
-		if ($qstart == "UNK") $qstart = null;
-		if ($release == "UNK") $release = null;
-
 		$stmt->bindParam(':release', $release);
 		$stmt->bindParam(':deadline', $deadline);
-		$stmt->bindParam(':qstart', $qstart);
-	
-		if (!$stmt->execute()) {
-			$debug=$stmt->errorInfo()[2];
-		} 
+
+		try{
+			$stmt->execute();
+		}catch (PDOException $e){
+						// Error handling to $debug
+		}
+
 	}else if(strcmp($opt,"ADDVARI")===0){
 		$querystring="INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (:qid,:uid,:disabled,:param,:variantanswer)";
 		$stmt = $pdo->prepare($querystring);
@@ -113,18 +112,18 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		$query->bindParam(':gradesys', $gradesys);
 		$query->bindParam(':template', $template);
 
-		if($qstart=="UNK") $query->bindValue(':qstart', null, PDO::PARAM_INT);
+		if($qstart=="null") $query->bindValue(':qstart', null,PDO::PARAM_INT);
 		else $query->bindParam(':qstart', $qstart);
 
-		if($deadline=="UNK") $query->bindValue(':deadline', null, PDO::PARAM_INT);
+		if($deadline=="null") $query->bindValue(':deadline', null,PDO::PARAM_INT);
 		else $query->bindParam(':deadline', $deadline);
 
-        if($release=="UNK") $query->bindValue(':release', null, PDO::PARAM_INT);
+        if($release=="null") $query->bindValue(':release', null,PDO::PARAM_INT);
 		else $query->bindParam(':release', $release);
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error updating dugga ".$error[2];
+			$debug="Error updating user".$error[2];
 		}
 	}else if(strcmp($opt,"UPDATEAUTO")===0){
 			$query = $pdo->prepare("UPDATE quiz SET autograde=:autograde WHERE id=:qid;");

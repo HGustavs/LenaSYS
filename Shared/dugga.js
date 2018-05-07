@@ -427,13 +427,13 @@ function AJAXService(opt,apara,kind)
 			success: returnedanswersDugga
 		});
 	}else if(kind=="DUGGA"){
-		$.ajax({
-			url: "duggaedservice.php",
-			type: "POST",
-			data: "opt="+opt+para,
-			dataType: "json",
-			success: returnedDugga
-		});
+			$.ajax({
+				url: "duggaedservice.php",
+				type: "POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: returnedDugga
+			});
 	}else if(kind=="BDUGGA"){
 			$.ajax({
 				url: "duggaedservice.php",
