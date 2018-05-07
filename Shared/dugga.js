@@ -120,6 +120,9 @@ function setExpireCookieLogOut() {
     }
 }
 //----------------------------------------------------------------------------------
+
+
+
 function closeWindows(){
 	var index_highest = 0;
 	var e;
@@ -131,6 +134,9 @@ function closeWindows(){
 	    if(index_current > index_highest && this.style.display == "block"||index_current > index_highest && this.style.display == "flex") {
 	        index_highest = index_current;
 					e=this;
+          status = 1;
+          showing = 0;
+          toggleloginnewpass();
 	    }
 	});
 
@@ -578,7 +584,7 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedQuiz
 		})
-	} 
+	}
 }
 
 //Will handle enter key pressed when loginbox is showing
