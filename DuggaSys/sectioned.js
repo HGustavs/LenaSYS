@@ -1515,6 +1515,7 @@ function returnedSection(data) {
 	toggleArrows();
 	menuState.idCounter = 0;
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
+	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 }
 
 function showHighscore(did, lid) {
@@ -1851,9 +1852,11 @@ $(document).mouseup(function (e) {
 		closeSelect();
 		showSaveButton();
 	}
-
 });
 
+$(document).scroll(function(e){
+	localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
+});
 
 // Function that scrolls the page to the bottom
 function scrollToBottom() {
