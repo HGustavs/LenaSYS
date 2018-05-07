@@ -2665,7 +2665,6 @@ table {
 /*end, styling for contribution.php*/
 #sortingBar {
     width: 50%;
-    position: absolute;
     margin-top: 5px;
 }
 
