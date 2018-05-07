@@ -87,7 +87,7 @@ function returnedFile(data) {
 	fileLink.renderTable();
 	if(querystring['confirmation'] != undefined) {
         $(".confirmationWindow").css("display", "block");
-        document.getElementById('editedFile').innerHTML = querystring['confirmation'] + " was successfully saved!";
+        document.getElementById('editedFile').innerHTML = querystring['confirmation'] + " has been successfully saved!";
 	}
 	if(!data['access']) {
         document.getElementById("fabButton").style.display = "none";
