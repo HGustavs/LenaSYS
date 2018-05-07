@@ -23,12 +23,12 @@ pdoConnect();
     <script src="../Shared/markdown.js"></script>
 </head>
 <body>
-<?php
-$noup = "SECTION";
-include '../Shared/navheader.php';
-?>
     <?php
-    include '../Shared/loginbox.php';
+        $noup = "SECTION";
+        include '../Shared/navheader.php';
+    ?>
+    <?php
+        include '../Shared/loginbox.php';
     ?>
 	<!-- content START -->
 	<div id="content">
