@@ -352,27 +352,6 @@ if($cvisibility){
 				);
 		}
 	}
-
-	if ($userid != "guest") {
-		$query = $pdo->prepare("SELECT usergroup.name, usergroup.ugid, usergroup.lid FROM usergroup, user_usergroup WHERE usergroup.ugid = user_usergroup.ugid AND user_usergroup.uid = :uid");
-		$query->bindParam(':uid', $userid);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error reading groups".$error[2];
-		}
-
-		foreach($query->fetchAll() as $row) {
-			foreach ($entries as $key => $val) {
-				if ($val['lid'] === $row['lid']) {
-					$entries[$key]['group'] = array(
-						'name' => $row['name'],
-						'ugid' => $row['ugid']
-					);
-				}
-			}
-		}
-	}
 }
 
 $query = $pdo->prepare("SELECT coursename, coursecode FROM course WHERE cid=:cid LIMIT 1");
