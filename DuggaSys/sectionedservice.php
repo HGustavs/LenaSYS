@@ -68,24 +68,24 @@ if(checklogin()){
 
 	$ha = $haswrite || $isSuperUserVar;
 
-	if($ha){
+	if($ha) {
 		// The code for modification using sessions
-		if(strcmp($opt,"DEL")===0){
+		if(strcmp($opt,"DEL")===0) {
 			$query = $pdo->prepare("DELETE FROM listentries WHERE lid=:lid");
 			$query->bindParam(':lid', $sectid);
 
 			if(!$query->execute()) {
-				$debug=
-					"The item could not be deleted. See information below:"
-					."\n\nSQLSTATE error code: ".$query->errorInfo()[0]
-					."\n\nDriver-specific error code: ".$query->errorInfo()[1]
-					."\n\nDriver-specific error message: \n"
-					.$query->errorInfo()[2];
+				if($query->errorInfo()[0] == 23000) {
+					$debug = "The item could not be deleted because of a foreign key constraint.";
+				} else {
+					$debug = "The item could not be deleted.";
+				}
 			}
-		}else if(strcmp($opt,"NEW")===0){
+
+		} else if(strcmp($opt,"NEW")===0) {
 
 			// Insert a new code example and update variables accordingly.
-			if($link==-1){
+			if($link==-1) {
 
 					$query2 = $pdo->prepare("INSERT INTO codeexample(cid,examplename,sectionname,uid,cversion) values (:cid,:ename,:sname,1,:cversion);");
 
@@ -119,10 +119,10 @@ if(checklogin()){
 				$debug="Error updating entries".$error[2];
 			}
 
-    }else if(strcmp($opt,"REORDER")===0){
+    	} else if(strcmp($opt,"REORDER")===0) {
 			$orderarr=explode(",",$order);
 
-			foreach ($orderarr as $key => $value){
+			foreach ($orderarr as $key => $value) {
 				$armin=explode("XX",$value);
 				$query = $pdo->prepare("UPDATE listentries set pos=:pos,moment=:moment WHERE lid=:lid;");
 				$query->bindParam(':lid', $armin[1]);
@@ -134,10 +134,10 @@ if(checklogin()){
 					$debug="Error updating entries".$error[2];
 				}
 			}
-		}else if(strcmp($opt,"UPDATE")===0){
+		} else if(strcmp($opt,"UPDATE")===0) {
 
 			// Insert a new code example and update variables accordingly.
-			if($link==-1){
+			if($link==-1) {
 
 					// Find section name - Last preceding section name if none - assigns UNK - so we know that nothing was found
 					// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link
@@ -200,23 +200,23 @@ if(checklogin()){
 					$debug="Error updating entries".$error[2];
 				}
 			}
-		}else if(strcmp($opt,"UPDATEVRS")===0){
+		} else if(strcmp($opt,"UPDATEVRS")===0) {
 			$query = $pdo->prepare("UPDATE vers SET versname=:versname,startdate=:startdate,enddate=:enddate WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursecode', $coursecode);
 			$query->bindParam(':vers', $versid);
 			$query->bindParam(':versname', $versname);
-// if start and end dates are null, insert mysql null value into database
-     if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
-     else $query->bindParam(':startdate', $startdate);
-     if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
-     else $query->bindParam(':enddate', $enddate);
+			// if start and end dates are null, insert mysql null value into database
+			if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
+			else $query->bindParam(':startdate', $startdate);
+			if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
+			else $query->bindParam(':enddate', $enddate);
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
-		}else if(strcmp($opt,"CHGVERS")===0){
+		} else if(strcmp($opt,"CHGVERS")===0) {
 			$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':vers', $versid);
