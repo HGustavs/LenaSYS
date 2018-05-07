@@ -133,10 +133,15 @@ function keyDownHandler(e){
 
     } else if(ctrlIsClicked && key == 86 ){
         //Ctrl + v
-        for(var i = 0; i < cloneTempArray.length; i++){
-            //Display cloned objects except lines
-            copySymbol(cloneTempArray[i]);
+        //Display cloned objects except lines
+        var connectedClones = [];
+        for(var i = 0; i < cloneTempArray; i++){
+            cloneTempArray[i].targeted = false;
         }
+        for(var i = 0; i < cloneTempArray; i++){
+            connectedClones = copySymbol(cloneTempArray);
+        }
+        fixConnections(connectedClones);
     }
 
     else if (key == 90 && ctrlIsClicked) undoDiagram();
@@ -219,9 +224,52 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
     return this.length - 1;
 }
 
+function fixConnections(clones){
+    var lineArr = diagram.getLineObjects();
+    for(var i = 0; i < lineArr.length; i++){
+        if(!lineArr[i].targeted) continue;
+
+        for(var j = 0; j < clones.length; j++){
+            if(clones[j].connectorTop.length > 0){
+                if(clones[j].connectorTop[0].from == lineArr[i].bottomRight){
+                    clones[j].connectorTop[0].from = lineArr[i].bottomRight;
+                }
+                if(clones[j].connectorTop[0].to == lineArr[i].topLeft){
+                    clones[j].connectorTop[0].to = lineArr[i].topLeft;
+                }
+            }
+            if(clones[j].connectorBottom.length > 0){
+                if(clones[j].connectorBottom[0].from == diagram[i].bottomRight){
+                    clones[j].connectorBottom[0].from = lineArr[i].bottomRight;
+                }
+                if(clones[j].connectorBottom[0].to == diagram[i].bottomRight){
+                    clones[j].connectorBottom[0].from = lineArr[i].bottomRight;
+                }
+            }
+            if(clones[j].connectorLeft.length > 0){
+                if(clones[j].connectorLeft[0].from == diagram[i].bottomRight){
+                    clones[j].connectorLeft[0].from = lineArr[i].bottomRight;
+                }
+                if(clones[j].connectorLeft[0].to == diagram[i].bottomRight){
+                    clones[j].connectorLeft[0].from = lineArr[i].bottomRight;
+                }
+            }
+            if(clones[j].connectorRight.length > 0){
+                if(clone.connectorRight[0].from == diagram[i].bottomRight){
+                    clones[j].connectorRight[0].from = lineArr[i].bottomRight;
+                }
+                if(clones[j].connectorRight[0].to == diagram[i].bottomRight){
+                    clones[j].connectorRight[0].from = lineArr[i].bottomRight;
+                }
+            }
+        }
+    }
+}
+
 //Clone an object
 function copySymbol(symbol){
-    var clone = Object.assign({}, symbol);
+    var clonesWithConnections = [];
+    var clone = Object.assign({}, symbol[i]);
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
     var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
     var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
@@ -237,38 +285,23 @@ function copySymbol(symbol){
     }else{
         clone.name = "Relation" + diagram.length;
     }
-    clone.topLeft = points.push(topLeftClone) - 1;
-    clone.bottomRight = points.push(bottomRightClone) - 1;
-    clone.centerPoint = points.push(centerPointClone) - 1;
-    clone.object_type = "";
-    clone.fontColor = "#000";
-    clone.font = "Arial";
 
-    if(clone.symbolkind == 4){
-        var timesChanged;
-        for(var i = 0; i < diagram.length; i++){
-            if(timesChanged == 2) break;
-            if(diagram[i].connectorRight[0].from == clone.topLeft){
-                diagram[i].connectorRight[0].from = clone.topLeft;
-                diagram[i].connectorRight[0].to = clone.bottomRight;
-                timesChanged++;
-            }
-            else if(diagram[i].connectorRight[0].to == clone.topLeft){
-                diagram[i].connectorRight[0].from = clone.bottomRight;
-                diagram[i].connectorRight[0].to = clone.topLeft;
-                timesChanged++;
-            }
+    if(clone.connectorTop.length > 0 || clone.connectorBottom.length > 0
+        || clone.connectorLeft.length > 0 || clone.connectorRight.length > 0){
+            clonesWithConnections.push(clone);
         }
+
+        if(clone.symbolkind != 4){
+            clone.topLeft = points.push(topLeftClone) - 1;
+            clone.bottomRight = points.push(bottomRightClone) - 1;
+            clone.centerPoint = points.push(centerPointClone) - 1;
+        }
+        clone.object_type = "";
+        clone.targeted = true;
+
+        diagram.push(clone);
+
     }
-
-    clone.targeted = true;
-    symbol.targeted = false;
-
-    diagram.push(clone);
-
-    return diagram.length;
-
-}
 
 //--------------------------------------------------------------------
 // drawPoints - Draws each of the points as a cross
