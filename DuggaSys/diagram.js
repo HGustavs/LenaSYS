@@ -228,13 +228,13 @@ function fixConnections(clones){
     var lineArr = diagram.getLineObjects();
     for(var i = 0; i < lineArr.length; i++){
         if(!lineArr[i].targeted) continue;
-        var topLeftClone = Object.assign({}, points[symbol.topLeft]);
-        var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
-        var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
+        var topLeftClone = Object.assign({}, points[lineArr[i].topLeft]);
+        var bottomRightClone = Object.assign({}, points[lineArr[i].bottomRight]);
+        var centerPointClone = Object.assign({}, points[lineArr[i].centerPoint]);
 
-        clone.topLeft = points.push(topLeftClone) - 1;
-        clone.bottomRight = points.push(bottomRightClone) - 1;
-        clone.centerPoint = points.push(centerPointClone) - 1;
+        lineArr[i].topLeft = points.push(topLeftClone) - 1;
+        lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
+        lineArr[i].centerPoint = points.push(centerPointClone) - 1;
         for(var j = 0; j < clones.length; j++){
             if(clones[j].connectorTop.length > 0){
                 if(clones[j].connectorTop[0].from == lineArr[i].bottomRight){
