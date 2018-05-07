@@ -242,28 +242,28 @@ function fixConnections(clones){
                 if(clones[j].connectorTop[0].from == tempBottomRight){
                     clones[j].connectorTop[0].from = lineArr[i].bottomRight;
                 }
-                else if(clones[j].connectorTop[0].to == tempBottomRight){
-                    clones[j].connectorTop[0].to = lineArr[i].bottomRight;
-                }
-                if(clones[j].connectorTop[0].from == tempTopLeft){
-                    clones[j].connectorTop[0].from = lineArr[i].topLeft;
-                }
                 else if(clones[j].connectorTop[0].from == tempTopLeft){
                     clones[j].connectorTop[0].from = lineArr[i].topLeft;
+                }
+                if(clones[j].connectorTop[0].to == tempBottomRight){
+                    clones[j].connectorTop[0].to = lineArr[i].bottomRight;
+                }
+                else if(clones[j].connectorTop[0].to == tempTopLeft){
+                    clones[j].connectorTop[0].to = lineArr[i].topLeft;
                 }
             }
             else if(clones[j].connectorBottom.length > 0){
                 if(clones[j].connectorBottom[0].from == tempBottomRight){
                     clones[j].connectorBottom[0].from = lineArr[i].bottomRight;
                 }
-                else if(clones[j].connectorBottom[0].to == tempBottomRight){
-                    clones[j].connectorBottom[0].to = lineArr[i].bottomRight;
-                }
-                if(clones[j].connectorBottom[0].from == tempTopLeft){
-                    clones[j].connectorBottom[0].from = lineArr[i].topLeft;
-                }
                 else if(clones[j].connectorBottom[0].from == tempTopLeft){
                     clones[j].connectorBottom[0].from = lineArr[i].topLeft;
+                }
+                if(clones[j].connectorBottom[0].to == tempBottomRight){
+                    clones[j].connectorBottom[0].to = lineArr[i].bottomRight;
+                }
+                else if(clones[j].connectorBottom[0].to == tempTopLeft){
+                    clones[j].connectorBottom[0].to = lineArr[i].topLeft;
                 }
             }
             else if(clones[j].connectorLeft.length > 0){
@@ -276,8 +276,8 @@ function fixConnections(clones){
                 if(clones[j].connectorLeft[0].from == tempTopLeft){
                     clones[j].connectorLeft[0].from = lineArr[i].topLeft;
                 }
-                else if(clones[j].connectorLeft[0].from == tempTopLeft){
-                    clones[j].connectorLeft[0].from = lineArr[i].topLeft;
+                else if(clones[j].connectorLeft[0].to == tempTopLeft){
+                    clones[j].connectorLeft[0].to = lineArr[i].topLeft;
                 }
             }
             else if(clones[j].connectorRight.length > 0){
@@ -290,8 +290,8 @@ function fixConnections(clones){
                 if(clones[j].connectorRight[0].from == tempTopLeft){
                     clones[j].connectorRight[0].from = lineArr[i].topLeft;
                 }
-                else if(clones[j].connectorRight[0].from == tempTopLeft){
-                    clones[j].connectorRight[0].from = lineArr[i].topLeft;
+                else if(clones[j].connectorRight[0].to == tempTopLeft){
+                    clones[j].connectorRight[0].to = lineArr[i].topLeft;
                 }
             }
 
@@ -322,7 +322,6 @@ function copySymbol(symbol){
     if(clone.connectorTop.length > 0 || clone.connectorBottom.length > 0
         || clone.connectorLeft.length > 0 || clone.connectorRight.length > 0){
             connectedClones.push(clone);
-            //Fixconnections?
         }
 
         if(clone.symbolkind != 4){
