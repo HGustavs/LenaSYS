@@ -228,7 +228,13 @@ function fixConnections(clones){
     var lineArr = diagram.getLineObjects();
     for(var i = 0; i < lineArr.length; i++){
         if(!lineArr[i].targeted) continue;
+        var topLeftClone = Object.assign({}, points[symbol.topLeft]);
+        var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
+        var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
 
+        clone.topLeft = points.push(topLeftClone) - 1;
+        clone.bottomRight = points.push(bottomRightClone) - 1;
+        clone.centerPoint = points.push(centerPointClone) - 1;
         for(var j = 0; j < clones.length; j++){
             if(clones[j].connectorTop.length > 0){
                 if(clones[j].connectorTop[0].from == lineArr[i].bottomRight){
@@ -255,7 +261,7 @@ function fixConnections(clones){
                 }
             }
             if(clones[j].connectorRight.length > 0){
-                if(clone.connectorRight[0].from == diagram[i].bottomRight){
+                if(clones[j].connectorRight[0].from == diagram[i].bottomRight){
                     clones[j].connectorRight[0].from = lineArr[i].bottomRight;
                 }
                 if(clones[j].connectorRight[0].to == diagram[i].bottomRight){
