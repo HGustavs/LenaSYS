@@ -2668,11 +2668,6 @@ table {
   position: relative;
   top: 28px;
 }
-.sortingBarMobile {
-  width: 135px;
-  position: relative;
-  top: 28px;
-}
 .sortingBtn {
   display: inline-block;
   margin-left: 10px;
@@ -3118,6 +3113,11 @@ only screen and (max-device-width: 768px) {
 
 @media only screen and (max-width: 650px),
 only screen and (max-device-width: 650px) {
+    .sortingBar {
+        width: 135px;
+        position: relative;
+        top: 28px;
+    }
   table.navheader td.access {
     margin-right: 0px;
     width: 0px;
