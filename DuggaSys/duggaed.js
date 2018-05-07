@@ -447,6 +447,42 @@ function markSelectedVariant(el) {
 	activeTableRow.style.backgroundColor = '#fbcd47';
 }
 
+/*
+	Change the styling of variantsTable. The variants list will be scrollable, and its
+	size will change depending on the size of the login box, where it is placed.
+*/
+function variantsTableStyling() {
+	var loginBox = findAncestor(document.getElementById('variant'), 'loginBox', 'className');
+	var loginBoxHeader = null;
+
+	var loginBoxHeight = null;
+	var loginBoxHeaderHeight = null;
+	var editVariantHeight = null;
+	var remainingSpace = null;
+	
+	// Find the header of the login box
+	for(var i = 0; i < loginBox.children.length; i++) {
+		if($(loginBox.children[i]).hasClass('loginBoxheader')) {
+			loginBoxHeader = loginBox.children[i];
+			break;
+		}
+	}
+
+	loginBoxHeight = $(loginBox).outerHeight();
+	loginBoxHeaderHeight = $(loginBoxHeader).outerHeight();
+	editVariantHeight = $("#editVariantDiv").outerHeight();
+
+	// Remaining space for the scrollable variants list
+	remainingSpace = loginBoxHeight - (loginBoxHeaderHeight + editVariantHeight + 60);
+
+	if(remainingSpace > 100) {
+		document.getElementById('variant').style.maxHeight = remainingSpace + 'px';
+	} else {
+		document.getElementById('variant').style.minHeight = '100px';
+		document.getElementById('variant').style.maxHeight = '100px';
+	}
+}
+
 // VARIANT FUNCTIONS end
 
 // Displaying and hidding the dynamic comfirmbox for deleting-items in duggaED
@@ -475,12 +511,11 @@ function returnedQuiz(data) {
 
 	var did = $('#did').val();
 	quiz['entries'].forEach(function (element) {
-		if (element['arrow'] == did) {
+		if (element['did'] == did) {
 			quiz = element;
 		}
 	});
-
-	$("#did").val(quiz['arrow']);
+	$("#did").val(quiz['did']);
 	$("#name").val(quiz['qname']);
 	$("#autograde").val(quiz['autograde']);
 	$("#gradesys").val(quiz['gradesystem']);
@@ -625,12 +660,11 @@ function variantsTableStyling() {
 		document.getElementById('variant').style.maxHeight = '100px';
 	}
 }
-
 // Rendring specific cells
 function renderCell(col, celldata, cellid) {
 
 	// DUGGA-TABLE cellstarts
-	// Numbering the table.
+	// Numbering the duggatable.
 	if (col == "did") {
 		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
 	}
@@ -688,7 +722,7 @@ function renderCell(col, celldata, cellid) {
 	// DUGGA-TABLE cellend
 
 	// VARIANT-TABLE cellstart
-	// Placing a clickable arrow in its designated column for previewing the variant.
+	// Numbering the varianttable.
 	else if (col == "vid") {
 		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
 	}
@@ -712,7 +746,7 @@ function renderCell(col, celldata, cellid) {
 
 	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "arrowVariant") {
-		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
+		str = "<img id='dorf' src='../Shared/icons/PlayT.svg' ";
 		str += " onclick='getVariantPreview();'>";
 		return str;
 	}
