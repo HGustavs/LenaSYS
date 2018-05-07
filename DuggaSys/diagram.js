@@ -313,6 +313,11 @@ function copySymbol(symbol){
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
     var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
     var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
+    var cloneConnTop = Object.assign({}, symbol.connectorTop);
+    var cloneConnBottom = Object.assign({}, symbol.connectorBottom);
+    var cloneConnLeft = Object.assign({}, symbol.connectorLeft);
+    var cloneConnRight = Object.assign({}, symbol.connectorRight);
+
 
     if(symbol.symbolkind == 1){
         clone.name = "New" + diagram.length;
@@ -329,13 +334,17 @@ function copySymbol(symbol){
     if(clone.connectorTop.length > 0 || clone.connectorBottom.length > 0
         || clone.connectorLeft.length > 0 || clone.connectorRight.length > 0){
             connectedClones.push(clone);
-        }
-
-        if(clone.symbolkind != 4){
-            clone.topLeft = points.push(topLeftClone) - 1;
-            clone.bottomRight = points.push(bottomRightClone) - 1;
-            clone.centerPoint = points.push(centerPointClone) - 1;
-        }
+    }
+    clone.connectorTop = cloneConnTop;
+    clone.connectorBottom = cloneConnBottom;
+    clone.connectorLeft = cloneConnLeft;
+    clone.connectorRight = cloneConnRight;
+    }
+    if(clone.symbolkind != 4){
+        clone.topLeft = points.push(topLeftClone) - 1;
+        clone.bottomRight = points.push(bottomRightClone) - 1;
+        clone.centerPoint = points.push(centerPointClone) - 1;
+    }
         clone.object_type = "";
         clone.targeted = true;
 
