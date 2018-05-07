@@ -2159,6 +2159,14 @@ $migrationArray = array(
         ],
     ],
     [
+      'version' => 'v0.05',
+      'description' => 'Remove old group tables',
+      [
+          ['sql', 'DROP TABLE usergroup'],
+          ['sql', 'DROP TABLE user_usergroup'],
+      ],
+    ],
+    [
         'version' => 'v0.06',
         'description' => 'New table for group and M-M between Group and User',
         [
@@ -2238,6 +2246,17 @@ if (isSuperUser($userid) && strcmp($version, "UNK")) {
                                 'message' => queryExecute($query),
                             );
                         }
+                    } else if ($type == 'sql') {
+                        queryExecute("SET FOREIGN_KEY_CHECKS = 0");
+                        $query = stripslashes($col[0]);
+
+                        $message[] = array(
+                            'id' => $iterator,
+                            'info' => "Pure SQL $query - ",
+                            'message' => queryExecute($query),
+                        );
+
+                        queryExecute("SET FOREIGN_KEY_CHECKS = 1");
                     }
                     $iterator++;
                 }
