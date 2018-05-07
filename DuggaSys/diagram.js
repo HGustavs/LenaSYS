@@ -238,7 +238,15 @@ function fixConnections(clones){
                     lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
                     clones[j].connectorTop[0].from = lineArr[i].bottomRight;
                 }
+                else if(clones[j].connectorTop[0].from == lineArr[i].bottomRight){
+                    lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
+                    clones[j].connectorTop[0].from = lineArr[i].bottomRight;
+                }
                 if(clones[j].connectorTop[0].to == lineArr[i].topLeft){
+                    lineArr[i].topLeft = points.push(topLeftClone) - 1;
+                    clones[j].connectorTop[0].to = lineArr[i].topLeft;
+                }
+                else if(clones[j].connectorTop[0].to == lineArr[i].topLeft){
                     lineArr[i].topLeft = points.push(topLeftClone) - 1;
                     clones[j].connectorTop[0].to = lineArr[i].topLeft;
                 }
@@ -248,7 +256,15 @@ function fixConnections(clones){
                     lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
                     clones[j].connectorBottom[0].from = lineArr[i].bottomRight;
                 }
+                else if(clones[j].connectorBottom[0].from == lineArr[i].bottomRight){
+                    lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
+                    clones[j].connectorBottom[0].from = lineArr[i].bottomRight;
+                }
                 if(clones[j].connectorBottom[0].to == lineArr[i].topLeft){
+                    lineArr[i].topLeft = points.push(topLeftClone) - 1;
+                    clones[j].connectorBottom[0].to = lineArr[i].topLeft;
+                }
+                else if(clones[j].connectorBottom[0].to == lineArr[i].topLeft){
                     lineArr[i].topLeft = points.push(topLeftClone) - 1;
                     clones[j].connectorBottom[0].to = lineArr[i].topLeft;
                 }
@@ -256,9 +272,17 @@ function fixConnections(clones){
             else if(clones[j].connectorRight.length > 0){
                 if(clones[j].connectorRight[0].from == lineArr[i].bottomRight){
                     lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
+                    clones[j].connectorLeft[0].from = lineArr[i].bottomRight;
+                }
+                else if(clones[j].connectorRight[0].from == lineArr[i].bottomRight){
+                    lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
                     clones[j].connectorRight[0].from = lineArr[i].bottomRight;
                 }
                 if(clones[j].connectorRight[0].to == lineArr[i].topLeft){
+                    lineArr[i].topLeft = points.push(topLeftClone) - 1;
+                    clones[j].connectorRight[0].to = lineArr[i].topLeft;
+                }
+                else if(clones[j].connectorRight[0].to == lineArr[i].topLeft){
                     lineArr[i].topLeft = points.push(topLeftClone) - 1;
                     clones[j].connectorRight[0].to = lineArr[i].topLeft;
                 }
@@ -268,7 +292,15 @@ function fixConnections(clones){
                     lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
                     clones[j].connectorLeft[0].from = lineArr[i].bottomRight;
                 }
+                else if(clones[j].connectorLeft[0].from == lineArr[i].bottomRight){
+                    lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
+                    clones[j].connectorLeft[0].from = lineArr[i].bottomRight;
+                }
                 if(clones[j].connectorLeft[0].to == lineArr[i].topLeft){
+                    lineArr[i].topLeft = points.push(topLeftClone) - 1;
+                    clones[j].connectorLeft[0].to = lineArr[i].topLeft;
+                }
+                else if(clones[j].connectorLeft[0].to == lineArr[i].topLeft){
                     lineArr[i].topLeft = points.push(topLeftClone) - 1;
                     clones[j].connectorLeft[0].to = lineArr[i].topLeft;
                 }
