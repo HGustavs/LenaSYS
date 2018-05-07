@@ -100,8 +100,11 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.quadrants = function () {
         // Fix right connector box (1)
+        var changed = true;
+        var anyChanged = false;
         var i = 0;
         while (i < this.connectorRight.length) {
+            changed = true;
             var xk = points[this.connectorRight[i].to].x;
             var yk = points[this.connectorRight[i].to].y;
             var bb = this.getquadrant(xk, yk);
@@ -116,11 +119,14 @@ function Symbol(kind) {
                 this.connectorBottom.push(conn[0]);
             } else {
                 i++;
+                changed = false;
             }
         }
+        anyChanged = changed ? true : anyChanged;
         // Fix left connector box (3)
         var i = 0;
         while (i < this.connectorLeft.length) {
+            changed = true;
             var xk = points[this.connectorLeft[i].to].x;
             var yk = points[this.connectorLeft[i].to].y;
             var bb = this.getquadrant(xk, yk);
@@ -134,12 +140,15 @@ function Symbol(kind) {
                 conn = this.connectorLeft.splice(i, 1);
                 this.connectorBottom.push(conn[0]);
             } else {
+                changed = false;
                 i++;
             }
         }
+        anyChanged = changed ? true : anyChanged;
         // Fix top connector box (0)
         var i = 0;
         while (i < this.connectorTop.length) {
+            changed = true;
             var xk = points[this.connectorTop[i].to].x;
             var yk = points[this.connectorTop[i].to].y;
             var bb = this.getquadrant(xk, yk);
@@ -153,12 +162,15 @@ function Symbol(kind) {
                 conn = this.connectorTop.splice(i, 1);
                 this.connectorBottom.push(conn[0]);
             } else {
+                changed = false;
                 i++;
             }
         }
+        anyChanged = changed ? true : anyChanged;
         // Fix bottom connector box (2)
         var i = 0;
         while (i < this.connectorBottom.length) {
+            changed = true;
             var xk = points[this.connectorBottom[i].to].x;
             var yk = points[this.connectorBottom[i].to].y;
             var bb = this.getquadrant(xk, yk);
@@ -172,9 +184,12 @@ function Symbol(kind) {
                 conn = this.connectorBottom.splice(i, 1);
                 this.connectorTop.push(conn[0]);
             } else {
+                changed = false;
                 i++;
             }
         }
+        anyChanged = changed ? true : anyChanged;
+        return anyChanged;
     }
 
     //--------------------------------------------------------------------
