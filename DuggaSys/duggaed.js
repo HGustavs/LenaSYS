@@ -554,7 +554,7 @@ function returnedDugga(data) {
 		null,
 		"",
 		renderCell,
-		renderSortOptions,
+		renderSortOptionsDugga,
 		null,
 		null,
 		[],
@@ -605,7 +605,7 @@ function renderVariant(clickedElement) {
 		null,
 		"",
 		renderCell,
-		renderSortOptions,
+		renderSortOptionsVariant,
 		null,
 		null,
 		[],
@@ -738,20 +738,30 @@ function renderCell(col, celldata, cellid) {
 // END OF rendering cells
 // END OF rendering tables
 
-function renderSortOptions(col,status) {
+function renderSortOptionsDugga(col,status) {
 	str = "";
-
 	if(col == "headingAddButton"){
 		str += "<input type='button' value='+' style='float:left;' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga();'>";
 	}
 	else{
-	if (status ==- 1) {
-		str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
-	} else if (status == 0) {
-		str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
-	} else {
-		str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+		if (status ==- 1) {
+			str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+		} else if (status == 0) {
+			str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+		} else {
+			str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+		}
 	}
+	return str;
+}
+function renderSortOptionsVariant(col,status) {
+	str = "";
+	if (status ==- 1) {
+		str += "<span class='sortableHeading' onclick='variantsTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+	} else if (status == 0) {
+		str += "<span class='sortableHeading' onclick='variantsTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+	} else {
+		str += "<span class='sortableHeading' onclick='variantsTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 	}
 	return str;
 }
