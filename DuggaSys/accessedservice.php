@@ -26,6 +26,7 @@ $username = getOP('username');
 $addedtime = getOP('addedtime');
 $val = getOP('val');
 $newusers = getOP('newusers');
+$newclass = getOP('newclass');
 $coursevers = getOP('coursevers');
 $teacher = getOP('teacher');
 $vers = getOP('vers');
@@ -132,7 +133,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$error=$query->errorInfo();
 					$debug="Error updating user".$error[2];
 				}
-	}else if(strcmp($opt,"CLASS")==0){
+        }else if(strcmp($opt,"CLASS")==0){
 				$query = $pdo->prepare("UPDATE user set class=:val WHERE uid=:uid");
 				$query->bindParam(':uid', $uid);
 				$query->bindParam(':val', $val);
@@ -141,7 +142,36 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$error=$query->errorInfo();
 					$debug="Error updating user".$error[2];
 				}
-	}else if(strcmp($opt,"CHPWD")==0){
+        }else if(strcmp($opt,"ADDCLASS")==0){
+            $newClassData = json_decode(htmlspecialchars_decode($newclass));
+
+            foreach ($newClassData as $newClass) {
+                $class = $newClass[0];
+                $responsible = $newClass[1];
+                $classname = $newClass[2];
+                $regcode = $newClass[3];
+                $classcode = $newClass[4];
+                $hp = $newClass[5];
+                $tempo = $newClass[6];
+                $hpProgress = $newClass[7];
+            }
+            
+            $querystring='INSERT INTO class (class, responsible, classname, regcode, classcode, hp, tempo, hpProgress) VALUES(:class, :responsible, :classname, :regcode, :classcode, :hp, :tempo, :hpProgress);';
+            $stmt = $pdo->prepare($querystring);
+            $stmt->bindParam(':class', $class);
+            $stmt->bindParam(':responsible', $responsible);
+            $stmt->bindParam(':classname', $classname);
+            $stmt->bindParam(':regcode', $regcode);
+            $stmt->bindParam(':classcode', $classcode);
+            $stmt->bindParam(':hp', $hp);
+            $stmt->bindParam(':tempo', $tempo);
+            $stmt->bindParam(':hpProgress', $hpProgress);
+
+            // Insert the user into the database.
+            if(!$stmt->execute()) {
+                $debug = "Not able to create the specified class. Please give the parameters proper values.";
+            }
+        }else if(strcmp($opt,"CHPWD")==0){
 				$query = $pdo->prepare("UPDATE user set password=:pwd, requestedpasswordchange=0 where uid=:uid;");
 				$query->bindParam(':uid', $uid);
 				$query->bindParam(':pwd', standardPasswordHash($pw));
@@ -150,7 +180,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$error=$query->errorInfo();
 					$debug="Error updating user".$error[2];
 				}
-	}else if(strcmp($opt,"ADDUSR")==0){
+        }else if(strcmp($opt,"ADDUSR")==0){
 			$newUserData = json_decode(htmlspecialchars_decode($newusers));
 
 			foreach ($newUserData as $user) {
