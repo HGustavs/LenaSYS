@@ -511,8 +511,8 @@ function cancelEditFile() {
 }
 
 function saveMarkdown() {
-    $("#cidz").val(querystring['cid']);
-    $("#courseversz").val(querystring['coursevers']);
+    $("#cID").val(querystring['cid']);
+    $("#courseVers").val(querystring['coursevers']);
 }
 
 

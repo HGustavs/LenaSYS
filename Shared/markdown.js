@@ -420,8 +420,8 @@ function loadPreview(fileUrl, fileName, fileKind) {
     var fileContent = getFIleContents(fileUrl);
     document.getElementById("mrkdwntxt").value = fileContent;
     updatePreview(fileContent);
-    $("#filename").val(fileName);
-    $("#kindz").val(fileKind);
+    $("#fileName").val(fileName);
+    $("#fileKind").val(fileKind);
     //updatePreview(document.getElementById("mrkdwntxt").value = fileContent);
 }
 
@@ -446,6 +446,7 @@ function getFIleContents(fileUrl){
         type: 'get',
         dataType: 'html',
         async: false,
+        cache: false,
         success: function(data) {
             result = data;
         }

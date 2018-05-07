@@ -116,10 +116,10 @@ include '../Shared/navheader.php';
         <div style="cursor:pointer;" onclick="closePreview();">x</div>
     </div>
     <form enctype="multipart/form-data" action="filereceive_preview.php" method="POST">
-        <input type='hidden' id='cidz' name='cid' value='Toddler'/>
-        <input type='hidden' id='courseversz' name='coursevers' value='Toddler'/>
-        <input type='hidden' id='kindz' name='kind' value='Toddler'/>
-        <input type='hidden' id='filename' name='filename' value='Toddler'/>
+        <input type='hidden' id='cID' name='cid' value='Toddler'/>
+        <input type='hidden' id='courseVersz' name='coursevers' value='Toddler'/>
+        <input type='hidden' id='fileKind' name='kind' value='Toddler'/>
+        <input type='hidden' id='fileName' name='filename' value='Toddler'/>
         <div class="markdown">
             <div class="markNav">Markdown
                 <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
@@ -127,7 +127,7 @@ include '../Shared/navheader.php';
                 <span id="codeBlockText" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
                 <span id="lists" onclick="lists()" title="lists">&#9711;</span>
                 <span id="quoteText" onclick="quoteText()" title="quote">&#10078;</span>
-                <span id="link" onclick="linkText()" title="link"><img id="linkFabBtnImg" class="fab-icon"
+                <span id="linkz" onclick="linkText()" title="link"><img id="linkFabBtnImg" class="fab-icon"
                                                                        src="../Shared/icons/link-icon.svg"></span>
                 <span id="img" onclick="externalImg()" title="Img"><img id="insert-photo" class="fab-icon"
                                                                         src="../Shared/icons/insert-photo.svg"></span>
@@ -157,14 +157,16 @@ include '../Shared/navheader.php';
                 </div>
             </div>
         </div>
-        <div class="optionButtons">
+        <div>
+
             <!--<button id="button-save" onclick="saveMarkdown()"></button>
 
             <button id="button-cancel" onclick="">Cancel</button>-->
         </div>
+        <input type="submit" value="Save" onclick="saveMarkdown()"/>
         <button id="button-close" onclick="cancelPreview()">Close</button>
 
-        <input class='submit-button fileed-submit-button' type="submit" value="Save" onclick="saveMarkdown()"/>
+
     </form>
 </div>
 <!-- Markdown-preview functionality END -->
