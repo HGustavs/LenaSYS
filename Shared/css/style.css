@@ -3728,6 +3728,7 @@ li:nth-last-child(10) a:hover {
 
 .prevSpan {
   max-width: 100%;
+  padding: 10px
 }
 
 #button-cancel {
@@ -3781,7 +3782,7 @@ li:nth-last-child(10) a:hover {
   margin: 10px auto;
 }
 textarea#mrkdwntxt {
-  width: 100%;
+  width: 94%;
   height: 100%;
   display: block;
   padding: 10px
