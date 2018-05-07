@@ -94,7 +94,7 @@ $(window).load(function () {
 				updateDugga();
 			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid()) {
 				createDugga();
-			} 
+			}
 			document.activeElement.blur();
 		}
 	});
@@ -439,11 +439,11 @@ function markSelectedVariant(el) {
 	var activeTable = findAncestor(el, 'TABLE', 'elName');
 	var activeTableRow = findAncestor(el, 'TR', 'elName');
 	var allRows = activeTable.getElementsByTagName('tr');
-	
+
 	for(let row of allRows) {
 		row.removeAttribute('style'); // Remove background color from previously marked rows.
 	}
-	
+
 	activeTableRow.style.backgroundColor = '#fbcd47';
 }
 
@@ -459,7 +459,7 @@ function variantsTableStyling() {
 	var loginBoxHeaderHeight = null;
 	var editVariantHeight = null;
 	var remainingSpace = null;
-	
+
 	// Find the header of the login box
 	for(var i = 0; i < loginBox.children.length; i++) {
 		if($(loginBox.children[i]).hasClass('loginBoxheader')) {
@@ -579,6 +579,7 @@ function returnedDugga(data) {
 	if (globalVariant){
 		renderVariant(globalVariant);
 	}
+	$(window).scrollTop(localStorage.getItem("duggaEdScrollPosition" + globalData.coursecode));
 }
 
 // Table for variants
@@ -786,7 +787,7 @@ function compare(a,b) {
 	} else {
 		return 0;
 	}
-}	
+}
 
 
 // START OF closers and openers
@@ -875,6 +876,9 @@ function findAncestor (el, name, type) {
 	return null;
 }
 
+$(document).scroll(function(e){
+	localStorage.setItem("duggaEdScrollPosition" + globalData.coursecode, $(window).scrollTop());
+});
 
 // function isInArray(array, search){
 //     return array.indexOf(search) >= 0;
@@ -941,4 +945,3 @@ function findAncestor (el, name, type) {
 
 // 	AJAXService("UPDATETEMPLATE",{cid:querystring['cid'],qid:did,template:template,coursevers:querystring['coursevers']},"DUGGA");
 // }
-
