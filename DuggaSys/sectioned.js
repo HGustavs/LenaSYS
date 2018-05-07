@@ -3,6 +3,7 @@ var retdata;
 var newversid;
 var active_lid;
 var isClickedElementBox = false;
+var testsAvailable;
 var nameSet = false;
 
 // Stores everything that relates to collapsable menus and their state.
@@ -257,11 +258,6 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	$("#editSection").css("display","flex");
 
 }
-
-function participationList() {
-	alert("ParticipationList");
-}
-
 
 function changedType(value)
 {
@@ -947,10 +943,10 @@ function returnedSection(data) {
 						+ "' class='group' style='display:block'>";
 				} else if (parseInt(item['kind']) === 7) {
 					str +=
-						"<div id='group"
+						"<div id='message"
 						+ menuState.idCounter
 						+ data.coursecode
-						+ "' class='group' style='display:block'>";
+						+ "' class='message' style='display:block'>";
 				}
 				menuState.idCounter++;
 				// All are visible according to database
@@ -1720,6 +1716,7 @@ function fabValidateType(kind) {
 	} else if (kind == 2){
 		if(retdata['codeexamples'].length <= 1){ //Index 1 in the array has a hard coded code example.
 			toggleFabButton();
+			testsAvailable = true;
 			$("#noMaterialText").html("Create a Code example before you can use it for a Code section.");
 			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
@@ -1802,6 +1799,9 @@ $(window).load(function () {
 			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
 				newItem();
 				showSaveButton();
+			} else if (isTypeValid() && testsAvailable == true){
+				confirmBox("closeConfirmBox");
+				testsAvailable = false;
 			} else if (errorMissingMaterialDisplay == 'flex'){
 				closeWindows();
 			}

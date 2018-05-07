@@ -8,7 +8,7 @@ var querystring = parseGet();
 var filez;
 var variant = [];
 var submissionRow = 0;
-var myTable;
+var duggaTable;
 var variantsTable;
 var str;
 var globalData;
@@ -447,6 +447,40 @@ function markSelectedVariant(el) {
 	activeTableRow.style.backgroundColor = '#fbcd47';
 }
 
+/*
+	Change the styling of variantsTable. The variants list will be scrollable, and its
+	size will change depending on the size of the login box, where it is placed.
+*/
+function variantsTableStyling() {
+	var loginBox = findAncestor(document.getElementById('variant'), 'loginBox', 'className');
+	var loginBoxHeader = null;
+
+	var loginBoxHeight = null;
+	var loginBoxHeaderHeight = null;
+	var editVariantHeight = null;
+	var remainingSpace = null;
+	
+	// Find the header of the login box
+	for(var i = 0; i < loginBox.children.length; i++) {
+		if($(loginBox.children[i]).hasClass('loginBoxheader')) {
+			loginBoxHeader = loginBox.children[i];
+			break;
+		}
+	}
+
+	loginBoxHeight = $(loginBox).outerHeight();
+	loginBoxHeaderHeight = $(loginBoxHeader).outerHeight();
+	editVariantHeight = $("#editVariantDiv").outerHeight();
+
+	// Remaining space for the scrollable variants list
+	remainingSpace = loginBoxHeight - (loginBoxHeaderHeight + editVariantHeight + 60);
+
+	if(remainingSpace > 100) {
+		document.getElementById('variant').style.maxHeight = remainingSpace + 'px';
+	} else {
+		document.getElementById('variant').style.maxHeight = '100px';
+	}
+}
 // VARIANT FUNCTIONS end
 
 // Displaying and hidding the dynamic comfirmbox for deleting-items in duggaED
@@ -509,18 +543,18 @@ function returnedDugga(data) {
 			modified: "Last modified",
 			arrow: "",
 			cogwheel: "",
-			trashcan: "<input type='button' value='+' style='float:left;' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga()'>"
+			trashcan: "headingAddButton"
 		},
 		tblbody: data['entries'],
 		tblfoot: []
 	}
-	myTable = new SortableTable(
+	duggaTable = new SortableTable(
 		tabledata,
 		"quiz",
 		null,
 		"",
 		renderCell,
-		null,
+		renderSortOptions,
 		null,
 		null,
 		[],
@@ -532,9 +566,9 @@ function returnedDugga(data) {
 		null,
 		null,
 		null,
-		false
+		true
 	);
-	myTable.renderTable();
+	duggaTable.renderTable();
 
 	$("content").html();
 	var result = 0;
@@ -571,7 +605,7 @@ function renderVariant(clickedElement) {
 		null,
 		"",
 		renderCell,
-		null,
+		renderSortOptions,
 		null,
 		null,
 		[],
@@ -583,47 +617,12 @@ function renderVariant(clickedElement) {
 		null,
 		null,
 		null,
-		false
+		true
 	);
 	variantsTable.renderTable();
 	newVariant();
 	$('#did').val(globalData['entries'][clickedElement].arrow);
 	variantsTableStyling();
-}
-
-/*
-	Change the styling of variantsTable. The variants list will be scrollable, and its
-	size will change depending on the size of the login box, where it is placed.
-*/
-function variantsTableStyling() {
-	var loginBox = findAncestor(document.getElementById('variant'), 'loginBox', 'className');
-	var loginBoxHeader = null;
-
-	var loginBoxHeight = null;
-	var loginBoxHeaderHeight = null;
-	var editVariantHeight = null;
-	var remainingSpace = null;
-	
-	// Find the header of the login box
-	for(var i = 0; i < loginBox.children.length; i++) {
-		if($(loginBox.children[i]).hasClass('loginBoxheader')) {
-			loginBoxHeader = loginBox.children[i];
-			break;
-		}
-	}
-
-	loginBoxHeight = $(loginBox).outerHeight();
-	loginBoxHeaderHeight = $(loginBoxHeader).outerHeight();
-	editVariantHeight = $("#editVariantDiv").outerHeight();
-
-	// Remaining space for the scrollable variants list
-	remainingSpace = loginBoxHeight - (loginBoxHeaderHeight + editVariantHeight + 60);
-
-	if(remainingSpace > 100) {
-		document.getElementById('variant').style.maxHeight = remainingSpace + 'px';
-	} else {
-		document.getElementById('variant').style.maxHeight = '100px';
-	}
 }
 
 // Rendring specific cells
@@ -688,7 +687,7 @@ function renderCell(col, celldata, cellid) {
 	// DUGGA-TABLE cellend
 
 	// VARIANT-TABLE cellstart
-	// Placing a clickable arrow in its designated column for previewing the variant.
+	// Numbering the variant table.
 	else if (col == "vid") {
 		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
 	}
@@ -712,7 +711,7 @@ function renderCell(col, celldata, cellid) {
 
 	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "arrowVariant") {
-		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
+		str = "<img id='dorf' src='../Shared/icons/PlayT.svg' ";
 		str += " onclick='getVariantPreview();'>";
 		return str;
 	}
@@ -738,6 +737,57 @@ function renderCell(col, celldata, cellid) {
 }
 // END OF rendering cells
 // END OF rendering tables
+
+function renderSortOptions(col,status) {
+	str = "";
+
+	if(col == "headingAddButton"){
+		str += "<input type='button' value='+' style='float:left;' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga();'>";
+	}
+	else{
+	if (status ==- 1) {
+		str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+	} else if (status == 0) {
+		str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+	} else {
+		str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+	}
+	}
+	return str;
+}
+
+function compare(a,b) {
+	let col = sortableTable.currentTable.getSortcolumn();
+	var tempA = a;
+	var tempB = b;
+
+	// Needed so that the counter starts from 0
+	// everytime we sort the table
+	count = 0;
+
+	if (col == "File name") {
+		tempA = tempA.toUpperCase();
+		tempB = tempB.toUpperCase();
+	} else if (col == "Extension") {
+		tempA = tempA.split('.');
+		tempB = tempB.split('.');
+
+		tempA = tempA[tempA.length-1];
+		tempB = tempB[tempB.length-1];
+	} else if (col == "Size") {
+		tempA = parseInt(tempA);
+		tempB = parseInt(tempB);
+	}
+
+	if (tempA > tempB) {
+		return 1;
+	} else if (tempA < tempB) {
+		return -1;
+	} else {
+		return 0;
+	}
+}	
+
 
 // START OF closers and openers
 function closeEditDugga() {
