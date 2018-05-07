@@ -60,7 +60,11 @@ body {
   font-family: 'Roboto', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-y: scroll;
+<<<<<<< HEAD
   width:100%;
+=======
+  width: 100%;
+>>>>>>> f04368eeadb2fecf712157a3b210ff1636907819
   height: 100%;
 }
 
@@ -3657,6 +3661,7 @@ li:nth-last-child(10) a:hover {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
+
 .previewWindowContainer {
   background-color: rgba(0, 0, 0, 0.6);
   position: fixed;
@@ -3704,7 +3709,19 @@ li:nth-last-child(10) a:hover {
   margin: 20px 8.5% 10px 8px;
   float: right;
 }
-
+.markdownPrev pre{
+    font-family: Hack, MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+    font-size: 10px;
+    line-height: 12px;
+    white-space: pre;
+    white-space: pre-wrap;
+    background: #ffffff;
+    display: inline-block;
+    padding: 1em;
+    margin: 0.5em 0px;
+    border: 1px solid #bebab0;
+    box-shadow: 1px 1px 2px #666;
+}
 .optionButtons {
   top: 585px;
   position: relative;
@@ -3821,7 +3838,8 @@ textarea{
     margin-left: 4%;
 }
 #linkFabBtnImg {
-position: absolute;
+    position: absolute;
+    margin-left: 10px;
 }
 
 #headerType1 {
@@ -3850,7 +3868,7 @@ position: absolute;
 
 #headerType3 {
   cursor: pointer;
-  color:#000;
+  color: #000;
   font-size: 11px;
   padding: 8px 5px 5px 13px;
   background-color: #fff;
@@ -3860,44 +3878,6 @@ position: absolute;
   background-color: rgb(200, 200, 200);
 }
 
-
-#headerType4 {
-  cursor: pointer;
-  color: #000;
-  font-size: 10px;
-  padding: 8px 5px 5px 13px;
-  background-color: #fff;
-}
-
-#headerType4:hover {
-  background-color: rgb(200, 200, 200);
-}
-
-
-#headerType5 {
-  cursor: pointer;
-  color: #000;
-  font-size: 9px;
-  padding: 8px 5px 5px 13px;
-  background-color: #fff;
-}
-
-#headerType5:hover {
-  background-color: rgb(200, 200, 200);
-}
-
-
-#headerType6 {
-  cursor: pointer;
-  color: #000;
-  font-size: 8px;
-  padding: 8px 5px 5px 13px;
-  background-color: #fff;
-}
-
-#headerType6:hover {
-  background-color: rgb(200, 200, 200);
-}
 .headerType {
   cursor: pointer;
   margin-left: 5%;
@@ -3911,11 +3891,10 @@ position: absolute;
 
 #select-header {
   max-width: 63px;
-  position: relative;
-  left:94%;
+  position: absolute;
   z-index: 2000;
   right: 75px;
-  background-color:#fff;
+  background-color: rgba(0, 0, 0, 0);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
 
@@ -3979,8 +3958,8 @@ position: absolute;
 }
 
 .editFileWindow {
-  height: 635px;
-  width: 690px;
+  height: 70%;
+  width: 50%;
   margin: 0px auto;
   border: solid rgb(200,200,200);
   background-color: rgb(240,240,240);
@@ -3996,11 +3975,14 @@ position: absolute;
 .editFileCode {
   border: solid rgb(200, 200, 200);
   background-color: #FFFFFF;
-  width: 665px;
-  height: 550px;
+  width: 96%;
+  height: 80%;
   position: relative;
-  margin: 20px 10px 10px 10px;
-  float: left;
+  margin: 20px auto;
+}
+
+.fileText {
+  height: 90%;
 }
 
 .optionButtons {
@@ -4026,13 +4008,22 @@ position: absolute;
   float: right;
   position: relative;
   margin: 0px 10px 0px 0px;
+
 }
 
 #filecont {
   border-radius: 8px;
   box-shadow: 2px 2px 4px #888 inset;
   resize: none;
-  margin: 10px 4px 0px 4px;
+  margin: 10px auto;
+  width: 90%;
+  height: 100%;
+}
+
+textarea#filecont{
+  width: 96%;
+  height: 100%;
+  display: block;
 }
 
 @media only screen and (max-height: 800px) and (max-width: 1400px) {
@@ -4042,7 +4033,7 @@ position: absolute;
   .editFileCode {
     height: 400px;
   }
-  #filecont{
+  #filecont {
     height: 350px;
   }
   .optionButtons {
