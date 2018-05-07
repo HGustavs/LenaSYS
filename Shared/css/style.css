@@ -3118,9 +3118,6 @@ only screen and (max-device-width: 650px) {
         position: relative;
         top: 10px;
     }
-    #sortAll {
-        margin-left: 15px;
-    }
   table.navheader td.access {
     margin-right: 0px;
     width: 0px;
