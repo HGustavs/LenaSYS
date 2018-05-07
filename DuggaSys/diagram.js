@@ -240,7 +240,7 @@ function fixConnections(clones){
                 }
                 else if(clones[j].connectorTop[0].to == lineArr[i].bottomRight){
                     lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
-                    clones[j].connectorTop[0].to = lineArr[i].topLeft;
+                    clones[j].connectorTop[0].to = lineArr[i].bottomRight;
                 }
                 if(clones[j].connectorTop[0].from == lineArr[i].topLeft){
                     lineArr[i].topLeft = points.push(topLeftClone) - 1;
@@ -258,7 +258,7 @@ function fixConnections(clones){
                 }
                 else if(clones[j].connectorBottom[0].to == lineArr[i].bottomRight){
                     lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
-                    clones[j].connectorBottom[0].to = lineArr[i].topLeft;
+                    clones[j].connectorBottom[0].to = lineArr[i].bottomRight;
                 }
                 if(clones[j].connectorBottom[0].from == lineArr[i].topLeft){
                     lineArr[i].topLeft = points.push(topLeftClone) - 1;
@@ -276,7 +276,7 @@ function fixConnections(clones){
                 }
                 else if(clones[j].connectorLeft[0].to == lineArr[i].bottomRight){
                     lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
-                    clones[j].connectorLeft[0].to = lineArr[i].topLeft;
+                    clones[j].connectorLeft[0].to = lineArr[i].bottomRight;
                 }
                 if(clones[j].connectorLeft[0].from == lineArr[i].topLeft){
                     lineArr[i].topLeft = points.push(topLeftClone) - 1;
@@ -294,7 +294,7 @@ function fixConnections(clones){
                 }
                 else if(clones[j].connectorRight[0].to == lineArr[i].bottomRight){
                     lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
-                    clones[j].connectorRight[0].to = lineArr[i].topLeft;
+                    clones[j].connectorRight[0].to = lineArr[i].bottomRight;
                 }
                 if(clones[j].connectorRight[0].from == lineArr[i].topLeft){
                     lineArr[i].topLeft = points.push(topLeftClone) - 1;
