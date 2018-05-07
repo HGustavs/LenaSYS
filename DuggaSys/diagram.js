@@ -275,6 +275,7 @@ function fixConnections(clones){
             }
         }
     }
+    connectedClones = [];
 }
 
 //Clone an object
