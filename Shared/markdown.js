@@ -419,6 +419,7 @@ function loadPreview(fileUrl) {
     $(".previewWindowContainer").css("display", "block");
     var fileContent = getFIleContents(fileUrl);
     document.getElementById("mrkdwntxt").value = fileContent;
+    beginningSpace();
     updatePreview(fileContent);
     //updatePreview(document.getElementById("mrkdwntxt").value = fileContent);
 }
@@ -574,6 +575,14 @@ function quoteText(){
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
+}
+function beginningSpace(){
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0, start) + '\r' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectedEnd=end + 3;
     updatePreview(txtarea.value);
 }
 
