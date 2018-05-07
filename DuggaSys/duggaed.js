@@ -9,13 +9,15 @@ var filez;
 var variant = [];
 var submissionRow = 0;
 var myTable;
-var myTable2;
+var variantsTable;
 var str;
 var globalData;
 var globalVariant;
 var itemToDelete;
 var typeOfItem;
 var duggaPages;
+var isClickedElementBox = false;
+
 
 AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
 
@@ -72,7 +74,7 @@ $(document).ready(function () {
 	});
 
 	$('#createjson').click(function () {
-		$('#parameter').val(createJSONString($('#jsonform').serializeArray()));
+		$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	});
 });
 
@@ -81,16 +83,16 @@ $(window).load(function () {
 	$(window).keyup(function (event) {
 		if (event.keyCode == 27) {
 			closeWindows();
-			// closeSelect();
+			resetNameValidation();
 			showDuggaSaveButton();
 		}else if (event.keyCode == 13){
 			//Remember that keycode 13 = enter button
 			var saveButtonDisplay = ($('#saveDugga').css('display'));
 			var editSectionDisplay = ($('#editDugga').css('display'));
 			var submitButtonDisplay = ($('#submitDugga').css('display'));
-			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid()) {
 				updateDugga();
-			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
+			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid()) {
 				createDugga();
 			} 
 			document.activeElement.blur();
@@ -98,17 +100,55 @@ $(window).load(function () {
 	});
 });
 
+function clearEditForm() {
+	$('#name').val("New dugga");
+	$('#name').attr('placeholder','Empty dugga');
+	$('#qstart').val("");
+	$('#qstart').attr('placeholder', 'YYYY-MM-DD');
+	$('#release').val("");
+	$('#release').attr('placeholder', 'YYYY-MM-DD');
+	$('#deadline').val("");
+	$('#deadline').attr('placeholder', 'YYYY-MM-DD');
+}
+
+// Detects clicks
+$(document).mousedown(function (e) {
+	var box = $(e.target);
+	if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
+		isClickedElementBox = true;
+	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
+		&& (findAncestor(box[0], "loginBox").classList.contains("loginBox"))) {
+		isClickedElementBox = true;
+	} else {
+		isClickedElementBox = false;
+	}
+});
+
+$(document).mouseup(function (e) {
+	// Click outside the loginBox
+	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
+		&& $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
+		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
+	{
+		closeWindows();
+	}
+});
+
+function resetNameValidation() {
+	var nme = document.getElementById("name");
+	$('#tooltipTxt').fadeOut();
+	nme.value = "";
+	nme.style.backgroundColor = "#fff";
+}
+
 // DUGGA FUNCTIONS start
 function newDugga() {
-	document.getElementById("editDuggaTitle").innerHTML = "New dugga";
-	document.getElementById('name').value = '';
-	document.getElementById('name').placeholder = 'Empty dugga';
-	document.getElementById('qstart').value = '';
-	document.getElementById('qstart').placeholder = 'YYYY-MM-DD';
-	document.getElementById('release').value = '';
-	document.getElementById('release').placeholder = 'YYYY-MM-DD';
-	document.getElementById('deadline').value = '';
-	document.getElementById('deadline').placeholder = 'YYYY-MM-DD';
+	$("#editDuggaTitle").html("New dugga");
+	clearEditForm();
+
+	// Set submitDugga button to disabled
+	$('#submitDugga').prop("disabled", true);
+
 	//----------------------------------------------------
 	// Set Autograde
 	//----------------------------------------------------
@@ -154,7 +194,6 @@ function createDugga() {
 	var deadline = $("#deadline").val();
 	var cid = querystring['cid'];
 	var coursevers = querystring['coursevers'];
-	window.location.reload();
 	$("#editDugga").css("display", "none");
 	//$("#overlay").css("display","none");
 
@@ -163,6 +202,13 @@ function createDugga() {
 }
 
 function selectDugga(qid) {
+
+	clearEditForm();
+
+	// Ensures that name validation is not set at start when selecting a dugga
+	resetNameValidation();
+	$('#saveDugga').prop("disabled", false);
+
 	AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'], qid: this.qid }, "GETQUIZ");
 
 	document.getElementById("editDuggaTitle").innerHTML = "Edit dugga";
@@ -226,6 +272,15 @@ function deleteDugga(did) {
 	$("#editDugga").css("display", "none");
 }
 
+function isNameValid(){
+	var nme = document.getElementById("name");
+
+	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d(),.]+$/)) {
+		return true;
+	}
+	return false;
+}
+
 // Checks if the title name includes any invalid characters
 function validateDuggaName() {
 	var retValue = false;
@@ -233,14 +288,14 @@ function validateDuggaName() {
 
 	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d()]+$/)) {
 		$('#tooltipTxt').fadeOut();
-		$('#saveBtn').removeAttr('disabled');
-		$('#submitBtn').removeAttr('disabled');
+		$('#saveDugga').removeAttr('disabled');
+		$('#submitDugga').removeAttr('disabled');
 		nme.style.backgroundColor = "#fff";
 		retValue = true;
 	} else {
 		$('#tooltipTxt').fadeIn();
-		$('#submitBtn').attr('disabled', 'disabled');
-		$('#saveBtn').attr('disabled', 'disabled');
+		$('#submitDugga').attr('disabled', 'disabled');
+		$('#saveDugga').attr('disabled', 'disabled');
 		nme.style.backgroundColor = "#f57";
 	}
 	return retValue;
@@ -259,7 +314,6 @@ function newVariant() {
 	document.getElementById('variantparameterText').placeholder = 'Undefied JSON parameter';
 	document.getElementById('variantanswerText').value = '';
 	document.getElementById('variantanswerText').placeholder = 'Undefied JSON answer';
-	$("#editVariant").css("display", "flex"); //Display variant-window
 }
 
 function createVariant() {
@@ -325,60 +379,72 @@ function updateVariantTitle(number) {
 	document.getElementById("editVariantTitle").innerHTML = "Variants for: " + globalData['entries'][number].qname;
 }
 
+// Opens the variant editor.
+function showVariantEditor() {
+	$("#editVariant").css("display", "flex"); //Display variant-window
+}
+
 // Adds a submission row
 function addVariantSubmissionRow() {
 	$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>" +
-		"<select name='type' id='submissionType" + submissionRow + "' style='width:65px;'>" +
+		"<select name='s_type' id='submissionType' style='width:65px;'>" +
 		"<option value='pdf'>PDF</option>" +
 		"<option value='zip'>Zip</option>" +
 		"<option value='link'>Link</option>" +
 		"<option value='text'>Text</option>" +
 		"</select>" +
-		"<input type='text' name='fieldname' id='fieldname" + submissionRow + "' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>" +
-		"<input type='text' name='instruction' id='instruction" + submissionRow + "' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>" +
+		"<input type='text' name='s_fieldname' id='fieldname" + submissionRow + "' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>" +
+		"<input type='text' name='s_instruction' id='instruction" + submissionRow + "' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>" +
 		"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>" +
 		"</div>");
 	submissionRow++;
 }
 
 function createJSONString(formData) {
-	// Init the JSON string variable
-	var jsonStr = "{";
+	var submission_types = [];
+	var type, fieldname, instruction;
 
-	// Get the first static fields
-	jsonStr += '"' + formData[0]['name'] + '":"' + formData[0]['value'] + '",';
-	jsonStr += '"' + formData[1]['name'] + '":"' + formData[1]['value'] + '",';
-	if (document.getElementById("extraparam").value !== "") {
-		jsonStr += document.getElementById("extraparam").value + ",";
+	formData.forEach(element => {
+		if (element.name == "s_type") type = element;
+		if (element.name == "s_fieldname") fieldname = element;
+		if (element.name == "s_instruction") instruction = element;
+
+		if (type && fieldname && instruction) {
+			submission_types.push({
+				"type":type.value,
+				"fieldname":fieldname.value,
+				"instruction":instruction.value
+			});
+
+			type = undefined;
+			fieldname = undefined;
+			instruction = undefined;
+		}
+	});
+
+
+	return JSON.stringify({
+		"type":formData[0].value,
+		"filelink":formData[1].value,
+		"extraparam":$('#extraparam').val(),
+		"submissions":submission_types
+	});
+}
+
+/*
+	This function marks the selected variant when editing by changing the
+	background color of the table row.
+*/
+function markSelectedVariant(el) {
+	var activeTable = findAncestor(el, 'TABLE', 'elName');
+	var activeTableRow = findAncestor(el, 'TR', 'elName');
+	var allRows = activeTable.getElementsByTagName('tr');
+	
+	for(let row of allRows) {
+		row.removeAttribute('style'); // Remove background color from previously marked rows.
 	}
-	jsonStr += '"submissions":[';
-
-	// Handle the dynamic amount of submission types
-	for (var i = 2; i < formData.length; i++) {
-		if (i % 3 == 2) {
-			// The start of a new submissions field, prepend with curly bracket
-			jsonStr += "{";
-		}
-		// Input the values of the array. This parses the option-select first, then the textfield. But if the text field is empty, then do not write it to JSON.
-		if (formData[i]['value'].length > 0) {
-			jsonStr += '"' + formData[i]['name'] + '":"' + formData[i]['value'] + '",';
-		}
-		if (i % 3 == 1) {
-			// This submission field is complete, prepare for next
-			// Remove the last comma
-			jsonStr = jsonStr.substr(0, jsonStr.length - 1);
-			// Prepare for next submissions array element.
-			jsonStr += "},";
-		}
-	}
-	// Remove the last comma
-	jsonStr = jsonStr.substr(0, jsonStr.length - 1);
-	// Append the end of the submissions array.
-	jsonStr += ']'; // The end of the submissions array.
-	// Here, the freetext field handling should be added as it comes after the submissions array.
-	jsonStr += '}'; // The end of the JSON-string.
-
-	return jsonStr;
+	
+	activeTableRow.style.backgroundColor = '#fbcd47';
 }
 
 // VARIANT FUNCTIONS end
@@ -413,12 +479,13 @@ function returnedQuiz(data) {
 			quiz = element;
 		}
 	});
+
 	$("#did").val(quiz['arrow']);
 	$("#name").val(quiz['qname']);
 	$("#autograde").val(quiz['autograde']);
 	$("#gradesys").val(quiz['gradesystem']);
 	$("#template").val(quiz['quizFile']);
-	$("#qstart").val(quiz['qstart'] ? quiz['qstart'] : "null");
+	$("#qstart").val(quiz['qstart']);
 	$("#deadline").val(quiz['deadline']);
 	$("#release").val(quiz['qrelease']);
 }
@@ -431,7 +498,7 @@ function returnedDugga(data) {
 
 	var tabledata = {
 		tblhead: {
-			arrow: "",
+			did: "",
 			qname: "Name",
 			autograde: "Autograde",
 			gradesystem: "Gradesystem",
@@ -440,8 +507,9 @@ function returnedDugga(data) {
 			deadline: "Deadline",
 			qrelease: "Result date",
 			modified: "Last modified",
+			arrow: "",
 			cogwheel: "",
-			trashcan: "<input type='button' value='+' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga()'>"
+			trashcan: "<input type='button' value='+' style='float:left;' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga()'>"
 		},
 		tblbody: data['entries'],
 		tblfoot: []
@@ -475,7 +543,7 @@ function returnedDugga(data) {
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 	str = "";
 	if (globalVariant){
-	renderVariant(globalVariant);
+		renderVariant(globalVariant);
 	}
 }
 
@@ -489,14 +557,15 @@ function renderVariant(clickedElement) {
 			param: "Parameter",
 			variantanswer: "Answer",
 			modified: "Modified",
-			disabled: "Disabled/Enabled",
+			disabled: "Status",
+			arrowVariant: "",
 			cogwheelVariant: "",
 			trashcanVariant: ""
 		},
 		tblbody: globalData['entries'][clickedElement].variants,
 		tblfoot: []
 	}
-	myTable2 = new SortableTable(
+	variantsTable = new SortableTable(
 		tabledata,
 		"variant",
 		null,
@@ -516,21 +585,54 @@ function renderVariant(clickedElement) {
 		null,
 		false
 	);
-	myTable2.renderTable();
+	variantsTable.renderTable();
 	newVariant();
 	$('#did').val(globalData['entries'][clickedElement].arrow);
+	variantsTableStyling();
+}
+
+/*
+	Change the styling of variantsTable. The variants list will be scrollable, and its
+	size will change depending on the size of the login box, where it is placed.
+*/
+function variantsTableStyling() {
+	var loginBox = findAncestor(document.getElementById('variant'), 'loginBox', 'className');
+	var loginBoxHeader = null;
+
+	var loginBoxHeight = null;
+	var loginBoxHeaderHeight = null;
+	var editVariantHeight = null;
+	var remainingSpace = null;
+	
+	// Find the header of the login box
+	for(var i = 0; i < loginBox.children.length; i++) {
+		if($(loginBox.children[i]).hasClass('loginBoxheader')) {
+			loginBoxHeader = loginBox.children[i];
+			break;
+		}
+	}
+
+	loginBoxHeight = $(loginBox).outerHeight();
+	loginBoxHeaderHeight = $(loginBoxHeader).outerHeight();
+	editVariantHeight = $("#editVariantDiv").outerHeight();
+
+	// Remaining space for the scrollable variants list
+	remainingSpace = loginBoxHeight - (loginBoxHeaderHeight + editVariantHeight + 60);
+
+	if(remainingSpace > 100) {
+		document.getElementById('variant').style.maxHeight = remainingSpace + 'px';
+	} else {
+		document.getElementById('variant').style.maxHeight = '100px';
+	}
 }
 
 // Rendring specific cells
 function renderCell(col, celldata, cellid) {
 
 	// DUGGA-TABLE cellstarts
-	// Placing a clickable icon in its designated column that opens a window for acess to variants.
-	if (col == "arrow") {
-		clickedElement = JSON.parse(cellid.match(/\d+/));
-		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
-		str += " onclick='renderVariant(\"" + clickedElement + "\");'>";
-		return str;
+	// Numbering the table.
+	if (col == "did") {
+		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
 	}
 
 	// Translating autograding from integers to show the data like yes/no.
@@ -559,6 +661,14 @@ function renderCell(col, celldata, cellid) {
 		}
 	}
 
+	// Placing a clickable icon in its designated column that opens a window for acess to variants.
+	else if (col == "arrow") {
+		clickedElement = JSON.parse(cellid.match(/\d+/));
+		str = "<img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg'";
+		str += " onclick='renderVariant(\"" + clickedElement + "\"); showVariantEditor();'>";
+		return str;
+	}
+
 	// Placing a clickable cogwheel in its designated column that opens a window for editing the row.
 	else if (col == "cogwheel") {
 		object = JSON.parse(celldata);
@@ -580,22 +690,7 @@ function renderCell(col, celldata, cellid) {
 	// VARIANT-TABLE cellstart
 	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "vid") {
-		// Get the page template
-		var page = globalData['entries'][globalVariant]['quizFile'];
-
-		// Get variant data for specific vid
-		var variantData;
-		globalData['entries'][globalVariant]['variants'].forEach(variant => {
-			if (variant.vid === celldata) {
-				variantData = variant;
-			}
-		});
-
-		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
-		str += "onclick='getVariantPreview("
-		str += JSON.stringify(variantData['param'])+","+JSON.stringify(variantData['variantanswer'])+", \""+page+"\"";
-		str += ");'>";
-		return str;
+		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
 	}
 
 	//Translating the integers behind "disabled" to say disabled or enabled. Also making it look that way.
@@ -615,11 +710,18 @@ function renderCell(col, celldata, cellid) {
 		return str;
 	}
 
+	// Placing a clickable arrow in its designated column for previewing the variant.
+	else if (col == "arrowVariant") {
+		str = "<img id='dorf' src='../Shared/icons/right_primary.svg' ";
+		str += " onclick='getVariantPreview();'>";
+		return str;
+	}
+
 	// Placing a clickable cogwheel in its designated column that select a variant to be edited.
 	else if (col == "cogwheelVariant") {
 		object = JSON.parse(celldata);
 		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
-		str += " onclick='selectVariant(" + object + ")' >";
+		str += " onclick='selectVariant(" + object + ");markSelectedVariant(this);' >";
 		return str;
 	}
 
@@ -640,8 +742,9 @@ function renderCell(col, celldata, cellid) {
 // START OF closers and openers
 function closeEditDugga() {
 	$("#editDugga").css("display", "none");
-	document.getElementById("name").style.backgroundColor = "#fff";  // Resets color for name input
-	$('#tooltipTxt').css("display", "none");							 // Resets tooltip text to its default form
+
+	// Resets the name validation
+	resetNameValidation();
 }
 
 function showLoginPopup() {
@@ -702,6 +805,24 @@ function closePreview() {
 	$("#resultpopover").css("display", "none");
 	$("#overlay").css("display", "none");
 	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
+}
+
+/*
+	This function finds the first ancestor element of the element passed in as an argument.
+	el: the element whose ancestor should be found.
+	name: the class or element name of the ancestor, i.e. 'myclass' or 'DIV'
+		(all element names must be in capital letters)
+	type: search for ancestor by class or element name
+*/
+function findAncestor (el, name, type) {
+	if(type == 'className') {
+		while ((el = el.parentElement) && !el.classList.contains(name));
+    	return el;
+	} else if(type == 'elName') {
+		while ((el = el.parentElement) && el.nodeName != name);
+    	return el;
+	}
+	return null;
 }
 
 
