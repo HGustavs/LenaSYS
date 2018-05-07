@@ -237,7 +237,13 @@ function fixConnections(clones){
         lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
         lineArr[i].topLeft = points.push(topLeftClone) - 1;
 
+
         for(var j = 0; j < clones.length; j++){
+            clones[j].clone.connectorTop = Object.assign({}, clones[j].symbol.connectorTop);
+            clones[j].clone.connectorBottom = Object.assign({}, clones[j].symbol.connectorBottom);
+            clones[j].clone.connectorLeft = Object.assign({}, clones[j].symbol.connectorLeft);
+            clones[j].clone.connectorRight = Object.assign({}, clones[j].symbol.connectorRight);
+
             if(clones[j].connectorTop.length > 0){
                 if(clones[j].connectorTop[0].from == tempBottomRight){
                     clones[j].connectorTop[0].from = lineArr[i].bottomRight;
@@ -321,7 +327,7 @@ function copySymbol(symbol){
 
     if(clone.connectorTop.length > 0 || clone.connectorBottom.length > 0
         || clone.connectorLeft.length > 0 || clone.connectorRight.length > 0){
-            connectedClones.push(clone);
+            connectedClones.push({clone:clone, symbol:symbol});
         }
 
         if(clone.symbolkind != 4){
