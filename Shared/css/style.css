@@ -3687,10 +3687,10 @@ li:nth-last-child(10) a:hover {
 .markdown {
   border: solid rgb(200, 200, 200);
   background-color: #FFFFFF;
-  width: 40%;
-  height: 80%;
+  width: 42%;
+  height: 90%;
   position: relative;
-  margin: 20px 10px 10px 8.5%;
+  margin: 20px 10px 10px 1%;
   float: left;
 }
 
@@ -3699,10 +3699,10 @@ li:nth-last-child(10) a:hover {
   background-color: #FFFFFF;
   word-wrap: break-word;
   overflow-y: scroll;
-  width: 40%;
-  height: 80%;
+  width: 46%;
+  height: 90%;
   position: relative;
-  margin: 20px 8.5% 10px 8px;
+  margin: 20px 1% 10px 8px;
   float: right;
 }
 .markdownPrev pre{
@@ -3771,7 +3771,9 @@ li:nth-last-child(10) a:hover {
   line-height: 25px;
 }
 .markText {
-    height: 90%;
+    height: 86%;
+    width:86%;
+    margin:10px auto;
 }
 #mrkdwntxt {
   border-radius: 8px;
