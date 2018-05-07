@@ -28,7 +28,7 @@ var fabListIsVisible = true;
 AJAXService("GET",{cid:querystring['cid']},"FILE");
 
 $(window).on('resize' = function() {
-	fileLink.magicHeader();
+	$('#fileLink').magicHeader();
     
     if($(window).width() < 650){
         $('#SortingBar').addClass('SortingBarMobile');
