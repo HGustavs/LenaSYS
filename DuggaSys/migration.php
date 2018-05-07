@@ -2158,6 +2158,14 @@ $migrationArray = array(
             ['column', 'quiz', 'qstart', 'datetime', ''],
         ],
     ],
+    [
+        'version' => 'v0.05',
+        'description' => 'Remove old group tables',
+        [
+            ['sql', 'DROP TABLE usergroup'],
+            ['sql', 'DROP TABLE user_usergroup'],
+        ],
+    ],
 );
 
 if (isSuperUser($userid) && strcmp($version, "UNK")) {
@@ -2226,6 +2234,17 @@ if (isSuperUser($userid) && strcmp($version, "UNK")) {
                                 'message' => queryExecute($query),
                             );
                         }
+                    } else if ($type == 'sql') {
+                        queryExecute("SET FOREIGN_KEY_CHECKS = 0");
+                        $query = stripslashes($col[0]);
+
+                        $message[] = array(
+                            'id' => $iterator,
+                            'info' => "Pure SQL $query - ",
+                            'message' => queryExecute($query),
+                        );
+
+                        queryExecute("SET FOREIGN_KEY_CHECKS = 1");
                     }
                     $iterator++;
                 }

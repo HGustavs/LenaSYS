@@ -1756,7 +1756,6 @@ function fabValidateType(kind) {
 	}
 }
 
-
 function addColorsToTabSections(kind, visible){
 	var retStr = "";
 	if(kind == 1){
