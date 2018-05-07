@@ -103,8 +103,6 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
 	$("#gradesys").html(str);
 
-
-
 	// Set Moments
 	str = "";
 	if (retdata['entries'].length > 0) {
