@@ -1705,6 +1705,7 @@ input.large-button {
   width: 100%;
   padding: 1px;
   border-bottom: 2px solid #dbd0d8;
+  border-left: 2px solid #dbd0d8;
   margin-top: 20px;
   font-size: 16px;
 }
