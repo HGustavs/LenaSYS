@@ -3999,6 +3999,31 @@ li:nth-last-child(10) a:hover {
   float: left;
 }
 
+.confirmationWindow {
+  height: 150px;
+  width: 400px;
+  margin: 0px auto;
+  border: solid rgb(200,200,200);
+  background-color: rgb(240,240,240);
+  box-shadow: 0px 5px 10px grey;
+  display: none;
+  left: 0;
+  right: 0;
+  top: 100px;
+  position: fixed;
+  text-align: center;
+}
+
+.confirmationText {
+  padding-top: 10px;
+}
+
+.confirmationButton {
+  width: 60px;
+  height: 30px;
+  margin-top: 30px;
+}
+
 .optionButtons {
   top: 585px;
   position: relative;
