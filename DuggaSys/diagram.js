@@ -139,6 +139,8 @@ function keyDownHandler(e){
                 copySymbol(cloneTempArray[i]);
             }
         }
+        updateGraphics();
+        SaveState();
     }
 
     else if (key == 90 && ctrlIsClicked) undoDiagram();
@@ -225,8 +227,14 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 function copySymbol(symbol){
     var clone = Object.assign({}, symbol);
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
+    topLeftClone.x += 10;
+    topLeftClone.y += 10;
     var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
+    bottomRightClone.x += 10;
+    bottomRightClone.y += 10;
     var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
+    centerPointClone.x += 10;
+    centerPointClone.y += 10;
 
     clone = new Symbol(symbol.symbolkind);
     if(symbol.symbolkind == 1){
@@ -611,7 +619,7 @@ diagram.sortConnectors = function() {
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
-            diagram[i].quadrants();
+            if(diagram[i].quadrants()) break;
         }
     }
 }

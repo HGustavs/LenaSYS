@@ -228,14 +228,17 @@ function renderCell(col,celldata,cellid) {
         }
 	    return "<div>" + list[list.length - 1] + "</div>";
 	} else if (col == "editor") {
+		var obj = JSON.parse(celldata);
+		list = obj.filename.split('.');
+		link = obj.filename.split('://');
 		if(link[0] == "https" || link[0] == "http"){
 			str = "";
 		} else if (list[list.length-1] == "md" || list[list.length-1] == "txt"){
 			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += "onclick='loadPreview(\"" + celldata + "\")'></div>";
+            str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></div>";
 		} else if (list[list.length-1] == "js" || list[list.length-1] == "html" || list[list.length-1] == "css" || list[list.length-1] == "php"){
             str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += "onclick='loadFile(\"" + celldata + "\")'></div>";
+            str += "onclick='loadFile(\"" + obj.filePath + "\")'></div>";
         }
 		return str;
 
@@ -317,7 +320,7 @@ function fileSizeSearch(row, colName, searchName){
 // ---------------
 //  Callback function that renders the col filter div
 //--------------------------------------------------------------------------
-		
+
 function renderSortOptions(col,status) {
 	str = "";
 
@@ -330,7 +333,7 @@ function renderSortOptions(col,status) {
 	}
 	return str;
 }
-			
+
 //--------------------------------------------------------------------------
 // compare
 // ---------------
@@ -380,7 +383,7 @@ function compare(a,b) {
 	} else {
 		return 0;
 	}
-}	
+}
 
 function formatBytes(bytes,decimals) {
    if (bytes == 0) return '0 Bytes';
@@ -488,7 +491,9 @@ function loadFile(fileUrl) {
     $(".editFileWindow").show();
     $(".editFileWindowContainer").css("display", "block");
     var fileContent = getFIleContents(fileUrl);
+	var fileName = fileUrl.split("/").pop().split(".")[0];
     document.getElementById("filecont").value = fileContent;
+	$(".fileName").html(fileName);
     editFile(fileContent);
 }
 
@@ -507,5 +512,8 @@ function cancelEditFile() {
     $(".editFileWindowContainer").css("display", "none");
 }
 
-
+function saveMarkdown() {
+    $("#cID").val(querystring['cid']);
+    $("#courseVers").val(querystring['coursevers']);
+}
 

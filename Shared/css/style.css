@@ -3818,9 +3818,7 @@ li:nth-last-child(10) a:hover {
     cursor: pointer;
     margin-right: 15px;
 }
-#linkFabBtnImg {
-position: absolute;
-}
+
 
 #headerType1 {
   cursor: pointer;
@@ -3904,7 +3902,7 @@ position: absolute;
 }
 
 .show-dropdown-content {
-  display: block;
+    display: block;
 }
 
 #select-header {

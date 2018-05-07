@@ -1,12 +1,12 @@
 Relation name:</br>
 <input onkeyup="changeObjectAppearance('relationType');" id='nametext' type='text'></br>
 Relation type: </br>
-<select onclick="changeObjectAppearance('relationType');" id='object_type'>
+<select onchange="changeObjectAppearance('relationType');" id='object_type'>
     <option value='Weak'>Weak</option>
     <option value='Strong' selected>Strong</option>
 </select></br>
 Background color:<br>
-<select onclick="changeObjectAppearance('relationType');" id='symbolColor'>
+<select onchange="changeObjectAppearance('relationType');" id='symbolColor'>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -18,14 +18,14 @@ Background color:<br>
     <option value='#000000'>Black</option>
 </select><br>
 Font family:<br>
-<select onclick="changeObjectAppearance('relationType');" id='font'>
+<select onchange="changeObjectAppearance('relationType');" id='font'>
     <option value='Arial' selected>Arial</option>
     <option value='Courier New'>Courier New</option>
     <option value='Impact'>Impact</option>
     <option value='Calibri'>Calibri</option>
 </select><br>
 Font color:<br>
-<select onclick="changeObjectAppearance('relationType');" id='fontColor'>
+<select onchange="changeObjectAppearance('relationType');" id='fontColor'>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -37,14 +37,14 @@ Font color:<br>
     <option value='#000000' selected="true">Black</option>
 </select><br>
 Text size:<br>
-<select onclick="changeObjectAppearance('relationType');" id='TextSize'>
+<select onchange="changeObjectAppearance('relationType');" id='TextSize'>
     <option value='Tiny' selected="true">Tiny</option>
     <option value='Small'>Small</option>
     <option value='Medium'>Medium</option>
     <option value='Large'>Large</option>
 </select><br>
 Line colors:<br>
-<select onclick="changeObjectAppearance('attributeType');" id='AttributeLineColor'>
+<select onchange="changeObjectAppearance('attributeType');" id='AttributeLineColor'>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>

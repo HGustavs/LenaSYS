@@ -1,7 +1,7 @@
 Attribute name:</br>
 <input onkeyup="changeObjectAppearance('attributeType');" id='nametext' type='text'></br>
 Attribute type: </br>
-<select onclick="changeObjectAppearance('attributeType');" id='object_type'>
+<select onchange="changeObjectAppearance('attributeType');" id='object_type'>
     "<option value='Primary key'>Primary key</option>
     "<option value='Partial key'>Partial key</option>
     "<option value='normal' selected="true">Normal</option>
@@ -10,7 +10,7 @@ Attribute type: </br>
     "<option value='Drive'>Derive</option>
 </select></br>
 Background color:<br>
-<select onclick="changeObjectAppearance('attributeType');" id='symbolColor'>
+<select onchange="changeObjectAppearance('attributeType');" id='symbolColor'>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -22,14 +22,14 @@ Background color:<br>
     <option value='#000000'>Black</option>
 </select><br>
 Font family:<br>
-<select onclick="changeObjectAppearance('attributeType');" id='font'>
+<select onchange="changeObjectAppearance('attributeType');" id='font'>
     "<option value='Arial' selected="true">Arial</option>
     "<option value='Courier New'>Courier New</option>
     "<option value='Impact'>Impact</option>
     "<option value='Calibri'>Calibri</option>
 </select><br>
 Font color:<br>
-<select onclick="changeObjectAppearance('attributeType');" id='fontColor'>
+<select onchange="changeObjectAppearance('attributeType');" id='fontColor'>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -41,14 +41,14 @@ Font color:<br>
     <option value='#000000' selected="true">Black</option>
 </select><br>
 Text size:<br>
-<select onclick="changeObjectAppearance('attributeType');" id='TextSize'>
+<select onchange="changeObjectAppearance('attributeType');" id='TextSize'>
     "<option value='Tiny' selected="true">Tiny</option>
     "<option value='Small'>Small</option>
     "<option value='Medium'>Medium</option>
     "<option value='Large'>Large</option>
 </select><br>
 Line colors:<br>
-<select onclick="changeObjectAppearance('attributeType');" id='AttributeLineColor'>
+<select onchange="changeObjectAppearance('attributeType');" id='AttributeLineColor'>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
