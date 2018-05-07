@@ -169,8 +169,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
             // Insert the user into the database.
             if(!$stmt->execute()) {
-                $error=$stmt->errorInfo();
-                $debug.= $error[2].$class;
+                $debug = "Not able to create the specified class. Please give the parameters proper values.";
             }
         }else if(strcmp($opt,"CHPWD")==0){
 				$query = $pdo->prepare("UPDATE user set password=:pwd, requestedpasswordchange=0 where uid=:uid;");
