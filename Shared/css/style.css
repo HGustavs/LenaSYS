@@ -3113,7 +3113,7 @@ only screen and (max-device-width: 768px) {
 
 @media only screen and (max-width: 650px),
 only screen and (max-device-width: 650px) {
-    .sortingBar {
+    #sortingBar {
         width: 135px;
         position: relative;
         top: 28px;
