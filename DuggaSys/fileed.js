@@ -35,7 +35,7 @@ $(window).on('resize' = function() {
         $('#SortingBar').removeClass('SortingBar');
     }else{
         $('#SortingBar').addClass('SortingBar');
-        $('.SortingBar').removeClass('SortingBarMobile');
+        $('#SortingBar').removeClass('SortingBarMobile');
     }
     });
 
