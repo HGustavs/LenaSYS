@@ -2665,6 +2665,7 @@ table {
 /*end, styling for contribution.php*/
 .sortingBar {
   width: 50%;
+    position: absolute;
   top: 28px;
 }
 .sortingBtn {
@@ -2674,6 +2675,7 @@ table {
 .sortingBtn input {
     font-size: 12px;
     margin-left: 10px;
+    position: relative;
     bottom: 2px;
 }
 
