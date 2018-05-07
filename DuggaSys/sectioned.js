@@ -659,7 +659,7 @@ function returnedSection(data) {
 		// Fill section list with information
 		var versionname = "";
 		if (retdata['versions'].length > 0) {
-			for (j = 0; j < retdata['versions'].length; j++) {
+			for (var j = 0; j < retdata['versions'].length; j++) {
 				var itemz = retdata['versions'][j];
 				if (retdata['courseid'] == itemz['cid']) {
 
@@ -672,7 +672,7 @@ function returnedSection(data) {
 			}
 		}
 
-		str = "";
+		var str = "";
 
 		str += "<table class='navheader' style='overflow: hidden; table-layout: fixed;'>"
 			+ "<tr class='trsize nowrap'>"; // This is for anti-stacking buttons
@@ -682,7 +682,7 @@ function returnedSection(data) {
 			var startdate = null;
 			var enddate = null;
 			if (retdata['versions'].length > 0) {
-				for (i = 0; i < retdata['versions'].length; i++) {
+				for (var i = 0; i < retdata['versions'].length; i++) {
 					var item = retdata['versions'][i];
 					if (retdata['courseid'] == item['cid'] && retdata['coursevers'] == item['vers']) {
 						startdate = item['startdate'];
@@ -849,6 +849,7 @@ function returnedSection(data) {
 
 		// hide som elements if to narrow
 		var hiddenInline = "";
+		var showInline = true;
 		if ($(window).width() < 480) {
 			showInline = false;
 			hiddenInline = "none";
@@ -985,7 +986,7 @@ function returnedSection(data) {
 					var submitted;
 					var lastSubmit = null;
 
-					for (jjj = 0; jjj < data['results'].length; jjj++) {
+					for (var jjj = 0; jjj < data['results'].length; jjj++) {
 						var lawtem = data['results'][jjj];
 						if ((lawtem['moment'] == item['lid'])) {
 							grady = lawtem['grade'];
@@ -1161,7 +1162,7 @@ function returnedSection(data) {
 				}
 
 				else if (itemKind == 4) { // Moment
-
+					var strz = "";
 					if (item['gradesys'] == 0) {
 						strz = "";
 					}
