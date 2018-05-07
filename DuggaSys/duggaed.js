@@ -543,7 +543,7 @@ function returnedDugga(data) {
 			modified: "Last modified",
 			arrow: "",
 			cogwheel: "",
-			trashcan: "<input type='button' value='+' style='float:left;' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga();'>"
+			trashcan: "headingAddButton"
 		},
 		tblbody: data['entries'],
 		tblfoot: []
@@ -740,12 +740,18 @@ function renderCell(col, celldata, cellid) {
 
 function renderSortOptions(col,status) {
 	str = "";
+
+	if(col == "headingAddButton"){
+		str += "<input type='button' value='+' style='float:left;' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga();'>";
+	}
+	else{
 	if (status ==- 1) {
 		str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
 	} else if (status == 0) {
 		str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 	} else {
 		str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+	}
 	}
 	return str;
 }
