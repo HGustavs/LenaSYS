@@ -259,11 +259,6 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
 }
 
-function participationList() {
-	alert("ParticipationList");
-}
-
-
 function changedType(value)
 {
 	kind=value;
