@@ -2665,7 +2665,6 @@ table {
 /*end, styling for contribution.php*/
 .sortingBar {
   width: 50%;
-  position: relative;
   top: 28px;
 }
 .sortingBtn {
@@ -3115,7 +3114,6 @@ only screen and (max-device-width: 768px) {
 only screen and (max-device-width: 650px) {
     #sortingBar {
         width: 135px;
-        position: relative;
         top: 10px;
     }
     #searchBar {
