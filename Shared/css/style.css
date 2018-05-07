@@ -3893,7 +3893,7 @@ li:nth-last-child(10) a:hover {
 }
 
 .show-dropdown-content {
-  display: block;
+    display: block;
 }
 
 #select-header {

@@ -74,6 +74,7 @@ include '../Shared/navheader.php';
     include '../Shared/loginbox.php';
     ?>
 
+
     <!-- Add File Dialog START -->
     <div id='addFile' class='loginBoxContainer' style='display:none;'>
         <div class='loginBox' style='width:464px;'>
@@ -104,6 +105,7 @@ include '../Shared/navheader.php';
                 </div>
                 <div style='display:none;' id='errormessage'></div>
             </form>
+
         </div>
     </div>
 </div>
@@ -171,16 +173,21 @@ include '../Shared/navheader.php';
 </div>
 <!-- Markdown-preview functionality END -->
 
-<!-- Edit file functionality START -->
-<div class="editFileWindowContainer"></div>
-<div class="editFileWindow">
-    <div class="loginBoxheader">
-        <h3>This is the editor</h3>
-        <div style="cursor:pointer;" onclick="closeEditFile();">x</div>
-    </div>
-    <div class="editFileCode">
-        <div class="fileText">
-            <textarea id="filecont" oninput="editFile(this.value)" name="filetext" rows="32" cols="79"></textarea>
+    <!-- Edit file functionality START -->
+    <div class="editFileWindowContainer"></div>
+    <div class="editFileWindow">
+        <div class="loginBoxheader">
+            <h3 class="fileName"></h3>
+            <div style="cursor:pointer;" onclick="closeEditFile();">x</div>
+        </div>
+        <div class="editFileCode">
+            <div class="fileText">
+                <textarea id="filecont" oninput="editFile(this.value)" name="filetext" rows="32" cols="79"></textarea>
+            </div>
+        </div>
+        <div class="optionButtons">
+            <button id="button-save" onclick="saveMarkdown()">Save</button>
+            <button id="button-cancel" onclick="">Cancel</button>
         </div>
     </div>
     <div class="optionButtons">

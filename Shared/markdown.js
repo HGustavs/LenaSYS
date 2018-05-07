@@ -418,7 +418,10 @@ function loadPreview(fileUrl, fileName, fileKind) {
     $(".previewWindow").show();
     $(".previewWindowContainer").css("display", "block");
     var fileContent = getFIleContents(fileUrl);
+    var fileName = fileUrl.split("/").pop().split(".")[0];
     document.getElementById("mrkdwntxt").value = fileContent;
+    $(".fileName").html(fileName);
+    console.log("name: " + fileName);
     updatePreview(fileContent);
     $("#fileName").val(fileName);
     $("#fileKind").val(fileKind);
