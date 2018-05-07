@@ -415,16 +415,15 @@ function cancelPreview() {
 }
 
 function loadPreview(fileUrl, fileName, fileKind) {
+    $("#fileName").val(fileName);
+    $("#fileKind").val(fileKind);
     $(".previewWindow").show();
     $(".previewWindowContainer").css("display", "block");
     var fileContent = getFIleContents(fileUrl);
-    var fileName = fileUrl.split("/").pop().split(".")[0];
+    var tempFileName = fileUrl.split("/").pop().split(".")[0];
     document.getElementById("mrkdwntxt").value = fileContent;
-    $(".fileName").html(fileName);
-    console.log("name: " + fileName);
+    $(".fileName").html(tempFileName);
     updatePreview(fileContent);
-    $("#fileName").val(fileName);
-    $("#fileKind").val(fileKind);
     //updatePreview(document.getElementById("mrkdwntxt").value = fileContent);
 }
 

@@ -119,7 +119,7 @@ include '../Shared/navheader.php';
     </div>
     <form enctype="multipart/form-data" action="filereceive_preview.php" method="POST">
         <input type='hidden' id='cID' name='cid' value='Toddler'/>
-        <input type='hidden' id='courseVersz' name='coursevers' value='Toddler'/>
+        <input type='hidden' id='courseVers' name='coursevers' value='Toddler'/>
         <input type='hidden' id='fileKind' name='kind' value='Toddler'/>
         <input type='hidden' id='fileName' name='filename' value='Toddler'/>
         <div class="markdown">
@@ -130,7 +130,7 @@ include '../Shared/navheader.php';
                 <span id="lists" onclick="lists()" title="lists">&#9711;</span>
                 <span id="quoteText" onclick="quoteText()" title="quote">&#10078;</span>
                 <span id="linkz" onclick="linkText()" title="link"><img id="linkFabBtnImg" class="fab-icon"
-                                                                       src="../Shared/icons/link-icon.svg"></span>
+                                                                        src="../Shared/icons/link-icon.svg"></span>
                 <span id="img" onclick="externalImg()" title="Img"><img id="insert-photo" class="fab-icon"
                                                                         src="../Shared/icons/insert-photo.svg"></span>
                 <span class="headerType" title="Header">aA&#9663;</span>
@@ -173,29 +173,29 @@ include '../Shared/navheader.php';
 </div>
 <!-- Markdown-preview functionality END -->
 
-    <!-- Edit file functionality START -->
-    <div class="editFileWindowContainer"></div>
-    <div class="editFileWindow">
-        <div class="loginBoxheader">
-            <h3 class="fileName"></h3>
-            <div style="cursor:pointer;" onclick="closeEditFile();">x</div>
-        </div>
-        <div class="editFileCode">
-            <div class="fileText">
-                <textarea id="filecont" oninput="editFile(this.value)" name="filetext" rows="32" cols="79"></textarea>
-            </div>
-        </div>
-        <div class="optionButtons">
-            <button id="button-save" onclick="saveMarkdown()">Save</button>
-            <button id="button-cancel" onclick="">Cancel</button>
+<!-- Edit file functionality START -->
+<div class="editFileWindowContainer"></div>
+<div class="editFileWindow">
+    <div class="loginBoxheader">
+        <h3 class="fileName"></h3>
+        <div style="cursor:pointer;" onclick="closeEditFile();">x</div>
+    </div>
+    <div class="editFileCode">
+        <div class="fileText">
+            <textarea id="filecont" oninput="editFile(this.value)" name="filetext" rows="32" cols="79"></textarea>
         </div>
     </div>
     <div class="optionButtons">
-<!--        <button id="button-save" onclick="saveMarkdown()">Save</button>-->
-
+        <button id="button-save" onclick="saveMarkdown()">Save</button>
         <button id="button-cancel" onclick="">Cancel</button>
     </div>
-    <button id="button-close" onclick="cancelEditFile()">Close</button>
+</div>
+<div class="optionButtons">
+    <!--        <button id="button-save" onclick="saveMarkdown()">Save</button>-->
+
+    <button id="button-cancel" onclick="">Cancel</button>
+</div>
+<button id="button-close" onclick="cancelEditFile()">Close</button>
 </div>
 <!-- Edit file functionality END -->
 

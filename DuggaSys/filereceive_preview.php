@@ -48,7 +48,6 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "filerecieve_preview.
 $ha = (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid)));
 
 if($ha){
-
     $allowedExtensions = [
         "txt" => ["text/plain"],
         "html" => ["text/html"],
