@@ -339,7 +339,6 @@ function copySymbol(symbol){
     clone.connectorBottom = cloneConnBottom;
     clone.connectorLeft = cloneConnLeft;
     clone.connectorRight = cloneConnRight;
-    }
     if(clone.symbolkind != 4){
         clone.topLeft = points.push(topLeftClone) - 1;
         clone.bottomRight = points.push(bottomRightClone) - 1;
