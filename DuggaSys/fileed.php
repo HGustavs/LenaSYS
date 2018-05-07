@@ -105,7 +105,7 @@ pdoConnect();
     <div class="previewWindowContainer"></div>
     <div class="previewWindow">
     	<div class="loginBoxheader">
-        	<h3>This is the preview window</h3>
+        	<h3 class="fileName"></h3>
         	<div style="cursor:pointer;" onclick="closePreview();">x</div>
         </div>
         <div class="markdown">
@@ -154,7 +154,7 @@ pdoConnect();
     <div class="editFileWindowContainer"></div>
     <div class="editFileWindow">
         <div class="loginBoxheader">
-            <h3>This is the editor</h3>
+            <h3 class="fileName"></h3>
             <div style="cursor:pointer;" onclick="closeEditFile();">x</div>
         </div>
         <div class="editFileCode">

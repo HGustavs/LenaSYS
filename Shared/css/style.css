@@ -3895,7 +3895,7 @@ position: absolute;
 }
 
 .show-dropdown-content {
-  display: block;
+    display: block;
 }
 
 #select-header {
