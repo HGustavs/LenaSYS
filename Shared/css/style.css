@@ -3116,7 +3116,7 @@ only screen and (max-device-width: 650px) {
     #sortingBar {
         width: 135px;
         position: relative;
-        top: 28px;
+        top: 10px;
     }
   table.navheader td.access {
     margin-right: 0px;
