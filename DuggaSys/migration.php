@@ -2157,7 +2157,8 @@ $migrationArray = array(
         [
             ['column', 'quiz', 'qstart', 'datetime', ''],
         ],
-
+    ],
+    [
         'version' => 'v0.06',
         'description' => 'New table for group and M-M between Group and User',
         [
