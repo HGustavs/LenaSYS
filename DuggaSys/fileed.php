@@ -190,13 +190,7 @@ include '../Shared/navheader.php';
         <button id="button-cancel" onclick="">Cancel</button>
     </div>
 </div>
-<div class="optionButtons">
-    <!--        <button id="button-save" onclick="saveMarkdown()">Save</button>-->
 
-    <button id="button-cancel" onclick="">Cancel</button>
-</div>
-<button id="button-close" onclick="cancelEditFile()">Close</button>
-</div>
 <!-- Edit file functionality END -->
 
 <!--Fab-button-->
@@ -216,6 +210,15 @@ include '../Shared/navheader.php';
                data-tooltip="Add Link"><img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg"></a>
         </li>
     </ol>
+</div>
+
+<div class="confirmationWindow">
+    <div class="loginBoxheader">
+        <h3 class="fileName"></h3>
+        <div style="cursor:pointer;" onclick="closeConfirmation();">x</div>
+    </div>
+    <p class="confirmationText" id="editedFile" >Hej</p>
+    <button class="confirmationButton" onclick="closeConfirmation()">Ok</button>
 </div>
 </body>
 </html>

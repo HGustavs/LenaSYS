@@ -85,7 +85,10 @@ function returnedFile(data) {
 
 
 	fileLink.renderTable();
-
+	if(querystring['confirmation'] != undefined) {
+        $(".confirmationWindow").css("display", "block");
+        document.getElementById('editedFile').innerHTML = querystring['confirmation'] + " was successfully saved!";
+	}
 	if(!data['access']) {
         document.getElementById("fabButton").style.display = "none";
 	}
@@ -159,6 +162,11 @@ function closePreview() {
 function closeEditFile() {
     $(".editFileWindow").css("display","none");
     $(".editFileWindowContainer").css("display", "none");
+}
+
+function closeConfirmation() {
+    $(".confirmationWindow").css("display", "none");
+    window.location.replace('fileed.php?cid='+ querystring['cid'] + '&coursevers=' + querystring['coursevers']);
 }
 
 //------------------------------------------------------------------
