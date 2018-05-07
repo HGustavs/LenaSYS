@@ -2663,15 +2663,17 @@ table {
 }
 
 /*end, styling for contribution.php*/
-.sortingBar {
+#sortingBar {
     width: 50%;
     position: absolute;
     margin-top: 5px;
 }
+
 .sortingBtn {
   display: inline-block;
   margin-left: 0px;
 }
+
 .sortingBtn input {
     font-size: 12px;
     margin-left: 10px;
