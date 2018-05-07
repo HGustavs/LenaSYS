@@ -60,11 +60,7 @@ body {
   font-family: 'Roboto', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-y: scroll;
-<<<<<<< HEAD
-  width:100%;
-=======
   width: 100%;
->>>>>>> f04368eeadb2fecf712157a3b210ff1636907819
   height: 100%;
 }
 
@@ -3993,7 +3989,6 @@ textarea{
   width: 355px;
 }
 
-
 #button-cancel {
   position: absolute;
   left: 5px;
@@ -4031,12 +4026,15 @@ textarea#filecont{
   .editFileWindow {
     height: 500px;
   }
+
   .editFileCode {
     height: 400px;
   }
+
   #filecont {
     height: 350px;
   }
+
   .optionButtons {
     top: 436px;
   }
