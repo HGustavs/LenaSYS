@@ -3681,8 +3681,8 @@ li:nth-last-child(10) a:hover {
 }
 
  .previewWindow {
-    height: 80%;
-    width: 80%;
+    height: 100%;
+    width: 95%;
     margin: 0px auto;
     border: solid rgb(200,200,200);
     background-color: rgb(240,240,240);
@@ -3698,7 +3698,7 @@ li:nth-last-child(10) a:hover {
 .markdown {
   border: solid rgb(200, 200, 200);
   background-color: #FFFFFF;
-  width: 42%;
+  width: 38%;
   height: 90%;
   position: relative;
   margin: 20px 10px 10px 1%;
@@ -3710,7 +3710,7 @@ li:nth-last-child(10) a:hover {
   background-color: #FFFFFF;
   word-wrap: break-word;
   overflow-y: scroll;
-  width: 46%;
+  width: 56%;
   height: 90%;
   position: relative;
   margin: 20px 1% 10px 8px;
@@ -3782,21 +3782,21 @@ li:nth-last-child(10) a:hover {
   line-height: 25px;
 }
 .markText {
-    height: 86%;
-    width:86%;
-    margin:10px auto;
+    height:87%;
+    width:84%;
+
 }
 #mrkdwntxt {
   border-radius: 8px;
   box-shadow: 2px 2px 4px #888 inset;
   resize: none;
-  width:90%;
+  width:100%;
   height:100%;
-  margin: 10px auto;
+  margin:12px;
 }
 textarea#mrkdwntxt {
-  width: 94%;
-  height: 100%;
+  width: 100%;
+  height: 93%;
   display: block;
   padding: 10px
 }
@@ -3846,7 +3846,7 @@ textarea#mrkdwntxt {
 }
 #link {
     cursor: pointer;
-    margin-right: 3%;
+    margin-left: 14%;
 }
 
 #linkFabBtnImg {
