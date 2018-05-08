@@ -27,7 +27,8 @@ $cid=getOP('cid');
 $vers=getOP('coursevers');
 $kind=getOP('kind');
 $fileName=getOP('filename');
-$inputText=gettheOP('markdowntext');
+$textField=getOP('textField');
+$inputText=gettheOP($textField);
 $error=false;
 
 if(isset($_SESSION['uid'])){

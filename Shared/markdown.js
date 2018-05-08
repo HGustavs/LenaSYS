@@ -419,6 +419,8 @@ function loadPreview(fileUrl, fileName, fileKind) {
     $("#fileKind").val(fileKind);
     $(".previewWindow").show();
     $(".previewWindowContainer").css("display", "block");
+    $(".markdownPart").show();
+    $(".editFilePart").hide();
     var fileContent = getFIleContents(fileUrl);
     var tempFileName = fileUrl.split("/").pop().split(".")[0];
     document.getElementById("mrkdwntxt").value = fileContent;
