@@ -704,7 +704,7 @@ function returnedResults(data)
         break;
       }
     }
-    createSortableTable(data);
+    myTable.renderTable();
   } else {
 
     entries=data.entries;
@@ -801,7 +801,7 @@ function createSortableTable(data){
 		null,
 		"",
 		renderCell,
-		null,
+		renderSortOptions,
 		null,
 		rowFilter,
 		[],
@@ -918,4 +918,96 @@ function rowFilter(row) {
   if (!showTeachers && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
 
   return true;
+}
+
+function renderSortOptions(col,status) {
+	str = "";
+	if (status ==- 1) {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+	} else if (status == 0) {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+	} else {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+	}
+	return str;
+}
+			
+//--------------------------------------------------------------------------
+// compare
+// ---------------
+//  Callback function with different compare alternatives for the column sort
+//--------------------------------------------------------------------------
+function compare(a,b) {
+	let col = sortableTable.currentTable.getSortcolumn();
+	let tempA;
+	let tempB;
+
+	//Column first name last name ssn
+	if (col == "Fname/Lname/SSN") {
+		/* The sorting in this column needs to follow the following priority order
+			1. First name
+			2. Last name
+			3. SSN */
+
+		tempA = a['firstname'].toUpperCase();
+		tempA += " " + a['lastname'].toUpperCase();
+		tempA += " " + a['ssn'].toUpperCase();
+
+		tempB = b['firstname'].toUpperCase();
+		tempB += " " + b['lastname'].toUpperCase();
+		tempB += " " + b['ssn'].toUpperCase();
+		
+	//Columns that contains duggor
+	} else {
+		/* The sorting in a column needs to follow the following priority order:
+			1. Need marking 												(10 000)
+			2. If the dugga is passed								(1 000)
+			3. If the dugga is failed								(100)
+			4. If the student only viewed the dugga (10)
+			5. When the dugga has been submitted 		(1) */
+
+		tempA = 0;
+		tempB = 0;
+		if(a['needMarking'] == true) {
+			tempA += 10000;
+		}
+		if(b['needMarking'] == true) {
+			tempB += 10000;
+		}
+			
+		if(a['grade'] == 2) {
+			tempA += 1000;
+		}
+		if(b['grade'] == 2) {
+			tempB += 1000;
+		}
+
+		if(a['grade'] == 1) {
+			tempA += 100;
+		}
+		if(b['grade'] == 1) {
+			tempB += 100;
+		}
+
+		if(a['ishere'] == true) {
+			tempA += 10;
+		}
+		if(b['ishere'] == true) {
+			tempB += 10;
+		}
+
+		if(a['submitted'] > b['submitted']) {
+			tempA += 1;
+		} else if(a['submitted'] < b['submitted']) {
+			tempB += 1;
+		}
+	}
+
+	if (tempA > tempB) {
+		return 1;
+	} else if (tempA < tempB) {
+		return -1;
+	} else {
+		return 0;
+	}
 }
