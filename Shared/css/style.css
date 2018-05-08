@@ -3984,7 +3984,6 @@ li:nth-last-child(10) a:hover {
   background-color: rgb(240,240,240);
   box-shadow: 0px 5px 10px grey;
   z-index: 12000;
-  display: none;
   left: 0;
   right: 0;
   top: 100px;
