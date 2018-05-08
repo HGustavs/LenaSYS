@@ -97,7 +97,7 @@ var symbolEndKind;                      // Is used to store which kind of object
 
 
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
-
+var connectedClones = [];
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
@@ -134,12 +134,15 @@ function keyDownHandler(e){
         }
     } else if(ctrlIsClicked && key == 86 ){
         //Ctrl + v
+        //Display cloned objects except lines
+        var connectedClones = [];
         for(var i = 0; i < cloneTempArray.length; i++){
-            //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != 4){
-                copySymbol(cloneTempArray[i]);
-            }
+            cloneTempArray[i].targeted = false;
         }
+        for(var i = 0; i < cloneTempArray.length; i++){
+            connectedClones = copySymbol(cloneTempArray[i]);
+        }
+        fixConnections(connectedClones);
         updateGraphics();
         SaveState();
     }
@@ -242,6 +245,90 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
     return this.length - 1;
 }
 
+function fixConnections(clones){
+    var lineArr = diagram.getLineObjects();
+    for(var i = 0; i < lineArr.length; i++){
+        if(!lineArr[i].targeted) continue;
+        var topLeftClone = Object.assign({}, points[lineArr[i].topLeft]);
+        var bottomRightClone = Object.assign({}, points[lineArr[i].bottomRight]);
+        var centerPointClone = Object.assign({}, points[lineArr[i].centerPoint]);
+        var tempBottomRight = lineArr[i].bottomRight;
+        var tempTopLeft = lineArr[i].topLeft;
+        lineArr[i].bottomRight = points.push(bottomRightClone) - 1;
+        lineArr[i].topLeft = points.push(topLeftClone) - 1;
+        lineArr[i].centerPoint = lineArr[i].bottomRight;
+        for(var j = 0; j < clones.length; j++){
+            if(clones[j].connectorTop.length > 0){
+                var fromValue;
+                var toValue;
+
+                if(clones[j].connectorTop[0].from == tempBottomRight){
+                    fromValue = lineArr[i].bottomRight;
+                }
+                else if(clones[j].connectorTop[0].from == tempTopLeft){
+                    fromValue = lineArr[i].topLeft;
+                }
+                if(clones[j].connectorTop[0].to == tempBottomRight){
+                    toValue = lineArr[i].bottomRight;
+                }
+                else if(clones[j].connectorTop[0].to == tempTopLeft){
+                    toValue = lineArr[i].topLeft;
+                }
+                clones[j].connectorTop[0] = {from:fromValue, to:toValue};
+            }
+            else if(clones[j].connectorBottom.length > 0){
+                if(clones[j].connectorBottom[0].from == tempBottomRight){
+                    fromValue = lineArr[i].bottomRight;
+                }
+                else if(clones[j].connectorBottom[0].from == tempTopLeft){
+                    fromValue = lineArr[i].topLeft;
+                }
+                if(clones[j].connectorBottom[0].to == tempBottomRight){
+                    toValue = lineArr[i].bottomRight;
+                }
+                else if(clones[j].connectorBottom[0].to == tempTopLeft){
+                    toValue = lineArr[i].topLeft;
+                }
+                clones[j].connectorBottom[0] = {from:fromValue, to:toValue};
+            }
+            else if(clones[j].connectorLeft.length > 0){
+                if(clones[j].connectorLeft[0].from == tempBottomRight){
+                    fromValue = lineArr[i].bottomRight;
+                }
+                else if(clones[j].connectorLeft[0].from == tempTopLeft){
+                    fromValue = lineArr[i].topLeft;
+                }
+                if(clones[j].connectorLeft[0].to == tempBottomRight){
+                    toValue = lineArr[i].bottomRight;
+                }
+                else if(clones[j].connectorLeft[0].to == tempTopLeft){
+                    toValue = lineArr[i].topLeft;
+                }
+                clones[j].connectorLeft[0] = {from:fromValue, to:toValue};
+            }
+            else if(clones[j].connectorRight.length > 0){
+                if(clones[j].connectorRight[0].from == tempBottomRight){
+                    fromValue = lineArr[i].bottomRight;
+                }
+                else if(clones[j].connectorRight[0].from == tempTopLeft){
+                    fromValue = lineArr[i].topLeft;
+                }
+                if(clones[j].connectorRight[0].to == tempBottomRight){
+                    toValue = lineArr[i].bottomRight;
+                }
+                else if(clones[j].connectorRight[0].to == tempTopLeft){
+                    toValue = lineArr[i].topLeft;
+                }
+                clones[j].connectorRight[0] = {from:fromValue, to:toValue};
+            }
+            if(clones[j].symbolkind == 2){
+                clones[j].centerPoint = lineArr[i].centerPoint;
+            }
+        }
+    }
+    connectedClones = [];
+}
+
 //Clone an object
 function copySymbol(symbol){
     var clone = Object.assign({}, symbol);
@@ -254,8 +341,12 @@ function copySymbol(symbol){
     var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
     centerPointClone.x += 10;
     centerPointClone.y += 10;
+    var cloneConnTop = Object.assign([], symbol.connectorTop);
+    var cloneConnBottom = Object.assign([], symbol.connectorBottom);
+    var cloneConnLeft = Object.assign([], symbol.connectorLeft);
+    var cloneConnRight = Object.assign([], symbol.connectorRight);
 
-    clone = new Symbol(symbol.symbolkind);
+
     if(symbol.symbolkind == 1){
         clone.name = "New" + diagram.length;
     }else if(symbol.symbolkind == 2){
@@ -267,20 +358,26 @@ function copySymbol(symbol){
     }else{
         clone.name = "Relation" + diagram.length;
     }
-    clone.topLeft = points.push(topLeftClone) - 1;
-    clone.bottomRight = points.push(bottomRightClone) - 1;
-    clone.centerPoint = points.push(centerPointClone) - 1;
-    clone.object_type = "";
-    clone.fontColor = "#000";
-    clone.font = "Arial";
 
+    if(clone.connectorTop.length > 0 || clone.connectorBottom.length > 0
+        || clone.connectorLeft.length > 0 || clone.connectorRight.length > 0){
+            connectedClones.push(clone);
+    }
+    clone.connectorTop = cloneConnTop;
+    clone.connectorBottom = cloneConnBottom;
+    clone.connectorLeft = cloneConnLeft;
+    clone.connectorRight = cloneConnRight;
+
+    if(clone.symbolkind != 4){
+        clone.topLeft = points.push(topLeftClone) - 1;
+        clone.bottomRight = points.push(bottomRightClone) - 1;
+        clone.centerPoint = points.push(centerPointClone) - 1;
+    }
+    clone.object_type = "";
     clone.targeted = true;
-    symbol.targeted = false;
 
     diagram.push(clone);
-
-    return diagram.length;
-
+    return connectedClones;
 }
 
 //--------------------------------------------------------------------
