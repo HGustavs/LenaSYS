@@ -1,21 +1,31 @@
 <?php
 date_default_timezone_set("Europe/Stockholm");
+
 // Include basic application services!
 include_once "../Shared/sessions.php";
 include_once "../Shared/basic.php";
+
 // Connect to database and start session
 pdoConnect();
 session_start();
+
 $cid=$_SESSION['courseid'];
 $vers=$_SESSION['coursevers'];
+
 $debug="NONE!";
+
 $log_db = new PDO('sqlite:../../GHData/GHdata_2018_1.db');
+
 $allusers=array();
+
 $allrowranks=array();
 $alleventranks=array();
 $allcommentranks=array();
+
 $allcommitranks=array();
+
 $draught=false;
+
 if(checklogin() && isSuperUser($_SESSION['uid'])) {
     $gituser = getOP('userid');
     $query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2018-03-25" and blamedate<"2019-01-01" union select author as usr from event where eventtime>"2018-03-25" and eventtime<"2019-01-01" union select author as usr from issue where issuetime>"2018-03-25" and issuetime<"2019-01-08") order by usr;');
@@ -27,6 +37,7 @@ if(checklogin() && isSuperUser($_SESSION['uid'])) {
     foreach($rows as $row){
         if(strlen($row['usr'])<9) array_push($allusers, $row['usr']);
     }
+  
     $draught=true;
 }else{
     if(isset($_SESSION['uid'])){
@@ -37,6 +48,7 @@ if(checklogin() && isSuperUser($_SESSION['uid'])) {
     }
     $gituser=$loginname;
 }
+
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 	$loginname=$_SESSION['loginname'];
@@ -48,12 +60,16 @@ if(isset($_SESSION['uid'])){
 	$lastname="UNK";
 	$firstname="UNK";
 }
+
 //$debug=print_r($_SESSION,true);
+
 $startweek = strtotime('2018-03-26');									// First monday in january
 $currentweek=$startweek;
 $currentweekend=strtotime("+1 week",$currentweek);
 $weekno=1;
+
 $weeks = array();
+
 $commitrank="NOT FOUND";
 $commitrankno="NOT FOUND";
 $i=1;
@@ -68,7 +84,9 @@ foreach($rows as $row){
         $commitrank=$i;
         $commitrankno=$row['rowk'];
     }
+  
     if($draught) array_push($allcommitranks, $row);
+  
     $i++;
 }
 $rowrank="NOT FOUND";
@@ -86,8 +104,11 @@ foreach($rows as $row){
         $rowrankno=$row['rowk'];
     }
     if($draught) array_push($allrowranks, $row);
+  
     $i++;
+  
 }
+
 $eventrankno="NOT FOUND";
 $eventrank="NOT FOUND";
 $i=1;
@@ -102,9 +123,12 @@ foreach($rows as $row){
         $eventrank=$i;
         $eventrankno=$row['rowk'];
     }
+  
     if($draught) array_push($alleventranks, $row);
+  
     $i++;
 }
+
 $commentrankno="NOT FOUND";
 $commentrank="NOT FOUND";
 $i=1;
@@ -119,9 +143,12 @@ foreach($rows as $row){
         $commentrank=$i;
         $commentrankno=$row['rowk'];
     }
+  
     if($draught) array_push($allcommentranks, $row);
+  
     $i++;
 }
+
 $issuerank="NOT FOUND";
 $issuerankno="NOT FOUND";
 $i=1;
@@ -138,6 +165,8 @@ foreach($rows as $row){
     }
     $i++;
 }
+
+
 /*
 $overallrank="NOT FOUND";
 $overallrankno="NOT FOUND";
@@ -153,13 +182,20 @@ foreach($rows as $row){
         $overallrank=$i;
         $overallrankno=$row['davegrowl'];
     }
+    
     if($draught) array_push($alltotalranks, $row);
+    
     $i++;
 }
+
+
 SELECT sum(rowk),author FROM (SELECT count(*) as rowk, author FROM event where eventtime>"2017-03-03" group by author UNION SELECT COUNT(*) as rowk,author FROM comment where commenttime>"2017-03-03" group by author UNION SELECT count(*) as rowk,author from issue where issuetime>"2017-03-03" group by author ) group by author order by rowk desc;
 */
+
 do{
+  
 		// Number of issues created by user during the interval
+  
 		$issues= array();
     $currentweekdate=date('Y-m-d', $currentweek);
 	$currentweekenddate=date('Y-m-d', $currentweekend);
@@ -181,6 +217,7 @@ do{
 				);
 				array_push($issues, $issue);
 		}
+  
 		// Event count of the various kinds of events during interval
 		$events = array();
 		$query = $log_db->prepare("SELECT kind,count(kind) as cnt FROM event WHERE kind!='comment' AND event.author=:gituser AND eventtime>:eventfrom AND eventtime<:eventto GROUP BY kind");
@@ -199,6 +236,7 @@ do{
 				);
 				array_push($events, $event);
 		}
+  
 		// Number of comments posted by the user during the interval
 		$comments= array();
 		$query = $log_db->prepare('SELECT * FROM event WHERE author=:gituser AND eventtime>:eventfrom AND eventtime<:eventto AND kind="comment"');
@@ -217,6 +255,7 @@ do{
 				);
 				array_push($comments, $comment);
 		}
+  
 		// Number of commits made by the user during the interval
 		$commits=array();
 		$query = $log_db->prepare('SELECT message,cid,author FROM commitgit WHERE author=:gituser AND thedate>:eventfrom AND thedate<:eventto');
@@ -235,6 +274,7 @@ do{
 				);
 				array_push($commits, $commit);
 		}
+  
 		// Number of lines changed in each file during interval
 		$files= array();
         $query = $log_db->prepare('SELECT sum(rowcnt) as rowk, * FROM Bfile,Blame where Blame.fileid=Bfile.id and blameuser=:gituser and blamedate>:blamefrom and blamedate<:blameto GROUP BY filename');
@@ -254,6 +294,7 @@ do{
 				);
 				array_push($files, $file);
 		}
+  
 		$week = array(
 			'weekno' => $weekno,
 			'weekstart' => $currentweekdate,
@@ -265,10 +306,16 @@ do{
 			'files' => $files
 		);
 		array_push($weeks, $week);
+  
 		$currentweek=$currentweekend;
+  
 		$currentweekend=strtotime("+1 week",$currentweek);
+  
 		$weekno++;
+  
 }while($weekno<11);
+
+
 $count = array();
 $currentdate = $startweek;
 for($i=0;$i<70;$i++){
@@ -340,8 +387,9 @@ $array = array(
     'allcommentranks' => $allcommentranks,
     'allcommitranks' => $allcommitranks,
 	'githubuser' => $gituser,
-	
 	'count' => $count
 );
+
 echo json_encode($array);
+
 ?>

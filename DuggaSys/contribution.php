@@ -33,7 +33,7 @@ pdoConnect();
 		$noup="COURSE";
 		include '../Shared/navheader.php';
 	?>
-  <div id='infoText' style='background-color:#ffffff; border:1px solid black; top:100px; display:none;position:absolute;'>test</div>
+  <div id='infoText' style='background-color:#ffffff; border:1px solid black; top:100px; display:none;position:absolute;'></div>
 	<!-- content START -->
 	<div id="content">
 
