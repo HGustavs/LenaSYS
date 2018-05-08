@@ -155,7 +155,9 @@ function closeAddFile() {
 }
 
 function closePreview() {
-	$(".previewWindow").css("display","none");
+	/*$(".previewWindow").css("display","none");
+    $(".previewWindowContainer").css("display", "none");*/
+    $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
 }
 
@@ -196,7 +198,6 @@ function validateForm() {
 //----------------------------------------------------------------------------
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
-
 function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
 	var link = celldata.split('://');
@@ -246,7 +247,7 @@ function renderCell(col,celldata,cellid) {
             str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></div>";
 		} else if (list[list.length-1] == "js" || list[list.length-1] == "html" || list[list.length-1] == "css" || list[list.length-1] == "php"){
             str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += "onclick='loadFile(\"" + obj.filePath + "\")'></div>";
+            str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></div>";
         }
 		return str;
 
@@ -495,9 +496,15 @@ function deleteFile(fileid,filename) {
  * --------------------------------------------------------------*
  *****************************************************************/
 
-function loadFile(fileUrl) {
-    $(".editFileWindow").show();
-    $(".editFileWindowContainer").css("display", "block");
+function loadFile(fileUrl, fileNamez, fileKind) {
+    $("#fileName").val(fileNamez);
+    $("#fileKind").val(fileKind);
+    $(".previewWindow").show();
+    $(".previewWindowContainer").css("display", "block");
+    $(".markdownPart").hide();
+    $(".editFilePart").show();
+
+    //$(".editFileWindowContainer").css("display", "block");
     var fileContent = getFIleContents(fileUrl);
 	var fileName = fileUrl.split("/").pop().split(".")[0];
     document.getElementById("filecont").value = fileContent;
@@ -516,12 +523,26 @@ function editFile(str){
 
 }
 function cancelEditFile() {
-    $(".editFileWindow").hide();
+    // $(".editFileWindow").hide();
     $(".editFileWindowContainer").css("display", "none");
 }
 
 function saveMarkdown() {
     $("#cID").val(querystring['cid']);
     $("#courseVers").val(querystring['coursevers']);
+    $("#textField").val("markdowntext");
+}
+
+function saveTextToFile() {
+    $("#cID").val(querystring['cid']);
+    $("#courseVers").val(querystring['coursevers']);
+    $("#textField").val("filetext");
+}
+
+function validatePreviewForm(){
+	if(document.getElementById("cID").value == "Toddler"){
+		return false;
+	}
+	return true;
 }
 

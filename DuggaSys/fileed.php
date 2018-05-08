@@ -108,56 +108,74 @@ pdoConnect();
         <h3>This is the preview window</h3>
         <div style="cursor:pointer;" onclick="closePreview();">x</div>
     </div>
-    <form enctype="multipart/form-data" action="filereceive_preview.php" method="POST">
+    <form id="editForm" enctype="multipart/form-data" action="filereceive_preview.php" onsubmit="return validatePreviewForm()" method="POST">
         <input type='hidden' id='cID' name='cid' value='Toddler'/>
         <input type='hidden' id='courseVers' name='coursevers' value='Toddler'/>
         <input type='hidden' id='fileKind' name='kind' value='Toddler'/>
         <input type='hidden' id='fileName' name='filename' value='Toddler'/>
-        <div class="markdown">
-            <div class="markNav">Markdown
-                <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
-                <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
-                <span id="codeBlockText" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
-                <span id="lists" onclick="lists()" title="lists">&#9711;</span>
-                <span id="quoteText" onclick="quoteText()" title="quote">&#10078;</span>
-                <span id="linkz" onclick="linkText()" title="link"><img id="linkFabBtnImg" class="fab-icon"
-                                                                        src="../Shared/icons/link-icon.svg"></span>
-                <span id="img" onclick="externalImg()" title="Img"><img id="insert-photo" class="fab-icon"
-                                                                        src="../Shared/icons/insert-photo.svg"></span>
-                <span class="headerType" title="Header">aA&#9663;</span>
-                <div id="select-header">
-                    <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
-                    <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
-                    <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
-                    <span id="headerType4" onclick="selected();headerVal4()" value="H4">Header 4</span>
-                    <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
-                    <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
+        <input type='hidden' id='textField' name='textField' value='Toddler'/>
+        <div class="markdownPart">
+            <div class="markdown">
+                <div class="markNav">Markdown
+                    <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
+                    <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
+                    <span id="codeBlockText" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
+                    <span id="lists" onclick="lists()" title="lists">&#9711;</span>
+                    <span id="quoteText" onclick="quoteText()" title="quote">&#10078;</span>
+                    <span id="linkz" onclick="linkText()" title="link"><img id="linkFabBtnImg" class="fab-icon"
+                                                                            src="../Shared/icons/link-icon.svg"></span>
+                    <span id="img" onclick="externalImg()" title="Img"><img id="insert-photo" class="fab-icon"
+                                                                            src="../Shared/icons/insert-photo.svg"></span>
+                    <span class="headerType" title="Header">aA&#9663;</span>
+                    <div id="select-header">
+                        <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
+                        <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
+                        <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
+                        <span id="headerType4" onclick="selected();headerVal4()" value="H4">Header 4</span>
+                        <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
+                        <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
 
+                    </div>
+                </div>
+                <div class="markText">
+                <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext" rows="32"
+                          cols="40"></textarea>
                 </div>
             </div>
-            <div class="markText">
-            <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext" rows="32"
-                      cols="40"></textarea>
-            </div>
-        </div>
-        <div class="markdownPrev">
-            <div class="prevNav">Markdown Preview</div>
-            <div class="markTextPrev">
-                <div class="prevSpan">
-                    <div class="descbox">
-                        <span id="markdown"></span>
+            <div class="markdownPrev">
+                <div class="prevNav">Markdown Preview</div>
+                <div class="markTextPrev">
+                    <div class="prevSpan">
+                        <div class="descbox">
+                            <span id="markdown"></span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div>
+            <div>
 
-            <!--<button id="button-save" onclick="saveMarkdown()"></button>
+                <!--<button id="button-save" onclick="saveMarkdown()"></button>
 
-            <button id="button-cancel" onclick="">Cancel</button>-->
+                <button id="button-cancel" onclick="">Cancel</button>-->
+            </div>
+            <button type="submit" onclick="saveMarkdown()">Save</button>
+            <button onclick="cancelPreview()">Close</button>
         </div>
-        <input id="inputSave" type="submit" value="Save" onclick="saveMarkdown()"/>
-        <button id="button-close" onclick="cancelPreview()">Close</button>
+        <div class="editFilePart">
+            <div class="editFileWindow">
+                <div class="editFileCode">
+                    <div class="fileText">
+                        <textarea id="filecont" oninput="editFile(this.value)" name="filetext" rows="32" cols="79"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" onclick="saveTextToFile()"> Save </button>
+                <button onclick="cancelPreview()">Close</button>
+                <div class="optionButtons">
+
+                </div>
+            </div>
+        </div>
 
     </form>
 </div>
@@ -165,21 +183,6 @@ pdoConnect();
 
 <!-- Edit file functionality START -->
 <div class="editFileWindowContainer"></div>
-<div class="editFileWindow">
-    <div class="loginBoxheader">
-        <h3 class="fileName"></h3>
-        <div style="cursor:pointer;" onclick="closeEditFile();">x</div>
-    </div>
-    <div class="editFileCode">
-        <div class="fileText">
-            <textarea id="filecont" oninput="editFile(this.value)" name="filetext"</textarea>
-        </div>
-    </div>
-    <div class="optionButtons">
-        <button id="button-save" onclick="saveMarkdown()">Save</button>
-        <button id="button-cancel" onclick="">Cancel</button>
-    </div>
-</div>
 
 <!-- Edit file functionality END -->
 
