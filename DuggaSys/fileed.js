@@ -452,32 +452,7 @@ $(document).mouseup(function(e) {
 			$('.fab-btn-list').fadeOut(0);
 		}
 	}
-}).mousedown(function(e) {
-	// If the fab list is visible, there should be no timeout to toggle the list
-	if ($('.fab-btn-list').is(':visible')) {
-		fabListIsVisible = false;
-	} else {
-		fabListIsVisible = true;
-	}
-	if (fabListIsVisible) {
-		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
-			pressTimer = window.setTimeout(function() {
-				toggleFabButton();
-			}, 500);
-		}
-	} else {
-		toggleFabButton();
-		if (e.target.id == "gFabBtn" || e.target.id == "gFabBtnImg") {
-	    	showFilePopUp('GFILE');
-	    } else if (e.target.id == "lFabBtn" || e.target.id == "lFabBtnImg") {
-	    	showFilePopUp('LFILE');
-	    } else if (e.target.id == "mFabBtn" || e.target.id == "mFabBtnImg") {
-	    	showFilePopUp('MFILE');
-	    } else if (e.target.id == "linkFabBtn" || e.target.id == "linkFabBtnImg") {
-	    	showLinkPopUp();
-	    }
-	}
-}).bind('taphold', function(e){
+}).on("taphold", function(e){
     if ($('.fab-btn-list').is(':visible')) {
 		fabListIsVisible = false;
 	} else {
@@ -487,7 +462,7 @@ $(document).mouseup(function(e) {
 		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
 			pressTimer = window.setTimeout(function() {
 				toggleFabButton();
-			}, 500);
+			}, 400);
 		}
 	} else {
 		toggleFabButton();
