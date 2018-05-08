@@ -429,7 +429,7 @@ function toggleFabButton() {
 	}
 }
 
-$(document).mouseup(function(e) {
+$(document).on('touchend': function() {
 	// The "Add Course Local File" popup should appear on
 	// a "fast click" if the fab list isn't visible
 	if (!$('.fab-btn-list').is(':visible')) {
@@ -452,7 +452,7 @@ $(document).mouseup(function(e) {
 			$('.fab-btn-list').fadeOut(0);
 		}
 	}
-}).mousedown(function(e) {
+}).on('touchstart':function() {
 	// If the fab list is visible, there should be no timeout to toggle the list
 	if ($('.fab-btn-list').is(':visible')) {
 		fabListIsVisible = false;
@@ -480,7 +480,7 @@ $(document).mouseup(function(e) {
 });
 
 function deleteFile(fileid,filename) {
-	if (confirm("Do you really want to delete the file/link: " + filename)) {
+	if (confirm("Do you really want to delete the file/link: " + filename)) { 
 		AJAXService("DELFILE",{fid:fileid,cid:querystring['cid']},"FILE");
 	}
 	/*Reloads window when deleteFile has been called*/
