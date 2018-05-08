@@ -24,6 +24,7 @@ var fileKind = "";
 var searchterm = "";
 var pressTimer;
 var fabListIsVisible = true;
+var fabTimer;
 
 AJAXService("GET",{cid:querystring['cid']},"FILE");
 
@@ -478,6 +479,7 @@ $(document).mouseup(function(e) {
 	    }
 	}
 }).on("touchstart", function(e){
+    
     if ($('.fab-btn-list').is(':visible')) {
 		fabListIsVisible = false;
 	} else {
@@ -485,7 +487,7 @@ $(document).mouseup(function(e) {
 	}
 	if (fabListIsVisible) {
 		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
-			pressTimer = window.setTimeout(function() {
+			fabTimer = window.setTimeout(function() {
 				toggleFabButton();
 			}, 500);
 		}
@@ -501,7 +503,11 @@ $(document).mouseup(function(e) {
 	    	showLinkPopUp();
 	    }
 	}
-});
+}).on("touchend", function(e){
+    if(fabTimer){
+        clearTimeout(fabTimer);
+    }
+};
 
 
 
