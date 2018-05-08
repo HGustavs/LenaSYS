@@ -459,10 +459,8 @@ $(document).mouseup(function(e) {
 		fabListIsVisible = true;
 	}
 	if (fabListIsVisible) {
-		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
-			pressTimer = window.setTimeout(function() {
+		if (e.target.id == "fabButton") {
 				toggleFabButton();
-			}, 400);
 		}
 	} else {
 		toggleFabButton();
