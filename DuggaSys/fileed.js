@@ -490,6 +490,7 @@ $(document).mouseup(function(e) {
 			fabTimer = window.setTimeout(function() {
 				toggleFabButton();
 			}, 500);
+            e.preventDefault()
 		}
 	} else {
 		toggleFabButton();
@@ -502,6 +503,7 @@ $(document).mouseup(function(e) {
 	    } else if (e.target.id == "linkFabBtn" || e.target.id == "linkFabBtnImg") {
 	    	showLinkPopUp();
 	    }
+        
 	}
 }).on("touchend", function(e){
     //abrupts and clears the timer for touchstart when the user lets go of the fab
