@@ -956,7 +956,7 @@ function compare(a,b) {
 		tempB = b['firstname'].toUpperCase();
 		tempB += " " + b['lastname'].toUpperCase();
 		tempB += " " + b['ssn'].toUpperCase();
-		
+
 	//Columns that contains duggor
 	} else {
 		/* The sorting in a column needs to follow the following priority order:
