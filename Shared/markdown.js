@@ -582,14 +582,7 @@ function quoteText(){
     txtarea.selectionEnd= end + 2;
     updatePreview(txtarea.value);
 }
-function beginningSpace(){
-    this.setCarotPosition();
-    var finText = txtarea.value.substring(0, start) + '\r' + sel + '' + txtarea.value.substring(end);
-    txtarea.value = finText;
-    txtarea.focus();
-    txtarea.selectedEnd=end + 3;
-    updatePreview(txtarea.value);
-}
+
 
 $(document).ready(function(){
    $(".headerType").click(function(){
