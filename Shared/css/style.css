@@ -1270,14 +1270,6 @@ input {
   padding: 8px 0px 8px 8px;
 }
 
-.drop-down-text>a::before {
-  /*PLACEHOLDER FOR ICON*/
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  content: "I";
-}
-
 .drop-down-text:hover {
   background-color: rgb(240, 240, 240);
   cursor: default !important;
