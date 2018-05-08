@@ -198,7 +198,7 @@ function createDugga() {
 	//$("#overlay").css("display","none");
 
 	//autograde, gradesystem, qname, quizFile, release, deadline, creator, vers
-	AJAXService("ADDUGGA", { cid: cid, autograde: autograde, gradesys: gradesys, nme: nme, template: template, release: release, deadline: deadline, deadline2: deadline2, deadline3: deadline3, coursevers: coursevers }, "DUGGA");
+	AJAXService("ADDUGGA", { cid: cid, autograde: autograde, gradesys: gradesys, nme: nme, template: template, release: release, deadline: deadline, deadline2: deadline2, deadline3: deadline3, coursevers: coursevers, qstart: qstart}, "DUGGA");
 }
 
 function selectDugga(qid) {
