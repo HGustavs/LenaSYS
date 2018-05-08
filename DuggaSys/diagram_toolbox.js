@@ -1,10 +1,11 @@
-var val = (locallocalStorage.getItem("toolbarState") != null) localStorage.getItem("toolbarState") : 0;
+var val;
 
 function initToolbox(){
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     var bound = myCanvas.getBoundingClientRect();
     element.style.top = (bound.top+"px");
+    val = (locallocalStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     //element.style.height = (bound.bottom-bound.top-200+"px");
     //element.style.height = (400+"px");
 }
