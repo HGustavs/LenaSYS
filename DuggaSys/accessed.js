@@ -250,12 +250,13 @@ function changeLastname(uid,id)
 {
 	AJAXService("LASTNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
 }
-function changeClass(cid,uid,val)
+function changeClass(cid,uid,val,selected)
 {
     if(val!="newClass"){
 	AJAXService("CLASS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
     }else if(val=="newClass"){
-	newClassSelected();
+	AJAXService("CLASS",{cid:cid,uid:uid,val:selected,coursevers:querystring['coursevers']},"ACCESS");
+	showCreateClassPopup();
     }
 }
 
@@ -447,7 +448,8 @@ function renderCell(col,celldata,cellid) {
 	for(var i = 0; i < filez['classes'].length; i++){
 	    items.push(filez['classes'][i]['class']);
 	}
-	str = makeClassDatalist("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
+	    var selectedItem = obj.class;
+	    str = makeClassDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value,\""+selectedItem+"\");", items, items, selectedItem);
 	str += "<div style='display:none;'>" + obj.class + "</div>";
 	return str;
     } else if(col == "groups") {
@@ -459,7 +461,7 @@ function renderCell(col,celldata,cellid) {
 }
 
 function makeDropdown(onChange, values, items, selected){
-    str = "<select onChange='"+onChange+"' onclick='return false;'>";
+    str = "<select id='testId' onChange='"+onChange+"' onclick='return false;'>";
     for(var i = 0; i < values.length; i++){
 	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
     }
@@ -467,21 +469,16 @@ function makeDropdown(onChange, values, items, selected){
     return str;
 }
 
-function makeClassDatalist(onChange, values, items, selected){
+function makeClassDropdown(onChange, values, items, selected){
     str = "<select onChange='"+onChange+"' onclick='return false;'>";
     str+= "<option value='null'></option>";
 
     for(var i = 0; i < values.length; i++){
 	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
     }
-
     str+= "<option value='newClass'>&#x2795 New Class</option>";
     str+="</select>";
     return str;
-}
-
-function newClassSelected(){
-	showCreateClassPopup();
 }
 
 function renderSortOptions(col,status) {
