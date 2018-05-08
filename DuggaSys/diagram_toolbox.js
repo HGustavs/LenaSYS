@@ -1,4 +1,4 @@
-var val = 0;
+var val = (locallocalStorage.getItem("toolbarState") != null) localStorage.getItem("toolbarState") : 0;
 
 function initToolbox(){
     var element = document.getElementById('diagram-toolbar');
@@ -34,7 +34,7 @@ function switchToolbar(direction){
     }
   }
   document.getElementById('toolbarTypeText').innerHTML = text[val];
-
+  localStorage.setItem("toolbarState", val)
   //hides irrelevant buttons, and shows relevant buttons
   if(val == 1){
     $(".buttonsStyle").hide();
