@@ -178,7 +178,7 @@ pdoConnect();
               <input id='saveVariant' class='submit-button' style='display:none; float:right;' type='button' value='Save' onclick='updateVariant(); showVariantSubmitButton();'>
               <input id='disableVariant' class='submit-button disableEnable' style='display:none; float:right;' type='button' value='Disable' onclick='showVariantEnableButton();'>
               <input id='enableVariant' class='submit-button disableEnable' style='display:none; float:right;' type='button' value='Enable' onclick='showVariantDisableButton();'>
-              <input id='cancelVariant' class='submit-button' style='display:block; float:right;' type='button' value='Cancel' onclick='newVariant();'>
+              <input id='cancelVariant' class='submit-button' style='display:block; float:right;' type='button' value='Cancel' onclick='newVariant(); removeVariantTableHighlights();'>
             </div>
           </div>
        </div>
