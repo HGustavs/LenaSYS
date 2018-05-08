@@ -156,7 +156,7 @@ pdoConnect();
 
             <button id="button-cancel" onclick="">Cancel</button>-->
         </div>
-        <input type="submit" value="Save" onclick="saveMarkdown()"/>
+        <input id="inputSave" type="submit" value="Save" onclick="saveMarkdown()"/>
         <button id="button-close" onclick="cancelPreview()">Close</button>
 
     </form>

@@ -893,6 +893,7 @@ input {
   border: 2px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
+  margin-left: 1050px
 }
 
 .loginBox .inputwrapper {
@@ -3945,6 +3946,9 @@ textarea#mrkdwntxt {
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
+#inputSave {
+
+}
 
 @media only screen and (max-height: 800px) and (max-width: 1400px) {
     .previewWindow {
@@ -4079,7 +4083,7 @@ textarea#mrkdwntxt {
 #button-close {
   float: right;
   position: relative;
-  margin: 0px 10px 0px 0px;
+  margin: -23px 70px 0px 0px;
 
 }
 
