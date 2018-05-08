@@ -817,7 +817,6 @@ function returnedSection(data) {
 			str += "<div class='fixed-action-button'>"
 			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onmouseover='openFabMenu();' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
 			str += "<ol class='fab-btn-list' onmouseover='resetHoverTimer();'; style='margin: 0; padding: 0; display: none;' reversed>"
-			// str += "<ol class='hoverMenu'>"
 
 			//Heading button
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='fabValidateType(\"0\");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
@@ -843,7 +842,6 @@ function returnedSection(data) {
 			// Message button
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='fabValidateType(\"7\");'><i class='material-icons'>format_quote</i></a></li>"
 
-			str +="<div> <a class='hoverMenu'></a></div>";
 			str += "</ol>"
 
 			str += "</div>";
