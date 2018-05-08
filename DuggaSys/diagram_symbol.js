@@ -100,18 +100,22 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.quadrants = function () {
         // Fix right connector box (1)
+        var changed = false;
         var i = 0;
         while (i < this.connectorRight.length) {
             var xk = points[this.connectorRight[i].to].x;
             var yk = points[this.connectorRight[i].to].y;
             var bb = this.getquadrant(xk, yk);
             if (bb == 3) {
+                changed = true;
                 conn = this.connectorRight.splice(i, 1);
                 this.connectorLeft.push(conn[0]);
             } else if (bb == 0) {
+                changed = true;
                 conn = this.connectorRight.splice(i, 1);
                 this.connectorTop.push(conn[0]);
             } else if (bb == 2) {
+                changed = true;
                 conn = this.connectorRight.splice(i, 1);
                 this.connectorBottom.push(conn[0]);
             } else {
@@ -125,12 +129,15 @@ function Symbol(kind) {
             var yk = points[this.connectorLeft[i].to].y;
             var bb = this.getquadrant(xk, yk);
             if (bb == 1) {
+                changed = true;
                 conn = this.connectorLeft.splice(i, 1);
                 this.connectorRight.push(conn[0]);
             } else if (bb == 0) {
+                changed = true;
                 conn = this.connectorLeft.splice(i, 1);
                 this.connectorTop.push(conn[0]);
             } else if (bb == 2) {
+                changed = true;
                 conn = this.connectorLeft.splice(i, 1);
                 this.connectorBottom.push(conn[0]);
             } else {
@@ -144,12 +151,15 @@ function Symbol(kind) {
             var yk = points[this.connectorTop[i].to].y;
             var bb = this.getquadrant(xk, yk);
             if (bb == 1) {
+                changed = true;
                 conn = this.connectorTop.splice(i, 1);
                 this.connectorRight.push(conn[0]);
             } else if (bb == 3) {
+                changed = true;
                 conn = this.connectorTop.splice(i, 1);
                 this.connectorLeft.push(conn[0]);
             } else if (bb == 2) {
+                changed = true;
                 conn = this.connectorTop.splice(i, 1);
                 this.connectorBottom.push(conn[0]);
             } else {
@@ -163,18 +173,22 @@ function Symbol(kind) {
             var yk = points[this.connectorBottom[i].to].y;
             var bb = this.getquadrant(xk, yk);
             if (bb == 1) {
+                changed = true;
                 conn = this.connectorBottom.splice(i, 1);
                 this.connectorRight.push(conn[0]);
             } else if (bb == 3) {
+                changed = true;
                 conn = this.connectorBottom.splice(i, 1);
                 this.connectorLeft.push(conn[0]);
             } else if (bb == 0) {
+                changed = true;
                 conn = this.connectorBottom.splice(i, 1);
                 this.connectorTop.push(conn[0]);
             } else {
                 i++;
             }
         }
+        return changed;
     }
 
     //--------------------------------------------------------------------

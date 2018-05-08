@@ -1,5 +1,5 @@
 Font family:<br>
-<select id='font' onclick='globalFont(); hashfunction(); updategfx();'>
+<select id='font' onchange='globalFont(); hashfunction(); updategfx();'>
     <option value='Arial' selected>Arial</option>
     <option value='Courier New'>Courier New</option>
     <option value='Impact'>Impact</option>
@@ -7,7 +7,7 @@ Font family:<br>
 </select><br>
 
 Font color:<br>
-<select id ='fontColor' onclick='globalFontColor(); hashfunction(); updategfx();'>
+<select id ='fontColor' onchange='globalFontColor(); hashfunction(); updategfx();'>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -19,14 +19,14 @@ Font color:<br>
     <option value='#000000'>Black</option>
 </select><br>
 Text size:<br>
-<select id='TextSize' onclick='globalTextSize(); hashfunction(); updategfx();'>
+<select id='TextSize' onchange='globalTextSize(); hashfunction(); updategfx();'>
     <option value='Tiny' selected>Tiny</option>
     <option value='Small'>Small</option>
     <option value='Medium'>Medium</option>
     <option value='Large'>Large</option>
 </select><br>
 Fill color:<br>
-<select onclick="globalFillColor(); hashfunction(); updategfx();" id='FillColor'>
+<select onchange="globalFillColor(); hashfunction(); updategfx();" id='FillColor'>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -38,7 +38,7 @@ Fill color:<br>
     <option value='#000000'>Black</option>
 </select><br>
 Stroke color:<br>
-<select onclick="globalStrokeColor(); hashfunction(); updategfx();" id='StrokeColor'>
+<select onchange="globalStrokeColor(); hashfunction(); updategfx();" id='StrokeColor'>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>

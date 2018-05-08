@@ -2666,22 +2666,22 @@ table {
 
 /*end, styling for contribution.php*/
 #sortingBar {
-  width: 50%;
-  position: relative;
-  top: 28px;
+    width: 50%;
+    position:absolute;
+    margin-top: 5px;
 }
 
 .sortingBtn {
   display: inline-block;
-  margin-left: 10px;
+  margin-left: 0px;
 }
 
 .sortingBtn input {
-  font-size: 12px;
-  position: relative;
-  bottom: 2px;
+    font-size: 12px;
+    margin-left: 10px;
+    position: relative;
+    bottom: 2px;
 }
-
 
 /* styling for the search bar in fileed.php */
 
@@ -3023,6 +3023,11 @@ ul.hamburgerList button.menuButton {
 
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
+     #sortingBar {
+        width: 135px;
+        position: relative;
+        top: 10px;
+    }
   /* moment date and course version */
   .dateField {
     opacity: 0.0;
@@ -3117,6 +3122,12 @@ only screen and (max-device-width: 768px) {
 
 @media only screen and (max-width: 650px),
 only screen and (max-device-width: 650px) {
+    #searchBar {
+        margin-left: 15px;
+    }
+    #searchinput{
+        width:170px;
+    }
   table.navheader td.access {
     margin-right: 0px;
     width: 0px;
@@ -3837,6 +3848,7 @@ textarea#mrkdwntxt {
     cursor: pointer;
     margin-right: 3%;
 }
+
 #linkFabBtnImg {
     position: absolute;
     margin-left: 10px;
@@ -3922,7 +3934,7 @@ textarea#mrkdwntxt {
 }
 
 .show-dropdown-content {
-  display: block;
+    display: block;
 }
 
 #select-header {
@@ -4019,6 +4031,31 @@ textarea#mrkdwntxt {
 
 .fileText {
   height: 90%;
+}
+
+.confirmationWindow {
+  height: 150px;
+  width: 400px;
+  margin: 0px auto;
+  border: solid rgb(200,200,200);
+  background-color: rgb(240,240,240);
+  box-shadow: 0px 5px 10px grey;
+  display: none;
+  left: 0;
+  right: 0;
+  top: 100px;
+  position: fixed;
+  text-align: center;
+}
+
+.confirmationText {
+  padding-top: 10px;
+}
+
+.confirmationButton {
+  width: 60px;
+  height: 30px;
+  margin-top: 30px;
 }
 
 .optionButtons {
