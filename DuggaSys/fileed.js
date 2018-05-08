@@ -83,7 +83,6 @@ function returnedFile(data) {
 		true
 	);
 
-
 	fileLink.renderTable();
 	if(querystring['confirmation'] != undefined) {
         $(".confirmationWindow").css("display", "block");
@@ -428,7 +427,7 @@ function toggleFabButton() {
 		$('.fab-btn-sm').toggleClass('scale-out');
 	}
 }
-
+$.event.special.tap.tapholdThreshold=200;
 $(document).mouseup(function(e) {
 	// The "Add Course Local File" popup should appear on
 	// a "fast click" if the fab list isn't visible
@@ -460,7 +459,7 @@ $(document).mouseup(function(e) {
 		fabListIsVisible = true;
 	}
 	if (fabListIsVisible) {
-		if (e.target.id == "fabButton") {
+		if (e.target.id == "fabBtn") {
 				toggleFabButton();
                 console.log("touchhold");
 		}
