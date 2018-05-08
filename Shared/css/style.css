@@ -60,6 +60,8 @@ body {
   font-family: 'Roboto', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-y: scroll;
+  width: 100%;
+  height: 100%;
 }
 
 table {
@@ -891,6 +893,7 @@ input {
   border: 2px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
+  margin-left: 1050px
 }
 
 .loginBox .inputwrapper {
@@ -3666,6 +3669,7 @@ li:nth-last-child(10) a:hover {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
+
 .previewWindowContainer {
   background-color: rgba(0, 0, 0, 0.6);
   position: fixed;
@@ -3678,8 +3682,8 @@ li:nth-last-child(10) a:hover {
 }
 
  .previewWindow {
-    height: 635px;
-    width: 900px;
+    height: 100%;
+    width: 95%;
     margin: 0px auto;
     border: solid rgb(200,200,200);
     background-color: rgb(240,240,240);
@@ -3695,10 +3699,10 @@ li:nth-last-child(10) a:hover {
 .markdown {
   border: solid rgb(200, 200, 200);
   background-color: #FFFFFF;
-  width: 350px;
-  height: 550px;
+  width: 38%;
+  height: 90%;
   position: relative;
-  margin: 20px 10px 10px 10px;
+  margin: 20px 10px 10px 1%;
   float: left;
 }
 
@@ -3707,13 +3711,25 @@ li:nth-last-child(10) a:hover {
   background-color: #FFFFFF;
   word-wrap: break-word;
   overflow-y: scroll;
-  width: 490px;
-  height: 550px;
+  width: 56%;
+  height: 90%;
   position: relative;
-  margin: 20px 10px 10px 10px;
+  margin: 20px 1% 10px 8px;
   float: right;
 }
-
+.markdownPrev pre{
+  font-family: Hack, MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+  font-size: 10px;
+  line-height: 12px;
+  white-space: pre;
+  white-space: pre-wrap;
+  background: #ffffff;
+  display: inline-block;
+  padding: 1em;
+  margin: 0.5em 0px;
+  border: 1px solid #bebab0;
+  box-shadow: 1px 1px 2px #666;
+}
 .optionButtons {
   top: 585px;
   position: relative;
@@ -3724,6 +3740,7 @@ li:nth-last-child(10) a:hover {
 
 .prevSpan {
   max-width: 100%;
+  padding: 10px
 }
 
 #button-cancel {
@@ -3765,24 +3782,36 @@ li:nth-last-child(10) a:hover {
   padding: 0px 5px 0px 5px;
   line-height: 25px;
 }
+.markText {
+    height:87%;
+    width:84%;
 
+}
 #mrkdwntxt {
   border-radius: 8px;
   box-shadow: 2px 2px 4px #888 inset;
   resize: none;
-  margin: 10px 4px 0px 4px;
+  width:100%;
+  height:100%;
+  margin:12px;
+}
+textarea#mrkdwntxt {
+  width: 100%;
+  height: 93%;
+  display: block;
+  padding: 10px
 }
 
 #boldText {
   cursor: pointer;
-  margin-left: 45px;
+  margin-left: 5%;
   position: relative;
   bottom: 10%;
 }
 
 #cursiveText {
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 3%;
   position: relative;
   bottom:10%;
 }
@@ -3790,27 +3819,27 @@ li:nth-last-child(10) a:hover {
 #lists {
   cursor: pointer;
   color: #FFFFFF;
-  margin-left: 10px;
+  margin-left: 3%;
   font-size: 12px;
   position: relative;
   bottom:15%;
 }
 #codeBlockText {
     cursor: pointer;
-    margin-left: 10px;
+    margin-left: 3%;
     position: relative;
     bottom:10%;
 }
 #quoteText {
     cursor: pointer;
-    margin-left: 10px;
+    margin-left: 3%;
     font-size: 25px;
     position: relative;
     top:20%;
 }
 #img {
     cursor: pointer;
-    margin-left: 10px;
+    margin-left: 9%;
 }
 #insert-photo {
     position: absolute;
@@ -3818,9 +3847,13 @@ li:nth-last-child(10) a:hover {
 }
 #link {
     cursor: pointer;
-    margin-right: 15px;
+    margin-left: 14%;
 }
 
+#linkFabBtnImg {
+    position: absolute;
+    margin-left: 10px;
+}
 
 #headerType1 {
   cursor: pointer;
@@ -3848,7 +3881,7 @@ li:nth-last-child(10) a:hover {
 
 #headerType3 {
   cursor: pointer;
-  color:#000;
+  color: #000;
   font-size: 11px;
   padding: 8px 5px 5px 13px;
   background-color: #fff;
@@ -3857,8 +3890,6 @@ li:nth-last-child(10) a:hover {
 #headerType3:hover {
   background-color: rgb(200, 200, 200);
 }
-
-
 #headerType4 {
   cursor: pointer;
   color: #000;
@@ -3898,7 +3929,7 @@ li:nth-last-child(10) a:hover {
 }
 .headerType {
   cursor: pointer;
-  margin-left: 30px;
+  margin-left: 9%;
   position: relative;
   bottom: 10%;
 }
@@ -3909,12 +3940,14 @@ li:nth-last-child(10) a:hover {
 
 #select-header {
   max-width: 63px;
-  position: relative;
-  left:94%;
+  position: absolute;
   z-index: 2000;
-  right: 75px;
-  background-color:#fff;
+  right: 0px;
+  background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
+}
+#inputSave {
+
 }
 
 @media only screen and (max-height: 800px) and (max-width: 1400px) {
@@ -3977,8 +4010,8 @@ li:nth-last-child(10) a:hover {
 }
 
 .editFileWindow {
-  height: 635px;
-  width: 690px;
+  height: 70%;
+  width: 50%;
   margin: 0px auto;
   border: solid rgb(200,200,200);
   background-color: rgb(240,240,240);
@@ -3993,11 +4026,14 @@ li:nth-last-child(10) a:hover {
 .editFileCode {
   border: solid rgb(200, 200, 200);
   background-color: #FFFFFF;
-  width: 665px;
-  height: 550px;
+  width: 96%;
+  height: 80%;
   position: relative;
-  margin: 20px 10px 10px 10px;
-  float: left;
+  margin: 20px auto;
+}
+
+.fileText {
+  height: 90%;
 }
 
 .confirmationWindow {
@@ -4033,7 +4069,6 @@ li:nth-last-child(10) a:hover {
   width: 355px;
 }
 
-
 #button-cancel {
   position: absolute;
   left: 5px;
@@ -4047,54 +4082,40 @@ li:nth-last-child(10) a:hover {
 #button-close {
   float: right;
   position: relative;
-  margin: 0px 10px 0px 0px;
+  margin: -23px 70px 0px 0px;
+
 }
 
 #filecont {
   border-radius: 8px;
   box-shadow: 2px 2px 4px #888 inset;
   resize: none;
-  margin: 10px 4px 0px 4px;
+  margin: 10px auto;
+  width: 90%;
+  height: 100%;
+}
+
+textarea#filecont{
+  width: 91%;
+  height: 100%;
+  display: block;
+  padding: 10px
 }
 
 @media only screen and (max-height: 800px) and (max-width: 1400px) {
   .editFileWindow {
     height: 500px;
   }
+
   .editFileCode {
     height: 400px;
   }
-  #filecont{
+
+  #filecont {
     height: 350px;
   }
+
   .optionButtons {
     top: 436px;
   }
-}
-
-/* Import diagram */
-
-.importDiagram {
-  height: auto !important;
-  margin-top: 0 !important;
-  display: none;
-}
-
-.importDiagram .importWrap {
-  padding: 20px;
-}
-
-.importDiagram .importError {
-  margin-top: 10px;
-  color: red;
-  display: none;
-}
-
-.importDiagram .importButtonWrap {
-  margin-top: 10px;
-}
-
-.importDiagram .uploadButton {
-  width: auto;
-  padding: 0 15px;
 }

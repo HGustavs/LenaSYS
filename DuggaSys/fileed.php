@@ -176,13 +176,13 @@ pdoConnect();
                 </div>
             </div>
         </div>
+
     </form>
 </div>
 <!-- Markdown-preview functionality END -->
 
 <!-- Edit file functionality START -->
 <div class="editFileWindowContainer"></div>
-
 
 <!-- Edit file functionality END -->
 

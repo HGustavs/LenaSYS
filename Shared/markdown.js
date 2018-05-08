@@ -424,6 +424,7 @@ function loadPreview(fileUrl, fileName, fileKind) {
     var fileContent = getFIleContents(fileUrl);
     var tempFileName = fileUrl.split("/").pop().split(".")[0];
     document.getElementById("mrkdwntxt").value = fileContent;
+
     $(".fileName").html(tempFileName);
     updatePreview(fileContent);
     //updatePreview(document.getElementById("mrkdwntxt").value = fileContent);
@@ -583,6 +584,7 @@ function quoteText(){
     txtarea.selectionEnd= end + 2;
     updatePreview(txtarea.value);
 }
+
 
 $(document).ready(function(){
    $(".headerType").click(function(){
