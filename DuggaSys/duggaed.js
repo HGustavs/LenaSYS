@@ -618,7 +618,7 @@ function renderVariant(clickedElement) {
 		null,
 		null,
 		null,
-		true
+		false
 	);
 	variantsTable.renderTable();
 	newVariant();
@@ -776,23 +776,14 @@ function compare(a,b) {
 	// everytime we sort the table
 	count = 0;
 
-	if (col == "File name") {
+	if (col == "Name"  || col == "Template") {
 		tempA = tempA.toUpperCase();
 		tempB = tempB.toUpperCase();
-	} else if (col == "Extension") {
-		tempA = tempA.split('.');
-		tempB = tempB.split('.');
-
-		tempA = tempA[tempA.length-1];
-		tempB = tempB[tempB.length-1];
-	} else if (col == "Size") {
-		tempA = parseInt(tempA);
-		tempB = parseInt(tempB);
 	}
 
-	if (tempA > tempB) {
+	if (tempA > tempB || tempB == null) {
 		return 1;
-	} else if (tempA < tempB) {
+	} else if (tempA < tempB || tempA == null) {
 		return -1;
 	} else {
 		return 0;
