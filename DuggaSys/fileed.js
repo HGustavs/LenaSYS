@@ -487,7 +487,7 @@ $(document).mouseup(function(e) {
 		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
 			pressTimer = window.setTimeout(function() {
 				toggleFabButton();
-			}, 200);
+			}, 500);
 		}
 	} else {
 		toggleFabButton();
