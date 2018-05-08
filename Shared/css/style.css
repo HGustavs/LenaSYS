@@ -3469,8 +3469,10 @@ only screen and (max-device-width: 320px) {
 }
 
 #fabBtnImg{
-    -webkit-user-select:none;
-    -webkit-touch-callout:none;
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none; /* Standard syntax */
 }
 /* FAB bubble list container */
 
