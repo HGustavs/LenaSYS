@@ -366,7 +366,6 @@ function updateVariant() {
 	} else if ($('#enableVariant').is(':visible')) {
 		disabled = '1';
 	}
-
 	AJAXService("SAVVARI", { cid: querystring['cid'], vid: vid, disabled: disabled, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
@@ -436,15 +435,19 @@ function createJSONString(formData) {
 	background color of the table row.
 */
 function markSelectedVariant(el) {
-	var activeTable = findAncestor(el, 'TABLE', 'elName');
 	var activeTableRow = findAncestor(el, 'TR', 'elName');
-	var allRows = activeTable.getElementsByTagName('tr');
+	removeVariantTableHighlights();
+	activeTableRow.style.backgroundColor = '#fbcd47';
+}
 
+function removeVariantTableHighlights() {
+	var allRows = [];
+	$('#variant_body').find('tr').each(function() {
+		allRows.push(this);
+	});
 	for(let row of allRows) {
 		row.removeAttribute('style'); // Remove background color from previously marked rows.
 	}
-
-	activeTableRow.style.backgroundColor = '#fbcd47';
 }
 
 /*
@@ -835,6 +838,7 @@ function showVariantDisableButton() {
 	$("#enableVariant").css("display", "none");
 	$("#disableVariant").css("display", "block");
 }
+
 //END OF closers and openers
 
 function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template) {
