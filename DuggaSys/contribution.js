@@ -105,7 +105,7 @@ function renderBarDiagram(data)
     dailyCount[i] = new Array(dateString, commits, events, comments, loc);
     date = new Date(dateString);
     date.setDate(date.getDate() + 1);
-    dateString = date.toLocaleDateString();
+    dateString = date.toISOString().split("T")[0];
   }
   
   // Renders the diagram
