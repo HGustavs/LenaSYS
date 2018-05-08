@@ -590,7 +590,6 @@ function renderVariant(clickedElement) {
 		tblhead: {
 			vid: "",
 			param: "Parameter",
-			variantanswer: "Answer",
 			modified: "Modified",
 			disabled: "Status",
 			arrowVariant: "",
