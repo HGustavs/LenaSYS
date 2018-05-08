@@ -477,7 +477,7 @@ $(document).mouseup(function(e) {
 	    	showLinkPopUp();
 	    }
 	}
-}).on('taphold', function(e){
+}).bind('taphold', function(e){
     if ($('.fab-btn-list').is(':visible')) {
 		fabListIsVisible = false;
 	} else {
