@@ -2,6 +2,7 @@ var sessionkind=0;
 var querystring=parseGet();
 var versions;
 var dataInfo;
+var expanded = false;
 
 AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 
@@ -419,7 +420,15 @@ function renderCell(col,celldata,cellid) {
     str += "<div style='display:none;'>" + obj.class + "</div>";
 		return str;
 	} else if(col == "groups") {
-		return "<span>" + celldata + "</span>";
+		var groups = filez['groups'];
+
+		str = '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
+		str += '<select><option>Välj grupper</option></select><div class="overSelect"></div></div><div id="checkboxes">';
+		groups.forEach(group => {
+			str += '<label for="'+group.groupID+'"><input type="checkbox" id="'+group.groupID+'"/>'+group.groupName+'</label>';
+		});
+		str += '</div></div>';
+		return str;
 	} else {
 		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
@@ -501,4 +510,16 @@ function keyUpSearch() {
 	        return !~text.indexOf(val);
 	    }).hide();
 	});
+}
+
+function showCheckboxes(element) {
+	var checkboxes = $(element).find("#checkboxes");
+	checkboxes = element.parentElement.lastChild;
+	if (!expanded) {
+		checkboxes.style.display = "block";
+		expanded = true;
+	} else {
+		checkboxes.style.display = "none";
+		expanded = false;
+    }
 }
