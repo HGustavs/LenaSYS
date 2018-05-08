@@ -3468,6 +3468,10 @@ only screen and (max-device-width: 320px) {
   background-color: #ffd369;
 }
 
+#fabBtnImg{
+    -webkit-user-select:none;
+    -webkit-touch-callout:none;
+}
 /* FAB bubble list container */
 
 .fab-btn-list {
