@@ -5,6 +5,7 @@ var active_lid;
 var isClickedElementBox = false;
 var testsAvailable;
 var nameSet = false;
+var hoverMenuTimer;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -102,6 +103,8 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	else str += "<option value='3'>U-3-4-5</option>";
 
 	$("#gradesys").html(str);
+
+
 
 	// Set Moments
 	str = "";
@@ -812,8 +815,8 @@ function returnedSection(data) {
 			str += "</tr></table>";
 
 			str += "<div class='fixed-action-button'>"
-			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
-			str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
+			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onmouseover='openFabMenu();' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
+			str += "<ol class='fab-btn-list' onmouseover='resetHoverTimer();'; style='margin: 0; padding: 0; display: none;' reversed>"
 
 			//Heading button
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='fabValidateType(\"0\");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
@@ -840,6 +843,7 @@ function returnedSection(data) {
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='fabValidateType(\"7\");'><i class='material-icons'>format_quote</i></a></li>"
 
 			str += "</ol>"
+
 			str += "</div>";
 		} else {
 			str += "</tr></table>";
@@ -1705,6 +1709,40 @@ function toggleFabButton() {
 	}
 }
 
+function openFabMenu(){
+	$('.fab-btn-list').fadeIn(0);
+	$('.fab-btn-sm').removeClass('scale-out');
+}
+
+function resetHoverTimer(){
+	clearTimeout(hoverMenuTimer);
+	startTimerAgain();
+}
+
+function checkIfCloseFabMenu(){
+	var elements = document.querySelectorAll(":hover"); // last element will be the element that the mouse is hovering on
+	if(findAncestor(elements[elements.length-1], "fixed-action-button") == null){
+		closeFabMenu();
+	}
+	startTimerAgain();
+}
+
+function startTimerAgain(){
+	hoverMenuTimer = window.setTimeout(function(){
+		checkIfCloseFabMenu();
+	}, 2500);
+}
+
+function createQuickItem(){
+	selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined");
+	newItem();
+}
+
+function closeFabMenu(){
+	$('.fab-btn-sm').addClass('scale-out');
+	$('.fab-btn-list').delay(100).fadeOut(0);
+}
+
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function fabValidateType(kind) {
 	if (kind == 0){
@@ -1775,6 +1813,12 @@ $(document).ready(function () {
 	$(document).on('click', '#dorf', function (e) {
 		e.stopPropagation();
 	});
+
+	hoverMenuTimer = window.setTimeout(function(){
+		checkIfCloseFabMenu();
+	}, 25);
+
+
 });
 
 $(window).load(function () {
@@ -1813,6 +1857,10 @@ $(window).load(function () {
 // Detects clicks
 $(document).mousedown(function (e) {
 	var box = $(e.target);
+
+
+
+
 	if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
 		isClickedElementBox = true;
 	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
@@ -1822,7 +1870,6 @@ $(document).mousedown(function (e) {
 		isClickedElementBox = false;
 	}
 });
-
 
 $(document).mouseup(function (e) {
 	// Click outside the FAB list
