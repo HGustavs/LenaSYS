@@ -3883,7 +3883,7 @@ li:nth-last-child(10) a:hover {
 }
 
 .multiselect-group {
-  width: 150px;
+  width: 100px;
 }
 
 .group-select-box {
@@ -3908,8 +3908,8 @@ li:nth-last-child(10) a:hover {
   border: 1px #dadada solid;
   position: absolute;
   background: white;
-  z-index: 9999;
-  width: 150px;
+  z-index: 50;
+  width: 100px;
 
 }
 
