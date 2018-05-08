@@ -1739,7 +1739,7 @@ function createQuickItem(){
 }
 
 function closeFabMenu(){
-	$('.fab-btn-sm').removeClass('scale-out');
+	$('.fab-btn-sm').addClass('scale-out');
 	$('.fab-btn-list').delay(100).fadeOut(0);
 }
 
