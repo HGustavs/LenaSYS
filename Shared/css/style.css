@@ -2246,7 +2246,7 @@ span.arrow {
   border:0;
   outline: none;
   cursor: pointer;
-  padding: 1px 0 0 7px;
+  
  }
 
 .fab:hover {
@@ -3665,7 +3665,7 @@ li:nth-last-child(10) a:hover {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
- 
+
  .previewWindowContainer {
     background-color: rgba(0,0,0,0.6);
     position: fixed;
