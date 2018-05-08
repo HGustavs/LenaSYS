@@ -182,6 +182,7 @@ function arrowKeyPressed(key){
   for(var i = 0; i < selected_objects.length; i++){
     selected_objects[i].move(xNew, yNew);
   }
+  updateGraphics();
 }
 
 
