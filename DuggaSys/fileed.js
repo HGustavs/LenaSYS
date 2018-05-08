@@ -477,9 +477,8 @@ $(document).mouseup(function(e) {
 	    	showLinkPopUp();
 	    }
 	}
-}).addEventListener('touchstart', function(e) {
-	// If the fab list is visible, there should be no timeout to toggle the list
-	if ($('.fab-btn-list').is(':visible')) {
+}).on('taphold', function(e){
+    if ($('.fab-btn-list').is(':visible')) {
 		fabListIsVisible = false;
 	} else {
 		fabListIsVisible = true;
@@ -503,6 +502,8 @@ $(document).mouseup(function(e) {
 	    }
 	}
 });
+
+
 
 function deleteFile(fileid,filename) {
 	if (confirm("Do you really want to delete the file/link: " + filename)) {
