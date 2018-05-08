@@ -435,21 +435,16 @@ function createJSONString(formData) {
 	background color of the table row.
 */
 function markSelectedVariant(el) {
-	// var activeTable = findAncestor(el, 'TABLE', 'elName');
 	var activeTableRow = findAncestor(el, 'TR', 'elName');
-	// var allRows = activeTable.getElementsByTagName('tr');
-	
 	removeVariantTableHighlights();
 	activeTableRow.style.backgroundColor = '#fbcd47';
 }
 
 function removeVariantTableHighlights() {
 	var allRows = [];
-
 	$('#variant_body').find('tr').each(function() {
 		allRows.push(this);
 	});
-
 	for(let row of allRows) {
 		row.removeAttribute('style'); // Remove background color from previously marked rows.
 	}
