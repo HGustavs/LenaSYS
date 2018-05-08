@@ -108,7 +108,7 @@ pdoConnect();
         <h3>This is the preview window</h3>
         <div style="cursor:pointer;" onclick="closePreview();">x</div>
     </div>
-    <form id="editForm" enctype="multipart/form-data" action="filereceive_preview.php" method="POST">
+    <form id="editForm" enctype="multipart/form-data" action="filereceive_preview.php" onsubmit="return validatePreviewForm()" method="POST">
         <input type='hidden' id='cID' name='cid' value='Toddler'/>
         <input type='hidden' id='courseVers' name='coursevers' value='Toddler'/>
         <input type='hidden' id='fileKind' name='kind' value='Toddler'/>
@@ -159,7 +159,7 @@ pdoConnect();
                 <button id="button-cancel" onclick="">Cancel</button>-->
             </div>
             <button type="submit" onclick="saveMarkdown()">Save</button>
-            <button id="button-close" onclick="cancelPreview()">Close</button>
+            <button onclick="cancelPreview()">Close</button>
         </div>
         <div class="editFilePart">
             <div class="editFileWindow">
@@ -170,7 +170,7 @@ pdoConnect();
                 </div>
 
                 <button type="submit" onclick="saveTextToFile()"> Save </button>
-                <button id="button-close" onclick="cancelPreview()">Close</button>
+                <button onclick="cancelPreview()">Close</button>
                 <div class="optionButtons">
 
                 </div>

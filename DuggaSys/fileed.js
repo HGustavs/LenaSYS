@@ -198,7 +198,6 @@ function validateForm() {
 //----------------------------------------------------------------------------
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
-
 function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
 	var link = celldata.split('://');
@@ -538,5 +537,12 @@ function saveTextToFile() {
     $("#cID").val(querystring['cid']);
     $("#courseVers").val(querystring['coursevers']);
     $("#textField").val("filetext");
+}
+
+function validatePreviewForm(){
+	if(document.getElementById("cID").value == "Toddler"){
+		return false;
+	}
+	return true;
 }
 
