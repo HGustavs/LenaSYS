@@ -170,6 +170,7 @@ p {
   background: #fff;
   /*min-height: calc(100vh - 90px);*/
   padding: 65px 10px 25px 10px;
+  margin-bottom: 60px;
 }
 
 #accessedcontent {
