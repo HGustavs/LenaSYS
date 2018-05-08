@@ -1255,15 +1255,6 @@ input {
   padding: 8px 0px 8px 8px;
 }
 
-.drop-down-item>a::before,
-.export-drop-down-item>a::before {
-  /*PLACEHOLDER FOR ICON*/
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  content: "I";
-}
-
 .drop-down-item:hover,
 .export-drop-down-item:hover {
   background-color: rgb(240, 240, 240);
