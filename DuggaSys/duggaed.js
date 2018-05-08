@@ -366,7 +366,6 @@ function updateVariant() {
 	} else if ($('#enableVariant').is(':visible')) {
 		disabled = '1';
 	}
-
 	AJAXService("SAVVARI", { cid: querystring['cid'], vid: vid, disabled: disabled, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
@@ -439,7 +438,7 @@ function markSelectedVariant(el) {
 	var activeTable = findAncestor(el, 'TABLE', 'elName');
 	var activeTableRow = findAncestor(el, 'TR', 'elName');
 	var allRows = activeTable.getElementsByTagName('tr');
-
+	
 	for(let row of allRows) {
 		row.removeAttribute('style'); // Remove background color from previously marked rows.
 	}
@@ -836,6 +835,7 @@ function showVariantDisableButton() {
 	$("#enableVariant").css("display", "none");
 	$("#disableVariant").css("display", "block");
 }
+
 //END OF closers and openers
 
 function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template) {
