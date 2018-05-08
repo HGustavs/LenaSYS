@@ -122,6 +122,8 @@ function keyDownHandler(e){
             deactivateMovearound();
         }
         updateGraphics();
+    } else if(key == 37 || key == 38 || key == 39 || key == 40){//arrow keys
+        arrowKeyPressed(key);
     } else if(key == 17 || key == 91){
         ctrlIsClicked = true;
     } else if(ctrlIsClicked && key == 67){
@@ -130,7 +132,6 @@ function keyDownHandler(e){
         for(var i = 0; i < selected_objects.length; i++){
             cloneTempArray.push(selected_objects[i]);
         }
-
     } else if(ctrlIsClicked && key == 86 ){
         //Ctrl + v
         for(var i = 0; i < cloneTempArray.length; i++){
@@ -165,6 +166,23 @@ window.onkeyup = function(event) {
     }
   }
 
+//Handler for when pressing arrow keys
+function arrowKeyPressed(key){
+  var xNew = 0, yNew = 0;
+
+  if(key == 37){//left
+    xNew = -5;
+  }else if(key == 38){//up
+    yNew = -5;
+  }else if(key == 39){//right
+    xNew = 5;
+  }else if(key == 40){//down
+    yNew = 5;
+  }
+  for(var i = 0; i < selected_objects.length; i++){
+    selected_objects[i].move(xNew, yNew);
+  }
+}
 
 
 //--------------------------------------------------------------------
