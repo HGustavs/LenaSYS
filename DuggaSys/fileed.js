@@ -453,6 +453,7 @@ $(document).mouseup(function(e) {
 		}
 	}
 }).on("taphold", function(e){
+    console.log("touchytouchy");
     if ($('.fab-btn-list').is(':visible')) {
 		fabListIsVisible = false;
 	} else {
@@ -461,6 +462,7 @@ $(document).mouseup(function(e) {
 	if (fabListIsVisible) {
 		if (e.target.id == "fabButton") {
 				toggleFabButton();
+                console.log("touchhold");
 		}
 	} else {
 		toggleFabButton();
