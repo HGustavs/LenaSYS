@@ -434,7 +434,7 @@ $(document).mouseup(function(e) {
 	// The "Add Course Local File" popup should appear on
 	// a "fast click" if the fab list isn't visible
 	if (!$('.fab-btn-list').is(':visible')) {
-		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
+		if (e.target.id == "fabBtn") {
 			clearTimeout(pressTimer);
 			showFilePopUp('MFILE');
 	    }
@@ -461,7 +461,7 @@ $(document).mouseup(function(e) {
 		fabListIsVisible = true;
 	}
 	if (fabListIsVisible) {
-		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
+		if (e.target.id == "fabBtn") {
 			pressTimer = window.setTimeout(function() {
 				toggleFabButton();
 			}, 500);
@@ -479,14 +479,14 @@ $(document).mouseup(function(e) {
 	    }
 	}
 }).on("touchstart", function(e){
-    
+    //Event for holding the fab on mobile
     if ($('.fab-btn-list').is(':visible')) {
 		fabListIsVisible = false;
 	} else {
 		fabListIsVisible = true;
 	}
 	if (fabListIsVisible) {
-		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
+		if (e.target.id == "fabBtn") {
 			fabTimer = window.setTimeout(function() {
 				toggleFabButton();
 			}, 500);
@@ -504,6 +504,7 @@ $(document).mouseup(function(e) {
 	    }
 	}
 }).on("touchend", function(e){
+    //abrupts and clears the timer for touchstart when the user lets go of the fab
     if(fabTimer){
         clearTimeout(fabTimer);
     }
