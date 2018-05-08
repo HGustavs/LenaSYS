@@ -876,7 +876,7 @@ function returnedSection(data) {
 
 			str += "<div id='course-newitem' style='display: flex;'>";
 			str +=
-				"<input type='button' value='+' class='submit-button-newitem' title='New Item'"
+				"<input id='addElement' type='button' value='+' class='submit-button-newitem' title='New Item'"
 				+ " onclick='selectItem("
 				+ "\"" + item['lid'] + "\","
 				+ "\"" + item['entryname'] + "\","
