@@ -507,7 +507,7 @@ $(document).mouseup(function(e) {
     if(fabTimer){
         clearTimeout(fabTimer);
     }
-};
+});
 
 
 
