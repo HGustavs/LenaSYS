@@ -8,7 +8,7 @@
 		<div id='login' class="loginBox">
 			<div class='loginBoxheader'>
 				<h3>Login</h3>
-				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
+				<div class="cursorPointer" onclick="closeWindows(); resetLoginStatus();" onkeydown="closeOnEsc();" title="Close window">x</div>
 			</div>
 			<form action="" id="loginForm" method="post">
 				<table class="loginBoxTable">
@@ -47,7 +47,7 @@
 		<div id='newpassword' class='newpassword' style="display:none">
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
-				<div class="cursorPointer" onclick="closeWindows(); resetLoginStatus();" title="Close window">x</div>
+				<div class="cursorPointer" onclick="closeWindows(); resetLoginStatus();" onkeydown="closeOnEsc();" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
 				<table class="loginBoxTable">
@@ -81,7 +81,7 @@
 		<div id='showsecurityquestion' class='showsecurityquestion' style="display:none">
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
-				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
+				<div class="cursorPointer" onclick="closeWindows(); resetLoginStatus();" onkeydown="closeOnEsc();" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
 				<table class="loginBoxTable">
@@ -123,7 +123,7 @@
 		<div id='resetcomplete' class='resetcomplete' style="display:none">
 			<div class='loginBoxheader' id="completeid">
 				<h3>Request complete</h3>
-				<div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
+				<div class='cursorPointer' onclick="closeWindows();resetLoginStatus();" onkeypress="closeOnEsc();" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
 				<table class="loginBoxTable">
@@ -158,7 +158,7 @@
   <div class="expiremessagebox" style="display:none">
     <div class='loginBoxheader'>
       <h3>Alert</h3>
-      <div class='cursorPointer' onclick="closeWindows()" title="Close window">x</div>
+      <div class='cursorPointer' onclick="closeWindows()"  title="Close window">x</div>
     </div>
     <p id="expiremessage">Your session will expire in about 30 minutes. Refresh session ?</p>
     <input type="button" id="expiremessagebutton" class="submit-button" onclick="closeWindows(); refreshUserSession()" value="Refresh">
