@@ -497,6 +497,35 @@ p {
   display: inline-block;
 }
 
+/*  Statistics List */
+
+#courseList { /* Move up later*/
+    display: flex;
+}
+
+#Sectionlistc { /* Move up later*/
+  display: inline-block;
+}
+
+ #statisticsList {
+  display: flex;
+ }
+
+ #statistics {
+   background-color: #927b9e;
+   color: white;
+   width: 36px;
+   height: 100%;
+   box-shadow: 3px 0px 0px #aaa;
+   margin-right: 3px;
+ }
+
+ .statisticsContent {
+   width: 100px;
+   height: 100%;
+   background-color: #d8d7da;
+ }
+
 /* --------------================################================-------------- *
  *                                    Header                                    *
  * --------------================################================-------------- */

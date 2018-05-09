@@ -895,7 +895,22 @@ function returnedSection(data) {
 
 		str += "</div>";
 
-		str += "<div id='Sectionlistc' >";
+		str += "<div id='courseList'>";
+		str += "<!-- Statistics List -->"
+		+ "<div id='statisticsList'>"
+			+ "<div id='statistics' style='display: inline-block; cursor: pointer;'>"
+				+ "<div style='margin: 10px;'>"
+					+ "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + menuState.idCounter++ + data.coursecode + "class='arrowComp' style='display: none;'>"
+					+ "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + menuState.idCounter++ + data.coursecode + "class='arrowRight' style='display: inline;'>"
+				+ "</div>"
+				+ "<div class='nowrap' style='padding-left:5px' title='statistics'>"
+						+ "<span class='listentries-span' style='writing-mode: vertical-rl; text-orientation: upright;'>Statistics</span>"
+				+ "</div>"
+			+ "</div>"
+			+ "<div id='statistics" + menuState.idCounter + data.coursecode + "' class='statisticsContent' style='display: inline-block;'></div>"
+		+ "</div>";
+
+		str += "<div id='Sectionlistc'>";
 
 		// For now we only have two kinds of sections
 		if (data['entries'].length > 0) {
@@ -1459,7 +1474,7 @@ function returnedSection(data) {
 			str += "</div>";
 		}
 
-		str += "</div>";
+		str += "</div></div>";
 		var slist = document.getElementById('Sectionlist');
 		slist.innerHTML = str;
 		if (resave == true) {
