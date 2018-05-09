@@ -142,31 +142,57 @@ function importUsers()
 	}
 	var newUserJSON = JSON.stringify(newUsersArr);
 
-	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
+	AJAXService("CLASS",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
 	hideImportUsersPopup();
 }
 
 function addSingleUser()
 {
-	var newUser = new Array();
-	newUser.push($("#addSsn").val());
-	newUser.push($("#addLastname").val() + ", " + $("#addFirstname").val());
-	newUser.push($("#addCid").val());
-	newUser.push($("#addNy").val());
-	newUser.push($("#addPid").val() + ', ' + $("#addTerm").val());
-	newUser.push($("#addEmail").val());
+    var newUser = new Array();
+    newUser.push($("#addSsn").val());
+    newUser.push($("#addLastname").val() + ", " + $("#addFirstname").val());
+    newUser.push($("#addCid").val());
+    newUser.push($("#addNy").val());
+    newUser.push($("#addPid").val() + ', ' + $("#addTerm").val());
+    newUser.push($("#addEmail").val());
 
-	var outerArr = new Array();
-	outerArr.push(newUser);
+    var outerArr = new Array();
+    outerArr.push(newUser);
 
-	var newUserJSON = JSON.stringify(outerArr);
-	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
-	hideCreateUserPopup();
+    var newUserJSON = JSON.stringify(outerArr);
+    AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
+    hideCreateUserPopup();
+}
+
+function addClass()
+{
+    var newClass = new Array();
+    newClass.push($("#addClass").val());
+    newClass.push($("#addResponsible").val());
+    newClass.push($("#addClassname").val());
+    newClass.push($("#addRegcode").val());
+    newClass.push($("#addClasscode").val());
+    newClass.push($("#addHp").val());
+    newClass.push($("#addTempo").val());
+    newClass.push($("#addHpProgress").val());
+
+    var outerArr = new Array();
+    outerArr.push(newClass);
+
+    var newClassJSON = JSON.stringify(outerArr);
+    AJAXService("ADDCLASS",{cid:querystring['cid'],newclass:newClassJSON,coursevers:querystring['coursevers']},"ACCESS");
+    hideCreateClassPopup();
 }
 
 function showCreateUserPopup()
 {
 	$("#createUser").css("display","flex");
+	//$("#overlay").css("display","block");
+}
+
+function showCreateClassPopup()
+{
+	$("#createClass").css("display","flex");
 	//$("#overlay").css("display","block");
 }
 
@@ -178,8 +204,14 @@ function showImportUsersPopup()
 
 function hideCreateUserPopup()
 {
-	$("#createUser").css("display","none");
-	//$("#overlay").css("display","none");
+    $("#createUser").css("display","none");
+    //$("#overlay").css("display","none");
+}
+
+function hideCreateClassPopup()
+{
+    $("#createClass").css("display","none");
+    //$("#overlay").css("display","none");
 }
 
 function hideImportUsersPopup()
@@ -218,115 +250,120 @@ function changeLastname(uid,id)
 {
 	AJAXService("LASTNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
 }
-function changeClass(cid,uid,val)
+function changeClass(cid,uid,val,selected)
 {
+    if(val!="newClass"){
 	AJAXService("CLASS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
+    }else if(val=="newClass"){
+	AJAXService("CLASS",{cid:cid,uid:uid,val:selected,coursevers:querystring['coursevers']},"ACCESS");
+	showCreateClassPopup();
+    }
 }
 
 // Sets values in the "cogwheel popup"
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
 function selectUser(uid,username,ssn,firstname,lastname,access,className)
 {
-	// Reverts the string to an array
-  /*
-	var teachs = teacherstring.split("/t");
-	var userClass = classString.split("/t");
-	// Sort the array to make navigation easier
-	teachs.sort();
-	userClass.sort();
+    // Reverts the string to an array
+    /*
+       var teachs = teacherstring.split("/t");
+       var userClass = classString.split("/t");
+       // Sort the array to make navigation easier
+       teachs.sort();
+       userClass.sort();
 
-	// Array with no spaces used for our IF case as option[value] does not work with spaces
-	var trimmed = $.map(teachs, function(value){
-		  return value.replace(/ /g, '');
-	});
+       // Array with no spaces used for our IF case as option[value] does not work with spaces
+       var trimmed = $.map(teachs, function(value){
+       return value.replace(/ /g, '');
+       });
 
-	// Loop through our array to put the teachers into an option in our select input
-	for(var i = 0; i < teachs.length; i++){
-		// If the teacher already exists in an option
-		if($("#teacher option[value="+ trimmed[i] +"]").length > 0){
-			// Loop through all of our options
-			$("#teacher option").each(function(){
+       // Loop through our array to put the teachers into an option in our select input
+       for(var i = 0; i < teachs.length; i++){
+       // If the teacher already exists in an option
+       if($("#teacher option[value="+ trimmed[i] +"]").length > 0){
+       // Loop through all of our options
+       $("#teacher option").each(function(){
 
-				// If a teacher no longer exists but the option for said teacher still exists
-				if ($.inArray(this.text, teachs) == -1)
-					{
-					  // Remove that option
-					  $(this).remove();
-					}
-				})
-		}
-		// If the teacher doesn't exist in an option
-		else{
-			// Create a new option where the value and text is the teachers name
-		    $('#teacher').append($('<option>', {
-   				value: trimmed[i],
-    			text: teachs[i]
-				}));
-    		}
-	};
+       // If a teacher no longer exists but the option for said teacher still exists
+       if ($.inArray(this.text, teachs) == -1)
+       {
+       // Remove that option
+       $(this).remove();
+       }
+       })
+       }
+       // If the teacher doesn't exist in an option
+       else{
+       // Create a new option where the value and text is the teachers name
+       $('#teacher').append($('<option>', {
+       value: trimmed[i],
+       text: teachs[i]
+       }));
+       }
+       };
 
-	// Loop through our array to put the classes into an option in our select input
-	for(var j = 0; j < userClass.length; j++){
-		// If the class already exists in an option
-		if($("#class option[value="+ userClass[j] +"]").length > 0){
-		}
-		// If the class doesn't exist in an option
-		else{
-			// Create a new option where the value and text is the classes name
-		    $('#class').append($('<option>', {
-   				value: userClass[j],
-    			text: userClass[j]
-				}));
-    		}
-	};
+       // Loop through our array to put the classes into an option in our select input
+       for(var j = 0; j < userClass.length; j++){
+       // If the class already exists in an option
+       if($("#class option[value="+ userClass[j] +"]").length > 0){
+       }
+       // If the class doesn't exist in an option
+       else{
+       // Create a new option where the value and text is the classes name
+       $('#class').append($('<option>', {
+       value: userClass[j],
+       text: userClass[j]
+       }));
+       }
+       };
 
-*/
-	// Set Name
-	$("#firstname").val(firstname);
-	$("#lastname").val(lastname);
+     */
+    // Set Name
+    $("#firstname").val(firstname);
+    $("#lastname").val(lastname);
 
-	// Set User name
-	$("#usrnme").val(username);
+    // Set User name
+    $("#usrnme").val(username);
 
-	//Set SSN
-	$("#ussn").val(ssn);
-	if (className != "null" || className != "UNK") {$("#class").val(className);}
-	$("#uid").val(uid);
+    //Set SSN
+    $("#ussn").val(ssn);
+    if (className != "null" || className != "UNK") {$("#class").val(className);}
+    $("#uid").val(uid);
 
-	// Displays the cogwheel box
-	$("#editUsers").css("display","flex");
+    // Displays the cogwheel box
+    $("#editUsers").css("display","flex");
 
-	//$("#overlay").css("display","block");
+    //$("#overlay").css("display","block");
 }
 
 function updateUser()
 {
-	var ussn=$("#ussn").val();
-	var usrnme=$("#usrnme").val();
-	var firstname=$("#firstname").val();
-	var lastname=$("#lastname").val();
-	var uid=$("#uid").val();
-	var className=$("#class").val();
-	var teach=$("#teacher").val();
+    var ussn=$("#ussn").val();
+    var usrnme=$("#usrnme").val();
+    var firstname=$("#firstname").val();
+    var lastname=$("#lastname").val();
+    var uid=$("#uid").val();
+    var className=$("#class").val();
+    var teach=$("#teacher").val();
 
-	AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,className:className,cid:querystring['cid'],coursevers:querystring['coursevers'],teacher:teach},"ACCESS");
+    AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,className:className,cid:querystring['cid'],coursevers:querystring['coursevers'],teacher:teach},"ACCESS");
 
-	$("#editUsers").css("display","none");
-	//$("#overlay").css("display","none");
+    $("#editUsers").css("display","none");
+    //$("#overlay").css("display","none");
 }
 
 function closeEdituser()
 {
-	$("#editUsers").css("display","none");
+    $("#editUsers").css("display","none");
 }
 
 function resetPw(uid,username)
 {
-	rnd=randomstring();
+    rnd=randomstring();
 
-	window.location="mailto:"+username+"@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20"+rnd+"%0A%0A/LENASys Administrators";
+    window.location="mailto:"+username+"@student.his.se?Subject=LENASys%20Password%20Reset&body=Your%20new%20password%20for%20LENASys%20is:%20"+rnd+"%0A%0A/LENASys Administrators";
 
-	AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd,coursevers:querystring['coursevers']},"ACCESS");
+    AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd,coursevers:querystring['coursevers']},"ACCESS");
 }
 
 /**
@@ -335,16 +372,16 @@ function resetPw(uid,username)
  * @returns {Function} Sorting function with the correct property to fetch.
  */
 function propComparator(prop) {
-	var propt = prop.split(' ').join('').toLocaleLowerCase();
+    var propt = prop.split(' ').join('').toLocaleLowerCase();
     return function(a, b) {
-		if(!a[propt] || !b[propt]) {
+	if(!a[propt] || !b[propt]) {
             return 0;
         }
         else{
             var aName = a[propt].toLowerCase();
             var bName = b[propt].toLowerCase();
             return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-		}
+	}
     }
 }
 var bool = true;
@@ -406,30 +443,42 @@ function renderCell(col,celldata,cellid) {
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
 		return str;
 	}else if(col == "class"){
-    obj=JSON.parse(celldata);
-    var items = new Array();
-		// Every user doesn't have a class
-		items.push("null");
-    for(var i = 0; i < filez['classes'].length; i++){
-      items.push(filez['classes'][i]['class']);
-    }
-    str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
-		return str;
-	} else if(col == "groups") {
-		return "<span>" + celldata + "</span>";
-	} else {
-		return "<div id='" + cellid + "'>" + celldata + "</div>";
+	obj=JSON.parse(celldata);
+	var items = new Array();
+	for(var i = 0; i < filez['classes'].length; i++){
+	    items.push(filez['classes'][i]['class']);
 	}
-	return celldata;
+	    var selectedItem = obj.class;
+	    str = makeClassDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value,\""+selectedItem+"\");", items, items, selectedItem);
+	str += "<div style='display:none;'>" + obj.class + "</div>";
+	return str;
+    } else if(col == "groups") {
+	return "<span>" + celldata + "</span>";
+    } else {
+	return "<div id='" + cellid + "'>" + celldata + "</div>";
+    }
+    return celldata;
 }
 
 function makeDropdown(onChange, values, items, selected){
-  str = "<select onChange='"+onChange+"' onclick='return false;'>";
-  for(var i = 0; i < values.length; i++){
-    str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
-  }
-  str+="</select>";
-  return str;
+    str = "<select id='testId' onChange='"+onChange+"' onclick='return false;'>";
+    for(var i = 0; i < values.length; i++){
+	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
+    }
+    str+="</select>";
+    return str;
+}
+
+function makeClassDropdown(onChange, values, items, selected){
+    str = "<select onChange='"+onChange+"' onclick='return false;'>";
+    str+= "<option value='null'></option>";
+
+    for(var i = 0; i < values.length; i++){
+	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
+    }
+    str+= "<option value='newClass'>&#x2795 New Class</option>";
+    str+="</select>";
+    return str;
 }
 
 function renderSortOptions(col,status) {

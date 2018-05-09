@@ -42,6 +42,8 @@ function setup(){
   filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
   filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
   filt+="<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+  filt+="<div id='columnfilter'></div>"
+  filt+="<div id='customfilter'></div>"
   filt+="</div>";
   filt+="</span></td>";
 
@@ -100,23 +102,7 @@ function process()
 		moments[l].momname = momname;
 	}
 
-/*
 	// Create temporary list that complies with dropdown
-  momtmp=new Array;
-	for(var l=0;l<moments.length;l++){
-		if (clist !== null ){
-			index=clist.indexOf("hdr"+moments[l].lid+"check");
-			if(clist[index+1]=="true"){
-				momtmp.push(moments[l]);
-			}
-		} else {
-		// default to show every moment/dugga
-			momtmp.push(moments[l]);
-		}
-	}
-*/
-
-  // Replaces the loop above in order to prevent filtering which is currently not working.
   momtmp=new Array;
   for(var l=0;l<moments.length;l++){
     momtmp.push(moments[l]);
@@ -178,52 +164,8 @@ function process()
 	}
 
 	// Update dropdown list
+  // Filter for teachers.
   var dstr="";
-
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
-
-	var activeMoment = 0;
-	for(var j=0;j<moments.length;j++){
-
-		var lid=moments[j].lid;
-		var name=moments[j].entryname;
-		dstr+="<div class='checkbox-dugga";
-		if (moments[j].visible == 0) {dstr +=" checkhidden";}
-
-		if (moments[j].kind == 4) {dstr +=" checkmoment";}
-
-		dstr+="'><input name='selectdugga' type='checkbox' disabled class='headercheck' id='hdr"+lid+"check'";
-		if (moments[j].kind == 4) {
-			duggaArray.push( [] );
-			var idAddString = "hdr"+lid+"check";
-			dstr+=" onclick='checkMomentParts(" + activeMoment + ", \"" + idAddString + "\"); toggleAll();'";
-			activeMoment++;
-		} else {
-			var idAddString = "hdr"+lid+"check";
-			if(activeMoment>0){
-				duggaArray[activeMoment-1].push(idAddString);
-			}else{
-				duggaArray[activeMoment].push(idAddString);
-			}
-		}
-
-		if (clist){
-			index=clist.indexOf("hdr"+lid+"check");
-			if(index>-1){
- 				if(clist[index+1]=="true"){
- 					dstr+=" checked ";
- 				}
- 			}
- 		} else {
- 			/* default to check every visible dugga/moment */
- 			if (moments[j].visible != 0) dstr+=" checked ";
- 		}
- 		dstr+=">";
- 		dstr+= "<label class='headerlabel' id='hdr"+lid;
- 		dstr+="' for='hdr"+lid+"check' ";
- 		dstr+=">"+name+"</label></div>";
- 	}
-	// Filter for teachers.
 	dstr+="<div class='checkbox-dugga checkmoment'>";
 	dstr+="<input type='checkbox' class='headercheck' name='showTeachers' value='0' id='showteachers'";
 	if(clist){
@@ -247,7 +189,7 @@ function process()
 
 	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
 
-	document.getElementById("dropdownc").innerHTML=dstr;
+	document.getElementById("customfilter").innerHTML=dstr;
 	var dstr="";
 
 	// Sorting
@@ -290,7 +232,6 @@ function process()
 
 function hoverc()
 {
-  toggleAll(); // Check toggle all if there are any elements checked
     $('#dropdowns').css('display','none');
     $('#dropdownc').css('display','block');
 }
@@ -316,54 +257,6 @@ function leavec()
   if(str!=old || onlyPending==opend) process();
   myTable.renderTable();
   magicHeading();
-}
-
-// Function to select and unselect all duggas
-function checkedAll() {
-  // Current state
-  var duggaElements = document.getElementsByName("selectdugga");
-  var selectToggle = document.getElementById('selectdugga');
-
-  // Are there any elements checked?
-  var anyChecked = false;
-
-  for (var i =0; i < duggaElements.length; i++) {
-    if(duggaElements[i].checked) {
-      anyChecked = true;
-      break;
-    }
-  }
-
-  // Yes, there is at lease one element checked, so default is clear
-  if(anyChecked) {
-    selectToggle.checked = false;
-    for (var i =0; i < duggaElements.length; i++) {
-      duggaElements[i].checked = false;
-    }
-  } else { // There are no element(s) checked, so set all
-    selectToggle.checked = true;
-    for (var i =0; i < duggaElements.length; i++) {
-      duggaElements[i].checked = true;
-    }
-  }
-}
-
-// Check all/none box if there are any filters on, else uncheck
-function toggleAll() {
-  // Current state
-  var duggaElements = document.getElementsByName("selectdugga");
-  var selectToggle = document.getElementById('selectdugga');
-
-  // Are there any elements checked?
-  var anyChecked = false;
-
-  for (var i =0; i < duggaElements.length; i++) {
-    if(duggaElements[i].checked) {
-      anyChecked = true;
-      break;
-    }
-  }
-//  selectToggle.checked = anyChecked;
 }
 
 function checkMomentParts(pos, id) {
@@ -798,11 +691,11 @@ function createSortableTable(data){
 	myTable = new SortableTable(
 		tabledata,
 		"resultTable",
-		null,
+		"columnfilter",
 		"",
 		renderCell,
 		renderSortOptions,
-		null,
+		renderColumnFilter,
 		rowFilter,
 		[],
 		[],
@@ -1010,4 +903,19 @@ function compare(a,b) {
 	} else {
 		return 0;
 	}
+}
+
+function renderColumnFilter(colname,col,status) {
+  str = "";
+  if (colname == "FnameLnameSSN") return str;
+  if (status) {
+    str = "<div class='checkbox-dugga'>";
+    str += "<input type='checkbox' checked onclick='myTable.toggleColumn(\"" + colname + "\",\"" + col + "\")'><label class='headerlabel'>" + col + "</label>";
+    str += "</div>"
+  } else {
+    str = "<div class='checkbox-dugga'>";
+    str += "<input type='checkbox' onclick='myTable.toggleColumn(\"" + colname + "\",\"" + col + "\")'><label class='headerlabel'>" + col + "</label>";
+    str += "</div>"
+  }
+  return str;
 }
