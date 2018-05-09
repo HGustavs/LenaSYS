@@ -99,7 +99,8 @@ function parseMarkdown(inString)
     inString = inString.replace(/^\=\|\=(\r\n|\n|\r)/gm, '=|=&&&');
 
     //One line break
-     inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
+     //inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
+     inString=inString.replace(/(\n)$/gm, "<br>");
 
     // Split on code or console block
     var codearray=inString.split(/\~{3}|\=\|\=/);
@@ -252,6 +253,7 @@ function handleLists(currentLine, prevLine, nextLine) {
     if(!isUnorderdList(nextLine) && isUnorderdList(currentLine) && !isOrderdList(nextLine) && !isTable(nextLine)) markdown += "</ul>"; // Close unordered list
     return markdown;
 }
+
 function handleTable(currentLine, prevLine, nextLine) {
     var markdown = "";
     var columns = currentLine.split('|').filter(function(v){return v !== '';});
@@ -412,12 +414,20 @@ function cancelPreview() {
     $(".previewWindowContainer").css("display", "none");
 }
 
-function loadPreview(fileUrl) {
+function loadPreview(fileUrl, fileName, fileKind) {
+    $("#fileName").val(fileName);
+    $("#fileKind").val(fileKind);
     $(".previewWindow").show();
     $(".previewWindowContainer").css("display", "block");
+    $(".markdownPart").show();
+    $(".editFilePart").hide();
     var fileContent = getFIleContents(fileUrl);
+    var tempFileName = fileUrl.split("/").pop().split(".")[0];
     document.getElementById("mrkdwntxt").value = fileContent;
+
+    $(".fileName").html(tempFileName);
     updatePreview(fileContent);
+    //updatePreview(document.getElementById("mrkdwntxt").value = fileContent);
 }
 
 function updatePreview(str) {
@@ -441,6 +451,7 @@ function getFIleContents(fileUrl){
         type: 'get',
         dataType: 'html',
         async: false,
+        cache: false,
         success: function(data) {
             result = data;
         }
@@ -448,13 +459,13 @@ function getFIleContents(fileUrl){
     return result;
 }
 
-
-function boldText() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'****');
-}
-
 function cursiveText() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'____');
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0, start) + '__' + sel + '__' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
 }
 
 function showDropdown() {
@@ -466,15 +477,112 @@ function selected() {
 }
 
 function headerVal1() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'# ');
+    this.setCarotPosition()
+    var finText = txtarea.value.substring(0, start) + '# ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
 
 }
 
 function headerVal2() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'## ');
+    this.setCarotPosition()
+    var finText = txtarea.value.substring(0, start) + '## ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 3;
+    updatePreview(txtarea.value);
 }
+
 function headerVal3() {
-    $('#mrkdwntxt').val($('#mrkdwntxt').val()+'### ');
+    this.setCarotPosition()
+    var finText = txtarea.value.substring(0, start) + '### ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 4;
+    updatePreview(txtarea.value);
+}
+
+function headerVal4() {
+    this.setCarotPosition()
+    var finText = txtarea.value.substring(0, start) + '#### ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 5;
+    updatePreview(txtarea.value);
+}
+
+function headerVal5() {
+    this.setCarotPosition()
+    var finText = txtarea.value.substring(0, start) + '##### ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 6;
+    updatePreview(txtarea.value);
+}
+
+function headerVal6() {
+    this.setCarotPosition()
+    var finText = txtarea.value.substring(0, start) + '###### ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 7;
+    updatePreview(txtarea.value);
+}
+
+function lists(){
+    $('#mrkdwntxt').val($('#mrkdwntxt').val() + '* ');
+}
+
+function codeBlockText(){
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0, start) + '~~~\n\n' + sel + '~~~' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 4;
+    updatePreview(txtarea.value);
+}
+
+function boldText() {
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0, start) + '**' + sel + '**' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
+}
+
+function linkText(){
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0,start) + '!!!' + 'Link here, and link name here' + sel + '!!!' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd = end +12;
+    updatePreview(txtarea.value);
+}
+function setCarotPosition(){
+    this.txtarea = document.getElementById("mrkdwntxt");
+    this.start = txtarea.selectionStart;
+    this.end = txtarea.selectionEnd;
+    this.sel = txtarea.value.substring(start,end);
+}
+function externalImg(){
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0,start) + '|||' + 'img here, thumbnail in width px here,  full width here' + sel + '|||' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd = end +11;
+    updatePreview(txtarea.value);
+}
+
+function quoteText(){
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0, start) + '^ ' + sel + ' ^' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd= end + 2;
+    updatePreview(txtarea.value);
 }
 
 

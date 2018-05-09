@@ -51,6 +51,7 @@ $entries=array();
 $files=array();
 $lfiles =array();
 $gfiles =array();
+$access = False;
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
   	$query = $pdo->prepare("SELECT fileid,filename,kind, filesize, uploaddate FROM fileLink WHERE ((cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) OR isGlobal='1') ORDER BY filename;");
   	$query->bindParam(':cid', $cid);
@@ -69,31 +70,32 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
         if ($filekind == 1) {
             $filePath = "UNK";
-            $filekind = "Link";
+            $filekindname = "Link";
 		    } else if ($filekind == 2) {
             // Global
             $filePath = "../courses/global/".$filename;
-            $filekind = "Global";
+            $filekindname = "Global";
         } else if ($filekind == 3) {
             // Course Local
             $filePath = "../courses/".$cid."/".$filename;
-            $filekind = "Course local";
+            $filekindname = "Course local";
         } else if ($filekind == 4) {
             // Version Local
             $filePath = "../courses/".$cid."/".$coursevers."/".$filename;
-            $filekind = "Version local";
+            $filekindname = "Version local";
         } else {
             $filePath = "UNK";
+            $filekindname = "UNK";
         }
 
       $entry = array(
           'counter' => $row['filename'],
     			'filename' => $row['filename'],
           'extension' => $row['filename'],
-          'kind' => $filekind,
-    			'filesize' => $row['filesize'],
+          'kind' => $filekindname,
+    			'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]) ,
     			'uploaddate' => $row['uploaddate'],
-          'editor' => $filePath,
+          'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename]),
           'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']])
   		);
 
@@ -123,13 +125,16 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
       			}
     		}
   	}
+
+  	$access = True;
 }
 		
 $array = array(
   	'entries' => $entries,
   	'debug' => $debug,
   	'gfiles' => $gfiles,
-  	'lfiles' => $lfiles
+  	'lfiles' => $lfiles,
+	'access' => $access
 );
 
 echo json_encode($array);

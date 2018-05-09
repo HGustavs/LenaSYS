@@ -125,13 +125,11 @@ function loadUMLForm(element, dir){
         var attributesTextArea = document.getElementById('UMLAttributes');
         var operationsTextArea = document.getElementById('UMLOperations');
         for(var i = 0; i < diagram[lastSelectedObject].attributes.length;i++){
-          attributesText += diagram[lastSelectedObject].attributes[i].visibility + " " +
-          diagram[lastSelectedObject].attributes[i].text;
+          attributesText += diagram[lastSelectedObject].attributes[i].text;
           if(i < diagram[lastSelectedObject].attributes.length - 1) attributesText += "\n";
         }
         for(var i = 0; i < diagram[lastSelectedObject].operations.length;i++){
-          operationsText += diagram[lastSelectedObject].operations[i].visibility + " " +
-          diagram[lastSelectedObject].operations[i].text
+          operationsText += diagram[lastSelectedObject].operations[i].text
           if(i < diagram[lastSelectedObject].operations.length - 1) operationsText += "\n";
         }
 
@@ -208,14 +206,12 @@ function changeObjectAppearance(object_type){
       diagram[lastSelectedObject].attributes = [];
       diagram[lastSelectedObject].operations = [];
 
-      //Splits and inserts visibility and text for attributes and operations
+      //Inserts text for attributes and operations
       for(var i = 0;i < attributeLines.length;i++){
-        var tempString = attributeLines[i].split(' ');
-        diagram[lastSelectedObject].attributes.push({visibility:tempString[0], text:tempString[1]});
+        diagram[lastSelectedObject].attributes.push({text:attributeLines[i]});
       }
       for(var i = 0; i < operationLines.length; i++){
-        var tempString = operationLines[i].split(' ');
-        diagram[lastSelectedObject].operations.push({visibility:tempString[0], text:tempString[1]});
+        diagram[lastSelectedObject].operations.push({text:operationLines[i]});
       }
 
     } else if (diagram[lastSelectedObject].symbolkind == 4) {

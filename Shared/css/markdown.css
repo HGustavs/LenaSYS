@@ -62,11 +62,11 @@
     line-height: 12px;
     white-space: pre;
     white-space: pre-wrap;
-    background: #ffffff;	
+    background: #ffffff;
     display: inline-block;
     padding: 1em;
     margin: 0.5em 0px;
-    border: 1px solid #bebab0;	
+    border: 1px solid #bebab0;
     box-shadow: 1px 1px 2px #666;
 }
 
@@ -133,7 +133,7 @@
 		border: 3px solid teal;
 }
 
-.gifwrapper {	  
+.gifwrapper {
     position: relative;
 		display: flex;
 		align-items: center;
@@ -212,21 +212,20 @@
 #markdown h3{
     font-size:16px;
     margin: 2px 0px 2px 0px;
-    border-bottom:2px solid #aaa;
 }
 #markdown h2 {
   font-size:18px;
-  margin: 2px 0px 2px 0px;    
-  
+  margin: 2px 0px 2px 0px;
+
 }
 #markdown h1 {
   font-size:22px;
-  margin: 2px 0px 2px 0px;    
+  margin: 2px 0px 2px 0px;
 }
 
 #markdown h2 {
     font-size:18px;
-    margin: 2px 0px 2px 0px;  
+    margin: 2px 0px 2px 0px;
 }
 
 #markdown h1 {

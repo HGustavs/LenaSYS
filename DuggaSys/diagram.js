@@ -87,14 +87,16 @@ var xPos = 0;
 var yPos = 0;
 var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not. This is used in diagram_dialog.js
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
-var diagramNumberUndo = 0;              // Is used for localStorage and undo
-var diagramNumberRedo = 0;              // Is used for localStorage and redo
+var diagramNumberHistory = 0;           // Is used for undo and redo
 var diagramCode = "";                   // Is used to stringfy the diagram-array
 var appearanceMenuOpen = false;         // True if appearance menu is open
 var classAppearanceOpen = false;
 
 var symbolStartKind;                    // Is used to store which kind of object you start on
 var symbolEndKind;                      // Is used to store which kind of object you end on
+
+
+var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 
 
 //this block of the code is used to handel keyboard input;
@@ -107,6 +109,7 @@ function keyDownHandler(e){
     if(appearanceMenuOpen) return;
     if((key == 46 || key == 8)){
         eraseSelectedObject();
+        SaveState();
     } else if(key == 32){
         //Use space for movearound
         if (e.stopPropagation) {
@@ -119,11 +122,35 @@ function keyDownHandler(e){
             deactivateMovearound();
         }
         updateGraphics();
+    } else if(key == 37 || key == 38 || key == 39 || key == 40){//arrow keys
+        arrowKeyPressed(key);
+    } else if(key == 17 || key == 91){
+        ctrlIsClicked = true;
+    } else if(ctrlIsClicked && key == 67){
+        //Ctrl + c
+        cloneTempArray = [];
+        for(var i = 0; i < selected_objects.length; i++){
+            cloneTempArray.push(selected_objects[i]);
+        }
+    } else if(ctrlIsClicked && key == 86 ){
+        //Ctrl + v
+        for(var i = 0; i < cloneTempArray.length; i++){
+            //Display cloned objects except lines
+            if(cloneTempArray[i].symbolkind != 4){
+                copySymbol(cloneTempArray[i]);
+            }
+        }
+        updateGraphics();
+        SaveState();
     }
+
+    else if (key == 90 && ctrlIsClicked) undoDiagram();
+    else if (key == 89 && ctrlIsClicked) redoDiagram();
     else if(key == 17 || key == 91)
     {
       ctrlIsClicked = true;
     }
+
 }
 
 //--------------------------------------------------------------------
@@ -139,6 +166,24 @@ window.onkeyup = function(event) {
     }
   }
 
+//Handler for when pressing arrow keys
+function arrowKeyPressed(key){
+  var xNew = 0, yNew = 0;
+
+  if(key == 37){//left
+    xNew = -5;
+  }else if(key == 38){//up
+    yNew = -5;
+  }else if(key == 39){//right
+    xNew = 5;
+  }else if(key == 40){//down
+    yNew = 5;
+  }
+  for(var i = 0; i < selected_objects.length; i++){
+    selected_objects[i].move(xNew, yNew);
+  }
+  updateGraphics();
+}
 
 
 //--------------------------------------------------------------------
@@ -197,6 +242,47 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
     return this.length - 1;
 }
 
+//Clone an object
+function copySymbol(symbol){
+    var clone = Object.assign({}, symbol);
+    var topLeftClone = Object.assign({}, points[symbol.topLeft]);
+    topLeftClone.x += 10;
+    topLeftClone.y += 10;
+    var bottomRightClone = Object.assign({}, points[symbol.bottomRight]);
+    bottomRightClone.x += 10;
+    bottomRightClone.y += 10;
+    var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
+    centerPointClone.x += 10;
+    centerPointClone.y += 10;
+
+    clone = new Symbol(symbol.symbolkind);
+    if(symbol.symbolkind == 1){
+        clone.name = "New" + diagram.length;
+    }else if(symbol.symbolkind == 2){
+        clone.name = "Attr" + diagram.length;
+    }else if(symbol.symbolkind == 3){
+        clone.name = "Entity" + diagram.length;
+    }else if(symbol.symbolkind == 4){
+        clone.name = "Line" + diagram.length;
+    }else{
+        clone.name = "Relation" + diagram.length;
+    }
+    clone.topLeft = points.push(topLeftClone) - 1;
+    clone.bottomRight = points.push(bottomRightClone) - 1;
+    clone.centerPoint = points.push(centerPointClone) - 1;
+    clone.object_type = "";
+    clone.fontColor = "#000";
+    clone.font = "Arial";
+
+    clone.targeted = true;
+    symbol.targeted = false;
+
+    diagram.push(clone);
+
+    return diagram.length;
+
+}
+
 //--------------------------------------------------------------------
 // drawPoints - Draws each of the points as a cross
 //--------------------------------------------------------------------
@@ -226,7 +312,7 @@ points.drawPoints = function() {
 
 //--------------------------------------------------------------------
 // closestPoint - Returns the distance and index of the point closest
-// to the coordinates passed as parameters.
+// to the cotargetItemsInsideSelectionBoxordinates passed as parameters.
 //--------------------------------------------------------------------
 points.closestPoint = function(xCoordinate, yCoordinate) {
     var distance = 50000000;
@@ -242,6 +328,8 @@ points.closestPoint = function(xCoordinate, yCoordinate) {
     }
     return {distance:Math.sqrt(distance), index:index};
 }
+
+
 
 //--------------------------------------------------------------------
 // clearAllSelects - Clears all selects from the array "points"
@@ -261,6 +349,24 @@ var diagram = [];
 //--------------------------------------------------------------------
 // draw - Executes draw methond in all diagram objects
 //--------------------------------------------------------------------
+
+diagram.closestPoint = function(mx, my){
+    var distance = 50000000;
+    var point;
+    this.forEach(symbol => {
+        [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
+            var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
+            var deltaY = corner.fake ? my - corner.y.y : my - corner.y;
+            var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
+            if (hypotenuseElevatedBy2 < distance) {
+                distance = hypotenuseElevatedBy2;
+                point = corner;
+            }
+        });
+    });
+    return {distance:Math.sqrt(distance), point:point};
+}
+
 diagram.draw = function() {
     this.adjustPoints();
     //Draws all lines first so that they appear behind the object instead
@@ -277,6 +383,7 @@ diagram.draw = function() {
             this[i].draw();
         }
     }
+
 }
 
 //--------------------------------------------------------------------
@@ -306,7 +413,7 @@ diagram.deleteObject = function(object) {
 // targetItemsInsideSelectionBox - Targets all items inside the
 // selection box (dragged by the user)
 //--------------------------------------------------------------------
-diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
+diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
     //ensure that an entity cannot scale below the minimum size
     if (sx > ex) {
         var tempEndX = ex;
@@ -331,10 +438,18 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                     pointsSelected++;
                 }
             }
-            if (pointsSelected >= tempPoints.length) {
-                this[i].targeted = true;
-            } else {
-                this[i].targeted = false;
+            if(!hover){
+                if (pointsSelected >= tempPoints.length) {
+                    this[i].targeted = true;
+                } else {
+                    this[i].targeted = false;
+                }
+            }else{
+                if (pointsSelected >= tempPoints.length) {
+                    this[i].isHovered = true;
+                } else {
+                    this[i].isHovered = false;
+                }
             }
         } else {
             var index = selected_objects.indexOf(this[i]);
@@ -352,22 +467,24 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy) {
                 sy < tempTopLeftY && ey > tempTopLeftY &&
                 sx < tempBottomRightX && ex > tempBottomRightX &&
                 sy < tempBottomRightY && ey > tempBottomRightY) {
-                if (ctrlIsClicked) {
+                if (ctrlIsClicked && !hover) {
                     if (index >= 0) {
                         this[i].targeted = false;
                         selected_objects.splice(index, 1);
-                    } else {
+                    } else if(!hover){
                         this[i].targeted = true;
                         selected_objects.push(this[i]);
                     }
                 } else {
-                    if (index < 0) {
+                    if (index < 0 && !hover) {
                         this[i].targeted = true;
                         selected_objects.push(this[i]);
+                    } else if(hover){
+                        this[i].isHovered = true;
                     }
                 }
             } else if(!ctrlIsClicked) {
-                this[i].targeted = false;
+                if(!hover) this[i].targeted = false;
                 if (index >= 0) selected_objects.splice(index, 1);
             }
         }
@@ -401,7 +518,8 @@ diagram.checkForHover = function(posX, posY) {
         else return 0;
     });
     if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind == 2) {
-        hoveredObjects[hoveredObjects.length - 1].isHovered = true;
+        //We only want to set it to true when md is not in selectionbox mode
+        hoveredObjects[hoveredObjects.length - 1].isHovered = md != 4 || uimode != "normal";
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }
@@ -520,7 +638,7 @@ diagram.sortConnectors = function() {
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
-            diagram[i].quadrants();
+            if(diagram[i].quadrants()) break;
         }
     }
 }
@@ -849,6 +967,7 @@ function clearCanvas() {
         points.pop();
     }
     updateGraphics();
+    SaveState();
 }
 
 var consloe = {};
@@ -1244,4 +1363,16 @@ function globalStrokeColor() {
     for (var i = 0; i < diagram.length; i++) {
             diagram[i].strokeColor = document.getElementById('StrokeColor').value;
     }
+}
+
+function undoDiagram() {
+    if (diagramNumberHistory > 1) diagramNumberHistory--;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (tmpDiagram != null) LoadImport(tmpDiagram);
+}
+
+function redoDiagram() {
+    if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (tmpDiagram != null) LoadImport(tmpDiagram);
 }

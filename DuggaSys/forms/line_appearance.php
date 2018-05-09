@@ -1,5 +1,5 @@
 Line type: </br>
-<select onclick="changeObjectAppearance('lineType');" id='object_type'>
+<select onchange="changeObjectAppearance('lineType');" id='object_type'>
     <option value='normal'>Normal</option>
     <option value='Forced'>Forced</option>
     <option value='Derived'>Derived</option>
@@ -12,7 +12,7 @@ Cardinality: <br/>
   <option value="M">M</option>
 </select><br/>
 <!--Line colors:<br>
-<select onclick="changeObjectAppearance('attributeType');" id='AttributeLineColor'>
+<select onchange="changeObjectAppearance('attributeType');" id='AttributeLineColor'>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
