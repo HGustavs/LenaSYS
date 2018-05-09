@@ -42,6 +42,8 @@ function setup(){
   filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();'>";
   filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
   filt+="<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+  filt+="<div id='columnfilter'></div>"
+  filt+="<div id='customfilter'></div>"
   filt+="</div>";
   filt+="</span></td>";
 
@@ -100,23 +102,7 @@ function process()
 		moments[l].momname = momname;
 	}
 
-/*
 	// Create temporary list that complies with dropdown
-  momtmp=new Array;
-	for(var l=0;l<moments.length;l++){
-		if (clist !== null ){
-			index=clist.indexOf("hdr"+moments[l].lid+"check");
-			if(clist[index+1]=="true"){
-				momtmp.push(moments[l]);
-			}
-		} else {
-		// default to show every moment/dugga
-			momtmp.push(moments[l]);
-		}
-	}
-*/
-
-  // Replaces the loop above in order to prevent filtering which is currently not working.
   momtmp=new Array;
   for(var l=0;l<moments.length;l++){
     momtmp.push(moments[l]);
@@ -160,70 +146,25 @@ function process()
 				var momentresult=restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
 				if(typeof momentresult!='undefined'){
-					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname,});
+					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname, deadline:new Date(momtmp[j].deadline),});
 				}else{
-					student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, userAnswer:"UNK", quizfile:momtmp[j].quizfile, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname,});
+					student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, userAnswer:"UNK", quizfile:momtmp[j].quizfile, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname, deadline:new Date(momtmp[j].deadline),});
 				}
 			}else{
 				var momentresult=restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
 				if(typeof momentresult!='undefined'){
-					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant,quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname,});
+					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant,quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname,  deadline:new Date(momtmp[j].deadline),});
 				}else{
-					student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile});
+					student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile,  deadline:new Date(momtmp[j].deadline),});
 				}
 			}
 		}
 		students.push(student);
 	}
-
 	// Update dropdown list
+  // Filter for teachers.
   var dstr="";
-
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='selectduggatoggle' id='selectdugga' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
-
-	var activeMoment = 0;
-	for(var j=0;j<moments.length;j++){
-
-		var lid=moments[j].lid;
-		var name=moments[j].entryname;
-		dstr+="<div class='checkbox-dugga";
-		if (moments[j].visible == 0) {dstr +=" checkhidden";}
-
-		if (moments[j].kind == 4) {dstr +=" checkmoment";}
-
-		dstr+="'><input name='selectdugga' type='checkbox' class='headercheck' id='hdr"+lid+"check'";
-		if (moments[j].kind == 4) {
-			duggaArray.push( [] );
-			var idAddString = "hdr"+lid+"check";
-			dstr+=" onclick='checkMomentParts(" + activeMoment + ", \"" + idAddString + "\"); toggleAll();'";
-			activeMoment++;
-		} else {
-			var idAddString = "hdr"+lid+"check";
-			if(activeMoment>0){
-				duggaArray[activeMoment-1].push(idAddString);
-			}else{
-				duggaArray[activeMoment].push(idAddString);
-			}
-		}
-
-		if (clist){
-			index=clist.indexOf("hdr"+lid+"check");
-			if(index>-1){
- 				if(clist[index+1]=="true"){
- 					dstr+=" checked ";
- 				}
- 			}
- 		} else {
- 			/* default to check every visible dugga/moment */
- 			if (moments[j].visible != 0) dstr+=" checked ";
- 		}
- 		dstr+=">";
- 		dstr+= "<label class='headerlabel' id='hdr"+lid;
- 		dstr+="' for='hdr"+lid+"check' ";
- 		dstr+=">"+name+"</label></div>";
- 	}
-	// Filter for teachers.
 	dstr+="<div class='checkbox-dugga checkmoment'>";
 	dstr+="<input type='checkbox' class='headercheck' name='showTeachers' value='0' id='showteachers'";
 	if(clist){
@@ -237,17 +178,17 @@ function process()
 	dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>";
 
 	// Filter for only showing pending
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='pending' value='0' id='pending'";
 	if (onlyPending){ dstr+=" checked"; }
 	dstr+="><label class='headerlabel' for='pending'>Only pending</label></div>";
 
 	// Filter for mini mode
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='minimode' value='0' id='minimode' onchange='miniMode()'>";
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='minimode' value='0' id='minimode' onchange='miniMode()'>";
 	dstr+="<label class='headerlabel' for='minimode'>Mini mode</label></div>";
 
 	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
 
-	document.getElementById("dropdownc").innerHTML=dstr;
+	document.getElementById("customfilter").innerHTML=dstr;
 	var dstr="";
 
 	// Sorting
@@ -290,7 +231,6 @@ function process()
 
 function hoverc()
 {
-  toggleAll(); // Check toggle all if there are any elements checked
     $('#dropdowns').css('display','none');
     $('#dropdownc').css('display','block');
 }
@@ -314,55 +254,8 @@ function leavec()
     localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
 
   if(str!=old || onlyPending==opend) process();
+  myTable.renderTable();
   magicHeading();
-}
-
-// Function to select and unselect all duggas
-function checkedAll() {
-  // Current state
-  var duggaElements = document.getElementsByName("selectdugga");
-  var selectToggle = document.getElementById('selectdugga');
-
-  // Are there any elements checked?
-  var anyChecked = false;
-
-  for (var i =0; i < duggaElements.length; i++) {
-    if(duggaElements[i].checked) {
-      anyChecked = true;
-      break;
-    }
-  }
-
-  // Yes, there is at lease one element checked, so default is clear
-  if(anyChecked) {
-    selectToggle.checked = false;
-    for (var i =0; i < duggaElements.length; i++) {
-      duggaElements[i].checked = false;
-    }
-  } else { // There are no element(s) checked, so set all
-    selectToggle.checked = true;
-    for (var i =0; i < duggaElements.length; i++) {
-      duggaElements[i].checked = true;
-    }
-  }
-}
-
-// Check all/none box if there are any filters on, else uncheck
-function toggleAll() {
-  // Current state
-  var duggaElements = document.getElementsByName("selectdugga");
-  var selectToggle = document.getElementById('selectdugga');
-
-  // Are there any elements checked?
-  var anyChecked = false;
-
-  for (var i =0; i < duggaElements.length; i++) {
-    if(duggaElements[i].checked) {
-      anyChecked = true;
-      break;
-    }
-  }
-//  selectToggle.checked = anyChecked;
 }
 
 function checkMomentParts(pos, id) {
@@ -695,13 +588,15 @@ function returnedResults(data)
           if (students[t][j].lid == data.duggaid){
             dpos=j;
             students[t][j].grade = parseInt(data.results);
+            students[t][j].gradeExpire = data.duggaexpire;
+            students[t][j].timesGraded = parseInt(data.duggatimesgraded);
             break;
           }
         }
         break;
       }
     }
-    createSortableTable(data);
+    myTable.renderTable();
   } else {
 
     entries=data.entries;
@@ -760,21 +655,22 @@ var myTable;
 //----------------------------------------
 
 function buildDynamicHeaders() {
-  let tblhead = {0:"Fname/Lname/SSN"};
+  let tblhead = {"FnameLnameSSN":"Fname/Lname/SSN"};
   moments.forEach(function(entry) {
-  	tblhead[entry['lid']] = entry['entryname'];
+  	tblhead["lid:"+entry['lid']] = entry['entryname'];
   });
   return tblhead;
 }
 
 function buildStudentInfo() {
+  let i = 0;
 	students.forEach(function(entry) {
 		if(entry.length > 1) {
-			var row = {0:entry[0]};
-			for(i = 1; i < entry.length; i++) {
-				row[entry[i]['lid']] = entry[i];
+			var row = {"FnameLnameSSN":entry[0]};
+			for(j = 1; j < entry.length; j++) {
+				row["lid:"+entry[j]['lid']] = entry[j];
 			}
-			studentInfo[entry[1]['uid']] = row;
+			studentInfo[i++] = row;
 		}
 	});
 	return studentInfo;
@@ -794,19 +690,19 @@ function createSortableTable(data){
 	myTable = new SortableTable(
 		tabledata,
 		"resultTable",
-		null,
+		"columnfilter",
 		"",
 		renderCell,
-		null,
-		null,
-		null,
+		renderSortOptions,
+		renderColumnFilter,
+		rowFilter,
 		[],
 		[],
 		"",
 		null,
 		null,
-		null,
-		null,
+		rowHighlightOn,
+		rowHighlightOff,
 		null,
 		null,
 		false
@@ -818,7 +714,7 @@ function createSortableTable(data){
 
 function renderCell(col,celldata,cellid) {
 	// First column (Fname/Lname/SSN)
-  if (col == 0){
+  if (col == "FnameLnameSSN"){
     str = celldata.grade;
     return str;
 
@@ -828,7 +724,8 @@ function renderCell(col,celldata,cellid) {
       if(celldata.kind==4) { str += "dugga-moment "; }
       if (celldata.grade === 1) {str += "dugga-fail";}
       else if (celldata.grade > 1) {str += "dugga-pass";}
-      else if (celldata.needMarking === true) {str += "dugga-pending"; onlyPending=false;}
+      else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending"; onlyPending=false;}
+      else if (celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission"; onlyPending=false;}
       else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
       else {str += "dugga-unassigned";}
     str += "'>";
@@ -878,4 +775,147 @@ function renderCell(col,celldata,cellid) {
     return str;
   }
 return celldata;
+}
+
+//--------------------------------------------------------------------------
+// rowHighlight
+// ---------------
+//  Callback function that highlights the currently hovered row
+//--------------------------------------------------------------------------
+
+function rowHighlightOn(rowid,rowno,colclass,centerel) {
+  document.getElementById(rowid).style.border = "3px solid rgba(97,72,117,1)";
+  var collist = document.getElementsByClassName(colclass);
+		for(let i=0;i<collist.length;i++){
+			collist[i].style.borderLeft="3px solid rgba(97,72,117,1)";
+			collist[i].style.borderRight="3px solid rgba(97,72,117,1)";
+		}
+  centerel.style.backgroundImage = "radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2))";
+}
+
+function rowHighlightOff(rowid,rowno,colclass,centerel) {
+  document.getElementById(rowid).style.border = "";
+  var collist = document.getElementsByClassName(colclass);
+		for(let i=0;i<collist.length;i++){
+			collist[i].style.borderLeft="";
+			collist[i].style.borderRight="";
+		}
+  centerel.style.backgroundImage = "none";
+}
+
+//----------------------------------------------------------------
+// rowFilter <- Callback function that filters rows in the table
+//----------------------------------------------------------------
+function rowFilter(row) {
+  // Custom filters that remove rows before an actual search
+  if (!showTeachers && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
+
+  return true;
+}
+
+function renderSortOptions(col,status) {
+	str = "";
+	if (status ==- 1) {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+	} else if (status == 0) {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+	} else {
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+	}
+	return str;
+}
+			
+//--------------------------------------------------------------------------
+// compare
+// ---------------
+//  Callback function with different compare alternatives for the column sort
+//--------------------------------------------------------------------------
+function compare(a,b) {
+	let col = sortableTable.currentTable.getSortcolumn();
+	let tempA;
+	let tempB;
+
+	//Column first name last name ssn
+	if (col == "Fname/Lname/SSN") {
+		/* The sorting in this column needs to follow the following priority order
+			1. First name
+			2. Last name
+			3. SSN */
+
+		tempA = a['firstname'].toUpperCase();
+		tempA += " " + a['lastname'].toUpperCase();
+		tempA += " " + a['ssn'].toUpperCase();
+
+		tempB = b['firstname'].toUpperCase();
+		tempB += " " + b['lastname'].toUpperCase();
+		tempB += " " + b['ssn'].toUpperCase();
+
+	//Columns that contains duggor
+	} else {
+		/* The sorting in a column needs to follow the following priority order:
+			1. Need marking 												(10 000)
+			2. If the dugga is passed								(1 000)
+			3. If the dugga is failed								(100)
+			4. If the student only viewed the dugga (10)
+			5. When the dugga has been submitted 		(1) */
+
+		tempA = 0;
+		tempB = 0;
+		if(a['needMarking'] == true) {
+			tempA += 10000;
+		}
+		if(b['needMarking'] == true) {
+			tempB += 10000;
+		}
+			
+		if(a['grade'] == 2) {
+			tempA += 1000;
+		}
+		if(b['grade'] == 2) {
+			tempB += 1000;
+		}
+
+		if(a['grade'] == 1) {
+			tempA += 100;
+		}
+		if(b['grade'] == 1) {
+			tempB += 100;
+		}
+
+		if(a['ishere'] == true) {
+			tempA += 10;
+		}
+		if(b['ishere'] == true) {
+			tempB += 10;
+		}
+
+		if(a['submitted'] > b['submitted']) {
+			tempA += 1;
+		} else if(a['submitted'] < b['submitted']) {
+			tempB += 1;
+		}
+	}
+
+	if (tempA > tempB) {
+		return 1;
+	} else if (tempA < tempB) {
+		return -1;
+	} else {
+		return 0;
+	}
+}
+
+function renderColumnFilter(colname,col,status) {
+  str = "";
+  if (colname == "FnameLnameSSN") return str;
+  if (status) {
+    str = "<div class='checkbox-dugga'>";
+    str += "<input type='checkbox' checked onclick='myTable.toggleColumn(\"" + colname + "\",\"" + col + "\")'><label class='headerlabel'>" + col + "</label>";
+    str += "</div>"
+  } else {
+    str = "<div class='checkbox-dugga'>";
+    str += "<input type='checkbox' onclick='myTable.toggleColumn(\"" + colname + "\",\"" + col + "\")'><label class='headerlabel'>" + col + "</label>";
+    str += "</div>"
+  }
+  return str;
 }

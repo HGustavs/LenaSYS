@@ -71,6 +71,98 @@ function sortRank( col ){
    renderRankTable();
 }
 
+function hideInfoText(){
+  var text = document.getElementById("infoText");
+  text.style.display = "none";
+}
+
+function showInfoText(object, displayText){
+  var text = document.getElementById("infoText");
+  text.style.display = "inline";
+  text.innerHTML = displayText;
+  text.style.left = (document.documentElement.scrollLeft + object.getBoundingClientRect()["x"] + object.width["baseVal"]["value"] + 2) + "px";
+  text.style.top = (document.documentElement.scrollTop + object.getBoundingClientRect()["y"] + (object.height.baseVal.value / 2) - (text.offsetHeight / 2)) + "px";
+}
+
+function renderBarDiagram(data)
+{
+  // Creates array from data for easier access
+  var dailyCount = new Array(70);
+  var dateString = data['weeks'][0]['weekstart'];
+  var numOfWeeks = data['weeks'].length;
+  var date;
+  var maxDayCount = 0;
+  for(var i = 0; i < 7 * numOfWeeks; i++){
+    let day = data['count'][dateString];
+    let commits = parseInt(day["commits"][0][0]);
+    let events = parseInt(day["events"][0][0]);
+    let comments = parseInt(day["comments"][0][0]);
+    let loc = parseInt(day["loc"][0][0] == null ? 0 : day["loc"][0][0]);
+    let total = commits + events + comments + loc;
+    if(total > maxDayCount){
+      maxDayCount = total;
+    }
+    dailyCount[i] = new Array(dateString, commits, events, comments, loc);
+    date = new Date(dateString);
+    date.setDate(date.getDate() + 1);
+    dateString = date.toISOString().split("T")[0];
+  }
+  
+  // Renders the diagram
+  var str = "<div style='width:100%;overflow-x:scroll;'>";
+  str += "<svg class='chart fumho' style='background-color:#efefef;' width='1300' height='250' aria-labelledby='title desc' role='img'>";
+  for(var i = 0; i < numOfWeeks; i++){
+    str += "<rect x='" + (65 + 120 * i) + "' y='0%' width='120' height='100%' style='fill:" + (i % 2 == 1 ? "#cccccc" : "#efefef") + ";' />"
+  }
+  str += "<line style='stroke:#000;' x1='65' x2='65' y1='5%' y2='220'></line>";
+  str += "<line style='stroke:#000;' x1='65' x2='99%' y1='220' y2='220'></line>";
+  
+  // Calculates and render scale numbers on the left
+  var zeros = Math.pow(10, Math.round(maxDayCount).toString().length - 2);
+  var highRange = Math.ceil(maxDayCount / zeros) * zeros;
+  for(var i = 0; i < 5; i++){
+    let range = (highRange / 4) * i;
+    if(highRange > 100){
+      range = Math.round(range);
+    }
+    str += "<text x='" + (62 - (range.toString().length * 9)) + "' y='" + (225 - (range / highRange) * 200) + "'>" + range + "</text>";
+    str += "<line style='stroke:#ccc;' x1='65' x2='99%' y1='" + (220 - (range / highRange) * 200) + "' y2='" + (220 - (range / highRange) * 200) + "'></line>";
+  }
+  
+  // Renders the bars
+  for(var i = 0; i < numOfWeeks; i++){
+    str += "<g class='bar'>";
+    for(var j = 0; j < 7; j++){
+      let day = dailyCount[i * 7 + j];
+      let yOffset = 0;
+      for(var k = 1; k < day.length; k++){
+        let height = (day[k] / highRange) * 200; 
+        yOffset += height;
+        let color = "#F44336";
+        let type = "<br />Commits: ";
+        if(k == 2){
+          color = "#4DB6AC";
+          type = "<br />Events: ";
+        } else if(k == 3){
+          color = "#43A047";
+          type = "<br />Comments: ";
+        } else if(k == 4){
+          color = "purple";
+          type = "<br />LOC: ";
+        }
+        str += "<rect onmouseover='showInfoText(this, \"" + (day[0] + type + day[k]) + "\");' onmouseout='hideInfoText()' style='fill:" + color + ";' width='10' height='" + height + "' x='" + (j * 15 + 120 * i + 75) + "' y='" + (220 - yOffset) + "'></rect>";
+      }
+    }
+    
+    str += "<text x='" + (120 * i + 100) + "' y='240'>week " + (i + 1) + "</text>";
+    str += "</g>";
+  }
+  
+  str += "</svg>";
+  str += "</div>";
+  return str;
+}
+
 function intervaltocolor(size,val)
 {
     if(val<size*0.25){
@@ -145,7 +237,9 @@ function returnedSection(data)
     str+="<td style='background-color:"+intervaltocolor(41,data['commitrank'])+"'>"+data['commitrank']+"</td>";
     str+="</tr>";
     str+="</table>";
-
+  
+    str += renderBarDiagram(data);
+  
     // Table heading
 	str+="<table class='fumho'>";
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";

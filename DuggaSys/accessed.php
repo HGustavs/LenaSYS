@@ -39,7 +39,7 @@
 				echo "<input class='submit-button' type='button' value='Import user(s)' onclick='showImportUsersPopup();'/>";
 				echo "</div>";
 				echo "<div id='searchBar' style='position:relative; top:-5px; left: 5px;'>";
-				echo "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById('searchinput').value;searchKeyUp(event);user.renderTable();'> ";
+				echo "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById(\"searchinput\").value;searchKeyUp(event);myTable.renderTable();'> ";
 				echo "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>";
 				echo "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>";
 				echo "</button>";
@@ -103,6 +103,29 @@
       		</div>
       </div>
 	</div>
+
+	<div id='createClass' class='loginBoxContainer' style='display:none;'>
+      <div class='loginBox' style='width:464px;'>
+      		<div class='loginBoxheader'>
+      			<h3>Add class</h3>
+      			<div class='cursorPointer' onclick='closeWindows();'>x</div>
+      		</div>
+      		<div style='padding:5px;'>
+      		    <input type='hidden' id='uid' value='Toddler' /></td>
+      		    <div class='inputwrapper'><span>Class:</span><input placeholder="WEBUG13h" class='textinput' type='text' id='addClass'/></div>
+      		    <div class='inputwrapper'><span>Responsible:</span><input placeholder="101" class='textinput' id='addResponsible'></input></div>
+      		    <div class='inputwrapper'><span>Classname:</span><input placeholder="Webbutvecklare - programmering" class='textinput' type='text' id='addClassname'/></div>
+                    <div class='inputwrapper'><span>Regcode:</span><input placeholder="199191" class='textinput' id='addRegcode'></input></div>
+		    <div class='inputwrapper'><span>Classcode:</span><input placeholder="WEBUG" class='textinput' type='text' id='addClasscode'/></div>
+                    <div class='inputwrapper'><span>Hp:</span><input placeholder="180.0" class='textinput' id='addHp'></input></div>
+		    <div class='inputwrapper'><span>Tempo:</span><input placeholder="100" class='textinput' id='addTempo'></input></div>
+		    <div class='inputwrapper'><span>HpProgress:</span><input placeholder="0.0" class='textinput' id='addHpProgress'></input></div>		    
+      		</div>
+      		<div style='padding:5px;'>
+      			<input class='submit-button' type='button' value='Add' onclick='addClass();' />
+      		</div>
+      </div>
+	</div>                                                                                                                                                     
 
 	<!-- Add User Dialog END -->
 	<!-- Edit User Dialog START -->
