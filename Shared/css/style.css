@@ -2064,8 +2064,6 @@ span.arrow {
 #resultTable td {
   height: 1px;
   padding: 0px;
-  border-right: 2px solid #dbd0d8;
-  border-bottom: 2px solid #dbd0d8;
 }
 
 /* End DuggaSys resulted*/
@@ -2234,7 +2232,7 @@ span.arrow {
   border:0;
   outline: none;
   cursor: pointer;
-  padding: 1px 0 0 7px;
+  
  }
 
 .fab:hover {
@@ -2255,6 +2253,10 @@ span.arrow {
 
 .dugga-pending-highlighted {
   background-color: rgb(215, 215, 181) !important;
+}
+
+.dugga-pending-late-submission {
+	background-color: rgb(255, 200, 70);
 }
 
 .dugga-fail {
@@ -2622,10 +2624,22 @@ table {
   font-family: Roboto, Arial Narrow;
 }
 
+.fumho {
+  margin-top: 15px;
+}
+
 .fumho td {
   padding-left: 8px;
   padding-right: 8px;
   border-right: 2px dotted rgba(0, 0, 0, 0.2);
+}
+
+.fumho td:first-child {
+  border-left:2px dotted rgba(0,0,0,0.2);
+}
+
+.fumho tr:last-child {
+  border-bottom:2px dotted rgba(0,0,0,0.2);
 }
 
 .fumho tr:nth-child(even) {
