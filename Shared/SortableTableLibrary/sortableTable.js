@@ -18,7 +18,7 @@ function searchKeyUp(e) {
     return true;
 }
 
-function keypressHandler(event) {    
+function keypressHandler(event) {
     if (event.keyCode == 13) {
         updateCellInternal();
     } else if(event.keyCode == 27) {
@@ -88,8 +88,8 @@ function clickedInternal(event,clickdobj) {
 		str += "<div id='input-container' style='flex-grow:1'>";
 		str += sortableTable.currentTable.showEditCell(coldata,rowno,rowelement,cellelement,columnname,columnno,rowdata,coldata,tableid);
 		str += "</div>";
-		str += "<img id='popovertick' class='icon' src='Icon_Tick.svg' onclick='updateCellInternal();'>";
-		str += "<img id='popovercross' class='icon' src='Icon_Cross.svg' onclick='clearUpdateCellInternal();'>";
+		str += "<img id='popovertick' class='icon' src='../Shared/SortableTableLibrary/Icon_Tick.svg' onclick='updateCellInternal();'>";
+		str += "<img id='popovercross' class='icon' src='../Shared/SortableTableLibrary/Icon_Cross.svg' onclick='clearUpdateCellInternal();'>";
 		var lmnt = cellelement.getBoundingClientRect();
 		console.log(lmnt.top, lmnt.right, lmnt.bottom, lmnt.left, lmnt.height, lmnt.width);
 		var popoverelement = document.getElementById("editpopover");
@@ -199,7 +199,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;margin-top:50px;border-bottom:none;' class='list' id='"+tableid+"_tbl_mh'>";
 		mhvstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;' id='"+tableid+"_tbl_mhv'>";
 		mhfstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;top:0px;z-index:3000;' id='"+tableid+"_tbl_mhf'>";
-    
+
 		// Assign currently active table
 		sortableTable.currentTable = this;
 
@@ -297,10 +297,10 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		// Render table body
 		str += "<tbody id='"+tableid+"_body'>";
 		mhvstr += "<tbody id='"+tableid+"_mhvbody'>";
-		
+
 		for (var i = 0; i < tbl.tblbody.length-1; i++) {
 			var row = tbl.tblbody[i];
-			
+
 			if (rowFilter(row)) {
 				// Keep row sum total here
 				var rowsum = 0;
@@ -312,7 +312,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 
 				for (let colnamez in row) {
 
-					//Counter for freeze here							
+					//Counter for freeze here
 					// If we show this column...
 					if (columnfilter[colnamez] != null) {
 						// This condition is true if column is in summing list and in that case perform the sum like a BOSS
@@ -419,25 +419,25 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 
     this.getSortkind = function() {
         return sortkind;
-    } 
+    }
 
 	this.magicHeader = function() {
 		// Assign table and magic headings table(s)
-		if (this.hasMagicHeadings) {					 
+		if (this.hasMagicHeadings) {
 			document.getElementById(tableid).innerHTML = str+mhstr+mhvstr+mhfstr;
 			document.getElementById(tableid+"_tbl_mh").style.width=document.getElementById(tableid+"_tbl").getBoundingClientRect().width+"px";
-			document.getElementById(tableid+"_tbl_mh").style.boxSizing = "border-box";          
+			document.getElementById(tableid+"_tbl_mh").style.boxSizing = "border-box";
 			children=document.getElementById(tableid+"_tbl").getElementsByTagName('TH');
-			
+
 			for (i = 0; i < children.length; i++) {
 				document.getElementById(children[i].id+"_mh").style.width = children[i].getBoundingClientRect().width+"px";
-				document.getElementById(children[i].id+"_mh").style.boxSizing = "border-box";          
+				document.getElementById(children[i].id+"_mh").style.boxSizing = "border-box";
 			}
 
 			document.getElementById(tableid+"_tbl_mhf").style.width = Math.round(document.getElementById(tableid+"_tbl_mhv").getBoundingClientRect().width)+"px";
 			document.getElementById(tableid+"_tbl_mhf").style.boxSizing = "border-box";
 			children=document.getElementById(tableid+"_tbl_mhv").getElementsByTagName('TH');
-			
+
 			for (i = 0; i < children.length; i++) {
 				document.getElementById(children[i].id.slice(0, -1)+"f").style.width = children[i].getBoundingClientRect().width+"px";
 				document.getElementById(children[i].id.slice(0, -1)+"f").style.boxSizing = "border-box";
@@ -449,8 +449,8 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		if (tableSort != null) {
 			sortTable(tableSort, colSort, reverseSort);
 		}
-	} 
-    
+	}
+
 	// Simpler magic heading v. III
 	setInterval(freezePaneHandler,30);
 
