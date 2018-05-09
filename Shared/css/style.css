@@ -895,7 +895,6 @@ input {
   border: 2px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  margin-left: 1050px
 }
 
 .loginBox .inputwrapper {
@@ -2234,7 +2233,7 @@ span.arrow {
   border:0;
   outline: none;
   cursor: pointer;
-  
+
  }
 
 .fab:hover {
