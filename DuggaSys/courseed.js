@@ -386,8 +386,8 @@ function returnedCourse(data)
 
 			str += "</div>";
       if (data['entries'].length-1 == i){
-      str += "<div class='bigg item nowrap' style='padding-bottom: 5px;'></div>";
-    }
+        str += "<div class='bigg item nowrap' style='padding-bottom: 5px;'></div>";
+      }
 		}
 	} else {
 		// No items were returned!
