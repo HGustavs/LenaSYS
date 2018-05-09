@@ -59,6 +59,7 @@ body {
 body {
   font-family: 'Roboto', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-y: scroll;
   width: 100%;
   height: 100%;
@@ -171,6 +172,7 @@ p {
   background: #fff;
   /*min-height: calc(100vh - 90px);*/
   padding: 65px 10px 25px 10px;
+  margin-bottom: 60px;
 }
 
 #accessedcontent {
@@ -1689,8 +1691,8 @@ input.large-button {
 .list {
   width: 100%;
   padding: 1px;
-  border-left: 2px solid #dbd0d8;
   border-bottom: 2px solid #dbd0d8;
+  border-left: 2px solid #dbd0d8;
   margin-top: 20px;
   font-size: 16px;
 }
@@ -3053,6 +3055,7 @@ only screen and (max-device-width: 1085px) {
 
 @media only screen and (max-width: 800px),
 only screen and (max-device-width: 800px) {
+	#addElement{display:none;}
   table.navheader td.editVers,
   table.navheader td.contribution,
   table.navheader td.newVers {

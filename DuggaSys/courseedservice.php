@@ -64,7 +64,7 @@ if(checklogin()){
 		if(strcmp($opt,"DEL")===0){
 
 		}else if(strcmp($opt,"NEW")===0){
-			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator) VALUES(:coursecode,:coursename,0,:usrid)");
+			$query = $pdo->prepare("INSERT INTO course (coursecode,coursename,visibility,creator, hp) VALUES(:coursecode,:coursename,0,:usrid, 7.5)");
 
 			$query->bindParam(':usrid', $userid);
 			$query->bindParam(':coursecode', $coursecode);
@@ -73,6 +73,26 @@ if(checklogin()){
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
+			} else {
+				// Add default groups
+				$courseID = $pdo->lastInsertId();
+				$defaultGroups = array(
+					"I", "II", "III", "IV", "V", "VI", "VII", "VIII",
+					"1", "2", "3", "4", "5", "6", "7", "8",
+					"A", "B", "C", "D", "E", "F", "G", "H",
+				);
+				
+
+				foreach($defaultGroups as $group) {
+					$stmt = $pdo->prepare("INSERT INTO groups(courseID, groupName) VALUES(:courseID, :groupName)");
+					$stmt->bindParam(':courseID', $courseID);
+					$stmt->bindParam(':groupName', $group);
+
+					if (!$stmt->execute()) {
+						$error = $stmt->errorInfo();
+						$debug = "Error adding group " . $error[2];
+					}
+				}
 			}
 		}else if(strcmp($opt,"NEWVRS")===0){
 			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
@@ -88,6 +108,7 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
+
 		}else if(strcmp($opt,"UPDATEVRS")===0){
 			$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
 			$query->bindParam(':cid', $courseid);

@@ -98,7 +98,7 @@ $migrationArray = array(
             ['column', 'quiz', 'modified', 'timestamp', 'NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'],
             ['column', 'quiz', 'creator', 'int', ''],
             ['column', 'quiz', 'vers', 'varchar(8)', ''],
-            ['column', 'quiz', 'qstart', 'date', 'NULL DEFAULT NULL'],
+            ['column', 'quiz', 'qstart', 'datetime', ''],
 
             ['create', 'variant', 'vid', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT', 'PRIMARY KEY(vid)'],
             ['column', 'variant', 'quizID', 'int', '', 'FOREIGN KEY (quizID) REFERENCES quiz (id) ON DELETE CASCADE ON UPDATE CASCADE'],
@@ -2151,6 +2151,33 @@ $migrationArray = array(
             ['insert', 'user', 'values' => ['username' =>  'Roger', 'firstname' => 'Roger', 'lastname' =>  'Rogersson','superuser' => 1, 'creator' => 1, 'password' => '$2y$10$u886VEwTO/ohXer5b6zI7.1kUhVF0LMxHmibvz0mShL6dYKi4vZhe']]
         ],
     ],
+    [
+        'version' => 'v0.04',
+        'description' => 'Update qstart',
+        [
+            ['column', 'quiz', 'qstart', 'datetime', ''],
+        ],
+    ],
+    [
+      'version' => 'v0.05',
+      'description' => 'Remove old group tables',
+      [
+          ['sql', 'DROP TABLE usergroup'],
+          ['sql', 'DROP TABLE user_usergroup'],
+      ],
+    ],
+    [
+        'version' => 'v0.06',
+        'description' => 'New table for group and M-M between Group and User',
+        [
+            ['create', 'groups', 'groupID', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT', 'PRIMARY KEY(groupID)'],
+            ['column', 'groups', 'courseID', 'int', 'UNSIGNED NOT NULL', 'FOREIGN KEY(courseID) REFERENCES course(cid)'],
+            ['column', 'groups', 'groupName', 'varchar(80)', 'NOT NULL'],
+
+            ['create', 'user_group', 'groupID', 'int', 'UNSIGNED NOT NULL', 'FOREIGN KEY(groupID) REFERENCES groups(groupID)'],
+            ['column', 'user_group', 'userID', 'int', ' UNSIGNED NOT NULL', 'FOREIGN KEY(userID) REFERENCES user(uid)', 'PRIMARY KEY(groupID, userID'],
+        ],
+    ],
 );
 
 if (isSuperUser($userid) && strcmp($version, "UNK")) {
@@ -2219,6 +2246,17 @@ if (isSuperUser($userid) && strcmp($version, "UNK")) {
                                 'message' => queryExecute($query),
                             );
                         }
+                    } else if ($type == 'sql') {
+                        queryExecute("SET FOREIGN_KEY_CHECKS = 0");
+                        $query = stripslashes($col[0]);
+
+                        $message[] = array(
+                            'id' => $iterator,
+                            'info' => "Pure SQL $query - ",
+                            'message' => queryExecute($query),
+                        );
+
+                        queryExecute("SET FOREIGN_KEY_CHECKS = 1");
                     }
                     $iterator++;
                 }
