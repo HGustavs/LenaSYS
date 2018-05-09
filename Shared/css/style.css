@@ -3443,17 +3443,18 @@ only screen and (max-device-width: 320px) {
 /* Large FAB button */
 
 .fab-btn-lg {
-  width: 56px;
-  height: 56px;
-  line-height: 70px;
-  background-color: #fecc56;
-  color: #614875;
+    width: 56px;
+    height: 56px;
+    line-height: 56px;
+    background-color: #fecc56;
+    color: #614875;
+    font-size: 30px;
+    vertical-align: middle;
 }
 
 .fab-btn-lg:hover {
   background-color: #ffd369;
 }
-
 /* FAB bubble list container */
 
 .fab-btn-list {

@@ -24,6 +24,7 @@ var fileKind = "";
 var searchterm = "";
 var pressTimer;
 var fabListIsVisible = true;
+var fabTimer;
 
 AJAXService("GET",{cid:querystring['cid']},"FILE");
 
@@ -434,7 +435,7 @@ $(document).mouseup(function(e) {
 	// The "Add Course Local File" popup should appear on
 	// a "fast click" if the fab list isn't visible
 	if (!$('.fab-btn-list').is(':visible')) {
-		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
+		if (e.target.id == "fabBtn") {
 			clearTimeout(pressTimer);
 			showFilePopUp('MFILE');
 	    }
@@ -461,7 +462,7 @@ $(document).mouseup(function(e) {
 		fabListIsVisible = true;
 	}
 	if (fabListIsVisible) {
-		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
+		if (e.target.id == "fabBtn") {
 			pressTimer = window.setTimeout(function() {
 				toggleFabButton();
 			}, 500);
@@ -478,7 +479,41 @@ $(document).mouseup(function(e) {
 	    	showLinkPopUp();
 	    }
 	}
+}).on("touchstart", function(e){
+    //Event for holding the fab on mobile
+    if ($('.fab-btn-list').is(':visible')) {
+		fabListIsVisible = false;
+	} else {
+		fabListIsVisible = true;
+	}
+	if (fabListIsVisible) {
+		if (e.target.id == "fabBtn") {
+			fabTimer = window.setTimeout(function() {
+				toggleFabButton();
+			}, 500);
+            e.preventDefault();
+		}
+	} else {
+		toggleFabButton();
+		if (e.target.id == "gFabBtn" || e.target.id == "gFabBtnImg") {
+	    	showFilePopUp('GFILE');
+	    } else if (e.target.id == "lFabBtn" || e.target.id == "lFabBtnImg") {
+	    	showFilePopUp('LFILE');
+	    } else if (e.target.id == "mFabBtn" || e.target.id == "mFabBtnImg") {
+	    	showFilePopUp('MFILE');
+	    } else if (e.target.id == "linkFabBtn" || e.target.id == "linkFabBtnImg") {
+	    	showLinkPopUp();
+	    }
+        return;
+	}
+}).on("touchend", function(e){
+    //abrupts and clears the timer for touchstart when the user lets go of the fab
+    if(fabTimer){
+        clearTimeout(fabTimer);
+    }
 });
+
+
 
 function deleteFile(fileid,filename) {
 	if (confirm("Do you really want to delete the file/link: " + filename)) {
