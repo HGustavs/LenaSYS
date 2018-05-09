@@ -2269,6 +2269,10 @@ span.arrow {
   background-color: rgb(215, 215, 181) !important;
 }
 
+.dugga-pending-late-submission {
+	background-color: rgb(255, 200, 70);
+}
+
 .dugga-fail {
   background-color: rgb(255, 170, 170);
 }
