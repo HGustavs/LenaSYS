@@ -146,23 +146,22 @@ function process()
 				var momentresult=restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
 				if(typeof momentresult!='undefined'){
-					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname,});
+					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname, deadline:new Date(momtmp[j].deadline),});
 				}else{
-					student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, userAnswer:"UNK", quizfile:momtmp[j].quizfile, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname,});
+					student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, userAnswer:"UNK", quizfile:momtmp[j].quizfile, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname, deadline:new Date(momtmp[j].deadline),});
 				}
 			}else{
 				var momentresult=restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
 				if(typeof momentresult!='undefined'){
-					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant,quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname,});
+					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant,quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname,  deadline:new Date(momtmp[j].deadline),});
 				}else{
-					student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile});
+					student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile,  deadline:new Date(momtmp[j].deadline),});
 				}
 			}
 		}
 		students.push(student);
 	}
-
 	// Update dropdown list
   // Filter for teachers.
   var dstr="";
@@ -725,7 +724,8 @@ function renderCell(col,celldata,cellid) {
       if(celldata.kind==4) { str += "dugga-moment "; }
       if (celldata.grade === 1) {str += "dugga-fail";}
       else if (celldata.grade > 1) {str += "dugga-pass";}
-      else if (celldata.needMarking === true) {str += "dugga-pending"; onlyPending=false;}
+      else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending"; onlyPending=false;}
+      else if (celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission"; onlyPending=false;}
       else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
       else {str += "dugga-unassigned";}
     str += "'>";
