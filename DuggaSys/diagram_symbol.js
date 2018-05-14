@@ -234,12 +234,7 @@ function Symbol(kind) {
             ctx.font = "14px Arial";
             this.minWidth = ctx.measureText(longestStr).width + 15;
 
-            if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight){
-                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
-            }
-            if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth){
-                points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
-            }
+
             if(points[this.middleDivider].y + opHeight > points[this.bottomRight].y){
                 points[this.middleDivider].y = points[this.bottomRight].y - opHeight;
                 points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
@@ -247,6 +242,12 @@ function Symbol(kind) {
             if(points[this.topLeft].y + attrHeight > points[this.middleDivider].y){
                 points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
                 points[this.topLeft].y = points[this.middleDivider].y - attrHeight;
+            }
+            if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight){
+                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
+            }
+            if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth){
+                points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
             }
         } else if (this.symbolkind == 5){
             // Static size of relation. Makes resizing of relation impossible.
