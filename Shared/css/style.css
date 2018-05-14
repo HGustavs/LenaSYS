@@ -3726,20 +3726,6 @@ li:nth-last-child(10) a:hover {
   height:100%;
 }
 
-.markdownPrev pre{
-  font-family: Hack, MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
-  font-size: 10px;
-  line-height: 12px;
-  white-space: pre;
-  white-space: pre-wrap;
-  background: #ffffff;
-  display: inline-block;
-  padding: 1em;
-  margin: 0.5em 0px;
-  border: 1px solid #bebab0;
-  box-shadow: 1px 1px 2px #666;
-}
-
 .optionButtons {
   top: 585px;
   position: relative;
@@ -3957,11 +3943,9 @@ textarea#mrkdwntxt {
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
 #inputSave {
-
 }
 
-
-@media only screen and (max-height: 2560px) and (max-width: 1440px) {
+@media only screen and (max-height: 800px) and (max-width: 1350px) {
   .previewWindow {
     height: 80%;
   }
@@ -3978,7 +3962,7 @@ textarea#mrkdwntxt {
     margin: auto auto auto 8px;
   }
   .markText {
-    height:75%;
+    height:70%;
     width:90%;
   }
   #mrkdwntxt {
@@ -3986,7 +3970,7 @@ textarea#mrkdwntxt {
     resize: none;
     width:100%;
     height:100%;
-    margin:12px;
+    margin:5px;
   }
   .optionButtons {
     top: 686px;
