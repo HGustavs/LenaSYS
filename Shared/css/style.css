@@ -3696,6 +3696,10 @@ li:nth-last-child(10) a:hover {
     position: fixed;
 }
 
+.markdownPart{
+  height: 100%;
+}
+
 .markdown {
   border: solid rgb(200, 200, 200);
   background-color: #FFFFFF;
@@ -3717,6 +3721,11 @@ li:nth-last-child(10) a:hover {
   margin: 20px 1% 10px 8px;
   float: right;
 }
+
+#editForm {
+  height:100%;
+}
+
 .markdownPrev pre{
   font-family: Hack, MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
   font-size: 10px;
@@ -3730,6 +3739,7 @@ li:nth-last-child(10) a:hover {
   border: 1px solid #bebab0;
   box-shadow: 1px 1px 2px #666;
 }
+
 .optionButtons {
   top: 585px;
   position: relative;
@@ -3951,32 +3961,33 @@ textarea#mrkdwntxt {
 }
 
 
-@media only screen and (max-height: 2560px) and (max-width: 1400px) {
+@media only screen and (max-height: 2560px) and (max-width: 1440px) {
   .previewWindow {
-    height: 750px;
-    position: fixed;
+    height: 80%;
   }
-
   .markdown {
-    height: 350px;
+    height: 35%;
     width: 97%;
     position: relative;
     float: left;
   }
-
   .markdownPrev {
-    height: 250px;
-    width: 92%;
+    height: 35%;
+    width: 97%;
     float: left;
-    position: fixed;
-    margin: 400px auto auto 8px;
+    margin: auto auto auto 8px;
   }
-
+  .markText {
+    height:75%;
+    width:90%;
+  }
   #mrkdwntxt {
-    height: 300px;
-    width: 100%;
+    border-radius: 8px;
+    resize: none;
+    width:100%;
+    height:100%;
+    margin:12px;
   }
-
   .optionButtons {
     top: 686px;
   }
