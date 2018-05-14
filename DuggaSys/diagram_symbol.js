@@ -32,7 +32,8 @@ function Symbol(kind) {
     this.cardinality = [
       {"value": null, "isCorrectSide": null}
     ];
-
+    this.minWidth;
+    this.minHeight;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -204,22 +205,24 @@ function Symbol(kind) {
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
         } else if (this.symbolkind == 1) {
-            points[this.centerPoint].x = x1 + hw;
-            points[this.centerPoint].y = y1 + hh;
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
+            points[this.topLeft].y = y1;
 
+            this.minHeight = 0;
+            var attrHeight;
+            var opHeight;
             if(this.attributes.length > 0){
                 //Height of text + padding
-                var attrHeight = (this.attributes.length*14)+35;
-                points[this.topLeft].y = y1;
-                points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
+                attrHeight = (this.attributes.length*14)+35;
+                this.minHeight -= (points[this.topLeft].y + attrHeight);
             }
             if(this.operations.length > 0){
-                var opHeight = (this.operations.length*14)+15;
-                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
+                opHeight = (this.operations.length*14)+15;
+                this.minHeight += (points[this.bottomRight.y] + opHeight);
+            }
 
-            }//Finding the longest string
+            //Finding the longest string
             var longestStr = "";
             for(var i = 0; i < this.operations.length; i++){
                 if(this.operations[i].text.length > longestStr.length)
@@ -232,7 +235,17 @@ function Symbol(kind) {
             //Measures the length and sets the width of the object to this.
             ctx.font = "14px Arial";
             var strLen = ctx.measureText(longestStr).width;
-            points[this.bottomRight].x = points[this.topLeft].x + strLen + 15;
+            this.minWidth = points[this.topLeft].x + strLen + 15;
+
+            if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight){
+                points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
+                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
+            }
+            if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth){
+                points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
+            }
+        }
+
         } else if (this.symbolkind == 5){
                 // Static size of relation. Makes resizing of relation impossible.
                 points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
@@ -376,7 +389,7 @@ function Symbol(kind) {
         }
     }
 
-    
+
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
@@ -495,8 +508,8 @@ function Symbol(kind) {
             }*/
         }
     }
-    
-    
+
+
 
     //--------------------------------------------------------------------
     // erase/delete
@@ -676,7 +689,7 @@ function Symbol(kind) {
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-    
+
         ctx.save();
 
         ctx.textAlign = "center";

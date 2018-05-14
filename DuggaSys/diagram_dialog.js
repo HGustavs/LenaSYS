@@ -247,5 +247,5 @@ function changeCardinality(){
     if(val == "None") val = "";
     if(diagram[lastSelectedObject].cardinality[0].value != null){
         diagram[lastSelectedObject].cardinality[0].value = val;
-}
+    }
 }
