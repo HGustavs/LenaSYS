@@ -209,20 +209,19 @@ function Symbol(kind) {
             points[this.middleDivider].x = x1 + hw;
             points[this.topLeft].y = y1;
 
-            this.minHeight = 0;
             var attrHeight;
             var opHeight;
             if(this.attributes.length > 0){
                 //Height of text + padding
                 attrHeight = (this.attributes.length*14)+35;
-                this.minHeight -= (points[this.topLeft].y + attrHeight);
             }
             if(this.operations.length > 0){
                 opHeight = (this.operations.length*14)+15;
-                this.minHeight += (points[this.bottomRight].y + opHeight);
             }
+            this.minHeight = attrHeight + opHeight;
 
             //Finding the longest string
+            this.minWidth = 0;
             var longestStr = "";
             for(var i = 0; i < this.operations.length; i++){
                 if(this.operations[i].text.length > longestStr.length)
@@ -235,7 +234,7 @@ function Symbol(kind) {
             //Measures the length and sets the width of the object to this.
             ctx.font = "14px Arial";
             var strLen = ctx.measureText(longestStr).width;
-            this.minWidth = points[this.topLeft].x + strLen + 15;
+            this.minWidth = strLen + 15;
 
             if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight){
                 points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
