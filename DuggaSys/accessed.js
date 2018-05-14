@@ -469,15 +469,6 @@ function renderCell(col,celldata,cellid) {
 	} else {
 		return "<div id='" + cellid + "'>" + celldata + "</div>";
 	}
-	    var selectedItem = obj.class;
-	    str = makeClassDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value,\""+selectedItem+"\");", items, items, selectedItem);
-	str += "<div style='display:none;'>" + obj.class + "</div>";
-	return str;
-    } else if(col == "groups") {
-	return "<span>" + celldata + "</span>";
-    } else {
-	return "<div id='" + cellid + "'>" + celldata + "</div>";
-    }
     return celldata;
 }
 
