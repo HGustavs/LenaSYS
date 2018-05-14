@@ -3119,18 +3119,18 @@ only screen and (max-device-width: 768px) {
     font-size: 20px;
   }
     /* Force table to not be like tables anymore */
-    #fileLink_tbl tbody<style>{ 
+    #fileLink_tbl tbody[style]{ 
 		display: block !important;
 	}
-    #fileLink_tblhead<style>{
+    #fileLink_tblhead[style]{
         display: none !important;
     }
-    #fileLink_tbl tr<style>{ 
+    #fileLink_tbl tr[style]{ 
         border: 1px solid #ccc !important; 
         display: block !important;
     }
 	
-	#fileLink_tbl td<style>{ 
+    #fileLink_tbl td[style]{ 
 		/* Behave  like a "row" */
         display: block !important;
 		border: none !important;
