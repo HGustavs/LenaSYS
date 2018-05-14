@@ -889,16 +889,16 @@ function compare(a,b) {
 			tempB += 10;
 		}
 
-		if(a['submitted'] > b['submitted']) {
+		if(a['submitted'] < b['submitted']) {
 			tempA += 1;
-		} else if(a['submitted'] < b['submitted']) {
+		} else if(a['submitted'] > b['submitted']) {
 			tempB += 1;
 		}
 	}
 
-	if (tempA > tempB) {
+	if (tempA < tempB) {
 		return 1;
-	} else if (tempA < tempB) {
+	} else if (tempA > tempB) {
 		return -1;
 	} else {
 		return 0;
