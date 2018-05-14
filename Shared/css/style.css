@@ -1179,13 +1179,7 @@ input {
   background-color: #614875;
   width: 47%;
 }
-#undoButton{
-  margin-right:5px;
-}
-#redoButton{
-  margin-left:5px;
-}
-#hotkey-actions {
+.hotkey-actions {
   position: relative;
   font-size: 11px;
   color: #3d3d3d;
