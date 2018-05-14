@@ -4102,6 +4102,21 @@ textarea#filecont{
   padding: 10px
 }
 
+/* --------------================################================-------------- *
+ *                           DuggaEd - Variants editor                          *
+ * --------------================################================-------------- */
+ .variants-param-col {
+   display: inline-block;
+   width: 300px;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+ }
+
+ #param_variant_tbl {
+   width: 0;
+ }
+
 @media only screen and (max-height: 800px) and (max-width: 1400px) {
   .editFileWindow {
     height: 500px;

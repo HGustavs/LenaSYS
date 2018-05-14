@@ -483,6 +483,18 @@ function variantsTableStyling() {
 	} else {
 		document.getElementById('variant').style.maxHeight = '100px';
 	}
+
+	// $(".variant-param-tbl").each(function() {
+	// 	this.style.maxWidth = '230px';
+	// });
+
+	// $(".variants-param-col").each(function() {
+	// 	this.style.display = 'inline-block';
+	// 	this.style.width = '230px';
+	// 	this.style.whiteSpace = 'nowrap';
+	// 	this.style.overflow = 'hidden';
+	// 	this.style.textOverflow = 'ellipsis';
+	// });
 }
 // VARIANT FUNCTIONS end
 
@@ -693,6 +705,11 @@ function renderCell(col, celldata, cellid) {
 	// Numbering the variant table.
 	else if (col == "vid") {
 		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
+	}
+
+	else if (col == "param") {
+		var str = "<span class='variants-param-col'>" + celldata + "</span>";
+		return str;
 	}
 
 	//Translating the integers behind "disabled" to say disabled or enabled. Also making it look that way.
