@@ -3119,7 +3119,7 @@ only screen and (max-device-width: 768px) {
     font-size: 20px;
   }
     /* Force table to not be like tables anymore */
-	#fileLink_tbl:table, fileLink_tbl:thead, fileLink_tbl:tbody, fileLink_tbl:th, fileLink_tbl:td, fileLink_tbl:tr { 
+	#fileLink_tbl, fileLink_tbl thead, fileLink_tbl tbody, fileLink_tbl th, fileLink_tbl td, fileLink_tbl tr { 
 		display: block; 
 	}
 	
@@ -3129,9 +3129,9 @@ only screen and (max-device-width: 768px) {
 		top: -9999px !important;
 		left: -9999px !important;
 	}
-    #fileLink_tbl:tr { border: 1px solid #ccc !important; }
+    #fileLink_tbl tr { border: 1px solid #ccc !important; }
 	
-	#fileLink_tbl: td { 
+	#fileLink_tbl td { 
 		/* Behave  like a "row" */
 		border: none !important;
 		border-bottom: 1px solid #eee !important; 
@@ -3152,14 +3152,14 @@ only screen and (max-device-width: 768px) {
     /*
 	Label the data
 	*/
-	#fileLink_tbl td:nth-of-type(1):before { content: "Number"; }
-    #fileLink_tbl td:nth-of-type(2):before { content: "Exstension"; }
-	#fileLink_tbl td:nth-of-type(3):before { content: "Exstension"; }
-	#fileLink_tbl td:nth-of-type(4):before { content: "Kind"; }
-	#fileLink_tbl td:nth-of-type(5):before { content: "Size"; }
-	#fileLink_tbl td:nth-of-type(6):before { content: "Upload date"; }
-	#fileLink_tbl td:nth-of-type(7):before { content: "Edit"; }
-	#fileLink_tbl td:nth-of-type(8):before { content: "Trash"; }
+	#fileLink_tbl td nth-of-type(1):before { content: "Number"; }
+    #fileLink_tbl td nth-of-type(2):before { content: "Exstension"; }
+	#fileLink_tbl td nth-of-type(3):before { content: "Exstension"; }
+	#fileLink_tbl td nth-of-type(4):before { content: "Kind"; }
+	#fileLink_tbl td nth-of-type(5):before { content: "Size"; }
+	#fileLink_tbl td nth-of-type(6):before { content: "Upload date"; }
+	#fileLink_tbl td nth-of-type(7):before { content: "Edit"; }
+	#fileLink_tbl td nth-of-type(8):before { content: "Trash"; }
 }
 
 @media only screen and (max-width: 650px),
