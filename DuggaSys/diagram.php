@@ -168,11 +168,11 @@
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <a href="#" onclick='undoDiagram()'>Undo</a>
-                            <i id="hotkey-undo">Ctrl+Z</i>
+                            <i id="hotkey-undo">Ctrl + Z</i>
                         </div>
                         <div class="drop-down-item">
                             <a href="#" onclick='redoDiagram()'>Redo</a>
-                            <i id="hotkey-redo">Ctrl+Y</i>
+                            <i id="hotkey-redo">Ctrl + Y</i>
                         </div>
                         <div class="drop-down-item">
                             <a href="#" onclick='globalAppearanceMenu();'>Global Appearance</a>
