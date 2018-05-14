@@ -443,16 +443,16 @@ function validateType() {
 
 
 function updateItem() {
-	tabs = $("#tabs").val();
-	lid = $("#lid").val();
-	kind = $("#type").val();
-	link = $("#link").val();
-	highscoremode = $("#highscoremode").val();
-	sectionname = $("#sectionname").val();
-	visibility = $("#visib").val();
-	moment = $("#moment").val();
-	gradesys = $("#gradesys").val();
-	comments = $("#comments").val();
+	var tabs = $("#tabs").val();
+	var lid = $("#lid").val();
+	var kind = $("#type").val();
+	var link = $("#link").val();
+	var highscoremode = $("#highscoremode").val();
+	var sectionname = $("#sectionname").val();
+	var visibility = $("#visib").val();
+	var moment = $("#moment").val();
+	var gradesys = $("#gradesys").val();
+	var comments = $("#comments").val();
 	// Storing tabs in gradesys column!
 	if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7) gradesys = tabs;
 	AJAXService(
@@ -471,12 +471,6 @@ function updateItem() {
 	$("#editSection").css("display", "none");
 
 }
-
-// Create New Dugga/Example
-function createLink() {
-	alert("CREATE!");
-}
-
 
 function newItem() {
 	tabs = $("#tabs").val();
