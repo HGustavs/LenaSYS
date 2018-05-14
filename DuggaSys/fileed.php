@@ -122,7 +122,7 @@ pdoConnect();
                     <span id="codeBlockText" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
                     <span id="lists" onclick="lists()" title="lists">&#9711;</span>
                     <span id="quoteText" onclick="quoteText()" title="quote">&#10078;</span>
-                    <span id="linkz" onclick="linkText()" title="link"><img id="linkFabBtnImg" class="fab-icon"
+                    <span id="linkz" onclick="linkText()" title="link"><img id="linkFabBtnImgPrev" class="fab-icon"
                                                                             src="../Shared/icons/link-icon.svg"></span>
                     <span id="img" onclick="externalImg()" title="Img"><img id="insert-photo" class="fab-icon"
                                                                             src="../Shared/icons/insert-photo.svg"></span>
