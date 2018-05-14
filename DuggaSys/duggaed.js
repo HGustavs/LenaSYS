@@ -305,7 +305,8 @@ function validateDuggaName() {
 // VARIANT FUNCTIONS start
 function newVariant() {
 	showVariantDisableButton();
-	showVariantSubmitButton();
+	$("#submitVariant").css("display", "block");
+	$("#saveVariant").css("display", "none");
 	document.getElementById('filelink').value = '';
 	document.getElementById('filelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
@@ -341,7 +342,7 @@ function selectVariant(vid) {
 		});
 	});
 
-	showVariantSaveButton();
+	$("#saveVariant").css("display", "block");
 
 	$("#vid").val(target_variant['vid']); // Set Variant ID
 	$("#variantparameterText").val(target_variant['param']); // Set Variant ID
@@ -819,16 +820,6 @@ function showDuggaSaveButton() {
 	$("#saveDugga").css("display", "block");
 }
 
-function showVariantSubmitButton() {
-	$("#submitVariant").css("display", "block");
-	$("#saveVariant").css("display", "none");
-}
-
-function showVariantSaveButton() {
-	$("#submitVariant").css("display", "none");
-	$("#saveVariant").css("display", "block");
-}
-
 function showVariantEnableButton() {
 	$("#enableVariant").css("display", "block");
 	$("#disableVariant").css("display", "none");
@@ -838,6 +829,7 @@ function showVariantDisableButton() {
 	$("#enableVariant").css("display", "none");
 	$("#disableVariant").css("display", "block");
 }
+
 
 //END OF closers and openers
 
