@@ -695,6 +695,11 @@ function renderCell(col, celldata, cellid) {
 		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
 	}
 
+	else if (col == "param") {
+		var str = "<span class='variants-param-col'>" + celldata + "</span>";
+		return str;
+	}
+
 	//Translating the integers behind "disabled" to say disabled or enabled. Also making it look that way.
 	else if (col == "disabled") {
 		if (celldata == "0") {
