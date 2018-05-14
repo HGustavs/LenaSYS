@@ -764,7 +764,6 @@ function compare(a,b) {
 }
 
 function rowFilter(row) {
-	console.log(row.param);
 	for (i = 0; i < row.length; i++) {
 		if (row[i].indexOf != null) {
 			if (row[i].indexOf(searchterm) != -1) return true;

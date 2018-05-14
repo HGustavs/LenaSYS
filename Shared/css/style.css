@@ -980,6 +980,7 @@ input {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow:auto;
 }
 
 .loginBox form {
