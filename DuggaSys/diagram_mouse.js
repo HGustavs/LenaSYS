@@ -59,8 +59,6 @@ function mousemoveevt(ev, t) {
         currentMouseCoordinateX = (((ev.offsetX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.offsetY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
     }
-    currentMouseCoordinateX = Math.round(currentMouseCoordinateX);
-    currentMouseCoordinateY = Math.round(currentMouseCoordinateY);
     if (md == 0) {
         // Select a new point only if mouse is not already moving a point or selection box
         sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);

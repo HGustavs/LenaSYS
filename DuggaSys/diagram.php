@@ -273,23 +273,12 @@
             <div id="selectDiv">
                 <select name="Zoom" id="ZoomSelect" onchange="zoomInMode();">
                     <option selected='selected' disabled>Choose zoom</option>
-                    <option value="0.05">5%</option>
-                    <option value="0.1">10%</option>
-                    <option value="0.2">20%</option>
                     <option value="0.3">30%</option>
                     <option value="0.5">50%</option>
                     <option value="0.75">75%</option>
                     <option value="1">100%</option>
-                    <option value="1.25">125%</option>
                     <option value="1.5">150%</option>
                     <option value="2">200%</option>
-                    <option value="4">400%</option>
-                    <option value="6">600%</option>
-                    <option value="8">800%</option>
-                    <option value="10">1000%</option>
-                    <option value="12">1200%</option>
-                    <option value="14">1400%</option>
-                    <option value="16">1600%</option>
                 </select>
                 <i class="ikonPil"></i>
             </div>
