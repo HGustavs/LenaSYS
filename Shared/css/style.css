@@ -3966,8 +3966,6 @@ textarea#mrkdwntxt {
     width:90%;
   }
   #mrkdwntxt {
-    border-radius: 8px;
-    resize: none;
     width:100%;
     height:100%;
     margin:5px;
