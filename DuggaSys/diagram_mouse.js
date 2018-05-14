@@ -74,7 +74,7 @@ function mousemoveevt(ev, t) {
         if (movobj != -1 ) {
             uimode = "Moved";
             for (var i = 0; i < diagram.length; i++) {
-                if (diagram[i].targeted == true) {
+                if (diagram[i].targeted == true && !diagram[movobj].locked) {
                     if(snapToGrid){
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
