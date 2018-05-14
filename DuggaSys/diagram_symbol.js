@@ -243,6 +243,12 @@ function Symbol(kind) {
             if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth){
                 points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
             }
+            if(points[this.middleDivider].y + opHeight < points[this.bottomRight].y){
+                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
+            }
+            if(points[this.topLeft].y + attrHeight > points[this.middleDivider].y){
+                points[this.topLeft].y = points[this.middleDivider].y - attrHeight;
+            }
         } else if (this.symbolkind == 5){
             // Static size of relation. Makes resizing of relation impossible.
             points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
