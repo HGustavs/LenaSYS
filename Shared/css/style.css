@@ -3950,23 +3950,38 @@ textarea#mrkdwntxt {
 
 }
 
-@media only screen and (max-height: 800px) and (max-width: 1400px) {
-    .previewWindow {
-        height: 500px;
-     }
-     .markdown {
-         height: 400px;
-     }
-     .markdownPrev {
-         height: 400px;
-     }
-    #mrkdwntxt {
-        height: 350px;
-    }
-    .optionButtons {
-        top: 436px;
-    }
- }
+
+@media only screen and (max-height: 2560px) and (max-width: 1400px) {
+  .previewWindow {
+    height: 750px;
+    position: fixed;
+  }
+
+  .markdown {
+    height: 350px;
+    width: 97%;
+    position: relative;
+    float: left;
+  }
+
+  .markdownPrev {
+    height: 250px;
+    width: 92%;
+    float: left;
+    position: fixed;
+    margin: 400px auto auto 8px;
+  }
+
+  #mrkdwntxt {
+    height: 300px;
+    width: 100%;
+  }
+
+  .optionButtons {
+    top: 686px;
+  }
+}
+
 
 /* Import diagram */
 
