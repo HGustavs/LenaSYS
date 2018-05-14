@@ -661,7 +661,6 @@ function initializeCanvas() {
     // generateExampleCode();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
-    SaveState();
     updateGraphics();
     canvas.addEventListener('dblclick', doubleclick, false);
     canvas.addEventListener('touchmove', mousemoveevt, false);
@@ -1082,6 +1081,7 @@ function loadDiagram() {
                 points[i] = b.points[i];
             }
             updateGraphics();
+            SaveState();
         }
     }
 }
