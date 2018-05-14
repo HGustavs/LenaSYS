@@ -296,7 +296,7 @@
         </div>
     </div>
     <!-- The Appearance menu. Default state is display: none; -->
-    <div id="appearance" class='loginBoxContainer' style='display: none;'>
+    <div id="appearance" class='loginBoxContainer' style='display: none; background-color: rgba(0,0,0,0)'>
         <div class='loginBox'>
             <div class='loginBoxheader'>
                 <h3>Appearance</h3>
