@@ -145,6 +145,13 @@ function closeWindows(){
 					resetFields();
 			}
 	}
+
+  $(document).keyup(function(e) {
+    if (e.which == 27){
+      resetLoginStatus();
+    }
+  });
+
 	window.removeEventListener("keypress", loginEventHandler, false);
 }
 
@@ -578,7 +585,7 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedQuiz
 		})
-	} 
+	}
 }
 
 //Will handle enter key pressed when loginbox is showing
