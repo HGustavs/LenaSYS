@@ -3119,18 +3119,18 @@ only screen and (max-device-width: 768px) {
     font-size: 20px;
   }
     /* Force table to not be like tables anymore */
-    #fileLink_tbl<style>:tbody{ 
+    #fileLink_tbl tbody<style>{ 
 		display: block !important;
 	}
     #fileLink_tblhead<style>{
         display: none !important;
     }
-    #fileLink_tbl<style>:tr { 
+    #fileLink_tbl tr<style>{ 
         border: 1px solid #ccc !important; 
         display: block !important;
     }
 	
-	#fileLink_tbl<style>:td { 
+	#fileLink_tbl td<style>{ 
 		/* Behave  like a "row" */
         display: block !important;
 		border: none !important;
@@ -3139,27 +3139,27 @@ only screen and (max-device-width: 768px) {
 		padding-left: 50% !important; 
 	}
 	
-	#fileLink_tbl:td:before { 
+	#fileLink_tbl td:before { 
 		/* Now like a table header */
-		position: absolute !important;
+		position: absolute;
 		/* Top/left values mimic padding */
-		top: 6px !important;
-		left: 6px !important;
-		width: 45% !important; 
-		padding-right: 10px !important; 
-		white-space: nowrap !important;
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
 	}
     /*
 	Label the data
 	*/
-	td:nth-of-type(1):before { content: "Number"; }
-    td:nth-of-type(2):before { content: "Exstension"; }
-	td:nth-of-type(3):before { content: "Exstension"; }
-	td:nth-of-type(4):before { content: "Kind"; }
-	td:nth-of-type(5):before { content: "Size"; }
-	td:nth-of-type(6):before { content: "Upload date"; }
-	td:nth-of-type(7):before { content: "Edit"; }
-	td:nth-of-type(8):before { content: "Trash"; }
+	#fileLink_tbl td:nth-of-type(1):before { content: "Number"; }
+    #fileLink_tbl td:nth-of-type(2):before { content: "Exstension"; }
+	#fileLink_tbl td:nth-of-type(3):before { content: "Exstension"; }
+	#fileLink_tbl td:nth-of-type(4):before { content: "Kind"; }
+	#fileLink_tbl td:nth-of-type(5):before { content: "Size"; }
+	#fileLink_tbl td:nth-of-type(6):before { content: "Upload date"; }
+	#fileLink_tbl td:nth-of-type(7):before { content: "Edit"; }
+	#fileLink_tbl td:nth-of-type(8):before { content: "Trash"; }
 }
 
 @media only screen and (max-width: 650px),
