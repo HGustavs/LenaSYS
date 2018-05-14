@@ -533,7 +533,7 @@ function returnedQuiz(data) {
 function returnedDugga(data) {
 	filez = data;
 	globalData = data;
-
+	console.log(data['writeaccess']);
 	var tabledata = {
 		tblhead: {
 			did: "",
