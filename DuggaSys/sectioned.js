@@ -900,16 +900,13 @@ function returnedSection(data) {
 		+ "<div id='statisticsList'>"
 		+ "<div id='statistics' class='statistics' style='display: inline-block; cursor: pointer;'>"
 		+ "<div style='margin: 10px;'>"
-		+ "<img src='../Shared/icons/desc_complement.svg' id='arrowComp"
-		+ menuState.idCounter++ + data.coursecode + "' class='arrowComp' style='display: inline-block;'>"
-		+ "<img src='../Shared/icons/right_complement.svg' id='arrowRight"
-		+ menuState.idCounter++ + data.coursecode + "' class='arrowRight' style='display: none;'>"
+		+ "<img src='../Shared/icons/right_complement.svg' id='arrowRightStatistics' style='display: inline-block;'>"
+		+ "<img src='../Shared/icons/desc_complement.svg' id='arrowCompStatistics' style='display: none;'>"
 		+ "</div>"
 		+ "<div class='nowrap' style='padding-left:5px' title='statistics'>"
 		+ "<span class='listentries-span' style='writing-mode: vertical-rl; text-orientation: upright;'>Statistics</span>"
 		+ "</div></div>"
-		+ "<div id='statistics" + menuState.idCounter + data.coursecode
-		+ "' class='statisticsContent' style='display: inline-block;'>"
+		+ "<div class='statisticsContent' style='display: inline-block;'>"
 		+ "</div></div>";
 
 		str += "<div id='Sectionlistc'>";
@@ -1630,25 +1627,36 @@ function hideCollapsedMenus() {
 	for (var i = 0; i < menuState.hiddenElements.length; i++) {
 		var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
 		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
-			console.log("Moment!"); // Remove later
 			jQuery(ancestor).nextUntil('.moment').hide();
 		}
 		ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
 		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
 			jQuery(ancestor).nextUntil('.section').hide();
 		}
+
 		if(menuState.hiddenElements[i] == "statistics"){
-			$("#statistics").nextAll().hide();
+			$(".statistics").nextAll().hide();
 		}
 	}
 }
 
 /* Show down arrow by default and then hide this arrow and show the right
-   arrow if it is in the arrowIcons array. */
+   arrow if it is in the arrowIcons array.
+	 The other way around for the statistics section. */
 function toggleArrows() {
+	$('#arrowRightStatistics').show();
+	$('#arrowCompStatistics').hide();
+	for (var i = 0; i < menuState.hiddenElements.length; i++){
+		console.log("Hej!");
+		if (menuState.hiddenElements[i] == "statistics"){
+			console.log("Hej! if");
+			$('#arrowRightStatistics').hide();
+			$('#arrowCompStatistics').show();
+		}
+	}
+
 	$('.arrowComp').show();
 	$('.arrowRight').hide();
-
 	for (var i = 0; i < menuState.arrowIcons.length; i++) {
 		/* If the string 'arrowComp' is a part of the string on the current
 		   index of the arrowIcons array, hide down arrow and show right arrow. */

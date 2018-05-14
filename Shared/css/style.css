@@ -1961,13 +1961,13 @@ span.arrow {
   /* ie 6/7 */
 }
 
-.arrowComp {
+.arrowComp, #arrowCompStatistics{
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
 }
 
-.arrowRight {
+.arrowRight, #arrowRightStatistics{
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
