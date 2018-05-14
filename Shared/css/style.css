@@ -1180,10 +1180,12 @@ input {
   padding: 5px;
 }
 #undoButton{
-
+  margin-right:5px;
+  filter: invert(100%);
 }
-#redoutton{
-
+#redoButton{
+  margin-left:5px;
+  filter: invert(100%);
 }
 
 /* --------------================################================-------------- *
