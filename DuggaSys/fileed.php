@@ -105,7 +105,7 @@ pdoConnect();
 <div class="previewWindowContainer"></div>
 <div class="previewWindow">
     <div class="loginBoxheader">
-        <h3>This is the preview window</h3>
+        <h3 class ="fileName"></h3>
         <div style="cursor:pointer;" onclick="closePreview();">x</div>
     </div>
     <form id="editForm" enctype="multipart/form-data" action="filereceive_preview.php" onsubmit="return validatePreviewForm()" method="POST">
