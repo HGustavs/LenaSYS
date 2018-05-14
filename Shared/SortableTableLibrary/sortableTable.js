@@ -373,6 +373,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		mhvstr+= "</table>";
 
 		this.magicHeader();
+		freezePaneHandler();
 	}
 
 	this.toggleColumn = function(colname,col) {
