@@ -3056,9 +3056,7 @@ only screen and (max-device-width: 1085px) {
 @media only screen and (max-width: 800px),
 only screen and (max-device-width: 800px) {
 	#addElement{display:none;}
-  /* table.navheader td.editVers, */
-  /* table.navheader td.newVers  */
-  table.navheader td.contribution{
+   table.navheader td.contribution{
     margin-right: 0px;
     width: 0px;
     -webkit-transition: margin-right 0.5s, width 0.5s;
