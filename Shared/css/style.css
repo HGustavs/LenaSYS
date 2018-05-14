@@ -3125,29 +3125,29 @@ only screen and (max-device-width: 768px) {
 	
 	/* Hide table headers (but not display: none;, for accessibility) */
 	thead tr { 
-		position: absolute;
-		top: -9999px;
-		left: -9999px;
+		position: absolute !important;
+		top: -9999px !important;
+		left: -9999px !important;
 	}
-    tr { border: 1px solid #ccc; }
+    tr { border: 1px solid #ccc !important; }
 	
 	td { 
 		/* Behave  like a "row" */
-		border: none;
-		border-bottom: 1px solid #eee; 
-		position: relative;
-		padding-left: 50%; 
+		border: none !important;
+		border-bottom: 1px solid #eee !important; 
+		position: relative !important;
+		padding-left: 50% !important; 
 	}
 	
 	td:before { 
 		/* Now like a table header */
-		position: absolute;
+		position: absolute !important;
 		/* Top/left values mimic padding */
-		top: 6px;
-		left: 6px;
-		width: 45%; 
-		padding-right: 10px; 
-		white-space: nowrap;
+		top: 6px !important;
+		left: 6px !important;
+		width: 45% !important; 
+		padding-right: 10px !important; 
+		white-space: nowrap !important;
 	}
     
     /*
