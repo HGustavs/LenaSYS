@@ -1644,12 +1644,10 @@ function hideCollapsedMenus() {
    arrow if it is in the arrowIcons array.
 	 The other way around for the statistics section. */
 function toggleArrows() {
-	$('#arrowRightStatistics').show();
-	$('#arrowCompStatistics').hide();
+	$('#arrowRightStatistics').hide();
+	$('#arrowCompStatistics').show();
 	for (var i = 0; i < menuState.hiddenElements.length; i++){
-		console.log("Hej!");
 		if (menuState.hiddenElements[i] == "statistics"){
-			console.log("Hej! if");
 			$('#arrowRightStatistics').hide();
 			$('#arrowCompStatistics').show();
 		}
