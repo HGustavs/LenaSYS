@@ -1179,12 +1179,6 @@ input {
   background-color: #614875;
   width: 47%;
 }
-.hotkey-actions {
-  position: relative;
-  font-size: 11px;
-  color: #3d3d3d;
-  right: 6px;
-}
 
 /* --------------================################================-------------- *
  *                            END TOOLBOX/APPLICATION                           *
@@ -1299,6 +1293,21 @@ input {
 }
 
 #hotkey-ctrl {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
+  top: 55px;
+}
+
+#hotkey-undo {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
+  top: 10px;
+}
+#hotkey-redo {
   position: absolute !important;
   font-size: 11px !important;
   color: #3d3d3d !important;
