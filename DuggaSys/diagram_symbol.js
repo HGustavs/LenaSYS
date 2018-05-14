@@ -219,18 +219,18 @@ function Symbol(kind) {
             }
             if(this.operations.length > 0){
                 opHeight = (this.operations.length*14)+15;
-                this.minHeight += (points[this.bottomRight.y] + opHeight);
+                this.minHeight += (points[this.bottomRight].y + opHeight);
             }
 
             //Finding the longest string
             var longestStr = "";
             for(var i = 0; i < this.operations.length; i++){
                 if(this.operations[i].text.length > longestStr.length)
-                    longestStr = this.operations[i].text;
+                longestStr = this.operations[i].text;
             }
             for(var i = 0; i < this.attributes.length; i++){
                 if(this.attributes[i].text.length > longestStr.length)
-                    longestStr = this.attributes[i].text;
+                longestStr = this.attributes[i].text;
             }
             //Measures the length and sets the width of the object to this.
             ctx.font = "14px Arial";
@@ -244,16 +244,14 @@ function Symbol(kind) {
             if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth){
                 points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
             }
-        }
-
         } else if (this.symbolkind == 5){
-                // Static size of relation. Makes resizing of relation impossible.
-                points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
-                points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
-                points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
-                points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;
-            }
+            // Static size of relation. Makes resizing of relation impossible.
+            points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
+            points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
+            points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
+            points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;
         }
+    }
 
     //--------------------------------------------------------------------
     // Sorts the connector
