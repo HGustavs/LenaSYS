@@ -508,8 +508,13 @@ function compare(a,b) {
     tempB = tempB[tempB.length - 1]['teacher'];
 	}
 
-  tempA = tempA.toUpperCase();
-  tempB = tempB.toUpperCase();
+  if(tempA != null){
+    tempA = tempA.toUpperCase();
+  }
+  if(tempB != null){
+    tempB = tempB.toUpperCase();
+  }
+  
 	if (tempA > tempB) {
 		return 1;
 	} else if (tempA < tempB) {
