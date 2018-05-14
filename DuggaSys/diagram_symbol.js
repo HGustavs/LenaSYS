@@ -220,7 +220,7 @@ function Symbol(kind) {
             this.minHeight = attrHeight + opHeight;
 
             //Finding the longest string
-            var longestStr = "";
+            var longestStr = this.name;
             for(var i = 0; i < this.operations.length; i++){
                 if(this.operations[i].text.length > longestStr.length)
                     longestStr = this.operations[i].text;
