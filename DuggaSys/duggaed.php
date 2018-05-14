@@ -24,7 +24,7 @@ pdoConnect();
   <script src="timer.js"></script>
   <script src="clickcounter.js"></script>
 </head>
-<body>
+<body onkeypress='keypressHandler(event)'>
 
 	<!-- Navigation Header START -->
 	<?php
@@ -101,16 +101,14 @@ pdoConnect();
 
   	<!-- Edit Variant Dialog START -->
   	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style="width:80%;">
+      <div class='loginBox' id='variantBox'>
         <div class='loginBoxheader'>
           <h3 id="editVariantTitle">Edit Variant</h3>
           <div class='cursorPointer' onclick='closeWindows();'>x</div>
         </div>
 
-        <div class='loginBoxbody' style='width:100%; height:100%;'>
-          <div id='upperDiv'>
-            <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; border-bottom: #7f7f7f solid 3px; background-color: white; overflow-y: auto; overflow-x: hidden; margin-bottom: 5px;'></div> <!-- A div to place the variant-table within. -->
-          </div>
+        <div class='loginBoxbody' id='variantBody' style='width:100%; height:100%;'>
+            <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; border-bottom: #7f7f7f solid 3px; background-color: white; overflow-y: auto; overflow-x: hidden; margin-bottom: 5px; max-height: 300px; flex-shrink: 99;'></div> <!-- A div to place the variant-table within. -->
           <div id='editVariantDiv' style="display:flex;">
             <input type='hidden' id='vid' value='Toddler'/>
               <div id="leftDivDialog" style="width: 50%; height:100%; display: inline-block;">
@@ -158,7 +156,14 @@ pdoConnect();
                   <!-- End of leftDivDialog -->
                 </form>
               </div>
-              <div id="rightDivDialog" style="width: 50%; height:100%; display: inline-block;">
+              <div id="rightDivDialog" style='width: 50%; height:100%; display: inline-block;'>
+                <fieldset style="width:90%">
+                  <legend>Search in the Table</legend>
+                  <div>
+                    <input id='variantSearch' type='search' style='width:70%;' onkeyup="searchterm=document.getElementById('variantSearch').value;variantsTable.renderTable();"/>
+                    <input id='searchVariant' class='submit-button' style='display:inline-block; float:right;' type='button' value='Search' onclick=''>
+                  </div>
+                </fieldset>
                 <fieldset style="width:90%">
                   <legend>Generated Param JSON</legend>
                   <div id='parameter' style='min-height:120px'>
@@ -167,13 +172,13 @@ pdoConnect();
                 </fieldset>
                 <fieldset style="width:90%">
                   <legend>Answer</legend>
-                    <div id='variantanswer' style='min-height:120px'>
+                    <div id='variantanswer' style='min-height:120px;'>
                       <textarea id='variantanswerText' rows="5" style="min-height:100px"></textarea>
                     </div>
                 </fieldset>
               </div>
             </div>
-            <div id='buttonVariantDiv' style='padding:5px;'>
+            <div id='buttonVariantDiv' style='display:flow-root;'>
               <input id='closeVariant' class='submit-button' style='display:block; float:left;' type='button' value='Close' onclick='closeWindows();'>
               <input id='submitVariant' class='submit-button' style='display:none; float:right;' type='button' value='Submit' onclick='createVariant();'>
               <input id='saveVariant' class='submit-button' style='display:none; float:right;' type='button' value='Save' onclick='updateVariant(); showVariantSubmitButton();'>
