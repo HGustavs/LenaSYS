@@ -177,7 +177,7 @@
                         <div class="drop-down-divider">
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick='lockSelected()'>Lock selected</a>
+                            <a href="#" onclick='lockSelected()'>Lock/Unlock selected</a>
                         </div>
                         <div class="drop-down-divider">
                         </div>
