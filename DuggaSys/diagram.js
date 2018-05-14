@@ -1081,9 +1081,10 @@ function loadDiagram() {
                 points[i] = b.points[i];
             }
             updateGraphics();
-            SaveState();
         }
     }
+
+    SaveState();
 }
 
 function removeLocalStorage() {
