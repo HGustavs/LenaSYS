@@ -116,12 +116,12 @@
                         </div>
                         -->
                         <h4 class="label">Undo/Redo</h4>
-                        <div class="toolbar-drawer">
+                        <div class="toolbar-drawer" style="text-align: center">
                             <button class="diagramAction" id="undoButton" onclick='undoDiagram()'>
-                                <img src="../Shared/icons/undo.svg">
+                                <img src="../Shared/icons/undo.svg" style="filter: invert(100%);">
                             </button>
                             <button class="diagramAction" id="redoButton" onclick='redoDiagram()'>
-                                <img src="../Shared/icons/redo.svg">
+                                <img src="../Shared/icons/redo.svg" style="filter: invert(100%);">
                             </button>
                         </div>
                     </div>

@@ -1177,15 +1177,12 @@ input {
 .diagramAction{
   border-radius: 5px;
   background-color: #614875;
-  padding: 5px;
 }
 #undoButton{
   margin-right:5px;
-  filter: invert(100%);
 }
 #redoButton{
   margin-left:5px;
-  filter: invert(100%);
 }
 
 /* --------------================################================-------------- *
