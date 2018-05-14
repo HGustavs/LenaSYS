@@ -200,10 +200,7 @@ function validateForm() {
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
 function renderCell(col,celldata,cellid) {
-	var list = celldata.split('.');
-	var link = celldata.split('://');
 	var str="";
-
 	if (col == "counter") {
 		return "<div class='counterBox'>" + ++fileLink.rowIndex + "</div>";
 	} if (col == "trashcan") {
@@ -212,19 +209,11 @@ function renderCell(col,celldata,cellid) {
 		str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></div>";
 		return str;
 	} else if (col == "filename") {
-		if (link[0] == "https" || link[0] == "http") {
-			return "<a href='" + celldata + "' target='_blank'>" + celldata + "</a>";
+		obj = JSON.parse(celldata);
+		if (obj.kind == "Link") {
+			return "<a href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
 		} else {
-			// Goes through the previously split parts of the file name
-			// and adds dots to keep the actual file name correct
-			var listStr = "";
-			for (var i = 0; i < list.length - 1; i++) {
-				listStr += list[i];
-				if (i != list.length - 2) {
-					listStr += ".";
-				}
-			}
-			return "<div id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+celldata+"\")'>" + listStr + "</div>";
+			return "<div id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+obj.filename+"\")'>" + obj.shortfilename + "</div>";
 		}
 	} else if (col == "filesize") {
         var obj = JSON.parse(celldata);
@@ -233,25 +222,18 @@ function renderCell(col,celldata,cellid) {
         }
         return formatBytes(obj.size, 0);
     } else if (col == "extension") {
-        if(link[0] == "https" || link[0] == "http"){
-            return "<div> - </div>";
-        }
-	    return "<div>" + list[list.length - 1] + "</div>";
+	    return "<div>" + celldata + "</div>";
 	} else if (col == "editor") {
 		var obj = JSON.parse(celldata);
-		list = obj.filename.split('.');
-		link = obj.filename.split('://');
-		if(link[0] == "https" || link[0] == "http"){
-			str = "";
-		} else if (list[list.length-1] == "md" || list[list.length-1] == "txt"){
+		str = "";
+		if (obj.extension == "md" || obj.extension == "txt"){
 			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></div>";
-		} else if (list[list.length-1] == "js" || list[list.length-1] == "html" || list[list.length-1] == "css" || list[list.length-1] == "php"){
+		} else if (obj.extension == "js" || obj.extension == "html" || obj.extension == "css" || obj.extension == "php"){
             str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
             str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></div>";
         }
 		return str;
-
 	}
 	return celldata;
 }
@@ -279,12 +261,6 @@ function rowFilter(row) {
                 case "file name":
                     columnToSearch = "filename";
                     break;
-                case "extension":
-                    columnToSearch = "extension";
-                    break;
-                case "kind":
-                    columnToSearch = "kind";
-                    break;
                 case "size":
                     columnToSearch = "filesize";
                     break;
@@ -296,7 +272,9 @@ function rowFilter(row) {
             }
             if(columnToSearch == "filesize"){
                 if(fileSizeSearch(row, columnToSearch, tempSearchTerm)) match = true;
-            } else {
+            } else if(columnToSearch == "filename"){
+            	if(fileNameSearch(row, columnToSearch, tempSearchTerm)) match = true;
+			} else {
                 if(row[columnToSearch].toUpperCase().indexOf(tempSearchTerm.toUpperCase()) != -1) match = true;
             }
         } else {
@@ -307,7 +285,10 @@ function rowFilter(row) {
                     if(key == "filesize"){
                         if(fileSizeSearch(row, key, tempSearchTerm) &&
                             !(key == "counter" || key == "editor" || key == "trashcan")) match = true;
-                    } else {
+                    } else if(key == "filename") {
+                        if(fileNameSearch(row, key, tempSearchTerm) &&
+                            !(key == "counter" || key == "editor" || key == "trashcan")) match = true;
+					} else {
                         if (row[key].toUpperCase().indexOf(tempSearchTerm.toUpperCase()) != -1 &&
                             !(key == "counter" || key == "editor" || key == "trashcan")) match = true;
                     }
@@ -323,6 +304,11 @@ function rowFilter(row) {
 function fileSizeSearch(row, colName, searchName){
 	var obj = JSON.parse(row[colName]);
     return formatBytes(parseInt(obj.size), 0).toUpperCase().indexOf(searchName.toUpperCase()) != -1
+}
+
+function fileNameSearch(row, colName, searchName) {
+    var obj = JSON.parse(row[colName]);
+    return obj.shortfilename.toUpperCase().indexOf(searchName.toUpperCase()) != -1;
 }
 
 //--------------------------------------------------------------------------
@@ -354,23 +340,10 @@ function compare(a,b) {
 	var tempA = a;
 	var tempB = b;
 	if (col == "File name") {
-		tempA = tempA.toUpperCase();
-		tempB = tempB.toUpperCase();
-	} else if (col == "Extension") {
-        var linkA = tempA.split("://");
-        var linkB = tempB.split("://");
-		tempA = tempA.split('.');
-		tempB = tempB.split('.');
-		if(linkA[0] == "https" || linkA[0] == "http"){
-			tempA = "-";
-		} else {
-            tempA = tempA[tempA.length-1];
-		}
-        if(linkB[0] == "https" || linkB[0] == "http"){
-            tempB = "-";
-        } else {
-            tempB = tempB[tempB.length-1];
-        }
+		tempA = JSON.parse(tempA);
+		tempB = JSON.parse(tempB);
+		tempA = tempA.shortfilename.toUpperCase();
+		tempB = tempB.shortfilename.toUpperCase();
 	} else if (col == "Size") {
 		tempA = JSON.parse(tempA);
 		tempB = JSON.parse(tempB);
