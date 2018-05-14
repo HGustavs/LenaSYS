@@ -857,6 +857,14 @@ function compare(a,b) {
 		tempB += " " + b['lastname'].toUpperCase();
 		tempB += " " + b['ssn'].toUpperCase();
 
+		if (tempA > tempB) {
+			return 1;
+		} else if (tempA < tempB) {
+			return -1;
+		} else {
+			return 0;
+		}
+
 	//Columns that contains duggor
 	} else {
 		/* The sorting in a column needs to follow the following priority order:
@@ -896,19 +904,19 @@ function compare(a,b) {
 			tempB += 10;
 		}
 
-		if(a['submitted'] > b['submitted']) {
+		if(a['submitted'] < b['submitted']) {
 			tempA += 1;
-		} else if(a['submitted'] < b['submitted']) {
+		} else if(a['submitted'] > b['submitted']) {
 			tempB += 1;
 		}
-	}
 
-	if (tempA > tempB) {
-		return 1;
-	} else if (tempA < tempB) {
-		return -1;
-	} else {
-		return 0;
+		if (tempA < tempB) {
+			return 1;
+		} else if (tempA > tempB) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 }
 
