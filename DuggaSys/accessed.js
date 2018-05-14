@@ -425,7 +425,7 @@ function renderCell(col,celldata,cellid) {
 		str = '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
 		str += '<select><option>Välj grupper</option></select><div class="overSelect"></div></div><div id="checkboxes">';
 		groups.forEach(group => {
-			str += '<label for="'+group.groupID+'"><input type="checkbox" id="'+group.groupID+'"/>'+group.groupName+'</label>';
+			str += '<label for="'+group.groupID+'"><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'"/>'+group.groupName+'</label>';
 		});
 		str += '</div></div>';
 		return str;
