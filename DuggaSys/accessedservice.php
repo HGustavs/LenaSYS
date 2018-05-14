@@ -31,6 +31,7 @@ $coursevers = getOP('coursevers');
 $teacher = getOP('teacher');
 $vers = getOP('vers');
 $requestedpasswordchange = getOP('requestedpasswordchange');
+$groups = array();
 $queryResult = 'NONE!';
 
 $debug="NONE!";
@@ -411,6 +412,19 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 }
 
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+	// get all groups
+	$query = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid");
+	$query->bindParam(':cid', $cid);
+
+	if (!$query->execute()) {
+		$error = $query->errorInfo();
+		$debug="Error while getting groups " . $error[2];
+	} else {
+		$groups = $query->fetchAll(PDO::FETCH_ASSOC);
+	}
+}
+
 $courses=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
@@ -436,6 +450,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
       );
     }
   }
+
+
 }
 
 $array = array(
@@ -444,6 +460,7 @@ $array = array(
 	'teachers' => $teachers,
 	'classes' => $classes,
 	'courses' => $courses,
+	'groups' => $groups,
 	'queryResult' => $queryResult
 );
 
