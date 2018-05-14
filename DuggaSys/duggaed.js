@@ -483,18 +483,6 @@ function variantsTableStyling() {
 	} else {
 		document.getElementById('variant').style.maxHeight = '100px';
 	}
-
-	// $(".variant-param-tbl").each(function() {
-	// 	this.style.maxWidth = '230px';
-	// });
-
-	// $(".variants-param-col").each(function() {
-	// 	this.style.display = 'inline-block';
-	// 	this.style.width = '230px';
-	// 	this.style.whiteSpace = 'nowrap';
-	// 	this.style.overflow = 'hidden';
-	// 	this.style.textOverflow = 'ellipsis';
-	// });
 }
 // VARIANT FUNCTIONS end
 

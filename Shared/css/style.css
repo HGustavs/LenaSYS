@@ -4105,17 +4105,37 @@ textarea#filecont{
 /* --------------================################================-------------- *
  *                           DuggaEd - Variants editor                          *
  * --------------================################================-------------- */
- .variants-param-col {
-   display: inline-block;
-   width: 300px;
-   white-space: nowrap;
-   overflow: hidden;
-   text-overflow: ellipsis;
- }
+.variants-param-col {
+  display: inline-block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
- #param_variant_tbl {
-   width: 0;
- }
+.variant-vid {
+  width: 20px;
+}
+
+.variant-param {
+  max-width: 100px;
+}
+
+.variant-modified {
+  width: 150px;
+}
+
+.variant-disabled {
+  width: 80px;
+}
+
+.variant-arrowVariant, .variant-cogwheelVariant, .variant-trashcanVariant {
+  width: 25px;
+}
+
+/* #param_variant_tbl {
+  width: 100px;
+} */
 
 @media only screen and (max-height: 800px) and (max-width: 1400px) {
   .editFileWindow {
