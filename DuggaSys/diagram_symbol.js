@@ -221,7 +221,6 @@ function Symbol(kind) {
             this.minHeight = attrHeight + opHeight;
 
             //Finding the longest string
-            this.minWidth = 0;
             var longestStr = "";
             for(var i = 0; i < this.operations.length; i++){
                 if(this.operations[i].text.length > longestStr.length)
@@ -233,20 +232,20 @@ function Symbol(kind) {
             }
             //Measures the length and sets the width of the object to this.
             ctx.font = "14px Arial";
-            var strLen = ctx.measureText(longestStr).width;
-            this.minWidth = strLen + 15;
+            this.minWidth = ctx.measureText(longestStr).width + 15;
 
             if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight){
-                points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
                 points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
             }
             if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth){
                 points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
             }
-            if(points[this.middleDivider].y + opHeight < points[this.bottomRight].y){
+            if(points[this.middleDivider].y + opHeight > points[this.bottomRight].y){
+                points[this.middleDivider].y = points[this.bottomRight].y - opHeight;
                 points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
             }
             if(points[this.topLeft].y + attrHeight > points[this.middleDivider].y){
+                points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
                 points[this.topLeft].y = points[this.middleDivider].y - attrHeight;
             }
         } else if (this.symbolkind == 5){
