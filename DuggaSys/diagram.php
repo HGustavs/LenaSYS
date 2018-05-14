@@ -175,7 +175,11 @@
                             <i id="hotkey-redo">Ctrl + Y</i>
                         </div>
                         <div class="drop-down-divider">
-
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick='lockSelected()'>Lock selected</a>
+                        </div>
+                        <div class="drop-down-divider">
                         </div>
                         <div class="drop-down-item">
                             <a href="#" onclick='globalAppearanceMenu();'>Global Appearance</a>
