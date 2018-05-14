@@ -1,5 +1,5 @@
-/* 
------ THIS FILE IS THE EXAMPLE DATA FOR THE DIAGRAM ----- 
+/*
+----- THIS FILE IS THE EXAMPLE DATA FOR THE DIAGRAM -----
 */
 var erEntityA;
 
@@ -28,11 +28,11 @@ function generateExampleCode() {
     // Create a UML Class and add three attributes, two operations and a name
     classA = new Symbol(1);
     classA.name = "Person";
-    classA.attributes.push({visibility:"+", text:"height:Integer"});
-    classA.attributes.push({visibility:"#", text:"at:Large"});
-    classA.attributes.push({visibility:"-", text:"megalomania:Real"});
-    classA.operations.push({visibility:"+", text:"hold(name:String)"});
-    classA.operations.push({visibility:"-", text:"makemore()"});
+    classA.attributes.push({text:"+ height:Integer"});
+    classA.attributes.push({text:"# at:Large"});
+    classA.attributes.push({text:"- megalomania:Real"});
+    classA.operations.push({text:"+ hold(name:String)"});
+    classA.operations.push({text:"- makemore()"});
     classA.topLeft = 14;
     classA.bottomRight = 15;
     classA.middleDivider = 16;

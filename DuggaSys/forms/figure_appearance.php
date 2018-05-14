@@ -1,5 +1,5 @@
 Fill color:<br>
-<select onclick="changeObjectAppearance('figureType');" id='figureFillColor'>
+<select onchange="changeObjectAppearance('figureType');" id='figureFillColor'>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -11,7 +11,7 @@ Fill color:<br>
     <option value='#000000'>Black</option>
 </select><br>
 Line color:<br>
-<select onclick="changeObjectAppearance('figureType');" id='figureLineColor'>
+<select onchange="changeObjectAppearance('figureType');" id='figureLineColor'>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>

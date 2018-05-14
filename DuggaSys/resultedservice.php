@@ -48,7 +48,8 @@ $duggastats="";
 $duggaentry="";
 $duggauser="";
 $duggafeedback="";
-
+$duggaexpire="";
+$duggatimesgraded="";
 $gradeupdated=false;
 
 $entries=array();
@@ -173,6 +174,18 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$coursename = $row['coursename'];
 					$results = sendPushNotification($luid, "$listname for $coursename has been graded");
 					// Ignore results of whether the push notification was sent or not, as this notification is only for user convenience
+				}
+			}
+			// Get gradeExpire and timesGraded in order to update the local arrays of resulted.js whenever a grade is updated.
+			$query = $pdo->prepare("SELECT gradeExpire, timesGraded FROM useranswer WHERE uid=:luid AND moment=:moment AND cid=:cid AND vers=:vers LIMIT 1");
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':vers', $vers);
+			$query->bindParam(':moment', $listentry);
+			$query->bindParam(':luid', $luid);
+			if($query->execute()) {
+				if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+					$duggaexpire = $row['gradeExpire'];
+					$duggatimesgraded = $row['timesGraded'];
 				}
 			}
 		}
@@ -614,6 +627,8 @@ $array = array(
 	'dugganame' => $dugganame,
 	'duggaparam' => $duggaparam,
 	'duggaanswer' => $duggaanswer,
+	'duggaexpire' => $duggaexpire,
+	'duggatimesgraded' => $duggatimesgraded,
 	'useranswer' => $useranswer,
 	'duggastats' => $duggastats,
 	'duggafeedback' => $duggafeedback,

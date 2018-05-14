@@ -30,7 +30,7 @@ function findPos(obj) {
 
 function updateActivePoint() {
     if (sel.distance <= tolerance) {
-        activePoint = sel.index;
+        activePoint = sel.point;
     } else {
         activePoint = null;
     }
@@ -61,17 +61,21 @@ function mousemoveevt(ev, t) {
     }
     if (md == 0) {
         // Select a new point only if mouse is not already moving a point or selection box
-        sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+        sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
         // If mouse is not pressed highlight closest point
         points.clearAllSelects();
         movobj = diagram.itemClicked();
-        updateActivePoint();
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
         // If mouse is pressed down and at a point in selected object - move that point
-        points[sel.index].x = currentMouseCoordinateX;
-        points[sel.index].y = currentMouseCoordinateY;
+        if(!sel.point.fake){
+            sel.point.x = currentMouseCoordinateX;
+            sel.point.y = currentMouseCoordinateY;
+        } else {
+            sel.point.x.x = currentMouseCoordinateX;
+            sel.point.y.y = currentMouseCoordinateY;
+        }
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
@@ -88,7 +92,11 @@ function mousemoveevt(ev, t) {
             }
         }
     }
-    diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
+    if (md == 4 && uimode == "normal") {
+        diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY, true);
+    } else {
+        diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
+    }
     updateGraphics();
     // Draw select or create dotted box
     if (md == 4) {
@@ -190,7 +198,7 @@ function mousedownevt(ev) {
         if (hovobj == -1) {
             md = 0;
         } else {
-            sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+            sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             //Store which object you are hovering over in lineStartObj
             lineStartObj = hovobj;
 
@@ -201,11 +209,11 @@ function mousedownevt(ev) {
 
     } else if (sel.distance < tolerance) {
         for (var i = 0; i < diagram.length; i++) {
-            if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
+            /*if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
                 md = 3;
                 handleSelect();
                 return;
-            }
+            }*/
         }
         md = 2;
     } else if (movobj != -1) {
@@ -285,7 +293,7 @@ function mouseupevt(ev) {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
 
-             sel = points.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
             if(symbolStartKind != 4 && symbolEndKind != 4){
@@ -300,11 +308,11 @@ function mouseupevt(ev) {
                 //okToMakeLine is a flag for this
                 var okToMakeLine= true;
                 if(symbolEndKind == 3 && symbolStartKind == 2){
-                    if(diagram[hovobj].hasConnector(p1)){
+                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0){
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == 2 && symbolStartKind == 3){
-                    if(diagram[lineStartObj].hasConnector(p2)){
+                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0){
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == 3 && symbolStartKind == 5) {
@@ -312,6 +320,8 @@ function mouseupevt(ev) {
                 } else if(symbolEndKind == 5 && symbolStartKind == 3) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
                 } else if(symbolEndKind == 5 && symbolStartKind == 5){
+                    okToMakeLine = false;
+                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)){
                     okToMakeLine = false;
                 }
                 if(okToMakeLine){
@@ -330,8 +340,8 @@ function mouseupevt(ev) {
     if (uimode == "CreateClass" && md == 4) {
         classB = new Symbol(1);
         classB.name = "New" + diagram.length;
-        classB.operations.push({visibility:"-", text:"makemore()"});
-        classB.attributes.push({visibility:"+", text:"height:Integer"});
+        classB.operations.push({text:"- makemore()"});
+        classB.attributes.push({text:"+ height:Integer"});
         classB.topLeft = p1;
         classB.bottomRight = p2;
 
@@ -423,7 +433,7 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
-
+    SaveState();
 
 }
 
@@ -432,6 +442,7 @@ function doubleclick(ev) {
     var posistionY = (sy + yPos);
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
+        $(".loginBox").draggable();
         //console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
     }
 }

@@ -100,18 +100,22 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.quadrants = function () {
         // Fix right connector box (1)
+        var changed = false;
         var i = 0;
         while (i < this.connectorRight.length) {
             var xk = points[this.connectorRight[i].to].x;
             var yk = points[this.connectorRight[i].to].y;
             var bb = this.getquadrant(xk, yk);
             if (bb == 3) {
+                changed = true;
                 conn = this.connectorRight.splice(i, 1);
                 this.connectorLeft.push(conn[0]);
             } else if (bb == 0) {
+                changed = true;
                 conn = this.connectorRight.splice(i, 1);
                 this.connectorTop.push(conn[0]);
             } else if (bb == 2) {
+                changed = true;
                 conn = this.connectorRight.splice(i, 1);
                 this.connectorBottom.push(conn[0]);
             } else {
@@ -125,12 +129,15 @@ function Symbol(kind) {
             var yk = points[this.connectorLeft[i].to].y;
             var bb = this.getquadrant(xk, yk);
             if (bb == 1) {
+                changed = true;
                 conn = this.connectorLeft.splice(i, 1);
                 this.connectorRight.push(conn[0]);
             } else if (bb == 0) {
+                changed = true;
                 conn = this.connectorLeft.splice(i, 1);
                 this.connectorTop.push(conn[0]);
             } else if (bb == 2) {
+                changed = true;
                 conn = this.connectorLeft.splice(i, 1);
                 this.connectorBottom.push(conn[0]);
             } else {
@@ -144,12 +151,15 @@ function Symbol(kind) {
             var yk = points[this.connectorTop[i].to].y;
             var bb = this.getquadrant(xk, yk);
             if (bb == 1) {
+                changed = true;
                 conn = this.connectorTop.splice(i, 1);
                 this.connectorRight.push(conn[0]);
             } else if (bb == 3) {
+                changed = true;
                 conn = this.connectorTop.splice(i, 1);
                 this.connectorLeft.push(conn[0]);
             } else if (bb == 2) {
+                changed = true;
                 conn = this.connectorTop.splice(i, 1);
                 this.connectorBottom.push(conn[0]);
             } else {
@@ -163,18 +173,22 @@ function Symbol(kind) {
             var yk = points[this.connectorBottom[i].to].y;
             var bb = this.getquadrant(xk, yk);
             if (bb == 1) {
+                changed = true;
                 conn = this.connectorBottom.splice(i, 1);
                 this.connectorRight.push(conn[0]);
             } else if (bb == 3) {
+                changed = true;
                 conn = this.connectorBottom.splice(i, 1);
                 this.connectorLeft.push(conn[0]);
             } else if (bb == 0) {
+                changed = true;
                 conn = this.connectorBottom.splice(i, 1);
                 this.connectorTop.push(conn[0]);
             } else {
                 i++;
             }
         }
+        return changed;
     }
 
     //--------------------------------------------------------------------
@@ -209,11 +223,11 @@ function Symbol(kind) {
             var longestStr = "";
             for(var i = 0; i < this.operations.length; i++){
                 if(this.operations[i].text.length > longestStr.length)
-                    longestStr = this.operations[i].visibility + " " + this.operations[i].text;
+                    longestStr = this.operations[i].text;
             }
             for(var i = 0; i < this.attributes.length; i++){
                 if(this.attributes[i].text.length > longestStr.length)
-                    longestStr = this.attributes[i].visibility + " " + this.attributes[i].text;
+                    longestStr = this.attributes[i].text;
             }
             //Measures the length and sets the width of the object to this.
             ctx.font = "14px Arial";
@@ -237,7 +251,7 @@ function Symbol(kind) {
         } else {
             var delta = (end - start) / 2;
         }
-        
+
         if (direction == 1) {
             // Vertical connector
             connector.sort(function(a, b) {
@@ -250,11 +264,11 @@ function Symbol(kind) {
             } else {
                 var ycc = start + delta;
             }
-            
+
             for (var i = 0; i < connector.length; i++) {
                 if(this.symbolkind != 5){
                     ycc += delta;
-                } 
+                }
                 points[connector[i].from].y = ycc;
                 points[connector[i].from].x = otherside;
             }
@@ -273,7 +287,7 @@ function Symbol(kind) {
                 if(this.symbolkind != 5) {
                     ycc += delta;
                 }
-                
+
                 points[connector[i].from].y = otherside ;
                 points[connector[i].from].x = ycc;
             }
@@ -320,10 +334,23 @@ function Symbol(kind) {
     }
 
     this.connectorCountFromSymbol = function(symbol) {
+        var count = 0;
         var tmp = this.connectorTop.concat(this.connectorBottom, this.connectorLeft, this.connectorRight);
-        tmp = tmp.filter(c => c.to == symbol.topLeft || c.to == symbol.bottomRight || c.to == symbol.centerPoint || c.to == symbol.middleDivider ||
-            c.from == symbol.topLeft || c.from == symbol.bottomRight || c.from == symbol.centerPoint || c.from == symbol.middleDivider);
-        return tmp.length;
+
+        if ((this.symbolkind == 3 && symbol.symbolkind == 5) || this.symbolkind == 5 && symbol.symbolkind == 3) {
+            var symbolTmp = symbol.connectorTop.concat(symbol.connectorBottom, symbol.connectorLeft, symbol.connectorRight);
+            for (var i = 0; i < symbolTmp.length; i++) {
+                for (var j = 0; j < tmp.length; j++) {
+                    if (symbolTmp[i].to == tmp[j].from) count++;
+                }
+            }
+        } else {
+            tmp = tmp.filter(c => c.to == symbol.topLeft || c.to == symbol.bottomRight || c.to == symbol.centerPoint || c.to == symbol.middleDivider ||
+                c.from == symbol.topLeft || c.from == symbol.bottomRight || c.from == symbol.centerPoint || c.from == symbol.middleDivider);
+            count = tmp.length;
+        }
+
+        return count;
     }
 
     this.hasConnectorFromPoint = function(point) {
@@ -349,7 +376,7 @@ function Symbol(kind) {
         }
     }
 
-
+    
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
@@ -455,19 +482,21 @@ function Symbol(kind) {
             if (this.symbolkind == 1) {
                 points[this.middleDivider].x += movex;
                 points[this.middleDivider].y += movey;
-            } else if (this.symbolkind == 2 || this.symbolkind == 5) {
+            } else if (this.symbolkind == 2 || this.symbolkind == 5 || this.symbolkind == 3) {
                 points[this.centerPoint].x += movex;
                 points[this.centerPoint].y += movey;
-            } else if (this.symbolkind == 3) {
+            } /*else if (this.symbolkind == 3) {
                 for (var i = 0; i < this.arity.length; i++) {
                     for (var j = 0; j < this.arity[i].length; j++) {
                         this.arity[i][j].x += movex;
                         this.arity[i][j].y += movey;
                     }
                 }
-            }
+            }*/
         }
     }
+    
+    
 
     //--------------------------------------------------------------------
     // erase/delete
@@ -647,8 +676,9 @@ function Symbol(kind) {
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-
+    
         ctx.save();
+
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
@@ -684,6 +714,17 @@ function Symbol(kind) {
             ctx.arc(x2,y2,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
+            if(this.symbolkind != 4){
+                ctx.beginPath();
+                ctx.arc(x1,y2,5,0,2*Math.PI,false);
+                ctx.fillStyle = '#F82';
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(x2,y1,5,0,2*Math.PI,false);
+                ctx.fillStyle = '#F82';
+                ctx.fill();
+            }
         }
 
 
@@ -718,7 +759,12 @@ function Symbol(kind) {
         // Write Class Name
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
+        if(ctx.measureText(this.name).width >= (x2-x1) - 2){
+            ctx.textAlign = "start";
+            ctx.fillText(this.name, x1 + 2 , y1 + (0.85 * this.textsize));
+        }else{
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
+        }
         if (this.key_type == 'Primary key') {
             var linelength = ctx.measureText(this.name).width;
             ctx.beginPath(1);
@@ -734,17 +780,17 @@ function Symbol(kind) {
         ctx.font = parseInt(this.textsize) + "px Arial";
 
         for (var i = 0; i < this.attributes.length; i++) {
-            ctx.fillText(this.attributes[i].visibility + " " + this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
+            ctx.fillText(this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
         }
 
         for (var i = 0; i < this.operations.length; i++) {
-            ctx.fillText(this.operations[i].visibility + " " + this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
+            ctx.fillText(this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
         }
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2){
         ctx.fillStyle = this.symbolColor;
-        ctx.lineWidth = this.lineWidth;
+        ctx.lineWidth = this.lineWidth + 2;
         //This is a temporary solution to the black symbol problem
 
 
@@ -761,6 +807,7 @@ function Symbol(kind) {
             ctx.fill();
             makeShadow();
         }
+        ctx.clip();
 
         //drawing an derived attribute
         if (this.key_type == 'Drive') {
@@ -779,8 +826,12 @@ function Symbol(kind) {
         ctx.stroke();
         ctx.setLineDash([]);
         ctx.fillStyle = this.fontColor;
-        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
-        ctx.clip();
+        if(ctx.measureText(this.name).width > (x2-x1) - 4){
+            ctx.textAlign = "start";
+            ctx.fillText(this.name, x1 + 4 , (y1 + ((y2 - y1) * 0.5)));
+        }else{
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        }
     }
 
     this.drawEntity = function(x1, y1, x2, y2){
@@ -805,7 +856,13 @@ function Symbol(kind) {
         ctx.stroke();
 
         ctx.fillStyle = this.fontColor;
-        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+
+        if(ctx.measureText(this.name).width >= (x2-x1) - 5){
+            ctx.textAlign = "start";
+            ctx.fillText(this.name, x1 + 3 , (y1 + ((y2 - y1) * 0.5)));
+        }else{
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        }
         ctx.font = parseInt(textsize) + "px " + this.font;
     }
 
@@ -877,7 +934,12 @@ function Symbol(kind) {
 
         ctx.stroke();
         ctx.fillStyle = this.fontColor;
-        ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        if(ctx.measureText(this.name).width >= (x2-x1) - 12){
+            ctx.textAlign = "start";
+            ctx.fillText(this.name, x1 + 10 , (y1 + ((y2 - y1) * 0.5)));
+        }else{
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
+        }
     }
 
 }

@@ -3,7 +3,9 @@ var retdata;
 var newversid;
 var active_lid;
 var isClickedElementBox = false;
+var testsAvailable;
 var nameSet = false;
+var hoverMenuTimer;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -258,11 +260,6 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
 }
 
-function participationList() {
-	alert("ParticipationList");
-}
-
-
 function changedType(value)
 {
 	kind=value;
@@ -355,7 +352,7 @@ function confirmBox(operation, item = null) {
 		$("#sectionConfirmBox").css("display", "none");
 	} else if (operation == "closeConfirmBox") {
 		$("#sectionConfirmBox").css("display", "none");
-		$("#noTestsConfirmBox").css("display", "none");
+		$("#noMaterialConfirmBox").css("display", "none");
 	}
 }
 
@@ -405,6 +402,10 @@ function isTypeValid(){
 	var nme = document.getElementById("type");
 	if(retdata['duggor'].length == 0 && kind == 3){
 		return false;
+	} else if (retdata['codeexamples'].length <= 1 && kind == 2){
+		return false;
+	} else if (retdata['links'].length == 0 && kind == 5){
+		return false;
 	}
 	return true;
 }
@@ -416,17 +417,24 @@ function validateType() {
 		$('#saveBtn').removeAttr('disabled');
 		$('#submitBtn').removeAttr('disabled');
 		type.style.backgroundColor = "#fff";
-	}else{
+	} else {
 		$('#saveBtn').attr('disabled', 'disabled');
 		$('#submitBtn').attr('disabled', 'disabled');
-		if(!isTypeValid()){
+		if (!isTypeValid()){
+			if (type.value == 2){ //Code
+				$("#tooltipType").html("Create a Code example before you can use it for a Code section.");
+			} else if (type.value == 3){ //Test
+				$("#tooltipType").html("Create a Dugga before you can use it for a Test section.");
+			} else if (type.value == 5){ // Link
+				$("#tooltipType").html("Create a Link before you can use it for a Link section.");
+			}
+
 			$('#tooltipType').fadeIn();
 			for (i = 0; i < type.options.length; i++) {
 				type.options[i].style.backgroundColor = "#fff";
 			}
 			type.style.backgroundColor = "#f57";
-
-		}else if(!isNameValid()){
+		} else if (!isNameValid()){
 			$('#tooltipType').fadeOut();
 			type.style.backgroundColor = "#FFF";
 		}
@@ -435,16 +443,16 @@ function validateType() {
 
 
 function updateItem() {
-	tabs = $("#tabs").val();
-	lid = $("#lid").val();
-	kind = $("#type").val();
-	link = $("#link").val();
-	highscoremode = $("#highscoremode").val();
-	sectionname = $("#sectionname").val();
-	visibility = $("#visib").val();
-	moment = $("#moment").val();
-	gradesys = $("#gradesys").val();
-	comments = $("#comments").val();
+	var tabs = $("#tabs").val();
+	var lid = $("#lid").val();
+	var kind = $("#type").val();
+	var link = $("#link").val();
+	var highscoremode = $("#highscoremode").val();
+	var sectionname = $("#sectionname").val();
+	var visibility = $("#visib").val();
+	var moment = $("#moment").val();
+	var gradesys = $("#gradesys").val();
+	var comments = $("#comments").val();
 	// Storing tabs in gradesys column!
 	if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7) gradesys = tabs;
 	AJAXService(
@@ -463,12 +471,6 @@ function updateItem() {
 	$("#editSection").css("display", "none");
 
 }
-
-// Create New Dugga/Example
-function createLink() {
-	alert("CREATE!");
-}
-
 
 function newItem() {
 	tabs = $("#tabs").val();
@@ -652,7 +654,7 @@ function returnedSection(data) {
 		// Fill section list with information
 		var versionname = "";
 		if (retdata['versions'].length > 0) {
-			for (j = 0; j < retdata['versions'].length; j++) {
+			for (var j = 0; j < retdata['versions'].length; j++) {
 				var itemz = retdata['versions'][j];
 				if (retdata['courseid'] == itemz['cid']) {
 
@@ -665,7 +667,7 @@ function returnedSection(data) {
 			}
 		}
 
-		str = "";
+		var str = "";
 
 		str += "<table class='navheader' style='overflow: hidden; table-layout: fixed;'>"
 			+ "<tr class='trsize nowrap'>"; // This is for anti-stacking buttons
@@ -675,7 +677,7 @@ function returnedSection(data) {
 			var startdate = null;
 			var enddate = null;
 			if (retdata['versions'].length > 0) {
-				for (i = 0; i < retdata['versions'].length; i++) {
+				for (var i = 0; i < retdata['versions'].length; i++) {
 					var item = retdata['versions'][i];
 					if (retdata['courseid'] == item['cid'] && retdata['coursevers'] == item['vers']) {
 						startdate = item['startdate'];
@@ -741,18 +743,6 @@ function returnedSection(data) {
 			str += "<div class='hamburgerMenu'>";
 			str += "<ul class='hamburgerList'>";
 			str +=
-				"<li class='editVers'><button class='submit-button menuButton editVers '"
-				+ "onclick='closeWindows(); hamburgerChange(); showEditVersion(\"" + querystring['coursevers']
-				+ "\",\"" + versionname + "\",\"" + startdate + "\",\"" + enddate + "\");' "
-				+ "title='Edit the selected version'>Edit Version</button></li>";
-
-			str +=
-				"<li class='newVers'><button class='submit-button menuButton newVers'"
-				+ "onclick='closeWindows();  hamburgerChange(); showCreateVersion();'"
-				+ "title='Create a new version of this course'>New Version</button></li>";
-
-			str += "<li class='hamburgerSeparator'><hr></li>";
-			str +=
 				"<li class='results'><button class='submit-button menuButton results'"
 				+ "onclick='closeWindows(); changeURL(\"resulted.php?cid=" + querystring['courseid'] + "&coursevers="
 				+ querystring['coursevers'] + "\")' title='Edit student results'>Results</button></li>";
@@ -807,8 +797,8 @@ function returnedSection(data) {
 			str += "</tr></table>";
 
 			str += "<div class='fixed-action-button'>"
-			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='toggleFabButton();'><i class='material-icons'>add</i></a>"
-			str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
+			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onmouseover='openFabMenu();' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
+			str += "<ol class='fab-btn-list' onmouseover='resetHoverTimer();'; style='margin: 0; padding: 0; display: none;' reversed>"
 
 			//Heading button
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='fabValidateType(\"0\");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
@@ -835,6 +825,7 @@ function returnedSection(data) {
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='fabValidateType(\"7\");'><i class='material-icons'>format_quote</i></a></li>"
 
 			str += "</ol>"
+
 			str += "</div>";
 		} else {
 			str += "</tr></table>";
@@ -842,6 +833,7 @@ function returnedSection(data) {
 
 		// hide som elements if to narrow
 		var hiddenInline = "";
+		var showInline = true;
 		if ($(window).width() < 480) {
 			showInline = false;
 			hiddenInline = "none";
@@ -866,7 +858,7 @@ function returnedSection(data) {
 
 			str += "<div id='course-newitem' style='display: flex;'>";
 			str +=
-				"<input type='button' value='+' class='submit-button-newitem' title='New Item'"
+				"<input id='addElement' type='button' value='+' class='submit-button-newitem' title='New Item'"
 				+ " onclick='selectItem("
 				+ "\"" + item['lid'] + "\","
 				+ "\"" + item['entryname'] + "\","
@@ -936,10 +928,10 @@ function returnedSection(data) {
 						+ "' class='group' style='display:block'>";
 				} else if (parseInt(item['kind']) === 7) {
 					str +=
-						"<div id='group"
+						"<div id='message"
 						+ menuState.idCounter
 						+ data.coursecode
-						+ "' class='group' style='display:block'>";
+						+ "' class='message' style='display:block'>";
 				}
 				menuState.idCounter++;
 				// All are visible according to database
@@ -978,7 +970,7 @@ function returnedSection(data) {
 					var submitted;
 					var lastSubmit = null;
 
-					for (jjj = 0; jjj < data['results'].length; jjj++) {
+					for (var jjj = 0; jjj < data['results'].length; jjj++) {
 						var lawtem = data['results'][jjj];
 						if ((lawtem['moment'] == item['lid'])) {
 							grady = lawtem['grade'];
@@ -1154,7 +1146,7 @@ function returnedSection(data) {
 				}
 
 				else if (itemKind == 4) { // Moment
-
+					var strz = "";
 					if (item['gradesys'] == 0) {
 						strz = "";
 					}
@@ -1229,21 +1221,8 @@ function returnedSection(data) {
 
 				str += "</td>";
 
-				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
-				if (submitted) {
-					var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
-					var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
-					var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
-					// create a warning if the dugga is submitted after the set deadline
-					if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-						str += "<td style='width:25px;'><img style='width:25px; padding-top:3px'"
-							+ "title='This dugga is not guaranteed to be marked due to submition after deadline.'"
-							+ "src='../Shared/icons/warningTriangle.svg'/></td>";
-					} else {
 
-					}
-				}
 
 				// Add generic td for deadlines if one exists
 				if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
@@ -1260,11 +1239,25 @@ function returnedSection(data) {
 						str += "</div>";
 						str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length);
 					} else {
-						str += "<span class='dateField'>" + deadline.slice(0, yearFormat.length);
-						str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3) + "</span>";
+						str += "<span class='dateField'>" + deadline.slice(0, yearFormat.length) + "</span>";
+						str += deadline.slice(yearFormat.length, yearFormat.length + dateFormat.length + 1 + timeFilterAndFormat.length - 3);
 					}
 
 					str += "</div></td>";
+				}
+
+				// Due to date and time format problems slice is used to make the variable submitted the same format as variable deadline
+				if (submitted) {
+					var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
+					var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
+					var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
+
+					// create a warning if the dugga is submitted after the set deadline
+					if ((status === "pending") && (dateTimeSubmitted > deadline)) {
+						str += "<td style='width:25px;'><img style='width:25px; padding-top:3px'"
+							+ "title='This dugga is not guaranteed to be marked due to submition after deadline.'"
+							+ "src='../Shared/icons/warningTriangle.svg'/></td>";
+					}
 				}
 
 				// Cog Wheel
@@ -1503,6 +1496,7 @@ function returnedSection(data) {
 	toggleArrows();
 	menuState.idCounter = 0;
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
+	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 }
 
 function showHighscore(did, lid) {
@@ -1694,6 +1688,40 @@ function toggleFabButton() {
 	}
 }
 
+function openFabMenu(){
+	$('.fab-btn-list').fadeIn(0);
+	$('.fab-btn-sm').removeClass('scale-out');
+}
+
+function resetHoverTimer(){
+	clearTimeout(hoverMenuTimer);
+	startTimerAgain();
+}
+
+function checkIfCloseFabMenu(){
+	var elements = document.querySelectorAll(":hover"); // last element will be the element that the mouse is hovering on
+	if(findAncestor(elements[elements.length-1], "fixed-action-button") == null){
+		closeFabMenu();
+	}
+	startTimerAgain();
+}
+
+function startTimerAgain(){
+	hoverMenuTimer = window.setTimeout(function(){
+		checkIfCloseFabMenu();
+	}, 2500);
+}
+
+function createQuickItem(){
+	selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined");
+	newItem();
+}
+
+function closeFabMenu(){
+	$('.fab-btn-sm').addClass('scale-out');
+	$('.fab-btn-list').delay(100).fadeOut(0);
+}
+
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function fabValidateType(kind) {
 	if (kind == 0){
@@ -1703,12 +1731,20 @@ function fabValidateType(kind) {
 		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 2){
-		selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined");
-		newItem();
-	} else if (kind == 3){
-		if (retdata['duggor'].length == 0){
+		if(retdata['codeexamples'].length <= 1){ //Index 1 in the array has a hard coded code example.
 			toggleFabButton();
-			$("#noTestsConfirmBox").css("display", "flex");
+			testsAvailable = true;
+			$("#noMaterialText").html("Create a Code example before you can use it for a Code section.");
+			$("#noMaterialConfirmBox").css("display", "flex");
+		} else {
+			selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined");
+			newItem();
+		}
+	} else if (kind == 3){
+		if(retdata['duggor'].length == 0){
+			toggleFabButton();
+			$("#noMaterialText").html("Create a Dugga before you can use it for a Test section.");
+			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
 			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined");
 			newItem();
@@ -1717,8 +1753,14 @@ function fabValidateType(kind) {
 		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined");
 		newItem();
 	} else if (kind == 5){
-		selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined");
-		newItem();
+		if(retdata['links'].length == 0){
+			toggleFabButton();
+			$("#noMaterialText").html("Create a Link before you can use it for a Link section.");
+			$("#noMaterialConfirmBox").css("display", "flex");
+		} else {
+			selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined");
+			newItem();
+		}
 	} else if (kind == 6){
 		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined");
 		newItem();
@@ -1727,7 +1769,6 @@ function fabValidateType(kind) {
 		newItem();
 	}
 }
-
 
 function addColorsToTabSections(kind, visible){
 	var retStr = "";
@@ -1751,6 +1792,12 @@ $(document).ready(function () {
 	$(document).on('click', '#dorf', function (e) {
 		e.stopPropagation();
 	});
+
+	hoverMenuTimer = window.setTimeout(function(){
+		checkIfCloseFabMenu();
+	}, 25);
+
+
 });
 
 $(window).load(function () {
@@ -1769,11 +1816,17 @@ $(window).load(function () {
 			var editSectionDisplay = ($('#editSection').css('display'));
 			var submitButtonDisplay = ($('#submitBtn').css('display'));
 			var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
+			var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
 			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
 				updateItem();
 			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
 				newItem();
 				showSaveButton();
+			} else if (isTypeValid() && testsAvailable == true){
+				confirmBox("closeConfirmBox");
+				testsAvailable = false;
+			} else if (errorMissingMaterialDisplay == 'flex'){
+				closeWindows();
 			}
 
 		}
@@ -1783,6 +1836,10 @@ $(window).load(function () {
 // Detects clicks
 $(document).mousedown(function (e) {
 	var box = $(e.target);
+
+
+
+
 	if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
 		isClickedElementBox = true;
 	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
@@ -1792,7 +1849,6 @@ $(document).mousedown(function (e) {
 		isClickedElementBox = false;
 	}
 });
-
 
 $(document).mouseup(function (e) {
 	// Click outside the FAB list
@@ -1820,9 +1876,11 @@ $(document).mouseup(function (e) {
 		closeSelect();
 		showSaveButton();
 	}
-
 });
 
+$(document).scroll(function(e){
+	localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
+});
 
 // Function that scrolls the page to the bottom
 function scrollToBottom() {

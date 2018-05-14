@@ -31,11 +31,14 @@
     <br/>
     <script>
         $(document).ready(function(){
+            $(".menu-drop-down").hover(function(){
+                $(this).find(".drop-down").show();
+            }, function(){
+                $(this).find(".drop-down").hide();
+            });
             $(".drop-down-item").click(function(){
-            $("a").slideUp(); });
-
-            $(".drop-down-item").click(function(){
-            $("a").slideDown(); });
+                $(this).closest(".drop-down").hide();
+            });
 
             window.addEventListener('keypress', clickEnterOnDialogMenu);
         });
@@ -53,7 +56,7 @@
     <div id="content" style="padding-top: 40px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
         <div id="buttonDiv">
             <div class="document-settings">
-                <div id="diagram-toolbar" class="application-toolbar-wrap">
+                <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none">
                     <div class="application-header">
                         <div id="toolbar-minimize"  onclick="toggleToolbarMinimize();">
                             <img id="minimizeArrow" class="toolbarMaximized" src="../Shared/icons/arrow.svg">
@@ -112,14 +115,11 @@
                             </button>
                         </div>
                         -->
-                        <!--
-                        IS NOT IN USE YET
                         <h4 class="label">Undo/Redo</h4>
                         <div class="toolbar-drawer">
                             <button onclick='undoDiagram()'>Undo</button>
                             <button onclick='redoDiagram()'>Redo</button>
                         </div>
-                        -->
                     </div>
                 </div>
                 <div class="menu-drop-down">
@@ -360,7 +360,6 @@
             //?//>";</script>
             //<script type="text/javascript" src="diagram_IOHandler.js"></script>
         }
-
 
     ?>
 </body>

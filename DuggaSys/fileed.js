@@ -24,7 +24,7 @@ var fileKind = "";
 var searchterm = "";
 var pressTimer;
 var fabListIsVisible = true;
-var count = 0;
+var fabTimer;
 
 AJAXService("GET",{cid:querystring['cid']},"FILE");
 
@@ -61,7 +61,7 @@ function returnedFile(data) {
     	},
     	tblbody: data['entries'],
     	tblfoot:[]
-    }
+    };
 
     fileLink = new SortableTable(
 		tabledata,
@@ -86,6 +86,13 @@ function returnedFile(data) {
 
 
 	fileLink.renderTable();
+	if(querystring['confirmation'] != undefined) {
+        $(".confirmationWindow").css("display", "block");
+        document.getElementById('editedFile').innerHTML = querystring['confirmation'] + " has been successfully saved!";
+	}
+	if(!data['access']) {
+        document.getElementById("fabButton").style.display = "none";
+	}
 
 	if(data['debug']!="NONE!") alert(data['debug']);
 }
@@ -149,8 +156,20 @@ function closeAddFile() {
 }
 
 function closePreview() {
-	$(".previewWindow").css("display","none");
+	/*$(".previewWindow").css("display","none");
+    $(".previewWindowContainer").css("display", "none");*/
+    $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
+}
+
+function closeEditFile() {
+    $(".editFileWindow").css("display","none");
+    $(".editFileWindowContainer").css("display", "none");
+}
+
+function closeConfirmation() {
+    $(".confirmationWindow").css("display", "none");
+    window.location.replace('fileed.php?cid='+ querystring['cid'] + '&coursevers=' + querystring['coursevers']);
 }
 
 //------------------------------------------------------------------
@@ -177,24 +196,16 @@ function validateForm() {
 	return result;
 }
 
-function showLoginPopup() {
-	$("#loginBox").css("display","flex");
-}
-
-function hideLoginPopup() {
-	$("#loginBox").css("display","none");
-}
-
 //----------------------------------------------------------------------------
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
-
 function renderCell(col,celldata,cellid) {
 	var list = celldata.split('.');
 	var link = celldata.split('://');
 	var str="";
+
 	if (col == "counter") {
-		return "<div class='counterBox'>" + ++count + "</div>";
+		return "<div class='counterBox'>" + ++fileLink.rowIndex + "</div>";
 	} if (col == "trashcan") {
 		obj = JSON.parse(celldata);
 	    str = "<div class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
@@ -216,16 +227,29 @@ function renderCell(col,celldata,cellid) {
 			return "<div id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+celldata+"\")'>" + listStr + "</div>";
 		}
 	} else if (col == "filesize") {
-		return formatBytes(celldata, 0);
-	} else if (col == "extension") {
+        var obj = JSON.parse(celldata);
+        if(obj.kind == "Link") {
+            return "-";
+        }
+        return formatBytes(obj.size, 0);
+    } else if (col == "extension") {
+        if(link[0] == "https" || link[0] == "http"){
+            return "<div> - </div>";
+        }
 	    return "<div>" + list[list.length - 1] + "</div>";
 	} else if (col == "editor") {
+		var obj = JSON.parse(celldata);
+		list = obj.filename.split('.');
+		link = obj.filename.split('://');
 		if(link[0] == "https" || link[0] == "http"){
 			str = "";
-		}else if (list[list.length-1] == "md" || list[list.length-1] == "txt"){
+		} else if (list[list.length-1] == "md" || list[list.length-1] == "txt"){
 			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += "onclick='loadPreview(\"" + celldata + "\")'></div>";
-		}
+            str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></div>";
+		} else if (list[list.length-1] == "js" || list[list.length-1] == "html" || list[list.length-1] == "css" || list[list.length-1] == "php"){
+            str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
+            str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></div>";
+        }
 		return str;
 
 	}
@@ -236,12 +260,69 @@ function renderCell(col,celldata,cellid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-	for (key in row) {
-		if (row[key] != null) {
-			if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-		}
-	}
-	return false;
+	var regex = new RegExp('(.*)::(.*)');
+	// Split the searchterm at each &&
+    var splitSearch = searchterm.split("&&");
+
+    var tempSearchTerm;
+    var columnToSearch;
+
+    // Loop through each searchterms. If there is a match set "match" to true.
+    // If "match" is false at the end of an iteration return false since there wasn't a match.
+    for(var i = 0; i < splitSearch.length; i++){
+        tempSearchTerm = splitSearch[i].trim().match(regex);
+        var match = false;
+        if(tempSearchTerm != null && tempSearchTerm.length > 1) {
+            columnToSearch = tempSearchTerm[1].toLowerCase();
+            tempSearchTerm = tempSearchTerm[2];
+            switch (columnToSearch) {
+                case "file name":
+                    columnToSearch = "filename";
+                    break;
+                case "extension":
+                    columnToSearch = "extension";
+                    break;
+                case "kind":
+                    columnToSearch = "kind";
+                    break;
+                case "size":
+                    columnToSearch = "filesize";
+                    break;
+                case "upload date":
+                    columnToSearch = "uploaddate";
+                    break;
+                default:
+                    break;
+            }
+            if(columnToSearch == "filesize"){
+                if(fileSizeSearch(row, columnToSearch, tempSearchTerm)) match = true;
+            } else {
+                if(row[columnToSearch].toUpperCase().indexOf(tempSearchTerm.toUpperCase()) != -1) match = true;
+            }
+        } else {
+            tempSearchTerm = splitSearch[i].trim();
+            for (var key in row) {
+                if (row[key] != null) {
+                    // Special search criteria for Size column
+                    if(key == "filesize"){
+                        if(fileSizeSearch(row, key, tempSearchTerm) &&
+                            !(key == "counter" || key == "editor" || key == "trashcan")) match = true;
+                    } else {
+                        if (row[key].toUpperCase().indexOf(tempSearchTerm.toUpperCase()) != -1 &&
+                            !(key == "counter" || key == "editor" || key == "trashcan")) match = true;
+                    }
+                }
+            }
+
+        }
+        if(!match) return false;
+    }
+    return true;
+}
+
+function fileSizeSearch(row, colName, searchName){
+	var obj = JSON.parse(row[colName]);
+    return formatBytes(parseInt(obj.size), 0).toUpperCase().indexOf(searchName.toUpperCase()) != -1
 }
 
 //--------------------------------------------------------------------------
@@ -249,7 +330,7 @@ function rowFilter(row) {
 // ---------------
 //  Callback function that renders the col filter div
 //--------------------------------------------------------------------------
-		
+
 function renderSortOptions(col,status) {
 	str = "";
 
@@ -262,7 +343,7 @@ function renderSortOptions(col,status) {
 	}
 	return str;
 }
-			
+
 //--------------------------------------------------------------------------
 // compare
 // ---------------
@@ -272,23 +353,37 @@ function compare(a,b) {
 	let col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
 	var tempB = b;
-
-	// Needed so that the counter starts from 0
-	// everytime we sort the table
-	count = 0;
-
 	if (col == "File name") {
 		tempA = tempA.toUpperCase();
 		tempB = tempB.toUpperCase();
 	} else if (col == "Extension") {
+        var linkA = tempA.split("://");
+        var linkB = tempB.split("://");
 		tempA = tempA.split('.');
 		tempB = tempB.split('.');
-
-		tempA = tempA[tempA.length-1];
-		tempB = tempB[tempB.length-1];
+		if(linkA[0] == "https" || linkA[0] == "http"){
+			tempA = "-";
+		} else {
+            tempA = tempA[tempA.length-1];
+		}
+        if(linkB[0] == "https" || linkB[0] == "http"){
+            tempB = "-";
+        } else {
+            tempB = tempB[tempB.length-1];
+        }
 	} else if (col == "Size") {
-		tempA = parseInt(tempA);
-		tempB = parseInt(tempB);
+		tempA = JSON.parse(tempA);
+		tempB = JSON.parse(tempB);
+		if(tempA.kind != "Link"){
+            tempA = parseInt(tempA.size);
+		} else {
+			tempA = -1;
+		}
+		if(tempB.kind != "Link") {
+            tempB = parseInt(tempB.size);
+		} else {
+			tempB = -1;
+		}
 	}
 
 	if (tempA > tempB) {
@@ -298,7 +393,7 @@ function compare(a,b) {
 	} else {
 		return 0;
 	}
-}	
+}
 
 function formatBytes(bytes,decimals) {
    if (bytes == 0) return '0 Bytes';
@@ -340,7 +435,7 @@ $(document).mouseup(function(e) {
 	// The "Add Course Local File" popup should appear on
 	// a "fast click" if the fab list isn't visible
 	if (!$('.fab-btn-list').is(':visible')) {
-		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
+		if (e.target.id == "fabBtn") {
 			clearTimeout(pressTimer);
 			showFilePopUp('MFILE');
 	    }
@@ -367,7 +462,7 @@ $(document).mouseup(function(e) {
 		fabListIsVisible = true;
 	}
 	if (fabListIsVisible) {
-		if (e.target.id == "fabBtn" || e.target.id == "fabBtnImg") {
+		if (e.target.id == "fabBtn") {
 			pressTimer = window.setTimeout(function() {
 				toggleFabButton();
 			}, 500);
@@ -384,7 +479,40 @@ $(document).mouseup(function(e) {
 	    	showLinkPopUp();
 	    }
 	}
+}).on("touchstart", function(e){
+    //Event for holding the fab on mobile
+    if ($('.fab-btn-list').is(':visible')) {
+		fabListIsVisible = false;
+	} else {
+		fabListIsVisible = true;
+	}
+	if (fabListIsVisible) {
+		if (e.target.id == "fabBtn") {
+			fabTimer = window.setTimeout(function() {
+				toggleFabButton();
+			}, 500);
+            e.preventDefault();
+		}
+	} else {
+		toggleFabButton();
+		if (e.target.id == "gFabBtn" || e.target.id == "gFabBtnImg") {
+	    	showFilePopUp('GFILE');
+	    } else if (e.target.id == "lFabBtn" || e.target.id == "lFabBtnImg") {
+	    	showFilePopUp('LFILE');
+	    } else if (e.target.id == "mFabBtn" || e.target.id == "mFabBtnImg") {
+	    	showFilePopUp('MFILE');
+	    } else if (e.target.id == "linkFabBtn" || e.target.id == "linkFabBtnImg") {
+	    	showLinkPopUp();
+	    }
+        return;
+	}
+}).on("touchend", function(e){
+    //abrupts and clears the timer for touchstart when the user lets go of the fab
+    if(fabTimer){
+        clearTimeout(fabTimer);
+    }
 });
+
 
 
 function deleteFile(fileid,filename) {
@@ -394,3 +522,62 @@ function deleteFile(fileid,filename) {
 	/*Reloads window when deleteFile has been called*/
 	window.location.reload(true);
 }
+
+/*****************************************************************
+ * --------------------------------------------------------------*
+ * loadFile(), editFile(), cancelEditFile() and closeEditFile()  *
+ * makes it possible to open and edit or modify an existing 	 *
+ * file (js, css, html and php). Doesn't include markdown!		 *
+ * --------------------------------------------------------------*
+ *****************************************************************/
+
+function loadFile(fileUrl, fileNamez, fileKind) {
+    $("#fileName").val(fileNamez);
+    $("#fileKind").val(fileKind);
+    $(".previewWindow").show();
+    $(".previewWindowContainer").css("display", "block");
+    $(".markdownPart").hide();
+    $(".editFilePart").show();
+
+    //$(".editFileWindowContainer").css("display", "block");
+    var fileContent = getFIleContents(fileUrl);
+	var fileName = fileUrl.split("/").pop().split(".")[0];
+    document.getElementById("filecont").value = fileContent;
+	$(".fileName").html(fileName);
+    editFile(fileContent);
+}
+
+function editFile(str){
+        if(str.length == 0){
+            document.getElementById("filecont").innerHTML = " ";
+            return;
+        }
+        else {
+            document.getElementById("filecont").innerHTML=str;
+        };
+
+}
+function cancelEditFile() {
+    // $(".editFileWindow").hide();
+    $(".editFileWindowContainer").css("display", "none");
+}
+
+function saveMarkdown() {
+    $("#cID").val(querystring['cid']);
+    $("#courseVers").val(querystring['coursevers']);
+    $("#textField").val("markdowntext");
+}
+
+function saveTextToFile() {
+    $("#cID").val(querystring['cid']);
+    $("#courseVers").val(querystring['coursevers']);
+    $("#textField").val("filetext");
+}
+
+function validatePreviewForm(){
+	if(document.getElementById("cID").value == "Toddler"){
+		return false;
+	}
+	return true;
+}
+
