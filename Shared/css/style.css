@@ -3122,8 +3122,8 @@ only screen and (max-device-width: 768px) {
     #fileLink_tbl tbody[style]{ 
 		display: block !important;
 	}
-    #fileLink_tblhead[style]{
-        display: none !important;
+    #fileLink_tblhead{
+        display: none;
     }
     #fileLink_tbl tr[style]{ 
         border: 1px solid #ccc !important; 
