@@ -178,7 +178,7 @@ function process()
 	dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>";
 
 	// Filter for only showing pending
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='pending' value='0' id='pending'";
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
 	if (onlyPending){ dstr+=" checked"; }
 	dstr+="><label class='headerlabel' for='pending'>Only pending</label></div>";
 
@@ -724,8 +724,8 @@ function renderCell(col,celldata,cellid) {
       if(celldata.kind==4) { str += "dugga-moment "; }
       if (celldata.grade === 1) {str += "dugga-fail";}
       else if (celldata.grade > 1) {str += "dugga-pass";}
-      else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending"; onlyPending=false;}
-      else if (celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission"; onlyPending=false;}
+      else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
+      else if (celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
       else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
       else {str += "dugga-unassigned";}
     str += "'>";
@@ -809,7 +809,14 @@ function rowHighlightOff(rowid,rowno,colclass,centerel) {
 function rowFilter(row) {
   // Custom filters that remove rows before an actual search
   if (!showTeachers && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
-
+  if (onlyPending) {
+    let rowPending = false;
+    for (var colname in row){
+      if (colname != "FnameLnameSSN" && row[colname]["needMarking"] == true) { rowPending = true; break; }
+    }
+    if (!rowPending) { return false; }
+  }
+  
   return true;
 }
 
