@@ -898,17 +898,19 @@ function returnedSection(data) {
 		str += "<div id='courseList'>";
 		str += "<!-- Statistics List -->"
 		+ "<div id='statisticsList'>"
-			+ "<div id='statistics' style='display: inline-block; cursor: pointer;'>"
-				+ "<div style='margin: 10px;'>"
-					+ "<img src='../Shared/icons/desc_complement.svg' id='arrowComp" + menuState.idCounter++ + data.coursecode + "class='arrowComp' style='display: none;'>"
-					+ "<img src='../Shared/icons/right_complement.svg' id='arrowRight" + menuState.idCounter++ + data.coursecode + "class='arrowRight' style='display: inline;'>"
-				+ "</div>"
-				+ "<div class='nowrap' style='padding-left:5px' title='statistics'>"
-						+ "<span class='listentries-span' style='writing-mode: vertical-rl; text-orientation: upright;'>Statistics</span>"
-				+ "</div>"
-			+ "</div>"
-			+ "<div id='statistics" + menuState.idCounter + data.coursecode + "' class='statisticsContent' style='display: inline-block;'></div>"
-		+ "</div>";
+		+ "<div id='statistics' class='statistics' style='display: inline-block; cursor: pointer;'>"
+		+ "<div style='margin: 10px;'>"
+		+ "<img src='../Shared/icons/desc_complement.svg' id='arrowComp"
+		+ menuState.idCounter++ + data.coursecode + "' class='arrowComp' style='display: inline-block;'>"
+		+ "<img src='../Shared/icons/right_complement.svg' id='arrowRight"
+		+ menuState.idCounter++ + data.coursecode + "' class='arrowRight' style='display: none;'>"
+		+ "</div>"
+		+ "<div class='nowrap' style='padding-left:5px' title='statistics'>"
+		+ "<span class='listentries-span' style='writing-mode: vertical-rl; text-orientation: upright;'>Statistics</span>"
+		+ "</div></div>"
+		+ "<div id='statistics" + menuState.idCounter + data.coursecode
+		+ "' class='statisticsContent' style='display: inline-block;'>"
+		+ "</div></div>";
 
 		str += "<div id='Sectionlistc'>";
 
@@ -1589,7 +1591,7 @@ function returnedHighscore(data) {
 }
 
 // Toggle content for each moment
-$(document).on('click', '.moment, .section', function () {
+$(document).on('click', '.moment, .section, .statistics', function () {
 	/* The event handler returns two elements. The following two if statements
 	   gets the element of interest. */
 	if (this.id.length > 0) {
@@ -1598,9 +1600,11 @@ $(document).on('click', '.moment, .section', function () {
 	if (this.id.length > 0) {
 		saveArrowIds(this.id);
 	}
+
 	hideCollapsedMenus();
 	toggleArrows();
 });
+
 
 // Save ids of all elements, whose state needs to be remembered, in local storage.
 function saveHiddenElementIDs(clickedElement) {
@@ -1622,15 +1626,19 @@ function saveArrowIds(clickedElement) {
 /* Hide all child elements to the moment and section elements in the
    hiddenElements array. */
 function hideCollapsedMenus() {
-	$('.header, .section, .code, .test, .link, .group').show();
+	$('.header, .section, .code, .test, .link, .group, .statisticsContent').show();
 	for (var i = 0; i < menuState.hiddenElements.length; i++) {
 		var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
 		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
+			console.log("Moment!"); // Remove later
 			jQuery(ancestor).nextUntil('.moment').hide();
 		}
 		ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
 		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
 			jQuery(ancestor).nextUntil('.section').hide();
+		}
+		if(menuState.hiddenElements[i] == "statistics"){
+			$("#statistics").nextAll().hide();
 		}
 	}
 }
