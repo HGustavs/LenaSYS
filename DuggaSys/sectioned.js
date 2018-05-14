@@ -590,21 +590,8 @@ function createVersion() {
 	enddate.setHours(endHour)
 	enddate.setMinutes(endMinute);
 
-	startdate 	= startdate.getFullYear() + "-"
-				+ ('0' + (startdate.getMonth()+1)).slice(-2) + '-'
-				+ ('0' + startdate.getDate()).slice(-2)
-				+ "T" + startdate.getHours() + ":" + startdate.getMinutes() + ":"
-				+ startdate.getSeconds();
-
-	enddate 	= enddate.getFullYear() + "-"
-				+ ('0' + (enddate.getMonth()+1)).slice(-2) + '-'
-				+ ('0' + enddate.getDate()).slice(-2)
-				+ "T" + enddate.getHours() + ":" + enddate.getMinutes() + ":"
-				+ enddate.getSeconds();
-
-
-
-
+	startdate = getDateFormat(startdate, "hourMinuteSecond");
+	enddate = getDateFormat(enddate, "hourMinuteSecond");
 
 	if (versid == "" || versname == "") {
 		alert("Version Name and Version ID must be entered!");
@@ -662,13 +649,8 @@ function showEditVersion(versid, versname, startdate, enddate) {
 	var endHour = enddate.getHours()
 	var endMinute = enddate.getMinutes()
 
-	startdate 	= startdate.getFullYear() + "-"
-				+ ('0' + (startdate.getMonth()+1)).slice(-2) + '-'
-				+ ('0' + startdate.getDate()).slice(-2)
-
-	enddate 	= enddate.getFullYear() + "-"
-				+ ('0' + (enddate.getMonth()+1)).slice(-2) + '-'
-				+ ('0' + enddate.getDate()).slice(-2)
+	startdate = getDateFormat(startdate);
+	enddate = getDateFormat(enddate);
 
 	$("#eversname").val(versname);
 	$("#eversid").val(versid);
@@ -705,17 +687,8 @@ function updateVersion() {
 	enddate.setHours(endHour)
 	enddate.setMinutes(endMinute);
 
-	startdate 	= startdate.getFullYear() + "-"
-				+ ('0' + (startdate.getMonth()+1)).slice(-2) + '-'
-				+ ('0' + startdate.getDate()).slice(-2)
-				+ "T" + startdate.getHours() + ":" + startdate.getMinutes() + ":"
-				+ startdate.getSeconds();
-
-	enddate 	= enddate.getFullYear() + "-"
-				+ ('0' + (enddate.getMonth()+1)).slice(-2) + '-'
-				+ ('0' + enddate.getDate()).slice(-2)
-				+ "T" + enddate.getHours() + ":" + enddate.getMinutes() + ":"
-				+ enddate.getSeconds();
+	startdate = getDateFormat(startdate, "hourMinuteSecond");
+	enddate = getDateFormat(enddate, "hourMinuteSecond");
 
 	AJAXService("UPDATEVRS", {
 		cid: cid,
@@ -735,6 +708,19 @@ function updateVersion() {
 
 	$("#editCourseVersion").css("display", "none");
 
+}
+
+function getDateFormat(date, operation = ""){
+	if(operation == "hourMinuteSecond"){
+		return date.getFullYear() + "-"
+			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
+			+ ('0' + date.getDate()).slice(-2)
+			+ "T" + date.getHours() + ":" + date.getMinutes() + ":"
+			+ date.getSeconds();
+	}
+	return date.getFullYear() + "-"
+			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
+			+ ('0' + date.getDate()).slice(-2)
 }
 
 function goToVersion(selected) {
