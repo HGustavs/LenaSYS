@@ -3886,6 +3886,11 @@ li:nth-last-child(10) a:hover {
   width: 100px;
 }
 
+#checkboxes {
+  max-height: 40%;
+  overflow: scroll;
+}
+
 .group-select-box {
   position: relative;
 }

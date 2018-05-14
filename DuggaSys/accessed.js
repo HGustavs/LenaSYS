@@ -1,4 +1,5 @@
 var sessionkind=0;
+var activeElement;
 var querystring=parseGet();
 var versions;
 var dataInfo;
@@ -425,7 +426,7 @@ function renderCell(col,celldata,cellid) {
 		str = '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
 		str += '<select><option>Välj grupper</option></select><div class="overSelect"></div></div><div id="checkboxes">';
 		groups.forEach(group => {
-			str += '<label for="'+group.groupID+'"><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'"/>'+group.groupName+'</label>';
+			str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'"/>'+group.groupName+'</label>';
 		});
 		str += '</div></div>';
 		return str;
@@ -513,6 +514,7 @@ function keyUpSearch() {
 }
 
 function showCheckboxes(element) {
+	activeElement = element;
 	var checkboxes = $(element).find("#checkboxes");
 	checkboxes = element.parentElement.lastChild;
 	if (!expanded) {
@@ -523,3 +525,17 @@ function showCheckboxes(element) {
 		expanded = false;
     }
 }
+$(document).mouseup(function(e) 
+{
+	// if the target of the click isn't the container nor a descendant of the container
+	if (activeElement) {
+		var checkboxes = $(activeElement).find("#checkboxes");
+		checkboxes = activeElement.parentElement.lastChild;
+
+		if (expanded && !checkboxes.contains(e.target)) 
+		{
+			checkboxes.style.display = "none";
+			// GÖr ajax request för att uppdatera databasen
+		}
+   	}
+});
