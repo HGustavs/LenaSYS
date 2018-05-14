@@ -3945,7 +3945,7 @@ textarea#mrkdwntxt {
 #inputSave {
 }
 
-@media only screen and (max-height: 800px) and (max-width: 1350px) {
+@media only screen and (max-height: 1440px) and (max-width: 1350px) {
   .previewWindow {
     height: 80%;
   }
