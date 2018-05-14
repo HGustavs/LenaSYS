@@ -1083,6 +1083,8 @@ function loadDiagram() {
             updateGraphics();
         }
     }
+
+    SaveState();
 }
 
 function removeLocalStorage() {
