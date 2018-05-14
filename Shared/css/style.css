@@ -3119,16 +3119,13 @@ only screen and (max-device-width: 768px) {
     font-size: 20px;
   }
     /* Force table to not be like tables anymore */
-	#fileLink_tbl, fileLink_tbl:thead, fileLink_tbl:tbody, fileLink_tbl:th, fileLink_tbl:td, fileLink_tbl:tr { 
-		display: block; 
+	#fileLink_tbl, #fileLink_tbl:tbody, #fileLink_tbl:th, #fileLink_tbl:td, #fileLink_tbl:tr { 
+		display: block !important; 
 	}
-	
+    #fileLink_tbl: thead{
+        display: none !important;
+    }
 	/* Hide table headers (but not display: none;, for accessibility) */
-	#fileLink_tbl:thead: tr { 
-		position: absolute !important;
-		top: -9999px !important;
-		left: -9999px !important;
-	}
     #fileLink_tbl:tr { border: 1px solid #ccc !important; }
 	
 	#fileLink_tbl:td { 
