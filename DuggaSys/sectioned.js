@@ -52,7 +52,41 @@ $(document).ready(function () {
 	$('#enddate').datepicker({
 		dateFormat: "yy-mm-dd"
 	});
+	addMinuteOptions();
+	addHourOptions();
+
 });
+
+
+function addMinuteOptions(){
+	let str = "";
+	for(var i = 0; i < 60; i+=5){
+		if(i < 10){
+			str+= "<option value=" + i + ">0" + i + "</option>";
+		}else{
+			str+= "<option value=" + i + ">" + i + "</option>";
+		}
+	}
+	$("#minutePickerStartNewVersion").html(str);
+	$("#minutePickerEndNewVersion").html(str);
+	$("#minutePickerStartEditVersion").html(str);
+	$("#minutePickerEndEditVersion").html(str);
+}
+
+function addHourOptions(){
+	let str = "";
+	for(var i = 0; i < 24; i++){
+		if(i < 10){
+			str+= "<option value=" + i + ">0" + i + "</option>";
+		}else{
+			str+= "<option value=" + i + ">" + i + "</option>";
+		}
+	}
+	$("#hourPickerStartNewVersion").html(str);
+	$("#hourPickerEndNewVersion").html(str);
+	$("#hourPickerStartEditVersion").html(str);
+	$("#hourPickerEndEditVersion").html(str);
+}
 
 
 function showSubmitButton() {
@@ -545,6 +579,32 @@ function createVersion() {
 	var comments = $("#comments").val();
 	var startdate = $("#startdate").val();
 	var enddate = $("#enddate").val();
+	var startHour = ($("#hourPickerStartNewVersion").val());
+	var startMinute = ($("#minutePickerStartNewVersion").val());
+	var endHour = ($("#hourPickerEndNewVersion").val());
+	var endMinute = ($("#minutePickerEndNewVersion").val());
+	startdate = new Date(startdate)
+	enddate = new Date(enddate)
+	startdate.setHours(startHour)
+	startdate.setMinutes(startMinute)
+	enddate.setHours(endHour)
+	enddate.setMinutes(endMinute);
+
+	startdate 	= startdate.getFullYear() + "-"
+				+ ('0' + (startdate.getMonth()+1)).slice(-2) + '-'
+				+ ('0' + startdate.getDate()).slice(-2)
+				+ "T" + startdate.getHours() + ":" + startdate.getMinutes() + ":"
+				+ startdate.getSeconds();
+
+	enddate 	= enddate.getFullYear() + "-"
+				+ ('0' + (enddate.getMonth()+1)).slice(-2) + '-'
+				+ ('0' + enddate.getDate()).slice(-2)
+				+ "T" + enddate.getHours() + ":" + enddate.getMinutes() + ":"
+				+ enddate.getSeconds();
+
+
+
+
 
 	if (versid == "" || versname == "") {
 		alert("Version Name and Version ID must be entered!");
@@ -595,16 +655,34 @@ function returnedCourse(data) {
 }
 
 function showEditVersion(versid, versname, startdate, enddate) {
-	$("#eversid").val(versid);
+	startdate = new Date(startdate)
+	enddate = new Date(enddate)
+	var startHour = startdate.getHours()
+	var startMinute = startdate.getMinutes()
+	var endHour = enddate.getHours()
+	var endMinute = enddate.getMinutes()
+
+	startdate 	= startdate.getFullYear() + "-"
+				+ ('0' + (startdate.getMonth()+1)).slice(-2) + '-'
+				+ ('0' + startdate.getDate()).slice(-2)
+
+	enddate 	= enddate.getFullYear() + "-"
+				+ ('0' + (enddate.getMonth()+1)).slice(-2) + '-'
+				+ ('0' + enddate.getDate()).slice(-2)
+
 	$("#eversname").val(versname);
+	$("#eversid").val(versid);
 	$("#estartdate").val(startdate);
 	$("#eenddate").val(enddate);
-
+	$("#hourPickerStartEditVersion").val(startHour);
+	$("#minutePickerStartEditVersion").val(startMinute);
+	$("#hourPickerEndEditVersion").val(endHour);
+	$("#minutePickerEndEditVersion").val(endMinute);
 	$("#editCourseVersion").css("display", "flex");
-
 }
 
 function updateVersion() {
+
 	var cid = $("#cid").val();
 	var versid = $("#eversid").val();
 	var versname = $("#eversname").val();
@@ -614,6 +692,30 @@ function updateVersion() {
 	var makeactive = $("#emakeactive").is(':checked');
 	var startdate = $("#estartdate").val();
 	var enddate = $("#eenddate").val();
+	var startHour = ($("#hourPickerStartEditVersion").val());
+	var startMinute = ($("#minutePickerStartEditVersion").val());
+	var endHour = ($("#hourPickerEndEditVersion").val());
+	var endMinute = ($("#minutePickerEndEditVersion").val());
+
+
+	startdate = new Date(startdate)
+	enddate = new Date(enddate)
+	startdate.setHours(startHour)
+	startdate.setMinutes(startMinute)
+	enddate.setHours(endHour)
+	enddate.setMinutes(endMinute);
+
+	startdate 	= startdate.getFullYear() + "-"
+				+ ('0' + (startdate.getMonth()+1)).slice(-2) + '-'
+				+ ('0' + startdate.getDate()).slice(-2)
+				+ "T" + startdate.getHours() + ":" + startdate.getMinutes() + ":"
+				+ startdate.getSeconds();
+
+	enddate 	= enddate.getFullYear() + "-"
+				+ ('0' + (enddate.getMonth()+1)).slice(-2) + '-'
+				+ ('0' + enddate.getDate()).slice(-2)
+				+ "T" + enddate.getHours() + ":" + enddate.getMinutes() + ":"
+				+ enddate.getSeconds();
 
 	AJAXService("UPDATEVRS", {
 		cid: cid,
