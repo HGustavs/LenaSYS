@@ -884,6 +884,15 @@ $(document).scroll(function(e){
 	localStorage.setItem("duggaEdScrollPosition" + globalData.coursecode, $(window).scrollTop());
 });
 
+// Start of functions handling the FAB-button functionality
+
+function createQuickItem(){
+	newDugga();
+	createDugga();
+}
+
+// End of functions handling the FAB-button functionality
+
 // function isInArray(array, search){
 //     return array.indexOf(search) >= 0;
 // }

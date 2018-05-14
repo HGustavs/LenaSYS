@@ -15,7 +15,7 @@ pdoConnect();
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
   <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -44,6 +44,13 @@ pdoConnect();
   	<!-- Login Dialog END -->
       <div id="quiz" style='width:100%;'></div> <!-- A div to place the quiz-table within. -->
   </div>
+
+  <!-- START OF FAB-button  -->
+  <div class='fixed-action-button'>
+      <a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'><i class='material-icons'>add</i></a>
+  </div>
+  <!-- END OF FAB-button  -->
+
     <!-- Edit Dugga Dialog START -->
   	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
         <div class='loginBox' style='width:464px;'>
