@@ -4105,6 +4105,17 @@ textarea#filecont{
 /* --------------================################================-------------- *
  *                           DuggaEd - Variants editor                          *
  * --------------================################================-------------- */
+
+/* Number column */
+.variant-vid {
+  width: 20px;
+}
+
+.variant-param {
+  max-width: 0;
+}
+
+/* Content in paramater coulumn */
 .variants-param-col {
   display: inline-block;
   width: 100%;
@@ -4113,29 +4124,20 @@ textarea#filecont{
   text-overflow: ellipsis;
 }
 
-.variant-vid {
-  width: 20px;
-}
-
-.variant-param {
-  max-width: 100px;
-}
-
+/* Modified column */
 .variant-modified {
   width: 150px;
 }
 
+/* Status column */
 .variant-disabled {
-  width: 80px;
+  width: 60px;
 }
 
+/* Preview, Edit and Delete columns */
 .variant-arrowVariant, .variant-cogwheelVariant, .variant-trashcanVariant {
   width: 25px;
 }
-
-/* #param_variant_tbl {
-  width: 100px;
-} */
 
 @media only screen and (max-height: 800px) and (max-width: 1400px) {
   .editFileWindow {
