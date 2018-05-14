@@ -70,7 +70,7 @@ if (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
         $splitname = explode(".", $filename);
         $extension = $splitname[count($splitname) - 1];
         $splitname = array_slice($splitname, 0, count($splitname) - 1);
-        $shortfilename = implode($splitname);
+        $shortfilename = implode(".", $splitname);
 
         if ($filekind == 1) {
             $filePath = "UNK";
