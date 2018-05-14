@@ -2905,6 +2905,7 @@ table.navheader td.hamburger {
   display: inline-block;
   cursor: pointer;
   margin-right: 0px;
+  margin-bottom: 4px;
   width: 0px;
   opacity: 0.0;
   transition: width 0.5s, opacity 0.5s, margin 0.5s;
@@ -3055,18 +3056,16 @@ only screen and (max-device-width: 1085px) {
 @media only screen and (max-width: 800px),
 only screen and (max-device-width: 800px) {
 	#addElement{display:none;}
-  table.navheader td.editVers,
-  table.navheader td.contribution,
-  table.navheader td.newVers {
+  /* table.navheader td.editVers, */
+  /* table.navheader td.newVers  */
+  table.navheader td.contribution{
     margin-right: 0px;
     width: 0px;
     -webkit-transition: margin-right 0.5s, width 0.5s;
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
   }
-  table.navheader div.editVers,
-  table.navheader div.contribution,
-  table.navheader div.newVers {
+  table.navheader div.contribution{
     pointer-events: none;
     opacity: 0;
     -webkit-transition: opacity 0.5s;
@@ -3082,15 +3081,13 @@ only screen and (max-device-width: 800px) {
     -moz-transition: opacity 0.5s, width 0.5s, margin 0.5s;
     -o-transition: opacity 0.5s, width 0.5s, margin 0.5s;
   }
-  ul.hamburgerList li.newVers,
-  ul.hamburgerList li.editVers,
   ul.hamburgerList li.contribution {
     pointer-events: auto;
     display: block;
     height: 26px;
     opacity: 1.0;
   }
-  ul.hamburgerList li.hamburgerSeparator {
+  ul.hamburgerList {
     display: block;
     height: 13px;
   }
@@ -3120,8 +3117,8 @@ only screen and (max-device-width: 768px) {
   }
 }
 
-@media only screen and (max-width: 650px),
-only screen and (max-device-width: 650px) {
+@media only screen and (max-width: 710px),
+only screen and (max-device-width: 710px) {
     #searchBar {
         margin-left: 15px;
     }
@@ -3150,8 +3147,8 @@ only screen and (max-device-width: 650px) {
   }
 }
 
-@media only screen and (max-width: 540px),
-only screen and (max-device-width: 540px) {
+@media only screen and (max-width: 590px),
+only screen and (max-device-width: 590px) {
   table.navheader td.files {
     margin-right: 0px;
     width: 0px;
@@ -3174,8 +3171,8 @@ only screen and (max-device-width: 540px) {
   }
 }
 
-@media only screen and (max-width: 480px),
-only screen and (max-device-width: 480px) {
+@media only screen and (max-width: 530px),
+only screen and (max-device-width: 530px) {
   .hideAll,
   .showAll {
     -webkit-transform: scale(0.6, 0.6);
@@ -3202,8 +3199,8 @@ only screen and (max-device-width: 480px) {
   }
 }
 
-@media only screen and (max-width: 430px),
-only screen and (max-device-width: 430px) {
+@media only screen and (max-width: 480px),
+only screen and (max-device-width: 480px) {
   table.navheader td.tests,
   table.navheader td.results {
     margin-right: 0px;

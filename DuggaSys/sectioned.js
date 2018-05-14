@@ -743,18 +743,6 @@ function returnedSection(data) {
 			str += "<div class='hamburgerMenu'>";
 			str += "<ul class='hamburgerList'>";
 			str +=
-				"<li class='editVers'><button class='submit-button menuButton editVers '"
-				+ "onclick='closeWindows(); hamburgerChange(); showEditVersion(\"" + querystring['coursevers']
-				+ "\",\"" + versionname + "\",\"" + startdate + "\",\"" + enddate + "\");' "
-				+ "title='Edit the selected version'>Edit Version</button></li>";
-
-			str +=
-				"<li class='newVers'><button class='submit-button menuButton newVers'"
-				+ "onclick='closeWindows();  hamburgerChange(); showCreateVersion();'"
-				+ "title='Create a new version of this course'>New Version</button></li>";
-
-			str += "<li class='hamburgerSeparator'><hr></li>";
-			str +=
 				"<li class='results'><button class='submit-button menuButton results'"
 				+ "onclick='closeWindows(); changeURL(\"resulted.php?cid=" + querystring['courseid'] + "&coursevers="
 				+ querystring['coursevers'] + "\")' title='Edit student results'>Results</button></li>";
