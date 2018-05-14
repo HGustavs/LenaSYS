@@ -17,6 +17,7 @@ var itemToDelete;
 var typeOfItem;
 var duggaPages;
 var isClickedElementBox = false;
+var searchterm = "";
 
 
 AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
@@ -455,36 +456,7 @@ function removeVariantTableHighlights() {
 	Change the styling of variantsTable. The variants list will be scrollable, and its
 	size will change depending on the size of the login box, where it is placed.
 */
-function variantsTableStyling() {
-	var loginBox = findAncestor(document.getElementById('variant'), 'loginBox', 'className');
-	var loginBoxHeader = null;
 
-	var loginBoxHeight = null;
-	var loginBoxHeaderHeight = null;
-	var editVariantHeight = null;
-	var remainingSpace = null;
-
-	// Find the header of the login box
-	for(var i = 0; i < loginBox.children.length; i++) {
-		if($(loginBox.children[i]).hasClass('loginBoxheader')) {
-			loginBoxHeader = loginBox.children[i];
-			break;
-		}
-	}
-
-	loginBoxHeight = $(loginBox).outerHeight();
-	loginBoxHeaderHeight = $(loginBoxHeader).outerHeight();
-	editVariantHeight = $("#editVariantDiv").outerHeight();
-
-	// Remaining space for the scrollable variants list
-	remainingSpace = loginBoxHeight - (loginBoxHeaderHeight + editVariantHeight + 60);
-
-	if(remainingSpace > 100) {
-		document.getElementById('variant').style.maxHeight = remainingSpace + 'px';
-	} else {
-		document.getElementById('variant').style.maxHeight = '100px';
-	}
-}
 // VARIANT FUNCTIONS end
 
 // Displaying and hidding the dynamic comfirmbox for deleting-items in duggaED
@@ -626,7 +598,6 @@ function renderVariant(clickedElement) {
 	variantsTable.renderTable();
 	newVariant();
 	$('#did').val(globalData['entries'][clickedElement].arrow);
-	variantsTableStyling();
 }
 
 // Rendring specific cells
@@ -798,6 +769,14 @@ function compare(a,b) {
 	}
 }
 
+function rowFilter(row) {
+	for (i = 0; i < row.length; i++) {
+		if (row[i].indexOf != null) {
+			if (row[i].indexOf(searchterm) != -1) return true;
+		}
+	}
+	return false;
+}
 
 // START OF closers and openers
 function closeEditDugga() {
