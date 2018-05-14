@@ -3129,9 +3129,9 @@ only screen and (max-device-width: 768px) {
 		top: -9999px !important;
 		left: -9999px !important;
 	}
-    #fileLink_tbl tr { border: 1px solid #ccc !important; }
+    #fileLink_tbl:tr { border: 1px solid #ccc !important; }
 	
-	#fileLink_tbl td { 
+	#fileLink_tbl: td { 
 		/* Behave  like a "row" */
 		border: none !important;
 		border-bottom: 1px solid #eee !important; 
