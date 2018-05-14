@@ -3124,14 +3124,14 @@ only screen and (max-device-width: 768px) {
 	}
 	
 	/* Hide table headers (but not display: none;, for accessibility) */
-	thead tr { 
+	#fileLink_tbl:thead tr { 
 		position: absolute !important;
 		top: -9999px !important;
 		left: -9999px !important;
 	}
-    tr { border: 1px solid #ccc !important; }
+    #fileLink_tbl:tr { border: 1px solid #ccc !important; }
 	
-	td { 
+	#fileLink_tbl:td { 
 		/* Behave  like a "row" */
 		border: none !important;
 		border-bottom: 1px solid #eee !important; 
@@ -3139,7 +3139,7 @@ only screen and (max-device-width: 768px) {
 		padding-left: 50% !important; 
 	}
 	
-	td:before { 
+	#fileLink_tbl:td:before { 
 		/* Now like a table header */
 		position: absolute !important;
 		/* Top/left values mimic padding */
@@ -3153,13 +3153,14 @@ only screen and (max-device-width: 768px) {
     /*
 	Label the data
 	*/
-	td:nth-of-type(1):before { content: "File name"; }
-	td:nth-of-type(2):before { content: "Exstension"; }
-	td:nth-of-type(3):before { content: "Kind"; }
-	td:nth-of-type(4):before { content: "Size"; }
-	td:nth-of-type(5):before { content: "Upload date"; }
-	td:nth-of-type(6):before { content: "Edit"; }
-	td:nth-of-type(7):before { content: "Trash"; }
+	#fileLink_tbl:td:nth-of-type(1):before { content: "Number"; }
+    td:nth-of-type(2):before { content: "Exstension"; }
+	td:nth-of-type(3):before { content: "Exstension"; }
+	td:nth-of-type(4):before { content: "Kind"; }
+	td:nth-of-type(5):before { content: "Size"; }
+	td:nth-of-type(6):before { content: "Upload date"; }
+	td:nth-of-type(7):before { content: "Edit"; }
+	td:nth-of-type(8):before { content: "Trash"; }
 }
 
 @media only screen and (max-width: 650px),
