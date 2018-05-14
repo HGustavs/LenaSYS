@@ -116,9 +116,13 @@
                         </div>
                         -->
                         <h4 class="label">Undo/Redo</h4>
-                        <div class="toolbar-drawer">
-                            <button onclick='undoDiagram()'>Undo</button>
-                            <button onclick='redoDiagram()'>Redo</button>
+                        <div class="toolbar-drawer" style="text-align: center">
+                            <button class="diagramAction" id="undoButton" onclick='undoDiagram()'>
+                                <img src="../Shared/icons/undo.svg" style="filter: invert(100%);">
+                            </button>
+                            <button class="diagramAction" id="redoButton" onclick='redoDiagram()'>
+                                <img src="../Shared/icons/redo.svg" style="filter: invert(100%);">
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -162,6 +166,17 @@
                 <div class="menu-drop-down">
                     <span class="label">Edit</span>
                     <div class="drop-down">
+                        <div class="drop-down-item">
+                            <a href="#" onclick='undoDiagram()'>Undo</a>
+                            <i id="hotkey-undo">Ctrl + Z</i>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick='redoDiagram()'>Redo</a>
+                            <i id="hotkey-redo">Ctrl + Y</i>
+                        </div>
+                        <div class="drop-down-divider">
+
+                        </div>
                         <div class="drop-down-item">
                             <a href="#" onclick='globalAppearanceMenu();'>Global Appearance</a>
                         </div>

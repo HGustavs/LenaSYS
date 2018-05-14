@@ -1174,6 +1174,11 @@ input {
   width: 50%;
   filter:invert(100%);
 }
+.diagramAction{
+  border-radius: 5px;
+  background-color: #614875;
+  width: 47%;
+}
 
 /* --------------================################================-------------- *
  *                            END TOOLBOX/APPLICATION                           *
@@ -1293,6 +1298,21 @@ input {
   color: #3d3d3d !important;
   right: 6px !important;
   top: 55px;
+}
+
+#hotkey-undo {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
+  top: 10px;
+}
+#hotkey-redo {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
+  top: 45px;
 }
 
 /* --------------================################================-------------- *
