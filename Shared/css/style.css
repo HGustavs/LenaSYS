@@ -1174,6 +1174,17 @@ input {
   width: 50%;
   filter:invert(100%);
 }
+.diagramAction{
+  border-radius: 5px;
+  background-color: #614875;
+  padding: 5px;
+}
+#undoButton{
+
+}
+#redoutton{
+
+}
 
 /* --------------================################================-------------- *
  *                            END TOOLBOX/APPLICATION                           *

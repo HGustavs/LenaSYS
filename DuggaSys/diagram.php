@@ -117,8 +117,12 @@
                         -->
                         <h4 class="label">Undo/Redo</h4>
                         <div class="toolbar-drawer">
-                            <button onclick='undoDiagram()'>Undo</button>
-                            <button onclick='redoDiagram()'>Redo</button>
+                            <button class="diagramAction" id="undoButton" onclick='undoDiagram()'>
+                                <img src="../Shared/icons/undo.svg">
+                            </button>
+                            <button class="diagramAction" id="redoButton" onclick='redoDiagram()'>
+                                <img src="../Shared/icons/redo.svg">
+                            </button>
                         </div>
                     </div>
                 </div>
