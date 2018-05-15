@@ -461,8 +461,10 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	}
 
 	// Simpler magic heading v. III
-	setInterval(freezePaneHandler,30);
-
+    //setInterval(freezePaneHandler,30);
+    window.onscroll = function() {
+        freezePaneHandler();
+    }
 	function freezePaneHandler() {
 		// Hide magic headings and find minimum overdraft
 		for (var i = 0; i < sortableTable.sortableTables.length; i++) {

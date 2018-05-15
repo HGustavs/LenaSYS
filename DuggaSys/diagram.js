@@ -128,18 +128,19 @@ function keyDownHandler(e){
         ctrlIsClicked = true;
     } else if(ctrlIsClicked && key == 67){
         //Ctrl + c
-        cloneTempArray = [];
-        for(var i = 0; i < selected_objects.length; i++){
-            cloneTempArray.push(selected_objects[i]);
-        }
+        fillCloneArray();
     } else if(ctrlIsClicked && key == 86 ){
         //Ctrl + v
+        var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++){
             //Display cloned objects except lines
             if(cloneTempArray[i].symbolkind != 4){
-                copySymbol(cloneTempArray[i]);
+                const cloneIndex = copySymbol(cloneTempArray[i]) - 1; 
+                temp.push(diagram[cloneIndex]);
             }
         }
+        cloneTempArray = temp;
+        selected_objects = temp;
         updateGraphics();
         SaveState();
     }
@@ -151,6 +152,13 @@ function keyDownHandler(e){
       ctrlIsClicked = true;
     }
 
+}
+
+function fillCloneArray(){
+    cloneTempArray = [];
+    for(var i = 0; i < selected_objects.length; i++){
+        cloneTempArray.push(selected_objects[i]);
+    }
 }
 
 //--------------------------------------------------------------------
