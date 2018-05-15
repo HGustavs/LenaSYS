@@ -68,6 +68,13 @@ function mousemoveevt(ev, t) {
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
+        if(!sel.point.fake){
+            sel.point.x = currentMouseCoordinateX;
+            sel.point.y = currentMouseCoordinateY;
+        } else {
+            sel.point.x.x = currentMouseCoordinateX;
+            sel.point.y.y = currentMouseCoordinateY;
+        }
         // If mouse is pressed down and at a point in selected object - move that point
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object

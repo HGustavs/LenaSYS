@@ -207,103 +207,11 @@ function Symbol(kind) {
         var hw = (points[this.bottomRight].x - x1) * 0.5;
         var hh = (points[this.bottomRight].y - y1) * 0.5;
         if (this.symbolkind == 2 || this.symbolkind == 3) {
-            if(this.targeted && md == 2){
-                //topLeft
-                if(x1 == sel.point.x){
-                    if(x1 < (x2 - entityTemplate.width)){
-                        resizeableX = true;
-                    }else{
-                        resizeableX = false;
-                        if(currentMouseCoordinateX < x1){
-                            resizeableX = true;
-                        }
-                    }
-                    if(y1 < (y2 - entityTemplate.height)){
-                        resizeableY = true;
-                    }else{
-                        resizeableY = false;
-                        if(currentMouseCoordinateY < y1){
-                            resizeableY = true;
-                        }
-                    }
-                }
-                //bottomRight
-                if(x2 == sel.point.x){
-                    if(x2 > (x1 + entityTemplate.width)){
-                        resizeableX = true;
-                    }else{
-                        resizeableX = false;
-                        if(currentMouseCoordinateX > x2){
-                            resizeableX = true;
-                        }
-                    }
-                    if(y2 > (y1 + entityTemplate.height)){
-                        resizeableY = true;
-                    }else{
-                        resizeableY = false;
-                        if(currentMouseCoordinateY > y2){
-                            resizeableY = true;
-                        }
-                    }
-                }
-                
-                var p1 = sel.point.x;
-                var p2 = sel.point.y;
-                
-                if(p1.x > p2.x){
-                    if(p1.x > (p2.x + entityTemplate.width)){
-                        resizeableX = true;
-                    }else{
-                        resizeableX = false;
-                        if(currentMouseCoordinateX > p1.x){
-                            resizeableX = true;
-                        }
-                    }
-                    if(p2.y < (p1.y - entityTemplate.height)){
-                        resizeableY = true;
-                    }else{
-                        resizeableY = false;
-                        if(currentMouseCoordinateY < p2.y){
-                            resizeableY = true;
-                        }
-                    }
-                }
-                if(p1.x < p2.x){
-                    if(p1.x < (p2.x - entityTemplate.width)){
-                        resizeableX = true;
-                    }else{
-                        resizeableX = false;
-                        if(currentMouseCoordinateX < p1.x){
-                            resizeableX = true;
-                        }
-                    }
-                    
-                    if(p2.y > (p1.y + entityTemplate.height)){
-                        resizeableY = true;
-                    }else{
-                        resizeableY = false;
-                        if(currentMouseCoordinateY > p2.y){
-                            resizeableY = true;
-                        }
-                    }
-                }
- 
-                if(!sel.point.fake){
-                    if(resizeableX){
-                        sel.point.x = currentMouseCoordinateX;
-                    }
-                    if(resizeableY){
-                        sel.point.y = currentMouseCoordinateY;
-                    }
-                } else {
-                    if(resizeableX){
-                        sel.point.x.x = currentMouseCoordinateX;
-                    }
-                    if(resizeableY){
-                        sel.point.y.y = currentMouseCoordinateY;
-                    }
-                }
-            
+            if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width){
+                points[this.bottomRight].x = points[this.topLeft].x + entityTemplate.width;
+            }
+            if(points[this.bottomRight].y - points[this.topLeft].y < entityTemplate.height){
+                points[this.bottomRight].y = points[this.topLeft].y + entityTemplate.height;
             }
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
