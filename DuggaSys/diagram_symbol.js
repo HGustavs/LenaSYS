@@ -34,6 +34,7 @@ function Symbol(kind) {
     ];
     this.minWidth;
     this.minHeight;
+    this.locked = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -246,10 +247,10 @@ function Symbol(kind) {
                         }
                     }
                 }
-                
+
                 var p1 = sel.point.x;
                 var p2 = sel.point.y;
-                
+
                 if(p1.x > p2.x){
                     if(p1.x > (p2.x + entityTemplate.width)){
                         resizeableX = true;
@@ -277,7 +278,7 @@ function Symbol(kind) {
                             resizeableX = true;
                         }
                     }
-                    
+
                     if(p2.y > (p1.y + entityTemplate.height)){
                         resizeableY = true;
                     }else{
@@ -287,7 +288,7 @@ function Symbol(kind) {
                         }
                     }
                 }
- 
+
                 if(!sel.point.fake){
                     if(resizeableX){
                         sel.point.x = currentMouseCoordinateX;
@@ -303,7 +304,7 @@ function Symbol(kind) {
                         sel.point.y.y = currentMouseCoordinateY;
                     }
                 }
-            
+
             }
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
@@ -590,6 +591,7 @@ function Symbol(kind) {
     // Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
+        if(this.locked) return;
         if(this.symbolkind != 4){
             points[this.topLeft].x += movex;
             points[this.topLeft].y += movey;
