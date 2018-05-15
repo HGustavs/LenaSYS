@@ -447,7 +447,7 @@ function removeVariantTableHighlights() {
 	$('#variant_body').find('tr').each(function() {
 		allRows.push(this);
 	});
-	for(let row of allRows) {
+	for(var row of allRows) {
 		row.removeAttribute('style'); // Remove background color from previously marked rows.
 	}
 }
@@ -763,7 +763,7 @@ function renderSortOptionsVariant(col,status) {
 
 //Compare to make the table sortable
 function compare(a,b) {
-	let col = sortableTable.currentTable.getSortcolumn();
+	var col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
 	var tempB = b;
 
