@@ -3777,22 +3777,6 @@ li:nth-last-child(10) a:hover {
   height: 85%;
 }
 
-#button-cancel {
-  position: absolute;
-  left: 235px;
-}
-
-#button-save {
-  position: absolute;
-  left: 305px;
-}
-
-#button-close {
-  float: right;
-  position: relative;
-  margin: 0px 10px 0px 0px;
-}
-
 .prevHead {
   height: 20px;
   background-color: #614875;
