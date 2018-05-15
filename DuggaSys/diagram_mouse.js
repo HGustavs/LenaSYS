@@ -448,7 +448,7 @@ function doubleclick(ev) {
 }
 
 function resize() {
-    if (uimode == "CreateClass" && md == 4) {
+    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
             var tempX = currentMouseCoordinateX;
             currentMouseCoordinateX = startMouseCoordinateX;
@@ -459,41 +459,6 @@ function resize() {
             var tempY = currentMouseCoordinateY;
             currentMouseCoordinateY = startMouseCoordinateY;
             startMouseCoordinateY = tempY;
-        }
-    } else if (uimode == "CreateERAttr" && md == 4) {
-        if (currentMouseCoordinateX >= startMouseCoordinateX && (currentMouseCoordinateX - startMouseCoordinateX) < attributeTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX + attributeTemplate.width;
-        } else if (currentMouseCoordinateX < startMouseCoordinateX && (startMouseCoordinateX - currentMouseCoordinateX) < attributeTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX - attributeTemplate.width;
-        }
-        if (currentMouseCoordinateY >= startMouseCoordinateY && (currentMouseCoordinateY - startMouseCoordinateY) < attributeTemplate.width) {
-            currentMouseCoordinateY = startMouseCoordinateY + attributeTemplate.height;
-        } else if (currentMouseCoordinateY < startMouseCoordinateY && (startMouseCoordinateY - currentMouseCoordinateY) < attributeTemplate.height) {
-            currentMouseCoordinateY = startMouseCoordinateY - attributeTemplate.height;
-        }
-    } else if (uimode == "CreateEREntity" && md == 4) {
-        if (currentMouseCoordinateX >= startMouseCoordinateX && (currentMouseCoordinateX - startMouseCoordinateX) < entityTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX + entityTemplate.width;
-        } else if (currentMouseCoordinateX < startMouseCoordinateX && (startMouseCoordinateX - currentMouseCoordinateX) < entityTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX - entityTemplate.width;
-        }
-        if (currentMouseCoordinateY >= startMouseCoordinateY && (currentMouseCoordinateY - startMouseCoordinateY) < entityTemplate.width) {
-            currentMouseCoordinateY = startMouseCoordinateY + entityTemplate.height;
-        } else if (currentMouseCoordinateY < startMouseCoordinateY && (startMouseCoordinateY - currentMouseCoordinateY) < entityTemplate.height) {
-            currentMouseCoordinateY = startMouseCoordinateY - entityTemplate.height;
-        }
-    } else if (uimode == "CreateERRelation" && md == 4) {
-        if(currentMouseCoordinateX > startMouseCoordinateX) {
-            currentMouseCoordinateX = startMouseCoordinateX + relationTemplate.width;
-        } else{
-            startMouseCoordinateX=currentMouseCoordinateX;
-            currentMouseCoordinateX = startMouseCoordinateX+relationTemplate.width;
-        }
-        if(currentMouseCoordinateY > startMouseCoordinateY) {
-            currentMouseCoordinateY = startMouseCoordinateY + relationTemplate.height;
-        } else{
-            startMouseCoordinateY=currentMouseCoordinateY;
-            currentMouseCoordinateY = startMouseCoordinateY+relationTemplate.height;
         }
     }
 }
