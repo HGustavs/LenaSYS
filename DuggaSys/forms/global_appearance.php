@@ -1,7 +1,7 @@
 Font family:<br>
 <select id='font' onchange='globalFont(); hashFunction(); updateGraphics();'>
     <option value='' selected> - Choose font - </option>
-    <option value='Arial' selected>Arial</option>
+    <option value='Arial'>Arial</option>
     <option value='Courier New'>Courier New</option>
     <option value='Impact'>Impact</option>
     <option value='Calibri'>Calibri</option>
@@ -22,7 +22,7 @@ Font color:<br>
 Text size:<br>
 <select id='TextSize' onchange='globalTextSize(); hashFunction(); updateGraphics();'>
     <option value='' selected> - Choose text size - </option>
-    <option value='Tiny' selected>Tiny</option>
+    <option value='Tiny' >Tiny</option>
     <option value='Small'>Small</option>
     <option value='Medium'>Medium</option>
     <option value='Large'>Large</option>
