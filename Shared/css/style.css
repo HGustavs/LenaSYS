@@ -3734,8 +3734,6 @@ li:nth-last-child(10) a:hover {
 .markdownPrev { /* Rutan som visar den översatta koden */
   border: solid rgb(200, 200, 200);
   border-color: #614875;
-  word-wrap: break-word;
-  overflow-y: scroll;
   width: 56%;
   height: 80%;
   position: relative;
@@ -3829,7 +3827,7 @@ li:nth-last-child(10) a:hover {
   resize: none;
   width:100%;
   height:100%;
-  margin:12px;
+  margin:10px;
 }
 textarea#mrkdwntxt {
   width: 100%;

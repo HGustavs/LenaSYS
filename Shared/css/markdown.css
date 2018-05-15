@@ -6,9 +6,13 @@
 	font-style: normal;
 	font-size: 16px;
 	line-height: 1.5;
-	height:100%;
+	height:80%;
+	word-wrap: break-word;
+	overflow-y: scroll;
 	background-color: #fff;
 	padding:10px;
+
+
 }
 
 /*
