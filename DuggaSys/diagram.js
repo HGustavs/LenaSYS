@@ -1140,6 +1140,14 @@ function setRefreshTime() {
   }
   return time;
 }
+
+function lockSelected(){
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].locked = !selected_objects[i].locked;
+    }
+}
+
+
 function align(mode){
     for(var i = 0; i < diagram.length; i++){
         if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1){

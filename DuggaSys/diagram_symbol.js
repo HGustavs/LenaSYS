@@ -34,6 +34,7 @@ function Symbol(kind) {
     ];
     this.minWidth;
     this.minHeight;
+    this.locked = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -498,6 +499,7 @@ function Symbol(kind) {
     // Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
+        if(this.locked) return;
         if(this.symbolkind != 4){
             points[this.topLeft].x += movex;
             points[this.topLeft].y += movey;
