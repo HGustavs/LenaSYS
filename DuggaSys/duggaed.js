@@ -9,7 +9,7 @@ var filez;
 var variant = [];
 var submissionRow = 0;
 var duggaTable;
-var variantsTable;
+var variantTable;
 var str;
 var globalData;
 var globalVariant;
@@ -308,7 +308,7 @@ function newVariant() {
 	showVariantDisableButton();
 	$("#submitVariant").css("display", "block");
 	$("#saveVariant").css("display", "none");
-	document.getElementById('filelink').value = '';
+	document.getElementById('variantSearch').value = '';
 	document.getElementById('filelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
 	document.getElementById('extraparam').placeholder = 'Extra dugga parameters in valid JSON';
@@ -506,6 +506,16 @@ function returnedDugga(data) {
 	filez = data;
 	globalData = data;
 
+	if (data['writeaccess'] == true) {
+		$('#quiz').show();
+		$('.fixed-action-button').show();
+	}
+	else {
+		$('#quiz').hide();
+		$('.fixed-action-button').hide();
+	}
+
+	console.log(data['writeaccess']);
 	var tabledata = {
 		tblhead: {
 			did: "",
@@ -532,7 +542,7 @@ function returnedDugga(data) {
 		renderCell,
 		renderSortOptionsDugga,
 		null,
-		null,
+		duggaFilter,
 		[],
 		[],
 		"",
@@ -575,7 +585,7 @@ function renderVariant(clickedElement) {
 		tblbody: globalData['entries'][clickedElement].variants,
 		tblfoot: []
 	}
-	variantsTable = new SortableTable(
+	variantTable = new SortableTable(
 		tabledata,
 		"variant",
 		null,
@@ -583,7 +593,7 @@ function renderVariant(clickedElement) {
 		renderCell,
 		renderSortOptionsVariant,
 		null,
-		null,
+		variantFilter,
 		[],
 		[],
 		"",
@@ -595,7 +605,8 @@ function renderVariant(clickedElement) {
 		null,
 		false
 	);
-	variantsTable.renderTable();
+	searchterm = '';
+	variantTable.renderTable();
 	newVariant();
 	$('#did').val(globalData['entries'][clickedElement].arrow);
 }
@@ -718,6 +729,8 @@ function renderCell(col, celldata, cellid) {
 // END OF rendering cells
 // END OF rendering tables
 
+
+//Making dugga headers clickable for sorting.
 function renderSortOptionsDugga(col,status) {
 	str = "";
 	if(col == "headingAddButton"){
@@ -734,18 +747,21 @@ function renderSortOptionsDugga(col,status) {
 	}
 	return str;
 }
+
+//Making variant headers clickable for sorting.
 function renderSortOptionsVariant(col,status) {
 	str = "";
 	if (status ==- 1) {
-		str += "<span class='sortableHeading' onclick='variantsTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
 	} else if (status == 0) {
-		str += "<span class='sortableHeading' onclick='variantsTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 	} else {
-		str += "<span class='sortableHeading' onclick='variantsTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 	}
 	return str;
 }
 
+//Compare to make the table sortable
 function compare(a,b) {
 	let col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
@@ -769,14 +785,29 @@ function compare(a,b) {
 	}
 }
 
-function rowFilter(row) {
-	for (i = 0; i < row.length; i++) {
-		if (row[i].indexOf != null) {
-			if (row[i].indexOf(searchterm) != -1) return true;
-		}
+//Filtering duggas from the searchfield.
+function duggaFilter(row) {
+	if (row.qname.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
+		return true;
 	}
-	return false;
+	else if (row.quizFile.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
+		return true;
+	}
+	else{
+		return false;
+	}
 }
+
+//Filtering variants from the searchfield.
+function variantFilter(row) {
+	if (row.param.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
 
 // START OF closers and openers
 function closeEditDugga() {
@@ -868,69 +899,3 @@ function createQuickItem(){
 }
 
 // End of functions handling the FAB-button functionality
-
-// function isInArray(array, search){
-//     return array.indexOf(search) >= 0;
-// }
-
-// function parseParameters(str){
-// 	return str;
-// }
-
-// function displayfield(res){
-// 	$("#autogradeselect"+res).css("display","block");
-// }
-
-// function changename(didd,num){
-// 	var yes = didd;
-// 	$("#did").val(yes);
-// 	var name =  $("#duggav"+num).val();
-// 	$("#name").val(name);
-// 	var nme=$("#name").val();
-// 	var did=$("#did").val();
-
-// 	AJAXService("UPDATEDNAME",{cid:querystring['cid'],qid:did,nme:nme,coursevers:querystring['coursevers']},"DUGGA");
-// }
-
-// function changeauto(didd,num){
-// 	var yes = didd;
-// 	$("#did").val(yes);
-// 	var auto =  $("#duggav"+num).val();
-// 	$("#autograde").val(auto);
-// 	var autograde=$("#autograde").val();
-// 	var did=$("#did").val();
-// 	var autograde=$("#autograde").val();
-
-// 	AJAXService("UPDATEAUTO",{cid:querystring['cid'],qid:did,autograde:autograde,coursevers:querystring['coursevers']},"DUGGA");
-// }
-
-// function changegrade(didd,num){
-// 	var yes = didd;
-// 	$("#did").val(yes);
-// 	var auto =  $("#duggav"+num).val();
-// 	$("#gradesys").val(auto);
-// 	var did=$("#did").val();
-// 	var gradesys=$("#gradesys").val();
-
-// 	AJAXService("UPDATEGRADE",{cid:querystring['cid'],qid:did,gradesys:gradesys,coursevers:querystring['coursevers']},"DUGGA");
-// }
-
-// function changefile(didd,num){
-// 	str="";
-// 	for(var j=0;j<filez.length;j++){
-// 			filen=filez[j];
-// 			if(filen!=".."&&filen!="."){
-// 					if(template==filen) str+="<option selected='selected' value='"+filen+"'>"+filen+"</option>"
-// 					else str+="<option value='"+filen+"'>"+filen+"</option>"
-// 			}
-// 	}
-// 	$("#template").html(str);
-// 	var yes = didd;
-// 	$("#did").val(yes);
-// 	var templates =  $("#duggav"+num).val();
-// 	$("#template").val(templates);
-// 	var did=$("#did").val();
-// 	var template=$("#template").val();
-
-// 	AJAXService("UPDATETEMPLATE",{cid:querystring['cid'],qid:did,template:template,coursevers:querystring['coursevers']},"DUGGA");
-// }
