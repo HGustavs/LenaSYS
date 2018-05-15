@@ -263,8 +263,8 @@ function copySymbol(symbol){
     centerPointClone.x += 10;
     centerPointClone.y += 10;
     var middleDividerClone = Object.assign({}, points[symbol.middleDivider]);
-    middleDivider.x += 10;
-    middleDivider.y += 10;
+    middleDividerClone.x += 10;
+    middleDividerClone.y += 10;
 
     if(symbol.symbolkind == 1){
         clone.name = "New" + diagram.length;
