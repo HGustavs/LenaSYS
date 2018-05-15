@@ -135,7 +135,8 @@ function keyDownHandler(e){
         for(var i = 0; i < cloneTempArray.length; i++){
             //Display cloned objects except lines
             if(cloneTempArray[i].symbolkind != 4){
-                temp.push(diagram[copySymbol(cloneTempArray[i]) - 1]);
+                const cloneIndex = copySymbol(cloneTempArray[i]) - 1; 
+                temp.push(diagram[cloneIndex]);
             }
         }
         cloneTempArray = temp;
