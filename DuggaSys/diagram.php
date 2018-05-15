@@ -116,9 +116,13 @@
                         </div>
                         -->
                         <h4 class="label">Undo/Redo</h4>
-                        <div class="toolbar-drawer">
-                            <button onclick='undoDiagram()'>Undo</button>
-                            <button onclick='redoDiagram()'>Redo</button>
+                        <div class="toolbar-drawer" style="text-align: center">
+                            <button class="diagramAction" id="undoButton" onclick='undoDiagram()'>
+                                <img src="../Shared/icons/undo.svg" style="filter: invert(100%);">
+                            </button>
+                            <button class="diagramAction" id="redoButton" onclick='redoDiagram()'>
+                                <img src="../Shared/icons/redo.svg" style="filter: invert(100%);">
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -162,6 +166,21 @@
                 <div class="menu-drop-down">
                     <span class="label">Edit</span>
                     <div class="drop-down">
+                        <div class="drop-down-item">
+                            <a href="#" onclick='undoDiagram()'>Undo</a>
+                            <i id="hotkey-undo">Ctrl + Z</i>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick='redoDiagram()'>Redo</a>
+                            <i id="hotkey-redo">Ctrl + Y</i>
+                        </div>
+                        <div class="drop-down-divider">
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick='lockSelected()'>Lock/Unlock selected</a>
+                        </div>
+                        <div class="drop-down-divider">
+                        </div>
                         <div class="drop-down-item">
                             <a href="#" onclick='globalAppearanceMenu();'>Global Appearance</a>
                         </div>
@@ -273,30 +292,19 @@
             <div id="selectDiv">
                 <select name="Zoom" id="ZoomSelect" onchange="zoomInMode();">
                     <option selected='selected' disabled>Choose zoom</option>
-                    <option value="0.05">5%</option>
-                    <option value="0.1">10%</option>
-                    <option value="0.2">20%</option>
                     <option value="0.3">30%</option>
                     <option value="0.5">50%</option>
                     <option value="0.75">75%</option>
                     <option value="1">100%</option>
-                    <option value="1.25">125%</option>
                     <option value="1.5">150%</option>
                     <option value="2">200%</option>
-                    <option value="4">400%</option>
-                    <option value="6">600%</option>
-                    <option value="8">800%</option>
-                    <option value="10">1000%</option>
-                    <option value="12">1200%</option>
-                    <option value="14">1400%</option>
-                    <option value="16">1600%</option>
                 </select>
                 <i class="ikonPil"></i>
             </div>
         </div>
     </div>
     <!-- The Appearance menu. Default state is display: none; -->
-    <div id="appearance" class='loginBoxContainer' style='display: none;'>
+    <div id="appearance" class='loginBoxContainer' style='display: none; background-color: rgba(0,0,0,0)'>
         <div class='loginBox'>
             <div class='loginBoxheader'>
                 <h3>Appearance</h3>

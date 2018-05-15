@@ -68,7 +68,6 @@ function mousemoveevt(ev, t) {
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
-        // If mouse is pressed down and at a point in selected object - move that point
         if(!sel.point.fake){
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;
@@ -76,12 +75,13 @@ function mousemoveevt(ev, t) {
             sel.point.x.x = currentMouseCoordinateX;
             sel.point.y.y = currentMouseCoordinateY;
         }
+        // If mouse is pressed down and at a point in selected object - move that point
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
             uimode = "Moved";
             for (var i = 0; i < diagram.length; i++) {
-                if (diagram[i].targeted == true) {
+                if (diagram[i].targeted == true && !diagram[movobj].locked) {
                     if(snapToGrid){
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
@@ -448,7 +448,7 @@ function doubleclick(ev) {
 }
 
 function resize() {
-    if (uimode == "CreateClass" && md == 4) {
+    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
             var tempX = currentMouseCoordinateX;
             currentMouseCoordinateX = startMouseCoordinateX;
@@ -459,41 +459,6 @@ function resize() {
             var tempY = currentMouseCoordinateY;
             currentMouseCoordinateY = startMouseCoordinateY;
             startMouseCoordinateY = tempY;
-        }
-    } else if (uimode == "CreateERAttr" && md == 4) {
-        if (currentMouseCoordinateX >= startMouseCoordinateX && (currentMouseCoordinateX - startMouseCoordinateX) < attributeTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX + attributeTemplate.width;
-        } else if (currentMouseCoordinateX < startMouseCoordinateX && (startMouseCoordinateX - currentMouseCoordinateX) < attributeTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX - attributeTemplate.width;
-        }
-        if (currentMouseCoordinateY >= startMouseCoordinateY && (currentMouseCoordinateY - startMouseCoordinateY) < attributeTemplate.width) {
-            currentMouseCoordinateY = startMouseCoordinateY + attributeTemplate.height;
-        } else if (currentMouseCoordinateY < startMouseCoordinateY && (startMouseCoordinateY - currentMouseCoordinateY) < attributeTemplate.height) {
-            currentMouseCoordinateY = startMouseCoordinateY - attributeTemplate.height;
-        }
-    } else if (uimode == "CreateEREntity" && md == 4) {
-        if (currentMouseCoordinateX >= startMouseCoordinateX && (currentMouseCoordinateX - startMouseCoordinateX) < entityTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX + entityTemplate.width;
-        } else if (currentMouseCoordinateX < startMouseCoordinateX && (startMouseCoordinateX - currentMouseCoordinateX) < entityTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX - entityTemplate.width;
-        }
-        if (currentMouseCoordinateY >= startMouseCoordinateY && (currentMouseCoordinateY - startMouseCoordinateY) < entityTemplate.width) {
-            currentMouseCoordinateY = startMouseCoordinateY + entityTemplate.height;
-        } else if (currentMouseCoordinateY < startMouseCoordinateY && (startMouseCoordinateY - currentMouseCoordinateY) < entityTemplate.height) {
-            currentMouseCoordinateY = startMouseCoordinateY - entityTemplate.height;
-        }
-    } else if (uimode == "CreateERRelation" && md == 4) {
-        if(currentMouseCoordinateX > startMouseCoordinateX) {
-            currentMouseCoordinateX = startMouseCoordinateX + relationTemplate.width;
-        } else{
-            startMouseCoordinateX=currentMouseCoordinateX;
-            currentMouseCoordinateX = startMouseCoordinateX+relationTemplate.width;
-        }
-        if(currentMouseCoordinateY > startMouseCoordinateY) {
-            currentMouseCoordinateY = startMouseCoordinateY + relationTemplate.height;
-        } else{
-            startMouseCoordinateY=currentMouseCoordinateY;
-            currentMouseCoordinateY = startMouseCoordinateY+relationTemplate.height;
         }
     }
 }

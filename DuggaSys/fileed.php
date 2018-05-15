@@ -105,7 +105,7 @@ pdoConnect();
 <div class="previewWindowContainer"></div>
 <div class="previewWindow">
     <div class="loginBoxheader">
-        <h3>This is the preview window</h3>
+        <h3 class ="fileName"></h3>
         <div style="cursor:pointer;" onclick="closePreview();">x</div>
     </div>
     <form id="editForm" enctype="multipart/form-data" action="filereceive_preview.php" onsubmit="return validatePreviewForm()" method="POST">
@@ -122,7 +122,7 @@ pdoConnect();
                     <span id="codeBlockText" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
                     <span id="lists" onclick="lists()" title="lists">&#9711;</span>
                     <span id="quoteText" onclick="quoteText()" title="quote">&#10078;</span>
-                    <span id="linkz" onclick="linkText()" title="link"><img id="linkFabBtnImg" class="fab-icon"
+                    <span id="linkz" onclick="linkText()" title="link"><img id="linkFabBtnImgPrev" class="fab-icon"
                                                                             src="../Shared/icons/link-icon.svg"></span>
                     <span id="img" onclick="externalImg()" title="Img"><img id="insert-photo" class="fab-icon"
                                                                             src="../Shared/icons/insert-photo.svg"></span>
@@ -138,8 +138,7 @@ pdoConnect();
                     </div>
                 </div>
                 <div class="markText">
-                <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext" rows="32"
-                          cols="40"></textarea>
+                <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
                 </div>
             </div>
             <div class="markdownPrev">

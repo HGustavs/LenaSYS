@@ -32,7 +32,9 @@ function Symbol(kind) {
     this.cardinality = [
       {"value": null, "isCorrectSide": null}
     ];
-
+    this.minWidth;
+    this.minHeight;
+    this.locked = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -196,31 +198,41 @@ function Symbol(kind) {
     // Restricts resizing for classes
     //--------------------------------------------------------------------
     this.adjust = function () {
+        var resizeableX = false;
+        var resizeableY = false;
+
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
+        var x2 = points[this.bottomRight].x;
+        var y2 = points[this.bottomRight].y;
         var hw = (points[this.bottomRight].x - x1) * 0.5;
         var hh = (points[this.bottomRight].y - y1) * 0.5;
         if (this.symbolkind == 2 || this.symbolkind == 3) {
+            if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width){
+                points[this.bottomRight].x = points[this.topLeft].x + entityTemplate.width;
+            }
+            if(points[this.bottomRight].y - points[this.topLeft].y < entityTemplate.height){
+                points[this.bottomRight].y = points[this.topLeft].y + entityTemplate.height;
+            }
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
         } else if (this.symbolkind == 1) {
-            points[this.centerPoint].x = x1 + hw;
-            points[this.centerPoint].y = y1 + hh;
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
+            points[this.topLeft].y = y1;
 
+            var attrHeight, opHeight;
             if(this.attributes.length > 0){
                 //Height of text + padding
-                var attrHeight = (this.attributes.length*14)+35;
-                points[this.topLeft].y = y1;
-                points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
+                attrHeight = (this.attributes.length*14)+35;
             }
             if(this.operations.length > 0){
-                var opHeight = (this.operations.length*14)+15;
-                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
+                opHeight = (this.operations.length*14)+15;
+            }
+            this.minHeight = attrHeight + opHeight;
 
-            }//Finding the longest string
-            var longestStr = "";
+            //Finding the longest string
+            var longestStr = this.name;
             for(var i = 0; i < this.operations.length; i++){
                 if(this.operations[i].text.length > longestStr.length)
                     longestStr = this.operations[i].text;
@@ -229,18 +241,31 @@ function Symbol(kind) {
                 if(this.attributes[i].text.length > longestStr.length)
                     longestStr = this.attributes[i].text;
             }
-            //Measures the length and sets the width of the object to this.
             ctx.font = "14px Arial";
-            var strLen = ctx.measureText(longestStr).width;
-            points[this.bottomRight].x = points[this.topLeft].x + strLen + 15;
-        } else if (this.symbolkind == 5){
-                // Static size of relation. Makes resizing of relation impossible.
-                points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
-                points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
-                points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
-                points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;
+            this.minWidth = ctx.measureText(longestStr).width + 15;
+
+            if(points[this.middleDivider].y + opHeight > points[this.bottomRight].y){
+                points[this.middleDivider].y = points[this.bottomRight].y - opHeight;
+                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
             }
+            if(points[this.topLeft].y + attrHeight > points[this.middleDivider].y){
+                points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
+                points[this.topLeft].y = points[this.middleDivider].y - attrHeight;
+            }
+            if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight){
+                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
+            }
+            if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth){
+                points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
+            }
+        } else if (this.symbolkind == 5){
+            // Static size of relation. Makes resizing of relation impossible.
+            points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
+            points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
+            points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
+            points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;
         }
+    }
 
     //--------------------------------------------------------------------
     // Sorts the connector
@@ -376,7 +401,7 @@ function Symbol(kind) {
         }
     }
 
-    
+
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
@@ -474,6 +499,7 @@ function Symbol(kind) {
     // Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
+        if(this.locked) return;
         if(this.symbolkind != 4){
             points[this.topLeft].x += movex;
             points[this.topLeft].y += movey;
@@ -495,8 +521,8 @@ function Symbol(kind) {
             }*/
         }
     }
-    
-    
+
+
 
     //--------------------------------------------------------------------
     // erase/delete
@@ -676,7 +702,7 @@ function Symbol(kind) {
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-    
+
         ctx.save();
 
         ctx.textAlign = "center";
