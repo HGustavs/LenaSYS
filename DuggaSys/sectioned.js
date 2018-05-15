@@ -882,8 +882,8 @@ function returnedSection(data) {
 		+ "<div id='statisticsList'>"
 		+ "<div id='statistics' class='statistics' style='display: inline-block; cursor: pointer;'>"
 		+ "<div style='margin: 10px;'>"
-		+ "<img src='../Shared/icons/right_complement.svg' id='arrowRightStatistics' style='display: inline-block;'>"
-		+ "<img src='../Shared/icons/desc_complement.svg' id='arrowCompStatistics' style='display: none;'>"
+		+ "<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>"
+		+ "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>"
 		+ "</div>"
 		+ "<div class='nowrap' style='padding-left:5px' title='statistics'>"
 		+ "<span class='listentries-span' style='writing-mode: vertical-rl; text-orientation: upright;'>Statistics</span>"
@@ -1626,15 +1626,6 @@ function hideCollapsedMenus() {
    arrow if it is in the arrowIcons array.
 	 The other way around for the statistics section. */
 function toggleArrows() {
-	$('#arrowRightStatistics').hide();
-	$('#arrowCompStatistics').show();
-	for (var i = 0; i < menuState.hiddenElements.length; i++){
-		if (menuState.hiddenElements[i] == "statistics"){
-			$('#arrowRightStatistics').hide();
-			$('#arrowCompStatistics').show();
-		}
-	}
-
 	$('.arrowComp').show();
 	$('.arrowRight').hide();
 	for (var i = 0; i < menuState.arrowIcons.length; i++) {
@@ -1644,6 +1635,15 @@ function toggleArrows() {
 			$('#' + menuState.arrowIcons[i]).hide();
 		} else {
 			$('#' + menuState.arrowIcons[i]).show();
+		}
+	}
+
+	$('#arrowStatisticsOpen').show();
+	$('#arrowStatisticsClosed').hide();
+	for (var i = 0; i < menuState.hiddenElements.length; i++){
+		if (menuState.hiddenElements[i] == "statistics"){
+			$('#arrowStatisticsOpen').hide();
+			$('#arrowStatisticsClosed').show();
 		}
 	}
 }
