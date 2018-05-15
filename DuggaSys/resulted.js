@@ -14,6 +14,7 @@ var allowedRegradeTime = 24*60*60*1000;
 //var benchmarkData = performance.timing; // Will be updated after onload event
 //var ajaxStart;
 //var tim;
+var searchterm = "";
 var studentInfo = new Array;
 var students=new Array;
 var momtmp=new Array;
@@ -138,7 +139,7 @@ function process()
 		}
 		var student=new Array;
 		// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-		student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class,access:entries[i].access,setTeacher});
+		student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class,access:entries[i].access,setTeacher,username:entries[i].username});
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for(var j=0;j<momtmp.length;j++){
 			// If it is a feedback quiz -- we have special handling.
@@ -817,7 +818,32 @@ function rowFilter(row) {
     if (!rowPending) { return false; }
   }
   
-  return true;
+	for (colname in row) {
+  	if(colname == "FnameLnameSSN") {
+  		let name = "";
+  		if (row[colname]["firstname"] != null) {
+  			name += row[colname]["firstname"] + " ";
+  		}
+  		if (row[colname]["lastname"] != null) {	
+  		 row[colname]["lastname"];
+  		}
+  		if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+  		
+  		if (row[colname]["ssn"] != null) {
+  			if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;	
+  		}
+  		if (row[colname]["username"] != null) {
+  			if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+  		}
+  		if (row[colname]["class"] != null) {
+  			if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+  		}
+  		if (row[colname]["setTeacher"] != null) {
+  			if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+  		}
+  	}
+  }
+  return false;
 }
 
 function renderSortOptions(col,status) {
