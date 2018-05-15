@@ -1,3 +1,5 @@
+var tempDiagram;
+
 //--------------------------------------------------------------------
 // Basic functionality
 // The building blocks for creating the menu
@@ -22,6 +24,10 @@ function closeAppearanceDialogMenu() {
     /*
      * Closes the dialog menu for appearance.
      */
+     //if the X is pressed on the global appearance menu rollback the changes
+     if(globalAppearanceValue == 1){
+       diagram = tempDiagram;
+     }
     appearanceMenuOpen = false;
     classAppearanceOpen = false;
     globalAppearanceValue = 0;
@@ -163,6 +169,8 @@ function setSelectedOption(type, value){
 
 function globalAppearanceMenu(){
     globalAppearanceValue = 1;
+    tempDiagram = diagram;
+
     //open a menu to change appearance on all entities.
     var form = showMenu();
     //AJAX
