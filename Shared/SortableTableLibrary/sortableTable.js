@@ -313,7 +313,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				str += "<tr id='"+tableid+"_"+i+"' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 				mhvstr += "<tr id='"+tableid+"_"+i+"_mvh' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
                 if(this.hasCounter) {
-                    str += "<td onclick='clickedInternal(event,this);' class='counterBox'><span>"+ this.rowIndex++ +"</span></td>";
+                    str += "<td onclick='clickedInternal(event,this);' class='" + tableid + "_counter'><span>"+ this.rowIndex++ +"</span></td>";
                 }
 				result++;
 
