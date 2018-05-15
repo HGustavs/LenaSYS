@@ -533,6 +533,16 @@ function returnedQuiz(data) {
 function returnedDugga(data) {
 	filez = data;
 	globalData = data;
+
+	if (data['writeaccess'] == true) {
+		$('#quiz').show();
+		$('.fixed-action-button').show();
+	}
+	else {
+		$('#quiz').hide();
+		$('.fixed-action-button').hide();
+	}
+
 	console.log(data['writeaccess']);
 	var tabledata = {
 		tblhead: {
