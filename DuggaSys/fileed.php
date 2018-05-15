@@ -151,12 +151,6 @@ pdoConnect();
                     </div>
                 </div>
             </div>
-            <div>
-
-                <!--<button id="button-save" onclick="saveMarkdown()"></button>
-
-                <button id="button-cancel" onclick="">Cancel</button>-->
-            </div>
             <button class="save-close-button" type="submit" onclick="saveMarkdown()">Save</button>
             <button class="save-close-button" onclick="cancelPreview()">Close</button>
         </div>

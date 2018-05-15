@@ -3727,7 +3727,7 @@ li:nth-last-child(10) a:hover {
   width: 38%;
   height: 80%;
   position: relative;
-  margin: 20px 10px 10px 1%;
+  margin: 20px 1% 10px 1%;
   float: left;
 }
 
@@ -3739,7 +3739,7 @@ li:nth-last-child(10) a:hover {
   width: 56%;
   height: 80%;
   position: relative;
-  margin: 20px 1% 10px 8px;
+  margin: 20px 1% 10px 1%;
   float: right;
 }
 
