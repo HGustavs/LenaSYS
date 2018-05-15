@@ -83,6 +83,7 @@ function showInfoText(object, displayText){
   var text = document.getElementById("infoText");
   text.style.display = "inline";
   text.innerHTML = displayText;
+
   if(object.width!=null){
     text.style.left = (document.documentElement.scrollLeft + object.getBoundingClientRect()["x"] + object.width["baseVal"]["value"] + 2) + "px";
     text.style.top = (document.documentElement.scrollTop + object.getBoundingClientRect()["y"] + (object.height.baseVal.value / 2) - (text.offsetHeight / 2)) + "px";
@@ -144,23 +145,21 @@ function renderBarDiagram(data)
     for(var j = 0; j < 7; j++){
       let day = dailyCount[i * 7 + j];
       let yOffset = 0;
+      str += "<g width='10' onmouseover='showInfoText(this, \"" + (day[0] + "<br />commits: " + day[1] + "<br />Events: " + day[2] + "<br />Comments: " + day[3] + "<br />LOC: " + day[4]) + "\");' onmouseout='hideInfoText()'>";
       for(var k = 1; k < day.length; k++){
         let height = (day[k] / highRange) * 200; 
         yOffset += height;
         let color = "#F44336";
-        let type = "<br />Commits: ";
         if(k == 2){
           color = "#4DB6AC";
-          type = "<br />Events: ";
         } else if(k == 3){
           color = "#43A047";
-          type = "<br />Comments: ";
         } else if(k == 4){
           color = "purple";
-          type = "<br />LOC: ";
         }
-        str += "<rect onmouseover='showInfoText(this, \"" + (day[0] + type + day[k]) + "\");' onmouseout='hideInfoText()' style='fill:" + color + ";' width='10' height='" + height + "' x='" + (j * 15 + 120 * i + 75) + "' y='" + (220 - yOffset) + "'></rect>";
+        str += "<rect style='fill:" + color + ";' width='10' height='" + height + "' x='" + (j * 15 + 120 * i + 75) + "' y='" + (220 - yOffset) + "'></rect>";
       }
+      str += "</g>";
     }
     
     str += "<text x='" + (120 * i + 100) + "' y='240'>week " + (i + 1) + "</text>";

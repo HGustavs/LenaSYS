@@ -801,14 +801,6 @@ function closeEditDugga() {
 	resetNameValidation();
 }
 
-function showLoginPopup() {
-	$("#loginBox").css("display", "block");
-}
-
-function hideLoginPopup() {
-	$("#loginBox").css("display", "none");
-}
-
 function showDuggaSubmitButton() {
 	$("#submitDugga").css("display", "block");
 	$("#saveDugga").css("display", "none");
