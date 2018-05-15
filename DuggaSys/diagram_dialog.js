@@ -171,7 +171,7 @@ function globalAppearanceMenu(){
     //open a menu to change appearance on all entities.
     var form = showMenu();
     //AJAX
-    loadFormIntoElement(form,'forms/global_appearance.php');
+    //loadFormIntoElement(form,'forms/global_appearance.php');
 }
 
 function objectAppearanceMenu(form) {

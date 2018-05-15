@@ -1,6 +1,6 @@
 Font family:<br>
 <select id='font' onchange='globalFont(); hashFunction(); updateGraphics();'>
-    <option value='' selected>Choose font</option>
+    <option value='' selected> - Choose font - </option>
     <option value='Arial' selected>Arial</option>
     <option value='Courier New'>Courier New</option>
     <option value='Impact'>Impact</option>
@@ -8,7 +8,7 @@ Font family:<br>
 </select><br>
 Font color:<br>
 <select id ='fontColor' onchange='globalFontColor(); hashFunction(); updateGraphics();'>
-    <option value='' selected>Choose text color</option>
+    <option value='' selected> - Choose text color - </option>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -21,7 +21,7 @@ Font color:<br>
 </select><br>
 Text size:<br>
 <select id='TextSize' onchange='globalTextSize(); hashFunction(); updateGraphics();'>
-    <option value='' selected>Choose text size</option>
+    <option value='' selected> - Choose text size - </option>
     <option value='Tiny' selected>Tiny</option>
     <option value='Small'>Small</option>
     <option value='Medium'>Medium</option>
@@ -29,7 +29,7 @@ Text size:<br>
 </select><br>
 Fill color:<br>
 <select onchange="globalFillColor(); hashFunction(); updateGraphics();" id='FillColor'>
-    <option value='' selected>Choose symbol color</option>
+    <option value='' selected> - Choose symbol color - </option>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -42,7 +42,7 @@ Fill color:<br>
 </select><br>
 Stroke color:<br>
 <select onchange="globalStrokeColor(); hashFunction(); updateGraphics();" id='StrokeColor'>
-    <option value='' selected>Choose line color</option>
+    <option value='' selected> - Choose line color - </option>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
