@@ -50,7 +50,6 @@ function returnedFile(data) {
 
     var tabledata = {
     	tblhead:{
-    		//counter:"",
     		filename:"File name",
     		extension:"Extension",
     		kind:"Kind",
