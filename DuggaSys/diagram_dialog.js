@@ -22,10 +22,9 @@ function closeAppearanceDialogMenu() {
     /*
      * Closes the dialog menu for appearance.
      */
-     //if the X is pressed on the global appearance menu rollback the changes
+     //if the X
      if(globalAppearanceValue == 1){
-       var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
-       if (tmpDiagram != null) LoadImport(tmpDiagram);
+
      }
     appearanceMenuOpen = false;
     classAppearanceOpen = false;
@@ -34,7 +33,6 @@ function closeAppearanceDialogMenu() {
     $("#appearance").hide();
     dimDialogMenu(false);
     document.removeEventListener("click", clickOutsideDialogMenu);
-    SaveState();
 }
 
 function clickOutsideDialogMenu(ev) {
@@ -169,7 +167,6 @@ function setSelectedOption(type, value){
 
 function globalAppearanceMenu(){
     globalAppearanceValue = 1;
-
     //open a menu to change appearance on all entities.
     var form = showMenu();
     //AJAX
