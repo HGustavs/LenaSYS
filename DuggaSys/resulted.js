@@ -820,12 +820,27 @@ function rowFilter(row) {
   
 	for (colname in row) {
   	if(colname == "FnameLnameSSN") {
-  		let name = row[colname]["firstname"] + " " + row[colname]["lastname"];
+  		let name = "";
+  		if (row[colname]["firstname"] != null) {
+  			name += row[colname]["firstname"] + " ";
+  		}
+  		if (row[colname]["lastname"] != null) {	
+  		 row[colname]["lastname"];
+  		}
   		if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+  		
+  		if (row[colname]["ssn"] != null) {
+  			if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;	
+  		}
+  		if (row[colname]["username"] != null) {
+  			if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+  		}
+  		if (row[colname]["class"] != null) {
+  			if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+  		}
+  		if (row[colname]["setTeacher"] != null) {
+  			if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+  		}
   	}
   }
   return false;
