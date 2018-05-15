@@ -50,7 +50,9 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php",
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
+$writeaccess = false;
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
+	$writeaccess = true;
 	if(strcmp($opt,"ADDUGGA")===0){
 		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart) VALUES (:cid,:autograde,:gradesystem,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart)";
 		$stmt = $pdo->prepare($querystring);
@@ -69,10 +71,10 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		$stmt->bindParam(':release', $release);
 		$stmt->bindParam(':deadline', $deadline);
 		$stmt->bindParam(':qstart', $qstart);
-	
+
 		if (!$stmt->execute()) {
 			$debug=$stmt->errorInfo()[2];
-		} 
+		}
 	}else if(strcmp($opt,"ADDVARI")===0){
 		$querystring="INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (:qid,:uid,:disabled,:param,:variantanswer)";
 		$stmt = $pdo->prepare($querystring);
@@ -289,11 +291,12 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 $array = array(
 	'entries' => $entries,
 	'debug' => $debug,
+	'writeaccess' => $writeaccess,
 	'files' => $files,
 	'duggaPages' => $duggaPages,
 	'coursecode' => $coursecode,
 	'coursename' => $coursename
-	
+
 
 );
 
