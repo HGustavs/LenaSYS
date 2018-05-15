@@ -3702,7 +3702,7 @@ li:nth-last-child(10) a:hover {
 }
 
  .previewWindow {
-    height: 85%;
+    height: 90%;
     width: 95%;
     margin: 0px auto;
     border: solid rgb(200,200,200);
@@ -3712,7 +3712,7 @@ li:nth-last-child(10) a:hover {
     display: none;
     left: 0;
     right: 0;
-    top: 50px;
+    top: 5%;
     position: fixed;
 }
 
@@ -3982,7 +3982,7 @@ textarea#mrkdwntxt {
 
 @media only screen and (max-height: 1440px) and (max-width: 1350px) {
   .previewWindow {
-    height: 80%;
+    height: 90%;
   }
   .markdown {
     height: 35%;
