@@ -167,7 +167,8 @@ pdoConnect();
                 <fieldset style="width:90%">
                   <legend>Search in the Table</legend>
                   <div>
-                    <input id='variantSearch' type='search' placeholder="Parameter searchterm.." style='width:90%;' onkeyup="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantsTable.renderTable();"/>
+                    <input id="variantSearch" type="search" placeholder="Parameter searchterm.." style="width:90%;" 
+                    onkeyup="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantsTable.renderTable();"onsearch="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantsTable.renderTable();"/>
                   </div>
                 </fieldset>
                 <fieldset style="width:90%">
