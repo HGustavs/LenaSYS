@@ -133,11 +133,12 @@ function keyDownHandler(e){
         //Ctrl + v
         for(var i = 0; i < cloneTempArray.length; i++){
             //Display cloned objects except lines
+            var temp = [];
             if(cloneTempArray[i].symbolkind != 4){
-                copySymbol(cloneTempArray[i]);
+                temp.push(diagram[copySymbol(cloneTempArray[i]) - 1]);
             }
+            cloneTempArray = temp;
         }
-        fillCloneArray();
         updateGraphics();
         SaveState();
     }
