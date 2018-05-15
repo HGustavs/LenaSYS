@@ -250,16 +250,17 @@ function createCardinality(){
 }
 function changeCardinality(){
     var val = document.getElementById('cardinality').value;
-    var valUML = document.getElementId('cardinalityUml').value;
+    var valUML = document.getElementById('cardinalityUml').value;
 
     //Setting existing cardinality value on line
     if(val == "None") val = "";
+    if(valUML == "None") valUML = "";
     if(diagram[lastSelectedObject].cardinality[0].value != null){
         if(diagram[lastSelectedObject].cardinality[0].symbolKind != 1){
             diagram[lastSelectedObject].cardinality[0].value = val;
         } else{
             diagram[lastSelectedObject].cardinality[0].valueUML = valUML;
-            diagram[lastSelectedObject].cardinality[0].val = val;
+            diagram[lastSelectedObject].cardinality[0].value = val;
         }
     }
 }

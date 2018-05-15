@@ -898,8 +898,8 @@ function Symbol(kind) {
             //Updates x and y position
             ctx.fillStyle = '#000';
             if(this.cardinality[0].symbolKind == 1){
-                ctx.fillText(this.cardinality[0].value, x1, y1);
-                ctx.fillText(this.cardinality[0].valueUML, x2, y2);
+                ctx.fillText(this.cardinality[0].value, x1+10, y1+10);
+                ctx.fillText(this.cardinality[0].valueUML, x2-10, y2-10);
             }
             else if(this.cardinality[0].isCorrectSide){
                 this.cardinality[0].x = x1 > x2 ? x1-10 : x1+10;
