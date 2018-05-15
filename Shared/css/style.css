@@ -2787,6 +2787,12 @@ table {
   border-top-right-radius: 5px;
   box-shadow: none;
 }
+.searchField{
+  height: 25px;
+  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
+  border-right: 0px;
+}
 
 #lookingGlassSVG {
   position: absolute;
