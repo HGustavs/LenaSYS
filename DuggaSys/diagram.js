@@ -128,10 +128,7 @@ function keyDownHandler(e){
         ctrlIsClicked = true;
     } else if(ctrlIsClicked && key == 67){
         //Ctrl + c
-        cloneTempArray = [];
-        for(var i = 0; i < selected_objects.length; i++){
-            cloneTempArray.push(selected_objects[i]);
-        }
+        fillCloneArray();
     } else if(ctrlIsClicked && key == 86 ){
         //Ctrl + v
         for(var i = 0; i < cloneTempArray.length; i++){
@@ -140,6 +137,7 @@ function keyDownHandler(e){
                 copySymbol(cloneTempArray[i]);
             }
         }
+        fillCloneArray();
         updateGraphics();
         SaveState();
     }
@@ -151,6 +149,13 @@ function keyDownHandler(e){
       ctrlIsClicked = true;
     }
 
+}
+
+function fillCloneArray(){
+    cloneTempArray = [];
+    for(var i = 0; i < selected_objects.length; i++){
+        cloneTempArray.push(selected_objects[i]);
+    }
 }
 
 //--------------------------------------------------------------------
