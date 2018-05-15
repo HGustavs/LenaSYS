@@ -157,8 +157,8 @@ pdoConnect();
 
                 <button id="button-cancel" onclick="">Cancel</button>-->
             </div>
-            <button type="submit" onclick="saveMarkdown()">Save</button>
-            <button onclick="cancelPreview()">Close</button>
+            <button class="save-close-button" type="submit" onclick="saveMarkdown()">Save</button>
+            <button class="save-close-button" onclick="cancelPreview()">Close</button>
         </div>
         <div class="editFilePart">
             <div class="editFileWindow">
