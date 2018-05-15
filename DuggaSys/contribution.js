@@ -180,7 +180,7 @@ function renderLineDiagram(data){
 
     //Selectbox to choose week
     str='<select id="weekoption" value="0" style="margin-top:25px;" onchange="document.getElementById(\'lineDiagramDiv\').innerHTML=weekchoice(this.value);">';
-    str+='<option value="">All weeks</option>'; 
+    str+='<option value="'+firstweek+'">All weeks</option>'; 
 	for(i=0;i<weeks.length;i++){
             var week=weeks[i];
             str+='<option value="'+week.weekstart+'">'+ "Week " + week.weekno +"   ("+week.weekstart+" - "+week.weekend+")"+'</option>';
@@ -289,16 +289,17 @@ function lineDiagram(){
 }
 
 function weekchoice(dateString){
-    let date;
-    let events=0;
-    let commits=0;
-    let loc=0;
-    let comments=0;
+    
+    var date;
+    var events=0;
+    var commits=0;
+    var loc=0;
+    var comments=0;
 
-    if(($("#weekoption option:selected").text())==""){
-        let weekcounter=0;
-        let daycounter=0;
-        let weekarray=[];
+    if(($("#weekoption option:selected").text())=="" || ($("#weekoption option:selected").text())=="All weeks"){
+        var weekcounter=0;
+        var daycounter=0;
+        var weekarray=[];
         for(i=0;i<70;i++){
             
             events = parseInt(daycounts[dateString].events[0][0]);
@@ -308,14 +309,14 @@ function weekchoice(dateString){
 
             weekarray[i] = [dateString, commits, events, loc, comments];
 
-            let total = commits + events + comments + loc;
+            var total = commits + events + comments + loc;
             if(total > maxDayCount){
                 maxDayCount = total;
             }
 
             date = new Date(dateString);
             date.setDate(date.getDate() + 1);
-            dateString = date.toLocaleDateString();
+            dateString = date.toISOString().slice(0,10);
         }
         dailyCount=[[0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0], [0,0,0,0,0]];
         for(var i=0;i<weekarray.length;i++){
@@ -329,16 +330,16 @@ function weekchoice(dateString){
     for(var key in daycounts){
         if (key == dateString){
             for(i=0;i<7;i++){
-                let events = parseInt(daycounts[dateString].events[0][0]);
-                let commits = parseInt(daycounts[dateString].commits[0][0]);
-                let loc = parseInt(daycounts[dateString].loc[0][0] == null ? 0 :daycounts[dateString].loc[0][0]);
-                let comments = parseInt(daycounts[dateString].comments[0][0]);
+                var events = parseInt(daycounts[dateString].events[0][0]);
+                var commits = parseInt(daycounts[dateString].commits[0][0]);
+                var loc = parseInt(daycounts[dateString].loc[0][0] == null ? 0 :daycounts[dateString].loc[0][0]);
+                var comments = parseInt(daycounts[dateString].comments[0][0]);
 
                 dailyCount[i] = [dateString, commits, events, loc, comments];
 
                 date = new Date(dateString);
                 date.setDate(date.getDate() + 1);
-                dateString = date.toLocaleDateString();
+                dateString = date.toISOString().slice(0,10);
 
             }
             dateString = "";
