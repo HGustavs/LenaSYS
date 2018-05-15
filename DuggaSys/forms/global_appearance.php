@@ -1,5 +1,5 @@
 Font family:<br>
-<select id='font' onchange='globalFont(); hashfunction(); updategfx();'>
+<select id='font' onchange='globalFont(); hashFunction(); updateGraphics();'>
     <option value='Arial' selected>Arial</option>
     <option value='Courier New'>Courier New</option>
     <option value='Impact'>Impact</option>
@@ -52,4 +52,4 @@ Stroke color:<br>
 Line thickness:<br>
 <input id="line-thickness" onclick='globalLineThickness(); hashFunction(); updateGraphics();' style="width:100%; margin: -2px; padding: 0px;" type="range" min="1" max="5" value="2">
 
-<button type='submit' class='submit-button' onclick="closeAppearanceDialogMenu(); changeObjectAppearance(); setType(form);" style='float: none; display: block; margin: 0px auto;'>OK</button>
+<button type='submit' class='submit-button' onclick="SaveState(); closeAppearanceDialogMenu(); setType(form);" style='float: none; display: block; margin: 0px auto;'>OK</button>

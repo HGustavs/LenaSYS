@@ -1,5 +1,3 @@
-var tempDiagram;
-
 //--------------------------------------------------------------------
 // Basic functionality
 // The building blocks for creating the menu
@@ -26,7 +24,8 @@ function closeAppearanceDialogMenu() {
      */
      //if the X is pressed on the global appearance menu rollback the changes
      if(globalAppearanceValue == 1){
-       diagram = tempDiagram;
+       var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+       if (tmpDiagram != null) LoadImport(tmpDiagram);
      }
     appearanceMenuOpen = false;
     classAppearanceOpen = false;
@@ -35,6 +34,7 @@ function closeAppearanceDialogMenu() {
     $("#appearance").hide();
     dimDialogMenu(false);
     document.removeEventListener("click", clickOutsideDialogMenu);
+    SaveState();
 }
 
 function clickOutsideDialogMenu(ev) {
@@ -169,7 +169,6 @@ function setSelectedOption(type, value){
 
 function globalAppearanceMenu(){
     globalAppearanceValue = 1;
-    tempDiagram = diagram;
 
     //open a menu to change appearance on all entities.
     var form = showMenu();
