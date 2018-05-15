@@ -37,9 +37,11 @@ pdoConnect();
 	<!-- Content START -->
 	
 	<div id="content">
-	<div class="titles">
-	<h1 style= "width:100%;margin-top:10px;text-align:center;">Tests</h1>
-	
+    <div class='titles' style='padding-top:10px;'>
+      <h1 style='flex:1;text-align:center;'>Tests</h1>
+    </div>
+       <input id="duggaSearch" type="search" placeholder="Searchtem.." style="float:right; margin-bottom: 5px;" 
+                    onkeyup="searchterm=document.getElementById('duggaSearch').value; searchKeyUp(event); duggaTable.renderTable();"onsearch="searchterm=document.getElementById('duggaSearch').value; searchKeyUp(event); duggaTable.renderTable();"/> 
   	<!-- Content END -->
 
   	<!-- Login Dialog START -->
@@ -172,8 +174,8 @@ pdoConnect();
                 <fieldset style="width:90%">
                   <legend>Search in the Table</legend>
                   <div>
-                    <input id='variantSearch' type='search' style='width:70%;' onkeyup="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantsTable.renderTable();"/>
-                    <input id='searchVariant' class='submit-button' style='display:inline-block; float:right;' type='button' value='Search' onclick=''>
+                    <input id="variantSearch" type="search" placeholder="Searchterm.."" style="width:90%;" 
+                    onkeyup="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"onsearch="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"/>
                   </div>
                 </fieldset>
                 <fieldset style="width:90%">
