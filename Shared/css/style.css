@@ -3720,7 +3720,7 @@ li:nth-last-child(10) a:hover {
   height: 100%;
 }
 
-.markdown { /* Rutan som håller textfältet*/
+.markdown {
   border: solid rgb(200, 200, 200);
   border-color: #614875;
   background-color: rgb(200, 200, 200);
@@ -3731,7 +3731,7 @@ li:nth-last-child(10) a:hover {
   float: left;
 }
 
-.markdownPrev { /* Rutan som visar den översatta koden */
+.markdownPrev {
   border: solid rgb(200, 200, 200);
   border-color: #614875;
   width: 56%;
@@ -3817,17 +3817,19 @@ li:nth-last-child(10) a:hover {
   line-height: 25px;
 }
 .markText {
-    height:91%;
-    width:91%;
+  height:91%;
+  width:92%;
 }
 .markTextPrev {
-    height: 100%;
+  height: 100%;
 }
-#mrkdwntxt { /* Textrutan som användaren redigerar i */
+#mrkdwntxt {
   resize: none;
   width:100%;
   height:100%;
-  margin:10px;
+  margin: 2%;
+  word-wrap: break-word;
+  overflow-y: scroll;
 }
 textarea#mrkdwntxt {
   width: 100%;
@@ -4000,13 +4002,7 @@ textarea#mrkdwntxt {
     margin: auto auto auto 8px;
   }
   .markText {
-    height:70%;
-    width:90%;
-  }
-  #mrkdwntxt {
-    width:100%;
-    height:100%;
-    margin:5px;
+    height:72%;
   }
   .optionButtons {
     top: 686px;

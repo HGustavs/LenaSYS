@@ -6,13 +6,16 @@
 	font-style: normal;
 	font-size: 16px;
 	line-height: 1.5;
-	height:80%;
+	height:100%;
 	word-wrap: break-word;
 	overflow-y: scroll;
 	background-color: #fff;
 	padding:10px;
-
-
+}
+@media only screen and (max-height: 1440px) and (max-width: 1350px) {
+	.descbox{
+		height: 80%;
+	}
 }
 
 /*
