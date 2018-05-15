@@ -1,16 +1,49 @@
-Line type: </br>
-<select onchange="changeObjectAppearance('lineType');" id='object_type'>
-    <option value='normal'>Normal</option>
-    <option value='Forced'>Forced</option>
-    <option value='Derived'>Derived</option>
-</select></br>
-Cardinality: <br/>
-<select onchange="changeCardinality()" id="cardinality">
-  <option value="None">None</option>
-  <option value="1">1</option>
-  <option value="N">N</option>
-  <option value="M">M</option>
-</select><br/>
+<?php
+$cardinality = $_GET['cardinality'];
+
+if($cardinality != 1){
+  echo"
+  Line type: </br>
+  <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
+      <option value='normal'>Normal</option>
+      <option value='Forced'>Forced</option>
+      <option value='Derived'>Derived</option>
+  </select></br>
+  Cardinality: <br/>
+  <select onchange=\"changeCardinality()\" id='cardinality'>
+    <option value='None'>None</option>
+    <option value='1'>1</option>
+    <option value='N'>N</option>
+    <option value='M'>M</option>
+  </select><br/>
+  ";
+}else{
+  echo"
+  Line type: </br>
+  <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
+      <option value='normal'>Normal</option>
+      <option value='Forced'>Forced</option>
+      <option value='Derived'>Derived</option>
+  </select></br>
+  Cardinality: <br/>
+  <select onchange=\"changeCardinality()\" id='cardinality'>
+    <option value='None'>None</option>
+    <option value='0..1'>0..1</option>
+    <option value='1..1'>1..1</option>
+    <option value='0..*'>0..*</option>
+    <option value='1..*'>1..*</option>
+  </select><br/>
+  <select onchange=\"changeCardinality()\" id='cardinalityUml'>
+    <option value='None'>None</option>
+    <option value='0..1'>0..1</option>
+    <option value='1..1'>1..1</option>
+    <option value='0..*'>0..*</option>
+    <option value='1..*'>1..*</option>
+  </select><br/>
+  ";
+}
+?>
+
 <!--Line colors:<br>
 <select onchange="changeObjectAppearance('attributeType');" id='AttributeLineColor'>
     <option value='#ccefff'>Blue</option>
