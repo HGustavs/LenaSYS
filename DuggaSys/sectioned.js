@@ -877,7 +877,21 @@ function returnedSection(data) {
 
 		str += "</div>";
 
-		str += "<div id='Sectionlistc' >";
+		str += "<div id='courseList'>";
+		str += "<!-- Statistics List -->"
+		+ "<div id='statisticsList'>"
+		+ "<div id='statistics' class='statistics' style='display: inline-block; cursor: pointer;'>"
+		+ "<div style='margin: 10px;'>"
+		+ "<img src='../Shared/icons/right_complement.svg' id='arrowRightStatistics' style='display: inline-block;'>"
+		+ "<img src='../Shared/icons/desc_complement.svg' id='arrowCompStatistics' style='display: none;'>"
+		+ "</div>"
+		+ "<div class='nowrap' style='padding-left:5px' title='statistics'>"
+		+ "<span class='listentries-span' style='writing-mode: vertical-rl; text-orientation: upright;'>Statistics</span>"
+		+ "</div></div>"
+		+ "<div class='statisticsContent' style='display: inline-block;'>"
+		+ "</div></div>";
+
+		str += "<div id='Sectionlistc'>";
 
 		// For now we only have two kinds of sections
 		if (data['entries'].length > 0) {
@@ -1441,7 +1455,7 @@ function returnedSection(data) {
 			str += "</div>";
 		}
 
-		str += "</div>";
+		str += "</div></div>";
 		var slist = document.getElementById('Sectionlist');
 		slist.innerHTML = str;
 		if (resave == true) {
@@ -1556,7 +1570,7 @@ function returnedHighscore(data) {
 }
 
 // Toggle content for each moment
-$(document).on('click', '.moment, .section', function () {
+$(document).on('click', '.moment, .section, .statistics', function () {
 	/* The event handler returns two elements. The following two if statements
 	   gets the element of interest. */
 	if (this.id.length > 0) {
@@ -1565,9 +1579,11 @@ $(document).on('click', '.moment, .section', function () {
 	if (this.id.length > 0) {
 		saveArrowIds(this.id);
 	}
+
 	hideCollapsedMenus();
 	toggleArrows();
 });
+
 
 // Save ids of all elements, whose state needs to be remembered, in local storage.
 function saveHiddenElementIDs(clickedElement) {
@@ -1589,7 +1605,7 @@ function saveArrowIds(clickedElement) {
 /* Hide all child elements to the moment and section elements in the
    hiddenElements array. */
 function hideCollapsedMenus() {
-	$('.header, .section, .code, .test, .link, .group').show();
+	$('.header, .section, .code, .test, .link, .group, .statisticsContent').show();
 	for (var i = 0; i < menuState.hiddenElements.length; i++) {
 		var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
 		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
@@ -1599,15 +1615,28 @@ function hideCollapsedMenus() {
 		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
 			jQuery(ancestor).nextUntil('.section').hide();
 		}
+
+		if(menuState.hiddenElements[i] == "statistics"){
+			$(".statistics").nextAll().hide();
+		}
 	}
 }
 
 /* Show down arrow by default and then hide this arrow and show the right
-   arrow if it is in the arrowIcons array. */
+   arrow if it is in the arrowIcons array.
+	 The other way around for the statistics section. */
 function toggleArrows() {
+	$('#arrowRightStatistics').hide();
+	$('#arrowCompStatistics').show();
+	for (var i = 0; i < menuState.hiddenElements.length; i++){
+		if (menuState.hiddenElements[i] == "statistics"){
+			$('#arrowRightStatistics').hide();
+			$('#arrowCompStatistics').show();
+		}
+	}
+
 	$('.arrowComp').show();
 	$('.arrowRight').hide();
-
 	for (var i = 0; i < menuState.arrowIcons.length; i++) {
 		/* If the string 'arrowComp' is a part of the string on the current
 		   index of the arrowIcons array, hide down arrow and show right arrow. */

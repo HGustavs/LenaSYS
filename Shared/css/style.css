@@ -497,6 +497,36 @@ p {
   display: inline-block;
 }
 
+/*  Statistics List */
+
+#courseList { /* Move up later*/
+    display: flex;
+}
+
+#Sectionlistc { /* Move up later*/
+  display: inline-block;
+}
+
+ #statisticsList {
+  display: flex;
+ }
+
+ .statistics {
+   background-color: #927b9e;
+   color: white;
+   width: 36px;
+   height: 100%;
+   box-shadow: 3px 0px 0px #aaa;
+   margin-right: 3px;
+   font-size: 14pt;
+ }
+
+ .statisticsContent {
+   width: 100px;
+   height: 100%;
+   background-color: #d8d7da;
+ }
+
 /* --------------================################================-------------- *
  *                                    Header                                    *
  * --------------================################================-------------- */
@@ -1942,13 +1972,13 @@ span.arrow {
   /* ie 6/7 */
 }
 
-.arrowComp {
+.arrowComp, #arrowCompStatistics{
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
 }
 
-.arrowRight {
+.arrowRight, #arrowRightStatistics{
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
