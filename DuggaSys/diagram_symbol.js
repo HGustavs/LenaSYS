@@ -30,7 +30,7 @@ function Symbol(kind) {
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
     this.cardinality = [
-      {"value": null, "isCorrectSide": null}
+      {"value": null, "isCorrectSide": null, "symbolKind":null}
     ];
     this.minWidth;
     this.minHeight;
@@ -897,17 +897,20 @@ function Symbol(kind) {
         if(this.cardinality[0].value != "" && this.cardinality[0].value != null){
             //Updates x and y position
             ctx.fillStyle = '#000';
-            if(this.cardinality[0].isCorrectSide)
-            {
+            if(this.cardinality[0].symbolKind == 1){
+                ctx.fillText(this.cardinality[0].value, x1, y1);
+                ctx.fillText(this.cardinality[0].valueUML, x2, y2);
+            }
+            else if(this.cardinality[0].isCorrectSide){
                 this.cardinality[0].x = x1 > x2 ? x1-10 : x1+10;
                 this.cardinality[0].y = y1 > y2 ? y1-10 : y1+10;
+                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
-            else
-            {
+            else {
                 this.cardinality[0].x = x2 > x1 ? x2-10 : x2+10;
                 this.cardinality[0].y = y2 > y1 ? y2-10 : y2+10;
+                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
-            ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
         }
 
 
