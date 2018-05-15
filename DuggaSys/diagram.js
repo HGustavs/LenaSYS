@@ -252,7 +252,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 
 //Clone an object
 function copySymbol(symbol){
-    var clone = Object.assign({}, symbol);
+    var clone = Object.assign(new Symbol(), symbol);
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
     topLeftClone.x += 10;
     topLeftClone.y += 10;
@@ -263,7 +263,6 @@ function copySymbol(symbol){
     centerPointClone.x += 10;
     centerPointClone.y += 10;
 
-    clone = new Symbol(symbol.symbolkind);
     if(symbol.symbolkind == 1){
         clone.name = "New" + diagram.length;
     }else if(symbol.symbolkind == 2){
@@ -278,9 +277,6 @@ function copySymbol(symbol){
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
     clone.centerPoint = points.push(centerPointClone) - 1;
-    clone.object_type = "";
-    clone.fontColor = "#000";
-    clone.font = "Arial";
 
     clone.targeted = true;
     symbol.targeted = false;
