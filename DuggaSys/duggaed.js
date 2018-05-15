@@ -776,7 +776,7 @@ function compare(a,b) {
 
 //Filtering from the searchfield.
 function rowFilter(row) {
-	if (row.param.indexOf(searchterm) != -1){
+	if (row.param.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
 		return true;
 	}
 	else{
