@@ -50,7 +50,7 @@ pdoConnect();
   	?>
   	<!-- Login Dialog END -->
       <div id="quiz" style='width:100%;'></div> <!-- A div to place the quiz-table within. -->
-  </div></div>
+  </div>
 
   <!-- START OF FAB-button  -->
   <div class='fixed-action-button'>
