@@ -522,10 +522,16 @@ p {
  }
 
  .statisticsContent {
-   width: 100px;
+   width: 100%;
    height: 100%;
    background-color: #d8d7da;
- }
+}
+
+#stastisticPie{
+    border: 2px solid darkgray;
+    background-color: #eae8eb; 
+    margin: 10px 10px 10px 10px;
+}
 
 /* --------------================################================-------------- *
  *                                    Header                                    *
