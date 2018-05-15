@@ -137,9 +137,9 @@ pdoConnect();
 
                     </div>
                 </div>
-                <div class="markText">
-                <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
-                </div>
+                        <div class="markText">
+                        <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
+                        </div>
             </div>
             <div class="markdownPrev">
                 <div class="prevNav">Markdown Preview</div>

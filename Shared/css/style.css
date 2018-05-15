@@ -3722,9 +3722,10 @@ li:nth-last-child(10) a:hover {
 
 .markdown { /* Rutan som håller textfältet*/
   border: solid rgb(200, 200, 200);
+  border-color: #614875;
   background-color: rgb(200, 200, 200);
   width: 38%;
-  height: 90%;
+  height: 80%;
   position: relative;
   margin: 20px 10px 10px 1%;
   float: left;
@@ -3732,11 +3733,11 @@ li:nth-last-child(10) a:hover {
 
 .markdownPrev {
   border: solid rgb(200, 200, 200);
-  background-color: #FFFFFF;
+  border-color: #614875;
   word-wrap: break-word;
   overflow-y: scroll;
   width: 56%;
-  height: 90%;
+  height: 80%;
   position: relative;
   margin: 20px 1% 10px 8px;
   float: right;
@@ -3756,7 +3757,8 @@ li:nth-last-child(10) a:hover {
 
 .prevSpan {
   max-width: 100%;
-  padding: 10px
+  padding: 10px;
+  height: 85%;
 }
 
 #button-cancel {
@@ -3799,8 +3801,11 @@ li:nth-last-child(10) a:hover {
   line-height: 25px;
 }
 .markText {
-    height:87%;
-    width:84%;
+    height:91%;
+    width:91%;
+}
+.markTextPrev {
+    height: 100%;
 }
 #mrkdwntxt { /* Textrutan som användaren redigerar i */
   resize: none;
