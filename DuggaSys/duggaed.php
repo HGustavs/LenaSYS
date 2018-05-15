@@ -23,6 +23,7 @@ pdoConnect();
   <script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
   <script src="timer.js"></script>
   <script src="clickcounter.js"></script>
+  
 </head>
 <body onkeypress='keypressHandler(event)'>
 
@@ -34,6 +35,7 @@ pdoConnect();
 	<!-- Navigation Header END -->
 
 	<!-- Content START -->
+	
 	<div id="content">
     <div class='titles' style='padding-top:10px;'>
       <h1 style='flex:1;text-align:center;'>Tests</h1>
