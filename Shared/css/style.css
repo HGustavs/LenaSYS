@@ -941,6 +941,31 @@ input {
   float: left;
 }
 
+
+.loginBox .inputwrapperSmall {
+  clear: both;
+  width: 100%;
+  padding: 3px 0 3px 0;
+  height: 30px;
+  line-height: 30px;
+}
+
+.loginBox .inputwrapperSmall span {
+  float: right;
+}
+
+.loginBox .inputwrapperSmall input,
+.loginBox .inputwrapperSmall select {
+  float: right;
+  width: 50px;
+}
+
+.loginBox .inputwrapperSmall input[type="checkbox"] {
+  /* margin-right: 200px; */
+  height: 24px;
+}
+
+
 .loginBox .inputwrapper input,
 .loginBox .inputwrapper select {
   float: right;
