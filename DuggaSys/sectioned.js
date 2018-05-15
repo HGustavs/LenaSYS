@@ -59,7 +59,7 @@ $(document).ready(function () {
 
 
 function addMinuteOptions(){
-	let str = "";
+	var str = "";
 	for(var i = 0; i < 60; i+=5){
 		if(i < 10){
 			str+= "<option value=" + i + ">0" + i + "</option>";
@@ -74,7 +74,7 @@ function addMinuteOptions(){
 }
 
 function addHourOptions(){
-	let str = "";
+	var str = "";
 	for(var i = 0; i < 24; i++){
 		if(i < 10){
 			str+= "<option value=" + i + ">0" + i + "</option>";
