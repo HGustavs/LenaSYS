@@ -131,14 +131,14 @@ function keyDownHandler(e){
         fillCloneArray();
     } else if(ctrlIsClicked && key == 86 ){
         //Ctrl + v
+        var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++){
             //Display cloned objects except lines
-            var temp = [];
             if(cloneTempArray[i].symbolkind != 4){
                 temp.push(diagram[copySymbol(cloneTempArray[i]) - 1]);
             }
-            cloneTempArray = temp;
         }
+        cloneTempArray = temp;
         updateGraphics();
         SaveState();
     }
