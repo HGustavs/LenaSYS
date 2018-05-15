@@ -140,6 +140,7 @@ function keyDownHandler(e){
             }
         }
         cloneTempArray = temp;
+        selected_objects = temp;
         updateGraphics();
         SaveState();
     }
