@@ -50,7 +50,6 @@ function returnedFile(data) {
 
     var tabledata = {
     	tblhead:{
-    		counter:"",
     		filename:"File name",
     		extension:"Extension",
     		kind:"Kind",
@@ -81,6 +80,7 @@ function returnedFile(data) {
 		null,
 		null,
         null,
+		true,
 		true
 	);
 
@@ -201,9 +201,8 @@ function validateForm() {
 //----------------------------------------------------------------------------
 function renderCell(col,celldata,cellid) {
 	var str="";
-	if (col == "counter") {
-		return "<span class='counterBox'>" + ++fileLink.rowIndex + "</span>";
-	} if (col == "trashcan") {
+
+	if (col == "trashcan") {
 		obj = JSON.parse(celldata);
 	    str = "<span class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
 		str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></span>";

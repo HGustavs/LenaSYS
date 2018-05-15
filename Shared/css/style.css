@@ -328,13 +328,13 @@ p {
   height: 16px;
 }
 
-.iconBox, .counterBox {
+.iconBox, .fileLink_counter {
   text-align: center;
   margin: 0;
   padding: 0;
 }
 
-.counterBox {
+.fileLink_counter {
   font-size: 20px;
   color: #614875;
 }
