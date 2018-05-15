@@ -3502,6 +3502,7 @@ only screen and (max-device-width: 320px) {
   bottom: 24px;
   right: 24px;
   z-index: 500;
+  display: none;
 }
 
 /* FAB base */
@@ -4276,3 +4277,8 @@ textarea#filecont{
     top: 436px;
   }
 }
+
+#quiz{
+    display: none;
+}
+
