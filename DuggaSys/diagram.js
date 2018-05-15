@@ -135,7 +135,7 @@ function keyDownHandler(e){
         for(var i = 0; i < cloneTempArray.length; i++){
             //Display cloned objects except lines
             if(cloneTempArray[i].symbolkind != 4){
-                const cloneIndex = copySymbol(cloneTempArray[i]) - 1; 
+                const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
             }
         }
@@ -262,6 +262,9 @@ function copySymbol(symbol){
     var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
     centerPointClone.x += 10;
     centerPointClone.y += 10;
+    var middleDividerClone = Object.assign({}, points[symbol.middleDivider]);
+    middleDivider.x += 10;
+    middleDivider.y += 10;
 
     if(symbol.symbolkind == 1){
         clone.name = "New" + diagram.length;
@@ -276,8 +279,12 @@ function copySymbol(symbol){
     }
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
-    clone.centerPoint = points.push(centerPointClone) - 1;
-
+    if(clone.symbolkind != 1){
+        clone.centerPoint = points.push(centerPointClone) - 1;
+    }
+    else{
+        clone.middleDivider = points.push(middleDividerClone) - 1;
+    }
     clone.targeted = true;
     symbol.targeted = false;
 
