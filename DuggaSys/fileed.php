@@ -137,9 +137,12 @@ pdoConnect();
 
                     </div>
                 </div>
-                <div class="markText">
-                <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
-                </div>
+                <fieldset>
+                    <div class="markText">
+                        <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext">
+                        </textarea>
+                    </div>
+                </fieldset>
             </div>
             <div class="markdownPrev">
                 <div class="prevNav">Markdown Preview</div>
@@ -157,8 +160,8 @@ pdoConnect();
 
                 <button id="button-cancel" onclick="">Cancel</button>-->
             </div>
-            <button type="submit" onclick="saveMarkdown()">Save</button>
-            <button onclick="cancelPreview()">Close</button>
+            <button class="save-close-button" type="submit" onclick="saveMarkdown()">Save</button>
+            <button class="save-close-button" onclick="cancelPreview()">Close</button>
         </div>
         <div class="editFilePart">
             <div class="editFileWindow">
