@@ -3118,48 +3118,55 @@ only screen and (max-device-width: 768px) {
   #Sectionlist .course {
     font-size: 20px;
   }
+    
     /* Force table to not be like tables anymore */
-    #fileLink_tbl tbody[style]{ 
-		display: block !important;
+    #fileLink_body{ 
+		display: block;
 	}
     #fileLink_tblhead{
         display: none;
     }
-    #fileLink_tbl tr[style]{ 
+    #fileLink_tbl_mh[style]{
+        display: none !important;
+    }
+    #fileLink_body tr[style]{ 
         border: 1px solid #ccc !important; 
         display: block !important;
     }
 	
-    #fileLink_tbl td[style]{ 
+    #fileLink_body>tr>td{ 
 		/* Behave  like a "row" */
-        display: block !important;
-		border: none !important;
-		border-bottom: 1px solid #eee !important; 
-		position: relative !important;
-		padding-left: 50% !important; 
+        display: block;
+		border: none;
+		border-bottom: 1px solid #eee; 
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        
 	}
-	
-	#fileLink_tbl td:before { 
-		/* Now like a table header */
-		position: absolute;
+	#fileLink_body>tr>td:before { 
 		/* Top/left values mimic padding */
+        display: inline-block;
 		top: 6px;
 		left: 6px;
-		width: 45%; 
-		padding-right: 10px; 
+		width: 20%;
+		padding-right: 28%; 
 		white-space: nowrap;
+        font-weight: bold;
 	}
+    
     /*
 	Label the data
 	*/
-	#fileLink_tbl td:nth-of-type(1):before { content: "Number"; }
-    #fileLink_tbl td:nth-of-type(2):before { content: "Exstension"; }
-	#fileLink_tbl td:nth-of-type(3):before { content: "Exstension"; }
-	#fileLink_tbl td:nth-of-type(4):before { content: "Kind"; }
-	#fileLink_tbl td:nth-of-type(5):before { content: "Size"; }
-	#fileLink_tbl td:nth-of-type(6):before { content: "Upload date"; }
-	#fileLink_tbl td:nth-of-type(7):before { content: "Edit"; }
-	#fileLink_tbl td:nth-of-type(8):before { content: "Trash"; }
+	#fileLink_body>tr>td:nth-of-type(1):before { content: "Number: "; }
+    #fileLink_body>tr>td:nth-of-type(2):before { content: "File name: "; }
+	#fileLink_body>tr>td:nth-of-type(3):before { content: "Exstension: "; }
+    #fileLink_body>tr>td:nth-of-type(4):before { content: "Kind: "; }
+	#fileLink_body>tr>td:nth-of-type(5):before { content: "Size: "; }
+	#fileLink_body>tr>td:nth-of-type(6):before { content: "Upload date: "; }
+	#fileLink_body>tr>td:nth-of-type(7):before { content: "Edit: "; }
+	#fileLink_body>tr>td:nth-of-type(8):before { content: "Trash: "; }
 }
 
 @media only screen and (max-width: 650px),

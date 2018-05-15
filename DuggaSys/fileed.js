@@ -205,11 +205,11 @@ function renderCell(col,celldata,cellid) {
 	var str="";
 
 	if (col == "counter") {
-		return "<div class='counterBox'>" + ++fileLink.rowIndex + "</div>";
+		return "<span class='counterBox'>" + ++fileLink.rowIndex + "</span>";
 	} if (col == "trashcan") {
 		obj = JSON.parse(celldata);
-	    str = "<div class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-		str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></div>";
+	    str = "<span class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
+		str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></span>";
 		return str;
 	} else if (col == "filename") {
 		if (link[0] == "https" || link[0] == "http") {
@@ -224,19 +224,19 @@ function renderCell(col,celldata,cellid) {
 					listStr += ".";
 				}
 			}
-			return "<div id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+celldata+"\")'>" + listStr + "</div>";
+			return "<span id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+celldata+"\")'>" + listStr + "</span>";
 		}
 	} else if (col == "filesize") {
         var obj = JSON.parse(celldata);
         if(obj.kind == "Link") {
-            return "-";
+            return "<span>-</span>";
         }
-        return formatBytes(obj.size, 0);
+        return "<span>" + formatBytes(obj.size, 0) + "</span>";
     } else if (col == "extension") {
         if(link[0] == "https" || link[0] == "http"){
-            return "<div> - </div>";
+            return "<span> - </span>";
         }
-	    return "<div>" + list[list.length - 1] + "</div>";
+	    return "<span>" + list[list.length - 1] + "</span>";
 	} else if (col == "editor") {
 		var obj = JSON.parse(celldata);
 		list = obj.filename.split('.');
@@ -244,11 +244,11 @@ function renderCell(col,celldata,cellid) {
 		if(link[0] == "https" || link[0] == "http"){
 			str = "";
 		} else if (list[list.length-1] == "md" || list[list.length-1] == "txt"){
-			str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></div>";
+			str = "<span class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
+            str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
 		} else if (list[list.length-1] == "js" || list[list.length-1] == "html" || list[list.length-1] == "css" || list[list.length-1] == "php"){
-            str = "<div class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></div>";
+            str = "<span class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
+            str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
         }
 		return str;
 
