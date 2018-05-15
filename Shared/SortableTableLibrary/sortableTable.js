@@ -194,7 +194,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	}
 
 	this.reRender = function() {
-		this.rowIndex = 0;
+		this.rowIndex = 1;
 		// Local variable that contains html code for main table and local variable that contains magic headings table
 		str = "<table style='border-collapse: collapse;' id='"+tableid+"_tbl' class='list list--nomargin'>";
 		mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;margin-top:50px;border-bottom:none;' class='list' id='"+tableid+"_tbl_mh'>";
@@ -243,7 +243,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 
 		//var freezePaneIndex = tbl.tblhead.indexOf(freezePane);
 		if(this.hasCounter) {
-            str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'><span> </span></th>";
+            str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'></th>";
         }
 		for(var colname in tbl.tblhead) {
 			var col = tbl.tblhead[colname];
@@ -313,7 +313,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 				str += "<tr id='"+tableid+"_"+i+"' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 				mhvstr += "<tr id='"+tableid+"_"+i+"_mvh' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
                 if(this.hasCounter) {
-                    str += "<td onclick='clickedInternal(event,this);' class='"+tableid+"-"+colnamez+" counterBox'><span>"+ ++this.rowIndex +"</span></td>";
+                    str += "<td onclick='clickedInternal(event,this);' class='counterBox'><span>"+ this.rowIndex++ +"</span></td>";
                 }
 				result++;
 

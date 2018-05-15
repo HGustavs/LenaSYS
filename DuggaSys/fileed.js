@@ -203,9 +203,7 @@ function validateForm() {
 function renderCell(col,celldata,cellid) {
 	var str="";
 
-	/*if (col == "counter") {
-		return "<div class='counterBox'>" + ++fileLink.rowIndex + "</div>";
-	} */if (col == "trashcan") {
+	if (col == "trashcan") {
 		obj = JSON.parse(celldata);
 	    str = "<span class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
 		str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></span>";
