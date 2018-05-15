@@ -284,6 +284,7 @@ function copySymbol(symbol){
     }
     else{
         clone.middleDivider = points.push(middleDividerClone) - 1;
+        clone.centerPoint = clone.middleDivider;
     }
     clone.targeted = true;
     symbol.targeted = false;
