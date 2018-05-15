@@ -3990,13 +3990,13 @@ textarea#mrkdwntxt {
     height: 90%;
   }
   .markdown {
-    height: 35%;
+    height: 38%;
     width: 97%;
     position: relative;
     float: left;
   }
   .markdownPrev {
-    height: 35%;
+    height: 38%;
     width: 97%;
     float: left;
     margin: auto auto auto 8px;
@@ -4012,6 +4012,9 @@ textarea#mrkdwntxt {
   }
   .optionButtons {
     top: 686px;
+  }
+  .save-close-button{
+    margin-top: 4%;
   }
 }
 
