@@ -37,7 +37,8 @@ pdoConnect();
 	<!-- Content START -->
 	
 	<div id="content">
-	<h1 style= "width:100%;margin-top:50px;text-align:center;">Tests</h1>
+	<div class="titles">
+	<h1 style= "width:100%;margin-top:10px;text-align:center;">Tests</h1>
 	
   	<!-- Content END -->
 
@@ -47,7 +48,7 @@ pdoConnect();
   	?>
   	<!-- Login Dialog END -->
       <div id="quiz" style='width:100%;'></div> <!-- A div to place the quiz-table within. -->
-  </div>
+  </div></div>
 
   <!-- START OF FAB-button  -->
   <div class='fixed-action-button'>
