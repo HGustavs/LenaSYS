@@ -1929,7 +1929,7 @@ function drawPieChart() {
 
   // Calculate passed, failed and not graded quizes.
   for(var i = 0; i < retdata['results'].length; i++) {
-	  if(retdata['results'][i]['useranswer'] != null){
+	  if(retdata['results'][i]['useranswer'] != null){ // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
 		  if(retdata['results'][i].grade == 2) {
 			  passedQuizes++;
 		  } else if(retdata['results'][i].grade == 1) {
