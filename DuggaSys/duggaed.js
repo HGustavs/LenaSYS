@@ -9,7 +9,7 @@ var filez;
 var variant = [];
 var submissionRow = 0;
 var duggaTable;
-var variantsTable;
+var variantTable;
 var str;
 var globalData;
 var globalVariant;
@@ -18,6 +18,7 @@ var typeOfItem;
 var duggaPages;
 var isClickedElementBox = false;
 var searchterm = "";
+
 
 AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
 
@@ -541,7 +542,7 @@ function returnedDugga(data) {
 		renderCell,
 		renderSortOptionsDugga,
 		null,
-		null,
+		duggaFilter,
 		[],
 		[],
 		"",
@@ -584,7 +585,7 @@ function renderVariant(clickedElement) {
 		tblbody: globalData['entries'][clickedElement].variants,
 		tblfoot: []
 	}
-	variantsTable = new SortableTable(
+	variantTable = new SortableTable(
 		tabledata,
 		"variant",
 		null,
@@ -592,7 +593,7 @@ function renderVariant(clickedElement) {
 		renderCell,
 		renderSortOptionsVariant,
 		null,
-		rowFilter,
+		variantFilter,
 		[],
 		[],
 		"",
@@ -605,7 +606,7 @@ function renderVariant(clickedElement) {
 		false
 	);
 	searchterm = '';
-	variantsTable.renderTable();
+	variantTable.renderTable();
 	newVariant();
 	$('#did').val(globalData['entries'][clickedElement].arrow);
 }
@@ -751,11 +752,11 @@ function renderSortOptionsDugga(col,status) {
 function renderSortOptionsVariant(col,status) {
 	str = "";
 	if (status ==- 1) {
-		str += "<span class='sortableHeading' onclick='variantsTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
 	} else if (status == 0) {
-		str += "<span class='sortableHeading' onclick='variantsTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 	} else {
-		str += "<span class='sortableHeading' onclick='variantsTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 	}
 	return str;
 }
@@ -784,8 +785,21 @@ function compare(a,b) {
 	}
 }
 
-//Filtering from the searchfield.
-function rowFilter(row) {
+//Filtering duggas from the searchfield.
+function duggaFilter(row) {
+	if (row.qname.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
+		return true;
+	}
+	else if (row.quizFile.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+//Filtering variants from the searchfield.
+function variantFilter(row) {
 	if (row.param.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
 		return true;
 	}
