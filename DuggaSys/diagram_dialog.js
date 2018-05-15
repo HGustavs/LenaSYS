@@ -24,7 +24,8 @@ function closeAppearanceDialogMenu() {
      */
      //if the X
      if(globalAppearanceValue == 1){
-
+       var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+       if (tmpDiagram != null) LoadImport(tmpDiagram);
      }
     appearanceMenuOpen = false;
     classAppearanceOpen = false;
