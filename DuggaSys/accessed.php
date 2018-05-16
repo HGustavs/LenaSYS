@@ -113,7 +113,7 @@
       		<div style='padding:5px;'>
       		    <input type='hidden' id='uid' value='Toddler' /></td>
       		    <div class='inputwrapper'><span>Class:</span><input placeholder="WEBUG13h" class='textinput' type='text' id='addClass'/></div>
-      		    <div class='inputwrapper'><span>Responsible:</span><input placeholder="101" class='textinput' id='addResponsible'></input></div>
+      		    <div class='inputwrapper'><span>Responsible:</span><select class='textinput' id='addResponsible'></select></div>
       		    <div class='inputwrapper'><span>Classname:</span><input placeholder="Webbutvecklare - programmering" class='textinput' type='text' id='addClassname'/></div>
                     <div class='inputwrapper'><span>Regcode:</span><input placeholder="199191" class='textinput' id='addRegcode'></input></div>
 		    <div class='inputwrapper'><span>Classcode:</span><input placeholder="WEBUG" class='textinput' type='text' id='addClasscode'/></div>

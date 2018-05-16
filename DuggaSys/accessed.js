@@ -61,6 +61,26 @@ function setup()
 	$("#dropdowns").html(dropdownOptions);
 }
 
+function fillResponsibleOptions(responsibles)
+{
+    var selectResponsibleTag = document.getElementById("addResponsible");    
+    var formatInnerHTML = function(responsibles, i){return responsibles[i]["firstname"]+" "+responsibles[i]["lastname"]+" ("+responsibles[i]["uid"]+")";}
+    var formatValue = function(responsibles, i){return responsibles[i]["uid"];}
+    
+    for(var i = 0;i < responsibles.length; i++){
+	addSingleOptionToSelectTag(selectResponsibleTag, responsibles, formatInnerHTML, formatValue, i);
+    }
+}
+
+// formatInnerHTMLFunction - provide a function to format the string. Same for formatValueFunction.
+function addSingleOptionToSelectTag(tag, jsonList, formatInnerHTMLFunction, formatValueFunction, index)
+{
+    var option = document.createElement("option");
+    option.innerHTML = formatInnerHTMLFunction(jsonList, index);
+    option.value = formatValueFunction(jsonList, index);
+    tag.appendChild(option);
+}
+
 function hoverc()
 {
     $('#dropdowns').css('display','none');
@@ -471,6 +491,7 @@ function makeDropdown(onChange, values, items, selected){
 
 function makeClassDropdown(onChange, values, items, selected){
     str = "<select onChange='"+onChange+"' onclick='return false;'>";
+
     str+= "<option value='null'></option>";
 
     for(var i = 0; i < values.length; i++){
@@ -554,7 +575,8 @@ var myTable;
 //----------------------------------------
 
 function returnedAccess(data) {
-	setup();
+    setup();
+    fillResponsibleOptions(data.responsibles);
 	filez = data;
 	var tabledata = {
 		tblhead:{
