@@ -253,8 +253,9 @@ function createCardinality(){
 }
 function changeCardinality(isUML){
     var val = document.getElementById('cardinality').value;
+    var valUML;
     if(isUML){
-        var valUML = document.getElementById('cardinalityUml').value;
+        valUML = document.getElementById('cardinalityUml').value;
     }
 
     //Setting existing cardinality value on line
