@@ -712,16 +712,31 @@ function createSortableTable(data){
 }
 
 function renderCell(col,celldata,cellid) {
+	// Render minimode
 	if (showMini) {
+		// First column (Fname/Lname/SSN)
 		if (col == "FnameLnameSSN"){
 			str = "<div class='dugga-result-div'>";
-    	str += celldata.firstname + " " + celldata.lastname;
+				str += celldata.firstname + " " + celldata.lastname;
     	str += "</div>"
     	return str;
   	} else {
-  		return "";
+			// color based on pass,fail,pending,assigned,unassigned
+			str = "<div style='height:25px;' class='";
+				if(celldata.kind==4) { str += "dugga-moment "; }
+				if (celldata.grade === 1) {str += "dugga-fail";}
+				else if (celldata.grade > 1) {str += "dugga-pass";}
+				else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
+				else if (celldata.kind != 4 && celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
+				else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
+				else {str += "dugga-unassigned";}
+			str += "'>";
+			str += "</div>"
+			return str;
   	}
 	}
+
+	// Render normal mode
 	// First column (Fname/Lname/SSN)
   if (col == "FnameLnameSSN"){
     str = celldata.grade;
