@@ -3758,10 +3758,10 @@ li:nth-last-child(10) a:hover {
   cursor: pointer;
   margin-top: 6px;
   margin-bottom: 2px;
-  margin-left: 10px;
+  margin-right: 3%;
   font-size: 14px;
   transition: 1s background-color;
-  float: left;
+  float: right;
   line-height: 30px;
   text-align: center;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
@@ -4045,26 +4045,25 @@ textarea#mrkdwntxt {
   display: none;
 }
 
-.editFileWindow { /* boxen som håller texten*/
-  height: 90%;
+.editFileWindow {
+  height: 80%;
   width: 95%;
-  margin: 0px auto;
-  border: solid rgb(200,200,200);
+  margin: auto;
   background-color: rgb(200,200,200);
   z-index: 12000;
   left: 0;
   right: 0;
-  top: 100px; /*ändra*/
+  top: 10%;
   position: fixed;
 }
 
-.editFileCode { /*textrutan tyyyyp*/
+.editFileCode {
   border: solid rgb(200, 200, 200);
   background-color: rgb(200, 200, 200);
-  width: 96%;
-  height: 80%;
+  width: 93%;
+  height: 90%;
   position: relative;
-  margin: 1%;
+  margin: auto;
 }
 
 .fileText {
@@ -4112,24 +4111,13 @@ textarea#mrkdwntxt {
 }
 
 textarea#filecont{
-  width: 91%;
+  width: 97%;
   height: 100%;
   display: block;
   padding: 10px
 }
 
-@media only screen and (max-height: 800px) and (max-width: 1400px) {
-  .editFileWindow {
-    height: 500px;
-  }
-
-  .editFileCode {
-    height: 400px;
-  }
-
-  #filecont {
-    height: 350px;
-  }
+@media only screen and (max-width: 900px) {
 
   .optionButtons {
     top: 436px;
