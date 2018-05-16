@@ -245,7 +245,7 @@ function createCardinality(){
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
     }
     else if(diagram[lineStartObj].symbolkind == 1 && diagram[hovobj].symbolkind == 1){
-        diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true, "symbolKind": 1})
+        diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
     }
 }
 function changeCardinality(){
