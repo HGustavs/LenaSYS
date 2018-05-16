@@ -506,7 +506,7 @@ function returnedDugga(data) {
 	filez = data;
 	globalData = data;
 
-	if (data['writeaccess'] == true) {
+	if (data['writeaccess']) {
 		$('#quiz').show();
 		$('.fixed-action-button').show();
 		$('.searchField').show();
@@ -517,6 +517,8 @@ function returnedDugga(data) {
 		$('.fixed-action-button').hide();
 		$('.searchField').hide();
 		$('#searchbutton').hide();
+			changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
+				+ querystring['coursevers'] + "");
 	}
 
 	console.log(data['writeaccess']);
