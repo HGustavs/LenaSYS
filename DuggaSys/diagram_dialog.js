@@ -22,6 +22,11 @@ function closeAppearanceDialogMenu() {
     /*
      * Closes the dialog menu for appearance.
      */
+     //if the X
+     if(globalAppearanceValue == 1){
+       var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+       if (tmpDiagram != null) LoadImport(tmpDiagram);
+     }
     appearanceMenuOpen = false;
     classAppearanceOpen = false;
     globalAppearanceValue = 0;
