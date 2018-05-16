@@ -1083,7 +1083,6 @@ input {
 .application-toolbar-wrap {
   position: fixed;
   z-index: 1000;
-  display: block;
   border: 1px solid rgb(200, 200, 200);
   outline: 1px solid rgb(240, 240, 240);
   background-color: #fff;
@@ -3138,9 +3137,9 @@ only screen and (max-device-width: 768px) {
   #Sectionlist .course {
     font-size: 20px;
   }
-    
+
     /* Force table to not be like tables anymore */
-    #fileLink_body{ 
+    #fileLink_body{
 		display: block;
 	}
     #fileLink_tblhead{
@@ -3149,35 +3148,35 @@ only screen and (max-device-width: 768px) {
     #fileLink_tbl_mh[style]{
         display: none !important;
     }
-    #fileLink_body tr[style]{ 
-        border: 1px solid #ccc !important; 
+    #fileLink_body tr[style]{
+        border: 1px solid #ccc !important;
         display: block !important;
     }
-	
-    #fileLink_body>tr>td{ 
+
+    #fileLink_body>tr>td{
 		/* Behave  like a "row" */
         display: block;
 		border: none;
-		border-bottom: 1px solid #eee; 
+		border-bottom: 1px solid #eee;
         text-align: left;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-        
+
 	}
-	#fileLink_body>tr>td:before { 
+	#fileLink_body>tr>td:before {
 		/* Top/left values mimic padding */
         display: inline-block;
 		top: 6px;
 		left: 6px;
 		width: 20%;
-		padding-right: 28%; 
+		padding-right: 28%;
 		white-space: nowrap;
         font-weight: bold;
         font-size: 16px;
         color:#000000;
 	}
-    
+
     /*
 	Label the data
 	*/
