@@ -579,20 +579,17 @@ function saveResponse()
 function returnedResults(data)
 {
   if (data.gradeupdated === true){
-    // Find the array row for updated grade in our local data structure "students"
-    var rowpos=-1;
-    var dpos=-1;
-    for (var t=0;t<students.length;t++){
-      if (students[t][1].uid == data.duggauser) {
-        rowpos=t;
-        for (var j=0;j<students[t].length;j++){
-          if (students[t][j].lid == data.duggaid){
-            dpos=j;
-            students[t][j].grade = parseInt(data.results);
-            students[t][j].gradeExpire = data.duggaexpire;
-            students[t][j].timesGraded = parseInt(data.duggatimesgraded);
-            break;
-          }
+  	// Update the the local array studentInfo when grade is updated.
+    for (var student in studentInfo){
+      var studentObject = studentInfo[student]["lid:" + data.duggaid];
+      if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
+        studentObject.grade = parseInt(data.results);
+        studentObject.timesGraded = parseInt(data.duggatimesgraded);
+        studentObject.gradeExpire = data.duggaexpire;
+        if (data.results > 0) { 
+        	studentObject.needMarking = false;
+        } else {
+        	studentObject.needMarking = true;
         }
         break;
       }
@@ -678,7 +675,6 @@ function buildStudentInfo() {
 }
 
 function createSortableTable(data){
-  studentInfo = new Array;
 	let tblhead = buildDynamicHeaders();
 	studentInfo = buildStudentInfo();
 
@@ -726,7 +722,7 @@ function renderCell(col,celldata,cellid) {
       if (celldata.grade === 1) {str += "dugga-fail";}
       else if (celldata.grade > 1) {str += "dugga-pass";}
       else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
-      else if (celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
+      else if (celldata.kind != 4 && celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
       else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
       else {str += "dugga-unassigned";}
     str += "'>";
