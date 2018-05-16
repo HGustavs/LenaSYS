@@ -285,7 +285,12 @@ function mouseupevt(ev) {
         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
+    var saveState = md == 4 && uimode != "normal";
+    if(movobj > -1) {
+        if(diagram[movobj].symbolkind != 4 && uimode == "Moved") saveState = true;
+    }
     if (uimode == "CreateLine" && md == 4) {
+        saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
          if (hovobj == -1 || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 3) {
             md = 0;
@@ -294,8 +299,9 @@ function mouseupevt(ev) {
              symbolEndKind = diagram[hovobj].symbolkind;
 
              sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
+            //okToMakeLine is a flag for this
+            var okToMakeLine = true;
             if(symbolStartKind != 4 && symbolEndKind != 4){
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == 2) {
@@ -305,8 +311,6 @@ function mouseupevt(ev) {
                 }
 
                 //Code for making sure enitities not connect to the same attribute multiple times
-                //okToMakeLine is a flag for this
-                var okToMakeLine= true;
                 if(symbolEndKind == 3 && symbolStartKind == 2){
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0){
                         okToMakeLine= false;
@@ -325,6 +329,7 @@ function mouseupevt(ev) {
                     okToMakeLine = false;
                 }
                 if(okToMakeLine){
+                    saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     if (diagram[hovobj].symbolkind == 2) {
                         p2 = diagram[hovobj].centerPoint;
@@ -433,7 +438,7 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
-    SaveState();
+    if(saveState) SaveState();
 
 }
 
