@@ -286,8 +286,9 @@ function mouseupevt(ev) {
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
     //okToMakeLine is a flag for this
-    var okToMakeLine = uimode != "normal";
+    var okToMakeLine = false;
     if (uimode == "CreateLine" && md == 4) {
+        okToMakeLine = true;
         //Check if you release on canvas or try to draw a line from entity to entity
          if (hovobj == -1 || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 3) {
             md = 0;
