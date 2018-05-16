@@ -286,7 +286,7 @@ function mouseupevt(ev) {
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
     var saveState = md == 4 && uimode != "normal";
-    saveState = uimode == "Moved" ? true : saveState;
+    saveState = uimode == "Moved" && symbolStartKind != 4 ? true : saveState;
     if (uimode == "CreateLine" && md == 4) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
