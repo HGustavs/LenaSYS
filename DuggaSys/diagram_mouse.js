@@ -285,6 +285,8 @@ function mouseupevt(ev) {
         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
+    //okToMakeLine is a flag for this
+    var okToMakeLine= true;
     if (uimode == "CreateLine" && md == 4) {
         //Check if you release on canvas or try to draw a line from entity to entity
          if (hovobj == -1 || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 3) {
@@ -305,8 +307,6 @@ function mouseupevt(ev) {
                 }
 
                 //Code for making sure enitities not connect to the same attribute multiple times
-                //okToMakeLine is a flag for this
-                var okToMakeLine= true;
                 if(symbolEndKind == 3 && symbolStartKind == 2){
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0){
                         okToMakeLine= false;
@@ -433,7 +433,7 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
-    SaveState();
+    if(okToMakeLine) SaveState();
 
 }
 
