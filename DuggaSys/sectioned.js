@@ -915,6 +915,7 @@ function returnedSection(data) {
 			str += "</ol>"
 
 			str += "</div>";
+
 		} else {
 			str += "</tr></table>";
 		}
