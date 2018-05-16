@@ -1943,7 +1943,8 @@ function drawPieChart() {
 
   // Calculate non submitted quizes.
   notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
-  if(notSubmittedQuizes == 0){ 	// if a course has no tests, this will make the piechart
+
+  if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
 	  totalQuizes++; 			// show that the student has 100% not submitted tests.
 	  notSubmittedQuizes++;
   }
