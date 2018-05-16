@@ -572,7 +572,6 @@ var myTable;
 function returnedAccess(data) {
     setup();
     fillResponsibleOptions(data.responsibles);
-    console.log(data.responsibles);
 	filez = data;
 	var tabledata = {
 		tblhead:{
