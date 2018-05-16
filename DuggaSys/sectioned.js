@@ -7,7 +7,6 @@ var testsAvailable;
 var nameSet = false;
 var hoverMenuTimer;
 
-var timerForDeadlineText;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -992,57 +991,14 @@ function returnedSection(data) {
 		str+="</div>";
 		str	+="<div id='deadlineInfoBox' style='display: inline-block; "
 			+" padding: 10px; width: 250px;"
-			+" background-color: #000;'> ";
-			str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/f.gif'</td>";
-		str +="<h2 id='textBlink' style='color: red;'>  Upcoming Deadlines  </h2>"
-		str +="<p> bitdugga 1 in 3 days </p>"
-		str +="<p> <h1> Dugga with a very very very very long name in 12 hours </h1> </p>"
-		str +="<p> asd </p>"
-		str +="<p> asd </p>"
+			+" background-color: #fff;'> ";
+		str +="<h2 id='deadlineInfoTitle' style='color: red;'>  Upcoming Deadlines  </h2>"
+		str +="<h4 id='deadlineInfoFirst'> bitdugga 1 in 3 days </h3>"
+		str +="<h4 id='deadlineInfoSecond'> Dugga with a very very very very long name in 12 hours </h4> "
+		str +="<h4 id='deadlineInfoThird'> asd </h5>	"
+		str +="<h4 id='deadlineInfoFourth'> asd </h6>"
+		str +="<h4 id='deadlineInfoFifth'> asd </h6>"
 
-
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/a.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/b.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/b.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/b.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/b.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/d.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/d.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/d.gif'</td>";
-
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/e.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/e.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/g.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/g.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/g.gif'</td>";
-
-
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/h.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/b.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/h.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/b.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/h.gif'</td>";
-		str += "<td style='width:20px;'><img style=';' "
-			+ "src='../Shared/b.gif'</td>";
 
 
 
@@ -1677,6 +1633,7 @@ function returnedSection(data) {
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 	drawPieChart();
+	fixDeadlineInfoBoxesText()
 }
 
 function showHighscore(did, lid) {
@@ -2089,20 +2046,44 @@ function drawPieChart() {
   ctx.restore();
 }
 
-function startTimerForAidsText(num){
-	console.log("switching");
-	if (num % 2 == 0){
-		$('#textBlink').css("color", "blue");
-	}else {
-		$('#textBlink').css("color", "red");
+
+function fixDeadlineInfoBoxesText(){
+	// console.log(retdata['duggor']);
+	var closestDeadlineArray = [];
+
+
+	var copyOfDuggaArray = retdata['duggor'];
+
+	copyOfDuggaArray.reduce(function(prev, curr){
+		return prev.deadline < curr.deadline ? prev : curr;
+	});
+
+	Array.prototype.hasMin = function(attrib){
+		return this.reduce(function(prev, curr){
+			return prev[attrib] < curr[attrib] ? prev : curr;
+		});
 	}
-	num++;
-	timerForDeadlineText = window.setTimeout(function(){
-		startTimerForAidsText(num);
-	}, 100);
 
+	closestDeadlineArray.push((copyOfDuggaArray.hasMin('deadline')));
+	copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(copyOfDuggaArray.hasMin('deadline')), 1);
+	closestDeadlineArray.push((copyOfDuggaArray.hasMin('deadline')));
+	copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(copyOfDuggaArray.hasMin('deadline')), 1);
+	closestDeadlineArray.push((copyOfDuggaArray.hasMin('deadline')));
+	copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(copyOfDuggaArray.hasMin('deadline')), 1);
+	closestDeadlineArray.push((copyOfDuggaArray.hasMin('deadline')));
+	copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(copyOfDuggaArray.hasMin('deadline')), 1);
+	closestDeadlineArray.push((copyOfDuggaArray.hasMin('deadline')));
+	copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(copyOfDuggaArray.hasMin('deadline')), 1);
 
+	document.getElementById("deadlineInfoFirst").innerHTML = closestDeadlineArray[0]['qname'];
+	document.getElementById("deadlineInfoSecond").innerHTML = closestDeadlineArray[1]['qname'];
+	document.getElementById("deadlineInfoThird").innerHTML = closestDeadlineArray[2]['qname'];
+	document.getElementById("deadlineInfoFourth").innerHTML = closestDeadlineArray[3]['qname'];
+	document.getElementById("deadlineInfoFifth").innerHTML = closestDeadlineArray[4]['qname'];
+	console.log(closestDeadlineArray);
+	console.log(retdata);
 }
+
 
 $(document).ready(function () {
 	// Function to prevent collapsing when clicking icons
@@ -2116,12 +2097,6 @@ $(document).ready(function () {
 	hoverMenuTimer = window.setTimeout(function(){
 		checkIfCloseFabMenu();
 	}, 25);
- 	var num = 0;
-	timerForDeadlineText = window.setTimeout(function(){
-		startTimerForAidsText(num);
-	}, 12);
-
-
 });
 
 $(window).load(function () {
