@@ -107,10 +107,13 @@ function loadLineForm(element, dir){
             element.innerHTML = file.responseText;
             if(globalAppearanceValue == 0){
                 var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value
+                var cardinalityValUML = diagram[lastSelectedObject].cardinality[0].valueUML;
                 var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
+                var tempCardinalityUML = cardinalityValUML == "" || cardinalityValUML == null ? "None" : cardinalityValUML;
 
                 setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
                 setSelectedOption('cardinality', tempCardinality);
+                setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
         }
     }
