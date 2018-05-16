@@ -436,10 +436,7 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
-    if(saveState) {
-        SaveState();
-        console.log("Hello its ok to make a line");
-    }
+    if(saveState) SaveState();
 
 }
 
