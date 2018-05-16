@@ -115,8 +115,11 @@ pdoConnect();
         <input type='hidden' id='fileName' name='filename' value='Toddler'/>
         <input type='hidden' id='textField' name='textField' value='Toddler'/>
         <div class="markdownPart">
+
             <div class="markdown">
-                <div class="markNav">Markdown
+                <fieldset id="markset">
+                    <legend>Markdown</legend>
+
                     <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
                     <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
                     <span id="codeBlockText" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
@@ -136,13 +139,15 @@ pdoConnect();
                         <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
 
                     </div>
-                </div>
+
                         <div class="markText">
                         <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
                         </div>
+                        </fieldset>
             </div>
+
             <div class="markdownPrev">
-                <div class="prevNav">Markdown Preview</div>
+                <fieldset id="markPrevSet"><legend>Markdown preview</legend>
                 <div class="markTextPrev">
                     <div class="prevSpan">
                         <div class="descbox">
@@ -150,6 +155,7 @@ pdoConnect();
                         </div>
                     </div>
                 </div>
+                </fieldset>
             </div>
             <button class="save-close-button" type="submit" onclick="saveMarkdown()">Save</button>
             <button class="save-close-button" onclick="cancelPreview()">Close</button>
