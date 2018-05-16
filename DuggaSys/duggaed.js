@@ -509,10 +509,14 @@ function returnedDugga(data) {
 	if (data['writeaccess'] == true) {
 		$('#quiz').show();
 		$('.fixed-action-button').show();
+		$('.searchField').show();
+		$('#searchbutton').show();
 	}
 	else {
 		$('#quiz').hide();
 		$('.fixed-action-button').hide();
+		$('.searchField').hide();
+		$('#searchbutton').hide();
 	}
 
 	console.log(data['writeaccess']);
