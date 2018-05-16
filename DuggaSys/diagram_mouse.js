@@ -433,7 +433,7 @@ function mouseupevt(ev) {
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
-    if(okToMakeLine && uimode != "normal") SaveState();
+    if(okToMakeLine || uimode != "normal") SaveState();
 
 }
 
