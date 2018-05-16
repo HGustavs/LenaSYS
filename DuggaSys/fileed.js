@@ -398,51 +398,18 @@ function convertFileKind(kind){
 function toggleFabButton() {
 	if (!$('.fab-btn-sm').hasClass('scale-out')) {
 		$('.fab-btn-sm').toggleClass('scale-out');
-		$('.fab-btn-list').delay(100).fadeOut(0);
+		$('.fab-btn-list').fadeOut(0);
 	} else {
 		$('.fab-btn-list').fadeIn(0);
 		$('.fab-btn-sm').toggleClass('scale-out');
 	}
 }
 
-$(document).mouseup(function(e) {
-	// The "Add Course Local File" popup should appear on
-	// a "fast click" if the fab list isn't visible
-	if (!$('.fab-btn-list').is(':visible')) {
-		if (e.target.id == "fabBtn") {
-			clearTimeout(pressTimer);
-			showFilePopUp('MFILE');
-	    }
-	    return false;
-    }
-	// Click outside the FAB list
-    if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target)// if the target of the click isn't the container...
-        && $('.fixed-action-button').has(e.target).length === 0) {// ... nor a descendant of the container
-		if (!$('.fab-btn-sm').hasClass('scale-out')) {
-			$('.fab-btn-sm').toggleClass('scale-out');
-			$('.fab-btn-list').delay(100).fadeOut(0);
-		}
-	} else if ($('.fab-btn-list').is(':visible') && $('.fixed-action-button').is(e.target)) {
-		if (!$('.fab-btn-sm').hasClass('scale-out')) {
-			$('.fab-btn-sm').toggleClass('scale-out');
-			$('.fab-btn-list').fadeOut(0);
-		}
-	}
-}).mousedown(function(e) {
+$(document).mousedown(function(e) {
 	// If the fab list is visible, there should be no timeout to toggle the list
+    console.log("mousedown activated");
 	if ($('.fab-btn-list').is(':visible')) {
-		fabListIsVisible = false;
-	} else {
-		fabListIsVisible = true;
-	}
-	if (fabListIsVisible) {
-		if (e.target.id == "fabBtn") {
-			pressTimer = window.setTimeout(function() {
-				toggleFabButton();
-			}, 500);
-		}
-	} else {
-		toggleFabButton();
+        //toggleFabButton();
 		if (e.target.id == "gFabBtn" || e.target.id == "gFabBtnImg") {
 	    	showFilePopUp('GFILE');
 	    } else if (e.target.id == "lFabBtn" || e.target.id == "lFabBtnImg") {
@@ -452,7 +419,30 @@ $(document).mouseup(function(e) {
 	    } else if (e.target.id == "linkFabBtn" || e.target.id == "linkFabBtnImg") {
 	    	showLinkPopUp();
 	    }
+	} else {
+        if (e.target.id == "fabBtn") {
+			pressTimer = window.setTimeout(function() {
+				toggleFabButton();
+			}, 500);
+		}
 	}
+}).mouseup(function(e) {
+	// The "Add Course Local File" popup should appear on
+	// a "fast click" if the fab list isn't visible
+	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
+			clearTimeout(pressTimer);
+			showFilePopUp('MFILE');
+            console.log("mouseup");
+    }// Click outside the FAB list
+    else if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target)// if the target of the click isn't the container...
+        && $('.fixed-action-button').has(e.target).length === 0) {// ... nor a descendant of the container
+        toggleFabButton();
+        console.log("2")
+	}
+    else if ($('.fab-btn-list').is(':visible') && $('.fixed-action-button').is(e.target)) {
+			toggleFabButton();
+            console.log("3");
+    }
 }).on("touchstart", function(e){
     //Event for holding the fab on mobile
     if ($('.fab-btn-list').is(':visible')) {
@@ -460,12 +450,15 @@ $(document).mouseup(function(e) {
 	} else {
 		fabListIsVisible = true;
 	}
+    
 	if (fabListIsVisible) {
 		if (e.target.id == "fabBtn") {
-			fabTimer = window.setTimeout(function() {
+			pressTimer = window.setTimeout(function() {
 				toggleFabButton();
 			}, 500);
+            
             e.preventDefault();
+            
 		}
 	} else {
 		toggleFabButton();
@@ -478,13 +471,23 @@ $(document).mouseup(function(e) {
 	    } else if (e.target.id == "linkFabBtn" || e.target.id == "linkFabBtnImg") {
 	    	showLinkPopUp();
 	    }
-        return;
 	}
 }).on("touchend", function(e){
     //abrupts and clears the timer for touchstart when the user lets go of the fab
-    if(fabTimer){
-        clearTimeout(fabTimer);
-    }
+    // The "Add Course Local File" popup should appear on
+	// a "fast click" if the fab list isn't visible
+	if (!$('.fab-btn-list').is(':visible')) {
+		if (e.target.id == "fabBtn") {
+			clearTimeout(pressTimer);
+			showFilePopUp('MFILE');
+	    }
+    }// Click outside the FAB list
+    else if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target)// if the target of the click isn't the container...
+        && $('.fixed-action-button').has(e.target).length === 0) {// ... nor a descendant of the container
+			toggleFabButton();
+	} else if ($('.fab-btn-list').is(':visible') && $('.fixed-action-button').is(e.target)) {
+			toggleFabButton();
+	}
 });
 
 
