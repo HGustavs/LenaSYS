@@ -33,7 +33,7 @@ if($cardinality != 1){
     <option value='0..*'>0..*</option>
     <option value='1..*'>1..*</option>
   </select><br/>
-  <select onchange=\"changeCardinality(true)\" id='cardinalityUml'>
+  <select onchange=\"changeCardinality(true)\" id='cardinalityUml' style=\"margin-top:3px\">
     <option value='None'>None</option>
     <option value='0..1'>0..1</option>
     <option value='1..1'>1..1</option>
