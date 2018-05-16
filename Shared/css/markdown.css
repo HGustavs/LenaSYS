@@ -12,7 +12,7 @@
 	background-color: #fff;
 	padding:10px;
 }
-@media only screen and (max-height: 1440px) and (max-width: 1350px) {
+@media only screen and (max-width: 900px) {
 	.descbox{
 		height: 80%;
 	}

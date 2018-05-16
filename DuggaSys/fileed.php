@@ -101,7 +101,8 @@ pdoConnect();
     </div>
 </div>
 <!-- Edit File Dialog END -->
-<!-- Markdown-preview functionality START -->
+
+<!-- Markdown-preview and edit file functionality START -->
 <div class="previewWindowContainer"></div>
 <div class="previewWindow">
     <div class="loginBoxheader">
@@ -162,8 +163,8 @@ pdoConnect();
                     </div>
                 </div>
 
-                <button type="submit" onclick="saveTextToFile()"> Save </button>
-                <button onclick="cancelPreview()">Close</button>
+                <button class="save-close-button" type="submit" onclick="saveTextToFile()"> Save </button>
+                <button class="save-close-button" onclick="cancelPreview()">Close</button>
                 <div class="optionButtons">
 
                 </div>
@@ -172,12 +173,7 @@ pdoConnect();
 
     </form>
 </div>
-<!-- Markdown-preview functionality END -->
-
-<!-- Edit file functionality START -->
-<div class="editFileWindowContainer"></div>
-
-<!-- Edit file functionality END -->
+<!-- Markdown-preview and edit file functionality END -->
 
 <!--Fab-button-->
 <div class="fixed-action-button" id="fabButton">
