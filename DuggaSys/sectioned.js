@@ -7,6 +7,8 @@ var testsAvailable;
 var nameSet = false;
 var hoverMenuTimer;
 
+var timerForDeadlineText;
+
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
 	idCounter: 0, 		/* Used to give elements unique ids. This might? brake
@@ -956,7 +958,8 @@ function returnedSection(data) {
 				+ "\"" + momentexists + "\","
 				+ "\"" + item['gradesys'] + "\","
 				+ "\"" + item['highscoremode'] + "\", null"
-				+ "); showSubmitButton(); validateType(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
+				+ "); showSubmitButton(); validateType(); "
+				+ "editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
 			str += "</div>";
 		}
 
@@ -974,7 +977,8 @@ function returnedSection(data) {
 		+ "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>"
 		+ "</div>"
 		+ "<div class='nowrap' style='padding-left:5px' title='statistics'>"
-		+ "<span class='listentries-span' style='writing-mode: vertical-rl; text-orientation: upright;'>Statistics</span>"
+		+ "<span class='listentries-span' style='writing-mode: vertical-rl; "
+		+ "text-orientation: upright;'>Statistics</span>"
 		+ "</div></div>"
 		+ "<div class='statisticsContent' style='display: inline-block;'>";
 
@@ -984,9 +988,74 @@ function returnedSection(data) {
 		str+="<div id='stastisticPie' style=' height:100px;'>";
 		str+="<canvas id='pieChart' width='250px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
 		// str+="<div><p>Swim lane description</p></div>";
+
+		str+="</div>";
+		str	+="<div id='deadlineInfoBox' style='display: inline-block; "
+			+" padding: 10px; width: 250px;"
+			+" background-color: #000;'> ";
+			str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/f.gif'</td>";
+		str +="<h2 id='textBlink' style='color: red;'>  Upcoming Deadlines  </h2>"
+		str +="<p> bitdugga 1 in 3 days </p>"
+		str +="<p> <h1> Dugga with a very very very very long name in 12 hours </h1> </p>"
+		str +="<p> asd </p>"
+		str +="<p> asd </p>"
+
+
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/a.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/b.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/b.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/b.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/b.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/d.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/d.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/d.gif'</td>";
+
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/e.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/e.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/g.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/g.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/g.gif'</td>";
+
+
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/h.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/b.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/h.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/b.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/h.gif'</td>";
+		str += "<td style='width:20px;'><img style=';' "
+			+ "src='../Shared/b.gif'</td>";
+
+
+
+
+
 		str+="</div>";
 
-		str +=  "</div></div>";
+
+
+
+		str +=  "</div></div>"; // closing div for statisticsContent
+
+
 		str += "<div id='Sectionlistc'>";
 
 		// For now we only have two kinds of sections
@@ -2020,7 +2089,20 @@ function drawPieChart() {
   ctx.restore();
 }
 
+function startTimerForAidsText(num){
+	console.log("switching");
+	if (num % 2 == 0){
+		$('#textBlink').css("color", "blue");
+	}else {
+		$('#textBlink').css("color", "red");
+	}
+	num++;
+	timerForDeadlineText = window.setTimeout(function(){
+		startTimerForAidsText(num);
+	}, 100);
 
+
+}
 
 $(document).ready(function () {
 	// Function to prevent collapsing when clicking icons
@@ -2034,6 +2116,10 @@ $(document).ready(function () {
 	hoverMenuTimer = window.setTimeout(function(){
 		checkIfCloseFabMenu();
 	}, 25);
+ 	var num = 0;
+	timerForDeadlineText = window.setTimeout(function(){
+		startTimerForAidsText(num);
+	}, 12);
 
 
 });

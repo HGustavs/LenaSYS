@@ -529,8 +529,15 @@ p {
 
 #stastisticPie{
     border: 2px solid darkgray;
-    background-color: #eae8eb; 
+    background-color: #eae8eb;
     margin: 10px 10px 10px 10px;
+}
+
+#deadlineInfoBox{
+    width: 100%;
+    /* height: 100%; */
+    margin: 10px 10px 10px 10px;
+    border: 2px solid black;
 }
 
 /* --------------================################================-------------- *
@@ -4287,4 +4294,3 @@ textarea#filecont{
 #quiz{
     display: none;
 }
-
