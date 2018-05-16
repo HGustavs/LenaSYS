@@ -398,7 +398,7 @@ function convertFileKind(kind){
 function toggleFabButton() {
 	if (!$('.fab-btn-sm').hasClass('scale-out')) {
 		$('.fab-btn-sm').toggleClass('scale-out');
-		$('.fab-btn-list').fadeOut(0);
+		$('.fab-btn-list').delay(250).fadeOut(0);
 	} else {
 		$('.fab-btn-list').fadeIn(0);
 		$('.fab-btn-sm').toggleClass('scale-out');
@@ -407,7 +407,6 @@ function toggleFabButton() {
 
 $(document).mousedown(function(e) {
 	// If the fab list is visible, there should be no timeout to toggle the list
-    console.log("mousedown activated");
 	if ($('.fab-btn-list').is(':visible')) {
         //toggleFabButton();
 		if (e.target.id == "gFabBtn" || e.target.id == "gFabBtnImg") {
@@ -419,6 +418,9 @@ $(document).mousedown(function(e) {
 	    } else if (e.target.id == "linkFabBtn" || e.target.id == "linkFabBtnImg") {
 	    	showLinkPopUp();
 	    }
+        else if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) {
+			toggleFabButton();
+    }
 	} else {
         if (e.target.id == "fabBtn") {
 			pressTimer = window.setTimeout(function() {
@@ -432,17 +434,12 @@ $(document).mousedown(function(e) {
 	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
 			clearTimeout(pressTimer);
 			showFilePopUp('MFILE');
-            console.log("mouseup");
+           
     }// Click outside the FAB list
-    else if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target)// if the target of the click isn't the container...
-        && $('.fixed-action-button').has(e.target).length === 0) {// ... nor a descendant of the container
+    else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")// if the target of the click isn't the container...
+        /*&& $('.fixed-action-button').has(e.target).length === 0*/) {// ... nor a descendant of the container
         toggleFabButton();
-        console.log("2")
 	}
-    else if ($('.fab-btn-list').is(':visible') && $('.fixed-action-button').is(e.target)) {
-			toggleFabButton();
-            console.log("3");
-    }
 }).on("touchstart", function(e){
     //Event for holding the fab on mobile
     if ($('.fab-btn-list').is(':visible')) {
