@@ -30,6 +30,7 @@ var clist;
 var onlyPending=false;
 var timeZero=new Date(0);
 var showTeachers = false;
+var showMini = false;
 var duggaArray = [[]];
 
 function setup(){
@@ -184,8 +185,9 @@ function process()
 	dstr+="><label class='headerlabel' for='pending'>Only pending</label></div>";
 
 	// Filter for mini mode
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='minimode' value='0' id='minimode' onchange='miniMode()'>";
-	dstr+="<label class='headerlabel' for='minimode'>Mini mode</label></div>";
+	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='minimode' value='0' id='minimode' onclick='toggleMiniMode()'";
+	if (showMini){ dstr+=" checked"; }
+	dstr+="><label class='headerlabel' for='minimode'>Mini mode</label></div>";
 
 	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
 
@@ -638,11 +640,11 @@ function returnedResults(data)
   }
 }
 
-function miniMode(){
+function toggleMiniMode(){
   if (document.getElementById('minimode').checked){
-    $(".gradeImg").css("display", "none");
+    showMini = true;
   } else {
-    $(".gradeImg").css("display", "block");
+    showMini = false;
   }
 }
 
@@ -710,6 +712,16 @@ function createSortableTable(data){
 }
 
 function renderCell(col,celldata,cellid) {
+	if (showMini) {
+		if (col == "FnameLnameSSN"){
+			str = "<div class='dugga-result-div'>";
+    	str += celldata.firstname + " " + celldata.lastname;
+    	str += "</div>"
+    	return str;
+  	} else {
+  		return "";
+  	}
+	}
 	// First column (Fname/Lname/SSN)
   if (col == "FnameLnameSSN"){
     str = celldata.grade;
@@ -717,7 +729,7 @@ function renderCell(col,celldata,cellid) {
 
   } else {
     // color based on pass,fail,pending,assigned,unassigned
-    str = "<div style='height:100%;' class='";
+    str = "<div style='height:80px;' class='";
       if(celldata.kind==4) { str += "dugga-moment "; }
       if (celldata.grade === 1) {str += "dugga-fail";}
       else if (celldata.grade > 1) {str += "dugga-pass";}
