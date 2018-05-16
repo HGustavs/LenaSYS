@@ -2062,9 +2062,35 @@ span.arrow {
   /* Black w/ opacity */
 }
 
+.tableCellHighlightning {
+  background-image: radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2));
+}
+
+.tableRowHighlightning {
+  border-bottom: 3px solid rgba(97,72,117,1) !important;
+  border-top: 3px solid rgba(97,72,117,1) !important;
+}
+
+.tableColHighlightning {
+  border-left: 3px solid rgba(97,72,117,1) !important;
+  border-right: 3px solid rgba(97,72,117,1) !important;
+}
+
 #resultTable td {
   height: 80px;
   padding: 0px;
+  border-right: 3px dashed rgba(97,72,117,0);
+  border-left: 3px dashed rgba(97,72,117,0);
+  border-bottom: 3px dashed rgba(97,72,117,0);
+  border-top: 3px dashed rgba(97,72,117,0);
+}
+
+#user td {
+  padding: 0px;
+  border-right: 3px dashed rgba(97,72,117,0);
+  border-left: 3px dashed rgba(97,72,117,0);
+  border-bottom: 3px dashed rgba(97,72,117,0);
+  border-top: 3px dashed rgba(97,72,117,0);
 }
 
 /* End DuggaSys resulted*/
