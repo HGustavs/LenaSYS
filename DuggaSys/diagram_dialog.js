@@ -27,6 +27,7 @@ function closeAppearanceDialogMenu() {
        var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
        if (tmpDiagram != null) LoadImport(tmpDiagram);
      }
+     $(".loginBox").draggable('destroy');
     appearanceMenuOpen = false;
     classAppearanceOpen = false;
     globalAppearanceValue = 0;
@@ -169,6 +170,7 @@ function setSelectedOption(type, value){
 function globalAppearanceMenu(){
     globalAppearanceValue = 1;
     //open a menu to change appearance on all entities.
+    $(".loginBox").draggable();
     var form = showMenu();
     //AJAX
     loadFormIntoElement(form,'forms/global_appearance.php');

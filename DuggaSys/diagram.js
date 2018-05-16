@@ -875,37 +875,6 @@ function setType() {
     updateGraphics();
 }
 
-/*
- * Closes the dialog menu for appearance.
- */
-function closeAppearanceDialogMenu() {
-    $("#appearance").hide();
-    dimDialogMenu(false);
-    document.removeEventListener("click", clickOutsideDialogMenu);
-}
-
-/*
- * Closes the dialog menu when click is done outside box.
- */
-function clickOutsideDialogMenu(event) {
-    $(document).mousedown(function (event) {
-        var container = $("#appearance");
-        if (!container.is(event.target) && container.has(event.target).length === 0) {
-            container.hide();
-            dimDialogMenu(false);
-            document.removeEventListener("click", clickOutsideDialogMenu);
-        }
-    });
-}
-
-function dimDialogMenu(dim) {
-    if (dim) {
-        $("#appearance").css("display", "flex");
-    } else {
-        $("#appearance").css("display", "none");
-    }
-}
-
 function connectedObjects(line) {
     var privateObjects = [];
     for (var i = 0; i < diagram.length; i++) {
