@@ -79,7 +79,8 @@ function mousemoveevt(ev, t) {
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
-            uimode = "Moved";
+            uimode = "Moved";            
+            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true && !diagram[movobj].locked) {
                     if(snapToGrid){
