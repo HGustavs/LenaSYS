@@ -3827,22 +3827,22 @@ textarea#mrkdwntxt {
 
 #boldText {
   cursor: pointer;
-  margin-left: 5%;
-  position: relative;
-  bottom: 10%;
+  margin-left: 3%;
+  position: absolute;
+  margin-top: 0%;
 }
 
 #cursiveText {
   cursor: pointer;
-  margin-left: 3%;
-  position: relative;
-  bottom:10%;
+  margin-left: 8%;
+  position: absolute;
+  margin-top:0%;
 }
 
 #lists {
   cursor: pointer;
   color: #FFFFFF;
-  margin-left: 3%;
+  margin-left: 13%;
   font-size: 12px;
   position: absolute;
   filter: invert(100%);
@@ -3850,13 +3850,13 @@ textarea#mrkdwntxt {
 }
 #codeBlockText {
     cursor: pointer;
-    margin-left: 9%;
+    margin-left: 19%;
     position: absolute;
     margin-top: -1%
 }
 #quoteText {
     cursor: pointer;
-    margin-left: 16%;
+    margin-left: 26%;
     font-size: 25px;
     position: absolute;
     margin-top:-1%;
@@ -3867,7 +3867,7 @@ textarea#mrkdwntxt {
 }
 #insert-photo {
     position: absolute;
-    margin-left: 14%;
+    margin-left: 23%;
     margin-top: -1%;
 }
 #link {
@@ -3877,7 +3877,7 @@ textarea#mrkdwntxt {
 
 #linkFabBtnImgPrev {
     position: absolute;
-    margin-left: 31%;
+    margin-left: 38%;
     margin-top:-1%;
     filter: invert(100%);
 }
@@ -3956,7 +3956,7 @@ textarea#mrkdwntxt {
 }
 .headerType {
   cursor: pointer;
-  margin-left: 31%;
+  margin-left: 37%;
   position: absolute;
   margin-top:-1%
 }
@@ -3969,7 +3969,7 @@ textarea#mrkdwntxt {
   max-width: 63px;
   position: absolute;
   z-index: 2000;
-  right: 0px;
+  right: 38%;
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
