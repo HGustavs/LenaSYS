@@ -10,7 +10,7 @@ if($cardinality != 1){
       <option value='Derived'>Derived</option>
   </select></br>
   Cardinality: <br/>
-  <select onchange=\"changeCardinality()\" id='cardinality'>
+  <select onchange=\"changeCardinality(false)\" id='cardinality'>
     <option value='None'>None</option>
     <option value='1'>1</option>
     <option value='N'>N</option>
@@ -26,14 +26,14 @@ if($cardinality != 1){
       <option value='Derived'>Derived</option>
   </select></br>
   Cardinality: <br/>
-  <select onchange=\"changeCardinality()\" id='cardinality'>
+  <select onchange=\"changeCardinality(true)\" id='cardinality'>
     <option value='None'>None</option>
     <option value='0..1'>0..1</option>
     <option value='1..1'>1..1</option>
     <option value='0..*'>0..*</option>
     <option value='1..*'>1..*</option>
   </select><br/>
-  <select onchange=\"changeCardinality()\" id='cardinalityUml'>
+  <select onchange=\"changeCardinality(true)\" id='cardinalityUml'>
     <option value='None'>None</option>
     <option value='0..1'>0..1</option>
     <option value='1..1'>1..1</option>
