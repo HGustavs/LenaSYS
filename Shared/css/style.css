@@ -3174,6 +3174,8 @@ only screen and (max-device-width: 768px) {
 		padding-right: 28%; 
 		white-space: nowrap;
         font-weight: bold;
+        font-size: 16px;
+        color:#000000;
 	}
     
     /*

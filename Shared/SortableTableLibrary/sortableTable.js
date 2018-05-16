@@ -242,8 +242,11 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	    mhfstr += "<thead id='"+tableid+"_tblhead_mhf'><tr>";
 
 		//var freezePaneIndex = tbl.tblhead.indexOf(freezePane);
+
+		// Add Column for counter if the sortabletable should have a counter column.
 		if(this.hasCounter) {
-            str += "<th id='"+colname+"_"+tableid+"_tbl' class='"+tableid+"'></th>";
+            str += "<th id='counter_"+tableid+"_tbl' class='"+tableid+"'></th>";
+            mhstr += "<th id='counter_"+tableid+"_tbl_mh' class='"+tableid+"'></th>";
         }
 		for(var colname in tbl.tblhead) {
 			var col = tbl.tblhead[colname];
@@ -312,7 +315,9 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 
 				str += "<tr id='"+tableid+"_"+i+"' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 				mhvstr += "<tr id='"+tableid+"_"+i+"_mvh' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
-                if(this.hasCounter) {
+
+				// Add Counter cell to the row. The class <tableid>_counter can be used to style the counterText
+				if(this.hasCounter) {
                     str += "<td onclick='clickedInternal(event,this);' class='" + tableid + "_counter'><span>"+ this.rowIndex++ +"</span></td>";
                 }
 				result++;

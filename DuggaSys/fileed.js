@@ -29,7 +29,7 @@ var fabTimer;
 AJAXService("GET",{cid:querystring['cid']},"FILE");
 
 window.onresize = function() {
-	fileLink.magicHeader();
+	fileLink.renderTable();
 }
 
 $(document).on('click','.last',function(e) {
