@@ -251,9 +251,11 @@ function createCardinality(){
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
     }
 }
-function changeCardinality(){
+function changeCardinality(isUML){
     var val = document.getElementById('cardinality').value;
-    var valUML = document.getElementById('cardinalityUml').value;
+    if(isUML){
+        var valUML = document.getElementById('cardinalityUml').value;
+    }
 
     //Setting existing cardinality value on line
     if(val == "None") val = "";
