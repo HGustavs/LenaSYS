@@ -286,9 +286,8 @@ function mouseupevt(ev) {
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
     var saveState = md == 4 && uimode != "normal";
-    saveState = uimode == "Moved"  ? true : saveState;
-    if(lineStartObj > -1){
-        saveState = diagram[lineStartObj].symbolkind == 4 && uimode == "Moved" ? false : saveState;
+    if(movobj > -1) {
+        if(diagram[movobj].symbolkind != 4 && uimode == "Moved") saveState = true;
     }
     if (uimode == "CreateLine" && md == 4) {
         saveState = false;
