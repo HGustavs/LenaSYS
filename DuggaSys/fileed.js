@@ -421,7 +421,6 @@ $(document).mousedown(function(e) {
 	    }
         else if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) {
 			toggleFabButton();
-            alert("aaaaaa");
     }
 	} else {
         if (e.target.id == "fabBtn") {
@@ -438,14 +437,8 @@ $(document).mousedown(function(e) {
 			showFilePopUp('MFILE');
            
     }// Click outside the FAB list
-<<<<<<< Updated upstream
     else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) { // if the target of the click isn't the container...
         toggleFabButton();
-=======
-    else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")// if the target of the click isn't the container...
-        /*&& $('.fixed-action-button').has(e.target).length === 0*/) {// ... nor a descendant of the container
-        //toggleFabButton();
->>>>>>> Stashed changes
 	}
 }).on("touchstart", function(e){
     // If the fab list is visible, there should be no timeout to toggle the list
