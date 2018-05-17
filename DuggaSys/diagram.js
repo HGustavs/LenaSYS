@@ -941,6 +941,21 @@ function drawGrid() {
     }
 }
 
+function gridToSVG(width, height) {
+    var str = "", stroke = "";
+    for (var i = 0; i < width; i++) {
+        if (i % 5 == 0) stroke = "rgb(208, 208, 220)"; //This is a "thick" line
+        else stroke = "rgb(238, 238, 250)";
+        str += "<line x1='"+(i*gridSize)+"' y1='0' x2='"+(i*gridSize)+"' y2='"+height+"' style='stroke:"+stroke+";stroke-width:1;' />";
+    }
+    for (var i = 0; i < height; i++) {
+        if (i % 5 == 0) stroke = "rgb(208, 208, 220)"; //This is a "thick" line
+        else stroke = "rgb(238, 238, 250)";
+        str += "<line x1='0' y1='"+(i*gridSize)+"' x2='"+width+"' y2='"+(i*gridSize)+"' style='stroke:"+stroke+";stroke-width:1;' />";
+    }
+    return str;
+}
+
 //remove all elements in the diagram array. it hides the points by placing them beyond the users view.
 function clearCanvas() {
     while (diagram.length > 0) {
@@ -1369,4 +1384,17 @@ function redoDiagram() {
     if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
+}
+
+function diagramToSVG() {
+    var str = "";
+    // Convert lines to SVG first so they appear behind other objects
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+    }
+    // Conert other objects to SVG
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
+    }
+    return str;
 }

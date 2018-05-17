@@ -217,6 +217,20 @@ function Load() {
     updateGraphics();
 }
 
+function ExportSVG(el) {
+    var svgstr = "";
+    var width = window.innerWidth, height = window.innerHeight;
+    svgstr += "<svg width='"+width+"' height='"+height+"' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>";
+    svgstr += gridToSVG(width, height);
+    svgstr += diagramToSVG();
+    svgstr += "</svg>";
+    //$("#canvasDiv").html(svgstr);
+    var data = "text/json;charset=utf-8," + encodeURIComponent(svgstr);
+    el.setAttribute("class", 'icon-download');
+    el.setAttribute("href", "data:" + data);
+    el.setAttribute("download", "diagram.svg");
+}
+
 $(document).ready(function(){
     function downloadCanvas(link, canvasId, filename) {
         link.href = document.getElementById(canvasId).toDataURL();

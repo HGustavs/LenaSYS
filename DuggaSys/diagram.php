@@ -149,6 +149,9 @@
                                     <a href="#" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
                                 </div>
                                 <div class="export-drop-down-item">
+                                    <a href="#" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
+                                </div>
+                                <div class="export-drop-down-item">
                                     <a href="#" id="picid">Export Picture</a>
                                 </div>
                             </div>
