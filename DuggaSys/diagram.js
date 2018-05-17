@@ -1367,3 +1367,16 @@ function redoDiagram() {
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
+
+function diagramToSVG() {
+    var str = "";
+    // Convert lines to SVG first so they appear behind other objects
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+    }
+    // Conert other objects to SVG
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
+    }
+    return str;
+}
