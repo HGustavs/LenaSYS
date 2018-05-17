@@ -198,9 +198,6 @@ function Symbol(kind) {
     // Restricts resizing for classes
     //--------------------------------------------------------------------
     this.adjust = function () {
-        var resizeableX = false;
-        var resizeableY = false;
-
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
