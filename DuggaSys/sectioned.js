@@ -2084,6 +2084,12 @@ function fixDeadlineInfoBoxesText(){
 	for(var i = 0; i < copyOfDuggaArray.length; i++){
 		if (i > allDeadlineTexts.length - 1) break;
 		var lowestElement = copyOfDuggaArray.hasMin('deadline')
+		var dateOfCurrentElement = new Date(lowestElement['deadline'])
+		if(dateOfCurrentElement.getTime() < Date.now()){ // This deadline has already passed, no need to show it
+			copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(lowestElement), 1); // remove element
+			i--; // so we dont lose our index
+			continue; // skip rest of the for-loop
+		}
 		if(lowestElement['entryname'].length > 20){
 			allDeadlineTexts[i].innerHTML = " " + lowestElement['entryname'].slice(0, 20) + "...";
 		}else{
