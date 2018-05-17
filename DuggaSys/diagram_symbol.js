@@ -985,7 +985,49 @@ function Symbol(kind) {
 		// Create SVG string
 		str += "<g>";
 		if (this.symbolkind == 1) { //UML Class
+			var midy = points[this.middleDivider].y;
+            font = "bold " + parseInt(fontsize) + "px Arial";
+            ctx.font = font;
 
+            // Box
+            svgPos = x1+","+y1+" "+x2+","+y1+" "+x2+","+y2+" "+x1+","+y2;
+            svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
+            svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
+            str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
+            
+            svgStyle = "stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
+            // Top Divider
+            str += "<Line x1='"+x1+"' y1='"+(y1+(fontsize*1.5))+"' x2='"+x2+"' y2='"+(y1+(fontsize*1.5))+"' style='"+svgStyle+"' />";
+            // Middle Divider
+            str += "<Line x1='"+x1+"' y1='"+midy+"' x2='"+x2+"' y2='"+midy+"' style='"+svgStyle+"' />";
+
+            // Name
+            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            if(ctx.measureText(this.name).width >= (x2-x1) - 2){
+                svgPos = "x='"+(x1+2)+"' y='"+(y1+(0.85*this.textsize))+"' text-anchor='middle' dominant-baseline='central'";
+            }else{
+                svgPos = "x='"+(x1+((x2 - x1)*0.5))+"' y='"+(y1+(0.85*fontsize))+"' text-anchor='middle' dominant-baseline='central'";
+            }
+            str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.name+"</text>";
+
+            if (this.key_type == "Primary key") {
+                var linelength = ctx.measureText(this.name).width;
+                svgPos = (x1+((x2-x1)*0.5))+","+(y1+(0.85*fontsize))+" "+(x1+((x2-x1)*0.5))+","+(y1+(0.85*fontsize))+" ";
+                svgPos += (x1+((x2-x1)*0.5)+linelength)+","+(y1+(0.85*fontsize)+10);
+                str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
+            }
+
+            font = parseInt(fontsize) + "px Arial";
+            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            for (var i = 0; i < this.attributes.length; i++) {
+                svgPos = "x='"+(x1+(fontsize*0.3))+"' y='"+(y1+(fontsize*1.7)+(fontsize*i))+"'";
+                str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.attributes[i].text+"</text>";
+            }
+
+            for (var i = 0; i < this.operations.length; i++) {
+                svgPos = "x='"+(x1+(fontsize*0.3))+"' y='"+(midy+(fontsize*0.2)+(fontsize*i))+"'";
+                str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.operations[i].text+"</text>";
+            }
 		} else if (this.symbolkind == 2) { //ERAttribute
 
 		} else if (this.symbolkind == 3) { //Entity
