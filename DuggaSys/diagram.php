@@ -108,7 +108,7 @@
                         <div class="toolbar-drawer">
                             <button id='squarebutton' onclick="setMode('Square');" class='buttonsStyle unpressed' data="Draw Square">
                                 <img src="../Shared/icons/diagram_draw_square.svg">
-                            </button><br>
+                            </button>
                             <button id='drawfreebutton' onclick="setMode('Free');" class='buttonsStyle unpressed' data="Draw Free">
                                 <img src="../Shared/icons/diagram_draw_free.svg">
                             </button>
