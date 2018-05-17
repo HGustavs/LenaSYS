@@ -83,10 +83,9 @@ function showInfoText(object, displayText){
   var text = document.getElementById("infoText");
   text.style.display = "inline";
   text.innerHTML = displayText;
-
-  if(object.width!=null){
-    text.style.left = (document.documentElement.scrollLeft + object.getBoundingClientRect()["x"] + object.width["baseVal"]["value"] + 2) + "px";
-    text.style.top = (document.documentElement.scrollTop + object.getBoundingClientRect()["y"] + (object.height.baseVal.value / 2) - (text.offsetHeight / 2)) + "px";
+  if(typeof object.attributes.width !== 'undefined'){
+    text.style.left = (document.documentElement.scrollLeft + object.getBoundingClientRect()["x"] + object.getBoundingClientRect().width + 2) + "px";
+    text.style.top = (document.documentElement.scrollTop + object.getBoundingClientRect()["y"] + (object.getBoundingClientRect().height / 2) - (text.offsetHeight / 2)) + "px";
   }
   else{
     text.style.left = (document.documentElement.scrollLeft + object.getBoundingClientRect()["x"] + object.r["baseVal"]["value"] + 2) + "px";
