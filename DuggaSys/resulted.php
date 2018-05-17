@@ -57,7 +57,7 @@ pdoConnect();
 
   <!-- -------------------=============####### Preview Popover #######=============------------------- -->
 
-  
+
 	<div id='previewpopover' class='previewPopover' style='display:none;'>
 		<div class='loginBoxheader'>
 			<h3 style='width:100%;' id='Nameof'>Document Preview</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
@@ -110,16 +110,17 @@ pdoConnect();
 								padding-top:50px;
 								padding-bottom:50px;
 								text-align:center;
-								top:0;'> 
+								position: fixed;
+								top:0;'>
 									Result
 		</h1>
-		<div id='searchBar' style='position:relative; top:-5px; left: 5px;'>
+		<div id='searchBar' style='position: fixed;top: 110px; right: 10px;'>
 			<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.renderTable();'/>
 			<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>
 				<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
 			</button>
 		</div>
-		<div id="resultTable" style='width:fit-content; white-space: nowrap;'>	
+		<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 140px;'>
 		</div>
 
 </body>
