@@ -219,7 +219,7 @@ function Load() {
 
 function ExportSVG(el) {
     var svgstr = "";
-    var width = 1920, height = 1080;
+    var width = window.innerWidth, height = window.innerHeight;
     svgstr += "<svg width='"+width+"' height='"+height+"' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>";
     svgstr += gridToSVG(width, height);
     svgstr += diagramToSVG();
