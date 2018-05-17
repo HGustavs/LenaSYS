@@ -260,10 +260,10 @@ function Symbol(kind) {
             }
         } else if (this.symbolkind == 5){
             // Static size of relation. Makes resizing of relation impossible.
-            points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
+            /*points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
             points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
             points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
-            points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;
+            points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;*/
         }
     }
 
@@ -730,7 +730,7 @@ function Symbol(kind) {
 
 
         //Highlighting points when targeted, makes it easier to resize
-        if(this.targeted && this.symbolkind != 5){
+        if(this.targeted){
             ctx.beginPath();
             ctx.arc(x1,y1,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
