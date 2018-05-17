@@ -808,23 +808,23 @@ return celldata;
 //--------------------------------------------------------------------------
 
 function rowHighlightOn(rowid,rowno,colclass,centerel) {
-  document.getElementById(rowid).style.border = "3px solid rgba(97,72,117,1)";
-  var collist = document.getElementsByClassName(colclass);
-		for(let i=0;i<collist.length;i++){
-			collist[i].style.borderLeft="3px solid rgba(97,72,117,1)";
-			collist[i].style.borderRight="3px solid rgba(97,72,117,1)";
-		}
-  centerel.style.backgroundImage = "radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2))";
+  var row = document.getElementById(rowid);
+  row.classList.add("tableRowHighlightning");
+  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+  for(var i=0;i<collist.length;i++){
+    collist[i].classList.add("tableColHighlightning");
+  }
+  centerel.classList.add("tableCellHighlightning");
 }
 
 function rowHighlightOff(rowid,rowno,colclass,centerel) {
-  document.getElementById(rowid).style.border = "";
-  var collist = document.getElementsByClassName(colclass);
-		for(let i=0;i<collist.length;i++){
-			collist[i].style.borderLeft="";
-			collist[i].style.borderRight="";
-		}
-  centerel.style.backgroundImage = "none";
+  var row = document.getElementById(rowid);
+  row.classList.remove("tableRowHighlightning");
+  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+  for(var i=0;i<collist.length;i++){
+    collist[i].classList.remove("tableColHighlightning");
+  }
+  centerel.classList.remove("tableCellHighlightning");
 }
 
 //----------------------------------------------------------------

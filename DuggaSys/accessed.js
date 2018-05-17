@@ -625,16 +625,24 @@ myTable.magicHeader();
 
 }
 
-function rowHighlightOn(rowid,rowno,colclass,centerel){
-    document.getElementById(rowid).style.borderTop="2px solid rgba(255,0,0,1)";
-		document.getElementById(rowid).style.borderBottom="2px solid rgba(255,0,0,1)";
-		centerel.style.backgroundImage="radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2))";
+function rowHighlightOn(rowid,rowno,colclass,centerel) {
+  var row = document.getElementById(rowid);
+  row.classList.add("tableRowHighlightning");
+  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+  for(var i=0;i<collist.length;i++){
+    collist[i].classList.add("tableColHighlightning");
+  }
+  centerel.classList.add("tableCellHighlightning");
 }
 
-function rowHighlightOff(rowid,rowno,colclass,centerel){
-    document.getElementById(rowid).style.borderTop="";
-		document.getElementById(rowid).style.borderBottom="";
-		centerel.style.backgroundImage="none";
+function rowHighlightOff(rowid,rowno,colclass,centerel) {
+  var row = document.getElementById(rowid);
+  row.classList.remove("tableRowHighlightning");
+  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+  for(var i=0;i<collist.length;i++){
+    collist[i].classList.remove("tableColHighlightning");
+  }
+  centerel.classList.remove("tableCellHighlightning");
 }
 
 //excuted onclick button for quick searching in table
