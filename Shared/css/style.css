@@ -2013,13 +2013,13 @@ span.arrow {
   /* ie 6/7 */
 }
 
-.arrowComp, #arrowCompStatistics{
+.arrowComp, #arrowStatisticsClosed {
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
 }
 
-.arrowRight, #arrowRightStatistics{
+.arrowRight, #arrowStatisticsOpen {
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
