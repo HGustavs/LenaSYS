@@ -74,7 +74,7 @@
                             </div>
                           </div>
                         <h4 class="label tlabel" id="labelTools">Tools</h4>
-                        <div class="toolbar-drawer labelTools">
+                        <div class="toolbar-drawer" id="labelTools">
                             <div class="tooltipdialog">
                                 <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
                                     <img src="../Shared/icons/diagram_create_line.svg">
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         <h4 class="label tlabel" id="labelCreate">Create</h4>
-                        <div class="toolbar-drawer labelCreate">
+                        <div class="toolbar-drawer" id="labelCreate">
                             <div class="tooltipdialog">
                                 <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute">
                                     <img src="../Shared/icons/diagram_create_attribute.svg">
@@ -105,7 +105,7 @@
                             </div>
                         </div>
                         <h4 class="label tlabel" id="labelDraw">Draw</h4>
-                        <div class="toolbar-drawer labelDraw">
+                        <div class="toolbar-drawer" id="labelDraw">
                             <button id='squarebutton' onclick="setMode('Square');" class='buttonsStyle unpressed' data="Draw Square">
                                 <img src="../Shared/icons/diagram_draw_square.svg">
                             </button>
@@ -114,7 +114,7 @@
                             </button>
                         </div>
                         <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
-                        <div class="toolbar-drawer labelUndo" style="text-align: center">
+                        <div class="toolbar-drawer" id="labelUndo" style="text-align: center">
                             <button class="diagramAction" id="undoButton" onclick='undoDiagram()'>
                                 <img src="../Shared/icons/undo.svg" style="filter: invert(100%);">
                             </button>
