@@ -26,12 +26,9 @@ var entries;
 var moments;
 var results;
 var versions;
-var clist;
-var onlyPending=false;
 var timeZero=new Date(0);
-var showTeachers = false;
-var showMini = false;
 var duggaArray = [[]];
+var filterList;
 
 function setup(){
   //Benchmarking function
@@ -56,22 +53,6 @@ function setup(){
   filt+="</span></td>";
   $("#menuHook").before(filt);
 
-  // Set part of filter config
-  if (localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending")=="true"){
-      onlyPending=true;
-  } else {
-      onlyPending=false;
-  }
-
-  var t = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
-  if(t != null) {
-    if((t.indexOf("showteachers**true",0)>=0)){
-      showTeachers = true;
-  }else{
-      showTeachers = false;
-  }
-  }
-
   window.onscroll = function() {magicHeading()};
 
   AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "RESULT");
@@ -88,12 +69,6 @@ function toggleSortDir(col){
 
 function process()
 {
-	// Read dropdown from local storage
-	clist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
-	if (clist){
-		clist=clist.split("**");
-	}
-
 	// Create temporary list that complies with dropdown
 	momtmp=new Array;
 	var momname = "Moment unavailable";
@@ -164,30 +139,17 @@ function process()
 		}
 		students.push(student);
 	}
-	// Update dropdown list
-  // Filter for teachers.
-  var dstr="";
-	dstr+="<div class='checkbox-dugga checkmoment'>";
-	dstr+="<input type='checkbox' class='headercheck' name='showTeachers' value='0' id='showteachers'";
-	if(clist){
-		index=clist.indexOf("showteachers");
-		if(index>-1){
-			if(clist[index+1]=="true"){
-				dstr+=" checked";
-			}
-		}
+	// Update filter list from local storage.
+	filterList = JSON.parse(localStorage.getItem("resultTable_filter_"+querystring['cid']+"-"+querystring['coursevers']));
+	if (filterList == null){
+		filterList = {};
 	}
-	dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>";
 
-	// Filter for only showing pending
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='pending' value='0' id='pending'";
-	if (onlyPending){ dstr+=" checked"; }
-	dstr+="><label class='headerlabel' for='pending'>Only pending</label></div>";
-
-	// Filter for mini mode
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' class='headercheck' name='minimode' value='0' id='minimode' onclick='toggleMiniMode()'";
-	if (showMini){ dstr+=" checked"; }
-	dstr+="><label class='headerlabel' for='minimode'>Mini mode</label></div>";
+	// Add custom filters to the filter menu.
+  var dstr="";
+	dstr+=makeCustomFilter("showTeachers", "Show Teachers");
+	dstr+=makeCustomFilter("onlyPending", "Only pending");
+	dstr+=makeCustomFilter("minimode", "Mini mode");
 
 	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
 
@@ -232,6 +194,25 @@ function process()
 	//console.log(performance.now()-tim);
 }
 
+function makeCustomFilter(filtername, labeltext){
+	str="<div class='checkbox-dugga checkmoment'>";
+	str+= "<input type='checkbox' id='"+filtername+"' onclick='toggleFilter(\""+filtername+"\")'";
+	if (filterList[filtername] == null) {filterList[filtername] = false;}
+	if (filterList[filtername]) {str+=" checked";}
+	str+="><label class='headerlabel' for='"+filtername+"'>"+labeltext+"</label></div>";
+	return str;
+}
+
+function toggleFilter(filter){
+	if (filterList[filter] == false) {
+		filterList[filter] = true;
+	} else {
+		filterList[filter] = false;
+	}
+	localStorage.setItem("resultTable_filter_"+querystring['cid']+"-"+querystring['coursevers'], JSON.stringify(filterList));
+	myTable.renderTable();
+}
+
 function hoverc()
 {
     $('#dropdowns').css('display','none');
@@ -241,24 +222,6 @@ function hoverc()
 function leavec()
 {
   $('#dropdownc').css('display','none');
-
-  // Update columns only now
-  var str="";
-  $(".headercheck").each(function(){
-      str+=$(this).attr("id")+"**"+$(this).is(':checked')+"**";
-  });
-
-  showTeachers=$('#showteachers').is(":checked");
-    old=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
-    localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
-
-  onlyPending=$('#pending').is(":checked");
-    var opend=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending");
-    localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
-
-  if(str!=old || onlyPending==opend) process();
-  myTable.renderTable();
-  magicHeading();
 }
 
 function checkMomentParts(pos, id) {
@@ -640,15 +603,6 @@ function returnedResults(data)
   }
 }
 
-function toggleMiniMode(){
-  if (document.getElementById('minimode').checked){
-    showMini = true;
-  } else {
-    showMini = false;
-  }
-}
-
-
 var myTable;
 //----------------------------------------
 // Renderer
@@ -713,7 +667,7 @@ function createSortableTable(data){
 
 function renderCell(col,celldata,cellid) {
 	// Render minimode
-	if (showMini) {
+	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
 		if (col == "FnameLnameSSN"){
 			str = "<div class='dugga-result-div'>";
@@ -832,8 +786,8 @@ function rowHighlightOff(rowid,rowno,colclass,centerel) {
 //----------------------------------------------------------------
 function rowFilter(row) {
   // Custom filters that remove rows before an actual search
-  if (!showTeachers && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
-  if (onlyPending) {
+  if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
+  if (filterList["onlyPending"]) {
     let rowPending = false;
     for (var colname in row){
       if (colname != "FnameLnameSSN" && row[colname]["needMarking"] == true) { rowPending = true; break; }
