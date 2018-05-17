@@ -127,8 +127,8 @@ function renderBarDiagram(data)
   str += "<line style='stroke:#000;' x1='65' x2='99%' y1='220' y2='220'></line>";
   
   // Calculates and render scale numbers on the left
-  var zeros = Math.pow(10, Math.round(maxDayCount).toString().length - 2);
-  var highRange = Math.ceil(maxDayCount / zeros) * zeros;
+  var decimals = Math.pow(10, Math.round(maxDayCount).toString().length - 2);
+  var highRange = Math.ceil(maxDayCount / decimals) * decimals;
   for(var i = 0; i < 5; i++){
     let range = (highRange / 4) * i;
     if(highRange > 100){
@@ -196,16 +196,26 @@ function lineDiagram(){
     str="<svg viewBox='0 0 580 250' class='lineChart' style='max-width:900px;min-width:700px;background-color:#efefef;margin-top:10px;'>";
 
     // Calculates and render scale numbers on the left
-    var zeros = Math.pow(10, Math.round(maxDayCount).toString().length - 2);
-    var highRange = Math.ceil(maxDayCount / zeros) * zeros;
-   
-    for(var i = 0; i < 5; i++){
-        let range = (highRange / 4) * i;
-        if(highRange > 100){
-        range = Math.round(range);
+    var decimals = Math.pow(10, Math.round(maxDayCount).toString().length - 2);
+    //find the maximum value of commits/events/comments/LOC within selected dates
+    maxDayCount = 1;
+    for(i = 0; i < 7; i++) {
+      for(j = 1; j < dailyCount[i].length; j++) {
+        if(dailyCount[i][j] > maxDayCount) {
+          maxDayCount = dailyCount[i][j];
         }
-        str += "<text font-size='10' x='" + (45 - (range.toString().length * 7)) + "' y='" + (225 - (range / highRange) * 200) + "'>" + range + "</text>";
-        str += "<line style='stroke:#ccc;' x1='45' x2='99%' y1='" + (220 - (range / highRange) * 200) + "' y2='" + (220 - (range / highRange) * 200) + "'></line>";
+      }
+    }
+    var highRange = Math.ceil(maxDayCount / decimals) * decimals;
+   
+    var graphHeight = 200;
+    for(var i = 0; i < 5; i++){
+        var range = (highRange / 4) * i;
+        if(highRange > 100){
+          range = Math.round(range);
+        }
+        str += "<text font-size='10' x='" + (45 - (range.toString().length * 7)) + "' y='" + (225 - (range / highRange) * graphHeight) + "'>" + range + "</text>";
+        str += "<line style='stroke:#ccc;' x1='45' x2='99%' y1='" + (220 - (range / highRange) * graphHeight) + "' y2='" + (220 - (range / highRange) * graphHeight) + "'></line>";
     }
 
     //Grid lines
@@ -230,12 +240,12 @@ function lineDiagram(){
     str+="<polyline fill='none' stroke='#F44336' stroke-width='2'";
     str+="points='";
     for(i=0;i<7;i++){
-        str+=xNumber[i]+","+dailyCount[i][1]+" ";
+        str+=xNumber[i]+","+(dailyCount[i][1] / maxDayCount * graphHeight)+" ";
     }
     str+="'/>";
     for(i=0;i<xNumber.length;i++){
         str+="<circle onmouseover='showInfoText(this, \"" + "Commits: : " + (dailyCount[i][1]) + "\");' onmouseout='hideInfoText()'";
-        str+="cx='"+xNumber[i]+"' cy='"+dailyCount[i][1]+"' r='3' fill='#F44336'/>";
+        str+="cx='"+xNumber[i]+"' cy='"+(dailyCount[i][1] / maxDayCount * graphHeight)+"' r='3' fill='#F44336'/>";
     }
     str+="</g>";
 
@@ -244,12 +254,12 @@ function lineDiagram(){
     str+="<polyline fill='none' stroke='#4DB6AC' stroke-width='2'";
     str+="points='";
     for(i=0;i<7;i++){
-        str+=xNumber[i]+","+dailyCount[i][2]+" ";
+        str+=xNumber[i]+","+(dailyCount[i][2] / maxDayCount * graphHeight)+" ";
     }
     str+="'/>";
     for(i=0;i<xNumber.length;i++){
         str+="<circle onmouseover='showInfoText(this, \"" + "Events: " + (dailyCount[i][2]) + "\");' onmouseout='hideInfoText()'";
-        str+="cx='"+xNumber[i]+"' cy='"+dailyCount[i][2]+"' r='3' fill='#4DB6AC' />";
+        str+="cx='"+xNumber[i]+"' cy='"+(dailyCount[i][2] / maxDayCount * graphHeight)+"' r='3' fill='#4DB6AC' />";
     }
     str+="</g>";
 
@@ -258,13 +268,13 @@ function lineDiagram(){
     str+="<polyline fill='none' stroke='purple' stroke-width='2'";
     str+="points='";
     for(i=0;i<7;i++){
-        str+=xNumber[i]+","+dailyCount[i][3]+" ";
+        str+=xNumber[i]+","+(dailyCount[i][3] / maxDayCount * graphHeight)+" ";
     }
     str+="'/>";
 
     for(i=0;i<xNumber.length;i++){
         str+="<circle onmouseover='showInfoText(this, \"" + "LOC: " + (dailyCount[i][3]) + "\");' onmouseout='hideInfoText()'";
-        str+="cx='"+xNumber[i]+"' cy='"+dailyCount[i][3]+"' r='3' fill='purple' />";
+        str+="cx='"+xNumber[i]+"' cy='"+(dailyCount[i][3] / maxDayCount * graphHeight)+"' r='3' fill='purple' />";
     }
     str+="</g>";
 
@@ -273,12 +283,12 @@ function lineDiagram(){
     str+="<polyline fill='none' stroke='#43A047' stroke-width='2'";
     str+="points='";
     for(i=0;i<7;i++){
-        str+=xNumber[i]+","+dailyCount[i][4]+" ";
+        str+=xNumber[i]+","+(dailyCount[i][4] / maxDayCount * graphHeight)+" ";
     }
     str+="'/>";
     for(i=0;i<xNumber.length;i++){
         str+="<circle onmouseover='showInfoText(this, \"" + "Comments: " + (dailyCount[i][4]) + "\");' onmouseout='hideInfoText()'";
-        str+="cx='"+xNumber[i]+"' cy='"+dailyCount[i][4]+"' r='3' fill='#43A047' />";
+        str+="cx='"+xNumber[i]+"' cy='"+(dailyCount[i][4] / maxDayCount * graphHeight)+"' r='3' fill='#43A047' />";
     }
     str+="</g>";
     str+="</svg>";
