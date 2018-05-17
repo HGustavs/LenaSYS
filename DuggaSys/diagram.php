@@ -73,7 +73,7 @@
                               <img id="toolbarRightArrow" src="../Shared/icons/arrow.svg">
                             </div>
                           </div>
-                        <h4 class="label" id="labelTools">Tools</h4>
+                        <h4 class="tlabel" id="labelTools">Tools</h4>
                         <div class="toolbar-drawer">
                             <div class="tooltipdialog">
                                 <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
@@ -81,7 +81,7 @@
                                 </button>
                             </div>
                         </div>
-                        <h4 class="label" id="labelCreate">Create</h4>
+                        <h4 class="tlabel" id="labelCreate">Create</h4>
                         <div class="toolbar-drawer">
                             <div class="tooltipdialog">
                                 <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute">
@@ -104,7 +104,7 @@
                                 </button>
                             </div>
                         </div>
-                        <h4 class="label" id="labelDraw">Draw</h4>
+                        <h4 class="tlabel" id="labelDraw">Draw</h4>
                         <div class="toolbar-drawer">
                             <button id='squarebutton' onclick="setMode('Square');" class='buttonsStyle unpressed' data="Draw Square">
                                 <img src="../Shared/icons/diagram_draw_square.svg">
@@ -113,7 +113,7 @@
                                 <img src="../Shared/icons/diagram_draw_free.svg">
                             </button>
                         </div>
-                        <h4 class="label" id="labelUndo">Undo/Redo</h4>
+                        <h4 class="tlabel" id="labelUndo">Undo/Redo</h4>
                         <div class="toolbar-drawer" style="text-align: center">
                             <button class="diagramAction" id="undoButton" onclick='undoDiagram()'>
                                 <img src="../Shared/icons/undo.svg" style="filter: invert(100%);">
