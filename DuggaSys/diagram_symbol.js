@@ -259,12 +259,13 @@ function Symbol(kind) {
                 points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
             }
         } else if (this.symbolkind == 5){
-            if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2 ||
-              points[this.bottomRight].y - points[this.topLeft].y < relationTemplate.height/2){
-                points[this.bottomRight].y = points[this.bottomRight].x = points[this.topLeft].x + relationTemplate.width/2;
-            }else{
-                points[this.bottomRight].y = points[this.bottomRight].x*(relationTemplate.height/relationTemplate.width);
+            if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2){
+                points[this.bottomRight].x = points[this.topLeft].x + relationTemplate.width/2;
             }
+            if(points[this.bottomRight].y - points[this.topLeft].y < relationTemplate.height/2){
+                points[this.bottomRight].y = points[this.topLeft].y + relationTemplate.height/2;
+            }
+            points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
             // Static size of relation. Makes resizing of relation impossible.
