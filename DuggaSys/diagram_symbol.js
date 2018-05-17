@@ -1003,7 +1003,8 @@ function Symbol(kind) {
 
             // Name
             svgStyle = "fill:"+this.fontColor+";font:"+font+";";
-            if(ctx.measureText(this.name).width >= (x2-x1) - 2){
+            var nameLength = ctx.measureText(this.name).width;
+            if(nameLength >= (x2-x1) - 2){
                 svgPos = "x='"+(x1+2)+"' y='"+(y1+(0.85*this.textsize))+"' text-anchor='middle' dominant-baseline='central'";
             }else{
                 svgPos = "x='"+(x1+((x2 - x1)*0.5))+"' y='"+(y1+(0.85*fontsize))+"' text-anchor='middle' dominant-baseline='central'";
@@ -1011,9 +1012,8 @@ function Symbol(kind) {
             str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.name+"</text>";
 
             if (this.key_type == "Primary key") {
-                var linelength = ctx.measureText(this.name).width;
                 svgPos = (x1+((x2-x1)*0.5))+","+(y1+(0.85*fontsize))+" "+(x1+((x2-x1)*0.5))+","+(y1+(0.85*fontsize))+" ";
-                svgPos += (x1+((x2-x1)*0.5)+linelength)+","+(y1+(0.85*fontsize)+10);
+                svgPos += (x1+((x2-x1)*0.5)+nameLength)+","+(y1+(0.85*fontsize)+10);
                 str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
             }
 
