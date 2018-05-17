@@ -17,7 +17,7 @@ function Path() {
     this.Opacity = 1;               // Opacity (default is 100%)
     this.linewidth = 2;             // Line Width (stroke width - default is 2 pixels)
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
-                                    // An organized path can contain several sub-path, each of which must be organized
+    this.targeted = true;                    // An organized path can contain several sub-path, each of which must be organized
 
     //--------------------------------------------------------------------
     // Performs a delta-move on all points in a path
@@ -84,7 +84,7 @@ function Path() {
         }
         if (this.segments.length > 0) {
             // Assign stroke style, color, transparency etc
-            ctx.strokeStyle = this.strokeColor;
+            ctx.strokeStyle = this.targeted ? "#F82" : this.strokeColor;
             ctx.fillStyle = this.fillColor;
             ctx.globalAlpha = this.Opacity;
             ctx.lineWidth = this.linewidth;
@@ -391,13 +391,15 @@ function figureFreeDraw() {
             p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         }
         // Check if the new point is the starting point
-        if (points[startPosition].x == points[p2].x &&
-            points[startPosition].y == points[p2].y) {
+        var closestPoint = points.closestPoint(points[p2].x, points[p2].y, p2);
+        if(closestPoint.index == startPosition && closestPoint.distance < 10){
             // Delete all previous rendered lines
             for (var i = 0; i < numberOfPointsInFigure; i++) {
                 diagram.pop();
             }
             // Render the figure
+            points.splice(p2, 1);
+            p2 = startPosition;
             figurePath.addsegment(1, p1, p2);
             diagram.push(figurePath);
             cleanUp();

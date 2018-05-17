@@ -468,7 +468,6 @@ function mouseupevt(ev) {
             if(md != 0) diagram[lastSelectedObject].targeted = true;
         }
     }
-    document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();
