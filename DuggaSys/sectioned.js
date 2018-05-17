@@ -534,7 +534,6 @@ function newItem() {
 			comment: comment
 		}, "SECTION");
 	$("#editSection").css("display", "none");
-	setTimeout(function () { scrollToBottom(); }, 100);  // Scroll the page to the bottom after the object is created, the delay is there because the function runs quicker than the database update
 }
 
 function closeSelect() {
@@ -1622,13 +1621,23 @@ function returnedSection(data) {
 		showCreateVersion();
 
 	}
+
+	scrollToBottom(); // Scroll to the bottom to show newly created items.
+
+	// The next 5 lines are related to collapsable menus and their state.
 	getHiddenElements();
 	hideCollapsedMenus();
 	getArrowElements();
 	toggleArrows();
 	menuState.idCounter = 0;
+
+	// Change title of the current page depending on which page the user is on.
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
+
+	// Change the scroll position to where the user was last time.
 	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
+
+	// Create the pie chart used in the statistics section.
 	drawPieChart();
 	fixDeadlineInfoBoxesText()
 }
