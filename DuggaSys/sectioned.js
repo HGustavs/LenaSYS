@@ -992,11 +992,9 @@ function returnedSection(data) {
 		// str+="<div><p>Swim lane description</p></div>";
 
 		str+="</div>";
-		str	+="<div id='deadlineInfoBox' style='display: none; "
-			+" padding: 10px; width: 250px;"
-			+" '> ";
-		str +="<h2 id='deadlineInfoTitle' >    </h2>"
-
+		str	+="<div id='deadlineInfoBox' style='display: none;"
+			+" padding: 10px; width: 250px;'> ";
+		str +="<h2 id='deadlineInfoTitle'></h2>"
 		str +="<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
 		+ "<span id='deadlineInfoFirstDate' style='margin-right:5px;width:35px;'></span></div>"
 		str +="<div class='deadlineInfo'><span style='width: 100%;' id='deadlineInfoSecondText'> </span>"
