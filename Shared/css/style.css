@@ -3138,6 +3138,10 @@ only screen and (max-device-width: 768px) {
     font-size: 20px;
   }
 
+.fileLink_counter {
+    font-size: 16px;
+    color: #000;
+}
     /* Force table to not be like tables anymore */
     #fileLink_body{
 		display: block;
