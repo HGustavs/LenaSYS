@@ -311,6 +311,7 @@ function handleSelect() {
 function mouseupevt(ev) {
     if (uimode == "CreateFigure" && md == 4) {
         createFigure();
+        if(figureType == "Free") return;
     }
     // Code for creating a new class
     if (md == 4 && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
