@@ -79,7 +79,7 @@ function mousemoveevt(ev, t) {
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
-            uimode = "Moved";            
+            uimode = "Moved";
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true && !diagram[movobj].locked) {
@@ -101,7 +101,39 @@ function mousemoveevt(ev, t) {
     updateGraphics();
     // Draw select or create dotted box
     if (md == 4) {
-        if (uimode == "CreateEREntity"){
+        if (figureType == "Free" && uimode == "CreateFigure"){
+            if(p2 != null && !(isFirstPoint)) {
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
+                ctx.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
+                ctx.strokeStyle = "#000";
+                ctx.stroke();
+                ctx.setLineDash([]);
+                if (ghostingCrosses == true) {
+                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                }
+            }
+        }else if(uimode == "CreateFigure" && figureType == "Square"){
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath(1);
+            ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
+            ctx.lineTo(currentMouseCoordinateX, startMouseCoordinateY);
+            ctx.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
+            ctx.lineTo(startMouseCoordinateX, currentMouseCoordinateY);
+            ctx.lineTo(startMouseCoordinateX, startMouseCoordinateY);
+            ctx.strokeStyle = "#d51";
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.closePath(1);
+            if (ghostingCrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossFillStyle = "rgba(255, 102, 68, 0.0)";
+            }
+        }else if (uimode == "CreateEREntity"){
             ctx.setLineDash([3, 3]);
             ctx.beginPath(1);
             ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
@@ -222,13 +254,18 @@ function mousedownevt(ev) {
         handleSelect();
     } else {
         md = 4; // Box select or Create mode.
-        startMouseCoordinateX = currentMouseCoordinateX;
-        startMouseCoordinateY = currentMouseCoordinateY;
+        if(uimode != "CreateFigure"){
+            startMouseCoordinateX = currentMouseCoordinateX;
+            startMouseCoordinateY = currentMouseCoordinateY;
+        }
         if(uimode != "MoveAround" && !ctrlIsClicked){
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
             }
             selected_objects = [];
+        }
+        if(uimode == "CreateFigure" && figureType == "Square"){
+            createFigure();
         }
     }
 }
@@ -272,11 +309,9 @@ function handleSelect() {
 }
 
 function mouseupevt(ev) {
-
-  /*  if (snapToGrid) {
-        currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
-        currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
-    }*/
+    if (uimode == "CreateFigure" && md == 4) {
+        createFigure();
+    }
     // Code for creating a new class
     if (md == 4 && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
         resize();
@@ -433,7 +468,6 @@ function mouseupevt(ev) {
             if(md != 0) diagram[lastSelectedObject].targeted = true;
         }
     }
-    document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();

@@ -47,7 +47,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); Symbol(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();">
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
@@ -73,16 +73,16 @@
                               <img id="toolbarRightArrow" src="../Shared/icons/arrow.svg">
                             </div>
                           </div>
-                        <h4 class="label">Tools</h4>
-                        <div class="toolbar-drawer">
+                        <h4 class="label tlabel" id="labelTools">Tools</h4>
+                        <div class="toolbar-drawer" id="drawerTools">
                             <div class="tooltipdialog">
                                 <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
                                     <img src="../Shared/icons/diagram_create_line.svg">
                                 </button>
                             </div>
                         </div>
-                        <h4 class="label">Create</h4>
-                        <div class="toolbar-drawer">
+                        <h4 class="label tlabel" id="labelCreate">Create</h4>
+                        <div class="toolbar-drawer" id="drawerCreate">
                             <div class="tooltipdialog">
                                 <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute">
                                     <img src="../Shared/icons/diagram_create_attribute.svg">
@@ -104,19 +104,17 @@
                                 </button>
                             </div>
                         </div>
-                        <!--
-                        <h4 class="label">Draw</h4>
-                        <div class="toolbar-drawer">
+                        <h4 class="label tlabel" id="labelDraw">Draw</h4>
+                        <div class="toolbar-drawer" id="drawerDraw">
                             <button id='squarebutton' onclick="setMode('Square');" class='buttonsStyle unpressed' data="Draw Square">
                                 <img src="../Shared/icons/diagram_draw_square.svg">
-                            </button><br>
+                            </button>
                             <button id='drawfreebutton' onclick="setMode('Free');" class='buttonsStyle unpressed' data="Draw Free">
                                 <img src="../Shared/icons/diagram_draw_free.svg">
                             </button>
                         </div>
-                        -->
-                        <h4 class="label">Undo/Redo</h4>
-                        <div class="toolbar-drawer" style="text-align: center">
+                        <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
+                        <div class="toolbar-drawer" id="drawerUndo" style="text-align: center">
                             <button class="diagramAction" id="undoButton" onclick='undoDiagram()'>
                                 <img src="../Shared/icons/undo.svg" style="filter: invert(100%);">
                             </button>
