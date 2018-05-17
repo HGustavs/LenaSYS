@@ -104,7 +104,6 @@
                                 </button>
                             </div>
                         </div>
-                        <!--
                         <h4 class="label">Draw</h4>
                         <div class="toolbar-drawer">
                             <button id='squarebutton' onclick="setMode('Square');" class='buttonsStyle unpressed' data="Draw Square">
@@ -114,7 +113,6 @@
                                 <img src="../Shared/icons/diagram_draw_free.svg">
                             </button>
                         </div>
-                        -->
                         <h4 class="label">Undo/Redo</h4>
                         <div class="toolbar-drawer" style="text-align: center">
                             <button class="diagramAction" id="undoButton" onclick='undoDiagram()'>
