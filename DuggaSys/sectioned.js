@@ -2111,7 +2111,7 @@ function fixDeadlineInfoBoxesText(){
 	}
 
 	if(closestDeadlineArray.length == 0){ // if we have no deadlines, put this nice text instead
-		allDeadlineTexts[0].innerHTML = "No upcoming duggas"
+		allDeadlineTexts[0].innerHTML = "No upcoming deadlines"
 	}
 }
 
