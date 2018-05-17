@@ -43,6 +43,7 @@ function switchToolbar(direction){
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
+    $("#drawerUndo").show();
     $(".tlabel").hide();
     $("#labelCreate").show();
     $("#labelTools").show();
@@ -56,6 +57,7 @@ function switchToolbar(direction){
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
+    $("#drawerUndo").show();
     $(".tlabel").hide();
     $("#labelCreate").show();
     $("#labelTools").show();
@@ -66,6 +68,7 @@ function switchToolbar(direction){
   }else if(toolbarState == 3){
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
+    $("#drawerUndo").show();
     $(".tlabel").hide();
     $("#labelDraw").show();
     $("#labelUndo").show();
