@@ -709,7 +709,7 @@ function renderCell(col, celldata, cellid) {
 	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "arrowVariant") {
 		str = "<img id='dorf' src='../Shared/icons/PlayT.svg' ";
-		str += " onclick='getVariantPreview();'>";
+		str += " onclick='getVariantPreview( " + object + ", " + clickedElement + ");'>";
 		return str;
 	}
 
@@ -854,7 +854,28 @@ function showVariantDisableButton() {
 
 //END OF closers and openers
 
-function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template) {
+function getVariantPreview(vid) {
+	var did = document.getElementById("did").value;
+	var target_variant;
+	var target_quiz;
+	globalData['entries'].forEach(element => {
+		if (element['did'] == did) {
+			target_quiz = element;
+		}
+		var tempVariant = element['variants'];
+		tempVariant.forEach(variant => {
+			if (variant['vid'] == vid) {
+				target_variant = variant;
+			}
+		});
+	});
+
+
+	var template = target_quiz['quizFile'];
+	var duggaVariantParam = target_variant['param']; // Set Variant Param
+	var duggaVariantAnswer = target_variant['variantanswer']; // Set Variant Answer
+
+
 	$("#MarkCont").html(duggaPages[template]);
 
 	$.getScript("templates/" + template + ".js")
@@ -862,9 +883,9 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template) {
 			showFacit(decodeURIComponent(duggaVariantParam), "UNK", decodeURIComponent(duggaVariantAnswer), null, null, null);
 		})
 		.fail(function (jqxhr, settings, exception) {
-			eval(script);
 			showFacit(decodeURIComponent(duggaVariantParam), "UNK", decodeURIComponent(duggaVariantAnswer));
 		});
+
 
 	$("#resultpopover").css("display", "flex");
 }
