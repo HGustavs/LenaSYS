@@ -3523,6 +3523,10 @@ only screen and (max-device-width: 320px) {
     width: 95%;
     margin: 1rem auto;
   }
+
+  #statisticsList {
+    display: none;
+  }
 }
 
 /* --------------================################================-------------- *
