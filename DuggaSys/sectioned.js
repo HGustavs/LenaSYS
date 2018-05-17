@@ -712,6 +712,9 @@ function getDateFormat(date, operation = ""){
 			+ ('0' + date.getDate()).slice(-2)
 			+ "T" + date.getHours() + ":" + date.getMinutes() + ":"
 			+ date.getSeconds();
+	}else if(operation == "dateMonth"){
+		return ('0' + (date.getDate())).slice(-2) + '-'
+			+ ('0' + (date.getMonth()+1)).slice(-2);
 	}
 	return date.getFullYear() + "-"
 			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
@@ -989,29 +992,23 @@ function returnedSection(data) {
 		// str+="<div><p>Swim lane description</p></div>";
 
 		str+="</div>";
-		str	+="<div id='deadlineInfoBox' style='display: inline-block; "
+		str	+="<div id='deadlineInfoBox' style='display: none; "
 			+" padding: 10px; width: 250px;"
-			+" background-color: #fff;'> ";
-		str +="<h2 id='deadlineInfoTitle' style='color: red;'>  Upcoming Deadlines  </h2>"
-		str +="<h4 id='deadlineInfoFirst'> bitdugga 1 in 3 days </h3>"
-		str +="<h4 id='deadlineInfoSecond'> Dugga with a very very very very long name in 12 hours </h4> "
-		str +="<h4 id='deadlineInfoThird'> asd </h5>	"
-		str +="<h4 id='deadlineInfoFourth'> asd </h6>"
-		str +="<h4 id='deadlineInfoFifth'> asd </h6>"
+			+" '> ";
+		str +="<h2 id='deadlineInfoTitle' style='color: red;'>    </h2>"
 
-
-
-
-
-
+		str +="<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
+		+ "<span id='deadlineInfoFirstDate' style='margin-right:5px;width:35px;'></span></div>"
+		str +="<div class='deadlineInfo'><span style='width: 100%;' id='deadlineInfoSecondText'> </span>"
+		+ "<span id='deadlineInfoSecondDate' style='margin-right:5px;width: 35px;'> </span> </div>"
+		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoThirdText'> </span>"
+		+ "<span id='deadlineInfoThirdDate' style='margin-right:5px;width: 35px;'> </span> </div>"
+		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFourthText'> </span>"
+		+ "<span id='deadlineInfoFourthDate' style='margin-right:5px;width: 35px;'> </span> </div>"
+		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFifthText'> </span>"
+		+ "<span id='deadlineInfoFifthDate' style='margin-right:5px;width:35px;'> </span> </div>"
 		str+="</div>";
-
-
-
-
 		str +=  "</div></div>"; // closing div for statisticsContent
-
-
 		str += "<div id='Sectionlistc'>";
 
 		// For now we only have two kinds of sections
@@ -2048,42 +2045,59 @@ function drawPieChart() {
 
 
 function fixDeadlineInfoBoxesText(){
-	// console.log(retdata['duggor']);
 	var closestDeadlineArray = [];
-
-
-	var copyOfDuggaArray = retdata['duggor'];
-
-	copyOfDuggaArray.reduce(function(prev, curr){
-		return prev.deadline < curr.deadline ? prev : curr;
-	});
-
-	Array.prototype.hasMin = function(attrib){
-		return this.reduce(function(prev, curr){
-			return prev[attrib] < curr[attrib] ? prev : curr;
+	var copyOfDuggaArray = retdata['entries'];
+	for(var i = 0; i < copyOfDuggaArray.length; i++){
+		if(copyOfDuggaArray[i]['kind'] != 3){
+			copyOfDuggaArray.splice(i, 1);
+			i--; // so we dont skip any elements when we remove them.
+		}
+	}
+	if(!copyOfDuggaArray.length == 0){
+		$("#deadlineInfoBox").css("display", "block");
+		document.getElementById("deadlineInfoTitle").innerHTML = "Upcoming Deadlines";
+		copyOfDuggaArray.reduce(function(prev, curr){
+			return prev.deadline < curr.deadline ? prev : curr;
 		});
+
+		Array.prototype.hasMin = function(attrib){
+			return this.reduce(function(prev, curr){
+				return prev[attrib] < curr[attrib] ? prev : curr;
+			});
+		}
 	}
 
-	closestDeadlineArray.push((copyOfDuggaArray.hasMin('deadline')));
-	copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(copyOfDuggaArray.hasMin('deadline')), 1);
-	closestDeadlineArray.push((copyOfDuggaArray.hasMin('deadline')));
-	copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(copyOfDuggaArray.hasMin('deadline')), 1);
-	closestDeadlineArray.push((copyOfDuggaArray.hasMin('deadline')));
-	copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(copyOfDuggaArray.hasMin('deadline')), 1);
-	closestDeadlineArray.push((copyOfDuggaArray.hasMin('deadline')));
-	copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(copyOfDuggaArray.hasMin('deadline')), 1);
-	closestDeadlineArray.push((copyOfDuggaArray.hasMin('deadline')));
-	copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(copyOfDuggaArray.hasMin('deadline')), 1);
+	var allDeadlineTexts = [];
+	allDeadlineTexts.push(document.getElementById("deadlineInfoFirstText"));
+	allDeadlineTexts.push(document.getElementById("deadlineInfoSecondText"));
+	allDeadlineTexts.push(document.getElementById("deadlineInfoThirdText"));
+	allDeadlineTexts.push(document.getElementById("deadlineInfoFourthText"));
+	allDeadlineTexts.push(document.getElementById("deadlineInfoFifthText"));
+	var deadLineDates = [];
+	deadLineDates.push(document.getElementById("deadlineInfoFirstDate"));
+	deadLineDates.push(document.getElementById("deadlineInfoSecondDate"));
+	deadLineDates.push(document.getElementById("deadlineInfoThirdDate"));
+	deadLineDates.push(document.getElementById("deadlineInfoFourthDate"));
+	deadLineDates.push(document.getElementById("deadlineInfoFifthDate"));
 
-	document.getElementById("deadlineInfoFirst").innerHTML = closestDeadlineArray[0]['qname'];
-	document.getElementById("deadlineInfoSecond").innerHTML = closestDeadlineArray[1]['qname'];
-	document.getElementById("deadlineInfoThird").innerHTML = closestDeadlineArray[2]['qname'];
-	document.getElementById("deadlineInfoFourth").innerHTML = closestDeadlineArray[3]['qname'];
-	document.getElementById("deadlineInfoFifth").innerHTML = closestDeadlineArray[4]['qname'];
-	console.log(closestDeadlineArray);
-	console.log(retdata);
+
+	for(var i = 0; i < copyOfDuggaArray.length; i++){
+		if (i > allDeadlineTexts.length - 1) break;
+		var lowestElement = copyOfDuggaArray.hasMin('deadline')
+		if(lowestElement['entryname'].length > 20){
+			allDeadlineTexts[i].innerHTML = " " + lowestElement['entryname'].slice(0, 20) + "...";
+		}else{
+			allDeadlineTexts[i].innerHTML = " " + lowestElement['entryname'].slice(0, 20);
+		}
+		deadLineDates[i].innerHTML = " " + removeYearFromDate(lowestElement['deadline']);
+		copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(lowestElement), 1);
+	}
 }
 
+function removeYearFromDate(date){
+	var remadeDate = new Date(date);
+	return getDateFormat(remadeDate, "dateMonth").replace("-" ,"/");
+}
 
 $(document).ready(function () {
 	// Function to prevent collapsing when clicking icons
