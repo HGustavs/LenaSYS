@@ -1070,7 +1070,7 @@ function Symbol(kind) {
 			} else if (this.key_type == "Derived") {
 				strokeWidth = this.lineWidth * 2;
 				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
-				str += "<line "+svgPos+" style='"+svgStyle+"' stroke-dashArray='"+lineDash+"' />";
+				str += "<line "+svgPos+" style='"+svgStyle+"' stroke-dasharray='"+lineDash+"' />";
 			} else {
 				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
