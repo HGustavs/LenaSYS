@@ -408,7 +408,6 @@ function toggleFabButton() {
 $(document).mousedown(function(e) {
 	// If the fab list is visible, there should be no timeout to toggle the list
 	if ($('.fab-btn-list').is(':visible')) {
-        //toggleFabButton();
 		if (e.target.id == "gFabBtn" || e.target.id == "gFabBtnImg") {
 	    	showFilePopUp('GFILE');
 	    } else if (e.target.id == "lFabBtn" || e.target.id == "lFabBtnImg") {
@@ -436,8 +435,7 @@ $(document).mousedown(function(e) {
 			showFilePopUp('MFILE');
            
     }// Click outside the FAB list
-    else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")// if the target of the click isn't the container...
-        /*&& $('.fixed-action-button').has(e.target).length === 0*/) {// ... nor a descendant of the container
+    else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) { // if the target of the click isn't the container...
         toggleFabButton();
 	}
 }).on("touchstart", function(e){
