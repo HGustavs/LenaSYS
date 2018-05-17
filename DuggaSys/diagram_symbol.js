@@ -984,7 +984,7 @@ function Symbol(kind) {
 
 		// Create SVG string
 		str += "<g>";
-		if (this.symbolkind == 1) { //UML Class
+		if (this.symbolkind == 1) {
 			var midy = points[this.middleDivider].y;
             font = "bold " + parseInt(fontsize) + "px Arial";
             ctx.font = font;
@@ -1028,9 +1028,9 @@ function Symbol(kind) {
                 svgPos = "x='"+(x1+(fontsize*0.3))+"' y='"+(midy+(fontsize*0.2)+(fontsize*i))+"'";
                 str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.operations[i].text+"</text>";
             }
-		} else if (this.symbolkind == 2) { //ERAttribute
+		} else if (this.symbolkind == 2) {
 
-		} else if (this.symbolkind == 3) { //Entity
+		} else if (this.symbolkind == 3) {
 			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 			// Add extra box if weak entity
 			if (this.key_type == "Weak") {
@@ -1049,7 +1049,7 @@ function Symbol(kind) {
 				svgPos = "x='"+(x1 + ((x2 - x1) * 0.5))+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='middle' dominant-baseline='central'";
 			}
 			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
-		} else if (this.symbolkind == 4) { //Line
+		} else if (this.symbolkind == 4) {
 			// Cardinality
 			if (this.cardinality[0].value != "" && this.cardinality[0].value != null) {
 				svgPos = "x='"+this.cardinality[0].x+"' y='"+this.cardinality[0].y+"' text-anchor='middle' dominant-baseline='central'";
@@ -1075,7 +1075,7 @@ function Symbol(kind) {
 				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 			}
-		} else if (this.symbolkind == 5) { //Relation
+		} else if (this.symbolkind == 5) {
 			var midx = points[this.centerPoint].x;
 			var midy = points[this.centerPoint].y;
 			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
