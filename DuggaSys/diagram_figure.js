@@ -398,6 +398,8 @@ function figureFreeDraw() {
                 diagram.pop();
             }
             // Render the figure
+            points.splice(p2, 1);
+            p2 = startPosition;
             figurePath.addsegment(1, p1, p2);
             diagram.push(figurePath);
             cleanUp();
