@@ -466,6 +466,10 @@ function resize() {
             currentMouseCoordinateY = startMouseCoordinateY;
             startMouseCoordinateY = tempY;
         }
+        if(uimode == "CreateERRelation" && (currentMouseCoordinateX - startMouseCoordinateX < relationTemplate.width || currentMouseCoordinateY - startMouseCoordinateY < relationTemplate.height)){
+            currentMouseCoordinateX = startMouseCoordinateX + relationTemplate.width;
+            currentMouseCoordinateY = startMouseCoordinateY + relationTemplate.height;
+        }
     }
 }
 

@@ -198,9 +198,6 @@ function Symbol(kind) {
     // Restricts resizing for classes
     //--------------------------------------------------------------------
     this.adjust = function () {
-        var resizeableX = false;
-        var resizeableY = false;
-
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
@@ -259,11 +256,20 @@ function Symbol(kind) {
                 points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
             }
         } else if (this.symbolkind == 5){
+            if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2){
+                points[this.bottomRight].x = points[this.topLeft].x + relationTemplate.width/2;
+            }
+            if(points[this.bottomRight].y - points[this.topLeft].y < relationTemplate.height/2){
+                points[this.bottomRight].y = points[this.topLeft].y + relationTemplate.height/2;
+            }
+            points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
+            points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
+            points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
             // Static size of relation. Makes resizing of relation impossible.
-            points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
+            /*points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
             points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
             points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
-            points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;
+            points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;*/
         }
     }
 
@@ -730,7 +736,7 @@ function Symbol(kind) {
 
 
         //Highlighting points when targeted, makes it easier to resize
-        if(this.targeted && this.symbolkind != 5){
+        if(this.targeted){
             ctx.beginPath();
             ctx.arc(x1,y1,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
