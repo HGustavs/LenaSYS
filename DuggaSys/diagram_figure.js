@@ -5,7 +5,7 @@
 //--------------------------------------------------------------------
 // path - stores a number of segments
 //--------------------------------------------------------------------
-/*
+
 function Path() {
     this.kind = 1;                  // Path kind
     this.segments = Array();        // Segments
@@ -104,7 +104,7 @@ function Path() {
                 pseg = seg;
             }
             // Make either stroke or fill or both -- stroke always after fill
-            if (fillstate) {   
+            if (fillstate) {
                 ctx.save();
                 ctx.shadowBlur = 10;
                 ctx.shadowOffsetX = 3;
@@ -445,4 +445,3 @@ function openInitialDialog() {
     diagram[lastSelectedObject].targeted = true;
     openAppearanceDialogMenu();
 }
-*/
