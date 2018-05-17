@@ -258,13 +258,12 @@ function updateDugga() {
 	var template = $("#template").val();
 	var qstart = $("#qstart").val();
 	var deadline = $("#deadline").val();
-	var deadline2 = $("#deadline2").val();
-	var deadline3 = $("#deadline3").val();
 	var release = $("#release").val();
+	var jsondeadline = "{'deadline1':'"+$("#deadline").val()+"', 'comment1':'"+$("#deadlinecomments1").val()+"', 'deadline2':'"+$("#deadline2").val()+"', 'comment2':'"+$("#deadlinecomments2").val()+"', 'deadline3':'"+$("#deadline3").val()+"', 'comment3':'"+$("#deadlinecomments3").val()+"'}";
 
 	closeEditDugga();
 
-	AJAXService("SAVDUGGA", { cid: querystring['cid'], qid: did, nme: nme, autograde: autograde, gradesys: gradesys, template: template, qstart: qstart, deadline: deadline, deadline2: deadline2, deadline3: deadline3, release: release, coursevers: querystring['coursevers'] }, "DUGGA");
+	AJAXService("SAVDUGGA", { cid: querystring['cid'], qid: did, nme: nme, autograde: autograde, gradesys: gradesys, template: template, qstart: qstart, deadline: deadline, jsondeadline: jsondeadline, release: release, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
 function deleteDugga(did) {
