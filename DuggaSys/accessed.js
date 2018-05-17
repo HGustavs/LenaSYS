@@ -4,7 +4,6 @@ var versions;
 var dataInfo;
 var searchterm = "";
 
-
 function setup(){
   // Render filter options
   var filt ="";
@@ -15,7 +14,7 @@ function setup(){
 	filt+="</div>";
 	filt+="</span></td>";
 	$("#menuHook").html(filt);
-  
+
   AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 }
 
@@ -454,7 +453,7 @@ function rowFilter(row) {
     if (key == "examiner"){
       var examiners = JSON.parse(row[key])['examiners']
       var teacher = examiners[examiners.length - 1]['teacher'];
-      if (teacher.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+      if (teacher && teacher.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
     } else if (key == "access") {
       var access = "none";
       if (JSON.parse(row[key])['access'] == "W"){
@@ -483,8 +482,7 @@ var myTable;
 //----------------------------------------
 
 function returnedAccess(data) {
-    setup();
-    fillResponsibleOptions(data.responsibles);
+  fillResponsibleOptions(data.responsibles);
 	filez = data;
 	var tabledata = {
 		tblhead:{
