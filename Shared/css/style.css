@@ -3739,30 +3739,18 @@ li:nth-last-child(10) a:hover {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
-
-.previewWindowContainer {
-  background-color: rgba(0, 0, 0, 0.6);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 8000;
-  display: none;
-}
-
  .previewWindow {
-    height: 100%;
+    height: 90%;
     width: 95%;
     margin: 0px auto;
     border: solid rgb(200,200,200);
-    background-color: rgb(240,240,240);
+    background-color:  rgb(200,200,200);
     box-shadow: 0px 5px 10px grey;
     z-index: 12000;
     display: none;
     left: 0;
     right: 0;
-    top: 100px;
+    top: 5%;
     position: fixed;
 }
 
@@ -3772,28 +3760,49 @@ li:nth-last-child(10) a:hover {
 
 .markdown {
   border: solid rgb(200, 200, 200);
-  background-color: #FFFFFF;
+  background-color: rgb(200, 200, 200);
   width: 38%;
-  height: 90%;
+  height: 80%;
   position: relative;
-  margin: 20px 10px 10px 1%;
+  margin: 20px 1% 10px 1%;
   float: left;
 }
-
+#markset {
+    height: 93%;
+}
+#markPrevSet {
+    height:93%;
+}
 .markdownPrev {
   border: solid rgb(200, 200, 200);
-  background-color: #FFFFFF;
-  word-wrap: break-word;
-  overflow-y: scroll;
   width: 56%;
-  height: 90%;
+  height: 80%;
   position: relative;
-  margin: 20px 1% 10px 8px;
+  margin: 20px 1% 10px 1%;
   float: right;
 }
 
 #editForm {
   height:100%;
+}
+
+.save-close-button {
+  border-radius: 4px;
+  background-color: #614875;
+  border: 0px;
+  width: 110px;
+  height: 30px;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  margin-right: 3%;
+  font-size: 14px;
+  transition: 1s background-color;
+  float: right;
+  line-height: 30px;
+  text-align: center;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
 .optionButtons {
@@ -3803,26 +3812,10 @@ li:nth-last-child(10) a:hover {
   height: 40px;
   width: 355px;
 }
-
 .prevSpan {
   max-width: 100%;
-  padding: 10px
-}
-
-#button-cancel {
-  position: absolute;
-  left: 235px;
-}
-
-#button-save {
-  position: absolute;
-  left: 305px;
-}
-
-#button-close {
-  float: right;
-  position: relative;
-  margin: 0px 10px 0px 0px;
+  padding: 10px;
+  height: 85%;
 }
 
 .prevHead {
@@ -3849,59 +3842,62 @@ li:nth-last-child(10) a:hover {
   line-height: 25px;
 }
 .markText {
-    height:87%;
-    width:84%;
-
+  height:135%;
+  width:92%;
+}
+.markTextPrev {
+  height: 100%;
 }
 #mrkdwntxt {
-  border-radius: 8px;
-  box-shadow: 2px 2px 4px #888 inset;
   resize: none;
   width:100%;
   height:100%;
-  margin:12px;
+  margin: 2%;
+  word-wrap: break-word;
+  overflow-y: scroll;
 }
 textarea#mrkdwntxt {
   width: 100%;
-  height: 93%;
+  height: 60%;
   display: block;
-  padding: 10px
+  padding: 10px;
 }
 
 #boldText {
   cursor: pointer;
-  margin-left: 5%;
-  position: relative;
-  bottom: 10%;
+  margin-left: 3%;
+  position: absolute;
+  margin-top: 0%;
 }
 
 #cursiveText {
   cursor: pointer;
-  margin-left: 3%;
-  position: relative;
-  bottom:10%;
+  margin-left: 8%;
+  position: absolute;
+  margin-top:0%;
 }
 
 #lists {
   cursor: pointer;
   color: #FFFFFF;
-  margin-left: 3%;
+  margin-left: 13%;
   font-size: 12px;
-  position: relative;
-  bottom:15%;
+  position: absolute;
+  filter: invert(100%);
+  margin-top: 0%;
 }
 #codeBlockText {
     cursor: pointer;
-    margin-left: 3%;
-    position: relative;
-    bottom:10%;
+    margin-left: 19%;
+    position: absolute;
+    margin-top: -1%
 }
 #quoteText {
     cursor: pointer;
-    margin-left: 3%;
+    margin-left: 26%;
     font-size: 25px;
-    position: relative;
-    top:20%;
+    position: absolute;
+    margin-top:-1%;
 }
 #img {
     cursor: pointer;
@@ -3909,7 +3905,8 @@ textarea#mrkdwntxt {
 }
 #insert-photo {
     position: absolute;
-    filter: invert(100%);
+    margin-left: 23%;
+    margin-top: -1%;
 }
 #link {
     cursor: pointer;
@@ -3918,7 +3915,9 @@ textarea#mrkdwntxt {
 
 #linkFabBtnImgPrev {
     position: absolute;
-    margin-left: 10px;
+    margin-left: 38%;
+    margin-top:-1%;
+    filter: invert(100%);
 }
 
 #headerType1 {
@@ -3995,9 +3994,9 @@ textarea#mrkdwntxt {
 }
 .headerType {
   cursor: pointer;
-  margin-left: 9%;
-  position: relative;
-  bottom: 10%;
+  margin-left: 37%;
+  position: absolute;
+  margin-top:-1%
 }
 
 .show-dropdown-content {
@@ -4008,40 +4007,37 @@ textarea#mrkdwntxt {
   max-width: 63px;
   position: absolute;
   z-index: 2000;
-  right: 0px;
+  right: 38%;
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
 #inputSave {
 }
 
-@media only screen and (max-height: 1440px) and (max-width: 1350px) {
+@media only screen and (max-width: 900px) {
   .previewWindow {
-    height: 80%;
+    height: 90%;
   }
   .markdown {
-    height: 35%;
+    height: 38%;
     width: 97%;
     position: relative;
     float: left;
   }
   .markdownPrev {
-    height: 35%;
+    height: 38%;
     width: 97%;
     float: left;
     margin: auto auto auto 8px;
   }
   .markText {
-    height:70%;
-    width:90%;
-  }
-  #mrkdwntxt {
-    width:100%;
     height:100%;
-    margin:5px;
   }
   .optionButtons {
     top: 686px;
+  }
+  .save-close-button{
+    margin-top: 4%;
   }
 }
 
@@ -4088,30 +4084,28 @@ textarea#mrkdwntxt {
 }
 
 .editFileWindow {
-  height: 70%;
-  width: 50%;
-  margin: 0px auto;
-  border: solid rgb(200,200,200);
-  background-color: rgb(240,240,240);
-  box-shadow: 0px 5px 10px grey;
+  height: 80%;
+  width: 95%;
+  margin: auto;
+  background-color: rgb(200,200,200);
   z-index: 12000;
   left: 0;
   right: 0;
-  top: 100px;
+  top: 10%;
   position: fixed;
 }
 
 .editFileCode {
   border: solid rgb(200, 200, 200);
-  background-color: #FFFFFF;
-  width: 96%;
-  height: 80%;
+  background-color: rgb(200, 200, 200);
+  width: 93%;
+  height: 90%;
   position: relative;
-  margin: 20px auto;
+  margin: auto;
 }
 
 .fileText {
-  height: 90%;
+  height: 93%;
 }
 
 .confirmationWindow {
@@ -4147,51 +4141,21 @@ textarea#mrkdwntxt {
   width: 355px;
 }
 
-#button-cancel {
-  position: absolute;
-  left: 5px;
-}
-
-#button-save {
-  position: absolute;
-  left: 75px;
-}
-
-#button-close {
-  float: right;
-  position: relative;
-  margin: -23px 70px 0px 0px;
-
-}
-
 #filecont {
-  border-radius: 8px;
-  box-shadow: 2px 2px 4px #888 inset;
   resize: none;
   margin: 10px auto;
-  width: 90%;
+  width: 100%;
   height: 100%;
 }
 
 textarea#filecont{
-  width: 91%;
+  width: 97%;
   height: 100%;
   display: block;
   padding: 10px
 }
 
-@media only screen and (max-height: 800px) and (max-width: 1400px) {
-  .editFileWindow {
-    height: 500px;
-  }
-
-  .editFileCode {
-    height: 400px;
-  }
-
-  #filecont {
-    height: 350px;
-  }
+@media only screen and (max-width: 900px) {
 
   .optionButtons {
     top: 436px;

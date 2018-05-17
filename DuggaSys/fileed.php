@@ -101,7 +101,8 @@ pdoConnect();
     </div>
 </div>
 <!-- Edit File Dialog END -->
-<!-- Markdown-preview functionality START -->
+
+<!-- Markdown-preview and edit file functionality START -->
 <div class="previewWindowContainer"></div>
 <div class="previewWindow">
     <div class="loginBoxheader">
@@ -115,8 +116,11 @@ pdoConnect();
         <input type='hidden' id='fileName' name='filename' value='Toddler'/>
         <input type='hidden' id='textField' name='textField' value='Toddler'/>
         <div class="markdownPart">
+
             <div class="markdown">
-                <div class="markNav">Markdown
+                <fieldset id="markset">
+                    <legend>Markdown</legend>
+
                     <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
                     <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
                     <span id="codeBlockText" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
@@ -136,13 +140,15 @@ pdoConnect();
                         <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
 
                     </div>
-                </div>
-                <div class="markText">
-                <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
-                </div>
+
+                        <div class="markText">
+                        <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
+                        </div>
+                        </fieldset>
             </div>
+
             <div class="markdownPrev">
-                <div class="prevNav">Markdown Preview</div>
+                <fieldset id="markPrevSet"><legend>Markdown preview</legend>
                 <div class="markTextPrev">
                     <div class="prevSpan">
                         <div class="descbox">
@@ -150,15 +156,10 @@ pdoConnect();
                         </div>
                     </div>
                 </div>
+                </fieldset>
             </div>
-            <div>
-
-                <!--<button id="button-save" onclick="saveMarkdown()"></button>
-
-                <button id="button-cancel" onclick="">Cancel</button>-->
-            </div>
-            <button type="submit" onclick="saveMarkdown()">Save</button>
-            <button onclick="cancelPreview()">Close</button>
+            <button class="save-close-button" type="submit" onclick="saveMarkdown()">Save</button>
+            <button class="save-close-button" onclick="cancelPreview()">Close</button>
         </div>
         <div class="editFilePart">
             <div class="editFileWindow">
@@ -168,8 +169,8 @@ pdoConnect();
                     </div>
                 </div>
 
-                <button type="submit" onclick="saveTextToFile()"> Save </button>
-                <button onclick="cancelPreview()">Close</button>
+                <button class="save-close-button" type="submit" onclick="saveTextToFile()"> Save </button>
+                <button class="save-close-button" onclick="cancelPreview()">Close</button>
                 <div class="optionButtons">
 
                 </div>
@@ -178,12 +179,7 @@ pdoConnect();
 
     </form>
 </div>
-<!-- Markdown-preview functionality END -->
-
-<!-- Edit file functionality START -->
-<div class="editFileWindowContainer"></div>
-
-<!-- Edit file functionality END -->
+<!-- Markdown-preview and edit file functionality END -->
 
 <!--Fab-button-->
 <div class="fixed-action-button" id="fabButton">
