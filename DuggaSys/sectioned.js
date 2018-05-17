@@ -988,7 +988,7 @@ function returnedSection(data) {
 		//Piechart.
 		/* The next div is a container div containing a description of the swim lanes
 		   and a pie chart giving an overview of course progress by a student. */
-		str+="<div id='stastisticPie' style=' height:100px;'>";
+		str+="<div id='statisticsPie' style=' height:100px;'>";
 		str+="<canvas id='pieChart' width='250px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
 		// str+="<div><p>Swim lane description</p></div>";
 
