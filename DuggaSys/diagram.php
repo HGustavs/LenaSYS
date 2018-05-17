@@ -49,7 +49,7 @@
 <!-- updateGraphics() must be last -->
 <body onload="initializeCanvas(); Symbol(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();">
     <?php
-        $noup = "COURSE";
+        $noup = "SECTION";
         include '../Shared/navheader.php';
     ?>
     <!-- content START -->
