@@ -336,7 +336,7 @@ function renderSortOptions(col,status) {
 //  Callback function with different compare alternatives for the column sort
 //--------------------------------------------------------------------------
 function compare(a,b) {
-	let col = sortableTable.currentTable.getSortcolumn();
+	var col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
 	var tempB = b;
 	if (col == "File name") {
