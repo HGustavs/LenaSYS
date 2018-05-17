@@ -34,10 +34,6 @@
 				echo "<div class='titles' style='position:sticky;top:50px;z-index:100;background:#ffffff;padding-top:20px;padding-bottom:20px;margin-top:0px;'>";
 				echo "<h1 style='flex:10;text-align:center;'>Access</h1>";
 				echo "<div style='align-items: flex-end; display: flex; justify-content: space-between;'>";
-				echo "<div style='display: inline-block;'>";
-				echo "<input class='submit-button' type='button' value='Add user' onclick='showCreateUserPopup();'/>";
-				echo "<input class='submit-button' type='button' value='Import user(s)' onclick='showImportUsersPopup();'/>";
-				echo "</div>";
 				echo "<div id='searchBar' style='position:relative; top:-5px; left: 5px;'>";
 				echo "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById(\"searchinput\").value;searchKeyUp(event);myTable.renderTable();'> ";
 				echo "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>";
@@ -119,13 +115,13 @@
 		    <div class='inputwrapper'><span>Classcode:</span><input placeholder="WEBUG" class='textinput' type='text' id='addClasscode'/></div>
                     <div class='inputwrapper'><span>Hp:</span><input placeholder="180.0" class='textinput' id='addHp'></input></div>
 		    <div class='inputwrapper'><span>Tempo:</span><input placeholder="100" class='textinput' id='addTempo'></input></div>
-		    <div class='inputwrapper'><span>HpProgress:</span><input placeholder="0.0" class='textinput' id='addHpProgress'></input></div>		    
+		    <div class='inputwrapper'><span>HpProgress:</span><input placeholder="0.0" class='textinput' id='addHpProgress'></input></div>
       		</div>
       		<div style='padding:5px;'>
       			<input class='submit-button' type='button' value='Add' onclick='addClass();' />
       		</div>
       </div>
-	</div>                                                                                                                                                     
+	</div>
 
 	<!-- Add User Dialog END -->
 	<!-- Edit User Dialog START -->
@@ -151,5 +147,18 @@
       </div>
 	</div>
 	<!-- Edit User Dialog END -->
+
+	<div class="fixed-action-button" id="fabButtonAcc">
+	    <a class="btn-floating fab-btn-lg noselect" id="fabBtnAcc">+</a>
+	    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
+	        <li><a id="iFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out"
+	               data-tooltip='Import user(s)'><img id="iFabBtnImg" class="fab-icon"
+	                                                   src="../Shared/icons/global-icon.svg"></a></li>
+	        <li><a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out"
+	               data-tooltip='Create user'><img id="cFabBtnImg" class="fab-icon"
+	                                                          src="../Shared/icons/version_local-icon.svg"></a></li>
+	    </ol>
+	</div>
+
 </body>
 </html>
