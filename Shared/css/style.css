@@ -4314,3 +4314,15 @@ textarea#filecont{
     top: 436px;
   }
 }
+
+/* styling for the search bar in duggaed.php */
+
+#testSearchContainer {
+  display: inline-flex;
+  height: 24px;
+  border-radius: 5px;
+  margin: 0 2px 7px 0;
+  float: right;
+  position: relative;
+  top: -5px; 
+}
