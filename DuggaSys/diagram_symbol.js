@@ -1031,6 +1031,7 @@ function Symbol(kind) {
 		} else if (this.symbolkind == 2) {
 
 		} else if (this.symbolkind == 3) {
+			strokeWidth = this.lineWidth;
 			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 			// Add extra box if weak entity
 			if (this.key_type == "Weak") {
@@ -1038,9 +1039,12 @@ function Symbol(kind) {
 				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			}
 			// Create Entity box
+			strokeWidth = this.lineWidth * 2;
+			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 			svgPos = x1+","+y1+" "+x2+","+y1+" "+x2+","+y2+" "+x1+","+y2;
 			svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
+			strokeWidth = this.lineWidth;
 			// Text
 			svgStyle = "fill:"+this.fontColor+"; font:"+font+";";
 			if (ctx.measureText(this.name).width > (x2-x1) - 5) {
@@ -1078,15 +1082,17 @@ function Symbol(kind) {
 		} else if (this.symbolkind == 5) {
 			var midx = points[this.centerPoint].x;
 			var midy = points[this.centerPoint].y;
-			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
-			if (this.key_type == "Weak") {
-				svgPos = midx+","+(y1+5)+" "+(x2-9)+","+midy+" "+midx+","+(y2-5)+" "+(x1+9)+","+midy+" "+midx+","+(y1+5);
-				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
-			}
 			// Relation
+			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 			svgPos = midx+","+y1+" "+x2+","+midy+" "+midx+","+y2+" "+x1+","+midy+" "+midx+","+y1;
 			svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
+			// Weak relation
+			if (this.key_type == "Weak") {
+				svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+				svgPos = midx+","+(y1+5)+" "+(x2-9)+","+midy+" "+midx+","+(y2-5)+" "+(x1+9)+","+midy+" "+midx+","+(y1+5);
+				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
+			}
 			// Text
 			svgStyle = "fill:"+this.fontColor+";font:"+font+";";
 			if(ctx.measureText(this.name).width >= (x2-x1) - 12){
