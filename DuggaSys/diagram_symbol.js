@@ -1031,7 +1031,6 @@ function Symbol(kind) {
 		} else if (this.symbolkind == 2) {
 
 		} else if (this.symbolkind == 3) {
-			strokeWidth = this.lineWidth;
 			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 			// Add extra box if weak entity
 			if (this.key_type == "Weak") {
@@ -1039,12 +1038,9 @@ function Symbol(kind) {
 				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			}
 			// Create Entity box
-			strokeWidth = this.lineWidth * 2;
-			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 			svgPos = x1+","+y1+" "+x2+","+y1+" "+x2+","+y2+" "+x1+","+y2;
 			svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
-			strokeWidth = this.lineWidth;
 			// Text
 			svgStyle = "fill:"+this.fontColor+"; font:"+font+";";
 			if (ctx.measureText(this.name).width > (x2-x1) - 5) {
