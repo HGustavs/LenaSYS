@@ -995,7 +995,7 @@ function returnedSection(data) {
 		str	+="<div id='deadlineInfoBox' style='display: none; "
 			+" padding: 10px; width: 250px;"
 			+" '> ";
-		str +="<h2 id='deadlineInfoTitle' style='color: red;'>    </h2>"
+		str +="<h2 id='deadlineInfoTitle' >    </h2>"
 
 		str +="<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
 		+ "<span id='deadlineInfoFirstDate' style='margin-right:5px;width:35px;'></span></div>"
@@ -2079,7 +2079,7 @@ function fixDeadlineInfoBoxesText(){
 	deadLineDates.push(document.getElementById("deadlineInfoThirdDate"));
 	deadLineDates.push(document.getElementById("deadlineInfoFourthDate"));
 	deadLineDates.push(document.getElementById("deadlineInfoFifthDate"));
-
+	var isAnyUpcomingDugga = false;
 
 	for(var i = 0; i < copyOfDuggaArray.length; i++){
 		if (i > allDeadlineTexts.length - 1) break;
@@ -2095,8 +2095,15 @@ function fixDeadlineInfoBoxesText(){
 		}else{
 			allDeadlineTexts[i].innerHTML = " " + lowestElement['entryname'].slice(0, 20);
 		}
+		$('#deadlineInfoBox').css("display", "block");
 		deadLineDates[i].innerHTML = " " + removeYearFromDate(lowestElement['deadline']);
 		copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(lowestElement), 1);
+		isAnyUpcomingDugga = true;
+	}
+	if(isAnyUpcomingDugga){
+		$('#deadlineInfoBox').css("display", "block");
+	}else{
+		$('#deadlineInfoBox').css("display", "none");
 	}
 }
 
