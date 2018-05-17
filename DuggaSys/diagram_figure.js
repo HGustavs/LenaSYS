@@ -391,7 +391,7 @@ function figureFreeDraw() {
             p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         }
         // Check if the new point is the starting point
-        closestPoint = points.closestPoint(points[p2].x, points[p2].y);
+        var closestPoint = points.closestPoint(points[p2].x, points[p2].y, p2);
         if(closestPoint.index == startPosition && closestPoint.distance < 10){
             // Delete all previous rendered lines
             for (var i = 0; i < numberOfPointsInFigure; i++) {

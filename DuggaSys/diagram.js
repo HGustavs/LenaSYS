@@ -326,10 +326,11 @@ points.drawPoints = function() {
 // closestPoint - Returns the distance and index of the point closest
 // to the cotargetItemsInsideSelectionBoxordinates passed as parameters.
 //--------------------------------------------------------------------
-points.closestPoint = function(xCoordinate, yCoordinate) {
+points.closestPoint = function(xCoordinate, yCoordinate, pointIndex) {
     var distance = 50000000;
     var index = -1;
     for (var i = 0; i < this.length; i++) {
+        if(i == pointIndex) continue;
         var deltaX = xCoordinate - this[i].x;
         var deltaY = yCoordinate - this[i].y;
         var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
