@@ -54,8 +54,8 @@ function switchToolbar(direction){
     $("#relationbutton").show();
   }else if( toolbarState == 2){
     $(".toolbar-drawer").hide();
-    $("drawerTools").show();
-    $("drawerCreate").show();
+    $("#drawerTools").show();
+    $("#drawerCreate").show();
     $(".tlabel").hide();
     $("#labelCreate").show();
     $("#labelTools").show();
@@ -65,7 +65,7 @@ function switchToolbar(direction){
     $("#classbutton").show();
   }else if(toolbarState == 3){
     $(".toolbar-drawer").hide();
-    $("drawerDraw").show();
+    $("#drawerDraw").show();
     $(".tlabel").hide();
     $("#labelDraw").show();
     $("#labelUndo").show();
