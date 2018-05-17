@@ -42,7 +42,7 @@ function switchToolbar(direction){
   if(toolbarState == 1){
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
-    $("drawerCreate").show();
+    $("#drawerCreate").show();
     $(".tlabel").hide();
     $("#labelCreate").show();
     $("#labelTools").show();
