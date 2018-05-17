@@ -24,15 +24,15 @@ function toggleToolbarMinimize(){
 
 //function for switching the toolbar state (All, ER, UML)
 function switchToolbar(direction){
-  var text = ["All", "ER", "UML"];
+  var text = ["All", "ER", "UML", "Free"];
   if(direction == 'left'){
     toolbarState--;
     if(toolbarState < 0){
-      toolbarState = 2;
+      toolbarState = 3;
     }
   }else if(direction == 'right'){
     toolbarState++;
-    if(toolbarState > 2){
+    if(toolbarState > 3){
       toolbarState = 0;
     }
   }
@@ -49,6 +49,10 @@ function switchToolbar(direction){
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
+  }else if(toolbarState == 3){
+    $(".buttonsStyle").hide();
+    $("#squarebutton").show();
+    $("#drawfreebutton").show();
   }
   else{
     $(".buttonsStyle").show();
