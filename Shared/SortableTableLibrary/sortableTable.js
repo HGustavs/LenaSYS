@@ -32,9 +32,9 @@ function defaultRowFilter() {
 
 // Global sorting function global
 function sortableInternalSort(a,b) {
-	let ret = 0;
-    //let colname = currentTable.tbl.tblhead.indexOf(currentTable.sortcolumn);
-    let colname = sortableTable.currentTable.getKeyByValue();
+	var ret = 0;
+    //var colname = currentTable.tbl.tblhead.indexOf(currentTable.sortcolumn);
+    var colname = sortableTable.currentTable.getKeyByValue();
 
 	if (sortableTable.currentTable.ascending) {
 		//alert("Compare: "+a+" "+b);
@@ -55,7 +55,7 @@ function clearUpdateCellInternal() {
 }
 
 function updateCellInternal() {
-    for (let i = 0; i < sortableTable.sortableTables.length; i++) {
+    for (var i = 0; i < sortableTable.sortableTables.length; i++) {
         if (sortableTable.sortableTables[i].tableid == sortableTable.edit_tableid) {
             sortableTable.sortableTables[i].updateCell();
         }
@@ -66,10 +66,10 @@ function updateCellInternal() {
 // clickedInternal
 function clickedInternal(event,clickdobj) {
 	if (sortableTable.currentTable.showEditCell != null) {
-		let cellelement = event.target.closest("td");
-		let arr = cellelement.className.split("-");
-		let rowelement = event.target.closest("tr");
-		let barr = rowelement.id.split("_");
+		var cellelement = event.target.closest("td");
+		var arr = cellelement.className.split("-");
+		var rowelement = event.target.closest("tr");
+		var barr = rowelement.id.split("_");
 
 		var columnname = arr[1];
 		var columnno = arr[2];
@@ -108,10 +108,10 @@ function clickedInternal(event,clickdobj) {
 
 // We call all highlights in order to allow hover of non-active tables
 function rowHighlightInternal(event,row) {
-    let arr = row.id.split("_");
-    let rowno = parseInt(arr[1]);
-	let centerel = event.target.closest("td");
-	for (let i = 0; i < sortableTable.sortableTables.length; i++) {
+    var arr = row.id.split("_");
+    var rowno = parseInt(arr[1]);
+	var centerel = event.target.closest("td");
+	for (var i = 0; i < sortableTable.sortableTables.length; i++) {
 		if (sortableTable.sortableTables[i].highlightRow != null) {
 			sortableTable.sortableTables[i].highlightRow(row.id,rowno,centerel.className,centerel);
 		}
@@ -120,10 +120,10 @@ function rowHighlightInternal(event,row) {
 
 // We call all deHighlights in order to allow hover of non-active tables
 function rowDeHighlightInternal(event,row) {
-	let arr = row.id.split("_");
-	let rowno = parseInt(arr[1]);
-	let centerel = event.target.closest("td");
-	for (let i = 0; i < sortableTable.sortableTables.length; i++) {
+	var arr = row.id.split("_");
+	var rowno = parseInt(arr[1]);
+	var centerel = event.target.closest("td");
+	for (var i = 0; i < sortableTable.sortableTables.length; i++) {
 		if (sortableTable.sortableTables[i].deHighlightRow != null) {
 			sortableTable.sortableTables[i].deHighlightRow(row.id,rowno,centerel.className,centerel);
 		}
@@ -179,7 +179,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 
     tbl.cleanHead = [];
 
-    for (let i = 0; i < tbl.tblhead.length; i++){
+    for (var i = 0; i < tbl.tblhead.length; i++){
         tbl.cleanHead.push(tbl.tblhead[i].toLowerCase().replace(/[^a-zA-Z0-9]+/g, ""));
     }
 
@@ -211,7 +211,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		// Local variable that contains summing array
 		var sumContent = [];
 
-		let isFirstVisit = false;
+		var isFirstVisit = false;
 		if (columnfilter == null) {
 			isFirstVisit = true;
 			columnfilter = {};
@@ -322,7 +322,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
                 }
 				result++;
 
-				for (let colnamez in row) {
+				for (var colnamez in row) {
 
 					//Counter for freeze here
 					// If we show this column...
@@ -337,7 +337,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 							rowsum += sumFunc(colnamez,col);
 						}
 
-						let cellid = "r"+i+"_"+tableid+"_"+colnamez;
+						var cellid = "r"+i+"_"+tableid+"_"+colnamez;
 						str += "<td id='"+cellid+"' onclick='clickedInternal(event,this);' class='"+tableid+"-"+colnamez+"'>"+renderCell(colnamez,tbl.tblbody[i][colnamez],cellid)+"</td>";
 
 						// if (colnamez <= freezePaneIndex) {
@@ -473,7 +473,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 	function freezePaneHandler() {
 		// Hide magic headings and find minimum overdraft
 		for (var i = 0; i < sortableTable.sortableTables.length; i++) {
-			let table = sortableTable.sortableTables[i];
+			var table = sortableTable.sortableTables[i];
 			if (table.hasMagicHeadings) {
 				if (document.getElementById(table.tableid+"_tbl") != null) {
 					var thetab = document.getElementById(table.tableid+"_tbl").getBoundingClientRect();
