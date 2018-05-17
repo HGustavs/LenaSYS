@@ -938,6 +938,21 @@ function drawGrid() {
     }
 }
 
+function gridToSVG(width, height) {
+    var str = "", stroke = "";
+    for (var i = 0; i < width; i++) {
+        if (i % 5 == 0) stroke = "rgb(208, 208, 220)"; //This is a "thick" line
+        else stroke = "rgb(238, 238, 250)";
+        str += "<line x1='"+(i*gridSize)+"' y1='0' x2='"+(i*gridSize)+"' y2='"+height+"' style='stroke:"+stroke+";stroke-width:1;' />";
+    }
+    for (var i = 0; i < height; i++) {
+        if (i % 5 == 0) stroke = "rgb(208, 208, 220)"; //This is a "thick" line
+        else stroke = "rgb(238, 238, 250)";
+        str += "<line x1='0' y1='"+(i*gridSize)+"' x2='"+width+"' y2='"+(i*gridSize)+"' style='stroke:"+stroke+";stroke-width:1;' />";
+    }
+    return str;
+}
+
 //remove all elements in the diagram array. it hides the points by placing them beyond the users view.
 function clearCanvas() {
     while (diagram.length > 0) {
