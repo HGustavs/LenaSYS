@@ -303,9 +303,12 @@ function rowFilter(row) {
 
 function fileSizeSearch(row, colName, searchName){
 	var obj = JSON.parse(row[colName]);
-    return formatBytes(parseInt(obj.size), 0).toUpperCase().indexOf(searchName.toUpperCase()) != -1
+    var tempString="-";
+    if(obj.kind!="Link"){
+        tempString = formatBytes(parseInt(obj.size), 0);
+    }
+    return tempString.toUpperCase().indexOf(searchName.toUpperCase()) != -1;
 }
-
 function fileNameSearch(row, colName, searchName) {
     var obj = JSON.parse(row[colName]);
     return obj.shortfilename.toUpperCase().indexOf(searchName.toUpperCase()) != -1;
