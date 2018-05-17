@@ -527,10 +527,19 @@ p {
    background-color: #d8d7da;
 }
 
-#stastisticPie{
+#statisticsPie {
     border: 2px solid darkgray;
     background-color: #eae8eb;
     margin: 10px 10px 10px 10px;
+}
+
+#deadlineInfoBox {
+    width: 100%;
+    margin: 10px 10px 10px 10px;
+    border: 2px solid darkgray;
+    background-color: #eae8eb;
+    margin: 10px 10px 10px 10px;
+
 }
 
 /* --------------================################================-------------- *
@@ -2003,13 +2012,13 @@ span.arrow {
   /* ie 6/7 */
 }
 
-.arrowComp, #arrowCompStatistics{
+.arrowComp, #arrowStatisticsClosed {
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
 }
 
-.arrowRight, #arrowRightStatistics{
+.arrowRight, #arrowStatisticsOpen {
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
@@ -2043,6 +2052,12 @@ span.arrow {
   -webkit-appearance: none;
   -moz-appearance: none;
   vertical-align: text-top;
+}
+
+.deadlineInfo{
+    display:flex;
+    align-content:space-between;
+    width:100%;
 }
 
 /* End DuggaSys Sectioneed*/
@@ -4316,7 +4331,6 @@ textarea#filecont{
 }
 
 /* styling for the search bar in duggaed.php */
-
 #testSearchContainer {
   display: inline-flex;
   height: 24px;

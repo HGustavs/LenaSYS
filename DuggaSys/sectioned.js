@@ -7,6 +7,7 @@ var testsAvailable;
 var nameSet = false;
 var hoverMenuTimer;
 
+
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
 	idCounter: 0, 		/* Used to give elements unique ids. This might? brake
@@ -710,6 +711,10 @@ function getDateFormat(date, operation = ""){
 			+ ('0' + date.getDate()).slice(-2)
 			+ "T" + date.getHours() + ":" + date.getMinutes() + ":"
 			+ date.getSeconds();
+	}else if(operation == "dateMonth"){
+		return ('0' + date.getDate()).slice(-2) + '-'
+			+ ('0' + (date.getMonth()+1)).slice(-2);
+
 	}
 	return date.getFullYear() + "-"
 			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
@@ -956,7 +961,8 @@ function returnedSection(data) {
 				+ "\"" + momentexists + "\","
 				+ "\"" + item['gradesys'] + "\","
 				+ "\"" + item['highscoremode'] + "\", null"
-				+ "); showSubmitButton(); validateType(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
+				+ "); showSubmitButton(); validateType(); "
+				+ "editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
 			str += "</div>";
 		}
 
@@ -974,19 +980,34 @@ function returnedSection(data) {
 		+ "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>"
 		+ "</div>"
 		+ "<div class='nowrap' style='padding-left:5px' title='statistics'>"
-		+ "<span class='listentries-span' style='writing-mode: vertical-rl; text-orientation: upright;'>Statistics</span>"
+		+ "<span class='listentries-span' style='writing-mode: vertical-rl; "
+		+ "text-orientation: upright;'>Statistics</span>"
 		+ "</div></div>"
 		+ "<div class='statisticsContent' style='display: inline-block;'>";
 
 		//Piechart.
 		/* The next div is a container div containing a description of the swim lanes
 		   and a pie chart giving an overview of course progress by a student. */
-		str+="<div id='stastisticPie' style=' height:100px;'>";
+		str+="<div id='statisticsPie' style=' height:100px;'>";
 		str+="<canvas id='pieChart' width='250px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
 		// str+="<div><p>Swim lane description</p></div>";
-		str+="</div>";
 
-		str +=  "</div></div>";
+		str+="</div>";
+		str	+="<div id='deadlineInfoBox' style='display: inline-block;"
+			+" padding: 10px; width: 250px;'> ";
+		str +="<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>"
+		str +="<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
+		+ "<span id='deadlineInfoFirstDate' style='margin-right:5px;width:35px;'></span></div>"
+		str +="<div class='deadlineInfo'><span style='width: 100%;' id='deadlineInfoSecondText'> </span>"
+		+ "<span id='deadlineInfoSecondDate' style='margin-right:5px;width: 35px;'> </span> </div>"
+		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoThirdText'> </span>"
+		+ "<span id='deadlineInfoThirdDate' style='margin-right:5px;width: 35px;'> </span> </div>"
+		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFourthText'> </span>"
+		+ "<span id='deadlineInfoFourthDate' style='margin-right:5px;width: 35px;'> </span> </div>"
+		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFifthText'> </span>"
+		+ "<span id='deadlineInfoFifthDate' style='margin-right:5px;width:35px;'> </span> </div>"
+		str+="</div>";
+		str +=  "</div></div>"; // closing div for statisticsContent
 		str += "<div id='Sectionlistc'>";
 
 		// For now we only have two kinds of sections
@@ -1616,8 +1637,8 @@ function returnedSection(data) {
 	// Change the scroll position to where the user was last time.
 	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 
-	// Create the pie chart used in the statistics section.
-	drawPieChart();
+	drawPieChart(); // Create the pie chart used in the statistics section.
+	fixDeadlineInfoBoxesText();
 }
 
 function showHighscore(did, lid) {
@@ -2031,6 +2052,77 @@ function drawPieChart() {
 }
 
 
+function fixDeadlineInfoBoxesText(){
+	var closestDeadlineArray = [];
+	var duggaEntries = retdata['entries'].slice();
+	var allDeadlineTexts = [];
+	allDeadlineTexts.push(document.getElementById("deadlineInfoFirstText"));
+	allDeadlineTexts.push(document.getElementById("deadlineInfoSecondText"));
+	allDeadlineTexts.push(document.getElementById("deadlineInfoThirdText"));
+	allDeadlineTexts.push(document.getElementById("deadlineInfoFourthText"));
+	allDeadlineTexts.push(document.getElementById("deadlineInfoFifthText"));
+	var deadLineDates = [];
+	deadLineDates.push(document.getElementById("deadlineInfoFirstDate"));
+	deadLineDates.push(document.getElementById("deadlineInfoSecondDate"));
+	deadLineDates.push(document.getElementById("deadlineInfoThirdDate"));
+	deadLineDates.push(document.getElementById("deadlineInfoFourthDate"));
+	deadLineDates.push(document.getElementById("deadlineInfoFifthDate"));
+	var isAnyUpcomingDugga = false;
+
+	// remove everything from Entries that isnt a Test
+	for(var i = duggaEntries.length - 1; i >= 0; i--){
+		if(duggaEntries[i]['kind'] != 3){
+			duggaEntries.splice(i, 1);
+		}
+	}
+
+		// to find the lowest-valued-element
+	if(duggaEntries.length != 0){
+		duggaEntries.reduce(function(prev, curr){
+			return prev.deadline < curr.deadline ? prev : curr;
+		});
+
+		Array.prototype.hasMin = function(attrib){
+			if(this.length != 0){
+				return this.reduce(function(prev, curr){
+					return prev[attrib] < curr[attrib] ? prev : curr;
+				});
+			}
+		}
+	}
+
+	if(duggaEntries.length > 0){
+		while(closestDeadlineArray.length < allDeadlineTexts.length){
+			if(closestDeadlineArray.length > 4){ // we only want 5 elements
+				break;
+			}
+			var lowestElement = duggaEntries.hasMin('deadline');
+			if(lowestElement == undefined) break; // bad solution to check if array is empty
+			var testDate = new Date(lowestElement['deadline']);
+			if(Date.now() < testDate.getTime()){ // if deadline hasn't already happened we save it
+				closestDeadlineArray.push(lowestElement);
+			}
+			duggaEntries.splice(duggaEntries.indexOf(lowestElement), 1);
+		}
+		for(var i = 0; i < closestDeadlineArray.length; i++){
+			if(closestDeadlineArray[i]['entryname'].length > 23){
+				allDeadlineTexts[i].innerHTML = " " + closestDeadlineArray[i]['entryname'].slice(0, 23) + "...";
+			}else{
+				allDeadlineTexts[i].innerHTML = " " + closestDeadlineArray[i]['entryname'];
+			}
+			deadLineDates[i].innerHTML = " " + removeYearFromDate(closestDeadlineArray[i]['deadline']);
+		}
+	}
+
+	if(closestDeadlineArray.length == 0){ // if we have no deadlines, put this nice text instead
+		allDeadlineTexts[0].innerHTML = "No upcoming deadlines"
+	}
+}
+
+function removeYearFromDate(date){
+	var remadeDate = new Date(date);
+	return getDateFormat(remadeDate, "dateMonth").replace("-" ,"/");
+}
 
 $(document).ready(function () {
 	// Function to prevent collapsing when clicking icons
@@ -2044,8 +2136,6 @@ $(document).ready(function () {
 	hoverMenuTimer = window.setTimeout(function(){
 		checkIfCloseFabMenu();
 	}, 25);
-
-
 });
 
 $(window).load(function () {
