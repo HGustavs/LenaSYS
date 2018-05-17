@@ -151,6 +151,10 @@ function Path() {
         return false;
     }
 
+    this.checkForHover = function (mx, my) {
+        return this.isClicked(mx, my);
+    }
+
     //--------------------------------------------------------------------
     // Recursively splits a line at intersection points from top to bottom until there is no line left
     //--------------------------------------------------------------------
