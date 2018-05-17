@@ -3191,6 +3191,10 @@ only screen and (max-device-width: 800px) {
     display: block;
     height: 13px;
   }
+
+  #statisticsList {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 768px),
@@ -3214,6 +3218,10 @@ only screen and (max-device-width: 768px) {
   }
   #Sectionlist .course {
     font-size: 20px;
+  }
+
+  #statisticsList {
+    display: none;
   }
 }
 
@@ -3245,6 +3253,10 @@ only screen and (max-device-width: 710px) {
     height: 26px;
     opacity: 1.0;
   }
+
+  #statisticsList {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 590px),
@@ -3268,6 +3280,10 @@ only screen and (max-device-width: 590px) {
     display: block;
     height: 26px;
     opacity: 1.0;
+  }
+
+  #statisticsList {
+    display: none;
   }
 }
 
@@ -3296,6 +3312,10 @@ only screen and (max-device-width: 530px) {
   }
   #Sectionlist .course {
     font-size: 16px;
+  }
+
+  #statisticsList {
+    display: none;
   }
 }
 
@@ -3340,12 +3360,20 @@ only screen and (max-device-width: 480px) {
     margin-top: 0px;
     margin-left: 0px;
   }
+
+  #statisticsList {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
   #Sectionlist .course {
     font-size: 14px;
+  }
+
+  #statisticsList {
+    display: none;
   }
 }
 
@@ -3511,6 +3539,10 @@ only screen and (max-device-width: 320px) {
     width: 95%;
     margin: 1rem auto;
   }
+
+  #statisticsList {
+    display: none;
+  }
 }
 
 /* --------------================################================-------------- *
@@ -3524,7 +3556,6 @@ only screen and (max-device-width: 320px) {
   bottom: 24px;
   right: 24px;
   z-index: 500;
-  display: none;
 }
 
 /* FAB base */
@@ -4300,6 +4331,3 @@ textarea#filecont{
   }
 }
 
-#quiz{
-    display: none;
-}
