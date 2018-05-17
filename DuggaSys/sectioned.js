@@ -2105,7 +2105,11 @@ function fixDeadlineInfoBoxesText(){
 			duggaEntries.splice(duggaEntries.indexOf(lowestElement), 1);
 		}
 		for(var i = 0; i < closestDeadlineArray.length; i++){
-			allDeadlineTexts[i].innerHTML = " " + closestDeadlineArray[i]['entryname'].slice(0, 20);
+			if(closestDeadlineArray[i]['entryname'].length > 25){
+				allDeadlineTexts[i].innerHTML = " " + closestDeadlineArray[i]['entryname'].slice(0, 25) + "...";
+			}else{
+				allDeadlineTexts[i].innerHTML = " " + closestDeadlineArray[i]['entryname'];
+			}
 			deadLineDates[i].innerHTML = " " + removeYearFromDate(closestDeadlineArray[i]['deadline']);
 		}
 	}
