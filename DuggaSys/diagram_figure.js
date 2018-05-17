@@ -392,7 +392,7 @@ function figureFreeDraw() {
         }
         // Check if the new point is the starting point
         var closestPoint = points.closestPoint(points[p2].x, points[p2].y, p2);
-        if(closestPoint.index == startPosition && closestPoint.distance < 10){
+        if(closestPoint.index == startPosition && closestPoint.distance < 20){
             // Delete all previous rendered lines
             for (var i = 0; i < numberOfPointsInFigure; i++) {
                 diagram.pop();
@@ -401,6 +401,7 @@ function figureFreeDraw() {
             points.splice(p2, 1);
             p2 = startPosition;
             figurePath.addsegment(1, p1, p2);
+            md = 0; // To prevent selectbox spawn when clicking out of freedraw mode
             diagram.push(figurePath);
             cleanUp();
         } else {
