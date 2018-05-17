@@ -713,8 +713,9 @@ function getDateFormat(date, operation = ""){
 			+ "T" + date.getHours() + ":" + date.getMinutes() + ":"
 			+ date.getSeconds();
 	}else if(operation == "dateMonth"){
-		return ('0' + (date.getDate())).slice(-2) + '-'
+		return ('0' + date.getDate()).slice(-2) + '-'
 			+ ('0' + (date.getMonth()+1)).slice(-2);
+
 	}
 	return date.getFullYear() + "-"
 			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
@@ -2044,15 +2045,16 @@ function drawPieChart() {
 
 
 function fixDeadlineInfoBoxesText(){
+	// console.log(retdata['entries'])
 	var closestDeadlineArray = [];
-	var copyOfDuggaArray = retdata['entries'];
+	var copyOfDuggaArray = retdata['entries'].slice();
 	for(var i = 0; i < copyOfDuggaArray.length; i++){
 		if(copyOfDuggaArray[i]['kind'] != 3){
 			copyOfDuggaArray.splice(i, 1);
 			i--; // so we dont skip any elements when we remove them.
 		}
 	}
-	if(!copyOfDuggaArray.length == 0){
+	if(copyOfDuggaArray.length != 0){
 		$("#deadlineInfoBox").css("display", "block");
 		document.getElementById("deadlineInfoTitle").innerHTML = "Upcoming Deadlines";
 		copyOfDuggaArray.reduce(function(prev, curr){
@@ -2060,9 +2062,11 @@ function fixDeadlineInfoBoxesText(){
 		});
 
 		Array.prototype.hasMin = function(attrib){
-			return this.reduce(function(prev, curr){
-				return prev[attrib] < curr[attrib] ? prev : curr;
-			});
+			if(this.length != 0){
+				return this.reduce(function(prev, curr){
+					return prev[attrib] < curr[attrib] ? prev : curr;
+				});
+			}
 		}
 	}
 
@@ -2079,31 +2083,39 @@ function fixDeadlineInfoBoxesText(){
 	deadLineDates.push(document.getElementById("deadlineInfoFourthDate"));
 	deadLineDates.push(document.getElementById("deadlineInfoFifthDate"));
 	var isAnyUpcomingDugga = false;
+	// This solution with decreasing the index does not quite seem to work
+	// console.log(copyOfDuggaArray);
+	if(copyOfDuggaArray.length > 0){
+		while(closestDeadlineArray.length < 6){
+			if(closestDeadlineArray.length > 4){
+				break;
+			}
+			var lowestElement = copyOfDuggaArray.hasMin('deadline');
+			// console.log(lowestElement);
+			if(lowestElement == undefined) break;
+			var testDate = new Date(lowestElement['deadline']);
+			if(Date.now() > testDate.getTime()){
+				// console.log("ALREADY HAPPENED");
+			}else{
+				// console.log("NOT HAPPENED");
+				closestDeadlineArray.push(lowestElement);
+			}
+			copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(lowestElement), 1);
+		}
 
-	for(var i = 0; i < copyOfDuggaArray.length; i++){
-		if (i > allDeadlineTexts.length - 1) break;
-		var lowestElement = copyOfDuggaArray.hasMin('deadline')
-		var dateOfCurrentElement = new Date(lowestElement['deadline'])
-		if(dateOfCurrentElement.getTime() < Date.now()){ // This deadline has already passed, no need to show it
-			copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(lowestElement), 1); // remove element
-			i--; // so we dont lose our index
-			continue; // skip rest of the for-loop
+		// console.log(closestDeadlineArray);
+
+		for(var i = 0; i < closestDeadlineArray.length; i++){
+			allDeadlineTexts[i].innerHTML = " " + closestDeadlineArray[i]['entryname'].slice(0, 20);
+			deadLineDates[i].innerHTML = " " + removeYearFromDate(closestDeadlineArray[i]['deadline']);
 		}
-		if(lowestElement['entryname'].length > 20){
-			allDeadlineTexts[i].innerHTML = " " + lowestElement['entryname'].slice(0, 20) + "...";
-		}else{
-			allDeadlineTexts[i].innerHTML = " " + lowestElement['entryname'].slice(0, 20);
-		}
-		$('#deadlineInfoBox').css("display", "block");
-		deadLineDates[i].innerHTML = " " + removeYearFromDate(lowestElement['deadline']);
-		copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(lowestElement), 1);
-		isAnyUpcomingDugga = true;
 	}
-	if(isAnyUpcomingDugga){
+
+	//if(isAnyUpcomingDugga){
 		$('#deadlineInfoBox').css("display", "block");
-	}else{
-		$('#deadlineInfoBox').css("display", "none");
-	}
+//	}else{/
+	//	$('#deadlineInfoBox').css("display", "none");
+	//}
 }
 
 function removeYearFromDate(date){
