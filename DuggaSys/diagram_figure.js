@@ -17,7 +17,7 @@ function Path() {
     this.Opacity = 1;               // Opacity (default is 100%)
     this.linewidth = 2;             // Line Width (stroke width - default is 2 pixels)
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
-                                    // An organized path can contain several sub-path, each of which must be organized
+    this.targeted = true;                    // An organized path can contain several sub-path, each of which must be organized
 
     //--------------------------------------------------------------------
     // Performs a delta-move on all points in a path

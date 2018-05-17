@@ -365,7 +365,7 @@ var diagram = [];
 diagram.closestPoint = function(mx, my){
     var distance = 50000000;
     var point;
-    this.forEach(symbol => {
+    this.filter(symbol => symbol.kind != 1).forEach(symbol => {
         [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
             var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
             var deltaY = corner.fake ? my - corner.y.y : my - corner.y;
@@ -381,6 +381,11 @@ diagram.closestPoint = function(mx, my){
 
 diagram.draw = function() {
     this.adjustPoints();
+    for(var i = 0; i < this.length; i++){
+        if (this[i].kind == 1) {
+            this[i].draw(1, 1);
+        }
+    }
     //Draws all lines first so that they appear behind the object instead
     for(var i = 0; i < this.length; i++){
         if(this[i].symbolkind == 4){
@@ -388,10 +393,7 @@ diagram.draw = function() {
         }
     }
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 1) {
-            this[i].draw(1, 1);
-        }
-        else if(this[i].kind == 2 && this[i].symbolkind != 4){
+        if(this[i].kind == 2 && this[i].symbolkind != 4){
             this[i].draw();
         }
     }
@@ -519,7 +521,7 @@ diagram.itemClicked = function() {
 //--------------------------------------------------------------------
 diagram.checkForHover = function(posX, posY) {
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 2) this[i].isHovered = false;
+        this[i].isHovered = false;
     }
     var hoveredObjects = this.filter(symbol => symbol.checkForHover(posX, posY));
     if (hoveredObjects.length <= 0) return -1;
@@ -529,7 +531,7 @@ diagram.checkForHover = function(posX, posY) {
         else if (a.symbolkind != 4 && b.symbolkind == 4) return 1;
         else return 0;
     });
-    if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind == 2) {
+    if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind != 1) {
         //We only want to set it to true when md is not in selectionbox mode
         hoveredObjects[hoveredObjects.length - 1].isHovered = md != 4 || uimode != "normal";
     }
