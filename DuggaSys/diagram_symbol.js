@@ -685,15 +685,7 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.draw = function () {
         ctx.lineWidth = this.lineWidth * 2;
-        if (this.sizeOftext == 'Small') {
-            textsize = 20;
-        } else if (this.sizeOftext == 'Medium') {
-            textsize = 30;
-        } else if (this.sizeOftext == 'Large') {
-            textsize = 50;
-        } else {
-            textsize = 14; //<-- Tiny and everything else
-        }
+        textsize = this.getFontsize();
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.strokeColor;
 
 
