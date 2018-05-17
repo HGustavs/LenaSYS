@@ -1975,6 +1975,11 @@ function drawPieChart() {
   // Calculate non submitted quizes.
   notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
 
+  if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
+	  totalQuizes++; 			// show that the student has 100% not submitted tests.
+	  notSubmittedQuizes++;
+  }
+
   // PCT = Percentage
   var passedPCT = 100 * (passedQuizes / totalQuizes);
   var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
