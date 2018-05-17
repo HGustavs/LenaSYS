@@ -392,7 +392,7 @@ function figureFreeDraw() {
         }
         // Check if the new point is the starting point
         closestPoint = points.closestPoint(points[p2].x, points[p2].y);
-        if(closestPoint.index == startPosition && closesPoint.distance < 10){
+        if(closestPoint.index == startPosition && closestPoint.distance < 10){
             // Delete all previous rendered lines
             for (var i = 0; i < numberOfPointsInFigure; i++) {
                 diagram.pop();
