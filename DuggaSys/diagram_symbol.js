@@ -259,6 +259,8 @@ function Symbol(kind) {
                 points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
             }
         } else if (this.symbolkind == 5){
+            points[this.centerPoint].x = x1 + hw;
+            points[this.centerPoint].y = y1 + hh;
             // Static size of relation. Makes resizing of relation impossible.
             /*points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
             points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
