@@ -260,7 +260,6 @@ function updateDugga() {
 	var deadline = $("#deadline").val();
 	var release = $("#release").val();
 	var jsondeadline = "{'deadline1':'"+$("#deadline").val()+"', 'comment1':'"+$("#deadlinecomments1").val()+"', 'deadline2':'"+$("#deadline2").val()+"', 'comment2':'"+$("#deadlinecomments2").val()+"', 'deadline3':'"+$("#deadline3").val()+"', 'comment3':'"+$("#deadlinecomments3").val()+"'}";
-	console.log(jsondeadline);
 
 	closeEditDugga();
 
