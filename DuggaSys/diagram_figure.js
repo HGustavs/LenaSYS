@@ -84,7 +84,7 @@ function Path() {
         }
         if (this.segments.length > 0) {
             // Assign stroke style, color, transparency etc
-            ctx.strokeStyle = this.strokeColor;
+            ctx.strokeStyle = this.targeted ? "#F82" : this.strokeColor;
             ctx.fillStyle = this.fillColor;
             ctx.globalAlpha = this.Opacity;
             ctx.lineWidth = this.linewidth;
