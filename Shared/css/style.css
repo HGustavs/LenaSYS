@@ -3175,6 +3175,10 @@ only screen and (max-device-width: 800px) {
     display: block;
     height: 13px;
   }
+
+  #statisticsList {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 768px),
@@ -3198,6 +3202,10 @@ only screen and (max-device-width: 768px) {
   }
   #Sectionlist .course {
     font-size: 20px;
+  }
+
+  #statisticsList {
+    display: none;
   }
 }
 
@@ -3229,6 +3237,10 @@ only screen and (max-device-width: 710px) {
     height: 26px;
     opacity: 1.0;
   }
+
+  #statisticsList {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 590px),
@@ -3252,6 +3264,10 @@ only screen and (max-device-width: 590px) {
     display: block;
     height: 26px;
     opacity: 1.0;
+  }
+
+  #statisticsList {
+    display: none;
   }
 }
 
@@ -3280,6 +3296,10 @@ only screen and (max-device-width: 530px) {
   }
   #Sectionlist .course {
     font-size: 16px;
+  }
+
+  #statisticsList {
+    display: none;
   }
 }
 
@@ -3324,12 +3344,20 @@ only screen and (max-device-width: 480px) {
     margin-top: 0px;
     margin-left: 0px;
   }
+
+  #statisticsList {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
   #Sectionlist .course {
     font-size: 14px;
+  }
+
+  #statisticsList {
+    display: none;
   }
 }
 
@@ -3494,6 +3522,10 @@ only screen and (max-device-width: 320px) {
   .migration-row {
     width: 95%;
     margin: 1rem auto;
+  }
+
+  #statisticsList {
+    display: none;
   }
 }
 
@@ -4281,4 +4313,16 @@ textarea#filecont{
   .optionButtons {
     top: 436px;
   }
+}
+
+/* styling for the search bar in duggaed.php */
+
+#testSearchContainer {
+  display: inline-flex;
+  height: 24px;
+  border-radius: 5px;
+  margin: 0 2px 7px 0;
+  float: right;
+  position: relative;
+  top: -5px; 
 }
