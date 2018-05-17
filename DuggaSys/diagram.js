@@ -1048,7 +1048,7 @@ function loadDiagram() {
                 if (b.diagramNames[i] == "Symbol") {
                     b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
                 } else if (b.diagramNames[i] == "Path") {
-                  //  b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+                    b.diagram[i] = Object.assign(new Path, b.diagram[i]);
                 }
             }
             diagram.length = b.diagram.length;
@@ -1057,7 +1057,7 @@ function loadDiagram() {
             }
             // Points fix
             for (var i = 0; i < b.points.length; i++) {
-             //   b.points[i] = Object.assign(new Path, b.points[i]);
+                b.points[i] = Object.assign(new Path, b.points[i]);
             }
             points.length = b.points.length;
             for (var i = 0; i < b.points.length; i++) {
