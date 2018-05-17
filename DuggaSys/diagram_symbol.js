@@ -263,7 +263,7 @@ function Symbol(kind) {
               points[this.bottomRight].y - points[this.topLeft].y < relationTemplate.height/2){
                 points[this.bottomRight].y = points[this.bottomRight].x = points[this.topLeft].x + relationTemplate.width/2;
             }else{
-                points[this.bottomRight].y = points[this.bottomRight].x;
+                points[this.bottomRight].y = points[this.bottomRight].x*(relationTemplate.height/relationTemplate.width);
             }
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
