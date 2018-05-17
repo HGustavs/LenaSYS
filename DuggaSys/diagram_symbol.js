@@ -976,7 +976,7 @@ function Symbol(kind) {
 		// Set font
 		var fontsize = this.getFontsize();
 		var font = "bold " + parseInt(fontsize) + "px " + this.font;
-
+		ctx.font = font; // Set canvas font in order for measureText to work
 		// Style and positions
 		var svgObj = "", svgStyle = "", svgPos = "";
 		var lineDash = "5, 4"; // Use this for dashed line
@@ -1001,7 +1001,6 @@ function Symbol(kind) {
 			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
 			// Text
 			svgStyle = "fill:"+this.fontColor+"; font:"+font+";";
-			ctx.font = font; // Set canvas font in order for measureText to work
 			if (ctx.measureText(this.name).width > (x2-x1) - 5) {
 				svgPos = "x='"+(x1+3)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
 			} else {
@@ -1035,7 +1034,25 @@ function Symbol(kind) {
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 			}
 		} else if (this.symbolkind == 5) { //Relation
-
+			var midx = points[this.centerPoint].x;
+			var midy = points[this.centerPoint].y;
+			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+			if (this.key_type == "Weak") {
+				svgPos = midx+","+(y1+5)+" "+(x2-9)+","+midy+" "+midx+","+(y2-5)+" "+(x1+9)+","+midy+" "+midx+","+(y1+5);
+				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
+			}
+			// Relation
+			svgPos = midx+","+y1+" "+x2+","+midy+" "+midx+","+y2+" "+x1+","+midy+" "+midx+","+y1;
+			svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
+			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
+			// Text
+			svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+			if(ctx.measureText(this.name).width >= (x2-x1) - 12){
+				svgPos = "x='"+(x1+10)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
+			}else{
+				svgPos = "x='"+(x1+((x2-x1)*0.5))+"' y='"+(y1+((y2-y1)*0.5))+"' text-anchor='middle' dominant-baseline='central'";
+			}
+			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
 		}
 		str += "</g>";
 		return str;
