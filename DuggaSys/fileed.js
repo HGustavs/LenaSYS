@@ -441,50 +441,30 @@ $(document).mousedown(function(e) {
         toggleFabButton();
 	}
 }).on("touchstart", function(e){
-    //Event for holding the fab on mobile
-    if ($('.fab-btn-list').is(':visible')) {
-		fabListIsVisible = false;
+    // If the fab list is visible, there should be no timeout to toggle the list
+	if ($('.fab-btn-list').is(':visible')) {
+        //toggleFabButton();
+        
 	} else {
-		fabListIsVisible = true;
-	}
-    
-	if (fabListIsVisible) {
-		if (e.target.id == "fabBtn") {
+        if (e.target.id == "fabBtn") {
 			pressTimer = window.setTimeout(function() {
 				toggleFabButton();
+                
 			}, 500);
-            
-            e.preventDefault();
-            
+            return false;
 		}
-	} else {
-		toggleFabButton();
-		if (e.target.id == "gFabBtn" || e.target.id == "gFabBtnImg") {
-	    	showFilePopUp('GFILE');
-	    } else if (e.target.id == "lFabBtn" || e.target.id == "lFabBtnImg") {
-	    	showFilePopUp('LFILE');
-	    } else if (e.target.id == "mFabBtn" || e.target.id == "mFabBtnImg") {
-	    	showFilePopUp('MFILE');
-	    } else if (e.target.id == "linkFabBtn" || e.target.id == "linkFabBtnImg") {
-	    	showLinkPopUp();
-	    }
 	}
 }).on("touchend", function(e){
     //abrupts and clears the timer for touchstart when the user lets go of the fab
     // The "Add Course Local File" popup should appear on
 	// a "fast click" if the fab list isn't visible
-	if (!$('.fab-btn-list').is(':visible')) {
-		if (e.target.id == "fabBtn") {
+	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
 			clearTimeout(pressTimer);
 			showFilePopUp('MFILE');
-	    }
+           return false;
     }// Click outside the FAB list
-    else if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target)// if the target of the click isn't the container...
-        && $('.fixed-action-button').has(e.target).length === 0) {// ... nor a descendant of the container
-			toggleFabButton();
-	} else if ($('.fab-btn-list').is(':visible') && $('.fixed-action-button').is(e.target)) {
-			toggleFabButton();
-	}
+    
+    
 });
 
 
