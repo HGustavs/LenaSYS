@@ -997,9 +997,9 @@ function Symbol(kind) {
             
             svgStyle = "stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
             // Top Divider
-            str += "<Line x1='"+x1+"' y1='"+(y1+(fontsize*1.5))+"' x2='"+x2+"' y2='"+(y1+(fontsize*1.5))+"' style='"+svgStyle+"' />";
+            str += "<line x1='"+x1+"' y1='"+(y1+(fontsize*1.5))+"' x2='"+x2+"' y2='"+(y1+(fontsize*1.5))+"' style='"+svgStyle+"' />";
             // Middle Divider
-            str += "<Line x1='"+x1+"' y1='"+midy+"' x2='"+x2+"' y2='"+midy+"' style='"+svgStyle+"' />";
+            str += "<line x1='"+x1+"' y1='"+midy+"' x2='"+x2+"' y2='"+midy+"' style='"+svgStyle+"' />";
 
             // Name
             svgStyle = "fill:"+this.fontColor+";font:"+font+";";

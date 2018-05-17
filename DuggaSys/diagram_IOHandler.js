@@ -219,14 +219,14 @@ function Load() {
 
 function ExportSVG(el) {
     var svgstr = "";
-    svgstr += "<svg width='" + canvas.width + "' height='" + canvas.height + 
-        "' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>";
+    svgstr += "<svg width='1920' height='1080' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>";
     svgstr += diagramToSVG();
     svgstr += "</svg>";
-    $("#canvasDiv").html(svgstr);
-    //var data = "text/json;charset=utf-8," + encodeURIComponent(svgstr);
-    //el.setAttribute("class", 'icon-download');
-    //el.setAttribute("href", "data:" + data);
+    //$("#canvasDiv").html(svgstr);
+    var data = "text/json;charset=utf-8," + encodeURIComponent(svgstr);
+    el.setAttribute("class", 'icon-download');
+    el.setAttribute("href", "data:" + data);
+    el.setAttribute("download", "diagram.svg");
 }
 
 $(document).ready(function(){
