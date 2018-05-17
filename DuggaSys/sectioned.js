@@ -776,10 +776,6 @@ function returnedSection(data) {
 				"<li class='access'><button class='submit-button menuButton access'"
 				+ "onclick='closeWindows(); accessCourse();' "
 				+ "title='Give students access to the selected version'>Access</button></li>";
-			str +=
-				"<li class='contribution'><button class='submit-button menuButton analysis'"
-				+ "onclick='closeWindows(); changeURL(\"stats.php?cid=" + querystring['courseid'] + "&coursevers="
-				+ querystring['coursevers'] + "\")' title='Access Contribution page'>Contribution</button></li>";
 			str += "</ul>";
 			str += "</div";
 			str += "</td>";
@@ -804,11 +800,6 @@ function returnedSection(data) {
 				"<td class='access menuButton' style='display: inline-block;'>"
 				+ "<div class='access menuButton'><input type='button' value='Access' class='submit-button'"
 				+ "title='Give students access to the selected version' onclick='accessCourse();'/></div></td>";
-			str +=
-				"<td class='contribution menuButton' style='display: inline-block;'>"
-				+ "<div class='contribution menuButton'><input type='button' value='Contribution'"
-				+ "class='submit-button' title='Access contribution page' onclick='changeURL(\"stats.php?cid="
-				+ querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "\")'/></div></td>";
 		} else {/* No version selector for students */ }
 
 		if (retdata["writeaccess"]) {
