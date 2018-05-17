@@ -994,9 +994,9 @@ function returnedSection(data) {
 		// str+="<div><p>Swim lane description</p></div>";
 
 		str+="</div>";
-		str	+="<div id='deadlineInfoBox' style='display: none;"
+		str	+="<div id='deadlineInfoBox' style='display: inline-block;"
 			+" padding: 10px; width: 250px;'> ";
-		str +="<h2 id='deadlineInfoTitle'></h2>"
+		str +="<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>"
 		str +="<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
 		+ "<span id='deadlineInfoFirstDate' style='margin-right:5px;width:35px;'></span></div>"
 		str +="<div class='deadlineInfo'><span style='width: 100%;' id='deadlineInfoSecondText'> </span>"
@@ -2045,31 +2045,8 @@ function drawPieChart() {
 
 
 function fixDeadlineInfoBoxesText(){
-	// console.log(retdata['entries'])
 	var closestDeadlineArray = [];
-	var copyOfDuggaArray = retdata['entries'].slice();
-	for(var i = 0; i < copyOfDuggaArray.length; i++){
-		if(copyOfDuggaArray[i]['kind'] != 3){
-			copyOfDuggaArray.splice(i, 1);
-			i--; // so we dont skip any elements when we remove them.
-		}
-	}
-	if(copyOfDuggaArray.length != 0){
-		$("#deadlineInfoBox").css("display", "block");
-		document.getElementById("deadlineInfoTitle").innerHTML = "Upcoming Deadlines";
-		copyOfDuggaArray.reduce(function(prev, curr){
-			return prev.deadline < curr.deadline ? prev : curr;
-		});
-
-		Array.prototype.hasMin = function(attrib){
-			if(this.length != 0){
-				return this.reduce(function(prev, curr){
-					return prev[attrib] < curr[attrib] ? prev : curr;
-				});
-			}
-		}
-	}
-
+	var duggaEntries = retdata['entries'].slice();
 	var allDeadlineTexts = [];
 	allDeadlineTexts.push(document.getElementById("deadlineInfoFirstText"));
 	allDeadlineTexts.push(document.getElementById("deadlineInfoSecondText"));
@@ -2083,39 +2060,51 @@ function fixDeadlineInfoBoxesText(){
 	deadLineDates.push(document.getElementById("deadlineInfoFourthDate"));
 	deadLineDates.push(document.getElementById("deadlineInfoFifthDate"));
 	var isAnyUpcomingDugga = false;
-	// This solution with decreasing the index does not quite seem to work
-	// console.log(copyOfDuggaArray);
-	if(copyOfDuggaArray.length > 0){
-		while(closestDeadlineArray.length < 6){
-			if(closestDeadlineArray.length > 4){
+
+	// remove everything from Entries that isnt a Test
+	for(var i = duggaEntries.length - 1; i >= 0; i--){
+		if(duggaEntries[i]['kind'] != 3){
+			duggaEntries.splice(i, 1);
+		}
+	}
+
+		// to find the lowest-valued-element
+	if(duggaEntries.length != 0){
+		duggaEntries.reduce(function(prev, curr){
+			return prev.deadline < curr.deadline ? prev : curr;
+		});
+
+		Array.prototype.hasMin = function(attrib){
+			if(this.length != 0){
+				return this.reduce(function(prev, curr){
+					return prev[attrib] < curr[attrib] ? prev : curr;
+				});
+			}
+		}
+	}
+
+	if(duggaEntries.length > 0){
+		while(closestDeadlineArray.length < allDeadlineTexts.length){
+			if(closestDeadlineArray.length > 4){ // we only want 5 elements
 				break;
 			}
-			var lowestElement = copyOfDuggaArray.hasMin('deadline');
-			// console.log(lowestElement);
-			if(lowestElement == undefined) break;
+			var lowestElement = duggaEntries.hasMin('deadline');
+			if(lowestElement == undefined) break; // bad solution to check if array is empty
 			var testDate = new Date(lowestElement['deadline']);
-			if(Date.now() > testDate.getTime()){
-				// console.log("ALREADY HAPPENED");
-			}else{
-				// console.log("NOT HAPPENED");
+			if(Date.now() < testDate.getTime()){ // if deadline hasn't already happened we save it
 				closestDeadlineArray.push(lowestElement);
 			}
-			copyOfDuggaArray.splice(copyOfDuggaArray.indexOf(lowestElement), 1);
+			duggaEntries.splice(duggaEntries.indexOf(lowestElement), 1);
 		}
-
-		// console.log(closestDeadlineArray);
-
 		for(var i = 0; i < closestDeadlineArray.length; i++){
 			allDeadlineTexts[i].innerHTML = " " + closestDeadlineArray[i]['entryname'].slice(0, 20);
 			deadLineDates[i].innerHTML = " " + removeYearFromDate(closestDeadlineArray[i]['deadline']);
 		}
 	}
 
-	//if(isAnyUpcomingDugga){
-		$('#deadlineInfoBox').css("display", "block");
-//	}else{/
-	//	$('#deadlineInfoBox').css("display", "none");
-	//}
+	if(closestDeadlineArray.length == 0){ // if we have no deadlines, put this nice text instead
+		allDeadlineTexts[0].innerHTML = "No upcoming duggas"
+	}
 }
 
 function removeYearFromDate(date){
