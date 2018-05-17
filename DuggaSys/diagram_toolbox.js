@@ -40,21 +40,33 @@ function switchToolbar(direction){
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == 1){
+    $(".label").hide();
+    $("#labelCreate").show();
+    $("#labelTools").show();
+    $("#labelUndo").show();
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
   }else if( toolbarState == 2){
+    $(".label").hide();
+    $("#labelCreate").show();
+    $("#labelTools").show();
+    $("#labelUndo").show();
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
   }else if(toolbarState == 3){
+    $(".label").hide();
+    $("#labelDraw").show();
+    $("#labelUndo").show();
     $(".buttonsStyle").hide();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
   else{
+    $(".label").show();
     $(".buttonsStyle").show();
   }
 
