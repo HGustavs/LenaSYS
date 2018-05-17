@@ -1049,8 +1049,6 @@ function Symbol(kind) {
 			fontsize = 30;
 		} else if (this.sizeOftext == 'Large') {
 			fontsize = 50;
-		} else {
-			fontsize = 14; //<-- Tiny and everything else
 		}
 		return fontsize;
 	}
