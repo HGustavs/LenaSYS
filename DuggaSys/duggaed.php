@@ -43,7 +43,7 @@ pdoConnect();
     <button id="searchbutton" class="switchContent" style="float:right;" onclick="return searchKeyUp(event);" type="button">
         <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
       </button>
-       <input id="duggaSearch" class ="searchField" type="search" placeholder="Searchterm.." style="float:right; margin-bottom: 5px;" 
+       <input id="duggaSearch" class ="searchField" type="search" placeholder="Search" style="float:right; margin-bottom: 5px;" 
                     onkeyup="searchterm=document.getElementById('duggaSearch').value; searchKeyUp(event); duggaTable.renderTable();"onsearch="searchterm=document.getElementById('duggaSearch').value; searchKeyUp(event); duggaTable.renderTable();"/> 
   	<!-- Content END -->
 
@@ -177,7 +177,7 @@ pdoConnect();
                 <fieldset style="width:90%">
                   <legend>Search in the Table</legend>
                   <div style="width:100%; height: 25px; display:flex; flex-wrap:wrap; flex-direction:row;">
-                    <input id="variantSearch" class="searchFiled" type="search" placeholder="Searchterm.." style="flex-grow: 99; margin: 0px; padding: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;" 
+                    <input id="variantSearch" class="searchFiled" type="search" placeholder="Searchter..." style="flex-grow: 99; margin: 0px; padding: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;" 
                     onkeyup="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"onsearch="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"/>
                                         <button id="searchbutton" class="switchContent" style="" onclick="return searchKeyUp(event);" type="button">
                       <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
