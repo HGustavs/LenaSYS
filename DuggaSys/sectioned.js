@@ -1637,9 +1637,8 @@ function returnedSection(data) {
 	// Change the scroll position to where the user was last time.
 	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 
-	// Create the pie chart used in the statistics section.
-	drawPieChart();
-	fixDeadlineInfoBoxesText()
+	drawPieChart(); // Create the pie chart used in the statistics section.
+	fixDeadlineInfoBoxesText();
 }
 
 function showHighscore(did, lid) {
