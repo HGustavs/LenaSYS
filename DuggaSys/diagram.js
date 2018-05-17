@@ -40,7 +40,7 @@ var lineStartObj = -1;
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
-//var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
+var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
 var widthWindow;                    // The width on the users screen is saved is in this var.
 var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
