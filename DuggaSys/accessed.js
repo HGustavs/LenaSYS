@@ -4,61 +4,38 @@ var versions;
 var dataInfo;
 var searchterm = "";
 
-AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
-
-//----------------------------------------
-// Commands:
-//----------------------------------------
-
-function setup()
-{
-	/*    Add filter icon in the navheader   */
-	var filt ="";
+function setup(){
+  // Render filter options
+  var filt ="";
 	filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'>";
 	filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
 	filt+="<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+  filt+="<div id='filterOptions'></div>"
 	filt+="</div>";
 	filt+="</span></td>";
 	$("#menuHook").html(filt);
 
-	var dropdownOptions = "";
-	dropdownOptions+="<div class='checkbox-accessed accessedLine'><input type='checkbox' checked class='headercheck' id='selectAll' onclick='checkedAll();'><label class='headerlabel'>Select all/Unselect all</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed accessedLine'></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption'  id='selectusername' onclick='filter(\"username\");'><label class='headerlabel'>User</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectssn' onclick='filter(\"ssn\");'><label class='headerlabel'>SSN</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectfirstname' onclick='filter(\"firstname\");'><label class='headerlabel'>First Name</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectlastname' onclick='filter(\"lastname\");'><label class='headerlabel'>Last Name</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectclass' onclick='filter(\"class\");'><label class='headerlabel'>Class</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectmodified' onclick='filter(\"modified\");'><label class='headerlabel'>Added</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectexaminer' onclick='filter(\"examiner\");'><label class='headerlabel'>Examiner</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectvers' onclick='filter(\"vers\");'><label class='headerlabel'>Version</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectaccess' onclick='filter(\"access\");'><label class='headerlabel'>Access</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input type='checkbox' checked class='headercheck selectoption' id='selectrequestedpasswordchange' onclick='filter(\"requestedpasswordchange\");'><label class='headerlabel'>Password</label></div>";
-	$("#dropdownc").html(dropdownOptions);
+  AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
+}
 
-	/*    Add sort icon in the navheader   */
-	var sort = "";
-	sort+="<td id='filter' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
-	sort+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
-	sort+="<div id='dropdowns' class='dropdown-list-container'>";
-	sort+="</div>";
-	sort+="</span></td>";
-	$("#menuHook").append(sort);
+function fillResponsibleOptions(responsibles)
+{
+    var selectResponsibleTag = document.getElementById("addResponsible");
+    var formatInnerHTML = function(responsibles, i){return responsibles[i]["firstname"]+" "+responsibles[i]["lastname"]+" ("+responsibles[i]["uid"]+")";}
+    var formatValue = function(responsibles, i){return responsibles[i]["uid"];}
 
-	dropdownOptions = "";
-	dropdownOptions+="<div class='checkbox-accessed accessedLine'></div>";
-	dropdownOptions+="<div class='checkbox-accessed' style='border-bottom:1px solid #888'><input type='radio' checked class='headercheck' name='sortdir' value='1' id='sortdir1'><label class='headerlabel' for='sortdir1'>Sort ascending</label><input name='sortdir' onclick='toggleSortDir(0)' type='radio' class='headercheck' value='-1' id='sortdir0'><label class='headerlabel' for='sortdir0'>Sort descending</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck'  id='selectUser' onclick='sorttype(0);'><label class='headerlabel'>User</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectSSN' onclick='sorttype(1);'><label class='headerlabel'>SSN</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectFN' onclick='sorttype(2);'><label class='headerlabel'>First Name</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectLN' onclick='sorttype(3);'><label class='headerlabel'>Last Name</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectClass' onclick='sorttype(4);'><label class='headerlabel'>Class</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='h+eadercheck' id='selectAdded' onclick='sorttype(5);'><label class='headerlabel'>Added</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectExaminer' onclick='sorttype(6);'><label class='headerlabel'>Examiner</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectVersion' onclick='sorttype(7);'><label class='headerlabel'>Version</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' checked class='headercheck' id='selectAccess' onclick='sorttype(8);'><label class='headerlabel'>Access</label></div>";
-	dropdownOptions+="<div class='checkbox-accessed'><input name='sortcol' type='radio' class='headercheck' id='selectPassword' onclick='sorttype(9);'><label class='headerlabel'>Password</label></div>";
-	$("#dropdowns").html(dropdownOptions);
+    for(var i = 0;i < responsibles.length; i++){
+	addSingleOptionToSelectTag(selectResponsibleTag, responsibles, formatInnerHTML, formatValue, i);
+    }
+}
+
+// formatInnerHTMLFunction - provide a function to format the string. Same for formatValueFunction.
+function addSingleOptionToSelectTag(tag, jsonList, formatInnerHTMLFunction, formatValueFunction, index)
+{
+    var option = document.createElement("option");
+    option.innerHTML = formatInnerHTMLFunction(jsonList, index);
+    option.value = formatValueFunction(jsonList, index);
+    tag.appendChild(option);
 }
 
 function hoverc()
@@ -72,65 +49,9 @@ function leavec()
 		$('#dropdownc').css('display','none');
 }
 
-function hovers()
-{
-    $('#dropdownc').css('display','none');
-    $('#dropdowns').css('display','block');
-}
-
-function leaves()
-{
-		$('#dropdowns').css('display','none');
-}
-
-function filter(name)
-{
-	if (document.getElementById("select" + name).checked){
-		var arr = document.getElementsByClassName("user-" + name);
-		document.getElementById(name + "_user_tbl").style.display = "table-cell";
-		for (var i = 0; i < arr.length; i++){
-			arr[i].style.display = "table-cell";
-		}
-	} else {
-		var arr = document.getElementsByClassName("user-" + name);
-		document.getElementById(name + "_user_tbl").style.display = "none";
-		for (var i = 0; i < arr.length; i++){
-			arr[i].style.display = "none";
-		}
-	}
-}
-
-function toggleSortDir(type)
-{
-
-}
-
-function sorttype(type)
-{
-
-}
-
-function checkedAll()
-{
-	// Current state
-	var accessedElements = document.getElementsByClassName("selectoption");
-	var selectToggle = document.getElementById('selectAll');
-
-	// Yes, there is at lease one element checked, so default is clear
-	if(!selectToggle.checked) {
-		selectToggle.checked = false;
-		for (var i =0; i < accessedElements.length; i++) {
-			accessedElements[i].checked = false;
-			filter(accessedElements[i].getAttribute('id').replace("select", ""));
-		}
-	} else { // There are no element(s) checked, so set all
-		selectToggle.checked = true;
-		for (var i =0; i < accessedElements.length; i++) {
-			accessedElements[i].checked = true;
-			filter(accessedElements[i].getAttribute('id').replace("select", ""));
-		}
-	}
-}
+//----------------------------------------
+// Commands:
+//----------------------------------------
 
 function importUsers()
 {
@@ -391,7 +312,6 @@ var bool = true;
  */
 
 function renderCell(col,celldata,cellid) {
-  
 	if(col == "requestedpasswordchange") {
 		obj=JSON.parse(celldata);
 		str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
@@ -471,6 +391,7 @@ function makeDropdown(onChange, values, items, selected){
 
 function makeClassDropdown(onChange, values, items, selected){
     str = "<select onChange='"+onChange+"' onclick='return false;'>";
+
     str+= "<option value='null'></option>";
 
     for(var i = 0; i < values.length; i++){
@@ -497,7 +418,7 @@ function compare(a,b) {
 	let col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
 	var tempB = b;
-  
+
 	// Needed so that the counter starts from 0
 	// everytime we sort the table
 	count = 0;
@@ -514,7 +435,7 @@ function compare(a,b) {
   if(tempB != null){
     tempB = tempB.toUpperCase();
   }
-  
+
 	if (tempA > tempB) {
 		return 1;
 	} else if (tempA < tempB) {
@@ -522,7 +443,7 @@ function compare(a,b) {
 	} else {
 		return 0;
 	}
-}	
+}
 
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
@@ -532,7 +453,7 @@ function rowFilter(row) {
     if (key == "examiner"){
       var examiners = JSON.parse(row[key])['examiners']
       var teacher = examiners[examiners.length - 1]['teacher'];
-      if (teacher.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+      if (teacher && teacher.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
     } else if (key == "access") {
       var access = "none";
       if (JSON.parse(row[key])['access'] == "W"){
@@ -548,13 +469,20 @@ function rowFilter(row) {
 	return false;
 }
 
+function renderColumnFilter(colname,col,status) {
+  str = "<div class='checkbox-dugga'>";
+  str += "<input " + (status ? "checked " : "") + "type='checkbox' onclick='myTable.toggleColumn(\"" + colname + "\",\"" + col + "\")'><label class='headerlabel'>" + col + "</label>";
+  str += "</div>";
+  return str;
+}
+
 var myTable;
 //----------------------------------------
 // Renderer
 //----------------------------------------
 
 function returnedAccess(data) {
-	setup();
+  fillResponsibleOptions(data.responsibles);
 	filez = data;
 	var tabledata = {
 		tblhead:{
@@ -576,11 +504,11 @@ function returnedAccess(data) {
 	myTable = new SortableTable(
 		tabledata,
 		"user",
-		null,
+		"filterOptions",
 		"",
 	    renderCell,
 	    renderSortOptions,
-	    null,
+	    renderColumnFilter,
 	    rowFilter,
 	    [],
 	    [],
@@ -603,16 +531,24 @@ myTable.magicHeader();
 
 }
 
-function rowHighlightOn(rowid,rowno,colclass,centerel){
-    document.getElementById(rowid).style.borderTop="2px solid rgba(255,0,0,1)";
-		document.getElementById(rowid).style.borderBottom="2px solid rgba(255,0,0,1)";
-		centerel.style.backgroundImage="radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2))";
+function rowHighlightOn(rowid,rowno,colclass,centerel) {
+  var row = document.getElementById(rowid);
+  row.classList.add("tableRowHighlightning");
+  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+  for(var i=0;i<collist.length;i++){
+    collist[i].classList.add("tableColHighlightning");
+  }
+  centerel.classList.add("tableCellHighlightning");
 }
 
-function rowHighlightOff(rowid,rowno,colclass,centerel){
-    document.getElementById(rowid).style.borderTop="";
-		document.getElementById(rowid).style.borderBottom="";
-		centerel.style.backgroundImage="none";
+function rowHighlightOff(rowid,rowno,colclass,centerel) {
+  var row = document.getElementById(rowid);
+  row.classList.remove("tableRowHighlightning");
+  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+  for(var i=0;i<collist.length;i++){
+    collist[i].classList.remove("tableColHighlightning");
+  }
+  centerel.classList.remove("tableCellHighlightning");
 }
 
 //excuted onclick button for quick searching in table
@@ -625,3 +561,59 @@ function keyUpSearch() {
 	    }).hide();
 	});
 }
+
+function toggleFabButton() {
+	if (!$('.fab-btn-sm').hasClass('scale-out')) {
+		$('.fab-btn-sm').toggleClass('scale-out');
+		$('.fab-btn-list').delay(100).fadeOut(0);
+	} else {
+		$('.fab-btn-list').fadeIn(0);
+		$('.fab-btn-sm').toggleClass('scale-out');
+	}
+}
+
+$(document).mouseup(function(e) {
+	// The "Import User(s)" popup should appear on
+	// a "fast click" if the fab list isn't visible
+	if (!$('.fab-btn-list').is(':visible')) {
+		if (e.target.id == "fabBtnAcc") {
+			clearTimeout(pressTimer);
+			showImportUsersPopup();
+	    }
+	    return false;
+    }
+	// Click outside the FAB list
+    if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target)// if the target of the click isn't the container...
+        && $('.fixed-action-button').has(e.target).length === 0) {// ... nor a descendant of the container
+		if (!$('.fab-btn-sm').hasClass('scale-out')) {
+			$('.fab-btn-sm').toggleClass('scale-out');
+			$('.fab-btn-list').delay(100).fadeOut(0);
+		}
+	} else if ($('.fab-btn-list').is(':visible') && $('.fixed-action-button').is(e.target)) {
+		if (!$('.fab-btn-sm').hasClass('scale-out')) {
+			$('.fab-btn-sm').toggleClass('scale-out');
+			$('.fab-btn-list').fadeOut(0);
+		}
+	}
+}).mousedown(function(e) {
+	// If the fab list is visible, there should be no timeout to toggle the list
+	if ($('.fab-btn-list').is(':visible')) {
+		fabListIsVisible = false;
+	} else {
+		fabListIsVisible = true;
+	}
+	if (fabListIsVisible) {
+		if (e.target.id == "fabBtnAcc") {
+			pressTimer = window.setTimeout(function() {
+				toggleFabButton();
+			}, 500);
+		}
+	} else {
+		toggleFabButton();
+		if (e.target.id == "iFabBtn" || e.target.id == "iFabBtnImg") {
+	    	showImportUsersPopup();
+	    } else if (e.target.id == "cFabBtn" || e.target.id == "cFabBtnImg") {
+	    	showCreateUserPopup();
+			}
+		}
+	})

@@ -115,6 +115,7 @@ CREATE TABLE quiz (
 	creator 				INTEGER,
 	vers					VARCHAR(8),
     qstart					DATE,
+	jsondeadline	VARCHAR(2048),
 	PRIMARY KEY (id),
 	FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
