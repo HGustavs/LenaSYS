@@ -318,7 +318,7 @@ function returnedCourse(data)
 {
 	versions = data['versions'];
 	entries = data['entries'];
-	let uname=document.getElementById('userName').innerHTML;
+	var uname=document.getElementById('userName').innerHTML;
 
 	// Fill section list with information
 	str = "";

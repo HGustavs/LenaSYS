@@ -23,7 +23,7 @@ $(function() {
 		navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
 			var rawData = window.atob(push_notifications_vapid_public_key);
 			var vapidKey = new Uint8Array(rawData.length);
-			for (let i = 0; i < rawData.length; ++i) {
+			for (var i = 0; i < rawData.length; ++i) {
 				vapidKey[i] = rawData.charCodeAt(i);
 			}
 
@@ -46,7 +46,7 @@ $(function() {
 
 	var unsubscribe = function() {
 		$("#notificationsToggle")[0].disabled = true;
-		
+
 		navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
 			serviceWorkerRegistration.pushManager.getSubscription()
 				.then(function(subscription) {
@@ -93,7 +93,7 @@ $(function() {
 				});
 		});
 	};
-	
+
 	if ('serviceWorker' in navigator) {
 		navigator.serviceWorker.register('pushnotificationsserviceworker.js').then(initialiseState);
 	} else {
