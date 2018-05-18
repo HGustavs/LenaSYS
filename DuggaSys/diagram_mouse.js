@@ -68,7 +68,6 @@ function mousemoveevt(ev, t) {
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
-        // If mouse is pressed down and at a point in selected object - move that point
         if(!sel.point.fake){
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;
@@ -76,12 +75,14 @@ function mousemoveevt(ev, t) {
             sel.point.x.x = currentMouseCoordinateX;
             sel.point.y.y = currentMouseCoordinateY;
         }
+        // If mouse is pressed down and at a point in selected object - move that point
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
             uimode = "Moved";
+            $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             for (var i = 0; i < diagram.length; i++) {
-                if (diagram[i].targeted == true) {
+                if (diagram[i].targeted == true && !diagram[movobj].locked) {
                     if(snapToGrid){
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
@@ -100,7 +101,39 @@ function mousemoveevt(ev, t) {
     updateGraphics();
     // Draw select or create dotted box
     if (md == 4) {
-        if (uimode == "CreateEREntity"){
+        if (figureType == "Free" && uimode == "CreateFigure"){
+            if(p2 != null && !(isFirstPoint)) {
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
+                ctx.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
+                ctx.strokeStyle = "#000";
+                ctx.stroke();
+                ctx.setLineDash([]);
+                if (ghostingCrosses == true) {
+                    crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                    crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                    crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                }
+            }
+        }else if(uimode == "CreateFigure" && figureType == "Square"){
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath(1);
+            ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
+            ctx.lineTo(currentMouseCoordinateX, startMouseCoordinateY);
+            ctx.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
+            ctx.lineTo(startMouseCoordinateX, currentMouseCoordinateY);
+            ctx.lineTo(startMouseCoordinateX, startMouseCoordinateY);
+            ctx.strokeStyle = "#d51";
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.closePath(1);
+            if (ghostingCrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossFillStyle = "rgba(255, 102, 68, 0.0)";
+            }
+        }else if (uimode == "CreateEREntity"){
             ctx.setLineDash([3, 3]);
             ctx.beginPath(1);
             ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
@@ -221,13 +254,18 @@ function mousedownevt(ev) {
         handleSelect();
     } else {
         md = 4; // Box select or Create mode.
-        startMouseCoordinateX = currentMouseCoordinateX;
-        startMouseCoordinateY = currentMouseCoordinateY;
+        if(uimode != "CreateFigure"){
+            startMouseCoordinateX = currentMouseCoordinateX;
+            startMouseCoordinateY = currentMouseCoordinateY;
+        }
         if(uimode != "MoveAround" && !ctrlIsClicked){
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
             }
             selected_objects = [];
+        }
+        if(uimode == "CreateFigure" && figureType == "Square"){
+            createFigure();
         }
     }
 }
@@ -271,11 +309,10 @@ function handleSelect() {
 }
 
 function mouseupevt(ev) {
-
-  /*  if (snapToGrid) {
-        currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
-        currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
-    }*/
+    if (uimode == "CreateFigure" && md == 4) {
+        createFigure();
+        if(figureType == "Free") return;
+    }
     // Code for creating a new class
     if (md == 4 && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
         resize();
@@ -285,7 +322,12 @@ function mouseupevt(ev) {
         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
+    var saveState = md == 4 && uimode != "normal";
+    if(movobj > -1) {
+        if(diagram[movobj].symbolkind != 4 && uimode == "Moved") saveState = true;
+    }
     if (uimode == "CreateLine" && md == 4) {
+        saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
          if (hovobj == -1 || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 3) {
             md = 0;
@@ -294,8 +336,9 @@ function mouseupevt(ev) {
              symbolEndKind = diagram[hovobj].symbolkind;
 
              sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
-
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
+            //okToMakeLine is a flag for this
+            var okToMakeLine = true;
             if(symbolStartKind != 4 && symbolEndKind != 4){
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == 2) {
@@ -305,8 +348,6 @@ function mouseupevt(ev) {
                 }
 
                 //Code for making sure enitities not connect to the same attribute multiple times
-                //okToMakeLine is a flag for this
-                var okToMakeLine= true;
                 if(symbolEndKind == 3 && symbolStartKind == 2){
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0){
                         okToMakeLine= false;
@@ -325,6 +366,7 @@ function mouseupevt(ev) {
                     okToMakeLine = false;
                 }
                 if(okToMakeLine){
+                    saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     if (diagram[hovobj].symbolkind == 2) {
                         p2 = diagram[hovobj].centerPoint;
@@ -427,13 +469,12 @@ function mouseupevt(ev) {
             if(md != 0) diagram[lastSelectedObject].targeted = true;
         }
     }
-    document.addEventListener("click", clickOutsideDialogMenu);
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();
     // Clear mouse state
     md = 0;
-    SaveState();
+    if(saveState) SaveState();
 
 }
 
@@ -448,7 +489,7 @@ function doubleclick(ev) {
 }
 
 function resize() {
-    if (uimode == "CreateClass" && md == 4) {
+    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
             var tempX = currentMouseCoordinateX;
             currentMouseCoordinateX = startMouseCoordinateX;
@@ -460,40 +501,9 @@ function resize() {
             currentMouseCoordinateY = startMouseCoordinateY;
             startMouseCoordinateY = tempY;
         }
-    } else if (uimode == "CreateERAttr" && md == 4) {
-        if (currentMouseCoordinateX >= startMouseCoordinateX && (currentMouseCoordinateX - startMouseCoordinateX) < attributeTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX + attributeTemplate.width;
-        } else if (currentMouseCoordinateX < startMouseCoordinateX && (startMouseCoordinateX - currentMouseCoordinateX) < attributeTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX - attributeTemplate.width;
-        }
-        if (currentMouseCoordinateY >= startMouseCoordinateY && (currentMouseCoordinateY - startMouseCoordinateY) < attributeTemplate.width) {
-            currentMouseCoordinateY = startMouseCoordinateY + attributeTemplate.height;
-        } else if (currentMouseCoordinateY < startMouseCoordinateY && (startMouseCoordinateY - currentMouseCoordinateY) < attributeTemplate.height) {
-            currentMouseCoordinateY = startMouseCoordinateY - attributeTemplate.height;
-        }
-    } else if (uimode == "CreateEREntity" && md == 4) {
-        if (currentMouseCoordinateX >= startMouseCoordinateX && (currentMouseCoordinateX - startMouseCoordinateX) < entityTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX + entityTemplate.width;
-        } else if (currentMouseCoordinateX < startMouseCoordinateX && (startMouseCoordinateX - currentMouseCoordinateX) < entityTemplate.width) {
-            currentMouseCoordinateX = startMouseCoordinateX - entityTemplate.width;
-        }
-        if (currentMouseCoordinateY >= startMouseCoordinateY && (currentMouseCoordinateY - startMouseCoordinateY) < entityTemplate.width) {
-            currentMouseCoordinateY = startMouseCoordinateY + entityTemplate.height;
-        } else if (currentMouseCoordinateY < startMouseCoordinateY && (startMouseCoordinateY - currentMouseCoordinateY) < entityTemplate.height) {
-            currentMouseCoordinateY = startMouseCoordinateY - entityTemplate.height;
-        }
-    } else if (uimode == "CreateERRelation" && md == 4) {
-        if(currentMouseCoordinateX > startMouseCoordinateX) {
+        if(uimode == "CreateERRelation" && (currentMouseCoordinateX - startMouseCoordinateX < relationTemplate.width || currentMouseCoordinateY - startMouseCoordinateY < relationTemplate.height)){
             currentMouseCoordinateX = startMouseCoordinateX + relationTemplate.width;
-        } else{
-            startMouseCoordinateX=currentMouseCoordinateX;
-            currentMouseCoordinateX = startMouseCoordinateX+relationTemplate.width;
-        }
-        if(currentMouseCoordinateY > startMouseCoordinateY) {
             currentMouseCoordinateY = startMouseCoordinateY + relationTemplate.height;
-        } else{
-            startMouseCoordinateY=currentMouseCoordinateY;
-            currentMouseCoordinateY = startMouseCoordinateY+relationTemplate.height;
         }
     }
 }

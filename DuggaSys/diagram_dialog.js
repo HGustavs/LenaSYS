@@ -22,6 +22,12 @@ function closeAppearanceDialogMenu() {
     /*
      * Closes the dialog menu for appearance.
      */
+     //if the X
+     if(globalAppearanceValue == 1){
+       var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+       if (tmpDiagram != null) LoadImport(tmpDiagram);
+     }
+     $(".loginBox").draggable('destroy');
     appearanceMenuOpen = false;
     classAppearanceOpen = false;
     globalAppearanceValue = 0;
@@ -102,10 +108,13 @@ function loadLineForm(element, dir){
             element.innerHTML = file.responseText;
             if(globalAppearanceValue == 0){
                 var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value
+                var cardinalityValUML = diagram[lastSelectedObject].cardinality[0].valueUML;
                 var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
+                var tempCardinalityUML = cardinalityValUML == "" || cardinalityValUML == null ? "None" : cardinalityValUML;
 
                 setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
                 setSelectedOption('cardinality', tempCardinality);
+                setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
         }
     }
@@ -164,6 +173,7 @@ function setSelectedOption(type, value){
 function globalAppearanceMenu(){
     globalAppearanceValue = 1;
     //open a menu to change appearance on all entities.
+    $(".loginBox").draggable();
     var form = showMenu();
     //AJAX
     loadFormIntoElement(form,'forms/global_appearance.php');
@@ -177,7 +187,7 @@ function objectAppearanceMenu(form) {
     form.innerHTML = "No item selected<type='text'>";
     if (diagram[lastSelectedObject].symbolkind == 1) {
         classAppearanceOpen = true;
-        loadUMLForm(form, 'forms/class_appearance.php');
+        loadUMLForm(form, 'forms/class_appearance.php?');
     }
     if (diagram[lastSelectedObject].symbolkind == 2) {
         loadFormIntoElement(form, 'forms/attribute_appearance.php');
@@ -186,7 +196,7 @@ function objectAppearanceMenu(form) {
         loadFormIntoElement(form, 'forms/entity_appearance.php');
     }
     if (diagram[lastSelectedObject].symbolkind == 4) {
-        loadLineForm(form, 'forms/line_appearance.php');
+        loadLineForm(form, 'forms/line_appearance.php?cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
     }
     if (diagram[lastSelectedObject].symbolkind == 5) {
         loadFormIntoElement(form, 'forms/relation_appearance.php');
@@ -234,18 +244,31 @@ function changeObjectAppearance(object_type){
 function createCardinality(){
     //Setting cardinality on new line
     if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3){
-      diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
+        diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
     }
     else if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5) {
-      diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
+        diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
+    }
+    else if(diagram[lineStartObj].symbolkind == 1 && diagram[hovobj].symbolkind == 1){
+        diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
     }
 }
-function changeCardinality(){
+function changeCardinality(isUML){
     var val = document.getElementById('cardinality').value;
+    var valUML;
+    if(isUML){
+        valUML = document.getElementById('cardinalityUml').value;
+    }
 
     //Setting existing cardinality value on line
     if(val == "None") val = "";
+    if(valUML == "None") valUML = "";
     if(diagram[lastSelectedObject].cardinality[0].value != null){
-        diagram[lastSelectedObject].cardinality[0].value = val;
-}
+        if(diagram[lastSelectedObject].cardinality[0].symbolKind != 1){
+            diagram[lastSelectedObject].cardinality[0].value = val;
+        } else{
+            diagram[lastSelectedObject].cardinality[0].valueUML = valUML;
+            diagram[lastSelectedObject].cardinality[0].value = val;
+        }
+    }
 }

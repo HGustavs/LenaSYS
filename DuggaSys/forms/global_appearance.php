@@ -1,13 +1,14 @@
 Font family:<br>
-<select id='font' onchange='globalFont(); hashfunction(); updategfx();'>
-    <option value='Arial' selected>Arial</option>
+<select id='font' onchange='globalFont(); hashFunction(); updateGraphics();'>
+    <option value='' selected> - Choose font - </option>
+    <option value='Arial'>Arial</option>
     <option value='Courier New'>Courier New</option>
     <option value='Impact'>Impact</option>
     <option value='Calibri'>Calibri</option>
 </select><br>
-
 Font color:<br>
-<select id ='fontColor' onchange='globalFontColor(); hashfunction(); updategfx();'>
+<select id ='fontColor' onchange='globalFontColor(); hashFunction(); updateGraphics();'>
+    <option value='' selected> - Choose text color - </option>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -19,14 +20,16 @@ Font color:<br>
     <option value='#000000'>Black</option>
 </select><br>
 Text size:<br>
-<select id='TextSize' onchange='globalTextSize(); hashfunction(); updategfx();'>
-    <option value='Tiny' selected>Tiny</option>
+<select id='TextSize' onchange='globalTextSize(); hashFunction(); updateGraphics();'>
+    <option value='' selected> - Choose text size - </option>
+    <option value='Tiny' >Tiny</option>
     <option value='Small'>Small</option>
     <option value='Medium'>Medium</option>
     <option value='Large'>Large</option>
 </select><br>
 Fill color:<br>
-<select onchange="globalFillColor(); hashfunction(); updategfx();" id='FillColor'>
+<select onchange="globalFillColor(); hashFunction(); updateGraphics();" id='FillColor'>
+    <option value='' selected> - Choose symbol color - </option>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -38,7 +41,8 @@ Fill color:<br>
     <option value='#000000'>Black</option>
 </select><br>
 Stroke color:<br>
-<select onchange="globalStrokeColor(); hashfunction(); updategfx();" id='StrokeColor'>
+<select onchange="globalStrokeColor(); hashFunction(); updateGraphics();" id='StrokeColor'>
+    <option value='' selected> - Choose line color - </option>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -50,6 +54,6 @@ Stroke color:<br>
     <option value='#000000'>Black</option>
 </select><br>
 Line thickness:<br>
-<input id="line-thickness" onclick='globalLineThickness(); hashfunction(); updategfx();' style="width:100%; margin: -2px; padding: 0px;" type="range" min="1" max="5" value="2">
+<input id="line-thickness" onclick='globalLineThickness(); hashFunction(); updateGraphics();' style="width:100%; margin: -2px; padding: 0px;" type="range" min="1" max="5" value="2">
 
-<button type='submit' class='submit-button' onclick="closeAppearanceDialogMenu(); changeObjectAppearance(); setType(form);" style='float: none; display: block; margin: 0px auto;'>OK</button>
+<button type='submit' class='submit-button' onclick="SaveState(); closeAppearanceDialogMenu(); setType(form);" style='float: none; display: block; margin: 0px auto;'>OK</button>

@@ -328,13 +328,13 @@ p {
   height: 16px;
 }
 
-.iconBox, .counterBox {
+.iconBox, .fileLink_counter {
   text-align: center;
   margin: 0;
   padding: 0;
 }
 
-.counterBox {
+.fileLink_counter {
   font-size: 20px;
   color: #614875;
 }
@@ -1083,7 +1083,6 @@ input {
 .application-toolbar-wrap {
   position: fixed;
   z-index: 1000;
-  display: block;
   border: 1px solid rgb(200, 200, 200);
   outline: 1px solid rgb(240, 240, 240);
   background-color: #fff;
@@ -1173,6 +1172,11 @@ input {
   transform: rotate(90deg);
   width: 50%;
   filter:invert(100%);
+}
+.diagramAction{
+  border-radius: 5px;
+  background-color: #614875;
+  width: 47%;
 }
 
 /* --------------================################================-------------- *
@@ -1293,6 +1297,21 @@ input {
   color: #3d3d3d !important;
   right: 6px !important;
   top: 55px;
+}
+
+#hotkey-undo {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
+  top: 10px;
+}
+#hotkey-redo {
+  position: absolute !important;
+  font-size: 11px !important;
+  color: #3d3d3d !important;
+  right: 6px !important;
+  top: 45px;
 }
 
 /* --------------================################================-------------- *
@@ -3144,6 +3163,62 @@ only screen and (max-device-width: 768px) {
   #Sectionlist .course {
     font-size: 20px;
   }
+    
+.fileLink_counter {
+    font-size: 16px;
+    color: #000;
+}
+
+    /* Force table to not be like tables anymore */
+    #fileLink_body{
+		display: block;
+	}
+    #fileLink_tblhead{
+        display: none;
+    }
+    #fileLink_tbl_mh[style]{
+        display: none !important;
+    }
+    #fileLink_body tr[style]{
+        border: 1px solid #ccc !important;
+        display: block !important;
+    }
+
+    #fileLink_body>tr>td{
+		/* Behave  like a "row" */
+        display: block;
+		border: none;
+		border-bottom: 1px solid #eee;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+
+	}
+	#fileLink_body>tr>td:before {
+		/* Top/left values mimic padding */
+        display: inline-block;
+		top: 6px;
+		left: 6px;
+		width: 20%;
+		padding-right: 28%;
+		white-space: nowrap;
+        font-weight: bold;
+        font-size: 16px;
+        color:#000000;
+	}
+
+    /*
+	Label the data
+	*/
+	#fileLink_body>tr>td:nth-of-type(1):before { content: "Number: "; }
+    #fileLink_body>tr>td:nth-of-type(2):before { content: "File name: "; }
+	#fileLink_body>tr>td:nth-of-type(3):before { content: "Exstension: "; }
+    #fileLink_body>tr>td:nth-of-type(4):before { content: "Kind: "; }
+	#fileLink_body>tr>td:nth-of-type(5):before { content: "Size: "; }
+	#fileLink_body>tr>td:nth-of-type(6):before { content: "Upload date: "; }
+	#fileLink_body>tr>td:nth-of-type(7):before { content: "Edit: "; }
+	#fileLink_body>tr>td:nth-of-type(8):before { content: "Trash: "; }
 }
 
 @media only screen and (max-width: 650px),
@@ -3695,67 +3770,84 @@ li:nth-last-child(10) a:hover {
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
  * --------------================################================-------------- */
-
 .previewWindowContainer {
-  background-color: rgba(0, 0, 0, 0.6);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 8000;
-  display: none;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 8000;
+    display: none;
 }
 
+
  .previewWindow {
-    height: 100%;
+    height: 89%;
     width: 95%;
     margin: 0px auto;
     border: solid rgb(200,200,200);
-    background-color: rgb(240,240,240);
+    background-color:  rgb(200,200,200);
     box-shadow: 0px 5px 10px grey;
     z-index: 12000;
     display: none;
     left: 0;
     right: 0;
-    top: 100px;
+    top: 5%;
     position: fixed;
+}
+
+.markdownPart{
+  height: 100%;
 }
 
 .markdown {
   border: solid rgb(200, 200, 200);
-  background-color: #FFFFFF;
+  background-color: rgb(200, 200, 200);
   width: 38%;
-  height: 90%;
+  height: 80%;
   position: relative;
-  margin: 20px 10px 10px 1%;
+  margin: 20px 1% 10px 1%;
   float: left;
 }
-
+#markset {
+    height: 93%;
+}
+#markPrevSet {
+    height:93%;
+}
 .markdownPrev {
   border: solid rgb(200, 200, 200);
-  background-color: #FFFFFF;
-  word-wrap: break-word;
-  overflow-y: scroll;
   width: 56%;
-  height: 90%;
+  height: 80%;
   position: relative;
-  margin: 20px 1% 10px 8px;
+  margin: 20px 1% 10px 1%;
   float: right;
 }
-.markdownPrev pre{
-  font-family: Hack, MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
-  font-size: 10px;
-  line-height: 12px;
-  white-space: pre;
-  white-space: pre-wrap;
-  background: #ffffff;
-  display: inline-block;
-  padding: 1em;
-  margin: 0.5em 0px;
-  border: 1px solid #bebab0;
-  box-shadow: 1px 1px 2px #666;
+
+#editForm {
+  height:100%;
 }
+
+.save-close-button {
+  border-radius: 4px;
+  background-color: #614875;
+  border: 0px;
+  width: 110px;
+  height: 30px;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 19px;
+  margin-bottom: 2px;
+  margin-right: 3%;
+  font-size: 14px;
+  transition: 1s background-color;
+  float: right;
+  line-height: 30px;
+  text-align: center;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
 .optionButtons {
   top: 585px;
   position: relative;
@@ -3763,26 +3855,10 @@ li:nth-last-child(10) a:hover {
   height: 40px;
   width: 355px;
 }
-
 .prevSpan {
   max-width: 100%;
-  padding: 10px
-}
-
-#button-cancel {
-  position: absolute;
-  left: 235px;
-}
-
-#button-save {
-  position: absolute;
-  left: 305px;
-}
-
-#button-close {
-  float: right;
-  position: relative;
-  margin: 0px 10px 0px 0px;
+  padding: 10px;
+  height: 85%;
 }
 
 .prevHead {
@@ -3809,59 +3885,62 @@ li:nth-last-child(10) a:hover {
   line-height: 25px;
 }
 .markText {
-    height:87%;
-    width:84%;
-
+  height:135%;
+  width:92%;
+}
+.markTextPrev {
+  height: 100%;
 }
 #mrkdwntxt {
-  border-radius: 8px;
-  box-shadow: 2px 2px 4px #888 inset;
   resize: none;
   width:100%;
   height:100%;
-  margin:12px;
+  margin: 2%;
+  word-wrap: break-word;
+  overflow-y: scroll;
 }
 textarea#mrkdwntxt {
   width: 100%;
-  height: 93%;
+  height: 60%;
   display: block;
-  padding: 10px
+  padding: 10px;
 }
 
 #boldText {
   cursor: pointer;
-  margin-left: 5%;
-  position: relative;
-  bottom: 10%;
+  margin-left: 3%;
+  position: absolute;
+  margin-top: 0%;
 }
 
 #cursiveText {
   cursor: pointer;
-  margin-left: 3%;
-  position: relative;
-  bottom:10%;
+  margin-left: 8%;
+  position: absolute;
+  margin-top:0%;
 }
 
 #lists {
   cursor: pointer;
   color: #FFFFFF;
-  margin-left: 3%;
+  margin-left: 13%;
   font-size: 12px;
-  position: relative;
-  bottom:15%;
+  position: absolute;
+  filter: invert(100%);
+  margin-top: 0%;
 }
 #codeBlockText {
     cursor: pointer;
-    margin-left: 3%;
-    position: relative;
-    bottom:10%;
+    margin-left: 19%;
+    position: absolute;
+    margin-top: -1%
 }
 #quoteText {
     cursor: pointer;
-    margin-left: 3%;
+    margin-left: 26%;
     font-size: 25px;
-    position: relative;
-    top:20%;
+    position: absolute;
+    margin-top:-1%;
 }
 #img {
     cursor: pointer;
@@ -3869,16 +3948,19 @@ textarea#mrkdwntxt {
 }
 #insert-photo {
     position: absolute;
-    filter: invert(100%);
+    margin-left: 23%;
+    margin-top: -1%;
 }
 #link {
     cursor: pointer;
     margin-left: 14%;
 }
 
-#linkFabBtnImg {
+#linkFabBtnImgPrev {
     position: absolute;
-    margin-left: 10px;
+    margin-left: 38%;
+    margin-top:-1%;
+    filter: invert(100%);
 }
 
 #headerType1 {
@@ -3955,9 +4037,9 @@ textarea#mrkdwntxt {
 }
 .headerType {
   cursor: pointer;
-  margin-left: 9%;
-  position: relative;
-  bottom: 10%;
+  margin-left: 37%;
+  position: absolute;
+  margin-top:-1%
 }
 
 .show-dropdown-content {
@@ -3968,31 +4050,40 @@ textarea#mrkdwntxt {
   max-width: 63px;
   position: absolute;
   z-index: 2000;
-  right: 0px;
+  right: 38%;
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
 }
 #inputSave {
-
 }
 
-@media only screen and (max-height: 800px) and (max-width: 1400px) {
-    .previewWindow {
-        height: 500px;
-     }
-     .markdown {
-         height: 400px;
-     }
-     .markdownPrev {
-         height: 400px;
-     }
-    #mrkdwntxt {
-        height: 350px;
-    }
-    .optionButtons {
-        top: 436px;
-    }
- }
+@media only screen and (max-width: 900px) {
+  .previewWindow {
+    height: 89%;
+  }
+  .markdown {
+    height: 38%;
+    width: 97%;
+    position: relative;
+    float: left;
+  }
+  .markdownPrev {
+    height: 38%;
+    width: 97%;
+    float: left;
+    margin: auto auto auto 8px;
+  }
+  .markText {
+    height:100%;
+  }
+  .optionButtons {
+    top: 686px;
+  }
+  .save-close-button{
+    margin-top: 29px;
+  }
+}
+
 
 /* Import diagram */
 
@@ -4024,42 +4115,31 @@ textarea#mrkdwntxt {
 /* --------------================################================-------------- *
  *                               Edit file preview                              *
  * --------------================################================-------------- */
-.editFileWindowContainer {
-  background-color: rgba(0,0,0,0.6);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 8000;
-  display: none;
-}
+
 
 .editFileWindow {
-  height: 70%;
-  width: 50%;
-  margin: 0px auto;
-  border: solid rgb(200,200,200);
-  background-color: rgb(240,240,240);
-  box-shadow: 0px 5px 10px grey;
+  height: 80%;
+  width: 95%;
+  margin: auto;
+  background-color: rgb(200,200,200);
   z-index: 12000;
   left: 0;
   right: 0;
-  top: 100px;
+  top: 10%;
   position: fixed;
 }
 
 .editFileCode {
   border: solid rgb(200, 200, 200);
-  background-color: #FFFFFF;
-  width: 96%;
-  height: 80%;
+  background-color: rgb(200, 200, 200);
+  width: 93%;
+  height: 90%;
   position: relative;
-  margin: 20px auto;
+  margin: auto;
 }
 
 .fileText {
-  height: 90%;
+  height: 93%;
 }
 
 .confirmationWindow {
@@ -4095,51 +4175,23 @@ textarea#mrkdwntxt {
   width: 355px;
 }
 
-#button-cancel {
-  position: absolute;
-  left: 5px;
-}
-
-#button-save {
-  position: absolute;
-  left: 75px;
-}
-
-#button-close {
-  float: right;
-  position: relative;
-  margin: -23px 70px 0px 0px;
-
-}
-
 #filecont {
-  border-radius: 8px;
-  box-shadow: 2px 2px 4px #888 inset;
   resize: none;
   margin: 10px auto;
-  width: 90%;
+  width: 100%;
   height: 100%;
+  margin-left: -9px;
+  margin-top:20px;
 }
 
 textarea#filecont{
-  width: 91%;
+  width: 99%;
   height: 100%;
   display: block;
   padding: 10px
 }
 
-@media only screen and (max-height: 800px) and (max-width: 1400px) {
-  .editFileWindow {
-    height: 500px;
-  }
-
-  .editFileCode {
-    height: 400px;
-  }
-
-  #filecont {
-    height: 350px;
-  }
+@media only screen and (max-width: 900px) {
 
   .optionButtons {
     top: 436px;

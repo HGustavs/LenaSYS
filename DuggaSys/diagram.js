@@ -40,7 +40,7 @@ var lineStartObj = -1;
 var movobj = -1;                    // Moving object ID
 var lastSelectedObject = -1;        // The last selected object
 var uimode = "normal";              // User interface mode e.g. normal or create class currently
-//var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
+var figureType = null;              // Specification of uimode, when Create Figure is set to the active mode this is set to one of the forms a figure can be drawn in.
 var widthWindow;                    // The width on the users screen is saved is in this var.
 var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
@@ -128,18 +128,19 @@ function keyDownHandler(e){
         ctrlIsClicked = true;
     } else if(ctrlIsClicked && key == 67){
         //Ctrl + c
-        cloneTempArray = [];
-        for(var i = 0; i < selected_objects.length; i++){
-            cloneTempArray.push(selected_objects[i]);
-        }
+        fillCloneArray();
     } else if(ctrlIsClicked && key == 86 ){
         //Ctrl + v
+        var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++){
             //Display cloned objects except lines
             if(cloneTempArray[i].symbolkind != 4){
-                copySymbol(cloneTempArray[i]);
+                const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
+                temp.push(diagram[cloneIndex]);
             }
         }
+        cloneTempArray = temp;
+        selected_objects = temp;
         updateGraphics();
         SaveState();
     }
@@ -151,6 +152,13 @@ function keyDownHandler(e){
       ctrlIsClicked = true;
     }
 
+}
+
+function fillCloneArray(){
+    cloneTempArray = [];
+    for(var i = 0; i < selected_objects.length; i++){
+        cloneTempArray.push(selected_objects[i]);
+    }
 }
 
 //--------------------------------------------------------------------
@@ -244,7 +252,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 
 //Clone an object
 function copySymbol(symbol){
-    var clone = Object.assign({}, symbol);
+    var clone = Object.assign(new Symbol(), symbol);
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
     topLeftClone.x += 10;
     topLeftClone.y += 10;
@@ -254,8 +262,10 @@ function copySymbol(symbol){
     var centerPointClone = Object.assign({}, points[symbol.centerPoint]);
     centerPointClone.x += 10;
     centerPointClone.y += 10;
+    var middleDividerClone = Object.assign({}, points[symbol.middleDivider]);
+    middleDividerClone.x += 10;
+    middleDividerClone.y += 10;
 
-    clone = new Symbol(symbol.symbolkind);
     if(symbol.symbolkind == 1){
         clone.name = "New" + diagram.length;
     }else if(symbol.symbolkind == 2){
@@ -269,11 +279,13 @@ function copySymbol(symbol){
     }
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
-    clone.centerPoint = points.push(centerPointClone) - 1;
-    clone.object_type = "";
-    clone.fontColor = "#000";
-    clone.font = "Arial";
-
+    if(clone.symbolkind != 1){
+        clone.centerPoint = points.push(centerPointClone) - 1;
+    }
+    else{
+        clone.middleDivider = points.push(middleDividerClone) - 1;
+        clone.centerPoint = clone.middleDivider;
+    }
     clone.targeted = true;
     symbol.targeted = false;
 
@@ -314,10 +326,11 @@ points.drawPoints = function() {
 // closestPoint - Returns the distance and index of the point closest
 // to the cotargetItemsInsideSelectionBoxordinates passed as parameters.
 //--------------------------------------------------------------------
-points.closestPoint = function(xCoordinate, yCoordinate) {
+points.closestPoint = function(xCoordinate, yCoordinate, pointIndex) {
     var distance = 50000000;
     var index = -1;
     for (var i = 0; i < this.length; i++) {
+        if(i == pointIndex) continue;
         var deltaX = xCoordinate - this[i].x;
         var deltaY = yCoordinate - this[i].y;
         var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
@@ -353,7 +366,7 @@ var diagram = [];
 diagram.closestPoint = function(mx, my){
     var distance = 50000000;
     var point;
-    this.forEach(symbol => {
+    this.filter(symbol => symbol.kind != 1).forEach(symbol => {
         [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
             var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
             var deltaY = corner.fake ? my - corner.y.y : my - corner.y;
@@ -369,6 +382,11 @@ diagram.closestPoint = function(mx, my){
 
 diagram.draw = function() {
     this.adjustPoints();
+    for(var i = 0; i < this.length; i++){
+        if (this[i].kind == 1) {
+            this[i].draw(1, 1);
+        }
+    }
     //Draws all lines first so that they appear behind the object instead
     for(var i = 0; i < this.length; i++){
         if(this[i].symbolkind == 4){
@@ -376,10 +394,7 @@ diagram.draw = function() {
         }
     }
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 1) {
-            this[i].draw(1, 1);
-        }
-        else if(this[i].kind == 2 && this[i].symbolkind != 4){
+        if(this[i].kind == 2 && this[i].symbolkind != 4){
             this[i].draw();
         }
     }
@@ -507,7 +522,7 @@ diagram.itemClicked = function() {
 //--------------------------------------------------------------------
 diagram.checkForHover = function(posX, posY) {
     for (var i = 0; i < this.length; i++) {
-        if (this[i].kind == 2) this[i].isHovered = false;
+        this[i].isHovered = false;
     }
     var hoveredObjects = this.filter(symbol => symbol.checkForHover(posX, posY));
     if (hoveredObjects.length <= 0) return -1;
@@ -517,7 +532,7 @@ diagram.checkForHover = function(posX, posY) {
         else if (a.symbolkind != 4 && b.symbolkind == 4) return 1;
         else return 0;
     });
-    if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind == 2) {
+    if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind != 1) {
         //We only want to set it to true when md is not in selectionbox mode
         hoveredObjects[hoveredObjects.length - 1].isHovered = md != 4 || uimode != "normal";
     }
@@ -863,37 +878,6 @@ function setType() {
     updateGraphics();
 }
 
-/*
- * Closes the dialog menu for appearance.
- */
-function closeAppearanceDialogMenu() {
-    $("#appearance").hide();
-    dimDialogMenu(false);
-    document.removeEventListener("click", clickOutsideDialogMenu);
-}
-
-/*
- * Closes the dialog menu when click is done outside box.
- */
-function clickOutsideDialogMenu(event) {
-    $(document).mousedown(function (event) {
-        var container = $("#appearance");
-        if (!container.is(event.target) && container.has(event.target).length === 0) {
-            container.hide();
-            dimDialogMenu(false);
-            document.removeEventListener("click", clickOutsideDialogMenu);
-        }
-    });
-}
-
-function dimDialogMenu(dim) {
-    if (dim) {
-        $("#appearance").css("display", "flex");
-    } else {
-        $("#appearance").css("display", "none");
-    }
-}
-
 function connectedObjects(line) {
     var privateObjects = [];
     for (var i = 0; i < diagram.length; i++) {
@@ -955,6 +939,21 @@ function drawGrid() {
         ctx.stroke();
         ctx.closePath();
     }
+}
+
+function gridToSVG(width, height) {
+    var str = "", stroke = "";
+    for (var i = 0; i < width; i++) {
+        if (i % 5 == 0) stroke = "rgb(208, 208, 220)"; //This is a "thick" line
+        else stroke = "rgb(238, 238, 250)";
+        str += "<line x1='"+(i*gridSize)+"' y1='0' x2='"+(i*gridSize)+"' y2='"+height+"' style='stroke:"+stroke+";stroke-width:1;' />";
+    }
+    for (var i = 0; i < height; i++) {
+        if (i % 5 == 0) stroke = "rgb(208, 208, 220)"; //This is a "thick" line
+        else stroke = "rgb(238, 238, 250)";
+        str += "<line x1='0' y1='"+(i*gridSize)+"' x2='"+width+"' y2='"+(i*gridSize)+"' style='stroke:"+stroke+";stroke-width:1;' />";
+    }
+    return str;
 }
 
 //remove all elements in the diagram array. it hides the points by placing them beyond the users view.
@@ -1065,7 +1064,7 @@ function loadDiagram() {
                 if (b.diagramNames[i] == "Symbol") {
                     b.diagram[i] = Object.assign(new Symbol, b.diagram[i]);
                 } else if (b.diagramNames[i] == "Path") {
-                  //  b.diagram[i] = Object.assign(new Path, b.diagram[i]);
+                    b.diagram[i] = Object.assign(new Path, b.diagram[i]);
                 }
             }
             diagram.length = b.diagram.length;
@@ -1074,7 +1073,7 @@ function loadDiagram() {
             }
             // Points fix
             for (var i = 0; i < b.points.length; i++) {
-             //   b.points[i] = Object.assign(new Path, b.points[i]);
+                b.points[i] = Object.assign(new Path, b.points[i]);
             }
             points.length = b.points.length;
             for (var i = 0; i < b.points.length; i++) {
@@ -1083,6 +1082,8 @@ function loadDiagram() {
             updateGraphics();
         }
     }
+
+    SaveState();
 }
 
 function removeLocalStorage() {
@@ -1138,6 +1139,14 @@ function setRefreshTime() {
   }
   return time;
 }
+
+function lockSelected(){
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].locked = !selected_objects[i].locked;
+    }
+}
+
+
 function align(mode){
     for(var i = 0; i < diagram.length; i++){
         if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1){
@@ -1375,4 +1384,17 @@ function redoDiagram() {
     if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
+}
+
+function diagramToSVG() {
+    var str = "";
+    // Convert lines to SVG first so they appear behind other objects
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+    }
+    // Conert other objects to SVG
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
+    }
+    return str;
 }

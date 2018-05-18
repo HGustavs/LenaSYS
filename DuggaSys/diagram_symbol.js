@@ -30,9 +30,11 @@ function Symbol(kind) {
     this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
     this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
     this.cardinality = [
-      {"value": null, "isCorrectSide": null}
+      {"value": null, "isCorrectSide": null, "symbolKind":null}
     ];
-
+    this.minWidth;
+    this.minHeight;
+    this.locked = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -198,29 +200,36 @@ function Symbol(kind) {
     this.adjust = function () {
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
+        var x2 = points[this.bottomRight].x;
+        var y2 = points[this.bottomRight].y;
         var hw = (points[this.bottomRight].x - x1) * 0.5;
         var hh = (points[this.bottomRight].y - y1) * 0.5;
         if (this.symbolkind == 2 || this.symbolkind == 3) {
+            if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width){
+                points[this.bottomRight].x = points[this.topLeft].x + entityTemplate.width;
+            }
+            if(points[this.bottomRight].y - points[this.topLeft].y < entityTemplate.height){
+                points[this.bottomRight].y = points[this.topLeft].y + entityTemplate.height;
+            }
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
         } else if (this.symbolkind == 1) {
-            points[this.centerPoint].x = x1 + hw;
-            points[this.centerPoint].y = y1 + hh;
             // Place middle divider point in middle between x1 and y1
             points[this.middleDivider].x = x1 + hw;
+            points[this.topLeft].y = y1;
 
+            var attrHeight, opHeight;
             if(this.attributes.length > 0){
                 //Height of text + padding
-                var attrHeight = (this.attributes.length*14)+35;
-                points[this.topLeft].y = y1;
-                points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
+                attrHeight = (this.attributes.length*14)+35;
             }
             if(this.operations.length > 0){
-                var opHeight = (this.operations.length*14)+15;
-                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
+                opHeight = (this.operations.length*14)+15;
+            }
+            this.minHeight = attrHeight + opHeight;
 
-            }//Finding the longest string
-            var longestStr = "";
+            //Finding the longest string
+            var longestStr = this.name;
             for(var i = 0; i < this.operations.length; i++){
                 if(this.operations[i].text.length > longestStr.length)
                     longestStr = this.operations[i].text;
@@ -229,18 +238,40 @@ function Symbol(kind) {
                 if(this.attributes[i].text.length > longestStr.length)
                     longestStr = this.attributes[i].text;
             }
-            //Measures the length and sets the width of the object to this.
             ctx.font = "14px Arial";
-            var strLen = ctx.measureText(longestStr).width;
-            points[this.bottomRight].x = points[this.topLeft].x + strLen + 15;
-        } else if (this.symbolkind == 5){
-                // Static size of relation. Makes resizing of relation impossible.
-                points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
-                points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
-                points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
-                points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;
+            this.minWidth = ctx.measureText(longestStr).width + 15;
+
+            if(points[this.middleDivider].y + opHeight > points[this.bottomRight].y){
+                points[this.middleDivider].y = points[this.bottomRight].y - opHeight;
+                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
             }
+            if(points[this.topLeft].y + attrHeight > points[this.middleDivider].y){
+                points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
+                points[this.topLeft].y = points[this.middleDivider].y - attrHeight;
+            }
+            if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight){
+                points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
+            }
+            if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth){
+                points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
+            }
+        } else if (this.symbolkind == 5){
+            if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2){
+                points[this.bottomRight].x = points[this.topLeft].x + relationTemplate.width/2;
+            }
+            if(points[this.bottomRight].y - points[this.topLeft].y < relationTemplate.height/2){
+                points[this.bottomRight].y = points[this.topLeft].y + relationTemplate.height/2;
+            }
+            points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
+            points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
+            points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
+            // Static size of relation. Makes resizing of relation impossible.
+            /*points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
+            points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
+            points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
+            points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;*/
         }
+    }
 
     //--------------------------------------------------------------------
     // Sorts the connector
@@ -376,7 +407,7 @@ function Symbol(kind) {
         }
     }
 
-    
+
     //--------------------------------------------------------------------
     // Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
@@ -474,6 +505,7 @@ function Symbol(kind) {
     // Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
+        if(this.locked) return;
         if(this.symbolkind != 4){
             points[this.topLeft].x += movex;
             points[this.topLeft].y += movey;
@@ -495,8 +527,8 @@ function Symbol(kind) {
             }*/
         }
     }
-    
-    
+
+
 
     //--------------------------------------------------------------------
     // erase/delete
@@ -659,15 +691,7 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.draw = function () {
         ctx.lineWidth = this.lineWidth * 2;
-        if (this.sizeOftext == 'Small') {
-            textsize = 20;
-        } else if (this.sizeOftext == 'Medium') {
-            textsize = 30;
-        } else if (this.sizeOftext == 'Large') {
-            textsize = 50;
-        } else {
-            textsize = 14; //<-- Tiny and everything else
-        }
+        textsize = this.getFontsize();
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.strokeColor;
 
 
@@ -676,7 +700,7 @@ function Symbol(kind) {
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
-    
+
         ctx.save();
 
         ctx.textAlign = "center";
@@ -704,7 +728,7 @@ function Symbol(kind) {
 
 
         //Highlighting points when targeted, makes it easier to resize
-        if(this.targeted && this.symbolkind != 5){
+        if(this.targeted){
             ctx.beginPath();
             ctx.arc(x1,y1,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
@@ -871,17 +895,24 @@ function Symbol(kind) {
         if(this.cardinality[0].value != "" && this.cardinality[0].value != null){
             //Updates x and y position
             ctx.fillStyle = '#000';
-            if(this.cardinality[0].isCorrectSide)
-            {
+            if(this.cardinality[0].symbolKind == 1){
+                var valX = x1 > x2 ? x1-15 : x1+15;
+                var valY = y1 > y2 ? y1-15 : y1+15;
+                var valY2 = y2 > y1 ? y2-15 : y2+15;
+                var valX2 = x2 > x1 ? x2-15 : x2+15;
+                ctx.fillText(this.cardinality[0].value, valX, valY);
+                ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
+            }
+            else if(this.cardinality[0].isCorrectSide){
                 this.cardinality[0].x = x1 > x2 ? x1-10 : x1+10;
                 this.cardinality[0].y = y1 > y2 ? y1-10 : y1+10;
+                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
-            else
-            {
+            else {
                 this.cardinality[0].x = x2 > x1 ? x2-10 : x2+10;
                 this.cardinality[0].y = y2 > y1 ? y2-10 : y2+10;
+                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
-            ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
         }
 
 
@@ -941,7 +972,153 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
+    this.symbolToSVG = function(symbolID) {
+		var str = ""; // SVG string
+		// Get points
+		var x1 = points[this.topLeft].x;
+		var y1 = points[this.topLeft].y;
+		var x2 = points[this.bottomRight].x;
+		var y2 = points[this.bottomRight].y;
+		// Set font
+		var fontsize = this.getFontsize();
+		var font = "bold " + parseInt(fontsize) + "px " + this.font;
+		ctx.font = font; // Set canvas font in order for measureText to work
+		// Style and positions
+		var svgObj = "", svgStyle = "", svgPos = "";
+		var lineDash = "5, 4"; // Use this for dashed line
+		var strokeWidth = this.lineWidth;
 
+		// Create SVG string
+		str += "<g>";
+		if (this.symbolkind == 1) {
+			var midy = points[this.middleDivider].y;
+            font = "bold " + parseInt(fontsize) + "px Arial";
+            ctx.font = font;
+
+            // Box
+            svgPos = x1+","+y1+" "+x2+","+y1+" "+x2+","+y2+" "+x1+","+y2;
+            svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
+            svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
+            str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
+            
+            svgStyle = "stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
+            // Top Divider
+            str += "<line x1='"+x1+"' y1='"+(y1+(fontsize*1.5))+"' x2='"+x2+"' y2='"+(y1+(fontsize*1.5))+"' style='"+svgStyle+"' />";
+            // Middle Divider
+            str += "<line x1='"+x1+"' y1='"+midy+"' x2='"+x2+"' y2='"+midy+"' style='"+svgStyle+"' />";
+
+            // Name
+            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            var nameLength = ctx.measureText(this.name).width;
+            if(nameLength >= (x2-x1) - 2){
+                svgPos = "x='"+(x1+2)+"' y='"+(y1+(0.85*this.textsize))+"' text-anchor='middle' dominant-baseline='central'";
+            }else{
+                svgPos = "x='"+(x1+((x2 - x1)*0.5))+"' y='"+(y1+(0.85*fontsize))+"' text-anchor='middle' dominant-baseline='central'";
+            }
+            str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.name+"</text>";
+
+            if (this.key_type == "Primary key") {
+                svgPos = (x1+((x2-x1)*0.5))+","+(y1+(0.85*fontsize))+" "+(x1+((x2-x1)*0.5))+","+(y1+(0.85*fontsize))+" ";
+                svgPos += (x1+((x2-x1)*0.5)+nameLength)+","+(y1+(0.85*fontsize)+10);
+                str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
+            }
+
+            font = parseInt(fontsize) + "px Arial";
+            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            for (var i = 0; i < this.attributes.length; i++) {
+                svgPos = "x='"+(x1+(fontsize*0.3))+"' y='"+(y1+(fontsize*1.7)+(fontsize*i))+"'";
+                str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.attributes[i].text+"</text>";
+            }
+
+            for (var i = 0; i < this.operations.length; i++) {
+                svgPos = "x='"+(x1+(fontsize*0.3))+"' y='"+(midy+(fontsize*0.2)+(fontsize*i))+"'";
+                str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.operations[i].text+"</text>";
+            }
+		} else if (this.symbolkind == 2) {
+
+		} else if (this.symbolkind == 3) {
+			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+			// Add extra box if weak entity
+			if (this.key_type == "Weak") {
+				svgPos = (x1-5)+","+(y1-5)+" "+(x2+5)+","+(y1-5)+" "+(x2+5)+","+(y2+5)+" "+(x1-5)+","+(y2+5);
+				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
+			}
+			// Create Entity box
+			svgPos = x1+","+y1+" "+x2+","+y1+" "+x2+","+y2+" "+x1+","+y2;
+			svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
+			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
+			// Text
+			svgStyle = "fill:"+this.fontColor+"; font:"+font+";";
+			if (ctx.measureText(this.name).width > (x2-x1) - 5) {
+				svgPos = "x='"+(x1+3)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
+			} else {
+				svgPos = "x='"+(x1 + ((x2 - x1) * 0.5))+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='middle' dominant-baseline='central'";
+			}
+			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
+		} else if (this.symbolkind == 4) {
+			// Cardinality
+			if (this.cardinality[0].value != "" && this.cardinality[0].value != null) {
+				svgPos = "x='"+this.cardinality[0].x+"' y='"+this.cardinality[0].y+"' text-anchor='middle' dominant-baseline='central'";
+				svgStyle = "fill:#000; font:"+font+";";
+				str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.cardinality[0].value+"</text>";
+			}
+			svgPos = "x1='"+x1+"' y1='"+y1+"' x2='"+x2+"' y2='"+y2+"'";
+			if (this.key_type == "Forced") {
+				// Thick line that will be divided into two lines using thin line
+				strokeWidth = this.lineWidth * 3;
+				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+				str += "<line "+svgPos+" style='"+svgStyle+"' />";
+
+				// Thin line used to divide thick line into two lines
+				strokeWidth = this.lineWidth;
+				svgStyle = "stroke:#fff; stroke-width:"+strokeWidth+";";
+				str += "<line "+svgPos+" style='"+svgStyle+"' />";
+			} else if (this.key_type == "Derived") {
+				strokeWidth = this.lineWidth * 2;
+				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+				str += "<line "+svgPos+" style='"+svgStyle+"' stroke-dasharray='"+lineDash+"' />";
+			} else {
+				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+				str += "<line "+svgPos+" style='"+svgStyle+"' />";
+			}
+		} else if (this.symbolkind == 5) {
+			var midx = points[this.centerPoint].x;
+			var midy = points[this.centerPoint].y;
+			// Relation
+			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+			svgPos = midx+","+y1+" "+x2+","+midy+" "+midx+","+y2+" "+x1+","+midy+" "+midx+","+y1;
+			svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
+			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
+			// Weak relation
+			if (this.key_type == "Weak") {
+				svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+				svgPos = midx+","+(y1+5)+" "+(x2-9)+","+midy+" "+midx+","+(y2-5)+" "+(x1+9)+","+midy+" "+midx+","+(y1+5);
+				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
+			}
+			// Text
+			svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+			if(ctx.measureText(this.name).width >= (x2-x1) - 12){
+				svgPos = "x='"+(x1+10)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
+			}else{
+				svgPos = "x='"+(x1+((x2-x1)*0.5))+"' y='"+(y1+((y2-y1)*0.5))+"' text-anchor='middle' dominant-baseline='central'";
+			}
+			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
+		}
+		str += "</g>";
+		return str;
+	}
+
+	this.getFontsize = function() {
+		var fontsize = 14;
+		if (this.sizeOftext == 'Small') {
+			fontsize = 20;
+		} else if (this.sizeOftext == 'Medium') {
+			fontsize = 30;
+		} else if (this.sizeOftext == 'Large') {
+			fontsize = 50;
+		}
+		return fontsize;
+	}
 }
 
 
