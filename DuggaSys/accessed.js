@@ -431,7 +431,7 @@ function renderSortOptions(col,status) {
 }
 
 function compare(a,b) {
-	let col = sortableTable.currentTable.getSortcolumn();
+	var col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
 	var tempB = b;
 
@@ -590,14 +590,14 @@ function showCheckboxes(element) {
 		expanded = false;
     }
 }
-$(document).mouseup(function(e) 
+$(document).mouseup(function(e)
 {
 	// if the target of the click isn't the container nor a descendant of the container
 	if (activeElement) {
 		var checkboxes = $(activeElement).find("#checkboxes");
 		checkboxes = activeElement.parentElement.lastChild;
 
-		if (expanded && !checkboxes.contains(e.target)) 
+		if (expanded && !checkboxes.contains(e.target))
 		{
 			checkboxes.style.display = "none";
 			// GÖr ajax request för att uppdatera databasen

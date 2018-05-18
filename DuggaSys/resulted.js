@@ -551,7 +551,7 @@ function returnedResults(data)
         studentObject.grade = parseInt(data.results);
         studentObject.timesGraded = parseInt(data.duggatimesgraded);
         studentObject.gradeExpire = data.duggaexpire;
-        if (data.results > 0) { 
+        if (data.results > 0) {
         	studentObject.needMarking = false;
         } else {
         	studentObject.needMarking = true;
@@ -609,7 +609,7 @@ var myTable;
 //----------------------------------------
 
 function buildDynamicHeaders() {
-  let tblhead = {"FnameLnameSSN":"Fname/Lname/SSN"};
+  var tblhead = {"FnameLnameSSN":"Fname/Lname/SSN"};
   moments.forEach(function(entry) {
   	tblhead["lid:"+entry['lid']] = entry['entryname'];
   });
@@ -617,11 +617,11 @@ function buildDynamicHeaders() {
 }
 
 function buildStudentInfo() {
-  let i = 0;
+  var i = 0;
 	students.forEach(function(entry) {
 		if(entry.length > 1) {
 			var row = {"FnameLnameSSN":entry[0]};
-			for(j = 1; j < entry.length; j++) {
+			for(var j = 1; j < entry.length; j++) {
 				row["lid:"+entry[j]['lid']] = entry[j];
 			}
 			studentInfo[i++] = row;
@@ -631,7 +631,7 @@ function buildStudentInfo() {
 }
 
 function createSortableTable(data){
-	let tblhead = buildDynamicHeaders();
+	var tblhead = buildDynamicHeaders();
 	studentInfo = buildStudentInfo();
 
 	var tabledata = {
@@ -788,26 +788,26 @@ function rowFilter(row) {
   // Custom filters that remove rows before an actual search
   if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
   if (filterList["onlyPending"]) {
-    let rowPending = false;
+    var rowPending = false;
     for (var colname in row){
       if (colname != "FnameLnameSSN" && row[colname]["needMarking"] == true) { rowPending = true; break; }
     }
     if (!rowPending) { return false; }
   }
-  
+
 	for (colname in row) {
   	if(colname == "FnameLnameSSN") {
-  		let name = "";
+  		var name = "";
   		if (row[colname]["firstname"] != null) {
   			name += row[colname]["firstname"] + " ";
   		}
-  		if (row[colname]["lastname"] != null) {	
+  		if (row[colname]["lastname"] != null) {
   		 row[colname]["lastname"];
   		}
   		if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		
+
   		if (row[colname]["ssn"] != null) {
-  			if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;	
+  			if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
   		}
   		if (row[colname]["username"] != null) {
   			if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
@@ -834,16 +834,16 @@ function renderSortOptions(col,status) {
 	}
 	return str;
 }
-			
+
 //--------------------------------------------------------------------------
 // compare
 // ---------------
 //  Callback function with different compare alternatives for the column sort
 //--------------------------------------------------------------------------
 function compare(a,b) {
-	let col = sortableTable.currentTable.getSortcolumn();
-	let tempA;
-	let tempB;
+	var col = sortableTable.currentTable.getSortcolumn();
+	var tempA;
+	var tempB;
 
 	//Column first name last name ssn
 	if (col == "Fname/Lname/SSN") {
@@ -885,7 +885,7 @@ function compare(a,b) {
 		if(b['needMarking'] == true) {
 			tempB += 10000;
 		}
-			
+
 		if(a['grade'] == 2) {
 			tempA += 1000;
 		}
