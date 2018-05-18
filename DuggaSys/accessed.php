@@ -21,7 +21,7 @@
 	<script src="accessed.js"></script>
 
 </head>
-<body>
+<body onload="setup();">
 	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
