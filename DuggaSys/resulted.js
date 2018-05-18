@@ -658,7 +658,7 @@ function createSortableTable(data){
 		rowHighlightOff,
 		null,
 		null,
-		false
+		true
 	);
 	myTable.renderTable();
 
