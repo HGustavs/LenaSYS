@@ -15,7 +15,7 @@ pdoConnect();
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
   <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -23,6 +23,7 @@ pdoConnect();
   <script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
   <script src="timer.js"></script>
   <script src="clickcounter.js"></script>
+
 </head>
 <body>
 
@@ -34,8 +35,21 @@ pdoConnect();
 	<!-- Navigation Header END -->
 
 	<!-- Content START -->
+
 	<div id="content">
-  	<!-- Content END -->
+    <div class='titles' style='padding-top:10px;'>
+      <h1 style='flex:1;text-align:center;'>Tests</h1>
+    </div>
+
+    <div id="testSearchContainer">
+        <input id="duggaSearch" class ="searchField" type="search" placeholder="Searchterm.."
+                    onkeyup="searchterm=document.getElementById('duggaSearch').value; searchKeyUp(event); duggaTable.renderTable();"onsearch="searchterm=document.getElementById('duggaSearch').value; searchKeyUp(event); duggaTable.renderTable();"/>
+        <button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
+            <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
+        </button>
+
+    </div>
+    <!-- Content END -->
 
   	<!-- Login Dialog START -->
   	<?php
@@ -44,6 +58,13 @@ pdoConnect();
   	<!-- Login Dialog END -->
       <div id="quiz" style='width:100%;'></div> <!-- A div to place the quiz-table within. -->
   </div>
+
+  <!-- START OF FAB-button  -->
+  <div class='fixed-action-button'>
+      <a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'><i class='material-icons'>add</i></a>
+  </div>
+  <!-- END OF FAB-button  -->
+
     <!-- Edit Dugga Dialog START -->
   	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
         <div class='loginBox' style='width:464px;'>
@@ -101,17 +122,15 @@ pdoConnect();
 
   	<!-- Edit Variant Dialog START -->
   	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style="width:80%;">
+      <div class='loginBox' id='variantBox'>
         <div class='loginBoxheader'>
           <h3 id="editVariantTitle">Edit Variant</h3>
           <div class='cursorPointer' onclick='closeWindows();'>x</div>
         </div>
 
-        <div class='loginBoxbody' style='width:100%; height:100%;'>
-          <div id='upperDiv'>
-            <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; border-bottom: #7f7f7f solid 3px; background-color: white; overflow-y: auto; overflow-x: hidden; margin-bottom: 5px;'></div> <!-- A div to place the variant-table within. -->
-          </div>
-          <div id='editVariantDiv' style="display:flex;">
+        <div class='loginBoxbody' id='variantBody' style='width:100%; height:100%;'>
+            <div id="variant" style='width:100%; border-top: solid 3px #fdcb60; border-bottom: #7f7f7f solid 3px; background-color: white; overflow-y: auto; overflow-x: hidden; margin-bottom: 5px; max-height: 300px; flex-shrink: 99; min-height: 100px;' ></div> <!-- A div to place the variant-table within. -->
+          <div id='editVariantDiv' style="display:flex; flex-shrink: 0;">
             <input type='hidden' id='vid' value='Toddler'/>
               <div id="leftDivDialog" style="width: 50%; height:100%; display: inline-block;">
                 <form id="jsonForm" name="jsonForm">
@@ -158,7 +177,17 @@ pdoConnect();
                   <!-- End of leftDivDialog -->
                 </form>
               </div>
-              <div id="rightDivDialog" style="width: 50%; height:100%; display: inline-block;">
+              <div id="rightDivDialog" style='width: 50%; height:100%; display: inline-block;'>
+                <fieldset style="width:90%">
+                  <legend>Search in the Table</legend>
+                  <div style="width:100%; height: 25px; display:flex; flex-wrap:wrap; flex-direction:row;">
+                    <input id="variantSearch" class="searchFiled" type="search" placeholder="Searchterm.." style="flex-grow: 99; margin: 0px; padding: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;"
+                    onkeyup="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"onsearch="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"/>
+                                        <button id="searchbutton" class="switchContent" style="" onclick="return searchKeyUp(event);" type="button">
+                      <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
+                    </button>
+                  </div>
+                </fieldset>
                 <fieldset style="width:90%">
                   <legend>Generated Param JSON</legend>
                   <div id='parameter' style='min-height:120px'>
@@ -167,16 +196,16 @@ pdoConnect();
                 </fieldset>
                 <fieldset style="width:90%">
                   <legend>Answer</legend>
-                    <div id='variantanswer' style='min-height:120px'>
+                    <div id='variantanswer' style='min-height:120px;'>
                       <textarea id='variantanswerText' rows="5" style="min-height:100px"></textarea>
                     </div>
                 </fieldset>
               </div>
             </div>
-            <div id='buttonVariantDiv' style='padding:5px;'>
+            <div id='buttonVariantDiv' style='display:flow-root;'>
               <input id='closeVariant' class='submit-button' style='display:block; float:left;' type='button' value='Close' onclick='closeWindows();'>
-              <input id='submitVariant' class='submit-button' style='display:none; float:right;' type='button' value='Submit' onclick='createVariant();'>
-              <input id='saveVariant' class='submit-button' style='display:none; float:right;' type='button' value='Save' onclick='updateVariant(); showVariantSubmitButton();'>
+              <input id='submitVariant' class='submit-button' style='display:none; float:right;' type='button' value='Create' onclick='createVariant();'>
+              <input id='saveVariant' class='submit-button' style='display:none; float:right;' type='button' value='Update' onclick='updateVariant();'>
               <input id='disableVariant' class='submit-button disableEnable' style='display:none; float:right;' type='button' value='Disable' onclick='showVariantEnableButton();'>
               <input id='enableVariant' class='submit-button disableEnable' style='display:none; float:right;' type='button' value='Enable' onclick='showVariantDisableButton();'>
               <input id='cancelVariant' class='submit-button' style='display:block; float:right;' type='button' value='Cancel' onclick='newVariant(); removeVariantTableHighlights();'>

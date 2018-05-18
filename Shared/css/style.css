@@ -497,6 +497,51 @@ p {
   display: inline-block;
 }
 
+/*  Statistics List */
+
+#courseList { /* Move up later*/
+    display: flex;
+}
+
+#Sectionlistc { /* Move up later*/
+  display: inline-block;
+}
+
+ #statisticsList {
+  display: flex;
+ }
+
+ .statistics {
+   background-color: #927b9e;
+   color: white;
+   width: 36px;
+   height: 100%;
+   box-shadow: 3px 0px 0px #aaa;
+   margin-right: 3px;
+   font-size: 14pt;
+ }
+
+ .statisticsContent {
+   width: 100%;
+   height: 100%;
+   background-color: #d8d7da;
+}
+
+#statisticsPie {
+    border: 2px solid darkgray;
+    background-color: #eae8eb;
+    margin: 10px 10px 10px 10px;
+}
+
+#deadlineInfoBox {
+    width: 100%;
+    margin: 10px 10px 10px 10px;
+    border: 2px solid darkgray;
+    background-color: #eae8eb;
+    margin: 10px 10px 10px 10px;
+
+}
+
 /* --------------================################================-------------- *
  *                                    Header                                    *
  * --------------================################================-------------- */
@@ -720,21 +765,23 @@ header td {
 }
 
 .loginBox {
-  /*display:block;*/
   padding: 4px;
   background-color: #ccc;
   border: 2px solid #999;
-  /*width: 350px;*/
   min-height: 100px;
   min-width: 200px;
   max-height: 80%;
   overflow-y: auto;
-  /*z-index: 9000;
-		position: fixed;
-		top: 30%;
-		left: 50%;
-		margin-left: -178px;*/
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+#variantBox{
+  max-width: 100%;
+  max-height: 100%;
+  width: 90%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
 }
 
 .newpassword {
@@ -909,6 +956,31 @@ input {
   float: left;
 }
 
+
+.loginBox .inputwrapperSmall {
+  clear: both;
+  width: 100%;
+  padding: 3px 0 3px 0;
+  height: 30px;
+  line-height: 30px;
+}
+
+.loginBox .inputwrapperSmall span {
+  float: right;
+}
+
+.loginBox .inputwrapperSmall input,
+.loginBox .inputwrapperSmall select {
+  float: right;
+  width: 50px;
+}
+
+.loginBox .inputwrapperSmall input[type="checkbox"] {
+  /* margin-right: 200px; */
+  height: 24px;
+}
+
+
 .loginBox .inputwrapper input,
 .loginBox .inputwrapper select {
   float: right;
@@ -970,7 +1042,16 @@ input {
   background-color: #ce3d3d;
 }
 
-.loginBoxbody {}
+.loginBoxbody {
+
+}
+
+#variantBody{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow:auto;
+}
 
 .loginBox form {
   padding: 20px;
@@ -1950,13 +2031,13 @@ span.arrow {
   /* ie 6/7 */
 }
 
-.arrowComp {
+.arrowComp, #arrowStatisticsClosed {
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
 }
 
-.arrowRight {
+.arrowRight, #arrowStatisticsOpen {
   vertical-align: text-top;
   position: relative;
   cursor: pointer;
@@ -1990,6 +2071,12 @@ span.arrow {
   -webkit-appearance: none;
   -moz-appearance: none;
   vertical-align: text-top;
+}
+
+.deadlineInfo{
+    display:flex;
+    align-content:space-between;
+    width:100%;
 }
 
 /* End DuggaSys Sectioneed*/
@@ -2157,6 +2244,14 @@ span.arrow {
   line-height: 30px;
   text-align: center;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+#variantSearch{
+  height: 30px;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  margin-left: 4px;
+  font-size: 14px;
 }
 
 .submit-button:hover {
@@ -2758,6 +2853,12 @@ table {
   border-top-right-radius: 5px;
   box-shadow: none;
 }
+.searchField{
+  height: 25px;
+  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
+  border-right: 0px;
+}
 
 #lookingGlassSVG {
   position: absolute;
@@ -2950,6 +3051,7 @@ table.navheader td.hamburger {
   display: inline-block;
   cursor: pointer;
   margin-right: 0px;
+  margin-bottom: 4px;
   width: 0px;
   opacity: 0.0;
   transition: width 0.5s, opacity 0.5s, margin 0.5s;
@@ -3100,18 +3202,14 @@ only screen and (max-device-width: 1085px) {
 @media only screen and (max-width: 800px),
 only screen and (max-device-width: 800px) {
 	#addElement{display:none;}
-  table.navheader td.editVers,
-  table.navheader td.contribution,
-  table.navheader td.newVers {
+   table.navheader td.contribution{
     margin-right: 0px;
     width: 0px;
     -webkit-transition: margin-right 0.5s, width 0.5s;
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
   }
-  table.navheader div.editVers,
-  table.navheader div.contribution,
-  table.navheader div.newVers {
+  table.navheader div.contribution{
     pointer-events: none;
     opacity: 0;
     -webkit-transition: opacity 0.5s;
@@ -3127,17 +3225,19 @@ only screen and (max-device-width: 800px) {
     -moz-transition: opacity 0.5s, width 0.5s, margin 0.5s;
     -o-transition: opacity 0.5s, width 0.5s, margin 0.5s;
   }
-  ul.hamburgerList li.newVers,
-  ul.hamburgerList li.editVers,
   ul.hamburgerList li.contribution {
     pointer-events: auto;
     display: block;
     height: 26px;
     opacity: 1.0;
   }
-  ul.hamburgerList li.hamburgerSeparator {
+  ul.hamburgerList {
     display: block;
     height: 13px;
+  }
+
+  #statisticsList {
+    display: none;
   }
 }
 
@@ -3149,6 +3249,7 @@ only screen and (max-device-width: 768px) {
     transform: scale(0.7, 0.7);
     left: 10px;
   }
+  
   #cookiemsg {
     background-color: #fecc56;
     z-index: 1000;
@@ -3160,10 +3261,15 @@ only screen and (max-device-width: 768px) {
     display: flex;
     text-align: center;
   }
+  
   #Sectionlist .course {
     font-size: 20px;
   }
-    
+
+  #statisticsList {
+    display: none;
+  }
+  
 .fileLink_counter {
     font-size: 16px;
     color: #000;
@@ -3173,12 +3279,15 @@ only screen and (max-device-width: 768px) {
     #fileLink_body{
 		display: block;
 	}
+  
     #fileLink_tblhead{
         display: none;
     }
+  
     #fileLink_tbl_mh[style]{
         display: none !important;
     }
+  
     #fileLink_body tr[style]{
         border: 1px solid #ccc !important;
         display: block !important;
@@ -3195,6 +3304,7 @@ only screen and (max-device-width: 768px) {
         overflow: hidden;
 
 	}
+  
 	#fileLink_body>tr>td:before {
 		/* Top/left values mimic padding */
         display: inline-block;
@@ -3221,8 +3331,8 @@ only screen and (max-device-width: 768px) {
 	#fileLink_body>tr>td:nth-of-type(8):before { content: "Trash: "; }
 }
 
-@media only screen and (max-width: 650px),
-only screen and (max-device-width: 650px) {
+@media only screen and (max-width: 710px),
+only screen and (max-device-width: 710px) {
     #searchBar {
         margin-left: 15px;
     }
@@ -3249,10 +3359,14 @@ only screen and (max-device-width: 650px) {
     height: 26px;
     opacity: 1.0;
   }
+
+  #statisticsList {
+    display: none;
+  }
 }
 
-@media only screen and (max-width: 540px),
-only screen and (max-device-width: 540px) {
+@media only screen and (max-width: 590px),
+only screen and (max-device-width: 590px) {
   table.navheader td.files {
     margin-right: 0px;
     width: 0px;
@@ -3273,10 +3387,14 @@ only screen and (max-device-width: 540px) {
     height: 26px;
     opacity: 1.0;
   }
+
+  #statisticsList {
+    display: none;
+  }
 }
 
-@media only screen and (max-width: 480px),
-only screen and (max-device-width: 480px) {
+@media only screen and (max-width: 530px),
+only screen and (max-device-width: 530px) {
   .hideAll,
   .showAll {
     -webkit-transform: scale(0.6, 0.6);
@@ -3301,10 +3419,14 @@ only screen and (max-device-width: 480px) {
   #Sectionlist .course {
     font-size: 16px;
   }
+
+  #statisticsList {
+    display: none;
+  }
 }
 
-@media only screen and (max-width: 430px),
-only screen and (max-device-width: 430px) {
+@media only screen and (max-width: 480px),
+only screen and (max-device-width: 480px) {
   table.navheader td.tests,
   table.navheader td.results {
     margin-right: 0px;
@@ -3344,12 +3466,20 @@ only screen and (max-device-width: 430px) {
     margin-top: 0px;
     margin-left: 0px;
   }
+
+  #statisticsList {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 320px),
 only screen and (max-device-width: 320px) {
   #Sectionlist .course {
     font-size: 14px;
+  }
+
+  #statisticsList {
+    display: none;
   }
 }
 
@@ -3514,6 +3644,10 @@ only screen and (max-device-width: 320px) {
   .migration-row {
     width: 95%;
     margin: 1rem auto;
+  }
+
+  #statisticsList {
+    display: none;
   }
 }
 
@@ -4112,6 +4246,51 @@ textarea#mrkdwntxt {
   padding: 0 15px;
 }
 
+
+.multiselect-group {
+  width: 100px;
+}
+
+#checkboxes {
+  max-height: 40%;
+  overflow: scroll;
+}
+
+.group-select-box {
+  position: relative;
+}
+
+.group-select-box select {
+  width: 100%;
+  font-weight: bold;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#checkboxes {
+  display: none;
+  border: 1px #dadada solid;
+  position: absolute;
+  background: white;
+  z-index: 50;
+  width: 100px;
+
+}
+
+#checkboxes label {
+  display: block;
+}
+
+#checkboxes label:hover {
+  background-color: #1e90ff;
+}
+
 /* --------------================################================-------------- *
  *                               Edit file preview                              *
  * --------------================################================-------------- */
@@ -4191,9 +4370,69 @@ textarea#filecont{
   padding: 10px
 }
 
-@media only screen and (max-width: 900px) {
+/* --------------================################================-------------- *
+ *                           DuggaEd - Variants editor                          *
+ * --------------================################================-------------- */
 
+/* Number column */
+.variant-vid {
+  width: 20px;
+}
+
+.variant-param {
+  max-width: 0;
+}
+
+/* Content in paramater coulumn */
+.variants-param-col {
+  display: inline-block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Modified column */
+.variant-modified {
+  width: 150px;
+}
+
+/* Status column */
+.variant-disabled {
+  width: 60px;
+}
+
+/* Preview, Edit and Delete columns */
+.variant-arrowVariant, .variant-cogwheelVariant, .variant-trashcanVariant {
+  width: 25px;
+}
+
+@media only screen and (max-height: 800px) and (max-width: 1400px) {
+  .editFileWindow {
+    height: 500px;
+  }
+
+  .editFileCode {
+    height: 400px;
+  }
+
+  #filecont {
+    height: 350px;
+  }
+
+@media only screen and (max-width: 900px) {
   .optionButtons {
     top: 436px;
   }
+}
+
+/* styling for the search bar in duggaed.php */
+#testSearchContainer {
+  display: inline-flex;
+  height: 24px;
+  border-radius: 5px;
+  margin: 0 2px 7px 0;
+  float: right;
+  position: relative;
+  top: -5px; 
 }

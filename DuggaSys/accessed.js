@@ -1,12 +1,19 @@
 var sessionkind=0;
+var activeElement;
 var querystring=parseGet();
 var versions;
 var dataInfo;
+var expanded = false;
 var searchterm = "";
 
-function setup(){
-  // Render filter options
-  var filt ="";
+//----------------------------------------
+// Commands:
+//----------------------------------------
+
+function setup()
+{
+	/*    Add filter icon in the navheader   */
+	var filt ="";
 	filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'>";
 	filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
 	filt+="<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
@@ -363,20 +370,29 @@ function renderCell(col,celldata,cellid) {
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
 		return str;
 	}else if(col == "class"){
-	obj=JSON.parse(celldata);
-	var items = new Array();
-	for(var i = 0; i < filez['classes'].length; i++){
-	    items.push(filez['classes'][i]['class']);
-	}
-	    var selectedItem = obj.class;
-	    str = makeClassDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value,\""+selectedItem+"\");", items, items, selectedItem);
-	str += "<div style='display:none;'>" + obj.class + "</div>";
-	return str;
-    } else if(col == "groups") {
-	return "<span>" + celldata + "</span>";
-    } else {
-	return "<div id='" + cellid + "'>" + celldata + "</div>";
+    obj=JSON.parse(celldata);
+    var items = new Array();
+		// Every user doesn't have a class
+		items.push("null");
+    for(var i = 0; i < filez['classes'].length; i++){
+      items.push(filez['classes'][i]['class']);
     }
+    str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
+    str += "<div style='display:none;'>" + obj.class + "</div>";
+		return str;
+	} else if(col == "groups") {
+		var groups = filez['groups'];
+
+		str = '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
+		str += '<select><option>Välj grupper</option></select><div class="overSelect"></div></div><div id="checkboxes">';
+		groups.forEach(group => {
+			str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'"/>'+group.groupName+'</label>';
+		});
+		str += '</div></div>';
+		return str;
+	} else {
+		return "<div id='" + cellid + "'>" + celldata + "</div>";
+	}
     return celldata;
 }
 
@@ -561,6 +577,33 @@ function keyUpSearch() {
 	    }).hide();
 	});
 }
+
+function showCheckboxes(element) {
+	activeElement = element;
+	var checkboxes = $(element).find("#checkboxes");
+	checkboxes = element.parentElement.lastChild;
+	if (!expanded) {
+		checkboxes.style.display = "block";
+		expanded = true;
+	} else {
+		checkboxes.style.display = "none";
+		expanded = false;
+    }
+}
+$(document).mouseup(function(e) 
+{
+	// if the target of the click isn't the container nor a descendant of the container
+	if (activeElement) {
+		var checkboxes = $(activeElement).find("#checkboxes");
+		checkboxes = activeElement.parentElement.lastChild;
+
+		if (expanded && !checkboxes.contains(e.target)) 
+		{
+			checkboxes.style.display = "none";
+			// GÖr ajax request för att uppdatera databasen
+		}
+   	}
+});
 
 function toggleFabButton() {
 	if (!$('.fab-btn-sm').hasClass('scale-out')) {

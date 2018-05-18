@@ -9,7 +9,7 @@ var filez;
 var variant = [];
 var submissionRow = 0;
 var duggaTable;
-var variantsTable;
+var variantTable;
 var str;
 var globalData;
 var globalVariant;
@@ -17,6 +17,7 @@ var itemToDelete;
 var typeOfItem;
 var duggaPages;
 var isClickedElementBox = false;
+var searchterm = "";
 
 
 AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
@@ -304,8 +305,9 @@ function validateDuggaName() {
 // VARIANT FUNCTIONS start
 function newVariant() {
 	showVariantDisableButton();
-	showVariantSubmitButton();
-	document.getElementById('filelink').value = '';
+	$("#submitVariant").css("display", "block");
+	$("#saveVariant").css("display", "none");
+	document.getElementById('variantSearch').value = '';
 	document.getElementById('filelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
 	document.getElementById('extraparam').placeholder = 'Extra dugga parameters in valid JSON';
@@ -340,7 +342,7 @@ function selectVariant(vid) {
 		});
 	});
 
-	showVariantSaveButton();
+	$("#saveVariant").css("display", "block");
 
 	$("#vid").val(target_variant['vid']); // Set Variant ID
 	$("#variantparameterText").val(target_variant['param']); // Set Variant ID
@@ -444,7 +446,7 @@ function removeVariantTableHighlights() {
 	$('#variant_body').find('tr').each(function() {
 		allRows.push(this);
 	});
-	for(let row of allRows) {
+	for(var row of allRows) {
 		row.removeAttribute('style'); // Remove background color from previously marked rows.
 	}
 }
@@ -453,36 +455,7 @@ function removeVariantTableHighlights() {
 	Change the styling of variantsTable. The variants list will be scrollable, and its
 	size will change depending on the size of the login box, where it is placed.
 */
-function variantsTableStyling() {
-	var loginBox = findAncestor(document.getElementById('variant'), 'loginBox', 'className');
-	var loginBoxHeader = null;
 
-	var loginBoxHeight = null;
-	var loginBoxHeaderHeight = null;
-	var editVariantHeight = null;
-	var remainingSpace = null;
-
-	// Find the header of the login box
-	for(var i = 0; i < loginBox.children.length; i++) {
-		if($(loginBox.children[i]).hasClass('loginBoxheader')) {
-			loginBoxHeader = loginBox.children[i];
-			break;
-		}
-	}
-
-	loginBoxHeight = $(loginBox).outerHeight();
-	loginBoxHeaderHeight = $(loginBoxHeader).outerHeight();
-	editVariantHeight = $("#editVariantDiv").outerHeight();
-
-	// Remaining space for the scrollable variants list
-	remainingSpace = loginBoxHeight - (loginBoxHeaderHeight + editVariantHeight + 60);
-
-	if(remainingSpace > 100) {
-		document.getElementById('variant').style.maxHeight = remainingSpace + 'px';
-	} else {
-		document.getElementById('variant').style.maxHeight = '100px';
-	}
-}
 // VARIANT FUNCTIONS end
 
 // Displaying and hidding the dynamic comfirmbox for deleting-items in duggaED
@@ -532,6 +505,22 @@ function returnedDugga(data) {
 	filez = data;
 	globalData = data;
 
+	if (data['writeaccess']) {
+		$('#quiz').show();
+		$('.fixed-action-button').show();
+		$('.searchField').show();
+		$('#searchbutton').show();
+	}
+	else {
+		$('#quiz').hide();
+		$('.fixed-action-button').hide();
+		$('.searchField').hide();
+		$('#searchbutton').hide();
+			changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
+				+ querystring['coursevers'] + "");
+	}
+
+	console.log(data['writeaccess']);
 	var tabledata = {
 		tblhead: {
 			did: "",
@@ -558,7 +547,7 @@ function returnedDugga(data) {
 		renderCell,
 		renderSortOptionsDugga,
 		null,
-		null,
+		duggaFilter,
 		[],
 		[],
 		"",
@@ -601,7 +590,7 @@ function renderVariant(clickedElement) {
 		tblbody: globalData['entries'][clickedElement].variants,
 		tblfoot: []
 	}
-	variantsTable = new SortableTable(
+	variantTable = new SortableTable(
 		tabledata,
 		"variant",
 		null,
@@ -609,7 +598,7 @@ function renderVariant(clickedElement) {
 		renderCell,
 		renderSortOptionsVariant,
 		null,
-		null,
+		variantFilter,
 		[],
 		[],
 		"",
@@ -621,10 +610,10 @@ function renderVariant(clickedElement) {
 		null,
 		false
 	);
-	variantsTable.renderTable();
+	searchterm = '';
+	variantTable.renderTable();
 	newVariant();
 	$('#did').val(globalData['entries'][clickedElement].arrow);
-	variantsTableStyling();
 }
 
 // Rendring specific cells
@@ -694,6 +683,11 @@ function renderCell(col, celldata, cellid) {
 		celldata = JSON.parse(cellid.match(/\d+/)) + 1;
 	}
 
+	else if (col == "param") {
+		var str = "<span class='variants-param-col'>" + celldata + "</span>";
+		return str;
+	}
+
 	//Translating the integers behind "disabled" to say disabled or enabled. Also making it look that way.
 	else if (col == "disabled") {
 		if (celldata == "0") {
@@ -714,7 +708,7 @@ function renderCell(col, celldata, cellid) {
 	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "arrowVariant") {
 		str = "<img id='dorf' src='../Shared/icons/PlayT.svg' ";
-		str += " onclick='getVariantPreview();'>";
+		str += " onclick='getVariantPreview( " + object + ", " + clickedElement + ");'>";
 		return str;
 	}
 
@@ -740,6 +734,8 @@ function renderCell(col, celldata, cellid) {
 // END OF rendering cells
 // END OF rendering tables
 
+
+//Making dugga headers clickable for sorting.
 function renderSortOptionsDugga(col,status) {
 	str = "";
 	if(col == "headingAddButton"){
@@ -756,20 +752,23 @@ function renderSortOptionsDugga(col,status) {
 	}
 	return str;
 }
+
+//Making variant headers clickable for sorting.
 function renderSortOptionsVariant(col,status) {
 	str = "";
 	if (status ==- 1) {
-		str += "<span class='sortableHeading' onclick='variantsTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
 	} else if (status == 0) {
-		str += "<span class='sortableHeading' onclick='variantsTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 	} else {
-		str += "<span class='sortableHeading' onclick='variantsTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 	}
 	return str;
 }
 
+//Compare to make the table sortable
 function compare(a,b) {
-	let col = sortableTable.currentTable.getSortcolumn();
+	var col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
 	var tempB = b;
 
@@ -788,6 +787,29 @@ function compare(a,b) {
 		return -1;
 	} else {
 		return 0;
+	}
+}
+
+//Filtering duggas from the searchfield.
+function duggaFilter(row) {
+	if (row.qname.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
+		return true;
+	}
+	else if (row.quizFile.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+//Filtering variants from the searchfield.
+function variantFilter(row) {
+	if (row.param.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
+		return true;
+	}
+	else{
+		return false;
 	}
 }
 
@@ -810,16 +832,6 @@ function showDuggaSaveButton() {
 	$("#saveDugga").css("display", "block");
 }
 
-function showVariantSubmitButton() {
-	$("#submitVariant").css("display", "block");
-	$("#saveVariant").css("display", "none");
-}
-
-function showVariantSaveButton() {
-	$("#submitVariant").css("display", "none");
-	$("#saveVariant").css("display", "block");
-}
-
 function showVariantEnableButton() {
 	$("#enableVariant").css("display", "block");
 	$("#disableVariant").css("display", "none");
@@ -830,9 +842,31 @@ function showVariantDisableButton() {
 	$("#disableVariant").css("display", "block");
 }
 
+
 //END OF closers and openers
 
-function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template) {
+function getVariantPreview(vid) {
+	var did = document.getElementById("did").value;
+	var target_variant;
+	var target_quiz;
+	globalData['entries'].forEach(element => {
+		if (element['did'] == did) {
+			target_quiz = element;
+		}
+		var tempVariant = element['variants'];
+		tempVariant.forEach(variant => {
+			if (variant['vid'] == vid) {
+				target_variant = variant;
+			}
+		});
+	});
+
+
+	var template = target_quiz['quizFile'];
+	var duggaVariantParam = target_variant['param']; // Set Variant Param
+	var duggaVariantAnswer = target_variant['variantanswer']; // Set Variant Answer
+
+
 	$("#MarkCont").html(duggaPages[template]);
 
 	$.getScript("templates/" + template + ".js")
@@ -840,9 +874,9 @@ function getVariantPreview(duggaVariantParam, duggaVariantAnswer, template) {
 			showFacit(decodeURIComponent(duggaVariantParam), "UNK", decodeURIComponent(duggaVariantAnswer), null, null, null);
 		})
 		.fail(function (jqxhr, settings, exception) {
-			eval(script);
 			showFacit(decodeURIComponent(duggaVariantParam), "UNK", decodeURIComponent(duggaVariantAnswer));
 		});
+
 
 	$("#resultpopover").css("display", "flex");
 }
@@ -875,68 +909,11 @@ $(document).scroll(function(e){
 	localStorage.setItem("duggaEdScrollPosition" + globalData.coursecode, $(window).scrollTop());
 });
 
-// function isInArray(array, search){
-//     return array.indexOf(search) >= 0;
-// }
+// Start of functions handling the FAB-button functionality
 
-// function parseParameters(str){
-// 	return str;
-// }
+function createQuickItem(){
+	newDugga();
+	createDugga();
+}
 
-// function displayfield(res){
-// 	$("#autogradeselect"+res).css("display","block");
-// }
-
-// function changename(didd,num){
-// 	var yes = didd;
-// 	$("#did").val(yes);
-// 	var name =  $("#duggav"+num).val();
-// 	$("#name").val(name);
-// 	var nme=$("#name").val();
-// 	var did=$("#did").val();
-
-// 	AJAXService("UPDATEDNAME",{cid:querystring['cid'],qid:did,nme:nme,coursevers:querystring['coursevers']},"DUGGA");
-// }
-
-// function changeauto(didd,num){
-// 	var yes = didd;
-// 	$("#did").val(yes);
-// 	var auto =  $("#duggav"+num).val();
-// 	$("#autograde").val(auto);
-// 	var autograde=$("#autograde").val();
-// 	var did=$("#did").val();
-// 	var autograde=$("#autograde").val();
-
-// 	AJAXService("UPDATEAUTO",{cid:querystring['cid'],qid:did,autograde:autograde,coursevers:querystring['coursevers']},"DUGGA");
-// }
-
-// function changegrade(didd,num){
-// 	var yes = didd;
-// 	$("#did").val(yes);
-// 	var auto =  $("#duggav"+num).val();
-// 	$("#gradesys").val(auto);
-// 	var did=$("#did").val();
-// 	var gradesys=$("#gradesys").val();
-
-// 	AJAXService("UPDATEGRADE",{cid:querystring['cid'],qid:did,gradesys:gradesys,coursevers:querystring['coursevers']},"DUGGA");
-// }
-
-// function changefile(didd,num){
-// 	str="";
-// 	for(var j=0;j<filez.length;j++){
-// 			filen=filez[j];
-// 			if(filen!=".."&&filen!="."){
-// 					if(template==filen) str+="<option selected='selected' value='"+filen+"'>"+filen+"</option>"
-// 					else str+="<option value='"+filen+"'>"+filen+"</option>"
-// 			}
-// 	}
-// 	$("#template").html(str);
-// 	var yes = didd;
-// 	$("#did").val(yes);
-// 	var templates =  $("#duggav"+num).val();
-// 	$("#template").val(templates);
-// 	var did=$("#did").val();
-// 	var template=$("#template").val();
-
-// 	AJAXService("UPDATETEMPLATE",{cid:querystring['cid'],qid:did,template:template,coursevers:querystring['coursevers']},"DUGGA");
-// }
+// End of functions handling the FAB-button functionality

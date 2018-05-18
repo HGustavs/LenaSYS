@@ -7,6 +7,7 @@ var testsAvailable;
 var nameSet = false;
 var hoverMenuTimer;
 
+
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
 	idCounter: 0, 		/* Used to give elements unique ids. This might? brake
@@ -52,7 +53,41 @@ $(document).ready(function () {
 	$('#enddate').datepicker({
 		dateFormat: "yy-mm-dd"
 	});
+	addMinuteOptions();
+	addHourOptions();
+
 });
+
+
+function addMinuteOptions(){
+	var str = "";
+	for(var i = 0; i < 60; i+=5){
+		if(i < 10){
+			str+= "<option value=" + i + ">0" + i + "</option>";
+		}else{
+			str+= "<option value=" + i + ">" + i + "</option>";
+		}
+	}
+	$("#minutePickerStartNewVersion").html(str);
+	$("#minutePickerEndNewVersion").html(str);
+	$("#minutePickerStartEditVersion").html(str);
+	$("#minutePickerEndEditVersion").html(str);
+}
+
+function addHourOptions(){
+	var str = "";
+	for(var i = 0; i < 24; i++){
+		if(i < 10){
+			str+= "<option value=" + i + ">0" + i + "</option>";
+		}else{
+			str+= "<option value=" + i + ">" + i + "</option>";
+		}
+	}
+	$("#hourPickerStartNewVersion").html(str);
+	$("#hourPickerEndNewVersion").html(str);
+	$("#hourPickerStartEditVersion").html(str);
+	$("#hourPickerEndEditVersion").html(str);
+}
 
 
 function showSubmitButton() {
@@ -443,16 +478,16 @@ function validateType() {
 
 
 function updateItem() {
-	tabs = $("#tabs").val();
-	lid = $("#lid").val();
-	kind = $("#type").val();
-	link = $("#link").val();
-	highscoremode = $("#highscoremode").val();
-	sectionname = $("#sectionname").val();
-	visibility = $("#visib").val();
-	moment = $("#moment").val();
-	gradesys = $("#gradesys").val();
-	comments = $("#comments").val();
+	var tabs = $("#tabs").val();
+	var lid = $("#lid").val();
+	var kind = $("#type").val();
+	var link = $("#link").val();
+	var highscoremode = $("#highscoremode").val();
+	var sectionname = $("#sectionname").val();
+	var visibility = $("#visib").val();
+	var moment = $("#moment").val();
+	var gradesys = $("#gradesys").val();
+	var comments = $("#comments").val();
 	// Storing tabs in gradesys column!
 	if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7) gradesys = tabs;
 	AJAXService(
@@ -471,12 +506,6 @@ function updateItem() {
 	$("#editSection").css("display", "none");
 
 }
-
-// Create New Dugga/Example
-function createLink() {
-	alert("CREATE!");
-}
-
 
 function newItem() {
 	tabs = $("#tabs").val();
@@ -505,7 +534,6 @@ function newItem() {
 			comment: comment
 		}, "SECTION");
 	$("#editSection").css("display", "none");
-	setTimeout(function () { scrollToBottom(); }, 100);  // Scroll the page to the bottom after the object is created, the delay is there because the function runs quicker than the database update
 }
 
 function closeSelect() {
@@ -545,6 +573,19 @@ function createVersion() {
 	var comments = $("#comments").val();
 	var startdate = $("#startdate").val();
 	var enddate = $("#enddate").val();
+	var startHour = ($("#hourPickerStartNewVersion").val());
+	var startMinute = ($("#minutePickerStartNewVersion").val());
+	var endHour = ($("#hourPickerEndNewVersion").val());
+	var endMinute = ($("#minutePickerEndNewVersion").val());
+	startdate = new Date(startdate)
+	enddate = new Date(enddate)
+	startdate.setHours(startHour)
+	startdate.setMinutes(startMinute)
+	enddate.setHours(endHour)
+	enddate.setMinutes(endMinute);
+
+	startdate = getDateFormat(startdate, "hourMinuteSecond");
+	enddate = getDateFormat(enddate, "hourMinuteSecond");
 
 	if (versid == "" || versname == "") {
 		alert("Version Name and Version ID must be entered!");
@@ -595,16 +636,29 @@ function returnedCourse(data) {
 }
 
 function showEditVersion(versid, versname, startdate, enddate) {
-	$("#eversid").val(versid);
+	startdate = new Date(startdate)
+	enddate = new Date(enddate)
+	var startHour = startdate.getHours()
+	var startMinute = startdate.getMinutes()
+	var endHour = enddate.getHours()
+	var endMinute = enddate.getMinutes()
+
+	startdate = getDateFormat(startdate);
+	enddate = getDateFormat(enddate);
+
 	$("#eversname").val(versname);
+	$("#eversid").val(versid);
 	$("#estartdate").val(startdate);
 	$("#eenddate").val(enddate);
-
+	$("#hourPickerStartEditVersion").val(startHour);
+	$("#minutePickerStartEditVersion").val(startMinute);
+	$("#hourPickerEndEditVersion").val(endHour);
+	$("#minutePickerEndEditVersion").val(endMinute);
 	$("#editCourseVersion").css("display", "flex");
-
 }
 
 function updateVersion() {
+
 	var cid = $("#cid").val();
 	var versid = $("#eversid").val();
 	var versname = $("#eversname").val();
@@ -614,6 +668,21 @@ function updateVersion() {
 	var makeactive = $("#emakeactive").is(':checked');
 	var startdate = $("#estartdate").val();
 	var enddate = $("#eenddate").val();
+	var startHour = ($("#hourPickerStartEditVersion").val());
+	var startMinute = ($("#minutePickerStartEditVersion").val());
+	var endHour = ($("#hourPickerEndEditVersion").val());
+	var endMinute = ($("#minutePickerEndEditVersion").val());
+
+
+	startdate = new Date(startdate)
+	enddate = new Date(enddate)
+	startdate.setHours(startHour)
+	startdate.setMinutes(startMinute)
+	enddate.setHours(endHour)
+	enddate.setMinutes(endMinute);
+
+	startdate = getDateFormat(startdate, "hourMinuteSecond");
+	enddate = getDateFormat(enddate, "hourMinuteSecond");
 
 	AJAXService("UPDATEVRS", {
 		cid: cid,
@@ -633,6 +702,23 @@ function updateVersion() {
 
 	$("#editCourseVersion").css("display", "none");
 
+}
+
+function getDateFormat(date, operation = ""){
+	if(operation == "hourMinuteSecond"){
+		return date.getFullYear() + "-"
+			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
+			+ ('0' + date.getDate()).slice(-2)
+			+ "T" + date.getHours() + ":" + date.getMinutes() + ":"
+			+ date.getSeconds();
+	}else if(operation == "dateMonth"){
+		return ('0' + date.getDate()).slice(-2) + '-'
+			+ ('0' + (date.getMonth()+1)).slice(-2);
+
+	}
+	return date.getFullYear() + "-"
+			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
+			+ ('0' + date.getDate()).slice(-2)
 }
 
 function goToVersion(selected) {
@@ -749,18 +835,6 @@ function returnedSection(data) {
 			str += "<div class='hamburgerMenu'>";
 			str += "<ul class='hamburgerList'>";
 			str +=
-				"<li class='editVers'><button class='submit-button menuButton editVers '"
-				+ "onclick='closeWindows(); hamburgerChange(); showEditVersion(\"" + querystring['coursevers']
-				+ "\",\"" + versionname + "\",\"" + startdate + "\",\"" + enddate + "\");' "
-				+ "title='Edit the selected version'>Edit Version</button></li>";
-
-			str +=
-				"<li class='newVers'><button class='submit-button menuButton newVers'"
-				+ "onclick='closeWindows();  hamburgerChange(); showCreateVersion();'"
-				+ "title='Create a new version of this course'>New Version</button></li>";
-
-			str += "<li class='hamburgerSeparator'><hr></li>";
-			str +=
 				"<li class='results'><button class='submit-button menuButton results'"
 				+ "onclick='closeWindows(); changeURL(\"resulted.php?cid=" + querystring['courseid'] + "&coursevers="
 				+ querystring['coursevers'] + "\")' title='Edit student results'>Results</button></li>";
@@ -836,6 +910,7 @@ function returnedSection(data) {
 			str += "</ol>"
 
 			str += "</div>";
+
 		} else {
 			str += "</tr></table>";
 		}
@@ -877,7 +952,8 @@ function returnedSection(data) {
 				+ "\"" + momentexists + "\","
 				+ "\"" + item['gradesys'] + "\","
 				+ "\"" + item['highscoremode'] + "\", null"
-				+ "); showSubmitButton(); validateType(); editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
+				+ "); showSubmitButton(); validateType(); "
+				+ "editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
 			str += "</div>";
 		}
 
@@ -886,7 +962,44 @@ function returnedSection(data) {
 
 		str += "</div>";
 
-		str += "<div id='Sectionlistc' >";
+		str += "<div id='courseList'>";
+		str += "<!-- Statistics List -->"
+		+ "<div id='statisticsList'>"
+		+ "<div id='statistics' class='statistics' style='display: inline-block; cursor: pointer;'>"
+		+ "<div style='margin: 10px;'>"
+		+ "<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>"
+		+ "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>"
+		+ "</div>"
+		+ "<div class='nowrap' style='padding-left:5px' title='statistics'>"
+		+ "<span class='listentries-span' style='writing-mode: vertical-rl; "
+		+ "text-orientation: upright;'>Statistics</span>"
+		+ "</div></div>"
+		+ "<div class='statisticsContent' style='display: inline-block;'>";
+
+		//Piechart.
+		/* The next div is a container div containing a description of the swim lanes
+		   and a pie chart giving an overview of course progress by a student. */
+		str+="<div id='statisticsPie' style=' height:100px;'>";
+		str+="<canvas id='pieChart' width='250px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
+		// str+="<div><p>Swim lane description</p></div>";
+
+		str+="</div>";
+		str	+="<div id='deadlineInfoBox' style='display: inline-block;"
+			+" padding: 10px; width: 250px;'> ";
+		str +="<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>"
+		str +="<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
+		+ "<span id='deadlineInfoFirstDate' style='margin-right:5px;width:35px;'></span></div>"
+		str +="<div class='deadlineInfo'><span style='width: 100%;' id='deadlineInfoSecondText'> </span>"
+		+ "<span id='deadlineInfoSecondDate' style='margin-right:5px;width: 35px;'> </span> </div>"
+		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoThirdText'> </span>"
+		+ "<span id='deadlineInfoThirdDate' style='margin-right:5px;width: 35px;'> </span> </div>"
+		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFourthText'> </span>"
+		+ "<span id='deadlineInfoFourthDate' style='margin-right:5px;width: 35px;'> </span> </div>"
+		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFifthText'> </span>"
+		+ "<span id='deadlineInfoFifthDate' style='margin-right:5px;width:35px;'> </span> </div>"
+		str+="</div>";
+		str +=  "</div></div>"; // closing div for statisticsContent
+		str += "<div id='Sectionlistc'>";
 
 		// For now we only have two kinds of sections
 		if (data['entries'].length > 0) {
@@ -1450,7 +1563,7 @@ function returnedSection(data) {
 			str += "</div>";
 		}
 
-		str += "</div>";
+		str += "</div></div>";
 		var slist = document.getElementById('Sectionlist');
 		slist.innerHTML = str;
 		if (resave == true) {
@@ -1499,13 +1612,24 @@ function returnedSection(data) {
 		showCreateVersion();
 
 	}
+
+	scrollToBottom(); // Scroll to the bottom to show newly created items.
+
+	// The next 5 lines are related to collapsable menus and their state.
 	getHiddenElements();
 	hideCollapsedMenus();
 	getArrowElements();
 	toggleArrows();
 	menuState.idCounter = 0;
+
+	// Change title of the current page depending on which page the user is on.
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
+
+	// Change the scroll position to where the user was last time.
 	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
+
+	drawPieChart(); // Create the pie chart used in the statistics section.
+	fixDeadlineInfoBoxesText();
 }
 
 function showHighscore(did, lid) {
@@ -1565,7 +1689,7 @@ function returnedHighscore(data) {
 }
 
 // Toggle content for each moment
-$(document).on('click', '.moment, .section', function () {
+$(document).on('click', '.moment, .section, .statistics', function () {
 	/* The event handler returns two elements. The following two if statements
 	   gets the element of interest. */
 	if (this.id.length > 0) {
@@ -1577,6 +1701,7 @@ $(document).on('click', '.moment, .section', function () {
 	hideCollapsedMenus();
 	toggleArrows();
 });
+
 
 // Save ids of all elements, whose state needs to be remembered, in local storage.
 function saveHiddenElementIDs(clickedElement) {
@@ -1598,7 +1723,7 @@ function saveArrowIds(clickedElement) {
 /* Hide all child elements to the moment and section elements in the
    hiddenElements array. */
 function hideCollapsedMenus() {
-	$('.header, .section, .code, .test, .link, .group').show();
+	$('.header, .section, .code, .test, .link, .group, .statisticsContent').show();
 	for (var i = 0; i < menuState.hiddenElements.length; i++) {
 		var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
 		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
@@ -1608,15 +1733,19 @@ function hideCollapsedMenus() {
 		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
 			jQuery(ancestor).nextUntil('.section').hide();
 		}
+
+		if(menuState.hiddenElements[i] == "statistics"){
+			$(".statistics").nextAll().hide();
+		}
 	}
 }
 
 /* Show down arrow by default and then hide this arrow and show the right
-   arrow if it is in the arrowIcons array. */
+   arrow if it is in the arrowIcons array.
+	 The other way around for the statistics section. */
 function toggleArrows() {
 	$('.arrowComp').show();
 	$('.arrowRight').hide();
-
 	for (var i = 0; i < menuState.arrowIcons.length; i++) {
 		/* If the string 'arrowComp' is a part of the string on the current
 		   index of the arrowIcons array, hide down arrow and show right arrow. */
@@ -1624,6 +1753,15 @@ function toggleArrows() {
 			$('#' + menuState.arrowIcons[i]).hide();
 		} else {
 			$('#' + menuState.arrowIcons[i]).show();
+		}
+	}
+
+	$('#arrowStatisticsOpen').show();
+	$('#arrowStatisticsClosed').hide();
+	for (var i = 0; i < menuState.hiddenElements.length; i++){
+		if (menuState.hiddenElements[i] == "statistics"){
+			$('#arrowStatisticsOpen').hide();
+			$('#arrowStatisticsClosed').show();
 		}
 	}
 }
@@ -1790,8 +1928,197 @@ function addColorsToTabSections(kind, visible){
 	return retStr;
 }
 
+function drawPieChart() {
+  var c = document.getElementById('pieChart');
+  var ctx = c.getContext('2d');
+  var width = c.width;
+  var height = c.height;
+  var pieChartRadius = height / 2;
+  var overviewBlockSize = 11;
+
+  var totalQuizes = 0;
+  var passedQuizes = 0;
+  var notGradedQuizes = 0;
+  var failedQuizes = 0;
+  var notSubmittedQuizes = 0;
+
+  // Calculate total quizes.
+  for(var i = 0; i < retdata['entries'].length; i++) {
+    if(retdata['entries'][i].kind == "3") {
+      totalQuizes++;
+    }
+  }
+
+  // Calculate passed, failed and not graded quizes.
+  for(var i = 0; i < retdata['results'].length; i++) {
+	  if(retdata['results'][i]['useranswer'] != null){ // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
+		  if(retdata['results'][i].grade == 2) {
+			  passedQuizes++;
+		  } else if(retdata['results'][i].grade == 1) {
+			  failedQuizes++;
+		  }
+		  else {
+			  notGradedQuizes++;
+		  }
+	  }
+  }
+
+  // Calculate non submitted quizes.
+  notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
+
+  if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
+	  totalQuizes++; 			// show that the student has 100% not submitted tests.
+	  notSubmittedQuizes++;
+  }
+
+  // PCT = Percentage
+  var passedPCT = 100 * (passedQuizes / totalQuizes);
+  var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
+  var failedPCT = 100 * (failedQuizes / totalQuizes);
+  var notSubmittedPCT = 100 * (notSubmittedQuizes / totalQuizes);
+
+  // Only use 2 decimal places and round up if necessary
+  passedPCT = Math.round(passedPCT * 100) / 100;
+  notGradedPCT = Math.round(notGradedPCT * 100) / 100;
+  failedPCT = Math.round(failedPCT * 100) / 100;
+  notSubmittedPCT = Math.round(notSubmittedPCT * 100) / 100;
+
+  var lastend = -1.57; /* Chart start point. -1.57 is a quarter the number of
+                          radians in a circle, i.e. start at 12 o'clock */
+  var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
+  var colors = {
+    'passedQuizes': '#00E676',        // Green
+    'notGradedQuizes': '#FFEB3B',     // Yellow
+    'failedQuizes': '#E53935',        // Red
+    'notSubmittedQuizes': '#BDBDBD'   // Grey
+  }
+
+  for (var i = 0; i < testsData.length; i++) {
+
+    if(i == 0) {
+      ctx.fillStyle = colors['passedQuizes'];
+    } else if(i == 1) {
+      ctx.fillStyle = colors['notGradedQuizes'];
+    } else if(i == 2) {
+      ctx.fillStyle = colors['failedQuizes'];
+    } else {
+      ctx.fillStyle = colors['notSubmittedQuizes'];
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(pieChartRadius, height / 2);
+
+    // Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
+    ctx.arc(pieChartRadius, height / 2, height / 2, lastend,lastend
+    + (Math.PI * 2 * (testsData[i] / totalQuizes)), false);
+
+    //Parameter for lineTo: x,y
+    ctx.lineTo(pieChartRadius, height / 2);
+    ctx.fill();
+
+    lastend += Math.PI * 2 * (testsData[i] / totalQuizes);
+  }
+
+  // Pie chart overview
+  ctx.save();
+  ctx.translate(pieChartRadius*2 + 20, 2);
+
+  ctx.fillStyle = colors['passedQuizes'];
+  ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
+
+  ctx.fillStyle = colors['notGradedQuizes'];
+  ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
+
+  ctx.fillStyle = colors['failedQuizes'];
+  ctx.fillRect(0, 40, overviewBlockSize, overviewBlockSize);
+
+  ctx.fillStyle = colors['notSubmittedQuizes'];
+  ctx.fillRect(0, 60, overviewBlockSize, overviewBlockSize);
+
+  ctx.font = "12px Arial";
+  ctx.fillStyle = "#000";
+
+  ctx.translate(20, 10);
+  ctx.fillText("Passed (" + passedPCT + "%)", 0, 0);
+  ctx.fillText("Not Graded (" + notGradedPCT + "%)", 0, 20);
+  ctx.fillText("Failed (" + failedPCT + "%)", 0, 40);
+  ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 0, 60);
+
+  ctx.restore();
+}
 
 
+function fixDeadlineInfoBoxesText(){
+	var closestDeadlineArray = [];
+	var duggaEntries = retdata['entries'].slice();
+	var allDeadlineTexts = [];
+	allDeadlineTexts.push(document.getElementById("deadlineInfoFirstText"));
+	allDeadlineTexts.push(document.getElementById("deadlineInfoSecondText"));
+	allDeadlineTexts.push(document.getElementById("deadlineInfoThirdText"));
+	allDeadlineTexts.push(document.getElementById("deadlineInfoFourthText"));
+	allDeadlineTexts.push(document.getElementById("deadlineInfoFifthText"));
+	var deadLineDates = [];
+	deadLineDates.push(document.getElementById("deadlineInfoFirstDate"));
+	deadLineDates.push(document.getElementById("deadlineInfoSecondDate"));
+	deadLineDates.push(document.getElementById("deadlineInfoThirdDate"));
+	deadLineDates.push(document.getElementById("deadlineInfoFourthDate"));
+	deadLineDates.push(document.getElementById("deadlineInfoFifthDate"));
+	var isAnyUpcomingDugga = false;
+
+	// remove everything from Entries that isnt a Test
+	for(var i = duggaEntries.length - 1; i >= 0; i--){
+		if(duggaEntries[i]['kind'] != 3){
+			duggaEntries.splice(i, 1);
+		}
+	}
+
+		// to find the lowest-valued-element
+	if(duggaEntries.length != 0){
+		duggaEntries.reduce(function(prev, curr){
+			return prev.deadline < curr.deadline ? prev : curr;
+		});
+
+		Array.prototype.hasMin = function(attrib){
+			if(this.length != 0){
+				return this.reduce(function(prev, curr){
+					return prev[attrib] < curr[attrib] ? prev : curr;
+				});
+			}
+		}
+	}
+
+	if(duggaEntries.length > 0){
+		while(closestDeadlineArray.length < allDeadlineTexts.length){
+			if(closestDeadlineArray.length > 4){ // we only want 5 elements
+				break;
+			}
+			var lowestElement = duggaEntries.hasMin('deadline');
+			if(lowestElement == undefined) break; // bad solution to check if array is empty
+			var testDate = new Date(lowestElement['deadline']);
+			if(Date.now() < testDate.getTime()){ // if deadline hasn't already happened we save it
+				closestDeadlineArray.push(lowestElement);
+			}
+			duggaEntries.splice(duggaEntries.indexOf(lowestElement), 1);
+		}
+		for(var i = 0; i < closestDeadlineArray.length; i++){
+			if(closestDeadlineArray[i]['entryname'].length > 23){
+				allDeadlineTexts[i].innerHTML = " " + closestDeadlineArray[i]['entryname'].slice(0, 23) + "...";
+			}else{
+				allDeadlineTexts[i].innerHTML = " " + closestDeadlineArray[i]['entryname'];
+			}
+			deadLineDates[i].innerHTML = " " + removeYearFromDate(closestDeadlineArray[i]['deadline']);
+		}
+	}
+
+	if(closestDeadlineArray.length == 0){ // if we have no deadlines, put this nice text instead
+		allDeadlineTexts[0].innerHTML = "No upcoming deadlines"
+	}
+}
+
+function removeYearFromDate(date){
+	var remadeDate = new Date(date);
+	return getDateFormat(remadeDate, "dateMonth").replace("-" ,"/");
+}
 
 $(document).ready(function () {
 	// Function to prevent collapsing when clicking icons
@@ -1805,8 +2132,6 @@ $(document).ready(function () {
 	hoverMenuTimer = window.setTimeout(function(){
 		checkIfCloseFabMenu();
 	}, 25);
-
-
 });
 
 $(window).load(function () {
