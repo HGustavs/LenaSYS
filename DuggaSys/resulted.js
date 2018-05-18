@@ -785,42 +785,42 @@ function rowHighlightOff(rowid,rowno,colclass,centerel) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-  // Custom filters that remove rows before an actual search
-  if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
-  if (filterList["onlyPending"]) {
-    var rowPending = false;
-    for (var colname in row){
-      if (colname != "FnameLnameSSN" && row[colname]["needMarking"] == true) { rowPending = true; break; }
-    }
-    if (!rowPending) { return false; }
-  }
+	// Custom filters that remove rows before an actual search
+	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
+	if (filterList["onlyPending"]) {
+		var rowPending = false;
+		for (var colname in row){
+			if (colname != "FnameLnameSSN" && row[colname]["needMarking"] == true) { rowPending = true; break; }
+		}
+		if (!rowPending) { return false; }
+	}
 
 	for (colname in row) {
-  	if(colname == "FnameLnameSSN") {
-  		var name = "";
-  		if (row[colname]["firstname"] != null) {
-  			name += row[colname]["firstname"] + " ";
-  		}
-  		if (row[colname]["lastname"] != null) {
-  		 row[colname]["lastname"];
-  		}
-  		if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+		if(colname == "FnameLnameSSN") {
+			var name = "";
+			if (row[colname]["firstname"] != null) {
+				name += row[colname]["firstname"] + " ";
+			}
+			if (row[colname]["lastname"] != null) {
+				name += row[colname]["lastname"];
+			}
+			if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
 
-  		if (row[colname]["ssn"] != null) {
-  			if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		}
-  		if (row[colname]["username"] != null) {
-  			if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		}
-  		if (row[colname]["class"] != null) {
-  			if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		}
-  		if (row[colname]["setTeacher"] != null) {
-  			if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		}
-  	}
-  }
-  return false;
+			if (row[colname]["ssn"] != null) {
+				if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+			}
+			if (row[colname]["username"] != null) {
+				if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+			}
+			if (row[colname]["class"] != null) {
+				if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+			}
+			if (row[colname]["setTeacher"] != null) {
+				if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+			}
+		}
+	}
+	return false;
 }
 
 function renderSortOptions(col,status) {
