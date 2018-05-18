@@ -67,12 +67,13 @@ function updateCellInternal() {
 function clickedInternal(event,clickdobj) {
 	if (sortableTable.currentTable.showEditCell != null) {
 		var cellelement = event.target.closest("td");
-		var arr = cellelement.className.split("-");
+		var arr = cellelement.id.split("_");
 		var rowelement = event.target.closest("tr");
 		var barr = rowelement.id.split("_");
+    arr[0] = arr[0].split("r")[1];
+		var columnname = arr[2];
+		var columnno = arr[0];
 
-		var columnname = arr[1];
-		var columnno = arr[2];
 		var rowno = parseInt(barr[1]);
 		var tableid = barr[0];
 		var str = "";
@@ -82,7 +83,7 @@ function clickedInternal(event,clickdobj) {
 		sortableTable.edit_tableid = tableid;
 
 		var rowdata = sortableTable.currentTable.getRow(rowno);
-		var coldata = rowdata[columnno];
+		var coldata = rowdata[columnname];
 
 		str += "<div id='input-container' style='flex-grow:1'>";
 		str += sortableTable.currentTable.showEditCell(coldata,rowno,rowelement,cellelement,columnname,columnno,rowdata,coldata,tableid);
@@ -304,7 +305,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		// Render table body
 		str += "<tbody id='"+tableid+"_body'>";
 		mhvstr += "<tbody id='"+tableid+"_mhvbody'>";
-		
+
 		for (var i = 0; i < tbl.tblbody.length; i++) {
 
 			var row = tbl.tblbody[i];
