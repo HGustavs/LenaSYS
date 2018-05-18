@@ -33,6 +33,7 @@ $gradesys = getOP('gradesys');
 $template = getOP('template');
 $qstart = getOP('qstart');
 $deadline = getOP('deadline');
+$jsondeadline = getOP('jsondeadline');
 $release = getOP('release');
 $coursevers = getOP('coursevers');
 $cogwheel = getOP('id');
@@ -108,12 +109,13 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			$debug="Error updating user".$error[2];
 		}
 	}else if(strcmp($opt,"SAVDUGGA")===0){
-		$query = $pdo->prepare("UPDATE quiz SET qname=:name,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qstart=:qstart,deadline=:deadline,qrelease=:release WHERE id=:qid;");
+		$query = $pdo->prepare("UPDATE quiz SET qname=:name,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qstart=:qstart,deadline=:deadline,qrelease=:release,jsondeadline=:jsondeadline WHERE id=:qid;");
 		$query->bindParam(':qid', $qid);
 		$query->bindParam(':name', $name);
 		$query->bindParam(':autograde', $autograde);
 		$query->bindParam(':gradesys', $gradesys);
 		$query->bindParam(':template', $template);
+		$query->bindParam(':jsondeadline', $jsondeadline);
 
 		if($qstart=="UNK") $query->bindValue(':qstart', null, PDO::PARAM_INT);
 		else $query->bindParam(':qstart', $qstart);

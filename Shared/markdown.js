@@ -561,6 +561,7 @@ function linkText(){
     txtarea.selectionEnd = end +12;
     updatePreview(txtarea.value);
 }
+
 function setCarotPosition(){
     this.txtarea = document.getElementById("mrkdwntxt");
     this.start = txtarea.selectionStart;

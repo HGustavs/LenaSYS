@@ -1,4 +1,4 @@
-<?php 
+<?php
 date_default_timezone_set("Europe/Stockholm");
 
 include_once "../Shared/sessions.php";
@@ -6,11 +6,11 @@ include_once "../Shared/basic.php";
 
 pdoConnect();
 session_start();
-if(isset($_SESSION['uid'])){
-    $userid=$_SESSION['uid'];
-}else{
-  	$userid="1";
-} 
+if (isset($_SESSION['uid'])) {
+    $userid = $_SESSION['uid'];
+} else {
+    $userid = "1";
+}
 
 $cid = getOP('cid');
 $opt = getOP('opt');
@@ -18,126 +18,131 @@ $coursevers = getOP('coursevers');
 $fid = getOP('fid');
 $filename = getOP('filename');
 $kind = getOP('kind');
-$debug="NONE!";	
+$debug = "NONE!";
 
 $log_uuid = getOP('log_uuid');
-$info=$opt." ".$cid." ".$coursevers." ".$fid." ".$filename." ".$kind;
-logServiceEvent($userid, EventTypes::ServiceServerStart, "fileedservice.php",$userid,$info);
+$info = $opt . " " . $cid . " " . $coursevers . " " . $fid . " " . $filename . " " . $kind;
+logServiceEvent($userid, EventTypes::ServiceServerStart, "fileedservice.php", $userid, $info);
 
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-  	if(strcmp($opt,"DELFILE")===0){
-    		// Remove file link from database
-    		$querystring='DELETE FROM fileLink WHERE fileid=:fid';
-    		$query = $pdo->prepare($querystring);
-    		$query->bindParam(':fid', $fid);
-    		if(!$query->execute()) {
-      			$error=$query->errorInfo();
-      			$debug="Error updating file list ".$error[2];
-    		}						
-    		// Remove file from filesystem? 
+if (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+    if (strcmp($opt, "DELFILE") === 0) {
+        // Remove file link from database
+        $querystring = 'DELETE FROM fileLink WHERE fileid=:fid';
+        $query = $pdo->prepare($querystring);
+        $query->bindParam(':fid', $fid);
+        if (!$query->execute()) {
+            $error = $query->errorInfo();
+            $debug = "Error updating file list " . $error[2];
+        }
+        // Remove file from filesystem?
         // Only for local files ... Course-wide and Global files could be used in other courses/course versions
-    		// TODO:		
-  	}
+        // TODO:
+    }
 }
 
 //------------------------------------------------------------------------------------------------
 // Retrieve Information			
 //------------------------------------------------------------------------------------------------
 
-$entries=array();
-$files=array();
-$lfiles =array();
-$gfiles =array();
+$entries = array();
+$files = array();
+$lfiles = array();
+$gfiles = array();
 $access = False;
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-  	$query = $pdo->prepare("SELECT fileid,filename,kind, filesize, uploaddate FROM fileLink WHERE ((cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) OR isGlobal='1') ORDER BY filename;");
-  	$query->bindParam(':cid', $cid);
-  	$query->bindParam(':vers', $coursevers);
-  	
-    if(!$query->execute()) {
-    		$error=$query->errorInfo();
-    		$debug="Error reading files ".$error[2];
-  	}
-    
-  	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){  		
-      // En till foreach om man vill hämta flera objekt i en cell och skicka med till rendercell
+if (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+    $query = $pdo->prepare("SELECT fileid,filename,kind, filesize, uploaddate FROM fileLink WHERE ((cid=:cid AND vers is null) OR (cid=:cid AND vers=:vers) OR isGlobal='1') ORDER BY filename;");
+    $query->bindParam(':cid', $cid);
+    $query->bindParam(':vers', $coursevers);
+
+    if (!$query->execute()) {
+        $error = $query->errorInfo();
+        $debug = "Error reading files " . $error[2];
+    }
+
+    foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        // En till foreach om man vill hämta flera objekt i en cell och skicka med till rendercell
 
         $filekind = $row['kind'];
         $filename = $row['filename'];
+        $splitname = explode(".", $filename);
+        $extension = $splitname[count($splitname) - 1];
+        $splitname = array_slice($splitname, 0, count($splitname) - 1);
+        $shortfilename = implode(".", $splitname);
 
         if ($filekind == 1) {
             $filePath = "UNK";
             $filekindname = "Link";
-		    } else if ($filekind == 2) {
+            $extension = "-";
+            $shortfilename = $filename;
+        } else if ($filekind == 2) {
             // Global
-            $filePath = "../courses/global/".$filename;
+            $filePath = "../courses/global/" . $filename;
             $filekindname = "Global";
         } else if ($filekind == 3) {
             // Course Local
-            $filePath = "../courses/".$cid."/".$filename;
+            $filePath = "../courses/" . $cid . "/" . $filename;
             $filekindname = "Course local";
         } else if ($filekind == 4) {
             // Version Local
-            $filePath = "../courses/".$cid."/".$coursevers."/".$filename;
+            $filePath = "../courses/" . $cid . "/" . $coursevers . "/" . $filename;
             $filekindname = "Version local";
         } else {
             $filePath = "UNK";
             $filekindname = "UNK";
         }
 
-      $entry = array(
-          'counter' => $row['filename'],
-    			'filename' => $row['filename'],
-          'extension' => $row['filename'],
-          'kind' => $filekindname,
-    			'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]) ,
-    			'uploaddate' => $row['uploaddate'],
-          'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename]),
-          'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']])
-  		);
+        $entry = array(
+            'filename' => json_encode(['filename' => $row['filename'], 'shortfilename' => $shortfilename, "kind" => $filekindname]),
+            'extension' => $extension,
+            'kind' => $filekindname,
+            'filesize' => json_encode(['size' => $row['filesize'], 'kind' => $filekindname]),
+            'uploaddate' => $row['uploaddate'],
+            'editor' => json_encode(['filePath' => $filePath, 'kind' => $filekind, 'filename' => $filename, 'extension' => $extension]),
+            'trashcan' => json_encode(['fileid' => $row['fileid'], 'filename' => $row['filename']])
+        );
 
-  		array_push($entries, $entry);
-  	}
+        array_push($entries, $entry);
+    }
 
-  	// Start traversing the filesystem from LenaSYS root
-  	chdir('../');
-  	$currcvd=getcwd();
-  	$dir = $currcvd."/templates/";
-  	
-  	if (file_exists($dir)){
-    		$files = scandir($dir);
-    		foreach ($files as $value){
-      			if(!is_dir($currcvd."/templates/".$value)){
-        				array_push($gfiles,$value);
-      			}
-    		}
-  	}
+    // Start traversing the filesystem from LenaSYS root
+    chdir('../');
+    $currcvd = getcwd();
+    $dir = $currcvd . "/templates/";
 
-  	$dir = $currcvd."/courses/".$cid."/";
-  	if (file_exists($dir)){
-    		$gtiles = scandir($dir);
-    		foreach ($gtiles as $value){
-      			if(!is_dir($currcvd."/courses/".$cid."/".$value)){
-        				array_push($lfiles,$value);
-      			}
-    		}
-  	}
+    if (file_exists($dir)) {
+        $files = scandir($dir);
+        foreach ($files as $value) {
+            if (!is_dir($currcvd . "/templates/" . $value)) {
+                array_push($gfiles, $value);
+            }
+        }
+    }
 
-  	$access = True;
+    $dir = $currcvd . "/courses/" . $cid . "/";
+    if (file_exists($dir)) {
+        $gtiles = scandir($dir);
+        foreach ($gtiles as $value) {
+            if (!is_dir($currcvd . "/courses/" . $cid . "/" . $value)) {
+                array_push($lfiles, $value);
+            }
+        }
+    }
+
+    $access = True;
 }
-		
+
 $array = array(
-  	'entries' => $entries,
-  	'debug' => $debug,
-  	'gfiles' => $gfiles,
-  	'lfiles' => $lfiles,
-	'access' => $access
+    'entries' => $entries,
+    'debug' => $debug,
+    'gfiles' => $gfiles,
+    'lfiles' => $lfiles,
+    'access' => $access
 );
 
 echo json_encode($array);
-logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "fileedservice.php",$userid,$info);
+logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "fileedservice.php", $userid, $info);
 
 ?>

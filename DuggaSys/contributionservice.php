@@ -112,7 +112,7 @@ foreach($rows as $row){
 $eventrankno="NOT FOUND";
 $eventrank="NOT FOUND";
 $i=1;
-$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2018-03-25" AND  eventtime<"2019-01-01" and eventtime!="undefined" group by author order by rowk desc;');
+$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2018-03-25" AND  eventtime<"2019-01-01" and eventtime!="undefined" AND kind != "comment" group by author order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
     $debug="Error reading entries".$error[2];

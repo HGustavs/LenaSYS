@@ -14,6 +14,7 @@ var allowedRegradeTime = 24*60*60*1000;
 //var benchmarkData = performance.timing; // Will be updated after onload event
 //var ajaxStart;
 //var tim;
+var searchterm = "";
 var studentInfo = new Array;
 var students=new Array;
 var momtmp=new Array;
@@ -25,11 +26,9 @@ var entries;
 var moments;
 var results;
 var versions;
-var clist;
-var onlyPending=false;
 var timeZero=new Date(0);
-var showTeachers = false;
 var duggaArray = [[]];
+var filterList;
 
 function setup(){
   //Benchmarking function
@@ -54,22 +53,6 @@ function setup(){
   filt+="</span></td>";
   $("#menuHook").before(filt);
 
-  // Set part of filter config
-  if (localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending")=="true"){
-      onlyPending=true;
-  } else {
-      onlyPending=false;
-  }
-
-  var t = localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
-  if(t != null) {
-    if((t.indexOf("showteachers**true",0)>=0)){
-      showTeachers = true;
-  }else{
-      showTeachers = false;
-  }
-  }
-
   window.onscroll = function() {magicHeading()};
 
   AJAXService("GET", { cid : querystring['cid'],vers : querystring['coursevers'] }, "RESULT");
@@ -86,12 +69,6 @@ function toggleSortDir(col){
 
 function process()
 {
-	// Read dropdown from local storage
-	clist=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
-	if (clist){
-		clist=clist.split("**");
-	}
-
 	// Create temporary list that complies with dropdown
 	momtmp=new Array;
 	var momname = "Moment unavailable";
@@ -138,7 +115,7 @@ function process()
 		}
 		var student=new Array;
 		// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-		student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class,access:entries[i].access,setTeacher});
+		student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class,access:entries[i].access,setTeacher,username:entries[i].username});
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for(var j=0;j<momtmp.length;j++){
 			// If it is a feedback quiz -- we have special handling.
@@ -162,29 +139,17 @@ function process()
 		}
 		students.push(student);
 	}
-	// Update dropdown list
-  // Filter for teachers.
-  var dstr="";
-	dstr+="<div class='checkbox-dugga checkmoment'>";
-	dstr+="<input type='checkbox' class='headercheck' name='showTeachers' value='0' id='showteachers'";
-	if(clist){
-		index=clist.indexOf("showteachers");
-		if(index>-1){
-			if(clist[index+1]=="true"){
-				dstr+=" checked";
-			}
-		}
+	// Update filter list from local storage.
+	filterList = JSON.parse(localStorage.getItem("resultTable_filter_"+querystring['cid']+"-"+querystring['coursevers']));
+	if (filterList == null){
+		filterList = {};
 	}
-	dstr+="><label class='headerlabel' for='showteachers'>Show Teachers</label></div>";
 
-	// Filter for only showing pending
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='pending' value='0' id='pending'";
-	if (onlyPending){ dstr+=" checked"; }
-	dstr+="><label class='headerlabel' for='pending'>Only pending</label></div>";
-
-	// Filter for mini mode
-	dstr+="<div class='checkbox-dugga checkmoment'><input type='checkbox' disabled class='headercheck' name='minimode' value='0' id='minimode' onchange='miniMode()'>";
-	dstr+="<label class='headerlabel' for='minimode'>Mini mode</label></div>";
+	// Add custom filters to the filter menu.
+  var dstr="";
+	dstr+=makeCustomFilter("showTeachers", "Show Teachers");
+	dstr+=makeCustomFilter("onlyPending", "Only pending");
+	dstr+=makeCustomFilter("minimode", "Mini mode");
 
 	dstr+="<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
 
@@ -229,6 +194,25 @@ function process()
 	//console.log(performance.now()-tim);
 }
 
+function makeCustomFilter(filtername, labeltext){
+	str="<div class='checkbox-dugga checkmoment'>";
+	str+= "<input type='checkbox' id='"+filtername+"' onclick='toggleFilter(\""+filtername+"\")'";
+	if (filterList[filtername] == null) {filterList[filtername] = false;}
+	if (filterList[filtername]) {str+=" checked";}
+	str+="><label class='headerlabel' for='"+filtername+"'>"+labeltext+"</label></div>";
+	return str;
+}
+
+function toggleFilter(filter){
+	if (filterList[filter] == false) {
+		filterList[filter] = true;
+	} else {
+		filterList[filter] = false;
+	}
+	localStorage.setItem("resultTable_filter_"+querystring['cid']+"-"+querystring['coursevers'], JSON.stringify(filterList));
+	myTable.renderTable();
+}
+
 function hoverc()
 {
     $('#dropdowns').css('display','none');
@@ -238,24 +222,6 @@ function hoverc()
 function leavec()
 {
   $('#dropdownc').css('display','none');
-
-  // Update columns only now
-  var str="";
-  $(".headercheck").each(function(){
-      str+=$(this).attr("id")+"**"+$(this).is(':checked')+"**";
-  });
-
-  showTeachers=$('#showteachers').is(":checked");
-    old=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees");
-    localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-checkees",str);
-
-  onlyPending=$('#pending').is(":checked");
-    var opend=localStorage.getItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending");
-    localStorage.setItem("lena_"+querystring['cid']+"-"+querystring['coursevers']+"-pending", onlyPending);
-
-  if(str!=old || onlyPending==opend) process();
-  myTable.renderTable();
-  magicHeading();
 }
 
 function checkMomentParts(pos, id) {
@@ -578,20 +544,17 @@ function saveResponse()
 function returnedResults(data)
 {
   if (data.gradeupdated === true){
-    // Find the array row for updated grade in our local data structure "students"
-    var rowpos=-1;
-    var dpos=-1;
-    for (var t=0;t<students.length;t++){
-      if (students[t][1].uid == data.duggauser) {
-        rowpos=t;
-        for (var j=0;j<students[t].length;j++){
-          if (students[t][j].lid == data.duggaid){
-            dpos=j;
-            students[t][j].grade = parseInt(data.results);
-            students[t][j].gradeExpire = data.duggaexpire;
-            students[t][j].timesGraded = parseInt(data.duggatimesgraded);
-            break;
-          }
+  	// Update the the local array studentInfo when grade is updated.
+    for (var student in studentInfo){
+      var studentObject = studentInfo[student]["lid:" + data.duggaid];
+      if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
+        studentObject.grade = parseInt(data.results);
+        studentObject.timesGraded = parseInt(data.duggatimesgraded);
+        studentObject.gradeExpire = data.duggaexpire;
+        if (data.results > 0) { 
+        	studentObject.needMarking = false;
+        } else {
+        	studentObject.needMarking = true;
         }
         break;
       }
@@ -640,15 +603,6 @@ function returnedResults(data)
   }
 }
 
-function miniMode(){
-  if (document.getElementById('minimode').checked){
-    $(".gradeImg").css("display", "none");
-  } else {
-    $(".gradeImg").css("display", "block");
-  }
-}
-
-
 var myTable;
 //----------------------------------------
 // Renderer
@@ -677,7 +631,6 @@ function buildStudentInfo() {
 }
 
 function createSortableTable(data){
-  studentInfo = new Array;
 	let tblhead = buildDynamicHeaders();
 	studentInfo = buildStudentInfo();
 
@@ -713,6 +666,31 @@ function createSortableTable(data){
 }
 
 function renderCell(col,celldata,cellid) {
+	// Render minimode
+	if (filterList["minimode"]) {
+		// First column (Fname/Lname/SSN)
+		if (col == "FnameLnameSSN"){
+			str = "<div class='dugga-result-div'>";
+				str += celldata.firstname + " " + celldata.lastname;
+    	str += "</div>"
+    	return str;
+  	} else {
+			// color based on pass,fail,pending,assigned,unassigned
+			str = "<div style='height:25px;' class='";
+				if(celldata.kind==4) { str += "dugga-moment "; }
+				if (celldata.grade === 1) {str += "dugga-fail";}
+				else if (celldata.grade > 1) {str += "dugga-pass";}
+				else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
+				else if (celldata.kind != 4 && celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
+				else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
+				else {str += "dugga-unassigned";}
+			str += "'>";
+			str += "</div>"
+			return str;
+  	}
+	}
+
+	// Render normal mode
 	// First column (Fname/Lname/SSN)
   if (col == "FnameLnameSSN"){
     str = celldata.grade;
@@ -720,12 +698,12 @@ function renderCell(col,celldata,cellid) {
 
   } else {
     // color based on pass,fail,pending,assigned,unassigned
-    str = "<div style='height:100%;' class='";
+    str = "<div style='height:80px;' class='";
       if(celldata.kind==4) { str += "dugga-moment "; }
       if (celldata.grade === 1) {str += "dugga-fail";}
       else if (celldata.grade > 1) {str += "dugga-pass";}
-      else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending"; onlyPending=false;}
-      else if (celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission"; onlyPending=false;}
+      else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
+      else if (celldata.kind != 4 && celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
       else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
       else {str += "dugga-unassigned";}
     str += "'>";
@@ -784,23 +762,23 @@ return celldata;
 //--------------------------------------------------------------------------
 
 function rowHighlightOn(rowid,rowno,colclass,centerel) {
-  document.getElementById(rowid).style.border = "3px solid rgba(97,72,117,1)";
-  var collist = document.getElementsByClassName(colclass);
-		for(let i=0;i<collist.length;i++){
-			collist[i].style.borderLeft="3px solid rgba(97,72,117,1)";
-			collist[i].style.borderRight="3px solid rgba(97,72,117,1)";
-		}
-  centerel.style.backgroundImage = "radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2))";
+  var row = document.getElementById(rowid);
+  row.classList.add("tableRowHighlightning");
+  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+  for(var i=0;i<collist.length;i++){
+    collist[i].classList.add("tableColHighlightning");
+  }
+  centerel.classList.add("tableCellHighlightning");
 }
 
 function rowHighlightOff(rowid,rowno,colclass,centerel) {
-  document.getElementById(rowid).style.border = "";
-  var collist = document.getElementsByClassName(colclass);
-		for(let i=0;i<collist.length;i++){
-			collist[i].style.borderLeft="";
-			collist[i].style.borderRight="";
-		}
-  centerel.style.backgroundImage = "none";
+  var row = document.getElementById(rowid);
+  row.classList.remove("tableRowHighlightning");
+  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+  for(var i=0;i<collist.length;i++){
+    collist[i].classList.remove("tableColHighlightning");
+  }
+  centerel.classList.remove("tableCellHighlightning");
 }
 
 //----------------------------------------------------------------
@@ -808,9 +786,41 @@ function rowHighlightOff(rowid,rowno,colclass,centerel) {
 //----------------------------------------------------------------
 function rowFilter(row) {
   // Custom filters that remove rows before an actual search
-  if (!showTeachers && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
-
-  return true;
+  if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
+  if (filterList["onlyPending"]) {
+    let rowPending = false;
+    for (var colname in row){
+      if (colname != "FnameLnameSSN" && row[colname]["needMarking"] == true) { rowPending = true; break; }
+    }
+    if (!rowPending) { return false; }
+  }
+  
+	for (colname in row) {
+  	if(colname == "FnameLnameSSN") {
+  		let name = "";
+  		if (row[colname]["firstname"] != null) {
+  			name += row[colname]["firstname"] + " ";
+  		}
+  		if (row[colname]["lastname"] != null) {	
+  		 row[colname]["lastname"];
+  		}
+  		if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+  		
+  		if (row[colname]["ssn"] != null) {
+  			if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;	
+  		}
+  		if (row[colname]["username"] != null) {
+  			if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+  		}
+  		if (row[colname]["class"] != null) {
+  			if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+  		}
+  		if (row[colname]["setTeacher"] != null) {
+  			if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+  		}
+  	}
+  }
+  return false;
 }
 
 function renderSortOptions(col,status) {
@@ -849,6 +859,14 @@ function compare(a,b) {
 		tempB = b['firstname'].toUpperCase();
 		tempB += " " + b['lastname'].toUpperCase();
 		tempB += " " + b['ssn'].toUpperCase();
+
+		if (tempA > tempB) {
+			return 1;
+		} else if (tempA < tempB) {
+			return -1;
+		} else {
+			return 0;
+		}
 
 	//Columns that contains duggor
 	} else {
@@ -889,19 +907,19 @@ function compare(a,b) {
 			tempB += 10;
 		}
 
-		if(a['submitted'] > b['submitted']) {
+		if(a['submitted'] < b['submitted']) {
 			tempA += 1;
-		} else if(a['submitted'] < b['submitted']) {
+		} else if(a['submitted'] > b['submitted']) {
 			tempB += 1;
 		}
-	}
 
-	if (tempA > tempB) {
-		return 1;
-	} else if (tempA < tempB) {
-		return -1;
-	} else {
-		return 0;
+		if (tempA < tempB) {
+			return 1;
+		} else if (tempA > tempB) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 }
 

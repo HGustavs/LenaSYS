@@ -47,9 +47,9 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); Symbol(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();">
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();">
     <?php
-        $noup = "COURSE";
+        $noup = "SECTION";
         include '../Shared/navheader.php';
     ?>
     <!-- content START -->
@@ -73,16 +73,16 @@
                               <img id="toolbarRightArrow" src="../Shared/icons/arrow.svg">
                             </div>
                           </div>
-                        <h4 class="label">Tools</h4>
-                        <div class="toolbar-drawer">
+                        <h4 class="label tlabel" id="labelTools">Tools</h4>
+                        <div class="toolbar-drawer" id="drawerTools">
                             <div class="tooltipdialog">
                                 <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
                                     <img src="../Shared/icons/diagram_create_line.svg">
                                 </button>
                             </div>
                         </div>
-                        <h4 class="label">Create</h4>
-                        <div class="toolbar-drawer">
+                        <h4 class="label tlabel" id="labelCreate">Create</h4>
+                        <div class="toolbar-drawer" id="drawerCreate">
                             <div class="tooltipdialog">
                                 <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute">
                                     <img src="../Shared/icons/diagram_create_attribute.svg">
@@ -104,21 +104,23 @@
                                 </button>
                             </div>
                         </div>
-                        <!--
-                        <h4 class="label">Draw</h4>
-                        <div class="toolbar-drawer">
+                        <h4 class="label tlabel" id="labelDraw">Draw</h4>
+                        <div class="toolbar-drawer" id="drawerDraw">
                             <button id='squarebutton' onclick="setMode('Square');" class='buttonsStyle unpressed' data="Draw Square">
                                 <img src="../Shared/icons/diagram_draw_square.svg">
-                            </button><br>
+                            </button>
                             <button id='drawfreebutton' onclick="setMode('Free');" class='buttonsStyle unpressed' data="Draw Free">
                                 <img src="../Shared/icons/diagram_draw_free.svg">
                             </button>
                         </div>
-                        -->
-                        <h4 class="label">Undo/Redo</h4>
-                        <div class="toolbar-drawer">
-                            <button onclick='undoDiagram()'>Undo</button>
-                            <button onclick='redoDiagram()'>Redo</button>
+                        <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
+                        <div class="toolbar-drawer" id="drawerUndo" style="text-align: center">
+                            <button class="diagramAction" id="undoButton" onclick='undoDiagram()'>
+                                <img src="../Shared/icons/undo.svg" style="filter: invert(100%);">
+                            </button>
+                            <button class="diagramAction" id="redoButton" onclick='redoDiagram()'>
+                                <img src="../Shared/icons/redo.svg" style="filter: invert(100%);">
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -147,6 +149,9 @@
                                     <a href="#" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
                                 </div>
                                 <div class="export-drop-down-item">
+                                    <a href="#" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
+                                </div>
+                                <div class="export-drop-down-item">
                                     <a href="#" id="picid">Export Picture</a>
                                 </div>
                             </div>
@@ -162,6 +167,21 @@
                 <div class="menu-drop-down">
                     <span class="label">Edit</span>
                     <div class="drop-down">
+                        <div class="drop-down-item">
+                            <a href="#" onclick='undoDiagram()'>Undo</a>
+                            <i id="hotkey-undo">Ctrl + Z</i>
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick='redoDiagram()'>Redo</a>
+                            <i id="hotkey-redo">Ctrl + Y</i>
+                        </div>
+                        <div class="drop-down-divider">
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick='lockSelected()'>Lock/Unlock selected</a>
+                        </div>
+                        <div class="drop-down-divider">
+                        </div>
                         <div class="drop-down-item">
                             <a href="#" onclick='globalAppearanceMenu();'>Global Appearance</a>
                         </div>
@@ -273,30 +293,19 @@
             <div id="selectDiv">
                 <select name="Zoom" id="ZoomSelect" onchange="zoomInMode();">
                     <option selected='selected' disabled>Choose zoom</option>
-                    <option value="0.05">5%</option>
-                    <option value="0.1">10%</option>
-                    <option value="0.2">20%</option>
                     <option value="0.3">30%</option>
                     <option value="0.5">50%</option>
                     <option value="0.75">75%</option>
                     <option value="1">100%</option>
-                    <option value="1.25">125%</option>
                     <option value="1.5">150%</option>
                     <option value="2">200%</option>
-                    <option value="4">400%</option>
-                    <option value="6">600%</option>
-                    <option value="8">800%</option>
-                    <option value="10">1000%</option>
-                    <option value="12">1200%</option>
-                    <option value="14">1400%</option>
-                    <option value="16">1600%</option>
                 </select>
                 <i class="ikonPil"></i>
             </div>
         </div>
     </div>
     <!-- The Appearance menu. Default state is display: none; -->
-    <div id="appearance" class='loginBoxContainer' style='display: none;'>
+    <div id="appearance" class='loginBoxContainer' style='display: none; background-color: rgba(0,0,0,0)'>
         <div class='loginBox'>
             <div class='loginBoxheader'>
                 <h3>Appearance</h3>

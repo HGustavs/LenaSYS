@@ -105,15 +105,21 @@ pdoConnect();
 		</div>
 	</div>
 
-		<h3 style='	width:100%;
+		<h1 style='	width:100%;
 								margin-top:50px;
 								padding-top:50px;
 								padding-bottom:50px;
 								text-align:center;
 								top:0;'> 
 									Result
-		</h3>
-		<div id="resultTable" style='width:fit-content; border: 2px solid green; white-space: nowrap;'>	
+		</h1>
+		<div id='searchBar' style='position:relative; top:-5px; left: 5px;'>
+			<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.renderTable();'/>
+			<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>
+				<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
+			</button>
+		</div>
+		<div id="resultTable" style='width:fit-content; white-space: nowrap;'>	
 		</div>
 
 </body>

@@ -7,7 +7,7 @@ function initToolbox(){
     element.style.top = (bound.top+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
-    element.style.display = "block";
+    element.style.display = "inline-block";
     //element.style.height = (bound.bottom-bound.top-200+"px");
     //element.style.height = (400+"px");
 }
@@ -24,15 +24,15 @@ function toggleToolbarMinimize(){
 
 //function for switching the toolbar state (All, ER, UML)
 function switchToolbar(direction){
-  var text = ["All", "ER", "UML"];
+  var text = ["All", "ER", "UML", "Free"];
   if(direction == 'left'){
     toolbarState--;
     if(toolbarState < 0){
-      toolbarState = 2;
+      toolbarState = 3;
     }
   }else if(direction == 'right'){
     toolbarState++;
-    if(toolbarState > 2){
+    if(toolbarState > 3){
       toolbarState = 0;
     }
   }
@@ -40,17 +40,45 @@ function switchToolbar(direction){
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == 1){
+    $(".toolbar-drawer").hide();
+    $("#drawerTools").show();
+    $("#drawerCreate").show();
+    $("#drawerUndo").show();
+    $(".tlabel").hide();
+    $("#labelCreate").show();
+    $("#labelTools").show();
+    $("#labelUndo").show();
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
   }else if( toolbarState == 2){
+    $(".toolbar-drawer").hide();
+    $("#drawerTools").show();
+    $("#drawerCreate").show();
+    $("#drawerUndo").show();
+    $(".tlabel").hide();
+    $("#labelCreate").show();
+    $("#labelTools").show();
+    $("#labelUndo").show();
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
+  }else if(toolbarState == 3){
+    $(".toolbar-drawer").hide();
+    $("#drawerDraw").show();
+    $("#drawerUndo").show();
+    $(".tlabel").hide();
+    $("#labelDraw").show();
+    $("#labelUndo").show();
+    $(".buttonsStyle").hide();
+    $("#squarebutton").show();
+    $("#drawfreebutton").show();
   }
   else{
+    $(".toolbar-drawer").show();
+    $(".label").show();
     $(".buttonsStyle").show();
   }
 
