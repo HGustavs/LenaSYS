@@ -32,6 +32,7 @@ $teacher = getOP('teacher');
 $vers = getOP('vers');
 $requestedpasswordchange = getOP('requestedpasswordchange');
 $groups = array();
+$gid = getOP('gid');
 $queryResult = 'NONE!';
 
 $debug="NONE!";
@@ -259,6 +260,35 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		// End of foreach user
 		}
 
+	} else if (strcmp($opt, "GROUP") == 0) {
+
+		// Check if group conenction exists.
+		$stmt = $pdo->prepare("SELECT * FROM user_group WHERE userID=:uid AND groupID=:gid");
+		$stmt->bindParam(':gid', $gid);
+		$stmt->bindParam(':uid', $uid);
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		if (count($result) > 0) {
+			$stmt = $pdo->prepare("DELETE FROM user_group WHERE userID=:uid AND groupID=:gid");
+			$stmt->bindParam(':gid', $gid);
+			$stmt->bindParam(':uid', $uid);
+
+			if(!$stmt->execute()) {
+				$error=$stmt->errorInfo();
+				$debug.="Error updating group: ".$error[2];
+			}
+		} else {
+			$stmt = $pdo->prepare("INSERT INTO user_group (groupID, userID) VALUES (:gid, :uid)");
+			$stmt->bindParam(':gid', $gid);
+			$stmt->bindParam(':uid', $uid);
+
+			// Insert the user into the database.
+			if(!$stmt->execute()) {
+				$error=$stmt->errorInfo();
+				$debug.="Error changing group: ".$error[2];
+			}
+		}
 	}
 }
 
