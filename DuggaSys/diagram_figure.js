@@ -450,6 +450,8 @@ function figureSquare() {
         figurePath.addsegment(1, p3, p4);
         figurePath.addsegment(1, p4, p1);
         diagram.push(figurePath);
+        selected_objects.push(figurePath);
+        lastSelectedObject = diagram.length - 1;
         cleanUp();
     }
 }
