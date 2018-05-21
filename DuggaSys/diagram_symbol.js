@@ -1000,7 +1000,7 @@ function Symbol(kind) {
             svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
             svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
             str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
-            
+
             svgStyle = "stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
             // Top Divider
             str += "<line x1='"+x1+"' y1='"+(y1+(fontsize*1.5))+"' x2='"+x2+"' y2='"+(y1+(fontsize*1.5))+"' style='"+svgStyle+"' />";
@@ -1035,7 +1035,35 @@ function Symbol(kind) {
                 str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.operations[i].text+"</text>";
             }
 		} else if (this.symbolkind == 2) {
+            svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+            // Outer oval for multivalued attributes
+            if (this.key_type == "Multivalue") {
+                str += this.ovalToSVG(x1-7, y1-7, x2+7, y2+7, svgStyle);
+            }
+            // Oval
+            if (this.key_type == "Drive") {
+                str += this.ovalToSVG(x1, y1, x2, y2, svgStyle, lineDash);
+            } else {
+                str += this.ovalToSVG(x1, y1, x2, y2, svgStyle, "");
+            }
 
+            // Key
+            var linelength = ctx.measureText(this.name).width;
+            var tmpX = (x1+((x2-x1)/2));
+            var tmpY = ((y1+(y2-y1)/2)+10);
+            if (this.key_type == "Primary key") {
+                str += "<line x1='"+(tmpX-(linelength/2))+"' y1='"+tmpY+"' x2='"+(tmpX+(linelength/2))+"' y2='"+tmpY+"' style='"+svgStyle+"' />";
+            } else if (this.key_type == "Partial key") {
+                str += "<line x1='"+(tmpX-(linelength/2))+"' y1='"+tmpY+"' x2='"+(tmpX+(linelength/2))+"' y2='"+tmpY+"' style='"+svgStyle+"' stroke-dasharray='"+lineDash+"' />";
+            }
+            // Text
+            svgStyle = "fill:"+this.fontColor+"; font:"+font+";";
+            if (linelength > (x2-x1) - 4) {
+				svgPos = "x='"+(x1+4)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
+			} else {
+				svgPos = "x='"+(x1 + ((x2 - x1) * 0.5))+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='middle' dominant-baseline='central'";
+			}
+            str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
 		} else if (this.symbolkind == 3) {
 			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 			// Add extra box if weak entity
@@ -1107,6 +1135,18 @@ function Symbol(kind) {
 		str += "</g>";
 		return str;
 	}
+
+    this.ovalToSVG = function(x1, y1, x2, y2, style, lineDash) {
+        var middleX = x1 + ((x2 - x1) * 0.5);
+        var middleY = y1 + ((y2 - y1) * 0.5);
+        var tmpStr = "";
+        var d = "M"+x1+","+middleY+" Q"+x1+","+y1+" "+middleX+","+y1+" ";
+        d += "L"+middleX+","+y1+" Q"+x2+","+y1+" "+x2+","+middleY+" ";
+        d += "L"+x2+","+middleY+" Q"+x2+","+y2+" "+middleX+","+y2+" ";
+        d += "L"+middleX+","+y2+" Q"+x1+","+y2+" "+x1+","+middleY;
+        tmpStr += "<path d='"+d+"' style='"+style+"' stroke-dasharray='"+lineDash+"' />";
+        return tmpStr;
+    }
 
 	this.getFontsize = function() {
 		var fontsize = 14;
