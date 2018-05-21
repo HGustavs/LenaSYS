@@ -147,6 +147,14 @@ function keyDownHandler(e){
 
     else if (key == 90 && ctrlIsClicked) undoDiagram();
     else if (key == 89 && ctrlIsClicked) redoDiagram();
+    else if (key == 65 && ctrlIsClicked) {
+      e.preventDefault();
+      for(var i = 0; i < diagram.length; i++){
+        selected_objects.push(diagram[i]);
+        diagram[i].targeted = true;
+      }
+      updateGraphics();
+    }
     else if(key == 17 || key == 91)
     {
       ctrlIsClicked = true;
@@ -157,7 +165,7 @@ function keyDownHandler(e){
             diagram.pop();
         }
         cleanUp();
-        updateGraphics();  
+        updateGraphics();
       }
     }
 
