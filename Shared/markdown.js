@@ -604,8 +604,6 @@ $(document).ready(function(){
         $("#select-header").addClass("show-dropdown-content");
     });
     $("#mrkdwntxt").keydown(function(e) {
-        console.log("f: "+ e.keyCode);
-        console.log("event: " + e.which);
         if (e.keyCode == 9){
             e.preventDefault();
             tabKey();
@@ -617,7 +615,6 @@ $(document).ready(function(){
 //Hide dropdown if click is outside the div
 $(document).mouseup(function(e) {
     var container = $("#select-header");
-
     if (!container.is(e.target) && container.has(e.target).length === 0) {
         container.hide();
     }
