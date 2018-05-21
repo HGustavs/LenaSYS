@@ -4164,7 +4164,6 @@ textarea#mrkdwntxt {
   background-color: rgb(200, 200, 200);
 }
 
-
 #headerType6 {
   cursor: pointer;
   color: #000;
@@ -4178,7 +4177,7 @@ textarea#mrkdwntxt {
 }
 .headerType {
   cursor: pointer;
-  margin-left: 34.75%;
+  margin-left: 35.75%;
   position: absolute;
   margin-top: -0.75%
 }
