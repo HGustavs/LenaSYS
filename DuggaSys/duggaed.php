@@ -36,34 +36,19 @@ pdoConnect();
 
 	<!-- Content START -->
 
-	<div id="content">
-    <div class='titles' style='padding-top:10px;'>
-      <h1 style='flex:1;text-align:center;'>Tests</h1>
-    </div>
+	<div id="content">	
+    	<div id="headerContent"></div> <!-- A div to place header content. -->
+		<div id="quiz" style='width:100%;'></div> <!-- A div to place the quiz-table within. -->
+		
+	  	<!-- Login Dialog START -->
+	  	<?php
+	  	 include '../Shared/loginbox.php';
+	  	?>
+	  	<!-- Login Dialog END -->
+  	</div>
+  	
+  	<!-- Content END -->
 
-    <div id="testSearchContainer">
-        <input id="duggaSearch" class ="searchField" type="search" placeholder="Searchterm.."
-                    onkeyup="searchterm=document.getElementById('duggaSearch').value; searchKeyUp(event); duggaTable.renderTable();"onsearch="searchterm=document.getElementById('duggaSearch').value; searchKeyUp(event); duggaTable.renderTable();"/>
-        <button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
-            <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
-        </button>
-
-    </div>
-    <!-- Content END -->
-
-  	<!-- Login Dialog START -->
-  	<?php
-  	 include '../Shared/loginbox.php';
-  	?>
-  	<!-- Login Dialog END -->
-      <div id="quiz" style='width:100%;'></div> <!-- A div to place the quiz-table within. -->
-  </div>
-
-  <!-- START OF FAB-button  -->
-  <div class='fixed-action-button'>
-      <a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'><i class='material-icons'>add</i></a>
-  </div>
-  <!-- END OF FAB-button  -->
 
     <!-- Edit Dugga Dialog START -->
   	<div id='editDugga' class='loginBoxContainer' style='display:none;'>

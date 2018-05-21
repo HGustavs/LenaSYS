@@ -504,23 +504,7 @@ function returnedQuiz(data) {
 function returnedDugga(data) {
 	filez = data;
 	globalData = data;
-
-	if (data['writeaccess']) {
-		$('#quiz').show();
-		$('.fixed-action-button').show();
-		$('.searchField').show();
-		$('#searchbutton').show();
-	}
-	else {
-		$('#quiz').hide();
-		$('.fixed-action-button').hide();
-		$('.searchField').hide();
-		$('#searchbutton').hide();
-			changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
-				+ querystring['coursevers'] + "");
-	}
-
-	console.log(data['writeaccess']);
+	
 	var tabledata = {
 		tblhead: {
 			did: "",
@@ -559,8 +543,42 @@ function returnedDugga(data) {
 		null,
 		true
 	);
-	duggaTable.renderTable();
+	
+	duggaTable.renderTable(); // Renders the dugga table
 
+	var content = "";
+	
+	// If the user has access to the dugga page, then render the content
+	if (data['writeaccess']) {
+		
+		/* Page title */
+		content += "<div class='titles' style='padding-top:10px;'>"
+		content += "<h1 style='flex:1;text-align:center;'>Tests</h1>"
+		content += "</div>"
+
+		/* Search engine */
+		content += "<div id='testSearchContainer'>"
+        content += "<input id='duggaSearch' class ='searchField' type='search' placeholder='Search...' onkeyup='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'onsearch='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'/>"
+        content += "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>"
+        content += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
+        content += "</button>"
+		content += "</div>"
+		
+		/* FAB Button */
+		content += "<div class='fixed-action-button'>"
+		content += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
+		content += "</div>";
+	}
+	else {
+		$("#quiz").html("");
+		alert("You don't have access to this page. You are now being redirected!")
+		changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
+				+ querystring['coursevers'] + "");
+	}
+	
+	$("#headerContent").html(content);
+	
+	
 	$("content").html();
 	var result = 0;
 	filez = data['files'];
