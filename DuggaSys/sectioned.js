@@ -768,18 +768,16 @@ function returnedSection(data) {
 			numberOfParts++;
 		}
 	}
-		// This should be all of the required variables (except for retdata['duggor']) that we need
-		// to build the new swimlanes.
-		// I have just copy-pasted the names from the current swimlanes, they could definitely get better names.
+
 	console.log("coursecode: " + retdata['coursecode'])
 	console.log("coursename: " + retdata['coursename'])
-	console.log("numberofparts: " + numberOfParts); 		// Number of moments in the course version
+	console.log("numberofparts: " + numberOfParts);
 	console.log("this date: " + now.toDateString());
 	console.log("This week: " + now.getWeek());
 	console.log("versend: " + enddate.getWeek());
-	console.log("verslength: " + weeksBetween(startdate, enddate));	// This is how many weeks we want in the course
+	console.log("verslength: " + weeksBetween(startdate, enddate));
 	console.log("versstartweek: " + startdate.getWeek());
-	console.log("weekprog: " + weeksBetween(now, startdate)); // weeks since the course has started, is probably used to show where we are in the course right now.
+	console.log("weekprog: " + weeksBetween(now, startdate));
 
 
 
@@ -1044,10 +1042,10 @@ function returnedSection(data) {
 
 		str += "<div id='statisticsSwimlanes' class='statisticsInnerBox' style='display: flex;'>";
 		str += "<div style='display: inline-block;'>";
-		str += "<canvas id='swimlanesMoments' width='100px' height='400px' style='padding:10px;'></canvas>";
+		str += "<canvas id='swimlanesMoments' style='padding:10px;'></canvas>";
 		str += "</div>";
-		str += "<div style='width: 400px; overflow-x: auto; white-space: nowrap; display: inline-block; margin: 10px 10px 10px -10px'>";
-		str += "<canvas id='swimlanesWeeks' width='600px' height='400px' style='background-color: white;'></canvas>";
+		str += "<div style='width: 385px; overflow-x: auto; white-space: nowrap; display: inline-block; margin: 10px 10px 10px -10px'>";
+		str += "<canvas id='swimlanesWeeks'></canvas>";
 		str += "</div>";
 		str += "</div>";
 		str += "</div></div>"; // closing div for statisticsContent
@@ -2187,12 +2185,18 @@ function drawSwimlanes(){
     'passedQuizes': '#00E676',        // Green
     'notGradedQuizes': '#FFEB3B',     // Yellow
     'failedQuizes': '#E53935',        // Red
-    'notSubmittedQuizes': '#BDBDBD',  // Grey
+    'notSubmittedQuizes': '#BDBDBD',  // Dark grey
 		'weeksOdd': '#8a7a9a',						// Purple
-		'momentsOdd': '#ededed'
+		'momentsOdd': '#ededed'						// Light gray
   }
 
-	/*if(){
+	swimMoments.width = 100;
+	swimMoments.height = 270;	// Should be dynamic depending on how many moments there are and a moments size is depending on how many tests there are in a momeent.
+
+	swimWeeks.width = 500;	// Depends on how many weeks a course is, weeks*35px (one day is 5px).
+	swimWeeks.height = 270;	// Depends on the height needed for the swimMoments.
+
+	/*if(){ // Dynamic height depending on number of moments
 		swimMoments.height = ;
 		swimWeeks.height = ;
 	}
@@ -2200,7 +2204,7 @@ function drawSwimlanes(){
 
 	}
 
-	if(){
+	if(){ // Dynamic width, depending on number of weeks
 		swimWeeks.width = ;
 	}
 	else {
@@ -2209,31 +2213,80 @@ function drawSwimlanes(){
 
 	ctxMoments.fillStyle = 'white';
 	ctxMoments.fillRect(0, 0, 100, 60);
-	ctxMoments.moveTo(0, 0);
 
-	ctxMoments.fillStyle = 'black';
+	ctxMoments.moveTo(0, 0);
+	ctxMoments.strokeStyle = colors['notSubmittedQuizes'];
 	ctxMoments.lineTo(100, 60);
 	ctxMoments.stroke();
 
 	ctxMoments.fillStyle = 'black';
-	ctxMoments.font = "12px Arial";
-	ctxMoments.fillText("Weeks", 50, 20);
-	ctxMoments.fillText("Moments", 10, 50);
+	ctxMoments.font = '12px Arial';
+	ctxMoments.fillText('Weeks', 50, 20);
+	ctxMoments.fillText('Moments', 10, 50);
 
-	var x = 0;
-	for(var i = 0; i < 20; i++){
+	// Prints out the moment rows to the swimlane table.
+	var y = 60;
+	for(var i = 1; i < 7; i++){ // 7 should be the number of moments in the course.
 		if(i % 2 == 0){
-			ctxWeeks.fillStyle = colors['weeksOdd'];
-			ctxWeeks.fillRect(x, 0, 50, 60);
+			ctxMoments.fillStyle = 'white';
+			// 35 should be the dynamic height of the moment.
+			ctxMoments.fillRect(0, y, 100, 35);
 		}
 		else {
-			ctxWeeks.fillStyle = 'white';
-			ctxWeeks.fillRect(x, 0, 50, 60);
+			ctxMoments.fillStyle = colors['momentsOdd'];
+			// 35 should be the dynamic height of the moment.
+			ctxMoments.fillRect(0, y, 100, 35);
 		}
-		x += 50;
+		y += 35;
 	}
 
+	// Prints out the week columns to the swimlane table.
+	var x = 0;
+	for(var i = 1; i < 12; i++){ // 12 should be the weeks of the course.
+		if(i % 2 == 0){
+			ctxWeeks.fillStyle = 'white';
+			ctxWeeks.fillRect(x, 0, 35, 60);
+			ctxWeeks.fillStyle = 'black';
+			ctxWeeks.font = '12px Arial';
+			ctxWeeks.fillText(i, x + 12, 33);
+		}
+		else {
+			ctxWeeks.fillStyle = colors['weeksOdd'];
+			ctxWeeks.fillRect(x, 0, 35, 60);
+			ctxWeeks.fillStyle = 'black';
+			ctxWeeks.font = '12px Arial';
+			ctxWeeks.fillText(i, x + 12, 33);
+		}
+		x += 35;
+	}
 
+	// Prints out the moment rows for the tests in the swimlane table.
+	y = 60;
+	for(var i = 1; i < 7; i++){ // 7 should be the number of moments in the course.
+		if(i % 2 == 0){
+			ctxWeeks.fillStyle = 'white';
+			// 385 should be the dynamic width of the swimlane and
+			// 35 should be the dynamic height of the moment.
+			ctxWeeks.fillRect(0, y, 385, 35);
+		}
+		else {
+			ctxWeeks.fillStyle = colors['momentsOdd'];
+			// 385 should be the dynamic width of the swimlane and
+			// 35 should be the dynamic height of the moment.
+			ctxWeeks.fillRect(0, y, 385, 35);
+		}
+		y += 35;
+	}
+
+	ctxMoments.moveTo(99, 60);
+	ctxMoments.strokeStyle = colors['notSubmittedQuizes'];
+	ctxMoments.lineTo(99, 270); // 270 should be the dynamic height of the canvas
+	ctxMoments.stroke();
+
+	ctxWeeks.moveTo(0, 60);
+	ctxWeeks.strokeStyle = colors['notSubmittedQuizes'];
+	ctxWeeks.lineTo(385, 60); // 385 should be the dynamic height of the canvas
+	ctxWeeks.stroke();
 }
 
 
