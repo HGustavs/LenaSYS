@@ -733,6 +733,12 @@ function accessCourse() {
 	//resets all inputs
 }
 
+function weeksBetween(firstDate, secondDate){
+	var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+	var diff = Math.abs(firstDate - secondDate);
+	return Math.round(diff / ONE_WEEK);
+}
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -740,6 +746,41 @@ var momentexists = 0;
 var resave = false;
 function returnedSection(data) {
 	retdata = data;
+	console.log(retdata);
+
+	Date.prototype.getWeek = function () {
+		var date = new Date(this.getTime());
+		date.setHours(0, 0, 0, 0);
+		date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+		var week1 = new Date(date.getFullYear(), 0, 4);
+		return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6 ) % 7) / 7);
+	}
+
+
+	var now = new Date();
+	var startdate = new Date(retdata['startdate']);
+	var enddate = new Date(retdata['enddate']);
+
+	var numberOfParts = 0;
+	for(var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		if(item['kind'] == 4){
+			numberOfParts++;
+		}
+	}
+
+	console.log("coursecode: " + retdata['coursecode'])
+	console.log("coursename: " + retdata['coursename'])
+	console.log("numberofparts: " + numberOfParts);
+	console.log("this date: " + now.toDateString());
+	console.log("This week: " + now.getWeek());
+	console.log("versend: " + enddate.getWeek());
+	console.log("verslength: " + weeksBetween(startdate, enddate));
+	console.log("versstartweek: " + startdate.getWeek());
+	console.log("weekprog: " + weeksBetween(now, startdate));
+
+
+
 	if (data['debug'] != "NONE!") alert(data['debug']);
 
 	if (querystring['coursevers'] != "null") {
