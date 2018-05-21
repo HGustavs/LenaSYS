@@ -534,4 +534,3 @@ function validatePreviewForm(){
 	}
 	return true;
 }
-

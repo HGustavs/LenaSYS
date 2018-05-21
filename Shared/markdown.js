@@ -99,8 +99,11 @@ function parseMarkdown(inString)
     inString = inString.replace(/^\=\|\=(\r\n|\n|\r)/gm, '=|=&&&');
 
     //One line break
-     //inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
-     inString=inString.replace(/(\n)$/gm, "<br>");
+    //inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
+    inString=inString.replace(/(\n)$/gm, "<br>");
+
+    //Tab
+    inString=inString.replace(/(\t)/gm, "<span style=\"padding-left:4em\"></span>");
 
     // Split on code or console block
     var codearray=inString.split(/\~{3}|\=\|\=/);
@@ -589,7 +592,7 @@ function quoteText(){
 
 function tabKey(){
     this.setCarotPosition();
-    var finText = txtarea.value.substring(0,start) + '\t' + sel + '\t' + txtarea.value.substring(end);
+    var finText = txtarea.value.substring(0,start) + '\t' + sel  + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.focus();
     txtarea.selectionEnd=end+2;
