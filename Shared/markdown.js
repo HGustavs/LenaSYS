@@ -587,18 +587,27 @@ function quoteText(){
     updatePreview(txtarea.value);
 }
 
-function tabKey(e){
+function tabKey(){
     this.setCarotPosition();
-    var finText = txtarea.value.substring(0,start) + '\t' + sel + '' + txtarea.value.substring(end);
+    var finText = txtarea.value.substring(0,start) + '\t' + sel + '\t' + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.focus();
-    txtarea.selectionEnd=end+1;
+    txtarea.selectionEnd=end+2;
     updatePreview(txtarea.value);
 }
 $(document).ready(function(){
    $(".headerType").click(function(){
         $("#select-header").toggle();
         $("#select-header").addClass("show-dropdown-content");
+    });
+    $("#mrkdwntxt").keydown(function(e) {
+        console.log("f: "+ e.keyCode);
+        console.log("event: " + e.which);
+        if (e.keyCode == 9){
+            e.preventDefault();
+            tabKey();
+
+        }
     });
 });
 
