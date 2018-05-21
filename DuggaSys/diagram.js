@@ -151,6 +151,14 @@ function keyDownHandler(e){
     {
       ctrlIsClicked = true;
     }
+    else if(key == 27){
+      if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
+        cleanUp();
+        for (var i = 0; i < numberOfPointsInFigure; i++) {
+            diagram.pop();
+        }
+      }
+    }
 
 }
 
