@@ -979,12 +979,12 @@ function returnedSection(data) {
 		//Piechart.
 		/* The next div is a container div containing a description of the swim lanes
 		   and a pie chart giving an overview of course progress by a student. */
-		str+="<div id='statisticsPie' style=' height:100px;'>";
+		str+="<div id='statisticsPie' class='statisticsInnerBox' style=' height:100px;'>";
 		str+="<canvas id='pieChart' width='250px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
 		// str+="<div><p>Swim lane description</p></div>";
 
 		str += "</div>";
-		str	+= "<div id='deadlineInfoBox' style='display: inline-block;"
+		str	+= "<div id='deadlineInfoBox' class='statisticsInnerBox' style='display: inline-block;"
 		+ " padding: 10px; width: 250px;'> ";
 		str += "<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>"
 		str += "<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
@@ -998,7 +998,7 @@ function returnedSection(data) {
 		str += "<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFifthText'> </span>"
 		+ "<span id='deadlineInfoFifthDate' style='margin-right:5px;width:35px;'> </span> </div>"
 		str+="</div>";
-		str += "<div id='statisticsSwimlanes' class=''>";
+		str += "<div id='statisticsSwimlanes' class='statisticsInnerBox'>";
 		str += "</div>";
 		str += "</div></div>"; // closing div for statisticsContent
 		str += "<div id='Sectionlistc'>";
