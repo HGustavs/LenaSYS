@@ -1638,7 +1638,8 @@ function returnedSection(data) {
 	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 
 	drawPieChart(); // Create the pie chart used in the statistics section.
-	fixDeadlineInfoBoxesText();
+	fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section
+	drawSwimlanes(); // Create the swimlane used in the statistics section.
 }
 
 function showHighscore(did, lid) {
@@ -2131,6 +2132,10 @@ function fixDeadlineInfoBoxesText(){
 function removeYearFromDate(date){
 	var remadeDate = new Date(date);
 	return getDateFormat(remadeDate, "dateMonth").replace("-" ,"/");
+}
+
+function drawSwimlanes(){
+
 }
 
 
