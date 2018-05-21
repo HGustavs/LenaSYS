@@ -2135,7 +2135,25 @@ function removeYearFromDate(date){
 }
 
 function drawSwimlanes(){
+	var swimMoments = document.getElementById('swimlanesMoments');
+	var swimWeeks = document.getElementById('swimlanesWeeks');
+	var ctxMoments = swimMoments.getContext('2d');
+	var ctxWeeks = swimWeeks.getContext('2d');
 
+	/*if(){
+		swimMoments.height = ;
+		swimWeeks.height = ;
+	}
+	else {
+
+	}
+
+	if(){
+		swimWeeks.width = ;
+	}
+	else {
+
+	}*/
 }
 
 
