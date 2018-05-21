@@ -188,6 +188,11 @@ function changeClass(cid,uid,val,selected)
     }
 }
 
+function changeGroup(uid, gid) {
+	console.log(uid + " " + gid);
+	AJAXService("GROUP",{cid:querystring['cid'],uid:uid,gid:gid,coursevers:querystring['coursevers']},"ACCESS");
+}
+
 // Sets values in the "cogwheel popup"
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
 function selectUser(uid,username,ssn,firstname,lastname,access,className)
@@ -386,7 +391,7 @@ function renderCell(col,celldata,cellid) {
 		str = '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
 		str += '<select><option>Välj grupper</option></select><div class="overSelect"></div></div><div id="checkboxes">';
 		groups.forEach(group => {
-			str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'"/>'+group.groupName+'</label>';
+			str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'" onclick="changeGroup('+obj.uid+','+group.groupID+')"/>'+group.groupName+'</label>';
 		});
 		str += '</div></div>';
 		return str;
