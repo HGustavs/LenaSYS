@@ -377,6 +377,19 @@ diagram.closestPoint = function(mx, my){
             }
         });
     });
+
+    this.filter(symbol => symbol.kind == 1).forEach(path => {
+        path.segments.forEach(seg => {
+            var deltaX = mx - points[seg.pb].x;
+            var deltaY = my - points[seg.pb].y;
+            var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
+            if (hypotenuseElevatedBy2 < distance) {
+                distance = hypotenuseElevatedBy2;
+                point = points[seg.pb];
+            }
+        });
+    });
+
     return {distance:Math.sqrt(distance), point:point};
 }
 
