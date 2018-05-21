@@ -979,8 +979,8 @@ function returnedSection(data) {
 		//Piechart.
 		/* The next div is a container div containing a description of the swim lanes
 		   and a pie chart giving an overview of course progress by a student. */
-		str+="<div id='statisticsPie' style=' height:100px;'>";
-		str+="<canvas id='pieChart' width='250px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
+		str+="<div id='statisticsPie'>";
+		str+="<canvas id='pieChart' width='385px' height='200px' style='margin: 10px 10px;'></canvas>"; // Contains pie chart.
 		// str+="<div><p>Swim lane description</p></div>";
 
 		str+="</div>";
@@ -2021,7 +2021,7 @@ for (var i = 0; i < testsData.length; i++) {
 
 	// Pie chart overview
 	ctx.save();
-	ctx.translate(pieChartRadius*2 + 20, 2);
+	ctx.translate(pieChartRadius*2 + 30, 120);
 
 	ctx.fillStyle = colors['passedQuizes'];
 	ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
