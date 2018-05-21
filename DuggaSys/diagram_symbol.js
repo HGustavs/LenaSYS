@@ -997,7 +997,7 @@ function Symbol(kind) {
             svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
             svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
             str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
-            
+
             svgStyle = "stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
             // Top Divider
             str += "<line x1='"+x1+"' y1='"+(y1+(fontsize*1.5))+"' x2='"+x2+"' y2='"+(y1+(fontsize*1.5))+"' style='"+svgStyle+"' />";
@@ -1116,17 +1116,16 @@ function Symbol(kind) {
 		}
 		return fontsize;
 	}
-}
 
-
-this.makeShadow = function(){
-    ctx.save();
-    ctx.shadowBlur = this.shadowBlur;
-    ctx.shadowOffsetX = this.shadowOffsetX;
-    ctx.shadowOffsetY = this.shadowOffsetY;
-    ctx.shadowColor = this.shadowColor;
-    ctx.fill();
-    ctx.restore();
+    this.makeShadow = function(){
+        ctx.save();
+        ctx.shadowBlur = this.shadowBlur;
+        ctx.shadowOffsetX = this.shadowOffsetX;
+        ctx.shadowOffsetY = this.shadowOffsetY;
+        ctx.shadowColor = this.shadowColor;
+        ctx.fill();
+        ctx.restore();
+    }
 }
 
 this.drawOval = function (x1, y1, x2, y2) {
