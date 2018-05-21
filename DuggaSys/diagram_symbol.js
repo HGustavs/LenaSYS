@@ -814,10 +814,7 @@ function Symbol(kind) {
 
     this.drawERAttribute = function(x1, y1, x2, y2){
         ctx.fillStyle = this.symbolColor;
-        ctx.lineWidth = this.lineWidth + 2;
         //This is a temporary solution to the black symbol problem
-
-
         // Drawing a multivalue attribute
         if (this.key_type == 'Multivalue') {
             drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);

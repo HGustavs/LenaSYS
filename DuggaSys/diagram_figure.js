@@ -15,7 +15,7 @@ function Path() {
     this.fillColor = "#fff";        // Fill color (default is white)
     this.strokeColor = "#000";      // Stroke color (default is black)
     this.Opacity = 1;               // Opacity (default is 100%)
-    this.linewidth = 2;             // Line Width (stroke width - default is 2 pixels)
+    this.lineWidth = 2;             // Line Width (stroke width - default is 2 pixels)
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
     this.targeted = true;                    // An organized path can contain several sub-path, each of which must be organized
 
@@ -87,7 +87,7 @@ function Path() {
             ctx.strokeStyle = this.targeted ? "#F82" : this.strokeColor;
             ctx.fillStyle = this.fillColor;
             ctx.globalAlpha = this.Opacity;
-            ctx.lineWidth = this.linewidth;
+            ctx.lineWidth = this.lineWidth;
 
             ctx.beginPath();
             var pseg = this.segments[0];
@@ -115,6 +115,22 @@ function Path() {
             }
             if (strokestate) {
                 ctx.stroke();
+            }
+
+            for(var i = 0; i < this.segments.length; i++){
+                var seg = points[this.segments[i].pa];
+                var segb = points[this.segments[i].pb];
+                if(this.targeted){
+                    ctx.beginPath();
+                    ctx.arc(seg.x,seg.y,5,0,2*Math.PI,false);
+                    ctx.fillStyle = '#F82';
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.arc(segb.x,segb.y,5,0,2*Math.PI,false);
+                    ctx.fillStyle = '#F82';
+                    ctx.fill();
+                }
             }
             // Reset opacity so that following draw operations are unaffected
             ctx.globalAlpha = 1.0;

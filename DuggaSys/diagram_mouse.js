@@ -71,6 +71,11 @@ function mousemoveevt(ev, t) {
         if(!sel.point.fake){
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;
+            //If we changed a point of a path object,
+            //  we need to recalculate the bounding-box so that it will remain clickable.
+            if(diagram[lastSelectedObject].kind == 1){
+                diagram[lastSelectedObject].calculateBoundingBox();
+            }
         } else {
             sel.point.x.x = currentMouseCoordinateX;
             sel.point.y.y = currentMouseCoordinateY;

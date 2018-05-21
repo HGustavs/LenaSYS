@@ -377,6 +377,19 @@ diagram.closestPoint = function(mx, my){
             }
         });
     });
+
+    this.filter(symbol => symbol.kind == 1).forEach(path => {
+        path.segments.forEach(seg => {
+            var deltaX = mx - points[seg.pb].x;
+            var deltaY = my - points[seg.pb].y;
+            var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
+            if (hypotenuseElevatedBy2 < distance) {
+                distance = hypotenuseElevatedBy2;
+                point = points[seg.pb];
+            }
+        });
+    });
+
     return {distance:Math.sqrt(distance), point:point};
 }
 
@@ -1326,9 +1339,7 @@ function distributeHorizontally(selected_objects, spacing){
 //Do we really need 5 functions that more or less do the same thing
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2) {
-            diagram[i].lineWidth = document.getElementById('line-thickness').value;
-        }
+        diagram[i].lineWidth = document.getElementById('line-thickness').value;
     }
 }
 //change the font on all entities to the same font.
