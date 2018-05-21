@@ -1929,122 +1929,122 @@ function addColorsToTabSections(kind, visible){
 }
 
 function drawPieChart() {
-  var c = document.getElementById('pieChart');
-  var ctx = c.getContext('2d');
-  var width = c.width;
-  var height = c.height;
-  var pieChartRadius = height / 2;
-  var overviewBlockSize = 11;
+	var c = document.getElementById('pieChart');
+	var ctx = c.getContext('2d');
+	var width = c.width;
+	var height = c.height;
+	var pieChartRadius = height / 2;
+	var overviewBlockSize = 11;
 
-  var totalQuizes = 0;
-  var passedQuizes = 0;
-  var notGradedQuizes = 0;
-  var failedQuizes = 0;
-  var notSubmittedQuizes = 0;
+	var totalQuizes = 0;
+	var passedQuizes = 0;
+	var notGradedQuizes = 0;
+	var failedQuizes = 0;
+	var notSubmittedQuizes = 0;
 
-  // Calculate total quizes.
-  for(var i = 0; i < retdata['entries'].length; i++) {
-    if(retdata['entries'][i].kind == "3") {
-      totalQuizes++;
-    }
-  }
+	// Calculate total quizes.
+	for(var i = 0; i < retdata['entries'].length; i++) {
+		if(retdata['entries'][i].kind == "3") {
+			totalQuizes++;
+		}
+	}
 
-  // Calculate passed, failed and not graded quizes.
-  for(var i = 0; i < retdata['results'].length; i++) {
-	  if(retdata['results'][i]['useranswer'] != null){ // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
-		  if(retdata['results'][i].grade == 2) {
-			  passedQuizes++;
-		  } else if(retdata['results'][i].grade == 1) {
-			  failedQuizes++;
-		  }
-		  else {
-			  notGradedQuizes++;
-		  }
-	  }
-  }
+	// Calculate passed, failed and not graded quizes.
+	for(var i = 0; i < retdata['results'].length; i++) {
+		if(retdata['results'][i]['useranswer'] != null){ // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
+		if(retdata['results'][i].grade == 2) {
+			passedQuizes++;
+		} else if(retdata['results'][i].grade == 1) {
+			failedQuizes++;
+		}
+		else {
+			notGradedQuizes++;
+		}
+	}
+}
 
-  // Calculate non submitted quizes.
-  notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
+// Calculate non submitted quizes.
+notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
 
-  if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
-	  totalQuizes++; 			// show that the student has 100% not submitted tests.
-	  notSubmittedQuizes++;
-  }
+if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
+	totalQuizes++; 			// show that the student has 100% not submitted tests.
+	notSubmittedQuizes++;
+}
 
-  // PCT = Percentage
-  var passedPCT = 100 * (passedQuizes / totalQuizes);
-  var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
-  var failedPCT = 100 * (failedQuizes / totalQuizes);
-  var notSubmittedPCT = 100 * (notSubmittedQuizes / totalQuizes);
+// PCT = Percentage
+var passedPCT = 100 * (passedQuizes / totalQuizes);
+var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
+var failedPCT = 100 * (failedQuizes / totalQuizes);
+var notSubmittedPCT = 100 * (notSubmittedQuizes / totalQuizes);
 
-  // Only use 2 decimal places and round up if necessary
-  passedPCT = Math.round(passedPCT * 100) / 100;
-  notGradedPCT = Math.round(notGradedPCT * 100) / 100;
-  failedPCT = Math.round(failedPCT * 100) / 100;
-  notSubmittedPCT = Math.round(notSubmittedPCT * 100) / 100;
+// Only use 2 decimal places and round up if necessary
+passedPCT = Math.round(passedPCT * 100) / 100;
+notGradedPCT = Math.round(notGradedPCT * 100) / 100;
+failedPCT = Math.round(failedPCT * 100) / 100;
+notSubmittedPCT = Math.round(notSubmittedPCT * 100) / 100;
 
-  var lastend = -1.57; /* Chart start point. -1.57 is a quarter the number of
-                          radians in a circle, i.e. start at 12 o'clock */
-  var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
-  var colors = {
-    'passedQuizes': '#00E676',        // Green
-    'notGradedQuizes': '#FFEB3B',     // Yellow
-    'failedQuizes': '#E53935',        // Red
-    'notSubmittedQuizes': '#BDBDBD'   // Grey
-  }
+var lastend = -1.57; /* Chart start point. -1.57 is a quarter the number of
+radians in a circle, i.e. start at 12 o'clock */
+var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
+var colors = {
+	'passedQuizes': '#00E676',        // Green
+	'notGradedQuizes': '#FFEB3B',     // Yellow
+	'failedQuizes': '#E53935',        // Red
+	'notSubmittedQuizes': '#BDBDBD'   // Grey
+}
 
-  for (var i = 0; i < testsData.length; i++) {
+for (var i = 0; i < testsData.length; i++) {
 
-    if(i == 0) {
-      ctx.fillStyle = colors['passedQuizes'];
-    } else if(i == 1) {
-      ctx.fillStyle = colors['notGradedQuizes'];
-    } else if(i == 2) {
-      ctx.fillStyle = colors['failedQuizes'];
-    } else {
-      ctx.fillStyle = colors['notSubmittedQuizes'];
-    }
+	if(i == 0) {
+		ctx.fillStyle = colors['passedQuizes'];
+	} else if(i == 1) {
+		ctx.fillStyle = colors['notGradedQuizes'];
+	} else if(i == 2) {
+		ctx.fillStyle = colors['failedQuizes'];
+	} else {
+		ctx.fillStyle = colors['notSubmittedQuizes'];
+	}
 
-    ctx.beginPath();
-    ctx.moveTo(pieChartRadius, height / 2);
+	ctx.beginPath();
+	ctx.moveTo(pieChartRadius, height / 2);
 
-    // Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
-    ctx.arc(pieChartRadius, height / 2, height / 2, lastend,lastend
-    + (Math.PI * 2 * (testsData[i] / totalQuizes)), false);
+	// Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
+	ctx.arc(pieChartRadius, height / 2, height / 2, lastend,lastend
+		+ (Math.PI * 2 * (testsData[i] / totalQuizes)), false);
 
-    //Parameter for lineTo: x,y
-    ctx.lineTo(pieChartRadius, height / 2);
-    ctx.fill();
+		//Parameter for lineTo: x,y
+		ctx.lineTo(pieChartRadius, height / 2);
+		ctx.fill();
 
-    lastend += Math.PI * 2 * (testsData[i] / totalQuizes);
-  }
+		lastend += Math.PI * 2 * (testsData[i] / totalQuizes);
+	}
 
-  // Pie chart overview
-  ctx.save();
-  ctx.translate(pieChartRadius*2 + 20, 2);
+	// Pie chart overview
+	ctx.save();
+	ctx.translate(pieChartRadius*2 + 20, 2);
 
-  ctx.fillStyle = colors['passedQuizes'];
-  ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
+	ctx.fillStyle = colors['passedQuizes'];
+	ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
 
-  ctx.fillStyle = colors['notGradedQuizes'];
-  ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
+	ctx.fillStyle = colors['notGradedQuizes'];
+	ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
 
-  ctx.fillStyle = colors['failedQuizes'];
-  ctx.fillRect(0, 40, overviewBlockSize, overviewBlockSize);
+	ctx.fillStyle = colors['failedQuizes'];
+	ctx.fillRect(0, 40, overviewBlockSize, overviewBlockSize);
 
-  ctx.fillStyle = colors['notSubmittedQuizes'];
-  ctx.fillRect(0, 60, overviewBlockSize, overviewBlockSize);
+	ctx.fillStyle = colors['notSubmittedQuizes'];
+	ctx.fillRect(0, 60, overviewBlockSize, overviewBlockSize);
 
-  ctx.font = "12px Arial";
-  ctx.fillStyle = "#000";
+	ctx.font = "12px Arial";
+	ctx.fillStyle = "#000";
 
-  ctx.translate(20, 10);
-  ctx.fillText("Passed (" + passedPCT + "%)", 0, 0);
-  ctx.fillText("Not Graded (" + notGradedPCT + "%)", 0, 20);
-  ctx.fillText("Failed (" + failedPCT + "%)", 0, 40);
-  ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 0, 60);
+	ctx.translate(20, 10);
+	ctx.fillText("Passed (" + passedPCT + "%)", 0, 0);
+	ctx.fillText("Not Graded (" + notGradedPCT + "%)", 0, 20);
+	ctx.fillText("Failed (" + failedPCT + "%)", 0, 40);
+	ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 0, 60);
 
-  ctx.restore();
+	ctx.restore();
 }
 
 
