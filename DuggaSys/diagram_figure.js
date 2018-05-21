@@ -116,6 +116,22 @@ function Path() {
             if (strokestate) {
                 ctx.stroke();
             }
+
+            for(var i = 0; i < this.segments.length; i++){
+                var seg = points[this.segments[i].pa];
+                var segb = points[this.segments[i].pb];
+                if(this.targeted){
+                    ctx.beginPath();
+                    ctx.arc(seg.x,seg.y,5,0,2*Math.PI,false);
+                    ctx.fillStyle = '#F82';
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.arc(segb.x,segb.y,5,0,2*Math.PI,false);
+                    ctx.fillStyle = '#F82';
+                    ctx.fill();
+                }
+            }
             // Reset opacity so that following draw operations are unaffected
             ctx.globalAlpha = 1.0;
         }
