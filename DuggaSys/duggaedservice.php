@@ -98,11 +98,16 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		}
 	}else if(strcmp($opt,"DELDU")===0){
         $query = $pdo->prepare("DELETE FROM quiz WHERE id=:qid");
-        $query->bindParam(':qid', $qid);
-        if(!$query->execute()) {
-            $error=$query->errorInfo();
-            $debug="Error deleting dugga".$error[2];
-        }
+		$query->bindParam(':qid', $qid);
+		
+		if(!$query->execute()) {
+			if($query->errorInfo()[0] == 23000) {
+				$debug = "The item could not be deleted because of a foreign key constraint.";
+			} else {
+				$debug = "The item could not be deleted.";
+			}
+		}
+		
     }else if(strcmp($opt,"ADDVARI")===0){
 		$querystring="INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (:qid,:uid,:disabled,:param,:variantanswer)";
 		$stmt = $pdo->prepare($querystring);
