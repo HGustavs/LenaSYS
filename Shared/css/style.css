@@ -1791,9 +1791,13 @@ input.large-button {
   width: 100%;
   padding: 1px;
   border-bottom: 2px solid #dbd0d8;
-  border-left: 2px solid #dbd0d8;
   margin-top: 20px;
   font-size: 16px;
+}
+
+.listHeading {
+  border-left: 2px solid #614875;
+  border-right: 2px solid #614875;
 }
 
 .innertable {
@@ -1811,6 +1815,7 @@ input.large-button {
 }
 
 .list td {
+  border-left: 2px solid #dbd0d8;
   border-right: 2px solid #dbd0d8;
   padding: 0 8px 0 8px;
 }
@@ -4413,14 +4418,6 @@ textarea#filecont{
   width: 25px;
 }
 
-#fileLink_tblhead{
-  border-left: 2px solid #614875;
-  border-right: 2px solid #614875;
-}
-#fileLink_tblhead_mh{
-  border-left: 2px solid #614875;
-  border-right: 2px solid #614875;
-}
 
 @media only screen and (max-height: 800px) and (max-width: 1400px) {
   .editFileWindow {
