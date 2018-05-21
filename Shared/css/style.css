@@ -3249,7 +3249,7 @@ only screen and (max-device-width: 768px) {
     transform: scale(0.7, 0.7);
     left: 10px;
   }
-  
+
   #cookiemsg {
     background-color: #fecc56;
     z-index: 1000;
@@ -3261,7 +3261,7 @@ only screen and (max-device-width: 768px) {
     display: flex;
     text-align: center;
   }
-  
+
   #Sectionlist .course {
     font-size: 20px;
   }
@@ -3269,7 +3269,7 @@ only screen and (max-device-width: 768px) {
   #statisticsList {
     display: none;
   }
-  
+
 .fileLink_counter {
     font-size: 16px;
     color: #000;
@@ -3279,15 +3279,15 @@ only screen and (max-device-width: 768px) {
     #fileLink_body{
 		display: block;
 	}
-  
+
     #fileLink_tblhead{
         display: none;
     }
-  
+
     #fileLink_tbl_mh[style]{
         display: none !important;
     }
-  
+
     #fileLink_body tr[style]{
         border: 1px solid #ccc !important;
         display: block !important;
@@ -3304,7 +3304,7 @@ only screen and (max-device-width: 768px) {
         overflow: hidden;
 
 	}
-  
+
 	#fileLink_body>tr>td:before {
 		/* Top/left values mimic padding */
         display: inline-block;
@@ -4419,6 +4419,7 @@ textarea#filecont{
   #filecont {
     height: 350px;
   }
+}
 
 @media only screen and (max-width: 900px) {
   .optionButtons {
@@ -4434,5 +4435,5 @@ textarea#filecont{
   margin: 0 2px 7px 0;
   float: right;
   position: relative;
-  top: -5px; 
+  top: -5px;
 }
