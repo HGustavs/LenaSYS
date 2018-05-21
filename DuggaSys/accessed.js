@@ -189,7 +189,6 @@ function changeClass(cid,uid,val,selected)
 }
 
 function changeGroup(uid, gid) {
-	console.log(uid + " " + gid);
 	AJAXService("GROUP",{cid:querystring['cid'],uid:uid,gid:gid,coursevers:querystring['coursevers']},"ACCESS");
 }
 
