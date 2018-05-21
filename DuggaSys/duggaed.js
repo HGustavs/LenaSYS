@@ -519,8 +519,6 @@ function returnedDugga(data) {
 			changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
 				+ querystring['coursevers'] + "");
 	}
-
-	console.log(data['writeaccess']);
 	var tabledata = {
 		tblhead: {
 			did: "",
