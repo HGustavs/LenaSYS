@@ -592,7 +592,7 @@ function AJAXService(opt,apara,kind)
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
 		if(showing == 1){
-			loginBarrier();
+			processLogin();
 		}else if(showing == 0){
 			resetPasswordBarrier();
 		}else if(showing == 2){
@@ -753,25 +753,7 @@ function processResetPasswordCheckSecurityAnswer(result) {
   }
 }
 
-function loginBarrier() {
-  var username = $("#login #username").val();
-
-  $.ajax({
-		type:"POST",
-		url: "../DuggaSys/accessedservice.php",
-		data: {
-      username: username,
-			opt: "LOGINATTEMPT"
-		},
-		success:function(data) {
-			var result = JSON.parse(data);
-			result = result.queryResult;
-			processLogin(result);
-		}
-	});
-}
-
-function processLogin(result) {
+function processLogin() {
 
     /*
     var username = $("#login #username").val();
@@ -822,64 +804,61 @@ function processLogin(result) {
 		});
 
     */
-
-    if (result <= 5) {
-      var username = $("#login #username").val();
-  		var saveuserlogin = $("#login #saveuserlogin").val();
-  		var password = $("#login #password").val();
-  		if (saveuserlogin==1){
-          	saveuserlogin = 'on';
-      }else{
-          	saveuserlogin = 'off';
-      }
-
-  		$.ajax({
-  			type:"POST",
-  			url: "../Shared/loginlogout.php",
-  			data: {
-  				username: username,
-  				saveuserlogin: saveuserlogin,
-  				password: password,
-  				opt: "LOGIN"
-  			},
-  			success:function(data) {
-  				var result = JSON.parse(data);
-  				if(result['login'] == "success") {
-            hideLoginPopup();
-            /*
-                      if(result['securityquestion'] != null) {
-                          localStorage.setItem("securityquestion", "set");
-                      } else {
-                          setSecurityNotifaction("on");
-                      }
-              */
-  					setExpireCookie();
-  					setExpireCookieLogOut();
-
-  					// Fake a second login, this will reload the page and enable chrome and firefox to save username and password
-  					//$("#loginForm").submit();
-            reloadPage();
-  				}else{
-  					if(typeof result.reason != "undefined") {
-              displayAlertText("#login #message", result.reason);
-  					} else {
-              displayAlertText("#login #message", "Wrong username or password");
-  					}
-
-
-  					$("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
-  					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
-            //closeWindows();
-  				}
-
-  			},
-  			error:function() {
-  				console.log("error");
-  			}
-  		});
-    } else {
-      displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
+    var username = $("#login #username").val();
+    var saveuserlogin = $("#login #saveuserlogin").val();
+    var password = $("#login #password").val();
+    if (saveuserlogin==1){
+          saveuserlogin = 'on';
+    }else{
+          saveuserlogin = 'off';
     }
+
+    $.ajax({
+      type:"POST",
+      url: "../Shared/loginlogout.php",
+      data: {
+        username: username,
+        saveuserlogin: saveuserlogin,
+        password: password,
+        opt: "LOGIN"
+      },
+      success:function(data) {
+        var result = JSON.parse(data);
+        if(result['login'] == "success") {
+          hideLoginPopup();
+          /*
+                    if(result['securityquestion'] != null) {
+                        localStorage.setItem("securityquestion", "set");
+                    } else {
+                        setSecurityNotifaction("on");
+                    }
+            */
+          setExpireCookie();
+          setExpireCookieLogOut();
+
+          // Fake a second login, this will reload the page and enable chrome and firefox to save username and password
+          //$("#loginForm").submit();
+          reloadPage();
+        }else if(result['login'] == "limit"){
+          displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
+        }else{
+          if(typeof result.reason != "undefined") {
+            displayAlertText("#login #message", result.reason);
+          } else {
+            displayAlertText("#login #message", "Wrong username or password");
+          }
+
+
+          $("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
+          $("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
+          //closeWindows();
+        }
+
+      },
+      error:function() {
+        console.log("error");
+      }
+    });
 }
 
 

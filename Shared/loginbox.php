@@ -34,7 +34,7 @@
 					</tr>
 					<tr class="loginboxTr">
 						<td>
-							<input type='button' class='buttonLoginBox' onclick="loginBarrier();" value='Login' title='Login'>
+							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login' title='Login'>
 						</td>
 					</tr>
 					<tr class="loginboxTr">
