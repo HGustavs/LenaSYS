@@ -142,7 +142,7 @@ pdoConnect();
                         </div>
 
                             <div class="markText">
-                            <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
+                            <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" onkeydown="tabKey(this.value)" name="markdowntext"></textarea>
                             </div>
                             </fieldset>
                 </div>
