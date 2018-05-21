@@ -1339,9 +1339,7 @@ function distributeHorizontally(selected_objects, spacing){
 //Do we really need 5 functions that more or less do the same thing
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2) {
-            diagram[i].lineWidth = document.getElementById('line-thickness').value;
-        }
+        diagram[i].lineWidth = document.getElementById('line-thickness').value;
     }
 }
 //change the font on all entities to the same font.
