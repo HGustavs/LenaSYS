@@ -4413,6 +4413,15 @@ textarea#filecont{
   width: 25px;
 }
 
+#fileLink_tblhead{
+  border-left: 2px solid #614875;
+  border-right: 2px solid #614875;
+}
+#fileLink_tblhead_mh{
+  border-left: 2px solid #614875;
+  border-right: 2px solid #614875;
+}
+
 @media only screen and (max-height: 800px) and (max-width: 1400px) {
   .editFileWindow {
     height: 500px;
