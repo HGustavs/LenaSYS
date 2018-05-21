@@ -459,6 +459,7 @@ function getFIleContents(fileUrl){
     return result;
 }
 
+
 function cursiveText() {
     this.setCarotPosition();
     var finText = txtarea.value.substring(0, start) + '__' + sel + '__' + txtarea.value.substring(end);
@@ -586,11 +587,27 @@ function quoteText(){
     updatePreview(txtarea.value);
 }
 
-
+function tabKey(){
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0,start) + '\t' + sel + '\t' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd=end+2;
+    updatePreview(txtarea.value);
+}
 $(document).ready(function(){
    $(".headerType").click(function(){
         $("#select-header").toggle();
         $("#select-header").addClass("show-dropdown-content");
+    });
+    $("#mrkdwntxt").keydown(function(e) {
+        console.log("f: "+ e.keyCode);
+        console.log("event: " + e.which);
+        if (e.keyCode == 9){
+            e.preventDefault();
+            tabKey();
+
+        }
     });
 });
 
