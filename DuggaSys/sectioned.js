@@ -1003,8 +1003,8 @@ function returnedSection(data) {
 		str += "<div style='display: inline-block;'>";
 		str += "<canvas id='swimlanesMoments' width='100px' height='400px' style='padding:10px;'></canvas>";
 		str += "</div>";
-		str += "<div style='width: 400px; overflow-x: auto; white-space: nowrap; display: inline-block'>";
-		str += "<canvas id='swimlanesWeeks' width='600px' height='400px' style='padding:10px;'></canvas>";
+		str += "<div style='width: 400px; overflow-x: auto; white-space: nowrap; display: inline-block; margin: 10px 10px 10px -10px'>";
+		str += "<canvas id='swimlanesWeeks' width='600px' height='400px' style='padding:10px; background-color: white;'></canvas>";
 		str += "</div>";
 		str += "</div>";
 		str += "</div></div>"; // closing div for statisticsContent
@@ -2140,6 +2140,15 @@ function drawSwimlanes(){
 	var ctxMoments = swimMoments.getContext('2d');
 	var ctxWeeks = swimWeeks.getContext('2d');
 
+	var colors = {
+    'passedQuizes': '#00E676',        // Green
+    'notGradedQuizes': '#FFEB3B',     // Yellow
+    'failedQuizes': '#E53935',        // Red
+    'notSubmittedQuizes': '#BDBDBD',  // Grey
+		'weeksOdd': '#8a7a9a',						// Purple
+		'momentsOdd': '#ededed'
+  }
+
 	/*if(){
 		swimMoments.height = ;
 		swimWeeks.height = ;
@@ -2154,6 +2163,19 @@ function drawSwimlanes(){
 	else {
 
 	}*/
+
+	ctxMoments.fillStyle = 'white';
+	ctxMoments.fillRect(0, 0, 100, 60);
+	ctxMoments.moveTo(0, 0);
+
+	ctxMoments.fillStyle = 'black';
+	ctxMoments.lineTo(100, 60);
+	ctxMoments.stroke();
+
+	ctxMoments.fillStyle = 'black';
+	ctxMoments.font = "12px Arial";
+	ctxMoments.fillText("Weeks", 50, 20);
+	ctxMoments.fillText("Moments", 10, 50);
 }
 
 
