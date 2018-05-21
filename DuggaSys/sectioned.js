@@ -1045,7 +1045,7 @@ function returnedSection(data) {
 		str += "<canvas id='swimlanesMoments' width='100px' height='400px' style='padding:10px;'></canvas>";
 		str += "</div>";
 		str += "<div style='width: 400px; overflow-x: auto; white-space: nowrap; display: inline-block; margin: 10px 10px 10px -10px'>";
-		str += "<canvas id='swimlanesWeeks' width='600px' height='400px' style='padding:10px; background-color: white;'></canvas>";
+		str += "<canvas id='swimlanesWeeks' width='600px' height='400px' style='background-color: white;'></canvas>";
 		str += "</div>";
 		str += "</div>";
 		str += "</div></div>"; // closing div for statisticsContent
@@ -2217,6 +2217,21 @@ function drawSwimlanes(){
 	ctxMoments.font = "12px Arial";
 	ctxMoments.fillText("Weeks", 50, 20);
 	ctxMoments.fillText("Moments", 10, 50);
+
+	var x = 0;
+	for(var i = 0; i < 20; i++){
+		if(i % 2 == 0){
+			ctxWeeks.fillStyle = colors['weeksOdd'];
+			ctxWeeks.fillRect(x, 0, 50, 60);
+		}
+		else {
+			ctxWeeks.fillStyle = 'white';
+			ctxWeeks.fillRect(x, 0, 50, 60);
+		}
+		x += 50;
+	}
+
+
 }
 
 
