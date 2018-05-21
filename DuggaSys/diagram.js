@@ -541,7 +541,9 @@ diagram.checkForHover = function(posX, posY) {
     var hoveredObjects = this.filter(symbol => symbol.checkForHover(posX, posY));
     if (hoveredObjects.length <= 0) return -1;
     hoveredObjects.sort(function(a, b) {
-        if (a.symbolkind != 4 && b.symbolkind != 4) return 0;
+        if(a.kind == 1 && b.kind == 2) return -1;
+        else if(a.kind != 1 && b.kind == 1) return 1;
+        else if (a.symbolkind != 4 && b.symbolkind != 4) return 0;
         else if (a.symbolkind == 4 && b.symbolkind != 4) return -1;
         else if (a.symbolkind != 4 && b.symbolkind == 4) return 1;
         else return 0;
