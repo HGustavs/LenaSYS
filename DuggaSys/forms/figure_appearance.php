@@ -7,7 +7,7 @@ Fill color:<br>
     <option value='#ffffcc'>Yellow</option>
     <option value='#ffe0cc'>Orange</option>
     <option value='#ffccff'>Purple</option>
-    <option value='#ffffff'>White</option>
+    <option value='#ffffff' selected="true">White</option>
     <option value='#000000'>Black</option>
 </select><br>
 Line color:<br>
@@ -20,6 +20,6 @@ Line color:<br>
     <option value='#ffe0cc'>Orange</option>
     <option value='#ffccff'>Purple</option>
     <option value='#ffffff'>White</option>
-    <option value='#000000'>Black</option>
+    <option value='#000000' selected="true">Black</option>
     </select><br>
 <button type='submit' class='submit-button' onclick="changeObjectAppearance('figureType'); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>OK</button>
