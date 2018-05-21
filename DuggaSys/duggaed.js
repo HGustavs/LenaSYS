@@ -504,7 +504,9 @@ function returnedQuiz(data) {
 function returnedDugga(data) {
 	filez = data;
 	globalData = data;
-  
+
+	if (data['debug'] != "NONE!") alert(data['debug']);
+	
 	if (data['writeaccess']) {
 		$('#quiz').show();
 		$('.fixed-action-button').show();
