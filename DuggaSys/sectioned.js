@@ -999,6 +999,7 @@ function returnedSection(data) {
 		+ "<span id='deadlineInfoFifthDate' style='margin-right:5px;width:35px;'> </span> </div>"
 		str+="</div>";
 		str += "<div id='statisticsSwimlanes' class=''>";
+		str += "<canvas id='swimlanes' width='400px' height='400px' style='padding:10px;'></canvas>";
 		str += "</div>";
 		str += "</div></div>"; // closing div for statisticsContent
 		str += "<div id='Sectionlistc'>";
