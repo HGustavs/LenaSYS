@@ -999,8 +999,13 @@ function returnedSection(data) {
 		+ "<span id='deadlineInfoFifthDate' style='margin-right:5px;width:35px;'> </span> </div>"
 		str+="</div>";
 
-		str += "<div id='statisticsSwimlanes' class='statisticsInnerBox'>";
-		str += "<canvas id='swimlanes' width='400px' height='400px' style='padding:10px;'></canvas>";
+		str += "<div id='statisticsSwimlanes' class='statisticsInnerBox' style='display: flex;'>";
+		str += "<div style='display: inline-block;'>";
+		str += "<canvas id='swimlanesMoments' width='100px' height='400px' style='padding:10px;'></canvas>";
+		str += "</div>";
+		str += "<div style='width: 400px; overflow-x: auto; white-space: nowrap; display: inline-block'>";
+		str += "<canvas id='swimlanesWeeks' width='600px' height='400px' style='padding:10px;'></canvas>";
+		str += "</div>";
 		str += "</div>";
 		str += "</div></div>"; // closing div for statisticsContent
 		str += "<div id='Sectionlistc'>";
@@ -1932,6 +1937,10 @@ function addColorsToTabSections(kind, visible){
 	return retStr;
 }
 
+
+// Statistic-sections functions, for drawing out all the statistics
+//(pie chart and swimlanes) and upcomming deadlines.
+
 function drawPieChart() {
   var c = document.getElementById('pieChart');
   var ctx = c.getContext('2d');
@@ -2124,6 +2133,8 @@ function removeYearFromDate(date){
 	return getDateFormat(remadeDate, "dateMonth").replace("-" ,"/");
 }
 
+
+// Event listeners
 $(document).ready(function () {
 	// Function to prevent collapsing when clicking icons
 	$(document).on('click', '#corf', function (e) {
