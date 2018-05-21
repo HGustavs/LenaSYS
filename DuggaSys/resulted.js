@@ -336,7 +336,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 							alert("You must press down the ctrl-key or cmd-key to change from grade G to U.");
 						}
 					} else {
-						alert("You can no longer change the grade to U, due to 24 hours has passed since grade G was set.");
+						alert("You can no longer change the grade to U as 24 hours has passed since grade G was set.");
 					}
 				}
             }
