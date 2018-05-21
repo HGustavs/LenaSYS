@@ -1400,13 +1400,14 @@ function redoDiagram() {
 
 function diagramToSVG() {
     var str = "";
-    // Convert lines to SVG first so they appear behind other objects
+    // Convert lines and figures to SVG first so they appear behind other objects
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+        if (diagram[i].kind == 2 && diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+        else if (diagram[i].kind == 1) str += diagram[i].figureToSVG();
     }
     // Conert other objects to SVG
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
+        if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
     }
     return str;
 }

@@ -367,6 +367,29 @@ function Path() {
             points[this.segments[i].pb] = waldoPoint;
         }
     }
+
+    this.figureToSVG = function() {
+        var str = "";
+        if (this.isorganized && this.segments.length > 0) {
+            str += "<g>";
+            var svgStyle = "fill:"+this.fillColor+";fill-opacity:"+this.opacity+";stroke:"+this.strokeColor+";stroke-width:"+this.lineWidth+";";
+            var pseg = this.segments[0];
+            svgPos = "M"+points[pseg.pa].x+","+points[pseg.pa].y;
+            for (var i = 0; i < this.segments.length; i++) {
+                var seg = this.segments[i];
+                // Start at sub-path
+                if (seg.pa != pseg.pb) {
+                    svgPos = "M"+points[seg.pa].x+","+points[seg.pa].y;
+                }
+                svgPos += " L"+points[seg.pb].x+","+points[seg.pb].y;
+                str += "<path d='"+svgPos+"' style='"+svgStyle+"' />";
+                // Remember previous segment
+                pseg = seg;
+            }
+            str += "</g>";
+        }
+        return str;
+    }
 }
 
 function drawSegment(pathA, p1, p2) {
