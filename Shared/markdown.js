@@ -99,8 +99,11 @@ function parseMarkdown(inString)
     inString = inString.replace(/^\=\|\=(\r\n|\n|\r)/gm, '=|=&&&');
 
     //One line break
-     //inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
-     inString=inString.replace(/(\n)$/gm, "<br>");
+    //inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
+    inString=inString.replace(/(\n)$/gm, "<br>");
+
+    //Tab
+    inString=inString.replace(/(\t)/gm, "<span style=\"padding-left:4em\"></span>");
 
     // Split on code or console block
     var codearray=inString.split(/\~{3}|\=\|\=/);
@@ -459,6 +462,7 @@ function getFIleContents(fileUrl){
     return result;
 }
 
+
 function cursiveText() {
     this.setCarotPosition();
     var finText = txtarea.value.substring(0, start) + '__' + sel + '__' + txtarea.value.substring(end);
@@ -586,18 +590,31 @@ function quoteText(){
     updatePreview(txtarea.value);
 }
 
-
+function tabKey(){
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0,start) + '\t' + sel  + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd=end+2;
+    updatePreview(txtarea.value);
+}
 $(document).ready(function(){
    $(".headerType").click(function(){
         $("#select-header").toggle();
         $("#select-header").addClass("show-dropdown-content");
+    });
+    $("#mrkdwntxt").keydown(function(e) {
+        if (e.keyCode == 9){
+            e.preventDefault();
+            tabKey();
+
+        }
     });
 });
 
 //Hide dropdown if click is outside the div
 $(document).mouseup(function(e) {
     var container = $("#select-header");
-
     if (!container.is(e.target) && container.has(e.target).length === 0) {
         container.hide();
     }
