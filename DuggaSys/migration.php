@@ -2171,7 +2171,7 @@ $migrationArray = array(
         'description' => 'New table for group and M-M between Group and User',
         [
             ['create', 'groups', 'groupID', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT', 'PRIMARY KEY(groupID)'],
-            ['column', 'groups', 'courseID', 'int', 'UNSIGNED NOT NULL', 'FOREIGN KEY(courseID) REFERENCES vers(cid)'],
+            ['column', 'groups', 'courseID', 'int', 'UNSIGNED NOT NULL', 'FOREIGN KEY(courseID) REFERENCES course(cid)'],
             ['column', 'groups', 'vers', 'varchar(8)', ''],
             ['column', 'groups', 'groupName', 'varchar(80)', 'NOT NULL'],
 
