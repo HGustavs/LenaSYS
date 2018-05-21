@@ -120,7 +120,7 @@ function createPieChart() {
 
   // Calculate non submitted quizes.
   notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
-  
+
   // PCT = Percentage
   var passedPCT = 100 * (passedQuizes / totalQuizes);
   var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
@@ -157,7 +157,7 @@ function createPieChart() {
 
     ctx.beginPath();
     ctx.moveTo(pieChartRadius, height / 2);
-    
+
     // Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
     ctx.arc(pieChartRadius, height / 2, height / 2, lastend,lastend
     + (Math.PI * 2 * (data[i] / totalQuizes)), false);
@@ -459,6 +459,7 @@ function swimlaneDrawLanes2() {
 // Gather the fetched data from the database and execute the swimming
 function returnedSwimlane(swimlaneData) {
   swimlaneInformation = swimlaneData;
+  console.log(swimlaneInformation);
   if (swimlaneInformation['returnvalue']) {
     swimlaneDrawLanes();
   }
