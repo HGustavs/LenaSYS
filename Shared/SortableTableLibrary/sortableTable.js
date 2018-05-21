@@ -237,10 +237,10 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		str += "<caption>"+caption+"</caption>";
 
 		// Make headings Clean Contains headings using only A-Z a-z 0-9 ... move to function removes lines of code and removes redundant code/data!?
-	    str += "<thead id='"+tableid+"_tblhead'><tr>";
-	    mhstr += "<thead id='"+tableid+"_tblhead_mh'><tr>";
-	    mhvstr += "<thead id='"+tableid+"_tblhead_mhv'><tr>";
-	    mhfstr += "<thead id='"+tableid+"_tblhead_mhf'><tr>";
+	    str += "<thead class='listHeading' id='"+tableid+"_tblhead'><tr>";
+	    mhstr += "<thead class='listHeading' id='"+tableid+"_tblhead_mh'><tr>";
+	    mhvstr += "<thead class='listHeading' id='"+tableid+"_tblhead_mhv'><tr>";
+	    mhfstr += "<thead class='listHeading' id='"+tableid+"_tblhead_mhf'><tr>";
 
 		//var freezePaneIndex = tbl.tblhead.indexOf(freezePane);
 
