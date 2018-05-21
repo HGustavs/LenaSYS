@@ -370,6 +370,7 @@ function mouseupevt(ev) {
                 } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)){
                     okToMakeLine = false;
                 }
+                if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
                 if(okToMakeLine){
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
