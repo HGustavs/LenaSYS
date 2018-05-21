@@ -455,6 +455,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
             }
             if(!hover){
                 if (pointsSelected >= tempPoints.length) {
+                    selected_objects.push(this[i]);
                     this[i].targeted = true;
                 } else {
                     this[i].targeted = false;
