@@ -3982,6 +3982,13 @@ li:nth-last-child(10) a:hover {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
 }
 
+legend{
+  display: block;
+  padding-left: 1.5%;
+  padding-right: 1.5%;
+  border: none;
+}
+
 .optionButtons {
   top: 585px;
   position: relative;
@@ -4042,14 +4049,14 @@ textarea#mrkdwntxt {
 
 #boldText {
   cursor: pointer;
-  margin-left: 3%;
+  margin-left: 1.75%;
   position: absolute;
   margin-top: 0%;
 }
 
 #cursiveText {
   cursor: pointer;
-  margin-left: 8%;
+  margin-left: 6.75%;
   position: absolute;
   margin-top:0%;
 }
@@ -4057,7 +4064,7 @@ textarea#mrkdwntxt {
 #lists {
   cursor: pointer;
   color: #FFFFFF;
-  margin-left: 13%;
+  margin-left: 11.75%;
   font-size: 12px;
   position: absolute;
   filter: invert(100%);
@@ -4065,25 +4072,25 @@ textarea#mrkdwntxt {
 }
 #codeBlockText {
     cursor: pointer;
-    margin-left: 19%;
+    margin-left: 16.75%;
     position: absolute;
-    margin-top: -1%
+    margin-top: -0.75%
 }
 #quoteText {
     cursor: pointer;
-    margin-left: 26%;
+    margin-left: 21.75%;
     font-size: 25px;
     position: absolute;
-    margin-top:-1%;
+    margin-top:-0.75%;
 }
 #img {
     cursor: pointer;
-    margin-left: 9%;
+    margin-left: 3.75%;
 }
 #insert-photo {
     position: absolute;
     margin-left: 23%;
-    margin-top: -1%;
+    margin-top: -0.75%;
 }
 #link {
     cursor: pointer;
@@ -4092,8 +4099,8 @@ textarea#mrkdwntxt {
 
 #linkFabBtnImgPrev {
     position: absolute;
-    margin-left: 38%;
-    margin-top:-1%;
+    margin-left: 32.75%;
+    margin-top: -0.75%;
     filter: invert(100%);
 }
 
@@ -4171,9 +4178,9 @@ textarea#mrkdwntxt {
 }
 .headerType {
   cursor: pointer;
-  margin-left: 37%;
+  margin-left: 34.75%;
   position: absolute;
-  margin-top:-1%
+  margin-top: -0.75%
 }
 
 .show-dropdown-content {
@@ -4419,6 +4426,7 @@ textarea#filecont{
   #filecont {
     height: 350px;
   }
+}
 
 @media only screen and (max-width: 900px) {
   .optionButtons {
@@ -4434,5 +4442,6 @@ textarea#filecont{
   margin: 0 2px 7px 0;
   float: right;
   position: relative;
-  top: -5px; 
+  top: -5px;
 }
+
