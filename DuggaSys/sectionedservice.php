@@ -227,6 +227,32 @@ if(checklogin()){
 			}
 		}
 	}
+
+	// Check if groups exists. If not add them
+	$stmt = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid");
+	$stmt->bindParam(":cid", $courseid);
+	$stmt->execute();
+
+	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+	if (count($result) < 24) {
+		$defaultGroups = array(
+			"I", "II", "III", "IV", "V", "VI", "VII", "VIII",
+			"1", "2", "3", "4", "5", "6", "7", "8",
+			"A", "B", "C", "D", "E", "F", "G", "H",
+		);
+		
+		foreach($defaultGroups as $group) {
+			$stmt = $pdo->prepare("INSERT INTO groups(courseID, groupName) VALUES(:courseID, :groupName)");
+			$stmt->bindParam(':courseID', $courseid);
+			$stmt->bindParam(':groupName', $group);
+
+			if (!$stmt->execute()) {
+				$error = $stmt->errorInfo();
+				$debug = "Error adding group " . $error[2];
+			}
+		}
+	}
 }
 
 //------------------------------------------------------------------------------------------------
