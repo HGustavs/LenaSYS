@@ -619,13 +619,13 @@ function buildDynamicHeaders() {
 function buildStudentInfo() {
   var i = 0;
 	students.forEach(function(entry) {
+		var row = {"FnameLnameSSN":entry[0]};
 		if(entry.length > 1) {
-			var row = {"FnameLnameSSN":entry[0]};
 			for(var j = 1; j < entry.length; j++) {
 				row["lid:"+entry[j]['lid']] = entry[j];
 			}
-			studentInfo[i++] = row;
 		}
+		studentInfo[i++] = row;
 	});
 	return studentInfo;
 }
