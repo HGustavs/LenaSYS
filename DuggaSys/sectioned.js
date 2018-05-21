@@ -998,7 +998,9 @@ function returnedSection(data) {
 		str += "<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFifthText'> </span>"
 		+ "<span id='deadlineInfoFifthDate' style='margin-right:5px;width:35px;'> </span> </div>"
 		str+="</div>";
+
 		str += "<div id='statisticsSwimlanes' class='statisticsInnerBox'>";
+		str += "<canvas id='swimlanes' width='400px' height='400px' style='padding:10px;'></canvas>";
 		str += "</div>";
 		str += "</div></div>"; // closing div for statisticsContent
 		str += "<div id='Sectionlistc'>";
