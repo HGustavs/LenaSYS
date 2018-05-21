@@ -388,6 +388,12 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	}
 	foreach($result as $row){
 	// Adds current student to array
+		// Gets the users groups
+		$stmt = $pdo->prepare("SELECT groupID FROM user_group WHERE userID=:uid");
+		$stmt->bindParam(":uid", $row['uid']);
+		$stmt->execute();
+		$grps = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 		array_push($examiners, $row);
 		$entry = array(
 			'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
@@ -400,7 +406,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			'examiner' => json_encode(['examiners' => $examiners]),
 			'vers' => json_encode(['vers' => $row['vers'], 'uid' => $row['uid']]),
 			'access' => json_encode(['access' => $row['access'], 'uid' => $row['uid']]),
-			'groups' => 'PLACEHOLDER',
+			'groups' => json_encode($grps),
 			'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid']])
 		);
 		array_push($entries, $entry);
