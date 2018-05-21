@@ -190,16 +190,15 @@ function createDugga() {
 	var gradesys = $("#gradesys").val();
 	var template = $("#template").val();
 	var release = $("#release").val();
-	var deadline3 = $("#deadline3").val();
-	var deadline2 = $("#deadline2").val();
 	var deadline = $("#deadline").val();
+	var jsondeadline = "{'deadline1':'"+$("#deadline").val()+"', 'comment1':'"+$("#deadlinecomments1").val()+"', 'deadline2':'"+$("#deadline2").val()+"', 'comment2':'"+$("#deadlinecomments2").val()+"', 'deadline3':'"+$("#deadline3").val()+"', 'comment3':'"+$("#deadlinecomments3").val()+"'}";
 	var cid = querystring['cid'];
 	var coursevers = querystring['coursevers'];
 	$("#editDugga").css("display", "none");
 	//$("#overlay").css("display","none");
 
 	//autograde, gradesystem, qname, quizFile, release, deadline, creator, vers
-	AJAXService("ADDUGGA", { cid: cid, autograde: autograde, gradesys: gradesys, nme: nme, template: template, release: release, deadline: deadline, deadline2: deadline2, deadline3: deadline3, coursevers: coursevers, qstart: qstart}, "DUGGA");
+	AJAXService("ADDUGGA", { cid: cid, autograde: autograde, gradesys: gradesys, nme: nme, template: template, release: release, deadline: deadline, jsondeadline: jsondeadline, coursevers: coursevers, qstart: qstart}, "DUGGA");
 }
 
 function selectDugga(qid) {
