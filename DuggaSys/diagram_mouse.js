@@ -311,9 +311,6 @@ function handleSelect() {
 function mouseupevt(ev) {
     if (uimode == "CreateFigure" && md == 4) {
         createFigure();
-        lastSelectedObject = diagram.length - 1; 
-        diagram[lastSelectedObject].targeted = true;
-        selected_objects.push(diagram[lastSelectedObject]);
         if(figureType == "Free") return;
     }
     // Code for creating a new class

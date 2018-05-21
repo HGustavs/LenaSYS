@@ -403,6 +403,8 @@ function figureFreeDraw() {
             figurePath.addsegment(1, p1, p2);
             md = 0; // To prevent selectbox spawn when clicking out of freedraw mode
             diagram.push(figurePath);
+            selected_objects.push(figurePath);
+            lastSelectedObject = diagram.length - 1;
             cleanUp();
         } else {
             // Temporary store the new line and then render it
