@@ -983,22 +983,24 @@ function returnedSection(data) {
 		str+="<canvas id='pieChart' width='250px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
 		// str+="<div><p>Swim lane description</p></div>";
 
-		str+="</div>";
-		str	+="<div id='deadlineInfoBox' style='display: inline-block;"
-			+" padding: 10px; width: 250px;'> ";
-		str +="<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>"
-		str +="<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
+		str += "</div>";
+		str	+= "<div id='deadlineInfoBox' style='display: inline-block;"
+		+ " padding: 10px; width: 250px;'> ";
+		str += "<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>"
+		str += "<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
 		+ "<span id='deadlineInfoFirstDate' style='margin-right:5px;width:35px;'></span></div>"
-		str +="<div class='deadlineInfo'><span style='width: 100%;' id='deadlineInfoSecondText'> </span>"
+		str += "<div class='deadlineInfo'><span style='width: 100%;' id='deadlineInfoSecondText'> </span>"
 		+ "<span id='deadlineInfoSecondDate' style='margin-right:5px;width: 35px;'> </span> </div>"
-		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoThirdText'> </span>"
+		str += "<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoThirdText'> </span>"
 		+ "<span id='deadlineInfoThirdDate' style='margin-right:5px;width: 35px;'> </span> </div>"
-		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFourthText'> </span>"
+		str += "<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFourthText'> </span>"
 		+ "<span id='deadlineInfoFourthDate' style='margin-right:5px;width: 35px;'> </span> </div>"
-		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFifthText'> </span>"
+		str += "<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFifthText'> </span>"
 		+ "<span id='deadlineInfoFifthDate' style='margin-right:5px;width:35px;'> </span> </div>"
 		str+="</div>";
-		str +=  "</div></div>"; // closing div for statisticsContent
+		str += "<div id='statisticsSwimlanes' class=''>";
+		str += "</div>";
+		str += "</div></div>"; // closing div for statisticsContent
 		str += "<div id='Sectionlistc'>";
 
 		// For now we only have two kinds of sections
