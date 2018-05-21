@@ -4374,6 +4374,10 @@ textarea#mrkdwntxt {
   margin-top:20px;
 }
 
+.fileLink-editor, .fileLink-trashcan{
+  text-align: center;
+}
+
 textarea#filecont{
   width: 99%;
   height: 100%;
