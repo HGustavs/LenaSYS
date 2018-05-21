@@ -539,7 +539,7 @@ function setfileCarotPosition(){
 	this.start = txtarea.selectionStart;
 	this.end = txtarea.selectionEnd;
 	this.sel = txtarea.value.substring(start,end);
-	var finText = txtarea.value.substring(0,start) + '\t' + sel + '\t' + txtarea.value.substring(end);
+	var finText = txtarea.value.substring(0,start) + '\t' + sel + txtarea.value.substring(end);
 	txtarea.value = finText;
 	txtarea.focus();
 	txtarea.selectionEnd=end+2;
