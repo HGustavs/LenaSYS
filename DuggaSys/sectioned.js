@@ -2230,12 +2230,12 @@ function drawSwimlanes(){
 		if(i % 2 == 0){
 			ctxMoments.fillStyle = 'white';
 			// 35 should be the dynamic height of the moment.
-			ctxMoments.fillRect(0, y, 100, 35);
+			ctxMoments.fillRect(0, y, swimMoments.width, 35);
 		}
 		else {
 			ctxMoments.fillStyle = colors['momentsOdd'];
 			// 35 should be the dynamic height of the moment.
-			ctxMoments.fillRect(0, y, 100, 35);
+			ctxMoments.fillRect(0, y, swimMoments.width, 35);
 		}
 		y += 35;
 	}
@@ -2265,15 +2265,13 @@ function drawSwimlanes(){
 	for(var i = 1; i < 7; i++){ // 7 should be the number of moments in the course.
 		if(i % 2 == 0){
 			ctxWeeks.fillStyle = 'white';
-			// 385 should be the dynamic width of the swimlane and
 			// 35 should be the dynamic height of the moment.
-			ctxWeeks.fillRect(0, y, 385, 35);
+			ctxWeeks.fillRect(0, y, swimWeeks.width, 35);
 		}
 		else {
 			ctxWeeks.fillStyle = colors['momentsOdd'];
-			// 385 should be the dynamic width of the swimlane and
 			// 35 should be the dynamic height of the moment.
-			ctxWeeks.fillRect(0, y, 385, 35);
+			ctxWeeks.fillRect(0, y, swimWeeks.width, 35);
 		}
 		y += 35;
 	}
