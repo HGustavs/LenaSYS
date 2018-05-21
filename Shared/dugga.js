@@ -594,7 +594,7 @@ function loginEventHandler(event){
 		if(showing == 1){
 			processLogin();
 		}else if(showing == 0){
-			resetPasswordBarrier();
+			processResetPasswordCheckUsername();
 		}else if(showing == 2){
 			enterSecurityQuestionBarrier();
 		}
@@ -631,26 +631,7 @@ function checkHTTPS() {
 	return (location.protocol == 'https:');
 }
 
-function resetPasswordBarrier() {
-	var username = $("#usernamereset").val();
-
-	$.ajax({
-		type:"POST",
-		url: "../DuggaSys/accessedservice.php",
-		data: {
-			username: username,
-			opt: "REQNEWPWD"
-		},
-		success:function(data) {
-			var result = JSON.parse(data);
-			result = result.queryResult;
-			processResetPasswordCheckUsername(result);
-		}
-	});
-}
-
-function processResetPasswordCheckUsername(result) {
-	if(result <= 5) {
+function processResetPasswordCheckUsername() {
 	//Gets the security question from the database
 	var username = $("#usernamereset").val();
 
@@ -668,7 +649,9 @@ function processResetPasswordCheckUsername(result) {
 				$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
 				status = 2;
 				toggleloginnewpass();
-			}else{
+			}else if(result['getname'] == "limit"){
+        displayAlertText("#newpassword #message2", "You have exceeded the maximum <br /> amount of tries within 5 min");
+      }else{
 				if(typeof result.reason != "undefined") {
           displayAlertText("#newpassword #message2", result.reason);
 				} else {
@@ -678,10 +661,6 @@ function processResetPasswordCheckUsername(result) {
 			}
 		}
 	});
-	}else {
-    displayAlertText("#newpassword #message2", "You have exceeded the maximum <br /> amount of tries within 5 min");
-		$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
-	}
 }
 
 function enterSecurityQuestionBarrier(){
