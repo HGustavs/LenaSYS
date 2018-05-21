@@ -119,7 +119,7 @@ pdoConnect();
 
                 <div class="markdown">
                     <fieldset id="markset">
-                        <legend>Markdown</legend>
+                        <legend>  Markdown</legend>
 
                         <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
                         <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
