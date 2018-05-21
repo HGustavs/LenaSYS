@@ -435,7 +435,7 @@ $(document).mousedown(function(e) {
 	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
 			clearTimeout(pressTimer);
 			showFilePopUp('MFILE');
-           
+
     }// Click outside the FAB list
     else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) { // if the target of the click isn't the container...
         toggleFabButton();
@@ -444,12 +444,12 @@ $(document).mousedown(function(e) {
     // If the fab list is visible, there should be no timeout to toggle the list
 	if ($('.fab-btn-list').is(':visible')) {
         //toggleFabButton();
-        
+
 	} else {
         if (e.target.id == "fabBtn") {
 			pressTimer = window.setTimeout(function() {
 				toggleFabButton();
-                
+
 			}, 500);
             return false;
 		}
@@ -463,8 +463,8 @@ $(document).mousedown(function(e) {
 			showFilePopUp('MFILE');
            return false;
     }// Click outside the FAB list
-    
-    
+
+
 });
 
 
@@ -534,4 +534,25 @@ function validatePreviewForm(){
 	}
 	return true;
 }
+function setfileCarotPosition(){
+	this.txtarea = document.getElementById("filecont");
+	this.start = txtarea.selectionStart;
+	this.end = txtarea.selectionEnd;
+	this.sel = txtarea.value.substring(start,end);
+	var finText = txtarea.value.substring(0,start) + '\t' + sel + '\t' + txtarea.value.substring(end);
+	txtarea.value = finText;
+	txtarea.focus();
+	txtarea.selectionEnd=end+2;
+	editFile(txtarea.value);
 
+}
+$(document).ready(function(){
+	$("#filecont").keydown(function(e) {
+		console.log("f: "+ e.keyCode);
+		console.log("event: " + e.which);
+		if (e.keyCode == 9){
+			e.preventDefault();
+			setfileCarotPosition();
+		}
+	});
+});

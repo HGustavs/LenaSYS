@@ -563,11 +563,18 @@ function linkText(){
     updatePreview(txtarea.value);
 }
 
-function setCarotPosition(){
+function setCarotMarkdownPosition(){
     this.txtarea = document.getElementById("mrkdwntxt");
     this.start = txtarea.selectionStart;
     this.end = txtarea.selectionEnd;
     this.sel = txtarea.value.substring(start,end);
+}
+function setcarotEditfilePosition(){
+    this.txtarea = document.getElementById("filecont");
+    this.start = txtarea.selectionStart;
+    this.end = txtarea.selectionEnd;
+    this.sel = txtarea.value.substring(start,end);
+
 }
 function externalImg(){
     this.setCarotPosition();
@@ -588,7 +595,7 @@ function quoteText(){
 }
 
 function tabKey(){
-    this.setCarotPosition();
+    this.setCarotMarkdownPosition();
     var finText = txtarea.value.substring(0,start) + '\t' + sel + '\t' + txtarea.value.substring(end);
     txtarea.value = finText;
     txtarea.focus();
