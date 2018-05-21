@@ -768,16 +768,18 @@ function returnedSection(data) {
 			numberOfParts++;
 		}
 	}
-
+		// This should be all of the required variables (except for retdata['duggor']) that we need
+		// to build the new swimlanes.
+		// I have just copy-pasted the names from the current swimlanes, they could definitely get better names.
 	console.log("coursecode: " + retdata['coursecode'])
 	console.log("coursename: " + retdata['coursename'])
-	console.log("numberofparts: " + numberOfParts);
+	console.log("numberofparts: " + numberOfParts); 		// Number of moments in the course version
 	console.log("this date: " + now.toDateString());
 	console.log("This week: " + now.getWeek());
 	console.log("versend: " + enddate.getWeek());
-	console.log("verslength: " + weeksBetween(startdate, enddate));
+	console.log("verslength: " + weeksBetween(startdate, enddate));	// This is how many weeks we want in the course
 	console.log("versstartweek: " + startdate.getWeek());
-	console.log("weekprog: " + weeksBetween(now, startdate));
+	console.log("weekprog: " + weeksBetween(now, startdate)); // weeks since the course has started, is probably used to show where we are in the course right now.
 
 
 
