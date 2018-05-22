@@ -112,6 +112,9 @@
                             <button id='drawfreebutton' onclick="setMode('Free');" class='buttonsStyle unpressed' data="Draw Free">
                                 <img src="../Shared/icons/diagram_draw_free.svg">
                             </button>
+                            <button id='drawtextbutton' onclick="setMode('Text');" class='buttonsStyle unpressed' data="Draw Text">
+                                <img src="../Shared/icons/diagram_draw_free.svg">
+                            </button>
                         </div>
                         <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
                         <div class="toolbar-drawer" id="drawerUndo" style="text-align: center">
