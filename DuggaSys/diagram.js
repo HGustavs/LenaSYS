@@ -860,6 +860,10 @@ function eraseObject(object) {
 function eraseSelectedObject() {
     canvas.style.cursor = "default";
     //Issue: Need to remove the crosses
+    if(!diagram[lastSelectedObject]){
+        showMenu().innerHTML = "No item selected<type='text'>";
+        $(".loginBox").draggable();
+    }
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].targeted == true) {
             diagram[i].targeted = false;
