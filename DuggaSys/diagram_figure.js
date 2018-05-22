@@ -32,7 +32,28 @@ function Path() {
 
     this.adjust = function(){
         if(this.figureType == "Square"){
-            
+            for(var i = 0; i < this.segments.length; i++){
+                var seg = this.segments[i];
+                if(points[seg.pa] == sel.point){
+                    if(i == 0){
+                        points[seg.pb].x = sel.point.x;
+                        points[seg.pb+1].y = sel.point.y;
+                    }
+                    else if(i == 1){
+                        points[seg.pb-1].x = sel.point.x;
+                        points[seg.pb].y = sel.point.y;
+                    }
+                    else if(i == 2){
+                        points[seg.pb].x = sel.point.x;
+                        points[seg.pb-1].y = sel.point.y;
+                    }
+                    else if(i == 3){
+                        points[seg.pb+1].x = sel.point.x;
+                        points[seg.pb].y = sel.point.y;
+                    }
+                    break;
+                }
+            }
         }
     }
 
