@@ -84,18 +84,18 @@
                         <h4 class="label tlabel" id="labelCreate">Create</h4>
                         <div class="toolbar-drawer" id="drawerCreate">
                             <div class="tooltipdialog">
-                                <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline;" class='buttonsStyle unpressed' data="Create Attribute">
+                                <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Attribute">
                                     <img id="createButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                 </button>
-                                <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline;" class='buttonsStyle unpressed' data="Create Entity">
+                                <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Entity">
                                     <img id="createButtons" src="../Shared/icons/diagram_create_entity.svg">
                                 </button>
                             </div>
                             <div class="tooltipdialog">
-                                <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline;" class='buttonsStyle unpressed' data="Create Relation">
+                                <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Relation">
                                     <img id="createButtons" src="../Shared/icons/diagram_create_relation.svg">
                                 </button>
-                                <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline;" class='buttonsStyle unpressed' data="Create Class">
+                                <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Class">
                                     <img id="createButtons" src="../Shared/icons/diagram_create_class.svg">
                                 </button>
                             </div>
