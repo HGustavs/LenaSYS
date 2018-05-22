@@ -28,6 +28,7 @@ function setup()
 function fillResponsibleOptions(responsibles)
 {
     var selectResponsibleTag = document.getElementById("addResponsible");
+    clearOptions(selectResponsibleTag); // Called in case this function is called several times.
     var formatInnerHTML = function(responsibles, i){return responsibles[i]["firstname"]+" "+responsibles[i]["lastname"]+" ("+responsibles[i]["uid"]+")";}
     var formatValue = function(responsibles, i){return responsibles[i]["uid"];}
 
@@ -43,6 +44,14 @@ function addSingleOptionToSelectTag(tag, jsonList, formatInnerHTMLFunction, form
     option.innerHTML = formatInnerHTMLFunction(jsonList, index);
     option.value = formatValueFunction(jsonList, index);
     tag.appendChild(option);
+}
+
+function clearOptions(selectTag)
+{
+    for(var i = selectTag.options.length - 1 ; i >= 0 ; i--)
+    {
+        selectTag.remove(i);
+    }
 }
 
 function hoverc()
