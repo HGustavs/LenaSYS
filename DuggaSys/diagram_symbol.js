@@ -739,7 +739,7 @@ function Symbol(kind) {
 
 
         //Highlighting points when targeted, makes it easier to resize
-        if(this.targeted){
+        if(this.targeted && this.symbolkind != 6){
             ctx.beginPath();
             ctx.arc(x1,y1,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
@@ -1156,7 +1156,7 @@ function Symbol(kind) {
 		} else if (this.symbolkind == 6) {
             svgStyle = "fill:"+this.fontColor+";font:"+font+";";
             svgPos = "x='"+(x1+((x2-x1)/2))+"' y='"+(y1+((y2-y1)/2))+"' text-anchor='middle' dominant-baseline='central'";
-            str += "<text "+svgPos+" style='"+svgStyle+"' >"+this.name+"</text>";       
+            str += "<text "+svgPos+" style='"+svgStyle+"' >"+this.name+"</text>";
         }
 		str += "</g>";
 		return str;
