@@ -389,8 +389,10 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	foreach($result as $row){
 	// Adds current student to array
 		// Gets the users groups
-		$stmt = $pdo->prepare("SELECT groupID FROM user_group WHERE userID=:uid");
+		$stmt = $pdo->prepare("SELECT user_group.groupID FROM user_group, groups WHERE userID=:uid AND groups.courseID=:cid AND groups.vers=:vers");
 		$stmt->bindParam(":uid", $row['uid']);
+		$stmt->bindParam(":vers", $row['vers']);
+		$stmt->bindParam(":cid", $cid);
 		$stmt->execute();
 		$grps = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -469,8 +471,9 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	// get all groups
-	$query = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid");
+	$query = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid AND vers=:vers");
 	$query->bindParam(':cid', $cid);
+	$query->bindParam(':vers', $coursevers);
 
 	if (!$query->execute()) {
 		$error = $query->errorInfo();
