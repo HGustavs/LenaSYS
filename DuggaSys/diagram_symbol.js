@@ -270,6 +270,11 @@ function Symbol(kind) {
             points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
             points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
             points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;*/
+        } else if (this.symbolkind == 6){
+            ctx.font = "bold " + this.getFontsize() + "px " + this.font;
+            var length = ctx.measureText(this.name).width;
+            points[this.topLeft].x = points[this.centerPoint].x - (length/2) - 10;
+            points[this.bottomRight].x = points[this.centerPoint].x + (length/2) + 10;
         }
     }
 
@@ -721,6 +726,8 @@ function Symbol(kind) {
         }
         else if(this.symbolkind == 5){
             this.drawRelation(x1, y1, x2, y2);
+        } else if (this.symbolkind == 6){
+            this.drawText();
         }
 
         ctx.restore();
@@ -968,6 +975,13 @@ function Symbol(kind) {
         }else{
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
+    }
+    this.drawText = function() {
+        var midx = points[this.centerPoint].x;
+        var midy = points[this.centerPoint].y;
+        ctx.beginPath();
+        ctx.fillStyle = this.fontColor;
+        ctx.fillText(this.name, midx, midy);
     }
     this.symbolToSVG = function(symbolID) {
 		var str = ""; // SVG string
