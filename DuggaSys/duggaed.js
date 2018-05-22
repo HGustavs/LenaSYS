@@ -742,6 +742,7 @@ function renderCell(col, celldata, cellid) {
 
 	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "arrowVariant") {
+		object = JSON.parse(celldata);
 		str = "<img id='dorf' src='../Shared/icons/PlayT.svg' ";
 		str += " onclick='getVariantPreview( " + object + ", " + clickedElement + ");'>";
 		return str;
@@ -901,7 +902,7 @@ function getVariantPreview(vid) {
 	var duggaVariantParam = target_variant['param']; // Set Variant Param
 	var duggaVariantAnswer = target_variant['variantanswer']; // Set Variant Answer
 
-
+	document.getElementById("resultpopoverTitle").innerHTML = "Previewing a variant with " + template + " template";
 	$("#MarkCont").html(duggaPages[template]);
 
 	$.getScript("templates/" + template + ".js")

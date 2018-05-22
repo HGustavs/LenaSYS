@@ -688,19 +688,6 @@ header td {
  *                                   Dialog Box                                 *
  * --------------================################================-------------- */
 
-#resultpopover {
-  position: fixed;
-  left: 16px;
-  top: 8px;
-  right: 16px;
-  bottom: 8px;
-  z-index: 9000;
-  box-shadow: 2px 2px 4px #000;
-  padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
-}
-
 #previewpopover {
   position: fixed;
   left: 8px;
@@ -780,6 +767,15 @@ header td {
   max-height: 100%;
   width: 90%;
   height: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+#resultpopoverBox{
+  max-width: 100%;
+  max-height: 100%;
+  width: 80%;
+  height: 80%;
   display: flex;
   flex-direction: column;
 }
@@ -1043,10 +1039,17 @@ input {
 }
 
 .loginBoxbody {
-
+  background-color:inherit;
 }
 
 #variantBody{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow:auto;
+}
+
+#resultpopoverBody{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -2470,14 +2473,10 @@ span.arrow {
 }
 
 .markCont {
-  position: absolute;
-  left: 4px;
-  right: 204px;
-  top: 34px;
-  bottom: 4px;
-  border: 2px inset #aaa;
-  background: #bbb;
-  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow:auto;
 }
 
 #teacherFeedbackTable {
