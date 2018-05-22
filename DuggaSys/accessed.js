@@ -20,6 +20,13 @@ function setup()
   filt+="<div id='filterOptions'></div>"
 	filt+="</div>";
 	filt+="</span></td>";
+  
+  filt+="<td id='sort' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
+  filt+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+  filt+="<div id='dropdowns' class='dropdown-list-container'>";
+  filt+="</div>";
+  filt+="</span></td>";
+  
 	$("#menuHook").html(filt);
 
   AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
@@ -51,9 +58,20 @@ function hoverc()
     $('#dropdownc').css('display','block');
 }
 
+function hovers()
+{
+  $('#dropdowns').css('display','block');
+  $('#dropdownc').css('display','none');
+}
+
 function leavec()
 {
 		$('#dropdownc').css('display','none');
+}
+
+function leaves()
+{
+		$('#dropdowns').css('display','none');
 }
 
 //----------------------------------------
