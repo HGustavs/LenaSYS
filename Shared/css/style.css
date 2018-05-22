@@ -3171,9 +3171,12 @@ ul.hamburgerList button.menuButton {
 .dateSize {
   width: 150px;
 }
+/* --------------================################================-------------- *
+  *                        FILEED TABLE STYLING                         *
+* --------------================################================-------------- */
 #fileLink_tbl{
-        width: 80%;
-        margin: auto !important;
+    width: 80%;
+    margin: auto !important;
     min-width: 1050px;
 }
 #sortingDiv{
@@ -3183,7 +3186,12 @@ ul.hamburgerList button.menuButton {
     min-width: 1050px;
 }
 .fileLink-editor, .fileLink-trashcan, .fileLink-uploaddate, .fileLink-filesize, .fileLink-kind, .fileLink-extension{
-  text-align: center;
+    text-align: center;
+}
+.fileLink-filename{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
