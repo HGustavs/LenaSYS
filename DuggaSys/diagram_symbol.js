@@ -988,7 +988,7 @@ function Symbol(kind) {
             ctx.lineWidth = 2;
             ctx.strokeColor = "F82";
             ctx.rect(x1, y1, x2-x1, y2-y1);
-            ctx.stroke();
+            ctx.setLineDash([5, 4]);
         }
 
         ctx.fillStyle = this.fontColor;
