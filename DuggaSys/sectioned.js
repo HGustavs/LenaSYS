@@ -534,6 +534,7 @@ function newItem() {
 			comment: comment
 		}, "SECTION");
 	$("#editSection").css("display", "none");
+	scrollToBottom(); // Scroll to the bottom to show newly created items.
 }
 
 function closeSelect() {
@@ -1613,8 +1614,6 @@ function returnedSection(data) {
 
 	}
 
-	scrollToBottom(); // Scroll to the bottom to show newly created items.
-
 	// The next 5 lines are related to collapsable menus and their state.
 	getHiddenElements();
 	hideCollapsedMenus();
@@ -1625,11 +1624,11 @@ function returnedSection(data) {
 	// Change title of the current page depending on which page the user is on.
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 
-	// Change the scroll position to where the user was last time.
-	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
-
 	drawPieChart(); // Create the pie chart used in the statistics section.
 	fixDeadlineInfoBoxesText();
+
+	// Change the scroll position to where the user was last time.
+	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 }
 
 function showHighscore(did, lid) {
