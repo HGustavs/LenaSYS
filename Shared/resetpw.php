@@ -53,38 +53,53 @@ if($opt=="GETQUESTION"){
 	
 	echo json_encode($res);
 
-}else if($opt=="CHECKANSWER"){	
-	$username=getOP('username');
-	$securityquestionanswer=getOP('securityquestionanswer');
-
-	pdoConnect(); // Makse sure it actually connects to a database
-
-	// Default values
-	$res = array("checkanswer" => "failed");
-
-	if(checkAnswer($username, $securityquestionanswer)){
-		$res["checkanswer"] = "success";
-		$res["username"] = $username;
-	}else{
-		$res["checkanswer"] = "failure";
-	}
-	
-	echo json_encode($res);
-
 }else if($opt=="REQUESTCHANGE"){
 	$username=getOP('username');
 
 	pdoConnect(); // Makes sure it actually connects to a database
 
-	// Default values
-	$res = array("requestchange" => "failed");
+  // Security question barrier
+  $maxQuestionTries = 5;
+  $log_db = new PDO('sqlite:../../log/loglena4.db');
+  $IP = getIP();
+  $timeInterval = 5; // in minutes
 
-	if(requestChange($username)){
-		$res["requestchange"] = "success";
-		$res["username"] = $username;
-	}else{
-		$res["requestchange"] = "failure";
-	}
+  $query = $GLOBALS['log_db']->prepare("SELECT COUNT(*) FROM userLogEntries
+    WHERE eventType = 13
+    AND uid = :user
+    AND remoteAddress = :IP
+    AND timestamp > DATETIME(DATETIME('NOW'), :timeInterval)");
+  $query->bindParam(':IP', $IP);
+  $query->bindValue(':timeInterval', '-' . $timeInterval . ' minute');
+  $query->bindParam(':user', $username);
+
+  if(!$query->execute()) {
+    $error=$query->errorInfo();
+    $debug="Error counting rows".$error[2];
+  } else {
+    $result = $query->fetch(PDO::FETCH_ASSOC);
+    $queryResult = $result['COUNT(*)'];
+  }
+  
+  
+  // CheckAnswer
+  $securityquestionanswer=getOP('securityquestionanswer');
+  
+	$res = array("requestchange" => "failed");
+  if($queryResult < $maxQuestionTries){
+    if(checkAnswer($username, $securityquestionanswer)){
+      $res["username"] = $username;
+      if(requestChange($username)){
+        $res["requestchange"] = "success";
+      }
+    }else{
+      $res["requestchange"] = "wrong";
+      logUserEvent($username,EventTypes::CheckSecQuestion,"");
+    }
+  }else{
+    $res["requestchange"] = "limit";
+  }
+	
 
 	echo json_encode($res);
 }

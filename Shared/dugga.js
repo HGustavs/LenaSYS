@@ -596,7 +596,7 @@ function loginEventHandler(event){
 		}else if(showing == 0){
 			processResetPasswordCheckUsername();
 		}else if(showing == 2){
-			enterSecurityQuestionBarrier();
+			processResetPasswordCheckSecurityAnswer();
 		}
 	}
 }
@@ -663,73 +663,32 @@ function processResetPasswordCheckUsername() {
 	});
 }
 
-function enterSecurityQuestionBarrier(){
+function processResetPasswordCheckSecurityAnswer() {
+  //Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
   var username = $("#usernamereset").val();
-
-	$.ajax({
-		type:"POST",
-		url: "../DuggaSys/accessedservice.php",
-		data: {
+  var securityquestionanswer = $("#answer").val();
+  $.ajax({
+    type:"POST",
+    url: "../Shared/resetpw.php",
+    data: {
       username: username,
-			opt: "CHECKSECURITYANSWER"
-		},
-		success:function(data) {
-			var result = JSON.parse(data);
-			result = result.queryResult;
-			processResetPasswordCheckSecurityAnswer(result);
-		}
-	});
-}
-
-function processResetPasswordCheckSecurityAnswer(result) {
-  if (result <= 5){
-    //Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
-    var username = $("#usernamereset").val();
-    var securityquestionanswer = $("#answer").val();
-
-    $.ajax({
-        type:"POST",
-        url: "../Shared/resetpw.php",
-        data: {
-          username: username,
-          securityquestionanswer: securityquestionanswer,
-          opt: "CHECKANSWER"
-        },
-        success:function(data) {
-          var result = JSON.parse(data);
-          if(result['checkanswer'] == "success") {
-            $.ajax({
-              type:"POST",
-              url: "../Shared/resetpw.php",
-              data: {
-                username: username,
-                opt: "REQUESTCHANGE"
-              },
-              success:function(data){
-                var result = JSON.parse(data);
-                if(result['requestchange'] == "success"){
-                  status = 3;
-                  toggleloginnewpass();
-                }else{
-                  $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
-                  displayAlertText("#showsecurityquestion #message3", "Something went wrong");
-                }
-              }
-            });
-          }else{
-            if(typeof result.reason != "undefined") {
-              displayAlertText("#showsecurityquestion #message3", result.reason);
-            } else {
-              //update database here.
-              displayAlertText("#showsecurityquestion #message3", "Wrong answer");
-            }
-            $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 6, 0.2)");
-        }
+      opt: "REQUESTCHANGE"
+    },
+    success:function(data){
+      var result = JSON.parse(data);
+      if(result['requestchange'] == "success"){
+        status = 3;
+        toggleloginnewpass();
+      }else if(result['requestchange'] == "limit"){
+        displayAlertText("#showsecurityquestion #message3", "You have exceeded the maximum <br /> amount of tries within 5 min");
+      }else if(result['requestchange'] == "wrong"){
+        displayAlertText("#showsecurityquestion #message3", "Wrong answer");
+      }else{
+        $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
+        displayAlertText("#showsecurityquestion #message3", "Something went wrong");
       }
-    });
-  } else {
-    displayAlertText("#showsecurityquestion #message3", "You have exceeded the maximum <br> amount of tries within 5 min");
-  }
+    }
+  });
 }
 
 function processLogin() {
