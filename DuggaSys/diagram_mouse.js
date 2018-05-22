@@ -503,13 +503,17 @@ function doubleclick(ev) {
 function createText(posX, posY) {
     var text = new Symbol(6);
     text.name = "New Text" + diagram.length;
+
+    var length  = ctx.measureText(text.name).width + 20;
+    var fontsize = text.getFontsize();
+    var height = fontsize + 20;
+
     text.fontColor = "#000000";
     text.font = "Arial";
-    ctx.font = "bold " + text.getFontsize() + "px " + text.font;
+    ctx.font = "bold " + fontsize + "px " + text.font;
 
-    var length  = ctx.measureText(text.name).width;
-    p1 = points.addPoint(posX - (length/2) - 10, posY - 10, false);
-    p2 = points.addPoint(posX + (length/2) + 10, posY + 10, false);
+    p1 = points.addPoint(posX - (length/2), posY - (height/2), false);
+    p2 = points.addPoint(posX + (length/2), posY + (height/2), false);
     p3 = points.addPoint(posX, posY, false);
 
     text.topLeft = p1;
