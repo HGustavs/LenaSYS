@@ -1625,7 +1625,6 @@ div.submit-button:disabled {
 #createButton2 {
   width: 35px;
   height: 25px;
-  margin-right: 0px;
 }
 
 .buttonsStyle img,
@@ -1635,6 +1634,19 @@ div.submit-button:disabled {
 }
 
 .buttonsStyle[data]:hover:after {
+  content: attr(data);
+  padding: 4px 8px;
+  color: #fff;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  white-space: nowrap;
+  z-index: 10;
+  border-radius: 5px;
+  background: #614875;
+}
+
+.buttonsStyle2[data]:hover:after {
   content: attr(data);
   padding: 4px 8px;
   color: #fff;
