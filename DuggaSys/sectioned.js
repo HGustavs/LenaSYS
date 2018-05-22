@@ -1012,7 +1012,7 @@ function returnedSection(data) {
 		str += "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>";
 		str += "</div>";
 		str += "<div class='nowrap' style='padding-left:5px' title='statistics'>";
-		str += "<span class='listentries-span' style='writing-mode:vertical-rl; ";
+		str += "<span class='listentries-span' style='writing-mode:vertical-rl; "
 			+ "text-orientation: upright;'>Statistics</span>";
 		str += "</div></div>";
 		str += "<div class='statisticsContent' style='display:inline-block;'>";
@@ -1021,7 +1021,7 @@ function returnedSection(data) {
 		str += "<canvas id='pieChart' width='250px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
 		str += "</div>";
 
-		str	+= "<div id='deadlineInfoBox' class='statisticsInnerBox' style='display:inline-block;";
+		str	+= "<div id='deadlineInfoBox' class='statisticsInnerBox' style='display:inline-block;"
 			+ "padding:10px; width:250px;'>";
 		str += "<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>";
 		str += "<div class='deadlineInfo'><span style='width:100%;'id='deadlineInfoFirstText'></span>";
@@ -2178,12 +2178,12 @@ function drawSwimlanes(){
 	var ctxWeeks = swimWeeks.getContext('2d');
 
 	var colors = {
-    'passedQuizes': '#00E676',        // Green
-    'notGradedQuizes': '#FFEB3B',     // Yellow
-    'failedQuizes': '#E53935',        // Red
-    'notSubmittedQuizes': '#BDBDBD',  // Dark grey
-		'weeksOdd': '#8a7a9a',						// Purple
-		'momentsOdd': '#ededed'						// Light gray
+    'passedQuizes': '#00E676',			// Green
+    'notGradedQuizes': '#FFEB3B',		// Yellow
+    'failedQuizes': '#E53935',			// Red
+    'notSubmittedQuizes': '#BDBDBD',	// Dark grey
+	'weeksOdd': '#8a7a9a',				// Purple
+	'momentsOdd': '#ededed'				// Light gray
   }
 
 	swimMoments.width = 100;
