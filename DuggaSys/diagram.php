@@ -185,6 +185,16 @@
                         <div class="drop-down-item">
                             <a href="#" onclick='globalAppearanceMenu();'>Global Appearance</a>
                         </div>
+                        <div class="drop-down-divider">
+                        </div>
+                         <div class="drop-down-item">
+                            <a href="#" onclick='openAppearanceDialogMenu();'>Change Appearance</a>
+                        </div>
+                        <div class="drop-down-divider">
+                        </div>
+                         <div class="drop-down-item">
+                            <a href="#" onclick='eraseSelectedObject();'>Delete Object</a>
+                        </div>
                     </div>
                 </div>
                 <div class="menu-drop-down">
@@ -257,8 +267,6 @@
 
             <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
             <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
-            <button onclick='openAppearanceDialogMenu();'>Change Appearance</button>
-            <button onclick='eraseSelectedObject();'>Delete Object</button>
             <div class="tooltipdialog">
                 <button id='moveButton' class='unpressed' title="Move Around" style="visibility:hidden">
                     <img src="../Shared/icons/diagram_move_arrows.svg">
