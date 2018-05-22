@@ -1167,9 +1167,12 @@ function Symbol(kind) {
 			}
 			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
 		} else if (this.symbolkind == 6) {
+            var midx = points[this.centerPoint].x;
             svgStyle = "fill:"+this.fontColor+";font:"+font+";";
-            svgPos = "x='"+(x1+((x2-x1)/2))+"' y='"+(y1+((y2-y1)/2))+"' text-anchor='middle' dominant-baseline='central'";
-            str += "<text "+svgPos+" style='"+svgStyle+"' >"+this.name+"</text>";
+            for (var i = 0; i < this.textLines.length; i++) {
+                svgPos = "x='"+midx+"' y='"+(y1+(fontsize*1.7)/2+(fontsize*i))+"' text-anchor='middle' dominant-baseline='central'";
+                str += "<text "+svgPos+" style='"+svgStyle+"' >"+this.textLines[i].text+"</text>";
+            }
         }
 		str += "</g>";
 		return str;
