@@ -310,6 +310,8 @@ function handleSelect() {
                 selected_objects.splice(index, 1);
             }
             last.targeted = false;
+            //when deselecting object, set lastSelectedObject to index of last object in selected_objects
+            lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length-1]);
         }
     }
 }
