@@ -1155,7 +1155,11 @@ function Symbol(kind) {
 				svgPos = "x='"+(x1+((x2-x1)*0.5))+"' y='"+(y1+((y2-y1)*0.5))+"' text-anchor='middle' dominant-baseline='central'";
 			}
 			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
-		}
+		} else if (this.symbolkind == 6) {
+            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            svgPos = "x='"+(x1+((x2-x1)/2))+"' y='"+(y1+((y2-y1)/2))+"' text-anchor='middle' dominant-baseline='central'";
+            str += "<text "+svgPos+" style='"+svgStyle+"' >"+this.name+"</text>";       
+        }
 		str += "</g>";
 		return str;
 	}
