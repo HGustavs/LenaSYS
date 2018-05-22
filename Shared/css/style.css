@@ -1634,6 +1634,11 @@ div.submit-button:disabled {
   border-radius: 0px;
 }
 
+#createButtons {
+  width: 35px;
+  height: 25px;
+}
+
 #moveButton img {
   height: 30px;
   width: 30px;
