@@ -14,6 +14,8 @@ function openAppearanceDialogMenu() {
     /*
      * Opens the dialog menu for appearance.
      */
+
+    $(".loginBox").draggable();
     var form = showMenu();
     appearanceMenuOpen = true;
     objectAppearanceMenu(form);
