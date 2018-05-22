@@ -32,7 +32,7 @@ function Path() {
 
     this.adjust = function(){
         if(this.figureType == "Square"){
-            if(!sel.point) return;
+            if(!sel) return;
             for(var i = 0; i < this.segments.length; i++){
                 var seg = this.segments[i];
                 if(points[seg.pa] == sel.point){
