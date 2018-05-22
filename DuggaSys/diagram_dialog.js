@@ -155,6 +155,23 @@ function loadUMLForm(element, dir){
   }
   file.send();
 }
+//Loads the appearance menu for text
+function loadTextForm(element, dir){
+  var file = new XMLHttpRequest();
+  file.open('GET', dir);
+  file.onreadystatechange = function(){
+    if(file.readyState === 4){
+      element.innerHTML = file.responseText;
+      if(globalAppearanceValue == 0){
+        document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+        setSelectedOption('font', diagram[lastSelectedObject].font);
+        setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
+        setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+      }
+    }
+  }
+  file.send();
+}
 
 function setSelectedOption(type, value){
   if(type != null){
@@ -209,6 +226,9 @@ function objectAppearanceMenu(form) {
     if (diagram[lastSelectedObject].symbolkind == 5) {
         loadFormIntoElement(form, 'forms/relation_appearance.php');
     }
+    if (diagram[lastSelectedObject].symbolkind == 6) {
+        loadTextForm(form, 'forms/text_appearance.php');
+    }
     if (diagram[lastSelectedObject].kind == 1) {
         loadFormIntoElement(form, 'forms/figure_appearance.php');
     }
@@ -237,6 +257,11 @@ function changeObjectAppearance(object_type){
     } else if (diagram[lastSelectedObject].kind == 1){
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].strokeColor = document.getElementById('figureLineColor').value;
+    } else if (diagram[lastSelectedObject].symbolkind == 6) {
+        diagram[lastSelectedObject].name = document.getElementById('nametext').value;
+        diagram[lastSelectedObject].fontColor = document.getElementById('fontColor').value;
+        diagram[lastSelectedObject].font = document.getElementById('font').value;
+        diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
     } else {
         diagram[lastSelectedObject].symbolColor = document.getElementById('symbolColor').value;
         diagram[lastSelectedObject].name = document.getElementById('nametext').value;

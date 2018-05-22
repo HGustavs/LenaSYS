@@ -270,6 +270,17 @@ function Symbol(kind) {
             points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
             points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
             points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;*/
+        } else if (this.symbolkind == 6){
+            var fontsize = this.getFontsize();
+            ctx.font = "bold " + fontsize + "px " + this.font;
+            var length = ctx.measureText(this.name).width + 20;
+            var height = fontsize + 20;
+
+            points[this.bottomRight].x = points[this.topLeft].x + length;
+            points[this.bottomRight].y = points[this.topLeft].y + height;
+
+            points[this.centerPoint].x = x1 + hw;
+            points[this.centerPoint].y = y1 + hh;
         }
     }
 
@@ -514,7 +525,7 @@ function Symbol(kind) {
             if (this.symbolkind == 1) {
                 points[this.middleDivider].x += movex;
                 points[this.middleDivider].y += movey;
-            } else if (this.symbolkind == 2 || this.symbolkind == 5 || this.symbolkind == 3) {
+            } else if (this.symbolkind == 2 || this.symbolkind == 5 || this.symbolkind == 3 || this.symbolkind == 6) {
                 points[this.centerPoint].x += movex;
                 points[this.centerPoint].y += movey;
             } /*else if (this.symbolkind == 3) {
@@ -719,6 +730,8 @@ function Symbol(kind) {
         }
         else if(this.symbolkind == 5){
             this.drawRelation(x1, y1, x2, y2);
+        } else if (this.symbolkind == 6){
+            this.drawText(x1, y1, x2, y2);
         }
 
         ctx.restore();
@@ -967,6 +980,20 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
+    this.drawText = function(x1, y1, x2, y2) {
+        var midx = x1 + ((x2-x1)/2);
+        var midy = y1 + ((y2-y1)/2);
+        ctx.beginPath();
+        if (this.targeted || this.isHovered) {
+            ctx.lineWidth = 2;
+            ctx.strokeColor = "F82";
+            ctx.rect(x1, y1, x2-x1, y2-y1);
+            ctx.stroke();
+        }
+
+        ctx.fillStyle = this.fontColor;
+        ctx.fillText(this.name, midx, midy);
+    }
     this.symbolToSVG = function(symbolID) {
 		var str = ""; // SVG string
 		// Get points
@@ -1126,7 +1153,11 @@ function Symbol(kind) {
 				svgPos = "x='"+(x1+((x2-x1)*0.5))+"' y='"+(y1+((y2-y1)*0.5))+"' text-anchor='middle' dominant-baseline='central'";
 			}
 			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
-		}
+		} else if (this.symbolkind == 6) {
+            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            svgPos = "x='"+(x1+((x2-x1)/2))+"' y='"+(y1+((y2-y1)/2))+"' text-anchor='middle' dominant-baseline='central'";
+            str += "<text "+svgPos+" style='"+svgStyle+"' >"+this.name+"</text>";       
+        }
 		str += "</g>";
 		return str;
 	}
