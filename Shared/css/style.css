@@ -1609,9 +1609,9 @@ div.submit-button:disabled {
 
 .buttonsStyle2 {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row;
+  /*justify-content: center;
+  align-items: center;*/
   border-radius: 8px;
   margin: 5px auto;
 }
