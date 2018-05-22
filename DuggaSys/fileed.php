@@ -131,7 +131,7 @@ pdoConnect();
                         <span id="img" onclick="externalImg()" title="Img"><img id="insert-photo" class="fab-icon"
                                                                                 src="../Shared/icons/insert-photo.svg"></span>
                         <span class="headerType" title="Header">aA&#9663;</span>
-                        <div id="select-header">
+                        <div class="selectHeader" id="select-header">
                             <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
                             <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
                             <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
