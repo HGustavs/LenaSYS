@@ -3189,11 +3189,11 @@ ul.hamburgerList button.menuButton {
     text-align: center;
 }
 .filename-wrapper{
-    width:100%;
     display: block;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    width:100%;
 }
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
