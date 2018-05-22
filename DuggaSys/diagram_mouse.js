@@ -267,6 +267,7 @@ function mousedownevt(ev) {
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
             }
+            lastSelectedObject = -1;
             selected_objects = [];
         }
         if(uimode == "CreateFigure" && figureType == "Square"){
