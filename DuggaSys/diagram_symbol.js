@@ -12,6 +12,7 @@ function Symbol(kind) {
     this.symbolkind = kind;         // Symbol kind (1 UML diagram symbol 2 ER Attribute)
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
+    this.textLines = [];                 // Free text array
     this.textsize = 14;             // 14 pixels text size is default
     this.symbolColor = '#ffffff';   // change background colors on entities
     this.strokeColor = '#000000';   // change standard line color
@@ -273,8 +274,16 @@ function Symbol(kind) {
         } else if (this.symbolkind == 6){
             var fontsize = this.getFontsize();
             ctx.font = "bold " + fontsize + "px " + this.font;
-            var length = ctx.measureText(this.name).width + 20;
-            var height = fontsize + 20;
+
+            var longestStr = "";
+            for (var i = 0; i < this.textLines.length; i++) {
+                if (this.textLines[i].text.length > longestStr.length) {
+                    longestStr = this.textLines[i].text;
+                }
+            }
+
+            var length = ctx.measureText(longestStr).width + 20;
+            var height = (this.textLines.length * fontsize) + fontsize;
 
             points[this.bottomRight].x = points[this.topLeft].x + length;
             points[this.bottomRight].y = points[this.topLeft].y + height;
@@ -990,10 +999,14 @@ function Symbol(kind) {
             ctx.rect(x1, y1, x2-x1, y2-y1);
             ctx.stroke();
         }
+        this.textsize = this.getFontsize();
 
         ctx.fillStyle = this.fontColor;
-        ctx.fillText(this.name, midx, midy);
+        for (var i = 0; i < this.textLines.length; i++) {
+            ctx.fillText(this.textLines[i].text, midx, y1 + (this.textsize * 1.7) / 2 + (this.textsize * i));
+        }
     }
+
     this.symbolToSVG = function(symbolID) {
 		var str = ""; // SVG string
 		// Get points

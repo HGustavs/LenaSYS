@@ -505,6 +505,7 @@ function doubleclick(ev) {
 function createText(posX, posY) {
     var text = new Symbol(6);
     text.name = "New Text" + diagram.length;
+    text.textLines.push({text:text.name});
 
     var length  = ctx.measureText(text.name).width + 20;
     var fontsize = text.getFontsize();
