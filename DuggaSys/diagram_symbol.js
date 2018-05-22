@@ -986,8 +986,10 @@ function Symbol(kind) {
         ctx.beginPath();
         if (this.targeted || this.isHovered) {
             ctx.lineWidth = 2;
-            ctx.rect(x1, y1, x2-x1, y2-y1);
             ctx.setLineDash([5, 4]);
+            ctx.strokeColor = "F82";
+            ctx.rect(x1, y1, x2-x1, y2-y1);
+            ctx.stroke();
         }
 
         ctx.fillStyle = this.fontColor;
