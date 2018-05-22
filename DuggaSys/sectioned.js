@@ -1044,7 +1044,7 @@ function returnedSection(data) {
 		str += "<div style='display: inline-block;'>";
 		str += "<canvas id='swimlanesMoments' style='padding:10px;'></canvas>";
 		str += "</div>";
-		str += "<div style='width: 385px; overflow-x: auto; white-space: nowrap; display: inline-block; margin: 10px 10px 10px -10px'>";
+		str += "<div style='width: 350px; overflow-x: auto; white-space: nowrap; display: inline-block; margin: 10px 10px 10px -10px'>";
 		str += "<canvas id='swimlanesWeeks'></canvas>";
 		str += "</div>";
 		str += "</div>";
@@ -2181,14 +2181,16 @@ function drawSwimlanes(){
 	var ctxMoments = swimMoments.getContext('2d');
 	var ctxWeeks = swimWeeks.getContext('2d');
 
+
+
 	var colors = {
-    'passedQuizes': '#00E676',        // Green
-    'notGradedQuizes': '#FFEB3B',     // Yellow
-    'failedQuizes': '#E53935',        // Red
-    'notSubmittedQuizes': '#BDBDBD',  // Dark grey
-		'weeksOdd': '#8a7a9a',						// Purple
-		'momentsOdd': '#ededed'						// Light gray
-  }
+    'passedQuizes': '#00E676',        	// Green
+    'notGradedQuizes': '#FFEB3B',     	// Yellow
+    'failedQuizes': '#E53935',        	// Red
+    'notSubmittedQuizes': '#BDBDBD',  	// Dark grey
+	'weeksOdd': '#8a7a9a',				// Purple
+	'momentsOdd': '#ededed'				// Light gray
+ 	}
 
 	swimMoments.width = 100;
 	swimMoments.height = 270;	// Should be dynamic depending on how many moments there are and a moments size is depending on how many tests there are in a momeent.
@@ -2199,13 +2201,23 @@ function drawSwimlanes(){
 	var enddate = new Date(retdata['enddate']);
 	var weekLength = weeksBetween(startdate, enddate);
 
+	var widthVar = 35;
+	var momentWidth = [];
+	var momentList = [];
 	var numberOfMoments = 0;
 	for(var i = 0; i < retdata['entries'].length; i++){
 		var item = retdata['entries'][i];
 		if(item['kind'] == 4){
+			momentWidth.push(widthVar);
+			widthVar = 35;
+			momentList.push(item);
 			numberOfMoments++;
+
+		}else{
+			widthVar += 35;
 		}
 	}
+
 
 
 
@@ -2233,21 +2245,24 @@ function drawSwimlanes(){
 	ctxMoments.fillText('Weeks', 50, 20);
 	ctxMoments.fillText('Moments', 10, 50);
 
-
-
 	// Prints out the moment rows to the swimlane table.
 	var y = 60;
 	for(var i = 1; i < numberOfMoments + 1; i++){ // 7 should be the number of moments in the course.
+		var test = momentWidth[i-1];
+		console.log(test);
 		if(i % 2 == 0){
 			ctxMoments.fillStyle = 'white';
 			// 35 should be the dynamic height of the moment.
-			ctxMoments.fillRect(0, y, swimMoments.width, 35);
+			ctxMoments.fillRect(0, y, swimMoments.width, test);
 		}
 		else {
 			ctxMoments.fillStyle = colors['momentsOdd'];
 			// 35 should be the dynamic height of the moment.
-			ctxMoments.fillRect(0, y, swimMoments.width, 35);
+			ctxMoments.fillRect(0, y, swimMoments.width, test);
 		}
+
+		ctxMoments.fillStyle = 'black';
+		ctxMoments.fillText(momentList[i-1]['entryname'], 10, y+20);
 		y += 35;
 	}
 
