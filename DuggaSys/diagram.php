@@ -178,19 +178,15 @@
                         <div class="drop-down-divider">
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick='lockSelected()'>Lock/Unlock selected</a>
-                        </div>
-                        <div class="drop-down-divider">
-                        </div>
-                        <div class="drop-down-item">
                             <a href="#" onclick='globalAppearanceMenu();'>Global Appearance</a>
-                        </div>
-                        <div class="drop-down-divider">
                         </div>
                          <div class="drop-down-item">
                             <a href="#" onclick='openAppearanceDialogMenu();'>Change Appearance</a>
                         </div>
                         <div class="drop-down-divider">
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick='lockSelected()'>Lock/Unlock selected</a>
                         </div>
                          <div class="drop-down-item">
                             <a href="#" onclick='eraseSelectedObject();'>Delete Object</a>
