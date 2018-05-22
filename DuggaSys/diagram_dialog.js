@@ -59,7 +59,6 @@ function clickEnterOnDialogMenu(ev) {
         if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen) {
             globalAppearanceValue = 0;
             closeAppearanceDialogMenu();
-
             // Is called in the separate appearance php-files at the buttons.
             // Called here since an enter press doesn't relate to any element
             changeObjectAppearance();
@@ -85,7 +84,7 @@ function loadFormIntoElement(element, dir){
 
     if(file.readyState === 4){
       element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0){
+      if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 2){
         document.getElementById('nametext').value = diagram[lastSelectedObject].name;
         setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
         setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
@@ -93,6 +92,10 @@ function loadFormIntoElement(element, dir){
         setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
         setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
         setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
+      }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1){
+        setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
+        setSelectedOption('figureLineColor',  diagram[lastSelectedObject].strokeColor);
+      
       }
     }
   }

@@ -12,8 +12,8 @@ function Path() {
     this.intarr = Array();          // Intersection list (one list per segment)
     this.tmplist = Array();         // Temporary list for testing of intersections
     this.auxlist = Array();         // Auxillary temp list for testing of intersections
-    this.fillColor = "#fff";        // Fill color (default is white)
-    this.strokeColor = "#000";      // Stroke color (default is black)
+    this.fillColor = '#ffffff';        // Fill color (default is white)
+    this.strokeColor = '#000000';      // Stroke color (default is black)
     this.Opacity = 1;               // Opacity (default is 100%)
     this.lineWidth = 2;             // Line Width (stroke width - default is 2 pixels)
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
