@@ -147,6 +147,9 @@ function Path() {
                 if(shouldFill) ctx.fill();
                 ctx.restore();
             }
+            // Reset opacity so that following draw operations are unaffected
+            ctx.globalAlpha = 1.0;
+            
             if (strokestate) {
                 ctx.stroke();
             }
@@ -166,8 +169,6 @@ function Path() {
                     ctx.fill();
                 }
             }
-            // Reset opacity so that following draw operations are unaffected
-            ctx.globalAlpha = 1.0;
         }
     }
 
