@@ -3176,13 +3176,42 @@ ul.hamburgerList button.menuButton {
 .dateSize {
   width: 150px;
 }
-
+/* --------------================################================-------------- *
+  *                        FILEED TABLE STYLING                         *
+* --------------================################================-------------- */
+#fileLink_tbl{
+    width: 80%;
+    margin: auto !important;
+    min-width: 1050px;
+}
+#sortingDiv{
+    height: 40px;
+    width: 80%;
+    margin: auto;
+    min-width: 1050px;
+}
+.fileLink-editor, .fileLink-trashcan, .fileLink-uploaddate, .fileLink-filesize, .fileLink-kind, .fileLink-extension{
+    text-align: center;
+}
+.fileLink-editor, .fileLink-trashcan{
+    width:25px;
+}
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
      #sortingBar {
         width: 135px;
         position: relative;
         top: 10px;
+    }
+    #sortingDiv{
+        width: 100%;
+        margin:0;
+        min-width: 0px;
+    }
+    #fileLink_tbl{
+        margin: 0 !important;
+        width: 100%;
+        min-width: 0px;
     }
   /* moment date and course version */
   .dateField {
@@ -3284,7 +3313,9 @@ only screen and (max-device-width: 768px) {
     font-size: 16px;
     color: #000;
 }
-
+.fileLink-editor, .fileLink-trashcan{
+    width:initial;
+}
     /* Force table to not be like tables anymore */
     #fileLink_body{
 		display: block;
@@ -4353,10 +4384,6 @@ textarea#mrkdwntxt {
   height: 100%;
   margin-left: -9px;
   margin-top:20px;
-}
-
-.fileLink-editor, .fileLink-trashcan{
-  text-align: center;
 }
 
 textarea#filecont{
