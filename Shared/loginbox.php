@@ -81,7 +81,7 @@
 		<div id='showsecurityquestion' class='showsecurityquestion' style="display:none">
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
-				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
+				<div class="cursorPointer" onclick="closeWindows();resetLoginStatus()" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
 				<table class="loginBoxTable">
