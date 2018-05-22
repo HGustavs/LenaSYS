@@ -187,6 +187,9 @@ function objectAppearanceMenu(form) {
     */
 
     form.innerHTML = "No item selected<type='text'>";
+    //if no item has been selected
+    if(!diagram[lastSelectedObject]){ return;}
+
     if (diagram[lastSelectedObject].symbolkind == 1) {
         classAppearanceOpen = true;
         loadUMLForm(form, 'forms/class_appearance.php?');
