@@ -148,7 +148,7 @@ pdoConnect();
                 </div>
 
                 <div class="markdownPrev">
-                    <fieldset id="markPrevSet"><legend>Markdown preview</legend>
+                    <fieldset id="markPrevSet"><legend id="markPrev">Markdown preview</legend>
                     <div class="markTextPrev">
                         <div class="prevSpan">
                             <div class="descbox">
