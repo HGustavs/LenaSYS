@@ -372,7 +372,7 @@ function returnedCourse(data)
 			if (data['writeaccess']) {
         		str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Course coordinator]'>" + courseBegin + courseEnd + "</a></div>";
         		str += "<span style='margin-bottom: 15px'>";
-				str += "<span><img id='dorf' style='position: absolute; right: 15px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" [" + item['activeversion'] + "]'></span>";
+				str += "<span><img id='dorf' style='position: relative; top: 10px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" [" + item['activeversion'] + "]'></span>";
         		str += "</span>";
       		} else {
         		str += "<div class='ellipsis' style='margin-right:15px;'>";
