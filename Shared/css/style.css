@@ -1613,6 +1613,12 @@ div.submit-button:disabled {
   height: 40px;
 }
 
+.buttonsStyle img,
+#createButton img {
+  width: 35px;
+  height: 25px;
+}
+
 .buttonsStyle[data]:hover:after {
   content: attr(data);
   padding: 4px 8px;
