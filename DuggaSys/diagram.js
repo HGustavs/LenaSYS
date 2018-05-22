@@ -875,7 +875,7 @@ function eraseSelectedObject() {
 function setMode(mode){ //"CreateClass" yet to be implemented in .php
     canvas.style.cursor = "default";
     uimode = mode;
-    if(mode == 'Square' || mode == 'Free' || mode = == 'Text') {
+    if(mode == 'Square' || mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
       figureType = mode;
     }
