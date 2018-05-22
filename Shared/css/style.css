@@ -1613,13 +1613,19 @@ div.submit-button:disabled {
   /*justify-content: center;
   align-items: center;*/
   border-radius: 8px;
-  margin: 5px auto;
+  /*margin: 5px auto;*/
 }
 
 .buttonsStyle2 img,
 #createButton img {
   width: 35px;
   height: 25px;
+}
+
+#createButton2 {
+  width: 35px;
+  height: 25px;
+  margin-right: 0px;
 }
 
 .buttonsStyle img,
