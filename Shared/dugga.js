@@ -676,7 +676,6 @@ function processResetPasswordCheckSecurityAnswer() {
     },
     success:function(data){
       var result = JSON.parse(data);
-      console.log(result['requestchange']);
       if(result['requestchange'] == "success"){
         status = 3;
         toggleloginnewpass();
