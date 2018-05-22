@@ -370,16 +370,18 @@ function renderCell(col,celldata,cellid) {
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
 		return str;
 	}else if(col == "class"){
-    obj=JSON.parse(celldata);
-    var items = new Array();
-		// Every user doesn't have a class
-		items.push("null");
-    for(var i = 0; i < filez['classes'].length; i++){
-      items.push(filez['classes'][i]['class']);
-    }
-    str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
-    str += "<div style='display:none;'>" + obj.class + "</div>";
-		return str;
+	    obj=JSON.parse(celldata);
+	    var items = new Array();
+	    // Every user doesn't have a class
+	    items.push("null");
+	    for(var i = 0; i < filez['classes'].length; i++){
+		items.push(filez['classes'][i]['class']);
+	    }
+	    var selectedItem = obj.class;
+	    str = makeClassDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value,\""+selectedItem+"\");", items, items, selectedItem);
+	    //str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
+	    str += "<div style='display:none;'>" + obj.class + "</div>";
+	    return str;
 	} else if(col == "groups") {
 		var groups = filez['groups'];
 
