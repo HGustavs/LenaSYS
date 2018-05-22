@@ -35,6 +35,7 @@ function setup()
 function fillResponsibleOptions(responsibles)
 {
     var selectResponsibleTag = document.getElementById("addResponsible");
+    clearOptions(selectResponsibleTag); // Called in case this function is called several times.
     var formatInnerHTML = function(responsibles, i){return responsibles[i]["firstname"]+" "+responsibles[i]["lastname"]+" ("+responsibles[i]["uid"]+")";}
     var formatValue = function(responsibles, i){return responsibles[i]["uid"];}
 
@@ -50,6 +51,14 @@ function addSingleOptionToSelectTag(tag, jsonList, formatInnerHTMLFunction, form
     option.innerHTML = formatInnerHTMLFunction(jsonList, index);
     option.value = formatValueFunction(jsonList, index);
     tag.appendChild(option);
+}
+
+function clearOptions(selectTag)
+{
+    for(var i = selectTag.options.length - 1 ; i >= 0 ; i--)
+    {
+        selectTag.remove(i);
+    }
 }
 
 function hoverc()
@@ -388,16 +397,18 @@ function renderCell(col,celldata,cellid) {
 		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
 		return str;
 	}else if(col == "class"){
-    obj=JSON.parse(celldata);
-    var items = new Array();
-		// Every user doesn't have a class
-		items.push("null");
-    for(var i = 0; i < filez['classes'].length; i++){
-      items.push(filez['classes'][i]['class']);
-    }
-    str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
-    str += "<div style='display:none;'>" + obj.class + "</div>";
-		return str;
+	    obj=JSON.parse(celldata);
+	    var items = new Array();
+	    // Every user doesn't have a class
+	    items.push("null");
+	    for(var i = 0; i < filez['classes'].length; i++){
+		items.push(filez['classes'][i]['class']);
+	    }
+	    var selectedItem = obj.class;
+	    str = makeClassDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value,\""+selectedItem+"\");", items, items, selectedItem);
+	    //str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
+	    str += "<div style='display:none;'>" + obj.class + "</div>";
+	    return str;
 	} else if(col == "groups") {
 		var groups = filez['groups'];
 
