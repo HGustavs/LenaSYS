@@ -213,7 +213,7 @@ function renderCell(col,celldata,cellid) {
 			return "<a href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
 		} else {
 
-			return "<span id='openFile' class='filename-wrapper' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+obj.filename+"\")'>" + obj.shortfilename + "</span>";
+			return "<span id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+obj.filename+"\")'>" + obj.shortfilename + "</span>";
 		}
 	} else if (col == "filesize") {
         var obj = JSON.parse(celldata);

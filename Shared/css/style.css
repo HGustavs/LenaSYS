@@ -3188,13 +3188,7 @@ ul.hamburgerList button.menuButton {
 .fileLink-editor, .fileLink-trashcan, .fileLink-uploaddate, .fileLink-filesize, .fileLink-kind, .fileLink-extension{
     text-align: center;
 }
-.filename-wrapper{
-    display: block;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    width:100%;
-}
+
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
      #sortingBar {
