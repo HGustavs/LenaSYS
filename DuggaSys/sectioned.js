@@ -2193,23 +2193,32 @@ function drawSwimlanes(){
 	swimMoments.width = 100;
 	swimMoments.height = 270;	// Should be dynamic depending on how many moments there are and a moments size is depending on how many tests there are in a momeent.
 
-	swimWeeks.width = 500;	// Depends on how many weeks a course is, weeks*35px (one day is 5px).
+	swimWeeks.width = 350;	// Depends on how many weeks a course is, weeks*35px (one day is 5px).
 	swimWeeks.height = 270;	// Depends on the height needed for the swimMoments.
+	var startdate = new Date(retdata['startdate']);
+	var enddate = new Date(retdata['enddate']);
+	var weekLength = weeksBetween(startdate, enddate);
 
-	/*if(){ // Dynamic height depending on number of moments
-		swimMoments.height = ;
-		swimWeeks.height = ;
+	var numberOfMoments = 0;
+	for(var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		if(item['kind'] == 4){
+			numberOfMoments++;
+		}
 	}
-	else {
 
+
+
+
+
+	if(numberOfMoments != 0){ // Dynamic height depending on number of moments
+		swimMoments.height = 60 + (35 * numberOfMoments); // 60 is height of the weeks/moment thingy
+		swimWeeks.height = swimMoments.height;
 	}
 
-	if(){ // Dynamic width, depending on number of weeks
-		swimWeeks.width = ;
+	if(weekLength != 0){ // Dynamic width, depending on number of weeks
+		swimWeeks.width = weekLength * 35;
 	}
-	else {
-
-	}*/
 
 	ctxMoments.fillStyle = 'white';
 	ctxMoments.fillRect(0, 0, 100, 60);
@@ -2224,9 +2233,11 @@ function drawSwimlanes(){
 	ctxMoments.fillText('Weeks', 50, 20);
 	ctxMoments.fillText('Moments', 10, 50);
 
+
+
 	// Prints out the moment rows to the swimlane table.
 	var y = 60;
-	for(var i = 1; i < 7; i++){ // 7 should be the number of moments in the course.
+	for(var i = 1; i < numberOfMoments + 1; i++){ // 7 should be the number of moments in the course.
 		if(i % 2 == 0){
 			ctxMoments.fillStyle = 'white';
 			// 35 should be the dynamic height of the moment.
@@ -2240,9 +2251,25 @@ function drawSwimlanes(){
 		y += 35;
 	}
 
+	// Prints out the moment rows for the tests in the swimlane table.
+	y = 60;
+	for(var i = 1; i < numberOfMoments + 1; i++){ // 7 should be the number of moments in the course.
+		if(i % 2 == 0){
+			ctxWeeks.fillStyle = 'white';
+			// 35 should be the dynamic height of the moment.
+			ctxWeeks.fillRect(0, y, swimWeeks.width, 35);
+		}
+		else {
+			ctxWeeks.fillStyle = colors['momentsOdd'];
+			// 35 should be the dynamic height of the moment.
+			ctxWeeks.fillRect(0, y, swimWeeks.width, 35);
+		}
+		y += 35;
+	}
+
 	// Prints out the week columns to the swimlane table.
 	var x = 0;
-	for(var i = 1; i < 12; i++){ // 12 should be the weeks of the course.
+	for(var i = 1; i < weekLength + 1; i++){ // 12 should be the weeks of the course.
 		if(i % 2 == 0){
 			ctxWeeks.fillStyle = 'white';
 			ctxWeeks.fillRect(x, 0, 35, 60);
@@ -2260,30 +2287,14 @@ function drawSwimlanes(){
 		x += 35;
 	}
 
-	// Prints out the moment rows for the tests in the swimlane table.
-	y = 60;
-	for(var i = 1; i < 7; i++){ // 7 should be the number of moments in the course.
-		if(i % 2 == 0){
-			ctxWeeks.fillStyle = 'white';
-			// 35 should be the dynamic height of the moment.
-			ctxWeeks.fillRect(0, y, swimWeeks.width, 35);
-		}
-		else {
-			ctxWeeks.fillStyle = colors['momentsOdd'];
-			// 35 should be the dynamic height of the moment.
-			ctxWeeks.fillRect(0, y, swimWeeks.width, 35);
-		}
-		y += 35;
-	}
-
 	ctxMoments.moveTo(99, 60);
 	ctxMoments.strokeStyle = colors['notSubmittedQuizes'];
-	ctxMoments.lineTo(99, 270); // 270 should be the dynamic height of the canvas
+	ctxMoments.lineTo(99, swimMoments.height); // 270 should be the dynamic height of the canvas
 	ctxMoments.stroke();
 
 	ctxWeeks.moveTo(0, 60);
 	ctxWeeks.strokeStyle = colors['notSubmittedQuizes'];
-	ctxWeeks.lineTo(385, 60); // 385 should be the dynamic height of the canvas
+	ctxWeeks.lineTo(swimWeeks.width, 60); // 385 should be the dynamic height of the canvas
 	ctxWeeks.stroke();
 }
 
