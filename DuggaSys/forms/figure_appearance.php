@@ -1,5 +1,7 @@
 Fill color:<br>
 <select onchange="changeObjectAppearance('figureType');" id='figureFillColor'>
+    <option value='noFill'>No Fill</option>
+    <option value='opacity'>Opacity</option>
     <option value='#ccefff'>Blue</option>
     <option value='#ddffee'>Green</option>
     <option value='#e6e6e6'>Grey</option>

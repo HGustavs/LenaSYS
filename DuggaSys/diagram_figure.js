@@ -112,6 +112,12 @@ function Path() {
         }
         if (this.segments.length > 0) {
             // Assign stroke style, color, transparency etc
+            var shouldFill = true;
+
+            if(this.fillColor == "noFill"){
+              shouldFill = false;
+            }
+
             ctx.strokeStyle = this.targeted ? "#F82" : this.strokeColor;
             ctx.fillStyle = this.fillColor;
             ctx.globalAlpha = this.Opacity;
@@ -138,7 +144,7 @@ function Path() {
                 ctx.shadowOffsetX = 3;
                 ctx.shadowOffsetY = 6;
                 ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
-                ctx.fill();
+                if(shouldFill) ctx.fill();
                 ctx.restore();
             }
             if (strokestate) {
