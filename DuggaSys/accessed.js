@@ -386,11 +386,17 @@ function renderCell(col,celldata,cellid) {
 		return str;
 	} else if(col == "groups") {
 		var groups = filez['groups'];
+		var userGroups = celldata ? JSON.parse(celldata) : "";
 
 		str = '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
 		str += '<select><option>Välj grupper</option></select><div class="overSelect"></div></div><div id="checkboxes">';
+
 		groups.forEach(group => {
-			str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'" onclick="changeGroup('+obj.uid+','+group.groupID+')"/>'+group.groupName+'</label>';
+			if (userGroups.length && checkUserGroup(group.groupID, userGroups)) {
+				str += '<label><input type="checkbox" checked name="'+group.groupID+'" id="'+group.groupID+'" onclick="changeGroup('+obj.uid+','+group.groupID+')"/>'+group.groupName+'</label>';
+			} else {
+				str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'" onclick="changeGroup('+obj.uid+','+group.groupID+')"/>'+group.groupName+'</label>';
+			}
 		});
 		str += '</div></div>';
 		return str;
@@ -400,10 +406,20 @@ function renderCell(col,celldata,cellid) {
     return celldata;
 }
 
+// Check if the user exist in the group
+function checkUserGroup(grpID, usrGrp) {
+	for(var i = 0; i < usrGrp.length; i++) {
+		if (usrGrp[i].groupID == grpID) {
+			return true;
+		}
+	}
+	return false;
+}
+
 function makeDropdown(onChange, values, items, selected){
     str = "<select id='testId' onChange='"+onChange+"' onclick='return false;'>";
     for(var i = 0; i < values.length; i++){
-	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
+		str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
     }
     str+="</select>";
     return str;
