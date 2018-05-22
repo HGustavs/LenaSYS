@@ -12,7 +12,7 @@ Fill color:<br>
     <option value='#000000'>Black</option>
 </select><br>
 Opacity:<br>
-<input type="range" id="figureOpacity" onchange="changeObjectAppearance('figureType');"><br>
+<input type="range" id="figureOpacity" onchange="changeObjectAppearance('figureType');" style="width:100%; margin: -2px; padding: 0px;"><br>
 Line color:<br>
 <select onchange="changeObjectAppearance('figureType');" id='figureLineColor'>
     <option value='#ccefff'>Blue</option>
