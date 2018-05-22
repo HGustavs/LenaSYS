@@ -437,9 +437,7 @@ diagram.draw = function() {
 //--------------------------------------------------------------------
 diagram.adjustPoints = function() {
     for (var i = 0 ; i < this.length; i++) {
-        if (this[i].kind == 2) {
-            this[i].adjust();
-        }
+        this[i].adjust();
     }
 }
 
