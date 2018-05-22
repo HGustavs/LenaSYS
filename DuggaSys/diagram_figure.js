@@ -18,7 +18,7 @@ function Path() {
     this.lineWidth = 2;             // Line Width (stroke width - default is 2 pixels)
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
     this.targeted = true;                    // An organized path can contain several sub-path, each of which must be organized
-
+    this.figureType = "Square";
     //--------------------------------------------------------------------
     // Performs a delta-move on all points in a path
     //--------------------------------------------------------------------
@@ -28,6 +28,12 @@ function Path() {
             points[this.segments[i].pa].y += movey;
         }
         this.calculateBoundingBox();
+    }
+
+    this.adjust = function(){
+        if(this.figureType == "Square"){
+            
+        }
     }
 
     //--------------------------------------------------------------------
@@ -442,6 +448,7 @@ function figureFreeDraw() {
             figurePath.addsegment(1, p1, p2);
             md = 0; // To prevent selectbox spawn when clicking out of freedraw mode
             diagram.push(figurePath);
+            figurePath.figureType = "Free";
             selected_objects.push(figurePath);
             lastSelectedObject = diagram.length - 1;
             cleanUp();
