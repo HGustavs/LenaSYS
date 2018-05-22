@@ -201,12 +201,17 @@ pdoConnect();
   	<!-- Edit Variant Dialog END -->
 
   	<!-- Result Dialog START -->
-  	<div id='resultpopover' class='resultPopover' style='display:none'>
-  		<div class='loginBoxheader'>
-  			<div class='cursorPointer' onclick="closePreview();">x</div>
-  		</div>
-  		<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"></div>
-  	</div>
+    <div id='resultpopover' class='loginBoxContainer' style='display:none; overflow:hidden;'>
+      <div class='loginBox' id='resultpopoverBox' style='overflow:auto;';>
+        <div class='loginBoxheader'>
+          <h3 id="resultpopoverTitle">PREVIEW</h3>
+          <div class='cursorPointer' onclick='closePreview();'>x</div>
+        </div>
+
+        <div class='loginBoxbody' id='MarkCont' style='width:100%; height:100%;'>
+        </div>
+  	 </div>
+    </div>
 	<!-- Result Dialog END -->
 
 </body>
