@@ -95,12 +95,12 @@
                             </div>
                             <div class="tooltipdialog">
                                 <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle2 unpressed' data="Create Relation">
-                                    <img id="createButton" src="../Shared/icons/diagram_create_relation.svg">
+                                    <img id="createButton2" src="../Shared/icons/diagram_create_relation.svg">
                                 </button>
                             </div>
                             <div class="tooltipdialog">
                                 <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle2 unpressed' data="Create Class">
-                                    <img id="createButton" src="../Shared/icons/diagram_create_class.svg">
+                                    <img id="createButton2" src="../Shared/icons/diagram_create_class.svg">
                                 </button>
                             </div>
                         </div>
