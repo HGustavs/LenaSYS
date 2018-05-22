@@ -87,7 +87,7 @@ if(checklogin()){
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
-			}else {
+			} else {
 				// Add default groups
 				$defaultGroups = array(
 					"I", "II", "III", "IV", "V", "VI", "VII", "VIII",
@@ -362,7 +362,31 @@ if(checklogin()){
               $error=$query->errorInfo();
               $debug="Error updating entries".$error[2];
             }
-        }
+		}
+		
+			// Create groups when copying
+
+			// Add default groups
+			$defaultGroups = array(
+				"I", "II", "III", "IV", "V", "VI", "VII", "VIII",
+				"1", "2", "3", "4", "5", "6", "7", "8",
+				"A", "B", "C", "D", "E", "F", "G", "H",
+			);
+			
+
+			foreach($defaultGroups as $group) {
+				$stmt = $pdo->prepare("INSERT INTO groups(courseID, vers, groupName) VALUES(:courseID, :vers, :groupName)");
+				
+				$stmt->bindParam(':courseID', $cid);
+				$stmt->bindParam(':vers', $versid);
+				$stmt->bindParam(':groupName', $group);
+
+				if (!$stmt->execute()) {
+					$error = $stmt->errorInfo();
+					$debug = "Error adding groups " . $error[2];
+				}
+			}
+
 
 			}else if(strcmp($opt,"UPDATE")===0){
 			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
