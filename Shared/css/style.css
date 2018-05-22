@@ -1608,15 +1608,15 @@ div.submit-button:disabled {
 }
 
 .buttonsStyle img,
-#moveButton img {
-  width: 50px;
-  height: 40px;
-}
-
-.buttonsStyle img,
 #createButton img {
   width: 35px;
   height: 25px;
+}
+
+.buttonsStyle img,
+#moveButton img {
+  width: 50px;
+  height: 40px;
 }
 
 .buttonsStyle[data]:hover:after {
