@@ -966,7 +966,7 @@ function returnedSection(data) {
 		str += "<div id='courseList'>";
 		str += "<!-- Statistics List -->"
 		+ "<div id='statisticsList'>"
-		+ "<div id='statistics' class='statistics' style='display: inline-block; cursor: pointer;'>"
+		+ "<div id='statistics' class='statistics noselect' style='display: inline-block; cursor: pointer;'>"
 		+ "<div style='margin: 10px;'>"
 		+ "<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>"
 		+ "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>"
