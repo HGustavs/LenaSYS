@@ -103,7 +103,7 @@
 					</tr>
 					<tr class="loginboxTr">
 						<td>
-							<input type='button' class='buttonLoginBox' onclick="enterSecurityQuestionBarrier();" value='Check answer' style='margin-top: 10px;' title='Check answer'>
+							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckSecurityAnswer();" value='Check answer' style='margin-top: 10px;' title='Check answer'>
 						</td>
 					</tr>
 
