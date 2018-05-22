@@ -102,7 +102,7 @@ function clickedInternal(event,clickdobj) {
 		popoverelement.style.left = Math.round(lmnt.left+xscroll)+"px";
 		popoverelement.style.top = Math.round(lmnt.top+yscroll)+"px";
 		popoverelement.style.minHeight = (Math.round(lmnt.height)-5)+"px";
-		popoverelement.style.maxWidth = (Math.round(lmnt.width)+0)+"px";
+		popoverelement.style.maxWidth = "fit-content";
 		popoverelement.style.display = "flex";
 	}
 }
@@ -221,7 +221,7 @@ function SortableTable(tbl,tableid,filterid,caption,renderCell,renderSortOptions
 		var filterstr = "";
 		for (var colname in tbl.tblhead) {
 				var col = tbl.tblhead[colname];
-				if (isFirstVisit || typeof columnfilter[colname] == "undefined") {
+				if (isFirstVisit) {
 					//columnfilter.push(col);
 					columnfilter[colname] = tbl.tblhead[colname];
 				}
