@@ -1637,7 +1637,7 @@ div.submit-button:disabled {
 #createButtons {
   width: 35px;
   height: 25px;
-  display: inline;
+  display: inline !important;
 }
 
 #moveButton img {
