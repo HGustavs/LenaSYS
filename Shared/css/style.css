@@ -3188,7 +3188,9 @@ ul.hamburgerList button.menuButton {
 .fileLink-editor, .fileLink-trashcan, .fileLink-uploaddate, .fileLink-filesize, .fileLink-kind, .fileLink-extension{
     text-align: center;
 }
-
+.fileLink-editor, .fileLink-trashcan{
+    width:25px;
+}
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
      #sortingBar {
@@ -3306,7 +3308,9 @@ only screen and (max-device-width: 768px) {
     font-size: 16px;
     color: #000;
 }
-
+.fileLink-editor, .fileLink-trashcan{
+    width:initial;
+}
     /* Force table to not be like tables anymore */
     #fileLink_body{
 		display: block;
