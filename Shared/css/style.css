@@ -4113,7 +4113,7 @@ textarea#mrkdwntxt {
   cursor: pointer;
   color: #000;
   font-size: 13px;
-  padding: 5px 5px 5px 5px;
+  padding: 5px 7px 0px 3px;
   background-color: #fff;
 }
 
@@ -4125,7 +4125,7 @@ textarea#mrkdwntxt {
   cursor: pointer;
   color: #000;
   font-size: 12px;
-  padding: 5px 5px 5px 9px;
+  padding: 5px 11px 5px 3px;
   background-color: #fff;
 }
 
@@ -4137,7 +4137,7 @@ textarea#mrkdwntxt {
   cursor: pointer;
   color: #000;
   font-size: 11px;
-  padding: 8px 5px 5px 13px;
+  padding: 5px 15px 5px 3px;
   background-color: #fff;
 }
 
@@ -4148,7 +4148,7 @@ textarea#mrkdwntxt {
   cursor: pointer;
   color: #000;
   font-size: 10px;
-  padding: 8px 5px 5px 13px;
+  padding: 5px 19px 5px 3px;
   background-color: #fff;
 }
 
@@ -4161,7 +4161,7 @@ textarea#mrkdwntxt {
   cursor: pointer;
   color: #000;
   font-size: 9px;
-  padding: 8px 5px 5px 13px;
+  padding: 5px 23px 5px 3px;
   background-color: #fff;
 }
 
@@ -4173,7 +4173,7 @@ textarea#mrkdwntxt {
   cursor: pointer;
   color: #000;
   font-size: 8px;
-  padding: 8px 5px 5px 13px;
+  padding: 5px 27px 6px 3px;
   background-color: #fff;
 }
 
