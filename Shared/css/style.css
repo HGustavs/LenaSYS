@@ -3188,7 +3188,8 @@ ul.hamburgerList button.menuButton {
 .fileLink-editor, .fileLink-trashcan, .fileLink-uploaddate, .fileLink-filesize, .fileLink-kind, .fileLink-extension{
     text-align: center;
 }
-.fileLink-filename{
+.filename-wrapper{
+    width:100%;
     display: block;
     overflow: hidden;
     white-space: nowrap;
