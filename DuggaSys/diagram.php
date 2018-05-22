@@ -84,23 +84,23 @@
                         <h4 class="label tlabel" id="labelCreate">Create</h4>
                         <div class="toolbar-drawer" id="drawerCreate">
                             <div class="tooltipdialog">
-                                <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle2 unpressed' data="Create Attribute">
-                                    <img id="createButton" src="../Shared/icons/diagram_create_attribute.svg">
+                                <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute">
+                                    <img src="../Shared/icons/diagram_create_attribute.svg">
                                 </button>
                             </div>
                             <div class="tooltipdialog">
-                                <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle2 unpressed' data="Create Entity">
-                                    <img id="createButton" src="../Shared/icons/diagram_create_entity.svg">
+                                <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle unpressed' data="Create Entity">
+                                    <img src="../Shared/icons/diagram_create_entity.svg">
                                 </button>
                             </div>
                             <div class="tooltipdialog">
-                                <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle2 unpressed' data="Create Relation">
-                                    <img id="createButton2" src="../Shared/icons/diagram_create_relation.svg">
+                                <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed' data="Create Relation">
+                                    <img src="../Shared/icons/diagram_create_relation.svg">
                                 </button>
                             </div>
                             <div class="tooltipdialog">
-                                <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle2 unpressed' data="Create Class">
-                                    <img id="createButton2" src="../Shared/icons/diagram_create_class.svg">
+                                <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle unpressed' data="Create Class">
+                                    <img src="../Shared/icons/diagram_create_class.svg">
                                 </button>
                             </div>
                         </div>
