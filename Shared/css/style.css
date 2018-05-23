@@ -4016,8 +4016,7 @@ li:nth-last-child(10) a:hover {
   height: 30px;
   color: #fff;
   cursor: pointer;
-  margin-top: 3px;
-  margin-bottom: 30px;
+  margin-top: auto;
   margin-right: 3%;
   font-size: 14px;
   transition: 1s background-color;
@@ -4117,7 +4116,7 @@ textarea#mrkdwntxt {
   margin-left: 9.75%;
   font-size: 12px;
   position: absolute;
-  margin-top: -3px;
+  margin-top: -0.3%;
 }
 #codeBlockText {
     cursor: pointer;
