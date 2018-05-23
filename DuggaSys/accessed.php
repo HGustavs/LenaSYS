@@ -28,7 +28,7 @@
 	?>
 
 	<!-- content START -->
-		<div id="wrappall" style="border-top:0px;display:table; table-layout:auto;">
+		<div id="wrappall" style="border-top:0px;display:table; table-layout:auto;padding:0px 10px 0px 10px;border:none;width:auto;">
 		<div id="newbutton">
 			<?php
 				echo "<div class='titles' style='position:sticky;top:50px;z-index:100;background:#ffffff;padding-top:20px;padding-bottom:20px;margin-top:0px;'>";
