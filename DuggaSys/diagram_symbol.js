@@ -1006,12 +1006,8 @@ function Symbol(kind) {
         ctx.fillStyle = this.fontColor;
         ctx.textAlign = this.textAlign;
 
-        var textX = 0;
-        if (this.textAlign == "start") textX = x1 + 10;
-        else if (this.textAlign == "end") textX = x2 - 10;
-        else textX = midx; 
         for (var i = 0; i < this.textLines.length; i++) {
-            ctx.fillText(this.textLines[i].text, textX, y1 + (this.textsize * 1.7) / 2 + (this.textsize * i));
+            ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.textsize * 1.7) / 2 + (this.textsize * i));
         }
     }
 
@@ -1177,14 +1173,24 @@ function Symbol(kind) {
 		} else if (this.symbolkind == 6) {
             var midx = points[this.centerPoint].x;
             svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            var textAlignment = this.textAlign;
+            if (this.textAlign == "center") textAlignment = "middle";
             for (var i = 0; i < this.textLines.length; i++) {
-                svgPos = "x='"+midx+"' y='"+(y1+(fontsize*1.7)/2+(fontsize*i))+"' text-anchor='middle' dominant-baseline='central'";
+                svgPos = "x='"+this.getTextX(x1, midx, x2)+"' y='"+(y1+(fontsize*1.7)/2+(fontsize*i))+"' text-anchor='"+textAlignment+"' dominant-baseline='central'";
                 str += "<text "+svgPos+" style='"+svgStyle+"' >"+this.textLines[i].text+"</text>";
             }
         }
 		str += "</g>";
 		return str;
 	}
+
+    this.getTextX = function(x1, midX, x2) {
+        var textX = 0;
+        if (this.textAlign == "start") textX = x1 + 10;
+        else if (this.textAlign == "end") textX = x2 - 10;
+        else textX = midX; 
+        return textX;
+    }
 
     this.ovalToSVG = function(x1, y1, x2, y2, style, lineDash) {
         var middleX = x1 + ((x2 - x1) * 0.5);
