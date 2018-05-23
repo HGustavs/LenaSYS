@@ -2038,10 +2038,10 @@ function drawPieChart() {
                           radians in a circle, i.e. start at 12 o'clock */
   var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
   var colors = {
-    'passedQuizes': '#00E676',        // Green
-    'notGradedQuizes': '#FFEB3B',     // Yellow
-    'failedQuizes': '#E53935',        // Red
-    'notSubmittedQuizes': '#BDBDBD'   // Grey
+    'passedQuizes': '#00B33C',        // Green
+	'notGradedQuizes': '#FFE81A',     // Yellow
+	'failedQuizes': '#E53935',        // Red
+	'notSubmittedQuizes': '#BDBDBD'   // Grey
   }
 
   for (var i = 0; i < testsData.length; i++) {
