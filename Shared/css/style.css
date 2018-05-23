@@ -1639,6 +1639,12 @@ div.submit-button:disabled {
   height: 25px;
 }
 
+#textButton {
+  width: 35px;
+  height: 22px;
+  margin-top: 3px;
+}
+
 #moveButton img {
   height: 30px;
   width: 30px;
