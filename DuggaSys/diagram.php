@@ -85,28 +85,28 @@
                         <div class="toolbar-drawer" id="drawerCreate">
                             <div class="tooltipdialog">
                                 <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Attribute">
-                                    <img class="createButtons" src="../Shared/icons/diagram_create_attribute.svg">
+                                    <img id="createButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                 </button>
                                 <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Entity">
-                                    <img class="createButtons" src="../Shared/icons/diagram_create_entity.svg">
+                                    <img id="createButtons" src="../Shared/icons/diagram_create_entity.svg">
                                 </button>
                             </div>
                             <div class="tooltipdialog">
                                 <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Relation">
-                                    <img class="createButtons" src="../Shared/icons/diagram_create_relation.svg">
+                                    <img id="createButtons" src="../Shared/icons/diagram_create_relation.svg">
                                 </button>
                                 <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Class">
-                                    <img class="createButtons" src="../Shared/icons/diagram_create_class.svg">
+                                    <img id="createButtons" src="../Shared/icons/diagram_create_class.svg">
                                 </button>
                             </div>
                         </div>
                         <h4 class="label tlabel" id="labelDraw">Draw</h4>
                         <div class="toolbar-drawer" id="drawerDraw">
                             <button id='squarebutton' onclick="setMode('Square');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Square">
-                                <img class="createButtons" src="../Shared/icons/diagram_draw_square.svg">
+                                <img id="createButtons" src="../Shared/icons/diagram_draw_square.svg">
                             </button>
                             <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Free">
-                                <img class="createButtons" src="../Shared/icons/diagram_draw_free.svg">
+                                <img id="createButtons" src="../Shared/icons/diagram_draw_free.svg">
                             </button>
                         </div>
                         <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
