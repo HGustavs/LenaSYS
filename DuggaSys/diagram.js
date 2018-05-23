@@ -865,10 +865,7 @@ function eraseSelectedObject() {
         $(".loginBox").draggable();
     }
     for(var i = 0; i < selected_objects.length; i++){
-        if(selected_objects[i].targeted){
-            selected_objects[i].targeted = false;
-            eraseObject(selected_objects[i]);
-        }
+        eraseObject(selected_objects[i]);
     }
     selected_objects = [];
     lastSelectedObject = -1;
