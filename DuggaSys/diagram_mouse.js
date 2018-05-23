@@ -315,6 +315,9 @@ function handleSelect() {
 
 function mouseupevt(ev) {
     if (uimode == "CreateFigure" && md == 4) {
+        if(figureType == "Text"){
+            createText(currentMouseCoordinateX, currentMouseCoordinateY);
+        }
         createFigure();
         if(figureType == "Free") return;
     }
