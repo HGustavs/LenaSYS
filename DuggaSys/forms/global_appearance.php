@@ -9,13 +9,13 @@ Font family:<br>
 Font color:<br>
 <select id ='fontColor' onchange='globalFontColor(); hashFunction(); updateGraphics();'>
     <option value='' selected> - Choose text color - </option>
-    <option value='#ccefff'>Blue</option>
-    <option value='#ddffee'>Green</option>
+    <option value='#64B5F6'>Blue</option>
+    <option value='#81C784'>Green</option>
     <option value='#e6e6e6'>Grey</option>
-    <option value='#ff9999'>Red</option>
-    <option value='#ffffcc'>Yellow</option>
-    <option value='#ffe0cc'>Orange</option>
-    <option value='#ffccff'>Purple</option>
+    <option value='#E57373'>Red</option>
+    <option value='#FFF176'>Yellow</option>
+    <option value='#FFB74D'>Orange</option>
+    <option value='#BA68C8'>Purple</option>
     <option value='#ffffff'>White</option>
     <option value='#000000'>Black</option>
 </select><br>
@@ -30,26 +30,26 @@ Text size:<br>
 Fill color:<br>
 <select onchange="globalFillColor(); hashFunction(); updateGraphics();" id='FillColor'>
     <option value='' selected> - Choose symbol color - </option>
-    <option value='#ccefff'>Blue</option>
-    <option value='#ddffee'>Green</option>
+    <option value='#64B5F6'>Blue</option>
+    <option value='#81C784'>Green</option>
     <option value='#e6e6e6'>Grey</option>
-    <option value='#ff9999'>Red</option>
-    <option value='#ffffcc'>Yellow</option>
-    <option value='#ffe0cc'>Orange</option>
-    <option value='#ffccff'>Purple</option>
+    <option value='#E57373'>Red</option>
+    <option value='#FFF176'>Yellow</option>
+    <option value='#FFB74D'>Orange</option>
+    <option value='#BA68C8'>Purple</option>
     <option value='#ffffff'>White</option>
     <option value='#000000'>Black</option>
 </select><br>
 Stroke color:<br>
 <select onchange="globalStrokeColor(); hashFunction(); updateGraphics();" id='StrokeColor'>
     <option value='' selected> - Choose line color - </option>
-    <option value='#ccefff'>Blue</option>
-    <option value='#ddffee'>Green</option>
+    <option value='#64B5F6'>Blue</option>
+    <option value='#81C784'>Green</option>
     <option value='#e6e6e6'>Grey</option>
-    <option value='#ff9999'>Red</option>
-    <option value='#ffffcc'>Yellow</option>
-    <option value='#ffe0cc'>Orange</option>
-    <option value='#ffccff'>Purple</option>
+    <option value='#E57373'>Red</option>
+    <option value='#FFF176'>Yellow</option>
+    <option value='#FFB74D'>Orange</option>
+    <option value='#BA68C8'>Purple</option>
     <option value='#ffffff'>White</option>
     <option value='#000000'>Black</option>
 </select><br>
