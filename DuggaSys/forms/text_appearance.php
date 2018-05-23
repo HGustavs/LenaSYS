@@ -19,6 +19,12 @@ Font color:<br>
     <option value='#ffffff'>White</option>
     <option value='#000000' selected="true">Black</option>
 </select><br>
+Text alignment:<br>
+<select onchange="changeObjectAppearance('textType');" id="textAlign">
+    <option value="start">Left</option>
+    <option value="center" selected="true">Center</option>
+    <option value="end">Right</option>
+</select>
 Text size:<br>
 <select onchange="changeObjectAppearance('textType');" id='TextSize'>
     "<option value='Tiny' selected="true">Tiny</option>

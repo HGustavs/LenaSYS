@@ -22,6 +22,7 @@ function Symbol(kind) {
     this.name = "New Class";        // Default name is new class
     this.key_type = "normal";       // Defult key tyoe for a class.
     this.sizeOftext = "Tiny";       // Used to set size of text.
+    this.textAlign = "center";      // Used to change alignment of free text
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point

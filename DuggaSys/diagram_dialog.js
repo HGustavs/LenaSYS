@@ -174,6 +174,7 @@ function loadTextForm(element, dir){
         textarea.value = text;
         setSelectedOption('font', diagram[lastSelectedObject].font);
         setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
+        setSelectedOption('textAlign', diagram[lastSelectedObject].textAlign);
         setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
       }
     }
