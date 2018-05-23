@@ -29,6 +29,8 @@ var versions;
 var timeZero=new Date(0);
 var duggaArray = [[]];
 var filterList;
+var tableName = "resultTable";
+var tableCellName = "resultTableCell";
 
 function setup(){
   //Benchmarking function
@@ -642,7 +644,7 @@ function createSortableTable(data){
 
 	myTable = new SortableTable(
 		tabledata,
-		"resultTable",
+		tableName,
 		"columnfilter",
 		"",
 		renderCell,
@@ -654,12 +656,12 @@ function createSortableTable(data){
 		"",
 		null,
 		null,
-		rowHighlightOn,
-		rowHighlightOff,
+		highlightOn,
+		highlightOff,
 		null,
 		null,
-	    true,
-	    true
+		true,
+		true
 	);
 	myTable.renderTable();
 
@@ -671,13 +673,15 @@ function renderCell(col,celldata,cellid) {
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
 		if (col == "FnameLnameSSN"){
-			str = "<div class='dugga-result-div'>";
-				str += celldata.firstname + " " + celldata.lastname;
-    	str += "</div>"
-    	return str;
-  	} else {
+			str = "<div style='height:25px;' class='dugga-result-div resultTableCell'>";
+				str += "<div class='resultTableText'>";
+					str += celldata.firstname + " " + celldata.lastname;
+				str += "</div>";
+			str += "</div>";
+			return str;
+		} else {
 			// color based on pass,fail,pending,assigned,unassigned
-			str = "<div style='height:25px;' class='";
+			str = "<div style='height:25px;' class='resultTableCell ";
 				if(celldata.kind==4) { str += "dugga-moment "; }
 				if (celldata.grade === 1) {str += "dugga-fail";}
 				else if (celldata.grade > 1) {str += "dugga-pass";}
@@ -686,74 +690,78 @@ function renderCell(col,celldata,cellid) {
 				else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
 				else {str += "dugga-unassigned";}
 			str += "'>";
-			str += "</div>"
+			str += "</div>";
 			return str;
-  	}
+		}
 	}
 
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
-  if (col == "FnameLnameSSN"){
-    str = celldata.grade;
-    return str;
+	if (col == "FnameLnameSSN"){
+		str = "<div class='resultTableCell' style='height:80px;'>";
+			str += "<div class='resultTableText'>";
+				str += celldata.grade;
+			str += "</div>";
+		str += "</div>";
+		return str;
 
-  } else {
-    // color based on pass,fail,pending,assigned,unassigned
-    str = "<div style='height:80px;' class='";
-      if(celldata.kind==4) { str += "dugga-moment "; }
-      if (celldata.grade === 1) {str += "dugga-fail";}
-      else if (celldata.grade > 1) {str += "dugga-pass";}
-      else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
-      else if (celldata.kind != 4 && celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
-      else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
-      else {str += "dugga-unassigned";}
-    str += "'>";
+	} else {
+		// color based on pass,fail,pending,assigned,unassigned
+		str = "<div style='height:80px;' class='resultTableCell ";
+			if(celldata.kind==4) { str += "dugga-moment "; }
+			if (celldata.grade === 1) {str += "dugga-fail";}
+			else if (celldata.grade > 1) {str += "dugga-pass";}
+			else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
+			else if (celldata.kind != 4 && celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
+			else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
+			else {str += "dugga-unassigned";}
+		str += "'>";
 
-    // Creation of grading buttons
-    if(celldata.ishere===true){
-      str += "<div class='gradeContainer'>";
-        if (celldata.grade === null ) {
-          str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
-        } else if (celldata.grade === -1 ) {
-          str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
-        } else {
-          str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
-        }
-        str += "<img id='korf' class='fist gradeImg";
-          if(celldata.userAnswer===null && !(celldata.quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
-            str += " grading-hidden";
-          }
-          str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
-        str += "/>";
-      str += "</div>"
+		// Creation of grading buttons
+		if(celldata.ishere===true){
+			str += "<div class='gradeContainer resultTableText'>";
+				if (celldata.grade === null ) {
+					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+				} else if (celldata.grade === -1 ) {
+					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+				} else {
+					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+				}
+				str += "<img id='korf' class='fist gradeImg";
+					if(celldata.userAnswer===null && !(celldata.quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
+						str += " grading-hidden";
+					}
+					str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
+				str += "/>";
+			str += "</div>";
 
-      // Print submitted time and change color to red if passed deadline
-      str += "<div class='text-center'"
-        for (var p = 0; p < moments.length; p++){
-          if (moments[p].link == celldata.quizId){
-            if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)){
-              str += " style='color:red;'";
-            }
-            break;
-          }
-        }
-        str += ">";
-        if (celldata.submitted.getTime() !== timeZero.getTime()){
-          str += celldata.submitted.toLocaleDateString()+ " " + celldata.submitted.toLocaleTimeString();
-        }
-      str += "</div>";
+			// Print submitted time and change color to red if passed deadline
+			str += "<div class='text-center resultTableText'";
+				for (var p = 0; p < moments.length; p++){
+					if (moments[p].link == celldata.quizId){
+						if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)){
+							str += " style='color:red;'";
+						}
+						break;
+					}
+				}
+				str += ">";
+				if (celldata.submitted.getTime() !== timeZero.getTime()){
+					str += celldata.submitted.toLocaleDateString()+ " " + celldata.submitted.toLocaleTimeString();
+				}
+			str += "</div>";
 
-      // Print times graded
-      str += "<div class='text-center'>";
-        if(celldata.ishere===true && celldata.timesGraded!==0){
-          str += "Times Graded: " + celldata.timesGraded;
-        }
-      str += "</div>"
-    }
-    str += "</div>"
-    return str;
-  }
-return celldata;
+			// Print times graded
+			str += "<div class='text-center'>";
+				if(celldata.ishere===true && celldata.timesGraded!==0){
+					str += "Times Graded: " + celldata.timesGraded;
+				}
+			str += "</div>";
+		}
+		str += "</div>";
+		return str;
+	}
+	return celldata;
 }
 
 //--------------------------------------------------------------------------
@@ -762,24 +770,72 @@ return celldata;
 //  Callback function that highlights the currently hovered row
 //--------------------------------------------------------------------------
 
-function rowHighlightOn(rowid,rowno,colclass,centerel) {
-  var row = document.getElementById(rowid);
-  row.classList.add("tableRowHighlightning");
-  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
-  for(var i=0;i<collist.length;i++){
-    collist[i].classList.add("tableColHighlightning");
-  }
-  centerel.classList.add("tableCellHighlightning");
+function highlightOn(rowid,rowno,colclass,centerel) {
+	var tableCounter = tableName + "_counter";
+	
+	//row highlights
+	var row = document.getElementById(rowid).getElementsByTagName("td");
+	for (var i = 0; i < row.length; i++) {
+			//find the div contained in the cell
+			if(!row[i].classList.contains(tableCounter)) {
+				rowId = row[i].getElementsByClassName(tableCellName)[0];
+			}else {
+				rowId = row[i];
+			}
+			rowId.classList.add("tableRowHighlightning");
+	}
+	
+	//column highlights
+	var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+	for(var i=0;i<collist.length;i++){
+		if(!collist[i].classList.contains(tableCounter)) {
+			var column = collist[i].getElementsByClassName(tableCellName)[0];
+		}else{
+			var column = collist[i];
+		}
+		column.classList.add("tableColHighlightning");
+	}
+	
+	//cell highlight
+	if(!centerel.classList.contains(tableCounter)) {
+		centerel.getElementsByClassName(tableCellName)[0].classList.add("tableCellHighlightning");
+	}else{
+		centerel.classList.add("tableCellHighlightning");
+	}
 }
 
-function rowHighlightOff(rowid,rowno,colclass,centerel) {
-  var row = document.getElementById(rowid);
-  row.classList.remove("tableRowHighlightning");
-  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
-  for(var i=0;i<collist.length;i++){
-    collist[i].classList.remove("tableColHighlightning");
-  }
-  centerel.classList.remove("tableCellHighlightning");
+function highlightOff(rowid,rowno,colclass,centerel) {
+	var tableCounter = tableName + "_counter";
+	
+	//row highlight
+	var row = document.getElementById(rowid).getElementsByTagName("td");
+	for (var i = 0; i < row.length; i++) {
+		//find the div contained in the cell
+		if(!row[i].classList.contains(tableCounter)) {
+				rowId = row[i].getElementsByClassName(tableCellName)[0];
+		}else {
+			rowId = row[i];
+		}
+		rowId.classList.remove("tableRowHighlightning");
+	}
+
+	//column highlights
+	var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+	for(var i=0;i<collist.length;i++){
+		if(!collist[i].classList.contains(tableCounter)) {
+			var column = collist[i].getElementsByClassName(tableCellName)[0];
+		}else{
+			column = collist[i];
+		}
+		column.classList.remove("tableColHighlightning");
+	}
+
+	//cell highlight
+	if(!centerel.classList.contains(tableCounter)) {
+		centerel.getElementsByClassName(tableCellName)[0].classList.remove("tableCellHighlightning");
+	}else{
+		centerel.classList.remove("tableCellHighlightning");
+	}
 }
 
 //----------------------------------------------------------------
