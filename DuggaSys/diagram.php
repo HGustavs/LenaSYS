@@ -113,7 +113,7 @@
                                 <img src="../Shared/icons/diagram_draw_free.svg">
                             </button>
                             <button id='drawtextbutton' onclick="setMode('Text');" class='buttonsStyle unpressed' data="Draw Text">
-                                <img src="../Shared/icons/diagram_draw_free.svg">
+                                <img src="../Shared/icons/textbox.svg">
                             </button>
                         </div>
                         <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
