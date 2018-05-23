@@ -473,8 +473,6 @@ function confirmBox(operation, item, type) {
 			deleteVariant(itemToDelete);
 			$("#sectionConfirmBox").css("display", "none");
 		}
-	} else if (operation == "closeConfirmBox") {
-		$("#sectionConfirmBox").css("display", "none");
 	}
 }
 
@@ -915,12 +913,6 @@ function getVariantPreview(vid) {
 
 
 	$("#resultpopover").css("display", "flex");
-}
-
-function closePreview() {
-	$("#resultpopover").css("display", "none");
-	$("#overlay").css("display", "none");
-	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
 }
 
 /*
