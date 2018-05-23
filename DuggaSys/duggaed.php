@@ -55,7 +55,7 @@ pdoConnect();
         <div class='loginBox' style='width:464px;'>
         		<div class='loginBoxheader'>
         			<h3 id="editDuggaTitle">Edit Dugga</h3>
-        			<div class='cursorPointer' onclick='closeEditDugga();'>x</div>
+        			<div class='cursorPointer' onclick='closeWindows();'>x</div>
         		</div>
         		<div style='padding:5px;'>
         			<input type='hidden' id='did' value='Toddler'/></td>
@@ -79,7 +79,7 @@ pdoConnect();
               <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
         		</div>
         		<div style='padding:5px;'>
-        			<input id='closeDugga' class='submit-button' style='display:block; float:left;' type='button' value='Cancel' onclick='closeEditDugga();' />
+        			<input id='closeDugga' class='submit-button' style='display:block; float:left;' type='button' value='Cancel' onclick='closeWindows();' />
         			<input id='submitDugga' class='submit-button' style='display:none; float:right;' type='button' value='Submit' onclick='createDugga();' />
         			<input id='saveDugga' class='submit-button' style='display:none; float:right;' type='button' value='Save' onclick='updateDugga();' />
         		</div>
