@@ -976,7 +976,7 @@ function returnedSection(data) {
 		+ "</div></div>"
 		+ "<div class='statisticsContent' style='display: inline-block;'>";
 		str+="<div id='statisticsPie'>";
-		str+="<canvas id='pieChart' width='250px' height='255px' style='margin: 10px 10px;'></canvas>"; // Contains pie chart.
+		str+="<canvas id='pieChart' width='260px' height='255px' style='margin: 10px 10px;'></canvas>"; // Contains pie chart.
 		str+="</div>";
 		str	+="<div id='deadlineInfoBox' style='display: inline-block;"
 		+ " padding: 10px; width: 250px;'> ";
@@ -1988,7 +1988,7 @@ var colors = {
 }
 
 ctx.save();
-ctx.translate(25, 0);
+ctx.translate(30, 0);
 
 for (var i = 0; i < testsData.length; i++) {
 
