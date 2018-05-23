@@ -119,6 +119,7 @@
       		</div>
       		<div style='padding:5px;'>
       			<input class='submit-button' type='button' value='Add' onclick='addClass();' />
+            <div id='classErrorText' style='color:rgb(199, 80, 80); margin-top:10px; text-align:center;'></div>
       		</div>
       </div>
 	</div>
