@@ -2039,9 +2039,9 @@ function drawPieChart() {
   var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
   var colors = {
     'passedQuizes': '#00B33C',        // Green
-	'notGradedQuizes': '#FFE81A',     // Yellow
-	'failedQuizes': '#E53935',        // Red
-	'notSubmittedQuizes': '#BDBDBD'   // Grey
+		'notGradedQuizes': '#FFE81A',     // Yellow
+		'failedQuizes': '#E53935',        // Red
+		'notSubmittedQuizes': '#BDBDBD'   // Grey
   }
 
   for (var i = 0; i < testsData.length; i++) {
@@ -2188,6 +2188,7 @@ function drawSwimlanes(){
 
 	var startdate = new Date(retdata['startdate']);
 	var enddate = new Date(retdata['enddate']);
+	var totalNumberOfTests = retdata['duggor'].length;
 	var weekLength = weeksBetween(startdate, enddate);
 
 	var widthVar = 30;
@@ -2202,8 +2203,7 @@ function drawSwimlanes(){
 			widthVar = 30;
 			momentList.push(item);
 			numberOfMoments++;
-
-		}else{
+		} else {
 			widthVar += 30;
 		}
 	}
@@ -2212,9 +2212,9 @@ function drawSwimlanes(){
 	//	Dynamic width and height for the canvases, depending on how many weeks a
 	//	course is and how many moments exist in the course.
 	if(numberOfMoments != 0){ // Dynamic height, depending on number of moments
-		//	Need to check how many moments and tests there are in total, (totalNumberOfTests * 15px) + (totalNumberOfMoments * 5px).
-		swimMoments.height = 60 + (30 * numberOfMoments); // 60 is height of the Weeks/Moments thingy
+		swimMoments.height = (30 * totalNumberOfTests) + 60; // 60 is height of the Weeks/Moments thingy
 		swimWeeks.height = swimMoments.height;
+		console.log("height: " + swimMoments.height);
 	}
 
 	if(weekLength != 0){ // Dynamic width, depending on number of weeks
@@ -2236,30 +2236,26 @@ function drawSwimlanes(){
 
 	// Prints out the moment rows to the swimlane table.
 	var y = 60;
-	for(var i = 1; i < numberOfMoments + 1; i++){
-		//	test needs to check how many tests there are in total in THIS moment, (totalNumberOfTests * 15px) + 5px.
-		//	5px is needed to give a margin on the first test in a moment.
-		var test = momentWidth[i-1];
-		console.log(test);
-		if(i % 2 == 0){
-			ctxMoments.fillStyle = 'white';
-			ctxWeeks.fillStyle = 'white';
-			// Test should be the dynamic height of the moment.
-			ctxMoments.fillRect(0, y, swimMoments.width, test);
-			ctxWeeks.fillRect(0, y, swimWeeks.width, test);
+	var isGray = true;
+	for(var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		if (item['kind'] == 4){
+			if (isGray){
+				ctxMoments.fillStyle = colors['momentsOdd'];
+				ctxWeeks.fillStyle = colors['momentsOdd'];
+				isGray = false;
+			} else {
+				ctxMoments.fillStyle = 'white';
+				ctxWeeks.fillStyle = 'white';
+				isGray = true;
+			}
+		} else if (item['kind'] == 3){
+			ctxMoments.fillRect(0, y, swimMoments.width, 30);
+			ctxWeeks.fillRect(0, y, swimWeeks.width, 30);
+			ctxMoments.fillStyle = 'black';
+			ctxMoments.fillText(item['entryname'], 5, y+20);
+			y += 30;
 		}
-		else {
-			ctxMoments.fillStyle = colors['momentsOdd'];
-			ctxWeeks.fillStyle = colors['momentsOdd'];
-			// Test should be the dynamic height of the moment.
-			ctxMoments.fillRect(0, y, swimMoments.width, test);
-			ctxWeeks.fillRect(0, y, swimWeeks.width, test);
-		}
-
-		ctxMoments.fillStyle = 'black';
-		ctxMoments.fillText(momentList[i-1]['entryname'], 10, y+20);
-
-		y += 30; // 30 should be the height of THIS moment.
 	}
 
 	// Prints out the week columns to the swimlane table.
@@ -2292,17 +2288,51 @@ function drawSwimlanes(){
 	ctxWeeks.lineTo(swimWeeks.width, 60);
 	ctxWeeks.stroke();
 
-	// Prints out the test(s) for THIS specific moment.
+	// Prints out all the tests.
 	y = 60;
-	for (var i = 0; i < 3; i++){ // 3 = numberOfTests in a moment
-		var testStartDate = 0; // Should be the week start px of a test (35px * weeks until test starts).
-		var testEndDate = 50; // Should be the length of a test in weeks px (35px * weeks of test duration).
+	for (var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		var testStartDate;
 
-		y += 5;
-		ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
-		ctxWeeks.fillRect(testStartDate, y, testEndDate, 10);
-		y += 10;
+		if (item['qrelease'] == null){
+			testStartDate = new Date(retdata['startdate']);
+		} else {
+			testStartDate = new Date(item['qrelease']);
+		}
+
+		var testEndDate = new Date(item['deadline']);
+		var courseStartDate = new Date(retdata['startdate']);
+		var testDuration = weeksBetween(testStartDate, testEndDate);
+		var untilTestStart = weeksBetween(courseStartDate, testStartDate);
+
+		if (item['kind'] == 3){
+			y += 5;
+				/*if( == 0) {
+		      ctxWeeks.fillStyle = colors['passedQuizes'];
+		    } else if( == 1) {
+		      ctxWeeks.fillStyle = colors['notGradedQuizes'];
+		    } else if( == 2) {
+		      ctxWeeks.fillStyle = colors['failedQuizes'];
+		    } else {
+		      ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
+		    }
+			}*/
+
+			ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
+			ctxWeeks.fillRect(untilTestStart*35, y, testDuration*35, 20);
+			y += 25;
+		}
 	}
+
+	// Timeline
+	var oneDay = 24 * 60 * 60 * 1000;
+	var currentDate = new Date();
+	var courseDay = Math.round(Math.abs((courseStartDate.getTime() - currentDate.getTime())/(oneDay)));
+
+	ctxWeeks.moveTo(courseDay*5, 0);
+	ctxWeeks.strokeStyle = 'black';
+	ctxWeeks.lineTo(courseDay*5, swimWeeks.height);
+	ctxWeeks.stroke();
 }
 
 
