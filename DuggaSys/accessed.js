@@ -437,8 +437,6 @@ function makeDropdown(onChange, values, items, selected){
 function makeClassDropdown(onChange, values, items, selected){
     str = "<select onChange='"+onChange+"' onclick='return false;'>";
 
-    str+= "<option value='null'></option>";
-
     for(var i = 0; i < values.length; i++){
 	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
     }
