@@ -98,6 +98,9 @@
                                 <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Class">
                                     <img id="createButtons" src="../Shared/icons/diagram_create_class.svg">
                                 </button>
+                                <button id='drawtextbutton' onclick="setMode('Text');" class='buttonsStyle unpressed' data="Draw Text">
+                                    <img src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
+                                </button>
                             </div>
                         </div>
                         <h4 class="label tlabel" id="labelDraw">Draw</h4>
@@ -107,9 +110,6 @@
                             </button>
                             <button id='drawfreebutton' onclick="setMode('Free');" class='buttonsStyle unpressed' data="Draw Free">
                                 <img src="../Shared/icons/diagram_draw_free.svg">
-                            </button>
-                            <button id='drawtextbutton' onclick="setMode('Text');" class='buttonsStyle unpressed' data="Draw Text">
-                                <img src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
                             </button>
                         </div>
                         <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
