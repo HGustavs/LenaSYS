@@ -75,6 +75,7 @@ function switchToolbar(direction){
     $(".buttonsStyle").hide();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
+    $("#drawtextbutton").show();
   }
   else{
     $(".toolbar-drawer").show();
