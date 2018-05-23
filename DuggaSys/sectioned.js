@@ -1247,21 +1247,24 @@ function returnedSection(data) {
 				}
 
 				else if (itemKind == 1) { // Section
+					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
 					str +=
 						"<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
 						+ item['entryname']
 						+ "</span><img src='../Shared/icons/desc_complement.svg'"
-						+ "id='arrowComp" + menuState.idCounter++ + data.coursecode
+						+ "id='arrowComp" + arrowID
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
-						+ "id='arrowRight" + menuState.idCounter++ + data.coursecode
+						+ "id='arrowRight" + arrowID
 						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
 				else if (itemKind == 4) { // Moment
 					var strz = "";
+					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
+					
 					if (item['gradesys'] == 0) {
 						strz = "";
 					}
@@ -1274,15 +1277,16 @@ function returnedSection(data) {
 					else if (item['gradesys'] == 3) {
 						strz = "(U-3-4-5)";
 					}
+					
 					str += "<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
 						+ item['entryname'] + " " + strz + " " + "</span>"
 						+ "<img src='../Shared/icons/desc_complement.svg'"
-						+ "id='arrowComp" + menuState.idCounter++ + data.coursecode
+						+ "id='arrowComp" + arrowID
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
-						+ "id='arrowRight" + menuState.idCounter++ + data.coursecode
+						+ "id='arrowRight" + arrowID
 						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
