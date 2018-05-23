@@ -2208,11 +2208,12 @@ function drawSwimlanes(){
 		}
 	}
 
-	swimMoments.width = 100;
 	//	Dynamic width and height for the canvases, depending on how many weeks a
 	//	course is and how many moments exist in the course.
+	swimMoments.width = 100;
 	if(numberOfMoments != 0){ // Dynamic height, depending on number of moments
-		swimMoments.height = (30 * totalNumberOfTests) + 60; // 60 is height of the Weeks/Moments thingy
+		// 60 is height of the Weeks/Moments label.
+		swimMoments.height = (30 * totalNumberOfTests) + 60;
 		swimWeeks.height = swimMoments.height;
 		console.log("height: " + swimMoments.height);
 	}
@@ -2262,7 +2263,7 @@ function drawSwimlanes(){
 		var item = retdata['entries'][i];
 		if (item['kind'] == 4){
 			ctxMoments.fillStyle = 'black';
-			ctxMoments.fillText(item['entryname'], 5, y+20);
+			ctxMoments.fillText(item['entryname'], 5, y + 20);
 		} else if (item['kind'] == 3){
 			y += 30;
 		}
@@ -2299,6 +2300,7 @@ function drawSwimlanes(){
 	ctxWeeks.stroke();
 
 	// Prints out all the tests.
+	var oneDay = 24 * 60 * 60 * 1000;
 	y = 60;
 	for (var i = 0; i < retdata['entries'].length; i++){
 		var item = retdata['entries'][i];
@@ -2312,8 +2314,10 @@ function drawSwimlanes(){
 
 		var testEndDate = new Date(item['deadline']);
 		var courseStartDate = new Date(retdata['startdate']);
-		var testDuration = weeksBetween(testStartDate, testEndDate);
-		var untilTestStart = weeksBetween(courseStartDate, testStartDate);
+		var testDuration = Math.round(Math.abs(
+			+ (testStartDate.getTime() - testEndDate.getTime())/(oneDay)));
+		var untilTestStart = Math.round(Math.abs(
+			+ (courseStartDate.getTime() - testStartDate.getTime())/(oneDay)));
 
 		if (item['kind'] == 3){
 			y += 5;
@@ -2329,19 +2333,19 @@ function drawSwimlanes(){
 			}*/
 
 			ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
-			ctxWeeks.fillRect(untilTestStart*35, y, testDuration*35, 20);
+			ctxWeeks.fillRect(untilTestStart * 5, y, testDuration * 5, 20);
 			y += 25;
 		}
 	}
 
 	// Timeline
-	var oneDay = 24 * 60 * 60 * 1000;
 	var currentDate = new Date();
-	var courseDay = Math.round(Math.abs((courseStartDate.getTime() - currentDate.getTime())/(oneDay)));
+	var courseDay = Math.round(Math.abs(
+		+ (courseStartDate.getTime() - currentDate.getTime())/(oneDay)));
 
-	ctxWeeks.moveTo(courseDay*5, 0);
+	ctxWeeks.moveTo(courseDay * 5, 0);
 	ctxWeeks.strokeStyle = 'black';
-	ctxWeeks.lineTo(courseDay*5, swimWeeks.height);
+	ctxWeeks.lineTo(courseDay * 5, swimWeeks.height);
 	ctxWeeks.stroke();
 }
 
