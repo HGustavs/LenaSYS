@@ -2252,8 +2252,18 @@ function drawSwimlanes(){
 		} else if (item['kind'] == 3){
 			ctxMoments.fillRect(0, y, swimMoments.width, 30);
 			ctxWeeks.fillRect(0, y, swimWeeks.width, 30);
+			y += 30;
+		}
+	}
+
+	//	Prints out the name on the moment in the moments column.
+	y = 60;
+	for (var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		if (item['kind'] == 4){
 			ctxMoments.fillStyle = 'black';
 			ctxMoments.fillText(item['entryname'], 5, y+20);
+		} else if (item['kind'] == 3){
 			y += 30;
 		}
 	}
