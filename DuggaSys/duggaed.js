@@ -262,7 +262,8 @@ function updateDugga() {
 	var release = $("#release").val();
 	var jsondeadline = "{'deadline1':'"+$("#deadline").val()+"', 'comment1':'"+$("#deadlinecomments1").val()+"', 'deadline2':'"+$("#deadline2").val()+"', 'comment2':'"+$("#deadlinecomments2").val()+"', 'deadline3':'"+$("#deadline3").val()+"', 'comment3':'"+$("#deadlinecomments3").val()+"'}";
 
-	closeEditDugga();
+	resetNameValidation();
+	closeWindows();
 
 	AJAXService("SAVDUGGA", { cid: querystring['cid'], qid: did, nme: nme, autograde: autograde, gradesys: gradesys, template: template, qstart: qstart, deadline: deadline, jsondeadline: jsondeadline, release: release, coursevers: querystring['coursevers'] }, "DUGGA");
 }
@@ -473,8 +474,6 @@ function confirmBox(operation, item, type) {
 			deleteVariant(itemToDelete);
 			$("#sectionConfirmBox").css("display", "none");
 		}
-	} else if (operation == "closeConfirmBox") {
-		$("#sectionConfirmBox").css("display", "none");
 	}
 }
 
@@ -849,15 +848,7 @@ function variantFilter(row) {
 	}
 }
 
-
 // START OF closers and openers
-function closeEditDugga() {
-	$("#editDugga").css("display", "none");
-
-	// Resets the name validation
-	resetNameValidation();
-}
-
 function showDuggaSubmitButton() {
 	$("#submitDugga").css("display", "block");
 	$("#saveDugga").css("display", "none");
@@ -877,8 +868,6 @@ function showVariantDisableButton() {
 	$("#enableVariant").css("display", "none");
 	$("#disableVariant").css("display", "block");
 }
-
-
 //END OF closers and openers
 
 function getVariantPreview(vid) {
@@ -915,12 +904,6 @@ function getVariantPreview(vid) {
 
 
 	$("#resultpopover").css("display", "flex");
-}
-
-function closePreview() {
-	$("#resultpopover").css("display", "none");
-	$("#overlay").css("display", "none");
-	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
 }
 
 /*

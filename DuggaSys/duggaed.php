@@ -55,7 +55,7 @@ pdoConnect();
         <div class='loginBox' style='width:464px;'>
         		<div class='loginBoxheader'>
         			<h3 id="editDuggaTitle">Edit Dugga</h3>
-        			<div class='cursorPointer' onclick='closeEditDugga();'>x</div>
+        			<div class='cursorPointer' onclick='closeWindows();'>x</div>
         		</div>
         		<div style='padding:5px;'>
         			<input type='hidden' id='did' value='Toddler'/></td>
@@ -79,7 +79,7 @@ pdoConnect();
               <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
         		</div>
         		<div style='padding:5px;'>
-        			<input id='closeDugga' class='submit-button' style='display:block; float:left;' type='button' value='Cancel' onclick='closeEditDugga();' />
+        			<input id='closeDugga' class='submit-button' style='display:block; float:left;' type='button' value='Cancel' onclick='closeWindows();' />
         			<input id='submitDugga' class='submit-button' style='display:none; float:right;' type='button' value='Submit' onclick='createDugga();' />
         			<input id='saveDugga' class='submit-button' style='display:none; float:right;' type='button' value='Save' onclick='updateDugga();' />
         		</div>
@@ -92,18 +92,32 @@ pdoConnect();
   	    <div class='loginBox' style='width:460px;'>
   				<div class='loginBoxheader'>
   				    <h3>Confirm deletion</h3>
-  				    <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+  				    <div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
   				</div>
   				<div style='text-align: center;'>
   				    <h4>Are you sure you want to delete this item?</h4>
   				</div>
   				<div style='display:flex; align-items:center; justify-content: center;'>
   				    <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
-  				    <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+  				    <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='closeWindows();' />
   				</div>
   	    </div>
   		</div>
     <!-- Confirm Section Dialog START -->
+
+    <!-- Result Dialog START -->
+    <div id='resultpopover' class='loginBoxContainer' style='display:none; overflow:hidden; z-index: 9999;'>
+      <div class='loginBox' id='resultpopoverBox' style='overflow:auto;';>
+        <div class='loginBoxheader'>
+          <h3 id="resultpopoverTitle">PREVIEW</h3>
+          <div class='cursorPointer' onclick='closeWindows();'>x</div>
+        </div>
+
+        <div class='loginBoxbody' id='MarkCont' style='width:100%; height:100%;'>
+        </div>
+     </div>
+    </div>
+  <!-- Result Dialog END -->
 
   	<!-- Edit Variant Dialog START -->
   	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
@@ -199,20 +213,6 @@ pdoConnect();
        </div>
     </div>
   	<!-- Edit Variant Dialog END -->
-
-  	<!-- Result Dialog START -->
-    <div id='resultpopover' class='loginBoxContainer' style='display:none; overflow:hidden;'>
-      <div class='loginBox' id='resultpopoverBox' style='overflow:auto;';>
-        <div class='loginBoxheader'>
-          <h3 id="resultpopoverTitle">PREVIEW</h3>
-          <div class='cursorPointer' onclick='closePreview();'>x</div>
-        </div>
-
-        <div class='loginBoxbody' id='MarkCont' style='width:100%; height:100%;'>
-        </div>
-  	 </div>
-    </div>
-	<!-- Result Dialog END -->
 
 </body>
 </html>
