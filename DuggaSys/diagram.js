@@ -860,19 +860,15 @@ function eraseObject(object) {
 function eraseSelectedObject() {
     canvas.style.cursor = "default";
     //Issue: Need to remove the crosses
-    if(!diagram[lastSelectedObject]){
+    if(selected_objects.length == 0){
         showMenu().innerHTML = "No item selected<type='text'>";
         $(".loginBox").draggable();
     }
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].targeted == true) {
-            diagram[i].targeted = false;
-            eraseObject(diagram[i]);
-            i = -1;
-            //To avoid removing the same index twice, lastSelectedObject is reset
-            lastSelectedObject = -1;
-        }
+    for(var i = 0; i < selected_objects.length; i++){
+        eraseObject(selected_objects[i]);
     }
+    selected_objects = [];
+    lastSelectedObject = -1;
     updateGraphics();
 }
 
