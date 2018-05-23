@@ -24,7 +24,7 @@ Text alignment:<br>
     <option value="start">Left</option>
     <option value="center" selected="true">Center</option>
     <option value="end">Right</option>
-</select>
+</select><br>
 Text size:<br>
 <select onchange="changeObjectAppearance('textType');" id='TextSize'>
     "<option value='Tiny' selected="true">Tiny</option>

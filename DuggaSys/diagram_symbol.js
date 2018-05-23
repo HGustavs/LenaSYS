@@ -1004,8 +1004,14 @@ function Symbol(kind) {
         this.textsize = this.getFontsize();
 
         ctx.fillStyle = this.fontColor;
+        ctx.textAlign = this.textAlign;
+
+        var textX = 0;
+        if (this.textAlign == "start") textX = x1 + 10;
+        else if (this.textAlign == "end") textX = x2 - 10;
+        else textX = midx; 
         for (var i = 0; i < this.textLines.length; i++) {
-            ctx.fillText(this.textLines[i].text, midx, y1 + (this.textsize * 1.7) / 2 + (this.textsize * i));
+            ctx.fillText(this.textLines[i].text, textX, y1 + (this.textsize * 1.7) / 2 + (this.textsize * i));
         }
     }
 
