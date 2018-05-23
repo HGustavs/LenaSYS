@@ -1613,7 +1613,7 @@ div.submit-button:disabled {
   height: 40px;
 }
 
-.buttonsStyle[data]:hover:after {
+.buttonsStyle[data]:hover:after, .diagramAction[data]:hover:after {
   content: attr(data);
   padding: 4px 8px;
   color: #fff;
