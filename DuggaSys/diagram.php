@@ -103,10 +103,10 @@
                         <h4 class="label tlabel" id="labelDraw">Draw</h4>
                         <div class="toolbar-drawer" id="drawerDraw">
                             <button id='squarebutton' onclick="setMode('Square');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Square">
-                                <img id="createButtons" src="../Shared/icons/diagram_draw_square.svg">
+                                <img class="createButtons" src="../Shared/icons/diagram_draw_square.svg">
                             </button>
                             <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Free">
-                                <img id="createButtons" src="../Shared/icons/diagram_draw_free.svg">
+                                <img class="createButtons" src="../Shared/icons/diagram_draw_free.svg">
                             </button>
                         </div>
                         <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
