@@ -174,6 +174,7 @@ function loadTextForm(element, dir){
         textarea.value = text;
         setSelectedOption('font', diagram[lastSelectedObject].font);
         setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
+        setSelectedOption('textAlign', diagram[lastSelectedObject].textAlign);
         setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
       }
     }
@@ -275,6 +276,7 @@ function changeObjectAppearance(object_type){
         }
         diagram[lastSelectedObject].fontColor = document.getElementById('fontColor').value;
         diagram[lastSelectedObject].font = document.getElementById('font').value;
+        diagram[lastSelectedObject].textAlign = document.getElementById('textAlign').value;
         diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
     } else {
         diagram[lastSelectedObject].symbolColor = document.getElementById('symbolColor').value;
