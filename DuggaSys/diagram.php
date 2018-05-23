@@ -99,7 +99,7 @@
                                     <img id="createButtons" src="../Shared/icons/diagram_create_class.svg">
                                 </button>
                                 <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Text">
-                                    <img src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
+                                    <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
                                 </button>
                             </div>
                         </div>
