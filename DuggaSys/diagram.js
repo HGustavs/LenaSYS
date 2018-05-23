@@ -160,15 +160,19 @@ function keyDownHandler(e){
       ctrlIsClicked = true;
     }
     else if(key == 27){
-      if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
+      cancelFreeDraw();
+    }
+
+}
+
+function cancelFreeDraw(){
+    if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
         for (var i = 0; i < numberOfPointsInFigure; i++) {
             diagram.pop();
         }
         cleanUp();
         updateGraphics();
       }
-    }
-
 }
 
 function fillCloneArray(){
@@ -879,6 +883,9 @@ function eraseSelectedObject() {
 function setMode(mode){ //"CreateClass" yet to be implemented in .php
     canvas.style.cursor = "default";
     uimode = mode;
+    if(mode == 'Square' && figureType == 'Free'){
+        cancelFreeDraw();
+    }
     if(mode == 'Square' || mode == 'Free') {
       uimode = "CreateFigure";
       figureType = mode;
