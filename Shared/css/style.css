@@ -4072,7 +4072,7 @@ textarea#mrkdwntxt {
   margin-left: 9.75%;
   font-size: 12px;
   position: absolute;
-  margin-top: -1%;
+  margin-top: -4px;
 }
 #codeBlockText {
     cursor: pointer;
