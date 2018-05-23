@@ -119,24 +119,49 @@ function addSingleUser()
     hideCreateUserPopup();
 }
 
+var inputVerified;
+
+function verifyClassInput(input, allowed, text){
+  if(input.val() == ""){
+    inputVerified = false;
+    input.css("background-color", "rgb(199, 80, 80)");
+    if(document.getElementById("classErrorText").innerHTML == ""){
+      document.getElementById("classErrorText").innerHTML = input.attr('id').substring(3) + " must have a value";
+    }
+  }else if(allowed != null && !allowed.test(input.val())){
+    inputVerified = false;
+    input.css("background-color", "rgb(199, 80, 80)");
+    if(document.getElementById("classErrorText").innerHTML == ""){
+      document.getElementById("classErrorText").innerHTML = input.attr('id').substring(3) + " must be a " + text;
+    }
+  }else{
+    input.css("background-color", "#ffffff");
+    return input.val();
+  }
+}
+
 function addClass()
 {
-    var newClass = new Array();
-    newClass.push($("#addClass").val());
-    newClass.push($("#addResponsible").val());
-    newClass.push($("#addClassname").val());
-    newClass.push($("#addRegcode").val());
-    newClass.push($("#addClasscode").val());
-    newClass.push($("#addHp").val());
-    newClass.push($("#addTempo").val());
-    newClass.push($("#addHpProgress").val());
+  inputVerified = true;
+  document.getElementById("classErrorText").innerHTML = "";
+  var newClass = new Array();
+  newClass.push(verifyClassInput($("#addClass"), null, ""));
+  newClass.push(verifyClassInput($("#addResponsible"), null, ""));
+  newClass.push(verifyClassInput($("#addClassname"), null, ""));
+  newClass.push(verifyClassInput($("#addRegcode"), /^[0-9]*$/, "number"));
+  newClass.push(verifyClassInput($("#addClasscode"), null, ""));
+  newClass.push(verifyClassInput($("#addHp"), /^[0-9.]*$/, "(decimal) number"));
+  newClass.push(verifyClassInput($("#addTempo"), /^[0-9]*$/, "number"));
+  newClass.push(verifyClassInput($("#addHpProgress"), /^[0-9.]*$/, "(decimal) number"));
 
+  if(inputVerified){
     var outerArr = new Array();
     outerArr.push(newClass);
 
     var newClassJSON = JSON.stringify(outerArr);
     AJAXService("ADDCLASS",{cid:querystring['cid'],newclass:newClassJSON,coursevers:querystring['coursevers']},"ACCESS");
     hideCreateClassPopup();
+  }
 }
 
 function showCreateUserPopup()
