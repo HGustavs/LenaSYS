@@ -161,8 +161,8 @@ pdoConnect();
                     </div>
                     </fieldset>
                 </div>
-                <button class="save-close-button" type="submit" onclick="saveMarkdown()">Save</button>
-                <button class="save-close-button" onclick="cancelPreview()">Close</button>
+                <button class="save-close-button-md" type="submit" onclick="saveMarkdown()">Save</button>
+                <button class="save-close-button-md" onclick="cancelPreview()">Close</button>
             </div>
             <div class="editFilePart">
                 <div class="editFileWindow">
@@ -172,8 +172,8 @@ pdoConnect();
                         </div>
                     </div>
 
-                    <button class="save-close-button" type="submit" onclick="saveTextToFile()"> Save </button>
-                    <button class="save-close-button" onclick="cancelPreview()">Close</button>
+                    <button class="save-close-button-fe" type="submit" onclick="saveTextToFile()"> Save </button>
+                    <button class="save-close-button-fe" onclick="cancelPreview()">Close</button>
                     <div class="optionButtons">
 
                     </div>

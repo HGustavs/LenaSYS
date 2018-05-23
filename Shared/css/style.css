@@ -4013,7 +4013,7 @@ li:nth-last-child(10) a:hover {
   width: 38%;
   height: 80%;
   position: relative;
-  margin: 20px 1% 10px 1%;
+  margin: 2% 1% 1% 1%;
   float: left;
 }
 #markset {
@@ -4027,7 +4027,7 @@ li:nth-last-child(10) a:hover {
   width: 56%;
   height: 80%;
   position: relative;
-  margin: 20px 1% 10px 1%;
+  margin: 2% 1% 1% 1%;
   float: right;
 }
 
@@ -4035,7 +4035,7 @@ li:nth-last-child(10) a:hover {
   height:100%;
 }
 
-.save-close-button {
+.save-close-button-md {
   border-radius: 4px;
   background-color: #614875;
   border: 0px;
@@ -4043,8 +4043,7 @@ li:nth-last-child(10) a:hover {
   height: 30px;
   color: #fff;
   cursor: pointer;
-  margin-top: 19px;
-  margin-bottom: 2px;
+  margin-top: auto;
   margin-right: 3%;
   font-size: 14px;
   transition: 1s background-color;
@@ -4144,7 +4143,7 @@ textarea#mrkdwntxt {
   margin-left: 9.75%;
   font-size: 12px;
   position: absolute;
-  margin-top: -3px;
+  margin-top: -0.3%;
 }
 #codeBlockText {
     cursor: pointer;
@@ -4258,7 +4257,6 @@ textarea#mrkdwntxt {
     height: 38%;
     width: 97%;
     float: left;
-    margin: auto auto auto 8px;
   }
   .markText {
     height:100%;
@@ -4266,8 +4264,8 @@ textarea#mrkdwntxt {
   .optionButtons {
     top: 686px;
   }
-  .save-close-button{
-    margin-top: 29px;
+  .save-close-button-md{
+    margin-top: 15px;
   }
 }
 
@@ -4407,6 +4405,26 @@ textarea#mrkdwntxt {
   width: 355px;
 }
 
+.save-close-button-fe{
+  border-radius: 4px;
+  background-color: #614875;
+  border: 0px;
+  width: 110px;
+  height: 30px;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 2px;
+  margin-right: 3%;
+  font-size: 14px;
+  transition: 1s background-color;
+  float: right;
+  line-height: 30px;
+  text-align: center;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+
 #filecont {
   resize: none;
   margin: 10px auto;
@@ -4421,6 +4439,20 @@ textarea#filecont{
   height: 100%;
   display: block;
   padding: 10px
+}
+
+@media only screen and (max-width: 900px) {
+  .editFileWindow {
+    height: 80%;
+  }
+
+  #filecont {
+    height: 70%;
+  }
+
+  .optionButtons {
+    top: 436px;
+  }
 }
 
 /* --------------================################================-------------- *
@@ -4458,27 +4490,6 @@ textarea#filecont{
 /* Preview, Edit and Delete columns */
 .variant-arrowVariant, .variant-cogwheelVariant, .variant-trashcanVariant {
   width: 25px;
-}
-
-
-@media only screen and (max-height: 800px) and (max-width: 1400px) {
-  .editFileWindow {
-    height: 500px;
-  }
-
-  .editFileCode {
-    height: 400px;
-  }
-
-  #filecont {
-    height: 350px;
-  }
-}
-
-@media only screen and (max-width: 900px) {
-  .optionButtons {
-    top: 436px;
-  }
 }
 
 /* styling for the search bar in duggaed.php */
