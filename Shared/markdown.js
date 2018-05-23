@@ -609,8 +609,6 @@ $(document).ready(function(){
         $("#select-header").addClass("show-dropdown-content");
     });
     $("#mrkdwntxt").keydown(function(e) {
-        console.log("f: "+ e.keyCode);
-        console.log("event: " + e.which);
         if (e.keyCode == 9){
             e.preventDefault();
             tabKey();

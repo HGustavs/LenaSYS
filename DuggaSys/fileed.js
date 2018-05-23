@@ -548,8 +548,6 @@ function setfileCarotPosition(){
 }
 $(document).ready(function(){
 	$("#filecont").keydown(function(e) {
-		console.log("f: "+ e.keyCode);
-		console.log("event: " + e.which);
 		if (e.keyCode == 9){
 			e.preventDefault();
 			setfileCarotPosition();
