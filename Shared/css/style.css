@@ -2169,26 +2169,47 @@ span.arrow {
 }
 
 .tableCellHighlightning {
-  background-image: radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2));
+	box-shadow: inset 0px 0px 0px 3px rgba(97,72,117,1) !important;
 }
 
 .tableRowHighlightning {
-  border-bottom: 3px solid rgba(97,72,117,1) !important;
-  border-top: 3px solid rgba(97,72,117,1) !important;
+	box-shadow: inset 0px 3px 0px 0px rgba(97,72,117,1),
+							inset 0px -3px 0px 0px rgba(97,72,117,1);
 }
 
 .tableColHighlightning {
-  border-left: 3px solid rgba(97,72,117,1) !important;
-  border-right: 3px solid rgba(97,72,117,1) !important;
+	box-shadow: inset 3px 0px 0px 0px rgba(97,72,117,1),
+							inset -3px 0px 0px 0px rgba(97,72,117,1);
+
+}
+
+.resultTableText {
+	margin-left: 3px;
+	margin-right: 3px;
 }
 
 #resultTable td {
   height: 1px;
   padding: 0px;
-  border-right: 3px dashed rgba(97,72,117,0);
-  border-left: 3px dashed rgba(97,72,117,0);
-  border-bottom: 3px dashed rgba(97,72,117,0);
-  border-top: 3px dashed rgba(97,72,117,0);
+  border: 0px;
+}
+
+#accessTable td {
+	padding: 0px;
+	border: 0px;
+}
+
+.accessTableText {
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.accessTableCell {
+	height:60px;
+	text-align:center;
+	display:table-cell;
+	vertical-align:middle;
+	width:220px; /* used make the table cell <div> exapnd to the parent td */
 }
 
 #user td {

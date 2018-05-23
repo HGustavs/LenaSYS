@@ -45,7 +45,7 @@
 			?>
 	</div>
 </div>
-	<div id='user' style='width:100%;'></div>
+	<div id='accessTable' style='width:100%; white-space: nowrap;'></div>
 	<!--- Edit Section Dialog END --->
 
 	<?php

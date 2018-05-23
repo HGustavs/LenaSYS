@@ -321,79 +321,128 @@ var bool = true;
 function renderCell(col,celldata,cellid) {
 	if(col == "requestedpasswordchange") {
 		obj=JSON.parse(celldata);
-		str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
-		str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
-    str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
-    return str;
+		str = "<div class='accessTableCell'>";
+			str += "<div class='accessTableText'>";
+				str += "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
+				str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
+				str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
+			str += "</div>";
+		str += "</div>";
+		return str;
 	}else if(col == "examiner"){
-    obj=JSON.parse(celldata)['examiners'];
-    if(obj[obj.length - 1]['access'] == 'W'){
-      str = "none";
-    }else{
-      var teacher = obj[obj.length - 1]['teacher'];
-      var items = new Array();
-      items.push("unassigned");
-      for(var i = 0; i < obj.length - 1; i++){
-        items.push(obj[i]['username']);
-      }
-      str = makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+obj[obj.length - 1]['uid']+"\",this.value);", items, items, teacher);
-      str += "<div style='display:none;'>" + teacher + "</div>";
-    }
-    return str;
-  }else if(col == "access"){
-    obj=JSON.parse(celldata);
-    str = makeDropdown("changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", new Array("W", "R", "null"), new Array("Teacher", "Student", "none"), obj.access);
-    str += "<div style='display:none;'>" + obj.access + "</div>";
-    return str;
+		obj=JSON.parse(celldata)['examiners'];
+		if(obj[obj.length - 1]['access'] == 'W'){
+			str = "<div class='accessTableCell'>";
+				str += "<div class='accessTableText'>";
+					str += "none";
+				str += "</div>";
+			str += "</div>";
+		}else{
+			var teacher = obj[obj.length - 1]['teacher'];
+			var items = new Array();
+			items.push("unassigned");
+			for(var i = 0; i < obj.length - 1; i++){
+				items.push(obj[i]['username']);
+			}
+			str = "<div class='accessTableCell'>";
+				str += "<div class='accessTableText'>";
+					str += makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+obj[obj.length - 1]['uid']+"\",this.value);", items, items, teacher);
+					str += "<div style='display:none;'>" + teacher + "</div>";
+				str += "</div>";
+			str += "</div>";
+		}
+		return str;
+	}else if(col == "access"){
+		obj=JSON.parse(celldata);
+		str = "<div class='accessTableCell'>";
+			str += "<div class='accessTableText'>";
+				str += makeDropdown("changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", new Array("W", "R", "null"), new Array("Teacher", "Student", "none"), obj.access);
+				str += "<div style='display:none;'>" + obj.access + "</div>";
+			str += "</div>";
+		str += "</div>";
+		return str;
 	}else if(col == "vers"){
-    obj=JSON.parse(celldata);
-    var items = new Array();
-    for(var i = 0; i < filez['courses'].length; i++){
-      items.push(filez['courses'][i]['vers']);
-    }
-    str = makeDropdown("changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.vers);
-    return str;
+		obj=JSON.parse(celldata);
+		var items = new Array();
+		for(var i = 0; i < filez['courses'].length; i++){
+			items.push(filez['courses'][i]['vers']);
+		}
+		str = "<div class='accessTableCell'>";
+			str += "<div class='accessTableText'>";
+				str += makeDropdown("changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.vers);
+			str += "</div>";
+		str += "</div>";
+		return str;
 	}else if (col == "username") {
 		obj = JSON.parse(celldata);
-		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeUsername("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.username+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
+		str = "<div class='accessTableCell'>";
+			str += "<div class='accessTableText'>";
+				str += "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeUsername("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.username+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
+			str += "</div>";
+		str += "</div>";
 		return str;
 	}else if (col == "ssn") {
 		obj = JSON.parse(celldata);
-		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeSSN("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.ssn+"\" size=13 onclick='return false;'>";
+		str = "<div class='accessTableCell'>";
+			str += "<div class='accessTableText'>";
+				str += "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeSSN("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.ssn+"\" size=13 onclick='return false;'>";
+			str += "</div>";
+		str += "</div>";
 		return str;
 	}else if (col == "firstname") {
 		obj = JSON.parse(celldata);
-		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeFirstname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.firstname+"\" size=8 onclick='return false;'>";
+		str = "<div class='accessTableCell'>";
+			str += "<div class='accessTableText'>";
+				str += "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeFirstname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.firstname+"\" size=8 onclick='return false;'>";
+			str += "</div>";
+		str += "<div>";
 		return str;
 	}else if (col == "lastname") {
 		obj = JSON.parse(celldata);
-		str = "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
+		str = "<div class='accessTableCell'>";
+			str += "<div class='accessTableText'>";
+				str += "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
+			str += "</div>";
+		str += "</div>";
 		return str;
 	}else if(col == "class"){
-    obj=JSON.parse(celldata);
-    var items = new Array();
+		obj=JSON.parse(celldata);
+		var items = new Array();
 		// Every user doesn't have a class
 		items.push("null");
-    for(var i = 0; i < filez['classes'].length; i++){
-      items.push(filez['classes'][i]['class']);
-    }
-    str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
-    str += "<div style='display:none;'>" + obj.class + "</div>";
+		for(var i = 0; i < filez['classes'].length; i++){
+			items.push(filez['classes'][i]['class']);
+		}
+		str = "<div class='accessTableCell'>";
+			str += "<div class='accessTableText'>";
+				str += makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
+				str += "<div style='display:none;'>" + obj.class + "</div>";
+			str += "</div>";
+		str += "</div>";
 		return str;
-	} else if(col == "groups") {
+	}else if(col == "groups") {
 		var groups = filez['groups'];
 
-		str = '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
-		str += '<select><option>Välj grupper</option></select><div class="overSelect"></div></div><div id="checkboxes">';
-		groups.forEach(group => {
-			str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'"/>'+group.groupName+'</label>';
-		});
-		str += '</div></div>';
+		str = "<div class='accessTableCell'>";
+			str += "<div class='accessTableText'>";
+				str += '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
+				str += '<select><option>Välj grupper</option></select><div class="overSelect"></div></div><div id="checkboxes">';
+				groups.forEach(group => {
+					str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'"/>'+group.groupName+'</label>';
+				});
+				str += '</div></div>';
+			str += "</div>";
+		str += "</div>";
 		return str;
 	} else {
-		return "<div id='" + cellid + "'>" + celldata + "</div>";
+		str = "<div class='accessTableCell'>";
+			str += "<div class='accessTableText'>";
+				str += "<div id='" + cellid + "'>" + celldata + "</div>";
+			str += "</div>";
+		str += "</div>";
+		return str;
 	}
-    return celldata;
+		return celldata;
 }
 
 function makeDropdown(onChange, values, items, selected){
@@ -519,7 +568,7 @@ function returnedAccess(data) {
 	}
 	myTable = new SortableTable(
 		tabledata,
-		"user",
+		"accessTable",
 		"filterOptions",
 		"",
 	    renderCell,
@@ -531,8 +580,8 @@ function returnedAccess(data) {
 	    "",
 	    null,
 	    null,
-		rowHighlightOn,
-		rowHighlightOff,
+		highlightOn,
+		highlightOff,
 		null,
 	    null,
 		true
@@ -547,24 +596,44 @@ myTable.magicHeader();
 
 }
 
-function rowHighlightOn(rowid,rowno,colclass,centerel) {
-  var row = document.getElementById(rowid);
-  row.classList.add("tableRowHighlightning");
-  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
-  for(var i=0;i<collist.length;i++){
-    collist[i].classList.add("tableColHighlightning");
-  }
-  centerel.classList.add("tableCellHighlightning");
+function highlightOn(rowid,rowno,colclass,centerel) {
+	//row highlights
+	var row = document.getElementById(rowid).getElementsByTagName("td");
+	for (var i = 0; i < row.length; i++) {
+			//find the div contained in the cell
+			rowId = row[i].getElementsByClassName("accessTableCell")[0];
+			rowId.classList.add("tableRowHighlightning");
+	}
+	
+	//column highlights
+	var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+	for(var i=0;i<collist.length;i++){
+		var column = collist[i].getElementsByClassName("accessTableCell")[0];
+		column.classList.add("tableColHighlightning");
+	}
+	
+	//cell highlight
+	centerel.getElementsByClassName("accessTableCell")[0].classList.add("tableCellHighlightning");
 }
 
-function rowHighlightOff(rowid,rowno,colclass,centerel) {
-  var row = document.getElementById(rowid);
-  row.classList.remove("tableRowHighlightning");
-  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
-  for(var i=0;i<collist.length;i++){
-    collist[i].classList.remove("tableColHighlightning");
-  }
-  centerel.classList.remove("tableCellHighlightning");
+function highlightOff(rowid,rowno,colclass,centerel) {
+	//row highlight
+	var row = document.getElementById(rowid).getElementsByTagName("td");
+	for (var i = 0; i < row.length; i++) {
+		//find the div contained in the cell
+		rowId = row[i].getElementsByClassName("accessTableCell")[0];
+		rowId.classList.remove("tableRowHighlightning");
+	}
+
+	//column highlights
+	var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+	for(var i=0;i<collist.length;i++){
+		var column = collist[i].getElementsByClassName("accessTableCell")[0];
+		column.classList.remove("tableColHighlightning");
+	}
+
+	//cell highlight
+	centerel.getElementsByClassName("accessTableCell")[0].classList.remove("tableCellHighlightning");
 }
 
 //excuted onclick button for quick searching in table
