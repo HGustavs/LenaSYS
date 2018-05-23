@@ -3202,6 +3202,19 @@ ul.hamburgerList button.menuButton {
 .fileLink-editor, .fileLink-trashcan{
     width:25px;
 }
+
+.fileLink-filename {
+  max-width: 190px;
+}
+
+.nowrap-filename {
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
+
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
      #sortingBar {
@@ -3217,7 +3230,7 @@ only screen and (max-device-width: 1085px) {
         min-width: 375px;
     }
     #fileLink{
-        min-width: 375px;
+        /*min-width: 375px;*/
     }
     #fileLink_tbl{
         margin: 0 !important;
@@ -3313,6 +3326,14 @@ only screen and (max-device-width: 768px) {
 
   #Sectionlist .course {
     font-size: 20px;
+  }
+
+  .fileLink-filename {
+    max-width: none;
+  }
+
+  .nowrap-filename {
+    max-width: 200px;
   }
 
   #statisticsList {
