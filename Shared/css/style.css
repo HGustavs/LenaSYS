@@ -1634,7 +1634,7 @@ div.submit-button:disabled {
   border-radius: 0px;
 }
 
-.createButtons {
+.toolboxButtons {
   width: 35px !important;
   height: 25px !important;
 }
