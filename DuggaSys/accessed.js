@@ -5,6 +5,8 @@ var versions;
 var dataInfo;
 var expanded = false;
 var searchterm = "";
+var tableName = "accessTable";
+var tableCellName = "accessTableCell";
 
 //----------------------------------------
 // Commands:
@@ -575,7 +577,7 @@ var myTable;
 //----------------------------------------
 
 function returnedAccess(data) {
-  fillResponsibleOptions(data.responsibles);
+	fillResponsibleOptions(data.responsibles);
 	filez = data;
 	var tabledata = {
 		tblhead:{
@@ -586,9 +588,9 @@ function returnedAccess(data) {
 			class:"Class",
 			modified:"Added",
 			examiner:"Examiner",
-        	vers:"Version",
-            access:"Access",
-        	groups:"Group(s)",
+			vers:"Version",
+			access:"Access",
+			groups:"Group(s)",
 			requestedpasswordchange:"Password"
 		},
 		tblbody: data['entries'],
@@ -599,19 +601,20 @@ function returnedAccess(data) {
 		"accessTable",
 		"filterOptions",
 		"",
-	    renderCell,
-	    renderSortOptions,
-	    renderColumnFilter,
-	    rowFilter,
-	    [],
-	    [],
-	    "",
-	    null,
-	    null,
+		renderCell,
+		renderSortOptions,
+		renderColumnFilter,
+		rowFilter,
+		[],
+		[],
+		"",
+		null,
+		null,
 		highlightOn,
 		highlightOff,
 		null,
-	    null,
+		null,
+		true,
 		true
 	);
 	myTable.renderTable();
@@ -625,43 +628,71 @@ myTable.magicHeader();
 }
 
 function highlightOn(rowid,rowno,colclass,centerel) {
+	var tableCounter = tableName + "_counter";
+	
 	//row highlights
 	var row = document.getElementById(rowid).getElementsByTagName("td");
 	for (var i = 0; i < row.length; i++) {
 			//find the div contained in the cell
-			rowId = row[i].getElementsByClassName("accessTableCell")[0];
+			if(!row[i].classList.contains(tableCounter)) {
+				rowId = row[i].getElementsByClassName(tableCellName)[0];
+			}else {
+				rowId = row[i];
+			}
 			rowId.classList.add("tableRowHighlightning");
 	}
 	
 	//column highlights
 	var collist = document.getElementsByClassName(colclass.split(" ")[0]);
 	for(var i=0;i<collist.length;i++){
-		var column = collist[i].getElementsByClassName("accessTableCell")[0];
+		if(!collist[i].classList.contains(tableCounter)) {
+			var column = collist[i].getElementsByClassName(tableCellName)[0];
+		}else{
+			var column = collist[i];
+		}
 		column.classList.add("tableColHighlightning");
 	}
 	
 	//cell highlight
-	centerel.getElementsByClassName("accessTableCell")[0].classList.add("tableCellHighlightning");
+	if(!centerel.classList.contains(tableCounter)) {
+		centerel.getElementsByClassName(tableCellName)[0].classList.add("tableCellHighlightning");
+	}else{
+		centerel.classList.add("tableCellHighlightning");
+	}
 }
 
 function highlightOff(rowid,rowno,colclass,centerel) {
+	var tableCounter = tableName + "_counter";
+	
 	//row highlight
 	var row = document.getElementById(rowid).getElementsByTagName("td");
 	for (var i = 0; i < row.length; i++) {
 		//find the div contained in the cell
-		rowId = row[i].getElementsByClassName("accessTableCell")[0];
+		if(!row[i].classList.contains(tableCounter)) {
+				rowId = row[i].getElementsByClassName(tableCellName)[0];
+		}else {
+			rowId = row[i];
+		}
 		rowId.classList.remove("tableRowHighlightning");
 	}
 
 	//column highlights
 	var collist = document.getElementsByClassName(colclass.split(" ")[0]);
 	for(var i=0;i<collist.length;i++){
-		var column = collist[i].getElementsByClassName("accessTableCell")[0];
+		if(!collist[i].classList.contains(tableCounter)) {
+			var column = collist[i].getElementsByClassName(tableCellName)[0];
+		}else{
+			column = collist[i];
+		}
 		column.classList.remove("tableColHighlightning");
 	}
 
 	//cell highlight
-	centerel.getElementsByClassName("accessTableCell")[0].classList.remove("tableCellHighlightning");
+	if(!centerel.classList.contains(tableCounter)) {
+		centerel.getElementsByClassName(tableCellName)[0].classList.remove("tableCellHighlightning");
+	}else{
+		centerel.classList.remove("tableCellHighlightning");
+	}
 }
 
 //excuted onclick button for quick searching in table

@@ -2194,6 +2194,10 @@ span.arrow {
   border: 0px;
 }
 
+.resultTable_counter span {
+	margin-left: 5px;
+}
+
 #accessTable td {
 	padding: 0px;
 	border: 0px;
@@ -2210,6 +2214,10 @@ span.arrow {
 	display:table-cell;
 	vertical-align:middle;
 	width:220px; /* used make the table cell <div> exapnd to the parent td */
+}
+
+.accessTable_counter span {
+	margin-left: 5px;
 }
 
 #user td {
