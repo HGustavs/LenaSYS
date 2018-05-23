@@ -85,18 +85,18 @@
                         <div class="toolbar-drawer" id="drawerCreate">
                             <div class="tooltipdialog">
                                 <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Attribute">
-                                    <img id="createButtons" src="../Shared/icons/diagram_create_attribute.svg">
+                                    <img class="createButtons" src="../Shared/icons/diagram_create_attribute.svg">
                                 </button>
                                 <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Entity">
-                                    <img id="createButtons" src="../Shared/icons/diagram_create_entity.svg">
+                                    <img class="createButtons" src="../Shared/icons/diagram_create_entity.svg">
                                 </button>
                             </div>
                             <div class="tooltipdialog">
                                 <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Relation">
-                                    <img id="createButtons" src="../Shared/icons/diagram_create_relation.svg">
+                                    <img class="createButtons" src="../Shared/icons/diagram_create_relation.svg">
                                 </button>
                                 <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Class">
-                                    <img id="createButtons" src="../Shared/icons/diagram_create_class.svg">
+                                    <img class="createButtons" src="../Shared/icons/diagram_create_class.svg">
                                 </button>
                             </div>
                         </div>
