@@ -65,7 +65,7 @@
       <option value=\'#000000\' selected="true">Black</option>
       </select><br>
       <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'attributeType\'); setType(); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>
-      '
+      ';
   }
   //form for classes
   else if($form == 2){
@@ -86,7 +86,7 @@
 
 
       <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'classType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>Ok</button>
-      '
+      ';
   }
   //form for entities
   else if($form == 3){
@@ -148,7 +148,7 @@
       <option value=\'#000000\' selected="true">Black</option>
       </select><br>
       <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'entityType\'); setType(); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>
-      '
+      ';
   }
   //form for figures
   else if($form == 4){
@@ -180,7 +180,7 @@
       Opacity:<br>
       <input type="range" id="figureOpacity" oninput="changeObjectAppearance(\'figureType\');" style="width:100%; margin: -2px; padding: 0px;"><br>
       <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'figureType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>
-      '
+      ';
   }
   //form for global
   else if($form == 5){
@@ -243,7 +243,7 @@
       <input id="line-thickness" onclick=\'globalLineThickness(); hashFunction(); updateGraphics();\' style="width:100%; margin: -2px; padding: 0px;" type="range" min="1" max="5" value="2">
 
       <button type=\'submit\' class=\'submit-button\' onclick="SaveState(); closeAppearanceDialogMenu(); setType(form);" style=\'float: none; display: block; margin: 0px auto;\'>OK</button>
-      '
+      ';
   }
   //form for lines
   else if($form == 6){
@@ -353,7 +353,7 @@
       <option value=\'#000000\' selected="true">Black</option>
       </select><br>
       <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'relationType\'); setType(form); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>
-      '
+      ';
   }
   //form for text
   else if($form == 8){
@@ -392,6 +392,6 @@
       "<option value=\'Large\'>Large</option>
       </select><br>
       <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'textType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>
-      '
+      ';
   }
  ?>

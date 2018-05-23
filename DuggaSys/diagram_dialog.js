@@ -224,7 +224,7 @@ function objectAppearanceMenu(form) {
         loadUMLForm(form, 'diagram_forms.php?form=2');
     }
     else if (diagram[lastSelectedObject].symbolkind == 2) {
-        loadFormIntoElement(form, 'attribute_appearance.php?form=1');
+        loadFormIntoElement(form, 'diagram_forms.php?form=1');
     }
     else if (diagram[lastSelectedObject].symbolkind == 3) {
         loadFormIntoElement(form, 'diagram_forms.php?form=3');
