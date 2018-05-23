@@ -71,18 +71,14 @@
   else if($form == 2){
       echo'Class name: </br>
       <input onkeyup="changeObjectAppearance(\'classType\');" id=\'nametext\' type=\'text\'></br>
-      <!--<select onclick="changeObjectAppearance(\'lineType\');" id=\'object_type\'>
-      <option value=\'normal\'>Normal</option>
-      </select></br>-->
-      <!--setType();-->
-      Attributes:
+      Attributes:<br>
 
-      <textarea id="UMLAttributes" class="UMLTextarea" style="height:100px; resize=\'none\'"></textarea>
+      <textarea id="UMLAttributes" class="UMLTextarea" style="height:100px; resize=none"></textarea><br>
 
 
-      Operations:
+      Operations:<br>
 
-      <textarea id="UMLOperations" class="UMLTextarea" style="height:100px; resize=\'none\'"></textarea>
+      <textarea id="UMLOperations" class="UMLTextarea" style="height:100px; resize=none"></textarea><br>
 
 
       <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'classType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>Ok</button>
