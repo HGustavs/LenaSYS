@@ -389,7 +389,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	foreach($result as $row){
 	// Adds current student to array
 		// Gets the users groups
-		$stmt = $pdo->prepare("SELECT user_group.groupID FROM user_group, groups WHERE userID=:uid AND groups.courseID=:cid AND groups.vers=:vers");
+		$stmt = $pdo->prepare("SELECT groups.vers, user_group.groupID FROM user_group, groups WHERE groups.groupID=user_group.groupID AND user_group.userID=:uid AND groups.courseID=:cid AND groups.vers=:vers");
 		$stmt->bindParam(":uid", $row['uid']);
 		$stmt->bindParam(":vers", $row['vers']);
 		$stmt->bindParam(":cid", $cid);
@@ -408,7 +408,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			'examiner' => json_encode(['examiners' => $examiners]),
 			'vers' => json_encode(['vers' => $row['vers'], 'uid' => $row['uid']]),
 			'access' => json_encode(['access' => $row['access'], 'uid' => $row['uid']]),
-			'groups' => json_encode($grps),
+			'groups' => json_encode(['vers' => $row['vers'], 'user_groups' =>  $grps]),
 			'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid']])
 		);
 		array_push($entries, $entry);
@@ -471,15 +471,14 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	// get all groups
-	$query = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid AND vers=:vers");
+	$query = $pdo->prepare("SELECT vers, groupID, groupName FROM groups WHERE courseID=:cid");
 	$query->bindParam(':cid', $cid);
-	$query->bindParam(':vers', $coursevers);
 
 	if (!$query->execute()) {
 		$error = $query->errorInfo();
 		$debug="Error while getting groups " . $error[2];
 	} else {
-		$groups = $query->fetchAll(PDO::FETCH_ASSOC);
+		$groups = $query->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
 	}
 }
 

@@ -391,8 +391,8 @@ function renderCell(col,celldata,cellid) {
 		str = '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
 		str += '<select><option>Välj grupper</option></select><div class="overSelect"></div></div><div id="checkboxes">';
 
-		groups.forEach(group => {
-			if (userGroups.length && checkUserGroup(group.groupID, userGroups)) {
+		groups[userGroups.vers].forEach(group => {
+			if (userGroups.user_groups.length && checkUserGroup(group.groupID, userGroups.user_groups)) {
 				str += '<label><input type="checkbox" checked name="'+group.groupID+'" id="'+group.groupID+'" onclick="changeGroup('+obj.uid+','+group.groupID+')"/>'+group.groupName+'</label>';
 			} else {
 				str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'" onclick="changeGroup('+obj.uid+','+group.groupID+')"/>'+group.groupName+'</label>';
@@ -406,7 +406,12 @@ function renderCell(col,celldata,cellid) {
     return celldata;
 }
 
-// Check if the user exist in the group
+/**
+ * Check if the user is in the active group
+ * 
+ * @param {ID of group} grpID 
+ * @param {ARRAY of usersactive groups} usrGrp 
+ */
 function checkUserGroup(grpID, usrGrp) {
 	for(var i = 0; i < usrGrp.length; i++) {
 		if (usrGrp[i].groupID == grpID) {
@@ -520,6 +525,7 @@ var myTable;
 function returnedAccess(data) {
   fillResponsibleOptions(data.responsibles);
 	filez = data;
+
 	var tabledata = {
 		tblhead:{
 			username:"User",
