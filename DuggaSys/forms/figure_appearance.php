@@ -1,5 +1,6 @@
 Fill color:<br>
 <select onchange="changeObjectAppearance('figureType');" id='figureFillColor'>
+    <option value='noFill'>No Fill</option>
     <option value='#64B5F6'>Blue</option>
     <option value='#81C784'>Green</option>
     <option value='#e6e6e6'>Grey</option>
@@ -21,5 +22,7 @@ Line color:<br>
     <option value='#BA68C8'>Purple</option>
     <option value='#ffffff'>White</option>
     <option value='#000000'>Black</option>
-    </select><br>
+</select><br>
+Opacity:<br>
+<input type="range" id="figureOpacity" onchange="changeObjectAppearance('figureType');" style="width:100%; margin: -2px; padding: 0px;"><br>
 <button type='submit' class='submit-button' onclick="changeObjectAppearance('figureType'); closeAppearanceDialogMenu();" style='float: none; display: block; margin: 10px auto;'>OK</button>

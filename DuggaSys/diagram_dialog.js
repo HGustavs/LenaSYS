@@ -97,6 +97,7 @@ function loadFormIntoElement(element, dir){
         setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
       }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1){
         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
+        document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
         setSelectedOption('figureLineColor',  diagram[lastSelectedObject].strokeColor);
 
       }
@@ -264,6 +265,7 @@ function changeObjectAppearance(object_type){
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
     } else if (diagram[lastSelectedObject].kind == 1){
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
+        diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
         diagram[lastSelectedObject].strokeColor = document.getElementById('figureLineColor').value;
     } else if (diagram[lastSelectedObject].symbolkind == 6) {
         diagram[lastSelectedObject].textLines = [];
