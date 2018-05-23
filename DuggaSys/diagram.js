@@ -864,15 +864,14 @@ function eraseSelectedObject() {
         showMenu().innerHTML = "No item selected<type='text'>";
         $(".loginBox").draggable();
     }
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].targeted == true) {
-            diagram[i].targeted = false;
-            eraseObject(diagram[i]);
-            i = -1;
-            //To avoid removing the same index twice, lastSelectedObject is reset
-            lastSelectedObject = -1;
+    for(var i = 0; i < selected_objects.length; i++){
+        if(selected_objects[i].targeted){
+            selected_objects[i].targeted = false;
+            eraseObject(selected_objects[i]);
         }
     }
+    selected_objects = [];
+    lastSelectedObject = -1;
     updateGraphics();
 }
 
