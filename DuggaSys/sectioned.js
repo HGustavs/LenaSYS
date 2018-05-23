@@ -2304,6 +2304,7 @@ function drawSwimlanes(){
 	y = 60;
 	for (var i = 0; i < retdata['entries'].length; i++){
 		var item = retdata['entries'][i];
+		var result = retdata['results'][i];
 		var testStartDate;
 
 		if (item['qrelease'] == null){
@@ -2321,15 +2322,18 @@ function drawSwimlanes(){
 
 		if (item['kind'] == 3){
 			y += 5;
-				/*if( == 0) {
-		      ctxWeeks.fillStyle = colors['passedQuizes'];
-		    } else if( == 1) {
-		      ctxWeeks.fillStyle = colors['notGradedQuizes'];
-		    } else if( == 2) {
-		      ctxWeeks.fillStyle = colors['failedQuizes'];
-		    } else {
-		      ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
-		    }
+			/*for (var j = 0; j < result.length; j++){
+				if (item['lid'] == result['moment']){
+					if(result['grade'] == 0) {
+			      ctxWeeks.fillStyle = colors['passedQuizes'];
+			    } else if(result['grade'] == 1) {
+			      ctxWeeks.fillStyle = colors['notGradedQuizes'];
+			    } else if(result['grade'] == 2) {
+			      ctxWeeks.fillStyle = colors['failedQuizes'];
+			    }
+				} else {
+					ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
+				}
 			}*/
 
 			ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
