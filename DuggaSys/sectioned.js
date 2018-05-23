@@ -975,29 +975,23 @@ function returnedSection(data) {
 		+ "text-orientation: upright;'>Statistics</span>"
 		+ "</div></div>"
 		+ "<div class='statisticsContent' style='display: inline-block;'>";
-
-		//Piechart.
-		/* The next div is a container div containing a description of the swim lanes
-		   and a pie chart giving an overview of course progress by a student. */
 		str+="<div id='statisticsPie'>";
-		str+="<canvas id='pieChart' width='385px' height='200px' style='margin: 10px 10px;'></canvas>"; // Contains pie chart.
-		// str+="<div><p>Swim lane description</p></div>";
-
+		str+="<canvas id='pieChart' width='250px' height='255px' style='margin: 10px 10px;'></canvas>"; // Contains pie chart.
 		str+="</div>";
 		str	+="<div id='deadlineInfoBox' style='display: inline-block;"
-			+" padding: 10px; width: 250px;'> ";
-		str +="<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>"
-		str +="<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
+		+ " padding: 10px; width: 250px;'> ";
+		str += "<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>"
+		str += "<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
 		+ "<span id='deadlineInfoFirstDate' style='margin-right:5px;width:35px;'></span></div>"
-		str +="<div class='deadlineInfo'><span style='width: 100%;' id='deadlineInfoSecondText'> </span>"
-		+ "<span id='deadlineInfoSecondDate' style='margin-right:5px;width: 35px;'> </span> </div>"
-		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoThirdText'> </span>"
-		+ "<span id='deadlineInfoThirdDate' style='margin-right:5px;width: 35px;'> </span> </div>"
-		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFourthText'> </span>"
-		+ "<span id='deadlineInfoFourthDate' style='margin-right:5px;width: 35px;'> </span> </div>"
-		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFifthText'> </span>"
-		+ "<span id='deadlineInfoFifthDate' style='margin-right:5px;width:35px;'> </span> </div>"
-		str+="</div>";
+		str += "<div class='deadlineInfo'><span style='width: 100%;' id='deadlineInfoSecondText'></span>"
+		+ "<span id='deadlineInfoSecondDate' style='margin-right:5px;width: 35px;'></span></div>"
+		str += "<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoThirdText'></span>"
+		+ "<span id='deadlineInfoThirdDate' style='margin-right:5px;width: 35px;'></span></div>"
+		str += "<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFourthText'></span>"
+		+ "<span id='deadlineInfoFourthDate' style='margin-right:5px;width: 35px;'></span></div>"
+		str += "<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFifthText'></span>"
+		+ "<span id='deadlineInfoFifthDate' style='margin-right:5px;width:35px;'></span></div>"
+		str += "</div>";
 		str +=  "</div></div>"; // closing div for statisticsContent
 		str += "<div id='Sectionlistc'>";
 
@@ -1932,7 +1926,7 @@ function drawPieChart() {
 	var c = document.getElementById('pieChart');
 	var ctx = c.getContext('2d');
 	var width = c.width;
-	var height = c.height;
+	var height = 200;
 	var pieChartRadius = height / 2;
 	var overviewBlockSize = 11;
 
@@ -1993,6 +1987,9 @@ var colors = {
 	'notSubmittedQuizes': '#BDBDBD'   // Grey
 }
 
+ctx.save();
+ctx.translate(25, 0);
+
 for (var i = 0; i < testsData.length; i++) {
 
 	if(i == 0) {
@@ -2019,30 +2016,40 @@ for (var i = 0; i < testsData.length; i++) {
 		lastend += Math.PI * 2 * (testsData[i] / totalQuizes);
 	}
 
+	ctx.restore();
 	// Pie chart overview
 	ctx.save();
-	ctx.translate(pieChartRadius*2 + 30, 120);
+	ctx.translate(10, 220);
 
 	ctx.fillStyle = colors['passedQuizes'];
 	ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
 
-	ctx.fillStyle = colors['notGradedQuizes'];
-	ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
-
 	ctx.fillStyle = colors['failedQuizes'];
-	ctx.fillRect(0, 40, overviewBlockSize, overviewBlockSize);
-
-	ctx.fillStyle = colors['notSubmittedQuizes'];
-	ctx.fillRect(0, 60, overviewBlockSize, overviewBlockSize);
+	ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
 
 	ctx.font = "12px Arial";
 	ctx.fillStyle = "#000";
 
 	ctx.translate(20, 10);
 	ctx.fillText("Passed (" + passedPCT + "%)", 0, 0);
-	ctx.fillText("Not Graded (" + notGradedPCT + "%)", 0, 20);
-	ctx.fillText("Failed (" + failedPCT + "%)", 0, 40);
-	ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 0, 60);
+	ctx.fillText("Failed (" + failedPCT + "%)", 0, 20);
+
+	ctx.restore();
+
+	ctx.save();
+	ctx.translate(110, 190);
+
+	ctx.fillStyle = colors['notGradedQuizes'];
+	ctx.fillRect(0, 30, overviewBlockSize, overviewBlockSize);
+
+	ctx.fillStyle = colors['notSubmittedQuizes'];
+	ctx.fillRect(0, 50, overviewBlockSize, overviewBlockSize);
+
+	ctx.font = "12px Arial";
+	ctx.fillStyle = "#000";
+
+	ctx.fillText("Not Graded (" + notGradedPCT + "%)", 20, 40);
+	ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 20, 60);
 
 	ctx.restore();
 }
