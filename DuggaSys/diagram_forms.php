@@ -73,12 +73,12 @@
       <input onkeyup="changeObjectAppearance(\'classType\');" id=\'nametext\' type=\'text\'></br>
       Attributes:<br>
 
-      <textarea id="UMLAttributes" class="UMLTextarea" style="height:100px; resize=none"></textarea><br>
+      <textarea id="UMLAttributes" class="UMLTextarea" style="height:100px; resize:none"></textarea><br>
 
 
       Operations:<br>
 
-      <textarea id="UMLOperations" class="UMLTextarea" style="height:100px; resize=none"></textarea><br>
+      <textarea id="UMLOperations" class="UMLTextarea" style="height:100px; resize:none"></textarea><br>
 
 
       <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'classType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>Ok</button>
