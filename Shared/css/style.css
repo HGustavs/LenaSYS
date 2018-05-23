@@ -3187,6 +3187,7 @@ ul.hamburgerList button.menuButton {
     height: 30px;
     width: 80%;
     margin: auto;
+    margin-top:20px;
     min-width: 1050px;
 }
 .fileLink-editor, .fileLink-trashcan, .fileLink-uploaddate, .fileLink-filesize, .fileLink-kind, .fileLink-extension{
@@ -3206,6 +3207,7 @@ only screen and (max-device-width: 1085px) {
         height:130px;
         width: 100%;
         margin:0;
+        margin-top: 0px;
         min-width: 375px;
     }
     #fileLink{
