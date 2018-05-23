@@ -35,34 +35,36 @@ pdoConnect();
 		<div class='titles' style='padding-top:10px;'>
 			<h1 style='flex:1;text-align:center;'>Files</h1>
 		</div>
-		<div id="sortingBar">
-			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="All" checked onclick="count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
-				<label name="sortAll">All files</label>
-			</div>
-			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="Global" onclick="count=0;searchterm='kind::global';searchKeyUp(event);fileLink.renderTable();"/>
-				<label name="sortGlobal">Global</label>
-			</div>
-			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="CourseLocal" onclick="count=0;searchterm='kind::course';searchKeyUp(event);fileLink.renderTable();"/>
-				<label name="sortCLocal">Course local</label>
-			</div>
-			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="VersionLocal" onclick="count=0;searchterm='kind::version';searchKeyUp(event);fileLink.renderTable();"/>
-				<label name="sortVLocal">Version local</label>
-			</div>
-			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="Links" onclick="count=0;searchterm='kind::link';searchKeyUp(event);fileLink.renderTable();"/>
-				<label name="sortLinks">Links</label>
-			</div>
-		</div>
-		<div id="searchBar">
-			<input id="searchinput" type="text" name="search" placeholder="Search.." onkeyup="searchterm=document.getElementById('searchinput').value;searchKeyUp(event);fileLink.renderTable();">
-			<button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
-				<img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
-			</button>
-		</div>
+        <div id="sortingDiv">
+            <div id="sortingBar">
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="All" checked onclick="count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortAll">All files</label>
+                </div>
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="Global" onclick="count=0;searchterm='kind::global';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortGlobal">Global</label>
+                </div>
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="CourseLocal" onclick="count=0;searchterm='kind::course';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortCLocal">Course local</label>
+                </div>
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="VersionLocal" onclick="count=0;searchterm='kind::version';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortVLocal">Version local</label>
+                </div>
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="Links" onclick="count=0;searchterm='kind::link';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortLinks">Links</label>
+                </div>
+            </div>
+            <div id="searchBar">
+                <input id="searchinput" type="text" name="search" placeholder="Search.." onkeyup="searchterm=document.getElementById('searchinput').value;searchKeyUp(event);fileLink.renderTable();">
+                <button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
+                    <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
+                </button>
+            </div>
+        </div>
 		<div id="fileLink" style='width:100%;margin-bottom: 30px;'></div>
 		<!-- content END -->
 
@@ -131,7 +133,7 @@ pdoConnect();
                         <span id="img" onclick="externalImg()" title="Img"><img id="insert-photo" class="fab-icon"
                                                                                 src="../Shared/icons/insert-photo.svg"></span>
                         <span class="headerType" title="Header">aA&#9663;</span>
-                        <div id="select-header">
+                        <div class="selectHeader" id="select-header">
                             <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
                             <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
                             <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>

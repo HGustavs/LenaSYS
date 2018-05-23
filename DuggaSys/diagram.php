@@ -84,23 +84,19 @@
                         <h4 class="label tlabel" id="labelCreate">Create</h4>
                         <div class="toolbar-drawer" id="drawerCreate">
                             <div class="tooltipdialog">
-                                <button id='attributebutton' onclick='setMode("CreateERAttr");' class='buttonsStyle unpressed' data="Create Attribute">
-                                    <img src="../Shared/icons/diagram_create_attribute.svg">
+                                <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Attribute">
+                                    <img id="createButtons" src="../Shared/icons/diagram_create_attribute.svg">
+                                </button>
+                                <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Entity">
+                                    <img id="createButtons" src="../Shared/icons/diagram_create_entity.svg">
                                 </button>
                             </div>
                             <div class="tooltipdialog">
-                                <button id='entitybutton' onclick='setMode("CreateEREntity");' class='buttonsStyle unpressed' data="Create Entity">
-                                    <img src="../Shared/icons/diagram_create_entity.svg">
+                                <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Relation">
+                                    <img id="createButtons" src="../Shared/icons/diagram_create_relation.svg">
                                 </button>
-                            </div>
-                            <div class="tooltipdialog">
-                                <button id='relationbutton' onclick='setMode("CreateERRelation");' class='buttonsStyle unpressed' data="Create Relation">
-                                    <img src="../Shared/icons/diagram_create_relation.svg">
-                                </button>
-                            </div>
-                            <div class="tooltipdialog">
-                                <button id='classbutton' onclick='setMode("CreateClass");' class='buttonsStyle unpressed' data="Create Class">
-                                    <img src="../Shared/icons/diagram_create_class.svg">
+                                <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Class">
+                                    <img id="createButtons" src="../Shared/icons/diagram_create_class.svg">
                                 </button>
                             </div>
                         </div>
@@ -181,19 +177,15 @@
                         <div class="drop-down-divider">
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick='lockSelected()'>Lock/Unlock selected</a>
-                        </div>
-                        <div class="drop-down-divider">
-                        </div>
-                        <div class="drop-down-item">
                             <a href="#" onclick='globalAppearanceMenu();'>Global Appearance</a>
-                        </div>
-                        <div class="drop-down-divider">
                         </div>
                          <div class="drop-down-item">
                             <a href="#" onclick='openAppearanceDialogMenu();'>Change Appearance</a>
                         </div>
                         <div class="drop-down-divider">
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick='lockSelected()'>Lock/Unlock selected</a>
                         </div>
                          <div class="drop-down-item">
                             <a href="#" onclick='eraseSelectedObject();'>Delete Object</a>

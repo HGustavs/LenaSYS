@@ -12,9 +12,9 @@ function Path() {
     this.intarr = Array();          // Intersection list (one list per segment)
     this.tmplist = Array();         // Temporary list for testing of intersections
     this.auxlist = Array();         // Auxillary temp list for testing of intersections
-    this.fillColor = '#ffffff';        // Fill color (default is white)
+    this.fillColor = '#ffffff';     // Fill color (default is white)
+    this.opacity = 1;             // Opacity valuefor figures
     this.strokeColor = '#000000';      // Stroke color (default is black)
-    this.Opacity = 1;               // Opacity (default is 100%)
     this.lineWidth = 2;             // Line Width (stroke width - default is 2 pixels)
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
     this.targeted = true;                    // An organized path can contain several sub-path, each of which must be organized
@@ -112,9 +112,15 @@ function Path() {
         }
         if (this.segments.length > 0) {
             // Assign stroke style, color, transparency etc
+            var shouldFill = true;
+
+            if(this.fillColor == "noFill"){
+              shouldFill = false;
+            }
+
             ctx.strokeStyle = this.targeted ? "#F82" : this.strokeColor;
             ctx.fillStyle = this.fillColor;
-            ctx.globalAlpha = this.Opacity;
+            ctx.globalAlpha = this.opacity;
             ctx.lineWidth = this.lineWidth;
 
             ctx.beginPath();
@@ -138,9 +144,12 @@ function Path() {
                 ctx.shadowOffsetX = 3;
                 ctx.shadowOffsetY = 6;
                 ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
-                ctx.fill();
+                if(shouldFill) ctx.fill();
                 ctx.restore();
             }
+            // Reset opacity so that following draw operations are unaffected
+            ctx.globalAlpha = 1.0;
+            
             if (strokestate) {
                 ctx.stroke();
             }
@@ -160,8 +169,6 @@ function Path() {
                     ctx.fill();
                 }
             }
-            // Reset opacity so that following draw operations are unaffected
-            ctx.globalAlpha = 1.0;
         }
     }
 

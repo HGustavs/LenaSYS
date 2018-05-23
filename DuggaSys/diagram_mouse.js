@@ -267,6 +267,7 @@ function mousedownevt(ev) {
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
             }
+            lastSelectedObject = -1;
             selected_objects = [];
         }
         if(uimode == "CreateFigure" && figureType == "Square"){
@@ -309,6 +310,8 @@ function handleSelect() {
                 selected_objects.splice(index, 1);
             }
             last.targeted = false;
+            //when deselecting object, set lastSelectedObject to index of last object in selected_objects
+            lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length-1]);
         }
     }
 }
@@ -505,6 +508,7 @@ function doubleclick(ev) {
 function createText(posX, posY) {
     var text = new Symbol(6);
     text.name = "New Text" + diagram.length;
+    text.textLines.push({text:text.name});
 
     var length  = ctx.measureText(text.name).width + 20;
     var fontsize = text.getFontsize();

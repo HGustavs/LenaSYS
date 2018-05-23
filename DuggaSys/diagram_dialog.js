@@ -32,6 +32,7 @@ function closeAppearanceDialogMenu() {
      $(".loginBox").draggable('destroy');
     appearanceMenuOpen = false;
     classAppearanceOpen = false;
+    textAppearanceOpen = false;
     globalAppearanceValue = 0;
     hashFunction();
     $("#appearance").hide();
@@ -58,7 +59,7 @@ function clickEnterOnDialogMenu(ev) {
      */
     $(document).keypress(function (ev) {
         var container = $("#appearance");
-        if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen) {
+        if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
             globalAppearanceValue = 0;
             closeAppearanceDialogMenu();
             // Is called in the separate appearance php-files at the buttons.
@@ -96,8 +97,9 @@ function loadFormIntoElement(element, dir){
         setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
       }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1){
         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
+        document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
         setSelectedOption('figureLineColor',  diagram[lastSelectedObject].strokeColor);
-      
+
       }
     }
   }
@@ -163,7 +165,13 @@ function loadTextForm(element, dir){
     if(file.readyState === 4){
       element.innerHTML = file.responseText;
       if(globalAppearanceValue == 0){
-        document.getElementById('nametext').value = diagram[lastSelectedObject].name;
+        var text = "";
+        var textarea = document.getElementById('freeText');
+        for (var i = 0; i < diagram[lastSelectedObject].textLines.length; i++) {
+            text += diagram[lastSelectedObject].textLines[i].text;
+            if (i < diagram[lastSelectedObject].textLines.length - 1) text += "\n";
+        }
+        textarea.value = text;
         setSelectedOption('font', diagram[lastSelectedObject].font);
         setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
         setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
@@ -227,6 +235,7 @@ function objectAppearanceMenu(form) {
         loadFormIntoElement(form, 'forms/relation_appearance.php');
     }
     if (diagram[lastSelectedObject].symbolkind == 6) {
+        textAppearanceOpen = true;
         loadTextForm(form, 'forms/text_appearance.php');
     }
     if (diagram[lastSelectedObject].kind == 1) {
@@ -256,9 +265,14 @@ function changeObjectAppearance(object_type){
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
     } else if (diagram[lastSelectedObject].kind == 1){
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
+        diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
         diagram[lastSelectedObject].strokeColor = document.getElementById('figureLineColor').value;
     } else if (diagram[lastSelectedObject].symbolkind == 6) {
-        diagram[lastSelectedObject].name = document.getElementById('nametext').value;
+        diagram[lastSelectedObject].textLines = [];
+        var textArray = $('#freeText').val().split('\n');
+        for(var i = 0; i < textArray.length; i++){
+          diagram[lastSelectedObject].textLines.push({text:textArray[i]});
+        }
         diagram[lastSelectedObject].fontColor = document.getElementById('fontColor').value;
         diagram[lastSelectedObject].font = document.getElementById('font').value;
         diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;

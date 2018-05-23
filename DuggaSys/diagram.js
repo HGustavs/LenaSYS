@@ -383,7 +383,7 @@ var diagram = [];
 diagram.closestPoint = function(mx, my){
     var distance = 50000000;
     var point;
-    this.filter(symbol => symbol.kind != 1).forEach(symbol => {
+    this.filter(symbol => symbol.kind != 1 && symbol.symbolkind != 6).forEach(symbol => {
         [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
             var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
             var deltaY = corner.fake ? my - corner.y.y : my - corner.y;
@@ -860,6 +860,10 @@ function eraseObject(object) {
 function eraseSelectedObject() {
     canvas.style.cursor = "default";
     //Issue: Need to remove the crosses
+    if(!diagram[lastSelectedObject]){
+        showMenu().innerHTML = "No item selected<type='text'>";
+        $(".loginBox").draggable();
+    }
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].targeted == true) {
             diagram[i].targeted = false;
