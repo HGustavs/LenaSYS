@@ -160,15 +160,20 @@ function keyDownHandler(e){
       ctrlIsClicked = true;
     }
     else if(key == 27){
-      if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
+      cancelFreeDraw();
+    }
+
+}
+
+function cancelFreeDraw(){
+    if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
         for (var i = 0; i < numberOfPointsInFigure; i++) {
             diagram.pop();
         }
         cleanUp();
+        md = 0; //Prevents the dashed line box, when drawing a square, to appear immediately
         updateGraphics();
       }
-    }
-
 }
 
 function fillCloneArray(){
@@ -877,6 +882,9 @@ function setMode(mode){ //"CreateClass" yet to be implemented in .php
     uimode = mode;
     if(mode == 'Square' || mode == 'Free') {
       uimode = "CreateFigure";
+      if(figureType == "Free"){
+          cancelFreeDraw();
+      }
       figureType = mode;
     }
 }
