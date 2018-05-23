@@ -413,7 +413,7 @@ function renderCell(col,celldata,cellid) {
 		var groups = filez['groups'];
 
 		str = '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
-		str += '<select><option>Välj grupper</option></select><div class="overSelect"></div></div><div id="checkboxes">';
+		str += '<select><option>Select groups</option></select><div class="overSelect"></div></div><div id="checkboxes">';
 		groups.forEach(group => {
 			str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'"/>'+group.groupName+'</label>';
 		});
