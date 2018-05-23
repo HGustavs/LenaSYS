@@ -114,10 +114,10 @@
                         </div>
                         <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
                         <div class="toolbar-drawer" id="drawerUndo" style="text-align: center">
-                            <button class="diagramAction" id="undoButton" onclick='undoDiagram()'>
+                            <button class="diagramAction" id="undoButton" onclick='undoDiagram()' data="Undo">
                                 <img src="../Shared/icons/undo.svg" style="filter: invert(100%);">
                             </button>
-                            <button class="diagramAction" id="redoButton" onclick='redoDiagram()'>
+                            <button class="diagramAction" id="redoButton" onclick='redoDiagram()' data="Redo">
                                 <img src="../Shared/icons/redo.svg" style="filter: invert(100%);">
                             </button>
                         </div>
