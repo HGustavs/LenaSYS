@@ -210,10 +210,10 @@ function renderCell(col,celldata,cellid) {
 	} else if (col == "filename") {
 		obj = JSON.parse(celldata);
 		if (obj.kind == "Link") {
-			return "<a href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
+			return "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
 		} else {
 
-			return "<span id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+obj.filename+"\")'>" + obj.shortfilename + "</span>";
+			return "<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+obj.filename+"\")'>" + obj.shortfilename + "</span>";
 		}
 	} else if (col == "filesize") {
         var obj = JSON.parse(celldata);
