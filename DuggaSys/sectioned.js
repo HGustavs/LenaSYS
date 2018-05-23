@@ -534,7 +534,7 @@ function newItem() {
 			comment: comment
 		}, "SECTION");
 	$("#editSection").css("display", "none");
-	scrollToBottom(); // Scroll to the bottom to show newly created items.
+	setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
 }
 
 function closeSelect() {
@@ -881,8 +881,8 @@ function returnedSection(data) {
 			str += "</tr></table>";
 
 			str += "<div class='fixed-action-button'>"
-			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onmouseover='openFabMenu();' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
-			str += "<ol class='fab-btn-list' onmouseover='resetHoverTimer();'; style='margin: 0; padding: 0; display: none;' reversed>"
+			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>"
+			str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
 
 			//Heading button
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='fabValidateType(\"0\");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
@@ -1828,38 +1828,9 @@ function toggleFabButton() {
 	}
 }
 
-function openFabMenu(){
-	$('.fab-btn-list').fadeIn(0);
-	$('.fab-btn-sm').removeClass('scale-out');
-}
-
-function resetHoverTimer(){
-	clearTimeout(hoverMenuTimer);
-	startTimerAgain();
-}
-
-function checkIfCloseFabMenu(){
-	var elements = document.querySelectorAll(":hover"); // last element will be the element that the mouse is hovering on
-	if(findAncestor(elements[elements.length-1], "fixed-action-button") == null){
-		closeFabMenu();
-	}
-	startTimerAgain();
-}
-
-function startTimerAgain(){
-	hoverMenuTimer = window.setTimeout(function(){
-		checkIfCloseFabMenu();
-	}, 2500);
-}
-
 function createQuickItem(){
 	selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined");
 	newItem();
-}
-
-function closeFabMenu(){
-	$('.fab-btn-sm').addClass('scale-out');
-	$('.fab-btn-list').delay(100).fadeOut(0);
 }
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
@@ -2134,10 +2105,6 @@ $(document).ready(function () {
 	$(document).on('click', '#dorf', function (e) {
 		e.stopPropagation();
 	});
-
-	hoverMenuTimer = window.setTimeout(function(){
-		checkIfCloseFabMenu();
-	}, 25);
 });
 
 $(window).load(function () {
@@ -2191,19 +2158,10 @@ $(document).mousedown(function (e) {
 });
 
 $(document).mouseup(function (e) {
-	// Click outside the FAB list
-	if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target) // if the target of the click isn't the container...
-		&& $('.fixed-action-button').has(e.target).length === 0) // ... nor a descendant of the container
-	{
-		if (!$('.fab-btn-sm').hasClass('scale-out')) {
-			$('.fab-btn-sm').toggleClass('scale-out');
-			$('.fab-btn-list').delay(100).fadeOut(0);
-		}
 
-	}
 
 	// Click outside the loginBox
-	else if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
+	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
 		&& $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
 		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
 	{
@@ -2227,3 +2185,55 @@ function scrollToBottom() {
 	var scrollingElement = (document.scrollingElement || document.body)
 	scrollingElement.scrollTop = scrollingElement.scrollHeight;
 }
+
+
+$(document).mousedown(function(e) {
+	// If the fab list is visible, there should be no timeout to toggle the list
+	if ($('.fab-btn-list').is(':visible')) {
+		if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) {
+			toggleFabButton();
+    	}
+	} else {
+        if (e.target.id == "fabBtn") {
+			pressTimer = window.setTimeout(function() {
+				toggleFabButton();
+			}, 200);
+		}
+	}
+}).mouseup(function(e) {
+	// A quick item should be created on
+	// a "fast click" if the fab list isn't visible
+	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
+			clearTimeout(pressTimer);
+			createQuickItem();
+           
+    }// Click outside the FAB list
+    else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) { // if the target of the click isn't the container...
+        toggleFabButton();
+	}
+}).on("touchstart", function(e){
+    // If the fab list is visible, there should be no timeout to toggle the list
+	if ($('.fab-btn-list').is(':visible')) {
+        //toggleFabButton();
+        
+	} else {
+        if (e.target.id == "fabBtn") {
+			pressTimer = window.setTimeout(function() {
+				toggleFabButton();
+                
+			}, 200);
+            return false;
+		}
+	}
+}).on("touchend", function(e){
+    //abrupts and clears the timer for touchstart when the user lets go of the fab
+    // The "Add Course Local File" popup should appear on
+	// a "fast click" if the fab list isn't visible
+	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
+			clearTimeout(pressTimer);
+			createQuickItem();
+           return false;
+    }// Click outside the FAB list
+    
+    
+});
