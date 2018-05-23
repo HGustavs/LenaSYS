@@ -374,7 +374,7 @@ if($cvisibility){
 						'deadline'=> $row['deadline'],
 						'qrelease' => $row['qrelease'],
 						'comments' => $row['comments'],
-						'qstart' => $row['qstart'],
+						'qstart' => $row['qstart']
 					)
 				);
 		}
