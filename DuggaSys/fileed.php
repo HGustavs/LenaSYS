@@ -126,7 +126,8 @@ pdoConnect();
                         <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
                         <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
                         <span id="codeBlockText" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
-                        <span id="lists" onclick="lists()" title="lists">&#9711;</span>
+                        <span id="lists" onclick="lists()" title="lists"><img id="listSymbol" class="fab-icon"
+                                                                                src="../Shared/icons/list-symbol.svg"></span>
                         <span id="quoteText" onclick="quoteText()" title="quote">&#10078;</span>
                         <span id="linkz" onclick="linkText()" title="link"><img id="linkFabBtnImgPrev" class="fab-icon"
                                                                                 src="../Shared/icons/link-icon.svg"></span>

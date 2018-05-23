@@ -536,7 +536,12 @@ function headerVal6() {
 }
 
 function lists(){
-    $('#mrkdwntxt').val($('#mrkdwntxt').val() + '* ');
+    this.setCarotPosition();
+    var finText = txtarea.value.substring(0, start) + '* ' + sel + '' + txtarea.value.substring(end);
+    txtarea.value = finText;
+    txtarea.focus();
+    txtarea.selectionEnd = end +2;
+    updatePreview(txtarea.value);
 }
 
 function codeBlockText(){

@@ -4110,11 +4110,10 @@ textarea#mrkdwntxt {
 #lists {
   cursor: pointer;
   color: #FFFFFF;
-  margin-left: 11.75%;
+  margin-left: 9.75%;
   font-size: 12px;
   position: absolute;
-  filter: invert(100%);
-  margin-top: 0%;
+  margin-top: -3px;
 }
 #codeBlockText {
     cursor: pointer;
