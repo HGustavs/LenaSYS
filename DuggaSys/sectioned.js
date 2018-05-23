@@ -730,8 +730,6 @@ function goToVersion(selected) {
 function accessCourse() {
 	var coursevers = $("#course-coursevers").text();
 	window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
-	resetinputs();
-	//resets all inputs
 }
 
 //----------------------------------------
