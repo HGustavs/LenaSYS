@@ -2186,12 +2186,6 @@ function drawSwimlanes(){
 		'momentsOdd': '#ededed'							// Light gray
  	}
 
-	swimMoments.width = 100;
-	swimMoments.height = 270;	// Should be dynamic depending on how many moments there are and a moments size is depending on how many tests there are in a momeent.
-
-	swimWeeks.width = 350;	// Depends on how many weeks a course is, weeks*35px (one day is 5px).
-	swimWeeks.height = 270;	// Depends on the height needed for the swimMoments.
-
 	var startdate = new Date(retdata['startdate']);
 	var enddate = new Date(retdata['enddate']);
 	var weekLength = weeksBetween(startdate, enddate);
@@ -2214,12 +2208,12 @@ function drawSwimlanes(){
 		}
 	}
 
-	//	Dynamin width and heigt for the canvases, depending on how many weeks a
+	swimMoments.width = 100;
+	//	Dynamic width and height for the canvases, depending on how many weeks a
 	//	course is and how many moments exist in the course.
 	if(numberOfMoments != 0){ // Dynamic height, depending on number of moments
-		swimMoments.height = 60 + (30 * numberOfMoments); // 60 is height of the Weeks/Moments thingy
-
 		//	Need to check how many moments and tests there are in total, (totalNumberOfTests * 15px) + (totalNumberOfMoments * 5px).
+		swimMoments.height = 60 + (30 * numberOfMoments); // 60 is height of the Weeks/Moments thingy
 		swimWeeks.height = swimMoments.height;
 	}
 
