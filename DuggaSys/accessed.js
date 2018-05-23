@@ -20,6 +20,13 @@ function setup()
   filt+="<div id='filterOptions'></div>"
 	filt+="</div>";
 	filt+="</span></td>";
+  
+  filt+="<td id='sort' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
+  filt+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+  filt+="<div id='dropdowns' class='dropdown-list-container'>";
+  filt+="</div>";
+  filt+="</span></td>";
+  
 	$("#menuHook").html(filt);
 
   AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
@@ -28,6 +35,7 @@ function setup()
 function fillResponsibleOptions(responsibles)
 {
     var selectResponsibleTag = document.getElementById("addResponsible");
+    clearOptions(selectResponsibleTag); // Called in case this function is called several times.
     var formatInnerHTML = function(responsibles, i){return responsibles[i]["firstname"]+" "+responsibles[i]["lastname"]+" ("+responsibles[i]["uid"]+")";}
     var formatValue = function(responsibles, i){return responsibles[i]["uid"];}
 
@@ -45,15 +53,34 @@ function addSingleOptionToSelectTag(tag, jsonList, formatInnerHTMLFunction, form
     tag.appendChild(option);
 }
 
+function clearOptions(selectTag)
+{
+    for(var i = selectTag.options.length - 1 ; i >= 0 ; i--)
+    {
+        selectTag.remove(i);
+    }
+}
+
 function hoverc()
 {
     $('#dropdowns').css('display','none');
     $('#dropdownc').css('display','block');
 }
 
+function hovers()
+{
+  $('#dropdowns').css('display','block');
+  $('#dropdownc').css('display','none');
+}
+
 function leavec()
 {
 		$('#dropdownc').css('display','none');
+}
+
+function leaves()
+{
+		$('#dropdowns').css('display','none');
 }
 
 //----------------------------------------
@@ -413,9 +440,10 @@ function renderCell(col,celldata,cellid) {
 		for(var i = 0; i < filez['classes'].length; i++){
 			items.push(filez['classes'][i]['class']);
 		}
+    var selectedItem = obj.class;
 		str = "<div class='accessTableCell'>";
 			str += "<div class='accessTableText'>";
-				str += makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
+				str += makeClassDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value,\""+selectedItem+"\");", items, items, selectedItem);
 				str += "<div style='display:none;'>" + obj.class + "</div>";
 			str += "</div>";
 		str += "</div>";

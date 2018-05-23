@@ -336,7 +336,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 							alert("You must press down the ctrl-key or cmd-key to change from grade G to U.");
 						}
 					} else {
-						alert("You can no longer change the grade to U, due to 24 hours has passed since grade G was set.");
+						alert("You can no longer change the grade to U as 24 hours has passed since grade G was set.");
 					}
 				}
             }
@@ -619,13 +619,13 @@ function buildDynamicHeaders() {
 function buildStudentInfo() {
   var i = 0;
 	students.forEach(function(entry) {
+		var row = {"FnameLnameSSN":entry[0]};
 		if(entry.length > 1) {
-			var row = {"FnameLnameSSN":entry[0]};
 			for(var j = 1; j < entry.length; j++) {
 				row["lid:"+entry[j]['lid']] = entry[j];
 			}
-			studentInfo[i++] = row;
 		}
+		studentInfo[i++] = row;
 	});
 	return studentInfo;
 }
@@ -658,7 +658,8 @@ function createSortableTable(data){
 		highlightOff,
 		null,
 		null,
-		false
+	    true,
+	    true
 	);
 	myTable.renderTable();
 
