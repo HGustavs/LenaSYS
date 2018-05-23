@@ -171,6 +171,7 @@ function cancelFreeDraw(){
             diagram.pop();
         }
         cleanUp();
+        md = 0; //Prevents the dashed line box, when drawing a square, to appear immediately
         updateGraphics();
       }
 }
@@ -883,11 +884,11 @@ function eraseSelectedObject() {
 function setMode(mode){ //"CreateClass" yet to be implemented in .php
     canvas.style.cursor = "default";
     uimode = mode;
-    if(mode == 'Square' && figureType == 'Free'){
-        cancelFreeDraw();
-    }
     if(mode == 'Square' || mode == 'Free') {
       uimode = "CreateFigure";
+      if(figureType == "Free"){
+          cancelFreeDraw();
+      }
       figureType = mode;
     }
 }
