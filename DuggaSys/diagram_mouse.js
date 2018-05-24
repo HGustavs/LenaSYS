@@ -71,6 +71,11 @@ function mousemoveevt(ev, t) {
         if(!sel.point.fake){
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;
+            //If we changed a point of a path object,
+            //  we need to recalculate the bounding-box so that it will remain clickable.
+            if(diagram[lastSelectedObject].kind == 1){
+                diagram[lastSelectedObject].calculateBoundingBox();
+            }
         } else {
             sel.point.x.x = currentMouseCoordinateX;
             sel.point.y.y = currentMouseCoordinateY;
@@ -262,6 +267,7 @@ function mousedownevt(ev) {
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
             }
+            lastSelectedObject = -1;
             selected_objects = [];
         }
         if(uimode == "CreateFigure" && figureType == "Square"){
@@ -304,12 +310,17 @@ function handleSelect() {
                 selected_objects.splice(index, 1);
             }
             last.targeted = false;
+            //when deselecting object, set lastSelectedObject to index of last object in selected_objects
+            lastSelectedObject = diagram.indexOf(selected_objects[selected_objects.length-1]);
         }
     }
 }
 
 function mouseupevt(ev) {
     if (uimode == "CreateFigure" && md == 4) {
+        if(figureType == "Text"){
+            createText(currentMouseCoordinateX, currentMouseCoordinateY);
+        }
         createFigure();
         if(figureType == "Free") return;
     }
@@ -365,6 +376,7 @@ function mouseupevt(ev) {
                 } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)){
                     okToMakeLine = false;
                 }
+                if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
                 if(okToMakeLine){
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
@@ -481,11 +493,44 @@ function mouseupevt(ev) {
 function doubleclick(ev) {
     var posistionX = (sx + xPos);
     var posistionY = (sy + yPos);
+
+    var posX = currentMouseCoordinateX;
+    var posY = currentMouseCoordinateY;
+
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
-        $(".loginBox").draggable();
         //console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
+    } else {
+        createText(posX, posY);
     }
+}
+
+function createText(posX, posY) {
+    var text = new Symbol(6);
+    text.name = "New Text" + diagram.length;
+    text.textLines.push({text:text.name});
+
+    var length  = ctx.measureText(text.name).width + 20;
+    var fontsize = text.getFontsize();
+    var height = fontsize + 20;
+
+    text.fontColor = "#000000";
+    text.font = "Arial";
+    ctx.font = "bold " + fontsize + "px " + text.font;
+
+    p1 = points.addPoint(posX - (length/2), posY - (height/2), false);
+    p2 = points.addPoint(posX + (length/2), posY + (height/2), false);
+    p3 = points.addPoint(posX, posY, false);
+
+    text.topLeft = p1;
+    text.bottomRight = p2;
+    text.centerPoint = p3;
+
+    diagram.push(text);
+    lastSelectedObject = diagram.length -1;
+    diagram[lastSelectedObject].targeted = true;
+    selected_objects.push(diagram[lastSelectedObject]);
+    updateGraphics();
 }
 
 function resize() {

@@ -130,10 +130,6 @@
             #headerType3:hover {
                 background-color: rgb(200,200,200);
             }
-            .headerType {
-                cursor: pointer;
-                margin-left: 150px;
-            }
 
             .show-dropdown-content {
                 display: block;

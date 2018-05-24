@@ -924,7 +924,6 @@ function returnedSection(data) {
 
 		if (retdata["writeaccess"]) {
 			str += "</tr></table>";
-
 			str += "<div class='fixed-action-button'>"
 			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>"
 			str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"

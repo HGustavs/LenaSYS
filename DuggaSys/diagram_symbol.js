@@ -12,6 +12,7 @@ function Symbol(kind) {
     this.symbolkind = kind;         // Symbol kind (1 UML diagram symbol 2 ER Attribute)
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
+    this.textLines = [];                 // Free text array
     this.textsize = 14;             // 14 pixels text size is default
     this.symbolColor = '#ffffff';   // change background colors on entities
     this.strokeColor = '#000000';   // change standard line color
@@ -21,6 +22,7 @@ function Symbol(kind) {
     this.name = "New Class";        // Default name is new class
     this.key_type = "normal";       // Defult key tyoe for a class.
     this.sizeOftext = "Tiny";       // Used to set size of text.
+    this.textAlign = "center";      // Used to change alignment of free text
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
@@ -270,6 +272,25 @@ function Symbol(kind) {
             points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
             points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
             points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;*/
+        } else if (this.symbolkind == 6){
+            var fontsize = this.getFontsize();
+            ctx.font = "bold " + fontsize + "px " + this.font;
+
+            var longestStr = "";
+            for (var i = 0; i < this.textLines.length; i++) {
+                if (this.textLines[i].text.length > longestStr.length) {
+                    longestStr = this.textLines[i].text;
+                }
+            }
+
+            var length = ctx.measureText(longestStr).width + 20;
+            var height = (this.textLines.length * fontsize) + fontsize;
+
+            points[this.bottomRight].x = points[this.topLeft].x + length;
+            points[this.bottomRight].y = points[this.topLeft].y + height;
+
+            points[this.centerPoint].x = x1 + hw;
+            points[this.centerPoint].y = y1 + hh;
         }
     }
 
@@ -514,7 +535,7 @@ function Symbol(kind) {
             if (this.symbolkind == 1) {
                 points[this.middleDivider].x += movex;
                 points[this.middleDivider].y += movey;
-            } else if (this.symbolkind == 2 || this.symbolkind == 5 || this.symbolkind == 3) {
+            } else if (this.symbolkind == 2 || this.symbolkind == 5 || this.symbolkind == 3 || this.symbolkind == 6) {
                 points[this.centerPoint].x += movex;
                 points[this.centerPoint].y += movey;
             } /*else if (this.symbolkind == 3) {
@@ -694,8 +715,6 @@ function Symbol(kind) {
         textsize = this.getFontsize();
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.strokeColor;
 
-
-
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
@@ -721,6 +740,8 @@ function Symbol(kind) {
         }
         else if(this.symbolkind == 5){
             this.drawRelation(x1, y1, x2, y2);
+        } else if (this.symbolkind == 6){
+            this.drawText(x1, y1, x2, y2);
         }
 
         ctx.restore();
@@ -728,7 +749,7 @@ function Symbol(kind) {
 
 
         //Highlighting points when targeted, makes it easier to resize
-        if(this.targeted){
+        if(this.targeted && this.symbolkind != 6){
             ctx.beginPath();
             ctx.arc(x1,y1,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
@@ -768,7 +789,7 @@ function Symbol(kind) {
         ctx.lineTo(x2, y2);
         ctx.lineTo(x1, y2);
         ctx.lineTo(x1, y1);
-        makeShadow();
+        this.makeShadow();
         ctx.closePath();
         // Top Divider
         ctx.moveTo(x1, y1 + (this.textsize * 1.5));
@@ -814,22 +835,19 @@ function Symbol(kind) {
 
     this.drawERAttribute = function(x1, y1, x2, y2){
         ctx.fillStyle = this.symbolColor;
-        ctx.lineWidth = this.lineWidth + 2;
         //This is a temporary solution to the black symbol problem
-
-
         // Drawing a multivalue attribute
         if (this.key_type == 'Multivalue') {
             drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
             ctx.stroke();
-            makeShadow();
+            this.makeShadow();
             drawOval(x1, y1, x2, y2);
         // Drawing a normal attribute
         } else {
             drawOval(x1, y1, x2, y2);
 
             ctx.fill();
-            makeShadow();
+            this.makeShadow();
         }
         ctx.clip();
 
@@ -867,6 +885,8 @@ function Symbol(kind) {
             ctx.lineTo(x2 + 5, y2 + 5);
             ctx.lineTo(x1 - 5, y2 + 5);
             ctx.lineTo(x1 - 5, y1 - 5);
+            ctx.stroke();
+            ctx.lineWidth = this.lineWidth;
         }
 
         ctx.moveTo(x1, y1);
@@ -875,7 +895,7 @@ function Symbol(kind) {
         ctx.lineTo(x1, y2);
         ctx.lineTo(x1, y1);
         ctx.closePath();
-        makeShadow();
+        this.makeShadow();
         ctx.clip();
         ctx.stroke();
 
@@ -958,7 +978,7 @@ function Symbol(kind) {
         ctx.lineTo(midx, y1);
 
         ctx.fillStyle = this.symbolColor;
-        makeShadow();
+        this.makeShadow();
         ctx.fill();
         ctx.closePath();
         ctx.clip();
@@ -972,6 +992,27 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
+    this.drawText = function(x1, y1, x2, y2) {
+        var midx = x1 + ((x2-x1)/2);
+        var midy = y1 + ((y2-y1)/2);
+        ctx.beginPath();
+        if (this.targeted || this.isHovered) {
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 4]);
+            ctx.strokeColor = "F82";
+            ctx.rect(x1, y1, x2-x1, y2-y1);
+            ctx.stroke();
+        }
+        this.textsize = this.getFontsize();
+
+        ctx.fillStyle = this.fontColor;
+        ctx.textAlign = this.textAlign;
+
+        for (var i = 0; i < this.textLines.length; i++) {
+            ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.textsize * 1.7) / 2 + (this.textsize * i));
+        }
+    }
+
     this.symbolToSVG = function(symbolID) {
 		var str = ""; // SVG string
 		// Get points
@@ -1000,7 +1041,7 @@ function Symbol(kind) {
             svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
             svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
             str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
-            
+
             svgStyle = "stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
             // Top Divider
             str += "<line x1='"+x1+"' y1='"+(y1+(fontsize*1.5))+"' x2='"+x2+"' y2='"+(y1+(fontsize*1.5))+"' style='"+svgStyle+"' />";
@@ -1035,7 +1076,35 @@ function Symbol(kind) {
                 str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.operations[i].text+"</text>";
             }
 		} else if (this.symbolkind == 2) {
+            svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+            // Outer oval for multivalued attributes
+            if (this.key_type == "Multivalue") {
+                str += this.ovalToSVG(x1-7, y1-7, x2+7, y2+7, svgStyle);
+            }
+            // Oval
+            if (this.key_type == "Drive") {
+                str += this.ovalToSVG(x1, y1, x2, y2, svgStyle, lineDash);
+            } else {
+                str += this.ovalToSVG(x1, y1, x2, y2, svgStyle, "");
+            }
 
+            // Key
+            var linelength = ctx.measureText(this.name).width;
+            var tmpX = (x1+((x2-x1)/2));
+            var tmpY = ((y1+(y2-y1)/2)+10);
+            if (this.key_type == "Primary key") {
+                str += "<line x1='"+(tmpX-(linelength/2))+"' y1='"+tmpY+"' x2='"+(tmpX+(linelength/2))+"' y2='"+tmpY+"' style='"+svgStyle+"' />";
+            } else if (this.key_type == "Partial key") {
+                str += "<line x1='"+(tmpX-(linelength/2))+"' y1='"+tmpY+"' x2='"+(tmpX+(linelength/2))+"' y2='"+tmpY+"' style='"+svgStyle+"' stroke-dasharray='"+lineDash+"' />";
+            }
+            // Text
+            svgStyle = "fill:"+this.fontColor+"; font:"+font+";";
+            if (linelength > (x2-x1) - 4) {
+				svgPos = "x='"+(x1+4)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
+			} else {
+				svgPos = "x='"+(x1 + ((x2 - x1) * 0.5))+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='middle' dominant-baseline='central'";
+			}
+            str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
 		} else if (this.symbolkind == 3) {
 			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 			// Add extra box if weak entity
@@ -1103,10 +1172,39 @@ function Symbol(kind) {
 				svgPos = "x='"+(x1+((x2-x1)*0.5))+"' y='"+(y1+((y2-y1)*0.5))+"' text-anchor='middle' dominant-baseline='central'";
 			}
 			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
-		}
+		} else if (this.symbolkind == 6) {
+            var midx = points[this.centerPoint].x;
+            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            var textAlignment = this.textAlign;
+            if (this.textAlign == "center") textAlignment = "middle";
+            for (var i = 0; i < this.textLines.length; i++) {
+                svgPos = "x='"+this.getTextX(x1, midx, x2)+"' y='"+(y1+(fontsize*1.7)/2+(fontsize*i))+"' text-anchor='"+textAlignment+"' dominant-baseline='central'";
+                str += "<text "+svgPos+" style='"+svgStyle+"' >"+this.textLines[i].text+"</text>";
+            }
+        }
 		str += "</g>";
 		return str;
 	}
+
+    this.getTextX = function(x1, midX, x2) {
+        var textX = 0;
+        if (this.textAlign == "start") textX = x1 + 10;
+        else if (this.textAlign == "end") textX = x2 - 10;
+        else textX = midX;
+        return textX;
+    }
+
+    this.ovalToSVG = function(x1, y1, x2, y2, style, lineDash) {
+        var middleX = x1 + ((x2 - x1) * 0.5);
+        var middleY = y1 + ((y2 - y1) * 0.5);
+        var tmpStr = "";
+        var d = "M"+x1+","+middleY+" Q"+x1+","+y1+" "+middleX+","+y1+" ";
+        d += "L"+middleX+","+y1+" Q"+x2+","+y1+" "+x2+","+middleY+" ";
+        d += "L"+x2+","+middleY+" Q"+x2+","+y2+" "+middleX+","+y2+" ";
+        d += "L"+middleX+","+y2+" Q"+x1+","+y2+" "+x1+","+middleY;
+        tmpStr += "<path d='"+d+"' style='"+style+"' stroke-dasharray='"+lineDash+"' />";
+        return tmpStr;
+    }
 
 	this.getFontsize = function() {
 		var fontsize = 14;
@@ -1119,17 +1217,16 @@ function Symbol(kind) {
 		}
 		return fontsize;
 	}
-}
 
-
-this.makeShadow = function(){
-    ctx.save();
-    ctx.shadowBlur = this.shadowBlur;
-    ctx.shadowOffsetX = this.shadowOffsetX;
-    ctx.shadowOffsetY = this.shadowOffsetY;
-    ctx.shadowColor = this.shadowColor;
-    ctx.fill();
-    ctx.restore();
+    this.makeShadow = function(){
+        ctx.save();
+        ctx.shadowBlur = this.shadowBlur;
+        ctx.shadowOffsetX = this.shadowOffsetX;
+        ctx.shadowOffsetY = this.shadowOffsetY;
+        ctx.shadowColor = this.shadowColor;
+        ctx.fill();
+        ctx.restore();
+    }
 }
 
 this.drawOval = function (x1, y1, x2, y2) {

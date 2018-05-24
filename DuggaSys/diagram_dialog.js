@@ -14,6 +14,8 @@ function openAppearanceDialogMenu() {
     /*
      * Opens the dialog menu for appearance.
      */
+
+    $(".loginBox").draggable();
     var form = showMenu();
     appearanceMenuOpen = true;
     objectAppearanceMenu(form);
@@ -30,6 +32,7 @@ function closeAppearanceDialogMenu() {
      $(".loginBox").draggable('destroy');
     appearanceMenuOpen = false;
     classAppearanceOpen = false;
+    textAppearanceOpen = false;
     globalAppearanceValue = 0;
     hashFunction();
     $("#appearance").hide();
@@ -56,10 +59,9 @@ function clickEnterOnDialogMenu(ev) {
      */
     $(document).keypress(function (ev) {
         var container = $("#appearance");
-        if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen) {
+        if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
             globalAppearanceValue = 0;
             closeAppearanceDialogMenu();
-
             // Is called in the separate appearance php-files at the buttons.
             // Called here since an enter press doesn't relate to any element
             changeObjectAppearance();
@@ -85,14 +87,19 @@ function loadFormIntoElement(element, dir){
 
     if(file.readyState === 4){
       element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0){
+      if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 2){
         document.getElementById('nametext').value = diagram[lastSelectedObject].name;
         setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
         setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
         setSelectedOption('font', diagram[lastSelectedObject].font);
         setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
         setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
-        setSelectedOption('AttributeLineColor', diagram[lastSelectedObject].strokeColor);
+        setSelectedOption('LineColor', diagram[lastSelectedObject].strokeColor);
+      }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1){
+        setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
+        document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
+        setSelectedOption('LineColor',  diagram[lastSelectedObject].strokeColor);
+
       }
     }
   }
@@ -114,7 +121,7 @@ function loadLineForm(element, dir){
 
                 setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
                 setSelectedOption('cardinality', tempCardinality);
-                setSelectedOption('cardinalityUml', tempCardinalityUML);
+                if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
         }
     }
@@ -150,6 +157,30 @@ function loadUMLForm(element, dir){
   }
   file.send();
 }
+//Loads the appearance menu for text
+function loadTextForm(element, dir){
+  var file = new XMLHttpRequest();
+  file.open('GET', dir);
+  file.onreadystatechange = function(){
+    if(file.readyState === 4){
+      element.innerHTML = file.responseText;
+      if(globalAppearanceValue == 0){
+        var text = "";
+        var textarea = document.getElementById('freeText');
+        for (var i = 0; i < diagram[lastSelectedObject].textLines.length; i++) {
+            text += diagram[lastSelectedObject].textLines[i].text;
+            if (i < diagram[lastSelectedObject].textLines.length - 1) text += "\n";
+        }
+        textarea.value = text;
+        setSelectedOption('font', diagram[lastSelectedObject].font);
+        setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
+        setSelectedOption('textAlign', diagram[lastSelectedObject].textAlign);
+        setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+      }
+    }
+  }
+  file.send();
+}
 
 function setSelectedOption(type, value){
   if(type != null){
@@ -176,7 +207,7 @@ function globalAppearanceMenu(){
     $(".loginBox").draggable();
     var form = showMenu();
     //AJAX
-    loadFormIntoElement(form,'forms/global_appearance.php');
+    loadFormIntoElement(form,'diagram_forms.php?form=globalType');
 }
 
 function objectAppearanceMenu(form) {
@@ -185,24 +216,31 @@ function objectAppearanceMenu(form) {
     */
 
     form.innerHTML = "No item selected<type='text'>";
+    //if no item has been selected
+    if(!diagram[lastSelectedObject]){ return;}
+
     if (diagram[lastSelectedObject].symbolkind == 1) {
         classAppearanceOpen = true;
-        loadUMLForm(form, 'forms/class_appearance.php?');
+        loadUMLForm(form, 'diagram_forms.php?form=classType');
     }
-    if (diagram[lastSelectedObject].symbolkind == 2) {
-        loadFormIntoElement(form, 'forms/attribute_appearance.php');
+    else if (diagram[lastSelectedObject].symbolkind == 2) {
+        loadFormIntoElement(form, 'diagram_forms.php?form=attributeType');
     }
-    if (diagram[lastSelectedObject].symbolkind == 3) {
-        loadFormIntoElement(form, 'forms/entity_appearance.php');
+    else if (diagram[lastSelectedObject].symbolkind == 3) {
+        loadFormIntoElement(form, 'diagram_forms.php?form=entityType');
     }
-    if (diagram[lastSelectedObject].symbolkind == 4) {
-        loadLineForm(form, 'forms/line_appearance.php?cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
+    else if (diagram[lastSelectedObject].symbolkind == 4) {
+        loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
     }
-    if (diagram[lastSelectedObject].symbolkind == 5) {
-        loadFormIntoElement(form, 'forms/relation_appearance.php');
+    else if (diagram[lastSelectedObject].symbolkind == 5) {
+        loadFormIntoElement(form, 'diagram_forms.php?form=relationType');
     }
-    if (diagram[lastSelectedObject].kind == 1) {
-        loadFormIntoElement(form, 'forms/figure_appearance.php');
+    else if (diagram[lastSelectedObject].symbolkind == 6) {
+        textAppearanceOpen = true;
+        loadTextForm(form, 'diagram_forms.php?form=textType');
+    }
+    else if (diagram[lastSelectedObject].kind == 1) {
+        loadFormIntoElement(form, 'diagram_forms.php?form=figureType');
     }
 }
 function changeObjectAppearance(object_type){
@@ -228,7 +266,18 @@ function changeObjectAppearance(object_type){
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
     } else if (diagram[lastSelectedObject].kind == 1){
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
-        diagram[lastSelectedObject].strokeColor = document.getElementById('figureLineColor').value;
+        diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
+        diagram[lastSelectedObject].strokeColor = document.getElementById('LineColor').value;
+    } else if (diagram[lastSelectedObject].symbolkind == 6) {
+        diagram[lastSelectedObject].textLines = [];
+        var textArray = $('#freeText').val().split('\n');
+        for(var i = 0; i < textArray.length; i++){
+          diagram[lastSelectedObject].textLines.push({text:textArray[i]});
+        }
+        diagram[lastSelectedObject].fontColor = document.getElementById('fontColor').value;
+        diagram[lastSelectedObject].font = document.getElementById('font').value;
+        diagram[lastSelectedObject].textAlign = document.getElementById('textAlign').value;
+        diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
     } else {
         diagram[lastSelectedObject].symbolColor = document.getElementById('symbolColor').value;
         diagram[lastSelectedObject].name = document.getElementById('nametext').value;
@@ -236,7 +285,7 @@ function changeObjectAppearance(object_type){
         diagram[lastSelectedObject].font = document.getElementById('font').value;
         diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
         diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
-        diagram[lastSelectedObject].strokeColor = document.getElementById('AttributeLineColor').value;
+        diagram[lastSelectedObject].strokeColor = document.getElementById('LineColor').value;
     }
     updateGraphics();
 }

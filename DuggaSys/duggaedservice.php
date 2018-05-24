@@ -53,7 +53,7 @@ $writeaccess = false;
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 	$writeaccess = true;
 	if(strcmp($opt,"ADDUGGA")===0){
-		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart) VALUES (:cid,:autograde,:gradesystem,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart)";
+		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart, jsondeadline) VALUES (:cid,:autograde,:gradesystem,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart, :jsondeadline)";
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':cid', $cid);
 		$stmt->bindParam(':uid', $userid);
@@ -62,6 +62,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		$stmt->bindParam(':gradesystem', $gradesys);
 		$stmt->bindParam(':qname', $name);
 		$stmt->bindParam(':template', $template);
+		$stmt->bindParam(':jsondeadline', $jsondeadline);
 
 		if ($deadline == "UNK") $deadline = null;
 		if ($qstart == "UNK") $qstart = null;

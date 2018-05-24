@@ -1607,7 +1607,7 @@ div.submit-button:disabled {
   height: 40px;
 }
 
-.buttonsStyle[data]:hover:after {
+.buttonsStyle[data]:hover:after, .diagramAction[data]:hover:after {
   content: attr(data);
   padding: 4px 8px;
   color: #fff;
@@ -1626,6 +1626,17 @@ div.submit-button:disabled {
   z-index: 2;
   position: absolute;
   border-radius: 0px;
+}
+
+.toolboxButtons {
+  width: 35px !important;
+  height: 25px !important;
+}
+
+#textButton {
+  width: 35px;
+  height: 22px;
+  margin-top: 3px;
 }
 
 #moveButton img {
@@ -1785,9 +1796,13 @@ input.large-button {
   width: 100%;
   padding: 1px;
   border-bottom: 2px solid #dbd0d8;
-  border-left: 2px solid #dbd0d8;
   margin-top: 20px;
   font-size: 16px;
+}
+
+.listHeading {
+  border-left: 2px solid #614875;
+  border-right: 2px solid #614875;
 }
 
 .innertable {
@@ -1805,6 +1820,7 @@ input.large-button {
 }
 
 .list td {
+  border-left: 2px solid #dbd0d8;
   border-right: 2px solid #dbd0d8;
   padding: 0 8px 0 8px;
 }
@@ -1889,6 +1905,29 @@ input.large-button {
 .sortableHeading {
   display: block;
   cursor: pointer;
+}
+
+#editpopover {
+  border:1px solid red;
+  box-shadow:2px 2px 2px #000;
+  position:absolute;
+  background-color: #82a43a;
+  width: fit-content;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  position: relative;
+  transform: translateY(50%);
+}
+
+#input-container input {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  size: 5;
 }
 
 .list#testTable input, .list#testTable select, .list#testTable label {
@@ -2163,26 +2202,73 @@ span.arrow {
 }
 
 .tableCellHighlightning {
-  background-image: radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2));
+	box-shadow: inset 0px 0px 0px 3px rgba(97,72,117,1) !important;
 }
 
 .tableRowHighlightning {
-  border-bottom: 3px solid rgba(97,72,117,1) !important;
-  border-top: 3px solid rgba(97,72,117,1) !important;
+	box-shadow: inset 0px 3px 0px 0px rgba(97,72,117,1),
+							inset 0px -3px 0px 0px rgba(97,72,117,1);
 }
 
 .tableColHighlightning {
-  border-left: 3px solid rgba(97,72,117,1) !important;
-  border-right: 3px solid rgba(97,72,117,1) !important;
+	box-shadow: inset 3px 0px 0px 0px rgba(97,72,117,1),
+							inset -3px 0px 0px 0px rgba(97,72,117,1);
+
+}
+
+.resultTableText {
+  margin-left: 3px;
+  margin-right: 3px;
+  font-size: 13px;
+}
+
+.resultTableNormal {
+  height:70px;
+  align-items:center;
+  display:flex;
+}
+
+.resultTableMini {
+  height:25px;
+  align-items:center;
+  display:flex;
 }
 
 #resultTable td {
   height: 1px;
   padding: 0px;
-  border-right: 3px dashed rgba(97,72,117,0);
-  border-left: 3px dashed rgba(97,72,117,0);
-  border-bottom: 3px dashed rgba(97,72,117,0);
-  border-top: 3px dashed rgba(97,72,117,0);
+  border: 0px;
+}
+
+.resultTable_counter {
+  text-align:center;
+}
+
+.resultTable_counter span {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+#accessTable td {
+	padding: 0px;
+	border: 0px;
+}
+
+.accessTableText {
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.accessTableCell {
+	height:60px;
+	text-align:center;
+	display:table-cell;
+	vertical-align:middle;
+	width:220px; /* used make the table cell <div> exapnd to the parent td */
+}
+
+.accessTable_counter span {
+	margin-left: 5px;
 }
 
 #user td {
@@ -2818,7 +2904,6 @@ table {
   display: inline-flex;
   height: 24px;
   border-radius: 5px;
-  margin: 0 2px 7px 0;
   float: right;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
 }
@@ -3156,13 +3241,61 @@ ul.hamburgerList button.menuButton {
 .dateSize {
   width: 150px;
 }
+/* --------------================################================-------------- *
+  *                        FILEED TABLE STYLING                         *
+* --------------================################================-------------- */
+#fileLink_tbl{
+    width: 80%;
+    margin: auto !important;
+    min-width: 1050px;
+}
+#sortingDiv{
+    height: 30px;
+    width: 80%;
+    margin: auto;
+    margin-top:20px;
+    min-width: 1050px;
+}
+.fileLink-editor, .fileLink-trashcan, .fileLink-uploaddate, .fileLink-filesize, .fileLink-kind, .fileLink-extension{
+    text-align: center;
+}
+.fileLink-editor, .fileLink-trashcan{
+    width:25px;
+}
+
+.fileLink-filename {
+  max-width: 190px;
+}
+
+.nowrap-filename {
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+}
 
 @media only screen and (max-width: 1085px),
 only screen and (max-device-width: 1085px) {
      #sortingBar {
         width: 135px;
         position: relative;
-        top: 10px;
+        top: 25px;
+    }
+    #sortingDiv{
+        height:130px;
+        width: 100%;
+        margin:0;
+        margin-top: 0px;
+        min-width: 375px;
+    }
+    #fileLink{
+        /*min-width: 375px;*/
+    }
+    #fileLink_tbl{
+        margin: 0 !important;
+        width: 100%;
+        min-width: 0px;
     }
   /* moment date and course version */
   .dateField {
@@ -3230,20 +3363,42 @@ only screen and (max-device-width: 768px) {
     font-size: 20px;
   }
 
+  .fileLink-filename {
+    max-width: none;
+  }
+
+  .nowrap-filename {
+    max-width: 200px;
+  }
+
   #statisticsList {
     display: none;
   }
 
- .fileLink_counter {
-
+.fileLink_counter {
     font-size: 16px;
     color: #000;
-  }
-
-  /* Force table to not be like tables anymore */
-  #fileLink_body{
-	 display: block;
+}
+.fileLink-editor, .fileLink-trashcan{
+    width:initial;
+}
+    /* Force table to not be like tables anymore */
+    #fileLink_body{
+		display: block;
 	}
+
+    #fileLink_tblhead{
+        display: none;
+    }
+
+    #fileLink_tbl_mh[style]{
+        display: none !important;
+    }
+
+    #fileLink_body tr[style]{
+        border: 1px solid #ccc !important;
+        display: block !important;
+    }
 
   #fileLink_tblhead{
     display: none;
@@ -3932,7 +4087,7 @@ li:nth-last-child(10) a:hover {
   width: 38%;
   height: 80%;
   position: relative;
-  margin: 20px 1% 10px 1%;
+  margin: 2% 1% 1% 1%;
   float: left;
 }
 #markset {
@@ -3946,7 +4101,7 @@ li:nth-last-child(10) a:hover {
   width: 56%;
   height: 80%;
   position: relative;
-  margin: 20px 1% 10px 1%;
+  margin: 2% 1% 1% 1%;
   float: right;
 }
 
@@ -3954,7 +4109,7 @@ li:nth-last-child(10) a:hover {
   height:100%;
 }
 
-.save-close-button {
+.save-close-button-md {
   border-radius: 4px;
   background-color: #614875;
   border: 0px;
@@ -3962,8 +4117,7 @@ li:nth-last-child(10) a:hover {
   height: 30px;
   color: #fff;
   cursor: pointer;
-  margin-top: 19px;
-  margin-bottom: 2px;
+  margin-top: auto;
   margin-right: 3%;
   font-size: 14px;
   transition: 1s background-color;
@@ -3971,6 +4125,18 @@ li:nth-last-child(10) a:hover {
   line-height: 30px;
   text-align: center;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+legend{
+  display: block;
+  padding-left: 1.55%;
+  padding-right: 1.55%;
+  border: none;
+}
+
+#markPrev {
+    padding-left: 0%;
+    padding-right: 0%;
 }
 
 .optionButtons {
@@ -4033,14 +4199,14 @@ textarea#mrkdwntxt {
 
 #boldText {
   cursor: pointer;
-  margin-left: 3%;
+  margin-left: 1.75%;
   position: absolute;
   margin-top: 0%;
 }
 
 #cursiveText {
   cursor: pointer;
-  margin-left: 8%;
+  margin-left: 6.75%;
   position: absolute;
   margin-top:0%;
 }
@@ -4048,33 +4214,32 @@ textarea#mrkdwntxt {
 #lists {
   cursor: pointer;
   color: #FFFFFF;
-  margin-left: 13%;
+  margin-left: 9.75%;
   font-size: 12px;
   position: absolute;
-  filter: invert(100%);
-  margin-top: 0%;
+  margin-top: -0.3%;
 }
 #codeBlockText {
     cursor: pointer;
-    margin-left: 19%;
+    margin-left: 16.75%;
     position: absolute;
-    margin-top: -1%
+    margin-top: -0.55%
 }
 #quoteText {
     cursor: pointer;
-    margin-left: 26%;
+    margin-left: 21.75%;
     font-size: 25px;
     position: absolute;
-    margin-top:-1%;
+    margin-top:-0.65%;
 }
 #img {
     cursor: pointer;
-    margin-left: 9%;
+    margin-left: 3.75%;
 }
 #insert-photo {
     position: absolute;
     margin-left: 23%;
-    margin-top: -1%;
+    margin-top: -0.75%;
 }
 #link {
     cursor: pointer;
@@ -4083,29 +4248,27 @@ textarea#mrkdwntxt {
 
 #linkFabBtnImgPrev {
     position: absolute;
-    margin-left: 38%;
-    margin-top:-1%;
+    margin-left: 32.75%;
+    margin-top: -0.75%;
     filter: invert(100%);
 }
-
-#headerType1 {
-  cursor: pointer;
-  color: #000;
-  font-size: 13px;
-  padding: 5px 5px 5px 5px;
-  background-color: #fff;
+.selectHeader > span {
+    display: block;
+    cursor: pointer;
+    color: #000;
+    background-color: #fff;
 }
-
-#headerType1:hover {
-  background-color: rgb(200, 200, 200);
+.selectHeader > span:hover {
+      background-color: rgb(200, 200, 200);
+}
+#headerType1 {
+    font-size: 13px;
+    padding: 5px 7px 0px 3px;
 }
 
 #headerType2 {
-  cursor: pointer;
-  color: #000;
   font-size: 12px;
-  padding: 5px 5px 5px 9px;
-  background-color: #fff;
+  padding: 5px 11px 5px 3px;
 }
 
 #headerType2:hover {
@@ -4113,58 +4276,23 @@ textarea#mrkdwntxt {
 }
 
 #headerType3 {
-  cursor: pointer;
-  color: #000;
   font-size: 11px;
-  padding: 8px 5px 5px 13px;
-  background-color: #fff;
+  padding: 5px 15px 5px 3px;
 }
 
-#headerType3:hover {
-  background-color: rgb(200, 200, 200);
-}
 #headerType4 {
-  cursor: pointer;
-  color: #000;
   font-size: 10px;
-  padding: 8px 5px 5px 13px;
-  background-color: #fff;
+  padding: 5px 19px 5px 3px;
 }
-
-#headerType4:hover {
-  background-color: rgb(200, 200, 200);
-}
-
 
 #headerType5 {
-  cursor: pointer;
-  color: #000;
   font-size: 9px;
-  padding: 8px 5px 5px 13px;
-  background-color: #fff;
+  padding: 5px 23px 5px 3px;
 }
-
-#headerType5:hover {
-  background-color: rgb(200, 200, 200);
-}
-
 
 #headerType6 {
-  cursor: pointer;
-  color: #000;
   font-size: 8px;
-  padding: 8px 5px 5px 13px;
-  background-color: #fff;
-}
-
-#headerType6:hover {
-  background-color: rgb(200, 200, 200);
-}
-.headerType {
-  cursor: pointer;
-  margin-left: 37%;
-  position: absolute;
-  margin-top:-1%
+  padding: 5px 27px 6px 3px;
 }
 
 .show-dropdown-content {
@@ -4172,14 +4300,13 @@ textarea#mrkdwntxt {
 }
 
 #select-header {
+  top: 50px;
+  left: 192px;
   max-width: 63px;
   position: absolute;
   z-index: 2000;
-  right: 38%;
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
-}
-#inputSave {
 }
 
 @media only screen and (max-width: 900px) {
@@ -4196,7 +4323,6 @@ textarea#mrkdwntxt {
     height: 38%;
     width: 97%;
     float: left;
-    margin: auto auto auto 8px;
   }
   .markText {
     height:100%;
@@ -4204,8 +4330,8 @@ textarea#mrkdwntxt {
   .optionButtons {
     top: 686px;
   }
-  .save-close-button{
-    margin-top: 29px;
+  .save-close-button-md{
+    margin-top: 15px;
   }
 }
 
@@ -4239,7 +4365,7 @@ textarea#mrkdwntxt {
 
 
 .multiselect-group {
-  width: 100px;
+  width: 112px;
 }
 
 #checkboxes {
@@ -4285,6 +4411,30 @@ textarea#mrkdwntxt {
 /* --------------================################================-------------- *
  *                               Edit file preview                              *
  * --------------================################================-------------- */
+.markdown-icons {
+  cursor:pointer;
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  vertical-align: middle;
+}
+
+.markdown-icon-div{
+  display: flex;
+}
+
+#quoteIcon {
+  margin-top: 2px;
+}
+
+#linkIcon {
+  filter: invert(100%);
+}
+
+#imgIcon, #headerIcon {
+  margin-left: 4px;
+}
 
 
 .editFileWindow {
@@ -4345,6 +4495,26 @@ textarea#mrkdwntxt {
   width: 355px;
 }
 
+.save-close-button-fe{
+  border-radius: 4px;
+  background-color: #614875;
+  border: 0px;
+  width: 110px;
+  height: 30px;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 2px;
+  margin-right: 3%;
+  font-size: 14px;
+  transition: 1s background-color;
+  float: right;
+  line-height: 30px;
+  text-align: center;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+
 #filecont {
   resize: none;
   margin: 10px auto;
@@ -4359,6 +4529,20 @@ textarea#filecont{
   height: 100%;
   display: block;
   padding: 10px
+}
+
+@media only screen and (max-width: 900px) {
+  .editFileWindow {
+    height: 80%;
+  }
+
+  #filecont {
+    height: 70%;
+  }
+
+  .optionButtons {
+    top: 436px;
+  }
 }
 
 /* --------------================################================-------------- *

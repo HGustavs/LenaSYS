@@ -35,34 +35,36 @@ pdoConnect();
 		<div class='titles' style='padding-top:10px;'>
 			<h1 style='flex:1;text-align:center;'>Files</h1>
 		</div>
-		<div id="sortingBar">
-			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="All" checked onclick="count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
-				<label name="sortAll">All files</label>
-			</div>
-			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="Global" onclick="count=0;searchterm='kind::global';searchKeyUp(event);fileLink.renderTable();"/>
-				<label name="sortGlobal">Global</label>
-			</div>
-			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="CourseLocal" onclick="count=0;searchterm='kind::course';searchKeyUp(event);fileLink.renderTable();"/>
-				<label name="sortCLocal">Course local</label>
-			</div>
-			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="VersionLocal" onclick="count=0;searchterm='kind::version';searchKeyUp(event);fileLink.renderTable();"/>
-				<label name="sortVLocal">Version local</label>
-			</div>
-			<div class="sortingBtn">
-				<input type="radio" name="sortKind" value="Links" onclick="count=0;searchterm='kind::link';searchKeyUp(event);fileLink.renderTable();"/>
-				<label name="sortLinks">Links</label>
-			</div>
-		</div>
-		<div id="searchBar">
-			<input id="searchinput" type="text" name="search" placeholder="Search.." onkeyup="searchterm=document.getElementById('searchinput').value;searchKeyUp(event);fileLink.renderTable();">
-			<button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
-				<img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
-			</button>
-		</div>
+        <div id="sortingDiv">
+            <div id="sortingBar">
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="All" checked onclick="count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortAll">All files</label>
+                </div>
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="Global" onclick="count=0;searchterm='kind::global';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortGlobal">Global</label>
+                </div>
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="CourseLocal" onclick="count=0;searchterm='kind::course';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortCLocal">Course local</label>
+                </div>
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="VersionLocal" onclick="count=0;searchterm='kind::version';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortVLocal">Version local</label>
+                </div>
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="Links" onclick="count=0;searchterm='kind::link';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortLinks">Links</label>
+                </div>
+            </div>
+            <div id="searchBar">
+                <input id="searchinput" type="text" name="search" placeholder="Search.." onkeyup="searchterm=document.getElementById('searchinput').value;searchKeyUp(event);fileLink.renderTable();">
+                <button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
+                    <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
+                </button>
+            </div>
+        </div>
 		<div id="fileLink" style='width:100%;margin-bottom: 30px;'></div>
 		<!-- content END -->
 
@@ -119,28 +121,29 @@ pdoConnect();
 
                 <div class="markdown">
                     <fieldset id="markset">
-                        <legend>Markdown</legend>
-
-                        <span id="boldText" onclick="boldText()" title="Bold"><b>B</b></span>
-                        <span id="cursiveText" onclick="cursiveText()" title="Italic"><i>i</i></span>
-                        <span id="codeBlockText" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
-                        <span id="lists" onclick="lists()" title="lists">&#9711;</span>
-                        <span id="quoteText" onclick="quoteText()" title="quote">&#10078;</span>
-                        <span id="linkz" onclick="linkText()" title="link"><img id="linkFabBtnImgPrev" class="fab-icon"
+                        <legend>  Markdown</legend>
+                        <div class="markdown-icon-div">
+                        <span class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></span>
+                        <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>
+                        <span class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
+                        <span class="markdown-icons" onclick="lists()" title="lists"><img
+                                                                                src="../Shared/icons/list-symbol.svg"></span>
+                        <span class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</span>
+                        <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img
                                                                                 src="../Shared/icons/link-icon.svg"></span>
-                        <span id="img" onclick="externalImg()" title="Img"><img id="insert-photo" class="fab-icon"
+                        <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img
                                                                                 src="../Shared/icons/insert-photo.svg"></span>
-                        <span class="headerType" title="Header">aA&#9663;</span>
-                        <div id="select-header">
+                        <span class="markdown-icons headerType" id="headerIcon" title="Header">aA&#9663;</span>
+
+                        <div class="selectHeader" id="select-header">
                             <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
                             <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
                             <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
                             <span id="headerType4" onclick="selected();headerVal4()" value="H4">Header 4</span>
                             <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
                             <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
-
                         </div>
-
+                        </div>
                             <div class="markText">
                             <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
                             </div>
@@ -148,7 +151,7 @@ pdoConnect();
                 </div>
 
                 <div class="markdownPrev">
-                    <fieldset id="markPrevSet"><legend>Markdown preview</legend>
+                    <fieldset id="markPrevSet"><legend id="markPrev">Markdown preview</legend>
                     <div class="markTextPrev">
                         <div class="prevSpan">
                             <div class="descbox">
@@ -158,8 +161,8 @@ pdoConnect();
                     </div>
                     </fieldset>
                 </div>
-                <button class="save-close-button" type="submit" onclick="saveMarkdown()">Save</button>
-                <button class="save-close-button" onclick="cancelPreview()">Close</button>
+                <button class="save-close-button-md" type="submit" onclick="saveMarkdown()">Save</button>
+                <button class="save-close-button-md" onclick="cancelPreview()">Close</button>
             </div>
             <div class="editFilePart">
                 <div class="editFileWindow">
@@ -169,8 +172,8 @@ pdoConnect();
                         </div>
                     </div>
 
-                    <button class="save-close-button" type="submit" onclick="saveTextToFile()"> Save </button>
-                    <button class="save-close-button" onclick="cancelPreview()">Close</button>
+                    <button class="save-close-button-fe" type="submit" onclick="saveTextToFile()"> Save </button>
+                    <button class="save-close-button-fe" onclick="cancelPreview()">Close</button>
                     <div class="optionButtons">
 
                     </div>
