@@ -32,6 +32,7 @@ $teacher = getOP('teacher');
 $vers = getOP('vers');
 $requestedpasswordchange = getOP('requestedpasswordchange');
 $groups = array();
+$gid = getOP('gid');
 $queryResult = 'NONE!';
 
 $debug="NONE!";
@@ -259,6 +260,35 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		// End of foreach user
 		}
 
+	} else if (strcmp($opt, "GROUP") == 0) {
+
+		// Check if group conenction exists.
+		$stmt = $pdo->prepare("SELECT * FROM user_group WHERE userID=:uid AND groupID=:gid");
+		$stmt->bindParam(':gid', $gid);
+		$stmt->bindParam(':uid', $uid);
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		if (count($result) > 0) {
+			$stmt = $pdo->prepare("DELETE FROM user_group WHERE userID=:uid AND groupID=:gid");
+			$stmt->bindParam(':gid', $gid);
+			$stmt->bindParam(':uid', $uid);
+
+			if(!$stmt->execute()) {
+				$error=$stmt->errorInfo();
+				$debug.="Error updating group: ".$error[2];
+			}
+		} else {
+			$stmt = $pdo->prepare("INSERT INTO user_group (groupID, userID) VALUES (:gid, :uid)");
+			$stmt->bindParam(':gid', $gid);
+			$stmt->bindParam(':uid', $uid);
+
+			// Insert the user into the database.
+			if(!$stmt->execute()) {
+				$error=$stmt->errorInfo();
+				$debug.="Error changing group: ".$error[2];
+			}
+		}
 	}
 }
 
@@ -358,6 +388,14 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	}
 	foreach($result as $row){
 	// Adds current student to array
+		// Gets the users groups
+		$stmt = $pdo->prepare("SELECT groups.vers, user_group.groupID FROM user_group, groups WHERE groups.groupID=user_group.groupID AND user_group.userID=:uid AND groups.courseID=:cid AND groups.vers=:vers");
+		$stmt->bindParam(":uid", $row['uid']);
+		$stmt->bindParam(":vers", $row['vers']);
+		$stmt->bindParam(":cid", $cid);
+		$stmt->execute();
+		$grps = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 		array_push($examiners, $row);
 		$entry = array(
 			'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
@@ -370,7 +408,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			'examiner' => json_encode(['examiners' => $examiners]),
 			'vers' => json_encode(['vers' => $row['vers'], 'uid' => $row['uid']]),
 			'access' => json_encode(['access' => $row['access'], 'uid' => $row['uid']]),
-			'groups' => 'PLACEHOLDER',
+			'groups' => json_encode(['vers' => $row['vers'], 'user_groups' =>  $grps]),
 			'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid']])
 		);
 		array_push($entries, $entry);
@@ -433,14 +471,14 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	// get all groups
-	$query = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid");
+	$query = $pdo->prepare("SELECT vers, groupID, groupName FROM groups WHERE courseID=:cid");
 	$query->bindParam(':cid', $cid);
 
 	if (!$query->execute()) {
 		$error = $query->errorInfo();
 		$debug="Error while getting groups " . $error[2];
 	} else {
-		$groups = $query->fetchAll(PDO::FETCH_ASSOC);
+		$groups = $query->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
 	}
 }
 

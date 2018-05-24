@@ -34,15 +34,6 @@
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
 
-			if($noup=='COURSE'){
-                    $cid=getOPG('cid');
-                    if($cid=="UNK") $cid=getOPG('courseid');
-                    $coursevers=getOPG('coursevers');
-                    if($coursevers=="UNK") $coursevers=getOPG('cvers');
-					echo "<td class='navButt' id='swimlane' title='Visual representation of course moment releases and deadlines'>";
-          echo "<a class ='linkSwimlane' href='#' onclick='swimlaneSetup();'><img src='../Shared/icons/swimlane.svg'></a></td>";
-
-			}
 
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){

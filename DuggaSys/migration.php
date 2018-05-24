@@ -2172,6 +2172,7 @@ $migrationArray = array(
         [
             ['create', 'groups', 'groupID', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT', 'PRIMARY KEY(groupID)'],
             ['column', 'groups', 'courseID', 'int', 'UNSIGNED NOT NULL', 'FOREIGN KEY(courseID) REFERENCES course(cid)'],
+            ['column', 'groups', 'vers', 'varchar(8)', ''],
             ['column', 'groups', 'groupName', 'varchar(80)', 'NOT NULL'],
 
             ['create', 'user_group', 'groupID', 'int', 'UNSIGNED NOT NULL', 'FOREIGN KEY(groupID) REFERENCES groups(groupID)'],

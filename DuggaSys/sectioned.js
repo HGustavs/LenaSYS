@@ -534,6 +534,7 @@ function newItem() {
 			comment: comment
 		}, "SECTION");
 	$("#editSection").css("display", "none");
+	setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
 }
 
 function closeSelect() {
@@ -729,8 +730,6 @@ function goToVersion(selected) {
 function accessCourse() {
 	var coursevers = $("#course-coursevers").text();
 	window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
-	resetinputs();
-	//resets all inputs
 }
 
 function weeksBetween(firstDate, secondDate){
@@ -908,8 +907,8 @@ function returnedSection(data) {
 			str += "</tr></table>";
 
 			str += "<div class='fixed-action-button'>"
-			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onmouseover='openFabMenu();' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
-			str += "<ol class='fab-btn-list' onmouseover='resetHoverTimer();'; style='margin: 0; padding: 0; display: none;' reversed>"
+			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>"
+			str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
 
 			//Heading button
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='fabValidateType(\"0\");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
@@ -1005,7 +1004,7 @@ function returnedSection(data) {
 		str += "<div class='statisticsContent' style='display:inline-block;'>";
 
 		str += "<div id='statisticsPie' class='statisticsInnerBox' style=' height:100px;'>";
-		str += "<canvas id='pieChart' width='250px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
+		str += "<canvas id='pieChart' width='300px' height='255px' style='margin: 10px 10px;'></canvas>"; // Contains pie chart.
 		str += "</div>";
 
 		str	+= "<div id='deadlineInfoBox' class='statisticsInnerBox' style='display:inline-block;"
@@ -1287,21 +1286,24 @@ function returnedSection(data) {
 				}
 
 				else if (itemKind == 1) { // Section
+					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
 					str +=
 						"<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
 						+ item['entryname']
 						+ "</span><img src='../Shared/icons/desc_complement.svg'"
-						+ "id='arrowComp" + menuState.idCounter++ + data.coursecode
+						+ "id='arrowComp" + arrowID
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
-						+ "id='arrowRight" + menuState.idCounter++ + data.coursecode
+						+ "id='arrowRight" + arrowID
 						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
 				else if (itemKind == 4) { // Moment
 					var strz = "";
+					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
+					
 					if (item['gradesys'] == 0) {
 						strz = "";
 					}
@@ -1314,15 +1316,16 @@ function returnedSection(data) {
 					else if (item['gradesys'] == 3) {
 						strz = "(U-3-4-5)";
 					}
+					
 					str += "<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
 						+ item['entryname'] + " " + strz + " " + "</span>"
 						+ "<img src='../Shared/icons/desc_complement.svg'"
-						+ "id='arrowComp" + menuState.idCounter++ + data.coursecode
+						+ "id='arrowComp" + arrowID
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
-						+ "id='arrowRight" + menuState.idCounter++ + data.coursecode
+						+ "id='arrowRight" + arrowID
 						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
@@ -1646,8 +1649,6 @@ function returnedSection(data) {
 
 	}
 
-	scrollToBottom(); // Scroll to the bottom to show newly created items.
-
 	// The next 5 lines are related to collapsable menus and their state.
 	getHiddenElements();
 	hideCollapsedMenus();
@@ -1658,12 +1659,12 @@ function returnedSection(data) {
 	// Change title of the current page depending on which page the user is on.
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 
-	// Change the scroll position to where the user was last time.
-	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
-
 	drawPieChart(); // Create the pie chart used in the statistics section.
 	fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section
 	drawSwimlanes(); // Create the swimlane used in the statistics section.
+
+	// Change the scroll position to where the user was last time.
+	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
 }
 
 function showHighscore(did, lid) {
@@ -1869,38 +1870,9 @@ function toggleFabButton() {
 	}
 }
 
-function openFabMenu(){
-	$('.fab-btn-list').fadeIn(0);
-	$('.fab-btn-sm').removeClass('scale-out');
-}
-
-function resetHoverTimer(){
-	clearTimeout(hoverMenuTimer);
-	startTimerAgain();
-}
-
-function checkIfCloseFabMenu(){
-	var elements = document.querySelectorAll(":hover"); // last element will be the element that the mouse is hovering on
-	if(findAncestor(elements[elements.length-1], "fixed-action-button") == null){
-		closeFabMenu();
-	}
-	startTimerAgain();
-}
-
-function startTimerAgain(){
-	hoverMenuTimer = window.setTimeout(function(){
-		checkIfCloseFabMenu();
-	}, 2500);
-}
-
 function createQuickItem(){
 	selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined");
 	newItem();
-}
-
-function closeFabMenu(){
-	$('.fab-btn-sm').addClass('scale-out');
-	$('.fab-btn-list').delay(100).fadeOut(0);
 }
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
@@ -1966,123 +1938,135 @@ function addColorsToTabSections(kind, visible){
 /* Statistic-sections functions, for drawing out all the statistics
    (pie chart and swimlanes) and upcomming deadlines. */
 function drawPieChart() {
-  var c = document.getElementById('pieChart');
-  var ctx = c.getContext('2d');
-  var width = c.width;
-  var height = c.height;
-  var pieChartRadius = height / 2;
-  var overviewBlockSize = 11;
+	var c = document.getElementById('pieChart');
+	var ctx = c.getContext('2d');
+	var width = c.width;
+	var height = 200;
+	var pieChartRadius = height / 2;
+	var overviewBlockSize = 11;
 
-  var totalQuizes = 0;
-  var passedQuizes = 0;
-  var notGradedQuizes = 0;
-  var failedQuizes = 0;
-  var notSubmittedQuizes = 0;
+	var totalQuizes = 0;
+	var passedQuizes = 0;
+	var notGradedQuizes = 0;
+	var failedQuizes = 0;
+	var notSubmittedQuizes = 0;
 
-  // Calculate total quizes.
-  for(var i = 0; i < retdata['entries'].length; i++) {
-    if(retdata['entries'][i].kind == "3") {
-      totalQuizes++;
-    }
-  }
+	// Calculate total quizes.
+	for(var i = 0; i < retdata['entries'].length; i++) {
+		if(retdata['entries'][i].kind == "3") {
+			totalQuizes++;
+		}
+	}
 
-  // Calculate passed, failed and not graded quizes.
-  for(var i = 0; i < retdata['results'].length; i++) {
-	  // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
-	  if(retdata['results'][i]['useranswer'] != null){
-		  if(retdata['results'][i].grade == 2) {
-			  passedQuizes++;
-		  } else if(retdata['results'][i].grade == 1) {
-			  failedQuizes++;
-		  }
-		  else {
-			  notGradedQuizes++;
-		  }
-	  }
-  }
+	// Calculate passed, failed and not graded quizes.
+	for(var i = 0; i < retdata['results'].length; i++) {
+		if(retdata['results'][i]['useranswer'] != null){ // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
+		if(retdata['results'][i].grade == 2) {
+			passedQuizes++;
+		} else if(retdata['results'][i].grade == 1) {
+			failedQuizes++;
+		}
+		else {
+			notGradedQuizes++;
+		}
+	}
+}
 
-  // Calculate non submitted quizes.
-  notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
+// Calculate non submitted quizes.
+notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
 
-  if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
-	  totalQuizes++; 		// show that the student has 100% not submitted tests.
-	  notSubmittedQuizes++;
-  }
+if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
+	totalQuizes++; 			// show that the student has 100% not submitted tests.
+	notSubmittedQuizes++;
+}
 
-  // PCT = Percentage
-  var passedPCT = 100 * (passedQuizes / totalQuizes);
-  var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
-  var failedPCT = 100 * (failedQuizes / totalQuizes);
-  var notSubmittedPCT = 100 * (notSubmittedQuizes / totalQuizes);
+// PCT = Percentage
+var passedPCT = 100 * (passedQuizes / totalQuizes);
+var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
+var failedPCT = 100 * (failedQuizes / totalQuizes);
+var notSubmittedPCT = 100 * (notSubmittedQuizes / totalQuizes);
 
-  // Only use 2 decimal places and round up if necessary
-  passedPCT = Math.round(passedPCT * 100) / 100;
-  notGradedPCT = Math.round(notGradedPCT * 100) / 100;
-  failedPCT = Math.round(failedPCT * 100) / 100;
-  notSubmittedPCT = Math.round(notSubmittedPCT * 100) / 100;
+// Only use 2 decimal places and round up if necessary
+passedPCT = Math.round(passedPCT * 100) / 100;
+notGradedPCT = Math.round(notGradedPCT * 100) / 100;
+failedPCT = Math.round(failedPCT * 100) / 100;
+notSubmittedPCT = Math.round(notSubmittedPCT * 100) / 100;
 
-  var lastend = -1.57; /* Chart start point. -1.57 is a quarter the number of
-                          radians in a circle, i.e. start at 12 o'clock */
-  var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
-  var colors = {
-    'passedQuizes': '#00B33C',			// Green
-	'notGradedQuizes': '#FFE81A',		// Yellow
-	'failedQuizes': '#E53935',			// Red
-	'notSubmittedQuizes': '#BDBDBD'		// Grey
-  }
+var lastend = -1.57; /* Chart start point. -1.57 is a quarter the number of
+radians in a circle, i.e. start at 12 o'clock */
+var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
+var colors = {
+	'passedQuizes': '#00E676',        // Green
+	'notGradedQuizes': '#FFEB3B',     // Yellow
+	'failedQuizes': '#E53935',        // Red
+	'notSubmittedQuizes': '#BDBDBD'   // Grey
+}
 
-  for (var i = 0; i < testsData.length; i++) {
+ctx.save();
+ctx.translate(50, 0);
 
-    if(i == 0) {
-      ctx.fillStyle = colors['passedQuizes'];
-    } else if(i == 1) {
-      ctx.fillStyle = colors['notGradedQuizes'];
-    } else if(i == 2) {
-      ctx.fillStyle = colors['failedQuizes'];
-    } else {
-      ctx.fillStyle = colors['notSubmittedQuizes'];
-    }
+for (var i = 0; i < testsData.length; i++) {
 
-    ctx.beginPath();
-    ctx.moveTo(pieChartRadius, height / 2);
+	if(i == 0) {
+		ctx.fillStyle = colors['passedQuizes'];
+	} else if(i == 1) {
+		ctx.fillStyle = colors['notGradedQuizes'];
+	} else if(i == 2) {
+		ctx.fillStyle = colors['failedQuizes'];
+	} else {
+		ctx.fillStyle = colors['notSubmittedQuizes'];
+	}
 
-    // Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
-    ctx.arc(pieChartRadius, height / 2, height / 2, lastend,lastend
-    + (Math.PI * 2 * (testsData[i] / totalQuizes)), false);
+	ctx.beginPath();
+	ctx.moveTo(pieChartRadius, height / 2);
 
-    //Parameter for lineTo: x,y
-    ctx.lineTo(pieChartRadius, height / 2);
-    ctx.fill();
+	// Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
+	ctx.arc(pieChartRadius, height / 2, height / 2, lastend,lastend
+		+ (Math.PI * 2 * (testsData[i] / totalQuizes)), false);
 
-    lastend += Math.PI * 2 * (testsData[i] / totalQuizes);
-  }
+		//Parameter for lineTo: x,y
+		ctx.lineTo(pieChartRadius, height / 2);
+		ctx.fill();
 
-  // Pie chart overview
-  ctx.save();
-  ctx.translate(pieChartRadius*2 + 20, 2);
+		lastend += Math.PI * 2 * (testsData[i] / totalQuizes);
+	}
 
-  ctx.fillStyle = colors['passedQuizes'];
-  ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
+	ctx.restore();
+	// Pie chart overview
+	ctx.save();
+	ctx.translate(10, 220);
 
-  ctx.fillStyle = colors['notGradedQuizes'];
-  ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
+	ctx.fillStyle = colors['passedQuizes'];
+	ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
 
-  ctx.fillStyle = colors['failedQuizes'];
-  ctx.fillRect(0, 40, overviewBlockSize, overviewBlockSize);
+	ctx.fillStyle = colors['failedQuizes'];
+	ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
 
-  ctx.fillStyle = colors['notSubmittedQuizes'];
-  ctx.fillRect(0, 60, overviewBlockSize, overviewBlockSize);
+	ctx.font = "12px Arial";
+	ctx.fillStyle = "#000";
 
-  ctx.font = "12px Arial";
-  ctx.fillStyle = "#000";
+	ctx.translate(20, 10);
+	ctx.fillText("Passed (" + passedPCT + "%)", 0, 0);
+	ctx.fillText("Failed (" + failedPCT + "%)", 0, 20);
 
-  ctx.translate(20, 10);
-  ctx.fillText("Passed (" + passedPCT + "%)", 0, 0);
-  ctx.fillText("Not Graded (" + notGradedPCT + "%)", 0, 20);
-  ctx.fillText("Failed (" + failedPCT + "%)", 0, 40);
-  ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 0, 60);
+	ctx.restore();
 
-  ctx.restore();
+	ctx.save();
+	ctx.translate(145, 190);
+
+	ctx.fillStyle = colors['notGradedQuizes'];
+	ctx.fillRect(0, 30, overviewBlockSize, overviewBlockSize);
+
+	ctx.fillStyle = colors['notSubmittedQuizes'];
+	ctx.fillRect(0, 50, overviewBlockSize, overviewBlockSize);
+
+	ctx.font = "12px Arial";
+	ctx.fillStyle = "#000";
+
+	ctx.fillText("Not Graded (" + notGradedPCT + "%)", 20, 40);
+	ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 20, 60);
+
+	ctx.restore();
 }
 
 
@@ -2346,10 +2330,6 @@ $(document).ready(function () {
 	$(document).on('click', '#dorf', function (e) {
 		e.stopPropagation();
 	});
-
-	hoverMenuTimer = window.setTimeout(function(){
-		checkIfCloseFabMenu();
-	}, 25);
 });
 
 $(window).load(function () {
@@ -2403,19 +2383,10 @@ $(document).mousedown(function (e) {
 });
 
 $(document).mouseup(function (e) {
-	// Click outside the FAB list
-	if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target) // if the target of the click isn't the container...
-		&& $('.fixed-action-button').has(e.target).length === 0) // ... nor a descendant of the container
-	{
-		if (!$('.fab-btn-sm').hasClass('scale-out')) {
-			$('.fab-btn-sm').toggleClass('scale-out');
-			$('.fab-btn-list').delay(100).fadeOut(0);
-		}
 
-	}
 
 	// Click outside the loginBox
-	else if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
+	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
 		&& $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
 		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
 	{
@@ -2439,3 +2410,55 @@ function scrollToBottom() {
 	var scrollingElement = (document.scrollingElement || document.body)
 	scrollingElement.scrollTop = scrollingElement.scrollHeight;
 }
+
+
+$(document).mousedown(function(e) {
+	// If the fab list is visible, there should be no timeout to toggle the list
+	if ($('.fab-btn-list').is(':visible')) {
+		if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) {
+			toggleFabButton();
+    	}
+	} else {
+        if (e.target.id == "fabBtn") {
+			pressTimer = window.setTimeout(function() {
+				toggleFabButton();
+			}, 200);
+		}
+	}
+}).mouseup(function(e) {
+	// A quick item should be created on
+	// a "fast click" if the fab list isn't visible
+	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
+			clearTimeout(pressTimer);
+			createQuickItem();
+           
+    }// Click outside the FAB list
+    else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) { // if the target of the click isn't the container...
+        toggleFabButton();
+	}
+}).on("touchstart", function(e){
+    // If the fab list is visible, there should be no timeout to toggle the list
+	if ($('.fab-btn-list').is(':visible')) {
+        //toggleFabButton();
+        
+	} else {
+        if (e.target.id == "fabBtn") {
+			pressTimer = window.setTimeout(function() {
+				toggleFabButton();
+                
+			}, 200);
+            return false;
+		}
+	}
+}).on("touchend", function(e){
+    //abrupts and clears the timer for touchstart when the user lets go of the fab
+    // The "Add Course Local File" popup should appear on
+	// a "fast click" if the fab list isn't visible
+	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
+			clearTimeout(pressTimer);
+			createQuickItem();
+           return false;
+    }// Click outside the FAB list
+    
+    
+});

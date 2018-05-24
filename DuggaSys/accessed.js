@@ -188,6 +188,10 @@ function changeClass(cid,uid,val,selected)
     }
 }
 
+function changeGroup(uid, gid) {
+	AJAXService("GROUP",{cid:querystring['cid'],uid:uid,gid:gid,coursevers:querystring['coursevers']},"ACCESS");
+}
+
 // Sets values in the "cogwheel popup"
 //function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
 function selectUser(uid,username,ssn,firstname,lastname,access,className)
@@ -382,11 +386,17 @@ function renderCell(col,celldata,cellid) {
 		return str;
 	} else if(col == "groups") {
 		var groups = filez['groups'];
+		var userGroups = celldata ? JSON.parse(celldata) : "";
 
 		str = '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
 		str += '<select><option>Välj grupper</option></select><div class="overSelect"></div></div><div id="checkboxes">';
-		groups.forEach(group => {
-			str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'"/>'+group.groupName+'</label>';
+
+		groups[userGroups.vers].forEach(group => {
+			if (userGroups.user_groups.length && checkUserGroup(group.groupID, userGroups.user_groups)) {
+				str += '<label><input type="checkbox" checked name="'+group.groupID+'" id="'+group.groupID+'" onclick="changeGroup('+obj.uid+','+group.groupID+')"/>'+group.groupName+'</label>';
+			} else {
+				str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'" onclick="changeGroup('+obj.uid+','+group.groupID+')"/>'+group.groupName+'</label>';
+			}
 		});
 		str += '</div></div>';
 		return str;
@@ -396,10 +406,25 @@ function renderCell(col,celldata,cellid) {
     return celldata;
 }
 
+/**
+ * Check if the user is in the active group
+ * 
+ * @param {ID of group} grpID 
+ * @param {ARRAY of usersactive groups} usrGrp 
+ */
+function checkUserGroup(grpID, usrGrp) {
+	for(var i = 0; i < usrGrp.length; i++) {
+		if (usrGrp[i].groupID == grpID) {
+			return true;
+		}
+	}
+	return false;
+}
+
 function makeDropdown(onChange, values, items, selected){
     str = "<select id='testId' onChange='"+onChange+"' onclick='return false;'>";
     for(var i = 0; i < values.length; i++){
-	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
+		str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
     }
     str+="</select>";
     return str;
@@ -500,6 +525,7 @@ var myTable;
 function returnedAccess(data) {
   fillResponsibleOptions(data.responsibles);
 	filez = data;
+
 	var tabledata = {
 		tblhead:{
 			username:"User",

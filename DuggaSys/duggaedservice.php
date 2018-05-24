@@ -26,7 +26,7 @@ $disabled = getOP('disabled');
 
 $uid = getOP('uid');
 
-$arrow = getOP('id');
+$id = getOP('id');
 $name = getOP('nme');
 $autograde = getOP('autograde');
 $gradesys = getOP('gradesys');
@@ -36,8 +36,6 @@ $deadline = getOP('deadline');
 $jsondeadline = getOP('jsondeadline');
 $release = getOP('release');
 $coursevers = getOP('coursevers');
-$cogwheel = getOP('id');
-$trashcan = getOP('id');
 
 $coursecode=getOP('coursecode');
 $coursename=getOP('coursename');
@@ -76,7 +74,41 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		if (!$stmt->execute()) {
 			$debug=$stmt->errorInfo()[2];
 		}
-	}else if(strcmp($opt,"ADDVARI")===0){
+	}else if(strcmp($opt,"SAVDUGGA")===0){
+		$query = $pdo->prepare("UPDATE quiz SET qname=:name,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qstart=:qstart,deadline=:deadline,qrelease=:release,jsondeadline=:jsondeadline WHERE id=:qid;");
+		$query->bindParam(':qid', $qid);
+		$query->bindParam(':name', $name);
+		$query->bindParam(':autograde', $autograde);
+		$query->bindParam(':gradesys', $gradesys);
+		$query->bindParam(':template', $template);
+		$query->bindParam(':jsondeadline', $jsondeadline);
+
+		if($qstart=="UNK") $query->bindValue(':qstart', null, PDO::PARAM_INT);
+		else $query->bindParam(':qstart', $qstart);
+
+		if($deadline=="UNK") $query->bindValue(':deadline', null, PDO::PARAM_INT);
+		else $query->bindParam(':deadline', $deadline);
+
+        if($release=="UNK") $query->bindValue(':release', null, PDO::PARAM_INT);
+		else $query->bindParam(':release', $release);
+
+		if(!$query->execute()) {
+			$error=$query->errorInfo();
+			$debug="Error updating dugga ".$error[2];
+		}
+	}else if(strcmp($opt,"DELDU")===0){
+        $query = $pdo->prepare("DELETE FROM quiz WHERE id=:qid");
+		$query->bindParam(':qid', $qid);
+		
+		if(!$query->execute()) {
+			if($query->errorInfo()[0] == 23000) {
+				$debug = "The item could not be deleted because of a foreign key constraint.";
+			} else {
+				$debug = "The item could not be deleted.";
+			}
+		}
+		
+    }else if(strcmp($opt,"ADDVARI")===0){
 		$querystring="INSERT INTO variant(quizID,creator,disabled,param,variantanswer) VALUES (:qid,:uid,:disabled,:param,:variantanswer)";
 		$stmt = $pdo->prepare($querystring);
 		$stmt->bindParam(':qid', $qid);
@@ -108,91 +140,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			$error=$query->errorInfo();
 			$debug="Error updating user".$error[2];
 		}
-	}else if(strcmp($opt,"SAVDUGGA")===0){
-		$query = $pdo->prepare("UPDATE quiz SET qname=:name,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qstart=:qstart,deadline=:deadline,qrelease=:release,jsondeadline=:jsondeadline WHERE id=:qid;");
-		$query->bindParam(':qid', $qid);
-		$query->bindParam(':name', $name);
-		$query->bindParam(':autograde', $autograde);
-		$query->bindParam(':gradesys', $gradesys);
-		$query->bindParam(':template', $template);
-		$query->bindParam(':jsondeadline', $jsondeadline);
-
-		if($qstart=="UNK") $query->bindValue(':qstart', null, PDO::PARAM_INT);
-		else $query->bindParam(':qstart', $qstart);
-
-		if($deadline=="UNK") $query->bindValue(':deadline', null, PDO::PARAM_INT);
-		else $query->bindParam(':deadline', $deadline);
-
-        if($release=="UNK") $query->bindValue(':release', null, PDO::PARAM_INT);
-		else $query->bindParam(':release', $release);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating dugga ".$error[2];
-		}
-	}else if(strcmp($opt,"UPDATEAUTO")===0){
-			$query = $pdo->prepare("UPDATE quiz SET autograde=:autograde WHERE id=:qid;");
-			$query->bindParam(':qid', $qid);
-			$query->bindParam(':autograde', $autograde);
-
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating user".$error[2];
-			}
-	}else if(strcmp($opt,"UPDATEDNAME")===0){
-			$query = $pdo->prepare("UPDATE quiz SET qname=:name WHERE id=:qid;");
-			$query->bindParam(':qid', $qid);
-			$query->bindParam(':name', $name);
-
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating user".$error[2];
-			}
-	}else if(strcmp($opt,"UPDATEGRADE")===0){
-			$query = $pdo->prepare("UPDATE quiz SET gradesystem=:gradesys WHERE id=:qid;");
-			$query->bindParam(':qid', $qid);
-			$query->bindParam(':gradesys', $gradesys);
-
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating user".$error[2];
-			}
-	}else if(strcmp($opt,"UPDATETEMPLATE")===0){
-			$query = $pdo->prepare("UPDATE quiz SET quizFile=:template WHERE id=:qid;");
-			$query->bindParam(':qid', $qid);
-			$query->bindParam(':template', $template);
-
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating user".$error[2];
-			}
-	}else if(strcmp($opt,"SAVVARIANSWER")===0){
-			$query = $pdo->prepare("UPDATE variant SET variantanswer=:variantanswer WHERE vid=:vid;");
-			$query->bindParam(':vid', $vid);
-			$query->bindParam(':variantanswer', $answer);
-
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating user".$error[2];
-			}
 	}
-	else if(strcmp($opt,"SAVVARIPARA")===0){
-			$query = $pdo->prepare("UPDATE variant SET  param=:param WHERE vid=:vid;");
-			$query->bindParam(':vid', $vid);
-			$query->bindParam(':param', $param);
-
-			if(!$query->execute()) {
-				$error=$query->errorInfo();
-				$debug="Error updating user".$error[2];
-			}
-	}else if(strcmp($opt,"DELDU")===0){
-        $query = $pdo->prepare("DELETE FROM quiz WHERE id=:qid");
-        $query->bindParam(':qid', $qid);
-        if(!$query->execute()) {
-            $error=$query->errorInfo();
-            $debug="Error deleting dugga".$error[2];
-        }
-    }
 }
 
 //------------------------------------------------------------------------------------------------
@@ -288,8 +236,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 	}
 }
 
-
-
 $array = array(
 	'entries' => $entries,
 	'debug' => $debug,
@@ -298,7 +244,6 @@ $array = array(
 	'duggaPages' => $duggaPages,
 	'coursecode' => $coursecode,
 	'coursename' => $coursename
-
 
 );
 

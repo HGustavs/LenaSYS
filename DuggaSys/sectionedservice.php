@@ -225,8 +225,44 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
+		} else if (strcmp($coursevers, "null")!==0) {
+			// Get every coursevers of courses so we seed groups to every courseversion
+			$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
+			$stmt->bindParam(":cid", $courseid);
+			$stmt->execute();
+			$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
+			$totalGroups = 24 * count($courseversions);
+
+			// Check if groups exists. If not add them
+			$stmt = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid");
+			$stmt->bindParam(":cid", $courseid);
+			$stmt->execute();
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			
+			
+			if (count($result) < $totalGroups) {
+				foreach($courseversions as $v) {
+					$defaultGroups = array(
+						"I", "II", "III", "IV", "V", "VI", "VII", "VIII",
+						"1", "2", "3", "4", "5", "6", "7", "8",
+						"A", "B", "C", "D", "E", "F", "G", "H",
+					);
+					
+					foreach($defaultGroups as $group) {
+						$stmt = $pdo->prepare("INSERT INTO groups(courseID, vers, groupName) VALUES(:courseID, :vers, :groupName)");
+						$stmt->bindParam(':courseID', $courseid);
+						$stmt->bindParam(':vers', $v);
+						$stmt->bindParam(':groupName', $group);
+
+						if (!$stmt->execute()) {
+							$error = $stmt->errorInfo();
+							$debug = "Error adding group " . $v;
+						}
+					}
+				}
+			}
 		}
-	}
+	} 
 }
 
 //------------------------------------------------------------------------------------------------
@@ -319,7 +355,7 @@ foreach($query->fetchAll() as $row) {
 $entries=array();
 
 if($cvisibility){
-  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
@@ -347,7 +383,8 @@ if($cvisibility){
 						'code_id' => $row['code_id'],
 						'deadline'=> $row['deadline'],
 						'qrelease' => $row['qrelease'],
-						'comments' => $row['comments']
+						'comments' => $row['comments'],
+						'qstart' => $row['qstart']
 					)
 				);
 		}
