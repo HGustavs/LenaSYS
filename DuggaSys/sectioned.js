@@ -2304,7 +2304,8 @@ function drawSwimlanes(){
 	y = 60;
 	for (var i = 0; i < retdata['entries'].length; i++){
 		var item = retdata['entries'][i];
-		var result = retdata['results'][i];
+		var result = retdata['results'];
+		//console.log(retdata['results']);
 		var testStartDate;
 
 		if (item['qrelease'] == null){
@@ -2320,23 +2321,23 @@ function drawSwimlanes(){
 		var untilTestStart = Math.round(Math.abs(
 			+ (courseStartDate.getTime() - testStartDate.getTime())/(oneDay)));
 
+		ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
 		if (item['kind'] == 3){
 			y += 5;
-			/*for (var j = 0; j < result.length; j++){
-				if (item['lid'] == result['moment']){
-					if(result['grade'] == 0) {
-			      ctxWeeks.fillStyle = colors['passedQuizes'];
-			    } else if(result['grade'] == 1) {
-			      ctxWeeks.fillStyle = colors['notGradedQuizes'];
-			    } else if(result['grade'] == 2) {
+			for (var j = 0; j < result.length; j++){
+				if (item['lid'] == result[j]['moment']){
+					if(result[j]['grade'] == null) {
+						ctxWeeks.fillStyle = colors['notGradedQuizes'];
+			    } else if(result[j]['grade'] == 1) {
 			      ctxWeeks.fillStyle = colors['failedQuizes'];
-			    }
-				} else {
-					ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
+			    } else if(result[j]['grade'] == 2) {
+						ctxWeeks.fillStyle = colors['passedQuizes'];
+			    } else {
+						ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
+					}
 				}
-			}*/
+			}
 
-			ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
 			ctxWeeks.fillRect(untilTestStart * 5, y, testDuration * 5, 20);
 			y += 25;
 		}
