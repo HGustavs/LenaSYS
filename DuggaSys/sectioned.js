@@ -1296,7 +1296,7 @@ function returnedSection(data) {
 					}
 					kk++;
 				} else if (itemKind === 7) { //Message
-					str += " <td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+					str += "<td style='width:25px; padding:5px'><img src='../Shared/icons/Message_icon.svg' style='width:100%;'/></td><td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 				}
 
 				// Close Information
