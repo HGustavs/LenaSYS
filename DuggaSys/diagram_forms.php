@@ -198,6 +198,7 @@
       <option value="start">Left</option>
       <option value="center" selected="true">Center</option>
       <option value="end">Right</option>
-      </select><br>'.$textSize.$okButton;
+      </select><br>'.$textSize
+      .'<button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'textType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>';
   }
  ?>
