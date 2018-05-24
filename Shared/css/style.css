@@ -2207,8 +2207,21 @@ span.arrow {
 }
 
 .resultTableText {
-	margin-left: 3px;
-	margin-right: 3px;
+  margin-left: 3px;
+  margin-right: 3px;
+  font-size: 13px;
+}
+
+.resultTableNormal {
+  height:70px;
+  align-items:center;
+  display:flex;
+}
+
+.resultTableMini {
+  height:25px;
+  align-items:center;
+  display:flex;
 }
 
 #resultTable td {
@@ -2217,8 +2230,13 @@ span.arrow {
   border: 0px;
 }
 
+.resultTable_counter {
+  text-align:center;
+}
+
 .resultTable_counter span {
-	margin-left: 5px;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
 #accessTable td {

@@ -350,7 +350,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 }
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls,qvariant,qid){
-  return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+" gradeImg\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
+  return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
 }
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid)
@@ -673,7 +673,7 @@ function renderCell(col,celldata,cellid) {
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
 		if (col == "FnameLnameSSN"){
-			str = "<div style='height:25px;' class='dugga-result-div resultTableCell'>";
+			str = "<div class='resultTableCell resultTableMini'>";
 				str += "<div class='resultTableText'>";
 					str += celldata.firstname + " " + celldata.lastname;
 				str += "</div>";
@@ -681,7 +681,7 @@ function renderCell(col,celldata,cellid) {
 			return str;
 		} else {
 			// color based on pass,fail,pending,assigned,unassigned
-			str = "<div style='height:25px;' class='resultTableCell ";
+			str = "<div class='resultTableCell resultTableMini ";
 				if(celldata.kind==4) { str += "dugga-moment "; }
 				if (celldata.grade === 1) {str += "dugga-fail";}
 				else if (celldata.grade > 1) {str += "dugga-pass";}
@@ -698,16 +698,19 @@ function renderCell(col,celldata,cellid) {
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
 	if (col == "FnameLnameSSN"){
-		str = "<div class='resultTableCell' style='height:80px;'>";
+		str = "<div class='resultTableCell resultTableNormal'>";
 			str += "<div class='resultTableText'>";
-				str += celldata.grade;
+				str += celldata.firstname+" "+celldata.lastname+"<br>";
+				str += celldata.username+" / "+celldata.class+"<br>";
+				str += celldata.ssn+"<br>";
+				str += celldata.setTeacher;
 			str += "</div>";
 		str += "</div>";
 		return str;
 
 	} else {
 		// color based on pass,fail,pending,assigned,unassigned
-		str = "<div style='height:80px;' class='resultTableCell ";
+		str = "<div style='height:70px;' class='resultTableCell ";
 			if(celldata.kind==4) { str += "dugga-moment "; }
 			if (celldata.grade === 1) {str += "dugga-fail";}
 			else if (celldata.grade > 1) {str += "dugga-pass";}
@@ -727,7 +730,7 @@ function renderCell(col,celldata,cellid) {
 				} else {
 					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
 				}
-				str += "<img id='korf' class='fist gradeImg";
+				str += "<img id='korf' class='fist";
 					if(celldata.userAnswer===null && !(celldata.quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
 						str += " grading-hidden";
 					}
@@ -752,7 +755,7 @@ function renderCell(col,celldata,cellid) {
 			str += "</div>";
 
 			// Print times graded
-			str += "<div class='text-center'>";
+			str += "<div class='text-center resultTableText'>";
 				if(celldata.ishere===true && celldata.timesGraded!==0){
 					str += "Times Graded: " + celldata.timesGraded;
 				}
