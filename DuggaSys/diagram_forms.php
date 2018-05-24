@@ -9,7 +9,7 @@
           <option value=\'#BA68C8\'>Purple</option>
           <option value=\'#ffffff\'>White</option>
           <option value=\'#000000\'>Black</option>';
-  $fonts = '<option value=\'Arial\' selected="true">Arial</option>
+  $fonts = '<option value=\'Arial\'>Arial</option>
           <option value=\'Courier New\'>Courier New</option>
           <option value=\'Impact\'>Impact</option>
           <option value=\'Calibri\'>Calibri</option>';
@@ -27,7 +27,7 @@
           </select><br>';
   $textSize = 'Text size:<br>
         <select onchange="changeObjectAppearance();" id=\'TextSize\'>
-        "<option value=\'Tiny\' selected="true">Tiny</option>
+        "<option value=\'Tiny\'>Tiny</option>
         "<option value=\'Small\'>Small</option>
         "<option value=\'Medium\'>Medium</option>
         "<option value=\'Large\'>Large</option>
