@@ -58,7 +58,6 @@ $(document).ready(function () {
 
 });
 
-
 function addMinuteOptions(){
 	var str = "";
 	for(var i = 0; i < 60; i+=5){
@@ -112,8 +111,9 @@ function editSectionDialogTitle(title) {
 }
 
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group = "UNK") {
 	nameSet = false;
+	console.log(group);
 	if (entryname == "undefined") entryname = "New Header";
 	if (kind == "undefined") kind = 0;
 	xelink = elink;
@@ -243,6 +243,19 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	// Set Link
 	$("#link").val(elink);
 
+
+	// Group
+	str = "";
+	str += "<option value='UNK'>Välj grupp</option>";
+
+	for(var i = 0; i < retdata['groups'].length; i++) {
+		if (group == retdata['groups'][i].groupID) {
+			str += "<option selected='selected' value='"+retdata['groups'][i].groupID+"'>"+retdata['groups'][i].groupName+"</option>"; 
+		} else {
+			str += "<option value='"+retdata['groups'][i].groupID+"'>"+retdata['groups'][i].groupName+"</option>"; 
+		}
+	}
+	$('#group').html(str);
 	// Show dialog
 	iistr = "";
 
@@ -252,6 +265,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	$("#inputwrapper-moment").css("display","block");
 	$("#inputwrapper-highscore").css("display","block");
 	$("#inputwrapper-comments").css("display","block");
+	$("#inputwrapper-group").css("display","block");
 
 	// Code
 	if(kind==2){
@@ -488,6 +502,8 @@ function updateItem() {
 	var moment = $("#moment").val();
 	var gradesys = $("#gradesys").val();
 	var comments = $("#comments").val();
+	var group = $("#group").val();
+
 	// Storing tabs in gradesys column!
 	if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7) gradesys = tabs;
 	AJAXService(
@@ -500,7 +516,8 @@ function updateItem() {
 			moment: moment,
 			gradesys: gradesys,
 			highscoremode: highscoremode,
-			comments: comments
+			comments: comments,
+			group:group
 		}, "SECTION");
 	$("#sectionConfirmBox").css("display", "none");
 	$("#editSection").css("display", "none");
@@ -508,16 +525,17 @@ function updateItem() {
 }
 
 function newItem() {
-	tabs = $("#tabs").val();
-	lid = $("#lid").val();
-	kind = $("#type").val();
-	link = $("#link").val();
-	highscoremode = $("#highscoremode").val();
-	sectionname = $("#sectionname").val();
-	visibility = $("#visib").val();
-	moment = $("#moment").val();
-	gradesys = $("#gradesys").val();
-	comment = $("#deadlinecomment").val();
+	var tabs = $("#tabs").val();
+	var lid = $("#lid").val();
+	var kind = $("#type").val();
+	var link = $("#link").val();
+	var highscoremode = $("#highscoremode").val();
+	var sectionname = $("#sectionname").val();
+	var visibility = $("#visib").val();
+	var moment = $("#moment").val();
+	var gradesys = $("#gradesys").val();
+	var comment = $("#deadlinecomment").val();
+	var group = $("#group").val();
 
 	// Storing tabs in gradesys column!
 	if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7) gradesys = tabs;
@@ -531,7 +549,8 @@ function newItem() {
 			moment: moment,
 			gradesys: gradesys,
 			highscoremode: highscoremode,
-			comment: comment
+			comment: comment,
+			group:group
 		}, "SECTION");
 	$("#editSection").css("display", "none");
 	setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
@@ -1252,8 +1271,11 @@ function returnedSection(data) {
 						"<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
-						+ item['entryname']
-						+ "</span><img src='../Shared/icons/desc_complement.svg'"
+						+ item['entryname'] + "</span>";
+						if (item['groupName'].length) {
+							str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%; min-width:18px;'/> " + item['groupName'];
+						}
+						str += "<img src='../Shared/icons/desc_complement.svg'"
 						+ "id='arrowComp" + arrowID
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
@@ -1264,7 +1286,7 @@ function returnedSection(data) {
 				else if (itemKind == 4) { // Moment
 					var strz = "";
 					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
-					
+
 					if (item['gradesys'] == 0) {
 						strz = "";
 					}
@@ -1281,8 +1303,12 @@ function returnedSection(data) {
 					str += "<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
-						+ item['entryname'] + " " + strz + " " + "</span>"
-						+ "<img src='../Shared/icons/desc_complement.svg'"
+						+ item['entryname'] + " " + strz + " </span>"; 
+					if (item['groupName'].length) {
+						str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%;min-width:18px;'/> " + item['groupName'];
+					}
+
+					str +=  "<img src='../Shared/icons/desc_complement.svg'"
 						+ "id='arrowComp" + arrowID
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
@@ -1463,7 +1489,8 @@ function returnedSection(data) {
 							+ "\"" + momentexists + "\","
 							+ "\"" + item['gradesys'] + "\","
 							+ "\"" + item['highscoremode'] + "\","
-							+ "\"" + item['comments'] + "\""
+							+ "\"" + item['comments'] + "\","
+							+ "\"" + item['group'] + "\""
 							+ "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
 							+ " title='Edit " + item['entryname'] + "' /></td>";
 					} else if (itemKind === 5) { 	// Link
@@ -1831,17 +1858,17 @@ function toggleFabButton() {
 }
 
 function createQuickItem(){
-	selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined");
+	selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined", "UNK");
 	newItem();
 }
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function fabValidateType(kind) {
 	if (kind == 0){
-		selectItem("undefined","New Header","0","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Header","0","undefined","undefined","0","undefined","undefined", "undefined");
 		newItem();
 	} else if (kind == 1){
-		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined", "UNK");
 		newItem();
 	} else if (kind == 2){
 		if(retdata['codeexamples'].length <= 1){ //Index 1 in the array has a hard coded code example.
@@ -1850,7 +1877,7 @@ function fabValidateType(kind) {
 			$("#noMaterialText").html("Create a Code example before you can use it for a Code section.");
 			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
-			selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined");
+			selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined", "UNK");
 			newItem();
 		}
 	} else if (kind == 3){
@@ -1859,11 +1886,11 @@ function fabValidateType(kind) {
 			$("#noMaterialText").html("Create a Dugga before you can use it for a Test section.");
 			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
-			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined");
+			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined", "UNK");
 			newItem();
 		}
 	} else if (kind == 4){
-		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined", "UNK");
 		newItem();
 	} else if (kind == 5){
 		if(retdata['links'].length == 0){
@@ -1871,14 +1898,14 @@ function fabValidateType(kind) {
 			$("#noMaterialText").html("Create a Link before you can use it for a Link section.");
 			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
-			selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined");
+			selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined", "UNK");
 			newItem();
 		}
 	} else if (kind == 6){
-		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined", "UNK");
 		newItem();
 	} else if (kind == 7){
-		selectItem("undefined","New Message","7","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Message","7","undefined","undefined","0","undefined","undefined", "UNK");
 		newItem();
 	}
 }
@@ -2146,9 +2173,6 @@ $(window).load(function () {
 $(document).mousedown(function (e) {
 	var box = $(e.target);
 
-
-
-
 	if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
 		isClickedElementBox = true;
 	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
@@ -2236,6 +2260,4 @@ $(document).mousedown(function(e) {
 			createQuickItem();
            return false;
     }// Click outside the FAB list
-    
-    
 });

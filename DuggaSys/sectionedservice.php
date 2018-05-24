@@ -38,6 +38,7 @@ $versname=getOP('versname');
 $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
 $comments=getOP('comments');
+$grp=getOP('group');
 $unmarked = 0;
 // course start and end dates, for a version of a course, created for swimlane functionality
 $startdate=getOP('startdate');
@@ -102,7 +103,7 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 			}
 
-			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment, :gradesys, :highscoremode)");
+			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupID) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment, :gradesys, :highscoremode, :group)");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
@@ -113,6 +114,13 @@ if(checklogin()){
 			$query->bindParam(':comment', $comment);
 			$query->bindParam(':visible', $visibility);
 			$query->bindParam(':highscoremode', $highscoremode);
+
+			if ($grp != "UNK") {
+				$query->bindParam(':group', $grp);
+			} else {
+				$query->bindValue(':group', null, PDO::PARAM_INT);
+			} 
+
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -169,11 +177,17 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 			}
 
-			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments WHERE lid=:lid;");
+			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupID=:group WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':comments', $comments);
 			$query->bindParam(':highscoremode', $highscoremode);
+
+			if ($grp != "UNK") {
+				$query->bindParam(':group', $grp);
+			} else {
+				$query->bindValue(':group', null, PDO::PARAM_INT);
+			} 
 
 			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
 			else $query->bindParam(':moment', $moment);
@@ -355,7 +369,7 @@ foreach($query->fetchAll() as $row) {
 $entries=array();
 
 if($cvisibility){
-  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, groupID FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
@@ -366,6 +380,11 @@ if($cvisibility){
 	}
 
 	foreach($query->fetchAll() as $row) {
+		$stmt = $pdo->prepare("SELECT groupName FROM groups WHERE groupID=:groupID");
+		$stmt->bindParam(":groupID", $row['groupID']);
+		$stmt->execute();
+		$grpName = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
 		// Push info
 		if($isSuperUserVar||$row['visible']==1||($row['visible']==2&&($hasread||$haswrite))||($row['visible']==0&&$haswrite==true)){
 				array_push(
@@ -384,7 +403,9 @@ if($cvisibility){
 						'deadline'=> $row['deadline'],
 						'qrelease' => $row['qrelease'],
 						'comments' => $row['comments'],
-						'qstart' => $row['qstart']
+						'qstart' => $row['qstart'],
+						'group' => $row['groupID'],
+						'groupName' => $grpName
 					)
 				);
 		}
@@ -543,6 +564,17 @@ if($ha){
   }
 }
 
+$stmt = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid AND vers=:vers");
+$stmt->bindParam(":cid", $courseid);
+$stmt->bindParam(":vers", $coursevers);
+
+if (!$stmt->execute()) {
+	$error=$stmt->errorInfo();
+	$debug="Error getting groups " . $error[2];
+} else {
+	$groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 $array = array(
 	'entries' => $entries,
 	"debug" => $debug,
@@ -559,7 +591,8 @@ $array = array(
 	'codeexamples' => $codeexamples,
 	'unmarked' => $unmarked,
 	'startdate' => $startdate,
-	'enddate' => $enddate
+	'enddate' => $enddate,
+	'groups' => $groups
 );
 
 echo json_encode($array);

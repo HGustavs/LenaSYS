@@ -95,7 +95,7 @@ CREATE TABLE listentries (
 	gradesystem 			TINYINT(1),
 	highscoremode			INT DEFAULT 0,
 	rowcolor				TINYINT(1),
-	grouptype				TINYINT(1),
+	groupID					INT DEFAULT NULL,
     PRIMARY KEY (lid),
 /*	FOREIGN KEY(code_id) REFERENCES codeexample(exampleid) ON UPDATE NO ACTION ON DELETE SET NULL, */
 	FOREIGN KEY (creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
