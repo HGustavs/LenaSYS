@@ -1012,7 +1012,7 @@ function returnedSection(data) {
 		str += "</div>";
 
 		str	+= "<div id='deadlineInfoBox' class='statisticsInnerBox' "
-		+ "style='display:inline-block; padding: 10px;'>";
+		+ "style='padding: 10px;'>";
 		str += "<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>";
 		str += "<div class='deadlineInfo'><span style='width:100%;'id='deadlineInfoFirstText'></span>";
 		str += "<span id='deadlineInfoFirstDate' style='margin-right:5px; width:35px;'></span></div>";
