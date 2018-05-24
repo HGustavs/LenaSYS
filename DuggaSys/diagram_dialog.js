@@ -207,7 +207,7 @@ function globalAppearanceMenu(){
     $(".loginBox").draggable();
     var form = showMenu();
     //AJAX
-    loadFormIntoElement(form,'diagram_forms.php?form=5');
+    loadFormIntoElement(form,'diagram_forms.php?form=global');
 }
 
 function objectAppearanceMenu(form) {
@@ -221,26 +221,26 @@ function objectAppearanceMenu(form) {
 
     if (diagram[lastSelectedObject].symbolkind == 1) {
         classAppearanceOpen = true;
-        loadUMLForm(form, 'diagram_forms.php?form=2');
+        loadUMLForm(form, 'diagram_forms.php?form=class');
     }
     else if (diagram[lastSelectedObject].symbolkind == 2) {
-        loadFormIntoElement(form, 'diagram_forms.php?form=1');
+        loadFormIntoElement(form, 'diagram_forms.php?form=attribute');
     }
     else if (diagram[lastSelectedObject].symbolkind == 3) {
-        loadFormIntoElement(form, 'diagram_forms.php?form=3');
+        loadFormIntoElement(form, 'diagram_forms.php?form=entity');
     }
     else if (diagram[lastSelectedObject].symbolkind == 4) {
-        loadLineForm(form, 'diagram_forms.php?form=6&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
+        loadLineForm(form, 'diagram_forms.php?form=line&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
     }
     else if (diagram[lastSelectedObject].symbolkind == 5) {
-        loadFormIntoElement(form, 'diagram_forms.php?form=7');
+        loadFormIntoElement(form, 'diagram_forms.php?form=relation');
     }
     else if (diagram[lastSelectedObject].symbolkind == 6) {
         textAppearanceOpen = true;
-        loadTextForm(form, 'diagram_forms.php?form=8');
+        loadTextForm(form, 'diagram_forms.php?form=text');
     }
     else if (diagram[lastSelectedObject].kind == 1) {
-        loadFormIntoElement(form, 'diagram_forms.php?form=4');
+        loadFormIntoElement(form, 'diagram_forms.php?form=figure');
     }
 }
 function changeObjectAppearance(object_type){
