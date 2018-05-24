@@ -77,7 +77,7 @@
                         <div class="toolbar-drawer" id="drawerTools">
                             <div class="tooltipdialog">
                                 <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
-                                    <img src="../Shared/icons/diagram_create_line.svg">
+                                    <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
                                 </button>
                             </div>
                         </div>
