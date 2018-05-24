@@ -4221,13 +4221,6 @@ textarea#mrkdwntxt {
   padding: 5px 27px 6px 3px;
 }
 
-.headerType {
-  cursor: pointer;
-  margin-left: 35.75%;
-  position: absolute;
-  margin-top: -0.75%
-}
-
 .show-dropdown-content {
     display: block;
 }
