@@ -121,7 +121,7 @@ function loadLineForm(element, dir){
 
                 setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
                 setSelectedOption('cardinality', tempCardinality);
-                setSelectedOption('cardinalityUml', tempCardinalityUML);
+                if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
         }
     }
