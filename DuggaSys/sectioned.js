@@ -1484,7 +1484,8 @@ function returnedSection(data) {
 							+ "\"" + momentexists + "\","
 							+ "\"" + item['gradesys'] + "\","
 							+ "\"" + item['highscoremode'] + "\","
-							+ "\"" + item['comments'] + "\""
+							+ "\"" + item['comments'] + "\","
+							+ "\"" + item['group'] + "\""
 							+ "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
 							+ " title='Edit " + item['entryname'] + "' /></td>";
 					} else if (itemKind === 2) { // code
