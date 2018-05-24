@@ -250,9 +250,9 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
 	for(var i = 0; i < retdata['groups'].length; i++) {
 		if (group == retdata['groups'][i].groupID) {
-			str += "<option selected='selected' value='"+retdata['groups'][i].groupID+"'>"+retdata['groups'][i].groupName+"</option>"; 
+			str += "<option selected='selected' value='"+retdata['groups'][i].groupID+"'>"+retdata['groups'][i].groupName+"</option>";
 		} else {
-			str += "<option value='"+retdata['groups'][i].groupID+"'>"+retdata['groups'][i].groupName+"</option>"; 
+			str += "<option value='"+retdata['groups'][i].groupID+"'>"+retdata['groups'][i].groupName+"</option>";
 		}
 	}
 	$('#group').html(str);
@@ -1347,7 +1347,7 @@ function returnedSection(data) {
 					str += "<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
-						+ item['entryname'] + " " + strz + " </span>"; 
+						+ item['entryname'] + " " + strz + " </span>";
 					if (item['groupName'].length) {
 						str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%;min-width:18px;'/> " + item['groupName'];
 					}
@@ -2191,7 +2191,14 @@ function drawSwimlanes(){
 
 	var startdate = new Date(retdata['startdate']);
 	var enddate = new Date(retdata['enddate']);
-	var totalNumberOfTests = retdata['duggor'].length;
+	var totalNumberOfTests = 0;
+
+	for (var i = 0; i < retdata['entries'].length; i++){
+		if (retdata['entries'][i]['kind'] == 3){
+			totalNumberOfTests++;
+		}
+	}
+
 	var weekLength = weeksBetween(startdate, enddate);
 
 	var widthVar = 30;
