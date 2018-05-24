@@ -85,7 +85,7 @@ $migrationArray = array(
             ['column', 'listentries', 'gradesystem', 'tinyint(1)', ''],
             ['column', 'listentries', 'highscoremode', 'int', 'DEFAULT 0'],
             ['column', 'listentries', 'rowcolor', 'tinyint(1)', ''],
-            ['column', 'listentries', 'grouptype', 'tinyint(1)', ''],
+            ['column', 'listentries', 'groupID', 'int', 'NULL DEFAULT NULL'],
 
             ['create', 'quiz', 'id', 'int', 'UNSIGNED NOT NULL AUTO_INCREMENT', 'PRIMARY KEY(id)'],
             ['column', 'quiz', 'cid', 'int', 'UNSIGNED NOT NULL', 'FOREIGN KEY (cid) REFERENCES course (cid) ON DELETE CASCADE ON UPDATE CASCADE'],
@@ -2177,6 +2177,14 @@ $migrationArray = array(
 
             ['create', 'user_group', 'groupID', 'int', 'UNSIGNED NOT NULL', 'FOREIGN KEY(groupID) REFERENCES groups(groupID)'],
             ['column', 'user_group', 'userID', 'int', ' UNSIGNED NOT NULL', 'FOREIGN KEY(userID) REFERENCES user(uid)', 'PRIMARY KEY(groupID, userID'],
+
+        ],
+    ],
+    [
+        'version' => 'v0.07',
+        'description' => 'Update listentries for groups',
+        [
+            ['column', 'listentries', 'groupID', 'int', 'NULL DEFAULT NULL'],
         ],
     ],
 );
