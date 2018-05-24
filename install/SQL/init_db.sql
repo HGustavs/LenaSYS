@@ -95,7 +95,7 @@ CREATE TABLE listentries (
 	gradesystem 			TINYINT(1),
 	highscoremode			INT DEFAULT 0,
 	rowcolor				TINYINT(1),
-	grouptype				TINYINT(1),
+	groupID					INT DEFAULT NULL,
     PRIMARY KEY (lid),
 /*	FOREIGN KEY(code_id) REFERENCES codeexample(exampleid) ON UPDATE NO ACTION ON DELETE SET NULL, */
 	FOREIGN KEY (creator) REFERENCES user(uid) ON DELETE NO ACTION ON UPDATE NO ACTION, FOREIGN KEY(cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
@@ -487,30 +487,24 @@ CREATE TABLE user_push_registration (
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* Usergroup and user_usergroup relation */
+CREATE TABLE `groups` (
+  `groupID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `courseID` int(10) unsigned NOT NULL,
+  `vers` varchar(8) DEFAULT NULL,
+  `groupName` varchar(80) NOT NULL,
+  PRIMARY KEY (`groupID`),
+  KEY `courseID` (`courseID`),
+  CONSTRAINT `groups_ibfk_1` FOREIGN KEY (`courseID`) REFERENCES `course` (`cid`)
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
 
-/* Create the usergroup table. This table consists of groups containing students */
-CREATE TABLE `usergroup` (
-  `ugid` 					int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `lid` 					int(10) UNSIGNED NOT NULL,
-  `name` 					varchar(255) NOT NULL,
-  `created` 				datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `lastupdated` 			datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`ugid`,`lid`),
-  KEY `lid` (`lid`),
-  KEY `ugid` (`ugid`),
-  CONSTRAINT `lid` FOREIGN KEY (`lid`) REFERENCES `listentries` (`lid`)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
-/* Create table user_usergroup. This table represents the relation between users and usergroups. */
-CREATE TABLE `user_usergroup` (
-  `uid` 					int(10) UNSIGNED NOT NULL,
-  `ugid` 					int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`uid`,`ugid`),
-  KEY `ugid` (`ugid`),
-  KEY `uid` (`uid`),
-  CONSTRAINT `usergroupid` FOREIGN KEY (`ugid`) REFERENCES `usergroup` (`ugid`),
-  CONSTRAINT `userid` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+CREATE TABLE `user_group` (
+  `groupID` int(10) unsigned NOT NULL,
+  `userID` int(10) unsigned NOT NULL,
+  KEY `groupID` (`groupID`),
+  KEY `userID` (`userID`),
+  CONSTRAINT `user_group_ibfk_1` FOREIGN KEY (`groupID`) REFERENCES `groups` (`groupID`),
+  CONSTRAINT `user_group_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `user` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*table used for checking participation. i.e participation is 0 = not participated, 1 = participated.*/
 CREATE TABLE user_participant (

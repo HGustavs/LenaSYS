@@ -38,6 +38,7 @@ $versname=getOP('versname');
 $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
 $comments=getOP('comments');
+$grp=getOP('group');
 $unmarked = 0;
 // course start and end dates, for a version of a course, created for swimlane functionality
 $startdate=getOP('startdate');
@@ -102,7 +103,7 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 			}
 
-			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment, :gradesys, :highscoremode)");
+			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupID) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment, :gradesys, :highscoremode, :group)");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
@@ -113,6 +114,13 @@ if(checklogin()){
 			$query->bindParam(':comment', $comment);
 			$query->bindParam(':visible', $visibility);
 			$query->bindParam(':highscoremode', $highscoremode);
+
+			if ($grp != "UNK") {
+				$query->bindParam(':group', $grp);
+			} else {
+				$query->bindValue(':group', null, PDO::PARAM_INT);
+			} 
+
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -169,11 +177,17 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 			}
 
-			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments WHERE lid=:lid;");
+			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupID=:group WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':comments', $comments);
 			$query->bindParam(':highscoremode', $highscoremode);
+
+			if ($grp != "UNK") {
+				$query->bindParam(':group', $grp);
+			} else {
+				$query->bindValue(':group', null, PDO::PARAM_INT);
+			} 
 
 			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
 			else $query->bindParam(':moment', $moment);
@@ -225,8 +239,44 @@ if(checklogin()){
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
 			}
+		} else if (strcmp($coursevers, "null")!==0) {
+			// Get every coursevers of courses so we seed groups to every courseversion
+			$stmt = $pdo->prepare("SELECT vers FROM vers WHERE cid=:cid");
+			$stmt->bindParam(":cid", $courseid);
+			$stmt->execute();
+			$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
+			$totalGroups = 24 * count($courseversions);
+
+			// Check if groups exists. If not add them
+			$stmt = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid");
+			$stmt->bindParam(":cid", $courseid);
+			$stmt->execute();
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			
+			
+			if (count($result) < $totalGroups) {
+				foreach($courseversions as $v) {
+					$defaultGroups = array(
+						"I", "II", "III", "IV", "V", "VI", "VII", "VIII",
+						"1", "2", "3", "4", "5", "6", "7", "8",
+						"A", "B", "C", "D", "E", "F", "G", "H",
+					);
+					
+					foreach($defaultGroups as $group) {
+						$stmt = $pdo->prepare("INSERT INTO groups(courseID, vers, groupName) VALUES(:courseID, :vers, :groupName)");
+						$stmt->bindParam(':courseID', $courseid);
+						$stmt->bindParam(':vers', $v);
+						$stmt->bindParam(':groupName', $group);
+
+						if (!$stmt->execute()) {
+							$error = $stmt->errorInfo();
+							$debug = "Error adding group " . $v;
+						}
+					}
+				}
+			}
 		}
-	}
+	} 
 }
 
 //------------------------------------------------------------------------------------------------
@@ -319,7 +369,7 @@ foreach($query->fetchAll() as $row) {
 $entries=array();
 
 if($cvisibility){
-  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, groupID FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
@@ -330,6 +380,11 @@ if($cvisibility){
 	}
 
 	foreach($query->fetchAll() as $row) {
+		$stmt = $pdo->prepare("SELECT groupName FROM groups WHERE groupID=:groupID");
+		$stmt->bindParam(":groupID", $row['groupID']);
+		$stmt->execute();
+		$grpName = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
 		// Push info
 		if($isSuperUserVar||$row['visible']==1||($row['visible']==2&&($hasread||$haswrite))||($row['visible']==0&&$haswrite==true)){
 				array_push(
@@ -347,7 +402,10 @@ if($cvisibility){
 						'code_id' => $row['code_id'],
 						'deadline'=> $row['deadline'],
 						'qrelease' => $row['qrelease'],
-						'comments' => $row['comments']
+						'comments' => $row['comments'],
+						'qstart' => $row['qstart'],
+						'group' => $row['groupID'],
+						'groupName' => $grpName
 					)
 				);
 		}
@@ -504,6 +562,38 @@ if($ha){
       $enddate = $row["enddate"];
     }
   }
+}else{
+	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind=1 ORDER BY filename");
+	$query->bindParam(':cid', $courseid);
+
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries".$error[2];
+	}
+
+	$queryo=$pdo->prepare("SELECT startdate,enddate FROM vers WHERE cid=:cid AND vers=:vers LIMIT 1;");
+	$queryo->bindParam(':cid', $courseid);
+	$queryo->bindParam(':vers', $coursevers);
+	if(!$queryo->execute()) {
+		$error=$queryo->errorInfo();
+		$debug="Error reading start/stopdate".$error[2];
+	}else{
+    foreach($queryo->fetchAll(PDO::FETCH_ASSOC) as $row){
+      $startdate = $row["startdate"];
+      $enddate = $row["enddate"];
+    }
+  }
+}
+
+$stmt = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid AND vers=:vers");
+$stmt->bindParam(":cid", $courseid);
+$stmt->bindParam(":vers", $coursevers);
+
+if (!$stmt->execute()) {
+	$error=$stmt->errorInfo();
+	$debug="Error getting groups " . $error[2];
+} else {
+	$groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 $array = array(
@@ -522,7 +612,8 @@ $array = array(
 	'codeexamples' => $codeexamples,
 	'unmarked' => $unmarked,
 	'startdate' => $startdate,
-	'enddate' => $enddate
+	'enddate' => $enddate,
+	'groups' => $groups
 );
 
 echo json_encode($array);

@@ -261,7 +261,8 @@ function updateDugga() {
 	var release = $("#release").val();
 	var jsondeadline = "{'deadline1':'"+$("#deadline").val()+"', 'comment1':'"+$("#deadlinecomments1").val()+"', 'deadline2':'"+$("#deadline2").val()+"', 'comment2':'"+$("#deadlinecomments2").val()+"', 'deadline3':'"+$("#deadline3").val()+"', 'comment3':'"+$("#deadlinecomments3").val()+"'}";
 
-	closeEditDugga();
+	resetNameValidation();
+	closeWindows();
 
 	AJAXService("SAVDUGGA", { cid: querystring['cid'], qid: did, nme: nme, autograde: autograde, gradesys: gradesys, template: template, qstart: qstart, deadline: deadline, jsondeadline: jsondeadline, release: release, coursevers: querystring['coursevers'] }, "DUGGA");
 }
@@ -472,8 +473,6 @@ function confirmBox(operation, item, type) {
 			deleteVariant(itemToDelete);
 			$("#sectionConfirmBox").css("display", "none");
 		}
-	} else if (operation == "closeConfirmBox") {
-		$("#sectionConfirmBox").css("display", "none");
 	}
 }
 
@@ -504,6 +503,8 @@ function returnedDugga(data) {
 	filez = data;
 	globalData = data;
 
+	if (data['debug'] != "NONE!") alert(data['debug']);
+	
 	if (data['writeaccess']) {
 		$('#quiz').show();
 		$('.fixed-action-button').show();
@@ -518,8 +519,7 @@ function returnedDugga(data) {
 			changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
 				+ querystring['coursevers'] + "");
 	}
-
-	console.log(data['writeaccess']);
+  
 	var tabledata = {
 		tblhead: {
 			did: "",
@@ -558,8 +558,42 @@ function returnedDugga(data) {
 		null,
 		true
 	);
-	duggaTable.renderTable();
+	
+	duggaTable.renderTable(); // Renders the dugga table
 
+	var content = "";
+	
+	// If the user has access to the dugga page, then render the content
+	if (data['writeaccess']) {
+		
+		/* Page title */
+		content += "<div class='titles' style='padding-top:10px;'>"
+		content += "<h1 style='flex:1;text-align:center;'>Tests</h1>"
+		content += "</div>"
+
+		/* Search engine */
+		content += "<div id='testSearchContainer'>"
+        content += "<input id='duggaSearch' class ='searchField' type='search' placeholder='Search...' onkeyup='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'onsearch='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'/>"
+        content += "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>"
+        content += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
+        content += "</button>"
+		content += "</div>"
+		
+		/* FAB Button */
+		content += "<div class='fixed-action-button'>"
+		content += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
+		content += "</div>";
+	}
+	else {
+		$("#quiz").html("");
+		alert("You don't have access to this page. You are now being redirected!")
+		changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
+				+ querystring['coursevers'] + "");
+	}
+	
+	$("#headerContent").html(content);
+	
+	
 	$("content").html();
 	var result = 0;
 	filez = data['files'];
@@ -706,6 +740,7 @@ function renderCell(col, celldata, cellid) {
 
 	// Placing a clickable arrow in its designated column for previewing the variant.
 	else if (col == "arrowVariant") {
+		object = JSON.parse(celldata);
 		str = "<img id='dorf' src='../Shared/icons/PlayT.svg' ";
 		str += " onclick='getVariantPreview( " + object + ", " + clickedElement + ");'>";
 		return str;
@@ -812,15 +847,7 @@ function variantFilter(row) {
 	}
 }
 
-
 // START OF closers and openers
-function closeEditDugga() {
-	$("#editDugga").css("display", "none");
-
-	// Resets the name validation
-	resetNameValidation();
-}
-
 function showDuggaSubmitButton() {
 	$("#submitDugga").css("display", "block");
 	$("#saveDugga").css("display", "none");
@@ -840,8 +867,6 @@ function showVariantDisableButton() {
 	$("#enableVariant").css("display", "none");
 	$("#disableVariant").css("display", "block");
 }
-
-
 //END OF closers and openers
 
 function getVariantPreview(vid) {
@@ -865,7 +890,7 @@ function getVariantPreview(vid) {
 	var duggaVariantParam = target_variant['param']; // Set Variant Param
 	var duggaVariantAnswer = target_variant['variantanswer']; // Set Variant Answer
 
-
+	document.getElementById("resultpopoverTitle").innerHTML = "Previewing a variant with " + template + " template";
 	$("#MarkCont").html(duggaPages[template]);
 
 	$.getScript("templates/" + template + ".js")
@@ -878,12 +903,6 @@ function getVariantPreview(vid) {
 
 
 	$("#resultpopover").css("display", "flex");
-}
-
-function closePreview() {
-	$("#resultpopover").css("display", "none");
-	$("#overlay").css("display", "none");
-	document.getElementById("MarkCont").innerHTML = '<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"> </div>';
 }
 
 /*

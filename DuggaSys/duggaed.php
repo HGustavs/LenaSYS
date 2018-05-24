@@ -36,41 +36,26 @@ pdoConnect();
 
 	<!-- Content START -->
 
-	<div id="content">
-    <div class='titles' style='padding-top:10px;'>
-      <h1 style='flex:1;text-align:center;'>Tests</h1>
-    </div>
+	<div id="content">	
+    	<div id="headerContent"></div> <!-- A div to place header content. -->
+		<div id="quiz" style='width:100%;'></div> <!-- A div to place the quiz-table within. -->
+		
+	  	<!-- Login Dialog START -->
+	  	<?php
+	  	 include '../Shared/loginbox.php';
+	  	?>
+	  	<!-- Login Dialog END -->
+  	</div>
+  	
+  	<!-- Content END -->
 
-    <div id="testSearchContainer">
-        <input id="duggaSearch" class ="searchField" type="search" placeholder="Searchterm.."
-                    onkeyup="searchterm=document.getElementById('duggaSearch').value; searchKeyUp(event); duggaTable.renderTable();"onsearch="searchterm=document.getElementById('duggaSearch').value; searchKeyUp(event); duggaTable.renderTable();"/>
-        <button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
-            <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
-        </button>
-
-    </div>
-    <!-- Content END -->
-
-  	<!-- Login Dialog START -->
-  	<?php
-  	 include '../Shared/loginbox.php';
-  	?>
-  	<!-- Login Dialog END -->
-      <div id="quiz" style='width:100%;'></div> <!-- A div to place the quiz-table within. -->
-  </div>
-
-  <!-- START OF FAB-button  -->
-  <div class='fixed-action-button'>
-      <a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'><i class='material-icons'>add</i></a>
-  </div>
-  <!-- END OF FAB-button  -->
 
     <!-- Edit Dugga Dialog START -->
   	<div id='editDugga' class='loginBoxContainer' style='display:none;'>
         <div class='loginBox' style='width:464px;'>
         		<div class='loginBoxheader'>
         			<h3 id="editDuggaTitle">Edit Dugga</h3>
-        			<div class='cursorPointer' onclick='closeEditDugga();'>x</div>
+        			<div class='cursorPointer' onclick='closeWindows();'>x</div>
         		</div>
         		<div style='padding:5px;'>
         			<input type='hidden' id='did' value='Toddler'/></td>
@@ -94,7 +79,7 @@ pdoConnect();
               <div class='inputwrapper'><span>Release Date:</span><input class='textinput datepicker' type='text' id='release' value='None' /></div>
         		</div>
         		<div style='padding:5px;'>
-        			<input id='closeDugga' class='submit-button' style='display:block; float:left;' type='button' value='Cancel' onclick='closeEditDugga();' />
+        			<input id='closeDugga' class='submit-button' style='display:block; float:left;' type='button' value='Cancel' onclick='closeWindows();' />
         			<input id='submitDugga' class='submit-button' style='display:none; float:right;' type='button' value='Submit' onclick='createDugga();' />
         			<input id='saveDugga' class='submit-button' style='display:none; float:right;' type='button' value='Save' onclick='updateDugga();' />
         		</div>
@@ -107,18 +92,32 @@ pdoConnect();
   	    <div class='loginBox' style='width:460px;'>
   				<div class='loginBoxheader'>
   				    <h3>Confirm deletion</h3>
-  				    <div class="cursorPointer" onclick='confirmBox("closeConfirmBox");' title="Close window">x</div>
+  				    <div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
   				</div>
   				<div style='text-align: center;'>
   				    <h4>Are you sure you want to delete this item?</h4>
   				</div>
   				<div style='display:flex; align-items:center; justify-content: center;'>
   				    <input style='margin-right: 5%;' class='submit-button' type='button' value='Yes' title='Yes' onclick='confirmBox("deleteItem");' />
-  				    <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='confirmBox("closeConfirmBox");' />
+  				    <input style='margin-left: 5%;' class='submit-button' type='button' value='No' title='No' onclick='closeWindows();' />
   				</div>
   	    </div>
   		</div>
     <!-- Confirm Section Dialog START -->
+
+    <!-- Result Dialog START -->
+    <div id='resultpopover' class='loginBoxContainer' style='display:none; overflow:hidden; z-index: 9999;'>
+      <div class='loginBox' id='resultpopoverBox' style='overflow:auto;';>
+        <div class='loginBoxheader'>
+          <h3 id="resultpopoverTitle">PREVIEW</h3>
+          <div class='cursorPointer' onclick='closeWindows();'>x</div>
+        </div>
+
+        <div class='loginBoxbody' id='MarkCont' style='width:100%; height:100%;'>
+        </div>
+     </div>
+    </div>
+  <!-- Result Dialog END -->
 
   	<!-- Edit Variant Dialog START -->
   	<div id='editVariant' class='loginBoxContainer' style='display:none;'>
@@ -181,7 +180,7 @@ pdoConnect();
                 <fieldset style="width:90%">
                   <legend>Search in the Table</legend>
                   <div style="width:100%; height: 25px; display:flex; flex-wrap:wrap; flex-direction:row;">
-                    <input id="variantSearch" class="searchFiled" type="search" placeholder="Searchterm.." style="flex-grow: 99; margin: 0px; padding: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;"
+                    <input id="variantSearch" class="searchFiled" type="search" placeholder="Search.." style="flex-grow: 99; margin: 0px; padding: 0px; border: 1px; border-bottom-right-radius: 0px; border-top-right-radius: 0px; height: 25px;"
                     onkeyup="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"onsearch="searchterm=document.getElementById('variantSearch').value; searchKeyUp(event); variantTable.renderTable();"/>
                                         <button id="searchbutton" class="switchContent" style="" onclick="return searchKeyUp(event);" type="button">
                       <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
@@ -214,15 +213,6 @@ pdoConnect();
        </div>
     </div>
   	<!-- Edit Variant Dialog END -->
-
-  	<!-- Result Dialog START -->
-  	<div id='resultpopover' class='resultPopover' style='display:none'>
-  		<div class='loginBoxheader'>
-  			<div class='cursorPointer' onclick="closePreview();">x</div>
-  		</div>
-  		<div id="MarkCont" style="position:absolute; left:4px; right:4px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb"></div>
-  	</div>
-	<!-- Result Dialog END -->
 
 </body>
 </html>

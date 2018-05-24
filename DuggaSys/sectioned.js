@@ -58,7 +58,6 @@ $(document).ready(function () {
 
 });
 
-
 function addMinuteOptions(){
 	var str = "";
 	for(var i = 0; i < 60; i+=5){
@@ -112,8 +111,9 @@ function editSectionDialogTitle(title) {
 }
 
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group = "UNK") {
 	nameSet = false;
+	console.log(group);
 	if (entryname == "undefined") entryname = "New Header";
 	if (kind == "undefined") kind = 0;
 	xelink = elink;
@@ -243,6 +243,19 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	// Set Link
 	$("#link").val(elink);
 
+
+	// Group
+	str = "";
+	str += "<option value='UNK'>Välj grupp</option>";
+
+	for(var i = 0; i < retdata['groups'].length; i++) {
+		if (group == retdata['groups'][i].groupID) {
+			str += "<option selected='selected' value='"+retdata['groups'][i].groupID+"'>"+retdata['groups'][i].groupName+"</option>";
+		} else {
+			str += "<option value='"+retdata['groups'][i].groupID+"'>"+retdata['groups'][i].groupName+"</option>";
+		}
+	}
+	$('#group').html(str);
 	// Show dialog
 	iistr = "";
 
@@ -252,6 +265,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	$("#inputwrapper-moment").css("display","block");
 	$("#inputwrapper-highscore").css("display","block");
 	$("#inputwrapper-comments").css("display","block");
+	$("#inputwrapper-group").css("display","block");
 
 	// Code
 	if(kind==2){
@@ -488,6 +502,8 @@ function updateItem() {
 	var moment = $("#moment").val();
 	var gradesys = $("#gradesys").val();
 	var comments = $("#comments").val();
+	var group = $("#group").val();
+
 	// Storing tabs in gradesys column!
 	if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7) gradesys = tabs;
 	AJAXService(
@@ -500,7 +516,8 @@ function updateItem() {
 			moment: moment,
 			gradesys: gradesys,
 			highscoremode: highscoremode,
-			comments: comments
+			comments: comments,
+			group:group
 		}, "SECTION");
 	$("#sectionConfirmBox").css("display", "none");
 	$("#editSection").css("display", "none");
@@ -508,16 +525,17 @@ function updateItem() {
 }
 
 function newItem() {
-	tabs = $("#tabs").val();
-	lid = $("#lid").val();
-	kind = $("#type").val();
-	link = $("#link").val();
-	highscoremode = $("#highscoremode").val();
-	sectionname = $("#sectionname").val();
-	visibility = $("#visib").val();
-	moment = $("#moment").val();
-	gradesys = $("#gradesys").val();
-	comment = $("#deadlinecomment").val();
+	var tabs = $("#tabs").val();
+	var lid = $("#lid").val();
+	var kind = $("#type").val();
+	var link = $("#link").val();
+	var highscoremode = $("#highscoremode").val();
+	var sectionname = $("#sectionname").val();
+	var visibility = $("#visib").val();
+	var moment = $("#moment").val();
+	var gradesys = $("#gradesys").val();
+	var comment = $("#deadlinecomment").val();
+	var group = $("#group").val();
 
 	// Storing tabs in gradesys column!
 	if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7) gradesys = tabs;
@@ -531,9 +549,11 @@ function newItem() {
 			moment: moment,
 			gradesys: gradesys,
 			highscoremode: highscoremode,
-			comment: comment
+			comment: comment,
+			group:group
 		}, "SECTION");
 	$("#editSection").css("display", "none");
+	setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
 }
 
 function closeSelect() {
@@ -729,8 +749,12 @@ function goToVersion(selected) {
 function accessCourse() {
 	var coursevers = $("#course-coursevers").text();
 	window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
-	resetinputs();
-	//resets all inputs
+}
+
+function weeksBetween(firstDate, secondDate){
+	var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+	var diff = Math.abs(firstDate - secondDate);
+	return Math.round(diff / ONE_WEEK);
 }
 
 //----------------------------------------
@@ -740,6 +764,28 @@ var momentexists = 0;
 var resave = false;
 function returnedSection(data) {
 	retdata = data;
+
+	Date.prototype.getWeek = function () {
+		var date = new Date(this.getTime());
+		date.setHours(0, 0, 0, 0);
+		date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+		var week1 = new Date(date.getFullYear(), 0, 4);
+		return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6 ) % 7) / 7);
+	}
+
+
+	var now = new Date();
+	var startdate = new Date(retdata['startdate']);
+	var enddate = new Date(retdata['enddate']);
+
+	var numberOfParts = 0;
+	for(var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		if(item['kind'] == 4){
+			numberOfParts++;
+		}
+	}
+
 	if (data['debug'] != "NONE!") alert(data['debug']);
 
 	if (querystring['coursevers'] != "null") {
@@ -878,10 +924,9 @@ function returnedSection(data) {
 
 		if (retdata["writeaccess"]) {
 			str += "</tr></table>";
-
-			str += "<div class='fixed-action-button' id='fabB'>"
-			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onmouseover='openFabMenu();' onclick='createQuickItem();'>+</a>"
-			str += "<ol class='fab-btn-list' onmouseover='resetHoverTimer();'; style='margin: 0; padding: 0; display: none;' reversed>"
+			str += "<div class='fixed-action-button'>"
+			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>"
+			str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
 
 			//Heading button
 			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='fabValidateType(\"0\");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
@@ -926,13 +971,14 @@ function returnedSection(data) {
 			hiddenInline = "inline";
 		}
 
-		str += "<div class='course' style='display: flex;align-items: center; justify-content: flex-end;'>";
+		str += "<div class='course' style='display:flex; align-items:center; justify-content:flex-end;'>";
 		str += "<div style='flex-grow:1'>"
 		str += "<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;"
 			+ "margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>" + data.coursename + "</span>";
 		str += "<span id='course-coursecode' style='margin-right:10px;'>" + data.coursecode + "</span>";
 		str += "<span id='course-versname' class='courseVersionField'>" + versionname + "</span>";
 		str += "</div>";
+
 		// If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign
 		if (retdata["writeaccess"]) {
 			if (item['kind'] == undefined) {
@@ -941,8 +987,7 @@ function returnedSection(data) {
 			}
 
 			str += "<div id='course-newitem' style='display: flex;'>";
-			str +=
-				"<input id='addElement' type='button' value='+' class='submit-button-newitem' title='New Item'"
+			str += "<input id='addElement' type='button' value='+' class='submit-button-newitem' title='New Item'"
 				+ " onclick='selectItem("
 				+ "\"" + item['lid'] + "\","
 				+ "\"" + item['entryname'] + "\","
@@ -957,48 +1002,58 @@ function returnedSection(data) {
 			str += "</div>";
 		}
 
-		str += "<div id='course-coursevers' style='display: none; margin-right:10px;'>" + data.coursevers + "</div>";
-		str += "<div id='course-courseid' style='display: none; margin-right:10px;'>" + data.courseid + "</div>";
+		str += "<div id='course-coursevers' style='display:none; margin-right:10px;'>"
+		+ data.coursevers + "</div>";
+		str += "<div id='course-courseid' style='display:none; margin-right:10px;'>"
+		+ data.courseid + "</div>";
 
 		str += "</div>";
 
 		str += "<div id='courseList'>";
-		str += "<!-- Statistics List -->"
-		+ "<div id='statisticsList'>"
-		+ "<div id='statistics' class='statistics' style='display: inline-block; cursor: pointer;'>"
-		+ "<div style='margin: 10px;'>"
-		+ "<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>"
-		+ "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>"
-		+ "</div>"
-		+ "<div class='nowrap' style='padding-left:5px' title='statistics'>"
-		+ "<span class='listentries-span' style='writing-mode: vertical-rl; "
-		+ "text-orientation: upright;'>Statistics</span>"
-		+ "</div></div>"
-		+ "<div class='statisticsContent' style='display: inline-block;'>";
+		str += "<!-- Statistics List -->";
+		str += "<div id='statisticsList'>";
+		str += "<div id='statistics' class='statistics' "
+		+ "style='display:inline-block; cursor:pointer;'>";
+		str += "<div style='margin:10px;'>";
+		str += "<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>";
+		str += "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>";
+		str += "</div>";
+		str += "<div class='nowrap' style='padding-left:5px' title='statistics'>";
+		str += "<span class='listentries-span noselect' style='writing-mode:vertical-rl; "
+		+ "text-orientation: upright;'>Statistics</span>";
+		str += "</div></div>";
+		str += "<div class='statisticsContent' style='display:inline-block;'>";
 
-		//Piechart.
-		/* The next div is a container div containing a description of the swim lanes
-		   and a pie chart giving an overview of course progress by a student. */
-		str+="<div id='statisticsPie' style=' height:100px;'>";
-		str+="<canvas id='pieChart' width='250px' height='75px' style='padding:10px;'></canvas>"; // Contains pie chart.
-		// str+="<div><p>Swim lane description</p></div>";
+		str += "<div id='statisticsPie' class='statisticsInnerBox'>";
+		str += "<canvas id='pieChart' width='300px' height='255px'"
+		+	"style='padding: 10px; display:flex; margin: auto;'></canvas>"; // Contains pie chart.
+		str += "</div>";
 
-		str+="</div>";
-		str	+="<div id='deadlineInfoBox' style='display: inline-block;"
-			+" padding: 10px; width: 250px;'> ";
-		str +="<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>"
-		str +="<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
-		+ "<span id='deadlineInfoFirstDate' style='margin-right:5px;width:35px;'></span></div>"
-		str +="<div class='deadlineInfo'><span style='width: 100%;' id='deadlineInfoSecondText'> </span>"
-		+ "<span id='deadlineInfoSecondDate' style='margin-right:5px;width: 35px;'> </span> </div>"
-		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoThirdText'> </span>"
-		+ "<span id='deadlineInfoThirdDate' style='margin-right:5px;width: 35px;'> </span> </div>"
-		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFourthText'> </span>"
-		+ "<span id='deadlineInfoFourthDate' style='margin-right:5px;width: 35px;'> </span> </div>"
-		str +="<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFifthText'> </span>"
-		+ "<span id='deadlineInfoFifthDate' style='margin-right:5px;width:35px;'> </span> </div>"
-		str+="</div>";
-		str +=  "</div></div>"; // closing div for statisticsContent
+		str	+= "<div id='deadlineInfoBox' class='statisticsInnerBox' "
+		+ "style='padding: 10px;'>";
+		str += "<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>";
+		str += "<div class='deadlineInfo'><span style='width:100%;'id='deadlineInfoFirstText'></span>";
+		str += "<span id='deadlineInfoFirstDate' style='margin-right:5px; width:35px;'></span></div>";
+		str += "<div class='deadlineInfo'><span style='width:100%;' id='deadlineInfoSecondText'></span>";
+		str += "<span id='deadlineInfoSecondDate' style='margin-right:5px; width:35px;'> </span></div>";
+		str += "<div class='deadlineInfo'> <span style='width:100%;' id='deadlineInfoThirdText'></span>";
+		str += "<span id='deadlineInfoThirdDate' style='margin-right:5px; width:35px;'></span></div>";
+		str += "<div class='deadlineInfo'> <span style='width:100%;' id='deadlineInfoFourthText'></span>";
+		str += "<span id='deadlineInfoFourthDate' style='margin-right:5px; width:35px;'></span></div>";
+		str += "<div class='deadlineInfo'> <span style='width:100%;' id='deadlineInfoFifthText'></span>";
+		str += "<span id='deadlineInfoFifthDate' style='margin-right:5px; width:35px;'></span></div>";
+		str += "</div>";
+
+		str += "<div id='statisticsSwimlanes' class='statisticsInnerBox' style='display:flex;'>";
+		str += "<div style='display:inline-block;'>";
+		str += "<canvas id='swimlanesMoments' style='padding:10px;'></canvas>";	// Contains swimlanes.
+		str += "</div>";
+		str += "<div style='width: 350px; overflow-x: auto; white-space: nowrap; "
+		+ "display: inline-block; margin: 10px 10px 10px -10px'>";
+		str += "<canvas id='swimlanesWeeks'></canvas>";	// Contains swimlanes.
+		str += "</div>";
+		str += "</div>";
+		str += "</div></div>"; // Closing div for statisticsContent
 		str += "<div id='Sectionlistc'>";
 
 		// For now we only have two kinds of sections
@@ -1240,7 +1295,7 @@ function returnedSection(data) {
 					}
 					kk++;
 				} else if (itemKind === 7) { //Message
-					str += " <td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+					str += "<td style='width:25px; padding:5px'><img src='../Shared/icons/Message_icon.svg' style='width:100%;'/></td><td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 				}
 
 				// Close Information
@@ -1254,21 +1309,27 @@ function returnedSection(data) {
 				}
 
 				else if (itemKind == 1) { // Section
+					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
 					str +=
 						"<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
-						+ item['entryname']
-						+ "</span><img src='../Shared/icons/desc_complement.svg'"
-						+ "id='arrowComp" + menuState.idCounter++ + data.coursecode
+						+ item['entryname'] + "</span>";
+						if (item['groupName'].length) {
+							str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%; min-width:18px;'/> " + item['groupName'];
+						}
+						str += "<img src='../Shared/icons/desc_complement.svg'"
+						+ "id='arrowComp" + arrowID
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
-						+ "id='arrowRight" + menuState.idCounter++ + data.coursecode
+						+ "id='arrowRight" + arrowID
 						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
 				else if (itemKind == 4) { // Moment
 					var strz = "";
+					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
+
 					if (item['gradesys'] == 0) {
 						strz = "";
 					}
@@ -1281,15 +1342,20 @@ function returnedSection(data) {
 					else if (item['gradesys'] == 3) {
 						strz = "(U-3-4-5)";
 					}
+
 					str += "<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
-						+ item['entryname'] + " " + strz + " " + "</span>"
-						+ "<img src='../Shared/icons/desc_complement.svg'"
-						+ "id='arrowComp" + menuState.idCounter++ + data.coursecode
+						+ item['entryname'] + " " + strz + " </span>";
+					if (item['groupName'].length) {
+						str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%;min-width:18px;'/> " + item['groupName'];
+					}
+
+					str +=  "<img src='../Shared/icons/desc_complement.svg'"
+						+ "id='arrowComp" + arrowID
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
-						+ "id='arrowRight" + menuState.idCounter++ + data.coursecode
+						+ "id='arrowRight" + arrowID
 						+ "' class='arrowRight' style='display:none;'></div>";
 				}
 
@@ -1417,7 +1483,8 @@ function returnedSection(data) {
 							+ "\"" + momentexists + "\","
 							+ "\"" + item['gradesys'] + "\","
 							+ "\"" + item['highscoremode'] + "\","
-							+ "\"" + item['comments'] + "\""
+							+ "\"" + item['comments'] + "\","
+							+ "\"" + item['group'] + "\""
 							+ "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
 							+ " title='Edit " + item['entryname'] + "' /></td>";
 					} else if (itemKind === 2) { // code
@@ -1466,7 +1533,8 @@ function returnedSection(data) {
 							+ "\"" + momentexists + "\","
 							+ "\"" + item['gradesys'] + "\","
 							+ "\"" + item['highscoremode'] + "\","
-							+ "\"" + item['comments'] + "\""
+							+ "\"" + item['comments'] + "\","
+							+ "\"" + item['group'] + "\""
 							+ "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
 							+ " title='Edit " + item['entryname'] + "' /></td>";
 					} else if (itemKind === 5) { 	// Link
@@ -1613,8 +1681,6 @@ function returnedSection(data) {
 
 	}
 
-	scrollToBottom(); // Scroll to the bottom to show newly created items.
-
 	// The next 5 lines are related to collapsable menus and their state.
 	getHiddenElements();
 	hideCollapsedMenus();
@@ -1625,11 +1691,12 @@ function returnedSection(data) {
 	// Change title of the current page depending on which page the user is on.
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 
+	drawPieChart(); // Create the pie chart used in the statistics section.
+	fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section
+	drawSwimlanes(); // Create the swimlane used in the statistics section.
+
 	// Change the scroll position to where the user was last time.
 	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
-
-	drawPieChart(); // Create the pie chart used in the statistics section.
-	fixDeadlineInfoBoxesText();
 }
 
 function showHighscore(did, lid) {
@@ -1835,47 +1902,18 @@ function toggleFabButton() {
 	}
 }
 
-function openFabMenu(){
-	$('.fab-btn-list').fadeIn(0);
-	$('.fab-btn-sm').removeClass('scale-out');
-}
-
-function resetHoverTimer(){
-	clearTimeout(hoverMenuTimer);
-	startTimerAgain();
-}
-
-function checkIfCloseFabMenu(){
-	var elements = document.querySelectorAll(":hover"); // last element will be the element that the mouse is hovering on
-	if(findAncestor(elements[elements.length-1], "fixed-action-button") == null){
-		closeFabMenu();
-	}
-	startTimerAgain();
-}
-
-function startTimerAgain(){
-	hoverMenuTimer = window.setTimeout(function(){
-		checkIfCloseFabMenu();
-	}, 2500);
-}
-
 function createQuickItem(){
-	selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined");
+	selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined", "UNK");
 	newItem();
-}
-
-function closeFabMenu(){
-	$('.fab-btn-sm').addClass('scale-out');
-	$('.fab-btn-list').delay(100).fadeOut(0);
 }
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function fabValidateType(kind) {
 	if (kind == 0){
-		selectItem("undefined","New Header","0","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Header","0","undefined","undefined","0","undefined","undefined", "undefined");
 		newItem();
 	} else if (kind == 1){
-		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined", "UNK");
 		newItem();
 	} else if (kind == 2){
 		if(retdata['codeexamples'].length <= 1){ //Index 1 in the array has a hard coded code example.
@@ -1884,7 +1922,7 @@ function fabValidateType(kind) {
 			$("#noMaterialText").html("Create a Code example before you can use it for a Code section.");
 			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
-			selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined");
+			selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined", "UNK");
 			newItem();
 		}
 	} else if (kind == 3){
@@ -1893,11 +1931,11 @@ function fabValidateType(kind) {
 			$("#noMaterialText").html("Create a Dugga before you can use it for a Test section.");
 			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
-			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined");
+			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined", "UNK");
 			newItem();
 		}
 	} else if (kind == 4){
-		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined", "UNK");
 		newItem();
 	} else if (kind == 5){
 		if(retdata['links'].length == 0){
@@ -1905,14 +1943,14 @@ function fabValidateType(kind) {
 			$("#noMaterialText").html("Create a Link before you can use it for a Link section.");
 			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
-			selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined");
+			selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined", "UNK");
 			newItem();
 		}
 	} else if (kind == 6){
-		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined", "UNK");
 		newItem();
 	} else if (kind == 7){
-		selectItem("undefined","New Message","7","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Message","7","undefined","undefined","0","undefined","undefined", "UNK");
 		newItem();
 	}
 }
@@ -1928,123 +1966,139 @@ function addColorsToTabSections(kind, visible){
 	return retStr;
 }
 
+
+/* Statistic-sections functions, for drawing out all the statistics
+   (pie chart and swimlanes) and upcomming deadlines. */
 function drawPieChart() {
-  var c = document.getElementById('pieChart');
-  var ctx = c.getContext('2d');
-  var width = c.width;
-  var height = c.height;
-  var pieChartRadius = height / 2;
-  var overviewBlockSize = 11;
+	var c = document.getElementById('pieChart');
+	var ctx = c.getContext('2d');
+	var width = c.width;
+	var height = 200;
+	var pieChartRadius = height / 2;
+	var overviewBlockSize = 11;
 
-  var totalQuizes = 0;
-  var passedQuizes = 0;
-  var notGradedQuizes = 0;
-  var failedQuizes = 0;
-  var notSubmittedQuizes = 0;
+	var totalQuizes = 0;
+	var passedQuizes = 0;
+	var notGradedQuizes = 0;
+	var failedQuizes = 0;
+	var notSubmittedQuizes = 0;
 
-  // Calculate total quizes.
-  for(var i = 0; i < retdata['entries'].length; i++) {
-    if(retdata['entries'][i].kind == "3") {
-      totalQuizes++;
-    }
-  }
+	// Calculate total quizes.
+	for(var i = 0; i < retdata['entries'].length; i++) {
+		if(retdata['entries'][i].kind == "3") {
+			totalQuizes++;
+		}
+	}
 
-  // Calculate passed, failed and not graded quizes.
-  for(var i = 0; i < retdata['results'].length; i++) {
-	  if(retdata['results'][i]['useranswer'] != null){ // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
-		  if(retdata['results'][i].grade == 2) {
-			  passedQuizes++;
-		  } else if(retdata['results'][i].grade == 1) {
-			  failedQuizes++;
-		  }
-		  else {
-			  notGradedQuizes++;
-		  }
-	  }
-  }
+	// Calculate passed, failed and not graded quizes.
+	for(var i = 0; i < retdata['results'].length; i++) {
+		if(retdata['results'][i]['useranswer'] != null){ // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
+		if(retdata['results'][i].grade == 2) {
+			passedQuizes++;
+		} else if(retdata['results'][i].grade == 1) {
+			failedQuizes++;
+		}
+		else {
+			notGradedQuizes++;
+		}
+	}
+}
 
-  // Calculate non submitted quizes.
-  notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
+// Calculate non submitted quizes.
+notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
 
-  if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
-	  totalQuizes++; 			// show that the student has 100% not submitted tests.
-	  notSubmittedQuizes++;
-  }
+if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
+	totalQuizes++; 			// show that the student has 100% not submitted tests.
+	notSubmittedQuizes++;
+}
 
-  // PCT = Percentage
-  var passedPCT = 100 * (passedQuizes / totalQuizes);
-  var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
-  var failedPCT = 100 * (failedQuizes / totalQuizes);
-  var notSubmittedPCT = 100 * (notSubmittedQuizes / totalQuizes);
+// PCT = Percentage
+var passedPCT = 100 * (passedQuizes / totalQuizes);
+var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
+var failedPCT = 100 * (failedQuizes / totalQuizes);
+var notSubmittedPCT = 100 * (notSubmittedQuizes / totalQuizes);
 
-  // Only use 2 decimal places and round up if necessary
-  passedPCT = Math.round(passedPCT * 100) / 100;
-  notGradedPCT = Math.round(notGradedPCT * 100) / 100;
-  failedPCT = Math.round(failedPCT * 100) / 100;
-  notSubmittedPCT = Math.round(notSubmittedPCT * 100) / 100;
+// Only use 2 decimal places and round up if necessary
+passedPCT = Math.round(passedPCT * 100) / 100;
+notGradedPCT = Math.round(notGradedPCT * 100) / 100;
+failedPCT = Math.round(failedPCT * 100) / 100;
+notSubmittedPCT = Math.round(notSubmittedPCT * 100) / 100;
 
-  var lastend = -1.57; /* Chart start point. -1.57 is a quarter the number of
-                          radians in a circle, i.e. start at 12 o'clock */
-  var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
-  var colors = {
-    'passedQuizes': '#00E676',        // Green
-    'notGradedQuizes': '#FFEB3B',     // Yellow
-    'failedQuizes': '#E53935',        // Red
-    'notSubmittedQuizes': '#BDBDBD'   // Grey
-  }
+var lastend = -1.57; /* Chart start point. -1.57 is a quarter the number of
+radians in a circle, i.e. start at 12 o'clock */
+var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
+var colors = {
+	'passedQuizes': '#00E676',        // Green
+	'notGradedQuizes': '#FFEB3B',     // Yellow
+	'failedQuizes': '#E53935',        // Red
+	'notSubmittedQuizes': '#BDBDBD'   // Grey
+}
 
-  for (var i = 0; i < testsData.length; i++) {
+ctx.save();
+ctx.translate(50, 0);
 
-    if(i == 0) {
-      ctx.fillStyle = colors['passedQuizes'];
-    } else if(i == 1) {
-      ctx.fillStyle = colors['notGradedQuizes'];
-    } else if(i == 2) {
-      ctx.fillStyle = colors['failedQuizes'];
-    } else {
-      ctx.fillStyle = colors['notSubmittedQuizes'];
-    }
+for (var i = 0; i < testsData.length; i++) {
 
-    ctx.beginPath();
-    ctx.moveTo(pieChartRadius, height / 2);
+	if(i == 0) {
+		ctx.fillStyle = colors['passedQuizes'];
+	} else if(i == 1) {
+		ctx.fillStyle = colors['notGradedQuizes'];
+	} else if(i == 2) {
+		ctx.fillStyle = colors['failedQuizes'];
+	} else {
+		ctx.fillStyle = colors['notSubmittedQuizes'];
+	}
 
-    // Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
-    ctx.arc(pieChartRadius, height / 2, height / 2, lastend,lastend
-    + (Math.PI * 2 * (testsData[i] / totalQuizes)), false);
+	ctx.beginPath();
+	ctx.moveTo(pieChartRadius, height / 2);
 
-    //Parameter for lineTo: x,y
-    ctx.lineTo(pieChartRadius, height / 2);
-    ctx.fill();
+	// Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
+	ctx.arc(pieChartRadius, height / 2, height / 2, lastend,lastend
+		+ (Math.PI * 2 * (testsData[i] / totalQuizes)), false);
 
-    lastend += Math.PI * 2 * (testsData[i] / totalQuizes);
-  }
+		//Parameter for lineTo: x,y
+		ctx.lineTo(pieChartRadius, height / 2);
+		ctx.fill();
 
-  // Pie chart overview
-  ctx.save();
-  ctx.translate(pieChartRadius*2 + 20, 2);
+		lastend += Math.PI * 2 * (testsData[i] / totalQuizes);
+	}
 
-  ctx.fillStyle = colors['passedQuizes'];
-  ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
+	ctx.restore();
+	// Pie chart overview
+	ctx.save();
+	ctx.translate(10, 220);
 
-  ctx.fillStyle = colors['notGradedQuizes'];
-  ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
+	ctx.fillStyle = colors['passedQuizes'];
+	ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
 
-  ctx.fillStyle = colors['failedQuizes'];
-  ctx.fillRect(0, 40, overviewBlockSize, overviewBlockSize);
+	ctx.fillStyle = colors['failedQuizes'];
+	ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
 
-  ctx.fillStyle = colors['notSubmittedQuizes'];
-  ctx.fillRect(0, 60, overviewBlockSize, overviewBlockSize);
+	ctx.font = "12px Arial";
+	ctx.fillStyle = "#000";
 
-  ctx.font = "12px Arial";
-  ctx.fillStyle = "#000";
+	ctx.translate(20, 10);
+	ctx.fillText("Passed (" + passedPCT + "%)", 0, 0);
+	ctx.fillText("Failed (" + failedPCT + "%)", 0, 20);
 
-  ctx.translate(20, 10);
-  ctx.fillText("Passed (" + passedPCT + "%)", 0, 0);
-  ctx.fillText("Not Graded (" + notGradedPCT + "%)", 0, 20);
-  ctx.fillText("Failed (" + failedPCT + "%)", 0, 40);
-  ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 0, 60);
+	ctx.restore();
 
-  ctx.restore();
+	ctx.save();
+	ctx.translate(145, 190);
+
+	ctx.fillStyle = colors['notGradedQuizes'];
+	ctx.fillRect(0, 30, overviewBlockSize, overviewBlockSize);
+
+	ctx.fillStyle = colors['notSubmittedQuizes'];
+	ctx.fillRect(0, 50, overviewBlockSize, overviewBlockSize);
+
+	ctx.font = "12px Arial";
+	ctx.fillStyle = "#000";
+
+	ctx.fillText("Not Graded (" + notGradedPCT + "%)", 20, 40);
+	ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 20, 60);
+
+	ctx.restore();
 }
 
 
@@ -2072,7 +2126,7 @@ function fixDeadlineInfoBoxesText(){
 		}
 	}
 
-		// to find the lowest-valued-element
+	// to find the lowest-valued-element
 	if(duggaEntries.length != 0){
 		duggaEntries.reduce(function(prev, curr){
 			return prev.deadline < curr.deadline ? prev : curr;
@@ -2120,6 +2174,193 @@ function removeYearFromDate(date){
 	return getDateFormat(remadeDate, "dateMonth").replace("-" ,"/");
 }
 
+function drawSwimlanes(){
+	var swimMoments = document.getElementById('swimlanesMoments');
+	var swimWeeks = document.getElementById('swimlanesWeeks');
+	var ctxMoments = swimMoments.getContext('2d');
+	var ctxWeeks = swimWeeks.getContext('2d');
+	var colors = {
+		'passedQuizes': '#00E676',        	// Green
+		'notGradedQuizes': '#FFEB3B',     	// Yellow
+		'failedQuizes': '#E53935',        	// Red
+		'notSubmittedQuizes': '#BDBDBD',  	// Dark grey
+		'weeksOdd': '#8a7a9a',				// Purple
+		'momentsOdd': '#ededed'				// Light gray
+ 	}
+
+	var startdate = new Date(retdata['startdate']);
+	var enddate = new Date(retdata['enddate']);
+	var totalNumberOfTests = 0;
+
+	for (var i = 0; i < retdata['entries'].length; i++){
+		if (retdata['entries'][i]['kind'] == 3){
+			totalNumberOfTests++;
+		}
+	}
+
+	var weekLength = weeksBetween(startdate, enddate);
+
+	var widthVar = 30;
+	var momentWidth = [];
+	var momentList = [];
+	var numberOfMoments = 0;
+
+	for(var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		if(item['kind'] == 4){
+			momentWidth.push(widthVar);
+			widthVar = 30;
+			momentList.push(item);
+			numberOfMoments++;
+		} else {
+			widthVar += 30;
+		}
+	}
+
+	//	Dynamic width and height for the canvases, depending on how many weeks a
+	//	course is and how many moments exist in the course.
+	swimMoments.width = 100;
+	if(numberOfMoments != 0){ // Dynamic height, depending on number of moments
+		// 60 is height of the Weeks/Moments label.
+		swimMoments.height = (30 * totalNumberOfTests) + 60;
+		swimWeeks.height = swimMoments.height;
+	}
+
+	if(weekLength != 0){ // Dynamic width, depending on number of weeks
+		swimWeeks.width = weekLength * 35;
+	}
+
+	ctxMoments.fillStyle = 'white';
+	ctxMoments.fillRect(0, 0, 100, 60);
+
+	ctxMoments.moveTo(0, 0);
+	ctxMoments.strokeStyle = colors['notSubmittedQuizes'];
+	ctxMoments.lineTo(100, 60);
+	ctxMoments.stroke();
+
+	ctxMoments.fillStyle = 'black';
+	ctxMoments.font = '12px Arial';
+	ctxMoments.fillText('Week', 50, 20);
+	ctxMoments.fillText('Moment', 10, 50);
+
+	// Prints out the moment rows to the swimlane table.
+	var y = 60;
+	var isGray = true;
+	for(var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		if (item['kind'] == 4){
+			if (isGray){
+				ctxMoments.fillStyle = colors['momentsOdd'];
+				ctxWeeks.fillStyle = colors['momentsOdd'];
+				isGray = false;
+			} else {
+				ctxMoments.fillStyle = 'white';
+				ctxWeeks.fillStyle = 'white';
+				isGray = true;
+			}
+		} else if (item['kind'] == 3){
+			ctxMoments.fillRect(0, y, swimMoments.width, 30);
+			ctxWeeks.fillRect(0, y, swimWeeks.width, 30);
+			y += 30;
+		}
+	}
+
+	//	Prints out the name on the moment in the moments column.
+	y = 60;
+	for (var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		if (item['kind'] == 4){
+			ctxMoments.fillStyle = 'black';
+			ctxMoments.fillText(item['entryname'], 5, y + 20);
+		} else if (item['kind'] == 3){
+			y += 30;
+		}
+	}
+
+	// Prints out the week columns to the swimlane table.
+	var x = 0;
+	for(var i = 1; i < weekLength + 1; i++){
+		if(i % 2 == 0){
+			ctxWeeks.fillStyle = 'white';
+			ctxWeeks.fillRect(x, 0, 35, 60);
+			ctxWeeks.fillStyle = 'black';
+			ctxWeeks.font = '12px Arial';
+			ctxWeeks.fillText(i, x + 12, 33);
+		}
+		else {
+			ctxWeeks.fillStyle = colors['weeksOdd'];
+			ctxWeeks.fillRect(x, 0, 35, 60);
+			ctxWeeks.fillStyle = 'black';
+			ctxWeeks.font = '12px Arial';
+			ctxWeeks.fillText(i, x + 12, 33);
+		}
+		x += 35;
+	}
+
+	ctxMoments.moveTo(99, 60);
+	ctxMoments.strokeStyle = colors['notSubmittedQuizes'];
+	ctxMoments.lineTo(99, swimMoments.height);
+	ctxMoments.stroke();
+
+	ctxWeeks.moveTo(0, 60);
+	ctxWeeks.strokeStyle = colors['notSubmittedQuizes'];
+	ctxWeeks.lineTo(swimWeeks.width, 60);
+	ctxWeeks.stroke();
+
+	// Prints out all the tests.
+	var oneDay = 24 * 60 * 60 * 1000;
+	y = 60;
+	for (var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		var result = retdata['results'];
+		var testStartDate;
+
+		if (item['qstart'] == null){
+			testStartDate = new Date(retdata['startdate']);
+		} else {
+			testStartDate = new Date(item['qstart']);
+		}
+
+		var testEndDate = new Date(item['deadline']);
+		var courseStartDate = new Date(retdata['startdate']);
+		var testDuration = Math.round(Math.abs(
+			+ (testStartDate.getTime() - testEndDate.getTime())/(oneDay)));
+		var untilTestStart = Math.round(Math.abs(
+			+ (courseStartDate.getTime() - testStartDate.getTime())/(oneDay)));
+
+		ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
+		if (item['kind'] == 3){
+			y += 5;
+			for (var j = 0; j < result.length; j++){
+				if (item['lid'] == result[j]['moment']){
+					if(result[j]['grade'] == null) {
+						ctxWeeks.fillStyle = colors['notGradedQuizes'];
+			    } else if(result[j]['grade'] == 1) {
+			      ctxWeeks.fillStyle = colors['failedQuizes'];
+			    } else if(result[j]['grade'] == 2) {
+						ctxWeeks.fillStyle = colors['passedQuizes'];
+			    } else {
+						ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
+					}
+				}
+			}
+
+			ctxWeeks.fillRect(untilTestStart * 5, y, testDuration * 5, 20);
+			y += 25;
+		}
+	}
+
+	// Timeline
+	var currentDate = new Date();
+	var courseDay = Math.round(Math.abs(
+		+ (courseStartDate.getTime() - currentDate.getTime())/(oneDay)));
+
+	ctxWeeks.fillStyle = '#000';
+	ctxWeeks.fillRect(courseDay * 5, 0, 2, swimWeeks.height);
+}
+
+
+// Event listeners
 $(document).ready(function () {
 	// Function to prevent collapsing when clicking icons
 	$(document).on('click', '#corf', function (e) {
@@ -2128,10 +2369,6 @@ $(document).ready(function () {
 	$(document).on('click', '#dorf', function (e) {
 		e.stopPropagation();
 	});
-
-	hoverMenuTimer = window.setTimeout(function(){
-		checkIfCloseFabMenu();
-	}, 25);
 });
 
 $(window).load(function () {
@@ -2171,9 +2408,6 @@ $(window).load(function () {
 $(document).mousedown(function (e) {
 	var box = $(e.target);
 
-
-
-
 	if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
 		isClickedElementBox = true;
 	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
@@ -2185,19 +2419,10 @@ $(document).mousedown(function (e) {
 });
 
 $(document).mouseup(function (e) {
-	// Click outside the FAB list
-	if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target) // if the target of the click isn't the container...
-		&& $('.fixed-action-button').has(e.target).length === 0) // ... nor a descendant of the container
-	{
-		if (!$('.fab-btn-sm').hasClass('scale-out')) {
-			$('.fab-btn-sm').toggleClass('scale-out');
-			$('.fab-btn-list').delay(100).fadeOut(0);
-		}
 
-	}
 
 	// Click outside the loginBox
-	else if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
+	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
 		&& $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
 		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
 	{
@@ -2221,3 +2446,53 @@ function scrollToBottom() {
 	var scrollingElement = (document.scrollingElement || document.body)
 	scrollingElement.scrollTop = scrollingElement.scrollHeight;
 }
+
+
+$(document).mousedown(function(e) {
+	// If the fab list is visible, there should be no timeout to toggle the list
+	if ($('.fab-btn-list').is(':visible')) {
+		if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) {
+			toggleFabButton();
+    	}
+	} else {
+        if (e.target.id == "fabBtn") {
+			pressTimer = window.setTimeout(function() {
+				toggleFabButton();
+			}, 200);
+		}
+	}
+}).mouseup(function(e) {
+	// A quick item should be created on
+	// a "fast click" if the fab list isn't visible
+	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
+			clearTimeout(pressTimer);
+			createQuickItem();
+
+    }// Click outside the FAB list
+    else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) { // if the target of the click isn't the container...
+        toggleFabButton();
+	}
+}).on("touchstart", function(e){
+    // If the fab list is visible, there should be no timeout to toggle the list
+	if ($('.fab-btn-list').is(':visible')) {
+        //toggleFabButton();
+
+	} else {
+        if (e.target.id == "fabBtn") {
+			pressTimer = window.setTimeout(function() {
+				toggleFabButton();
+
+			}, 200);
+            return false;
+		}
+	}
+}).on("touchend", function(e){
+    //abrupts and clears the timer for touchstart when the user lets go of the fab
+    // The "Add Course Local File" popup should appear on
+	// a "fast click" if the fab list isn't visible
+	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
+			clearTimeout(pressTimer);
+			createQuickItem();
+           return false;
+    }// Click outside the FAB list
+});

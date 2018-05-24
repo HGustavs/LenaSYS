@@ -527,19 +527,10 @@ p {
    background-color: #d8d7da;
 }
 
-#statisticsPie {
-    border: 2px solid darkgray;
-    background-color: #eae8eb;
-    margin: 10px 10px 10px 10px;
-}
-
-#deadlineInfoBox {
-    width: 100%;
+.statisticsInnerBox{
     margin: 10px 10px 10px 10px;
     border: 2px solid darkgray;
     background-color: #eae8eb;
-    margin: 10px 10px 10px 10px;
-
 }
 
 /* --------------================################================-------------- *
@@ -688,19 +679,6 @@ header td {
  *                                   Dialog Box                                 *
  * --------------================################================-------------- */
 
-#resultpopover {
-  position: fixed;
-  left: 16px;
-  top: 8px;
-  right: 16px;
-  bottom: 8px;
-  z-index: 9000;
-  box-shadow: 2px 2px 4px #000;
-  padding: 4px;
-  background-color: #ccc;
-  border: 2px solid #999;
-}
-
 #previewpopover {
   position: fixed;
   left: 8px;
@@ -780,6 +758,15 @@ header td {
   max-height: 100%;
   width: 90%;
   height: 90%;
+  display: flex;
+  flex-direction: column;
+}
+
+#resultpopoverBox{
+  max-width: 100%;
+  max-height: 100%;
+  width: 80%;
+  height: 80%;
   display: flex;
   flex-direction: column;
 }
@@ -1043,10 +1030,17 @@ input {
 }
 
 .loginBoxbody {
-
+  background-color:inherit;
 }
 
 #variantBody{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow:auto;
+}
+
+#resultpopoverBody{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -2556,14 +2550,10 @@ span.arrow {
 }
 
 .markCont {
-  position: absolute;
-  left: 4px;
-  right: 204px;
-  top: 34px;
-  bottom: 4px;
-  border: 2px inset #aaa;
-  background: #bbb;
-  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow:auto;
 }
 
 #teacherFeedbackTable {
@@ -3069,7 +3059,7 @@ table {
 
 .listentries-span {
   display: inline-block;
-  max-width: 90%;
+  max-width: 75%;
 }
 
 .showhidetext {
@@ -3342,32 +3332,6 @@ only screen and (max-device-width: 800px) {
     -moz-transition: margin-right 0.5s, width 0.5s;
     -o-transition: margin-right 0.5s, width 0.5s;
   }
-  table.navheader div.contribution{
-    pointer-events: none;
-    opacity: 0;
-    -webkit-transition: opacity 0.5s;
-    -moz-transition: opacity 0.5s;
-    -o-transition: opacity 0.5s;
-  }
-  table.navheader td.hamburger {
-    pointer-events: auto;
-    width: 32px;
-    opacity: 1.0;
-    margin-right: 4px;
-    -webkit-transition: opacity 0.5s, width 0.5s, margin 0.5s;
-    -moz-transition: opacity 0.5s, width 0.5s, margin 0.5s;
-    -o-transition: opacity 0.5s, width 0.5s, margin 0.5s;
-  }
-  ul.hamburgerList li.contribution {
-    pointer-events: auto;
-    display: block;
-    height: 26px;
-    opacity: 1.0;
-  }
-  ul.hamburgerList {
-    display: block;
-    height: 13px;
-  }
 
   #statisticsList {
     display: none;
@@ -3436,38 +3400,64 @@ only screen and (max-device-width: 768px) {
         display: block !important;
     }
 
-    #fileLink_body>tr>td{
+  #fileLink_tblhead{
+    display: none;
+  }
+
+  #fileLink_tbl_mh[style]{
+    display: none !important;
+  }
+
+  #fileLink_body tr[style]{
+    border: 1px solid #ccc !important;
+    display: block !important;
+  }
+
+  #fileLink_tblhead{
+    display: none;
+  }
+
+  #fileLink_tbl_mh[style]{
+    display: none !important;
+  }
+
+  #fileLink_body tr[style]{
+    border: 1px solid #ccc !important;
+    display: block !important;
+  }
+
+  #fileLink_body>tr>td{
 		/* Behave  like a "row" */
-        display: block;
-		border: none;
-		border-bottom: 1px solid #eee;
-        text-align: left;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
+    display: block;
+	 border: none;
+	 border-bottom: 1px solid #eee;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 
 	}
 
 	#fileLink_body>tr>td:before {
 		/* Top/left values mimic padding */
-        display: inline-block;
+    display: inline-block;
 		top: 6px;
 		left: 6px;
 		width: 20%;
 		padding-right: 28%;
 		white-space: nowrap;
-        font-weight: bold;
-        font-size: 16px;
-        color:#000000;
+    font-weight: bold;
+    font-size: 16px;
+    color:#000000;
 	}
 
     /*
 	Label the data
 	*/
 	#fileLink_body>tr>td:nth-of-type(1):before { content: "Number: "; }
-    #fileLink_body>tr>td:nth-of-type(2):before { content: "File name: "; }
+  #fileLink_body>tr>td:nth-of-type(2):before { content: "File name: "; }
 	#fileLink_body>tr>td:nth-of-type(3):before { content: "Exstension: "; }
-    #fileLink_body>tr>td:nth-of-type(4):before { content: "Kind: "; }
+  #fileLink_body>tr>td:nth-of-type(4):before { content: "Kind: "; }
 	#fileLink_body>tr>td:nth-of-type(5):before { content: "Size: "; }
 	#fileLink_body>tr>td:nth-of-type(6):before { content: "Upload date: "; }
 	#fileLink_body>tr>td:nth-of-type(7):before { content: "Edit: "; }
@@ -3476,12 +3466,25 @@ only screen and (max-device-width: 768px) {
 
 @media only screen and (max-width: 710px),
 only screen and (max-device-width: 710px) {
-    #searchBar {
-        margin-left: 15px;
-    }
-    #searchinput{
-        width:170px;
-    }
+  table.navheader td.hamburger {
+    pointer-events: auto;
+    width: 32px;
+    opacity: 1.0;
+    margin-right: 4px;
+    -webkit-transition: opacity 0.5s, width 0.5s, margin 0.5s;
+    -moz-transition: opacity 0.5s, width 0.5s, margin 0.5s;
+    -o-transition: opacity 0.5s, width 0.5s, margin 0.5s;
+  }
+  ul.hamburgerList {
+    display: block;
+    height: 13px;
+  }
+  #searchBar {
+    margin-left: 15px;
+  }
+  #searchinput{
+    width:170px;
+  }
   table.navheader td.access {
     margin-right: 0px;
     width: 0px;
@@ -4577,6 +4580,26 @@ textarea#filecont{
 /* Preview, Edit and Delete columns */
 .variant-arrowVariant, .variant-cogwheelVariant, .variant-trashcanVariant {
   width: 25px;
+}
+
+@media only screen and (max-height: 800px) and (max-width: 1400px) {
+  .editFileWindow {
+    height: 500px;
+  }
+
+  .editFileCode {
+    height: 400px;
+  }
+
+  #filecont {
+    height: 350px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .optionButtons {
+    top: 436px;
+  }
 }
 
 /* styling for the search bar in duggaed.php */
