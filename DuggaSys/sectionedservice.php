@@ -115,11 +115,12 @@ if(checklogin()){
 			$query->bindParam(':visible', $visibility);
 			$query->bindParam(':highscoremode', $highscoremode);
 
-			if ($grp == "null") {
-				$query->bindParam(':group', null, PDO::param);
-			}else if ($grp != "UNK") {
+			if ($grp != "UNK") {
 				$query->bindParam(':group', $grp);
+			} else {
+				$query->bindValue(':group', null, PDO::PARAM_INT);
 			} 
+
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();

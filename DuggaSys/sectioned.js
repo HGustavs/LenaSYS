@@ -111,7 +111,7 @@ function editSectionDialogTitle(title) {
 }
 
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group = "UNK") {
 	nameSet = false;
 	console.log(group);
 	if (entryname == "undefined") entryname = "New Header";
@@ -1271,8 +1271,11 @@ function returnedSection(data) {
 						"<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
-						+ item['entryname']
-						+ "</span><img src='../Shared/icons/desc_complement.svg'"
+						+ item['entryname'];
+						if (item['groupName'].length) {
+							str += " <img src='../Shared/icons/group-icon.png' class='' style='max-height: 36px;'/> " + item['groupName'];
+						}
+						str += "</span><img src='../Shared/icons/desc_complement.svg'"
 						+ "id='arrowComp" + arrowID
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
@@ -1283,7 +1286,7 @@ function returnedSection(data) {
 				else if (itemKind == 4) { // Moment
 					var strz = "";
 					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
-					
+
 					if (item['gradesys'] == 0) {
 						strz = "";
 					}
@@ -1301,7 +1304,6 @@ function returnedSection(data) {
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
 						+ item['entryname'] + " " + strz + " "; 
-
 					if (item['groupName'].length) {
 						str += " <img src='../Shared/icons/group-icon.png' class='' style='max-height: 36px;'/> " + item['groupName'];
 					}
@@ -1856,17 +1858,17 @@ function toggleFabButton() {
 }
 
 function createQuickItem(){
-	selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined");
+	selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined", "UNK");
 	newItem();
 }
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
 function fabValidateType(kind) {
 	if (kind == 0){
-		selectItem("undefined","New Header","0","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Header","0","undefined","undefined","0","undefined","undefined", "undefined");
 		newItem();
 	} else if (kind == 1){
-		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined", "UNK");
 		newItem();
 	} else if (kind == 2){
 		if(retdata['codeexamples'].length <= 1){ //Index 1 in the array has a hard coded code example.
@@ -1875,7 +1877,7 @@ function fabValidateType(kind) {
 			$("#noMaterialText").html("Create a Code example before you can use it for a Code section.");
 			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
-			selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined");
+			selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined", "UNK");
 			newItem();
 		}
 	} else if (kind == 3){
@@ -1884,11 +1886,11 @@ function fabValidateType(kind) {
 			$("#noMaterialText").html("Create a Dugga before you can use it for a Test section.");
 			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
-			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined");
+			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined", "UNK");
 			newItem();
 		}
 	} else if (kind == 4){
-		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined", "undefined");
+		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined", "UNK");
 		newItem();
 	} else if (kind == 5){
 		if(retdata['links'].length == 0){
@@ -1896,14 +1898,14 @@ function fabValidateType(kind) {
 			$("#noMaterialText").html("Create a Link before you can use it for a Link section.");
 			$("#noMaterialConfirmBox").css("display", "flex");
 		} else {
-			selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined");
+			selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined", "UNK");
 			newItem();
 		}
 	} else if (kind == 6){
-		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined", "UNK");
 		newItem();
 	} else if (kind == 7){
-		selectItem("undefined","New Message","7","undefined","undefined","0","undefined","undefined");
+		selectItem("undefined","New Message","7","undefined","undefined","0","undefined","undefined", "UNK");
 		newItem();
 	}
 }
