@@ -2177,6 +2177,9 @@ function drawSwimlanes(){
 	var ctxMoments = swimMoments.getContext('2d');
 	var ctxWeeks = swimWeeks.getContext('2d');
 
+	ctxMoments.clearRect(0, 0, ctxMoments.width, ctxMoments.height);
+	ctxWeeks.clearRect(0, 0, ctxWeeks.width, ctxWeeks.height);
+
 	var colors = {
 		'passedQuizes': '#00E676',        	// Green
 		'notGradedQuizes': '#FFEB3B',     	// Yellow
@@ -2188,6 +2191,7 @@ function drawSwimlanes(){
 
 	var startdate = new Date(retdata['startdate']);
 	var enddate = new Date(retdata['enddate']);
+	var startWeek = startdate.getWeek();
 	var totalNumberOfTests = retdata['duggor'].length;
 	var weekLength = weeksBetween(startdate, enddate);
 
@@ -2277,14 +2281,14 @@ function drawSwimlanes(){
 			ctxWeeks.fillRect(x, 0, 35, 60);
 			ctxWeeks.fillStyle = 'black';
 			ctxWeeks.font = '12px Arial';
-			ctxWeeks.fillText(i, x + 12, 33);
+			ctxWeeks.fillText(startWeek++, x + 12, 33);
 		}
 		else {
 			ctxWeeks.fillStyle = colors['weeksOdd'];
 			ctxWeeks.fillRect(x, 0, 35, 60);
 			ctxWeeks.fillStyle = 'black';
 			ctxWeeks.font = '12px Arial';
-			ctxWeeks.fillText(i, x + 12, 33);
+			ctxWeeks.fillText(startWeek++, x + 12, 33);
 		}
 		x += 35;
 	}
@@ -2348,10 +2352,8 @@ function drawSwimlanes(){
 	var courseDay = Math.round(Math.abs(
 		+ (courseStartDate.getTime() - currentDate.getTime())/(oneDay)));
 
-	ctxWeeks.moveTo(courseDay * 5, 0);
-	ctxWeeks.strokeStyle = colors['notSubmittedQuizes'];
-	ctxWeeks.lineTo(courseDay * 5, swimWeeks.height);
-	ctxWeeks.stroke();
+	ctxWeeks.fillStyle = '#000';
+	ctxWeeks.fillRect(courseDay * 5, 0, 2, swimWeeks.height);
 }
 
 
