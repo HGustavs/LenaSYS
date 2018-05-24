@@ -1633,6 +1633,11 @@ div.submit-button:disabled {
   height: 25px !important;
 }
 
+#linebutton {
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
 #textButton {
   width: 35px;
   height: 22px;
