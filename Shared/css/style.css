@@ -3229,9 +3229,6 @@ only screen and (max-device-width: 1085px) {
         margin-top: 0px;
         min-width: 375px;
     }
-    #fileLink{
-        /*min-width: 375px;*/
-    }
     #fileLink_tbl{
         margin: 0 !important;
         width: 100%;
@@ -3306,12 +3303,12 @@ only screen and (max-device-width: 800px) {
 
 @media only screen and (max-width: 768px),
 only screen and (max-device-width: 768px) {
-  .hideAll,
-  .showAll {
-    -webkit-transform: scale(0.7, 0.7);
-    transform: scale(0.7, 0.7);
-    left: 10px;
-  }
+    .hideAll,
+    .showAll {
+        -webkit-transform: scale(0.7, 0.7);
+            transform: scale(0.7, 0.7);
+        left: 10px;
+    }
     #cookiemsg {
         background-color: #fecc56;
         z-index: 1000;
@@ -3324,29 +3321,32 @@ only screen and (max-device-width: 768px) {
         text-align: center;
     }
 
-  #Sectionlist .course {
-    font-size: 20px;
-  }
+    #Sectionlist .course {
+        font-size: 20px;
+    }
 
-  .fileLink-filename {
-    max-width: none;
-  }
+    .fileLink-filename {
+        max-width: none;
+    }
 
-  .nowrap-filename {
-    max-width: 200px;
-  }
+    .nowrap-filename {
+        max-width: 200px;
+    }
 
-  #statisticsList {
-    display: none;
-  }
-
-.fileLink_counter {
-    font-size: 16px;
-    color: #000;
-}
-.fileLink-editor, .fileLink-trashcan{
-    width:initial;
-}
+    #statisticsList {
+        display: none;
+    }
+    
+    #sortingDiv{
+        margin-bottom: 20px;
+    }
+    .fileLink_counter {
+        font-size: 16px;
+        color: #000;
+    }
+    .fileLink-editor, .fileLink-trashcan{
+        width:initial;
+    }
     /* Force table to not be like tables anymore */
     #fileLink_body{
 		display: block;
