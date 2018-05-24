@@ -399,14 +399,12 @@ function renderCell(col,celldata,cellid) {
 	}else if(col == "class"){
 	    obj=JSON.parse(celldata);
 	    var items = new Array();
-	    // Every user doesn't have a class
-	    items.push("null");
+	    items.push("null"); // Every user doesn't have a class
 	    for(var i = 0; i < filez['classes'].length; i++){
 		items.push(filez['classes'][i]['class']);
 	    }
 	    var selectedItem = obj.class;
 	    str = makeClassDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value,\""+selectedItem+"\");", items, items, selectedItem);
-	    //str = makeDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.class);
 	    str += "<div style='display:none;'>" + obj.class + "</div>";
 	    return str;
 	} else if(col == "groups") {
@@ -436,7 +434,6 @@ function makeDropdown(onChange, values, items, selected){
 
 function makeClassDropdown(onChange, values, items, selected){
     str = "<select onChange='"+onChange+"' onclick='return false;'>";
-
     for(var i = 0; i < values.length; i++){
 	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
     }
