@@ -124,9 +124,9 @@
       '.$colors.'
       </select><br>
       Line thickness:<br>
-      <input id="line-thickness" onclick=\'globalLineThickness(); hashFunction(); updateGraphics();\' style="width:100%; margin: -2px; padding: 0px;" type="range" min="1" max="5" value="2">
+      <input id="line-thickness" oninput=\'globalLineThickness(); hashFunction(); updateGraphics();\' style="width:100%; margin: -2px; padding: 0px;" type="range" min="1" max="5" value="2">
 
-      <button type=\'submit\' class=\'submit-button\' onclick="SaveState(); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 0px auto;\'>OK</button>
+      <button type=\'submit\' class=\'submit-button\' onclick="SaveState(); globalLineThickness(); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 0px auto;\'>OK</button>
       ';
   }
   //form for lines
