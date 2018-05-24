@@ -2217,8 +2217,8 @@ function drawSwimlanes(){
 
 	ctxMoments.fillStyle = 'black';
 	ctxMoments.font = '12px Arial';
-	ctxMoments.fillText('Weeks', 50, 20);
-	ctxMoments.fillText('Moments', 10, 50);
+	ctxMoments.fillText('Week', 50, 20);
+	ctxMoments.fillText('Moment', 10, 50);
 
 	// Prints out the moment rows to the swimlane table.
 	var y = 60;
@@ -2292,10 +2292,10 @@ function drawSwimlanes(){
 		var result = retdata['results'];
 		var testStartDate;
 
-		if (item['qrelease'] == null){
+		if (item['qstart'] == null){
 			testStartDate = new Date(retdata['startdate']);
 		} else {
-			testStartDate = new Date(item['qrelease']);
+			testStartDate = new Date(item['qstart']);
 		}
 
 		var testEndDate = new Date(item['deadline']);
