@@ -26,7 +26,9 @@ var pressTimer;
 var fabListIsVisible = true;
 var fabTimer;
 
-AJAXService("GET",{cid:querystring['cid']},"FILE");
+function setup() {
+	AJAXService("GET",{cid:querystring['cid']},"FILE");
+}
 
 window.onresize = function() {
 	fileLink.renderTable();

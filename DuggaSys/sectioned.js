@@ -17,7 +17,9 @@ var menuState = {
 	arrowIcons: [] 		// Stores ids of arrows whose state needs to be remembered.
 }
 
-AJAXService("get", {}, "SECTION");
+function setup() {
+	AJAXService("get", {}, "SECTION");
+}
 
 //----------------------------------------
 // Commands:

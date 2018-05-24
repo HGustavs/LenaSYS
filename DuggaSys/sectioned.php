@@ -23,7 +23,7 @@
 	<script src="../Shared/dugga.js"></script>
 	<script src="sectioned.js"></script>
 </head>
-<body>
+<body onload="setup();">
 
 	<?php
 		$noup="COURSE";
