@@ -98,7 +98,7 @@ function loadFormIntoElement(element, dir){
       }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1){
         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
         document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
-        setSelectedOption('figureLineColor',  diagram[lastSelectedObject].strokeColor);
+        setSelectedOption('LineColor',  diagram[lastSelectedObject].strokeColor);
 
       }
     }
