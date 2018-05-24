@@ -1,27 +1,6 @@
 <?php
   $form = $_GET['form'];
-  $backgroundColor = 'Background color:<br>
-        <select onchange="changeObjectAppearance(\'attributeType\');" id=\'symbolColor\'>
-        <option value=\'#64B5F6\'>Blue</option>
-        <option value=\'#81C784\'>Green</option>
-        <option value=\'#e6e6e6\'>Grey</option>
-        <option value=\'#E57373\'>Red</option>
-        <option value=\'#FFF176\'>Yellow</option>
-        <option value=\'#FFB74D\'>Orange</option>
-        <option value=\'#BA68C8\'>Purple</option>
-        <option value=\'#ffffff\' selected="true">White</option>
-        <option value=\'#000000\'>Black</option>
-        </select><br>';
-  $fontFamily = 'Font family:<br>
-        <select onchange="changeObjectAppearance(\'attributeType\');" id=\'font\'>
-        "<option value=\'Arial\' selected="true">Arial</option>
-        "<option value=\'Courier New\'>Courier New</option>
-        "<option value=\'Impact\'>Impact</option>
-        "<option value=\'Calibri\'>Calibri</option>
-        </select><br>';
-  $fontColor = 'Font color:<br>
-          <select onchange="changeObjectAppearance(\'attributeType\');" id=\'fontColor\'>
-          <option value=\'#64B5F6\'>Blue</option>
+  $colors = '<option value=\'#64B5F6\'>Blue</option>
           <option value=\'#81C784\'>Green</option>
           <option value=\'#e6e6e6\'>Grey</option>
           <option value=\'#E57373\'>Red</option>
@@ -29,29 +8,36 @@
           <option value=\'#FFB74D\'>Orange</option>
           <option value=\'#BA68C8\'>Purple</option>
           <option value=\'#ffffff\'>White</option>
-          <option value=\'#000000\' selected="true">Black</option>
+          <option value=\'#000000\'>Black</option>';
+  $fonts = '<option value=\'Arial\' selected="true">Arial</option>
+          <option value=\'Courier New\'>Courier New</option>
+          <option value=\'Impact\'>Impact</option>
+          <option value=\'Calibri\'>Calibri</option>';
+  $backgroundColor = 'Background color:<br>
+        <select onchange="changeObjectAppearance();" id=\'symbolColor\'>
+        '.$colors'.
+        </select><br>';
+  $fontFamily = 'Font family:<br>
+        <select onchange="changeObjectAppearance();" id=\'font\'>
+        '.$fonts.'
+        </select><br>';
+  $fontColor = 'Font color:<br>
+          <select onchange="changeObjectAppearance();" id=\'fontColor\'>
+          '.$colors.'
           </select><br>';
   $textSize = 'Text size:<br>
-        <select onchange="changeObjectAppearance(\'attributeType\');" id=\'TextSize\'>
+        <select onchange="changeObjectAppearance();" id=\'TextSize\'>
         "<option value=\'Tiny\' selected="true">Tiny</option>
         "<option value=\'Small\'>Small</option>
         "<option value=\'Medium\'>Medium</option>
         "<option value=\'Large\'>Large</option>
         </select><br>';
   $lineColors = 'Line colors:<br>
-        <select onchange="changeObjectAppearance(\'attributeType\');" id=\'AttributeLineColor\'>
-        <option value=\'#64B5F6\'>Blue</option>
-        <option value=\'#81C784\'>Green</option>
-        <option value=\'#e6e6e6\'>Grey</option>
-        <option value=\'#E57373\'>Red</option>
-        <option value=\'#FFF176\'>Yellow</option>
-        <option value=\'#FFB74D\'>Orange</option>
-        <option value=\'#BA68C8\'>Purple</option>
-        <option value=\'#ffffff\'>White</option>
-        <option value=\'#000000\' selected="true">Black</option>
+        <select onchange="changeObjectAppearance();" id=\'LineColor\'>
+        '.$colors.'
         </select><br>
         ';
-  $okButton = '<button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'attributeType\'); setType(); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>';
+  $okButton = '<button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(); setType(); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>';
   //form for attributes
   if($form == 'attributeType'){
       echo'Attribute name:</br>
@@ -100,15 +86,7 @@
       echo'Fill color:<br>
       <select onchange="changeObjectAppearance(\'figureType\');" id=\'figureFillColor\'>
       <option value=\'noFill\'>No Fill</option>
-      <option value=\'#64B5F6\'>Blue</option>
-      <option value=\'#81C784\'>Green</option>
-      <option value=\'#e6e6e6\'>Grey</option>
-      <option value=\'#E57373\'>Red</option>
-      <option value=\'#FFF176\'>Yellow</option>
-      <option value=\'#FFB74D\'>Orange</option>
-      <option value=\'#BA68C8\'>Purple</option>
-      <option value=\'#ffffff\'>White</option>
-      <option value=\'#000000\'>Black</option>
+      '.$colors.'
       </select><br>'.$lineColors.'
       Opacity:<br>
       <input type="range" id="figureOpacity" oninput="changeObjectAppearance(\'figureType\');" style="width:100%; margin: -2px; padding: 0px;"><br>
@@ -120,23 +98,12 @@
       echo'Font family:<br>
       <select id=\'font\' onchange=\'globalFont(); hashFunction(); updateGraphics();\'>
       <option value=\'\' selected> - Choose font - </option>
-      <option value=\'Arial\'>Arial</option>
-      <option value=\'Courier New\'>Courier New</option>
-      <option value=\'Impact\'>Impact</option>
-      <option value=\'Calibri\'>Calibri</option>
+      '.$fonts.'
       </select><br>
       Font color:<br>
       <select id =\'fontColor\' onchange=\'globalFontColor(); hashFunction(); updateGraphics();\'>
       <option value=\'\' selected> - Choose text color - </option>
-      <option value=\'#64B5F6\'>Blue</option>
-      <option value=\'#81C784\'>Green</option>
-      <option value=\'#e6e6e6\'>Grey</option>
-      <option value=\'#E57373\'>Red</option>
-      <option value=\'#FFF176\'>Yellow</option>
-      <option value=\'#FFB74D\'>Orange</option>
-      <option value=\'#BA68C8\'>Purple</option>
-      <option value=\'#ffffff\'>White</option>
-      <option value=\'#000000\'>Black</option>
+      '.$colors.'
       </select><br>
       Text size:<br>
       <select id=\'TextSize\' onchange=\'globalTextSize(); hashFunction(); updateGraphics();\'>
@@ -149,28 +116,12 @@
       Fill color:<br>
       <select onchange="globalFillColor(); hashFunction(); updateGraphics();" id=\'FillColor\'>
       <option value=\'\' selected> - Choose symbol color - </option>
-      <option value=\'#64B5F6\'>Blue</option>
-      <option value=\'#81C784\'>Green</option>
-      <option value=\'#e6e6e6\'>Grey</option>
-      <option value=\'#E57373\'>Red</option>
-      <option value=\'#FFF176\'>Yellow</option>
-      <option value=\'#FFB74D\'>Orange</option>
-      <option value=\'#BA68C8\'>Purple</option>
-      <option value=\'#ffffff\'>White</option>
-      <option value=\'#000000\'>Black</option>
+      '.$colors.'
       </select><br>
       Stroke color:<br>
       <select onchange="globalStrokeColor(); hashFunction(); updateGraphics();" id=\'StrokeColor\'>
       <option value=\'\' selected> - Choose line color - </option>
-      <option value=\'#64B5F6\'>Blue</option>
-      <option value=\'#81C784\'>Green</option>
-      <option value=\'#e6e6e6\'>Grey</option>
-      <option value=\'#E57373\'>Red</option>
-      <option value=\'#FFF176\'>Yellow</option>
-      <option value=\'#FFB74D\'>Orange</option>
-      <option value=\'#BA68C8\'>Purple</option>
-      <option value=\'#ffffff\'>White</option>
-      <option value=\'#000000\'>Black</option>
+      '.$colors.'
       </select><br>
       Line thickness:<br>
       <input id="line-thickness" onclick=\'globalLineThickness(); hashFunction(); updateGraphics();\' style="width:100%; margin: -2px; padding: 0px;" type="range" min="1" max="5" value="2">
