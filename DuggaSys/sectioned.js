@@ -1020,7 +1020,7 @@ function returnedSection(data) {
 		str += "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>";
 		str += "</div>";
 		str += "<div class='nowrap' style='padding-left:5px' title='statistics'>";
-		str += "<span class='listentries-span' style='writing-mode:vertical-rl; "
+		str += "<span class='listentries-span noselect' style='writing-mode:vertical-rl; "
 		+ "text-orientation: upright;'>Statistics</span>";
 		str += "</div></div>";
 		str += "<div class='statisticsContent' style='display:inline-block;'>";
