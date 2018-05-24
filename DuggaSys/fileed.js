@@ -19,7 +19,7 @@ Execution order:
 
 var sessionkind = 0;
 var querystring = parseGet();
-var filez, fileLink;
+var filez, fileLink = '';
 var fileKind = "";
 var searchterm = "";
 var pressTimer;

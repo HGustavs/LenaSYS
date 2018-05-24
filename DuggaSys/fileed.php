@@ -22,7 +22,7 @@ pdoConnect();
     <script src="fileed.js"></script>
     <script src="../Shared/markdown.js"></script>
 </head>
-<body onload="fileLink.renderTable()">
+<body>
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
