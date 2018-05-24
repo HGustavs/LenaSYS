@@ -2182,8 +2182,8 @@ function drawSwimlanes(){
 		'notGradedQuizes': '#FFEB3B',     	// Yellow
 		'failedQuizes': '#E53935',        	// Red
 		'notSubmittedQuizes': '#BDBDBD',  	// Dark grey
-		'weeksOdd': '#8a7a9a',							// Purple
-		'momentsOdd': '#ededed'							// Light gray
+		'weeksOdd': '#8a7a9a',				// Purple
+		'momentsOdd': '#ededed'				// Light gray
  	}
 
 	var startdate = new Date(retdata['startdate']);
@@ -2349,7 +2349,7 @@ function drawSwimlanes(){
 		+ (courseStartDate.getTime() - currentDate.getTime())/(oneDay)));
 
 	ctxWeeks.moveTo(courseDay * 5, 0);
-	ctxWeeks.strokeStyle = 'black';
+	ctxWeeks.strokeStyle = colors['notSubmittedQuizes'];
 	ctxWeeks.lineTo(courseDay * 5, swimWeeks.height);
 	ctxWeeks.stroke();
 }
