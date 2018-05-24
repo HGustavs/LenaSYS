@@ -133,7 +133,7 @@ pdoConnect();
                                                                                 src="../Shared/icons/link-icon.svg"></span>
                         <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img
                                                                                 src="../Shared/icons/insert-photo.svg"></span>
-                        <span class="markdown-icons" id="headerIcon" title="Header">aA&#9663;</span>
+                        <span class="markdown-icons headerType" id="headerIcon" title="Header">aA&#9663;</span>
 
                         <div class="selectHeader" id="select-header">
                             <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
