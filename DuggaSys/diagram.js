@@ -147,11 +147,33 @@ function keyDownHandler(e){
 
     else if (key == 90 && ctrlIsClicked) undoDiagram();
     else if (key == 89 && ctrlIsClicked) redoDiagram();
+    else if (key == 65 && ctrlIsClicked) {
+      e.preventDefault();
+      for(var i = 0; i < diagram.length; i++){
+        selected_objects.push(diagram[i]);
+        diagram[i].targeted = true;
+      }
+      updateGraphics();
+    }
     else if(key == 17 || key == 91)
     {
       ctrlIsClicked = true;
     }
+    else if(key == 27){
+      cancelFreeDraw();
+    }
 
+}
+
+function cancelFreeDraw(){
+    if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
+        for (var i = 0; i < numberOfPointsInFigure; i++) {
+            diagram.pop();
+        }
+        cleanUp();
+        md = 0; //Prevents the dashed line box, when drawing a square, to appear immediately
+        updateGraphics();
+      }
 }
 
 function fillCloneArray(){
@@ -366,7 +388,7 @@ var diagram = [];
 diagram.closestPoint = function(mx, my){
     var distance = 50000000;
     var point;
-    this.filter(symbol => symbol.kind != 1).forEach(symbol => {
+    this.filter(symbol => symbol.kind != 1 && symbol.symbolkind != 6).forEach(symbol => {
         [points[symbol.topLeft], points[symbol.bottomRight], {x:points[symbol.topLeft], y:points[symbol.bottomRight], fake:true}, {x:points[symbol.bottomRight], y:points[symbol.topLeft], fake:true}].forEach(corner => {
             var deltaX = corner.fake ? mx - corner.x.x : mx - corner.x;
             var deltaY = corner.fake ? my - corner.y.y : my - corner.y;
@@ -377,6 +399,19 @@ diagram.closestPoint = function(mx, my){
             }
         });
     });
+
+    this.filter(symbol => symbol.kind == 1).forEach(path => {
+        path.segments.forEach(seg => {
+            var deltaX = mx - points[seg.pb].x;
+            var deltaY = my - points[seg.pb].y;
+            var hypotenuseElevatedBy2 = (deltaX * deltaX) + (deltaY * deltaY);
+            if (hypotenuseElevatedBy2 < distance) {
+                distance = hypotenuseElevatedBy2;
+                point = points[seg.pb];
+            }
+        });
+    });
+
     return {distance:Math.sqrt(distance), point:point};
 }
 
@@ -407,9 +442,7 @@ diagram.draw = function() {
 //--------------------------------------------------------------------
 diagram.adjustPoints = function() {
     for (var i = 0 ; i < this.length; i++) {
-        if (this[i].kind == 2) {
-            this[i].adjust();
-        }
+        this[i].adjust();
     }
 }
 
@@ -455,6 +488,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
             }
             if(!hover){
                 if (pointsSelected >= tempPoints.length) {
+                    selected_objects.push(this[i]);
                     this[i].targeted = true;
                 } else {
                     this[i].targeted = false;
@@ -527,7 +561,9 @@ diagram.checkForHover = function(posX, posY) {
     var hoveredObjects = this.filter(symbol => symbol.checkForHover(posX, posY));
     if (hoveredObjects.length <= 0) return -1;
     hoveredObjects.sort(function(a, b) {
-        if (a.symbolkind != 4 && b.symbolkind != 4) return 0;
+        if(a.kind == 1 && b.kind == 2) return -1;
+        else if(a.kind != 1 && b.kind == 1) return 1;
+        else if (a.symbolkind != 4 && b.symbolkind != 4) return 0;
         else if (a.symbolkind == 4 && b.symbolkind != 4) return -1;
         else if (a.symbolkind != 4 && b.symbolkind == 4) return 1;
         else return 0;
@@ -829,29 +865,32 @@ function eraseObject(object) {
 function eraseSelectedObject() {
     canvas.style.cursor = "default";
     //Issue: Need to remove the crosses
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].targeted == true) {
-            diagram[i].targeted = false;
-            eraseObject(diagram[i]);
-            i = -1;
-            //To avoid removing the same index twice, lastSelectedObject is reset
-            lastSelectedObject = -1;
-        }
+    if(selected_objects.length == 0){
+        showMenu().innerHTML = "No item selected<type='text'>";
+        $(".loginBox").draggable();
     }
+    for(var i = 0; i < selected_objects.length; i++){
+        eraseObject(selected_objects[i]);
+    }
+    selected_objects = [];
+    lastSelectedObject = -1;
     updateGraphics();
 }
 
 function setMode(mode){ //"CreateClass" yet to be implemented in .php
     canvas.style.cursor = "default";
     uimode = mode;
-    if(mode == 'Square' || mode == 'Free') {
+    if(mode == 'Square' || mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
+      if(figureType == "Free"){
+          cancelFreeDraw();
+      }
       figureType = mode;
     }
 }
 
 $(document).ready(function(){
-    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton").click(function(){
+    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton").click(function(){
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
@@ -1326,9 +1365,7 @@ function distributeHorizontally(selected_objects, spacing){
 //Do we really need 5 functions that more or less do the same thing
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2) {
-            diagram[i].lineWidth = document.getElementById('line-thickness').value;
-        }
+        diagram[i].lineWidth = document.getElementById('line-thickness').value;
     }
 }
 //change the font on all entities to the same font.
@@ -1388,13 +1425,17 @@ function redoDiagram() {
 
 function diagramToSVG() {
     var str = "";
-    // Convert lines to SVG first so they appear behind other objects
+    // Convert figures to SVG first so they appear behind other objects
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+        if (diagram[i].kind == 1) str += diagram[i].figureToSVG();
     }
-    // Conert other objects to SVG
+    // Convert lines to SVG second so they appear behind other symbols but above figures
     for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
+        if (diagram[i].kind == 2 && diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+    }
+    // Convert other objects to SVG
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
     }
     return str;
 }
