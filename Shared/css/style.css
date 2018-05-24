@@ -1897,6 +1897,29 @@ input.large-button {
   cursor: pointer;
 }
 
+#editpopover {
+  border:1px solid red;
+  box-shadow:2px 2px 2px #000;
+  position:absolute;
+  background-color: #82a43a;
+  width: fit-content;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  position: relative;
+  transform: translateY(50%);
+}
+
+#input-container input {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  size: 5;
+}
+
 .list#testTable input, .list#testTable select, .list#testTable label {
     padding:0px;
 }
@@ -2169,26 +2192,73 @@ span.arrow {
 }
 
 .tableCellHighlightning {
-  background-image: radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2));
+	box-shadow: inset 0px 0px 0px 3px rgba(97,72,117,1) !important;
 }
 
 .tableRowHighlightning {
-  border-bottom: 3px solid rgba(97,72,117,1) !important;
-  border-top: 3px solid rgba(97,72,117,1) !important;
+	box-shadow: inset 0px 3px 0px 0px rgba(97,72,117,1),
+							inset 0px -3px 0px 0px rgba(97,72,117,1);
 }
 
 .tableColHighlightning {
-  border-left: 3px solid rgba(97,72,117,1) !important;
-  border-right: 3px solid rgba(97,72,117,1) !important;
+	box-shadow: inset 3px 0px 0px 0px rgba(97,72,117,1),
+							inset -3px 0px 0px 0px rgba(97,72,117,1);
+
+}
+
+.resultTableText {
+  margin-left: 3px;
+  margin-right: 3px;
+  font-size: 13px;
+}
+
+.resultTableNormal {
+  height:70px;
+  align-items:center;
+  display:flex;
+}
+
+.resultTableMini {
+  height:25px;
+  align-items:center;
+  display:flex;
 }
 
 #resultTable td {
   height: 1px;
   padding: 0px;
-  border-right: 3px dashed rgba(97,72,117,0);
-  border-left: 3px dashed rgba(97,72,117,0);
-  border-bottom: 3px dashed rgba(97,72,117,0);
-  border-top: 3px dashed rgba(97,72,117,0);
+  border: 0px;
+}
+
+.resultTable_counter {
+  text-align:center;
+}
+
+.resultTable_counter span {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+#accessTable td {
+	padding: 0px;
+	border: 0px;
+}
+
+.accessTableText {
+	margin-left: 3px;
+	margin-right: 3px;
+}
+
+.accessTableCell {
+	height:60px;
+	text-align:center;
+	display:table-cell;
+	vertical-align:middle;
+	width:220px; /* used make the table cell <div> exapnd to the parent td */
+}
+
+.accessTable_counter span {
+	margin-left: 5px;
 }
 
 #user td {
@@ -3249,7 +3319,7 @@ only screen and (max-device-width: 768px) {
     transform: scale(0.7, 0.7);
     left: 10px;
   }
-  
+
   #cookiemsg {
     background-color: #fecc56;
     z-index: 1000;
@@ -3261,7 +3331,7 @@ only screen and (max-device-width: 768px) {
     display: flex;
     text-align: center;
   }
-  
+
   #Sectionlist .course {
     font-size: 20px;
   }
@@ -3269,7 +3339,7 @@ only screen and (max-device-width: 768px) {
   #statisticsList {
     display: none;
   }
-  
+
 .fileLink_counter {
     font-size: 16px;
     color: #000;
@@ -3279,15 +3349,15 @@ only screen and (max-device-width: 768px) {
     #fileLink_body{
 		display: block;
 	}
-  
+
     #fileLink_tblhead{
         display: none;
     }
-  
+
     #fileLink_tbl_mh[style]{
         display: none !important;
     }
-  
+
     #fileLink_body tr[style]{
         border: 1px solid #ccc !important;
         display: block !important;
@@ -3304,7 +3374,7 @@ only screen and (max-device-width: 768px) {
         overflow: hidden;
 
 	}
-  
+
 	#fileLink_body>tr>td:before {
 		/* Top/left values mimic padding */
         display: inline-block;
@@ -4248,7 +4318,7 @@ textarea#mrkdwntxt {
 
 
 .multiselect-group {
-  width: 100px;
+  width: 112px;
 }
 
 #checkboxes {
@@ -4434,5 +4504,5 @@ textarea#filecont{
   margin: 0 2px 7px 0;
   float: right;
   position: relative;
-  top: -5px; 
+  top: -5px;
 }

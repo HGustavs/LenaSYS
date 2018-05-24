@@ -592,11 +592,11 @@ function AJAXService(opt,apara,kind)
 function loginEventHandler(event){
 	if(event.keyCode == "0x0D"){
 		if(showing == 1){
-			loginBarrier();
+			processLogin();
 		}else if(showing == 0){
-			resetPasswordBarrier();
+			processResetPasswordCheckUsername();
 		}else if(showing == 2){
-			enterSecurityQuestionBarrier();
+			processResetPasswordCheckSecurityAnswer();
 		}
 	}
 }
@@ -631,26 +631,7 @@ function checkHTTPS() {
 	return (location.protocol == 'https:');
 }
 
-function resetPasswordBarrier() {
-	var username = $("#usernamereset").val();
-
-	$.ajax({
-		type:"POST",
-		url: "../DuggaSys/accessedservice.php",
-		data: {
-			username: username,
-			opt: "REQNEWPWD"
-		},
-		success:function(data) {
-			var result = JSON.parse(data);
-			result = result.queryResult;
-			processResetPasswordCheckUsername(result);
-		}
-	});
-}
-
-function processResetPasswordCheckUsername(result) {
-	if(result <= 5) {
+function processResetPasswordCheckUsername() {
 	//Gets the security question from the database
 	var username = $("#usernamereset").val();
 
@@ -668,7 +649,9 @@ function processResetPasswordCheckUsername(result) {
 				$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
 				status = 2;
 				toggleloginnewpass();
-			}else{
+			}else if(result['getname'] == "limit"){
+        displayAlertText("#newpassword #message2", "You have exceeded the maximum <br /> amount of tries within 5 min");
+      }else{
 				if(typeof result.reason != "undefined") {
           displayAlertText("#newpassword #message2", result.reason);
 				} else {
@@ -678,100 +661,37 @@ function processResetPasswordCheckUsername(result) {
 			}
 		}
 	});
-	}else {
-    displayAlertText("#newpassword #message2", "You have exceeded the maximum <br /> amount of tries within 5 min");
-		$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
-	}
 }
 
-function enterSecurityQuestionBarrier(){
+function processResetPasswordCheckSecurityAnswer() {
+  //Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
   var username = $("#usernamereset").val();
-
-	$.ajax({
-		type:"POST",
-		url: "../DuggaSys/accessedservice.php",
-		data: {
-      username: username,
-			opt: "CHECKSECURITYANSWER"
-		},
-		success:function(data) {
-			var result = JSON.parse(data);
-			result = result.queryResult;
-			processResetPasswordCheckSecurityAnswer(result);
-		}
-	});
-}
-
-function processResetPasswordCheckSecurityAnswer(result) {
-  if (result <= 5){
-    //Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
-    var username = $("#usernamereset").val();
-    var securityquestionanswer = $("#answer").val();
-
-    $.ajax({
-        type:"POST",
-        url: "../Shared/resetpw.php",
-        data: {
-          username: username,
-          securityquestionanswer: securityquestionanswer,
-          opt: "CHECKANSWER"
-        },
-        success:function(data) {
-          var result = JSON.parse(data);
-          if(result['checkanswer'] == "success") {
-            $.ajax({
-              type:"POST",
-              url: "../Shared/resetpw.php",
-              data: {
-                username: username,
-                opt: "REQUESTCHANGE"
-              },
-              success:function(data){
-                var result = JSON.parse(data);
-                if(result['requestchange'] == "success"){
-                  status = 3;
-                  toggleloginnewpass();
-                }else{
-                  $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
-                  displayAlertText("#showsecurityquestion #message3", "Something went wrong");
-                }
-              }
-            });
-          }else{
-            if(typeof result.reason != "undefined") {
-              displayAlertText("#showsecurityquestion #message3", result.reason);
-            } else {
-              //update database here.
-              displayAlertText("#showsecurityquestion #message3", "Wrong answer");
-            }
-            $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 6, 0.2)");
-        }
-      }
-    });
-  } else {
-    displayAlertText("#showsecurityquestion #message3", "You have exceeded the maximum <br> amount of tries within 5 min");
-  }
-}
-
-function loginBarrier() {
-  var username = $("#login #username").val();
-
+  var securityquestionanswer = $("#answer").val();
   $.ajax({
-		type:"POST",
-		url: "../DuggaSys/accessedservice.php",
-		data: {
+    type:"POST",
+    url: "../Shared/resetpw.php",
+    data: {
       username: username,
-			opt: "LOGINATTEMPT"
-		},
-		success:function(data) {
-			var result = JSON.parse(data);
-			result = result.queryResult;
-			processLogin(result);
-		}
-	});
+      opt: "REQUESTCHANGE"
+    },
+    success:function(data){
+      var result = JSON.parse(data);
+      if(result['requestchange'] == "success"){
+        status = 3;
+        toggleloginnewpass();
+      }else if(result['requestchange'] == "limit"){
+        displayAlertText("#showsecurityquestion #message3", "You have exceeded the maximum <br /> amount of tries within 5 min");
+      }else if(result['requestchange'] == "wrong"){
+        displayAlertText("#showsecurityquestion #message3", "Wrong answer");
+      }else{
+        $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
+        displayAlertText("#showsecurityquestion #message3", "Something went wrong");
+      }
+    }
+  });
 }
 
-function processLogin(result) {
+function processLogin() {
 
     /*
     var username = $("#login #username").val();
@@ -822,64 +742,61 @@ function processLogin(result) {
 		});
 
     */
-
-    if (result <= 5) {
-      var username = $("#login #username").val();
-  		var saveuserlogin = $("#login #saveuserlogin").val();
-  		var password = $("#login #password").val();
-  		if (saveuserlogin==1){
-          	saveuserlogin = 'on';
-      }else{
-          	saveuserlogin = 'off';
-      }
-
-  		$.ajax({
-  			type:"POST",
-  			url: "../Shared/loginlogout.php",
-  			data: {
-  				username: username,
-  				saveuserlogin: saveuserlogin,
-  				password: password,
-  				opt: "LOGIN"
-  			},
-  			success:function(data) {
-  				var result = JSON.parse(data);
-  				if(result['login'] == "success") {
-            hideLoginPopup();
-            /*
-                      if(result['securityquestion'] != null) {
-                          localStorage.setItem("securityquestion", "set");
-                      } else {
-                          setSecurityNotifaction("on");
-                      }
-              */
-  					setExpireCookie();
-  					setExpireCookieLogOut();
-
-  					// Fake a second login, this will reload the page and enable chrome and firefox to save username and password
-  					//$("#loginForm").submit();
-            reloadPage();
-  				}else{
-  					if(typeof result.reason != "undefined") {
-              displayAlertText("#login #message", result.reason);
-  					} else {
-              displayAlertText("#login #message", "Wrong username or password");
-  					}
-
-
-  					$("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
-  					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
-            //closeWindows();
-  				}
-
-  			},
-  			error:function() {
-  				console.log("error");
-  			}
-  		});
-    } else {
-      displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
+    var username = $("#login #username").val();
+    var saveuserlogin = $("#login #saveuserlogin").val();
+    var password = $("#login #password").val();
+    if (saveuserlogin==1){
+          saveuserlogin = 'on';
+    }else{
+          saveuserlogin = 'off';
     }
+
+    $.ajax({
+      type:"POST",
+      url: "../Shared/loginlogout.php",
+      data: {
+        username: username,
+        saveuserlogin: saveuserlogin,
+        password: password,
+        opt: "LOGIN"
+      },
+      success:function(data) {
+        var result = JSON.parse(data);
+        if(result['login'] == "success") {
+          hideLoginPopup();
+          /*
+                    if(result['securityquestion'] != null) {
+                        localStorage.setItem("securityquestion", "set");
+                    } else {
+                        setSecurityNotifaction("on");
+                    }
+            */
+          setExpireCookie();
+          setExpireCookieLogOut();
+
+          // Fake a second login, this will reload the page and enable chrome and firefox to save username and password
+          //$("#loginForm").submit();
+          reloadPage();
+        }else if(result['login'] == "limit"){
+          displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
+        }else{
+          if(typeof result.reason != "undefined") {
+            displayAlertText("#login #message", result.reason);
+          } else {
+            displayAlertText("#login #message", "Wrong username or password");
+          }
+
+
+          $("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
+          $("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
+          //closeWindows();
+        }
+
+      },
+      error:function() {
+        console.log("error");
+      }
+    });
 }
 
 
