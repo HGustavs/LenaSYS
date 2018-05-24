@@ -207,7 +207,7 @@ function globalAppearanceMenu(){
     $(".loginBox").draggable();
     var form = showMenu();
     //AJAX
-    loadFormIntoElement(form,'forms/global_appearance.php');
+    loadFormIntoElement(form,'diagram_forms.php?form=5');
 }
 
 function objectAppearanceMenu(form) {
@@ -221,26 +221,26 @@ function objectAppearanceMenu(form) {
 
     if (diagram[lastSelectedObject].symbolkind == 1) {
         classAppearanceOpen = true;
-        loadUMLForm(form, 'forms/class_appearance.php?');
+        loadUMLForm(form, 'diagram_forms.php?form=2');
     }
-    if (diagram[lastSelectedObject].symbolkind == 2) {
-        loadFormIntoElement(form, 'forms/attribute_appearance.php');
+    else if (diagram[lastSelectedObject].symbolkind == 2) {
+        loadFormIntoElement(form, 'diagram_forms.php?form=1');
     }
-    if (diagram[lastSelectedObject].symbolkind == 3) {
-        loadFormIntoElement(form, 'forms/entity_appearance.php');
+    else if (diagram[lastSelectedObject].symbolkind == 3) {
+        loadFormIntoElement(form, 'diagram_forms.php?form=3');
     }
-    if (diagram[lastSelectedObject].symbolkind == 4) {
-        loadLineForm(form, 'forms/line_appearance.php?cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
+    else if (diagram[lastSelectedObject].symbolkind == 4) {
+        loadLineForm(form, 'diagram_forms.php?form=6&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
     }
-    if (diagram[lastSelectedObject].symbolkind == 5) {
-        loadFormIntoElement(form, 'forms/relation_appearance.php');
+    else if (diagram[lastSelectedObject].symbolkind == 5) {
+        loadFormIntoElement(form, 'diagram_forms.php?form=7');
     }
-    if (diagram[lastSelectedObject].symbolkind == 6) {
+    else if (diagram[lastSelectedObject].symbolkind == 6) {
         textAppearanceOpen = true;
-        loadTextForm(form, 'forms/text_appearance.php');
+        loadTextForm(form, 'diagram_forms.php?form=8');
     }
-    if (diagram[lastSelectedObject].kind == 1) {
-        loadFormIntoElement(form, 'forms/figure_appearance.php');
+    else if (diagram[lastSelectedObject].kind == 1) {
+        loadFormIntoElement(form, 'diagram_forms.php?form=4');
     }
 }
 function changeObjectAppearance(object_type){
