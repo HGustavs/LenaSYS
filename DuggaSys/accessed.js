@@ -462,8 +462,7 @@ function renderCell(col,celldata,cellid) {
 	}else if(col == "class"){
 		obj=JSON.parse(celldata);
 		var items = new Array();
-		// Every user doesn't have a class
-		items.push("null");
+		items.push("null"); // Every user doesn't have a class
 		for(var i = 0; i < filez['classes'].length; i++){
 			items.push(filez['classes'][i]['class']);
 		}
@@ -477,7 +476,6 @@ function renderCell(col,celldata,cellid) {
 		return str;
 	}else if(col == "groups") {
 		var groups = filez['groups'];
-
 		str = "<div class='accessTableCell'>";
 			str += "<div class='accessTableText'>";
 				str += '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
@@ -511,9 +509,6 @@ function makeDropdown(onChange, values, items, selected){
 
 function makeClassDropdown(onChange, values, items, selected){
     str = "<select onChange='"+onChange+"' onclick='return false;'>";
-
-    str+= "<option value='null'></option>";
-
     for(var i = 0; i < values.length; i++){
 	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
     }
