@@ -751,6 +751,12 @@ function accessCourse() {
 	window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
 }
 
+function weeksBetween(firstDate, secondDate){
+	var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+	var diff = Math.abs(firstDate - secondDate);
+	return Math.round(diff / ONE_WEEK);
+}
+
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -758,6 +764,28 @@ var momentexists = 0;
 var resave = false;
 function returnedSection(data) {
 	retdata = data;
+
+	Date.prototype.getWeek = function () {
+		var date = new Date(this.getTime());
+		date.setHours(0, 0, 0, 0);
+		date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+		var week1 = new Date(date.getFullYear(), 0, 4);
+		return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6 ) % 7) / 7);
+	}
+
+
+	var now = new Date();
+	var startdate = new Date(retdata['startdate']);
+	var enddate = new Date(retdata['enddate']);
+
+	var numberOfParts = 0;
+	for(var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		if(item['kind'] == 4){
+			numberOfParts++;
+		}
+	}
+
 	if (data['debug'] != "NONE!") alert(data['debug']);
 
 	if (querystring['coursevers'] != "null") {
@@ -944,13 +972,14 @@ function returnedSection(data) {
 			hiddenInline = "inline";
 		}
 
-		str += "<div class='course' style='display: flex;align-items: center; justify-content: flex-end;'>";
+		str += "<div class='course' style='display:flex; align-items:center; justify-content:flex-end;'>";
 		str += "<div style='flex-grow:1'>"
 		str += "<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;"
 			+ "margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>" + data.coursename + "</span>";
 		str += "<span id='course-coursecode' style='margin-right:10px;'>" + data.coursecode + "</span>";
 		str += "<span id='course-versname' class='courseVersionField'>" + versionname + "</span>";
 		str += "</div>";
+
 		// If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign
 		if (retdata["writeaccess"]) {
 			if (item['kind'] == undefined) {
@@ -959,8 +988,7 @@ function returnedSection(data) {
 			}
 
 			str += "<div id='course-newitem' style='display: flex;'>";
-			str +=
-				"<input id='addElement' type='button' value='+' class='submit-button-newitem' title='New Item'"
+			str += "<input id='addElement' type='button' value='+' class='submit-button-newitem' title='New Item'"
 				+ " onclick='selectItem("
 				+ "\"" + item['lid'] + "\","
 				+ "\"" + item['entryname'] + "\","
@@ -975,42 +1003,58 @@ function returnedSection(data) {
 			str += "</div>";
 		}
 
-		str += "<div id='course-coursevers' style='display: none; margin-right:10px;'>" + data.coursevers + "</div>";
-		str += "<div id='course-courseid' style='display: none; margin-right:10px;'>" + data.courseid + "</div>";
+		str += "<div id='course-coursevers' style='display:none; margin-right:10px;'>"
+		+ data.coursevers + "</div>";
+		str += "<div id='course-courseid' style='display:none; margin-right:10px;'>"
+		+ data.courseid + "</div>";
 
 		str += "</div>";
 
 		str += "<div id='courseList'>";
-		str += "<!-- Statistics List -->"
-		+ "<div id='statisticsList'>"
-		+ "<div id='statistics' class='statistics noselect' style='display: inline-block; cursor: pointer;'>"
-		+ "<div style='margin: 10px;'>"
-		+ "<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>"
-		+ "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>"
-		+ "</div>"
-		+ "<div class='nowrap' style='padding-left:5px' title='statistics'>"
-		+ "<span class='listentries-span' style='writing-mode: vertical-rl; "
-		+ "text-orientation: upright;'>Statistics</span>"
-		+ "</div></div>"
-		+ "<div class='statisticsContent' style='display: inline-block;'>";
-		str+="<div id='statisticsPie'>";
-		str+="<canvas id='pieChart' width='300px' height='255px' style='margin: 10px 10px;'></canvas>"; // Contains pie chart.
-		str+="</div>";
-		str	+="<div id='deadlineInfoBox' style='display: inline-block;"
-		+ " padding: 10px; width: 250px;'> ";
-		str += "<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>"
-		str += "<div class='deadlineInfo'><span style='width: 100%;'id='deadlineInfoFirstText'></span>"
-		+ "<span id='deadlineInfoFirstDate' style='margin-right:5px;width:35px;'></span></div>"
-		str += "<div class='deadlineInfo'><span style='width: 100%;' id='deadlineInfoSecondText'></span>"
-		+ "<span id='deadlineInfoSecondDate' style='margin-right:5px;width: 35px;'></span></div>"
-		str += "<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoThirdText'></span>"
-		+ "<span id='deadlineInfoThirdDate' style='margin-right:5px;width: 35px;'></span></div>"
-		str += "<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFourthText'></span>"
-		+ "<span id='deadlineInfoFourthDate' style='margin-right:5px;width: 35px;'></span></div>"
-		str += "<div class='deadlineInfo'> <span style='width: 100%;' id='deadlineInfoFifthText'></span>"
-		+ "<span id='deadlineInfoFifthDate' style='margin-right:5px;width:35px;'></span></div>"
+		str += "<!-- Statistics List -->";
+		str += "<div id='statisticsList'>";
+		str += "<div id='statistics' class='statistics' "
+		+ "style='display:inline-block; cursor:pointer;'>";
+		str += "<div style='margin:10px;'>";
+		str += "<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>";
+		str += "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>";
 		str += "</div>";
-		str +=  "</div></div>"; // closing div for statisticsContent
+		str += "<div class='nowrap' style='padding-left:5px' title='statistics'>";
+		str += "<span class='listentries-span' style='writing-mode:vertical-rl; "
+		+ "text-orientation: upright;'>Statistics</span>";
+		str += "</div></div>";
+		str += "<div class='statisticsContent' style='display:inline-block;'>";
+
+		str += "<div id='statisticsPie' class='statisticsInnerBox'>";
+		str += "<canvas id='pieChart' width='300px' height='255px'"
+		+	"style='padding: 10px; display:flex; margin: auto;'></canvas>"; // Contains pie chart.
+		str += "</div>";
+
+		str	+= "<div id='deadlineInfoBox' class='statisticsInnerBox' "
+		+ "style='padding: 10px;'>";
+		str += "<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>";
+		str += "<div class='deadlineInfo'><span style='width:100%;'id='deadlineInfoFirstText'></span>";
+		str += "<span id='deadlineInfoFirstDate' style='margin-right:5px; width:35px;'></span></div>";
+		str += "<div class='deadlineInfo'><span style='width:100%;' id='deadlineInfoSecondText'></span>";
+		str += "<span id='deadlineInfoSecondDate' style='margin-right:5px; width:35px;'> </span></div>";
+		str += "<div class='deadlineInfo'> <span style='width:100%;' id='deadlineInfoThirdText'></span>";
+		str += "<span id='deadlineInfoThirdDate' style='margin-right:5px; width:35px;'></span></div>";
+		str += "<div class='deadlineInfo'> <span style='width:100%;' id='deadlineInfoFourthText'></span>";
+		str += "<span id='deadlineInfoFourthDate' style='margin-right:5px; width:35px;'></span></div>";
+		str += "<div class='deadlineInfo'> <span style='width:100%;' id='deadlineInfoFifthText'></span>";
+		str += "<span id='deadlineInfoFifthDate' style='margin-right:5px; width:35px;'></span></div>";
+		str += "</div>";
+
+		str += "<div id='statisticsSwimlanes' class='statisticsInnerBox' style='display:flex;'>";
+		str += "<div style='display:inline-block;'>";
+		str += "<canvas id='swimlanesMoments' style='padding:10px;'></canvas>";	// Contains swimlanes.
+		str += "</div>";
+		str += "<div style='width: 350px; overflow-x: auto; white-space: nowrap; "
+		+ "display: inline-block; margin: 10px 10px 10px -10px'>";
+		str += "<canvas id='swimlanesWeeks'></canvas>";	// Contains swimlanes.
+		str += "</div>";
+		str += "</div>";
+		str += "</div></div>"; // Closing div for statisticsContent
 		str += "<div id='Sectionlistc'>";
 
 		// For now we only have two kinds of sections
@@ -1299,7 +1343,7 @@ function returnedSection(data) {
 					else if (item['gradesys'] == 3) {
 						strz = "(U-3-4-5)";
 					}
-					
+
 					str += "<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
@@ -1648,7 +1692,8 @@ function returnedSection(data) {
 	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
 
 	drawPieChart(); // Create the pie chart used in the statistics section.
-	fixDeadlineInfoBoxesText();
+	fixDeadlineInfoBoxesText(); // Create the upcomming deadlines used in the statistics section
+	drawSwimlanes(); // Create the swimlane used in the statistics section.
 
 	// Change the scroll position to where the user was last time.
 	$(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
@@ -1921,6 +1966,9 @@ function addColorsToTabSections(kind, visible){
 	return retStr;
 }
 
+
+/* Statistic-sections functions, for drawing out all the statistics
+   (pie chart and swimlanes) and upcomming deadlines. */
 function drawPieChart() {
 	var c = document.getElementById('pieChart');
 	var ctx = c.getContext('2d');
@@ -2078,7 +2126,7 @@ function fixDeadlineInfoBoxesText(){
 		}
 	}
 
-		// to find the lowest-valued-element
+	// to find the lowest-valued-element
 	if(duggaEntries.length != 0){
 		duggaEntries.reduce(function(prev, curr){
 			return prev.deadline < curr.deadline ? prev : curr;
@@ -2126,6 +2174,186 @@ function removeYearFromDate(date){
 	return getDateFormat(remadeDate, "dateMonth").replace("-" ,"/");
 }
 
+function drawSwimlanes(){
+	var swimMoments = document.getElementById('swimlanesMoments');
+	var swimWeeks = document.getElementById('swimlanesWeeks');
+	var ctxMoments = swimMoments.getContext('2d');
+	var ctxWeeks = swimWeeks.getContext('2d');
+	var colors = {
+		'passedQuizes': '#00E676',        	// Green
+		'notGradedQuizes': '#FFEB3B',     	// Yellow
+		'failedQuizes': '#E53935',        	// Red
+		'notSubmittedQuizes': '#BDBDBD',  	// Dark grey
+		'weeksOdd': '#8a7a9a',				// Purple
+		'momentsOdd': '#ededed'				// Light gray
+ 	}
+
+	var startdate = new Date(retdata['startdate']);
+	var enddate = new Date(retdata['enddate']);
+	var totalNumberOfTests = retdata['duggor'].length;
+	var weekLength = weeksBetween(startdate, enddate);
+
+	var widthVar = 30;
+	var momentWidth = [];
+	var momentList = [];
+	var numberOfMoments = 0;
+
+	for(var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		if(item['kind'] == 4){
+			momentWidth.push(widthVar);
+			widthVar = 30;
+			momentList.push(item);
+			numberOfMoments++;
+		} else {
+			widthVar += 30;
+		}
+	}
+
+	//	Dynamic width and height for the canvases, depending on how many weeks a
+	//	course is and how many moments exist in the course.
+	swimMoments.width = 100;
+	if(numberOfMoments != 0){ // Dynamic height, depending on number of moments
+		// 60 is height of the Weeks/Moments label.
+		swimMoments.height = (30 * totalNumberOfTests) + 60;
+		swimWeeks.height = swimMoments.height;
+	}
+
+	if(weekLength != 0){ // Dynamic width, depending on number of weeks
+		swimWeeks.width = weekLength * 35;
+	}
+
+	ctxMoments.fillStyle = 'white';
+	ctxMoments.fillRect(0, 0, 100, 60);
+
+	ctxMoments.moveTo(0, 0);
+	ctxMoments.strokeStyle = colors['notSubmittedQuizes'];
+	ctxMoments.lineTo(100, 60);
+	ctxMoments.stroke();
+
+	ctxMoments.fillStyle = 'black';
+	ctxMoments.font = '12px Arial';
+	ctxMoments.fillText('Week', 50, 20);
+	ctxMoments.fillText('Moment', 10, 50);
+
+	// Prints out the moment rows to the swimlane table.
+	var y = 60;
+	var isGray = true;
+	for(var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		if (item['kind'] == 4){
+			if (isGray){
+				ctxMoments.fillStyle = colors['momentsOdd'];
+				ctxWeeks.fillStyle = colors['momentsOdd'];
+				isGray = false;
+			} else {
+				ctxMoments.fillStyle = 'white';
+				ctxWeeks.fillStyle = 'white';
+				isGray = true;
+			}
+		} else if (item['kind'] == 3){
+			ctxMoments.fillRect(0, y, swimMoments.width, 30);
+			ctxWeeks.fillRect(0, y, swimWeeks.width, 30);
+			y += 30;
+		}
+	}
+
+	//	Prints out the name on the moment in the moments column.
+	y = 60;
+	for (var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		if (item['kind'] == 4){
+			ctxMoments.fillStyle = 'black';
+			ctxMoments.fillText(item['entryname'], 5, y + 20);
+		} else if (item['kind'] == 3){
+			y += 30;
+		}
+	}
+
+	// Prints out the week columns to the swimlane table.
+	var x = 0;
+	for(var i = 1; i < weekLength + 1; i++){
+		if(i % 2 == 0){
+			ctxWeeks.fillStyle = 'white';
+			ctxWeeks.fillRect(x, 0, 35, 60);
+			ctxWeeks.fillStyle = 'black';
+			ctxWeeks.font = '12px Arial';
+			ctxWeeks.fillText(i, x + 12, 33);
+		}
+		else {
+			ctxWeeks.fillStyle = colors['weeksOdd'];
+			ctxWeeks.fillRect(x, 0, 35, 60);
+			ctxWeeks.fillStyle = 'black';
+			ctxWeeks.font = '12px Arial';
+			ctxWeeks.fillText(i, x + 12, 33);
+		}
+		x += 35;
+	}
+
+	ctxMoments.moveTo(99, 60);
+	ctxMoments.strokeStyle = colors['notSubmittedQuizes'];
+	ctxMoments.lineTo(99, swimMoments.height);
+	ctxMoments.stroke();
+
+	ctxWeeks.moveTo(0, 60);
+	ctxWeeks.strokeStyle = colors['notSubmittedQuizes'];
+	ctxWeeks.lineTo(swimWeeks.width, 60);
+	ctxWeeks.stroke();
+
+	// Prints out all the tests.
+	var oneDay = 24 * 60 * 60 * 1000;
+	y = 60;
+	for (var i = 0; i < retdata['entries'].length; i++){
+		var item = retdata['entries'][i];
+		var result = retdata['results'];
+		var testStartDate;
+
+		if (item['qstart'] == null){
+			testStartDate = new Date(retdata['startdate']);
+		} else {
+			testStartDate = new Date(item['qstart']);
+		}
+
+		var testEndDate = new Date(item['deadline']);
+		var courseStartDate = new Date(retdata['startdate']);
+		var testDuration = Math.round(Math.abs(
+			+ (testStartDate.getTime() - testEndDate.getTime())/(oneDay)));
+		var untilTestStart = Math.round(Math.abs(
+			+ (courseStartDate.getTime() - testStartDate.getTime())/(oneDay)));
+
+		ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
+		if (item['kind'] == 3){
+			y += 5;
+			for (var j = 0; j < result.length; j++){
+				if (item['lid'] == result[j]['moment']){
+					if(result[j]['grade'] == null) {
+						ctxWeeks.fillStyle = colors['notGradedQuizes'];
+			    } else if(result[j]['grade'] == 1) {
+			      ctxWeeks.fillStyle = colors['failedQuizes'];
+			    } else if(result[j]['grade'] == 2) {
+						ctxWeeks.fillStyle = colors['passedQuizes'];
+			    } else {
+						ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
+					}
+				}
+			}
+
+			ctxWeeks.fillRect(untilTestStart * 5, y, testDuration * 5, 20);
+			y += 25;
+		}
+	}
+
+	// Timeline
+	var currentDate = new Date();
+	var courseDay = Math.round(Math.abs(
+		+ (courseStartDate.getTime() - currentDate.getTime())/(oneDay)));
+
+	ctxWeeks.fillStyle = '#000';
+	ctxWeeks.fillRect(courseDay * 5, 0, 2, swimWeeks.height);
+}
+
+
+// Event listeners
 $(document).ready(function () {
 	// Function to prevent collapsing when clicking icons
 	$(document).on('click', '#corf', function (e) {
@@ -2232,7 +2460,7 @@ $(document).mousedown(function(e) {
 	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
 			clearTimeout(pressTimer);
 			createQuickItem();
-           
+
     }// Click outside the FAB list
     else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) { // if the target of the click isn't the container...
         toggleFabButton();
@@ -2241,12 +2469,12 @@ $(document).mousedown(function(e) {
     // If the fab list is visible, there should be no timeout to toggle the list
 	if ($('.fab-btn-list').is(':visible')) {
         //toggleFabButton();
-        
+
 	} else {
         if (e.target.id == "fabBtn") {
 			pressTimer = window.setTimeout(function() {
 				toggleFabButton();
-                
+
 			}, 200);
             return false;
 		}

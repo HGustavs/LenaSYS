@@ -527,19 +527,10 @@ p {
    background-color: #d8d7da;
 }
 
-#statisticsPie {
-    border: 2px solid darkgray;
-    background-color: #eae8eb;
-    margin: 10px 10px 10px 10px;
-}
-
-#deadlineInfoBox {
-    width: 100%;
+.statisticsInnerBox{
     margin: 10px 10px 10px 10px;
     border: 2px solid darkgray;
     background-color: #eae8eb;
-    margin: 10px 10px 10px 10px;
-
 }
 
 /* --------------================################================-------------- *
@@ -3243,7 +3234,8 @@ only screen and (max-device-width: 768px) {
     display: none;
   }
 
-  .fileLink_counter {
+ .fileLink_counter {
+
     font-size: 16px;
     color: #000;
   }
@@ -3252,6 +3244,19 @@ only screen and (max-device-width: 768px) {
   #fileLink_body{
 	 display: block;
 	}
+
+  #fileLink_tblhead{
+    display: none;
+  }
+
+  #fileLink_tbl_mh[style]{
+    display: none !important;
+  }
+
+  #fileLink_body tr[style]{
+    border: 1px solid #ccc !important;
+    display: block !important;
+  }
 
   #fileLink_tblhead{
     display: none;

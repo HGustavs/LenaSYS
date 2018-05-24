@@ -562,6 +562,27 @@ if($ha){
       $enddate = $row["enddate"];
     }
   }
+}else{
+	$query = $pdo->prepare("SELECT fileid,filename,kind FROM fileLink WHERE cid=:cid AND kind=1 ORDER BY filename");
+	$query->bindParam(':cid', $courseid);
+
+	if(!$query->execute()) {
+		$error=$query->errorInfo();
+		$debug="Error reading entries".$error[2];
+	}
+
+	$queryo=$pdo->prepare("SELECT startdate,enddate FROM vers WHERE cid=:cid AND vers=:vers LIMIT 1;");
+	$queryo->bindParam(':cid', $courseid);
+	$queryo->bindParam(':vers', $coursevers);
+	if(!$queryo->execute()) {
+		$error=$queryo->errorInfo();
+		$debug="Error reading start/stopdate".$error[2];
+	}else{
+    foreach($queryo->fetchAll(PDO::FETCH_ASSOC) as $row){
+      $startdate = $row["startdate"];
+      $enddate = $row["enddate"];
+    }
+  }
 }
 
 $stmt = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid AND vers=:vers");
