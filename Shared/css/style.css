@@ -4221,26 +4221,18 @@ textarea#mrkdwntxt {
   padding: 5px 27px 6px 3px;
 }
 
-.headerType {
-  cursor: pointer;
-  margin-left: 35.75%;
-  position: absolute;
-  margin-top: -0.75%
-}
-
 .show-dropdown-content {
     display: block;
 }
 
 #select-header {
+  top: 50px;
+  left: 192px;
   max-width: 63px;
   position: absolute;
   z-index: 2000;
-  right: 38%;
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
-}
-#inputSave {
 }
 
 @media only screen and (max-width: 900px) {
@@ -4345,6 +4337,30 @@ textarea#mrkdwntxt {
 /* --------------================################================-------------- *
  *                               Edit file preview                              *
  * --------------================################================-------------- */
+.markdown-icons {
+  cursor:pointer;
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  vertical-align: middle;
+}
+
+.markdown-icon-div{
+  display: flex;
+}
+
+#quoteIcon {
+  margin-top: 2px;
+}
+
+#linkIcon {
+  filter: invert(100%);
+}
+
+#imgIcon, #headerIcon {
+  margin-left: 4px;
+}
 
 
 .editFileWindow {
