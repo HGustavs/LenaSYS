@@ -746,7 +746,6 @@ var momentexists = 0;
 var resave = false;
 function returnedSection(data) {
 	retdata = data;
-	console.log(retdata);
 
 	Date.prototype.getWeek = function () {
 		var date = new Date(this.getTime());
@@ -768,18 +767,6 @@ function returnedSection(data) {
 			numberOfParts++;
 		}
 	}
-
-	console.log("coursecode: " + retdata['coursecode'])
-	console.log("coursename: " + retdata['coursename'])
-	console.log("numberofparts: " + numberOfParts);
-	console.log("this date: " + now.toDateString());
-	console.log("This week: " + now.getWeek());
-	console.log("versend: " + enddate.getWeek());
-	console.log("verslength: " + weeksBetween(startdate, enddate));
-	console.log("versstartweek: " + startdate.getWeek());
-	console.log("weekprog: " + weeksBetween(now, startdate));
-
-
 
 	if (data['debug'] != "NONE!") alert(data['debug']);
 
@@ -1976,9 +1963,8 @@ function addColorsToTabSections(kind, visible){
 }
 
 
-// Statistic-sections functions, for drawing out all the statistics
-//(pie chart and swimlanes) and upcomming deadlines.
-
+/* Statistic-sections functions, for drawing out all the statistics
+   (pie chart and swimlanes) and upcomming deadlines. */
 function drawPieChart() {
   var c = document.getElementById('pieChart');
   var ctx = c.getContext('2d');
@@ -2002,7 +1988,8 @@ function drawPieChart() {
 
   // Calculate passed, failed and not graded quizes.
   for(var i = 0; i < retdata['results'].length; i++) {
-	  if(retdata['results'][i]['useranswer'] != null){ // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
+	  // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
+	  if(retdata['results'][i]['useranswer'] != null){
 		  if(retdata['results'][i].grade == 2) {
 			  passedQuizes++;
 		  } else if(retdata['results'][i].grade == 1) {
@@ -2018,7 +2005,7 @@ function drawPieChart() {
   notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
 
   if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
-	  totalQuizes++; 			// show that the student has 100% not submitted tests.
+	  totalQuizes++; 		// show that the student has 100% not submitted tests.
 	  notSubmittedQuizes++;
   }
 
@@ -2038,10 +2025,10 @@ function drawPieChart() {
                           radians in a circle, i.e. start at 12 o'clock */
   var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
   var colors = {
-    'passedQuizes': '#00B33C',        // Green
-		'notGradedQuizes': '#FFE81A',     // Yellow
-		'failedQuizes': '#E53935',        // Red
-		'notSubmittedQuizes': '#BDBDBD'   // Grey
+    'passedQuizes': '#00B33C',			// Green
+	'notGradedQuizes': '#FFE81A',		// Yellow
+	'failedQuizes': '#E53935',			// Red
+	'notSubmittedQuizes': '#BDBDBD'		// Grey
   }
 
   for (var i = 0; i < testsData.length; i++) {
@@ -2123,7 +2110,7 @@ function fixDeadlineInfoBoxesText(){
 		}
 	}
 
-		// to find the lowest-valued-element
+	// to find the lowest-valued-element
 	if(duggaEntries.length != 0){
 		duggaEntries.reduce(function(prev, curr){
 			return prev.deadline < curr.deadline ? prev : curr;
@@ -2176,10 +2163,6 @@ function drawSwimlanes(){
 	var swimWeeks = document.getElementById('swimlanesWeeks');
 	var ctxMoments = swimMoments.getContext('2d');
 	var ctxWeeks = swimWeeks.getContext('2d');
-
-	ctxMoments.clearRect(0, 0, ctxMoments.width, ctxMoments.height);
-	ctxWeeks.clearRect(0, 0, ctxWeeks.width, ctxWeeks.height);
-
 	var colors = {
 		'passedQuizes': '#00E676',        	// Green
 		'notGradedQuizes': '#FFEB3B',     	// Yellow
@@ -2191,7 +2174,6 @@ function drawSwimlanes(){
 
 	var startdate = new Date(retdata['startdate']);
 	var enddate = new Date(retdata['enddate']);
-	var startWeek = startdate.getWeek();
 	var totalNumberOfTests = retdata['duggor'].length;
 	var weekLength = weeksBetween(startdate, enddate);
 
@@ -2219,7 +2201,6 @@ function drawSwimlanes(){
 		// 60 is height of the Weeks/Moments label.
 		swimMoments.height = (30 * totalNumberOfTests) + 60;
 		swimWeeks.height = swimMoments.height;
-		console.log("height: " + swimMoments.height);
 	}
 
 	if(weekLength != 0){ // Dynamic width, depending on number of weeks
@@ -2281,14 +2262,14 @@ function drawSwimlanes(){
 			ctxWeeks.fillRect(x, 0, 35, 60);
 			ctxWeeks.fillStyle = 'black';
 			ctxWeeks.font = '12px Arial';
-			ctxWeeks.fillText(startWeek++, x + 12, 33);
+			ctxWeeks.fillText(i, x + 12, 33);
 		}
 		else {
 			ctxWeeks.fillStyle = colors['weeksOdd'];
 			ctxWeeks.fillRect(x, 0, 35, 60);
 			ctxWeeks.fillStyle = 'black';
 			ctxWeeks.font = '12px Arial';
-			ctxWeeks.fillText(startWeek++, x + 12, 33);
+			ctxWeeks.fillText(i, x + 12, 33);
 		}
 		x += 35;
 	}
@@ -2309,7 +2290,6 @@ function drawSwimlanes(){
 	for (var i = 0; i < retdata['entries'].length; i++){
 		var item = retdata['entries'][i];
 		var result = retdata['results'];
-		//console.log(retdata['results']);
 		var testStartDate;
 
 		if (item['qrelease'] == null){
