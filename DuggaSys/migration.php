@@ -2145,13 +2145,6 @@ $migrationArray = array(
         ],
     ],
     [
-        'version' => 'v0.03',
-        'description' => 'New user named roger',
-        [
-            ['insert', 'user', 'values' => ['username' =>  'Roger', 'firstname' => 'Roger', 'lastname' =>  'Rogersson','superuser' => 1, 'creator' => 1, 'password' => '$2y$10$u886VEwTO/ohXer5b6zI7.1kUhVF0LMxHmibvz0mShL6dYKi4vZhe']]
-        ],
-    ],
-    [
         'version' => 'v0.04',
         'description' => 'Update qstart',
         [
