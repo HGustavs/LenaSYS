@@ -984,31 +984,35 @@ function returnedSection(data) {
 			str += "</div>";
 		}
 
-		str += "<div id='course-coursevers' style='display:none; margin-right:10px;'>" + data.coursevers + "</div>";
-		str += "<div id='course-courseid' style='display:none; margin-right:10px;'>" + data.courseid + "</div>";
+		str += "<div id='course-coursevers' style='display:none; margin-right:10px;'>"
+		+ data.coursevers + "</div>";
+		str += "<div id='course-courseid' style='display:none; margin-right:10px;'>"
+		+ data.courseid + "</div>";
 
 		str += "</div>";
 
 		str += "<div id='courseList'>";
 		str += "<!-- Statistics List -->";
 		str += "<div id='statisticsList'>";
-		str += "<div id='statistics' class='statistics' style='display:inline-block; cursor:pointer;'>";
+		str += "<div id='statistics' class='statistics' "
+		+ "style='display:inline-block; cursor:pointer;'>";
 		str += "<div style='margin:10px;'>";
 		str += "<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>";
 		str += "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>";
 		str += "</div>";
 		str += "<div class='nowrap' style='padding-left:5px' title='statistics'>";
 		str += "<span class='listentries-span' style='writing-mode:vertical-rl; "
-			+ "text-orientation: upright;'>Statistics</span>";
+		+ "text-orientation: upright;'>Statistics</span>";
 		str += "</div></div>";
 		str += "<div class='statisticsContent' style='display:inline-block;'>";
 
-		str += "<div id='statisticsPie' class='statisticsInnerBox' style=' height:100px;'>";
-		str += "<canvas id='pieChart' width='300px' height='255px' style='margin: 10px 10px;'></canvas>"; // Contains pie chart.
+		str += "<div id='statisticsPie' class='statisticsInnerBox'>";
+		str += "<canvas id='pieChart' width='300px' height='255px'"
+		+	"style='padding: 10px; display:flex; margin: auto;'></canvas>"; // Contains pie chart.
 		str += "</div>";
 
-		str	+= "<div id='deadlineInfoBox' class='statisticsInnerBox' style='display:inline-block;"
-			+ "padding:10px; width:250px;'>";
+		str	+= "<div id='deadlineInfoBox' class='statisticsInnerBox' "
+		+ "style='display:inline-block; padding: 10px;'>";
 		str += "<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>";
 		str += "<div class='deadlineInfo'><span style='width:100%;'id='deadlineInfoFirstText'></span>";
 		str += "<span id='deadlineInfoFirstDate' style='margin-right:5px; width:35px;'></span></div>";
@@ -1024,10 +1028,11 @@ function returnedSection(data) {
 
 		str += "<div id='statisticsSwimlanes' class='statisticsInnerBox' style='display:flex;'>";
 		str += "<div style='display:inline-block;'>";
-		str += "<canvas id='swimlanesMoments' style='padding:10px;'></canvas>";
+		str += "<canvas id='swimlanesMoments' style='padding:10px;'></canvas>";	// Contains swimlanes.
 		str += "</div>";
-		str += "<div style='width: 350px; overflow-x: auto; white-space: nowrap; display: inline-block; margin: 10px 10px 10px -10px'>";
-		str += "<canvas id='swimlanesWeeks'></canvas>";
+		str += "<div style='width: 350px; overflow-x: auto; white-space: nowrap; "
+		+ "display: inline-block; margin: 10px 10px 10px -10px'>";
+		str += "<canvas id='swimlanesWeeks'></canvas>";	// Contains swimlanes.
 		str += "</div>";
 		str += "</div>";
 		str += "</div></div>"; // Closing div for statisticsContent
@@ -1303,7 +1308,7 @@ function returnedSection(data) {
 				else if (itemKind == 4) { // Moment
 					var strz = "";
 					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
-					
+
 					if (item['gradesys'] == 0) {
 						strz = "";
 					}
@@ -1316,7 +1321,7 @@ function returnedSection(data) {
 					else if (item['gradesys'] == 3) {
 						strz = "(U-3-4-5)";
 					}
-					
+
 					str += "<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
@@ -2431,7 +2436,7 @@ $(document).mousedown(function(e) {
 	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
 			clearTimeout(pressTimer);
 			createQuickItem();
-           
+
     }// Click outside the FAB list
     else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) { // if the target of the click isn't the container...
         toggleFabButton();
@@ -2440,12 +2445,12 @@ $(document).mousedown(function(e) {
     // If the fab list is visible, there should be no timeout to toggle the list
 	if ($('.fab-btn-list').is(':visible')) {
         //toggleFabButton();
-        
+
 	} else {
         if (e.target.id == "fabBtn") {
 			pressTimer = window.setTimeout(function() {
 				toggleFabButton();
-                
+
 			}, 200);
             return false;
 		}
@@ -2459,6 +2464,6 @@ $(document).mousedown(function(e) {
 			createQuickItem();
            return false;
     }// Click outside the FAB list
-    
-    
+
+
 });
