@@ -28,13 +28,13 @@
 	?>
 
 	<!-- content START -->
-		<div id="wrappall" style="border-top:0px;display:table; table-layout:auto;">
+		<div id="wrappall" style="border-top:0px;display:table; table-layout:auto;padding:0px 10px 0px 10px;border:none;width:auto;">
 		<div id="newbutton">
 			<?php
 				echo "<div class='titles' style='position:sticky;top:50px;z-index:100;background:#ffffff;padding-top:20px;padding-bottom:20px;margin-top:0px;'>";
-				echo "<h1 style='flex:10;text-align:center;'>Access</h1>";
+				echo "<h1 style='flex:1;text-align:center;position:relative;left:100px;'>Access</h1>";
 				echo "<div style='align-items: flex-end; display: flex; justify-content: space-between;'>";
-				echo "<div id='searchBar' style='position:relative; top:-5px; left: 5px;'>";
+				echo "<div id='searchBar' style='position:relative; top:28px; left: 12px;'>";
 				echo "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById(\"searchinput\").value;searchKeyUp(event);myTable.renderTable();'> ";
 				echo "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>";
 				echo "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>";
@@ -45,7 +45,7 @@
 			?>
 	</div>
 </div>
-	<div id='user' style='width:100%;'></div>
+	<div id='accessTable' style='width:100%; white-space: nowrap;'></div>
 	<!--- Edit Section Dialog END --->
 
 	<?php
@@ -119,6 +119,7 @@
       		</div>
       		<div style='padding:5px;'>
       			<input class='submit-button' type='button' value='Add' onclick='addClass();' />
+            <div id='classErrorText' style='color:rgb(199, 80, 80); margin-top:10px; text-align:center;'></div>
       		</div>
       </div>
 	</div>

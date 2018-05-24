@@ -879,8 +879,8 @@ function returnedSection(data) {
 		if (retdata["writeaccess"]) {
 			str += "</tr></table>";
 
-			str += "<div class='fixed-action-button'>"
-			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onmouseover='openFabMenu();' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
+			str += "<div class='fixed-action-button' id='fabB'>"
+			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onmouseover='openFabMenu();' onclick='createQuickItem();'>+</a>"
 			str += "<ol class='fab-btn-list' onmouseover='resetHoverTimer();'; style='margin: 0; padding: 0; display: none;' reversed>"
 
 			//Heading button

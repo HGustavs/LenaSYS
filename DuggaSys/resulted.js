@@ -29,6 +29,8 @@ var versions;
 var timeZero=new Date(0);
 var duggaArray = [[]];
 var filterList;
+var tableName = "resultTable";
+var tableCellName = "resultTableCell";
 
 function setup(){
   //Benchmarking function
@@ -336,7 +338,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 							alert("You must press down the ctrl-key or cmd-key to change from grade G to U.");
 						}
 					} else {
-						alert("You can no longer change the grade to U, due to 24 hours has passed since grade G was set.");
+						alert("You can no longer change the grade to U as 24 hours has passed since grade G was set.");
 					}
 				}
             }
@@ -348,7 +350,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 }
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls,qvariant,qid){
-  return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+" gradeImg\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
+  return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
 }
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid)
@@ -619,13 +621,13 @@ function buildDynamicHeaders() {
 function buildStudentInfo() {
   var i = 0;
 	students.forEach(function(entry) {
+		var row = {"FnameLnameSSN":entry[0]};
 		if(entry.length > 1) {
-			var row = {"FnameLnameSSN":entry[0]};
 			for(var j = 1; j < entry.length; j++) {
 				row["lid:"+entry[j]['lid']] = entry[j];
 			}
-			studentInfo[i++] = row;
 		}
+		studentInfo[i++] = row;
 	});
 	return studentInfo;
 }
@@ -642,7 +644,7 @@ function createSortableTable(data){
 
 	myTable = new SortableTable(
 		tabledata,
-		"resultTable",
+		tableName,
 		"columnfilter",
 		"",
 		renderCell,
@@ -654,11 +656,12 @@ function createSortableTable(data){
 		"",
 		null,
 		null,
-		rowHighlightOn,
-		rowHighlightOff,
+		highlightOn,
+		highlightOff,
 		null,
 		null,
-		false
+		true,
+		true
 	);
 	myTable.renderTable();
 
@@ -670,13 +673,15 @@ function renderCell(col,celldata,cellid) {
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
 		if (col == "FnameLnameSSN"){
-			str = "<div class='dugga-result-div'>";
-				str += celldata.firstname + " " + celldata.lastname;
-    	str += "</div>"
-    	return str;
-  	} else {
+			str = "<div class='resultTableCell resultTableMini'>";
+				str += "<div class='resultTableText'>";
+					str += celldata.firstname + " " + celldata.lastname;
+				str += "</div>";
+			str += "</div>";
+			return str;
+		} else {
 			// color based on pass,fail,pending,assigned,unassigned
-			str = "<div style='height:25px;' class='";
+			str = "<div class='resultTableCell resultTableMini ";
 				if(celldata.kind==4) { str += "dugga-moment "; }
 				if (celldata.grade === 1) {str += "dugga-fail";}
 				else if (celldata.grade > 1) {str += "dugga-pass";}
@@ -685,74 +690,81 @@ function renderCell(col,celldata,cellid) {
 				else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
 				else {str += "dugga-unassigned";}
 			str += "'>";
-			str += "</div>"
+			str += "</div>";
 			return str;
-  	}
+		}
 	}
 
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
-  if (col == "FnameLnameSSN"){
-    str = celldata.grade;
-    return str;
+	if (col == "FnameLnameSSN"){
+		str = "<div class='resultTableCell resultTableNormal'>";
+			str += "<div class='resultTableText'>";
+				str += celldata.firstname+" "+celldata.lastname+"<br>";
+				str += celldata.username+" / "+celldata.class+"<br>";
+				str += celldata.ssn+"<br>";
+				str += celldata.setTeacher;
+			str += "</div>";
+		str += "</div>";
+		return str;
 
-  } else {
-    // color based on pass,fail,pending,assigned,unassigned
-    str = "<div style='height:80px;' class='";
-      if(celldata.kind==4) { str += "dugga-moment "; }
-      if (celldata.grade === 1) {str += "dugga-fail";}
-      else if (celldata.grade > 1) {str += "dugga-pass";}
-      else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
-      else if (celldata.kind != 4 && celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
-      else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
-      else {str += "dugga-unassigned";}
-    str += "'>";
+	} else {
+		// color based on pass,fail,pending,assigned,unassigned
+		str = "<div style='height:70px;' class='resultTableCell ";
+			if(celldata.kind==4) { str += "dugga-moment "; }
+			if (celldata.grade === 1) {str += "dugga-fail";}
+			else if (celldata.grade > 1) {str += "dugga-pass";}
+			else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
+			else if (celldata.kind != 4 && celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
+			else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
+			else {str += "dugga-unassigned";}
+		str += "'>";
 
-    // Creation of grading buttons
-    if(celldata.ishere===true){
-      str += "<div class='gradeContainer'>";
-        if (celldata.grade === null ) {
-          str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
-        } else if (celldata.grade === -1 ) {
-          str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
-        } else {
-          str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
-        }
-        str += "<img id='korf' class='fist gradeImg";
-          if(celldata.userAnswer===null && !(celldata.quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
-            str += " grading-hidden";
-          }
-          str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
-        str += "/>";
-      str += "</div>"
+		// Creation of grading buttons
+		if(celldata.ishere===true){
+			str += "<div class='gradeContainer resultTableText'>";
+				if (celldata.grade === null ) {
+					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+				} else if (celldata.grade === -1 ) {
+					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+				} else {
+					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+				}
+				str += "<img id='korf' class='fist";
+					if(celldata.userAnswer===null && !(celldata.quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
+						str += " grading-hidden";
+					}
+					str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
+				str += "/>";
+			str += "</div>";
 
-      // Print submitted time and change color to red if passed deadline
-      str += "<div class='text-center'"
-        for (var p = 0; p < moments.length; p++){
-          if (moments[p].link == celldata.quizId){
-            if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)){
-              str += " style='color:red;'";
-            }
-            break;
-          }
-        }
-        str += ">";
-        if (celldata.submitted.getTime() !== timeZero.getTime()){
-          str += celldata.submitted.toLocaleDateString()+ " " + celldata.submitted.toLocaleTimeString();
-        }
-      str += "</div>";
+			// Print submitted time and change color to red if passed deadline
+			str += "<div class='text-center resultTableText'";
+				for (var p = 0; p < moments.length; p++){
+					if (moments[p].link == celldata.quizId){
+						if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)){
+							str += " style='color:red;'";
+						}
+						break;
+					}
+				}
+				str += ">";
+				if (celldata.submitted.getTime() !== timeZero.getTime()){
+					str += celldata.submitted.toLocaleDateString()+ " " + celldata.submitted.toLocaleTimeString();
+				}
+			str += "</div>";
 
-      // Print times graded
-      str += "<div class='text-center'>";
-        if(celldata.ishere===true && celldata.timesGraded!==0){
-          str += "Times Graded: " + celldata.timesGraded;
-        }
-      str += "</div>"
-    }
-    str += "</div>"
-    return str;
-  }
-return celldata;
+			// Print times graded
+			str += "<div class='text-center resultTableText'>";
+				if(celldata.ishere===true && celldata.timesGraded!==0){
+					str += "Times Graded: " + celldata.timesGraded;
+				}
+			str += "</div>";
+		}
+		str += "</div>";
+		return str;
+	}
+	return celldata;
 }
 
 //--------------------------------------------------------------------------
@@ -761,66 +773,114 @@ return celldata;
 //  Callback function that highlights the currently hovered row
 //--------------------------------------------------------------------------
 
-function rowHighlightOn(rowid,rowno,colclass,centerel) {
-  var row = document.getElementById(rowid);
-  row.classList.add("tableRowHighlightning");
-  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
-  for(var i=0;i<collist.length;i++){
-    collist[i].classList.add("tableColHighlightning");
-  }
-  centerel.classList.add("tableCellHighlightning");
+function highlightOn(rowid,rowno,colclass,centerel) {
+	var tableCounter = tableName + "_counter";
+	
+	//row highlights
+	var row = document.getElementById(rowid).getElementsByTagName("td");
+	for (var i = 0; i < row.length; i++) {
+			//find the div contained in the cell
+			if(!row[i].classList.contains(tableCounter)) {
+				rowId = row[i].getElementsByClassName(tableCellName)[0];
+			}else {
+				rowId = row[i];
+			}
+			rowId.classList.add("tableRowHighlightning");
+	}
+	
+	//column highlights
+	var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+	for(var i=0;i<collist.length;i++){
+		if(!collist[i].classList.contains(tableCounter)) {
+			var column = collist[i].getElementsByClassName(tableCellName)[0];
+		}else{
+			var column = collist[i];
+		}
+		column.classList.add("tableColHighlightning");
+	}
+	
+	//cell highlight
+	if(!centerel.classList.contains(tableCounter)) {
+		centerel.getElementsByClassName(tableCellName)[0].classList.add("tableCellHighlightning");
+	}else{
+		centerel.classList.add("tableCellHighlightning");
+	}
 }
 
-function rowHighlightOff(rowid,rowno,colclass,centerel) {
-  var row = document.getElementById(rowid);
-  row.classList.remove("tableRowHighlightning");
-  var collist = document.getElementsByClassName(colclass.split(" ")[0]);
-  for(var i=0;i<collist.length;i++){
-    collist[i].classList.remove("tableColHighlightning");
-  }
-  centerel.classList.remove("tableCellHighlightning");
+function highlightOff(rowid,rowno,colclass,centerel) {
+	var tableCounter = tableName + "_counter";
+	
+	//row highlight
+	var row = document.getElementById(rowid).getElementsByTagName("td");
+	for (var i = 0; i < row.length; i++) {
+		//find the div contained in the cell
+		if(!row[i].classList.contains(tableCounter)) {
+				rowId = row[i].getElementsByClassName(tableCellName)[0];
+		}else {
+			rowId = row[i];
+		}
+		rowId.classList.remove("tableRowHighlightning");
+	}
+
+	//column highlights
+	var collist = document.getElementsByClassName(colclass.split(" ")[0]);
+	for(var i=0;i<collist.length;i++){
+		if(!collist[i].classList.contains(tableCounter)) {
+			var column = collist[i].getElementsByClassName(tableCellName)[0];
+		}else{
+			column = collist[i];
+		}
+		column.classList.remove("tableColHighlightning");
+	}
+
+	//cell highlight
+	if(!centerel.classList.contains(tableCounter)) {
+		centerel.getElementsByClassName(tableCellName)[0].classList.remove("tableCellHighlightning");
+	}else{
+		centerel.classList.remove("tableCellHighlightning");
+	}
 }
 
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-  // Custom filters that remove rows before an actual search
-  if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
-  if (filterList["onlyPending"]) {
-    var rowPending = false;
-    for (var colname in row){
-      if (colname != "FnameLnameSSN" && row[colname]["needMarking"] == true) { rowPending = true; break; }
-    }
-    if (!rowPending) { return false; }
-  }
+	// Custom filters that remove rows before an actual search
+	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
+	if (filterList["onlyPending"]) {
+		var rowPending = false;
+		for (var colname in row){
+			if (colname != "FnameLnameSSN" && row[colname]["needMarking"] == true) { rowPending = true; break; }
+		}
+		if (!rowPending) { return false; }
+	}
 
 	for (colname in row) {
-  	if(colname == "FnameLnameSSN") {
-  		var name = "";
-  		if (row[colname]["firstname"] != null) {
-  			name += row[colname]["firstname"] + " ";
-  		}
-  		if (row[colname]["lastname"] != null) {
-  		 row[colname]["lastname"];
-  		}
-  		if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+		if(colname == "FnameLnameSSN") {
+			var name = "";
+			if (row[colname]["firstname"] != null) {
+				name += row[colname]["firstname"] + " ";
+			}
+			if (row[colname]["lastname"] != null) {
+				name += row[colname]["lastname"];
+			}
+			if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
 
-  		if (row[colname]["ssn"] != null) {
-  			if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		}
-  		if (row[colname]["username"] != null) {
-  			if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		}
-  		if (row[colname]["class"] != null) {
-  			if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		}
-  		if (row[colname]["setTeacher"] != null) {
-  			if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-  		}
-  	}
-  }
-  return false;
+			if (row[colname]["ssn"] != null) {
+				if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+			}
+			if (row[colname]["username"] != null) {
+				if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+			}
+			if (row[colname]["class"] != null) {
+				if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+			}
+			if (row[colname]["setTeacher"] != null) {
+				if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+			}
+		}
+	}
+	return false;
 }
 
 function renderSortOptions(col,status) {

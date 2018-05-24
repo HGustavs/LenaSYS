@@ -34,7 +34,7 @@
 					</tr>
 					<tr class="loginboxTr">
 						<td>
-							<input type='button' class='buttonLoginBox' onclick="loginBarrier();" value='Login' title='Login'>
+							<input type='button' class='buttonLoginBox' onclick="processLogin();" value='Login' title='Login'>
 						</td>
 					</tr>
 					<tr class="loginboxTr">
@@ -63,7 +63,7 @@
 					</tr>
 					<tr class="loginboxTr">
 						<td>
-							<input type='button' class='buttonLoginBox' onclick="resetPasswordBarrier();" value='Continue' style='margin-top: 10px;' title='Continue'>
+							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckUsername();" value='Continue' style='margin-top: 10px;' title='Continue'>
 						</td>
 					</tr>
 					<tr class="loginboxTr">
@@ -81,7 +81,7 @@
 		<div id='showsecurityquestion' class='showsecurityquestion' style="display:none">
 			<div class='loginBoxheader'>
 				<h3> Reset Password</h3>
-				<div class="cursorPointer" onclick="closeWindows()" title="Close window">x</div>
+				<div class="cursorPointer" onclick="closeWindows();resetLoginStatus()" title="Close window">x</div>
 			</div>
 			<div style='padding: 20px;'>
 				<table class="loginBoxTable">
@@ -103,7 +103,7 @@
 					</tr>
 					<tr class="loginboxTr">
 						<td>
-							<input type='button' class='buttonLoginBox' onclick="enterSecurityQuestionBarrier();" value='Check answer' style='margin-top: 10px;' title='Check answer'>
+							<input type='button' class='buttonLoginBox' onclick="processResetPasswordCheckSecurityAnswer();" value='Check answer' style='margin-top: 10px;' title='Check answer'>
 						</td>
 					</tr>
 
