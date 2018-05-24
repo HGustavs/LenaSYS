@@ -1271,11 +1271,11 @@ function returnedSection(data) {
 						"<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
-						+ item['entryname'];
+						+ item['entryname'] + "</span>";
 						if (item['groupName'].length) {
-							str += " <img src='../Shared/icons/group-icon.png' class='' style='max-height: 36px;'/> " + item['groupName'];
+							str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%; min-width:18px;'/> " + item['groupName'];
 						}
-						str += "</span><img src='../Shared/icons/desc_complement.svg'"
+						str += "<img src='../Shared/icons/desc_complement.svg'"
 						+ "id='arrowComp" + arrowID
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
@@ -1303,12 +1303,12 @@ function returnedSection(data) {
 					str += "<div class='nowrap"
 						+ blorf + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
-						+ item['entryname'] + " " + strz + " "; 
+						+ item['entryname'] + " " + strz + " </span>"; 
 					if (item['groupName'].length) {
-						str += " <img src='../Shared/icons/group-icon.png' class='' style='max-height: 36px;'/> " + item['groupName'];
+						str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%;min-width:18px;'/> " + item['groupName'];
 					}
 
-					str +=  " </span><img src='../Shared/icons/desc_complement.svg'"
+					str +=  "<img src='../Shared/icons/desc_complement.svg'"
 						+ "id='arrowComp" + arrowID
 						+ "' class='arrowComp' style='display:inline-block;'>"
 						+ "<img src='../Shared/icons/right_complement.svg'"
