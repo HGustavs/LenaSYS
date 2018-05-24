@@ -885,6 +885,8 @@ function Symbol(kind) {
             ctx.lineTo(x2 + 5, y2 + 5);
             ctx.lineTo(x1 - 5, y2 + 5);
             ctx.lineTo(x1 - 5, y1 - 5);
+            ctx.stroke();
+            ctx.lineWidth = this.lineWidth;
         }
 
         ctx.moveTo(x1, y1);
@@ -1188,7 +1190,7 @@ function Symbol(kind) {
         var textX = 0;
         if (this.textAlign == "start") textX = x1 + 10;
         else if (this.textAlign == "end") textX = x2 - 10;
-        else textX = midX; 
+        else textX = midX;
         return textX;
     }
 
