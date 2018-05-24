@@ -4226,14 +4226,13 @@ textarea#mrkdwntxt {
 }
 
 #select-header {
+  top: 50px;
+  left: 192px;
   max-width: 63px;
   position: absolute;
   z-index: 2000;
-  right: 38%;
   background-color: rgba(255, 255, 255, 255);
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.19), 0px 6px 6px rgba(0, 0, 0, 0.3);
-}
-#inputSave {
 }
 
 @media only screen and (max-width: 900px) {
