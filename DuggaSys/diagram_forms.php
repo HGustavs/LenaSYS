@@ -53,7 +53,7 @@
         <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'attributeType\'); setType(); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>
         ';
   //form for attributes
-  if($form == 1){
+  if($form == 'attributeType'){
       echo'Attribute name:</br>
       <input onkeyup="changeObjectAppearance(\'attributeType\');" id=\'nametext\' type=\'text\'></br>
       Attribute type: </br>
@@ -68,7 +68,7 @@
       '.$backgroundColor.$fontFamily.$fontColor.$textSize.$lineColors;
   }
   //form for classes
-  else if($form == 2){
+  else if($form == 'classType'){
       echo'Class name: </br>
       <input onkeyup="changeObjectAppearance(\'classType\');" id=\'nametext\' type=\'text\'></br>
       Attributes:<br>
@@ -85,7 +85,7 @@
       ';
   }
   //form for entities
-  else if($form == 3){
+  else if($form == 'entityType'){
       echo'Entity name: </br>
       <input onkeyup="changeObjectAppearance(\'entityType\');" id=\'nametext\' type=\'text\'></br>
       Entity type: </br>
@@ -147,7 +147,7 @@
       ';
   }
   //form for figures
-  else if($form == 4){
+  else if($form == 'figureType'){
       echo'Fill color:<br>
       <select onchange="changeObjectAppearance(\'figureType\');" id=\'figureFillColor\'>
       <option value=\'noFill\'>No Fill</option>
@@ -179,7 +179,7 @@
       ';
   }
   //form for global
-  else if($form == 5){
+  else if($form == 'globalType'){
       echo'Font family:<br>
       <select id=\'font\' onchange=\'globalFont(); hashFunction(); updateGraphics();\'>
       <option value=\'\' selected> - Choose font - </option>
@@ -242,7 +242,7 @@
       ';
   }
   //form for lines
-  else if($form == 6){
+  else if($form == 'lineType'){
       $cardinality = $_GET['cardinality'];
 
       if($cardinality != 1){
@@ -290,7 +290,7 @@
 
   }
   //form for relations
-  else if($form == 7){
+  else if($form == 'relationType'){
       echo'Relation name:</br>
       <input onkeyup="changeObjectAppearance(\'relationType\');" id=\'nametext\' type=\'text\'></br>
       Relation type: </br>
@@ -352,7 +352,7 @@
       ';
   }
   //form for text
-  else if($form == 8){
+  else if($form == 'textType'){
       echo'Text:</br>
       <textarea id="freeText" class="FreeTextTextarea" oninput="changeObjectAppearance(\'textType\')" style="height:100px;resize:none;"></textarea><br>
       Font family:<br>
