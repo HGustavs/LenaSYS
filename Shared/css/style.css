@@ -762,6 +762,19 @@ header td {
   flex-direction: column;
 }
 
+#resultpopover{
+  position:fixed;
+  left:16px;
+  top:8px;
+  right:16px;
+  bottom:8px;
+  z-index:9000;
+  box-shadow:2px 2px 4px #000;
+  padding:4px;
+  background-color: #ccc;
+  border: 2px solid #999;
+}
+
 #resultpopoverBox{
   max-width: 100%;
   max-height: 100%;
