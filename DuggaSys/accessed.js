@@ -46,6 +46,99 @@ function fillResponsibleOptions(responsibles)
     }
 }
 
+function addMenuSortingOptions()
+{
+    var dropdown = document.getElementById("dropdowns");
+    var sortingAscendingOptions = createAscendingOptions();
+    dropdown.innerHTML = '<div id=sortingOptions>' + sortingAscendingOptions + '</div>';
+}
+
+function createAscendingOptions(){
+
+    // String to hold the options.
+    var sortingAscendingOptions = "";
+    
+    // Vars for the onClick-functions.
+    var onClickUserAscending      = "myTable.toggleSortStatus(\"User\",0)";
+    var onClickSSNAscending       = "myTable.toggleSortStatus(\"SSN\",0)";
+    var onClickFirstNameAscending = "myTable.toggleSortStatus(\"First&#32;name\",0)";
+    var onClickLastNameAscending  = "myTable.toggleSortStatus(\"Last&#32;name\",0)";
+    var onClickClassAscending     = "myTable.toggleSortStatus(\"Class\",0)";
+    var onClickAddedAscending     = "myTable.toggleSortStatus(\"Added\",0)";
+    var onClickExaminerAscending  = "myTable.toggleSortStatus(\"Examiner\",0)";
+    var onClickVersionAscending   = "myTable.toggleSortStatus(\"Version\",0)";
+    var onClickAccessAscending    = "myTable.toggleSortStatus(\"Access\",0)";
+    var onClickGroupsAscending    = "myTable.toggleSortStatus(\"Group(s)\",0)";    
+
+    // Start of div.
+    sortingAscendingOptions += '<div id="sortAscending" style="border-bottom:1px solid #888;">';
+
+    // User.
+    sortingAscendingOptions += '<div>';
+    sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickUserAscending+'>';
+    sortingAscendingOptions += '<label class="headerlabel">User, ascending.</label>';
+    sortingAscendingOptions += '</div>';
+
+    // SSN.
+    sortingAscendingOptions += '<div>';
+    sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickSSNAscending+'>';
+    sortingAscendingOptions += '<label class="headerlabel">SSN, ascending.</label>';
+    sortingAscendingOptions += '</div>';
+
+    // First Name.
+    sortingAscendingOptions += '<div>';
+    sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickFirstNameAscending+'>';
+    sortingAscendingOptions += '<label class="headerlabel">First Name,ascending.</label>';
+    sortingAscendingOptions += '</div>';
+
+    // Last Name.
+    sortingAscendingOptions += '<div>';
+    sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickLastNameAscending+'>';
+    sortingAscendingOptions += '<label class="headerlabel">Last Name, ascending.</label>';
+    sortingAscendingOptions += '</div>';
+
+    // Class.
+    sortingAscendingOptions += '<div>';
+    sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickClassAscending+'>';
+    sortingAscendingOptions += '<label class="headerlabel">Class, ascending.</label>';
+    sortingAscendingOptions += '</div>';
+
+    // Added.
+    sortingAscendingOptions += '<div>';
+    sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickAddedAscending+'>';
+    sortingAscendingOptions += '<label class="headerlabel">Added, ascending.</label>';
+    sortingAscendingOptions += '</div>';
+
+    // Examiner.
+    sortingAscendingOptions += '<div>';
+    sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickExaminerAscending+'>';
+    sortingAscendingOptions += '<label class="headerlabel">Examiner, ascending.</label>';
+    sortingAscendingOptions += '</div>';
+
+    // Version.
+    sortingAscendingOptions += '<div>';
+    sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickVersionAscending+'>';
+    sortingAscendingOptions += '<label class="headerlabel">Version, ascending.</label>';
+    sortingAscendingOptions += '</div>';
+
+    // Access.
+    sortingAscendingOptions += '<div>';
+    sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickAccessAscending+'>';
+    sortingAscendingOptions += '<label class="headerlabel">Access, ascending.</label>';
+    sortingAscendingOptions += '</div>';
+
+    // Groups.
+    sortingAscendingOptions += '<div>';
+    sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickGroupsAscending+'>';
+    sortingAscendingOptions += '<label class="headerlabel">Groups(s), ascending.</label>';
+    sortingAscendingOptions += '</div>';
+    
+    // End of div.
+    sortingAscendingOptions += '</div>';
+
+    return sortingAscendingOptions;
+}
+
 // formatInnerHTMLFunction - provide a function to format the string. Same for formatValueFunction.
 function addSingleOptionToSelectTag(tag, jsonList, formatInnerHTMLFunction, formatValueFunction, index)
 {
@@ -597,7 +690,7 @@ var myTable;
 //----------------------------------------
 
 function returnedAccess(data) {
-	fillResponsibleOptions(data.responsibles);
+    fillResponsibleOptions(data.responsibles);
 	filez = data;
 	var tabledata = {
 		tblhead:{
@@ -638,7 +731,8 @@ function returnedAccess(data) {
 		true
 	);
 	myTable.renderTable();
-	if(data['debug']!="NONE!") alert(data['debug']);
+    if(data['debug']!="NONE!") alert(data['debug']);
+      addMenuSortingOptions();
 }
 
 window.onresize = function() {
