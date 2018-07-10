@@ -136,6 +136,8 @@ function createAscendingOptions(){
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickGroupsAscending+'>';
     sortingAscendingOptions += '<label class="headerlabel">Groups(s).</label>';
     sortingAscendingOptions += '</div>';
+
+    sortingAscendingOptions += '<br>';
     
     // End of div.
     sortingAscendingOptions += '</div>';
