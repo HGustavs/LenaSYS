@@ -74,12 +74,15 @@ function createAscendingOptions(){
     // Start of div.
     sortingAscendingOptions += '<div id="sortAscending" style="border-bottom:1px solid #888;">';
 
+    // Title for ascending options.
+    sortingAscendingOptions += '<h3 style="color:#000000;">Ascending</h3>';
+    
     // User.
     sortingAscendingOptions += '<div>';
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickUserAscending+'>';
     sortingAscendingOptions += '<label class="headerlabel">User, ascending.</label>';
     sortingAscendingOptions += '</div>';
-
+    
     // SSN.
     sortingAscendingOptions += '<div>';
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickSSNAscending+'>';
@@ -159,6 +162,9 @@ function createDescendingOptions(){
 
     // Start of div.
     sortingDescendingOptions += '<div id="sortDescending">';
+
+    // Title for descending options.
+    sortingDescendingOptions += '<br><h3 style="color:#000000;">Descending</h3>';
 
     // User.
     sortingDescendingOptions += '<div>';
