@@ -50,7 +50,8 @@ function addMenuSortingOptions()
 {
     var dropdown = document.getElementById("dropdowns");
     var sortingAscendingOptions = createAscendingOptions();
-    dropdown.innerHTML = '<div id=sortingOptions>' + sortingAscendingOptions + '</div>';
+    var sortingDescendingOptions = createDescendingOptions();
+    dropdown.innerHTML = '<div id=sortingOptions>' + sortingAscendingOptions + sortingDescendingOptions + '</div>';
 }
 
 function createAscendingOptions(){
@@ -58,7 +59,7 @@ function createAscendingOptions(){
     // String to hold the options.
     var sortingAscendingOptions = "";
     
-    // Vars for the onClick-functions.
+    // Vars for the onClick-functions. "0" for ascending.
     var onClickUserAscending      = "myTable.toggleSortStatus(\"User\",0)";
     var onClickSSNAscending       = "myTable.toggleSortStatus(\"SSN\",0)";
     var onClickFirstNameAscending = "myTable.toggleSortStatus(\"First&#32;name\",0)";
@@ -137,6 +138,92 @@ function createAscendingOptions(){
     sortingAscendingOptions += '</div>';
 
     return sortingAscendingOptions;
+}
+
+function createDescendingOptions(){
+
+    // String to hold the options.
+    var sortingDescendingOptions = "";
+
+    // Vars for the onClick-functions. "1" for descending.
+    var onClickUserDescending      = "myTable.toggleSortStatus(\"User\",1)";
+    var onClickSSNDescending       = "myTable.toggleSortStatus(\"SSN\",1)";
+    var onClickFirstNameDescending = "myTable.toggleSortStatus(\"First&#32;name\",1)";
+    var onClickLastNameDescending  = "myTable.toggleSortStatus(\"Last&#32;name\",1)";
+    var onClickClassDescending     = "myTable.toggleSortStatus(\"Class\",1)";
+    var onClickAddedDescending     = "myTable.toggleSortStatus(\"Added\",1)";
+    var onClickExaminerDescending  = "myTable.toggleSortStatus(\"Examiner\",1)";
+    var onClickVersionDescending   = "myTable.toggleSortStatus(\"Version\",1)";
+    var onClickAccessDescending    = "myTable.toggleSortStatus(\"Access\",1)";
+    var onClickGroupsDescending    = "myTable.toggleSortStatus(\"Group(s)\",1)";
+
+    // Start of div.
+    sortingDescendingOptions += '<div id="sortDescending">';
+
+    // User.
+    sortingDescendingOptions += '<div>';
+    sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickUserDescending+'>';
+    sortingDescendingOptions += '<label class="headerlabel">User, descending.</label>';
+    sortingDescendingOptions += '</div>';
+
+    // SSN.
+    sortingDescendingOptions += '<div>';
+    sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickSSNDescending+'>';
+    sortingDescendingOptions += '<label class="headerlabel">SSN, descending.</label>';
+    sortingDescendingOptions += '</div>';
+
+    // First Name.
+    sortingDescendingOptions += '<div>';
+    sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickFirstNameDescending+'>';
+    sortingDescendingOptions += '<label class="headerlabel">First Name,descending.</label>';
+    sortingDescendingOptions += '</div>';
+
+    // Last Name.
+    sortingDescendingOptions += '<div>';
+    sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickLastNameDescending+'>';
+    sortingDescendingOptions += '<label class="headerlabel">Last Name, descending.</label>';
+    sortingDescendingOptions += '</div>';
+
+    // Class.
+    sortingDescendingOptions += '<div>';
+    sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickClassDescending+'>';
+    sortingDescendingOptions += '<label class="headerlabel">Class, descending.</label>';
+    sortingDescendingOptions += '</div>';
+
+    // Added.
+    sortingDescendingOptions += '<div>';
+    sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickAddedDescending+'>';
+    sortingDescendingOptions += '<label class="headerlabel">Added, descending.</label>';
+    sortingDescendingOptions += '</div>';
+
+    // Examiner.
+    sortingDescendingOptions += '<div>';
+    sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickExaminerDescending+'>';
+    sortingDescendingOptions += '<label class="headerlabel">Examiner, descending.</label>';
+    sortingDescendingOptions += '</div>';
+
+    // Version.
+    sortingDescendingOptions += '<div>';
+    sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickVersionDescending+'>';
+    sortingDescendingOptions += '<label class="headerlabel">Version, descending.</label>';
+    sortingDescendingOptions += '</div>';
+
+    // Access.
+    sortingDescendingOptions += '<div>';
+    sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickAccessDescending+'>';
+    sortingDescendingOptions += '<label class="headerlabel">Access, descending.</label>';
+    sortingDescendingOptions += '</div>';
+
+    // Groups.
+    sortingDescendingOptions += '<div>';
+    sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickGroupsDescending+'>';
+    sortingDescendingOptions += '<label class="headerlabel">Groups(s), descending.</label>';
+    sortingDescendingOptions += '</div>';
+    
+    // End of div.
+    sortingDescendingOptions += '</div>';
+
+    return sortingDescendingOptions;    
 }
 
 // formatInnerHTMLFunction - provide a function to format the string. Same for formatValueFunction.
