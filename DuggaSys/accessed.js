@@ -80,67 +80,67 @@ function createAscendingOptions(){
     // User.
     sortingAscendingOptions += '<div>';
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickUserAscending+'>';
-    sortingAscendingOptions += '<label class="headerlabel">User, ascending.</label>';
+    sortingAscendingOptions += '<label class="headerlabel">User.</label>';
     sortingAscendingOptions += '</div>';
     
     // SSN.
     sortingAscendingOptions += '<div>';
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickSSNAscending+'>';
-    sortingAscendingOptions += '<label class="headerlabel">SSN, ascending.</label>';
+    sortingAscendingOptions += '<label class="headerlabel">SSN.</label>';
     sortingAscendingOptions += '</div>';
 
     // First Name.
     sortingAscendingOptions += '<div>';
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickFirstNameAscending+'>';
-    sortingAscendingOptions += '<label class="headerlabel">First Name,ascending.</label>';
+    sortingAscendingOptions += '<label class="headerlabel">First Name.</label>';
     sortingAscendingOptions += '</div>';
 
     // Last Name.
     sortingAscendingOptions += '<div>';
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickLastNameAscending+'>';
-    sortingAscendingOptions += '<label class="headerlabel">Last Name, ascending.</label>';
+    sortingAscendingOptions += '<label class="headerlabel">Last Name.</label>';
     sortingAscendingOptions += '</div>';
 
     // Class.
     sortingAscendingOptions += '<div>';
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickClassAscending+'>';
-    sortingAscendingOptions += '<label class="headerlabel">Class, ascending.</label>';
+    sortingAscendingOptions += '<label class="headerlabel">Class.</label>';
     sortingAscendingOptions += '</div>';
 
     // Added.
     sortingAscendingOptions += '<div>';
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickAddedAscending+'>';
-    sortingAscendingOptions += '<label class="headerlabel">Added, ascending.</label>';
+    sortingAscendingOptions += '<label class="headerlabel">Added.</label>';
     sortingAscendingOptions += '</div>';
 
     // Examiner.
     sortingAscendingOptions += '<div>';
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickExaminerAscending+'>';
-    sortingAscendingOptions += '<label class="headerlabel">Examiner, ascending.</label>';
+    sortingAscendingOptions += '<label class="headerlabel">Examiner.</label>';
     sortingAscendingOptions += '</div>';
 
     // Version.
     sortingAscendingOptions += '<div>';
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickVersionAscending+'>';
-    sortingAscendingOptions += '<label class="headerlabel">Version, ascending.</label>';
+    sortingAscendingOptions += '<label class="headerlabel">Version.</label>';
     sortingAscendingOptions += '</div>';
 
     // Access.
     sortingAscendingOptions += '<div>';
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickAccessAscending+'>';
-    sortingAscendingOptions += '<label class="headerlabel">Access, ascending.</label>';
+    sortingAscendingOptions += '<label class="headerlabel">Access.</label>';
     sortingAscendingOptions += '</div>';
 
     // Groups.
     sortingAscendingOptions += '<div>';
     sortingAscendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickGroupsAscending+'>';
-    sortingAscendingOptions += '<label class="headerlabel">Groups(s), ascending.</label>';
+    sortingAscendingOptions += '<label class="headerlabel">Groups(s).</label>';
     sortingAscendingOptions += '</div>';
     
     // End of div.
     sortingAscendingOptions += '</div>';
 
-    return sortingAscendingOptions;
+    return sortingAscendingOptions;    
 }
 
 function createDescendingOptions(){
@@ -169,67 +169,67 @@ function createDescendingOptions(){
     // User.
     sortingDescendingOptions += '<div>';
     sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickUserDescending+'>';
-    sortingDescendingOptions += '<label class="headerlabel">User, descending.</label>';
+    sortingDescendingOptions += '<label class="headerlabel">User.</label>';
     sortingDescendingOptions += '</div>';
 
     // SSN.
     sortingDescendingOptions += '<div>';
     sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickSSNDescending+'>';
-    sortingDescendingOptions += '<label class="headerlabel">SSN, descending.</label>';
+    sortingDescendingOptions += '<label class="headerlabel">SSN.</label>';
     sortingDescendingOptions += '</div>';
 
     // First Name.
     sortingDescendingOptions += '<div>';
     sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickFirstNameDescending+'>';
-    sortingDescendingOptions += '<label class="headerlabel">First Name,descending.</label>';
+    sortingDescendingOptions += '<label class="headerlabel">First Name.</label>';
     sortingDescendingOptions += '</div>';
 
     // Last Name.
     sortingDescendingOptions += '<div>';
     sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickLastNameDescending+'>';
-    sortingDescendingOptions += '<label class="headerlabel">Last Name, descending.</label>';
+    sortingDescendingOptions += '<label class="headerlabel">Last Name.</label>';
     sortingDescendingOptions += '</div>';
 
     // Class.
     sortingDescendingOptions += '<div>';
     sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickClassDescending+'>';
-    sortingDescendingOptions += '<label class="headerlabel">Class, descending.</label>';
+    sortingDescendingOptions += '<label class="headerlabel">Class.</label>';
     sortingDescendingOptions += '</div>';
 
     // Added.
     sortingDescendingOptions += '<div>';
     sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickAddedDescending+'>';
-    sortingDescendingOptions += '<label class="headerlabel">Added, descending.</label>';
+    sortingDescendingOptions += '<label class="headerlabel">Added.</label>';
     sortingDescendingOptions += '</div>';
 
     // Examiner.
     sortingDescendingOptions += '<div>';
     sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickExaminerDescending+'>';
-    sortingDescendingOptions += '<label class="headerlabel">Examiner, descending.</label>';
+    sortingDescendingOptions += '<label class="headerlabel">Examiner.</label>';
     sortingDescendingOptions += '</div>';
 
     // Version.
     sortingDescendingOptions += '<div>';
     sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickVersionDescending+'>';
-    sortingDescendingOptions += '<label class="headerlabel">Version, descending.</label>';
+    sortingDescendingOptions += '<label class="headerlabel">Version.</label>';
     sortingDescendingOptions += '</div>';
 
     // Access.
     sortingDescendingOptions += '<div>';
     sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickAccessDescending+'>';
-    sortingDescendingOptions += '<label class="headerlabel">Access, descending.</label>';
+    sortingDescendingOptions += '<label class="headerlabel">Access.</label>';
     sortingDescendingOptions += '</div>';
 
     // Groups.
     sortingDescendingOptions += '<div>';
     sortingDescendingOptions += '<input type="radio" name="sortingOption" onclick='+onClickGroupsDescending+'>';
-    sortingDescendingOptions += '<label class="headerlabel">Groups(s), descending.</label>';
+    sortingDescendingOptions += '<label class="headerlabel">Groups(s).</label>';
     sortingDescendingOptions += '</div>';
     
     // End of div.
     sortingDescendingOptions += '</div>';
 
-    return sortingDescendingOptions;    
+    return sortingDescendingOptions;
 }
 
 // formatInnerHTMLFunction - provide a function to format the string. Same for formatValueFunction.
