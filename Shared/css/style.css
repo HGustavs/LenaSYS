@@ -3975,6 +3975,20 @@ li:nth-last-child(10) a:hover {
 /* --------------================################================-------------- *
  *                            FAB Button (AccessED)                            *
  * --------------================################================-------------- */
+#importUserFabButtonImage{
+  width: 36px;
+  height: 36px;
+  margin-top: 2px;
+  margin-right: 2px;
+}
+
+#createUserFabButtonImage{
+  width: 36px;
+  height: 36px;
+  margin-top: 2px;
+  margin-right: 2px;
+}
+
 
 /* --------------================################================-------------- *
  *                               Markdown preview                              *
