@@ -153,10 +153,10 @@
 	    <a class="btn-floating fab-btn-lg noselect" id="fabBtnAcc">+</a>
 	    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
 	        <li><a id="iFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out"
-	               data-tooltip='Import user(s)'><img id="iFabBtnImg" class="fab-icon"
+	               data-tooltip='Import user(s)'><img id="importUserFabButtonImage" class="fab-icon"
 	                                                   src="../Shared/css/images/importUser.svg"></a></li>
 	        <li><a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out"
-	               data-tooltip='Create user'><img id="cFabBtnImg" class="fab-icon"
+	               data-tooltip='Create user'><img id="createUserFabButtonImage" class="fab-icon"
 	                                                          src="../Shared/css/images/createUser.svg"></a></li>
 	    </ol>
 	</div>
