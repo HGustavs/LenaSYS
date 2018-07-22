@@ -135,7 +135,7 @@ function renderBarDiagram(data)
       range = Math.round(range);
     }
     str += "<text x='" + (62 - (range.toString().length * 9)) + "' y='" + (225 - (range / highRange) * 200) + "'>" + range + "</text>";
-    str += "<line style='stroke:#ccc;' x1='65' x2='99%' y1='" + (220 - (range / highRange) * 200) + "' y2='" + (220 - (range / highRange) * 200) + "'></line>";
+    str += "<line style='stroke:#273746;' x1='65' x2='99%' y1='" + (220 - (range / highRange) * 200) + "' y2='" + (220 - (range / highRange) * 200) + "'></line>";
   }
 
   // Renders the bars
