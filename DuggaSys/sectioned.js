@@ -130,6 +130,24 @@ function makeoptions(option,optionlist,valuelist)
 }
 
 //----------------------------------------------------------------------------------
+// makeoptions: Prepares a dropdown list specifically for items such as code examples / dugga etc
+//----------------------------------------------------------------------------------
+
+function makeoptionsItem(option,optionlist,optionstring,valuestring)
+{
+		var str="";
+		for(var i=0;i<optionlist.length;i++){
+				str+="<option ";
+				if(optionlist[valuestring]==option){
+						str+="selected='selected' ";
+				}
+				str+="value='"+optionlist[valuestring]+"'>"+optionlist[optionstring]+"</option>";
+		}
+		alert(str);
+		return str;
+}
+
+//----------------------------------------------------------------------------------
 // makeparams: Help function for hassle free preparation of a clickable param list 
 //----------------------------------------------------------------------------------
 
@@ -142,6 +160,10 @@ function makeparams(paramarray)
 		}
 		return str;
 }
+
+//----------------------------------------------------------------------------------
+// selectItem: Prepare item editing dialog after cog-wheel has been clicked
+//----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group = "UNK") {
 	nameSet = false;
@@ -271,6 +293,22 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
 }
 
+function changedType(kind)
+{
+		alert("CHANGED TYPE! "+kind);
+		
+		// Prepares option list for code example (2)/dugga (3) dropdown/links (5)
+		if(kind==2){
+				$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
+		}else if(kind==3){
+				$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'id','qname'));		
+		}else if(kind==5){
+				$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
+		}
+	
+}
+
+/*
 function changedType(value)
 {
 	kind=value;
@@ -352,6 +390,7 @@ function changedType(value)
 		}
 	}
 }
+*/
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
