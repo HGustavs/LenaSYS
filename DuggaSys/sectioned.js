@@ -138,10 +138,10 @@ function makeoptionsItem(option,optionlist,optionstring,valuestring)
 		var str="";
 		for(var i=0;i<optionlist.length;i++){
 				str+="<option ";
-				if(optionlist[valuestring]==option){
+				if(optionlist[i][valuestring]==option){
 						str+="selected='selected' ";
 				}
-				str+="value='"+optionlist[valuestring]+"'>"+optionlist[optionstring]+"</option>";
+				str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
 		}
 		alert(str);
 		return str;
@@ -295,102 +295,17 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
 function changedType(kind)
 {
-		alert("CHANGED TYPE! "+kind);
-		
-		// Prepares option list for code example (2)/dugga (3) dropdown/links (5)
+		// Prepares option list for code example (2)/dugga (3) dropdown/links (5) / Not applicable
 		if(kind==2){
 				$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
 		}else if(kind==3){
 				$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'id','qname'));		
 		}else if(kind==5){
 				$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
+		}else{
+				$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");		
 		}
-	
 }
-
-/*
-function changedType(value)
-{
-	kind=value;
-	iistr="";
-
-	if(kind==0){
-		if (!nameSet) {
-			$('#sectionname').val("New Header");
-		}
-	}
-	else if(kind==1){
-		if (!nameSet) {
-			$('#sectionname').val("New Section");
-		}
-	}
-	//Code
-	else if(kind==2){
-		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
-			var iitem=retdata['codeexamples'][ii];
-			if(xelink==iitem['exampleid']){
-				iistr+="<option selected='selected' value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
-			}else{
-				iistr+="<option value='"+iitem['exampleid']+"'>"+iitem['sectionname']+"</option>";
-			}
-		}
-		$("#link").html(iistr);
-
-		if (!nameSet) {
-			$('#sectionname').val("New Code");
-		}
-
-	//Dugga
-	}else if(kind==3){
-		for(var ii=0;ii<retdata['duggor'].length;ii++){
-			var iitem=retdata['duggor'][ii];
-			if(xelink==iitem['id']){
-				iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
-			}else{
-				iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
-			}
-		}
-		$("#link").html(iistr);
-
-		if (!nameSet) {
-			$('#sectionname').val("New Test");
-		}
-	} else if(kind==4){
-		if (!nameSet) {
-			$('#sectionname').val("New Moment");
-		}
-	//Link
-	} else if(kind==5){
-		for(var ii=0;ii<retdata['links'].length;ii++){
-			var iitem=retdata['links'][ii];
-			// filter file extension
-			var ext = iitem.filename.split('.').pop().toLowerCase();
-			var validExts = ['js', 'md', 'php', 'html', 'css', 'htm', 'html', 'pdf', 'png', 'jpg', 'txt'];
-			if (validExts.indexOf(ext) !== -1 || iitem.filename === '---===######===---') {
-				// output list
-				if (xelink == iitem['filename']) {
-					iistr += "<option selected='selected' value='" + iitem['filename'] + "'>" + iitem['filename'] + "</option>";
-				} else {
-					iistr += "<option value='" + iitem['filename'] + "'>" + iitem['filename'] + "</option>";
-				}
-			}
-		}
-		$("#link").html(iistr);
-
-		if (!nameSet) {
-			$('#sectionname').val("New Link");
-		}
-	} else if(kind==6){
-		if (!nameSet) {
-			$('#sectionname').val("New Group Activity");
-		}
-	} else if(kind==7){
-		if (!nameSet) {
-			$('#sectionname').val("New Message");
-		}
-	}
-}
-*/
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
