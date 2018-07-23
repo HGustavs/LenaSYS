@@ -1014,15 +1014,13 @@ function returnedSection(data) {
 		str += "<div id='courseList'>";
 		str += "<!-- Statistics List -->";
 		str += "<div id='statisticsList'>";
-		str += "<div id='statistics' class='statistics' "
-		+ "style='display:inline-block; cursor:pointer;'>";
+		str += "<div id='statistics' class='statistics' style='display:inline-block; cursor:pointer;'>";
 		str += "<div style='margin:10px;'>";
 		str += "<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>";
 		str += "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>";
 		str += "</div>";
 		str += "<div class='nowrap' style='padding-left:5px' title='statistics'>";
-		str += "<span class='listentries-span noselect' style='writing-mode:vertical-rl; "
-		+ "text-orientation: upright;'>Statistics</span>";
+		str += "<span class='listentries-span noselect' style='writing-mode:vertical-rl;text-orientation: upright;'>Deadlines</span>";
 		str += "</div></div>";
 		str += "<div class='statisticsContent' style='display:inline-block;'>";
 
@@ -1068,50 +1066,23 @@ function returnedSection(data) {
 
 				// Separating sections into different classes
 				if (parseInt(item['kind']) === 0) {
-					str +=
-						"<div id='header"
-						+ menuState.idCounter
-						+ data.coursecode
-						+ "' class='header' style='display:block'>";
+					str+="<div id='header"+menuState.idCounter+data.coursecode+"' class='header' style='display:block'>";
 				} else if (parseInt(item['kind']) === 1) {
-					str +=
-						"<div id='section"
-						+ menuState.idCounter
-						+ data.coursecode
-						+ "'  class='section' style='display:block'>";
+					str+="<div id='section"+menuState.idCounter+data.coursecode+"' class='section' style='display:block'>";
 				} else if (parseInt(item['kind']) === 2) {
-					str +=
-						"<div id='code"
-						+ menuState.idCounter
-						+ data.coursecode
-						+ "' class='code' style='display:block'>";
+					str+="<div id='code"+menuState.idCounter+data.coursecode+"' class='code' style='display:block'>";
 				} else if (parseInt(item['kind']) === 3) {
-					str +=
-						"<div id='test"
-						+ menuState.idCounter
-						+ data.coursecode
-						+ "' class='test' style='display:block'>";
+					str+="<div id='test"+menuState.idCounter+data.coursecode+"' class='test' style='display:block'>";
 				} else if (parseInt(item['kind']) === 4) {
-					str += "<div class='moment' style='display:block'>";
+					str+= "<div class='moment' style='display:block'>";
 				} else if (parseInt(item['kind']) === 5) {
-					str +=
-						"<div id='link"
-						+ menuState.idCounter
-						+ data.coursecode
-						+ "' class='link' style='display:block'>";
+					str+="<div id='link"+menuState.idCounter+data.coursecode+"' class='link' style='display:block'>";
 				} else if (parseInt(item['kind']) === 6) {
-					str +=
-						"<div id='group"
-						+ menuState.idCounter
-						+ data.coursecode
-						+ "' class='group' style='display:block'>";
+					str+="<div id='group"+menuState.idCounter+data.coursecode+"' class='group' style='display:block'>";
 				} else if (parseInt(item['kind']) === 7) {
-					str +=
-						"<div id='message"
-						+ menuState.idCounter
-						+ data.coursecode
-						+ "' class='message' style='display:block'>";
+					str+="<div id='message"+menuState.idCounter+data.coursecode+"' class='message' style='display:block'>";
 				}
+				
 				menuState.idCounter++;
 				// All are visible according to database
 
@@ -1972,137 +1943,135 @@ function addColorsToTabSections(kind, visible){
 /* Statistic-sections functions, for drawing out all the statistics
    (pie chart and swimlanes) and upcomming deadlines. */
 function drawPieChart() {
-	var c = document.getElementById('pieChart');
-	var ctx = c.getContext('2d');
-	var width = c.width;
-	var height = 200;
-	var pieChartRadius = height / 2;
-	var overviewBlockSize = 11;
+		var c = document.getElementById('pieChart');
+		var ctx = c.getContext('2d');
+		var width = c.width;
+		var height = 200;
+		var pieChartRadius = height / 2;
+		var overviewBlockSize = 11;
 
-	var totalQuizes = 0;
-	var passedQuizes = 0;
-	var notGradedQuizes = 0;
-	var failedQuizes = 0;
-	var notSubmittedQuizes = 0;
+		var totalQuizes = 0;
+		var passedQuizes = 0;
+		var notGradedQuizes = 0;
+		var failedQuizes = 0;
+		var notSubmittedQuizes = 0;
 
-	// Calculate total quizes.
-	for(var i = 0; i < retdata['entries'].length; i++) {
-		if(retdata['entries'][i].kind == "3") {
-			totalQuizes++;
+		// Calculate total quizes.
+		for(var i = 0; i < retdata['entries'].length; i++) {
+			if(retdata['entries'][i].kind == "3") {
+				totalQuizes++;
+			}
 		}
-	}
 
-	// Calculate passed, failed and not graded quizes.
-	for(var i = 0; i < retdata['results'].length; i++) {
-		if(retdata['results'][i]['useranswer'] != null){ // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
-		if(retdata['results'][i].grade == 2) {
-			passedQuizes++;
-		} else if(retdata['results'][i].grade == 1) {
-			failedQuizes++;
+		// Calculate passed, failed and not graded quizes.
+		for(var i = 0; i < retdata['results'].length; i++) {
+				// Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these	
+				if(retdata['results'][i]['useranswer'] != null){ 
+						if(retdata['results'][i].grade == 2){
+							passedQuizes++;
+						}else if(retdata['results'][i].grade == 1){
+							failedQuizes++;
+						}else {
+							notGradedQuizes++;
+						}
+				}
 		}
-		else {
-			notGradedQuizes++;
+
+		// Calculate non submitted quizes.
+		notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
+
+		if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
+			totalQuizes++; 			// show that the student has 100% not submitted tests.
+			notSubmittedQuizes++;
 		}
-	}
-}
 
-// Calculate non submitted quizes.
-notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
+		// PCT = Percentage
+		var passedPCT = 100 * (passedQuizes / totalQuizes);
+		var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
+		var failedPCT = 100 * (failedQuizes / totalQuizes);
+		var notSubmittedPCT = 100 * (notSubmittedQuizes / totalQuizes);
 
-if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
-	totalQuizes++; 			// show that the student has 100% not submitted tests.
-	notSubmittedQuizes++;
-}
+		// Only use 2 decimal places and round up if necessary
+		passedPCT = Math.round(passedPCT * 100) / 100;
+		notGradedPCT = Math.round(notGradedPCT * 100) / 100;
+		failedPCT = Math.round(failedPCT * 100) / 100;
+		notSubmittedPCT = Math.round(notSubmittedPCT * 100) / 100;
 
-// PCT = Percentage
-var passedPCT = 100 * (passedQuizes / totalQuizes);
-var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
-var failedPCT = 100 * (failedQuizes / totalQuizes);
-var notSubmittedPCT = 100 * (notSubmittedQuizes / totalQuizes);
+		var lastend = -1.57; /* Chart start point. -1.57 is a quarter the number of
+		radians in a circle, i.e. start at 12 o'clock */
+		var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
+		var colors = {
+			'passedQuizes': '#00E676',        // Green
+			'notGradedQuizes': '#FFEB3B',     // Yellow
+			'failedQuizes': '#E53935',        // Red
+			'notSubmittedQuizes': '#BDBDBD'   // Grey
+		}
 
-// Only use 2 decimal places and round up if necessary
-passedPCT = Math.round(passedPCT * 100) / 100;
-notGradedPCT = Math.round(notGradedPCT * 100) / 100;
-failedPCT = Math.round(failedPCT * 100) / 100;
-notSubmittedPCT = Math.round(notSubmittedPCT * 100) / 100;
+		ctx.save();
+		ctx.translate(50, 0);
 
-var lastend = -1.57; /* Chart start point. -1.57 is a quarter the number of
-radians in a circle, i.e. start at 12 o'clock */
-var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
-var colors = {
-	'passedQuizes': '#00E676',        // Green
-	'notGradedQuizes': '#FFEB3B',     // Yellow
-	'failedQuizes': '#E53935',        // Red
-	'notSubmittedQuizes': '#BDBDBD'   // Grey
-}
+		for (var i = 0; i < testsData.length; i++) {
 
-ctx.save();
-ctx.translate(50, 0);
+				if(i == 0) {
+					ctx.fillStyle = colors['passedQuizes'];
+				} else if(i == 1) {
+					ctx.fillStyle = colors['notGradedQuizes'];
+				} else if(i == 2) {
+					ctx.fillStyle = colors['failedQuizes'];
+				} else {
+					ctx.fillStyle = colors['notSubmittedQuizes'];
+				}
 
-for (var i = 0; i < testsData.length; i++) {
+				ctx.beginPath();
+				ctx.moveTo(pieChartRadius, height / 2);
 
-	if(i == 0) {
+				// Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
+				ctx.arc(pieChartRadius, height / 2, height / 2, lastend,lastend+(Math.PI * 2 * (testsData[i] / totalQuizes)), false);
+
+				//Parameter for lineTo: x,y
+				ctx.lineTo(pieChartRadius, height / 2);
+				ctx.fill();
+
+				lastend += Math.PI * 2 * (testsData[i] / totalQuizes);
+		}
+
+		ctx.restore();
+		// Pie chart overview
+		ctx.save();
+		ctx.translate(10, 220);
+
 		ctx.fillStyle = colors['passedQuizes'];
-	} else if(i == 1) {
-		ctx.fillStyle = colors['notGradedQuizes'];
-	} else if(i == 2) {
+		ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
+
 		ctx.fillStyle = colors['failedQuizes'];
-	} else {
+		ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
+
+		ctx.font = "12px Arial";
+		ctx.fillStyle = "#000";
+
+		ctx.translate(20, 10);
+		ctx.fillText("Passed (" + passedPCT + "%)", 0, 0);
+		ctx.fillText("Failed (" + failedPCT + "%)", 0, 20);
+
+		ctx.restore();
+
+		ctx.save();
+		ctx.translate(145, 190);
+
+		ctx.fillStyle = colors['notGradedQuizes'];
+		ctx.fillRect(0, 30, overviewBlockSize, overviewBlockSize);
+
 		ctx.fillStyle = colors['notSubmittedQuizes'];
-	}
+		ctx.fillRect(0, 50, overviewBlockSize, overviewBlockSize);
 
-	ctx.beginPath();
-	ctx.moveTo(pieChartRadius, height / 2);
+		ctx.font = "12px Arial";
+		ctx.fillStyle = "#000";
 
-	// Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
-	ctx.arc(pieChartRadius, height / 2, height / 2, lastend,lastend
-		+ (Math.PI * 2 * (testsData[i] / totalQuizes)), false);
+		ctx.fillText("Not Graded (" + notGradedPCT + "%)", 20, 40);
+		ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 20, 60);
 
-		//Parameter for lineTo: x,y
-		ctx.lineTo(pieChartRadius, height / 2);
-		ctx.fill();
-
-		lastend += Math.PI * 2 * (testsData[i] / totalQuizes);
-	}
-
-	ctx.restore();
-	// Pie chart overview
-	ctx.save();
-	ctx.translate(10, 220);
-
-	ctx.fillStyle = colors['passedQuizes'];
-	ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
-
-	ctx.fillStyle = colors['failedQuizes'];
-	ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
-
-	ctx.font = "12px Arial";
-	ctx.fillStyle = "#000";
-
-	ctx.translate(20, 10);
-	ctx.fillText("Passed (" + passedPCT + "%)", 0, 0);
-	ctx.fillText("Failed (" + failedPCT + "%)", 0, 20);
-
-	ctx.restore();
-
-	ctx.save();
-	ctx.translate(145, 190);
-
-	ctx.fillStyle = colors['notGradedQuizes'];
-	ctx.fillRect(0, 30, overviewBlockSize, overviewBlockSize);
-
-	ctx.fillStyle = colors['notSubmittedQuizes'];
-	ctx.fillRect(0, 50, overviewBlockSize, overviewBlockSize);
-
-	ctx.font = "12px Arial";
-	ctx.fillStyle = "#000";
-
-	ctx.fillText("Not Graded (" + notGradedPCT + "%)", 20, 40);
-	ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 20, 60);
-
-	ctx.restore();
+		ctx.restore();
 }
-
 
 function fixDeadlineInfoBoxesText(){
 	var closestDeadlineArray = [];

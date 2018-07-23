@@ -585,6 +585,9 @@ if($ha){
   }
 }
 
+// Declare groups array if no groups are found
+$groups=array();
+
 $stmt = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid AND vers=:vers");
 $stmt->bindParam(":cid", $courseid);
 $stmt->bindParam(":vers", $coursevers);
@@ -597,23 +600,23 @@ if (!$stmt->execute()) {
 }
 
 $array = array(
-	'entries' => $entries,
+	"entries" => $entries,
 	"debug" => $debug,
-	'writeaccess' => $ha,
-	'readaccess' => $cvisibility,
-	'coursename' => $coursename,
-	'coursevers' => $coursevers,
-	'coursecode' => $coursecode,
-	'courseid' => $courseid,
-	'links' => $links,
-	'duggor' => $duggor,
-	'results' => $resulties,
-	'versions' => $versions,
-	'codeexamples' => $codeexamples,
-	'unmarked' => $unmarked,
-	'startdate' => $startdate,
-	'enddate' => $enddate,
-	'groups' => $groups
+	"writeaccess" => $ha,
+	"readaccess" => $cvisibility,
+	"coursename" => $coursename,
+	"coursevers" => $coursevers,
+	"coursecode" => $coursecode,
+	"courseid" => $courseid,
+	"links" => $links,
+	"duggor" => $duggor,
+	"results" => $resulties,
+	"versions" => $versions,
+	"codeexamples" => $codeexamples,
+	"unmarked" => $unmarked,
+	"startdate" => $startdate,
+	"enddate" => $enddate,
+	"groups" => $groups
 );
 
 echo json_encode($array);
