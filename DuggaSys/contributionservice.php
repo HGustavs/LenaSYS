@@ -14,20 +14,21 @@ $vers=$_SESSION['coursevers'];
 
 $debug="NONE!";
 
-$log_db = new PDO('sqlite:../../GHdataJ.db');
+$log_db = new PDO('sqlite:../../GHData/GHdata_2018_7.db');
 
 $allusers=array();
 
 $allrowranks=array();
 $alleventranks=array();
 $allcommentranks=array();
-$alltotalranks=array();
+$allcommitranks=array();
 
 $draught=false;
 
+
 if(checklogin() && isSuperUser($_SESSION['uid'])) {
     $gituser = getOP('userid');    
-    $query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2017-03-01" union select author as usr from event where eventtime>"2017-03-01" union select author as usr from comment where commenttime>"2017-03-01" union select author as usr from issue where issuetime>"2017-03-01") order by usr;');
+    $query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2018-03-25" and blamedate<"2019-01-01" union select author as usr from event where eventtime>"2018-03-25" and eventtime<"2019-01-01" union select author as usr from issue where issuetime>"2018-03-25" and issuetime<"2019-01-08") order by usr;');
     if(!$query->execute()) {
         $error=$query->errorInfo();
         $debug="Error reading entries".$error[2];
@@ -62,17 +63,37 @@ if(isset($_SESSION['uid'])){
 
 //$debug=print_r($_SESSION,true);
 
-$startweek = strtotime('2017-03-27');									// First monday in january
+$startweek = strtotime('2018-03-26');									// First monday in january
 $currentweek=$startweek;
 $currentweekend=strtotime("+1 week",$currentweek);
 $weekno=1;
 
 $weeks = array();
 
+$commitrank="NOT FOUND";
+$commitrankno="NOT FOUND";
+$i=1;
+$query = $log_db->prepare('SELECT COUNT(*) as rowk, author FROM commitgit WHERE thedate>"2018-03-25" AND thedate<"2019-01-01" GROUP BY author ORDER BY rowk DESC;');
+if(!$query->execute()) {
+    $error=$query->errorInfo();
+    $debug="Error reading entries".$error[2];
+}
+$rows = $query->fetchAll();
+foreach($rows as $row){
+    if($row['author']==$gituser){
+        $commitrank=$i;
+        $commitrankno=$row['rowk'];
+    }
+    
+    if($draught) array_push($allcommitranks, $row);
+
+    $i++;
+}
+
 $rowrank="NOT FOUND";
 $rowrankno="NOT FOUND";
 $i=1;
-$query = $log_db->prepare('SELECT sum(rowcnt) as rowk, blameuser FROM Bfile,Blame where Blame.fileid=Bfile.id and blamedate>"2017-03-01" group by blameuser order by rowk desc;');
+$query = $log_db->prepare('SELECT sum(rowcnt) as rowk, blameuser FROM Bfile,Blame WHERE Blame.fileid=Bfile.id and blamedate>"2018-03-25" and blamedate<"2019-01-01" group by blameuser order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
     $debug="Error reading entries".$error[2];
@@ -92,7 +113,7 @@ foreach($rows as $row){
 $eventrankno="NOT FOUND";
 $eventrank="NOT FOUND";
 $i=1;
-$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2017-03-01" and eventtime!="undefined" group by author order by rowk desc;');
+$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2018-03-25" AND  eventtime<"2019-01-01" and eventtime!="undefined" group by author order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
     $debug="Error reading entries".$error[2];
@@ -112,7 +133,7 @@ foreach($rows as $row){
 $commentrankno="NOT FOUND";
 $commentrank="NOT FOUND";
 $i=1;
-$query = $log_db->prepare('SELECT count(*) as rowk, author FROM comment where commenttime>"2017-03-01" group by author having count(*)>4 order by rowk desc;');
+$query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2018-03-25" and eventtime!="undefined" and eventtime<"2019-01-01" and kind="comment" group by author order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
     $debug="Error reading entries".$error[2];
@@ -132,7 +153,7 @@ foreach($rows as $row){
 $issuerank="NOT FOUND";
 $issuerankno="NOT FOUND";
 $i=1;
-$query = $log_db->prepare('SELECT count(*) as rowk, author FROM issue where issuetime>"2017-03-01" and issuetime!="undefined" group by author order by rowk desc;');
+$query = $log_db->prepare('SELECT count(*) as rowk, author FROM issue where issuetime>"2018-03-25" and issuetime<"2019-01-01" and issuetime!="undefined" group by author order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
     $debug="Error reading entries".$error[2];
@@ -146,6 +167,8 @@ foreach($rows as $row){
     $i++;
 }
 
+
+/*
 $overallrank="NOT FOUND";
 $overallrankno="NOT FOUND";
 $i=1;
@@ -166,7 +189,6 @@ foreach($rows as $row){
     $i++;
 }
 
-/*
 
 SELECT sum(rowk),author FROM (SELECT count(*) as rowk, author FROM event where eventtime>"2017-03-03" group by author UNION SELECT COUNT(*) as rowk,author FROM comment where commenttime>"2017-03-03" group by author UNION SELECT count(*) as rowk,author from issue where issuetime>"2017-03-03" group by author ) group by author order by rowk desc;
 
@@ -198,7 +220,7 @@ do{
 
 		// Event count of the various kinds of events during interval
 		$events = array();
-		$query = $log_db->prepare("SELECT kind,count(kind) as cnt FROM event WHERE event.author=:gituser AND eventtime>:eventfrom AND eventtime<:eventto AND (kind='Assigned' OR kind='Closed' OR kind='Commit' OR kind='Reopened' OR kind='Labeled' OR kind='Requested' OR kind='Referenced' OR kind='Opened' ) GROUP BY kind");
+		$query = $log_db->prepare("SELECT kind,count(kind) as cnt FROM event WHERE event.author=:gituser AND eventtime>:eventfrom AND eventtime<:eventto GROUP BY kind");
 		$query->bindParam(':gituser', $gituser);
 		$query->bindParam(':eventfrom', $currentweekdate);
 		$query->bindParam(':eventto', $currentweekenddate );				
@@ -218,13 +240,13 @@ do{
     
 		// Number of comments posted by the user during the interval
 		$comments= array();
-		$query = $log_db->prepare('SELECT * FROM comment WHERE author=:gituser AND commenttime>:commentfrom AND commenttime<:commentto');
-		$query->bindParam(':commentfrom', $currentweekdate);
-		$query->bindParam(':commentto', $currentweekenddate );				
+		$query = $log_db->prepare('SELECT * FROM event WHERE author=:gituser AND eventtime>:eventfrom AND eventtime<:eventto AND kind="comment"');
 		$query->bindParam(':gituser', $gituser);
-        if(!$query->execute()) {
-            $error=$query->errorInfo();
-            $debug="Error reading entries".$error[2];
+		$query->bindParam(':eventfrom', $currentweekdate);
+		$query->bindParam(':eventto', $currentweekenddate );	
+    if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading entries".$error[2];
 		}
 		$rows = $query->fetchAll();
 		foreach($rows as $row){
@@ -235,6 +257,25 @@ do{
 				array_push($comments, $comment);				
 		}
 
+		// Number of commits made by the user during the interval
+		$commits=array();
+		$query = $log_db->prepare('SELECT message,cid,author FROM commitgit WHERE author=:gituser AND thedate>:eventfrom AND thedate<:eventto');
+		$query->bindParam(':gituser', $gituser);
+		$query->bindParam(':eventfrom', $currentweekdate);
+		$query->bindParam(':eventto', $currentweekenddate );	
+    if(!$query->execute()) {
+				$error=$query->errorInfo();
+				$debug="Error reading entries".$error[2];
+		}
+		$rows = $query->fetchAll();
+		foreach($rows as $row){
+				$commit=array(
+					'message' => $row['message'],
+					'cid' => $row['cid']
+				);
+				array_push($commits, $commit);
+		}	
+	
 		// Number of lines changed in each file during interval
 		$files= array();
         $query = $log_db->prepare('SELECT sum(rowcnt) as rowk, * FROM Bfile,Blame where Blame.fileid=Bfile.id and blameuser=:gituser and blamedate>:blamefrom and blamedate<:blameto GROUP BY filename');
@@ -261,7 +302,8 @@ do{
 			'weekend' => $currentweekenddate,
 			'events' => $events,			
 			'issues' => $issues,			
-			'comments' => $comments,			
+			'comments' => $comments,	
+			'commits' => $commits,			
 			'files' => $files
 		);
 
@@ -286,14 +328,14 @@ $array = array(
 	'issuerank' => $issuerank,
     'commentrankno' => $commentrankno,
     'commentrank' => $commentrank,
-    'overallrankno' => $overallrankno,
-    'overallrank' => $overallrank,
+    'commitrankno' => $commitrankno,
+    'commitrank' => $commitrank,
     'allusers' => $allusers,
 
     'allrowranks' => $allrowranks,
     'alleventranks' => $alleventranks,
     'allcommentranks' => $allcommentranks,
-    'alltotalranks' => $alltotalranks,
+    'allcommitranks' => $allcommitranks,
     'githubuser' => $gituser
     
 );
