@@ -112,9 +112,13 @@ function editSectionDialogTitle(title) {
 	}
 }
 
+//----------------------------------------------------------------------------------
+// makeoptions: Prepares a dropdown list with highlighting of previously selected item
+//----------------------------------------------------------------------------------
+
 function makeoptions(option,optionlist,valuelist)
 {
-		str="";
+		var str="";
 		for(var i=0;i<optionlist.length;i++){
 				str+="<option ";
 				if(valuelist[i]==option){
@@ -125,9 +129,22 @@ function makeoptions(option,optionlist,valuelist)
 		return str;
 }
 
+//----------------------------------------------------------------------------------
+// makeparams: Help function for hassle free preparation of a clickable param list 
+//----------------------------------------------------------------------------------
+
+function makeparams(paramarray)
+{
+		var str="";
+		for(var i=0;i<paramarray.length;i++){
+				if(i>0) str+=",";
+				str+="\""+paramarray[i]+"\"";
+		}
+		return str;
+}
+
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group = "UNK") {
 	nameSet = false;
-	console.log(group);
 	if (entryname == "undefined") entryname = "New Header";
 	if (kind == "undefined") kind = 0;
 	xelink = elink;
@@ -963,7 +980,7 @@ function returnedSection(data) {
 		str += "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>";
 		str += "</div>";
 		str += "<div class='nowrap' style='padding-left:5px' title='statistics'>";
-		str += "<span class='listentries-span noselect' style='writing-mode:vertical-rl;text-orientation: upright;'>Deadlines</span>";
+		str += "<span class='listentries-span noselect' style='writing-mode:vertical-rl;text-orientation: sideways;'>Deadlines</span>";
 		str += "</div></div>";
 		str += "<div class='statisticsContent' style='display:inline-block;'>";
 
@@ -1366,143 +1383,15 @@ function returnedSection(data) {
 
 				// Cog Wheel
 				if (data['writeaccess']) {
-					str += "<td style='width:32" + "px;";
-
-					if (itemKind === 0) {
-						str +=
-							"' class='header" + blorf + "'>"
-							+ "<img id='dorf' class='margin-4'"
-							+ " src='../Shared/icons/Cogwheel.svg'"
-							+ " onclick='selectItem("
-							+ "\"" + item['lid'] + "\","
-							+ "\"" + item['entryname'] + "\","
-							+ "\"" + item['kind'] + "\","
-							+ "\"" + item['visible'] + "\","
-							+ "\"" + item['link'] + "\","
-							+ "\"" + momentexists + "\","
-							+ "\"" + item['gradesys'] + "\","
-							+ "\"" + item['highscoremode'] + "\","
-							+ "\"" + item['comments'] + "\","
-							+ "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
-							+ " title='Edit " + item['entryname'] + "' /></td>";
-					} else if (itemKind === 1) { // Section
-						str +=
-							"' class='section" + blorf + "'>"
-							+ "<img id='dorf' class='margin-4'"
-							+ " src='../Shared/icons/Cogwheel.svg'"
-							+ " onclick='selectItem("
-							+ "\"" + item['lid'] + "\","
-							+ "\"" + item['entryname'] + "\","
-							+ "\"" + item['kind'] + "\","
-							+ "\"" + item['visible'] + "\","
-							+ "\"" + item['link'] + "\","
-							+ "\"" + momentexists + "\","
-							+ "\"" + item['gradesys'] + "\","
-							+ "\"" + item['highscoremode'] + "\","
-							+ "\"" + item['comments'] + "\","
-							+ "\"" + item['group'] + "\""
-							+ "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
-							+ " title='Edit " + item['entryname'] + "' /></td>";
-					} else if (itemKind === 2) { // code
-						str +=
-							"' ><img id='dorf' class='margin-4'"
-							+ " src='../Shared/icons/Cogwheel.svg'"
-							+ " onclick='selectItem("
-							+ "\"" + item['lid'] + "\","
-							+ "\"" + item['entryname'] + "\","
-							+ "\"" + item['kind'] + "\","
-							+ "\"" + item['visible'] + "\","
-							+ "\"" + item['link'] + "\","
-							+ "\"" + momentexists + "\","
-							+ "\"" + item['gradesys'] + "\","
-							+ "\"" + item['highscoremode'] + "\","
-							+ "\"" + item['comments'] + "\""
-							+ "); editSectionDialogTitle(\"editItem\")'"
-							+ " title='Edit " + item['entryname'] + "'  /></td>";
-					} else if (itemKind === 3) { 	// Dugga
-						str +=
-							"' ><img id='dorf' class='margin-4'"
-							+ " src='../Shared/icons/Cogwheel.svg'"
-							+ " onclick='selectItem("
-							+ "\"" + item['lid'] + "\","
-							+ "\"" + item['entryname'] + "\","
-							+ "\"" + item['kind'] + "\","
-							+ "\"" + item['visible'] + "\","
-							+ "\"" + item['link'] + "\","
-							+ "\"" + momentexists + "\","
-							+ "\"" + item['gradesys'] + "\","
-							+ "\"" + item['highscoremode'] + "\","
-							+ "\"" + item['comments'] + "\""
-							+ "); validateType(); editSectionDialogTitle(\"editItem\")'"
-							+ " title='Edit " + item['entryname'] + "'  /></td>";
-					} else if (itemKind === 4) { // Moment
-						str +=
-							"' class='moment" + blorf + "'>"
-							+ "<img id='dorf' class='margin-4'"
-							+ " src='../Shared/icons/Cogwheel.svg'"
-							+ " onclick='selectItem("
-							+ "\"" + item['lid'] + "\","
-							+ "\"" + item['entryname'] + "\","
-							+ "\"" + item['kind'] + "\","
-							+ "\"" + item['visible'] + "\","
-							+ "\"" + item['link'] + "\","
-							+ "\"" + momentexists + "\","
-							+ "\"" + item['gradesys'] + "\","
-							+ "\"" + item['highscoremode'] + "\","
-							+ "\"" + item['comments'] + "\","
-							+ "\"" + item['group'] + "\""
-							+ "); validateName(); validateType(); editSectionDialogTitle(\"editItem\")'"
-							+ " title='Edit " + item['entryname'] + "' /></td>";
-					} else if (itemKind === 5) { 	// Link
-						str +=
-							"' ><img id='dorf' class='margin-4'"
-							+ " src='../Shared/icons/Cogwheel.svg'"
-							+ " onclick='selectItem("
-							+ "\"" + item['lid'] + "\","
-							+ "\"" + item['entryname'] + "\","
-							+ "\"" + item['kind'] + "\","
-							+ "\"" + item['visible'] + "\","
-							+ "\"" + item['link'] + "\","
-							+ "\"" + momentexists + "\","
-							+ "\"" + item['gradesys'] + "\","
-							+ "\"" + item['highscoremode'] + "\","
-							+ "\"" + item['comments'] + "\""
-							+ "); editSectionDialogTitle(\"editItem\")'"
-							+ " title='Edit " + item['entryname'] + "'  /></td>";
-					} else if (itemKind === 6) {	// Group
-						str +=
-							"' ><img id='dorf' class='margin-4'"
-							+ " src='../Shared/icons/Cogwheel.svg'"
-							+ " onclick='selectItem("
-							+ "\"" + item['lid'] + "\","
-							+ "\"" + item['entryname'] + "\","
-							+ "\"" + item['kind'] + "\","
-							+ "\"" + item['visible'] + "\","
-							+ "\"" + item['link'] + "\","
-							+ "\"" + momentexists + "\","
-							+ "\"" + item['gradesys'] + "\","
-							+ "\"" + item['highscoremode'] + "\","
-							+ "\"" + item['comments'] + "\""
-							+ "); editSectionDialogTitle(\"editItem\")'"
-							+ " title='Edit " + item['entryname'] + "'  /></td>";
-					}
-					else if (itemKind === 7) {	// Message
-						str +=
-							"' ><img id='dorf' class='margin-4'"
-							+ " src='../Shared/icons/Cogwheel.svg'"
-							+ " onclick='selectItem("
-							+ "\"" + item['lid'] + "\","
-							+ "\"" + item['entryname'] + "\","
-							+ "\"" + item['kind'] + "\","
-							+ "\"" + item['visible'] + "\","
-							+ "\"" + item['link'] + "\","
-							+ "\"" + momentexists + "\","
-							+ "\"" + item['gradesys'] + "\","
-							+ "\"" + item['highscoremode'] + "\","
-							+ "\"" + item['comments'] + "\""
-							+ "); editSectionDialogTitle(\"editItem\")'"
-							+ " title='Edit " + item['entryname'] + "'  /></td>";
-					}
+					str +="<td style='width:32px;' ";
+					
+					if(itemKind===0) str+="class='header"+blorf+"' ";
+					if(itemKind===1) str+="class='section"+blorf+"' ";
+					if(itemKind===4) str+="class='moment"+blorf+"' ";
+				
+					str +="><img id='dorf' class='margin-4' src='../Shared/icons/Cogwheel.svg' ";
+					str +=" onclick='selectItem("+makeparams([item['lid'],item['entryname'], item['kind'],item['visible'],item['link'],momentexists,item['gradesys'],item['highscoremode'],item['comments']])+");' />";
+					str +="</td>";
 				}
 
 				// trashcan
@@ -2365,40 +2254,26 @@ function scrollToBottom() {
 $(document).mousedown(function(e) {
 	// If the fab list is visible, there should be no timeout to toggle the list
 	if ($('.fab-btn-list').is(':visible')) {
-		if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) {
-			toggleFabButton();
-    	}
+		if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) toggleFabButton();
 	} else {
-        if (e.target.id == "fabBtn") {
-			pressTimer = window.setTimeout(function() {
-				toggleFabButton();
-			}, 200);
+      if (e.target.id == "fabBtn") {
+				pressTimer = window.setTimeout(function() { toggleFabButton(); }, 200);
 		}
 	}
 }).mouseup(function(e) {
-	// A quick item should be created on
-	// a "fast click" if the fab list isn't visible
+	// A quick item should be created on a "fast click" if the fab list isn't visible / Click outside the FAB list / if the target of the click isn't the container...
 	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
 			clearTimeout(pressTimer);
 			createQuickItem();
-
-    }// Click outside the FAB list
-    else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) { // if the target of the click isn't the container...
+    }else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
         toggleFabButton();
 	}
 }).on("touchstart", function(e){
-    // If the fab list is visible, there should be no timeout to toggle the list
 	if ($('.fab-btn-list').is(':visible')) {
-        //toggleFabButton();
-
 	} else {
-        if (e.target.id == "fabBtn") {
-			pressTimer = window.setTimeout(function() {
-				toggleFabButton();
-
-			}, 200);
-            return false;
-		}
+			if (e.target.id == "fabBtn") { 
+				pressTimer = window.setTimeout(function() { toggleFabButton(); }, 200); return false;
+			}
 	}
 }).on("touchend", function(e){
     //abrupts and clears the timer for touchstart when the user lets go of the fab
