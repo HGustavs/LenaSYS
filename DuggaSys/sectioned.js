@@ -112,6 +112,18 @@ function editSectionDialogTitle(title) {
 	}
 }
 
+function makeoptions(option,optionlist,valuelist)
+{
+		str="";
+		for(var i=0;i<optionlist.length;i++){
+				str+="<option ";
+				if(valuelist[i]==option){
+						str+="selected='selected' ";
+				}
+				str+="value='"+valuelist[i]+"'>"+optionlist[i]+"</option>";
+		}
+		return str;
+}
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group = "UNK") {
 	nameSet = false;
@@ -125,23 +137,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	$("#I" + lid).css("border", "2px dashed #FC5");
 	$("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
 
-	// Set GradeSys
-	str = "";
-	if (gradesys == null || gradesys == 0) str += "<option selected='selected' value='0'>-</option>"
-	else str += "<option value='0'>-</option>";
-
-	if (gradesys == 1) str += "<option selected='selected' value='1'>U-G-VG</option>"
-	else str += "<option value='1'>U-G-VG</option>";
-
-	if (gradesys == 2) str += "<option selected='selected' value='2'>U-G</option>"
-	else str += "<option value='2'>U-G</option>";
-
-	if (gradesys == 3) str += "<option selected='selected' value='3'>U-3-4-5</option>"
-	else str += "<option value='3'>U-3-4-5</option>";
-
-	$("#gradesys").html(str);
-
-
+	// Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
+	$("#gradesys").html(makeoptions(gradesys,["-","U-G-VG","U-G","U-3-4-5"],[0,1,2,3]));
+	$("#type").html(makeoptions(kind,["Header","Section","Code","Test","Moment","Link","Group Activity","Message"],[0,1,2,3,4,5,6,7]));	
+	$("#visib").html(makeoptions(evisible,["Hidden","Public","Login"],[0,1,2]));
+	$("#tabs").html(makeoptions(gradesys,["0 tabs","1 tabs","2 tabs","3 tabs","end","1 tab + end","2 tabs + end"],[0,1,2,3,4,5,6]));
 
 	// Set Moments
 	str = "";
@@ -176,43 +176,6 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	// Set Lid
 	$("#lid").val(lid);
 
-	// Set Kind
-	str = "";
-	if (kind == 0) str += "<option selected='selected' value='0'>Header</option>"
-	else str += "<option value='0'>Header</option>";
-
-	if (kind == 1) str += "<option selected='selected' value='1'>Section</option>"
-	else str += "<option value='1'>Section</option>";
-
-	if (kind == 2) str += "<option selected='selected' value='2'>Code</option>"
-	else str += "<option value='2'>Code</option>";
-
-	if (kind == 3) str += "<option selected='selected' class='test' value='3'>Test</option>"
-	else str += "<option value='3'>Test</option>";
-
-	if (kind == 4) str += "<option selected='selected' value='4'>Moment</option>"
-	else str += "<option value='4'>Moment</option>";
-
-	if (kind == 5) str += "<option selected='selected' value='5'>Link</option>"
-	else str += "<option value='5'>Link</option>";
-
-	if (kind == 6) str += "<option selected='selected' value='6'>Group Activity</option>"
-	else str += "<option value='6'>Group Activity</option>'";
-	if (kind == 7) str += "<option selected='selected' value='7'>Message</option>"
-	else str += "<option value='7'>Message</option>";
-
-	$("#type").html(str);
-
-	// Set Visibiliy
-	str = "";
-	if (evisible == 0) str += "<option selected='selected' value='0'>Hidden</option>"
-	else str += "<option value='0'>Hidden</option>";
-	if (evisible == 1) str += "<option selected='selected' value='1'>Public</option>"
-	else str += "<option value='1'>Public</option>";
-	if (evisible == 2) str += "<option selected='selected' value='2'>Login</option>"
-	else str += "<option value='2'>Login</option>";
-	$("#visib").html(str);
-
 	// Add highscore mode options
 	str = "";
 	if (highscoremode == 0) str += "<option selected='selected' value ='0'>None</option>"
@@ -223,28 +186,8 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	else str += "<option value ='2'>Click based</option>";
 	$("#highscoremode").html(str);
 
-	// Set tabs
-	str = "";
-	if (gradesys == 0 || gradesys == null) str += "<option selected='selected' value ='0'>0 tabs</option>"
-	else str += "<option value ='0'>0 tabs</option>";
-	if (gradesys == 1) str += "<option selected='selected' value ='1'>1 tab</option>"
-	else str += "<option value ='1'>1 tab</option>";
-	if (gradesys == 2) str += "<option selected='selected' value ='2'>2 tabs</option>"
-	else str += "<option value ='2'>2 tabs</option>";
-	if (gradesys == 3) str += "<option selected='selected' value ='3'>3 tabs</option>"
-	else str += "<option value ='3'>3 tabs</option>";
-	if (gradesys == 4) str += "<option selected='selected' value ='4'>end</option>"
-	else str += "<option value ='4'>end</option>";
-	if (gradesys == 5) str += "<option selected='selected' value ='5'>1 tab + end</option>"
-	else str += "<option value ='5'>1 tab + end</option>";
-	if (gradesys > 6 || gradesys < 0) str += "<option selected='selected' value ='6'>2 tabs + end</option>"
-	else str += "<option value ='6'>2 tabs + end</option>";
-
-	$("#tabs").html(str);
-
 	// Set Link
 	$("#link").val(elink);
-
 
 	// Group
 	str = "";
