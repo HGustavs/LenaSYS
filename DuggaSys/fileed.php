@@ -8,104 +8,209 @@ pdoConnect();
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>File editor</title>
-	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
-	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">  
-	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
-	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
-	<script src="../Shared/dugga.js"></script>
-	<script src="fileed.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>File editor</title>
+    <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
+    <link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet">
+    <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+    <script src="../Shared/js/jquery-1.11.0.min.js"></script>
+    <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
+    <script src="../Shared/dugga.js"></script>
+    <script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
+    <script src="fileed.js"></script>
+    <script src="../Shared/markdown.js"></script>
 </head>
-<body onload="setupSort();">
-	<?php 
-		$noup="SECTION";
-		include '../Shared/navheader.php';
-	?>
-
+<body onload="setup();">
+    <?php
+        $noup = "SECTION";
+        include '../Shared/navheader.php';
+    ?>
+    <?php
+        include '../Shared/loginbox.php';
+    ?>
 	<!-- content START -->
-	<div id="content" >
-	
+	<div id="content">
 		<div class='titles' style='padding-top:10px;'>
 			<h1 style='flex:1;text-align:center;'>Files</h1>
 		</div>
-	
-		<button class="switchContent" onclick="switchcontent(),keyUpSearch()" type="button">Switch to One table</button>
-
-		<input id="searchinput" type="text" name="search" placeholder="Search.." onkeypress="return searchKeyPress(event);">
-
-		<button id="searchbutton" class="switchContent" onclick="searchcontent()" type="button">Search</button>
-
-        <div id="searchresults" style='width:100%; display:none;'>
-            <table class='list list--nomargin' style='margin-bottom:8px;' >
-                <tr><th class='first' style='width:64px;'>ID</th><th>Search Results</th><th style='width:30px' class='last'></th></tr>
-            </table>
+        <div id="sortingDiv">
+            <div id="sortingBar">
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="All" checked onclick="count=0;searchterm='';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortAll">All files</label>
+                </div>
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="Global" onclick="count=0;searchterm='kind::global';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortGlobal">Global</label>
+                </div>
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="CourseLocal" onclick="count=0;searchterm='kind::course';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortCLocal">Course local</label>
+                </div>
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="VersionLocal" onclick="count=0;searchterm='kind::version';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortVLocal">Version local</label>
+                </div>
+                <div class="sortingBtn">
+                    <input type="radio" name="sortKind" value="Links" onclick="count=0;searchterm='kind::link';searchKeyUp(event);fileLink.renderTable();"/>
+                    <label name="sortLinks">Links</label>
+                </div>
+            </div>
+            <div id="searchBar">
+                <input id="searchinput" type="text" name="search" placeholder="Search.." onkeyup="searchterm=document.getElementById('searchinput').value;searchKeyUp(event);fileLink.renderTable();">
+                <button id="searchbutton" class="switchContent" onclick="return searchKeyUp(event);" type="button">
+                    <img id="lookingGlassSVG" style="height:18px;" src="../Shared/icons/LookingGlass.svg">
+                </button>
+            </div>
         </div>
-		<div id="alllinks" style='width:100%;'>
-			<table class='list list--nomargin' style='margin-bottom:8px;' >
-				<tr><th><input class='submit-button fileed-button' type='button' value='Add Link' onclick='createLink();'/></th></tr>
-				<tr><th class='first' style='width:64px;'>ID</th><th>Link URL</th><th style='width:30px' class='last'></th></tr>
-			</table>
-		</div>
-		<!-- allcontent -->
-		<div id="allcontent" style="width:100%;display:none">
+		<div id="fileLink" style='width:100%;margin-bottom: 30px;'></div>
+		<!-- content END -->
 
-			<table class='list list--nomargin' style='margin-bottom:8px;' >
-				<tr><th><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("GFILE");'/></th></tr>
-				<tr><th class='first' style='width:64px;'>ID</th><th>File Group</th><th style='width:30px' class='last'></th></tr>
-			</table>			
+    <!-- Add File Dialog START -->
+    <div id='addFile' class='loginBoxContainer' style='display:none;'>
+        <div class='loginBox' style='width:464px;'>
+            <div class='loginBoxheader' style='cursor:default;'>
+                <h3 class="fileHeadline" id="mFileHeadline">Add Course Local File</h3>
+                <h3 class="fileHeadline" id="gFileHeadline">Add Global File</h3>
+                <h3 class="fileHeadline" id="lFileHeadline">Add Version Local File</h3>
+                <h3 class="linkPopUp">Add Link</h3>
+                <div class='cursorPointer' onclick='closeAddFile();'>x</div>
+            </div>
+            <form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
+                <div>
+                    <input type='hidden' id='cid' name='cid' value='Toddler'/>
+                    <input type='hidden' id='coursevers' name='coursevers' value='Toddler'/>
+                    <input type='hidden' id='kind' name='kind' value='Toddler'/>
+                    <div class='inputwrapper filePopUp'>
+                        <span>Upload File:</span>
+                        <input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple"/>
+                    </div>
+                    <div class='inputwrapper linkPopUp'>
+                        <span>URL:</span>
+                        <input style="width:380px" id="uploadedlink" class="textinput" name="link"
+                               placeholder="https://facebook.com" type="text"/>
+                    </div>
+                </div>
+                <div id='uploadbuttonname'>
+                    <input class='submit-button fileed-submit-button' type="submit" onclick="uploadFile(fileKind);"/>
+                </div>
+                <div style='display:none;' id='errormessage'></div>
+            </form>
 
-		</div>
-		<div id="allglobalfiles" style='width:100%;'>
-			<table class='list list--nomargin' style='margin-bottom:8px;' >
-				<tr><th><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("GFILE");'/></th></tr>
-				<tr><th class='first' style='width:64px;'>ID</th><th>Global File</th><th style='width:30px' class='last'></th></tr>
-			</table>
-		</div>
-		<div id="allcoursefiles" style='width:100%;'>
-				<table class='list list--nomargin'>
-						<tr><th><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("MFILE");'/></th></tr>
-						<tr><th class='first' style='width:64px;'>ID</th><th>Course Local File</th><th style='width:30px' class='last'></th></tr>
-				</table>
-		</div>
-		<div id="alllocalfiles" style='width:100%;'>
-			<table class='list list--nomargin'>
-				<tr><th><input class='submit-button fileed-button' type='button' value='Add File' onclick='createFile("LFILE");'/></th></tr>
-				<tr><th class='first' style='width:64px;'>ID</th><th>Local File</th><th style='width:30px' class='last'></th></tr>
-			</table>
-		</div>
-	</div>
-	<!-- content END -->
-	
-	<?php 
-		include '../Shared/loginbox.php';
-	?>
+        </div>
+    </div>
+</div>
+<!-- Edit File Dialog END -->
 
-	<!-- Add File Dialog START -->
-	<div id='addFile' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style='width:464px;'>
-      		<div class='loginBoxheader'>
-      			<h3>Add File/Link</h3>
-      			<div class='cursorPointer' onclick='closeAddFile();'>x</div>
-      		</div>
-      		<form enctype="multipart/form-data" action="filereceive.php" onsubmit="return validateForm()" method="POST">
-      			<div style='padding:5px;'>
-      				<input type='hidden' id='cid' name='cid' value='Toddler' />
-      				<input type='hidden' id='coursevers' name='coursevers' value='Toddler' />
-      				<input type='hidden' id='kind' name='kind' value='Toddler' />
-      				<div id="linky" class='inputwrapper'><span>URL:</span><input style="width:380px" id ="uploadedlink" class="textinput" name="link" placeholder="https://facebook.com" type="text" /></div>
-      				<div id="filey" class='inputwrapper'><span>Upload File:</span><input name="uploadedfile[]" id="uploadedfile" type="file" multiple="multiple" /></div>
-      				<div id="selecty" class='inputwrapper'><span>Existing File:</span><select id="selectedfile" name="selectedfile"></select></div>
-      			</div> 
-      			<div style='padding:5px;'>
-      				<td align='right'><div id='uploadbuttonname'><input class='submit-button' type="submit" value="Upload File" /></div></td>
-      			</div> 
-      			<div style ='padding:5px; display:none;' id='errormessage'>
-      			</div> 
-      		</form>
-      </div>
-	</div>
-	<!-- Edit File Dialog END -->
+<!-- Markdown-preview and edit file functionality START -->
+<div class="previewWindowContainer">
+    <div class="previewWindow">
+        <div class="loginBoxheader">
+            <h3 class ="fileName"></h3>
+            <div style="cursor:pointer;" onclick="closePreview();">x</div>
+        </div>
+        <form id="editForm" enctype="multipart/form-data" action="filereceive_preview.php" onsubmit="return validatePreviewForm()" method="POST">
+            <input type='hidden' id='cID' name='cid' value='Toddler'/>
+            <input type='hidden' id='courseVers' name='coursevers' value='Toddler'/>
+            <input type='hidden' id='fileKind' name='kind' value='Toddler'/>
+            <input type='hidden' id='fileName' name='filename' value='Toddler'/>
+            <input type='hidden' id='textField' name='textField' value='Toddler'/>
+            <div class="markdownPart">
+
+                <div class="markdown">
+                    <fieldset id="markset">
+                        <legend>  Markdown</legend>
+                        <div class="markdown-icon-div">
+                        <span class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></span>
+                        <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>
+                        <span class="markdown-icons" onclick="codeBlockText()" title="CodeBlock">&#10065;</span>
+                        <span class="markdown-icons" onclick="lists()" title="lists"><img
+                                                                                src="../Shared/icons/list-symbol.svg"></span>
+                        <span class="markdown-icons" id="quoteIcon" onclick="quoteText()" title="quote">&#10078;</span>
+                        <span class="markdown-icons" id="linkIcon" onclick="linkText()" title="link"><img
+                                                                                src="../Shared/icons/link-icon.svg"></span>
+                        <span class="markdown-icons" id="imgIcon" onclick="externalImg()" title="Img"><img
+                                                                                src="../Shared/icons/insert-photo.svg"></span>
+                        <span class="markdown-icons headerType" id="headerIcon" title="Header">aA&#9663;</span>
+
+                        <div class="selectHeader" id="select-header">
+                            <span id="headerType1" onclick="selected();headerVal1()" value="H1">Header 1</span>
+                            <span id="headerType2" onclick="selected();headerVal2()" value="H2">Header 2</span>
+                            <span id="headerType3" onclick="selected();headerVal3()" value="H3">Header 3</span>
+                            <span id="headerType4" onclick="selected();headerVal4()" value="H4">Header 4</span>
+                            <span id="headerType5" onclick="selected();headerVal5()" value="H5">Header 5</span>
+                            <span id="headerType6" onclick="selected();headerVal6()" value="H6">Header 6</span>
+                        </div>
+                        </div>
+                            <div class="markText">
+                            <textarea id="mrkdwntxt" oninput="updatePreview(this.value)" name="markdowntext"></textarea>
+                            </div>
+                            </fieldset>
+                </div>
+
+                <div class="markdownPrev">
+                    <fieldset id="markPrevSet"><legend id="markPrev">Markdown preview</legend>
+                    <div class="markTextPrev">
+                        <div class="prevSpan">
+                            <div class="descbox">
+                                <span id="markdown"></span>
+                            </div>
+                        </div>
+                    </div>
+                    </fieldset>
+                </div>
+                <button class="save-close-button-md" type="submit" onclick="saveMarkdown()">Save</button>
+                <button class="save-close-button-md" onclick="cancelPreview()">Close</button>
+            </div>
+            <div class="editFilePart">
+                <div class="editFileWindow">
+                    <div class="editFileCode">
+                        <div class="fileText">
+                            <textarea id="filecont" oninput="editFile(this.value)" name="filetext" rows="32" cols="79"></textarea>
+                        </div>
+                    </div>
+
+                    <button class="save-close-button-fe" type="submit" onclick="saveTextToFile()"> Save </button>
+                    <button class="save-close-button-fe" onclick="cancelPreview()">Close</button>
+                    <div class="optionButtons">
+
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<!-- Markdown-preview and edit file functionality END -->
+
+<!--Fab-button-->
+<div class="fixed-action-button" id="fabButton">
+    <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
+    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
+        <li><a id="gFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out"
+               data-tooltip='Add Global File'><img id="gFabBtnImg" class="fab-icon"
+                                                   src="../Shared/icons/global-icon.svg"></a></li>
+        <li><a id="lFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out"
+               data-tooltip='Add Version Local File'><img id="lFabBtnImg" class="fab-icon"
+                                                          src="../Shared/icons/version_local-icon.svg"></a></li>
+        <li><a id="mFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out"
+               data-tooltip='Add Course Local File'><img id="mFabBtnImg" class="fab-icon"
+                                                         src="../Shared/icons/course_local-icon.svg"></a></li>
+        <li><a id="linkFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out noselect"
+               data-tooltip="Add Link"><img id="linkFabBtnImg" class="fab-icon" src="../Shared/icons/link-icon.svg"></a>
+        </li>
+    </ol>
+</div>
+
+<div class="confirmationWindow">
+    <div class="loginBoxheader">
+        <h3 class="fileName"></h3>
+        <div style="cursor:pointer;" onclick="closeConfirmation();">x</div>
+    </div>
+    <p class="confirmationText" id="editedFile" >Hej</p>
+    <button class="confirmationButton" onclick="closeConfirmation()">Ok</button>
+</div>
 </body>
 </html>

@@ -5,19 +5,20 @@
 //--------------------------------------------------------------------
 // path - stores a number of segments
 //--------------------------------------------------------------------
+
 function Path() {
     this.kind = 1;                  // Path kind
     this.segments = Array();        // Segments
     this.intarr = Array();          // Intersection list (one list per segment)
     this.tmplist = Array();         // Temporary list for testing of intersections
     this.auxlist = Array();         // Auxillary temp list for testing of intersections
-    this.fillColor = "#48B";        // Fill color (default is blueish)
-    this.strokeColor = "#246";      // Stroke color (default is dark blue)
-    this.Opacity = 0.5;             // Opacity (default is 50%)
-    this.linewidth = 3;             // Line Width (stroke width - default is 3 pixels)
+    this.fillColor = '#ffffff';     // Fill color (default is white)
+    this.opacity = 1;             // Opacity valuefor figures
+    this.strokeColor = '#000000';      // Stroke color (default is black)
+    this.lineWidth = 2;             // Line Width (stroke width - default is 2 pixels)
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
-                                    // An organized path can contain several sub-path, each of which must be organized
-
+    this.targeted = true;                    // An organized path can contain several sub-path, each of which must be organized
+    this.figureType = "Square";
     //--------------------------------------------------------------------
     // Performs a delta-move on all points in a path
     //--------------------------------------------------------------------
@@ -27,6 +28,34 @@ function Path() {
             points[this.segments[i].pa].y += movey;
         }
         this.calculateBoundingBox();
+    }
+
+    this.adjust = function(){
+        if(this.figureType == "Square"){
+            if(!sel) return;
+            for(var i = 0; i < this.segments.length; i++){
+                var seg = this.segments[i];
+                if(points[seg.pa] == sel.point){
+                    if(i == 0){
+                        points[seg.pb].x = sel.point.x;
+                        points[seg.pb+1].y = sel.point.y;
+                    }
+                    else if(i == 1){
+                        points[seg.pb-1].x = sel.point.x;
+                        points[seg.pb].y = sel.point.y;
+                    }
+                    else if(i == 2){
+                        points[seg.pb].x = sel.point.x;
+                        points[seg.pb-1].y = sel.point.y;
+                    }
+                    else if(i == 3){
+                        points[seg.pb+1].x = sel.point.x;
+                        points[seg.pb].y = sel.point.y;
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     //--------------------------------------------------------------------
@@ -83,33 +112,63 @@ function Path() {
         }
         if (this.segments.length > 0) {
             // Assign stroke style, color, transparency etc
-            canvasContext.strokeStyle = this.strokeColor;
-            canvasContext.fillStyle = this.fillColor;
-            canvasContext.globalAlpha = this.Opacity;
-            canvasContext.lineWidth = this.linewidth;
-            canvasContext.beginPath();
+            var shouldFill = true;
+
+            if(this.fillColor == "noFill"){
+              shouldFill = false;
+            }
+
+            ctx.strokeStyle = this.targeted ? "#F82" : this.strokeColor;
+            ctx.fillStyle = this.fillColor;
+            ctx.globalAlpha = this.opacity;
+            ctx.lineWidth = this.lineWidth;
+
+            ctx.beginPath();
             var pseg = this.segments[0];
-            canvasContext.moveTo(points[pseg.pa].x, points[pseg.pa].y);
+            ctx.moveTo(points[pseg.pa].x, points[pseg.pa].y);
             for (var i = 0; i < this.segments.length; i++) {
                 var seg = this.segments[i];
                 // If we start over on another sub-path, we must start with a moveto
                 if (seg.pa != pseg.pb) {
-                    canvasContext.moveTo(points[seg.pa].x, points[seg.pa].y);
+                    ctx.moveTo(points[seg.pa].x, points[seg.pa].y);
                 }
                 // Draw current line
-                canvasContext.lineTo(points[seg.pb].x, points[seg.pb].y);
+                ctx.lineTo(points[seg.pb].x, points[seg.pb].y);
                 // Remember previous segment
                 pseg = seg;
             }
             // Make either stroke or fill or both -- stroke always after fill
             if (fillstate) {
-                canvasContext.fill();
-            }
-            if (strokestate) {
-                canvasContext.stroke();
+                ctx.save();
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetX = 3;
+                ctx.shadowOffsetY = 6;
+                ctx.shadowColor = "rgba(0, 0, 0, 0.3)";
+                if(shouldFill) ctx.fill();
+                ctx.restore();
             }
             // Reset opacity so that following draw operations are unaffected
-            canvasContext.globalAlpha = 1.0;
+            ctx.globalAlpha = 1.0;
+            
+            if (strokestate) {
+                ctx.stroke();
+            }
+
+            for(var i = 0; i < this.segments.length; i++){
+                var seg = points[this.segments[i].pa];
+                var segb = points[this.segments[i].pb];
+                if(this.targeted){
+                    ctx.beginPath();
+                    ctx.arc(seg.x,seg.y,5,0,2*Math.PI,false);
+                    ctx.fillStyle = '#F82';
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    ctx.arc(segb.x,segb.y,5,0,2*Math.PI,false);
+                    ctx.fillStyle = '#F82';
+                    ctx.fill();
+                }
+            }
         }
     }
 
@@ -141,6 +200,10 @@ function Path() {
             return intersections % 2;
         }
         return false;
+    }
+
+    this.checkForHover = function (mx, my) {
+        return this.isClicked(mx, my);
     }
 
     //--------------------------------------------------------------------
@@ -319,16 +382,16 @@ function Path() {
     //--------------------------------------------------------------------
     this.drawsegments = function (segmentlist, color) {
         // Draw aux set
-        canvasContext.lineWidth = 1;
-        canvasContext.strokeStyle = "#46f";
+        ctx.lineWidth = this.lineWidth;
+        ctx.strokeStyle = "#46f";
         for (var i = 0; i < segmentlist.length; i++) {
             var line = segmentlist[i];
             // If line is a straight line
             if (line.kind == 1) {
-                canvasContext.beginPath();
-                canvasContext.moveTo(points[line.pa].x, points[line.pa].y);
-                canvasContext.lineTo(points[line.pb].x, points[line.pb].y);
-                canvasContext.stroke();
+                ctx.beginPath();
+                ctx.moveTo(points[line.pa].x, points[line.pa].y);
+                ctx.lineTo(points[line.pb].x, points[line.pb].y);
+                ctx.stroke();
             }
         }
     }
@@ -338,6 +401,29 @@ function Path() {
             points[this.segments[i].pa] = waldoPoint;
             points[this.segments[i].pb] = waldoPoint;
         }
+    }
+
+    this.figureToSVG = function() {
+        var str = "";
+        if (this.isorganized && this.segments.length > 0) {
+            str += "<g>";
+            var svgStyle = "fill:"+this.fillColor+";fill-opacity:"+this.opacity+";stroke:"+this.strokeColor+";stroke-width:"+this.lineWidth+";";
+            var pseg = this.segments[0];
+            svgPos = "M"+points[pseg.pa].x+","+points[pseg.pa].y;
+            for (var i = 0; i < this.segments.length; i++) {
+                var seg = this.segments[i];
+                // Start at sub-path
+                if (seg.pa != pseg.pb) {
+                    svgPos = "M"+points[seg.pa].x+","+points[seg.pa].y;
+                }
+                svgPos += " L"+points[seg.pb].x+","+points[seg.pb].y;
+                str += "<path d='"+svgPos+"' style='"+svgStyle+"' />";
+                // Remember previous segment
+                pseg = seg;
+            }
+            str += "</g>";
+        }
+        return str;
     }
 }
 
@@ -352,12 +438,12 @@ var startPosition;
 var numberOfPointsInFigure = 0;
 
 function createFigure() {
-    if (uimode == "CreateFigure" && md == 4) {
-        if (figureType == "Free") {
-            figureFreeDraw();
-        } else if (figureType == "Square") {
-            figureSquare();
-        }
+    startMouseCoordinateX = currentMouseCoordinateX;
+    startMouseCoordinateY = currentMouseCoordinateY;
+    if (figureType == "Free") {
+        figureFreeDraw();
+    } else if (figureType == "Square") {
+        figureSquare();
     }
 }
 
@@ -379,17 +465,22 @@ function figureFreeDraw() {
             p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         }
         // Check if the new point is the starting point
-        if (points[startPosition].x == points[p2].x &&
-            points[startPosition].y == points[p2].y) {
+        var closestPoint = points.closestPoint(points[p2].x, points[p2].y, p2);
+        if(closestPoint.index == startPosition && closestPoint.distance < 20){
             // Delete all previous rendered lines
             for (var i = 0; i < numberOfPointsInFigure; i++) {
                 diagram.pop();
             }
             // Render the figure
+            points.splice(p2, 1);
+            p2 = startPosition;
             figurePath.addsegment(1, p1, p2);
+            md = 0; // To prevent selectbox spawn when clicking out of freedraw mode
             diagram.push(figurePath);
+            figurePath.figureType = "Free";
+            selected_objects.push(figurePath);
+            lastSelectedObject = diagram.length - 1;
             cleanUp();
-            openInitialDialog();
         } else {
             // Temporary store the new line and then render it
             var tempPath = new Path;
@@ -418,8 +509,9 @@ function figureSquare() {
         figurePath.addsegment(1, p3, p4);
         figurePath.addsegment(1, p4, p1);
         diagram.push(figurePath);
+        selected_objects.push(figurePath);
+        lastSelectedObject = diagram.length - 1;
         cleanUp();
-        openInitialDialog();
     }
 }
 
@@ -429,10 +521,9 @@ function figureSquare() {
 function cleanUp() {
     figurePath = new Path;
     startPosition = null;
-    uimode = null;
-    figureType = null;
     isFirstPoint = true;
     numberOfPointsInFigure = 0;
+    p2 = null;
 }
 
 function openInitialDialog() {

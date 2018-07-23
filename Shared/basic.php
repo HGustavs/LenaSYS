@@ -287,6 +287,9 @@ abstract class EventTypes {
 	const ServiceClientEnd = 8;
 	const Logout = 9;
 	const pageLoad = 10;
+  const PageNotFound = 11;
+  const RequestNewPW = 12;
+  const CheckSecQuestion = 13;
 }
 
 //------------------------------------------------------------------------------------------------
@@ -327,6 +330,20 @@ function getOS() {
 		}
 	}
 	return $osPlatform;
+}
+
+function getIP() {
+	$IP="";
+	if(isset($_SERVER['REMOTE_ADDR'])){
+			$IP.=$_SERVER['REMOTE_ADDR'];
+	}
+	if(isset($_SERVER['HTTP_CLIENT_IP'])){
+			$IP.=" ".$_SERVER['HTTP_CLIENT_IP'];
+	}
+	if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
+			$IP.=" ".$_SERVER['HTTP_X_FORWARDED_FOR'];
+	}
+	return $IP;
 }
 
 //------------------------------------------------------------------------------------------------

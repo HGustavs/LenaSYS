@@ -5,7 +5,7 @@
 <html>
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Dugga Viewer</title>
@@ -14,7 +14,7 @@
 	<link type="text/css" href="../Shared/css/markdown.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/dugga.css" rel="stylesheet">
 
-	
+
 	<script src="../Shared/js/jquery-1.11.0.min.js"></script>
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 	<script src="../Shared/dugga.js"></script>
@@ -43,7 +43,7 @@
 	$duggafile="UNK";
 	$duggarel="UNK";
 	$duggadead="UNK";
-	
+
 	$visibility=false;
 	$readaccess=false;
 	$checklogin=false;
@@ -52,8 +52,10 @@
 	if(isset($_SESSION['uid'])){
 		$userid=$_SESSION['uid'];
 	}else{
-		$userid="UNK";		
-	} 	
+		$userid="UNK";
+	}
+
+  if($cid != "UNK") $_SESSION['courseid'] = $cid;
 
 	$hr=false;
 	$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
@@ -67,7 +69,7 @@
 /*
 		//Give permit if the user is logged in and has access to the course or if it is public
 		$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0  && $userid != "UNK");
-		
+
 		if(!$hr){
 			if (checklogin()){
 				$hr = isSuperUser($userid);$hr;
@@ -75,12 +77,17 @@
 		}
 */
 
-	//If we have permission, and if file exists, include javascript file.			
+	//If we have permission, and if file exists, include javascript file.
 		if(isSuperUser($userid)){
+      // If the user is a super user, get all quizes.
 			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
-		}else{
-			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND visible=1 AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");					
-		}
+		}else if($readaccess){
+      // If logged in and has access, get all private(requires login) and public quizes.
+			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND (visible=1 OR visible=2) AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+		} else {
+      // If not logged in, get only the public quizes.
+      $query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND visible=1 AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");
+    }
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 		$query->bindParam(':quizid', $quizid);
@@ -99,13 +106,13 @@
 
 		}else{
 			echo "</head>";
-			echo "<body>";							
+			echo "<body>";
 		}
 
 ?>
 
 
-	<?php 
+	<?php
 		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
@@ -116,11 +123,11 @@
 
 			// Log USERID for Dugga Access
 			makeLogEntry($userid,1,$pdo,$cid." ".$vers." ".$quizid." ".$duggafile);
-			
+
 			// Put information in event log irrespective of whether we are allowed to or not.
 			// If we have access rights, read the file securely to document
-			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted 
-			
+			// Visibility: 0 Hidden 1 Public 2 Login 3 Deleted
+
 			if($duggafile!="UNK"&&$userid!="UNK"&&($readaccess||isSuperUser($userid))){
 				if(file_exists ( "templates/".$duggafile.".html")){
 					readfile("templates/".$duggafile.".html");
@@ -154,7 +161,7 @@
 
 			}else{
 				echo "<div class='err'><span style='font-weight:bold;'>Bummer!</span> Something went wrong in loading the test. Contact LENASys-admin.</div>";
-			}		
+			}
 		?>
 
 	</div>
@@ -166,13 +173,13 @@
     		<div id='receiptInfo'></div>
     		<textarea id="receipt" autofocus readonly></textarea>
     		<div class="button-row">
-    			<input type='button' class='submit-button'  onclick="showEmailPopup();" value='Save Receipt'> 
-    			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>	
+    			<input type='button' class='submit-button'  onclick="showEmailPopup();" value='Save Receipt'>
+    			<input type='button' class='submit-button'  onclick="hideReceiptPopup();" value='Close'>
     		</div>
     		<div id='emailPopup' style="display:none">
     			<div class='inputwrapper'><span>Ange din email:</span><input class='textinput' type='text' id='email' placeholder='Email' value=''/></div>
     			<div class="button-row"><input type='button' class='submit-button'  onclick="sendReceiptEmail();" value='Send Email'></div>
-    		</div>	
+    		</div>
       </div>
 	</div>
 	<!-- Login Box (receiptbox) End! -->

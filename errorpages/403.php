@@ -25,9 +25,8 @@ $noup="NONE";
 	<script src="../Shared/dugga.js"></script>
 </head>
 <body>
-You may not view this page
-<!--<br>
-<a href="/DuggaSys/courseed.php">Go to start</a>
--->
+    You may not view this page
+    <br>
+    <a href="/DuggaSys/courseed.php">Go to start</a>
 </body>
 </html>

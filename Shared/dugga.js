@@ -28,12 +28,20 @@ function setSecurityNotifaction(param){
     localStorage.setItem("securitynotification", param);
 }
 
+function resetLoginStatus(){
+  status = 1;
+  showing = 0;
+  toggleloginnewpass();
+}
+
 function toggleloginnewpass(){
 	resetFields();
+
   //Shows the New password-box (username input)
 	if(status == 0){
 		$("#newpassword").css("display", "block");
-		$("#loginBox").css("display", "none");
+		$("#loginBox").css("display", "flex");
+    $("#login").hide();
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -41,7 +49,7 @@ function toggleloginnewpass(){
     //Shows the Login-box
 	}else if(status == 1){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "flex");
+		$("#login").css("display", "block");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "none");
 		status= 0;
@@ -49,7 +57,7 @@ function toggleloginnewpass(){
     //Shows the Sequrity question-box (answer for question input)
 	}else if(status == 2){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "none");
+		$("#loginBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "block");
 		$("#resetcomplete").css("display", "none");
 		status= 1;
@@ -58,7 +66,7 @@ function toggleloginnewpass(){
   //Shows the Reset complete-box
 	else if(status == 3){
 		$("#newpassword").css("display", "none");
-		$("#loginBox").css("display", "none");
+		$("#loginBox").css("display", "flex");
 		$("#showsecurityquestion").css("display", "none");
 		$("#resetcomplete").css("display", "block");
 		status= 1;
@@ -75,7 +83,7 @@ function resetFields(){
 		$("#newpassword #username").val("");
 	}
 	$("#showsecurityquestion #answer").val("");
-  
+
   //Changes the background color back to white
 	$("#loginBox #username").css("background-color", "rgb(255, 255, 255)");
 	$("#loginBox #password").css("background-color", "rgb(255, 255, 255)");
@@ -83,9 +91,9 @@ function resetFields(){
 	$("#showsecurityquestion #answer").css("background-color", "rgb(255, 255, 255)");
 
   //Hides error messages
-	$("#login #message").html("<div class='alert danger'></div>");
-	$("#newpassword #message2").html("<div class='alert danger'></div>");
-	$("#showsecurityquestion #message3").html("<div class='alert danger'></div>");
+  displayAlertText("#login #message", "");
+  displayAlertText("#newpassword #message2", "");
+  displayAlertText("#showsecurityquestion #message3", "");
 }
 
 //----------------------------------------------------------------------------------
@@ -115,6 +123,7 @@ function setExpireCookieLogOut() {
 function closeWindows(){
 	var index_highest = 0;
 	var e;
+
 	//More effective to have a class for the div you want to search and pass that to your selector
 	$("*").each(function() {
 	    //Always use a radix when using parseInt
@@ -136,6 +145,13 @@ function closeWindows(){
 					resetFields();
 			}
 	}
+
+  $(document).keyup(function(e) {
+    if (e.which == 27){
+      resetLoginStatus();
+    }
+  });
+
 	window.removeEventListener("keypress", loginEventHandler, false);
 }
 
@@ -219,37 +235,37 @@ function saveDuggaResult(citstr)
 		}
 
 		AJAXService("SAVDU",{answer:citstr},"PDUGGA");
-		
+
 		document.getElementById('receipt').value = hexstr;
-		
+
 		var dateTime = new Date(); // Get the current date and time
 
  		var comment = querystring['comment']; //Get the comment
-		
+
 		var deadline = querystring['deadline']; //Get deadlinedate from URL
-		
+
 
 		Number.prototype.padLeft = function(base,chr){
 			var  len = (String(base || 10).length - String(this).length)+1;
 			return len > 0? new Array(len).join(chr || '0')+this : this;
 		}
-		
+
 		dateTimeFormat = [dateTime.getFullYear(),(dateTime.getMonth()+1).padLeft(),dateTime.getDate().padLeft()].join('-') +' ' +[dateTime.getHours().padLeft(),dateTime.getMinutes().padLeft(),dateTime.getSeconds().padLeft()].join(':');
-		
+
 		if(deadline > dateTimeFormat){	//Check if deadline has past
-			
+
 			document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.\n\n</p>";
 
 		}
 		else{ //Check if deadline has past
-			
+
 			if(comment == "UNK" || comment == "undefined" || comment == "null"){
- 				document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>";
+ 				document.getElementById('receiptInfo').innerHTML = "<p style='margin:15px 5px;'>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>OBS! Denna inlämning har gjorts efter att deadline har passerat. Läraren kommer att rätta duggan vid nästa ordinarie rättningstillfälle ELLER i mån av tid.</p>";
  			}
  			else{
- 				document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.png'/><p>"+comment+"</p>";
+ 				document.getElementById('receiptInfo').innerHTML = "<p>Teckensträngen är ditt kvitto på att duggan har lämnats in. Spara kvittot på en säker plats.</p><img style='width:40px;float:left;margin-right:10px;' title='Warning' src='../Shared/icons/warningTriangle.svg'/><p>"+comment+"</p>";
  			}
-			
+
 		}
 		showReceiptPopup();
 }
@@ -418,13 +434,13 @@ function AJAXService(opt,apara,kind)
 			success: returnedanswersDugga
 		});
 	}else if(kind=="DUGGA"){
-			$.ajax({
-				url: "duggaedservice.php",
-				type: "POST",
-				data: "opt="+opt+para,
-				dataType: "json",
-				success: returnedDugga
-			});
+		$.ajax({
+			url: "duggaedservice.php",
+			type: "POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedDugga
+		});
 	}else if(kind=="BDUGGA"){
 			$.ajax({
 				url: "duggaedservice.php",
@@ -561,6 +577,14 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedAnalysis
 		});
+	} else if(kind=="GETQUIZ") {
+		$.ajax({
+			url: "duggaedservice.php",
+			type:"POST",
+			data: "opt="+opt+para,
+			dataType: "json",
+			success: returnedQuiz
+		})
 	}
 }
 
@@ -586,7 +610,7 @@ function addSecurityQuestionProfile(username) {
 			opt: "GETQUESTION"
 		},
 		success:function(data) {
-			var result = JSON.parse(data);	
+			var result = JSON.parse(data);
 			if(result['getname'] == "success") {
 				$("#challengeQuestion").html(result['securityquestion']);
 			}else{
@@ -603,14 +627,14 @@ function addSecurityQuestionProfile(username) {
 }
 
 // Checks if the page is using https
-function checkHTTPS() { 
+function checkHTTPS() {
 	return (location.protocol == 'https:');
-} 
+}
 
 function processResetPasswordCheckUsername() {
-  //Gets the security question from the database
-	var username = $("#newpassword #username").val();
-	
+	//Gets the security question from the database
+	var username = $("#usernamereset").val();
+
 	$.ajax({
 		type:"POST",
 		url: "../Shared/resetpw.php",
@@ -619,79 +643,61 @@ function processResetPasswordCheckUsername() {
 			opt: "GETQUESTION"
 		},
 		success:function(data) {
-			var result = JSON.parse(data);	
-				//It is worth to note that getname should probably be named status/error since thats basically what it is			
+			var result = JSON.parse(data);
+				//It is worth to note that getname should probably be named status/error since thats basically what it is
 			if(result['getname'] == "success") {
 				$("#showsecurityquestion #displaysecurityquestion").html(result['securityquestion']);
 				status = 2;
 				toggleloginnewpass();
-			}else{
+			}else if(result['getname'] == "limit"){
+        displayAlertText("#newpassword #message2", "You have exceeded the maximum <br /> amount of tries within 5 min");
+      }else{
 				if(typeof result.reason != "undefined") {
-					$("#newpassword #message2").html("<div class='alert danger'>" + result.reason + "</div>");
+          displayAlertText("#newpassword #message2", result.reason);
 				} else {
-					$("#newpassword #message2").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>" + result['getname']  + "</div>");
+          displayAlertText("#newpassword #message2", result['getname']);
 				}
 				$("#newpassword #username").css("background-color", "rgba(255, 0, 6, 0.2)");
 			}
 		}
 	});
 }
-			
-
 
 function processResetPasswordCheckSecurityAnswer() {
-	//Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
-	var username = $("#newpassword #username").val();
-	var securityquestionanswer = $("#showsecurityquestion #answer").val();
-
-	$.ajax({
-			type:"POST",
-			url: "../Shared/resetpw.php",
-			data: {
-				username: username,
-				securityquestionanswer: securityquestionanswer,
-				opt: "CHECKANSWER"
-			},
-			success:function(data) {
-				var result = JSON.parse(data);
-				if(result['checkanswer'] == "success") {
-					$.ajax({
-						type:"POST",
-						url: "../Shared/resetpw.php",
-						data: {
-							username: username,
-							opt: "REQUESTCHANGE"
-						},
-						success:function(data){
-							var result = JSON.parse(data);
-							if(result['requestchange'] == "success"){
-								status = 3;
-								toggleloginnewpass();
-							}else{
-								$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
-								$("#showsecurityquestion #message3").html("<div class='alert danger'>Something went wrong</div>");
-							}
-						}
-					});
-				}else{
-					if(typeof result.reason != "undefined") {
-						$("#showsecurityquestion #message3").html("<div class='alert danger'>" + result.reason + "</div>");
-					} else {
-						$("#showsecurityquestion #message3").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong answer</div>");
-					}
-					$("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 6, 0.2)");
-			}
-		}
-	});
-}	
+  //Checking so the sequrity question answer is correct and notefying a teacher that a user needs its password changed
+  var username = $("#usernamereset").val();
+  var securityquestionanswer = $("#answer").val();
+  $.ajax({
+    type:"POST",
+    url: "../Shared/resetpw.php",
+    data: {
+      username: username,
+      opt: "REQUESTCHANGE"
+    },
+    success:function(data){
+      var result = JSON.parse(data);
+      if(result['requestchange'] == "success"){
+        status = 3;
+        toggleloginnewpass();
+      }else if(result['requestchange'] == "limit"){
+        displayAlertText("#showsecurityquestion #message3", "You have exceeded the maximum <br /> amount of tries within 5 min");
+      }else if(result['requestchange'] == "wrong"){
+        displayAlertText("#showsecurityquestion #message3", "Wrong answer");
+      }else{
+        $("#showsecurityquestion #answer").css("background-color", "rgba(255, 0, 0, 0.2)");
+        displayAlertText("#showsecurityquestion #message3", "Something went wrong");
+      }
+    }
+  });
+}
 
 function processLogin() {
+
     /*
-    
     var username = $("#login #username").val();
 		var saveuserlogin = $("#login #saveuserlogin").val();
 		var password = $("#login #password").val();
-		
+
 		$.ajax({
 			type:"POST",
 			url: "../Shared/loginlogout.php",
@@ -709,15 +715,15 @@ function processLogin() {
 					$("#loginbutton").addClass("loggedin");
 
 					hideLoginPopup();
-					
+
 					$("#login #username").val("");
-					$("#login #password").val("");		
-					
+					$("#login #password").val("");
+
 					$("#loginbutton").off("click");
 					console.log("Removed show login bind");
 					$("#loginbutton").click(function(){processLogout();});
 
-					location.reload();				
+					location.reload();
 				}else{
 					console.log("Failed to log in.");
 					if(typeof result.reason != "undefined") {
@@ -728,69 +734,74 @@ function processLogin() {
 					$("input#username").css("background-color", "rgba(255, 0, 6, 0.2)");
 					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
 				}
-					
-			},
-			error:function() {
-				console.log("error");
-			}
-		});    
-    
-    */
-		var username = $("#login #username").val();
-		var saveuserlogin = $("#login #saveuserlogin").val();
-		var password = $("#login #password").val();
-		if (saveuserlogin==1){
-        	saveuserlogin = 'on';
-    	}else{
-        	saveuserlogin = 'off';
-    	}
-
-		$.ajax({
-			type:"POST",
-			url: "../Shared/loginlogout.php",
-			data: {
-				username: username,
-				saveuserlogin: saveuserlogin,
-				password: password,
-				opt: "LOGIN"
-			},
-			success:function(data) {
-				var result = JSON.parse(data);
-				if(result['login'] == "success") {
-          hideLoginPopup();
-          /*
-                    if(result['securityquestion'] != null) {
-                        localStorage.setItem("securityquestion", "set");
-                    } else {
-                        setSecurityNotifaction("on"); 
-                    }
-            */        
-					setExpireCookie();
-					setExpireCookieLogOut();
-					
-					// Fake a second login, this will reload the page and enable chrome and firefox to save username and password
-					//$("#loginForm").submit();
-          reloadPage();
-				}else{
-          alert("Login failed!");
-					if(typeof result.reason != "undefined") {
-						$("#login #message").html("<div class='alert danger'>" + result.reason + "</div>");
-					} else {
-						$("#login #message").html("<div class='alert danger' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>Wrong username or password! </div>");
-						
-					}
-					
-					
-					$("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
-					$("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
-          closeWindows();
-				}
 
 			},
 			error:function() {
 				console.log("error");
 			}
 		});
+
+    */
+    var username = $("#login #username").val();
+    var saveuserlogin = $("#login #saveuserlogin").val();
+    var password = $("#login #password").val();
+    if (saveuserlogin==1){
+          saveuserlogin = 'on';
+    }else{
+          saveuserlogin = 'off';
+    }
+
+    $.ajax({
+      type:"POST",
+      url: "../Shared/loginlogout.php",
+      data: {
+        username: username,
+        saveuserlogin: saveuserlogin,
+        password: password,
+        opt: "LOGIN"
+      },
+      success:function(data) {
+        var result = JSON.parse(data);
+        if(result['login'] == "success") {
+          hideLoginPopup();
+          /*
+                    if(result['securityquestion'] != null) {
+                        localStorage.setItem("securityquestion", "set");
+                    } else {
+                        setSecurityNotifaction("on");
+                    }
+            */
+          setExpireCookie();
+          setExpireCookieLogOut();
+
+          // Fake a second login, this will reload the page and enable chrome and firefox to save username and password
+          //$("#loginForm").submit();
+          reloadPage();
+        }else if(result['login'] == "limit"){
+          displayAlertText("#login #message", "Too many failed attempts, <br /> try again later");
+        }else{
+          if(typeof result.reason != "undefined") {
+            displayAlertText("#login #message", result.reason);
+          } else {
+            displayAlertText("#login #message", "Wrong username or password");
+          }
+
+
+          $("#login #username").css("background-color", "rgba(255, 0, 6, 0.2)");
+          $("input#password").css("background-color", "rgba(255, 0, 6, 0.2)");
+          //closeWindows();
+        }
+
+      },
+      error:function() {
+        console.log("error");
+      }
+    });
+}
+
+
+function displayAlertText(selector, text){
+  $(selector).html("<div class='alert' style='color: rgb(199, 80, 80); margin-top: 10px; text-align: center;'>"+text+"</div>");
 }
 
 function processLogout() {
@@ -819,7 +830,7 @@ function showLoginPopup()
 	$("input#password").css("background-color", "rgba(255, 255, 255, 1)");
 
 	// Reset warning, if applicable
-	$("#login #message").html("<div class='alert danger'></div>");
+  displayAlertText("#login #message", "");
 
 	window.addEventListener("keypress", loginEventHandler, false);
 }
@@ -863,13 +874,13 @@ function hideReceiptPopup()
 	//$("#overlay").css("display","none");
 }
 
-function hideDuggaStatsPopup() 
+function hideDuggaStatsPopup()
 {
 	$("#duggaStats").css("display", "none");
 	//$("#overlay").css("display", "none");
 }
 
-function checkScroll(obj) { 
+function checkScroll(obj) {
 	if(obj.clientHeight < obj.scrollHeight) {
 		obj.style.height = (parseInt(obj.style.height)+1) + 'em';
 	}
@@ -988,7 +999,7 @@ function sessionExpireLogOut() {
 	}
 
 	function checkIfExpired() {
-		
+
 			if (document.cookie.indexOf('sessionEndTimeLogOut=expireC') == -1){
 			//alert('Your session has expired');
 			// When reloaded the log in icon should change from green to red
@@ -999,7 +1010,7 @@ function sessionExpireLogOut() {
 
 	}
 }
-	
+
 //----------------------------------------------------------------------------------
 // A function that handles the onmouseover/onmouseout events on the loginbutton-td, changing the icon-image on hover.
 //----------------------------------------------------------------------------------
@@ -1046,7 +1057,10 @@ function getCookie(cname) {
 $(window).load(function() {
 	//There is an issue with using this code, it generates errors that stop execution
       $(window).keyup(function(event){
-      	if(event.keyCode == 27) closeWindows();
+      	if(event.keyCode == 27) {
+          closeWindows();
+         // closeSelect();
+        }
       });
 });
 
@@ -1058,7 +1072,7 @@ $(window).load(function() {
 	$('.loginBox').draggable({ containment: "window"});	//contains the draggable box within window-boundaries
 });
 
-*/ 
+*/
 
 //----------------------------------------------------------------------------------
 // Help function to allow moving of elements from on index to another in array
@@ -1082,7 +1096,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 		var foundfile=null;
 		var oldfile="";
 		var tab="<table class='previewTable'>";
-		tab+="<thead><tr><th>Preview</th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>"
+		tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>"
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
 			for (var i=filez.length-1;i>=0;i--){
@@ -1091,11 +1105,11 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							tab+="<tr'>"
 
 							tab+="<td>";
-							// Button for making / viewing feedback - note - only button for given feedback to students.			
+							// Button for making / viewing feedback - note - only button for given feedback to students.
 							if (ctype == "link"){
-									tab+="<a href='"+filez[i].content+"' ><button>P</button></a>";
+									tab+="<a href='"+filez[i].content+"' ><img src='../Shared/icons/file_download.svg' /></a>";
 							} else {
-									tab+="<a href='"+filelink+"' ><button>P</button></a>";
+									tab+="<a href='"+filelink+"' ><img src='../Shared/icons/file_download.svg' /></a>";
 							}
 							tab+="</td>";
 							tab+="<td>";

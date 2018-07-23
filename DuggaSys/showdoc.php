@@ -2,23 +2,23 @@
 		ini_set("auto_detect_line_endings", true);
 		include_once "../Shared/basic.php";
 		include_once "../Shared/sessions.php";
-		
+
 		$file_extension="UNK";
         $tableAlignmentConf = [];
         $openedSublists = [];
 		function parseMarkdown($inString)
-		{	
+		{
 				$inString=preg_replace("/\</", "&lt;",$inString);
 				$inString=preg_replace("/\>/", "&gt;",$inString);
 
 				$inString=preg_replace("/^\~{3}(\r\n|\n|\r)/m", "~~~@@@",$inString);
 				$inString=preg_replace("/^\=\|\=(\r\n|\n|\r)/m", "=|=&&&",$inString);
-				
+
 				$str="";
 
 				//$codearray=explode('~~~', $inString);
 				$codearray=preg_split("/\~{3}|\=\|\=/", $inString);
-				
+
 				$specialBlockStart=true;
 				foreach ($codearray as $workstr) {
 						if(substr($workstr,0,3)==="@@@" && $specialBlockStart===true){
@@ -32,14 +32,14 @@
 								$specialBlockStart=true;
 						}
 						$str.=$workstr;
-						
+
 				}
 
 				return "<div id='markdown'>".$str."</div>";
 		}
 
 		function parseLineByLine($inString) {
-			$str = $inString;	
+			$str = $inString;
 			$markdown = "";
 
 			$currentLineFeed = strpos($str, PHP_EOL);
@@ -118,21 +118,21 @@
         $markdown = "";
         $value = "";
         //$currentLineIndentation = substr_count($currentLine, ' ');
-        //$nextLineIndentation = substr_count($nextLine, ' ');          
+        //$nextLineIndentation = substr_count($nextLine, ' ');
         $currentLineIndentation = strlen($currentLine)-strlen(ltrim($currentLine));
         $nextLineIndentation = strlen($nextLine)-strlen(ltrim($nextLine));
         // decide value
-        if(isOrderdList($currentLine)) $value = preg_replace('/^\s*\d*\.\s(.*)/','$1',$currentLine);        
-        if(isUnorderdList($currentLine)) $value = preg_replace('/^\s*[\-\*]\s(.*)/','$1',$currentLine);        
+        if(isOrderdList($currentLine)) $value = preg_replace('/^\s*\d*\.\s(.*)/','$1',$currentLine);
+        if(isUnorderdList($currentLine)) $value = preg_replace('/^\s*[\-\*]\s(.*)/','$1',$currentLine);
         // Open new ordered list
         if(!(isOrderdList($prevLine) || isUnorderdList($prevLine)) && isOrderdList($currentLine)) {
             $markdown .= "<ol>"; // Open a new ordered list
             array_push($openedSublists,0);
         }
         if(!(isUnorderdList($prevLine) || isOrderdList($prevLine) ) && isUnorderdList($currentLine)){
-            $markdown .= "<ul>"; //Open a new unordered list          
+            $markdown .= "<ul>"; //Open a new unordered list
             array_push($openedSublists,1);
-        } 
+        }
          // Open a new sublist
         if($currentLineIndentation < $nextLineIndentation && (isUnorderdList($nextLine) || isOrderdList($nextLine))) {
             $markdown .= "<li>";
@@ -181,7 +181,7 @@
                   $markdown .= "</ul>";
               }
               if($i>1){
-                  $markdown .= "</li>";                
+                  $markdown .= "</li>";
               }
           }
         }
@@ -248,22 +248,22 @@
 		function markdownBlock($instring)
 		{
 				//Regular expressions for italics
-				$instring = preg_replace("/\*{4}(.*?)\*{4}/", "<strong><em>$1</em></strong>",$instring);	
-				$instring = preg_replace("/\*{3}(.*?)\*{3}/", "<em>$1</em>",$instring);	
-				$instring = preg_replace("/\*{2}(.*?)\*{2}/", "<em>$1</em>",$instring);	
+				$instring = preg_replace("/\*{4}(.*?)\*{4}/", "<strong><em>$1</em></strong>",$instring);
+				$instring = preg_replace("/\*{3}(.*?)\*{3}/", "<em>$1</em>",$instring);
+				$instring = preg_replace("/\*{2}(.*?)\*{2}/", "<em>$1</em>",$instring);
 
 				// Bold
-				$instring = preg_replace("/\_{4}(.*?)\_{4}/", "<strong><em>$1</em></strong>",$instring);	
-				$instring = preg_replace("/\_{3}(.*?)\_{3}/", "<strong>$1</strong>",$instring);	
-				$instring = preg_replace("/\_{2}(.*?)\_{2}/", "<strong>$1</strong>",$instring);	
+				$instring = preg_replace("/\_{4}(.*?)\_{4}/", "<strong><em>$1</em></strong>",$instring);
+				$instring = preg_replace("/\_{3}(.*?)\_{3}/", "<strong>$1</strong>",$instring);
+				$instring = preg_replace("/\_{2}(.*?)\_{2}/", "<strong>$1</strong>",$instring);
 
 				// Headings -- 6 levels
-				$instring = preg_replace("/^\#{6}\s(.*)=*/m", "<h6>$1</h6>",$instring);	
-				$instring = preg_replace("/^\#{5}\s(.*)=*/m", "<h5>$1</h5>",$instring);	
-				$instring = preg_replace("/^\#{4}\s(.*)=*/m", "<h4>$1</h4>",$instring);	
-				$instring = preg_replace("/^\#{3}\s(.*)=*/m", "<h3>$1</h3>",$instring);	
-				$instring = preg_replace("/^\#{2}\s(.*)=*/m", "<h2>$1</h2>",$instring);	
-				$instring = preg_replace("/^\#{1}\s(.*)=*/m", "<h1>$1</h1>",$instring);	
+				$instring = preg_replace("/^\#{6}\s(.*)=*/m", "<h6>$1</h6>",$instring);
+				$instring = preg_replace("/^\#{5}\s(.*)=*/m", "<h5>$1</h5>",$instring);
+				$instring = preg_replace("/^\#{4}\s(.*)=*/m", "<h4>$1</h4>",$instring);
+				$instring = preg_replace("/^\#{3}\s(.*)=*/m", "<h3>$1</h3>",$instring);
+				$instring = preg_replace("/^\#{2}\s(.*)=*/m", "<h2>$1</h2>",$instring);
+				$instring = preg_replace("/^\#{1}\s(.*)=*/m", "<h1>$1</h1>",$instring);
 
 				//Regular expression for line
 				$instring = preg_replace("/^(\-{3}\n)/m", "<hr>",$instring);
@@ -273,29 +273,29 @@
 				//$instring= preg_replace ("/(\r\n|\n|\r)/","<br>",$instring);
 
 				// Fix for swedish characters
-				$instring= str_replace ("å","&aring;",$instring);				
-				$instring= str_replace ("Å","&Aring;",$instring);				
-				$instring= str_replace ("ä","&auml;",$instring);				
-				$instring= str_replace ("Ä","&Auml;",$instring);				
-				$instring= str_replace ("ö","&ouml;",$instring);				
-				$instring= str_replace ("Ö","&Ouml;",$instring);				
-				
+				$instring= str_replace ("å","&aring;",$instring);
+				$instring= str_replace ("Å","&Aring;",$instring);
+				$instring= str_replace ("ä","&auml;",$instring);
+				$instring= str_replace ("Ä","&Auml;",$instring);
+				$instring= str_replace ("ö","&ouml;",$instring);
+				$instring= str_replace ("Ö","&Ouml;",$instring);
+
 				// a href Link
 				// !!!url,text to show!!!
 				$instring = preg_replace("/\!{3}(.*?\S),(.*?\S)\!{3}/","<a href='$1' target='_blank'>$2</a>",$instring);
 
 				// External img src !!!
-				// |||src|||	
-				//$instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);        
+				// |||src|||
+				//$instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);
         $instring = preg_replace("/\|{3}(.+),([0-9]+)?,([0-9]+)?\|{3}/","<img class='imgzoom' src='$1' onmouseover='originalImg(this, $3)' onmouseout='thumbnailImg(this, $2)' width='$2px' style='border: 3px solid #614875;' />",$instring);
         $instring = preg_replace("/\|{3}(.*?\S)\|{3}/","<img src='$1' />",$instring);
 
 				// External mp4 src !!!
-				// ==[src]==	
+				// ==[src]==
 				$instring = preg_replace("/\={2}\[(.*?\S)\]\={2}/","<video width='80%' style='display:block; margin: 10px auto;' controls><source src='$1' type='video/mp4'></video>",$instring);
 
 				// External mp4 src !!!
-				// ==[src]==	
+				// ==[src]==
 				$instring = preg_replace("/\={2}\{(.*?\S)}\={2}/","<span id='placeholder-$1'></span>",$instring);
 
 				// Image Movie Link format: <img src="pngname.png" class="gifimage" onclick="showGif('gifname.gif');"/>
@@ -314,20 +314,20 @@
 
 				// Three or more dots should always be converted to an ellipsis.
 				$instring = preg_replace("/\.{3,}/", "&hellip;", $instring);
-				
+
 				// Iframe, website inside a inline frame - (--url,width,height--)
 				$instring = preg_replace("/\(\-{2}(.*?\S),(.*?\S),(.*?\S)\-{2}\)/", "<iframe src='$1' style='width:$2px; height:$3px;'></iframe>", $instring);
-				
+
 				// Quote text, this will be displayed in an additional box
 				// ^ Text you want to quote ^
 				$instring = preg_replace("/\^{1}\s(.*?\S)\s\^{1}/", "<blockquote>$1</blockquote><br/>", $instring);
 
-				return $instring;		
+				return $instring;
 		}
 
 		ob_start();
 		date_default_timezone_set("Europe/Stockholm");
-		
+
 		// Include basic application services!
 		session_start();
 		$readfile = false;
@@ -339,43 +339,84 @@
 		$coursevers=getOPG('coursevers');
 
 		$hdrs=getOPG('headers');
-		
+
 		// If no course version is given, read course version from session
 		if($cid=="UNK"){
 			if(isset($_SESSION['courseid'])){
 					$cid=$_SESSION['courseid'];
 			}
 		}
+		// echo $cid;
 		if($coursevers=="UNK"){
 			if(isset($_SESSION['coursevers'])){
 					$coursevers=$_SESSION['coursevers'];
-			}					
+			}
 		}
-		
+
 		// Read User ID from session
 		if(isset($_SESSION['uid'])){
 			$userid=$_SESSION['uid'];
 		}else{
-			$userid="UNK";		
-		} 	
-		
+			$userid="UNK";
+		}
+
 		// Get visibility from course table
-		$hr=false;
+		$courseVisibility;
 		$query = $pdo->prepare("SELECT visibility FROM course WHERE cid=:cid");
 		$query->bindParam(':cid', $cid);
 		$result = $query->execute();
-		if($row = $query->fetch(PDO::FETCH_ASSOC)){
-			$hr = ((checklogin() && hasAccess($userid, $cid, 'r')) || $row['visibility'] != 0);
-			if(!$hr){
-				if(checklogin()){
-					$hr = isSuperUser($userid);
+		if($row = $query->fetch(PDO::FETCH_ASSOC)) {
+		  $courseVisibility = $row['visibility'];
+		} else {
+		    $debug="Error reading dugga visibility";
+		}
+
+		// Read visibility of file
+		$duggaVisibility;
+		$query = $pdo->prepare("SELECT visible FROM listentries, variant
+														WHERE listentries.cid=:cid
+														AND listentries.link=variant.quizID
+														AND (replace(replace(variant.param, ': ', ':'), ' :', ':') LIKE :target
+														OR replace(replace(variant.param, ': ', ':'), ' :', ':') LIKE :filelink)");
+		$query->bindParam(':cid', $cid);
+		$query->bindValue(':target', "%\"target\":\"$fname\"%");
+		$query->bindValue(':filelink', "%\"filelink\":\"$fname\"%");
+		$result = $query->execute();
+		if($result){
+			foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+				$visible = $row['visible'];
+				if(!isset($duggaVisibility)) $duggaVisibility = $visible;
+				// Set permission to hidden
+				if ($visible == 0 && ($duggaVisibility != 1 && $duggaVisibility != 2)){
+					$duggaVisibility = 0;
+				}
+				// Set permission to private
+				if ($visible == 2 && $duggaVisibility == 0){
+					$duggaVisibility = 2;
+				}
+				// Set permission to public
+				if ($visible == 1 && $duggaVisibility != 1){
+					$duggaVisibility = 1;
+					break;
 				}
 			}
 		}
-		
-		if($hr){
+
+		$access = false;
+		if (checklogin()) {
+		  if (((hasAccess($userid, $cid, 'r')) &&
+		      ($duggaVisibility == 1 || $duggaVisibility == 2)&&
+		      ($courseVisibility == 1 || $courseVisibility == 2)) ||
+		      isSuperUser($userid)) {
+		    $access = true;
+		  }
+		} else if ($duggaVisibility == 1 && $courseVisibility == 1) {
+		  $access = true;
+		}
+
+		if($access){
 			// If we have access rights, read the file securely to document
-			if(is_numeric($fid)){ 
+			if(is_numeric($fid)){
 				// Check if it is a number or a filename
 				$query = $pdo->prepare("SELECT filename,kind from fileLink WHERE cid=:cid and fileid=:fid;");
 				$query->bindParam(':cid', $cid);
@@ -398,13 +439,13 @@
 				if($row = $query->fetch(PDO::FETCH_ASSOC)){
 					$filekind=$row['kind'];
 					$filename = $row['filename'];
-		
+
 					if($filekind==1){
 						// Link
 						//--------------------------
 						echo "<script>window.location.replace('".$filename."');</script>";
 					}else{
-		
+
 							if($filekind==2){
 								// Global
 								$file = "../courses/global/".$filename;
@@ -415,11 +456,11 @@
 								// Local
 								$file = "../courses/".$cid."/".$coursevers."/".$filename;
 							}else{
-								$file = "UNK";					
+								$file = "UNK";
 							}
-					
+
 							if(file_exists ( $file)){
-									$file_extension = strtolower(substr(strrchr($filename,"."),1));									
+									$file_extension = strtolower(substr(strrchr($filename,"."),1));
 									if($file_extension=="html"){
 											  $bummer=file_get_contents($file);
 									}else if($file_extension=="md"){
@@ -446,7 +487,7 @@
 											exit;
 									}
 								}else{
-									$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!".$file."</div>";										  
+									$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> The link you asked for does not currently exist!".$file."</div>";
 								}
 					}
 				}else{
@@ -454,14 +495,14 @@
 				}
 			}else{
 					$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
-			}		
+			}
 		}else{
 				$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
-		}		
-		
+		}
+
 		if(!$readfile){
 				if($hdrs=="none"){
-				
+
 				}else{
             $temp = explode('.', $filename);
             $ext  = array_pop($temp);
@@ -473,22 +514,22 @@
 						echo "<title>Document Viewer: $name</title>";
 						echo "<link type='text/css' href='../Shared/css/style.css' rel='stylesheet'>";
 						echo "<link type='text/css' href='../Shared/css/markdown.css' rel='stylesheet'>";
-						echo "<link type='text/css' href='../Shared/css/jquery-ui-1.10.4.min.css' rel='stylesheet'>";  
+						echo "<link type='text/css' href='../Shared/css/jquery-ui-1.10.4.min.css' rel='stylesheet'>";
 						echo "<script src='../Shared/js/jquery-1.11.0.min.js'></script>";
 						echo "<script src='../Shared/js/jquery-ui-1.10.4.min.js'></script>";
 						echo "<script src='../Shared/dugga.js'></script>";
-						echo "<script src='../Shared/markdown.js'></script>";				
+						echo "<script src='../Shared/markdown.js'></script>";
 						echo "</head>";
 						echo "<body>";
 				}
-				
+
 				if($hdrs=="none"){
-					
+
 				}else if($readfile == false){
 					$noup="SECTION";
 					include '../Shared/navheader.php';
 				}
-								
+
 				if($hdrs!="none") echo "<div id='content'>";
 
 				// Only .md files are supported
@@ -497,21 +538,21 @@
 						$bummer=parseMarkdown($bummer);
 						$bummer="<div class='descbox'>".$bummer."</div>";
 				}
-				
+
 				echo $bummer;
 
 				if($hdrs!="none"){
 						echo "</div>";
-						
+
 						include '../Shared/loginbox.php';
-		
-						// Code for supporting markdown gif clips for animated tutorials				
+
+						// Code for supporting markdown gif clips for animated tutorials
 						echo "<div id='figmd' class='figmd'><img id='bigmd' src='' class='bigmd' /></div>";
 						echo "<div id='backmd' class='backmd'></div>";
 
 						echo "</body>";
-						echo "</html>";		
+						echo "</html>";
 				}
-				
+
 		}
 ?>

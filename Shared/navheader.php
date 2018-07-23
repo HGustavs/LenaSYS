@@ -1,5 +1,5 @@
     <header>
-		<?php	
+		<?php
 			echo "<table class='navheader'><tr>";
 
 			include_once "../Shared/basic.php";
@@ -33,17 +33,8 @@
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
-        
-			if($noup=='COURSE'){
-                    $cid=getOPG('cid');
-                    if($cid=="UNK") $cid=getOPG('courseid');
-                    $coursevers=getOPG('coursevers');
-                    if($coursevers=="UNK") $coursevers=getOPG('cvers');
-					echo "<td class='navButt' id='swimlane' title='Visual representation of course moment releases and deadlines'>";
-          echo "<a class ='linkSwimlane' href='#' onclick='swimlaneSetup();'><img src='../Shared/icons/swimlane.svg'></a></td>";
 
-			}
-			
+
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
 					echo "<td class='navButt' id='beforebutton' title='Previous example' onmousedown='Skip(\"bd\");' onmouseup='Skip(\"bu\");' onclick='Skip(\"b\");'><img src='../Shared/icons/backward_button.svg'></td>";
@@ -75,10 +66,10 @@
 
 
 		echo "</tr></table>";
-		
+
 		//Cookie message
 		echo "<div id='cookiemsg' class='alertmsg'><p>This site uses cookies. By continuing to browse this page you accept the use of cookies.</p><input type='button' value='OK' class='submit-button' onclick='cookieMessage()'/></div>";
-		
+
 	?>
 </header>
 <?php

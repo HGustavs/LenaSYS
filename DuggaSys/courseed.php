@@ -43,12 +43,12 @@ $noup="NONE";
 		<div id='Courselist'>
 		</div>
 	</div>
-	
+
 	<!-- version identification -->
 	<div id="version" class='version' style='display:none'>Master hash <br /><?php echo $version ?></div>
-	
+
 	<!-- content END -->
-	
+
 	<?php
 	include '../Shared/loginbox.php';
 	?>
@@ -59,7 +59,7 @@ $noup="NONE";
 			<input type='button' value='Close' class='submit-button' onclick='document.getElementById("servermsgcontainer").style.display="none";'/>
 	</div>
 	<!-- Server Msg END -->
-	
+
 	<!-- New Course Section Dialog START -->
 	<div id='newCourse' class='loginBoxContainer' style='display:none;'>
     <div class='loginBox' style='width:464px;'>
@@ -99,30 +99,7 @@ $noup="NONE";
 	</div>
 	<!-- Edit Section Dialog END -->
 
-	<!-- New Version Dialog START -->
-	<div id='newCourseVersion' class='loginBoxContainer' style='display:none;'>
-      <div class='loginBox' style='width:464px;'>
-      		<div class='loginBoxheader'>
-      			<h3>New Course Version</h3>
-      			<div class="cursorPointer" onclick='closeWindows();' title="Close window">x</div>
-      		</div>
-      		<div style='padding:5px;'>
-      			<div class='inputwrapper'><span>Course Name:</span><input class='textinput' type='text' readonly id='coursename1' placeholder='Course Name' /></div>
-      			<div class='inputwrapper'><span>Course Code:</span><input class='textinput' type='text' readonly id='coursecode1' placeholder='Course Code' /></div>
-      			<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
-      			<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
-            <div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='startdate' value='' /></div>
-            <div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='' /></div>
-      			<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
-      			<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
-      		</div>
-      		<div style='padding:5px;'>
-      			<input class='submit-button' type='button' value='Create' title='Create new version' onclick='createVersion();' />
-      		</div>
-      </div>
-	</div>
-	<!-- New Verison Dialog END -->
-	
+
 	<!-- Edit Server Settings START -->
 	<div id='editSettings' class='loginBoxContainer' style='display:none;'>
     <div class='loginBox' style='width:464px;'>

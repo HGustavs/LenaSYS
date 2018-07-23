@@ -101,6 +101,7 @@ function getImage() {
 }
 
 function Save() {
+    c = [];
     for (var i = 0; i < diagram.length; i++) {
         c[i] = diagram[i].constructor.name;
         c[i] = c[i].replace(/"/g,"");
@@ -111,6 +112,24 @@ function Save() {
     console.log("State is saved");
 }
 
+function SaveState() {
+    Save();
+    if (diagramNumberHistory < diagramNumber) {
+        diagramNumberHistory++;
+        diagramNumber = diagramNumberHistory;
+    } else {
+        diagramNumber++;
+        diagramNumberHistory = diagramNumber;
+    }
+    localStorage.setItem("diagram" + diagramNumber, a);
+    for (var key in localStorage) {
+        if (key.indexOf("diagram") != -1) {
+            var tmp = key.match(/\d+$/);
+            if (tmp > diagramNumberHistory) localStorage.removeItem(key);
+        }
+    }
+}
+
 function SaveFile(el) {
     Save();
     var data = "text/json;charset=utf-8," + encodeURIComponent(a);
@@ -118,6 +137,11 @@ function SaveFile(el) {
     el.setAttribute("href", "data:" + data);
     el.setAttribute("download", "diagram.txt");
     updateGraphics();
+}
+
+function LoadImport(fileContent) {
+    a = fileContent;
+    Load();
 }
 
 function LoadFile() {
@@ -180,9 +204,10 @@ function Load() {
         diagram[i] = b.diagram[i];
     }
     // Points fix
-    for (var i = 0; i < b.points.length; i++) {
-        b.points[i] = Object.assign(new Path, b.points[i]);
-    }
+    // Currently unused, reimplement this when figures are reimplemented
+    /*for (var i = 0; i < b.points.length; i++) {
+        //b.points[i] = Object.assign(new Path, b.points[i]);
+    }*/
     points.length = b.points.length;
     for (var i = 0; i < b.points.length; i++) {
         points[i] = b.points[i];
@@ -190,6 +215,20 @@ function Load() {
     console.log("State is loaded");
     //Redrawn old state.
     updateGraphics();
+}
+
+function ExportSVG(el) {
+    var svgstr = "";
+    var width = window.innerWidth, height = window.innerHeight;
+    svgstr += "<svg width='"+width+"' height='"+height+"' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'>";
+    svgstr += gridToSVG(width, height);
+    svgstr += diagramToSVG();
+    svgstr += "</svg>";
+    //$("#canvasDiv").html(svgstr);
+    var data = "text/json;charset=utf-8," + encodeURIComponent(svgstr);
+    el.setAttribute("class", 'icon-download');
+    el.setAttribute("href", "data:" + data);
+    el.setAttribute("download", "diagram.svg");
 }
 
 $(document).ready(function(){

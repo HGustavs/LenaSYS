@@ -39,10 +39,10 @@ function checklogin()
         return true;
       } else if(failedLoginCount($_SERVER['REMOTE_ADDR']) < 100 && array_key_exists('username', $_COOKIE) && array_key_exists('password', $_COOKIE)) {
         return login($_COOKIE['username'], $_COOKIE['password'], false);
-      } else {		
+      } else {
         return false;
       }
-}	
+}
 
 //------------------------------------------------------------------------------------------------
 // showLoginPopup
@@ -123,10 +123,10 @@ function getQuestion($username)
 
             $query->execute();
 
-            if($query->rowCount() > 0) { 
+            if($query->rowCount() > 0) {
                 $_SESSION["getname"] = "Username not found";
                 return false;
-            }	
+            }
 
             if($row["securityquestion"]==null){
                 $_SESSION["getname"] = "Security question not found";
@@ -235,7 +235,7 @@ function standardPasswordHash($text)
 //------------------------------------------------------------------------------------------------
 // standardPasswordNeedsRehash
 //------------------------------------------------------------------------------------------------
-// Test if a hashed string meets the global LenaSys settings. 
+// Test if a hashed string meets the global LenaSys settings.
 // @param string $text Text to check
 // @return boolean
 //------------------------------------------------------------------------------------------------
@@ -262,7 +262,7 @@ function standardPasswordNeedsRehash($text)
 function login($username, $password, $savelogin)
 {
     global $pdo;
-    
+
 //    echo "SNÖ SNÖR eller SMÖR\n";
 
     if($pdo == null) {
@@ -276,7 +276,7 @@ function login($username, $password, $savelogin)
     if(!$query->execute()){
         $error=$query->errorInfo();
         echo "Error reading user entries".$error[2]."\n";
-    }    
+    }
 
     if($query->rowCount() > 0) {
         // echo "Rowcount>0\n";
@@ -349,7 +349,7 @@ function login($username, $password, $savelogin)
 // Check if a specified user ID has the requested access on a specified course
 // @param int $userId User ID of the user to look up
 // @param int $courseId ID of the course to look up access for
-// @param string $access_type A single letter denoting read or write access 
+// @param string $access_type A single letter denoting read or write access
 // (r and w respectively)
 // @return bool Returns true if the user has the requested access on the course
 // and false if they don't.
@@ -362,7 +362,7 @@ function hasAccess($userId, $courseId, $access_type)
 	if($access_type === 'w') {
 		return strtolower($access) == 'w';
 	} else if ($access_type === 'r') {
-		return strtolower($access) == 'r' || strtolower($access) == 'w'; 
+		return strtolower($access) == 'r' || strtolower($access) == 'w';
 	} else {
 		return false;
 	}

@@ -1,0 +1,490 @@
+<html>
+<head>
+    <meta charset="utf-8">
+  	<script src="sortableTable.js"></script> 
+  	<script>
+        // -------------------------------------------------------------------------------------------------------
+        // -----------------=============######## Sortable Table Demo Code ########=============-----------------
+        // -------------------------------------------------------------------------------------------------------
+        //  Copyright a97marbr / HGustavs 
+        //
+        //        (\ /)
+        //        (. .)           
+        //       c(")(")                ∴ 
+        //--------------------------------------------------------------------------------------------------------
+
+        //------------==========########### GLOBALS ###########==========------------
+        var tables = ["listentries","thetable2"];
+        var tabledata = {
+        	tblhead:[
+        		"lid","cid","entryname"
+        	],
+        	tblbody:[],
+        	tblfoot:["","","","","","",""]
+        }
+        var tabledata2 = {
+        	tblhead:[
+        		"ID","First/Last","Pnr","Num","Foo","Holk","Trumma"
+        	],
+        	tblbody:[],
+        	tblfoot:["","","Pnr","Num","","","Trumma"]
+        }
+
+        var myTable,myTable2;
+
+        //------------==========########### FUNCTIONZ ###########==========------------
+
+        //--------------------------------------------------------------------------
+        // setup
+        // ---------------
+        //  Creates the table object and assigns all mandatory pararmeters
+        //  
+        //  tbl,tableid,filterid,caption,renderCell,renderSortOptions,renderColumnFilter
+        //--------------------------------------------------------------------------
+
+        function setup() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log(this.responseText);                 
+                    var serverdata = JSON.parse(this.responseText);
+                    console.log(serverdata);
+                    
+                    tabledata.tblbody = serverdata[tables[0]];
+                    tabledata2.tblbody = serverdata[tables[1]];
+                    myTable = new SortableTable(
+                        tabledata,
+                        tables[0],
+                        "columnfilter",
+                        "listentries",
+                        renderCell,
+                        renderSortOptions,
+                        renderColumnFilter,
+                        rowFilter,
+                        ["lid","cid"],
+                        ["lid","cid"],				
+                        "RowSum",
+                        makeSum,
+                        "lid",
+                        rowHighlightOn,
+                        rowHighlightOff,
+                        displayCellEdit,
+                        updateCellCallback
+                    );
+                    myTable2 = new SortableTable(
+                        tabledata2,
+                        tables[1],
+                        "columnfilter2",
+                        "Booyah!",
+                        function(celldata,col,cellid){return renderCell(celldata,col,cellid)},
+                        function(col, kind){return renderSortOptions2(col,kind)},
+                        function(col, status){return renderColumnFilter2(col,status)},
+                        function(row){ return rowFilter(row)},
+                        ["Pnr","Num","Trumma"],
+                        ["Pnr","Num"],				
+                        "RowSum",
+                        function(col, val, row){return makeSum(col,val,row);},
+                        "First/Last",
+                        rowHighlightOn,
+                        rowHighlightOff,
+                        displayCellEdit,
+                        updateCellCallback
+                      );
+                      myTable.renderTable();
+                      myTable2.renderTable();
+                }
+            };
+            xhttp.open("GET", "db_service.php?dbarr=" + JSON.stringify(tables), true);
+            xhttp.send();  		
+        }
+
+        // function dbConnect()
+        // {
+        //     $printHeaderFunction=0;
+        //     // Send header info to err()?
+        //     if ($printHeaderFunction) {
+        //         $hdr = 'Database Connection Error';
+        //     } else {
+        //         $hdr = '';
+        //     }
+
+        //     // Connect to DB server
+        //     $OC_db = mysql_connect(DB_HOST,DB_USER,DB_PASSWORD) or err("Could not connect to database ".mysql_errno(),$hdr);
+        //     mysql_set_charset('utf8',$OC_db);
+        //     // Select DB
+        //     mysql_select_db(DB_NAME) or err("Could not select database \"".DB_NAME."\" error code".mysql_errno(),$hdr);
+        // }
+
+        // function pdoConnect()
+        // {
+        //     global $pdo;
+        //     try {
+        //         $pdo = new PDO(
+        //             'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8',
+        //             DB_USER,
+        //             DB_PASSWORD
+        //         );
+        //     } catch (PDOException $e) {
+        //         echo "Failed to get DB handle: " . $e->getMessage() . "</br>";
+        //         exit;
+        //     }
+
+        // }
+        			
+        //--------------------------------------------------------------------------
+        // editCell
+        // ---------------
+        //  Callback function for showing a cell editing interface
+        //--------------------------------------------------------------------------
+        function displayCellEdit(celldata,rowno,rowelement,cellelement,column,colno,rowdata,coldata,tableid){
+            let str = "";
+            if (column == "trumma") {
+                str += "<div style='display:flex;flex-direction:column;flex-grow:1;'>";
+                str += "<input type='text' id='popoveredit_xk' class='popoveredit' style='flex-grow:1' value='" + celldata.xk + "' size=" + celldata.xk.toString().length + "/>";
+                str += "<input type='text' id='popoveredit_yk' class='popoveredit' style='flex-grow:1' value='" + celldata.yk + "' size=" + celldata.yk.toString().length + "/>";
+                str += "<input type='text' id='popoveredit_col' class='popoveredit' style='flex-grow:1' value='" + celldata.col + "' size=" + celldata.col.toString().length + "/>";
+                str += "</div>";
+            } else {
+                str += "<input type='text' id='popoveredit0' class='popoveredit' style='flex-grow:1' value='" + celldata + "' size='" + celldata.toString().length + "'/>";
+            }
+            return str;          
+        }
+
+        //--------------------------------------------------------------------------
+        // updateCellCallback
+        // ---------------
+        //  Callback function for updating a cell value after editing a cell
+        //--------------------------------------------------------------------------
+        function updateCellCallback(rowno,colno,column,tableid) {
+            // Make AJAX call and return 
+            console.log(rowno,colno,column,tableid);
+            if (column == "pnr") {        
+                var newcelldata = parseFloat(document.getElementById("popoveredit0").value);
+                if (isNaN(newcelldata)) {
+                    return -1;// This must be handled
+                } else {
+                    updateDB(tableid,rowno,column,newcelldata);
+                    return newcelldata;
+                }        
+            } else if (column == "num") {
+                var newcelldata = parseInt(document.getElementById("popoveredit0").value);
+                if (isNaN(newcelldata)) {
+                    return -1;// This must be handled
+                } else {
+                    updateDB(tableid,rowno,column,newcelldata);
+                    return newcelldata;
+                }          
+            } else if (column == "trumma") {
+                // TODO: Check of individual parts needs to be done.
+                var obj = {xk:parseInt(document.getElementById("popoveredit_xk").value), yk:parseInt(document.getElementById("popoveredit_yk").value), col:document.getElementById("popoveredit_col").value};
+                updateDB(tableid, rowno, column, JSON.stringify(obj));
+                return obj;
+            } else {
+                updateDB(tableid, rowno, column, document.getElementById("popoveredit0").value);
+                return document.getElementById("popoveredit0").value;
+            }    
+        }
+        			
+        //--------------------------------------------------------------------------
+        // updateDB
+        // ---------------
+        // AJAX call to update cell value in database on server
+        //--------------------------------------------------------------------------
+        function updateDB(tableid,id,col,val){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert("Cell updated on server side.");
+                }
+            };
+            xhttp.open("GET", "db_service.php?command=update&updateid=" + id + "&updatecol=" + col + "&updatevalue=" + val + "&updatetable=" + tableid + "&dbarr=" + JSON.stringify(tables), true);
+            xhttp.send();
+        }
+
+        //--------------------------------------------------------------------------
+        // genDB
+        // ---------------
+        // AJAX call to generate new databases on server.
+        // THIS COMPLETELY REMOVES PREVIOUS DATABASES
+        //--------------------------------------------------------------------------
+        function genDB(){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    alert("Database generated.");
+                    location.reload();
+                }
+            };
+            xhttp.open("GET", "db_service.php?command=gendata&dbarr=" + JSON.stringify(tables), true);
+            xhttp.send();
+        }
+
+        //--------------------------------------------------------------------------
+        // rowHighlight
+        // ---------------
+        //  Callback function that highlights the currently hovered row
+        //--------------------------------------------------------------------------
+        			
+        function rowHighlightOn(rowid,rowno,colclass,centerel) {
+            document.getElementById(rowid).style.border = "2px solid rgba(255,0,0,1)";
+    		centerel.style.backgroundImage = "radial-gradient(RGBA(0,0,0,0),RGBA(0,0,0,0.2))";
+        }
+
+        function rowHighlightOff(rowid,rowno,colclass,centerel) {
+            document.getElementById(rowid).style.border = "";
+    		centerel.style.backgroundImage = "none";
+        }
+        			
+        //--------------------------------------------------------------------------
+        // renderColumnFilter
+        // ---------------
+        //  Callback function that renders the col filter div
+        //--------------------------------------------------------------------------
+        		
+        function renderColumnFilter(col,status) {
+    		str = "";
+
+    		if (status) {
+    			str = "<label>" + col + "</label>:<input type='checkbox' checked onclick='myTable.toggleColumn(\"" + col + "\")'>";
+    		} else {
+    			str = "<label>" + col + "</label>:<input type='checkbox' onclick='myTable.toggleColumn(\"" + col + "\")'>";
+    		}
+    		return str;
+        }
+
+        function renderColumnFilter2(col,status) {	
+    		str = "";
+
+    		if (status) {
+    			str = "<label>" + col + "</label>:<input type='checkbox' checked onclick='myTable2.toggleColumn(\"" + col + "\")'>";
+    		} else {
+    			str = "<label>" + col + "</label>:<input type='checkbox' onclick='myTable2.toggleColumn(\"" + col + "\")'>";
+    		}
+    		return str;
+        }
+
+        //--------------------------------------------------------------------------
+        // renderSortOptions
+        // ---------------
+        //  Callback function that renders the col filter div
+        //--------------------------------------------------------------------------
+        		
+        function renderSortOptions(col,status) {
+    		str = "";
+    		if (status == -1) {
+				if (col == "First/Last") {
+					str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",1)'>First</span>/";
+					str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",3)'>Last</span>";
+				} else {
+						str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "</span>";
+				}
+    		} else {
+				if (col == "First/Last") {
+					// First up/down vs Last up/down
+					if (status == 0 || status == 1) {
+						if (status == 0) {
+								str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",1)'>First&#x25b2;</span>/";
+						} else {
+								str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",0)'>First&#x25bc;</span>/";
+						}
+						str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",2)'>Last</span>";	
+					} else if (status == 2 || status == 3) {
+						str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",1)'>First</span>/";
+						if (status == 2) {
+								str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",3)'>Last&#x25b2;</span>";
+						} else {
+								str += "<span onclick='myTable.toggleSortStatus(\"First/Last\",2)'>Last&#x25bc;</span>";	
+						}
+					}		            
+                } else if (col == "Trumma") {
+					// Special sort for Trumma (JSON structure)
+                    str += "<span>" + col + "</span>";
+                    str += "<select onchange='myTable.toggleSortStatus(\"" + col + "\",this.value)'>";
+                    str += "<option hidden disabled selected value>Select Sort</option>"
+                    str += "<option value='0'>x&#x25b2;/y</option>";
+                    str += "<option value='1'>x&#x25bc;/y</option>";
+                    str += "<option value='2'>x/y&#x25b2;</option>";
+                    str += "<option value='3'>x/y&#x25bc;</option>";
+                    str += "</select>";
+            	} else {
+					if (status) {
+						str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "&#x25bc;</span>";
+					} else {
+						str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "&#x25b2;</span>";
+					}
+				}
+    		}
+
+    		return str;
+        }
+
+        function renderSortOptions2(col,status) {
+    		str = "";
+    		
+    		if (status == -1) {
+				if (col == "First/Last") {
+					str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",1)'>First</span>/";
+					str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",3)'>Last</span>";
+				} else {
+					str += "<span onclick='myTable2.toggleSortStatus(\"" + col + "\",1)'>" + col + "</span>";
+				}
+    		} else {
+				if (col == "First/Last") {
+					// First up/down vs Last up/down
+					if (status == 0 || status == 1) {
+						if (status == 0) {
+							str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",1)'>First&#x25b2;</span>/";
+						} else {
+							str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",0)'>First&#x25bc;</span>/";
+						}
+						str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",2)'>Last</span>";
+					} else if (status == 2 || status == 3) {
+						str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",1)'>First</span>/";
+						if (status == 2) {
+							str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",3)'>Last&#x25b2;</span>";	
+						} else {
+							str += "<span onclick='myTable2.toggleSortStatus(\"First/Last\",2)'>Last&#x25bc;</span>";
+						}
+					}		            
+                } else if (col == "Trumma") {
+					// Special sort for Trumma (JSON structure)
+                    str += "<span>" + col + "</span>";
+                    str += "<select onchange='myTable2.toggleSortStatus(\"" + col + "\",this.value)'>";
+                    str += "<option hidden disabled selected value>Select Sort</option>"
+                    str += "<option value='0'>x&#x25b2;/y</option>";
+                    str += "<option value='1'>x&#x25bc;/y</option>";
+                    str += "<option value='2'>x/y&#x25b2;</option>";
+                    str += "<option value='3'>x/y&#x25bc;</option>";
+                    str += "</select>";
+                } else {
+					if (status) {
+						str += "<span onclick='myTable2.toggleSortStatus(\"" + col + "\",0)'>" + col + "&#x25bc;</span>";
+					} else {
+						str += "<span onclick='myTable2.toggleSortStatus(\"" + col + "\",1)'>" + col + "&#x25b2;</span>";
+					}
+				}
+    		}
+
+    		return str;
+        }
+
+        //--------------------------------------------------------------------------
+        // renderCell
+        // ---------------
+        //  Callback function that renders a specific cell in the table
+        //--------------------------------------------------------------------------
+        		
+        function renderCell(celldata,col) {
+            if (col == "Trumma") {
+                return "<div><span>" + celldata.xk + "</span>/<span>" + celldata.yk + "</span></div>";
+            } else if (col == "Pnr") {
+                return "<div>" + celldata + "</div>";
+            } 
+        	return celldata;
+        }
+
+        //--------------------------------------------------------------------------
+        // rowFilter
+        // ---------------
+        //  Callback function that filters rows in the table
+        //--------------------------------------------------------------------------
+        		
+        function rowFilter(row) {
+        	return true;
+        }
+
+        //--------------------------------------------------------------------------
+        // compare
+        // ---------------
+        //  Callback function with different compare alternatives for the column sort
+        //--------------------------------------------------------------------------
+        function compare(a,b) {
+            // Find out which column and part of column are we sorting on from currentTable
+            let col = currentTable.getSortcolumn();
+            let kind = currentTable.getSortkind();
+            
+            if (col == "Trumma") {
+                if (kind == 0 || kind == 1) { 
+                    return a.xk - b.xk; 
+                } else if (kind == 2 || kind == 3) { 
+                    return a.yk - b.yk; 
+              } 
+            } else if (col == "First/Last") {
+                // Sort Fname / Lname 
+                if (kind == 0 || kind == 1) { 
+                    let afname = a.substr(0,a.indexOf(' '));
+                    let bfname = b.substr(0,b.indexOf(' '));
+                    if (afname < bfname) return -1; 
+                    if (afname > bfname) return 1; 
+                    return 0; 
+                } else if (kind == 2 || kind == 3) { 
+                    let alname = a.substr(a.indexOf(' ') + 1);
+                    let blname = b.substr(b.indexOf(' ') + 1);
+                    if (alname < blname) return -1; 
+                    if (alname > blname) return 1; 
+                    return 0; 
+                }
+            } else if (col == "Foo" || col == "Holk") {
+                if (a < b) return -1; 
+                if (a > b) return 1; 
+                return 0; 
+            } else {
+                // We allways sort none numbers below 
+                let tmp = (currentTable.ascending) ? -1000000 : 1000000;
+                
+                let left = (isNaN(a)) ? tmp : +a; 
+                let right = (isNaN(b)) ? tmp : +b; 
+                
+                return right - left;     
+            }
+        }
+
+        //--------------------------------------------------------------------------
+        // makeSum
+        // ---------------
+        //	makeSum col,value  
+        //  row is optional
+        //--------------------------------------------------------------------------
+        function makeSum(col,value,row) {
+        		if (col == "Trumma") {
+        				return value.xk;
+        		} else if (col == "RowSum") {
+        				return value.xk;
+        		} else {
+        				if (value == "UNK") {
+        						return 0;
+        				} else {
+        						return parseFloat(value);
+        				}
+        		}
+        		return 0;
+        }
+
+		</script>
+</head>
+<body onload="setup();" onkeypress='keypressHandler(event)'>
+
+    <h2>Example Table 1</h2>
+
+  	<button onclick="genDB();">Generate new databases</button>
+
+  	<div id='MHTEST'></div>
+
+  	<!-- Column filter div -->
+  	<div id="columnfilter"></div>
+    
+    <!-- Table placeholder -->
+    <div id="listentries"></div>
+    <br>
+    
+    <!-- You can have multiple tables on the same page -->
+    <h2>Example Table 2</h2>
+    <div id="columnfilter2"></div>
+
+    <div id="thetable2"></div>
+    <br>
+  	
+  	<div id="editpopover" style="display:none;"></div>
+  	
+  	<div id="dropdown"></div>
+</body>

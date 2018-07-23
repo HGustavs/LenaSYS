@@ -1,6 +1,6 @@
 /********************************************************************************
 
-   Documentation 
+   Documentation
 
 *********************************************************************************
 
@@ -8,7 +8,7 @@ Example seed
 ---------------------
 	 Example seed
 	 Param: {"instructions":"Move and resize the box with id greger until it matches the required format.","query":"Make the greger-box 100px x 100px and with a 25px left side margin and 50px bottom padding",[]}
-	 Answer: 
+	 Answer:
 -------------==============######## Documentation End ###########==============-------------
 */
 
@@ -57,7 +57,7 @@ var evalstr = "";
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
-function setup() 
+function setup()
 {
 	running = true;
 	tickInterval = setInterval("tick();", 50);
@@ -66,13 +66,13 @@ function setup()
 
 }
 
-function returnedDugga(data) 
-{	
+function returnedDugga(data)
+{
 
-	$("#content").css({"position":"relative","top":"50px"});
+	$("#content").css({"position":"relative"});
 
 	dataV = data;
-	
+
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
 	if (data['param'] == "UNK") {
@@ -88,7 +88,7 @@ function returnedDugga(data)
 		if (data["answer"] == null || data["answer"] !== "UNK") {
 			var userCode = data["answer"].slice(data["answer"].indexOf("###HTMLSTART###")+15,data["answer"].indexOf("###HTMLEND###"));
 			userCode =  reverseHtmlEntities(userCode);
-			
+
 			var userUrl = data["answer"].slice(data["answer"].indexOf("###URLSTART###")+14,data["answer"].indexOf("###URLEND###"));
 			userUrl =  reverseHtmlEntities(userUrl);
 
@@ -99,7 +99,7 @@ function returnedDugga(data)
 			refreshdUrl();
 		}
 
-		var max = 0;    
+		var max = 0;
 		$('.dugga-col').each(function() {
 		    max = Math.max($(this).height(), max);
 		}).height(max);
@@ -114,9 +114,9 @@ function returnedDugga(data)
 			for (var k=feedbackArr.length-1;k>=0;k--){
 				var fb_tmp = feedbackArr[k].split("%%");
 				fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-			} 		
+			}
 			fb += "</tbody></table>";
-			document.getElementById('feedbackTable').innerHTML = fb;		
+			document.getElementById('feedbackTable').innerHTML = fb;
 			document.getElementById('feedbackBox').style.display = "block";
 	}
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
@@ -136,7 +136,7 @@ function reset()
 
 }
 
-function saveClick() 
+function saveClick()
 {
 	Timer.stopTimer();
 
@@ -145,7 +145,7 @@ function saveClick()
 
 	score = 0;
 
-	if (querystring['highscoremode'] == 1) {	
+	if (querystring['highscoremode'] == 1) {
 		score = Timer.score;
 	} else if (querystring['highscoremode'] == 2) {
 		score = ClickCounter.score;
@@ -207,24 +207,24 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 			userCode =  reverseHtmlEntities(userCode);
 			var userUrl = uanswer.substr(uanswer.indexOf("###URLSTART###"),uanswer.indexOf("###URLEND###"));
 			var res = userUrl.split(",");
-			userUrl = res[0]; 
+			userUrl = res[0];
 			userUrl = userUrl.replace("###URLSTART###", "");
 			userUrl = userUrl.replace("###URLEND###", "");
 			userUrl =  reverseHtmlEntities(userUrl);
 			*/
 			var userCode = uanswer.slice(uanswer.indexOf("###HTMLSTART###")+15,uanswer.indexOf("###HTMLEND###"));
 			userCode =  reverseHtmlEntities(userCode);
-			
+
 			var userUrl = uanswer.slice(uanswer.indexOf("###URLSTART###")+14,uanswer.indexOf("###URLEND###"));
 			userUrl =  reverseHtmlEntities(userUrl);
       if(window.location.protocol === "https:"){
           userUrl=userUrl.replace("http://", "https://");
       }else{
-          userUrl=userUrl.replace("https://", "http://");				
+          userUrl=userUrl.replace("https://", "http://");
       }
 
 			var markWindowHeight = $("#MarkCont").height();
-			
+
 			$("#MarkCont").css({"overflow":"hidden"});
 
 			document.getElementById("input-col").style.height = (markWindowHeight-55)+"px";
@@ -247,7 +247,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 
 			document.getElementById("validation-col").style.height = (markWindowHeight-55)+"px";
 
-			
+
 			document.getElementById("url-validation-window").innerHTML = '<iframe style="pointer-events: none;width: 400px; height:1200px; border: 1px solid black; overflow:hidden; transform:scale(1); transform-origin:0 0; box-sizing:border-box;" src="https://html5.validator.nu/?doc='+ encodeURIComponent(userUrl)+'"></iframe>';
 
 
@@ -263,7 +263,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 		for (var k=feedbackArr.length-1;k>=0;k--){
 			var fb_tmp = feedbackArr[k].split("%%");
 			fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
-		} 		
+		}
 	}
 	fb += "</tbody></table>";
 	if (document.getElementById('teacherFeedbackTable')){
@@ -272,7 +272,7 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 
 }
 
-function closeFacit() 
+function closeFacit()
 {
 	clearInterval(tickInterval);
 	running = false;
@@ -283,7 +283,7 @@ function closeFacit()
 //--------------------================############================--------------------
 //------------==========########### CONTROLLER FUNCTIONS ###########==========------------
 
-function tick() 
+function tick()
 {
 	v += speed;
 	elapsedTime++;
@@ -312,9 +312,9 @@ function startDuggaHighScore(){
 	} else {
 		score = 0;
 	}
-}			
+}
 function reverseHtmlEntities(str) {
-													
+
 		befstr=str;
 		if(str!=undefined && str != null){
 				str=str.replace(/\&amp\;/g, '&');
@@ -344,7 +344,7 @@ function refreshdUrl()
     if(window.location.protocol === "https:"){
         newUrl=newUrl.replace("http://", "https://");
     }else{
-        newUrl=newUrl.replace("https://", "http://");				
+        newUrl=newUrl.replace("https://", "http://");
     }
 
 		document.getElementById("url-preview-window").innerHTML = '<iframe style="box-sizing:border-box;min-height:400px;min-width:400px;width:100%;height:100%;overflow:scroll;" id="preview-url-window" src="'+newUrl+'"></iframe>'
@@ -355,7 +355,7 @@ function processpreview()
 {
 		content=document.getElementById("content-window").value;
 		content=encodeURIComponent(content);
-		
+
 		document.getElementById("code-preview-window").src="preview.php?prev="+content;
 }
 

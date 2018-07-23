@@ -1,0 +1,215 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <!--<style>
+        table {
+          padding: 0 75px;
+        }
+
+        th,td {
+            white-space: nowrap;
+            padding: 0 0px;           
+        }
+        tr,td,th {
+            background-color: inherit;
+        }
+        tr:nth-child(odd) {
+            background-color: #dddddd;
+        }
+        tr:nth-child(even) {
+            background-color: #ffffff;
+        }
+				.gradient {
+							background-image: radial-gradient(yellow,#f06d06);
+				}
+		
+				#editpopover{
+						border:1px solid red;
+						box-shadow:2px 2px 2px #000;
+						position:absolute;
+						background-color: #82a43a; 
+				}
+			
+  			.icon {
+  					width:20px;
+  					height:20px;
+  					padding:0px;
+  			}                
+        
+        #input-container input{
+            width:100%;
+        }
+			
+     </style>-->
+ 		<script src="sortableTable.js"></script> 
+		<script>
+
+// -------------------------------------------------------------------------------------------------------
+// -----------------=============######## Sortable Table Demo Code ########=============-----------------
+// -------------------------------------------------------------------------------------------------------
+//  Copyright a97marbr / HGustavs 
+//
+//        (\ /)
+//        (. .)           
+//       c(")(")                ∴ 
+//--------------------------------------------------------------------------------------------------------
+
+//------------==========########### GLOBALS ###########==========------------
+
+var tabledata={
+	tblhead:[
+		"First/Last","Pnr","Num","Foo","Holk","Trumma"
+	],
+	tblbody:[
+	],
+	tblfoot:[]
+}
+
+var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		
+for(i=0;i<200;i++){
+
+		var wordcnt=Math.round(Math.random()*5+1);
+		var str="";
+		var str2="";
+		var str3="";
+		for(j=0;j<wordcnt;j++){
+				var charcnt=Math.round(Math.random()*10);
+				for(var k=0;k<charcnt;k++){
+						str += possible.charAt(Math.floor(Math.random() * possible.length));
+            str2 += possible.charAt(Math.floor(Math.random() * possible.length));
+            str3 += possible.charAt(Math.floor(Math.random() * possible.length));
+				}
+        str+=" ";
+        str2+=" ";
+        str3+=" ";
+		}
+		
+		tabledata.tblbody.push([str,Math.random()*5000,Math.round(Math.random()*20),str2,str3,{xk:Math.round(Math.random()*2000+1000),yk:Math.round(Math.random()*500),col:"Free Shevacadoo"}]);
+}
+
+var myTable,myTable2;
+
+//------------==========########### FUNCTIONZ ###########==========------------
+
+//--------------------------------------------------------------------------
+// setup
+// ---------------
+//  Creates the table object and assigns all mandatory pararmeters
+//  
+// tabledata contains the data for the table contents
+// "thetable" is ID for table element
+// "TableTitle" is Title of Table
+// "renderCell" is Callback for rendering each cell
+//--------------------------------------------------------------------------
+
+function setup(){
+  myTable = new SortableTable(
+		  tabledata,
+		  "thetable",
+		  null,
+			"Table Title!",
+      renderCell,
+      null,
+      null,
+      null,
+      [],
+      [],				
+      "",
+      null,
+      null,
+			null,
+			null,
+			displayCellEdit,
+      updateCellCallback,
+		  false
+	);
+	
+	myTable.renderTable();
+  
+}
+
+//--------------------------------------------------------------------------
+// renderCell
+// ---------------
+//  Callback function that renders a specific cell in the table
+//--------------------------------------------------------------------------
+		
+function renderCell(celldata,col){
+    if (col=="Trumma"){
+        return "<div><span>"+celldata.xk+"</span>/<span>"+celldata.yk+"</span></div>";
+    } else if (col=="Pnr"){
+        return "<div style='text-align:right'>"+celldata+"</div>";
+    }    
+		return celldata;
+}
+
+//--------------------------------------------------------------------------
+// editCell
+// ---------------
+//  Callback function for showing a cell editing interface
+//--------------------------------------------------------------------------
+function displayCellEdit(celldata,rowno,rowelement,cellelement,column,colno,rowdata,coldata,tableid){
+    let str="";
+    if(column=="trumma"){
+        str+="<div style='display:flex;flex-direction:column;flex-grow:1;'>";
+        str+="<input type='text' id='popoveredit_xk' class='popoveredit' style='flex-grow:1' value='"+celldata.xk+"' size="+celldata.xk.toString().length+"/>";
+        str+="<input type='text' id='popoveredit_yk' class='popoveredit' style='flex-grow:1' value='"+celldata.yk+"' size="+celldata.yk.toString().length+"/>";
+        str+="<input type='text' id='popoveredit_col' class='popoveredit' style='flex-grow:1' value='"+celldata.col+"' size="+celldata.col.toString().length+"/>";
+        str+="</div>";
+    }else{
+        str+="<input type='text' id='popoveredit0' class='popoveredit' style='flex-grow:1' value='"+celldata+"' size='"+celldata.toString().length+"'/>";
+    }
+    return str;          
+}
+
+//--------------------------------------------------------------------------
+// updateCellCallback
+// ---------------
+//  Callback function for updating a cell value after editing a cell
+//--------------------------------------------------------------------------
+function updateCellCallback(rowno,colno,column,tableid){
+    // Make AJAX call and return 
+    console.log(rowno,colno,column,tableid);
+    if(column=="pnr"){        
+        var newcelldata=parseFloat(document.getElementById("popoveredit0").value);
+        if(isNaN(newcelldata)){
+            return -1;// This must be handled
+        }else{
+            return newcelldata;
+        }          
+    }else if(column=="num"){
+        var newcelldata=parseInt(document.getElementById("popoveredit0").value);
+        if(isNaN(newcelldata)){
+            return -1;// This must be handled
+        }else{
+            return newcelldata;
+        }          
+    }else if(column=="trumma"){
+        // TODO: Check of individual parts needs to be done.
+        var obj={xk:parseInt(document.getElementById("popoveredit_xk").value),yk:parseInt(document.getElementById("popoveredit_yk").value),col:document.getElementById("popoveredit_col").value};
+        return obj;
+    }else{
+        return document.getElementById("popoveredit0").value;
+    }    
+}
+			
+		</script>
+</head>
+<body onload="setup();" onkeypress='keypressHandler(event)'>
+  <h2>Example Table 1</h2>
+	
+	<div id='MHTEST'></div>
+
+	<!-- Column filter div -->
+	<div id="columnfilter"></div>
+  
+  <!-- Table placeholder -->
+  <div id="thetable"></div>
+  <br>
+  <br>
+
+	<div id="editpopover" style="display:none;"></div>
+
+	
+</body>

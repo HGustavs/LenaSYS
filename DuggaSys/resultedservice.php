@@ -16,10 +16,10 @@ if(isset($_SESSION['uid'])){
 	$firstname=$_SESSION['firstname'];
 }else{
 	$userid=1;
-	$loginname="UNK";		
+	$loginname="UNK";
 	$lastname="UNK";
 	$firstname="UNK";
-} 	
+}
 
 $opt = getOP('opt');
 $cid = getOP('cid');
@@ -48,7 +48,8 @@ $duggastats="";
 $duggaentry="";
 $duggauser="";
 $duggafeedback="";
-
+$duggaexpire="";
+$duggatimesgraded="";
 $gradeupdated=false;
 
 $entries=array();
@@ -70,7 +71,12 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 	if(strcmp($opt,"CHGR")==0){
 		if($ukind=="U"){
-			$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+			if ($mark == "UNK"){
+				$mark = null;
+				$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NULL,timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+			} else {
+				$query = $pdo->prepare("UPDATE userAnswer SET grade=:mark,creator=:cuser,marked=NOW(),timesGraded=timesGraded + 1,gradeExpire=CURRENT_TIMESTAMP WHERE cid=:cid AND moment=:moment AND vers=:vers AND uid=:uid");
+			}
 			$query->bindParam(':mark', $mark);
 			$query->bindParam(':cuser', $userid);
 
@@ -78,6 +84,8 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$query->bindParam(':moment', $listentry);
 			$query->bindParam(':vers', $vers);
 			$query->bindParam(':uid', $luid);
+
+
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
@@ -128,7 +136,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':moment', $listentry);
 			$query->bindParam(':vers', $vers);
-			$query->bindParam(':uid', $luid);			
+			$query->bindParam(':uid', $luid);
 			$query->bindParam(':quizid', $quizId);
 			$query->bindParam(':variant', $qvariant);
 
@@ -168,8 +176,20 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					// Ignore results of whether the push notification was sent or not, as this notification is only for user convenience
 				}
 			}
+			// Get gradeExpire and timesGraded in order to update the local arrays of resulted.js whenever a grade is updated.
+			$query = $pdo->prepare("SELECT gradeExpire, timesGraded FROM useranswer WHERE uid=:luid AND moment=:moment AND cid=:cid AND vers=:vers LIMIT 1");
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':vers', $vers);
+			$query->bindParam(':moment', $listentry);
+			$query->bindParam(':luid', $luid);
+			if($query->execute()) {
+				if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+					$duggaexpire = $row['gradeExpire'];
+					$duggatimesgraded = $row['timesGraded'];
+				}
+			}
 		}
-		
+
 	}
 
 	if(strcmp($opt,"DUGGA")==0){
@@ -229,7 +249,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				$queryp->bindParam(':cid', $cid);
 				$queryp->bindParam(':vers', $vers);
 				$queryp->bindParam(':moment', $listentry);
-		
+
 				if(!$queryp->execute()) {
 					$error=$queryp->errorInfo();
 					$debug="Error reading param".$error[2]." ". __LINE__;
@@ -243,10 +263,10 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				$duggaentry=$listentry;
 				$dugganame="templates/".$row["quizFile"].".js";
 				$duggapage=file_get_contents("templates/".$row["quizFile"].".html");
-			
+
 		}
 	}
-	
+
 	if(strcmp($opt,"RESP")==0){
 
 			$currcvd=getcwd();
@@ -270,25 +290,25 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 					// Create a file area with format Lastname-Firstname-Login
 					$userdir = $row["lastname"]."_".$row["firstname"]."_".$row["username"];
-					
+
 					// First replace a predefined list of national characters
 					// Then replace any additional character that is not a-z, a number, period or underscore
 					$national = array("&ouml;", "&Ouml;", "&auml;", "&Auml;", "&aring;", "&Aring;","&uuml;","&Uuml;");
 					$nationalReplace = array("o", "O", "a", "A", "a", "A","u","U");
 					$userdir = str_replace($national, $nationalReplace, $userdir);
-					$userdir=preg_replace("/[^a-zA-Z0-9._]/", "", $userdir);				
-			
+					$userdir=preg_replace("/[^a-zA-Z0-9._]/", "", $userdir);
+
 					if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
 							if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
 									echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid/".$userdir;
 									$error=true;
 							}
 					}
-					
+
 					$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$responsefile."_FB.txt";
-					file_put_contents($movname,$responsetext);			
+					file_put_contents($movname,$responsetext);
 		}
-	}	
+	}
 }
 
 //------------------------------------------------------------------------------------------------
@@ -296,7 +316,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 //------------------------------------------------------------------------------------------------
 
 // Don't retreive all results if request was for a single dugga or a grade update
-if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
+if(strcmp($opt,"CHGR")!==0){
 	if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 		// Users connected to the current course version
 		/*
@@ -311,15 +331,15 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 
 		foreach($q->fetchAll(PDO::FETCH_ASSOC) as $row){
 				if (array_key_exists($row['uid'], $snus){
-					
+
 				} else {
-						
+
 				}
-				
+
 		}
 		*/
 		$query = $pdo->prepare("
-      SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class,user_course.access
+      SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class,user_course.access,user_course.teacher
       FROM user,user_course
       WHERE user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;
     ");
@@ -343,7 +363,8 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 				'lastname' => $row['lastname'],
 				'ssn' => $row['ssn'],
 				'class' => $row['class'],
-				'access' => $row['access']
+				'access' => $row['access'],
+				'teacher' => $row['teacher']
 			);
 /*
 			$entry = array(
@@ -384,7 +405,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 					'aid' => (int)$row['quiz'],
 					'variant' => (int)$row['variant'],
 					'dugga' => (int)$row['dugga'],
-					'moment' => (int)$row['moment'],					
+					'moment' => (int)$row['moment'],
 					'grade' => (int)$row['grade'],
 					'uid' => (int)$row['uid'],
 					'useranswer' => $row['useranswer'],
@@ -397,7 +418,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 					'totalStepsUsed' => $row['totalStepsUsed'],
 					'needMarking' => (bool)$row['needMarking'],
 					'timesGraded' => (int)$row['timesGraded'],
-					'gradeExpire' => $row['gradeExpire']
+					'gradeExpire' => $row['gradeExpire'],
 				)
 			);
 		}
@@ -406,7 +427,7 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 		//$query = $pdo->prepare("SELECT listentries.*,quizFile FROM listentries,quiz WHERE listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
 		//$query = $pdo->prepare("SELECT listentries.*,quizFile,variant.vid as qvariant FROM listentries,quiz,variant WHERE quiz.id=variant.quizID AND listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) GROUP BY lid ORDER BY pos;");
 		$query = $pdo->prepare("
-      SELECT listentries.*,quizFile,COUNT(variant.vid) AS qvariant
+      SELECT listentries.*,quizFile,COUNT(variant.vid) AS qvariant, quiz.deadline
       FROM listentries
       LEFT JOIN quiz ON listentries.link=quiz.id
       LEFT JOIN variant ON quiz.id=variant.quizID
@@ -436,7 +457,8 @@ if(strcmp($opt,"DUGGA")!==0 && strcmp($opt,"CHGR")!==0){
 					'vers' => $row['vers'],
 					'quizfile' => $row['quizFile'],
 					'gradesystem' => (int)$row['gradesystem'],
-					'qvariant' => $row['qvariant']
+					'qvariant' => $row['qvariant'],
+					'deadline' => $row['deadline']
 				)
 			);
 		}
@@ -485,15 +507,15 @@ if(strcmp($opt,"DUGGA")===0){
 			$feedback = "UNK";
 
 			$currcvd=getcwd();
-			
-			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";				
+
+			$fedbname=$currcvd."/".$row['filepath'].$row['filename'].$row['seq']."_FB.txt";
 			if(!file_exists($fedbname)) {
 					$feedback="UNK";
 			} else {
 					$feedback=file_get_contents($fedbname);
-			}			
-			
-			
+			}
+
+
 			if($row['kind']=="3"){
 					// Read file contents
 					$movname=$currcvd."/".$row['filepath']."/".$row['filename'].$row['seq'].".".$row['extension'];
@@ -538,13 +560,13 @@ if(strcmp($opt,"DUGGA")===0){
 			if (!isset($files[$row['segment']])) $files[$row['segment']] = array();
 			array_push($files[$row['segment']], $entry);
 		}
-	
+
 }
 
 if (sizeof($files) === 0) {$files = (object)array();} // Force data type to be object
 
 if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
-		$serviceTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];	
+		$serviceTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
 		$benchmark =  array('totalServiceTime' => $serviceTime);
 }else{
 		$benchmark="-1";
@@ -570,6 +592,25 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 }
 
+$courseteachers=array();
+if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+	$query = $pdo->prepare("
+    SELECT DISTINCT teacher
+    FROM user_course where cid=$cid;
+  ");
+	$query->bindParam(':cid', $cid);
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		$debug="Error reading user entries".$error[2];
+	}
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+			$teacher = array(
+				'teacher' => $row['teacher'],
+			);
+			array_push($courseteachers, $teacher);
+		}
+}
+
 $array = array(
 	'entries' => $entries,
 	'moments' => $gentries,
@@ -577,6 +618,7 @@ $array = array(
 	'debug' => $debug,
 	'results' => $lentries,
 	'teachers' => $teachers,
+	'courseteachers' => $courseteachers,
 
 	'duggauser' => $duggauser,
 	'duggaentry' => $duggaentry,
@@ -585,6 +627,8 @@ $array = array(
 	'dugganame' => $dugganame,
 	'duggaparam' => $duggaparam,
 	'duggaanswer' => $duggaanswer,
+	'duggaexpire' => $duggaexpire,
+	'duggatimesgraded' => $duggatimesgraded,
 	'useranswer' => $useranswer,
 	'duggastats' => $duggastats,
 	'duggafeedback' => $duggafeedback,
@@ -597,4 +641,7 @@ $array = array(
 echo json_encode($array);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php",$userid,$info);
+
+
+
 ?>

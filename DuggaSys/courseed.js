@@ -34,7 +34,7 @@ function updateCourse()
 
 	// Show dialog
 	$("#editCourse").css("display", "none");
-	
+
 	$("#overlay").css("display", "none");
 
 	AJAXService("UPDATE", {	cid : cid, coursename : coursename, visib : visib, coursecode : coursecode }, "COURSE");
@@ -112,10 +112,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 {
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
-	$("#C" + cid).css("border", "2px dashed #FC5");
-	$("#C" + cid).css("box-shadow", "1px 1px 3px #000 inset");
 	$(".item").css("background", "#fff");
-	$("#C" + cid).css("background", "#EDF");
 
 	// Set Name
 	$("#coursename").val(coursename);
@@ -183,7 +180,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 
 	// Show dialog
 	$("#editCourse").css("display", "flex");
-	
+
 	//$("#overlay").css("display", "block");
 
 	return false;
@@ -203,23 +200,23 @@ function getCurrentVersion(cid){
 }
 
 function editVersion(cid, cname, ccode) {
-			
+
 		document.getElementById('newCourseVersion').style.display = "flex";
 		//document.getElementById('overlay').style.display = "block";
 		document.getElementById('cid').value = cid;
 		document.getElementById('coursename1').value = cname;
 		document.getElementById('coursecode1').value = ccode;
 		var currentVersion = getCurrentVersion(cid);
-	
+
 		var str = "<select class='course-dropdown'>";
 		str += "<option value='None'"	;
-		
+
 		if(currentVersion=="None"){
 			str += "selected";
 			var versionname=vname;
 		}
 		str += ">-</option>";
-		
+
 		if (versions.length > 0) {
 			for ( i = 0; i < versions.length; i++) {
 				var item = versions[i];
@@ -242,21 +239,21 @@ function editVersion(cid, cname, ccode) {
 function editSettings(){
 		if(motd!=="UNK") $("#motd").val(motd);
 		document.getElementById('editSettings').style.display = "flex";
-		
+
 }
 
 function updateSettings() {
-			
+
 		var motd = $("#motd").val();
 		var readonly = 0;
 		if ($("#readonly").val() == "yes"){
 			readonly = 1;
-		} 
-	
+		}
+
 		// Show dialog
 		$("#editSettings").css("display", "none");
-	
-		AJAXService("SETTINGS", {	motd : motd, readonly : readonly}, "COURSE");		
+
+		AJAXService("SETTINGS", {	motd : motd, readonly : readonly}, "COURSE");
 }
 
 function createVersion(){
@@ -280,9 +277,9 @@ function createVersion(){
 		if(coursevers=="null"){
 			makeactive=true;
 		}
-	
+
 		if (copycourse != "None"){
-				//create a copy of course version 
+				//create a copy of course version
         AJAXService("CPYVRS", {
           cid : cid,
           versid : versid,
@@ -294,7 +291,7 @@ function createVersion(){
           enddate : enddate,
           makeactive : makeactive
         }, "COURSE");
-			
+
 		} else {
 			//create a fresh course version
 			AJAXService("NEWVRS", {
@@ -304,11 +301,11 @@ function createVersion(){
 				coursecode : coursecode,
 				coursename : coursename,
         makeactive : makeactive
-			}, "COURSE");		
+			}, "COURSE");
 		}
-  
-		$("#newCourseVersion").css("display","none");		
-		$("#overlay").css("display","none");		
+
+		$("#newCourseVersion").css("display","none");
+		$("#overlay").css("display","none");
 	}
 
 }
@@ -321,72 +318,76 @@ function returnedCourse(data)
 {
 	versions = data['versions'];
 	entries = data['entries'];
-  let uname=document.getElementById('userName').innerHTML;
+	var uname=document.getElementById('userName').innerHTML;
 
 	// Fill section list with information
 	str = "";
 
 	if (data['writeaccess']) {
 		str += "<div style='float:right;'>";
-		str += "<input class='submit-button' type='button' value='Add new course' onclick='newCourse();' title='Create new course' />";
+		str += "<input class='fab' type='button' value='+' onclick='newCourse();' title='Create new course' />";
 		str += "</div>";
 	}
 
 	// Course Name
 	str += "<div id='Courselistc'>";
-  
+
 	// Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
-	str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;''><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div class='ellipsis'> Course Organization System</div>" 
-  if (data['writeaccess']){ 
-      str+="<img style='margin-left:15px;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings();'>"   
-  } 
-  str+="</div>";
+	str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;''><a href='https://github.com/HGustavs/LenaSYS_2014'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div class='ellipsis'> Course Organization System</div>"
+	if (data['writeaccess']){
+		str+="<img style='margin-left:15px;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings();'>"
+	}
+	str+="</div>";
 	// For now we only have two kinds of sections
 	if (data['entries'].length > 0) {
 		for ( i = 0; i < data['entries'].length; i++) {
 			var item = data['entries'][i];
 
 			str += "<div class='bigg item nowrap' style='display: flex; align-items: center;justify-content: center;' id='C" + item['cid'] + "'>";
-			
+
+
+
 			var textStyle ="";
 			if (parseInt(item['visibility']) == 0) {
 				textStyle += "hidden";
-			}	else	if (parseInt(item['visibility']) == 2) {
+			} else if (parseInt(item['visibility']) == 2) {
 				textStyle += "login";
 			} else if (parseInt(item['visibility']) == 3) {
 				textStyle += "deleted"
 			}
 
-      var courseString = item['coursename'];
-      var courseBegin = "";
-      var courseEnd = "";
-      var courseSplitIndex = courseString.lastIndexOf(" ");
-      if(courseSplitIndex>0) { // There is a space in the course name
-        courseBegin = courseString.substr(0, courseSplitIndex);
-        courseEnd = courseString.substr(courseSplitIndex);
-      } else { // No space in course name, so just split the name in half *chop chop*
-        courseSplitIndex = parseInt(courseString.length/2);
-        courseBegin = courseString.substr(0, courseSplitIndex);
-        courseEnd = courseString.substr(courseSplitIndex);
-      }
+      		var courseString = item['coursename'];
+      		var courseBegin = "";
+      		var courseEnd = "";
+      		var courseSplitIndex = courseString.lastIndexOf(" ");
+      		if(courseSplitIndex>0) { // There is a space in the course name
+    			courseBegin = courseString.substr(0, courseSplitIndex);
+        		courseEnd = courseString.substr(courseSplitIndex);
+    		} else { // No space in course name, so just split the name in half *chop chop*
+        		courseSplitIndex = parseInt(courseString.length/2);
+        		courseBegin = courseString.substr(0, courseSplitIndex);
+        		courseEnd = courseString.substr(courseSplitIndex);
+    		}
 
 			if (data['writeaccess']) {
-        str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Course coordinator]'>" + courseBegin + courseEnd + "</a></div>";
-				str += "<span style='margin-right:15px;'><img id='dorf' src='../Shared/icons/PenV.svg' onclick='editVersion("+item['cid']+",\""+htmlFix(item['coursename'])+"\",\""+item['coursecode']+"\")' title='Create new version of \"" + item['coursename'] + "\"'></span>";
-        str += "<span style='margin-bottom: 15px'>";
-				str += "<span><img id='dorf' style='position: absolute; right: 15px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" [" + item['activeversion'] + "]'></span>";
-        str += "</span>";
-      } else {
-        str += "<div class='ellipsis' style='margin-right:15px;'>";
+        		str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Course coordinator]'>" + courseBegin + courseEnd + "</a></div>";
+        		str += "<span style='margin-bottom: 0px'>";
+				str += "<span><img id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" [" + item['activeversion'] + "]'></span>";
+        		str += "</span>";
+      		} else {
+        		str += "<div class='ellipsis' style='margin-right:15px;'>";
 				if(item['registered'] == true || uname=="Guest") {
-          str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Registered]'>" + item['coursename'] + "</a></span>";
-        }else{
-          str += "<span style='margin-right:15px;opacity:0.3'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Not registered]'>" + item['coursename'] + "</a></span>";
-        }
-        str += "</div>";
+          			str += "<span style='margin-right:15px;'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Registered]'>" + item['coursename'] + "</a></span>";
+        		}else{
+          			str += "<span style='margin-right:15px;opacity:0.3'><a class='" + textStyle + "' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Not registered]'>" + item['coursename'] + "</a></span>";
+        		}
+        		str += "</div>";
 			}
 
 			str += "</div>";
+      if (data['entries'].length-1 == i){
+        str += "<div class='bigg item nowrap' style='padding-bottom: 5px;'></div>";
+      }
 		}
 	} else {
 		// No items were returned!
@@ -405,10 +406,10 @@ function returnedCourse(data)
 	}
 	motd=data["motd"]
 	if(motd!=="UNK"){
-			document.getElementById("servermsg").innerHTML=data["motd"];
-			document.getElementById("servermsgcontainer").style.display="flex";
+		document.getElementById("servermsg").innerHTML=data["motd"];
+		document.getElementById("servermsgcontainer").style.display="flex";
 	} else {
-			document.getElementById("servermsgcontainer").style.display="none";
+		document.getElementById("servermsgcontainer").style.display="none";
 	}
 
 	resetinputs();

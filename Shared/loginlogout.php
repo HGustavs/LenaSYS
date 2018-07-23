@@ -25,6 +25,29 @@ if($opt=="REFRESH"){
 // If not login we assume logout	
 		$username=getOP('username');
 		$password=getOP('password');
+  
+    // Login barrier
+    $maxLoginTries = 10;
+    $log_db = new PDO('sqlite:../../log/loglena4.db');
+    $IP = getIP();
+    $timeInterval = 10; // in minutes
+
+    $query = $GLOBALS['log_db']->prepare("SELECT COUNT(*) FROM userLogEntries
+      WHERE eventType = 4
+      AND uid = :user
+      AND remoteAddress = :IP
+      AND timestamp > DATETIME(DATETIME('NOW'), :timeInterval)");
+    $query->bindParam(':IP', $IP);
+    $query->bindValue(':timeInterval', '-' . $timeInterval . ' minute');
+    $query->bindParam(':user', $username);
+
+    if(!$query->execute()) {
+      $error=$query->errorInfo();
+      $debug="Error counting rows".$error[2];
+    } else {
+      $result = $query->fetch(PDO::FETCH_ASSOC);
+      $queryResult = $result['COUNT(*)'];
+    }
 		
 		$savelogin = array_key_exists('saveuserlogin', $_POST) && $_POST['saveuserlogin'] == 'on';
 		
@@ -32,11 +55,8 @@ if($opt=="REFRESH"){
 		
 		// Default values
 		$res = array("login" => "failed");
-		
-		if(failedLoginCount($_SERVER['REMOTE_ADDR'])>=10){
-			$res["login"] = "failed";
-			$res["reason"] = "Too many failed attempts, try again later";
-		}else if(login($username, $password, $savelogin)){
+		if($maxLoginTries > $queryResult){
+      if(login($username, $password, $savelogin)){
 			// Successfully logged in, return user name
 			$res["login"] = "success";
 			$res["username"] = $username;
@@ -47,12 +67,16 @@ if($opt=="REFRESH"){
 			// Log USERID for Dugga Access
 			logUserEvent($username,EventTypes::LoginSuccess,"");
 
-		}else{
-			addlogintry(); // If to many attempts has been commited, it will jump to this
-			// As login has failed we log the attempt
+      }else{
+        addlogintry(); // If to many attempts has been commited, it will jump to this
+        // As login has failed we log the attempt
 
-			logUserEvent($username,EventTypes::LoginFail,"");
-		}
+        logUserEvent($username,EventTypes::LoginFail,"");
+      }
+    }else{
+      $res = array("login" => "limit");
+    }
+		
 		
 		// Return the data as JSON
 		echo json_encode($res);
@@ -86,4 +110,3 @@ if($opt=="REFRESH"){
 }
 	
 ?>
- 

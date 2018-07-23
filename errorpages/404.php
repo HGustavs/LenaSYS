@@ -2,12 +2,30 @@
 
 session_start();
 //include_once "../../coursesyspw.php";
-//include_once "../Shared/sessions.php";
-//include_once "../Shared/basic.php";
-//pdoConnect();
+include_once "../Shared/sessions.php";
+include_once "../Shared/basic.php";
+pdoConnect();
 /*
 $noup="NONE";
 */
+
+$opt=getOP('opt');
+$cid=getOP('cid');
+$coursename=getOP('coursename');
+$visibility=getOP('visib');
+$versid=getOP('versid');
+
+if(isset($_SESSION['uid'])){
+	$userid=$_SESSION['uid'];
+}else{
+	$userid="UNK";
+}
+
+$log_uuid = getOP('log_uuid');
+$info=$opt." ".$cid." ".$coursename." ".$versid." ".$visibility;
+$service = "404:".$_SERVER['REQUEST_URI'];
+logServiceEvent($log_uuid, EventTypes::PageNotFound ,$service ,$userid,$info);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,6 +45,6 @@ $noup="NONE";
 </head>
 <body>
 <h1>404 - File not found</h1>
-
+	<a href="/DuggaSys/courseed.php">Go to start</a>
 </body>
 </html>
