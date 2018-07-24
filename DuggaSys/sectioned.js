@@ -26,6 +26,66 @@ function setup() {
 // -------------==============######## Help Functions ###########==============-------------
 
 //----------------------------------------------------------------------------------
+// scrollToBottom: scrolls the page to the bottom
+//----------------------------------------------------------------------------------
+
+function scrollToBottom() {
+	var scrollingElement = (document.scrollingElement || document.body)
+	scrollingElement.scrollTop = scrollingElement.scrollHeight;
+}
+
+//----------------------------------------------------------------------------------
+// getHiddenElements: Get all element ids from local storage (who's children should be hidden).
+//----------------------------------------------------------------------------------
+
+function getHiddenElements() {
+	menuState.hiddenElements = JSON.parse(localStorage.getItem('hiddenElements'));
+	if (menuState.hiddenElements === null) {
+		menuState.hiddenElements = [];
+	}
+}
+
+//----------------------------------------------------------------------------------
+// getArrowElements: Get all arrow image ids from local storage that should be toggled.
+//----------------------------------------------------------------------------------
+
+function getArrowElements() {
+	menuState.arrowIcons = JSON.parse(localStorage.getItem('arrowIcons'));
+	if (menuState.arrowIcons === null) {
+		menuState.arrowIcons = [];
+	}
+}
+
+//----------------------------------------------------------------------------------
+// findAncestor: Finds the nearest parent element of "element" that contains the class "className".
+//----------------------------------------------------------------------------------
+
+function findAncestor(element, className) {
+	if (element != undefined || element != null) {
+		while ((element = element.parentElement) && !element.classList.contains(className));
+		return element;
+	}
+}
+
+//----------------------------------------------------------------------------------
+// addOrRemoveFromArray: Toggle string in array. Add string to array if it does not exist in the array. Remove string from array if it exist in the array. */
+//----------------------------------------------------------------------------------
+
+function addOrRemoveFromArray(elementID, array) {
+	var exists = false;
+	for (var i = 0; i < array.length; i++) {
+		if (elementID == array[i]) {
+			exists = true;
+			array.splice(i, 1);
+			break;
+		}
+	}
+	if (!exists) {
+		array.push(elementID);
+	}
+}
+
+//----------------------------------------------------------------------------------
 // makeoptions: Prepares a dropdown list with highlighting of previously selected item
 //----------------------------------------------------------------------------------
 
@@ -200,7 +260,6 @@ function showEditVersion(versid, versname, startdate, enddate) {
 	$("#editCourseVersion").css("display", "flex");
 }
 
-
 function displaymessage() {
 	$(".messagebox").css("display", "block");
 }
@@ -209,30 +268,6 @@ function displaymessage() {
 function bigMac() {
 	$(".hamburgerMenu").toggle();
 }
-
-$(document).ready(function () {
-	$(".messagebox").hover(function () {
-		$("#testbutton").css("background-color", "red");
-	});
-	$(".messagebox").mouseout(function () {
-		$("#testbutton").css("background-color", "#614875");
-	});
-	$('#estartdate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#eenddate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#startdate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#enddate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	addMinuteOptions();
-	addHourOptions();
-
-});
 
 function addMinuteOptions(){
 	var str = "";
@@ -1428,47 +1463,6 @@ function toggleArrows() {
 	}
 }
 
-// Get all element ids from local storage (who's children should be hidden).
-function getHiddenElements() {
-	menuState.hiddenElements = JSON.parse(localStorage.getItem('hiddenElements'));
-	if (menuState.hiddenElements === null) {
-		menuState.hiddenElements = [];
-	}
-}
-
-// Get all arrow image ids from local storage that should be toggled.
-function getArrowElements() {
-	menuState.arrowIcons = JSON.parse(localStorage.getItem('arrowIcons'));
-	if (menuState.arrowIcons === null) {
-		menuState.arrowIcons = [];
-	}
-}
-
-// Finds the nearest parent element of "element" that contains the class "className".
-function findAncestor(element, className) {
-	if (element != undefined || element != null) {
-		while ((element = element.parentElement) && !element.classList.contains(className));
-		return element;
-	}
-}
-
-/* Toggle string in array.
-   Add string to array if it does not exist in the array.
-   Remove string from array if it exist in the array. */
-function addOrRemoveFromArray(elementID, array) {
-	var exists = false;
-	for (var i = 0; i < array.length; i++) {
-		if (elementID == array[i]) {
-			exists = true;
-			array.splice(i, 1);
-			break;
-		}
-	}
-	if (!exists) {
-		array.push(elementID);
-	}
-}
-
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation = 'click') {
@@ -1952,8 +1946,8 @@ function drawSwimlanes(){
 	ctxWeeks.fillRect(courseDay * 5, 0, 2, swimWeeks.height);
 }
 
+// -------------==============######## Setup and Event listeners ###########==============-------------
 
-// Event listeners
 $(document).ready(function () {
 	// Function to prevent collapsing when clicking icons
 	$(document).on('click', '#corf', function (e) {
@@ -2011,10 +2005,9 @@ $(document).mousedown(function (e) {
 	}
 });
 
+// Detect Click outside the loginBox
+
 $(document).mouseup(function (e) {
-
-
-	// Click outside the loginBox
 	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
 		&& $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
 		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
@@ -2033,13 +2026,6 @@ $(document).mouseup(function (e) {
 $(document).scroll(function(e){
 	localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
 });
-
-// Function that scrolls the page to the bottom
-function scrollToBottom() {
-	var scrollingElement = (document.scrollingElement || document.body)
-	scrollingElement.scrollTop = scrollingElement.scrollHeight;
-}
-
 
 $(document).mousedown(function(e) {
 	// If the fab list is visible, there should be no timeout to toggle the list
@@ -2074,4 +2060,30 @@ $(document).mousedown(function(e) {
 			createQuickItem();
            return false;
     }// Click outside the FAB list
+});
+
+// Setup on-load
+
+$(document).ready(function () {
+	$(".messagebox").hover(function () {
+		$("#testbutton").css("background-color", "red");
+	});
+	$(".messagebox").mouseout(function () {
+		$("#testbutton").css("background-color", "#614875");
+	});
+	$('#estartdate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+	$('#eenddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+	$('#startdate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+	$('#enddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+	addMinuteOptions();
+	addHourOptions();
+
 });
