@@ -142,6 +142,37 @@ function navigatePage(pagename)
 		changeURL(pagename+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers']);
 }
 
+//----------------------------------------------------------------------------------
+// getDateFormat: Function for making PHP compatible date from javascript date
+//----------------------------------------------------------------------------------
+
+function getDateFormat(date, operation = ""){
+	if(operation == "hourMinuteSecond"){
+		return date.getFullYear() + "-"
+			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
+			+ ('0' + date.getDate()).slice(-2)
+			+ "T" + date.getHours() + ":" + date.getMinutes() + ":"
+			+ date.getSeconds();
+	}else if(operation == "dateMonth"){
+		return ('0' + date.getDate()).slice(-2) + '-'
+			+ ('0' + (date.getMonth()+1)).slice(-2);
+
+	}
+	return date.getFullYear() + "-"
+			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
+			+ ('0' + date.getDate()).slice(-2)
+}
+
+//----------------------------------------------------------------------------------
+// weeksBetween: Function for computing number of calendar weeks between dates
+//----------------------------------------------------------------------------------
+
+function weeksBetween(firstDate, secondDate){
+	var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+	var diff = Math.abs(firstDate - secondDate);
+	return Math.round(diff / ONE_WEEK);
+}
+
 // -------------==============######## Dialog Handling ###########==============-------------
 
 //----------------------------------------------------------------------------------
@@ -281,15 +312,6 @@ function bigMac() {
 	$(".hamburgerMenu").toggle();
 }
 
-function editSectionDialogTitle(title) {
-	// Change title of the edit section dialog
-	if (title === "newItem") {
-		document.getElementById("editSectionDialogTitle").innerHTML = "New item";
-	} else {
-		document.getElementById("editSectionDialogTitle").innerHTML = "Edit item";
-	}
-}
-
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
 function confirmBox(operation, item = null) {
 	if (operation == "openConfirmBox") {
@@ -304,84 +326,12 @@ function confirmBox(operation, item = null) {
 	}
 }
 
-function deleteItem(item_lid = null) {
-	var lid = item_lid ? item_lid : $("#lid").val();
-	AJAXService("DEL", { lid: lid }, "SECTION");
-	$("#editSection").css("display", "none");
-}
-
-function updateItem() {
-	var tabs = $("#tabs").val();
-	var lid = $("#lid").val();
-	var kind = $("#type").val();
-	var link = $("#link").val();
-	var highscoremode = $("#highscoremode").val();
-	var sectionname = $("#sectionname").val();
-	var visibility = $("#visib").val();
-	var moment = $("#moment").val();
-	var gradesys = $("#gradesys").val();
-	var comments = $("#comments").val();
-	var group = $("#group").val();
-
-	// Storing tabs in gradesys column!
-	if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7) gradesys = tabs;
-	AJAXService(
-		"UPDATE", {
-			lid: lid,
-			kind: kind,
-			link: link,
-			sectname: sectionname,
-			visibility: visibility,
-			moment: moment,
-			gradesys: gradesys,
-			highscoremode: highscoremode,
-			comments: comments,
-			group:group
-		}, "SECTION");
-	$("#sectionConfirmBox").css("display", "none");
-	$("#editSection").css("display", "none");
-
-}
-
-function newItem() {
-	var tabs = $("#tabs").val();
-	var lid = $("#lid").val();
-	var kind = $("#type").val();
-	var link = $("#link").val();
-	var highscoremode = $("#highscoremode").val();
-	var sectionname = $("#sectionname").val();
-	var visibility = $("#visib").val();
-	var moment = $("#moment").val();
-	var gradesys = $("#gradesys").val();
-	var comment = $("#deadlinecomment").val();
-	var group = $("#group").val();
-
-	// Storing tabs in gradesys column!
-	if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7) gradesys = tabs;
-	AJAXService(
-		"NEW", {
-			lid: lid,
-			kind: kind,
-			link: link,
-			sectname: sectionname,
-			visibility: visibility,
-			moment: moment,
-			gradesys: gradesys,
-			highscoremode: highscoremode,
-			comment: comment,
-			group:group
-		}, "SECTION");
-	$("#editSection").css("display", "none");
-	setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
-}
-
 function closeSelect() {
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$("#editSection").css("display", "none");
 	defaultNewItem();
 }
-
 
 function defaultNewItem() {
 
@@ -391,151 +341,229 @@ function defaultNewItem() {
 	$('#tooltipTxt').hide();							 		           	// Resets tooltip text to its default form
 }
 
-
 function showCreateVersion() {
 	$("#newCourseVersion").css("display", "flex");
 
 }
 
-function createVersion() {
+// Save ids of all elements, whose state needs to be remembered, in local storage.
+function saveHiddenElementIDs(clickedElement) {
+	addOrRemoveFromArray(clickedElement, menuState.hiddenElements);
+	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
+}
 
-	var cid = querystring['courseid'];
-	var versid = $("#versid").val();
-	newversid = versid;
-	var versname = $("#versname").val();
-	var coursecode = $("#course-coursecode").text();
-	var courseid = $("#course-courseid").text();
-	var coursename = $("#course-coursename").text();
-	var makeactive = $("#makeactive").is(':checked');
-	var coursevers = $("#course-coursevers").text();
-	var copycourse = $("#copyvers").val();
-	var comments = $("#comments").val();
-	var startdate = $("#startdate").val();
-	var enddate = $("#enddate").val();
-	var startHour = ($("#hourPickerStartNewVersion").val());
-	var startMinute = ($("#minutePickerStartNewVersion").val());
-	var endHour = ($("#hourPickerEndNewVersion").val());
-	var endMinute = ($("#minutePickerEndNewVersion").val());
-	startdate = new Date(startdate)
-	enddate = new Date(enddate)
-	startdate.setHours(startHour)
-	startdate.setMinutes(startMinute)
-	enddate.setHours(endHour)
-	enddate.setMinutes(endMinute);
+// Save ids of all arrows, whose state needs to be remembered, in local storage.
+function saveArrowIds(clickedElement) {
+	var childNodes = document.getElementById(clickedElement).firstChild.childNodes;
+	for (var i = 0; i < childNodes.length; i++) {
+		if (childNodes[i].nodeName == "IMG") {
+			addOrRemoveFromArray(childNodes[i].id, menuState.arrowIcons);
+		}
+	}
+	localStorage.setItem('arrowIcons', JSON.stringify(menuState.arrowIcons));
+}
 
-	startdate = getDateFormat(startdate, "hourMinuteSecond");
-	enddate = getDateFormat(enddate, "hourMinuteSecond");
-
-	if (versid == "" || versname == "") {
-		alert("Version Name and Version ID must be entered!");
-	} else {
-		if (coursevers == "null") {
-			makeactive = true;
+/* Hide all child elements to the moment and section elements in the
+   hiddenElements array. */
+function hideCollapsedMenus() {
+	$('.header, .section, .code, .test, .link, .group, .statisticsContent').show();
+	for (var i = 0; i < menuState.hiddenElements.length; i++) {
+		var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
+		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
+			jQuery(ancestor).nextUntil('.moment').hide();
+		}
+		ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
+		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
+			jQuery(ancestor).nextUntil('.section').hide();
 		}
 
-		if (copycourse != "None") {
-			//create a copy of course version
-			AJAXService("CPYVRS", {
-				cid: cid,
-				versid: versid,
-				versname: versname,
-				coursecode: coursecode,
-				coursename: coursename,
-				copycourse: copycourse,
-				startdate: startdate,
-				enddate: enddate,
-				makeactive: makeactive
-			}, "COURSE");
+		if(menuState.hiddenElements[i] == "statistics"){
+			$(".statistics").nextAll().hide();
+		}
+	}
+}
 
+/* Show down arrow by default and then hide this arrow and show the right
+   arrow if it is in the arrowIcons array.
+	 The other way around for the statistics section. */
+function toggleArrows() {
+	$('.arrowComp').show();
+	$('.arrowRight').hide();
+	for (var i = 0; i < menuState.arrowIcons.length; i++) {
+		/* If the string 'arrowComp' is a part of the string on the current
+		   index of the arrowIcons array, hide down arrow and show right arrow. */
+		if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
+			$('#' + menuState.arrowIcons[i]).hide();
 		} else {
-			//create a fresh course version
-			AJAXService("NEWVRS", {
-				cid: cid,
-				versid: versid,
-				versname: versname,
-				coursecode: coursecode,
-				coursename: coursename,
-				makeactive: makeactive
-			}, "COURSE");
+			$('#' + menuState.arrowIcons[i]).show();
 		}
-
-		$("#newCourseVersion").css("display", "none");
-
-
 	}
 
+	$('#arrowStatisticsOpen').show();
+	$('#arrowStatisticsClosed').hide();
+	for (var i = 0; i < menuState.hiddenElements.length; i++){
+		if (menuState.hiddenElements[i] == "statistics"){
+			$('#arrowStatisticsOpen').hide();
+			$('#arrowStatisticsClosed').show();
+		}
+	}
 }
 
-function returnedCourse(data) {
-	if (data['debug'] != "NONE!") alert(data['debug']);
-	window.setTimeout(function () {
-		changeURL("sectioned.php?courseid=" + querystring["courseid"]
-			+ "&coursename=" + querystring["coursename"] + "&coursevers=" + newversid);
-	}, 1000);
+// Finds all ancestors to the element with classname Hamburger and toggles them.
+// added some if-statements so escapePress wont always toggle
+function hamburgerChange(operation = 'click') {
+	if (operation != "click") {
+		if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
+			toggleHamburger();
+		}
+	} else {
+		toggleHamburger();
+	}
 }
+
+function toggleHamburger() {
+	var x = document.getElementById("hamburgerIcon");
+	findAncestor(x, "hamburger").classList.toggle("change");
+}
+
+// Toggles action bubbles when pressing the FAB button
+function toggleFabButton() {
+	if (!$('.fab-btn-sm').hasClass('scale-out')) {
+		$('.fab-btn-sm').toggleClass('scale-out');
+		$('.fab-btn-list').delay(100).fadeOut(0);
+	} else {
+		$('.fab-btn-list').fadeIn(0);
+		$('.fab-btn-sm').toggleClass('scale-out');
+	}
+}
+
+// -------------==============######## Commands ###########==============-------------
+
+//----------------------------------------------------------------------------------
+// prepareItem: Prepare sectioneditor parameters
+//----------------------------------------------------------------------------------
+
+function prepareItem()
+{
+		// Create parameter object and fill with information
+		var param={};
+
+		// Storing tabs in gradesys column!
+		var kind=$("#type").val()
+		if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7) param.gradesys = $("#tabs").val();
+		
+		param.lid = $("#lid").val();
+		param.kind = kind;
+		param.link = $("#link").val();
+		param.highscoremode = $("#highscoremode").val();
+		param.sectname = $("#sectionname").val();
+		param.visibility = $("#visib").val();
+		param.moment = $("#moment").val();
+		param.gradesys = $("#gradesys").val();
+		param.comments = $("#comments").val();
+		param.group = $("#group").val();
+	
+		return param;
+}
+
+//----------------------------------------------------------------------------------
+// deleteItem: Deletes Item from Section List
+//----------------------------------------------------------------------------------
+
+function deleteItem(item_lid = null) {
+	var lid = item_lid ? item_lid : $("#lid").val();
+	AJAXService("DEL", { lid: lid }, "SECTION");
+	$("#editSection").css("display", "none");
+}
+
+//----------------------------------------------------------------------------------
+// updateItem: Updates Item from Section List
+//----------------------------------------------------------------------------------
+
+function updateItem() {
+	
+	AJAXService("UPDATE", prepareItem(), "SECTION");
+	
+	$("#sectionConfirmBox").css("display", "none");
+	$("#editSection").css("display", "none");
+
+}
+
+//----------------------------------------------------------------------------------
+// newItem: New Item for Section List
+//----------------------------------------------------------------------------------
+
+function newItem() {
+
+	AJAXService("NEW", prepareItem(), "SECTION");
+	$("#editSection").css("display", "none");
+	
+	setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
+}
+
+//----------------------------------------------------------------------------------
+// createVersion: New Version of Course
+//----------------------------------------------------------------------------------
+
+function createVersion() {
+	
+	var param={};
+	param.cid = querystring['courseid'];
+	param.versid = $("#versid").val();
+	param.versname = $("#versname").val();
+	param.coursecode = $("#course-coursecode").text();
+	param.courseid = $("#course-courseid").text();
+	param.coursename = $("#course-coursename").text();
+	param.makeactive = $("#makeactive").is(':checked');
+	param.coursevers = $("#course-coursevers").text();
+	param.copycourse = $("#copyvers").val();
+	param.comments = $("#comments").val();
+	param.startdate = getDateFormat(new Date($("#startdate").val()+" "+$("#hourPickerStartNewVersion").val()+":"+$("#minutePickerStartNewVersion").val()),"hourMinuteSecond");
+	param.enddate = getDateFormat(new Date($("#enddate").val()+" "+$("#hourPickerEndNewVersion").val()+":"+$("#minutePickerEndNewVersion").val()),"hourMinuteSecond");
+	
+	newversid = param.versid;
+
+	if(param.versid == "" || param.versname == ""){
+			alert("Version Name and Version ID must be entered!");
+	}else{
+			if(copycourse != "None"){
+				//create a copy of course version
+				AJAXService("CPYVRS", param, "COURSE");
+			}else{
+				//create a fresh course version
+				AJAXService("NEWVRS", param, "COURSE");
+			}
+			$("#newCourseVersion").css("display", "none");
+	}
+}
+
+//----------------------------------------------------------------------------------
+// updateVersion: Edit Version of Course
+//----------------------------------------------------------------------------------
 
 function updateVersion() {
 
-	var cid = $("#cid").val();
-	var versid = $("#eversid").val();
-	var versname = $("#eversname").val();
-	var startdate = $("#estartdate").val();
-	var enddate = $("#eenddate").val();
-	var coursecode = $("#course-coursecode").text();
-	var makeactive = $("#emakeactive").is(':checked');
-	var startdate = $("#estartdate").val();
-	var enddate = $("#eenddate").val();
-	var startHour = ($("#hourPickerStartEditVersion").val());
-	var startMinute = ($("#minutePickerStartEditVersion").val());
-	var endHour = ($("#hourPickerEndEditVersion").val());
-	var endMinute = ($("#minutePickerEndEditVersion").val());
-
-
-	startdate = new Date(startdate)
-	enddate = new Date(enddate)
-	startdate.setHours(startHour)
-	startdate.setMinutes(startMinute)
-	enddate.setHours(endHour)
-	enddate.setMinutes(endMinute);
-
-	startdate = getDateFormat(startdate, "hourMinuteSecond");
-	enddate = getDateFormat(enddate, "hourMinuteSecond");
-
-	AJAXService("UPDATEVRS", {
-		cid: cid,
-		versid: versid,
-		versname: versname,
-		coursecode: coursecode,
-		startdate: startdate,
-		enddate: enddate
-	}, "SECTION");
+	var param={};
+	param.cid = $("#cid").val();
+	param.versid = $("#eversid").val();
+	param.versname = $("#eversname").val();
+	param.coursecode = $("#course-coursecode").text();
+	param.courseid = $("#course-courseid").text();
+	param.coursename = $("#course-coursename").text();
+	param.makeactive = $("#emakeactive").is(':checked');
+	param.coursevers = $("#course-coursevers").text();
+	param.copycourse = $("#copyvers").val();
+	param.comments = $("#comments").val();
+	param.startdate = getDateFormat(new Date($("#estartdate").val()+" "+$("#hourPickerStartEditVersion").val()+":"+$("#minutePickerStartEditVersion").val()),"hourMinuteSecond");
+	param.enddate = getDateFormat(new Date($("#eenddate").val()+" "+$("#hourPickerEndEditVersion").val()+":"+$("#minutePickerEndEditVersion").val()),"hourMinuteSecond");
+	
+	AJAXService("UPDATEVRS", param, "SECTION");
 
 	if (makeactive) {
-		AJAXService("CHGVERS", {
-			cid: cid,
-			versid: versid,
-		}, "SECTION");
+		AJAXService("CHGVERS", param, "SECTION");
 	}
 
 	$("#editCourseVersion").css("display", "none");
-
-}
-
-function getDateFormat(date, operation = ""){
-	if(operation == "hourMinuteSecond"){
-		return date.getFullYear() + "-"
-			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
-			+ ('0' + date.getDate()).slice(-2)
-			+ "T" + date.getHours() + ":" + date.getMinutes() + ":"
-			+ date.getSeconds();
-	}else if(operation == "dateMonth"){
-		return ('0' + date.getDate()).slice(-2) + '-'
-			+ ('0' + (date.getMonth()+1)).slice(-2);
-
-	}
-	return date.getFullYear() + "-"
-			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
-			+ ('0' + date.getDate()).slice(-2)
 }
 
 function goToVersion(selected) {
@@ -548,17 +576,21 @@ function accessCourse() {
 	window.location.href = "accessed.php?cid=" + querystring['courseid'] + "&coursevers=" + coursevers;
 }
 
-function weeksBetween(firstDate, secondDate){
-	var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
-	var diff = Math.abs(firstDate - secondDate);
-	return Math.round(diff / ONE_WEEK);
-}
-
 //----------------------------------------
 // Renderer
 //----------------------------------------
+
+function returnedCourse(data) {
+	if (data['debug'] != "NONE!") alert(data['debug']);
+	window.setTimeout(function () {
+		changeURL("sectioned.php?courseid=" + querystring["courseid"]
+			+ "&coursename=" + querystring["coursename"] + "&coursevers=" + newversid);
+	}, 1000);
+}
+
 var momentexists = 0;
 var resave = false;
+
 function returnedSection(data) {
 	retdata = data;
 
@@ -1262,97 +1294,6 @@ function returnedHighscore(data) {
 
 	var highscorelist = document.getElementById('HighscoreTable').innerHTML = str;
 	$("#HighscoreBox").css("display", "block");
-}
-
-// Save ids of all elements, whose state needs to be remembered, in local storage.
-function saveHiddenElementIDs(clickedElement) {
-	addOrRemoveFromArray(clickedElement, menuState.hiddenElements);
-	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
-}
-
-// Save ids of all arrows, whose state needs to be remembered, in local storage.
-function saveArrowIds(clickedElement) {
-	var childNodes = document.getElementById(clickedElement).firstChild.childNodes;
-	for (var i = 0; i < childNodes.length; i++) {
-		if (childNodes[i].nodeName == "IMG") {
-			addOrRemoveFromArray(childNodes[i].id, menuState.arrowIcons);
-		}
-	}
-	localStorage.setItem('arrowIcons', JSON.stringify(menuState.arrowIcons));
-}
-
-/* Hide all child elements to the moment and section elements in the
-   hiddenElements array. */
-function hideCollapsedMenus() {
-	$('.header, .section, .code, .test, .link, .group, .statisticsContent').show();
-	for (var i = 0; i < menuState.hiddenElements.length; i++) {
-		var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
-		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
-			jQuery(ancestor).nextUntil('.moment').hide();
-		}
-		ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
-		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
-			jQuery(ancestor).nextUntil('.section').hide();
-		}
-
-		if(menuState.hiddenElements[i] == "statistics"){
-			$(".statistics").nextAll().hide();
-		}
-	}
-}
-
-/* Show down arrow by default and then hide this arrow and show the right
-   arrow if it is in the arrowIcons array.
-	 The other way around for the statistics section. */
-function toggleArrows() {
-	$('.arrowComp').show();
-	$('.arrowRight').hide();
-	for (var i = 0; i < menuState.arrowIcons.length; i++) {
-		/* If the string 'arrowComp' is a part of the string on the current
-		   index of the arrowIcons array, hide down arrow and show right arrow. */
-		if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
-			$('#' + menuState.arrowIcons[i]).hide();
-		} else {
-			$('#' + menuState.arrowIcons[i]).show();
-		}
-	}
-
-	$('#arrowStatisticsOpen').show();
-	$('#arrowStatisticsClosed').hide();
-	for (var i = 0; i < menuState.hiddenElements.length; i++){
-		if (menuState.hiddenElements[i] == "statistics"){
-			$('#arrowStatisticsOpen').hide();
-			$('#arrowStatisticsClosed').show();
-		}
-	}
-}
-
-// Finds all ancestors to the element with classname Hamburger and toggles them.
-// added some if-statements so escapePress wont always toggle
-function hamburgerChange(operation = 'click') {
-	if (operation != "click") {
-		if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
-			toggleHamburger();
-		}
-	} else {
-		toggleHamburger();
-	}
-}
-
-function toggleHamburger() {
-	var x = document.getElementById("hamburgerIcon");
-	findAncestor(x, "hamburger").classList.toggle("change");
-}
-
-// Toggles action bubbles when pressing the FAB button
-function toggleFabButton() {
-	if (!$('.fab-btn-sm').hasClass('scale-out')) {
-		$('.fab-btn-sm').toggleClass('scale-out');
-		$('.fab-btn-list').delay(100).fadeOut(0);
-	} else {
-		$('.fab-btn-list').fadeIn(0);
-		$('.fab-btn-sm').toggleClass('scale-out');
-	}
 }
 
 function createQuickItem(){
