@@ -70,16 +70,16 @@
 						<div class='hamburgerMenu'>
 							<ul class='hamburgerList'>
 								<li class='results'>
-									<button class='submit-button menuButton results' onclick='closeWindows(); changeURLB("Results");' title='Edit student results'>Results</button>
+									<button class='submit-button menuButton results' onclick='closeWindows(); navigatePage("resulted.php");' title='Edit student results'>Results</button>
 								</li>
 								<li class='tests'>
-										<button class='submit-button menuButton tests' onclick='closeWindows(); changeURLB("Tests");' title='Show tests'>Tests</button>
+										<button class='submit-button menuButton tests' onclick='closeWindows(); navigatePage("duggaed.php");' title='Show tests'>Tests</button>
 								</li>
 								<li class='files'>
-										<button class='submit-button menuButton files' onclick='closeWindows(); changeURLB("Files");' title='Show files'>Files</button>
+										<button class='submit-button menuButton files' onclick='closeWindows(); navigatePage("fileed.php");' title='Show files'>Files</button>
 								</li>
 								<li class='access'>
-										<button class='submit-button menuButton access' onclick='closeWindows(); accessCourse();' title='Give students access to the selected version'>Access</button>
+										<button class='submit-button menuButton access' onclick='closeWindows(); navigatePage("accessed.php");' title='Give students access to the selected version'>Access</button>
 								</li>
 							</ul>
 						</div>
@@ -87,22 +87,22 @@
 
 					<td class='results menuButton' style='display: inline-block;'>
 						<div class='results menuButton'>
-							<input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURLB("Results");' />
+							<input type='button' value='Results' class='submit-button' title='Edit student results' onclick='navigatePage("resulted.php");' />
 						</div>
 					</td>
 					<td class='tests menuButton' style='display: inline-block;'>
 						<div class='tests menuButton'>
-							<input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' onclick='changeURLB("Tests")'/>
+							<input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' onclick='navigatePage("duggaed.php")'/>
 						</div>
 					</td>
 					<td class='files menuButton' style='display: inline-block;'>
 						<div class='files menuButton'>
-							<input type='button' value='Files' class='submit-button' title='Show files' onclick='changeURLB("Files")'/>
+							<input type='button' value='Files' class='submit-button' title='Show files' onclick='navigatePage("fileed.php")'/>
 						</div>
 					</td>
 					<td class='access menuButton' style='display: inline-block;'>
 						<div class='access menuButton'>
-							<input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/>
+							<input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='navigatePage("accessed.php");'/>
 						</div>
 					</td>
 				</tr>

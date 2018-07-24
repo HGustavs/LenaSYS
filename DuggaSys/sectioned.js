@@ -1,3 +1,5 @@
+// -------------==============######## Globals ###########==============-------------
+
 var querystring = parseGet();
 var retdata;
 var newversid;
@@ -6,7 +8,7 @@ var isClickedElementBox = false;
 var testsAvailable;
 var nameSet = false;
 var hoverMenuTimer;
-
+var xelink;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -21,11 +23,178 @@ function setup() {
 	AJAXService("get", {}, "SECTION");
 }
 
-//----------------------------------------
-// Commands:
-//----------------------------------------
+// -------------==============######## Help Functions ###########==============-------------
 
-var xelink;
+//----------------------------------------------------------------------------------
+// makeoptions: Prepares a dropdown list with highlighting of previously selected item
+//----------------------------------------------------------------------------------
+
+function makeoptions(option,optionlist,valuelist)
+{
+		var str="";
+		for(var i=0;i<optionlist.length;i++){
+				str+="<option ";
+				if(valuelist[i]==option){
+						str+="selected='selected' ";
+				}
+				str+="value='"+valuelist[i]+"'>"+optionlist[i]+"</option>";
+		}
+		return str;
+}
+
+//----------------------------------------------------------------------------------
+// makeoptionsItem: Prepares a dropdown list specifically for items such as code examples / dugga etc
+//----------------------------------------------------------------------------------
+
+function makeoptionsItem(option,optionlist,optionstring,valuestring)
+{
+		var str="";
+		for(var i=0;i<optionlist.length;i++){
+				str+="<option ";
+				if(optionlist[i][valuestring]==option){
+						str+="selected='selected' ";
+				}
+				str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
+		}
+		alert(str);
+		return str;
+}
+
+//----------------------------------------------------------------------------------
+// makeparams: Help function for hassle free preparation of a clickable param list 
+//----------------------------------------------------------------------------------
+
+function makeparams(paramarray)
+{
+		var str="";
+		for(var i=0;i<paramarray.length;i++){
+				if(i>0) str+=",";
+				str+="\""+paramarray[i]+"\"";
+		}
+		return str;
+}
+
+//----------------------------------------------------------------------------------
+// navigatePage: Local function for converting static page navigation to dynamic
+//----------------------------------------------------------------------------------
+
+function navigatePage(pagename)
+{
+		changeURL(pagename+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers']);
+}
+
+// -------------==============######## Dialog Handling ###########==============-------------
+
+//----------------------------------------------------------------------------------
+// selectItem: Prepare item editing dialog after cog-wheel has been clicked
+//----------------------------------------------------------------------------------
+
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group = "UNK") {
+	nameSet = false;
+	if (entryname == "undefined") entryname = "New Header";
+	if (kind == "undefined") kind = 0;
+	xelink = elink;
+	// Display Select Marker
+	$(".item").css("border", "none");
+	$(".item").css("box-shadow", "none");
+	$("#I" + lid).css("border", "2px dashed #FC5");
+	$("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
+
+	// Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
+	$("#gradesys").html(makeoptions(gradesys,["-","U-G-VG","U-G","U-3-4-5"],[0,1,2,3]));
+	$("#type").html(makeoptions(kind,["Header","Section","Code","Test","Moment","Link","Group Activity","Message"],[0,1,2,3,4,5,6,7]));	
+	$("#visib").html(makeoptions(evisible,["Hidden","Public","Login"],[0,1,2]));
+	$("#tabs").html(makeoptions(gradesys,["0 tabs","1 tabs","2 tabs","3 tabs","end","1 tab + end","2 tabs + end"],[0,1,2,3,4,5,6]));
+	$("#highscoremode").html(makeoptions(highscoremode,["None","Time Based","Click Based"],[0,1,2]));	
+	$("#group").html("<option value='UNK'>Select Group</option>"+makeoptionsItem(group,retdata['groups'],"groupName","groupID"));
+	
+	// Set Link
+	$("#link").val(elink);	
+	if(kind==2){
+			$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
+	}else if(kind==3){
+			$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'id','qname'));		
+	}else if(kind==5){
+			$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
+	}else{
+			$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");		
+	}
+	
+	// Set Moments - requires iteration since we only process kind 4
+	str = "";
+	if (retdata['entries'].length > 0) {
+
+		// Account for null
+		if (moment == "") str += "<option selected='selected' value='null'>&lt;None&gt;</option>"
+		else str += "<option value='null'>&lt;None&gt;</option>";
+
+		// Account for rest of moments!
+		for (var i = 0; i < retdata['entries'].length; i++) {
+			var item = retdata['entries'][i];
+			if (item['kind'] == 4) {
+				if (parseInt(moment) == parseInt(item['lid'])) str += "<option selected='selected' "
+					+ "value='" + item['lid'] + "'>" + item['entryname'] + "</option>";
+				else str += "<option value='" + item['lid'] + "'>" + item['entryname'] + "</option>";
+			}
+		}
+	}
+	$("#moment").html(str);
+
+	// Set Name
+	$("#sectionname").val(entryname);
+	$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='" + entryname + "' style='width:448px;'/>");
+
+	// Set Comment
+	$("#comments").val(comments);
+	$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='comments' value='" + comments + "' style='width:448px;'/>");
+
+	// Set Lid
+	$("#lid").val(lid);
+
+	$("#editSection").css("display","flex");
+
+}
+
+function changedType(kind)
+{
+		// Prepares option list for code example (2)/dugga (3) dropdown/links (5) / Not applicable
+		if(kind==2){
+				$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
+		}else if(kind==3){
+				$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'id','qname'));		
+		}else if(kind==5){
+				$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
+		}else{
+				$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");		
+		}
+}
+
+//----------------------------------------------------------------------------------
+// showEditVersion: Displays Edit Version Dialog
+//----------------------------------------------------------------------------------
+
+function showEditVersion(versid, versname, startdate, enddate) {
+	startdate = new Date(startdate)
+	enddate = new Date(enddate)
+	var startHour = startdate.getHours()
+	var startMinute = startdate.getMinutes()
+	var endHour = enddate.getHours()
+	var endMinute = enddate.getMinutes()
+
+	startdate = getDateFormat(startdate);
+	enddate = getDateFormat(enddate);
+
+	$("#eversname").val(versname);
+	$("#eversid").val(versid);
+	$("#estartdate").val(startdate);
+	$("#eenddate").val(enddate);
+	$("#hourPickerStartEditVersion").val(startHour);
+	$("#minutePickerStartEditVersion").val(startMinute);
+	$("#hourPickerEndEditVersion").val(endHour);
+	$("#minutePickerEndEditVersion").val(endMinute);
+	$("#editCourseVersion").css("display", "flex");
+}
+
 
 function displaymessage() {
 	$(".messagebox").css("display", "block");
@@ -110,170 +279,6 @@ function editSectionDialogTitle(title) {
 	} else {
 		document.getElementById("editSectionDialogTitle").innerHTML = "Edit item";
 	}
-}
-
-//----------------------------------------------------------------------------------
-// makeoptions: Prepares a dropdown list with highlighting of previously selected item
-//----------------------------------------------------------------------------------
-
-function makeoptions(option,optionlist,valuelist)
-{
-		var str="";
-		for(var i=0;i<optionlist.length;i++){
-				str+="<option ";
-				if(valuelist[i]==option){
-						str+="selected='selected' ";
-				}
-				str+="value='"+valuelist[i]+"'>"+optionlist[i]+"</option>";
-		}
-		return str;
-}
-
-//----------------------------------------------------------------------------------
-// makeoptions: Prepares a dropdown list specifically for items such as code examples / dugga etc
-//----------------------------------------------------------------------------------
-
-function makeoptionsItem(option,optionlist,optionstring,valuestring)
-{
-		var str="";
-		for(var i=0;i<optionlist.length;i++){
-				str+="<option ";
-				if(optionlist[i][valuestring]==option){
-						str+="selected='selected' ";
-				}
-				str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
-		}
-		alert(str);
-		return str;
-}
-
-//----------------------------------------------------------------------------------
-// makeparams: Help function for hassle free preparation of a clickable param list 
-//----------------------------------------------------------------------------------
-
-function makeparams(paramarray)
-{
-		var str="";
-		for(var i=0;i<paramarray.length;i++){
-				if(i>0) str+=",";
-				str+="\""+paramarray[i]+"\"";
-		}
-		return str;
-}
-
-//----------------------------------------------------------------------------------
-// selectItem: Prepare item editing dialog after cog-wheel has been clicked
-//----------------------------------------------------------------------------------
-
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group = "UNK") {
-	nameSet = false;
-	if (entryname == "undefined") entryname = "New Header";
-	if (kind == "undefined") kind = 0;
-	xelink = elink;
-	// Display Select Marker
-	$(".item").css("border", "none");
-	$(".item").css("box-shadow", "none");
-	$("#I" + lid).css("border", "2px dashed #FC5");
-	$("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
-
-	// Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
-	$("#gradesys").html(makeoptions(gradesys,["-","U-G-VG","U-G","U-3-4-5"],[0,1,2,3]));
-	$("#type").html(makeoptions(kind,["Header","Section","Code","Test","Moment","Link","Group Activity","Message"],[0,1,2,3,4,5,6,7]));	
-	$("#visib").html(makeoptions(evisible,["Hidden","Public","Login"],[0,1,2]));
-	$("#tabs").html(makeoptions(gradesys,["0 tabs","1 tabs","2 tabs","3 tabs","end","1 tab + end","2 tabs + end"],[0,1,2,3,4,5,6]));
-
-	// Set Link
-	$("#link").val(elink);	
-	if(kind==2){
-			$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
-	}else if(kind==3){
-			$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'id','qname'));		
-	}else if(kind==5){
-			$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
-	}else{
-			$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");		
-	}
-	
-	// Set Moments
-	str = "";
-	if (retdata['entries'].length > 0) {
-
-		// Account for null
-		if (moment == "") str += "<option selected='selected' value='null'>&lt;None&gt;</option>"
-		else str += "<option value='null'>&lt;None&gt;</option>";
-
-		// Account for rest of moments!
-		for (var i = 0; i < retdata['entries'].length; i++) {
-			var item = retdata['entries'][i];
-			if (item['kind'] == 4) {
-				if (parseInt(moment) == parseInt(item['lid'])) str += "<option selected='selected' "
-					+ "value='" + item['lid'] + "'>" + item['entryname'] + "</option>";
-				else str += "<option value='" + item['lid'] + "'>" + item['entryname'] + "</option>";
-			}
-		}
-	}
-	$("#moment").html(str);
-
-	// Set Name
-	$("#sectionname").val(entryname);
-	$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='" + entryname + "' style='width:448px;'/>");
-
-	// Set Comment
-	$("#comments").val(comments);
-	$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='comments' value='" + comments + "' style='width:448px;'/>");
-
-	// Set Lid
-	$("#lid").val(lid);
-
-	// Add highscore mode options
-	str = "";
-	if (highscoremode == 0) str += "<option selected='selected' value ='0'>None</option>"
-	else str += "<option value ='0'>None</option>";
-	if (highscoremode == 1) str += "<option selected='selected' value ='1'>Time based</option>"
-	else str += "<option value ='1'>Time based</option>";
-	if (highscoremode == 2) str += "<option selected='selected' value ='2'>Click based</option>"
-	else str += "<option value ='2'>Click based</option>";
-	$("#highscoremode").html(str);
-
-	// Group
-	str = "";
-	str += "<option value='UNK'>Välj grupp</option>";
-
-	for(var i = 0; i < retdata['groups'].length; i++) {
-		if (group == retdata['groups'][i].groupID) {
-			str += "<option selected='selected' value='"+retdata['groups'][i].groupID+"'>"+retdata['groups'][i].groupName+"</option>";
-		} else {
-			str += "<option value='"+retdata['groups'][i].groupID+"'>"+retdata['groups'][i].groupName+"</option>";
-		}
-	}
-	$('#group').html(str);
-	// Show dialog
-	iistr = "";
-
-	$("#inputwrapper-tabs").css("display","block");
-	$("#inputwrapper-link").css("display","block");
-	$("#inputwrapper-gradesystem").css("display","block");
-	$("#inputwrapper-moment").css("display","block");
-	$("#inputwrapper-highscore").css("display","block");
-	$("#inputwrapper-comments").css("display","block");
-	$("#inputwrapper-group").css("display","block");
-
-	$("#editSection").css("display","flex");
-
-}
-
-function changedType(kind)
-{
-		// Prepares option list for code example (2)/dugga (3) dropdown/links (5) / Not applicable
-		if(kind==2){
-				$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
-		}else if(kind==3){
-				$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'id','qname'));		
-		}else if(kind==5){
-				$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
-		}else{
-				$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");		
-		}
 }
 
 // Displaying and hidding the dynamic comfirmbox for the section edit dialog
@@ -540,28 +545,6 @@ function returnedCourse(data) {
 	}, 1000);
 }
 
-function showEditVersion(versid, versname, startdate, enddate) {
-	startdate = new Date(startdate)
-	enddate = new Date(enddate)
-	var startHour = startdate.getHours()
-	var startMinute = startdate.getMinutes()
-	var endHour = enddate.getHours()
-	var endMinute = enddate.getMinutes()
-
-	startdate = getDateFormat(startdate);
-	enddate = getDateFormat(enddate);
-
-	$("#eversname").val(versname);
-	$("#eversid").val(versid);
-	$("#estartdate").val(startdate);
-	$("#eenddate").val(enddate);
-	$("#hourPickerStartEditVersion").val(startHour);
-	$("#minutePickerStartEditVersion").val(startMinute);
-	$("#hourPickerEndEditVersion").val(endHour);
-	$("#minutePickerEndEditVersion").val(endMinute);
-	$("#editCourseVersion").css("display", "flex");
-}
-
 function updateVersion() {
 
 	var cid = $("#cid").val();
@@ -693,9 +676,11 @@ function returnedSection(data) {
 		var str = "";
 
 		if (data['writeaccess']) {
-				// Retrieve start and end dates for current version and build dropdowns
-				var startdate = null;
-				var enddate = null;
+				// <option value='?courseid=" + retdata['courseid']&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";ssstr += "<option value='" + vvers + "'";
+				// showEditVersion(\"" + querystring['coursevers'] + "\",\"" + versionname + "\",\""+ startdate + "\",\"" + enddate + "\");
+				// changeURL(\"resulted.php?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers'] + "\")
+
+				// Build dropdowns
 				var bstr="";
 				for (var i = 0; i < retdata['versions'].length; i++) {
 						var item = retdata['versions'][i];
@@ -705,10 +690,6 @@ function returnedSection(data) {
 										bstr += " selected";
 								}
 								bstr+=">"+item['versname']+" - "+item['vers']+"</option>";
-								if(retdata['coursevers'] == item['vers']){
-									startdate = item['startdate'];
-									enddate = item['enddate'];
-								}
 						}
 				}
 				document.getElementById("courseDropdownTop").innerHTML = bstr;
