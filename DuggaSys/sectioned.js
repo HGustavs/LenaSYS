@@ -1958,6 +1958,30 @@ $(document).ready(function () {
 	});
 });
 
+$(document).ready(function () {
+	$(".messagebox").hover(function () {
+		$("#testbutton").css("background-color", "red");
+	});
+	$(".messagebox").mouseout(function () {
+		$("#testbutton").css("background-color", "#614875");
+	});
+	$('#estartdate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+	$('#eenddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+	$('#startdate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+	$('#enddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+	addMinuteOptions();
+	addHourOptions();
+
+});
+
 $(window).load(function () {
 	//There is an issue with using this code, it generates errors that stop execution
 	$(window).keyup(function (event) {
@@ -1991,43 +2015,24 @@ $(window).load(function () {
 	});
 });
 
-// Detects clicks
-$(document).mousedown(function (e) {
+//----------------------------------------------------------------------------------
+// mouseDown: make sure mousedown is only handled in one single place regardless if touch or mouse
+//----------------------------------------------------------------------------------
+
+function mouseDown(e){
+
 	var box = $(e.target);
 
-	if (box[0].classList.contains("loginBox")) { // is the clicked element a loginbox?
+	// is the clicked element a loginbox? or is it inside a loginbox?
+	if (box[0].classList.contains("loginBox")) {
 		isClickedElementBox = true;
-	} else if ((findAncestor(box[0], "loginBox") != null) // or is it inside a loginbox?
+	} else if ((findAncestor(box[0], "loginBox") != null)
 		&& (findAncestor(box[0], "loginBox").classList.contains("loginBox"))) {
 		isClickedElementBox = true;
 	} else {
 		isClickedElementBox = false;
 	}
-});
-
-// Detect Click outside the loginBox
-
-$(document).mouseup(function (e) {
-	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) // if the target of the click isn't the container...
-		&& $('.loginBox').has(e.target).length === 0 // ... nor a descendant of the container
-		&& (!isClickedElementBox)) // or if we have clicked inside box and dragged it outside and released it
-	{
-		closeWindows();
-		closeSelect();
-		showSaveButton();
-	} else if (!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')) {
-		hamburgerChange("notAClick");
-		closeWindows();
-		closeSelect();
-		showSaveButton();
-	}
-});
-
-$(document).scroll(function(e){
-	localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
-});
-
-$(document).mousedown(function(e) {
+	
 	// If the fab list is visible, there should be no timeout to toggle the list
 	if ($('.fab-btn-list').is(':visible')) {
 		if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) toggleFabButton();
@@ -2036,7 +2041,26 @@ $(document).mousedown(function(e) {
 				pressTimer = window.setTimeout(function() { toggleFabButton(); }, 200);
 		}
 	}
-}).mouseup(function(e) {
+	
+}
+
+//----------------------------------------------------------------------------------
+// mouseUp: make sure mouseup is only handled in one single place regardless if touch or mouse
+//----------------------------------------------------------------------------------
+
+function mouseUp(e){
+	// if the target of the click isn't the container nor a descendant of the container or if we have clicked inside box and dragged it outside and released it
+	if ($('.loginBox').is(':visible') && !$('.loginBox').is(e.target) && $('.loginBox').has(e.target).length === 0 && (!isClickedElementBox)){
+		closeWindows();
+		closeSelect();
+		showSaveButton();
+	}else if(!findAncestor(e.target, "hamburgerClickable") && $('.hamburgerMenu').is(':visible')){
+		hamburgerChange("notAClick");
+		closeWindows();
+		closeSelect();
+		showSaveButton();
+	}
+
 	// A quick item should be created on a "fast click" if the fab list isn't visible / Click outside the FAB list / if the target of the click isn't the container...
 	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
 			clearTimeout(pressTimer);
@@ -2044,46 +2068,31 @@ $(document).mousedown(function(e) {
     }else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
         toggleFabButton();
 	}
-}).on("touchstart", function(e){
-	if ($('.fab-btn-list').is(':visible')) {
-	} else {
-			if (e.target.id == "fabBtn") { 
-				pressTimer = window.setTimeout(function() { toggleFabButton(); }, 200); return false;
-			}
-	}
-}).on("touchend", function(e){
-    //abrupts and clears the timer for touchstart when the user lets go of the fab
-    // The "Add Course Local File" popup should appear on
-	// a "fast click" if the fab list isn't visible
-	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
-			clearTimeout(pressTimer);
-			createQuickItem();
-           return false;
-    }// Click outside the FAB list
+	
+}
+
+//----------------------------------------------------------------------------------
+// event handlers: Detect mouse / touch gestures uniformly
+//----------------------------------------------------------------------------------
+
+$(document).mousedown(function (e) {
+		mouseDown(e);
 });
 
-// Setup on-load
-
-$(document).ready(function () {
-	$(".messagebox").hover(function () {
-		$("#testbutton").css("background-color", "red");
-	});
-	$(".messagebox").mouseout(function () {
-		$("#testbutton").css("background-color", "#614875");
-	});
-	$('#estartdate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#eenddate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#startdate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#enddate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	addMinuteOptions();
-	addHourOptions();
-
+$(document).mouseup(function (e) {
+	mouseUp(e);
 });
+
+$(document).on("touchstart", function(e){
+	mouseDown(e);
+});
+							 
+$(document).on("touchend", function(e){
+	mouseUp(e);
+});
+
+// React to scroll events
+$(document).scroll(function(e){
+	localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
+});
+							 
