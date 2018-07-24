@@ -173,6 +173,19 @@ function weeksBetween(firstDate, secondDate){
 	return Math.round(diff / ONE_WEEK);
 }
 
+//----------------------------------------------------------------------------------
+// weeksBetween: Function for computing week number for date
+//----------------------------------------------------------------------------------
+
+function getWeek(tdate)
+{
+		var date = new Date(tdate.getTime());
+		date.setHours(0, 0, 0, 0);
+		date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+		var week1 = new Date(date.getFullYear(), 0, 4);
+		return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6 ) % 7) / 7);
+}
+
 // -------------==============######## Dialog Handling ###########==============-------------
 
 //----------------------------------------------------------------------------------
@@ -594,15 +607,8 @@ var resave = false;
 function returnedSection(data) {
 	retdata = data;
 
-	Date.prototype.getWeek = function () {
-		var date = new Date(this.getTime());
-		date.setHours(0, 0, 0, 0);
-		date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-		var week1 = new Date(date.getFullYear(), 0, 4);
-		return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6 ) % 7) / 7);
-	}
-
-
+	if (data['debug'] != "NONE!") alert(data['debug']);
+	
 	var now = new Date();
 	var startdate = new Date(retdata['startdate']);
 	var enddate = new Date(retdata['enddate']);
@@ -614,8 +620,6 @@ function returnedSection(data) {
 			numberOfParts++;
 		}
 	}
-
-	if (data['debug'] != "NONE!") alert(data['debug']);
 
 	if (querystring['coursevers'] != "null") {
 		// Fill section list with information
@@ -649,6 +653,7 @@ function returnedSection(data) {
 								bstr+=">"+item['versname']+" - "+item['vers']+"</option>";
 						}
 				}
+				
 				document.getElementById("courseDropdownTop").innerHTML = bstr;
 				document.getElementById("copyvers").innerHTML = bstr;
 			
@@ -672,87 +677,7 @@ function returnedSection(data) {
 			showInline = true;
 			hiddenInline = "inline";
 		}
-
-		str += "<div class='course' style='display:flex; align-items:center; justify-content:flex-end;'>";
-		str += "<div style='flex-grow:1'>"
-		str += "<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;' title='"+data.coursename+" "+data.coursecode+" "+versionname+"'>"+data.coursename+"</span>";
-		str += "<span id='course-coursecode' style='margin-right:10px;'>" + data.coursecode + "</span>";
-		str += "<span id='course-versname' class='courseVersionField'>" + versionname + "</span>";
-		str += "</div>";
-
-		// If one has writeaccess (eg a teacher) the new item button is created, in shape of button with a '+'-sign
-		if (retdata["writeaccess"]) {
-			if (item['kind'] == undefined) {
-				item['kind'] = 0;
-				// Need to change it to a zero so it will default to type Header when creating new item.
-			}
-
-			str += "<div id='course-newitem' style='display: flex;'>";
-			str += "<input id='addElement' type='button' value='+' class='submit-button-newitem' title='New Item'"
-				+ " onclick='selectItem("
-				+ "\"" + item['lid'] + "\","
-				+ "\"" + item['entryname'] + "\","
-				+ "\"" + item['kind'] + "\","
-				+ "\"" + item['visible'] + "\","
-				+ "\"" + item['link'] + "\","
-				+ "\"" + momentexists + "\","
-				+ "\"" + item['gradesys'] + "\","
-				+ "\"" + item['highscoremode'] + "\", null"
-				+ "); showSubmitButton(); validateType(); "
-				+ "editSectionDialogTitle(\"newItem\"); defaultNewItem();'>";
-			str += "</div>";
-		}
-
-		str += "<div id='course-coursevers' style='display:none; margin-right:10px;'>"
-		+ data.coursevers + "</div>";
-		str += "<div id='course-courseid' style='display:none; margin-right:10px;'>"
-		+ data.courseid + "</div>";
-
-		str += "</div>";
-
-		str += "<div id='courseList'>";
-		str += "<!-- Statistics List -->";
-		str += "<div id='statisticsList'>";
-		str += "<div id='statistics' class='statistics' style='display:inline-block; cursor:pointer;'>";
-		str += "<div style='margin:10px;'>";
-		str += "<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>";
-		str += "<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>";
-		str += "</div>";
-		str += "<div class='nowrap' style='padding-left:5px' title='statistics'>";
-		str += "<span class='listentries-span noselect' style='writing-mode:vertical-rl;text-orientation: sideways;'>Deadlines</span>";
-		str += "</div></div>";
-		str += "<div class='statisticsContent' style='display:inline-block;'>";
-
-		str += "<div id='statisticsPie' class='statisticsInnerBox'>";
-		str += "<canvas id='pieChart' width='300px' height='255px'"
-		+	"style='padding: 10px; display:flex; margin: auto;'></canvas>"; // Contains pie chart.
-		str += "</div>";
-
-		str	+= "<div id='deadlineInfoBox' class='statisticsInnerBox' "
-		+ "style='padding: 10px;'>";
-		str += "<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>";
-		str += "<div class='deadlineInfo'><span style='width:100%;'id='deadlineInfoFirstText'></span>";
-		str += "<span id='deadlineInfoFirstDate' style='margin-right:5px; width:35px;'></span></div>";
-		str += "<div class='deadlineInfo'><span style='width:100%;' id='deadlineInfoSecondText'></span>";
-		str += "<span id='deadlineInfoSecondDate' style='margin-right:5px; width:35px;'> </span></div>";
-		str += "<div class='deadlineInfo'> <span style='width:100%;' id='deadlineInfoThirdText'></span>";
-		str += "<span id='deadlineInfoThirdDate' style='margin-right:5px; width:35px;'></span></div>";
-		str += "<div class='deadlineInfo'> <span style='width:100%;' id='deadlineInfoFourthText'></span>";
-		str += "<span id='deadlineInfoFourthDate' style='margin-right:5px; width:35px;'></span></div>";
-		str += "<div class='deadlineInfo'> <span style='width:100%;' id='deadlineInfoFifthText'></span>";
-		str += "<span id='deadlineInfoFifthDate' style='margin-right:5px; width:35px;'></span></div>";
-		str += "</div>";
-
-		str += "<div id='statisticsSwimlanes' class='statisticsInnerBox' style='display:flex;'>";
-		str += "<div style='display:inline-block;'>";
-		str += "<canvas id='swimlanesMoments' style='padding:10px;'></canvas>";	// Contains swimlanes.
-		str += "</div>";
-		str += "<div style='width: 350px; overflow-x: auto; white-space: nowrap; "
-		+ "display: inline-block; margin: 10px 10px 10px -10px'>";
-		str += "<canvas id='swimlanesWeeks'></canvas>";	// Contains swimlanes.
-		str += "</div>";
-		str += "</div>";
-		str += "</div></div>"; // Closing div for statisticsContent
+	
 		str += "<div id='Sectionlistc'>";
 
 		// For now we only have two kinds of sections
@@ -786,7 +711,6 @@ function returnedSection(data) {
 				// All are visible according to database
 
 				// Content table
-
 				str += "<table id='lid" + item['lid'] + "' value='" + item['lid'] + "' style='width:100%;"
 					+ "table-layout:fixed;'><tr style='height:32px;' ";
 				if (kk % 2 == 0) {
@@ -1173,7 +1097,7 @@ function returnedSection(data) {
 		}
 
 		str += "</div></div>";
-		var slist = document.getElementById('Sectionlist');
+		var slist = document.getElementById('Sectionlisti');
 		slist.innerHTML = str;
 		if (resave == true) {
 			str = "";

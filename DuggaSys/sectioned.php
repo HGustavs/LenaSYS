@@ -129,9 +129,82 @@
 		</div>
 		
 		<!-- FAB END -->
-						
+
+		<div id='Sectionlist'>
+		
+		<div class='course' style='display:flex; align-items:center; justify-content:flex-end;'>
+				<div style='flex-grow:1'>
+						<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;' title='"+data.coursename+" "+data.coursecode+" "+versionname+"'>UNK</span>
+						<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
+						<span id='course-versname' class='courseVersionField'>UNK</span>
+				</div>
+			
+				<div id='course-newitem' style='display: flex;'>
+						<input id='addElement' type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItemdefaultNewItem();'>
+				</div>
+
+				<div id='course-coursevers' style='display:none; margin-right:10px;' >UNK</div>
+				<div id='course-courseid' style='display:none; margin-right:10px;' >UNK</div>
+
+		</div>
+
+		<div id='courseList'>
+
+		<!-- Statistics List -->
+		
+		<div id='statisticsList'>
+				<div id='statistics' class='statistics' style='display:inline-block; cursor:pointer;'>
+						<div style='margin:10px;'>
+								<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>
+								<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>
+						</div>
+						<div class='nowrap' style='padding-left:5px' title='statistics'>
+								<span class='listentries-span noselect' style='writing-mode:vertical-rl;text-orientation: sideways;'>Deadlines</span>
+						</div>
+				</div>
+				<div class='statisticsContent' style='display:inline-block;'>
+						<div id='statisticsPie' class='statisticsInnerBox'>
+								<canvas id='pieChart' width='300px' height='255px' style='padding: 10px; display:flex; margin: auto;'></canvas>
+						</div>
+						<div id='deadlineInfoBox' class='statisticsInnerBox' style='padding: 10px;'>
+								<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>
+								<div class='deadlineInfo'>
+									<span style='width:100%;'id='deadlineInfoFirstText'></span>
+									<span id='deadlineInfoFirstDate' style='margin-right:5px; width:35px;'></span>
+								</div>
+								<div class='deadlineInfo'>
+									<span style='width:100%;' id='deadlineInfoSecondText'></span>
+									<span id='deadlineInfoSecondDate' style='margin-right:5px; width:35px;'> </span>
+								</div>
+								<div class='deadlineInfo'>
+									<span style='width:100%;' id='deadlineInfoThirdText'></span>
+									<span id='deadlineInfoThirdDate' style='margin-right:5px; width:35px;'></span>
+								</div>
+								<div class='deadlineInfo'>
+									<span style='width:100%;' id='deadlineInfoFourthText'></span>
+									<span id='deadlineInfoFourthDate' style='margin-right:5px; width:35px;'></span>
+								</div>
+								<div class='deadlineInfo'>
+									<span style='width:100%;' id='deadlineInfoFifthText'></span>
+									<span id='deadlineInfoFifthDate' style='margin-right:5px; width:35px;'></span>
+								</div>
+						</div>
+						<div id='statisticsSwimlanes' class='statisticsInnerBox' style='display:flex;'>
+								<div style='display:inline-block;'>
+									<canvas id='swimlanesMoments' style='padding:10px;'></canvas>
+								</div>
+								<div style='width: 350px; overflow-x: auto; white-space: nowrap; display: inline-block; margin: 10px 10px 10px -10px'>
+									<canvas id='swimlanesWeeks'></canvas>
+								</div>
+						</div>
+				</div>
+		</div>
+		<!-- Statistics List END-->
+			
 		<!-- Section List -->
-		<div id='Sectionlist'></div>
+		<div id='Sectionlisti'>
+		
+		</div>
 	</div>
 	<!-- content END -->
 
