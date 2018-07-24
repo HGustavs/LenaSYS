@@ -182,6 +182,18 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	$("#visib").html(makeoptions(evisible,["Hidden","Public","Login"],[0,1,2]));
 	$("#tabs").html(makeoptions(gradesys,["0 tabs","1 tabs","2 tabs","3 tabs","end","1 tab + end","2 tabs + end"],[0,1,2,3,4,5,6]));
 
+	// Set Link
+	$("#link").val(elink);	
+	if(kind==2){
+			$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
+	}else if(kind==3){
+			$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'id','qname'));		
+	}else if(kind==5){
+			$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
+	}else{
+			$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");		
+	}
+	
 	// Set Moments
 	str = "";
 	if (retdata['entries'].length > 0) {
@@ -204,13 +216,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
 	// Set Name
 	$("#sectionname").val(entryname);
-	$("sectionnamewrapper").html("<input type='text' class='form-control textinput'"
-		+ "id='sectionname' value='" + entryname + "' style='width:448px;'/>");
+	$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='sectionname' value='" + entryname + "' style='width:448px;'/>");
 
 	// Set Comment
 	$("#comments").val(comments);
-	$("sectionnamewrapper").html("<input type='text' class='form-control textinput'"
-		+ "id='comments' value='" + comments + "' style='width:448px;'/>");
+	$("sectionnamewrapper").html("<input type='text' class='form-control textinput' id='comments' value='" + comments + "' style='width:448px;'/>");
 
 	// Set Lid
 	$("#lid").val(lid);
@@ -224,9 +234,6 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	if (highscoremode == 2) str += "<option selected='selected' value ='2'>Click based</option>"
 	else str += "<option value ='2'>Click based</option>";
 	$("#highscoremode").html(str);
-
-	// Set Link
-	$("#link").val(elink);
 
 	// Group
 	str = "";
@@ -251,44 +258,6 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	$("#inputwrapper-comments").css("display","block");
 	$("#inputwrapper-group").css("display","block");
 
-	// Code
-	if(kind==2){
-		for(var ii=0;ii<retdata['codeexamples'].length;ii++){
-			var iitem=retdata['codeexamples'][ii];
-			if(xelink==iitem['exampleid']){
-				iistr+="<option selected='selected' value='"+iitem['exampleid']+"'>"
-				+iitem['examplename']+"</option>";
-			}else{
-				iistr+="<option value='"+iitem['exampleid']+"'>"+iitem['examplename']+"</option>";
-			}
-		}
-		$("#link").html(iistr);
-
-	// Dugga
-	}else if(kind==3){
-		for(var ii=0;ii<retdata['duggor'].length;ii++){
-			var iitem=retdata['duggor'][ii];
-			if(xelink==iitem['id']){
-			iistr+="<option selected='selected' value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
-			}else{
-				iistr+="<option value='"+iitem['id']+"'>"+iitem['qname']+"</option>";
-			}
-		}
-		$("#link").html(iistr);
-
-	// Link
-	}else if(kind==5){
-		for(var ii=0;ii<retdata['links'].length;ii++){
-			var iitem=retdata['links'][ii];
-			if(xelink==iitem['filename']){
-				iistr+="<option selected='selected' value='"+iitem['filename']+"'>"
-				+iitem['filename']+"</option>";
-			}else{
-				iistr+="<option value='"+iitem['filename']+"'>"+iitem['filename']+"</option>";
-			}
-  		}
-		$("#link").html(iistr);
-	}
 	$("#editSection").css("display","flex");
 
 }
@@ -723,123 +692,34 @@ function returnedSection(data) {
 
 		var str = "";
 
-		str += "<table class='navheader' style='overflow: hidden; table-layout: fixed;'>"
-			+ "<tr class='trsize nowrap'>"; // This is for anti-stacking buttons
-
 		if (data['writeaccess']) {
-			// Retrieve start and end dates for a version, if there are such, else set to null
-			var startdate = null;
-			var enddate = null;
-			if (retdata['versions'].length > 0) {
+				// Retrieve start and end dates for current version and build dropdowns
+				var startdate = null;
+				var enddate = null;
+				var bstr="";
 				for (var i = 0; i < retdata['versions'].length; i++) {
-					var item = retdata['versions'][i];
-					if (retdata['courseid'] == item['cid'] && retdata['coursevers'] == item['vers']) {
-						startdate = item['startdate'];
-						enddate = item['enddate'];
-					}
-				}
-			}
-
-			// Version dropdown
-			str += "<td style='display: inline-block;'><div class='course-dropdown-div'>";
-			var sstr = "<select class='course-dropdown' onchange='goToVersion(this)'>";
-			var ssstr = "<select class='course-dropdown'>";
-			if (retdata['versions'].length > 0) {
-				for (i = 0; i < retdata['versions'].length; i++) {
-					var item = retdata['versions'][i];
-					if (retdata['courseid'] == item['cid']) {
-						var vvers = item['vers'];
-						var vname = item['versname'];
-						sstr += "<option value='?courseid=" + retdata['courseid']
-							+ "&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";
-						ssstr += "<option value='" + vvers + "'";
-						if (retdata['coursevers'] == vvers) {
-							sstr += " selected";
-							ssstr += " selected";
+						var item = retdata['versions'][i];
+						if (retdata['courseid'] == item['cid']){
+								bstr+="<option value='"+item['vers']+"'";
+								if (retdata['coursevers'] == item['vers']) {
+										bstr += " selected";
+								}
+								bstr+=">"+item['versname']+" - "+item['vers']+"</option>";
+								if(retdata['coursevers'] == item['vers']){
+									startdate = item['startdate'];
+									enddate = item['enddate'];
+								}
 						}
-						sstr += ">" + vname + " - " + vvers + "</option>";
-						ssstr += ">" + vname + " - " + vvers + "</option>";
-					}
 				}
-			}
-			sstr += "</select>";
-			ssstr += "</select>";
-			str += sstr;
-			// Also replace the copyvers dialog dropdown
-			document.getElementById("copyvers").innerHTML = ssstr;
-			str += "</div></td>";
-			//Buttons for version editing
-			str +=
-				"<td class='editVers' style='display: inline-block;'><div class='editVers menuButton'>"
-				+ "<button type='button' class='submit-button no-radius' style='width:35px;"
-				+ "margin-left:0px' title='Edit the selected version'"
-				+ "onclick='showEditVersion(\"" + querystring['coursevers'] + "\",\"" + versionname + "\",\""
-				+ startdate + "\",\"" + enddate + "\");'>"
-				+ "<img id='versionCog' style='margin-top:6px' "
-				+ "src='../Shared/icons/CogwheelWhite.svg'></button></div></td>";
+				document.getElementById("courseDropdownTop").innerHTML = bstr;
+				document.getElementById("copyvers").innerHTML = bstr;
 
-			str +=
-				"<td class='newVers' style='display: inline-block;'><div class='newVers menuButton'>"
-				+ "<button type='button' value='New version' style='width:35px; margin-left:0px;"
-				+ "border-top-right-radius:3px; border-bottom-right-radius:3px;' class='submit-button no-radius'"
-				+ "title='Create a new version of this course' onclick='showCreateVersion();'>"
-				+ "<img id='versionPlus' style='margin-top:6px' "
-				+ "src='../Shared/icons/PlusS.svg'></button></div></td>";
-
-			//Hamburger menu for navigation
-			str += "<td class='hamburger hamburgerClickable'>";
-			str +=
-				"<div tabindex='0' class='package'><div id='hamburgerIcon' "
-				+ "class='submit-button hamburger' onclick='hamburgerChange();"
-				+ "bigMac();'><div class='container'><div class='bar1'></div><div "
-				+ "class='bar2'></div><div class='bar3'></div></div></div></div>";
-
-			str += "<div class='hamburgerMenu'>";
-			str += "<ul class='hamburgerList'>";
-			str +=
-				"<li class='results'><button class='submit-button menuButton results'"
-				+ "onclick='closeWindows(); changeURL(\"resulted.php?cid=" + querystring['courseid'] + "&coursevers="
-				+ querystring['coursevers'] + "\")' title='Edit student results'>Results</button></li>";
-			str +=
-				"<li class='tests'><button class='submit-button menuButton tests'"
-				+ "onclick='closeWindows(); changeURL(\"duggaed.php?cid=" + querystring['courseid'] + "&coursevers="
-				+ querystring['coursevers'] + "\")' title='Show tests'>Tests</button></li>";
-			str +=
-				"<li class='files'><button class='submit-button menuButton files'"
-				+ "onclick='closeWindows(); changeURL(\"fileed.php?cid=" + querystring['courseid'] + "&coursevers="
-				+ querystring['coursevers'] + "\")' title='Show files'>Files</button></li>";
-			str +=
-				"<li class='access'><button class='submit-button menuButton access'"
-				+ "onclick='closeWindows(); accessCourse();' "
-				+ "title='Give students access to the selected version'>Access</button></li>";
-			str += "</ul>";
-			str += "</div";
-			str += "</td>";
-
-			//Navigation menu
-			str +=
-				"<td class='results menuButton' style='display: inline-block;'>"
-				+ "<div class='results menuButton'><input type='button' value='Results' class='submit-button'"
-				+ "title='Edit student results' onclick='changeURL(\"resulted.php?cid="
-				+ querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "\")' /></div></td>";
-			str +=
-				"<td class='tests menuButton' style='display: inline-block;'>"
-				+ "<div class='tests menuButton'><input type='button' value='Tests' class='submit-button'"
-				+ "id='testbutton' title='Show tests' onclick='changeURL(\"duggaed.php?cid="
-				+ querystring['courseid'] + "&coursevers=" + querystring['coursevers'] + "\")'/></div></td>";
-			str +=
-				"<td class='files menuButton' style='display: inline-block;'>"
-				+ "<div class='files menuButton'><input type='button' value='Files' class='submit-button'"
-				+ "title='Show files' onclick='changeURL(\"fileed.php?cid=" + querystring['courseid'] + "&coursevers="
-				+ querystring['coursevers'] + "\")'/></div></td>";
-			str +=
-				"<td class='access menuButton' style='display: inline-block;'>"
-				+ "<div class='access menuButton'><input type='button' value='Access' class='submit-button'"
-				+ "title='Give students access to the selected version' onclick='accessCourse();'/></div></td>";
 		} else {/* No version selector for students */ }
 
 		if (retdata["writeaccess"]) {
-			str += "</tr></table>";
+			
+			// Show FAB - All static code.
+			
 			str += "<div class='fixed-action-button'>"
 			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>"
 			str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
@@ -875,6 +755,8 @@ function returnedSection(data) {
 		} else {
 			str += "</tr></table>";
 		}
+		
+		str+="</div>";
 
 		// hide som elements if to narrow
 		var hiddenInline = "";

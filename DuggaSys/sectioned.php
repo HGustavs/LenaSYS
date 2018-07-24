@@ -32,6 +32,87 @@
 
 	<!-- content START -->
 	<div id="content">
+		
+		<div id='TopMenuStatic' style="border: 4px solid darkred;">
+		
+			<table class='navheader' style='overflow: hidden; table-layout: fixed;'>
+				<tr class='trsize nowrap'>
+					<td style='display: inline-block;'>
+						<div class='course-dropdown-div'>
+								<select id="courseDropdownTop" class='course-dropdown' onchange='goToVersion(this)' >
+								</select>
+						</div>
+					</td>
+					<td class='editVers' style='display: inline-block;'>
+						<div class='editVers menuButton'>
+								<button type='button' class='submit-button no-radius' style='width:35px;margin-left:0px' title='Edit the selected version' onclick='showEditVersion();'>
+									<img id='versionCog' style='margin-top:6px' src='../Shared/icons/CogwheelWhite.svg'>
+								</button>
+						</div>
+					</td>
+					<td class='newVers' style='display: inline-block;'>
+						<div class='newVers menuButton'>
+							<button type='button' value='New version' style='width:35px; margin-left:0px;border-top-right-radius:3px; border-bottom-right-radius:3px;' class='submit-button no-radius' title='Create a new version of this course' onclick='showCreateVersion();' >
+								<img id='versionPlus' style='margin-top:6px' src='../Shared/icons/PlusS.svg'>
+							</button>
+						</div>
+					</td>
+					<td class='hamburger hamburgerClickable'>
+						<div tabindex='0' class='package'>
+							<div id='hamburgerIcon' class='submit-button hamburger' onclick='hamburgerChange();bigMac();' >
+								<div class='container'>
+									<div class='bar1'></div>
+									<div class='bar2'></div>
+									<div class='bar3'></div>
+								</div>
+							</div>
+						</div>
+						<div class='hamburgerMenu'>
+							<ul class='hamburgerList'>
+								<li class='results'>
+									<button class='submit-button menuButton results' onclick='closeWindows(); changeURLB("Results");' title='Edit student results'>Results</button>
+								</li>
+								<li class='tests'>
+										<button class='submit-button menuButton tests' onclick='closeWindows(); changeURLB("Tests");' title='Show tests'>Tests</button>
+								</li>
+								<li class='files'>
+										<button class='submit-button menuButton files' onclick='closeWindows(); changeURLB("Files");' title='Show files'>Files</button>
+								</li>
+								<li class='access'>
+										<button class='submit-button menuButton access' onclick='closeWindows(); accessCourse();' title='Give students access to the selected version'>Access</button>
+								</li>
+							</ul>
+						</div>
+					</td>
+
+					<td class='results menuButton' style='display: inline-block;'>
+						<div class='results menuButton'>
+							<input type='button' value='Results' class='submit-button' title='Edit student results' onclick='changeURLB("Results");' />
+						</div>
+					</td>
+					<td class='tests menuButton' style='display: inline-block;'>
+						<div class='tests menuButton'>
+							<input type='button' value='Tests' class='submit-button' id='testbutton' title='Show tests' onclick='changeURLB("Tests")'/>
+						</div>
+					</td>
+					<td class='files menuButton' style='display: inline-block;'>
+						<div class='files menuButton'>
+							<input type='button' value='Files' class='submit-button' title='Show files' onclick='changeURLB("Files")'/>
+						</div>
+					</td>
+					<td class='access menuButton' style='display: inline-block;'>
+						<div class='access menuButton'>
+							<input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='accessCourse();'/>
+						</div>
+					</td>
+				</tr>
+			
+			</table>
+
+		</div>
+		<!-- Static Top Menu END -->
+	
+						
 		<!-- Section List -->
 		<div id='Sectionlist'></div>
 	</div>
