@@ -116,7 +116,6 @@ function makeoptionsItem(option,optionlist,optionstring,valuestring)
 				}
 				str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
 		}
-		alert(str);
 		return str;
 }
 
@@ -150,6 +149,7 @@ function navigatePage(pagename)
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group = "UNK") {
+	
 	nameSet = false;
 	if (entryname == "undefined") entryname = "New Header";
 	if (kind == "undefined") kind = 0;
@@ -309,86 +309,6 @@ function deleteItem(item_lid = null) {
 	AJAXService("DEL", { lid: lid }, "SECTION");
 	$("#editSection").css("display", "none");
 }
-
-// Checks if the title name includes any invalid characters
-
-function validateName() {
-	nameSet = true;
-	var name = document.getElementById("sectionname");
-	if (isNameValid() && isTypeValid()){ // if both are valid, show buttons
-		$('#tooltipTxt').fadeOut();
-		$('#saveBtn').removeAttr('disabled');
-		$('#submitBtn').removeAttr('disabled');
-		name.style.backgroundColor = "#fff";
-
-	}else{ // if not, disable buttons
-		$('#saveBtn').attr('disabled', 'disabled');
-		$('#submitBtn').attr('disabled', 'disabled');
-		if(!isNameValid()){
-			$('#tooltipTxt').fadeIn();
-			name.style.backgroundColor = "#f57";
-		} else { // test must not be valid, remove our own tooltip and error-color
- 			$('#tooltipTxt').fadeOut();
-			name.style.backgroundColor = "#fff";
-		}
-	}
-}
-
-function isNameValid(){
-	var nme = document.getElementById("sectionname");
-
-	if (nme.value.match(/^[A-Za-zÅÄÖåäö\s\d(),.]+$/)) {
-		return true;
-	}
-	return false;
-}
-
-
-
-function isTypeValid(){
-	kind = $("#type").val();
-	var nme = document.getElementById("type");
-	if(retdata['duggor'].length == 0 && kind == 3){
-		return false;
-	} else if (retdata['codeexamples'].length <= 1 && kind == 2){
-		return false;
-	} else if (retdata['links'].length == 0 && kind == 5){
-		return false;
-	}
-	return true;
-}
-
-function validateType() {
-	var type = document.getElementById("type");
-	if (isTypeValid() && isNameValid()){
-		$('#tooltipType').fadeOut();
-		$('#saveBtn').removeAttr('disabled');
-		$('#submitBtn').removeAttr('disabled');
-		type.style.backgroundColor = "#fff";
-	} else {
-		$('#saveBtn').attr('disabled', 'disabled');
-		$('#submitBtn').attr('disabled', 'disabled');
-		if (!isTypeValid()){
-			if (type.value == 2){ //Code
-				$("#tooltipType").html("Create a Code example before you can use it for a Code section.");
-			} else if (type.value == 3){ //Test
-				$("#tooltipType").html("Create a Dugga before you can use it for a Test section.");
-			} else if (type.value == 5){ // Link
-				$("#tooltipType").html("Create a Link before you can use it for a Link section.");
-			}
-
-			$('#tooltipType').fadeIn();
-			for (i = 0; i < type.options.length; i++) {
-				type.options[i].style.backgroundColor = "#fff";
-			}
-			type.style.backgroundColor = "#f57";
-		} else if (!isNameValid()){
-			$('#tooltipType').fadeOut();
-			type.style.backgroundColor = "#FFF";
-		}
-	}
-}
-
 
 function updateItem() {
 	var tabs = $("#tabs").val();
@@ -685,10 +605,6 @@ function returnedSection(data) {
 		var str = "";
 
 		if (data['writeaccess']) {
-				// <option value='?courseid=" + retdata['courseid']&coursename=" + retdata['coursename'] + "&coursevers=" + vvers + "'";ssstr += "<option value='" + vvers + "'";
-				// showEditVersion(\"" + querystring['coursevers'] + "\",\"" + versionname + "\",\""+ startdate + "\",\"" + enddate + "\");
-				// changeURL(\"resulted.php?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers'] + "\")
-
 				// Build dropdowns
 				var bstr="";
 				for (var i = 0; i < retdata['versions'].length; i++) {
@@ -707,8 +623,6 @@ function returnedSection(data) {
 				// Show FAB / Menu
 				document.getElementById("TopMenuStatic").style.display = "Block";
 				document.getElementById("FABStatic").style.display = "Block";
-				
-
 		} else {
 			// Hide FAB / Menu
 			document.getElementById("TopMenuStatic").style.display = "None";
@@ -729,8 +643,7 @@ function returnedSection(data) {
 
 		str += "<div class='course' style='display:flex; align-items:center; justify-content:flex-end;'>";
 		str += "<div style='flex-grow:1'>"
-		str += "<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;"
-			+ "margin-right:10px;' title='" + data.coursename + " " + data.coursecode + " " + versionname + "'>" + data.coursename + "</span>";
+		str += "<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;' title='"+data.coursename+" "+data.coursecode+" "+versionname+"'>"+data.coursename+"</span>";
 		str += "<span id='course-coursecode' style='margin-right:10px;'>" + data.coursecode + "</span>";
 		str += "<span id='course-versname' class='courseVersionField'>" + versionname + "</span>";
 		str += "</div>";
@@ -1136,9 +1049,6 @@ function returnedSection(data) {
 
 				str += "</td>";
 
-
-
-
 				// Add generic td for deadlines if one exists
 				if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
 					var dl = deadline.split(" ");
@@ -1451,49 +1361,10 @@ function createQuickItem(){
 }
 
 //kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
-function fabValidateType(kind) {
-	if (kind == 0){
-		selectItem("undefined","New Header","0","undefined","undefined","0","undefined","undefined", "undefined");
-		newItem();
-	} else if (kind == 1){
-		selectItem("undefined","New Section","1","undefined","undefined","0","undefined","undefined", "UNK");
-		newItem();
-	} else if (kind == 2){
-		if(retdata['codeexamples'].length <= 1){ //Index 1 in the array has a hard coded code example.
-			toggleFabButton();
-			testsAvailable = true;
-			$("#noMaterialText").html("Create a Code example before you can use it for a Code section.");
-			$("#noMaterialConfirmBox").css("display", "flex");
-		} else {
-			selectItem("undefined","New Code","2","undefined","undefined","0","undefined","undefined", "UNK");
-			newItem();
-		}
-	} else if (kind == 3){
-		if(retdata['duggor'].length == 0){
-			toggleFabButton();
-			$("#noMaterialText").html("Create a Dugga before you can use it for a Test section.");
-			$("#noMaterialConfirmBox").css("display", "flex");
-		} else {
-			selectItem("undefined","New Test","3","undefined","undefined","0","undefined","undefined", "UNK");
-			newItem();
-		}
-	} else if (kind == 4){
-		selectItem("undefined","New Moment","4","undefined","undefined","0","undefined","undefined", "UNK");
-		newItem();
-	} else if (kind == 5){
-		if(retdata['links'].length == 0){
-			toggleFabButton();
-			$("#noMaterialText").html("Create a Link before you can use it for a Link section.");
-			$("#noMaterialConfirmBox").css("display", "flex");
-		} else {
-			selectItem("undefined","New Link","5","undefined","undefined","0","undefined","undefined", "UNK");
-			newItem();
-		}
-	} else if (kind == 6){
-		selectItem("undefined","New Group Activity","6","undefined","undefined","0","undefined","undefined", "UNK");
-		newItem();
-	} else if (kind == 7){
-		selectItem("undefined","New Message","7","undefined","undefined","0","undefined","undefined", "UNK");
+
+function createFABItem(kind,itemtitle) {
+	if(kind>=0&&kind<=7){
+		selectItem("undefined",itemtitle,kind,"undefined","undefined","0","undefined","undefined", "undefined");
 		newItem();
 	}
 }
