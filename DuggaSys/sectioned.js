@@ -151,9 +151,14 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	// Set Lid
 	$("#lid").val(lid);
 
+	// Display Dialog
 	$("#editSection").css("display","flex");
 
 }
+
+//----------------------------------------------------------------------------------
+// changedType: When kind of section has been changed we must update dropdown lists accordingly
+//----------------------------------------------------------------------------------
 
 function changedType(kind)
 {
@@ -694,51 +699,19 @@ function returnedSection(data) {
 				}
 				document.getElementById("courseDropdownTop").innerHTML = bstr;
 				document.getElementById("copyvers").innerHTML = bstr;
-
-		} else {/* No version selector for students */ }
-
-		if (retdata["writeaccess"]) {
 			
-			// Show FAB - All static code.
-			
-			str += "<div class='fixed-action-button'>"
-			str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>"
-			str += "<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>"
-
-			//Heading button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='fabValidateType(\"0\");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>"
-
-			//Section button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='fabValidateType(\"1\");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>"
-
-			// Moment button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='fabValidateType(\"4\");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>"
-
-			// Test button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='fabValidateType(\"3\");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>"
-
-			// Link button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='fabValidateType(\"5\");'><i class='material-icons'>link</i></a></li>"
-
-			//Code button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='fabValidateType(\"2\");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>"
-
-			// Group activity button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='fabValidateType(\"6\");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>"
-
-			// Message button
-			str += "<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='fabValidateType(\"7\");'><i class='material-icons'>format_quote</i></a></li>"
-
-			str += "</ol>"
-
-			str += "</div>";
+				// Show FAB / Menu
+				document.getElementById("TopMenuStatic").style.display = "Block";
+				document.getElementById("FABStatic").style.display = "Block";
+				
 
 		} else {
-			str += "</tr></table>";
+			// Hide FAB / Menu
+			document.getElementById("TopMenuStatic").style.display = "None";
+			document.getElementById("FABStatic").style.display = "None";
+
 		}
 		
-		str+="</div>";
-
 		// hide som elements if to narrow
 		var hiddenInline = "";
 		var showInline = true;

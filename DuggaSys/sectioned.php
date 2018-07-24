@@ -33,7 +33,7 @@
 	<!-- content START -->
 	<div id="content">
 		
-		<div id='TopMenuStatic' style="border: 4px solid darkred;">
+		<div id='TopMenuStatic' style="display:none;">
 		
 			<table class='navheader' style='overflow: hidden; table-layout: fixed;'>
 				<tr class='trsize nowrap'>
@@ -111,7 +111,24 @@
 
 		</div>
 		<!-- Static Top Menu END -->
-	
+
+		<!-- FAB Start -->
+		
+		<div class='fixed-action-button' id="FABStatic" style="display:none">
+				<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>
+				<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='fabValidateType(\"0\");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Section' onclick='fabValidateType(\"1\");'><img class='fab-icon' src='../Shared/icons/section-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Moment' onclick='fabValidateType(\"4\");'><img class='fab-icon' src='../Shared/icons/moment-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Test' onclick='fabValidateType(\"3\");'><img class='fab-icon' src='../Shared/icons/test-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Link' onclick='fabValidateType(\"5\");'><i class='material-icons'>link</i></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Code' onclick='fabValidateType(\"2\");'><img class='fab-icon' src='../Shared/icons/code-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Group activity' onclick='fabValidateType(\"6\");'><img class='fab-icon' src='../Shared/icons/group-icon.svg'></a></li>
+						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='fabValidateType(\"7\");'><i class='material-icons'>format_quote</i></a></li>
+				</ol>
+		</div>
+		
+		<!-- FAB END -->
 						
 		<!-- Section List -->
 		<div id='Sectionlist'></div>
