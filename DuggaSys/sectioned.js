@@ -264,42 +264,6 @@ function displaymessage() {
 	$(".messagebox").css("display", "block");
 }
 
-// Show the hamburger menu
-function bigMac() {
-	$(".hamburgerMenu").toggle();
-}
-
-function addMinuteOptions(){
-	var str = "";
-	for(var i = 0; i < 60; i+=5){
-		if(i < 10){
-			str+= "<option value=" + i + ">0" + i + "</option>";
-		}else{
-			str+= "<option value=" + i + ">" + i + "</option>";
-		}
-	}
-	$("#minutePickerStartNewVersion").html(str);
-	$("#minutePickerEndNewVersion").html(str);
-	$("#minutePickerStartEditVersion").html(str);
-	$("#minutePickerEndEditVersion").html(str);
-}
-
-function addHourOptions(){
-	var str = "";
-	for(var i = 0; i < 24; i++){
-		if(i < 10){
-			str+= "<option value=" + i + ">0" + i + "</option>";
-		}else{
-			str+= "<option value=" + i + ">" + i + "</option>";
-		}
-	}
-	$("#hourPickerStartNewVersion").html(str);
-	$("#hourPickerEndNewVersion").html(str);
-	$("#hourPickerStartEditVersion").html(str);
-	$("#hourPickerEndEditVersion").html(str);
-}
-
-
 function showSubmitButton() {
 	$(".submitDugga").css("display", "inline-block");
 	$(".updateDugga").css("display", "none");
@@ -310,6 +274,11 @@ function showSaveButton() {
 	$(".submitDugga").css("display", "none");
 	$(".updateDugga").css("display", "block");
 	$(".closeDugga").css("display", "block");
+}
+
+// Show the hamburger menu
+function bigMac() {
+	$(".hamburgerMenu").toggle();
 }
 
 function editSectionDialogTitle(title) {
@@ -1385,21 +1354,6 @@ function returnedHighscore(data) {
 	$("#HighscoreBox").css("display", "block");
 }
 
-// Toggle content for each moment
-$(document).on('click', '.moment, .section, .statistics', function () {
-	/* The event handler returns two elements. The following two if statements
-	   gets the element of interest. */
-	if (this.id.length > 0) {
-		saveHiddenElementIDs(this.id);
-	}
-	if (this.id.length > 0) {
-		saveArrowIds(this.id);
-	}
-	hideCollapsedMenus();
-	toggleArrows();
-});
-
-
 // Save ids of all elements, whose state needs to be remembered, in local storage.
 function saveHiddenElementIDs(clickedElement) {
 	addOrRemoveFromArray(clickedElement, menuState.hiddenElements);
@@ -1948,73 +1902,6 @@ function drawSwimlanes(){
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
-$(document).ready(function () {
-	// Function to prevent collapsing when clicking icons
-	$(document).on('click', '#corf', function (e) {
-		e.stopPropagation();
-	});
-	$(document).on('click', '#dorf', function (e) {
-		e.stopPropagation();
-	});
-});
-
-$(document).ready(function () {
-	$(".messagebox").hover(function () {
-		$("#testbutton").css("background-color", "red");
-	});
-	$(".messagebox").mouseout(function () {
-		$("#testbutton").css("background-color", "#614875");
-	});
-	$('#estartdate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#eenddate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#startdate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#enddate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	addMinuteOptions();
-	addHourOptions();
-
-});
-
-$(window).load(function () {
-	//There is an issue with using this code, it generates errors that stop execution
-	$(window).keyup(function (event) {
-		if (event.keyCode == 27) {
-			closeWindows();
-			closeSelect();
-			showSaveButton();
-			hamburgerChange("escapePress");
-			document.activeElement.blur(); // to lose focus from the newItem button when pressing enter
-		} else if (event.keyCode == 13) {
-			//Remember that keycode 13 = enter button
-			document.activeElement.blur();
-			var saveButtonDisplay = ($('#saveBtn').css('display'));
-			var editSectionDisplay = ($('#editSection').css('display'));
-			var submitButtonDisplay = ($('#submitBtn').css('display'));
-			var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
-			var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
-			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
-				updateItem();
-			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
-				newItem();
-				showSaveButton();
-			} else if (isTypeValid() && testsAvailable == true){
-				confirmBox("closeConfirmBox");
-				testsAvailable = false;
-			} else if (errorMissingMaterialDisplay == 'flex'){
-				closeWindows();
-			}
-
-		}
-	});
-});
-
 //----------------------------------------------------------------------------------
 // mouseDown: make sure mousedown is only handled in one single place regardless if touch or mouse
 //----------------------------------------------------------------------------------
@@ -2075,6 +1962,36 @@ function mouseUp(e){
 // event handlers: Detect mouse / touch gestures uniformly
 //----------------------------------------------------------------------------------
 
+$(window).keyup(function (event) {
+		if (event.keyCode == 27) {
+			closeWindows();
+			closeSelect();
+			showSaveButton();
+			hamburgerChange("escapePress");
+			document.activeElement.blur(); // to lose focus from the newItem button when pressing enter
+		} else if (event.keyCode == 13) {
+			//Remember that keycode 13 = enter button
+			document.activeElement.blur();
+			var saveButtonDisplay = ($('#saveBtn').css('display'));
+			var editSectionDisplay = ($('#editSection').css('display'));
+			var submitButtonDisplay = ($('#submitBtn').css('display'));
+			var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
+			var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
+			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
+				updateItem();
+			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
+				newItem();
+				showSaveButton();
+			} else if (isTypeValid() && testsAvailable == true){
+				confirmBox("closeConfirmBox");
+				testsAvailable = false;
+			} else if (errorMissingMaterialDisplay == 'flex'){
+				closeWindows();
+			}
+
+		}
+});
+
 $(document).mousedown(function (e) {
 		mouseDown(e);
 });
@@ -2094,5 +2011,63 @@ $(document).on("touchend", function(e){
 // React to scroll events
 $(document).scroll(function(e){
 	localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
+});						 
+
+// Functions to prevent collapsing when clicking icons
+$(document).on('click', '#corf', function (e) {
+		e.stopPropagation();
 });
-							 
+
+$(document).on('click', '#dorf', function (e) {
+		e.stopPropagation();
+});
+
+// The event handler returns two elements. The following two if statements gets the element of interest.
+$(document).on('click', '.moment, .section, .statistics', function () {
+	
+	if (this.id.length > 0) {
+		saveHiddenElementIDs(this.id);
+	}
+	if (this.id.length > 0) {
+		saveArrowIds(this.id);
+	}
+	hideCollapsedMenus();
+	toggleArrows();
+
+});
+
+// Setup (when loaded rather than when ready)
+
+$(window).load(function () {
+	$(".messagebox").hover(function () {
+		$("#testbutton").css("background-color", "red");
+	});
+	$(".messagebox").mouseout(function () {
+		$("#testbutton").css("background-color", "#614875");
+	});
+	$('#estartdate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+	$('#eenddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+	$('#startdate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+	$('#enddate').datepicker({
+		dateFormat: "yy-mm-dd"
+	});
+	
+	var timestr=makeoptions(null,["00","05","10","15","20","25","30","35","40","45","50","55"],[0,5,10,15,20,25,30,35,40,45,50,55]);
+	$("#minutePickerStartNewVersion").html(timestr);
+	$("#minutePickerEndNewVersion").html(timestr);
+	$("#minutePickerStartEditVersion").html(timestr);
+	$("#minutePickerEndEditVersion").html(timestr);
+
+	var timestr=makeoptions(null,["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]);
+	$("#hourPickerStartNewVersion").html(timestr);
+	$("#hourPickerEndNewVersion").html(timestr);
+	$("#hourPickerStartEditVersion").html(timestr);
+	$("#hourPickerEndEditVersion").html(timestr);
+	
+});
