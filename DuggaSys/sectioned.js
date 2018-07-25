@@ -9,6 +9,8 @@ var testsAvailable;
 var nameSet = false;
 var hoverMenuTimer;
 var xelink;
+var momentexists = 0;
+var resave = false;
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -601,9 +603,6 @@ function returnedCourse(data) {
 	}, 1000);
 }
 
-var momentexists = 0;
-var resave = false;
-
 function returnedSection(data) {
 	retdata = data;
 
@@ -621,14 +620,13 @@ function returnedSection(data) {
 		}
 	}
 
+	// Fill section list with information	
 	if (querystring['coursevers'] != "null") {
-		// Fill section list with information
 		var versionname = "";
 		if (retdata['versions'].length > 0) {
 			for (var j = 0; j < retdata['versions'].length; j++) {
 				var itemz = retdata['versions'][j];
 				if (retdata['courseid'] == itemz['cid']) {
-
 					var vversz = itemz['vers'];
 					var vnamez = itemz['versname'];
 					if (retdata['coursevers'] == vversz) {
@@ -681,8 +679,9 @@ function returnedSection(data) {
 		str += "<div id='Sectionlistc'>";
 
 		// For now we only have two kinds of sections
-		if (data['entries'].length > 0) {
+		if (data['entries'].length > 0){
 			var kk = 0;
+			
 			for (i = 0; i < data['entries'].length; i++) {
 				var item = data['entries'][i];
 				var deadline = item['deadline'];
@@ -711,8 +710,7 @@ function returnedSection(data) {
 				// All are visible according to database
 
 				// Content table
-				str += "<table id='lid" + item['lid'] + "' value='" + item['lid'] + "' style='width:100%;"
-					+ "table-layout:fixed;'><tr style='height:32px;' ";
+				str += "<table id='lid" + item['lid'] + "' value='" + item['lid'] + "' style='width:100%;table-layout:fixed;'><tr style='height:32px;' ";
 				if (kk % 2 == 0) {
 					str += " class='hi' ";
 				} else {
@@ -720,19 +718,14 @@ function returnedSection(data) {
 				}
 				str += " >";
 
-				var blorf = "";
-				if (parseInt(item['visible']) === 0) {
-					blorf = " hidden";
-				} else if (parseInt(item['visible']) === 3) {
-					blorf = " deleted";
-				} else if (parseInt(item['visible']) === 2) {
-					blorf = " login";
-				} else {
-					blorf = "";
-				}
+				var hideState = "";
+				if (parseInt(item['visible']) === 0) hideState = " hidden"
+				else if (parseInt(item['visible']) === 3) hideState = " deleted"
+				else if (parseInt(item['visible']) === 2) hideState = " login";
 
 				// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment
 				var itemKind = parseInt(item['kind']);
+				
 				if (itemKind === 3 || itemKind === 4 || itemKind === 6) {
 
 					// Styling for quiz row e.g. add a tab spacer
@@ -748,41 +741,38 @@ function returnedSection(data) {
 						if ((lawtem['moment'] == item['lid'])) {
 							grady = lawtem['grade'];
 							status = "";
+
 							var st = lawtem['submitted'];
-							if (st !== null) {
-								submitted = new Date(st);
-							} else {
-								submitted = null;
-							}
+							if (st !== null) submitted = new Date(st)
+							else submitted = null;
+
 							var mt = lawtem['marked'];
-							if (mt !== null) {
-								marked = new Date(mt);
-							} else {
-								marked = null;
-							}
+							if (mt !== null) marked = new Date(mt)
+							else marked = null;
 
 							if (itemKind === 3 || itemKind === 6) {
 								if (lawtem["useranswer"] !== null && submitted !== null && marked === null) {
 									status = "pending";
 								}
-
 								if (submitted !== null && marked !== null && (submitted.getTime() > marked.getTime())) {
 									status = "pending";
 								}
 								if (lastSubmit === null) {
-									lastSubmit = submitted;
-								} else if (submitted !== null) {
-									if (lastSubmit.getTime() < submitted.getTime()) {
 										lastSubmit = submitted;
-									}
+								} else if (submitted !== null) {
+										if (lastSubmit.getTime() < submitted.getTime()) {
+											lastSubmit = submitted;
+										}
 								}
 							}
+							
 						}
 					}
+					
 					if (itemKind === 3 || itemKind === 6) {
-						str += "<td class='LightBox" + blorf + "'>";
+						str += "<td class='LightBox" + hideState + "'>";
 					} else if (itemKind === 4) {
-						str += "<td class='LightBoxFilled" + blorf + "'>";
+						str += "<td class='LightBoxFilled" + hideState + "'>";
 					}
 					if ((grady == -1 || grady == 0 || grady == null) && status === "") {
 						// Nothing submitted nor marked (White)
@@ -800,66 +790,50 @@ function returnedSection(data) {
 					str += "</td>";
 				}
 
-
 				// Make tabs to align each section element
-				// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link
+				// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 == Group || 7 == Comment
 				if(itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 || itemKind === 7 ){
 					var itemGradesys = parseInt(item['gradesys']);
 					var itemVisible = item['visible'];
-
 					if (itemGradesys > 0 && itemGradesys < 4){
 						for (var numSpacers = 0; numSpacers < itemGradesys;numSpacers++){
-							str+=
-								"<td style='width:36px;overflow:hidden;"
-								+addColorsToTabSections(itemKind, itemVisible) + "'>"
-								+"<div class='spacerLeft'></div></td>";
+							str+=addColorsToTabSections(itemKind, itemVisible,"L");
 						}
 					} else if (itemGradesys == 4){
-						str+="<td style='" + addColorsToTabSections(itemKind, itemVisible) + "'"
-						+"class='LightBox'><div class='spacerEnd'></div></td>";
+						str+=addColorsToTabSections(itemKind, itemVisible,"E");
 					}else if (itemGradesys == 5){
-						str+="<td style='" + addColorsToTabSections(itemKind, itemVisible) + "'"
-						+"class='LightBox'><div class='spacerLeft'></div></td>"
-
-						str+= "<td style='" + addColorsToTabSections(itemKind, itemVisible) + "'"
-						+"class='LightBox'><div class='spacerEnd'></div></td>";
-
+						str+=addColorsToTabSections(itemKind, itemVisible,"L");
+						str+=addColorsToTabSections(itemKind, itemVisible,"E");
 					}else if (itemGradesys == 6){
-						str+="<td style='" + addColorsToTabSections(itemKind, itemVisible) + "'"
-						+"class='LightBox'><div class='spacerLeft'></div></td>"
-
-						str+="<td style='" + addColorsToTabSections(itemKind, itemVisible) + "'"
-						+"class='LightBox'><div class='spacerLeft'></div></td>"
-
-						str+="<td style='" + addColorsToTabSections(itemKind, itemVisible) + "'"
-						+"class='LightBox'><div class='spacerEnd'></div></td>";
+						str+=addColorsToTabSections(itemKind, itemVisible,"L");
+						str+=addColorsToTabSections(itemKind, itemVisible,"L");
+						str+=addColorsToTabSections(itemKind, itemVisible,"E");
 					}
 				}
-
 
 				// kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
 				if (itemKind === 0) {									// Header
 					// Styling for header row
-					str += "</td><td class='header item" + blorf + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' ";
+					str += "</td><td class='header item" + hideState + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' ";
 					kk = 0;
 				} else if (itemKind === 1) {						// Section
 					// Styling for Section row
-					str += "<td class='section item" + blorf + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' style='cursor:pointer;' ";
+					str += "<td class='section item" + hideState + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' style='cursor:pointer;' ";
 					kk = 0;
 				} else if (itemKind === 2) {						// Code Example
 					str += "<td";
 
 					if (kk == 0) {
 						if (kk % 2 == 0) {
-							str += " class='example item" + blorf + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+							str += " class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 						} else {
-							str += " class='example item" + blorf + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+							str += " class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 						}
 					} else {
 						if (kk % 2 == 0) {
-							str += " class='example item" + blorf + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+							str += " class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 						} else {
-							str += " class='example item" + blorf + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+							str += " class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 						}
 					}
 					kk++;
@@ -870,9 +844,9 @@ function returnedSection(data) {
 					}
 					str += "<td ";
 					if (kk % 2 == 0) {
-						str += " class='example item" + blorf + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+						str += " class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					} else {
-						str += " class='example item" + blorf + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+						str += " class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					}
 					kk++;
 				} else if (itemKind === 4) {					// Moment
@@ -880,7 +854,7 @@ function returnedSection(data) {
 					momentexists = item['lid'];
 
 					// Styling for moment row
-					str += "<td class='moment item" + blorf + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' style='cursor:pointer;' ";
+					str += "<td class='moment item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' style='cursor:pointer;' ";
 					kk = 0;
 				} else if (itemKind === 5) {					// Link
 					str += "<td";
@@ -908,7 +882,7 @@ function returnedSection(data) {
 					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
 					str +=
 						"<div class='nowrap"
-						+ blorf + "' style='padding-left:5px;' title='"
+						+ hideState + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
 						+ item['entryname'] + "</span>";
 						if (item['groupName'].length) {
@@ -940,7 +914,7 @@ function returnedSection(data) {
 					}
 
 					str += "<div class='nowrap"
-						+ blorf + "' style='padding-left:5px;' title='"
+						+ hideState + "' style='padding-left:5px;' title='"
 						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
 						+ item['entryname'] + " " + strz + " </span>";
 					if (item['groupName'].length) {
@@ -957,7 +931,7 @@ function returnedSection(data) {
 
 				else if (itemKind == 2) { // Code Example
 					str +=
-						"<div class='ellipsis nowrap'><span><a class='" + blorf
+						"<div class='ellipsis nowrap'><span><a class='" + hideState
 						+ "' style='margin-left:15px;' href='codeviewer.php?exampleid="
 						+ item['link'] + "&courseid=" + querystring['courseid']
 						+ "&cvers=" + querystring['coursevers'] + "' title='"
@@ -966,7 +940,7 @@ function returnedSection(data) {
 
 				else if (itemKind == 3) { // Test Title
 					str +=
-						"<div class='ellipsis nowrap'><a class='" + blorf
+						"<div class='ellipsis nowrap'><a class='" + hideState
 						+ "' style='cursor:pointer;margin-left:15px;' "
 						+ "onClick='changeURL(\"showDugga.php?cid=" + querystring['courseid']
 						+ "&coursevers=" + querystring['coursevers'] + "&did="
@@ -981,18 +955,18 @@ function returnedSection(data) {
 				else if (itemKind == 5) { // Link
 					if (item['link'].substring(0, 4) === "http") {
 						str +=
-							"<a class='" + blorf + "' style='cursor:pointer;margin-left:15px;' href="
+							"<a class='" + hideState + "' style='cursor:pointer;margin-left:15px;' href="
 							+ item['link'] + " target='_blank' >" + item['entryname'] + "</a>";
 					} else {
 						str +=
-							"<a class='" + blorf + "' style='cursor:pointer;margin-left:15px;'"
+							"<a class='" + hideState + "' style='cursor:pointer;margin-left:15px;'"
 							+ "onClick='changeURL(\"showdoc.php?cid=" + querystring['courseid']
 							+ "&coursevers=" + querystring['coursevers'] + "&fname="
 							+ item['link'] + "\");' >" + item['entryname'] + "</a>";
 					}
 				} else if (itemKind == 6) { // Group
 					str +=
-						"<div class='ellipsis nowrap'><a class='" + blorf
+						"<div class='ellipsis nowrap'><a class='" + hideState
 						+ "' style='cursor:pointer;margin-left:15px;'"
 						+ "onClick='alert(\"There should be some group functionality here\");'"
 						+ 'title=' + item['entryname'] + '><span><span>' + item['entryname']
@@ -1045,9 +1019,9 @@ function returnedSection(data) {
 				if (data['writeaccess']) {
 					str +="<td style='width:32px;' ";
 					
-					if(itemKind===0) str+="class='header"+blorf+"' ";
-					if(itemKind===1) str+="class='section"+blorf+"' ";
-					if(itemKind===4) str+="class='moment"+blorf+"' ";
+					if(itemKind===0) str+="class='header"+hideState+"' ";
+					if(itemKind===1) str+="class='section"+hideState+"' ";
+					if(itemKind===4) str+="class='moment"+hideState+"' ";
 				
 					str +="><img id='dorf' class='margin-4' src='../Shared/icons/Cogwheel.svg' ";
 					str +=" onclick='selectItem("+makeparams([item['lid'],item['entryname'], item['kind'],item['visible'],item['link'],momentexists,item['gradesys'],item['highscoremode'],item['comments']])+");' />";
@@ -1060,22 +1034,22 @@ function returnedSection(data) {
 
 					if (itemKind === 0) {
 						str +=
-							"' class='header" + blorf + "'>"
+							"' class='header" + hideState + "'>"
 							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					} else if (itemKind === 1) {
 						str +=
-							"' class='section" + blorf + "'>"
+							"' class='section" + hideState + "'>"
 							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					} else if (itemKind === 4) {
 						str +=
-							"' class='moment" + blorf + "'>"
+							"' class='moment" + hideState + "'>"
 							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					} else if (itemKind === 6) {
 						str +=
-							"' class='group" + blorf + "'>"
+							"' class='group" + hideState + "'>"
 							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
 							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
 					} else {
@@ -1234,14 +1208,21 @@ function createFABItem(kind,itemtitle) {
 	}
 }
 
-function addColorsToTabSections(kind, visible){
-	var retStr = "";
+function addColorsToTabSections(kind, visible,spkind){
+	var retStr = "<td style='width:36px;overflow:hidden;";
 	if(kind == 1){
 		retStr += "background-color:#927b9e;";
 		if(visible == 0){
 			retStr += "opacity:0.3;";
 		}
 	}
+	
+	if(spkind=="E"){
+			retStr+="'><div class='spacerEnd'></div></td>";
+	}else{
+			retStr+="'><div class='spacerLeft'></div></td>";	
+	}
+		
 	return retStr;
 }
 
