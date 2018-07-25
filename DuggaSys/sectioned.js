@@ -188,6 +188,15 @@ function getWeek(tdate)
 		return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6 ) % 7) / 7);
 }
 
+//----------------------------------------------------------------------------------
+// makeTextArray: Return array position X in text value array
+//----------------------------------------------------------------------------------
+
+function makeTextArray(intval,valarr)
+{
+		return valarr[intval];
+}
+
 // -------------==============######## Dialog Handling ###########==============-------------
 
 //----------------------------------------------------------------------------------
@@ -688,23 +697,8 @@ function returnedSection(data) {
 				var released = item['release'];
 
 				// Separating sections into different classes
-				if (parseInt(item['kind']) === 0) {
-					str+="<div id='header"+menuState.idCounter+data.coursecode+"' class='header' style='display:block'>";
-				} else if (parseInt(item['kind']) === 1) {
-					str+="<div id='section"+menuState.idCounter+data.coursecode+"' class='section' style='display:block'>";
-				} else if (parseInt(item['kind']) === 2) {
-					str+="<div id='code"+menuState.idCounter+data.coursecode+"' class='code' style='display:block'>";
-				} else if (parseInt(item['kind']) === 3) {
-					str+="<div id='test"+menuState.idCounter+data.coursecode+"' class='test' style='display:block'>";
-				} else if (parseInt(item['kind']) === 4) {
-					str+= "<div class='moment' style='display:block'>";
-				} else if (parseInt(item['kind']) === 5) {
-					str+="<div id='link"+menuState.idCounter+data.coursecode+"' class='link' style='display:block'>";
-				} else if (parseInt(item['kind']) === 6) {
-					str+="<div id='group"+menuState.idCounter+data.coursecode+"' class='group' style='display:block'>";
-				} else if (parseInt(item['kind']) === 7) {
-					str+="<div id='message"+menuState.idCounter+data.coursecode+"' class='message' style='display:block'>";
-				}
+				var valarr=["header","section","code","test","moment","link","group","message"];
+				str+="<div id='"+makeTextArray(item['kind'],valarr)+menuState.idCounter+data.coursecode+"' class='"+makeTextArray(item['kind'],valarr)+"' style='display:block'>";
 				
 				menuState.idCounter++;
 				// All are visible according to database
@@ -867,15 +861,7 @@ function returnedSection(data) {
 					var strz = "";
 					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
 
-					if (item['gradesys'] == 0) {
-						strz = "";
-					}else if (item['gradesys'] == 1) {
-						strz = "(U-G-VG)";
-					}else if (item['gradesys'] == 2) {
-						strz = "(U-G)";
-					}else if (item['gradesys'] == 3) {
-						strz = "(U-3-4-5)";
-					}
+					strz=makeTextArray(item['gradesys'],["","(U-G-VG)","(U-G)","(U-3-4-5)"]);
 
 					str += "<div class='nowrap"
 						+ hideState + "' style='padding-left:5px;' title='"
@@ -993,33 +979,9 @@ function returnedSection(data) {
 
 				// trashcan
 				if (data['writeaccess']) {
-					str += "<td style='width:36" + "px;";
-
-					if (itemKind === 0) {
-						str +=
-							"' class='header" + hideState + "'>"
-							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
-							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
-					} else if (itemKind === 1) {
-						str +=
-							"' class='section" + hideState + "'>"
-							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
-							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
-					} else if (itemKind === 4) {
-						str +=
-							"' class='moment" + hideState + "'>"
-							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
-							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
-					} else if (itemKind === 6) {
-						str +=
-							"' class='group" + hideState + "'>"
-							+ "<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
-							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
-					} else {
-						str +=
-							"' ><img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg'"
-							+ "onclick='confirmBox(\"openConfirmBox\", this);'></td>";
-					}
+					str+="<td style='width:36px;' class='"+makeTextArray(itemKind ,["header","section","code","test","moment","link","group","message"])+" "+ hideState + "'>";
+					str+="<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
+					str+="</td>";
 				}
 
 				str += "</tr>";
