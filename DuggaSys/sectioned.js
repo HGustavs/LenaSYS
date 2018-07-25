@@ -812,57 +812,31 @@ function returnedSection(data) {
 				}
 
 				// kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link
-				if (itemKind === 0) {									// Header
+				if (itemKind === 0){
 					// Styling for header row
 					str += "</td><td class='header item" + hideState + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' ";
 					kk = 0;
-				} else if (itemKind === 1) {						// Section
+				} else if (itemKind === 1){
 					// Styling for Section row
 					str += "<td class='section item" + hideState + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' style='cursor:pointer;' ";
 					kk = 0;
-				} else if (itemKind === 2) {						// Code Example
-					str += "<td";
-
-					if (kk == 0) {
-						if (kk % 2 == 0) {
-							str += " class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-						} else {
-							str += " class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-						}
-					} else {
-						if (kk % 2 == 0) {
-							str += " class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-						} else {
-							str += " class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-						}
-					}
+				} else if (itemKind === 2){
+					str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					kk++;
-				} else if (itemKind === 3 || itemKind === 6) {						// Dugga
+				} else if (itemKind === 3 || itemKind === 6){
 					if (item['highscoremode'] != 0 && itemKind == 3) {
 						str += "<td style='width:20px;'><img style=';' title='Highscore'"
 							+ "src='../Shared/icons/top10.png' onclick='showHighscore(\"" + item['link'] + "\",\"" + item['lid'] + "\")'/></td>";
 					}
-					str += "<td ";
-					if (kk % 2 == 0) {
-						str += " class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-					} else {
-						str += " class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-					}
+					str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					kk++;
-				} else if (itemKind === 4) {					// Moment
+				} else if (itemKind === 4){
 					//new moment bool equals true
 					momentexists = item['lid'];
-
-					// Styling for moment row
 					str += "<td class='moment item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' style='cursor:pointer;' ";
 					kk = 0;
 				} else if (itemKind === 5) {					// Link
-					str += "<td";
-					if (kk % 2 == 0) {
-						str += " class='example item' placeholder='" + momentexists + "'id='I" + item['lid'] + "' ";
-					} else {
-						str += " class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-					}
+					str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					kk++;
 				} else if (itemKind === 7) { //Message
 					str += "<td style='width:25px; padding:5px'><img src='../Shared/icons/Message_icon.svg' style='width:100%;'/></td><td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
@@ -872,19 +846,13 @@ function returnedSection(data) {
 				str += ">";
 
 				// Content of Section Item
-				if (itemKind == 0) { // Header
-					str +=
-						"<span style='padding-left:5px;' title='"
-						+ item['entryname'] + "'>" + item['entryname'] + "</span>";
-				}
-
-				else if (itemKind == 1) { // Section
+				if (itemKind == 0) {
+					// Header
+					str += "<span style='padding-left:5px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
+				}else if (itemKind == 1){
+					// Section
 					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
-					str +=
-						"<div class='nowrap"
-						+ hideState + "' style='padding-left:5px;' title='"
-						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
-						+ item['entryname'] + "</span>";
+					str +="<div class='nowrap"+ hideState + "' style='padding-left:5px;' title='"+ item['entryname'] + "'><span class='ellipsis listentries-span'>"+ item['entryname'] + "</span>";
 						if (item['groupName'].length) {
 							str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%; min-width:18px;'/> " + item['groupName'];
 						}
@@ -894,22 +862,18 @@ function returnedSection(data) {
 						+ "<img src='../Shared/icons/right_complement.svg'"
 						+ "id='arrowRight" + arrowID
 						+ "' class='arrowRight' style='display:none;'></div>";
-				}
-
-				else if (itemKind == 4) { // Moment
+				}else if (itemKind == 4){
+					// Moment
 					var strz = "";
 					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
 
 					if (item['gradesys'] == 0) {
 						strz = "";
-					}
-					else if (item['gradesys'] == 1) {
+					}else if (item['gradesys'] == 1) {
 						strz = "(U-G-VG)";
-					}
-					else if (item['gradesys'] == 2) {
+					}else if (item['gradesys'] == 2) {
 						strz = "(U-G)";
-					}
-					else if (item['gradesys'] == 3) {
+					}else if (item['gradesys'] == 3) {
 						strz = "(U-3-4-5)";
 					}
 
@@ -927,18 +891,16 @@ function returnedSection(data) {
 						+ "<img src='../Shared/icons/right_complement.svg'"
 						+ "id='arrowRight" + arrowID
 						+ "' class='arrowRight' style='display:none;'></div>";
-				}
-
-				else if (itemKind == 2) { // Code Example
+				}else if (itemKind == 2){ 
+					// Code Example
 					str +=
 						"<div class='ellipsis nowrap'><span><a class='" + hideState
 						+ "' style='margin-left:15px;' href='codeviewer.php?exampleid="
 						+ item['link'] + "&courseid=" + querystring['courseid']
 						+ "&cvers=" + querystring['coursevers'] + "' title='"
 						+ item['entryname'] + "'>" + item['entryname'] + "</a></span></div>";
-				}
-
-				else if (itemKind == 3) { // Test Title
+				}else if (itemKind == 3){ 
+					// Test Title
 					str +=
 						"<div class='ellipsis nowrap'><a class='" + hideState
 						+ "' style='cursor:pointer;margin-left:15px;' "
@@ -950,9 +912,8 @@ function returnedSection(data) {
 						+ item['deadline'] + "\");' title='" + item['entryname']
 						+ "'><span><span>"
 						+ item['entryname'] + "</span></span></a></div>";
-				}
-
-				else if (itemKind == 5) { // Link
+				}else if (itemKind == 5){ 
+					// Link
 					if (item['link'].substring(0, 4) === "http") {
 						str +=
 							"<a class='" + hideState + "' style='cursor:pointer;margin-left:15px;' href="
@@ -964,14 +925,16 @@ function returnedSection(data) {
 							+ "&coursevers=" + querystring['coursevers'] + "&fname="
 							+ item['link'] + "\");' >" + item['entryname'] + "</a>";
 					}
-				} else if (itemKind == 6) { // Group
+				}else if (itemKind == 6){ 
+					// Group
 					str +=
 						"<div class='ellipsis nowrap'><a class='" + hideState
 						+ "' style='cursor:pointer;margin-left:15px;'"
 						+ "onClick='alert(\"There should be some group functionality here\");'"
 						+ 'title=' + item['entryname'] + '><span><span>' + item['entryname']
 						+ "</span></span></a></div>";
-				} else if (itemKind == 7) { // Message
+				}else if (itemKind == 7){ 
+					// Message
 					str +=
 						"<span style='padding-left:5px;' title='"
 						+ item['entryname'] + "'>" + item['entryname'] + "</span>";
