@@ -220,8 +220,6 @@ function makeanchor(anchorhref,anchorclass,anchorstyle,title,isblank,paramobj)
 		str+="' title='"+title+"' ";
 		if(isblank) str+="target='_blank' ";
 	  str+=">"+title+"</a>";
-	
-		alert(str);
 
 		return str;
 }

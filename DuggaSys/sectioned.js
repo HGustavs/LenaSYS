@@ -942,8 +942,21 @@ function returnedHighscore(data) {
 	$("#HighscoreBox").css("display", "block");
 }
 
-/* Statistic-sections functions, for drawing out all the statistics
-   (pie chart and swimlanes) and upcomming deadlines. */
+function svgPie(cx,cy,radius,startpct,endpct,fill,stroke)
+{
+		x1 = cx + (radius*Math.cos(6.28*startpct));
+   	y1 = cy + (radius*Math.sin(6.28*startpct));
+
+   	x2 = cx + (radius*Math.cos(6.28*endpct));
+   	y2 = cy + (radius*Math.sin(6.28*endpct));
+	
+		return "<path d='M"+cx+","+cy+" L" + x1 + "," + y1 + "  A"+radius+","+radius+" 0 0,1 " + x2 + "," + y2 + " z' fill='"+fill+"' />";
+}
+
+//----------------------------------------------------------------------------------
+// drawPieChart: Statistic-sections functions, for drawing out all the statistics (pie chart and swimlanes) and upcomming deadlines.
+//----------------------------------------------------------------------------------
+
 function drawPieChart() {
 		var c = document.getElementById('pieChart');
 		var ctx = c.getContext('2d');
@@ -960,9 +973,7 @@ function drawPieChart() {
 
 		// Calculate total quizes.
 		for(var i = 0; i < retdata['entries'].length; i++) {
-			if(retdata['entries'][i].kind == "3") {
-				totalQuizes++;
-			}
+			if(retdata['entries'][i].kind == "3") totalQuizes++;
 		}
 
 		// Calculate passed, failed and not graded quizes.
@@ -979,100 +990,36 @@ function drawPieChart() {
 				}
 		}
 
-		// Calculate non submitted quizes.
-		notSubmittedQuizes = totalQuizes - (passedQuizes + failedQuizes + notGradedQuizes);
-
-		if(totalQuizes == 0){ 	// if a course has no tests, this will make the piechart
-			totalQuizes++; 			// show that the student has 100% not submitted tests.
+		// if a course has no tests, the chart will show that the student has 100% not submitted tests.
+		if(totalQuizes == 0){ 	
+			totalQuizes++; 			
 			notSubmittedQuizes++;
 		}
-
+	
 		// PCT = Percentage
-		var passedPCT = 100 * (passedQuizes / totalQuizes);
-		var notGradedPCT = 100 * (notGradedQuizes / totalQuizes);
-		var failedPCT = 100 * (failedQuizes / totalQuizes);
-		var notSubmittedPCT = 100 * (notSubmittedQuizes / totalQuizes);
+		var notGradedPCT = (notGradedQuizes / totalQuizes)-0.25;
+		var passedPCT = (passedQuizes / totalQuizes);
+		var failedPCT = (failedQuizes / totalQuizes);
+		var notSubmittedPCT = (totalQuizes-notGradedQuizes-passedQuizes-failedQuizes)/totalQuizes;
 
-		// Only use 2 decimal places and round up if necessary
-		passedPCT = Math.round(passedPCT * 100) / 100;
-		notGradedPCT = Math.round(notGradedPCT * 100) / 100;
-		failedPCT = Math.round(failedPCT * 100) / 100;
-		notSubmittedPCT = Math.round(notSubmittedPCT * 100) / 100;
+		// Slice 1 from 0 to notGraded ??
+		var str="";
+		str+="<circle cx='150' cy='100' r='90' fill='#BDBDBD' />";
+		str+=svgPie(150,100,90,-0.25,notGradedPCT,"#FFEB3B","#000");
+		str+=svgPie(150,100,90,notGradedPCT,notGradedPCT+passedPCT,"#00E676","#000");
+		str+=svgPie(150,100,90,notGradedPCT+passedPCT,notGradedPCT+passedPCT+failedPCT,"#E53935","#000");	
 
-		var lastend = -1.57; /* Chart start point. -1.57 is a quarter the number of
-		radians in a circle, i.e. start at 12 o'clock */
-		var testsData = [passedQuizes, notGradedQuizes, failedQuizes, notSubmittedQuizes];
-		var colors = {
-			'passedQuizes': '#00E676',        // Green
-			'notGradedQuizes': '#FFEB3B',     // Yellow
-			'failedQuizes': '#E53935',        // Red
-			'notSubmittedQuizes': '#BDBDBD'   // Grey
-		}
-
-		ctx.save();
-		ctx.translate(50, 0);
-
-		for (var i = 0; i < testsData.length; i++) {
-
-				if(i == 0) {
-					ctx.fillStyle = colors['passedQuizes'];
-				} else if(i == 1) {
-					ctx.fillStyle = colors['notGradedQuizes'];
-				} else if(i == 2) {
-					ctx.fillStyle = colors['failedQuizes'];
-				} else {
-					ctx.fillStyle = colors['notSubmittedQuizes'];
-				}
-
-				ctx.beginPath();
-				ctx.moveTo(pieChartRadius, height / 2);
-
-				// Arc Parameters: x, y, radius, startingAngle (radians), endingAngle (radians), antiClockwise (boolean)
-				ctx.arc(pieChartRadius, height / 2, height / 2, lastend,lastend+(Math.PI * 2 * (testsData[i] / totalQuizes)), false);
-
-				//Parameter for lineTo: x,y
-				ctx.lineTo(pieChartRadius, height / 2);
-				ctx.fill();
-
-				lastend += Math.PI * 2 * (testsData[i] / totalQuizes);
-		}
-
-		ctx.restore();
-		// Pie chart overview
-		ctx.save();
-		ctx.translate(10, 220);
-
-		ctx.fillStyle = colors['passedQuizes'];
-		ctx.fillRect(0, 0, overviewBlockSize, overviewBlockSize);
-
-		ctx.fillStyle = colors['failedQuizes'];
-		ctx.fillRect(0, 20, overviewBlockSize, overviewBlockSize);
-
-		ctx.font = "12px Arial";
-		ctx.fillStyle = "#000";
-
-		ctx.translate(20, 10);
-		ctx.fillText("Passed (" + passedPCT + "%)", 0, 0);
-		ctx.fillText("Failed (" + failedPCT + "%)", 0, 20);
-
-		ctx.restore();
-
-		ctx.save();
-		ctx.translate(145, 190);
-
-		ctx.fillStyle = colors['notGradedQuizes'];
-		ctx.fillRect(0, 30, overviewBlockSize, overviewBlockSize);
-
-		ctx.fillStyle = colors['notSubmittedQuizes'];
-		ctx.fillRect(0, 50, overviewBlockSize, overviewBlockSize);
-
-		ctx.font = "12px Arial";
-		ctx.fillStyle = "#000";
-
-		ctx.fillText("Not Graded (" + notGradedPCT + "%)", 20, 40);
-		ctx.fillText("Not Submitted (" + notSubmittedPCT + "%)", 20, 60);
-
-		ctx.restore();
+		str+="<rect x='36' y='200' width='11' height='11' fill='#00E676' />";
+		str+="<rect x='36' y='220' width='11' height='11' fill='#E53935' />";
+		str+="<rect x='166' y='200' width='11' height='11' fill='#FFEB3B' />";
+		str+="<rect x='166' y='220' width='11' height='11' fill='#BDBDBD' />";
+	
+		str+="<text x='55' y='211' font-family='Arial' font-size='12px' fill='black'>Passed: ("+Math.round(passedPCT*100)+"%)</text>";
+		str+="<text x='55' y='231' font-family='Arial' font-size='12px' fill='black'>Failed: ("+Math.round(failedPCT*100)+"%)</text>";
+		str+="<text x='185' y='211' font-family='Arial' font-size='12px' fill='black'>Pending: ("+Math.round((notGradedPCT+0.25)*100)+"%)</text>";
+		str+="<text x='185' y='231' font-family='Arial' font-size='12px' fill='black'>N/A: ("+Math.round(notSubmittedPCT*100)+"%)</text>";
+	
+		document.getElementById("pieChartSVG").innerHTML=str;
 }
 
 function fixDeadlineInfoBoxesText(){
