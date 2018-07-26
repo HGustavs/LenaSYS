@@ -116,9 +116,10 @@ CREATE TABLE quiz (
 	modified 		TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	creator 		INTEGER,
 	vers				VARCHAR(8),
-
-	CONSTRAINT 		pk_quiz PRIMARY KEY (id),
-	CONSTRAINT 		fk_quiz_joins_course FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
+	jsondeadline	VARCHAR(2048),
+	
+	PRIMARY KEY (id),
+	FOREIGN KEY (cid) REFERENCES course(cid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /**
@@ -530,6 +531,19 @@ DELIMITER ;
  DROP TABLE tmpSubmission;
  END //
  DELIMITER ;
+
+/* Code from 2018 */
+
+/* Usergroup and user_usergroup relation */
+CREATE TABLE groups (
+  groupID int(10) unsigned NOT NULL AUTO_INCREMENT,
+  courseID int(10) unsigned NOT NULL,
+  vers varchar(8) DEFAULT NULL,
+  groupName varchar(80) NOT NULL,
+  PRIMARY KEY (groupID),
+  FOREIGN KEY (courseID) REFERENCES course(cid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
 
 /* Templates for codeexamples */
 

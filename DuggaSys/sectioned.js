@@ -11,6 +11,7 @@ var hoverMenuTimer;
 var xelink;
 var momentexists = 0;
 var resave = false;
+var versnme="UNKz";
 
 // Stores everything that relates to collapsable menus and their state.
 var menuState = {
@@ -149,7 +150,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	if(kind==2){
 			$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
 	}else if(kind==3){
-			$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'id','qname'));		
+			$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'qname','id'));	
 	}else if(kind==5){
 			$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
 	}else{
@@ -214,19 +215,21 @@ function changedType(kind)
 // showEditVersion: Displays Edit Version Dialog
 //----------------------------------------------------------------------------------
 
-function showEditVersion(versid, versname, startdate, enddate) {
-	startdate = new Date(startdate)
-	enddate = new Date(enddate)
+function showEditVersion() {
+	
+	alert( versnme,querystring['coursevers'] );
+	
+	startdate = new Date(retdata['startdate'])
+	enddate = new Date(retdata['enddate'])
 	var startHour = startdate.getHours()
 	var startMinute = startdate.getMinutes()
 	var endHour = enddate.getHours()
 	var endMinute = enddate.getMinutes()
-
 	startdate = getDateFormat(startdate);
 	enddate = getDateFormat(enddate);
 
-	$("#eversname").val(versname);
-	$("#eversid").val(versid);
+	$("#eversname").val(versnme);
+	$("#eversid").val(querystring['coursevers']);
 	$("#estartdate").val(startdate);
 	$("#eenddate").val(enddate);
 	$("#hourPickerStartEditVersion").val(startHour);
@@ -444,7 +447,7 @@ function updateVersion() {
 	
 	AJAXService("UPDATEVRS", param, "SECTION");
 
-	if (makeactive) {
+	if (param.makeactive) {
 		AJAXService("CHGVERS", param, "SECTION");
 	}
 
@@ -520,6 +523,7 @@ function returnedSection(data) {
 								}
 								bstr+=">"+item['versname']+" - "+item['vers']+"</option>";
 						}
+						if(querystring['coursevers']==item['vers']) versnme=item['versname'];
 				}
 				
 				document.getElementById("courseDropdownTop").innerHTML = bstr;
@@ -1259,12 +1263,11 @@ function drawSwimlanes(){
 	}
 
 	// Timeline
-	var currentDate = new Date();
-	var courseDay = Math.round(Math.abs(
-		+ (courseStartDate.getTime() - currentDate.getTime())/(oneDay)));
+//	var currentDate = new Date();
+//	var courseDay = Math.round(Math.abs((courseStartDate.getTime() - currentDate.getTime())/(oneDay)));
 
-	ctxWeeks.fillStyle = '#000';
-	ctxWeeks.fillRect(courseDay * 5, 0, 2, swimWeeks.height);
+//	ctxWeeks.fillStyle = '#000';
+//	ctxWeeks.fillRect(courseDay * 5, 0, 2, swimWeeks.height);
 }
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
