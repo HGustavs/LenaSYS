@@ -25,176 +25,97 @@ function setup() {
 	AJAXService("get", {}, "SECTION");
 }
 
-// -------------==============######## Help Functions ###########==============-------------
+// -------------==============######## Internal Help Functions ###########==============-------------
 
-//----------------------------------------------------------------------------------
-// scrollToBottom: scrolls the page to the bottom
-//----------------------------------------------------------------------------------
-
-function scrollToBottom() {
-	var scrollingElement = (document.scrollingElement || document.body)
-	scrollingElement.scrollTop = scrollingElement.scrollHeight;
+// Save ids of all elements, whose state needs to be remembered, in local storage.
+function saveHiddenElementIDs(clickedElement) {
+	addOrRemoveFromArray(clickedElement, menuState.hiddenElements);
+	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
 }
 
-//----------------------------------------------------------------------------------
-// getHiddenElements: Get all element ids from local storage (who's children should be hidden).
-//----------------------------------------------------------------------------------
-
-function getHiddenElements() {
-	menuState.hiddenElements = JSON.parse(localStorage.getItem('hiddenElements'));
-	if (menuState.hiddenElements === null) {
-		menuState.hiddenElements = [];
-	}
-}
-
-//----------------------------------------------------------------------------------
-// getArrowElements: Get all arrow image ids from local storage that should be toggled.
-//----------------------------------------------------------------------------------
-
-function getArrowElements() {
-	menuState.arrowIcons = JSON.parse(localStorage.getItem('arrowIcons'));
-	if (menuState.arrowIcons === null) {
-		menuState.arrowIcons = [];
-	}
-}
-
-//----------------------------------------------------------------------------------
-// findAncestor: Finds the nearest parent element of "element" that contains the class "className".
-//----------------------------------------------------------------------------------
-
-function findAncestor(element, className) {
-	if (element != undefined || element != null) {
-		while ((element = element.parentElement) && !element.classList.contains(className));
-		return element;
-	}
-}
-
-//----------------------------------------------------------------------------------
-// addOrRemoveFromArray: Toggle string in array. Add string to array if it does not exist in the array. Remove string from array if it exist in the array. */
-//----------------------------------------------------------------------------------
-
-function addOrRemoveFromArray(elementID, array) {
-	var exists = false;
-	for (var i = 0; i < array.length; i++) {
-		if (elementID == array[i]) {
-			exists = true;
-			array.splice(i, 1);
-			break;
+// Save ids of all arrows, whose state needs to be remembered, in local storage.
+function saveArrowIds(clickedElement) {
+	var childNodes = document.getElementById(clickedElement).firstChild.childNodes;
+	for (var i = 0; i < childNodes.length; i++) {
+		if (childNodes[i].nodeName == "IMG") {
+			addOrRemoveFromArray(childNodes[i].id, menuState.arrowIcons);
 		}
 	}
-	if (!exists) {
-		array.push(elementID);
+	localStorage.setItem('arrowIcons', JSON.stringify(menuState.arrowIcons));
+}
+
+/* Hide all child elements to the moment and section elements in the
+   hiddenElements array. */
+function hideCollapsedMenus() {
+	$('.header, .section, .code, .test, .link, .group, .statisticsContent').show();
+	for (var i = 0; i < menuState.hiddenElements.length; i++) {
+		var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
+		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
+			jQuery(ancestor).nextUntil('.moment').hide();
+		}
+		ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
+		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
+			jQuery(ancestor).nextUntil('.section').hide();
+		}
+
+		if(menuState.hiddenElements[i] == "statistics"){
+			$(".statistics").nextAll().hide();
+		}
 	}
 }
 
-//----------------------------------------------------------------------------------
-// makeoptions: Prepares a dropdown list with highlighting of previously selected item
-//----------------------------------------------------------------------------------
-
-function makeoptions(option,optionlist,valuelist)
-{
-		var str="";
-		for(var i=0;i<optionlist.length;i++){
-				str+="<option ";
-				if(valuelist[i]==option){
-						str+="selected='selected' ";
-				}
-				str+="value='"+valuelist[i]+"'>"+optionlist[i]+"</option>";
+/* Show down arrow by default and then hide this arrow and show the right
+   arrow if it is in the arrowIcons array.
+	 The other way around for the statistics section. */
+function toggleArrows() {
+	$('.arrowComp').show();
+	$('.arrowRight').hide();
+	for (var i = 0; i < menuState.arrowIcons.length; i++) {
+		/* If the string 'arrowComp' is a part of the string on the current
+		   index of the arrowIcons array, hide down arrow and show right arrow. */
+		if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
+			$('#' + menuState.arrowIcons[i]).hide();
+		} else {
+			$('#' + menuState.arrowIcons[i]).show();
 		}
-		return str;
-}
-
-//----------------------------------------------------------------------------------
-// makeoptionsItem: Prepares a dropdown list specifically for items such as code examples / dugga etc
-//----------------------------------------------------------------------------------
-
-function makeoptionsItem(option,optionlist,optionstring,valuestring)
-{
-		var str="";
-		for(var i=0;i<optionlist.length;i++){
-				str+="<option ";
-				if(optionlist[i][valuestring]==option){
-						str+="selected='selected' ";
-				}
-				str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
-		}
-		return str;
-}
-
-//----------------------------------------------------------------------------------
-// makeparams: Help function for hassle free preparation of a clickable param list 
-//----------------------------------------------------------------------------------
-
-function makeparams(paramarray)
-{
-		var str="";
-		for(var i=0;i<paramarray.length;i++){
-				if(i>0) str+=",";
-				str+="\""+paramarray[i]+"\"";
-		}
-		return str;
-}
-
-//----------------------------------------------------------------------------------
-// navigatePage: Local function for converting static page navigation to dynamic
-//----------------------------------------------------------------------------------
-
-function navigatePage(pagename)
-{
-		changeURL(pagename+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers']);
-}
-
-//----------------------------------------------------------------------------------
-// getDateFormat: Function for making PHP compatible date from javascript date
-//----------------------------------------------------------------------------------
-
-function getDateFormat(date, operation = ""){
-	if(operation == "hourMinuteSecond"){
-		return date.getFullYear() + "-"
-			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
-			+ ('0' + date.getDate()).slice(-2)
-			+ "T" + date.getHours() + ":" + date.getMinutes() + ":"
-			+ date.getSeconds();
-	}else if(operation == "dateMonth"){
-		return ('0' + date.getDate()).slice(-2) + '-'
-			+ ('0' + (date.getMonth()+1)).slice(-2);
-
 	}
-	return date.getFullYear() + "-"
-			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
-			+ ('0' + date.getDate()).slice(-2)
+
+	$('#arrowStatisticsOpen').show();
+	$('#arrowStatisticsClosed').hide();
+	for (var i = 0; i < menuState.hiddenElements.length; i++){
+		if (menuState.hiddenElements[i] == "statistics"){
+			$('#arrowStatisticsOpen').hide();
+			$('#arrowStatisticsClosed').show();
+		}
+	}
 }
 
-//----------------------------------------------------------------------------------
-// weeksBetween: Function for computing number of calendar weeks between dates
-//----------------------------------------------------------------------------------
-
-function weeksBetween(firstDate, secondDate){
-	var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
-	var diff = Math.abs(firstDate - secondDate);
-	return Math.round(diff / ONE_WEEK);
+// Finds all ancestors to the element with classname Hamburger and toggles them.
+// added some if-statements so escapePress wont always toggle
+function hamburgerChange(operation = 'click') {
+	if (operation != "click") {
+		if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
+			toggleHamburger();
+		}
+	} else {
+		toggleHamburger();
+	}
 }
 
-//----------------------------------------------------------------------------------
-// weeksBetween: Function for computing week number for date
-//----------------------------------------------------------------------------------
-
-function getWeek(tdate)
-{
-		var date = new Date(tdate.getTime());
-		date.setHours(0, 0, 0, 0);
-		date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-		var week1 = new Date(date.getFullYear(), 0, 4);
-		return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6 ) % 7) / 7);
+function toggleHamburger() {
+	var x = document.getElementById("hamburgerIcon");
+	findAncestor(x, "hamburger").classList.toggle("change");
 }
 
-//----------------------------------------------------------------------------------
-// makeTextArray: Return array position X in text value array
-//----------------------------------------------------------------------------------
-
-function makeTextArray(intval,valarr)
-{
-		return valarr[intval];
+// Toggles action bubbles when pressing the FAB button
+function toggleFabButton() {
+	if (!$('.fab-btn-sm').hasClass('scale-out')) {
+		$('.fab-btn-sm').toggleClass('scale-out');
+		$('.fab-btn-list').delay(100).fadeOut(0);
+	} else {
+		$('.fab-btn-list').fadeIn(0);
+		$('.fab-btn-sm').toggleClass('scale-out');
+	}
 }
 
 // -------------==============######## Dialog Handling ###########==============-------------
@@ -370,95 +291,35 @@ function showCreateVersion() {
 
 }
 
-// Save ids of all elements, whose state needs to be remembered, in local storage.
-function saveHiddenElementIDs(clickedElement) {
-	addOrRemoveFromArray(clickedElement, menuState.hiddenElements);
-	localStorage.setItem('hiddenElements', JSON.stringify(menuState.hiddenElements));
+function createQuickItem(){
+	selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined", "UNK");
+	newItem();
 }
 
-// Save ids of all arrows, whose state needs to be remembered, in local storage.
-function saveArrowIds(clickedElement) {
-	var childNodes = document.getElementById(clickedElement).firstChild.childNodes;
-	for (var i = 0; i < childNodes.length; i++) {
-		if (childNodes[i].nodeName == "IMG") {
-			addOrRemoveFromArray(childNodes[i].id, menuState.arrowIcons);
-		}
-	}
-	localStorage.setItem('arrowIcons', JSON.stringify(menuState.arrowIcons));
-}
-
-/* Hide all child elements to the moment and section elements in the
-   hiddenElements array. */
-function hideCollapsedMenus() {
-	$('.header, .section, .code, .test, .link, .group, .statisticsContent').show();
-	for (var i = 0; i < menuState.hiddenElements.length; i++) {
-		var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
-		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
-			jQuery(ancestor).nextUntil('.moment').hide();
-		}
-		ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "section");
-		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('section')) {
-			jQuery(ancestor).nextUntil('.section').hide();
-		}
-
-		if(menuState.hiddenElements[i] == "statistics"){
-			$(".statistics").nextAll().hide();
-		}
+//kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
+function createFABItem(kind,itemtitle) {
+	if(kind>=0&&kind<=7){
+		selectItem("undefined",itemtitle,kind,"undefined","undefined","0","undefined","undefined", "undefined");
+		newItem();
 	}
 }
 
-/* Show down arrow by default and then hide this arrow and show the right
-   arrow if it is in the arrowIcons array.
-	 The other way around for the statistics section. */
-function toggleArrows() {
-	$('.arrowComp').show();
-	$('.arrowRight').hide();
-	for (var i = 0; i < menuState.arrowIcons.length; i++) {
-		/* If the string 'arrowComp' is a part of the string on the current
-		   index of the arrowIcons array, hide down arrow and show right arrow. */
-		if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
-			$('#' + menuState.arrowIcons[i]).hide();
-		} else {
-			$('#' + menuState.arrowIcons[i]).show();
+function addColorsToTabSections(kind, visible,spkind){
+	var retStr = "<td style='width:36px;overflow:hidden;";
+	if(kind == 1){
+		retStr += "background-color:#927b9e;";
+		if(visible == 0){
+			retStr += "opacity:0.3;";
 		}
 	}
-
-	$('#arrowStatisticsOpen').show();
-	$('#arrowStatisticsClosed').hide();
-	for (var i = 0; i < menuState.hiddenElements.length; i++){
-		if (menuState.hiddenElements[i] == "statistics"){
-			$('#arrowStatisticsOpen').hide();
-			$('#arrowStatisticsClosed').show();
-		}
+	
+	if(spkind=="E"){
+			retStr+="'><div class='spacerEnd'></div></td>";
+	}else{
+			retStr+="'><div class='spacerLeft'></div></td>";	
 	}
-}
-
-// Finds all ancestors to the element with classname Hamburger and toggles them.
-// added some if-statements so escapePress wont always toggle
-function hamburgerChange(operation = 'click') {
-	if (operation != "click") {
-		if (findAncestor(document.getElementById("hamburgerIcon"), "change") != null) {
-			toggleHamburger();
-		}
-	} else {
-		toggleHamburger();
-	}
-}
-
-function toggleHamburger() {
-	var x = document.getElementById("hamburgerIcon");
-	findAncestor(x, "hamburger").classList.toggle("change");
-}
-
-// Toggles action bubbles when pressing the FAB button
-function toggleFabButton() {
-	if (!$('.fab-btn-sm').hasClass('scale-out')) {
-		$('.fab-btn-sm').toggleClass('scale-out');
-		$('.fab-btn-list').delay(100).fadeOut(0);
-	} else {
-		$('.fab-btn-list').fadeIn(0);
-		$('.fab-btn-sm').toggleClass('scale-out');
-	}
+		
+	return retStr;
 }
 
 // -------------==============######## Commands ###########==============-------------
@@ -819,8 +680,7 @@ function returnedSection(data) {
 					kk++;
 				} else if (itemKind === 3 || itemKind === 6){
 					if (item['highscoremode'] != 0 && itemKind == 3) {
-						str += "<td style='width:20px;'><img style=';' title='Highscore'"
-							+ "src='../Shared/icons/top10.png' onclick='showHighscore(\"" + item['link'] + "\",\"" + item['lid'] + "\")'/></td>";
+						str += "<td style='width:20px;'><img style=';' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\"" + item['link'] + "\",\"" + item['lid'] + "\")'/></td>";
 					}
 					str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					kk++;
@@ -839,91 +699,55 @@ function returnedSection(data) {
 				// Close Information
 				str += ">";
 
+				// Generate ID for collapsing arrows
+				var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
+
 				// Content of Section Item
 				if (itemKind == 0) {
 					// Header
 					str += "<span style='padding-left:5px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
 				}else if (itemKind == 1){
 					// Section
-					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
-					str +="<div class='nowrap"+ hideState + "' style='padding-left:5px;' title='"+ item['entryname'] + "'><span class='ellipsis listentries-span'>"+ item['entryname'] + "</span>";
-						if (item['groupName'].length) {
-							str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%; min-width:18px;'/> " + item['groupName'];
-						}
-						str += "<img src='../Shared/icons/desc_complement.svg'"
-						+ "id='arrowComp" + arrowID
-						+ "' class='arrowComp' style='display:inline-block;'>"
-						+ "<img src='../Shared/icons/right_complement.svg'"
-						+ "id='arrowRight" + arrowID
-						+ "' class='arrowRight' style='display:none;'></div>";
+					str +="<div class='nowrap"+ hideState + "' style='padding-left:5px;' title='"+ item['entryname'] + "'>";
+					str+="<span class='ellipsis listentries-span'>"+ item['entryname'] + "</span>";
+					if (item['groupName'].length) {
+						str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%; min-width:18px;'/> " + item['groupName'];
+					}
+					str+="<img src='../Shared/icons/desc_complement.svg' id='arrowComp"+arrowID+"' class='arrowComp' style='display:inline-block;'>";
+					str+="<img src='../Shared/icons/right_complement.svg' id='arrowRight"+arrowID+"' class='arrowRight' style='display:none;'></div>";
 				}else if (itemKind == 4){
 					// Moment
-					var strz = "";
-					var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
-
-					strz=makeTextArray(item['gradesys'],["","(U-G-VG)","(U-G)","(U-3-4-5)"]);
-
-					str += "<div class='nowrap"
-						+ hideState + "' style='padding-left:5px;' title='"
-						+ item['entryname'] + "'><span class='ellipsis listentries-span'>"
-						+ item['entryname'] + " " + strz + " </span>";
+					var strz=makeTextArray(item['gradesys'],["","(U-G-VG)","(U-G)","(U-3-4-5)"]);
+					str+="<div class='nowrap"+hideState+"' style='padding-left:5px;' title='"+item['entryname']+"'>";
+					str+="<span class='ellipsis listentries-span'>"+item['entryname']+" "+strz+" </span>";
 					if (item['groupName'].length) {
 						str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%;min-width:18px;'/> " + item['groupName'];
 					}
-
-					str +=  "<img src='../Shared/icons/desc_complement.svg'"
-						+ "id='arrowComp" + arrowID
-						+ "' class='arrowComp' style='display:inline-block;'>"
-						+ "<img src='../Shared/icons/right_complement.svg'"
-						+ "id='arrowRight" + arrowID
-						+ "' class='arrowRight' style='display:none;'></div>";
+					str+="<img src='../Shared/icons/desc_complement.svg' id='arrowComp"+arrowID+"' class='arrowComp' style='display:inline-block;'>";
+					str+="<img src='../Shared/icons/right_complement.svg'"+"id='arrowRight"+arrowID+"' class='arrowRight' style='display:none;'>";
+					str+="</div>";
 				}else if (itemKind == 2){ 
 					// Code Example
-					str +=
-						"<div class='ellipsis nowrap'><span><a class='" + hideState
-						+ "' style='margin-left:15px;' href='codeviewer.php?exampleid="
-						+ item['link'] + "&courseid=" + querystring['courseid']
-						+ "&cvers=" + querystring['coursevers'] + "' title='"
-						+ item['entryname'] + "'>" + item['entryname'] + "</a></span></div>";
+					var param={'exampleid':item['link'],'courseid':querystring['courseid'],'cvers':querystring['coursevers']};
+					str +="<div class='ellipsis nowrap'><span>"+makeanchor("codeviewer.php",hideState,"margin-left:15px;",item['entryname'],false,param)+"</span></div>";
 				}else if (itemKind == 3){ 
-					// Test Title
-					str +=
-						"<div class='ellipsis nowrap'><a class='" + hideState
-						+ "' style='cursor:pointer;margin-left:15px;' "
-						+ "onClick='changeURL(\"showDugga.php?cid=" + querystring['courseid']
-						+ "&coursevers=" + querystring['coursevers'] + "&did="
-						+ item['link'] + "&moment=" + item['lid'] + "&segment="
-						+ momentexists + "&highscoremode=" + item['highscoremode']
-						+ "&comment=" + item['comments'] + "&deadline="
-						+ item['deadline'] + "\");' title='" + item['entryname']
-						+ "'><span><span>"
-						+ item['entryname'] + "</span></span></a></div>";
+					// Test / Dugga
+					var param={'did':item['link'],'cid':querystring['courseid'],'coursevers':querystring['coursevers'],'moment':item['lid'],'segment':momentexists,highscoremode:item['highscoremode'],comment:item['comments'],deadline:item['deadline']};
+					str +="<div class='ellipsis nowrap'><span>"+makeanchor("showDugga.php",hideState,"cursor:pointer;margin-left:15px;",item['entryname'],false,param)+"</span></div>";
 				}else if (itemKind == 5){ 
 					// Link
 					if (item['link'].substring(0, 4) === "http") {
-						str +=
-							"<a class='" + hideState + "' style='cursor:pointer;margin-left:15px;' href="
-							+ item['link'] + " target='_blank' >" + item['entryname'] + "</a>";
+						str+=makeanchor(item['link'],hideState,"cursor:pointer;margin-left:15px;",item['entryname'],false,{});
 					} else {
-						str +=
-							"<a class='" + hideState + "' style='cursor:pointer;margin-left:15px;'"
-							+ "onClick='changeURL(\"showdoc.php?cid=" + querystring['courseid']
-							+ "&coursevers=" + querystring['coursevers'] + "&fname="
-							+ item['link'] + "\");' >" + item['entryname'] + "</a>";
+						var param={'exampleid':item['link'],'courseid':querystring['courseid'],'coursevers':querystring['coursevers'],'fname':item['link']};						
+						str+=makeanchor("showdoc.php",hideState,"cursor:pointer;margin-left:15px;",item['entryname'],false,param);
 					}
 				}else if (itemKind == 6){ 
 					// Group
-					str +=
-						"<div class='ellipsis nowrap'><a class='" + hideState
-						+ "' style='cursor:pointer;margin-left:15px;'"
-						+ "onClick='alert(\"There should be some group functionality here\");'"
-						+ 'title=' + item['entryname'] + '><span><span>' + item['entryname']
-						+ "</span></span></a></div>";
+					str +="<div class='ellipsis nowrap'><span>"+makeanchor("#",hideState,"margin-left:15px;",item['entryname'],false,{})+"</span></div>";
 				}else if (itemKind == 7){ 
 					// Message
-					str +=
-						"<span style='padding-left:5px;' title='"
-						+ item['entryname'] + "'>" + item['entryname'] + "</span>";
+					str +="<span style='padding-left:5px;' title='"+item['entryname']+"'>"+item['entryname']+"</span>";
 				}
 
 				str += "</td>";
@@ -958,9 +782,7 @@ function returnedSection(data) {
 
 					// create a warning if the dugga is submitted after the set deadline
 					if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-						str += "<td style='width:25px;'><img style='width:25px; padding-top:3px'"
-							+ "title='This dugga is not guaranteed to be marked due to submition after deadline.'"
-							+ "src='../Shared/icons/warningTriangle.svg'/></td>";
+						str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
 					}
 				}
 
@@ -996,8 +818,10 @@ function returnedSection(data) {
 		}
 
 		str += "</div></div>";
+		
 		var slist = document.getElementById('Sectionlisti');
 		slist.innerHTML = str;
+		
 		if (resave == true) {
 			str = "";
 			$("#Sectionlist").find(".item").each(function (i) {
@@ -1007,10 +831,10 @@ function returnedSection(data) {
 				str += i + "XX" + ido.substr(1) + "XX" + phld;
 
 			});
-
 			AJAXService("REORDER", { order: str }, "SECTION");
 			resave = false;
 		}
+		
 		if (data['writeaccess']) {
 			// Enable sorting always if we are superuser as we refresh list on update
 
@@ -1034,14 +858,13 @@ function returnedSection(data) {
 			});
 		}
 	} else {
-		str = "<div class='course'><div id='course-coursename' style='display: inline-block; margin-right:10px;'>" + data.coursename + "</div>"
-			+ "<div id='course-coursecode' style='display: inline-block; margin-right:10px;'>" + data.coursecode + "</div>"
-			+ "<div id='course-coursevers' style='display: inline-block; margin-right:10px;'>" + data.coursevers + "</div>"
-			+ "<div id='course-courseid' style='display: none; margin-right:10px;'>" + data.courseid + "</div></div>";
-		str += "<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";
-		var slist = document.getElementById('Sectionlist');
-		slist.innerHTML = str;
-		showCreateVersion();
+		str = "<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";
+		
+		document.getElementById('Sectionlist').innerHTML = str;
+		
+		if (data['writeaccess']) {
+				showCreateVersion();
+		}
 
 	}
 
@@ -1118,39 +941,6 @@ function returnedHighscore(data) {
 	var highscorelist = document.getElementById('HighscoreTable').innerHTML = str;
 	$("#HighscoreBox").css("display", "block");
 }
-
-function createQuickItem(){
-	selectItem("undefined","New Item","2","undefined","undefined","0","undefined","undefined", "UNK");
-	newItem();
-}
-
-//kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
-
-function createFABItem(kind,itemtitle) {
-	if(kind>=0&&kind<=7){
-		selectItem("undefined",itemtitle,kind,"undefined","undefined","0","undefined","undefined", "undefined");
-		newItem();
-	}
-}
-
-function addColorsToTabSections(kind, visible,spkind){
-	var retStr = "<td style='width:36px;overflow:hidden;";
-	if(kind == 1){
-		retStr += "background-color:#927b9e;";
-		if(visible == 0){
-			retStr += "opacity:0.3;";
-		}
-	}
-	
-	if(spkind=="E"){
-			retStr+="'><div class='spacerEnd'></div></td>";
-	}else{
-			retStr+="'><div class='spacerLeft'></div></td>";	
-	}
-		
-	return retStr;
-}
-
 
 /* Statistic-sections functions, for drawing out all the statistics
    (pie chart and swimlanes) and upcomming deadlines. */
@@ -1350,11 +1140,6 @@ function fixDeadlineInfoBoxesText(){
 	if(closestDeadlineArray.length == 0){ // if we have no deadlines, put this nice text instead
 		allDeadlineTexts[0].innerHTML = "No upcoming deadlines"
 	}
-}
-
-function removeYearFromDate(date){
-	var remadeDate = new Date(date);
-	return getDateFormat(remadeDate, "dateMonth").replace("-" ,"/");
 }
 
 function drawSwimlanes(){
@@ -1619,9 +1404,9 @@ $(window).keyup(function (event) {
 			var submitButtonDisplay = ($('#submitBtn').css('display'));
 			var deleteButtonDisplay = ($('#sectionConfirmBox').css('display'));
 			var errorMissingMaterialDisplay = ($('#noMaterialConfirmBox').css('display'));
-			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
+			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() ) {
 				updateItem();
-			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid() && isTypeValid()) {
+			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
 				newItem();
 				showSaveButton();
 			} else if (isTypeValid() && testsAvailable == true){

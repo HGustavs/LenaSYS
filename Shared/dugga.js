@@ -97,6 +97,207 @@ function resetFields(){
 }
 
 //----------------------------------------------------------------------------------
+// scrollToBottom: scrolls the page to the bottom
+//----------------------------------------------------------------------------------
+
+function scrollToBottom() {
+	var scrollingElement = (document.scrollingElement || document.body)
+	scrollingElement.scrollTop = scrollingElement.scrollHeight;
+}
+
+//----------------------------------------------------------------------------------
+// getHiddenElements: Get all element ids from local storage (who's children should be hidden).
+//----------------------------------------------------------------------------------
+
+function getHiddenElements() {
+	menuState.hiddenElements = JSON.parse(localStorage.getItem('hiddenElements'));
+	if (menuState.hiddenElements === null) {
+		menuState.hiddenElements = [];
+	}
+}
+
+//----------------------------------------------------------------------------------
+// getArrowElements: Get all arrow image ids from local storage that should be toggled.
+//----------------------------------------------------------------------------------
+
+function getArrowElements() {
+	menuState.arrowIcons = JSON.parse(localStorage.getItem('arrowIcons'));
+	if (menuState.arrowIcons === null) {
+		menuState.arrowIcons = [];
+	}
+}
+
+//----------------------------------------------------------------------------------
+// findAncestor: Finds the nearest parent element of "element" that contains the class "className".
+//----------------------------------------------------------------------------------
+
+function findAncestor(element, className) {
+	if (element != undefined || element != null) {
+		while ((element = element.parentElement) && !element.classList.contains(className));
+		return element;
+	}
+}
+
+//----------------------------------------------------------------------------------
+// addOrRemoveFromArray: Toggle string in array. Add string to array if it does not exist in the array. Remove string from array if it exist in the array. */
+//----------------------------------------------------------------------------------
+
+function addOrRemoveFromArray(elementID, array) {
+	var exists = false;
+	for (var i = 0; i < array.length; i++) {
+		if (elementID == array[i]) {
+			exists = true;
+			array.splice(i, 1);
+			break;
+		}
+	}
+	if (!exists) {
+		array.push(elementID);
+	}
+}
+
+//----------------------------------------------------------------------------------
+// makeoptions: Prepares a dropdown list with highlighting of previously selected item
+//----------------------------------------------------------------------------------
+
+function makeoptions(option,optionlist,valuelist)
+{
+		var str="";
+		for(var i=0;i<optionlist.length;i++){
+				str+="<option ";
+				if(valuelist[i]==option){
+						str+="selected='selected' ";
+				}
+				str+="value='"+valuelist[i]+"'>"+optionlist[i]+"</option>";
+		}
+		return str;
+}
+
+//----------------------------------------------------------------------------------
+// makeoptionsItem: Prepares a dropdown list specifically for items such as code examples / dugga etc
+//----------------------------------------------------------------------------------
+
+function makeoptionsItem(option,optionlist,optionstring,valuestring)
+{
+		var str="";
+		for(var i=0;i<optionlist.length;i++){
+				str+="<option ";
+				if(optionlist[i][valuestring]==option){
+						str+="selected='selected' ";
+				}
+				str+="value='"+optionlist[i][valuestring]+"'>"+optionlist[i][optionstring]+"</option>";
+		}
+		return str;
+}
+
+//----------------------------------------------------------------------------------
+// makeparams: Help function for hassle free preparation of a clickable param list 
+//----------------------------------------------------------------------------------
+
+function makeparams(paramarray)
+{
+		var str="";
+		for(var i=0;i<paramarray.length;i++){
+				if(i>0) str+=",";
+				str+="\""+paramarray[i]+"\"";
+		}
+		return str;
+}
+
+//----------------------------------------------------------------------------------
+// makeanchor: Help function for hassle free preparation of an anchor link with parameters
+//----------------------------------------------------------------------------------
+
+function makeanchor(anchorhref,anchorclass,anchorstyle,title,isblank,paramobj)
+{
+		var str="<a class='"+anchorclass+"' style='"+anchorstyle+"' href='"+anchorhref;
+		var i=0;
+		for (var property in paramobj) {
+  			if(i>0){ str+="&" } else { str+="?" };
+				str+=property+"="+paramobj[property];
+				i++;
+		}
+		str+="' title='"+title+"' ";
+		if(isblank) str+="target='_blank' ";
+	  str+=">"+title+"</a>";
+	
+		alert(str);
+
+		return str;
+}
+
+//----------------------------------------------------------------------------------
+// navigatePage: Local function for converting static page navigation to dynamic
+//----------------------------------------------------------------------------------
+
+function navigatePage(pagename)
+{
+		changeURL(pagename+"?cid=" + querystring['courseid'] + "&coursevers="+ querystring['coursevers']);
+}
+
+//----------------------------------------------------------------------------------
+// getDateFormat: Function for making PHP compatible date from javascript date
+//----------------------------------------------------------------------------------
+
+function getDateFormat(date, operation = ""){
+	if(operation == "hourMinuteSecond"){
+		return date.getFullYear() + "-"
+			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
+			+ ('0' + date.getDate()).slice(-2)
+			+ "T" + date.getHours() + ":" + date.getMinutes() + ":"
+			+ date.getSeconds();
+	}else if(operation == "dateMonth"){
+		return ('0' + date.getDate()).slice(-2) + '-'
+			+ ('0' + (date.getMonth()+1)).slice(-2);
+
+	}
+	return date.getFullYear() + "-"
+			+ ('0' + (date.getMonth()+1)).slice(-2) + '-'
+			+ ('0' + date.getDate()).slice(-2)
+}
+
+//----------------------------------------------------------------------------------
+// weeksBetween: Function for computing number of calendar weeks between dates
+//----------------------------------------------------------------------------------
+
+function weeksBetween(firstDate, secondDate){
+	var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+	var diff = Math.abs(firstDate - secondDate);
+	return Math.round(diff / ONE_WEEK);
+}
+
+//----------------------------------------------------------------------------------
+// weeksBetween: Function for computing week number for date
+//----------------------------------------------------------------------------------
+
+function getWeek(tdate)
+{
+		var date = new Date(tdate.getTime());
+		date.setHours(0, 0, 0, 0);
+		date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+		var week1 = new Date(date.getFullYear(), 0, 4);
+		return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6 ) % 7) / 7);
+}
+
+//----------------------------------------------------------------------------------
+// makeTextArray: Return array position X in text value array
+//----------------------------------------------------------------------------------
+
+function makeTextArray(intval,valarr)
+{
+		return valarr[intval];
+}
+
+//----------------------------------------------------------------------------------
+// removeYearFromDate: Removes the year from the date
+//----------------------------------------------------------------------------------
+
+function removeYearFromDate(date){
+	var remadeDate = new Date(date);
+	return getDateFormat(remadeDate, "dateMonth").replace("-" ,"/");
+}
+
+//----------------------------------------------------------------------------------
 // Sets cookie that expires when there's 30 min left of session
 //----------------------------------------------------------------------------------
 
@@ -112,6 +313,7 @@ function setExpireCookie(){
 //----------------------------------------------------------------------------------
 // Sets a cookie that expires at the same time as the user is logged out (when the session ends)
 //----------------------------------------------------------------------------------
+
 function setExpireCookieLogOut() {
     if (localStorage.getItem("securityquestion") === "set") {
         var expireDate = new Date();
@@ -119,6 +321,7 @@ function setExpireCookieLogOut() {
         document.cookie = "sessionEndTimeLogOut=expireC; expires=" + expireDate.toGMTString() + "; path=/";
     }
 }
+
 //----------------------------------------------------------------------------------
 function closeWindows(){
 	var index_highest = 0;

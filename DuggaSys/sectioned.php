@@ -226,7 +226,7 @@
 					<div class="tooltipDugga">
 						<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
 					</div>
-					<input type='text' class='textinput' id='sectionname' value='sectionname' onkeyup="validateName();" onchange="validateName();" />
+					<input type='text' class='textinput' id='sectionname' value='sectionname' />
 				</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
@@ -234,7 +234,7 @@
 						<span id="tooltipType" style="display: none;" class="tooltipDuggaTypeTxt"></span>
 					</div> <!-- If you want to change the names of the spans, make sure that they fit with the dropdown box.
 						If they don't, change the width of loginbox select in the CSS file -->
-						<select id='type' value='type' onchange='changedType(document.getElementById("type").value);validateType();'></select>
+						<select id='type' value='type' onchange='changedType(document.getElementById("type").value);'></select>
 					</div>
 					<div id='inputwrapper-link' class='inputwrapper'><span>Link:</span><select id='link' ></select></div>
 					<div id='inputwrapper-gradesystem' class='inputwrapper'><span>Grade system:</span><select id='gradesys' ></select></div>
