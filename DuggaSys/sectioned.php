@@ -164,10 +164,7 @@
 				</div>
 				<div class='statisticsContent' style='display:inline-block;'>
 						<div id='statisticsPie' class='statisticsInnerBox'>
-								<canvas id='pieChart' width='300px' height='255px' style='padding: 10px; display:flex; margin: auto;'></canvas>
-								<svg id="pieChartSVG" width='300px' height='255px' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg" style="border:1px dotted green;">
-										
-								</svg>
+								<svg id="pieChartSVG" width='300px' height='255px' style='padding: 10px; display:flex; margin: auto;border:1px dotted green;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
 						</div>
 						<div id='deadlineInfoBox' class='statisticsInnerBox' style='padding: 10px;'>
 								<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>

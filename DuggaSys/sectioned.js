@@ -958,19 +958,12 @@ function svgPie(cx,cy,radius,startpct,endpct,fill,stroke)
 //----------------------------------------------------------------------------------
 
 function drawPieChart() {
-		var c = document.getElementById('pieChart');
-		var ctx = c.getContext('2d');
-		var width = c.width;
-		var height = 200;
-		var pieChartRadius = height / 2;
-		var overviewBlockSize = 11;
 
 		var totalQuizes = 0;
 		var passedQuizes = 0;
 		var notGradedQuizes = 0;
 		var failedQuizes = 0;
 		var notSubmittedQuizes = 0;
-
 		// Calculate total quizes.
 		for(var i = 0; i < retdata['entries'].length; i++) {
 			if(retdata['entries'][i].kind == "3") totalQuizes++;
