@@ -1019,70 +1019,51 @@ function drawPieChart() {
 		document.getElementById("pieChartSVG").innerHTML=str;
 }
 
+//----------------------------------------------------------------------------------
+// fixDeadlineInfoBoxesText: Makes an on-screen table containing at most 5 next deadlines
+//----------------------------------------------------------------------------------
+
 function fixDeadlineInfoBoxesText(){
+
 	var closestDeadlineArray = [];
-	var duggaEntries = retdata['entries'].slice();
-	var allDeadlineTexts = [];
-	allDeadlineTexts.push(document.getElementById("deadlineInfoFirstText"));
-	allDeadlineTexts.push(document.getElementById("deadlineInfoSecondText"));
-	allDeadlineTexts.push(document.getElementById("deadlineInfoThirdText"));
-	allDeadlineTexts.push(document.getElementById("deadlineInfoFourthText"));
-	allDeadlineTexts.push(document.getElementById("deadlineInfoFifthText"));
-	var deadLineDates = [];
-	deadLineDates.push(document.getElementById("deadlineInfoFirstDate"));
-	deadLineDates.push(document.getElementById("deadlineInfoSecondDate"));
-	deadLineDates.push(document.getElementById("deadlineInfoThirdDate"));
-	deadLineDates.push(document.getElementById("deadlineInfoFourthDate"));
-	deadLineDates.push(document.getElementById("deadlineInfoFifthDate"));
-	var isAnyUpcomingDugga = false;
-
-	// remove everything from Entries that isnt a Test
-	for(var i = duggaEntries.length - 1; i >= 0; i--){
-		if(duggaEntries[i]['kind'] != 3){
-			duggaEntries.splice(i, 1);
-		}
+	var deadlineEntries = [];
+	var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+	
+	var str="<tr><th style='padding:4px;'>Test</th><th style='padding:4px;'>Release</th><th style='padding:4px;'>Deadline</th></tr>";
+	
+	var current=new Date();
+	for(var i=0;i<retdata['entries'].length;i++){
+			var deadline=new Date(retdata['entries'][i].deadline);
+			var start=new Date(retdata['entries'][i].qstart);
+			if((retdata['entries'][i].kind == 3)&&(datediff(deadline,current)<17)){
+					deadlineEntries.push({'deadline':deadline,'start':start,'text':retdata['entries'][i].entryname});
+			}				
 	}
-
-	// to find the lowest-valued-element
-	if(duggaEntries.length != 0){
-		duggaEntries.reduce(function(prev, curr){
-			return prev.deadline < curr.deadline ? prev : curr;
-		});
-
-		Array.prototype.hasMin = function(attrib){
-			if(this.length != 0){
-				return this.reduce(function(prev, curr){
-					return prev[attrib] < curr[attrib] ? prev : curr;
-				});
-			}
-		}
-	}
-
-	if(duggaEntries.length > 0){
-		while(closestDeadlineArray.length < allDeadlineTexts.length){
-			if(closestDeadlineArray.length > 4){ // we only want 5 elements
-				break;
-			}
-			var lowestElement = duggaEntries.hasMin('deadline');
-			if(lowestElement == undefined) break; // bad solution to check if array is empty
-			var testDate = new Date(lowestElement['deadline']);
-			if(Date.now() < testDate.getTime()){ // if deadline hasn't already happened we save it
-				closestDeadlineArray.push(lowestElement);
-			}
-			duggaEntries.splice(duggaEntries.indexOf(lowestElement), 1);
-		}
-		for(var i = 0; i < closestDeadlineArray.length; i++){
-			if(closestDeadlineArray[i]['entryname'].length > 23){
-				allDeadlineTexts[i].innerHTML = " " + closestDeadlineArray[i]['entryname'].slice(0, 23) + "...";
+	
+	deadlineEntries.sort(function(a, b) {
+  		return a.deadline - b.deadline;
+	});
+	
+	// At most 5
+	var cnt=deadlineEntries.length;
+	if(deadlineEntries.length>5) cnt=5;
+	for(i=0;i<cnt;i++){
+			var entry=deadlineEntries[i];
+			if(entry.deadline<current){
+					str+="<tr style='color:red;'>";
 			}else{
-				allDeadlineTexts[i].innerHTML = " " + closestDeadlineArray[i]['entryname'];
+					str+="<tr style='color:black;'>";
 			}
-			deadLineDates[i].innerHTML = " " + removeYearFromDate(closestDeadlineArray[i]['deadline']);
-		}
+			str+="<td style='padding:4px;'>"+entry.text+"</td>";
+			str+="<td style='padding:4px;'>"+months[entry.start.getMonth()]+" "+entry.start.getDate()+"</td>";
+			str+="<td style='padding:4px;'>"+months[entry.deadline.getMonth()]+" "+entry.deadline.getDate()+"</td>";	
+			str+="</tr>";
 	}
-
-	if(closestDeadlineArray.length == 0){ // if we have no deadlines, put this nice text instead
-		allDeadlineTexts[0].innerHTML = "No upcoming deadlines"
+	
+	if(deadlineEntries.length == 0){ // if we have no deadlines, put this nice text instead
+			document.getElementById("deadlineList").innerHTML="<tr><td>There are no near-term deadlines</td></tr>";
+	}else{
+			document.getElementById("deadlineList").innerHTML=str;
 	}
 }
 

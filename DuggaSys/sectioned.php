@@ -167,27 +167,9 @@
 								<svg id="pieChartSVG" width='300px' height='255px' style='padding: 10px; display:flex; margin: auto;border:1px dotted green;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
 						</div>
 						<div id='deadlineInfoBox' class='statisticsInnerBox' style='padding: 10px;'>
-								<h2 id='deadlineInfoTitle'>Upcoming Deadlines</h2>
-								<div class='deadlineInfo'>
-									<span style='width:100%;'id='deadlineInfoFirstText'></span>
-									<span id='deadlineInfoFirstDate' style='margin-right:5px; width:35px;'></span>
-								</div>
-								<div class='deadlineInfo'>
-									<span style='width:100%;' id='deadlineInfoSecondText'></span>
-									<span id='deadlineInfoSecondDate' style='margin-right:5px; width:35px;'> </span>
-								</div>
-								<div class='deadlineInfo'>
-									<span style='width:100%;' id='deadlineInfoThirdText'></span>
-									<span id='deadlineInfoThirdDate' style='margin-right:5px; width:35px;'></span>
-								</div>
-								<div class='deadlineInfo'>
-									<span style='width:100%;' id='deadlineInfoFourthText'></span>
-									<span id='deadlineInfoFourthDate' style='margin-right:5px; width:35px;'></span>
-								</div>
-								<div class='deadlineInfo'>
-									<span style='width:100%;' id='deadlineInfoFifthText'></span>
-									<span id='deadlineInfoFifthDate' style='margin-right:5px; width:35px;'></span>
-								</div>
+								<h2 id='deadlineInfoTitle'>Recent and Upcoming Deadlines</h2>
+								<table id="deadlineList">
+								</table>
 						</div>
 						<div id='statisticsSwimlanes' class='statisticsInnerBox' style='display:flex;'>
 								<div style='display:inline-block;'>

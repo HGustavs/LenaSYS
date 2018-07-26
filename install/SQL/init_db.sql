@@ -487,15 +487,14 @@ CREATE TABLE user_push_registration (
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* Usergroup and user_usergroup relation */
-CREATE TABLE `groups` (
-  `groupID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `courseID` int(10) unsigned NOT NULL,
-  `vers` varchar(8) DEFAULT NULL,
-  `groupName` varchar(80) NOT NULL,
-  PRIMARY KEY (`groupID`),
-  KEY `courseID` (`courseID`),
-  CONSTRAINT `groups_ibfk_1` FOREIGN KEY (`courseID`) REFERENCES `course` (`cid`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
+CREATE TABLE groups (
+  groupID int(10) unsigned NOT NULL AUTO_INCREMENT,
+  courseID int(10) unsigned NOT NULL,
+  vers varchar(8) DEFAULT NULL,
+  groupName varchar(80) NOT NULL,
+  PRIMARY KEY (groupID),
+  FOREIGN KEY (courseID) REFERENCES course(cid)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE `user_group` (
   `groupID` int(10) unsigned NOT NULL,
