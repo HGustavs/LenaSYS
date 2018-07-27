@@ -171,14 +171,16 @@
 								<table id="deadlineList">
 								</table>
 						</div>
-						<div id='statisticsSwimlanes' class='statisticsInnerBox' style='display:flex;'>
-								<div style='display:inline-block;'>
-									<canvas id='swimlanesMoments' style='padding:10px;'></canvas>
-								</div>
-								<div style='width: 350px; overflow-x: auto; white-space: nowrap; display: inline-block; margin: 10px 10px 10px -10px'>
-									<canvas id='swimlanesWeeks'></canvas>
-								</div>
+						<div id='statisticsSwimlanes' class='statisticsInnerBox' style='display:block;'>
+								<svg id="swimlaneSVG" width='300px' height='255px' style='padding: 10px; display:flex; margin: auto;border:1px dotted green;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
 						</div>
+						<div style='display:flex;'>
+							<canvas id='swimlanesMoments' style='padding:10px;'></canvas>
+						</div>
+						<div style='width: 350px; overflow-x: auto; white-space: nowrap; display: inline-block; margin: 10px 10px 10px -10px'>
+							<canvas id='swimlanesWeeks'></canvas>
+						</div>
+
 				</div>
 		</div>
 		<!-- Statistics List END-->
@@ -307,7 +309,7 @@
 			<div style='padding:5px;'>
 				<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
-				<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' disabled /></div>
+				<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' /></div>
 				<div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='estartdate' value='' /></div>
 				<div class='inputwrapperSmall'><select id='minutePickerStartEditVersion'></select><span>Min:</span><select id='hourPickerStartEditVersion'></select><span>Hr:</span></div>
 				<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='eenddate' value='' /></div>

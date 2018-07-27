@@ -415,8 +415,8 @@ if($cvisibility){
 $query = $pdo->prepare("SELECT coursename, coursecode FROM course WHERE cid=:cid LIMIT 1");
 $query->bindParam(':cid', $courseid);
 
-$coursename = "Course not Found!";
-$coursecode = "Coursecode not found!";
+$coursename = "UNK";
+$coursecode = "UNK";
 
 if($query->execute()) {
 	foreach($query->fetchAll() as $row) {

@@ -216,9 +216,7 @@ function changedType(kind)
 //----------------------------------------------------------------------------------
 
 function showEditVersion() {
-	
-	alert( versnme,querystring['coursevers'] );
-	
+		
 	startdate = new Date(retdata['startdate'])
 	enddate = new Date(retdata['enddate'])
 	var startHour = startdate.getHours()
@@ -237,6 +235,7 @@ function showEditVersion() {
 	$("#hourPickerEndEditVersion").val(endHour);
 	$("#minutePickerEndEditVersion").val(endMinute);
 	$("#editCourseVersion").css("display", "flex");
+
 }
 
 function displaymessage() {
@@ -396,16 +395,13 @@ function newItem() {
 function createVersion() {
 	
 	var param={};
-	param.cid = querystring['courseid'];
-	param.versid = $("#versid").val();
-	param.versname = $("#versname").val();
-	param.coursecode = $("#course-coursecode").text();
-	param.courseid = $("#course-courseid").text();
-	param.coursename = $("#course-coursename").text();
-	param.makeactive = $("#makeactive").is(':checked');
-	param.coursevers = $("#course-coursevers").text();
-	param.copycourse = $("#copyvers").val();
-	param.comments = $("#comments").val();
+	param.courseid = querystring['courseid'];
+	param.versid = document.getElementById("versid").value;
+	param.versname = document.getElementById("versname").value;
+	param.copycourse = document.getElementById("copyvers").value;
+	param.coursecode = document.getElementById("course-coursecode").innerHTML;
+	param.coursename = document.getElementById("course-coursename").innerHTML;
+	param.makeactive = 2+$("#emakeactive").is(':checked');
 	param.startdate = getDateFormat(new Date($("#startdate").val()+" "+$("#hourPickerStartNewVersion").val()+":"+$("#minutePickerStartNewVersion").val()),"hourMinuteSecond");
 	param.enddate = getDateFormat(new Date($("#enddate").val()+" "+$("#hourPickerEndNewVersion").val()+":"+$("#minutePickerEndNewVersion").val()),"hourMinuteSecond");
 	
@@ -430,26 +426,26 @@ function createVersion() {
 //----------------------------------------------------------------------------------
 
 function updateVersion() {
-
+	
 	var param={};
-	param.cid = $("#cid").val();
-	param.versid = $("#eversid").val();
-	param.versname = $("#eversname").val();
-	param.coursecode = $("#course-coursecode").text();
-	param.courseid = $("#course-courseid").text();
-	param.coursename = $("#course-coursename").text();
-	param.makeactive = $("#emakeactive").is(':checked');
-	param.coursevers = $("#course-coursevers").text();
-	param.copycourse = $("#copyvers").val();
-	param.comments = $("#comments").val();
+	
+	param.courseid=querystring['courseid'];
+	param.versid = document.getElementById("eversid").value;
+	param.versname = document.getElementById("eversname").value;
+	param.copycourse = document.getElementById("copyvers").value;
+	param.coursecode = document.getElementById("course-coursecode").innerHTML;
+	param.coursename = document.getElementById("course-coursename").innerHTML;
+	param.makeactive = 2+$("#emakeactive").is(':checked');
 	param.startdate = getDateFormat(new Date($("#estartdate").val()+" "+$("#hourPickerStartEditVersion").val()+":"+$("#minutePickerStartEditVersion").val()),"hourMinuteSecond");
 	param.enddate = getDateFormat(new Date($("#eenddate").val()+" "+$("#hourPickerEndEditVersion").val()+":"+$("#minutePickerEndEditVersion").val()),"hourMinuteSecond");
 	
 	AJAXService("UPDATEVRS", param, "SECTION");
 
+	/*
 	if (param.makeactive) {
 		AJAXService("CHGVERS", param, "SECTION");
 	}
+	*/
 
 	$("#editCourseVersion").css("display", "none");
 }
@@ -509,6 +505,11 @@ function returnedSection(data) {
 			}
 		}
 
+		// Update header with course information from data
+		document.getElementById("course-coursecode").innerHTML=retdata['coursecode'];
+		document.getElementById("course-coursename").innerHTML=retdata['coursename'];
+		document.getElementById("course-versname").innerHTML=versionname;
+		
 		var str = "";
 
 		if (data['writeaccess']) {
@@ -898,11 +899,7 @@ function returnedHighscore(data) {
 
 	var str = "";
 
-	str += "<tr>";
-	str += "<th>Rank</th>";
-	str += "<th>Name</th>";
-	str += "<th>Score</th>";
-	str += "</tr>";
+	str += "<tr><th>Rank</th><th>Name</th><th>Score</th></tr>";
 
 	if (data['highscores'].length > 0) {
 		for (i = 0; i < data['highscores'].length; i++) {
@@ -912,33 +909,18 @@ function returnedHighscore(data) {
 			} else {
 				str += "<tr>";
 			}
-			str += "<td>";
-			str += (i + 1);
-			str += "</td>";
-
-			str += "<td>";
-			str += item['username'];
-			str += "</td>"
-			str += "<td>";
-			str += "Score: ";
-			str += item['score']
-			str += "</td>";
+			str += "<td>"+(i + 1)+"</td>";
+			str += "<td>"+item['username']+"</td>";
+			str += "<td>Score: "+item['score']+"</td>";
 			str += "</tr>";
 		}
 	}
 
 	if (data["user"]["username"]) {
 		str += "<tr class='highscoreUser'>";
-		str += "<td>";
-		str += "";
-		str += "</td>";
-		str += "<td>";
-		str += data["user"]["username"];
-		str += "</td>"
-		str += "<td>";
-		str += "Score: ";
-		str += data["user"]["score"]
-		str += "</td>";
+		str += "<td></td>";
+		str += "<td>"+data["user"]["username"]+"</td>";
+		str += "<td>Score: "+data["user"]["score"]+"</td>";
 		str += "</tr>";
 	}
 
@@ -1026,11 +1008,11 @@ function drawPieChart() {
 function fixDeadlineInfoBoxesText(){
 
 	var closestDeadlineArray = [];
-	var deadlineEntries = [];
 	var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 	
 	var str="<tr><th style='padding:4px;'>Test</th><th style='padding:4px;'>Release</th><th style='padding:4px;'>Deadline</th></tr>";
-	
+
+	var deadlineEntries = [];
 	var current=new Date();
 	for(var i=0;i<retdata['entries'].length;i++){
 			var deadline=new Date(retdata['entries'][i].deadline);
@@ -1068,187 +1050,88 @@ function fixDeadlineInfoBoxesText(){
 }
 
 function drawSwimlanes(){
-	var swimMoments = document.getElementById('swimlanesMoments');
-	var swimWeeks = document.getElementById('swimlanesWeeks');
-	var ctxMoments = swimMoments.getContext('2d');
-	var ctxWeeks = swimWeeks.getContext('2d');
-	var colors = {
-		'passedQuizes': '#00E676',        	// Green
-		'notGradedQuizes': '#FFEB3B',     	// Yellow
-		'failedQuizes': '#E53935',        	// Red
-		'notSubmittedQuizes': '#BDBDBD',  	// Dark grey
-		'weeksOdd': '#8a7a9a',				// Purple
-		'momentsOdd': '#ededed'				// Light gray
- 	}
 
 	var startdate = new Date(retdata['startdate']);
 	var enddate = new Date(retdata['enddate']);
-	var totalNumberOfTests = 0;
+	var current = new Date(2018, 9, 14);
 
-	for (var i = 0; i < retdata['entries'].length; i++){
-		if (retdata['entries'][i]['kind'] == 3){
-			totalNumberOfTests++;
-		}
+	var deadlineEntries = [];
+	var momentEntries = {};
+	var current=new Date();
+	var momentno=0; 
+	for(var i=0;i<retdata['entries'].length;i++){
+			var deadline=new Date(retdata['entries'][i].deadline);
+			var start=new Date(retdata['entries'][i].qstart);
+			if(retdata['entries'][i].kind == 3){
+					var marked=null;
+					var submitted=null;
+					var grade=null;
+					for(var j=0;j<retdata['results'].length;j++){
+							if(retdata['results'][j].moment==retdata['entries'][i].lid){
+									marked=retdata['results'][j].marked;
+									submitted=retdata['results'][j].submitted;
+									grade=retdata['results'][j].grade;
+							}
+					}
+					deadlineEntries.push({'deadline':deadline,'start':start,'text':retdata['entries'][i].entryname,'moment':retdata['entries'][i].moment,'marked':marked,'submitted':submitted,'grade':grade});
+			}else if(retdata['entries'][i].kind == 4){
+					momentEntries[retdata['entries'][i].lid]=retdata['entries'][i].entryname;
+					momentno++;
+			}				
 	}
 
 	var weekLength = weeksBetween(startdate, enddate);
+	var currentWeek = weeksBetween(current,startdate);
+	var weekwidth=30;
+	var colwidth=60;
+	var weekheight=25;
 
-	var widthVar = 30;
-	var momentWidth = [];
-	var momentList = [];
-	var numberOfMoments = 0;
-
-	for(var i = 0; i < retdata['entries'].length; i++){
-		var item = retdata['entries'][i];
-		if(item['kind'] == 4){
-			momentWidth.push(widthVar);
-			widthVar = 30;
-			momentList.push(item);
-			numberOfMoments++;
-		} else {
-			widthVar += 30;
+	var str="";
+	for(var i=0;i<weekLength;i++){
+		str+="<rect x='"+(i*weekwidth)+"' y='"+(15)+"' width='"+(weekwidth)+"' height='"+(weekheight*(deadlineEntries.length+1))+"' ";
+		if((i%2)==0){
+				str+="fill='#ededed' />";		
+		}else{
+				str+="fill='#ffffff' />";				
 		}
+		str+="<text x='"+((i*weekwidth)+(weekwidth*0.5))+"' y='"+(33)+"' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>"+(i+1)+"</text>";
+	}
+	
+	for(var i=1;i<(deadlineEntries.length+2);i++){
+			str+="<line x1='0' y1='"+((i*weekheight)+15)+"' x2='"+(weekLength*weekwidth)+"' y2='"+((i*weekheight)+15)+"' stroke='black' />";
 	}
 
-	//	Dynamic width and height for the canvases, depending on how many weeks a
-	//	course is and how many moments exist in the course.
-	swimMoments.width = 100;
-	if(numberOfMoments != 0){ // Dynamic height, depending on number of moments
-		// 60 is height of the Weeks/Moments label.
-		swimMoments.height = (30 * totalNumberOfTests) + 60;
-		swimWeeks.height = swimMoments.height;
-	}
+	
+	var weeky=weekheight+15;
+	for(obj in momentEntries){
+			console.log(obj+" "+momentEntries[obj]);
+			for(var i=0;i<deadlineEntries.length;i++){
+					entry=deadlineEntries[i];
+					if(obj==entry.moment){
+							// Now we generate a SVG element for this 
+							startweek=weeksBetween(startdate, entry.start);
+							deadlineweek=weeksBetween(startdate, entry.deadline);
 
-	if(weekLength != 0){ // Dynamic width, depending on number of weeks
-		swimWeeks.width = weekLength * 35;
-	}
+							var fillcol="#BDBDBD";
+							if((entry.submitted!=null)&&(entry.grade==undefined)) fillcol="#FFEB3B"
+							else if((entry.submitted!=null)&&(entry.grade>1)) fillcol="#00E676"
+							else if((entry.submitted!=null)&&(entry.grade==1)) fillcol="#E53935";
 
-	ctxMoments.fillStyle = 'white';
-	ctxMoments.fillRect(0, 0, 100, 60);
+							str+="<rect opacity='0.7' x='"+(startweek*weekwidth)+"' y='"+(weeky)+"' width='"+(deadlineweek*weekwidth)+"' height='"+weekheight+"' fill='"+fillcol+"' />";
+							str+="<text x='"+(12)+"' y='"+(weeky+18)+"' font-family='Arial' font-size='12px' fill='black' text-anchor='left'>"+entry.text+"</text>";
+						
+							console.log(entry.submitted+" "+entry.gradee+" "+entry.text);
 
-	ctxMoments.moveTo(0, 0);
-	ctxMoments.strokeStyle = colors['notSubmittedQuizes'];
-	ctxMoments.lineTo(100, 60);
-	ctxMoments.stroke();
-
-	ctxMoments.fillStyle = 'black';
-	ctxMoments.font = '12px Arial';
-	ctxMoments.fillText('Week', 50, 20);
-	ctxMoments.fillText('Moment', 10, 50);
-
-	// Prints out the moment rows to the swimlane table.
-	var y = 60;
-	var isGray = true;
-	for(var i = 0; i < retdata['entries'].length; i++){
-		var item = retdata['entries'][i];
-		if (item['kind'] == 4){
-			if (isGray){
-				ctxMoments.fillStyle = colors['momentsOdd'];
-				ctxWeeks.fillStyle = colors['momentsOdd'];
-				isGray = false;
-			} else {
-				ctxMoments.fillStyle = 'white';
-				ctxWeeks.fillStyle = 'white';
-				isGray = true;
-			}
-		} else if (item['kind'] == 3){
-			ctxMoments.fillRect(0, y, swimMoments.width, 30);
-			ctxWeeks.fillRect(0, y, swimWeeks.width, 30);
-			y += 30;
-		}
-	}
-
-	//	Prints out the name on the moment in the moments column.
-	y = 60;
-	for (var i = 0; i < retdata['entries'].length; i++){
-		var item = retdata['entries'][i];
-		if (item['kind'] == 4){
-			ctxMoments.fillStyle = 'black';
-			ctxMoments.fillText(item['entryname'], 5, y + 20);
-		} else if (item['kind'] == 3){
-			y += 30;
-		}
-	}
-
-	// Prints out the week columns to the swimlane table.
-	var x = 0;
-	for(var i = 1; i < weekLength + 1; i++){
-		if(i % 2 == 0){
-			ctxWeeks.fillStyle = 'white';
-			ctxWeeks.fillRect(x, 0, 35, 60);
-			ctxWeeks.fillStyle = 'black';
-			ctxWeeks.font = '12px Arial';
-			ctxWeeks.fillText(i, x + 12, 33);
-		}
-		else {
-			ctxWeeks.fillStyle = colors['weeksOdd'];
-			ctxWeeks.fillRect(x, 0, 35, 60);
-			ctxWeeks.fillStyle = 'black';
-			ctxWeeks.font = '12px Arial';
-			ctxWeeks.fillText(i, x + 12, 33);
-		}
-		x += 35;
-	}
-
-	ctxMoments.moveTo(99, 60);
-	ctxMoments.strokeStyle = colors['notSubmittedQuizes'];
-	ctxMoments.lineTo(99, swimMoments.height);
-	ctxMoments.stroke();
-
-	ctxWeeks.moveTo(0, 60);
-	ctxWeeks.strokeStyle = colors['notSubmittedQuizes'];
-	ctxWeeks.lineTo(swimWeeks.width, 60);
-	ctxWeeks.stroke();
-
-	// Prints out all the tests.
-	var oneDay = 24 * 60 * 60 * 1000;
-	y = 60;
-	for (var i = 0; i < retdata['entries'].length; i++){
-		var item = retdata['entries'][i];
-		var result = retdata['results'];
-		var testStartDate;
-
-		if (item['qstart'] == null){
-			testStartDate = new Date(retdata['startdate']);
-		} else {
-			testStartDate = new Date(item['qstart']);
-		}
-
-		var testEndDate = new Date(item['deadline']);
-		var courseStartDate = new Date(retdata['startdate']);
-		var testDuration = Math.round(Math.abs(
-			+ (testStartDate.getTime() - testEndDate.getTime())/(oneDay)));
-		var untilTestStart = Math.round(Math.abs(
-			+ (courseStartDate.getTime() - testStartDate.getTime())/(oneDay)));
-
-		ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
-		if (item['kind'] == 3){
-			y += 5;
-			for (var j = 0; j < result.length; j++){
-				if (item['lid'] == result[j]['moment']){
-					if(result[j]['grade'] == null) {
-						ctxWeeks.fillStyle = colors['notGradedQuizes'];
-			    } else if(result[j]['grade'] == 1) {
-			      ctxWeeks.fillStyle = colors['failedQuizes'];
-			    } else if(result[j]['grade'] == 2) {
-						ctxWeeks.fillStyle = colors['passedQuizes'];
-			    } else {
-						ctxWeeks.fillStyle = colors['notSubmittedQuizes'];
+							weeky+=weekheight;
 					}
-				}
 			}
 
-			ctxWeeks.fillRect(untilTestStart * 5, y, testDuration * 5, 20);
-			y += 25;
-		}
 	}
+	
+	str+="<line x1='"+((weekwidth*currentWeek))+"' y1='"+(15+weekheight)+"' x2='"+((weekwidth*currentWeek))+"' y2='"+(((1+deadlineEntries.length)*weekheight)+15)+"' stroke-width='3' stroke='red' />";	
+	
+	document.getElementById("swimlaneSVG").innerHTML=str;
 
-	// Timeline
-//	var currentDate = new Date();
-//	var courseDay = Math.round(Math.abs((courseStartDate.getTime() - currentDate.getTime())/(oneDay)));
-
-//	ctxWeeks.fillStyle = '#000';
-//	ctxWeeks.fillRect(courseDay * 5, 0, 2, swimWeeks.height);
 }
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
