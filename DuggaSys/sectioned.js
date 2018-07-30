@@ -533,6 +533,9 @@ function returnedSection(data) {
 				// Show FAB / Menu
 				document.getElementById("TopMenuStatic").style.display = "Block";
 				document.getElementById("FABStatic").style.display = "Block";
+			
+				// Show addElement Button
+				document.getElementById("addElement").style.display="Block";
 		} else {
 			// Hide FAB / Menu
 			document.getElementById("TopMenuStatic").style.display = "None";
