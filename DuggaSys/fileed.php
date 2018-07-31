@@ -121,7 +121,7 @@ pdoConnect();
 
                 <div class="markdown">
                     <fieldset id="markset">
-                        <legend>  Markdown</legend>
+                        <legend>Markdown</legend>
                         <div class="markdown-icon-div">
                         <span class="markdown-icons" onclick="boldText()" title="Bold"><b>B</b></span>
                         <span class="markdown-icons" onclick="cursiveText()" title="Italic"><i>i</i></span>
