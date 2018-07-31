@@ -311,7 +311,7 @@
     <div id="appearance" class='loginBoxContainer' style='display: none; background-color: rgba(0,0,0,0)'>
         <div class='loginBox'>
             <div class='loginBoxheader'>
-                <h3>Appearance</h3>
+                <h3 id="MenuTitle">Appearance</h3>
                 <div class='cursorPointer' onclick='closeAppearanceDialogMenu()'>x</div>
             </div>
             <div class='table-wrap'>

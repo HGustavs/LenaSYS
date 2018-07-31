@@ -868,6 +868,7 @@ function eraseSelectedObject() {
     if(selected_objects.length == 0){
         showMenu().innerHTML = "No item selected<type='text'>";
         $(".loginBox").draggable();
+        $("#MenuTitle").html("Object");
     }
     for(var i = 0; i < selected_objects.length; i++){
         eraseObject(selected_objects[i]);

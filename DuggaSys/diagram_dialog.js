@@ -16,6 +16,7 @@ function openAppearanceDialogMenu() {
      */
 
     $(".loginBox").draggable();
+    $("#MenuTitle").html("Appearance");
     var form = showMenu();
     appearanceMenuOpen = true;
     objectAppearanceMenu(form);
@@ -205,6 +206,7 @@ function globalAppearanceMenu(){
     globalAppearanceValue = 1;
     //open a menu to change appearance on all entities.
     $(".loginBox").draggable();
+    $("#MenuTitle").html("Global Appearance");
     var form = showMenu();
     //AJAX
     loadFormIntoElement(form,'diagram_forms.php?form=globalType');
