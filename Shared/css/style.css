@@ -580,6 +580,16 @@ header td {
   margin-bottom: 20px;
 }
 
+#dropdownc {
+  margin-left: 26px;
+  margin-top: 20px;
+}
+
+#dropdowns {
+  margin-left: 26px;
+  margin-top: 20px;
+}
+
 .navButt {
   width: 32px;
   vertical-align: middle;
