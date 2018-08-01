@@ -1497,6 +1497,13 @@ div.submit-button {
   border-radius: 4px;
 }
 
+.accessTableCell .submit-button {
+
+  line-height: 100%;
+  margin-top:2px;
+
+}
+
 input.submit-button-newitem {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
@@ -2936,6 +2943,8 @@ table {
   padding: 0 0 0 2px;
 }
 
+
+
 #searchbutton {
   position: relative;
   width: 26px;
@@ -3500,9 +3509,11 @@ only screen and (max-device-width: 710px) {
   #searchBar {
     margin-left: 15px;
   }
+
   #searchinput{
     width:170px;
   }
+
   table.navheader td.access {
     margin-right: 0px;
     width: 0px;
@@ -4384,6 +4395,7 @@ textarea#mrkdwntxt {
 
 .multiselect-group {
   width: 112px;
+  margin: auto;
 }
 
 #checkboxes {
