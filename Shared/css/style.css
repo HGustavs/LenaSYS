@@ -2282,7 +2282,7 @@ span.arrow {
 	text-align:center;
 	display:table-cell;
 	vertical-align:middle;
-	width:220px; /* used make the table cell <div> exapnd to the parent td */
+	/* width:220px;  used make the table cell <div> exapnd to the parent td */
 }
 
 .accessTable_counter span {

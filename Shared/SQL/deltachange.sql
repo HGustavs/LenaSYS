@@ -15,3 +15,14 @@ ALTER TABLE listentries add column groupID INT DEFAULT NULL;
 
 ALTER TABLE quiz add column jsondeadline VARCHAR(2048);
 
+/*
+
+Notice: Undefined variable: duggaVisibility in /Library/WebServer/Documents/LenaSYS_HT2017/DuggaSys/showdoc.php on line 408
+Notice: Undefined variable: duggaVisibility in /Library/WebServer/Documents/LenaSYS_HT2017/DuggaSys/showdoc.php on line 408
+
+Error retreiving userAnswers. (row 394) 0 row(s) were found. Error code: Unknown column 'timesGraded' in 'field list'
+
+NONE!Error changing group: Table 'imperious.user_group' doesn't exist
+
+Error retreiving userAnswers. (row 394) 0 row(s) were found. Error code: Unknown column 'timesGraded' in 'field list'
+*/

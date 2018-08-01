@@ -34,6 +34,7 @@ function setup()
   AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 }
 
+/*
 function fillResponsibleOptions(responsibles)
 {
     var selectResponsibleTag = document.getElementById("addResponsible");
@@ -45,6 +46,7 @@ function fillResponsibleOptions(responsibles)
 	addSingleOptionToSelectTag(selectResponsibleTag, responsibles, formatInnerHTML, formatValue, i);
     }
 }
+*/
 
 // formatInnerHTMLFunction - provide a function to format the string. Same for formatValueFunction.
 function addSingleOptionToSelectTag(tag, jsonList, formatInnerHTMLFunction, formatValueFunction, index)
@@ -202,20 +204,7 @@ function hideImportUsersPopup()
 	//$("#overlay").css("display","none");
 }
 
-function changeAccess(cid,uid,val)
-{
-	AJAXService("ACCESS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
-}
-
-function changeVersion(cid,uid,val)
-{
-	AJAXService("VERSION",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
-}
-
-function changeExaminer(cid,uid,val)
-{
-	AJAXService("EXAMINER",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
-}
+/*
 function changeUsername(uid,id)
 {
 	AJAXService("USERNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
@@ -232,6 +221,23 @@ function changeLastname(uid,id)
 {
 	AJAXService("LASTNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
 }
+*/
+
+function changeAccess(cid,uid,val)
+{
+	AJAXService("ACCESS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
+}
+
+function changeVersion(cid,uid,val)
+{
+	AJAXService("VERSION",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
+}
+
+function changeExaminer(cid,uid,val)
+{
+	AJAXService("EXAMINER",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
+}
+
 function changeClass(cid,uid,val,selected)
 {
     if(val!="newClass"){
@@ -246,82 +252,7 @@ function changeGroup(uid, gid) {
 	AJAXService("GROUP",{cid:querystring['cid'],uid:uid,gid:gid,coursevers:querystring['coursevers']},"ACCESS");
 }
 
-// Sets values in the "cogwheel popup"
-//function selectUser(uid,username,ssn,firstname,lastname,access,className,teacherstring,classString)
-function selectUser(uid,username,ssn,firstname,lastname,access,className)
-{
-    // Reverts the string to an array
-    /*
-       var teachs = teacherstring.split("/t");
-       var userClass = classString.split("/t");
-       // Sort the array to make navigation easier
-       teachs.sort();
-       userClass.sort();
-
-       // Array with no spaces used for our IF case as option[value] does not work with spaces
-       var trimmed = $.map(teachs, function(value){
-       return value.replace(/ /g, '');
-       });
-
-       // Loop through our array to put the teachers into an option in our select input
-       for(var i = 0; i < teachs.length; i++){
-       // If the teacher already exists in an option
-       if($("#teacher option[value="+ trimmed[i] +"]").length > 0){
-       // Loop through all of our options
-       $("#teacher option").each(function(){
-
-       // If a teacher no longer exists but the option for said teacher still exists
-       if ($.inArray(this.text, teachs) == -1)
-       {
-       // Remove that option
-       $(this).remove();
-       }
-       })
-       }
-       // If the teacher doesn't exist in an option
-       else{
-       // Create a new option where the value and text is the teachers name
-       $('#teacher').append($('<option>', {
-       value: trimmed[i],
-       text: teachs[i]
-       }));
-       }
-       };
-
-       // Loop through our array to put the classes into an option in our select input
-       for(var j = 0; j < userClass.length; j++){
-       // If the class already exists in an option
-       if($("#class option[value="+ userClass[j] +"]").length > 0){
-       }
-       // If the class doesn't exist in an option
-       else{
-       // Create a new option where the value and text is the classes name
-       $('#class').append($('<option>', {
-       value: userClass[j],
-       text: userClass[j]
-       }));
-       }
-       };
-
-     */
-    // Set Name
-    $("#firstname").val(firstname);
-    $("#lastname").val(lastname);
-
-    // Set User name
-    $("#usrnme").val(username);
-
-    //Set SSN
-    $("#ussn").val(ssn);
-    if (className != "null" || className != "UNK") {$("#class").val(className);}
-    $("#uid").val(uid);
-
-    // Displays the cogwheel box
-    $("#editUsers").css("display","flex");
-
-    //$("#overlay").css("display","block");
-}
-
+/*
 function updateUser()
 {
     var ussn=$("#ussn").val();
@@ -337,6 +268,7 @@ function updateUser()
     $("#editUsers").css("display","none");
     //$("#overlay").css("display","none");
 }
+*/
 
 function closeEdituser()
 {
@@ -376,138 +308,32 @@ var bool = true;
  * @param column
  */
 
-function renderCell(col,celldata,cellid) {
-	if(col == "requestedpasswordchange") {
-		obj=JSON.parse(celldata);
-		str = "<div class='accessTableCell'>";
-			str += "<div class='accessTableText'>";
-				str += "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
-				str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
-				str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
-			str += "</div>";
-		str += "</div>";
-		return str;
-	}else if(col == "examiner"){
-		obj=JSON.parse(celldata)['examiners'];
-		if(obj[obj.length - 1]['access'] == 'W'){
-			str = "<div class='accessTableCell'>";
-				str += "<div class='accessTableText'>";
-					str += "none";
-				str += "</div>";
-			str += "</div>";
-		}else{
-			var teacher = obj[obj.length - 1]['teacher'];
-			var items = new Array();
-			items.push("unassigned");
-			for(var i = 0; i < obj.length - 1; i++){
-				items.push(obj[i]['username']);
-			}
-			str = "<div class='accessTableCell'>";
-				str += "<div class='accessTableText'>";
-					str += makeDropdown("changeExaminer(\""+querystring['cid']+"\",\""+obj[obj.length - 1]['uid']+"\",this.value);", items, items, teacher);
-					str += "<div style='display:none;'>" + teacher + "</div>";
-				str += "</div>";
-			str += "</div>";
-		}
-		return str;
-	}else if(col == "access"){
-		obj=JSON.parse(celldata);
-		str = "<div class='accessTableCell'>";
-			str += "<div class='accessTableText'>";
-				str += makeDropdown("changeAccess(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", new Array("W", "R", "null"), new Array("Teacher", "Student", "none"), obj.access);
-				str += "<div style='display:none;'>" + obj.access + "</div>";
-			str += "</div>";
-		str += "</div>";
-		return str;
-	}else if(col == "vers"){
-		obj=JSON.parse(celldata);
-		var items = new Array();
-		for(var i = 0; i < filez['courses'].length; i++){
-			items.push(filez['courses'][i]['vers']);
-		}
-		str = "<div class='accessTableCell'>";
-			str += "<div class='accessTableText'>";
-				str += makeDropdown("changeVersion(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value);", items, items, obj.vers);
-			str += "</div>";
-		str += "</div>";
-		return str;
-	}else if (col == "username") {
-		obj = JSON.parse(celldata);
-		str = "<div class='accessTableCell'>";
-			str += "<div class='accessTableText'>";
-				str += "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeUsername("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.username+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
-			str += "</div>";
-		str += "</div>";
-		return str;
-	}else if (col == "ssn") {
-		obj = JSON.parse(celldata);
-		str = "<div class='accessTableCell'>";
-			str += "<div class='accessTableText'>";
-				str += "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeSSN("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.ssn+"\" size=13 onclick='return false;'>";
-			str += "</div>";
-		str += "</div>";
-		return str;
-	}else if (col == "firstname") {
-		obj = JSON.parse(celldata);
-		str = "<div class='accessTableCell'>";
-			str += "<div class='accessTableText'>";
-				str += "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeFirstname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.firstname+"\" size=8 onclick='return false;'>";
-			str += "</div>";
-		str += "<div>";
-		return str;
-	}else if (col == "lastname") {
-		obj = JSON.parse(celldata);
-		str = "<div class='accessTableCell'>";
-			str += "<div class='accessTableText'>";
-				str += "<input id=\""+cellid+"_input\" onKeyDown='if(event.keyCode==13) changeLastname("+obj.uid+",\""+cellid+"_input\");' value=\""+obj.lastname+"\" size=10 onclick='return false;'>";
-			str += "</div>";
-		str += "</div>";
-		return str;
-	}else if(col == "class"){
-		obj=JSON.parse(celldata);
-		var items = new Array();
-		items.push("null"); // Every user doesn't have a class
-		for(var i = 0; i < filez['classes'].length; i++){
-			items.push(filez['classes'][i]['class']);
-		}
-    var selectedItem = obj.class;
-		str = "<div class='accessTableCell'>";
-			str += "<div class='accessTableText'>";
-				str += makeClassDropdown("changeClass(\""+querystring['cid']+"\",\""+obj.uid+"\",this.value,\""+selectedItem+"\");", items, items, selectedItem);
-				str += "<div style='display:none;'>" + obj.class + "</div>";
-			str += "</div>";
-		str += "</div>";
-		return str;
-	}else if(col == "groups") {
-		var groups = filez['groups'];
-		var userGroups = celldata ? JSON.parse(celldata) : "";
-
-		str = "<div class='accessTableCell'>";
-			str += "<div class='accessTableText'>";
-				str += '<div class="multiselect-group"><div class="group-select-box" onclick="showCheckboxes(this)">';
-				str += '<select><option>Select group</option></select><div class="overSelect"></div></div><div id="checkboxes">';
-
-				groups[userGroups.vers].forEach(group => {
-					if (userGroups.user_groups.length && checkUserGroup(group.groupID, userGroups.user_groups)) {
-						str += '<label><input type="checkbox" checked name="'+group.groupID+'" id="'+group.groupID+'" onclick="changeGroup('+obj.uid+','+group.groupID+')"/>'+group.groupName+'</label>';
-					} else {
-						str += '<label><input type="checkbox" name="'+group.groupID+'" id="'+group.groupID+'" onclick="changeGroup('+obj.uid+','+group.groupID+')"/>'+group.groupName+'</label>';
-					}
-				});
-		str += '</div></div>';
-			str += "</div>";
-		str += "</div>";
-		return str;
-	} else {
-		str = "<div class='accessTableCell'>";
-			str += "<div class='accessTableText'>";
-				str += "<div id='" + cellid + "'>" + celldata + "</div>";
-			str += "</div>";
-		str += "</div>";
-		return str;
-	}
-		return celldata;
+function changeTextbox(e)
+{
+		var paramlist=e.target.id.split("_");
+		alert(paramlist[2]);
 }
+
+function renderCell(col,celldata,cellid) {
+		//return celldata;
+		var str="UNK";
+
+		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "examiner"){
+			obj = JSON.parse(celldata);
+			console.log(obj);
+		}
+	
+		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"){
+			str = "<input id=\""+cellid+"_input\" onKeyDown='changeTextbox(event)' value=\""+obj[col]+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
+		}else if(col=="examiner"){
+			console.log();
+		}else{
+				str=celldata;
+		}
+		return str;
+	
+}
+
 
 /**
  * Check if the user is in the active group
@@ -623,7 +449,7 @@ var myTable;
 //----------------------------------------
 
 function returnedAccess(data) {
-	fillResponsibleOptions(data.responsibles);
+
 	filez = data;
 
 	var tabledata = {
@@ -765,6 +591,7 @@ function showCheckboxes(element) {
 		expanded = false;
     }
 }
+
 $(document).mouseup(function(e)
 {
 	// if the target of the click isn't the container nor a descendant of the container

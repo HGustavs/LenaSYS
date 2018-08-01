@@ -536,14 +536,39 @@ DELIMITER ;
 
 /* Usergroup and user_usergroup relation */
 CREATE TABLE groups (
-  groupID int(10) unsigned NOT NULL AUTO_INCREMENT,
-  courseID int(10) unsigned NOT NULL,
-  vers varchar(8) DEFAULT NULL,
-  groupName varchar(80) NOT NULL,
-  PRIMARY KEY (groupID),
-  FOREIGN KEY (courseID) REFERENCES course(cid)
+  groupID INTEGER unsigned NOT NULL AUTO_INCREMENT,
+  groupKind VARCHAR(4) NOT NULL,
+	groupVal VARCHAR(8) NOT NULL,
+	groupInt INTEGER NOT NULL,
+  PRIMARY KEY (groupID)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","1",1);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","2",2);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","3",3);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","4",4);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","5",5);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","6",6);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","7",7);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","8",8);
+
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","A",1);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","B",2);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","C",3);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","D",4);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","E",5);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","F",6);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","G",7);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","H",8);
+
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","I",1);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","II",2);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","III",3);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","IV",4);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","V",5);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VI",6);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VII",7);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VIII",8);
 
 /* Templates for codeexamples */
 

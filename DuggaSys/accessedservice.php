@@ -297,6 +297,11 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 //------------------------------------------------------------------------------------------------
 
 $entries=array();
+$teachers=array();
+$classes=array();
+$groups=array();
+$courses=array();
+
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,teacher,vers,requestedpasswordchange, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 	$query->bindParam(':cid', $cid);
@@ -313,16 +318,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 	}
 	foreach($result as $row){
-	// Adds current student to array
-		// Gets the users groups
-		$stmt = $pdo->prepare("SELECT groups.vers, user_group.groupID FROM user_group, groups WHERE groups.groupID=user_group.groupID AND user_group.userID=:uid AND groups.courseID=:cid AND groups.vers=:vers");
-		$stmt->bindParam(":uid", $row['uid']);
-		$stmt->bindParam(":vers", $row['vers']);
-		$stmt->bindParam(":cid", $cid);
-		$stmt->execute();
-		$grps = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		array_push($examiners, $row);
 		$entry = array(
 			'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
 			'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),
@@ -334,17 +329,11 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			'examiner' => json_encode(['examiners' => $examiners]),
 			'vers' => json_encode(['vers' => $row['vers'], 'uid' => $row['uid']]),
 			'access' => json_encode(['access' => $row['access'], 'uid' => $row['uid']]),
-			'groups' => json_encode(['vers' => $row['vers'], 'user_groups' =>  $grps]),
 			'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid']])
 		);
 		array_push($entries, $entry);
-		array_pop($examiners);
 	}
-}
-
-// Array to fetch the username of all users with access "W" as these are all the teachers.
-$teachers=array();
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+	
 	$query = $pdo->prepare("SELECT user.firstname, user.lastname FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP BY user.firstname, user.lastname;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
@@ -358,29 +347,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		);
 		array_push($teachers, $teacher);
 	}
-}
-
-// Used to fill out the options of selecting a responsible in the popup window for creating a new class.
-$responsibles=array(); 
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT distinct user.firstname, user.lastname, user.uid FROM user, user_course WHERE user.uid=user_course.uid AND user_course.access = 'W';");
-	$query->bindParam(':cid', $cid);
-	if(!$query->execute()){
-		$error=$query->errorInfo();
-		$debug="Error reading user entries".$error[2];
-	}
-	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-		$responsible = array(
-			'firstname' => $row['firstname'],
-			'lastname' => $row['lastname'],
-			'uid' => $row['uid']
-		);
-		array_push($responsibles, $responsible);
-	}
-}
-
-$classes=array();
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
+	
 	$query = $pdo->prepare("SELECT class FROM class;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
@@ -393,24 +360,21 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		);
 		array_push($classes, $classe);
 	}
-}
 
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	// get all groups
-	$query = $pdo->prepare("SELECT vers, groupID, groupName FROM groups WHERE courseID=:cid");
-	$query->bindParam(':cid', $cid);
-
-	if (!$query->execute()) {
-		$error = $query->errorInfo();
-		$debug="Error while getting groups " . $error[2];
-	} else {
-		$groups = $query->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);
+	$query = $pdo->prepare("SELECT groupval,groupkind,groupint FROM groups ORDER BY groupkind,groupint;");
+	if(!$query->execute()){
+		$error=$query->errorInfo();
+		$debug="Error reading group entries".$error[2];
 	}
-}
-
-$courses=array();
-if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-
+	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$group = array(
+			'groupval' => $row['groupval'],
+			'groupkind' => $row['groupkind'],
+			'groupint' => $row['groupint'],
+		);
+		array_push($groups, $group);
+	}	
+	
 	$query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate FROM vers WHERE cid=:cid;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()) {
@@ -433,13 +397,13 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			);
 		}
 	}
+	
 }
 
 $array = array(
 	'entries' => $entries,
 	'debug' => $debug,
 	'teachers' => $teachers,
-	'responsibles' => $responsibles,
 	'classes' => $classes,
 	'courses' => $courses,
 	'groups' => $groups,
