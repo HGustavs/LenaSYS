@@ -504,7 +504,7 @@ function returnedDugga(data) {
 	globalData = data;
 
 	if (data['debug'] != "NONE!") alert(data['debug']);
-	
+
 	if (data['writeaccess']) {
 		$('#quiz').show();
 		$('.fixed-action-button').show();
@@ -519,7 +519,7 @@ function returnedDugga(data) {
 			changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
 				+ querystring['coursevers'] + "");
 	}
-  
+
 	var tabledata = {
 		tblhead: {
 			did: "",
@@ -558,14 +558,14 @@ function returnedDugga(data) {
 		null,
 		true
 	);
-	
+
 	duggaTable.renderTable(); // Renders the dugga table
 
 	var content = "";
-	
+
 	// If the user has access to the dugga page, then render the content
 	if (data['writeaccess']) {
-		
+
 		/* Page title */
 		content += "<div class='titles' style='padding-top:10px;'>"
 		content += "<h1 style='flex:1;text-align:center;'>Tests</h1>"
@@ -578,22 +578,24 @@ function returnedDugga(data) {
         content += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
         content += "</button>"
 		content += "</div>"
-		
+
 		/* FAB Button */
 		content += "<div class='fixed-action-button'>"
-		content += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
+		content += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'>+</a>"
 		content += "</div>";
+
 	}
+
 	else {
 		$("#quiz").html("");
 		alert("You don't have access to this page. You are now being redirected!")
 		changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
 				+ querystring['coursevers'] + "");
 	}
-	
+
 	$("#headerContent").html(content);
-	
-	
+
+
 	$("content").html();
 	var result = 0;
 	filez = data['files'];
