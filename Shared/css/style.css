@@ -233,7 +233,7 @@ p {
 }
 
 #Courselist a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 #Courselist .head {
