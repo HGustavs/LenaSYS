@@ -326,16 +326,16 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			'class' => json_encode(['class' => $row['class'], 'uid' => $row['uid']]),
 			'modified' => $row['modified'],
 			'teacher' => $row['teacher'],
-			'examiner' => $row['examiner'],
-			'groups' => $row['groups'],			
+			'examiner' => json_encode(['examiner' => $row['examiner'], 'uid' => $row['uid']]),
 			'vers' => json_encode(['vers' => $row['vers'], 'uid' => $row['uid']]),
 			'access' => json_encode(['access' => $row['access'], 'uid' => $row['uid']]),
+			'groups' => $row['groups'],			
 			'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid']])
 		);
 		array_push($entries, $entry);
 	}
 	
-	$query = $pdo->prepare("SELECT user.firstname, user.lastname FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP BY user.firstname, user.lastname;");
+	$query = $pdo->prepare("SELECT user.firstname,user.uid, user.lastname FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP by user.firstname,user.lastname, user.uid ORDER BY user.firstname, user.lastname;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -343,8 +343,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$teacher = array(
-			'firstname' => $row['firstname'],
-			'lastname' => $row['lastname']
+			'name' => $row['firstname']." ".$row['lastname'],
+			'uid' => $row['uid']
 		);
 		array_push($teachers, $teacher);
 	}

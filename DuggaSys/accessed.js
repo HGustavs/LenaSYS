@@ -34,37 +34,6 @@ function setup()
   AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 }
 
-/*
-function fillResponsibleOptions(responsibles)
-{
-    var selectResponsibleTag = document.getElementById("addResponsible");
-    clearOptions(selectResponsibleTag); // Called in case this function is called several times.
-    var formatInnerHTML = function(responsibles, i){return responsibles[i]["firstname"]+" "+responsibles[i]["lastname"]+" ("+responsibles[i]["uid"]+")";}
-    var formatValue = function(responsibles, i){return responsibles[i]["uid"];}
-
-    for(var i = 0;i < responsibles.length; i++){
-	addSingleOptionToSelectTag(selectResponsibleTag, responsibles, formatInnerHTML, formatValue, i);
-    }
-}
-*/
-
-// formatInnerHTMLFunction - provide a function to format the string. Same for formatValueFunction.
-function addSingleOptionToSelectTag(tag, jsonList, formatInnerHTMLFunction, formatValueFunction, index)
-{
-    var option = document.createElement("option");
-    option.innerHTML = formatInnerHTMLFunction(jsonList, index);
-    option.value = formatValueFunction(jsonList, index);
-    tag.appendChild(option);
-}
-
-function clearOptions(selectTag)
-{
-    for(var i = selectTag.options.length - 1 ; i >= 0 ; i--)
-    {
-        selectTag.remove(i);
-    }
-}
-
 function hoverc()
 {
     $('#dropdowns').css('display','none');
@@ -125,25 +94,6 @@ function addSingleUser()
 
 var inputVerified;
 
-function verifyClassInput(input, allowed, text){
-  if(input.val() == ""){
-    inputVerified = false;
-    input.css("background-color", "rgb(199, 80, 80)");
-    if(document.getElementById("classErrorText").innerHTML == ""){
-      document.getElementById("classErrorText").innerHTML = input.attr('id').substring(3) + " must have a value";
-    }
-  }else if(allowed != null && !allowed.test(input.val())){
-    inputVerified = false;
-    input.css("background-color", "rgb(199, 80, 80)");
-    if(document.getElementById("classErrorText").innerHTML == ""){
-      document.getElementById("classErrorText").innerHTML = input.attr('id').substring(3) + " must be a " + text;
-    }
-  }else{
-    input.css("background-color", "#ffffff");
-    return input.val();
-  }
-}
-
 function addClass()
 {
   inputVerified = true;
@@ -171,104 +121,42 @@ function addClass()
 function showCreateUserPopup()
 {
 	$("#createUser").css("display","flex");
-	//$("#overlay").css("display","block");
 }
 
 function showCreateClassPopup()
 {
 	$("#createClass").css("display","flex");
-	//$("#overlay").css("display","block");
 }
 
 function showImportUsersPopup()
 {
 	$("#importUsers").css("display", "flex");
-	//$("#overlay").css("display", "block");
 }
 
 function hideCreateUserPopup()
 {
     $("#createUser").css("display","none");
-    //$("#overlay").css("display","none");
 }
 
 function hideCreateClassPopup()
 {
     $("#createClass").css("display","none");
-    //$("#overlay").css("display","none");
 }
 
 function hideImportUsersPopup()
 {
 	$("#importUsers").css("display","none");
-	//$("#overlay").css("display","none");
-}
-
-/*
-function changeUsername(uid,id)
-{
-	AJAXService("USERNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
-}
-function changeSSN(uid,id)
-{
-	AJAXService("SSN",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
-}
-function changeFirstname(uid,id)
-{
-	AJAXService("FIRSTNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
-}
-function changeLastname(uid,id)
-{
-	AJAXService("LASTNAME",{cid:querystring['cid'],uid:uid,val:$("#"+id).val(),coursevers:querystring['coursevers']},"ACCESS");
-}
-*/
-
-function changeAccess(cid,uid,val)
-{
-	AJAXService("ACCESS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
-}
-
-function changeVersion(cid,uid,val)
-{
-	AJAXService("VERSION",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
-}
-
-function changeExaminer(cid,uid,val)
-{
-	AJAXService("EXAMINER",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
 }
 
 function changeClass(cid,uid,val,selected)
 {
     if(val!="newClass"){
-	AJAXService("CLASS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
+			AJAXService("CLASS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
     }else if(val=="newClass"){
-	AJAXService("CLASS",{cid:cid,uid:uid,val:selected,coursevers:querystring['coursevers']},"ACCESS");
-	showCreateClassPopup();
+			AJAXService("CLASS",{cid:cid,uid:uid,val:selected,coursevers:querystring['coursevers']},"ACCESS");
+			showCreateClassPopup();
     }
 }
-
-function changeGroup(uid, gid) {
-	AJAXService("GROUP",{cid:querystring['cid'],uid:uid,gid:gid,coursevers:querystring['coursevers']},"ACCESS");
-}
-
-/*
-function updateUser()
-{
-    var ussn=$("#ussn").val();
-    var usrnme=$("#usrnme").val();
-    var firstname=$("#firstname").val();
-    var lastname=$("#lastname").val();
-    var uid=$("#uid").val();
-    var className=$("#class").val();
-    var teach=$("#teacher").val();
-
-    AJAXService("UPDATE",{ssn:ussn,uid:uid,firstname:firstname,lastname:lastname,username:usrnme,className:className,cid:querystring['cid'],coursevers:querystring['coursevers'],teacher:teach},"ACCESS");
-
-    $("#editUsers").css("display","none");
-    //$("#overlay").css("display","none");
-}
-*/
 
 function closeEdituser()
 {
@@ -284,89 +172,43 @@ function resetPw(uid,username)
     AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd,coursevers:querystring['coursevers']},"ACCESS");
 }
 
-/**
- * Selects column to be sorted from table.
- * @param prop Column to sort
- * @returns {Function} Sorting function with the correct property to fetch.
- */
-function propComparator(prop) {
-    var propt = prop.split(' ').join('').toLocaleLowerCase();
-    return function(a, b) {
-	if(!a[propt] || !b[propt]) {
-            return 0;
-        }
-        else{
-            var aName = a[propt].toLowerCase();
-            var bName = b[propt].toLowerCase();
-            return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
-	}
-    }
-}
-var bool = true;
-/**
- * Sort based on what cell was pressed. Toggles between sort and reverse sort.
- * @param column
- */
-
 function changeTextbox(e)
 {
 		var paramlist=e.target.id.split("_");
 		alert(paramlist[2]);
 }
 
-function renderCell(col,celldata,cellid) {
-		//return celldata;
-		var str="UNK";
+function changeOpt(e)
+{
+		alert(e.target.id);
+}
 
-		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "examiner"){
-			obj = JSON.parse(celldata);
-			console.log(obj);
+function renderCell(col,celldata,cellid) {
+		var str="UNK";
+		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "class"||col == "examiner"){
+					obj = JSON.parse(celldata);			
 		}
 	
 		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"){
 			str = "<input id=\""+cellid+"_input\" onKeyDown='changeTextbox(event)' value=\""+obj[col]+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
+		}else if(col=="class"){
+			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'><option value='None'>None</option>"+makeoptionsItem(obj.class,filez['classes'],"class","class")+"</select>";
 		}else if(col=="examiner"){
-			console.log();
+			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'><option value='None'>None</option>"+makeoptionsItem(obj.examiner,filez['teachers'],"name","uid")+"</select>";
+		}else if(col=="vers"){
+			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'>"+makeoptionsItem(obj.vers,filez['courses'],"vers","versname")+"</select>";
+		}else if(col=="access"){
+			console.log(obj);
+			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'>"+makeoptions(obj.access,["Teacher","Student"],["W","R"])	+"</select>";
+		}else if(col == "requestedpasswordchange") {
+				str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
+				str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
+				str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
 		}else{
 				str=celldata;
 		}
 		return str;
 	
-}
-
-
-/**
- * Check if the user is in the active group
- * 
- * @param {ID of group} grpID 
- * @param {ARRAY of usersactive groups} usrGrp 
- */
-function checkUserGroup(grpID, usrGrp) {
-	for(var i = 0; i < usrGrp.length; i++) {
-		if (usrGrp[i].groupID == grpID) {
-			return true;
-		}
-	}
-	return false;
-}
-
-function makeDropdown(onChange, values, items, selected){
-    str = "<select id='testId' onChange='"+onChange+"' onclick='return false;'>";
-    for(var i = 0; i < values.length; i++){
-		str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
-    }
-    str+="</select>";
-    return str;
-}
-
-function makeClassDropdown(onChange, values, items, selected){
-    str = "<select onChange='"+onChange+"' onclick='return false;'>";
-    for(var i = 0; i < values.length; i++){
-	str+="<option value='"+values[i]+"'" + (values[i] == selected ? " selected='selected'" : "") + ">"+items[i]+"</option>";
-    }
-    str+= "<option value='newClass'>&#x2795 New Class</option>";
-    str+="</select>";
-    return str;
 }
 
 function renderSortOptions(col,status) {
@@ -483,8 +325,8 @@ function returnedAccess(data) {
 		"",
 		null,
 		null,
-		highlightOn,
-		highlightOff,
+		null,
+		null,
 		null,
 		null,
 		true,
@@ -492,80 +334,6 @@ function returnedAccess(data) {
 	);
 	myTable.renderTable();
 	if(data['debug']!="NONE!") alert(data['debug']);
-}
-
-window.onresize = function() {
-
-myTable.magicHeader();
-
-}
-
-function highlightOn(rowid,rowno,colclass,centerel) {
-	var tableCounter = tableName + "_counter";
-	
-	//row highlights
-	var row = document.getElementById(rowid).getElementsByTagName("td");
-	for (var i = 0; i < row.length; i++) {
-			//find the div contained in the cell
-			if(!row[i].classList.contains(tableCounter)) {
-				rowId = row[i].getElementsByClassName(tableCellName)[0];
-			}else {
-				rowId = row[i];
-			}
-			rowId.classList.add("tableRowHighlightning");
-	}
-	
-	//column highlights
-	var collist = document.getElementsByClassName(colclass.split(" ")[0]);
-	for(var i=0;i<collist.length;i++){
-		if(!collist[i].classList.contains(tableCounter)) {
-			var column = collist[i].getElementsByClassName(tableCellName)[0];
-		}else{
-			var column = collist[i];
-		}
-		column.classList.add("tableColHighlightning");
-	}
-	
-	//cell highlight
-	if(!centerel.classList.contains(tableCounter)) {
-		centerel.getElementsByClassName(tableCellName)[0].classList.add("tableCellHighlightning");
-	}else{
-		centerel.classList.add("tableCellHighlightning");
-	}
-}
-
-function highlightOff(rowid,rowno,colclass,centerel) {
-	var tableCounter = tableName + "_counter";
-	
-	//row highlight
-	var row = document.getElementById(rowid).getElementsByTagName("td");
-	for (var i = 0; i < row.length; i++) {
-		//find the div contained in the cell
-		if(!row[i].classList.contains(tableCounter)) {
-				rowId = row[i].getElementsByClassName(tableCellName)[0];
-		}else {
-			rowId = row[i];
-		}
-		rowId.classList.remove("tableRowHighlightning");
-	}
-
-	//column highlights
-	var collist = document.getElementsByClassName(colclass.split(" ")[0]);
-	for(var i=0;i<collist.length;i++){
-		if(!collist[i].classList.contains(tableCounter)) {
-			var column = collist[i].getElementsByClassName(tableCellName)[0];
-		}else{
-			column = collist[i];
-		}
-		column.classList.remove("tableColHighlightning");
-	}
-
-	//cell highlight
-	if(!centerel.classList.contains(tableCounter)) {
-		centerel.getElementsByClassName(tableCellName)[0].classList.remove("tableCellHighlightning");
-	}else{
-		centerel.classList.remove("tableCellHighlightning");
-	}
 }
 
 //excuted onclick button for quick searching in table
