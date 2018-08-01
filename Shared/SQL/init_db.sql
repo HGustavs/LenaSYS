@@ -28,6 +28,42 @@ INSERT INTO user(username,password,newpassword,creator,superuser) values ("Griml
 INSERT INTO user(username,password,newpassword,creator) values ("Toddler","$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",0,1);
 INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$2y$12$IHb86c8/PFyI5fa9r8B0But7rugtGKtogyp/2X0OuB3GJl9l0iJ.q",1,1,"111111-1111");
 
+CREATE TABLE groups (
+  groupID INTEGER unsigned NOT NULL AUTO_INCREMENT,
+  groupKind VARCHAR(4) NOT NULL,
+	groupVal VARCHAR(8) NOT NULL,
+	groupInt INTEGER NOT NULL,
+  PRIMARY KEY (groupID)
+) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+
+/* Usergroup and user_usergroup relation */
+
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","1",1);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","2",2);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","3",3);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","4",4);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","5",5);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","6",6);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","7",7);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","8",8);
+
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","A",1);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","B",2);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","C",3);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","D",4);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","E",5);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","F",6);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","G",7);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","H",8);
+
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","I",1);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","II",2);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","III",3);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","IV",4);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","V",5);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VI",6);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VII",7);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VIII",8);
 
 /**
  * Course table contains the most essential information relating to study courses in the database.
@@ -76,6 +112,8 @@ CREATE TABLE user_course(
 		term				CHAR(5) DEFAULT "VT16",
 		vers				VARCHAR(8),
 		vershistory	TEXT,
+		groups			VARCHAR(256),
+		examiner		INTEGER,
 		PRIMARY KEY(uid, cid),
 		FOREIGN KEY (uid)REFERENCES user (uid),
 		FOREIGN KEY (cid) REFERENCES course (cid)
@@ -533,42 +571,6 @@ DELIMITER ;
  DELIMITER ;
 
 /* Code from 2018 */
-
-/* Usergroup and user_usergroup relation */
-CREATE TABLE groups (
-  groupID INTEGER unsigned NOT NULL AUTO_INCREMENT,
-  groupKind VARCHAR(4) NOT NULL,
-	groupVal VARCHAR(8) NOT NULL,
-	groupInt INTEGER NOT NULL,
-  PRIMARY KEY (groupID)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","1",1);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","2",2);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","3",3);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","4",4);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","5",5);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","6",6);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","7",7);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","8",8);
-
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","A",1);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","B",2);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","C",3);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","D",4);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","E",5);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","F",6);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","G",7);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","H",8);
-
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","I",1);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","II",2);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","III",3);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","IV",4);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","V",5);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VI",6);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VII",7);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VIII",8);
 
 /* Templates for codeexamples */
 
