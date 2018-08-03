@@ -148,16 +148,6 @@ function hideImportUsersPopup()
 	$("#importUsers").css("display","none");
 }
 
-function changeClass(cid,uid,val,selected)
-{
-    if(val!="newClass"){
-			AJAXService("CLASS",{cid:cid,uid:uid,val:val,coursevers:querystring['coursevers']},"ACCESS");
-    }else if(val=="newClass"){
-			AJAXService("CLASS",{cid:cid,uid:uid,val:selected,coursevers:querystring['coursevers']},"ACCESS");
-			showCreateClassPopup();
-    }
-}
-
 function closeEdituser()
 {
     $("#editUsers").css("display","none");
@@ -416,12 +406,12 @@ $(document).mouseup(function(e) {
 	// The "Import User(s)" popup should appear on
 	// a "fast click" if the fab list isn't visible
 	if (!$('.fab-btn-list').is(':visible')) {
-		if (e.target.id == "fabBtnAcc") {
-			clearTimeout(pressTimer);
-			showImportUsersPopup();
-	    }
-	    return false;
-    }
+			if (e.target.id == "fabBtnAcc") {
+				clearTimeout(pressTimer);
+				showImportUsersPopup();
+			 }
+			 return false;
+   }
 	// Click outside the FAB list
     if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target)// if the target of the click isn't the container...
         && $('.fixed-action-button').has(e.target).length === 0) {// ... nor a descendant of the container
@@ -438,22 +428,20 @@ $(document).mouseup(function(e) {
 }).mousedown(function(e) {
 	// If the fab list is visible, there should be no timeout to toggle the list
 	if ($('.fab-btn-list').is(':visible')) {
-		fabListIsVisible = false;
+			fabListIsVisible = false;
 	} else {
-		fabListIsVisible = true;
+			fabListIsVisible = true;
 	}
 	if (fabListIsVisible) {
 		if (e.target.id == "fabBtnAcc") {
-			pressTimer = window.setTimeout(function() {
-				toggleFabButton();
-			}, 500);
+			pressTimer = window.setTimeout(function() {toggleFabButton();}, 500);
 		}
 	} else {
 		toggleFabButton();
 		if (e.target.id == "iFabBtn" || e.target.id == "iFabBtnImg") {
 	    	showImportUsersPopup();
-	    } else if (e.target.id == "cFabBtn" || e.target.id == "cFabBtnImg") {
+	  }else if(e.target.id == "cFabBtn" || e.target.id == "cFabBtnImg"){
 	    	showCreateUserPopup();
-			}
 		}
-	})
+	}
+})
