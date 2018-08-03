@@ -4386,9 +4386,23 @@ textarea#mrkdwntxt {
   width: 112px;
 }
 
-#checkboxes {
+.checkboxes {
+  display: none;
+  border: 1px #dadada solid;
+  position: absolute;
+  background: white;
+  z-index: 50;
+  width: 100px;
   max-height: 40%;
   overflow: scroll;
+}
+
+.checkboxes label {
+  display: block;
+}
+
+.checkboxes label:hover {
+  background-color: #1e90ff;
 }
 
 .group-select-box {
@@ -4408,23 +4422,7 @@ textarea#mrkdwntxt {
   bottom: 0;
 }
 
-#checkboxes {
-  display: none;
-  border: 1px #dadada solid;
-  position: absolute;
-  background: white;
-  z-index: 50;
-  width: 100px;
 
-}
-
-#checkboxes label {
-  display: block;
-}
-
-#checkboxes label:hover {
-  background-color: #1e90ff;
-}
 
 /* --------------================################================-------------- *
  *                               Edit file preview                              *

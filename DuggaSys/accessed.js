@@ -172,20 +172,15 @@ function resetPw(uid,username)
     AJAXService("CHPWD",{cid:querystring['cid'],uid:uid,pw:rnd,coursevers:querystring['coursevers']},"ACCESS");
 }
 
-function changeTextbox(e)
-{
-		var paramlist=e.target.id.split("_");
-		alert(paramlist[2]);
-}
-
 function changeOpt(e)
 {
-		alert(e.target.id);
+		var paramlist=e.target.id.split("_");
+		changeProperty(paramlist[1],paramlist[0],e.target.value);
 }
 
-function changeGroup(uid, gid) {
-	alert(uid+" "+gid);
-	//AJAXService("GROUP",{cid:querystring['cid'],uid:uid,gid:gid,coursevers:querystring['coursevers']},"ACCESS");
+function changeProperty(targetobj,propertyname,propertyvalue)
+{
+		alert("Changing:"+targetobj+"."+propertyname+":"+propertyvalue);
 }
 
 function renderCell(col,celldata,cellid) {
@@ -195,7 +190,7 @@ function renderCell(col,celldata,cellid) {
 		}
 	
 		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"){
-			str = "<input id=\""+cellid+"_input\" onKeyDown='changeTextbox(event)' value=\""+obj[col]+"\" size=8 onload='resizeInput(\""+cellid+"_input\")'>";
+			str = "<input id='"+col+"_"+obj.uid+"' onKeyDown='changeOpt(event)' value=\""+obj[col]+"\" size=8 >";
 		}else if(col=="class"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'><option value='None'>None</option>"+makeoptionsItem(obj.class,filez['classes'],"class","class")+"</select>";
 		}else if(col=="examiner"){
@@ -220,13 +215,13 @@ function renderCell(col,celldata,cellid) {
 						optstr+=tgroups[i];
 				}
 				str= "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
-				str+= "<select><option>"+optstr+"</option></select><div class='overSelect'></div></div><div id='checkboxes'>";
+				str+= "<select><option>"+optstr+"</option></select><div class='overSelect'></div></div><div class='checkboxes' id='grp"+obj.uid+"' >";
 				for(var i=0;i<filez['groups'].length;i++){
 						var group=filez['groups'][i];
 						if(tgroups.indexOf(group.groupval)>-1){
-								str += "<label><input type='checkbox' checked id='g"+obj.uid+"' onclick='changeGroup(\""+obj.uid+"\",\""+group.groupval+"\")'/>"+group.groupval+"</label>";						
+								str += "<label><input type='checkbox' checked id='g"+obj.uid+"' />"+group.groupval+"</label>";						
 						}else{
-								str += "<label><input type='checkbox' id='g"+obj.uid+"' onclick='changeGroup(\""+obj.uid+"\",\""+group.groupval+"\")'/>"+group.groupval+"</label>";												
+								str += "<label><input type='checkbox' id='g"+obj.uid+"' />"+group.groupval+"</label>";												
 						}
 				}
 				str += '</div></div>';
@@ -375,7 +370,7 @@ function keyUpSearch() {
 
 function showCheckboxes(element) {
 	activeElement = element;
-	var checkboxes = $(element).find("#checkboxes");
+	var checkboxes = $(element).find(".checkboxes");
 	checkboxes = element.parentElement.lastChild;
 	if (!expanded) {
 		checkboxes.style.display = "block";
@@ -390,15 +385,21 @@ $(document).mouseup(function(e)
 {
 	// if the target of the click isn't the container nor a descendant of the container
 	if (activeElement) {
-		var checkboxes = $(activeElement).find("#checkboxes");
+		var checkboxes = $(activeElement).find(".checkboxes");
 		checkboxes = activeElement.parentElement.lastChild;
 
-		if (expanded && !checkboxes.contains(e.target))
-		{
+		if (expanded && !checkboxes.contains(e.target)){
 			checkboxes.style.display = "none";
-			// GÖr ajax request för att uppdatera databasen
+			var str="";
+			for(i=0;i<checkboxes.childNodes.length;i++){
+					if(checkboxes.childNodes[i].childNodes[0].checked){
+							str+=checkboxes.childNodes[i].textContent+" ";
+					}
+			}
+			expanded=false;
+			changeProperty(checkboxes.id.substr(3),"group",str);
 		}
-   	}
+  }
 });
 
 function toggleFabButton() {
