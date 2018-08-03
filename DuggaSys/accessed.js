@@ -183,9 +183,14 @@ function changeOpt(e)
 		alert(e.target.id);
 }
 
+function changeGroup(uid, gid) {
+	alert(uid+" "+gid);
+	//AJAXService("GROUP",{cid:querystring['cid'],uid:uid,gid:gid,coursevers:querystring['coursevers']},"ACCESS");
+}
+
 function renderCell(col,celldata,cellid) {
 		var str="UNK";
-		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "class"||col == "examiner"){
+		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "class"||col == "examiner"||col == "groups"){
 					obj = JSON.parse(celldata);			
 		}
 	
@@ -198,12 +203,33 @@ function renderCell(col,celldata,cellid) {
 		}else if(col=="vers"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'>"+makeoptionsItem(obj.vers,filez['courses'],"vers","versname")+"</select>";
 		}else if(col=="access"){
-			console.log(obj);
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'>"+makeoptions(obj.access,["Teacher","Student"],["W","R"])	+"</select>";
 		}else if(col == "requestedpasswordchange") {
 				str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
 				str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
 				str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
+		}else if(col == "groups") {
+				if(obj.groups==null){
+						var tgroups=[];
+				}else{
+						var tgroups=JSON.stringify(obj.groups);
+				}
+				var optstr="";
+				for(var i=0;i<tgroups.length;i++){
+						if(i>0) optstr+=" ";
+						optstr+=tgroups[i];
+				}
+				str= "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
+				str+= "<select><option>"+optstr+"</option></select><div class='overSelect'></div></div><div id='checkboxes'>";
+				for(var i=0;i<filez['groups'].length;i++){
+						var group=filez['groups'][i];
+						if(tgroups.indexOf(group.groupval)>-1){
+								str += "<label><input type='checkbox' checked id='g"+obj.uid+"' onclick='changeGroup(\""+obj.uid+"\",\""+group.groupval+"\")'/>"+group.groupval+"</label>";						
+						}else{
+								str += "<label><input type='checkbox' id='g"+obj.uid+"' onclick='changeGroup(\""+obj.uid+"\",\""+group.groupval+"\")'/>"+group.groupval+"</label>";												
+						}
+				}
+				str += '</div></div>';
 		}else{
 				str=celldata;
 		}
