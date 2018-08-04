@@ -9,7 +9,7 @@ var tableName = "accessTable";
 var tableCellName = "accessTableCell";
 
 //----------------------------------------
-// Commands:
+// User Interface:
 //----------------------------------------
 
 function setup()
@@ -54,6 +54,41 @@ function leavec()
 function leaves()
 {
 		$('#dropdowns').css('display','none');
+}
+
+function showCreateUserPopup()
+{
+	$("#createUser").css("display","flex");
+}
+
+function showCreateClassPopup()
+{
+	$("#createClass").css("display","flex");
+}
+
+function showImportUsersPopup()
+{
+	$("#importUsers").css("display", "flex");
+}
+
+function hideCreateUserPopup()
+{
+    $("#createUser").css("display","none");
+}
+
+function hideCreateClassPopup()
+{
+    $("#createClass").css("display","none");
+}
+
+function hideImportUsersPopup()
+{
+	$("#importUsers").css("display","none");
+}
+
+function closeEdituser()
+{
+    $("#editUsers").css("display","none");
 }
 
 //----------------------------------------
@@ -118,41 +153,6 @@ function addClass()
   }
 }
 
-function showCreateUserPopup()
-{
-	$("#createUser").css("display","flex");
-}
-
-function showCreateClassPopup()
-{
-	$("#createClass").css("display","flex");
-}
-
-function showImportUsersPopup()
-{
-	$("#importUsers").css("display", "flex");
-}
-
-function hideCreateUserPopup()
-{
-    $("#createUser").css("display","none");
-}
-
-function hideCreateClassPopup()
-{
-    $("#createClass").css("display","none");
-}
-
-function hideImportUsersPopup()
-{
-	$("#importUsers").css("display","none");
-}
-
-function closeEdituser()
-{
-    $("#editUsers").css("display","none");
-}
-
 function resetPw(uid,username)
 {
     rnd=randomstring();
@@ -170,23 +170,27 @@ function changeOpt(e)
 
 function changeProperty(targetobj,propertyname,propertyvalue)
 {
-		alert("Changing:"+targetobj+"."+propertyname+":"+propertyvalue);
+		AJAXService("UPDATE",{cid:querystring['cid'],uid:targetobj,prop:propertyname,val:propertyvalue},"ACCESS");
 }
+
+//----------------------------------------------------------------
+// rowFilter <- Callback function that renders cells in the table
+//----------------------------------------------------------------
 
 function renderCell(col,celldata,cellid) {
 		var str="UNK";
-		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "class"||col == "examiner"||col == "groups"){
+		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "class"||col == "examiner"||col == "groups"||col == "vers"||col == "access"){
 					obj = JSON.parse(celldata);			
 		}
 	
 		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"){
-			str = "<input id='"+col+"_"+obj.uid+"' onKeyDown='changeOpt(event)' value=\""+obj[col]+"\" size=8 >";
+			str = "<input id='"+col+"_"+obj.uid+"' onKeyDown='if(event.keyCode==13) changeOpt(event)' value=\""+obj[col]+"\" size=8 >";
 		}else if(col=="class"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'><option value='None'>None</option>"+makeoptionsItem(obj.class,filez['classes'],"class","class")+"</select>";
 		}else if(col=="examiner"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'><option value='None'>None</option>"+makeoptionsItem(obj.examiner,filez['teachers'],"name","uid")+"</select>";
 		}else if(col=="vers"){
-			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'>"+makeoptionsItem(obj.vers,filez['courses'],"vers","versname")+"</select>";
+			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'>"+makeoptionsItem(obj.vers,filez['courses'],"versname","vers")+"</select>";
 		}else if(col=="access"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'>"+makeoptions(obj.access,["Teacher","Student"],["W","R"])	+"</select>";
 		}else if(col == "requestedpasswordchange") {
@@ -197,7 +201,7 @@ function renderCell(col,celldata,cellid) {
 				if(obj.groups==null){
 						var tgroups=[];
 				}else{
-						var tgroups=JSON.stringify(obj.groups);
+						var tgroups=obj.groups.split(" ");
 				}
 				var optstr="";
 				for(var i=0;i<tgroups.length;i++){
@@ -233,6 +237,10 @@ function renderSortOptions(col,status) {
 	}
 	return str;
 }
+
+//----------------------------------------------------------------
+// rowFilter <- Callback function that sorts rows in the table
+//----------------------------------------------------------------
 
 function compare(a,b) {
 	var col = sortableTable.currentTable.getSortcolumn();

@@ -34,6 +34,8 @@ $requestedpasswordchange = getOP('requestedpasswordchange');
 $groups = array();
 $gid = getOP('gid');
 $queryResult = 'NONE!';
+$prop=getOP('prop');
+$val=getOP('val');
 
 $debug="NONE!";
 
@@ -47,102 +49,52 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php"
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
 
 	if(strcmp($opt,"UPDATE")==0){
-		$query = $pdo->prepare("UPDATE user set firstname=:firstname,lastname=:lastname,ssn=:ssn,username=:username,class=:className WHERE uid=:uid;");
-		$query->bindParam(':firstname', $firstname);
-		$query->bindParam(':lastname', $lastname);
-		$query->bindParam(':ssn', $ssn);
-		$query->bindParam(':username', $username);
-		$query->bindParam(':uid', $uid);
-		$query->bindParam(':className', $className);
-		$query->bindParam(':addedtime', $addedtime);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
+	
+		// User Table Updates
+		if($prop=="firstname"){
+				$query = $pdo->prepare("UPDATE user SET firstname=:firstname WHERE uid=:uid;");
+				$query->bindParam(':firstname', $val);
+		}else if($prop=="lastname"){
+				$query = $pdo->prepare("UPDATE user SET lastname=:lastname WHERE uid=:uid;");
+				$query->bindParam(':lastname', $val);		
+		}else if($prop=="ssn"){
+				$query = $pdo->prepare("UPDATE user SET ssn=:ssn WHERE uid=:uid;");
+				$query->bindParam(':ssn', $val);		
+		}else if($prop=="username"){
+				$query = $pdo->prepare("UPDATE user SET username=:username WHERE uid=:uid;");
+				$query->bindParam(':username', $val);		
+		}else if($prop=="class"){
+				$query = $pdo->prepare("UPDATE user SET class=:class WHERE uid=:uid;");
+				$query->bindParam(':class', $val);		
 		}
-
-		$query = $pdo->prepare("UPDATE user_course set teacher=:teacher WHERE uid=:uid;");
-		$query->bindParam(':uid', $uid);
-		$query->bindParam(':teacher', $teacher);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
+		
+		// User_Course Table Updates
+		if($prop=="examiner"){
+				$query = $pdo->prepare("UPDATE user_course SET examiner=:examiner WHERE uid=:uid AND cid=:cid;");
+				$query->bindParam(':examiner', $val);
+		}else if($prop=="vers"){
+				$query = $pdo->prepare("UPDATE user_course SET vers=:vers WHERE uid=:uid AND cid=:cid;");
+				$query->bindParam(':vers', $val);		
+		}else if($prop=="access"){
+				$query = $pdo->prepare("UPDATE user_course SET access=:access WHERE uid=:uid AND cid=:cid;");
+				$query->bindParam(':access', $val);		
+		}else if($prop=="group"){
+				$query = $pdo->prepare("UPDATE user_course SET groups=:groups WHERE uid=:uid AND cid=:cid;");
+				$query->bindParam(':groups', $val);		
+		}	
+		
+		if($prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
+				$query->bindParam(':cid', $cid);
 		}
-	}else if(strcmp($opt,"ACCESS")==0){
-		$query = $pdo->prepare("UPDATE user_course set access=:val WHERE uid=:uid AND cid=:cid;");
-		$query->bindParam(':uid', $uid);
-		$query->bindParam(':cid', $cid);
-		$query->bindParam(':val', $val);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
-		}
-	}else if(strcmp($opt,"VERSION")==0){
-		$query = $pdo->prepare("UPDATE user_course set vers=:val WHERE uid=:uid AND cid=:cid;");
-		$query->bindParam(':uid', $uid);
-		$query->bindParam(':cid', $cid);
-		$query->bindParam(':val', $val);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
-		}
-	}else if(strcmp($opt,"EXAMINER")==0){
-		$query = $pdo->prepare("UPDATE user_course set teacher=:val WHERE uid=:uid AND cid=:cid;");
-		$query->bindParam(':uid', $uid);
-		$query->bindParam(':cid', $cid);
-		$query->bindParam(':val', $val);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
-		}
-	}else if(strcmp($opt,"USERNAME")==0){
-		$query = $pdo->prepare("UPDATE user set username=:val WHERE uid=:uid");
-		$query->bindParam(':uid', $uid);
-		$query->bindParam(':val', $val);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
-		}
-	}else if(strcmp($opt,"SSN")==0){
-		$query = $pdo->prepare("UPDATE user set ssn=:val WHERE uid=:uid");
-		$query->bindParam(':uid', $uid);
-		$query->bindParam(':val', $val);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
-		}
-	}else if(strcmp($opt,"FIRSTNAME")==0){
-		$query = $pdo->prepare("UPDATE user set firstname=:val WHERE uid=:uid");
-		$query->bindParam(':uid', $uid);
-		$query->bindParam(':val', $val);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
-		}
-	}else if(strcmp($opt,"LASTNAME")==0){
-		$query = $pdo->prepare("UPDATE user set lastname=:val WHERE uid=:uid");
-		$query->bindParam(':uid', $uid);
-		$query->bindParam(':val', $val);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
-		}
-	}else if(strcmp($opt,"CLASS")==0){
-		$query = $pdo->prepare("UPDATE user set class=:val WHERE uid=:uid");
-		$query->bindParam(':uid', $uid);
-		$query->bindParam(':val', $val);
-
-		if(!$query->execute()) {
-			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
+		
+		if($prop=="firstname"||$prop=="lastname"||$prop=="ssn"||$prop=="username"||$prop=="class"||$prop=="examiner"||$prop=="vers"||$prop=="access"||$prop=="group"){
+				$query->bindParam(':uid', $uid);
+				if(!$query->execute()) {
+						$error=$query->errorInfo();
+						$debug="Error updating user".$error[2];
+				}			
+		}else{
+				$debug="Failed to update property ".$prop." with value ".$val;
 		}
 	}else if(strcmp($opt,"ADDCLASS")==0){
 		$newClassData = json_decode(htmlspecialchars_decode($newclass));
@@ -260,36 +212,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 		// End of foreach user
 		}
 
-	} else if (strcmp($opt, "GROUP") == 0) {
-
-		// Check if group conenction exists.
-		$stmt = $pdo->prepare("SELECT * FROM user_group WHERE userID=:uid AND groupID=:gid");
-		$stmt->bindParam(':gid', $gid);
-		$stmt->bindParam(':uid', $uid);
-		$stmt->execute();
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-		if (count($result) > 0) {
-			$stmt = $pdo->prepare("DELETE FROM user_group WHERE userID=:uid AND groupID=:gid");
-			$stmt->bindParam(':gid', $gid);
-			$stmt->bindParam(':uid', $uid);
-
-			if(!$stmt->execute()) {
-				$error=$stmt->errorInfo();
-				$debug.="Error updating group: ".$error[2];
-			}
-		} else {
-			$stmt = $pdo->prepare("INSERT INTO user_group (groupID, userID) VALUES (:gid, :uid)");
-			$stmt->bindParam(':gid', $gid);
-			$stmt->bindParam(':uid', $uid);
-
-			// Insert the user into the database.
-			if(!$stmt->execute()) {
-				$error=$stmt->errorInfo();
-				$debug.="Error changing group: ".$error[2];
-			}
-		}
-	}
+	} 
 }
 
 //------------------------------------------------------------------------------------------------
@@ -398,7 +321,6 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			);
 		}
 	}
-	
 }
 
 $array = array(
