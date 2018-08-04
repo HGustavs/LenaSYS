@@ -14,23 +14,6 @@ var tableCellName = "accessTableCell";
 
 function setup()
 {
-	/*    Add filter icon in the navheader   */
-	var filt ="";
-	filt+="<td id='select' class='navButt'><span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'>";
-	filt+="<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
-	filt+="<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
-  filt+="<div id='filterOptions'></div>"
-	filt+="</div>";
-	filt+="</span></td>";
-  
-  filt+="<td id='sort' class='navButt'><span class='dropdown-container' onmouseover='hovers();' onmouseleave='leaves();'>";
-  filt+="<img class='navButt' src='../Shared/icons/sort_white.svg'>";
-  filt+="<div id='dropdowns' class='dropdown-list-container'>";
-  filt+="</div>";
-  filt+="</span></td>";
-  
-	$("#menuHook").html(filt);
-
   AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 }
 
@@ -312,6 +295,13 @@ var myTable;
 function returnedAccess(data) {
 
 	filez = data;
+	
+	if(data['debug']!="NONE!") alert(data['debug']);
+	
+	if(data["entries"].length>0){
+			document.getElementById("sort").style.display="table-cell";
+			document.getElementById("select").style.display="table-cell";		
+	}
 
 	var tabledata = {
 		tblhead:{
@@ -352,7 +342,7 @@ function returnedAccess(data) {
 		true
 	);
 	myTable.renderTable();
-	if(data['debug']!="NONE!") alert(data['debug']);
+	
 }
 
 //excuted onclick button for quick searching in table

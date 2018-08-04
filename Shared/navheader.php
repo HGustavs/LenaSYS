@@ -52,9 +52,29 @@
 					echo "<span id='exampleName'> Example Name</span>";
 					echo "</td>";
 				}else{
-				echo "<td id='menuHook' class='navSpacer'></td>";
-			}
+				
+						echo "<td id='menuHook' class='navSpacer'>";
+				
+						echo "<td id='select' style='display:none;' class='navButt'>";
+						echo   "<span class='dropdown-container' onmouseover='hoverc();' onmouseleave='leavec();'>";
+						echo     "<img class='navButt' src='../Shared/icons/tratt_white.svg'>";
+						echo     "<div id='dropdownc' class='dropdown-list-container' style='z-index: 1'>";
+  					echo     "<div id='filterOptions'></div>";
+						echo     "</div>";
+	          echo   "</span>";
+						echo "</td>";
 
+  					echo "<td id='sort' style='display:none' class='navButt'>";
+						echo   "<span class='dropdown-contain;er' onmouseover='hovers();' onmouseleave='leaves();'>";
+  					echo     "<img class='navButt' src='../Shared/icons/sort_white.svg'>";
+  					echo     "<div id='dropdowns' class='dropdown-list-container'>";
+  					echo     "</div>";
+  					echo   "</span>";
+						echo "</td>";
+				
+						echo "</td>";
+				
+			}
 
 			if(checklogin()) {
 					echo "<td class='navName'><a id='userName' href='profile.php' title='".$_SESSION['loginname']."&#39;s profile'>".$_SESSION['loginname']."</a></td>";
