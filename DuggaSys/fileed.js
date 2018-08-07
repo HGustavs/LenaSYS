@@ -11,11 +11,9 @@ Execution order:
 -------------==============######## Documentation End ###########==============-------------
 */
 
-/********************************************************************************
-
-   Globals <-- Next are globals - properly declared with var
-
-*********************************************************************************/
+//----------------------------------------------------------------------------
+//-------------==========########## Globals ##########==========--------------
+//----------------------------------------------------------------------------
 
 var sessionkind = 0;
 var querystring = parseGet();
@@ -43,10 +41,10 @@ $(function() {
 	$( "#deadline" ).datepicker({dateFormat: "yy-mm-dd"});
 });
 
-//-------------------------------------------------------------
-// Renderer <- Ran after the ajax call (ajax is started after
-//			   initialation of this file) is successful
-//-------------------------------------------------------------
+//----------------------------------------------------------------------------
+//-------------==========########## Renderer ##########==========-------------
+//----------------------------------------------------------------------------
+
 function returnedFile(data) {
 	filez = data;
 
@@ -311,6 +309,7 @@ function fileSizeSearch(row, colName, searchName){
     }
     return tempString.toUpperCase().indexOf(searchName.toUpperCase()) != -1;
 }
+
 function fileNameSearch(row, colName, searchName) {
     var obj = JSON.parse(row[colName]);
     return obj.shortfilename.toUpperCase().indexOf(searchName.toUpperCase()) != -1;
@@ -536,6 +535,7 @@ function validatePreviewForm(){
 	}
 	return true;
 }
+
 function setfileCarotPosition(){
 	this.txtarea = document.getElementById("filecont");
 	this.start = txtarea.selectionStart;
