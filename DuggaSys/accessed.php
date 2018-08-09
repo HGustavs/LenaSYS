@@ -83,16 +83,15 @@
       			<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
       		<div style='padding:5px;'>
-      			<input type='hidden' id='uid' value='Toddler' /></td>
+      			<input type='hidden' id='uid' value='Toddler' />
       			<div class='inputwrapper'><span>SSN:</span><input placeholder="999102-5571" class='textinput' type='text' id='addSsn'/></div>
       			<div class='inputwrapper'><span>First Name:</span><input placeholder="Greger" class='textinput' type='text' id='addFirstname'/></div>
       			<div class='inputwrapper'><span>Last Name:</span><input placeholder="Gregersson" class='textinput' type='text' id='addLastname'/></div>
-      			<div class='inputwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></input></div>
-      			<div class='inputwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></input></div>
-      			<div class='inputwrapper'><span>PID:</span><input placeholder="WEBUG" class='textinput' id='addPid'></input></div>
-      			<div class='inputwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></input></div>
-      			<div class='inputwrapper'><span>Email:</span><input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail'></input></div>
-
+      			<div class='inputwrapper'><span>CID:</span><input placeholder="91001" class='textinput' id='addCid'></div>
+      			<div class='inputwrapper'><span>Ny:</span><input placeholder="Ny" class='textinput' id='addNy'></div>
+      			<div class='inputwrapper'><span>PID:</span><input placeholder="WEBUG" class='textinput' id='addPid'></div>
+      			<div class='inputwrapper'><span>Term:</span><input placeholder="H11" class='textinput' id='addTerm'></div>
+      			<div class='inputwrapper'><span>Email:</span><input placeholder="b17mahgo@student.his.se" class='textinput' id='addEmail'></div>
       		</div>
       		<div style='padding:5px;'>
       			<input class='submit-button' type='button' value='Add' onclick='addSingleUser();' />
@@ -107,15 +106,15 @@
       			<div class='cursorPointer' onclick='closeWindows();'>x</div>
       		</div>
       		<div style='padding:5px;'>
-      		    <input type='hidden' id='uid' value='Toddler' /></td>
+      		    <input type='hidden' id='uid' value='Toddler' />
       		    <div class='inputwrapper'><span>Class:</span><input placeholder="WEBUG13h" class='textinput' type='text' id='addClass'/></div>
       		    <div class='inputwrapper'><span>Responsible:</span><select class='textinput' id='addResponsible'></select></div>
       		    <div class='inputwrapper'><span>Classname:</span><input placeholder="Webbutvecklare - programmering" class='textinput' type='text' id='addClassname'/></div>
-                    <div class='inputwrapper'><span>Regcode:</span><input placeholder="199191" class='textinput' id='addRegcode'></input></div>
-		    <div class='inputwrapper'><span>Classcode:</span><input placeholder="WEBUG" class='textinput' type='text' id='addClasscode'/></div>
-                    <div class='inputwrapper'><span>Hp:</span><input placeholder="180.0" class='textinput' id='addHp'></input></div>
-		    <div class='inputwrapper'><span>Tempo:</span><input placeholder="100" class='textinput' id='addTempo'></input></div>
-		    <div class='inputwrapper'><span>HpProgress:</span><input placeholder="0.0" class='textinput' id='addHpProgress'></input></div>
+              <div class='inputwrapper'><span>Regcode:</span><input placeholder="199191" class='textinput' id='addRegcode'></div>
+		    			<div class='inputwrapper'><span>Classcode:</span><input placeholder="WEBUG" class='textinput' type='text' id='addClasscode'/></div>
+              <div class='inputwrapper'><span>Hp:</span><input placeholder="180.0" class='textinput' id='addHp'></div>
+		    			<div class='inputwrapper'><span>Tempo:</span><input placeholder="100" class='textinput' id='addTempo'></div>
+		    			<div class='inputwrapper'><span>HpProgress:</span><input placeholder="0.0" class='textinput' id='addHpProgress'></div>
       		</div>
       		<div style='padding:5px;'>
       			<input class='submit-button' type='button' value='Add' onclick='addClass();' />
@@ -134,7 +133,7 @@
       		</div>
 
       		<div style='padding:5px;'>
-      			<input type='hidden' id='uid' value='Toddler' /></td>
+      			<input type='hidden' id='uid' value='Toddler' />
       			<div class='inputwrapper'><span>UserName:</span><input class='textinput' type='text' id='usrnme' value='User Name' /></div>
       			<div class='inputwrapper'><span>SSN:</span><input class='textinput' type='text' id='ussn' value='SSN' /></div>
       			<div class='inputwrapper'><span>First Name:</span><input class='textinput' type='text' id='firstname' value='First Name' /></div>
@@ -152,12 +151,16 @@
 	<div class="fixed-action-button" id="fabButtonAcc">
 	    <a class="btn-floating fab-btn-lg noselect" id="fabBtnAcc">+</a>
 	    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
-	        <li><a id="iFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out"
-	               data-tooltip='Import user(s)'><img id="iFabBtnImg" class="fab-icon"
-	                                                   src="../Shared/icons/global-icon.svg"></a></li>
-	        <li><a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out"
-	               data-tooltip='Create user'><img id="cFabBtnImg" class="fab-icon"
-	                                                          src="../Shared/icons/version_local-icon.svg"></a></li>
+	        <li onclick="showImportUsersPopup();" >
+							<a id="iFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Import user(s)'>
+									<img id="iFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg">
+							</a>
+					</li>
+	        <li onclick="showCreateUserPopup();">
+							<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Create user'>
+									<img id="cFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg">
+							</a>
+					</li>
 	    </ol>
 	</div>
 

@@ -370,8 +370,40 @@ function showCheckboxes(element) {
     }
 }
 
-$(document).mouseup(function(e)
-{
+$(document).mousedown(function (e) {
+		mouseDown(e);
+		FABDown(e);
+});
+
+$(document).mouseup(function (e) {
+		mouseUp(e);
+		FABUp(e);
+});
+
+$(document).on("touchstart", function(e){
+		mouseDown(e);
+		FABDown(e);
+});
+							 
+$(document).on("touchend", function(e){
+		mouseUp(e);
+		FABUp(e);
+});
+
+//----------------------------------------------------------------------------------
+// mouseDown: make sure mousedown is only handled in one single place regardless if touch or mouse
+//----------------------------------------------------------------------------------
+
+function mouseDown(e){
+	
+}
+
+//----------------------------------------------------------------------------------
+// mouseUp: make sure mousedown is only handled in one single place regardless if touch or mouse
+//----------------------------------------------------------------------------------
+
+function mouseUp(e){
+	
 	// if the target of the click isn't the container nor a descendant of the container
 	if (activeElement) {
 		var checkboxes = $(activeElement).find(".checkboxes");
@@ -389,58 +421,14 @@ $(document).mouseup(function(e)
 			changeProperty(checkboxes.id.substr(3),"group",str);
 		}
   }
-});
-
-function toggleFabButton() {
-	if (!$('.fab-btn-sm').hasClass('scale-out')) {
-		$('.fab-btn-sm').toggleClass('scale-out');
-		$('.fab-btn-list').delay(100).fadeOut(0);
-	} else {
-		$('.fab-btn-list').fadeIn(0);
-		$('.fab-btn-sm').toggleClass('scale-out');
-	}
 }
 
-$(document).mouseup(function(e) {
-	// The "Import User(s)" popup should appear on
-	// a "fast click" if the fab list isn't visible
-	if (!$('.fab-btn-list').is(':visible')) {
-			if (e.target.id == "fabBtnAcc") {
-				clearTimeout(pressTimer);
-				showImportUsersPopup();
-			 }
-			 return false;
-   }
-	// Click outside the FAB list
-    if ($('.fab-btn-list').is(':visible') && !$('.fixed-action-button').is(e.target)// if the target of the click isn't the container...
-        && $('.fixed-action-button').has(e.target).length === 0) {// ... nor a descendant of the container
-		if (!$('.fab-btn-sm').hasClass('scale-out')) {
-			$('.fab-btn-sm').toggleClass('scale-out');
-			$('.fab-btn-list').delay(100).fadeOut(0);
-		}
-	} else if ($('.fab-btn-list').is(':visible') && $('.fixed-action-button').is(e.target)) {
-		if (!$('.fab-btn-sm').hasClass('scale-out')) {
-			$('.fab-btn-sm').toggleClass('scale-out');
-			$('.fab-btn-list').fadeOut(0);
-		}
-	}
-}).mousedown(function(e) {
-	// If the fab list is visible, there should be no timeout to toggle the list
-	if ($('.fab-btn-list').is(':visible')) {
-			fabListIsVisible = false;
-	} else {
-			fabListIsVisible = true;
-	}
-	if (fabListIsVisible) {
-		if (e.target.id == "fabBtnAcc") {
-			pressTimer = window.setTimeout(function() {toggleFabButton();}, 500);
-		}
-	} else {
-		toggleFabButton();
-		if (e.target.id == "iFabBtn" || e.target.id == "iFabBtnImg") {
-	    	showImportUsersPopup();
-	  }else if(e.target.id == "cFabBtn" || e.target.id == "cFabBtnImg"){
-	    	showCreateUserPopup();
-		}
-	}
-})
+//----------------------------------------------------------------------------------
+// createQuickItem: Handle "fast" click on FAB button
+//----------------------------------------------------------------------------------
+
+function createQuickItem()
+{
+		clearTimeout(pressTimer);
+		showImportUsersPopup();
+}

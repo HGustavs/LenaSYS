@@ -108,17 +108,6 @@ function toggleHamburger() {
 	findAncestor(x, "hamburger").classList.toggle("change");
 }
 
-// Toggles action bubbles when pressing the FAB button
-function toggleFabButton() {
-	if (!$('.fab-btn-sm').hasClass('scale-out')) {
-		$('.fab-btn-sm').toggleClass('scale-out');
-		$('.fab-btn-list').delay(100).fadeOut(0);
-	} else {
-		$('.fab-btn-list').fadeIn(0);
-		$('.fab-btn-sm').toggleClass('scale-out');
-	}
-}
-
 // -------------==============######## Dialog Handling ###########==============-------------
 
 //----------------------------------------------------------------------------------
@@ -1139,6 +1128,26 @@ function drawSwimlanes(){
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
+$(document).mousedown(function (e) {
+		mouseDown(e);
+		FABDown(e);
+});
+
+$(document).mouseup(function (e) {
+		mouseUp(e);
+		FABUp(e);
+});
+
+$(document).on("touchstart", function(e){
+		mouseDown(e);
+		FABDown(e);
+});
+							 
+$(document).on("touchend", function(e){
+		mouseUp(e);
+		FABUp(e);
+});
+
 //----------------------------------------------------------------------------------
 // mouseDown: make sure mousedown is only handled in one single place regardless if touch or mouse
 //----------------------------------------------------------------------------------
@@ -1155,15 +1164,6 @@ function mouseDown(e){
 		isClickedElementBox = true;
 	} else {
 		isClickedElementBox = false;
-	}
-	
-	// If the fab list is visible, there should be no timeout to toggle the list
-	if ($('.fab-btn-list').is(':visible')) {
-		if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) toggleFabButton();
-	} else {
-      if (e.target.id == "fabBtn") {
-				pressTimer = window.setTimeout(function() { toggleFabButton(); }, 200);
-		}
 	}
 	
 }
@@ -1184,15 +1184,6 @@ function mouseUp(e){
 		closeSelect();
 		showSaveButton();
 	}
-
-	// A quick item should be created on a "fast click" if the fab list isn't visible / Click outside the FAB list / if the target of the click isn't the container...
-	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
-			clearTimeout(pressTimer);
-			createQuickItem();
-    }else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
-        toggleFabButton();
-	}
-	
 }
 
 //----------------------------------------------------------------------------------
@@ -1227,22 +1218,6 @@ $(window).keyup(function (event) {
 			}
 
 		}
-});
-
-$(document).mousedown(function (e) {
-		mouseDown(e);
-});
-
-$(document).mouseup(function (e) {
-	mouseUp(e);
-});
-
-$(document).on("touchstart", function(e){
-	mouseDown(e);
-});
-							 
-$(document).on("touchend", function(e){
-	mouseUp(e);
 });
 
 // React to scroll events
