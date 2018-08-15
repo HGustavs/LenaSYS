@@ -163,6 +163,6 @@
 					</li>
 	    </ol>
 	</div>
-
+	<div id="editpopover" style="display:none;"></div>
 </body>
 </html>

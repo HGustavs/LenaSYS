@@ -157,17 +157,18 @@ function changeProperty(targetobj,propertyname,propertyvalue)
 }
 
 //----------------------------------------------------------------
-// rowFilter <- Callback function that renders cells in the table
+// renderCell <- Callback function that renders cells in the table
 //----------------------------------------------------------------
 
 function renderCell(col,celldata,cellid) {
 		var str="UNK";
-		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "class"||col == "examiner"||col == "groups"||col == "vers"||col == "access"){
+		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "class"||col == "examiner"||col == "groups"||col == "vers"||col == "access"||col == "requestedpasswordchange"){
 					obj = JSON.parse(celldata);			
 		}
 	
 		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"){
-			str = "<input id='"+col+"_"+obj.uid+"' onKeyDown='if(event.keyCode==13) changeOpt(event)' value=\""+obj[col]+"\" size=8 >";
+			//str = "<div style='display:flex;'><input id='"+col+"_"+obj.uid+"' onKeyDown='if(event.keyCode==13) changeOpt(event)' value=\""+obj[col]+"\" style='margin:0 4px;flex-grow:1;font-size:11px;' size=" + obj[col].toString().length +"></div>";
+			str = "<div style='display:flex;'><span id='"+col+"_"+obj.uid+"' style='margin:0 4px;flex-grow:1;'>"+obj[col]+"</span></div>";
 		}else if(col=="class"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'><option value='None'>None</option>"+makeoptionsItem(obj.class,filez['classes'],"class","class")+"</select>";
 		}else if(col=="examiner"){
@@ -203,20 +204,20 @@ function renderCell(col,celldata,cellid) {
 				}
 				str += '</div></div>';
 		}else{
-				str=celldata;
+				str="<div style='display:flex;'><div style='margin:0 4px;flex-grow:1;'>"+celldata+"</div></div>";
 		}
 		return str;
 	
 }
 
-function renderSortOptions(col,status) {
+function renderSortOptions(col,status,colname) {
 	str = "";
 	if (status == -1) {
-		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
 	} else if (status == 0) {
-		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 	} else {
-		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 	}
 	return str;
 }
@@ -233,11 +234,15 @@ function compare(a,b) {
 	// Needed so that the counter starts from 0
 	// everytime we sort the table
 	count = 0;
-	if (col == "Examiner") {
+	if (col == "examiner") {
+		if(tempA.examiner!=null)tempA = filez.teachers[tempA.examiner].name;
+		if(tempB.examiner!=null)tempB = filez.teachers[tempB.examiner].name;
+		/*
 		tempA = JSON.parse(tempA)['examiners'];
 		tempB = JSON.parse(tempB)['examiners'];
     tempA = tempA[tempA.length - 1]['teacher'];
-    tempB = tempB[tempB.length - 1]['teacher'];
+		tempB = tempB[tempB.length - 1]['teacher'];
+		*/
 	}
 
   if(tempA != null){
@@ -255,37 +260,65 @@ function compare(a,b) {
 		return 0;
 	}
 }
+//--------------------------------------------------------------------------
+// editCell
+// ---------------
+//  Callback function for showing a cell editing interface
+//--------------------------------------------------------------------------
+function displayCellEdit(celldata,rowno,rowelement,cellelement,column,colno,rowdata,coldata,tableid) {
+		let str = "";
+		if (column == "firstname"||column == "lastname"||column == "ssn"||column == "username") {
+				celldata=JSON.parse(celldata)
+				str += "<input type='hidden' id='popoveredit_uid' class='popoveredit' style='flex-grow:1;' value='" + celldata.uid + "'/>";
+				str += "<input type='text' id='popoveredit_"+column+"' class='popoveredit' style='flex-grow:1;width:auto;' value='" + celldata[column] + "' size=" + celldata[column].toString().length + "/>";
+		} 
+		return str;
+}
+
+//--------------------------------------------------------------------------
+// updateCellCallback
+// ---------------
+//  Callback function for updating a cell value after editing a cell
+//--------------------------------------------------------------------------
+function updateCellCallback(rowno,colno,column,tableid) {
+		if (column == "firstname"||column == "lastname"||column == "ssn"||column == "username") {
+				// TODO: Check of individual parts needs to be done.
+				var obj = {uid:parseInt(document.getElementById("popoveredit_uid").value)};
+				obj[column]=document.getElementById("popoveredit_"+column).value;
+				changeProperty(obj.uid,column,obj[column])
+				return JSON.stringify(obj);
+		}		
+}
 
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
-function rowFilter(row) {
-	for (key in row) {
-    if (key == "examiner"){
-      var examiners = JSON.parse(row[key])['examiners']
-      var teacher = examiners[examiners.length - 1]['teacher'];
-      if (teacher && teacher.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-    } else if (key == "access") {
-      var access = "none";
-      if (JSON.parse(row[key])['access'] == "W"){
-        access = "teacher";
-      } else if (JSON.parse(row[key])['access'] == "R"){
-        access = "student";
-      }
-			if (access.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
-		} else if (row[key] != null) {
-			if (row[key].toUpperCase().indexOf(searchterm.toUpperCase()) != -1) return true;
+var searchterm = "";
+function rowFilter(row) {	
+		if(searchterm == ""){
+				return true;
+		}else{
+				for (var property in row) {
+					if (row.hasOwnProperty(property)) {
+						if (row[property] != null) {
+							if (row[property].indexOf != null) {
+								if (row[property].indexOf(searchterm) != -1) return true;
+							}
+						}
+					}
+				}   
 		}
-	}
-	return false;
+		return false;
 }
 
-function renderColumnFilter(colname,col,status) {
+/*
+function renderColumnFilter(col,status,colname) {
   str = "<div class='checkbox-dugga'>";
-  str += "<input " + (status ? "checked " : "") + "type='checkbox' onclick='myTable.toggleColumn(\"" + colname + "\",\"" + col + "\")'><label class='headerlabel'>" + col + "</label>";
-  str += "</div>";
+  str += "<input " + (status ? "checked " : "") + "type='checkbox' onclick='myTable.toggleColumn(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+	str += "</div>";
   return str;
 }
+*/
 
 var myTable;
 
@@ -319,8 +352,10 @@ function returnedAccess(data) {
 			requestedpasswordchange:"Password"
 		},
 		tblbody: data['entries'],
-		tblfoot:[]
+		tblfoot:{}
 	}
+	var colOrder=["username","ssn","firstname","lastname","class","modified","examiner","vers","access","groups","requestedpasswordchange"]
+	/*
 	myTable = new SortableTable(
 		tabledata,
 		"accessTable",
@@ -342,6 +377,24 @@ function returnedAccess(data) {
 		true,
 		true
 	);
+	*/
+	myTable = new SortableTable({
+		data:tabledata,
+		tableElementId:"accessTable",
+		filterElementId:"filterOptions",
+		renderCellCallback:renderCell,
+		renderSortOptionsCallback:renderSortOptions,
+		rowFilterCallback:rowFilter,
+		displayCellEditCallback:displayCellEdit,
+		updateCellCallback:updateCellCallback,
+		readOnlyColumns:["ssn","username","requestedpasswordchange","modified","class","examiner","vers","access","groups"],
+		columnOrder:colOrder,
+		freezePaneIndex:4,
+		hasRowHighlight:true,
+		hasMagicHeadings:false,
+		hasCounterColumn:true
+	});
+
 	myTable.renderTable();
 	
 }
@@ -418,7 +471,7 @@ function mouseUp(e){
 					}
 			}
 			expanded=false;
-			changeProperty(checkboxes.id.substr(3),"group",str);
+			if(str!="")changeProperty(checkboxes.id.substr(3),"group",str);
 		}
   }
 }

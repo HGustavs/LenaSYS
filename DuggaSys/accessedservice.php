@@ -330,7 +330,8 @@ $array = array(
 	'classes' => $classes,
 	'courses' => $courses,
 	'groups' => $groups,
-	'queryResult' => $queryResult
+	'queryResult' => $queryResult,
+	'examiners' => $examiners
 );
 
 echo json_encode($array);
