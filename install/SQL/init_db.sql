@@ -487,7 +487,7 @@ CREATE TABLE user_push_registration (
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* Usergroup and user_usergroup relation */
-CREATE TABLE groups (
+CREATE TABLE `groups` (
   groupID int(10) unsigned NOT NULL AUTO_INCREMENT,
   courseID int(10) unsigned NOT NULL,
   vers varchar(8) DEFAULT NULL,
@@ -496,13 +496,13 @@ CREATE TABLE groups (
   FOREIGN KEY (courseID) REFERENCES course(cid)
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-CREATE TABLE `user_group` (
-  `groupID` int(10) unsigned NOT NULL,
-  `userID` int(10) unsigned NOT NULL,
-  KEY `groupID` (`groupID`),
-  KEY `userID` (`userID`),
-  CONSTRAINT `user_group_ibfk_1` FOREIGN KEY (`groupID`) REFERENCES `groups` (`groupID`),
-  CONSTRAINT `user_group_ibfk_2` FOREIGN KEY (`userID`) REFERENCES `user` (`uid`)
+CREATE TABLE user_group (
+  groupID int(10) unsigned NOT NULL,
+  userID int(10) unsigned NOT NULL,
+  KEY groupID (groupID),
+  KEY userID (userID),
+  CONSTRAINT user_group_ibfk_1 FOREIGN KEY (groupID) REFERENCES `groups` (groupID),
+  CONSTRAINT user_group_ibfk_2 FOREIGN KEY (userID) REFERENCES user (uid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*table used for checking participation. i.e participation is 0 = not participated, 1 = participated.*/

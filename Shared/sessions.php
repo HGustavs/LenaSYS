@@ -263,15 +263,17 @@ function login($username, $password, $savelogin)
 {
     global $pdo;
 
-//    echo "SNÖ SNÖR eller SMÖR\n";
-
     if($pdo == null) {
         pdoConnect();
     }
-    $query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,securityquestion,password(:pwd) as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
 
+    if(MYSQL_VERSION<"8.0"){
+        $query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,securityquestion,password(:pwd) as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
+        $query->bindParam(':pwd', $password);
+    }else{
+        $query = $pdo->prepare("SELECT uid,username,password,superuser,lastname,firstname,securityquestion,NULL as mysql_pwd_input FROM user WHERE username=:username LIMIT 1");
+    }
     $query->bindParam(':username', $username);
-    $query->bindParam(':pwd', $password);
 
     if(!$query->execute()){
         $error=$query->errorInfo();
@@ -279,9 +281,6 @@ function login($username, $password, $savelogin)
     }
 
     if($query->rowCount() > 0) {
-        // echo "Rowcount>0\n";
-
-        // Fetch the result
         $row = $query->fetch(PDO::FETCH_ASSOC);
 
         if ($row['password'] == $row['mysql_pwd_input']) {
