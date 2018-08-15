@@ -79,7 +79,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				$query = $pdo->prepare("UPDATE user_course SET access=:access WHERE uid=:uid AND cid=:cid;");
 				$query->bindParam(':access', $val);		
 		}else if($prop=="group"){
-				$query = $pdo->prepare("UPDATE user_course SET groups=:groups WHERE uid=:uid AND cid=:cid;");
+				$query = $pdo->prepare("UPDATE user_course SET `groups`=:groups WHERE uid=:uid AND cid=:cid;");
 				$query->bindParam(':groups', $val);		
 		}	
 		
@@ -226,7 +226,7 @@ $groups=array();
 $courses=array();
 
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
-	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,teacher,vers,requestedpasswordchange,examiner,groups, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
+	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,teacher,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
@@ -285,7 +285,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		array_push($classes, $classe);
 	}
 
-	$query = $pdo->prepare("SELECT groupval,groupkind,groupint FROM groups ORDER BY groupkind,groupint;");
+	$query = $pdo->prepare("SELECT groupval,groupkind,groupint FROM `groups` ORDER BY groupkind,groupint;");
 	if(!$query->execute()){
 		$error=$query->errorInfo();
 		$debug="Error reading group entries".$error[2];

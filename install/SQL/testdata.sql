@@ -45,8 +45,8 @@ INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,securityque
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,securityquestion,securityquestionanswer, class) VALUES (230,'a99karpe','Karin','Persson','19990101-0015','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','a99karpe@student.his.se','what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i','WEBUG14h');
 
 /* Teachers */
-INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,creator,superuser,securityquestion,securityquestionanswer) VALUES (100,'stei','Joey','Stenhus','340101-0101','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','joey.s@his.se',0,1,'what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i');
-INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,creator,superuser,securityquestion,securityquestionanswer) VALUES (101,'brom','Martin','Brobygge','340101-1232','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','martin.b@his.se',0,1,'what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,creator,superuser,securityquestion,securityquestionanswer) VALUES (100,'stei','Joey','Stenhus','340101-0101','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','joey.s@his.se',0,1,'what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i');
+INSERT INTO user (uid,username,firstname,lastname,ssn,password,email,creator,superuser,securityquestion,securityquestionanswer) VALUES (101,'brom','Martin','Brobygge','340101-1232','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','martin.b@his.se',0,1,'what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i');
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,creator,email,securityquestion,securityquestionanswer) VALUES (4,'teacher1','Emma','Lindberg','19770101-1231','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','1','teacher1@his.se','what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i');
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,creator,email,securityquestion,securityquestionanswer) VALUES (5,'teacher2','Lena','Carlsson','19770101-1232','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','1','teacher2@his.se','what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i');
 INSERT INTO user (uid,username,firstname,lastname,ssn,password,creator,email,securityquestion,securityquestionanswer) VALUES (6,'teacher3','Bo','Lindberg','19770101-1233','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','1','teacher3@his.se','what is Toddlers Password? ','$2y$10$haOR5Mw2Ay1onfxODcDp.OcSeA1yPUH6C56qlzuvzKNSucGtbTA2i');
@@ -421,24 +421,24 @@ INSERT INTO course_req (cid,req_cid) VALUES (319,308);
 INSERT INTO course_req (cid,req_cid) VALUES (319,309);
 
 -- DVSUG --
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (200,'a13andka','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Anders','Karlsson','910202-3434','a13andka@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (201,'a13sveth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Sven','Torbjörnsson','890502-2344','a13sveth@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (202,'a13saeth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Sven','Torbjörnsson','890502-2445','a13saeth@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (203,'a13sbeth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Sten','Torbjörnsson','890502-2674','a13sbeth@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (204,'c13sneth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Syen','Torbjörnsson','890502-2944','a13sneth@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (205,'b13sceth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Suen','Torbjörnsson','890502-2389','a13sceth@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (206,'a13steth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Rddn','Torbjörnsson','890702-1389','a13steth@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (207,'b13syeth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Suen','Torbjörnsson','790202-2389','a13syeth@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (208,'a13eyeth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Eyde','Torbjörnsson','790222-2489','a13syeth@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (209,'a13eydth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','tuen','Torbjörnsson','730202-2379','a13syeth@student.his.se','DVSUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (210,'c13dddth','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','tuen','Torbjörnsson','781202-2389','a13syeth@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (200,'a13andka','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Anders','Karlsson','910202-3434','a13andka@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (201,'a13sveth','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Sven','Torbjörnsson','890502-2344','a13sveth@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (202,'a13saeth','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Sven','Torbjörnsson','890502-2445','a13saeth@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (203,'a13sbeth','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Sten','Torbjörnsson','890502-2674','a13sbeth@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (204,'c13sneth','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Syen','Torbjörnsson','890502-2944','a13sneth@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (205,'b13sceth','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Suen','Torbjörnsson','890502-2389','a13sceth@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (206,'a13steth','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Rddn','Torbjörnsson','890702-1389','a13steth@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (207,'b13syeth','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Suen','Torbjörnsson','790202-2389','a13syeth@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (208,'a13eyeth','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Eyde','Torbjörnsson','790222-2489','a13syeth@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (209,'a13eydth','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','tuen','Torbjörnsson','730202-2379','a13syeth@student.his.se','DVSUG13h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (210,'c13dddth','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','tuen','Torbjörnsson','781202-2389','a13syeth@student.his.se','DVSUG13h');
 
 -- WEBUG --
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (211,'c13aaath','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Tuen','Torbjörnsson','781902-3381','a13syeth@student.his.se','WEBUG13h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (212,'c13timan','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Tim','Andersson','901202-2399','c13timan@student.his.se','WEBUG14h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (213,'a13siman','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Simon','Andersson','931202-2489','a13siman@student.his.se','WEBUG14h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (214,'a13henan','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Henrik','Andersson','891202-3489','a13henan@student.his.se','WEBUG14h');
-INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (215,'a13jacan','*15E4521DE818D9E7B318250FE7DCDA0419FA84AE','Jacob','Andersson Svensson','751202-2389','a13jacan@student.his.se','WEBUG14h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (211,'c13aaath','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Tuen','Torbjörnsson','781902-3381','a13syeth@student.his.se','WEBUG13h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (212,'c13timan','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Tim','Andersson','901202-2399','c13timan@student.his.se','WEBUG14h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (213,'a13siman','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Simon','Andersson','931202-2489','a13siman@student.his.se','WEBUG14h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (214,'a13henan','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Henrik','Andersson','891202-3489','a13henan@student.his.se','WEBUG14h');
+INSERT INTO user (uid,username,password,firstname,lastname,ssn,email,class) VALUES (215,'a13jacan','$2y$10$qGYP1gTTr7SG5/WbRlxCm.1tPmmZonKSYlAJaLj00pBEAJxyeKtI2','Jacob','Andersson Svensson','751202-2389','a13jacan@student.his.se','WEBUG14h');
 
 -- Course with user --
 -- Teachers --
@@ -472,52 +472,52 @@ INSERT INTO user_course (uid,cid,result,access,period,term,vers) VALUES (203,305
 
 -- Users added 2017 --
 -- DVSUG --
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (216,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (217,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (218,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (219,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (220,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (231,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (232,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (233,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (234,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (235,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (216,1,0,'R',1,'HT15','BoLindberg',45656,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (217,1,0,'R',1,'HT15','BoLindberg',45656,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (218,1,0,'R',1,'HT15','BoLindberg',45656,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (219,1,0,'R',1,'HT15','BoLindberg',45656,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (220,1,0,'R',1,'HT15','BoLindberg',45656,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (231,1,0,'R',1,'HT15','BoLindberg',45656,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (232,1,0,'R',1,'HT15','BoLindberg',45656,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (233,1,0,'R',1,'HT15','BoLindberg',45656,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (234,1,0,'R',1,'HT15','BoLindberg',45656,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (235,1,0,'R',1,'HT15','BoLindberg',45656,6,'1');
 
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (216,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (217,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (218,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (219,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (220,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (231,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (232,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (233,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (234,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (235,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (216,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (217,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (218,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (219,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (220,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (231,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (232,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (233,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (234,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (235,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'1');
 
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (216,4,0,'R',1,'HT15','BoLindberg',1338);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (217,4,0,'R',1,'HT15','BoLindberg',1338);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (218,4,0,'R',1,'HT15','BoLindberg',1338);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (219,4,0,'R',1,'HT15','BoLindberg',1338);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (220,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (216,4,0,'R',1,'HT15','BoLindberg',1338,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (217,4,0,'R',1,'HT15','BoLindberg',1338,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (218,4,0,'R',1,'HT15','BoLindberg',1338,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (219,4,0,'R',1,'HT15','BoLindberg',1338,6,'1');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (220,4,0,'R',1,'HT15','BoLindberg',1338,6,'1');
 
 -- WEBUG13 --
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (221,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (222,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (223,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (224,1,0,'R',1,'HT15','BoLindberg',45656);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (225,1,0,'R',1,'HT15','BoLindberg',45656);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (221,1,0,'R',1,'HT15','BoLindberg',45656,6,'2');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (222,1,0,'R',1,'HT15','BoLindberg',45656,6,'2');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (223,1,0,'R',1,'HT15','BoLindberg',45656,6,'2');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (224,1,0,'R',1,'HT15','BoLindberg',45656,6,'2');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (225,1,0,'R',1,'HT15','BoLindberg',45656,6,'2');
 
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (221,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (222,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (223,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (224,2,0,'R',1,'HT15','EmmaLindberg',97732);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (225,2,0,'R',1,'HT15','EmmaLindberg',97732);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (221,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'2');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (222,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'2');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (223,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'2');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (224,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'2');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (225,2,0,'R',1,'HT15','EmmaLindberg',97732,6,'2');
 
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (221,4,0,'R',1,'HT15','BoLindberg',1338);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (222,4,0,'R',1,'HT15','BoLindberg',1338);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (223,4,0,'R',1,'HT15','BoLindberg',1338);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (224,4,0,'R',1,'HT15','BoLindberg',1338);
-INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (225,4,0,'R',1,'HT15','BoLindberg',1338);
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (221,4,0,'R',1,'HT15','BoLindberg',1338,6,'2');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (222,4,0,'R',1,'HT15','BoLindberg',1338,6,'2');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (223,4,0,'R',1,'HT15','BoLindberg',1338,6,'2');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (224,4,0,'R',1,'HT15','BoLindberg',1338,6,'2');
+INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers,examiner,`groups`) VALUES (225,4,0,'R',1,'HT15','BoLindberg',1338,6,'2');
 
 -- WEBUG14 --
 INSERT INTO user_course (uid,cid,result,access,period,term,teacher,vers) VALUES (226,1,0,'R',1,'HT15','BoLindberg',45656);
