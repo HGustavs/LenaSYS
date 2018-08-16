@@ -618,6 +618,14 @@ function buildDynamicHeaders() {
   return tblhead;
 }
 
+function buildColumnOrder() {
+		var colOrder=["FnameLnameSSN"];
+		moments.forEach(function(entry) {
+				colOrder.push("lid:"+entry['lid']);
+		});
+		return colOrder;
+}
+
 function buildStudentInfo() {
   var i = 0;
 	students.forEach(function(entry) {
@@ -633,39 +641,55 @@ function buildStudentInfo() {
 }
 
 function createSortableTable(data){
-	var tblhead = buildDynamicHeaders();
-	studentInfo = buildStudentInfo();
+		var tblhead = buildDynamicHeaders();
+		studentInfo = buildStudentInfo();
 
-	var tabledata = {
-		tblhead,
-		tblbody: studentInfo,
-		tblfoot:[]
-	}
+		var tabledata = {
+			tblhead,
+			tblbody: studentInfo,
+			tblfoot:[]
+		}
+		/*
+		myTable = new SortableTable(
+			tabledata,
+			tableName,
+			"columnfilter",
+			"",
+			renderCell,
+			renderSortOptions,
+			renderColumnFilter,
+			rowFilter,
+			[],
+			[],
+			"",
+			null,
+			null,
+			highlightOn,
+			highlightOff,
+			null,
+			null,
+			true,
+			true
+		);
+		*/
+		var colOrder=buildColumnOrder();
+		myTable = new SortableTable({
+				data:tabledata,
+				tableElementId:tableName,
+				filterElementId:"columnfilter",
+				renderCellCallback:renderCell,
+				renderSortOptionsCallback:renderSortOptions,
+				renderColumnFilterCallback:renderColumnFilter,
+				rowFilterCallback:rowFilter,
+				columnOrder:colOrder,
+				hasRowHighlight:true,
+				hasMagicHeadings:true,
+				hasCounterColumn:true
+		});
 
-	myTable = new SortableTable(
-		tabledata,
-		tableName,
-		"columnfilter",
-		"",
-		renderCell,
-		renderSortOptions,
-		renderColumnFilter,
-		rowFilter,
-		[],
-		[],
-		"",
-		null,
-		null,
-		highlightOn,
-		highlightOff,
-		null,
-		null,
-		true,
-		true
-	);
-	myTable.renderTable();
+		myTable.renderTable();
 
-	if(data['debug']!="NONE!") alert(data['debug']);
+		if(data['debug']!="NONE!") alert(data['debug']);
 }
 
 function renderCell(col,celldata,cellid) {
@@ -700,10 +724,10 @@ function renderCell(col,celldata,cellid) {
 	if (col == "FnameLnameSSN"){
 		str = "<div class='resultTableCell resultTableNormal'>";
 			str += "<div class='resultTableText'>";
-				str += celldata.firstname+" "+celldata.lastname+"<br>";
-				str += celldata.username+" / "+celldata.class+"<br>";
-				str += celldata.ssn+"<br>";
-				str += celldata.setTeacher;
+				str += "<div style='font-weight:bold'>"+celldata.firstname+" "+celldata.lastname+"</div>";
+				str += "<div>"+celldata.username+" / "+celldata.class+"</div>";
+				str += "<div>"+celldata.ssn+"</div>";
+				str += "<div style='font-style:italic;text-align:right;'>"+celldata.setTeacher+"</div>";
 			str += "</div>";
 		str += "</div>";
 		return str;
@@ -772,7 +796,7 @@ function renderCell(col,celldata,cellid) {
 // ---------------
 //  Callback function that highlights the currently hovered row
 //--------------------------------------------------------------------------
-
+/*
 function highlightOn(rowid,rowno,colclass,centerel) {
 	var tableCounter = tableName + "_counter";
 	
@@ -806,7 +830,8 @@ function highlightOn(rowid,rowno,colclass,centerel) {
 		centerel.classList.add("tableCellHighlightning");
 	}
 }
-
+*/
+/*
 function highlightOff(rowid,rowno,colclass,centerel) {
 	var tableCounter = tableName + "_counter";
 	
@@ -840,6 +865,7 @@ function highlightOff(rowid,rowno,colclass,centerel) {
 		centerel.classList.remove("tableCellHighlightning");
 	}
 }
+*/
 
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
@@ -883,16 +909,74 @@ function rowFilter(row) {
 	return false;
 }
 
-function renderSortOptions(col,status) {
-	str = "";
-	if (status ==- 1) {
-		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
-	} else if (status == 0) {
-		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
-	} else {
-		str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
-	}
-	return str;
+function renderSortOptions(col,status,colname) {
+		str = "";
+		if (status ==- 1) {
+				if(col=="FnameLnameSSN"){
+						let colnameArr=colname.split("/");
+						str+="<div style='white-space:nowrap;cursor:pointer'>"
+						str+="<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
+						str+="<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+						str+="<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+				}else{
+						str+="<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+				}
+				str+="</div>"
+			}else{
+				if(col=="FnameLnameSSN"){
+						let colnameArr=colname.split("/");
+						if (status == 0 || status == 1) {
+								str+="<div style='white-space:nowrap;cursor:pointer'>"
+								if(status==0){
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+								}else{
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>/";
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+							}
+							str+="</div>"
+						} else if(status == 2 || status == 3) {
+								str+="<div style='white-space:nowrap;cursor:pointer'>"
+								if(status==2){
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",3)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+								}else{
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>/";
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
+								}
+								str+="</div>"
+						}else {
+								str+="<div style='white-space:nowrap;cursor:pointer'>"
+								if(status==4){
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",5)'>" + colnameArr[2] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+								}else{
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
+										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+								}
+								str+="</div>"
+						}
+				}else{
+						if(status==0) {
+								str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<span style='display:inline-block;background-color:#ffffdd;width:16px;height:16px;border-radius:8px;'></span></span>";
+						}else if(status==1){
+								str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colname + "<span style='display:inline-block;background-color:#B5D7A8;width:16px;height:16px;border-radius:8px;'></span></span>";
+						}else if(status==2){
+								str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",3)'>" + colname + "<span style='display:inline-block;background-color:#d79b9b;width:16px;height:16px;border-radius:8px;'></span></span>";
+						}else if(status==3){
+								str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colname + "<span style='display:inline-block;background-color:#d0c0d0;width:16px;height:16px;border-radius:8px;'></span></span>";
+						}else{
+								str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<span style='display:inline-block;background-color:#eae8eb;width:16px;height:16px;border-radius:8px;'></span></span>";
+						}
+				}
+		}
+		return str;
 }
 
 //--------------------------------------------------------------------------
@@ -901,88 +985,110 @@ function renderSortOptions(col,status) {
 //  Callback function with different compare alternatives for the column sort
 //--------------------------------------------------------------------------
 function compare(a,b) {
-	var col = sortableTable.currentTable.getSortcolumn();
-	var tempA;
-	var tempB;
+		var col = sortableTable.currentTable.getSortcolumn();
+		let kind = sortableTable.currentTable.getSortkind();
+		var tempA;
+		var tempB;
 
-	//Column first name last name ssn
-	if (col == "Fname/Lname/SSN") {
-		/* The sorting in this column needs to follow the following priority order
-			1. First name
-			2. Last name
-			3. SSN */
+		if (col == "FnameLnameSSN") {
+				if(kind==0||kind==1){
+						tempA=a['firstname'].toUpperCase();
+						tempB=b['firstname'].toUpperCase();
+				}else if(kind==2||kind==3){
+						tempA=a['lastname'].toUpperCase();
+						tempB=b['lastname'].toUpperCase();
+				}else{
+						tempA=a['ssn'].toUpperCase();
+						tempB=b['ssn'].toUpperCase();	
+				}
 
-		tempA = a['firstname'].toUpperCase();
-		tempA += " " + a['lastname'].toUpperCase();
-		tempA += " " + a['ssn'].toUpperCase();
-
-		tempB = b['firstname'].toUpperCase();
-		tempB += " " + b['lastname'].toUpperCase();
-		tempB += " " + b['ssn'].toUpperCase();
-
-		if (tempA > tempB) {
-			return 1;
-		} else if (tempA < tempB) {
-			return -1;
+				if (tempA > tempB) {
+						return 1;
+				} else if (tempA < tempB) {
+						return -1;
+				} else {
+						return 0;
+				}
 		} else {
-			return 0;
-		}
+				// Sorting rotates:
+				// Need marking --> Passed --> Failed --> Opened --> Not opened
+				tempA=0;
+				tempB=0;
+				if(kind==0){
+						if(a['needMarking'] == true) {tempA += 1000000;}
+						if(b['needMarking'] == true) {tempB += 1000000;}
+						if(a['grade'] == 2) {tempA += 100000;}
+						if(b['grade'] == 2) {tempB += 100000;}
+						if(a['grade'] == 1) {tempA += 10000;}
+						if(b['grade'] == 1) {tempB += 10000;}
+						if(a['ishere'] == true) {tempA += 1000;}
+						if(b['ishere'] == true) {tempB += 1000;}	
+				}else if(kind==1){
+						if(a['needMarking'] == true) {tempA += 1000;}
+						if(b['needMarking'] == true) {tempB += 1000;}
+						if(a['grade'] == 2) {tempA += 1000000;}
+						if(b['grade'] == 2) {tempB += 1000000;}
+						if(a['grade'] == 1) {tempA += 100000;}
+						if(b['grade'] == 1) {tempB += 100000;}
+						if(a['ishere'] == true) {tempA += 10000;}
+						if(b['ishere'] == true) {tempB += 10000;}	
+				}else if(kind==2){
+						if(a['needMarking'] == true) {tempA += 10000;}
+						if(b['needMarking'] == true) {tempB += 10000;}
+						if(a['grade'] == 2) {tempA += 1000;}
+						if(b['grade'] == 2) {tempB += 1000;}
+						if(a['grade'] == 1) {tempA += 1000000;}
+						if(b['grade'] == 1) {tempB += 1000000;}
+						if(a['ishere'] == true) {tempA += 100000;}
+						if(b['ishere'] == true) {tempB += 100000;}	
+				}else if(kind==3){
+						if(a['needMarking'] == true) {tempA += 100000;}
+						if(b['needMarking'] == true) {tempB += 100000;}
+						if(a['grade'] == 2) {tempA += 10000;}
+						if(b['grade'] == 2) {tempB += 10000;}
+						if(a['grade'] == 1) {tempA += 1000;}
+						if(b['grade'] == 1) {tempB += 1000;}
+						if(a['ishere'] == true && a['grade'] == 0) {tempA += 1000000;}
+						if(b['ishere'] == true && b['grade'] == 0) {tempB += 1000000;}	
+			}else{
+						if(a['needMarking'] == true) {tempA += 100000;}
+						if(b['needMarking'] == true) {tempB += 100000;}
+						if(a['grade'] == 2) {tempA += 1000;}
+						if(b['grade'] == 2) {tempB += 1000;}
+						if(a['grade'] == 1) {tempA += 100000;}
+						if(b['grade'] == 1) {tempB += 100000;}
+						if(a['ishere'] == true && a['grade'] == 0) {tempA += 1000000;}
+						if(b['ishere'] == true && b['grade'] == 0) {tempB += 1000000;}	
+						if(a['ishere'] == false && a['grade'] == -1) {tempA += 10000000;}
+						if(b['ishere'] == false && b['grade'] == -1) {tempB += 10000000;}	
+				}
 
-	//Columns that contains duggor
-	} else {
-		/* The sorting in a column needs to follow the following priority order:
-			1. Need marking 												(10 000)
-			2. If the dugga is passed								(1 000)
-			3. If the dugga is failed								(100)
-			4. If the student only viewed the dugga (10)
-			5. When the dugga has been submitted 		(1) */
+				if(a['submitted'] < b['submitted']) {
+						tempA += 1;
+				}else if(a['submitted'] > b['submitted']){
+						tempB += 1;
+				}
 
-		tempA = 0;
-		tempB = 0;
-		if(a['needMarking'] == true) {
-			tempA += 10000;
+				if(kind==0||kind==2||kind==4){
+						if (tempA < tempB) {
+								return 1;
+						} else if (tempA > tempB) {
+								return -1;
+						} else {
+								return 0;
+						}
+				}else{
+						if (tempA > tempB) {
+								return 1;
+						} else if (tempA < tempB) {
+								return -1;
+						} else {
+								return 0;
+						}
+				}
 		}
-		if(b['needMarking'] == true) {
-			tempB += 10000;
-		}
-
-		if(a['grade'] == 2) {
-			tempA += 1000;
-		}
-		if(b['grade'] == 2) {
-			tempB += 1000;
-		}
-
-		if(a['grade'] == 1) {
-			tempA += 100;
-		}
-		if(b['grade'] == 1) {
-			tempB += 100;
-		}
-
-		if(a['ishere'] == true) {
-			tempA += 10;
-		}
-		if(b['ishere'] == true) {
-			tempB += 10;
-		}
-
-		if(a['submitted'] < b['submitted']) {
-			tempA += 1;
-		} else if(a['submitted'] > b['submitted']) {
-			tempB += 1;
-		}
-
-		if (tempA < tempB) {
-			return 1;
-		} else if (tempA > tempB) {
-			return -1;
-		} else {
-			return 0;
-		}
-	}
 }
-
+/*
 function renderColumnFilter(colname,col,status) {
   str = "";
   if (colname == "FnameLnameSSN") return str;
@@ -996,4 +1102,20 @@ function renderColumnFilter(colname,col,status) {
     str += "</div>"
   }
   return str;
+}
+*/
+
+function renderColumnFilter(col,status,colname) {
+		str = "";
+		if (colname == "FnameLnameSSN") return str;
+		if (status) {
+			str = "<div class='checkbox-dugga'>";
+			str += "<input type='checkbox' checked onclick='myTable.toggleColumn(\"" + col + "\",\"" + status + "\")'><label class='headerlabel'>" + colname + "</label>";
+			str += "</div>"
+		} else {
+			str = "<div class='checkbox-dugga'>";
+			str += "<input type='checkbox' onclick='myTable.toggleColumn(\"" + col + "\",\"" + status + "\")'><label class='headerlabel'>" + colname + "</label>";
+			str += "</div>"
+		}
+		return str;
 }
