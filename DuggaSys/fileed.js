@@ -63,53 +63,30 @@ function returnedFile(data) {
     };
     var colOrder=["filename","extension","kind","filesize","uploaddate","editor","trashcan"];
 
-	/*
-    fileLink = new SortableTable(
-		tabledata,
-		"fileLink",
-		null,
-		"",
-        renderCell,
-        renderSortOptions,
-        null,
-        rowFilter,
-        [],
-        [],
-        "",
-        null,
-        null,
-		null,
-		null,
-		null,
-        null,
-		true,
-		true
-	);
-	*/
-  fileLink = new SortableTable({
-      data:tabledata,
-      tableElementId:"fileLink",
-      filterElementId:"filterOptions",
-      renderCellCallback:renderCell,
-      renderSortOptionsCallback:renderSortOptions,
-      rowFilterCallback:rowFilter,
-      columnOrder:colOrder,
-      hasRowHighlight:true,
-      hasMagicHeadings:true,
-      hasCounterColumn:true
-	});
+	  fileLink = new SortableTable({
+        data:tabledata,
+        tableElementId:"fileLink",
+        filterElementId:"filterOptions",
+        renderCellCallback:renderCell,
+        renderSortOptionsCallback:renderSortOptions,
+        rowFilterCallback:rowFilter,
+        columnOrder:colOrder,
+        hasRowHighlight:true,
+        hasMagicHeadings:true,
+        hasCounterColumn:true
+	  });
 
 
-	fileLink.renderTable();
-	if(querystring['confirmation'] != undefined) {
+    fileLink.renderTable();
+    if(querystring['confirmation'] != undefined) {
         $(".confirmationWindow").css("display", "block");
         document.getElementById('editedFile').innerHTML = querystring['confirmation'] + " has been successfully saved!";
-	}
-	if(!data['access']) {
+    }
+    if(!data['access']) {
         document.getElementById("fabButton").style.display = "none";
-	}
+    }
 
-	if(data['debug']!="NONE!") alert(data['debug']);
+    if(data['debug']!="NONE!") alert(data['debug']);
 }
 
 function showLinkPopUp() {

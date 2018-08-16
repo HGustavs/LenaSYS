@@ -649,29 +649,6 @@ function createSortableTable(data){
 			tblbody: studentInfo,
 			tblfoot:[]
 		}
-		/*
-		myTable = new SortableTable(
-			tabledata,
-			tableName,
-			"columnfilter",
-			"",
-			renderCell,
-			renderSortOptions,
-			renderColumnFilter,
-			rowFilter,
-			[],
-			[],
-			"",
-			null,
-			null,
-			highlightOn,
-			highlightOff,
-			null,
-			null,
-			true,
-			true
-		);
-		*/
 		var colOrder=buildColumnOrder();
 		myTable = new SortableTable({
 				data:tabledata,
@@ -790,82 +767,6 @@ function renderCell(col,celldata,cellid) {
 	}
 	return celldata;
 }
-
-//--------------------------------------------------------------------------
-// rowHighlight
-// ---------------
-//  Callback function that highlights the currently hovered row
-//--------------------------------------------------------------------------
-/*
-function highlightOn(rowid,rowno,colclass,centerel) {
-	var tableCounter = tableName + "_counter";
-	
-	//row highlights
-	var row = document.getElementById(rowid).getElementsByTagName("td");
-	for (var i = 0; i < row.length; i++) {
-			//find the div contained in the cell
-			if(!row[i].classList.contains(tableCounter)) {
-				rowId = row[i].getElementsByClassName(tableCellName)[0];
-			}else {
-				rowId = row[i];
-			}
-			rowId.classList.add("tableRowHighlightning");
-	}
-	
-	//column highlights
-	var collist = document.getElementsByClassName(colclass.split(" ")[0]);
-	for(var i=0;i<collist.length;i++){
-		if(!collist[i].classList.contains(tableCounter)) {
-			var column = collist[i].getElementsByClassName(tableCellName)[0];
-		}else{
-			var column = collist[i];
-		}
-		column.classList.add("tableColHighlightning");
-	}
-	
-	//cell highlight
-	if(!centerel.classList.contains(tableCounter)) {
-		centerel.getElementsByClassName(tableCellName)[0].classList.add("tableCellHighlightning");
-	}else{
-		centerel.classList.add("tableCellHighlightning");
-	}
-}
-*/
-/*
-function highlightOff(rowid,rowno,colclass,centerel) {
-	var tableCounter = tableName + "_counter";
-	
-	//row highlight
-	var row = document.getElementById(rowid).getElementsByTagName("td");
-	for (var i = 0; i < row.length; i++) {
-		//find the div contained in the cell
-		if(!row[i].classList.contains(tableCounter)) {
-				rowId = row[i].getElementsByClassName(tableCellName)[0];
-		}else {
-			rowId = row[i];
-		}
-		rowId.classList.remove("tableRowHighlightning");
-	}
-
-	//column highlights
-	var collist = document.getElementsByClassName(colclass.split(" ")[0]);
-	for(var i=0;i<collist.length;i++){
-		if(!collist[i].classList.contains(tableCounter)) {
-			var column = collist[i].getElementsByClassName(tableCellName)[0];
-		}else{
-			column = collist[i];
-		}
-		column.classList.remove("tableColHighlightning");
-	}
-
-	//cell highlight
-	if(!centerel.classList.contains(tableCounter)) {
-		centerel.getElementsByClassName(tableCellName)[0].classList.remove("tableCellHighlightning");
-	}else{
-		centerel.classList.remove("tableCellHighlightning");
-	}
-}
-*/
 
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
@@ -1088,22 +989,6 @@ function compare(a,b) {
 				}
 		}
 }
-/*
-function renderColumnFilter(colname,col,status) {
-  str = "";
-  if (colname == "FnameLnameSSN") return str;
-  if (status) {
-    str = "<div class='checkbox-dugga'>";
-    str += "<input type='checkbox' checked onclick='myTable.toggleColumn(\"" + colname + "\",\"" + col + "\")'><label class='headerlabel'>" + col + "</label>";
-    str += "</div>"
-  } else {
-    str = "<div class='checkbox-dugga'>";
-    str += "<input type='checkbox' onclick='myTable.toggleColumn(\"" + colname + "\",\"" + col + "\")'><label class='headerlabel'>" + col + "</label>";
-    str += "</div>"
-  }
-  return str;
-}
-*/
 
 function renderColumnFilter(col,status,colname) {
 		str = "";
