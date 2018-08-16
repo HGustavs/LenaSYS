@@ -3269,7 +3269,7 @@ ul.hamburgerList button.menuButton {
 }
 #sortingDiv{
     height: 30px;
-    width: 80%;
+    /*width: 80%;*/
     margin: auto;
     margin-top:20px;
     min-width: 1050px;

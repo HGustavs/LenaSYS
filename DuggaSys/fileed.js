@@ -49,19 +49,21 @@ function returnedFile(data) {
 	filez = data;
 
     var tabledata = {
-    	tblhead:{
-    		filename:"File name",
-    		extension:"Extension",
-    		kind:"Kind",
-    		filesize:"Size",
-    		uploaddate:"Upload date",
-    		editor:"",
-    		trashcan:""
-    	},
-    	tblbody: data['entries'],
-    	tblfoot:[]
+        tblhead:{
+            filename:"File name",
+            extension:"Extension",
+            kind:"Kind",
+            filesize:"Size",
+            uploaddate:"Upload date",
+            editor:"",
+            trashcan:""
+        },
+        tblbody: data['entries'],
+        tblfoot:{}
     };
+    var colOrder=["filename","extension","kind","filesize","uploaddate","editor","trashcan"];
 
+	/*
     fileLink = new SortableTable(
 		tabledata,
 		"fileLink",
@@ -83,6 +85,19 @@ function returnedFile(data) {
 		true,
 		true
 	);
+	*/
+  fileLink = new SortableTable({
+      data:tabledata,
+      tableElementId:"fileLink",
+      filterElementId:"filterOptions",
+      renderCellCallback:renderCell,
+      renderSortOptionsCallback:renderSortOptions,
+      rowFilterCallback:rowFilter,
+      columnOrder:colOrder,
+      hasRowHighlight:true,
+      hasMagicHeadings:true,
+      hasCounterColumn:true
+	});
 
 
 	fileLink.renderTable();
@@ -110,20 +125,19 @@ function showLinkPopUp() {
 }
 
 function showFilePopUp(fileKind) {
-    $("#uploadbuttonname").html("<input class='submit-button fileed-submit-button' type='submit' " +
-    	"value='Upload file' onclick='uploadFile(\"" + fileKind + "\");'/>");
+    $("#uploadbuttonname").html("<input class='submit-button fileed-submit-button' type='submit' value='Upload file' onclick='uploadFile(\"" + fileKind + "\");'/>");
     $(".fileHeadline").css("display","none");
     $(".filePopUp").css("display","block");
-	$("#selecty").css("display","block");
-	$("#addFile").css("display","flex");
-	$(".linkPopUp").css("display","none");
+	  $("#selecty").css("display","block");
+	  $("#addFile").css("display","flex");
+	  $(".linkPopUp").css("display","none");
 
     if (fileKind == "MFILE") {
-    	$("#mFileHeadline").css("display","block");
+    	  $("#mFileHeadline").css("display","block");
     } else if (fileKind == "LFILE") {
-		$("#lFileHeadline").css("display","block");
+		    $("#lFileHeadline").css("display","block");
     } else if (fileKind == "GFILE") {
-		$("#gFileHeadline").css("display","block");
+		    $("#gFileHeadline").css("display","block");
     }
 }
 
@@ -200,42 +214,39 @@ function validateForm() {
 // renderCell <- Callback function that renders a specific cell in the table
 //----------------------------------------------------------------------------
 function renderCell(col,celldata,cellid) {
-	var str="";
+  var str="";
+  
+  if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
+      obj = JSON.parse(celldata);
+  }
 
 	if (col == "trashcan") {
-		obj = JSON.parse(celldata);
 	    str = "<span class='iconBox'><img id='dorf' class='trashcanIcon' src='../Shared/icons/Trashcan.svg' ";
-		str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></span>";
-		return str;
+		  str += " onclick='deleteFile(\"" + obj.fileid + "\",\"" + obj.filename + "\");' ></span>";
 	} else if (col == "filename") {
-		obj = JSON.parse(celldata);
-		if (obj.kind == "Link") {
-			return "<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
-		} else {
-
-			return "<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+obj.filename+"\")'>" + obj.shortfilename + "</span>";
-		}
+      if (obj.kind == "Link") {
+        str+="<a class='nowrap-filename' href='" + obj.filename + "' target='_blank'>" + obj.filename + "</a>";
+      } else {
+        str+="<span class='nowrap-filename' id='openFile' onclick='changeURL(\"showdoc.php?cid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+obj.filename+"\")'>" + obj.shortfilename + "</span>";
+      }
 	} else if (col == "filesize") {
-        var obj = JSON.parse(celldata);
-        if(obj.kind == "Link") {
-            return "<span>-</span>";
-        }
-        return "<span>" + formatBytes(obj.size, 0) + "</span>";
-    } else if (col == "extension") {
-	    return "<span>" + celldata + "</span>";
+      if(obj.kind == "Link") {
+          str+= "<span>-</span>";
+      }else{
+          str+="<span>" + formatBytes(obj.size, 0) + "</span>";
+      }        
+  } else if (col == "extension" || col=="uploaddate" || col=="kind") {
+      str+="<span>" + celldata + "</span>";
 	} else if (col == "editor") {
-		var obj = JSON.parse(celldata);
-		str = "";
-		if (obj.extension == "md" || obj.extension == "txt"){
-			str = "<span class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
-		} else if (obj.extension == "js" || obj.extension == "html" || obj.extension == "css" || obj.extension == "php"){
-            str = "<span class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
-            str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
-        }
-		return str;
+      if (obj.extension == "md" || obj.extension == "txt"){
+          str = "<span class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
+          str += "onclick='loadPreview(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
+      } else if (obj.extension == "js" || obj.extension == "html" || obj.extension == "css" || obj.extension == "php"){
+          str = "<span class='iconBox'><img id='dorf' class='markdownIcon' src='../Shared/icons/markdownPen.svg' ";
+          str += "onclick='loadFile(\"" + obj.filePath + "\", \"" + obj.filename + "\", " + obj.kind + ")'></span>";
+      }
 	}
-	return celldata;
+	return str;
 }
 
 //----------------------------------------------------------------
@@ -321,15 +332,15 @@ function fileNameSearch(row, colName, searchName) {
 //  Callback function that renders the col filter div
 //--------------------------------------------------------------------------
 
-function renderSortOptions(col,status) {
+function renderSortOptions(col,status,colname) {
 	str = "";
 
 	if (status ==- 1) {
-		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
 	} else if (status == 0) {
-		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 	} else {
-		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 	}
 	return str;
 }
@@ -340,36 +351,37 @@ function renderSortOptions(col,status) {
 //  Callback function with different compare alternatives for the column sort
 //--------------------------------------------------------------------------
 function compare(a,b) {
-	var col = sortableTable.currentTable.getSortcolumn();
-	var tempA = a;
-	var tempB = b;
-	if (col == "File name") {
-		tempA = JSON.parse(tempA);
-		tempB = JSON.parse(tempB);
-		tempA = tempA.shortfilename.toUpperCase();
-		tempB = tempB.shortfilename.toUpperCase();
-	} else if (col == "Size") {
-		tempA = JSON.parse(tempA);
-		tempB = JSON.parse(tempB);
-		if(tempA.kind != "Link"){
+    var col = sortableTable.currentTable.getSortcolumn();
+    var tempA = a;
+    var tempB = b;
+    if (col == "filename") {
+        tempA = JSON.parse(tempA);
+        tempB = JSON.parse(tempB);
+        tempA = tempA.shortfilename.toUpperCase();
+        tempB = tempB.shortfilename.toUpperCase();
+    } else if (col == "filesize") {
+        tempA = JSON.parse(tempA);
+        tempB = JSON.parse(tempB);
+        if(tempA.kind != "Link"){
             tempA = parseInt(tempA.size);
-		} else {
-			tempA = -1;
-		}
-		if(tempB.kind != "Link") {
+        } else {
+            tempA = -1;
+        }
+        if(tempB.kind != "Link") {
             tempB = parseInt(tempB.size);
-		} else {
-			tempB = -1;
-		}
-	}
+        } else {
+            tempB = -1;
+        }
+    }
 
-	if (tempA > tempB) {
-		return 1;
-	} else if (tempA < tempB) {
-		return -1;
-	} else {
-		return 0;
-	}
+    if (tempA > tempB) {
+        return 1;
+    } else if (tempA < tempB) {
+        return -1;
+    } else {
+        return 0;
+    }
+    return tempA-tempB;
 }
 
 function formatBytes(bytes,decimals) {
@@ -489,3 +501,20 @@ $(document).ready(function(){
 	});
 });
 
+// -------------==============######## Setup and Event listeners ###########==============-------------
+
+$(document).mousedown(function (e) {
+  FABDown(e);
+});
+
+$(document).mouseup(function (e) {
+  FABUp(e);
+});
+
+$(document).on("touchstart", function(e){
+  FABDown(e);
+});
+             
+$(document).on("touchend", function(e){
+  FABUp(e);
+});
