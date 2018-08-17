@@ -519,8 +519,7 @@ function returnedDugga(data) {
 			changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
 				+ querystring['coursevers'] + "");
 	}
-  
-	var tabledata = {
+  var tabledata = {
 		tblhead: {
 			did: "",
 			qname: "Name",
@@ -533,11 +532,12 @@ function returnedDugga(data) {
 			modified: "Last modified",
 			arrow: "",
 			cogwheel: "",
-			trashcan: "headingAddButton"
+			trashcan: ""
 		},
 		tblbody: data['entries'],
-		tblfoot: []
+		tblfoot: {}
 	}
+	/*
 	duggaTable = new SortableTable(
 		tabledata,
 		"quiz",
@@ -558,95 +558,121 @@ function returnedDugga(data) {
 		null,
 		true
 	);
-	
-	duggaTable.renderTable(); // Renders the dugga table
+	*/
+		var colOrder=["did","qname","autograde","gradesystem","quizFile","qstart","deadline","qrelease","modified","arrow","cogwheel","trashcan"];
+		duggaTable = new SortableTable({
+				data:tabledata,
+				tableElementId:"quiz",
+				renderCellCallback:renderCell,
+				renderSortOptionsCallback:renderSortOptionsDugga,
+				rowFilterCallback:duggaFilter,
+				columnOrder:colOrder,
+				hasRowHighlight:true,
+				hasMagicHeadings:true,
+				hasCounterColumn:false
+		});
 
-	var content = "";
-	
-	// If the user has access to the dugga page, then render the content
-	if (data['writeaccess']) {
-		
-		/* Page title */
-		content += "<div class='titles' style='padding-top:10px;'>"
-		content += "<h1 style='flex:1;text-align:center;'>Tests</h1>"
-		content += "</div>"
+		duggaTable.renderTable(); // Renders the dugga table
 
-		/* Search engine */
-		content += "<div id='testSearchContainer'>"
-        content += "<input id='duggaSearch' class ='searchField' type='search' placeholder='Search...' onkeyup='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'onsearch='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'/>"
-        content += "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>"
-        content += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
-        content += "</button>"
-		content += "</div>"
+		var content = "";
 		
-		/* FAB Button */
-		content += "<div class='fixed-action-button'>"
-		content += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
-		content += "</div>";
-	}
-	else {
-		$("#quiz").html("");
-		alert("You don't have access to this page. You are now being redirected!")
-		changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
-				+ querystring['coursevers'] + "");
-	}
-	
-	$("#headerContent").html(content);
-	
-	
-	$("content").html();
-	var result = 0;
-	filez = data['files'];
-	duggaPages = data['duggaPages'];
-	document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
-	str = "";
-	if (globalVariant){
-		renderVariant(globalVariant);
-	}
-	$(window).scrollTop(localStorage.getItem("duggaEdScrollPosition" + globalData.coursecode));
+		// If the user has access to the dugga page, then render the content
+		if (data['writeaccess']) {
+			
+				/* Page title */
+				content += "<div class='titles' style='padding-top:10px;'>"
+						content += "<h1 style='flex:1;text-align:center;'>Tests</h1>"
+				content += "</div>"
+
+				/* Search engine */
+				content += "<div id='testSearchContainer'>"
+						content += "<input id='duggaSearch' class ='searchField' type='search' placeholder='Search...' onkeyup='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'onsearch='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'/>"
+						content += "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>"
+						content += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
+						content += "</button>"
+				content += "</div>"
+				
+				/* FAB Button */
+				content += "<div class='fixed-action-button'>"
+						content += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
+				content += "</div>";
+		}
+		else {
+				$("#quiz").html("");
+				alert("You don't have access to this page. You are now being redirected!")
+				changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers=" + querystring['coursevers'] + "");
+		}
+		
+		$("#headerContent").html(content);
+		
+		
+		$("content").html();
+		var result = 0;
+		filez = data['files'];
+		duggaPages = data['duggaPages'];
+		document.getElementById("sectionedPageTitle").innerHTML = data.coursename + " - " + data.coursecode;
+		str = "";
+		if (globalVariant){
+				renderVariant(globalVariant);
+		}
+		$(window).scrollTop(localStorage.getItem("duggaEdScrollPosition" + globalData.coursecode));
 }
 
 // Table for variants
 function renderVariant(clickedElement) {
-	globalVariant = clickedElement;
-	updateVariantTitle(clickedElement);
-	var tabledata = {
-		tblhead: {
-			vid: "",
-			param: "Parameter",
-			modified: "Modified",
-			disabled: "Status",
-			arrowVariant: "",
-			cogwheelVariant: "",
-			trashcanVariant: ""
-		},
-		tblbody: globalData['entries'][clickedElement].variants,
-		tblfoot: []
-	}
-	variantTable = new SortableTable(
-		tabledata,
-		"variant",
-		null,
-		"",
-		renderCell,
-		renderSortOptionsVariant,
-		null,
-		variantFilter,
-		[],
-		[],
-		"",
-		null,
-		null,
-		null,
-		null,
-		null,
-		null,
-		false
-	);
-	searchterm = '';
-	variantTable.renderTable();
-	newVariant();
-	$('#did').val(globalData['entries'][clickedElement].arrow);
+		globalVariant = clickedElement;
+		updateVariantTitle(clickedElement);
+		var tabledata = {
+				tblhead: {
+						vid: "",
+						param: "Parameter",
+						modified: "Modified",
+						disabled: "Status",
+						arrowVariant: "",
+						cogwheelVariant: "",
+						trashcanVariant: ""
+				},
+				tblbody: globalData['entries'][clickedElement].variants,
+				tblfoot: {}
+		}
+		/*
+		variantTable = new SortableTable(
+			tabledata,
+			"variant",
+			null,
+			"",
+			renderCell,
+			renderSortOptionsVariant,
+			null,
+			variantFilter,
+			[],
+			[],
+			"",
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			false
+		);
+		*/
+		var colOrderVariant=["vid","param","modified","disabled","arrowVariant","cogwheelVariant","trashcanVariant"];
+		variantTable = new SortableTable({
+				data:tabledata,
+				tableElementId:"variant",
+				renderCellCallback:renderCell,
+				renderSortOptionsCallback:renderSortOptionsVariant,
+				rowFilterCallback:variantFilter,
+				columnOrder:colOrderVariant,
+				hasRowHighlight:true,
+				hasMagicHeadings:true,
+				hasCounterColumn:false
+		});
+		searchterm = '';
+		variantTable.renderTable();
+		newVariant();
+		$('#did').val(globalData['entries'][clickedElement].arrow);
 }
 
 // Rendring specific cells
@@ -770,32 +796,41 @@ function renderCell(col, celldata, cellid) {
 
 
 //Making dugga headers clickable for sorting.
-function renderSortOptionsDugga(col,status) {
-	str = "";
-	if(col == "headingAddButton"){
-		str += "<input type='button' value='+' style='float:left;' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga();'>";
-	}
-	else{
-		if (status ==- 1) {
-			str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
-		} else if (status == 0) {
-			str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
-		} else {
-			str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+function renderSortOptionsDugga(col,status,colname) {
+		str = "";
+		/*
+		if(col == "headingAddButton"){
+			str += "<input type='button' value='+' style='float:left;' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga();'>";
+		}	
+		else{
+			if (status ==- 1) {
+				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+			} else if (status == 0) {
+				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+			} else {
+				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+			}
 		}
-	}
-	return str;
+		*/
+		if (status ==- 1) {
+				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
+		} else if (status == 0) {
+				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+		} else {
+				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+		}
+return str;
 }
 
 //Making variant headers clickable for sorting.
-function renderSortOptionsVariant(col,status) {
+function renderSortOptionsVariant(col,status,colname) {
 	str = "";
 	if (status ==- 1) {
-		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "</span>";
+		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
 	} else if (status == 0) {
-		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",1)'>" + col + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
+		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>";
 	} else {
-		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",0)'>" + col + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
+		str += "<span class='sortableHeading' onclick='variantTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 	}
 	return str;
 }
@@ -810,7 +845,7 @@ function compare(a,b) {
 	// everytime we sort the table
 	count = 0;
 
-	if (col == "Name"  || col == "Template") {
+	if (col == "qname"  || col == "quizFile") {
 		tempA = tempA.toUpperCase();
 		tempB = tempB.toUpperCase();
 	}
@@ -928,10 +963,45 @@ $(document).scroll(function(e){
 });
 
 // Start of functions handling the FAB-button functionality
+$(document).mousedown(function (e) {
+		mouseDown(e);
+		FABDown(e);
+});
+
+$(document).mouseup(function (e) {
+		mouseUp(e);
+		FABUp(e);
+});
+
+$(document).on("touchstart", function(e){
+		mouseDown(e);
+		FABDown(e);
+});
+						 
+$(document).on("touchend", function(e){
+		mouseUp(e);
+		FABUp(e);
+});
+
+//----------------------------------------------------------------------------------
+// mouseDown: make sure mousedown is only handled in one single place regardless if touch or mouse
+//----------------------------------------------------------------------------------
+
+function mouseDown(e){
+
+}
+
+//----------------------------------------------------------------------------------
+// mouseUp: make sure mousedown is only handled in one single place regardless if touch or mouse
+//----------------------------------------------------------------------------------
+
+function mouseUp(e){
+
+}
 
 function createQuickItem(){
-	newDugga();
-	createDugga();
+		newDugga();
+		createDugga();
 }
 
 // End of functions handling the FAB-button functionality

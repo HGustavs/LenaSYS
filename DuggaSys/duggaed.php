@@ -214,5 +214,11 @@ pdoConnect();
     </div>
   	<!-- Edit Variant Dialog END -->
 
+    <div class="fixed-action-button" id="fabButtonAcc">
+        <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
+        <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
+        </ol>
+	</div>
+
 </body>
 </html>
