@@ -237,12 +237,6 @@ function compare(a,b) {
 	if (col == "examiner") {
 		if(tempA.examiner!=null)tempA = filez.teachers[tempA.examiner].name;
 		if(tempB.examiner!=null)tempB = filez.teachers[tempB.examiner].name;
-		/*
-		tempA = JSON.parse(tempA)['examiners'];
-		tempB = JSON.parse(tempB)['examiners'];
-    tempA = tempA[tempA.length - 1]['teacher'];
-		tempB = tempB[tempB.length - 1]['teacher'];
-		*/
 	}
 
   if(tempA != null){
@@ -311,15 +305,6 @@ function rowFilter(row) {
 		return false;
 }
 
-/*
-function renderColumnFilter(col,status,colname) {
-  str = "<div class='checkbox-dugga'>";
-  str += "<input " + (status ? "checked " : "") + "type='checkbox' onclick='myTable.toggleColumn(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
-	str += "</div>";
-  return str;
-}
-*/
-
 var myTable;
 
 //----------------------------------------------------------------------------
@@ -355,29 +340,6 @@ function returnedAccess(data) {
 		tblfoot:{}
 	}
 	var colOrder=["username","ssn","firstname","lastname","class","modified","examiner","vers","access","groups","requestedpasswordchange"]
-	/*
-	myTable = new SortableTable(
-		tabledata,
-		"accessTable",
-		"filterOptions",
-		"",
-		renderCell,
-		renderSortOptions,
-		renderColumnFilter,
-		rowFilter,
-		[],
-		[],
-		"",
-		null,
-		null,
-		null,
-		null,
-		null,
-		null,
-		true,
-		true
-	);
-	*/
 	myTable = new SortableTable({
 		data:tabledata,
 		tableElementId:"accessTable",
