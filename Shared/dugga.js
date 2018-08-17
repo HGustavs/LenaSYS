@@ -1461,45 +1461,43 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 //----------------------------------------------------------------------------------
 // FABDown : FAB Mouse Down / Touch Down
 //----------------------------------------------------------------------------------
-
 function FABDown(e)
 {
-	// If the fab list is visible, there should be no timeout to toggle the list
-	if ($('.fab-btn-list').is(':visible')) {
-		if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) FABToggle();
-	} else {
-      if (e.target.id == "fabBtn") {
-				pressTimer = window.setTimeout(function() { FABToggle(); }, 200);
+		// If the fab list is visible, there should be no timeout to toggle the list
+		if ($('.fab-btn-list').is(':visible')) {
+				if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) FABToggle();
+		} else {
+				if (e.target.id == "fabBtn") {
+						pressTimer = window.setTimeout(function() { FABToggle(); }, 200);
+				}
 		}
-	}
 }
 
 //----------------------------------------------------------------------------------
-// FABDown : FAB Mouse Down / Touch Down
+// FABUp : FAB Mouse Up / Touch Up
 //----------------------------------------------------------------------------------
-
 function FABUp(e)
 {
-	// A quick item should be created on a "fast click" if the fab list isn't visible / Click outside the FAB list / if the target of the click isn't the container...
-	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
-			clearTimeout(pressTimer);
-			createQuickItem();
-    }else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
-        FABToggle();
-	}	
+		// A quick item should be created on a "fast click" if the fab list isn't visible / Click outside the FAB list / if the target of the click isn't the container...
+		if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
+				clearTimeout(pressTimer);
+				createQuickItem();
+		}else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
+				FABToggle();
+		}	
 }
 
 //----------------------------------------------------------------------------------
-// FABToggle : FAB Mouse Down / Touch Down
-//----------------------------------------------------------------------------------
-
+// FABToggle : FAB Mouse Toggle / Touch Toggle
+//
 // Toggles action bubbles when pressing the FAB button
+//----------------------------------------------------------------------------------
 function FABToggle() {
-	if (!$('.fab-btn-sm').hasClass('scale-out')) {
-		$('.fab-btn-sm').toggleClass('scale-out');
-		$('.fab-btn-list').delay(100).fadeOut(0);
-	} else {
-		$('.fab-btn-list').fadeIn(0);
-		$('.fab-btn-sm').toggleClass('scale-out');
-	}
+		if (!$('.fab-btn-sm').hasClass('scale-out')) {
+				$('.fab-btn-sm').toggleClass('scale-out');
+				$('.fab-btn-list').delay(100).fadeOut(0);
+		} else {
+				$('.fab-btn-list').fadeIn(0);
+				$('.fab-btn-sm').toggleClass('scale-out');
+		}
 }
