@@ -174,10 +174,17 @@ function makeoptions(option,optionlist,valuelist)
 		var str="";
 		for(var i=0;i<optionlist.length;i++){
 				str+="<option ";
-				if(valuelist[i]==option){
-						str+="selected='selected' ";
+				if(valuelist==null){
+						if(i==option){
+								str+="selected='selected' ";
+						}
+						str+="value='"+i+"'>"+optionlist[i]+"</option>";
+				}else{
+						if(valuelist[i]==option){
+								str+="selected='selected' ";
+						}
+						str+="value='"+valuelist[i]+"'>"+optionlist[i]+"</option>";
 				}
-				str+="value='"+valuelist[i]+"'>"+optionlist[i]+"</option>";
 		}
 		return str;
 }
