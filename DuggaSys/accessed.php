@@ -149,7 +149,7 @@
 	<!-- Edit User Dialog END -->
 
 	<div class="fixed-action-button" id="fabButtonAcc">
-	    <a class="btn-floating fab-btn-lg noselect" id="fabBtnAcc">+</a>
+	    <a class="btn-floating fab-btn-lg noselect" id="fabBtn">+</a>
 	    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
 	        <li onclick="showImportUsersPopup();" >
 							<a id="iFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Import user(s)'>
