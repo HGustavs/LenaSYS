@@ -103,7 +103,7 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 			}
 
-			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupID) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment, :gradesys, :highscoremode, :group)");
+			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment, :gradesys, :highscoremode, :group)");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
@@ -118,7 +118,7 @@ if(checklogin()){
 			if ($grp != "UNK") {
 				$query->bindParam(':group', $grp);
 			} else {
-				$query->bindValue(':group', null, PDO::PARAM_INT);
+				$query->bindValue(':group', null, PDO::PARAM_STR);
 			} 
 
 
@@ -177,7 +177,7 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 			}
 
-			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupID=:group WHERE lid=:lid;");
+			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupKind=:group WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':comments', $comments);
@@ -186,7 +186,7 @@ if(checklogin()){
 			if ($grp != "UNK") {
 				$query->bindParam(':group', $grp);
 			} else {
-				$query->bindValue(':group', null, PDO::PARAM_INT);
+				$query->bindValue(':group', null, PDO::PARAM_STR);
 			} 
 
 			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
@@ -247,6 +247,7 @@ if(checklogin()){
 			$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
 			$totalGroups = 24 * count($courseversions);
 
+			/*
 			// Check if groups exists. If not add them
 			$stmt = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid");
 			$stmt->bindParam(":cid", $courseid);
@@ -275,6 +276,7 @@ if(checklogin()){
 					}
 				}
 			}
+			*/
 		}
 	} 
 }
@@ -328,6 +330,22 @@ foreach($query->fetchAll() as $row) {
 		)
 	);
 }
+$groupmember=array();
+$query = $pdo->prepare("SELECT `groups` FROM user_course WHERE uid=:uid AND cid=:cid;");
+$query->bindParam(':cid', $courseid);
+$query->bindParam(':uid', $userid);
+$result=$query->execute();
+
+if(!$query->execute()) {
+	$error=$query->errorInfo();
+	$debug="Error reading results".$error[2];
+}
+
+foreach($query->fetchAll() as $row) {
+	$groupmember=trim($row['groups']);	
+	$groupmember=explode(" ", $groupmember);	
+}
+
 $resulties=array();
 $query = $pdo->prepare("SELECT moment,quiz,grade,DATE_FORMAT(submitted, '%Y-%m-%dT%H:%i:%s') AS submitted,DATE_FORMAT(marked, '%Y-%m-%dT%H:%i:%s') AS marked,useranswer FROM userAnswer WHERE uid=:uid AND cid=:cid AND vers=:vers;");
 $query->bindParam(':cid', $courseid);
@@ -369,7 +387,7 @@ foreach($query->fetchAll() as $row) {
 $entries=array();
 
 if($cvisibility){
-  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, groupID FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, groupKind FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
@@ -380,11 +398,12 @@ if($cvisibility){
 	}
 
 	foreach($query->fetchAll() as $row) {
+		/*
 		$stmt = $pdo->prepare("SELECT groupName FROM groups WHERE groupID=:groupID");
 		$stmt->bindParam(":groupID", $row['groupID']);
 		$stmt->execute();
 		$grpName = $stmt->fetchAll(PDO::FETCH_COLUMN);
-
+		*/
 		// Push info
 		if($isSuperUserVar||$row['visible']==1||($row['visible']==2&&($hasread||$haswrite))||($row['visible']==0&&$haswrite==true)){
 				array_push(
@@ -404,8 +423,11 @@ if($cvisibility){
 						'qrelease' => $row['qrelease'],
 						'comments' => $row['comments'],
 						'qstart' => $row['qstart'],
+						/*
 						'group' => $row['groupID'],
 						'groupName' => $grpName
+						*/
+						'group' => $row['groupKind']
 					)
 				);
 		}
@@ -588,16 +610,28 @@ if($ha){
 // Declare groups array if no groups are found
 $groups=array();
 
+/*
 $stmt = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid AND vers=:vers");
 $stmt->bindParam(":cid", $courseid);
 $stmt->bindParam(":vers", $coursevers);
+*/
+$stmt = $pdo->prepare("SELECT * FROM `groups`");
 
 if (!$stmt->execute()) {
-	$error=$stmt->errorInfo();
-	$debug="Error getting groups " . $error[2];
+		$error=$stmt->errorInfo();
+		$debug="Error getting groups " . $error[2];
 } else {
-	$groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+				if($groups[$row['groupKind']]==null){
+						$groups[$row['groupKind']]=array();
+				}
+				array_push($groups[$row['groupKind']],$row['groupVal']);				
+		}
 }
+$tst_data=array();
+$tst_data['Le']=array('A');
+$tst_data['No']=array('2');
+$tst_data['Vi']=array('VI');
 
 $array = array(
 	"entries" => $entries,
@@ -616,7 +650,8 @@ $array = array(
 	"unmarked" => $unmarked,
 	"startdate" => $startdate,
 	"enddate" => $enddate,
-	"groups" => $groups
+	"groups" => $groups,
+	"groupmember" => $groupmember
 );
 
 echo json_encode($array);

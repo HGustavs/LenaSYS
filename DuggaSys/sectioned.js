@@ -114,7 +114,7 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group = "UNK") {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group) {
 	
 	nameSet = false;
 	if (entryname == "undefined") entryname = "New Header";
@@ -132,7 +132,13 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	$("#visib").html(makeoptions(evisible,["Hidden","Public","Login"],[0,1,2]));
 	$("#tabs").html(makeoptions(gradesys,["0 tabs","1 tabs","2 tabs","3 tabs","end","1 tab + end","2 tabs + end"],[0,1,2,3,4,5,6]));
 	$("#highscoremode").html(makeoptions(highscoremode,["None","Time Based","Click Based"],[0,1,2]));	
-	$("#group").html("<option value='UNK'>Select Group</option>"+makeoptionsItem(group,retdata['groups'],"groupName","groupID"));
+	var groups=[];
+	for (var key in retdata['groups']) {
+			// skip loop if the property is from prototype
+			if (!retdata['groups'].hasOwnProperty(key)) continue;
+			groups.push(key);
+	}
+	$("#group").html("<option value='UNK'>Select Group</option>"+makeoptions(group,groups,groups));
 	
 	// Set Link
 	$("#link").val(elink);	
@@ -707,9 +713,11 @@ function returnedSection(data) {
 					// Section
 					str +="<div class='nowrap"+ hideState + "' style='padding-left:5px;' title='"+ item['entryname'] + "'>";
 					str+="<span class='ellipsis listentries-span'>"+ item['entryname'] + "</span>";
+					/*
 					if (item['groupName'].length) {
 						str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%; min-width:18px;'/> " + item['groupName'];
 					}
+					*/
 					str+="<img src='../Shared/icons/desc_complement.svg' id='arrowComp"+arrowID+"' class='arrowComp' style='display:inline-block;'>";
 					str+="<img src='../Shared/icons/right_complement.svg' id='arrowRight"+arrowID+"' class='arrowRight' style='display:none;'></div>";
 				}else if (itemKind == 4){
@@ -717,9 +725,11 @@ function returnedSection(data) {
 					var strz=makeTextArray(item['gradesys'],["","(U-G-VG)","(U-G)","(U-3-4-5)"]);
 					str+="<div class='nowrap"+hideState+"' style='padding-left:5px;' title='"+item['entryname']+"'>";
 					str+="<span class='ellipsis listentries-span'>"+item['entryname']+" "+strz+" </span>";
+					/*
 					if (item['groupName'].length) {
 						str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%;min-width:18px;'/> " + item['groupName'];
 					}
+					*/
 					str+="<img src='../Shared/icons/desc_complement.svg' id='arrowComp"+arrowID+"' class='arrowComp' style='display:inline-block;'>";
 					str+="<img src='../Shared/icons/right_complement.svg'"+"id='arrowRight"+arrowID+"' class='arrowRight' style='display:none;'>";
 					str+="</div>";
@@ -748,6 +758,22 @@ function returnedSection(data) {
 				}
 
 				str += "</td>";
+
+				// group						
+				if(item['group']!=null){						
+						str+="<td>";				
+						str+="<span style='white-space:nowrap;'>You belong to group:";
+						let count=0;
+						for(let i=0;i<data['groupmember'].length;i++){
+								let member=data['groupmember'][i];
+								if(data['groups'][item['group']].includes(member)){
+										if(count>0)str+=",";
+										str+=data['groupmember'][i];
+										count++;
+								}
+						}
+						str+="</span></td>";		
+				}
 
 				// Add generic td for deadlines if one exists
 				if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
@@ -792,7 +818,7 @@ function returnedSection(data) {
 					if(itemKind===4) str+="class='moment"+hideState+"' ";
 				
 					str +="><img id='dorf' class='margin-4' src='../Shared/icons/Cogwheel.svg' ";
-					str +=" onclick='selectItem("+makeparams([item['lid'],item['entryname'], item['kind'],item['visible'],item['link'],momentexists,item['gradesys'],item['highscoremode'],item['comments']])+");' />";
+					str +=" onclick='selectItem("+makeparams([item['lid'],item['entryname'], item['kind'],item['visible'],item['link'],momentexists,item['gradesys'],item['highscoremode'],item['comments'],item['group']])+");' />";
 					str +="</td>";
 				}
 
@@ -801,7 +827,7 @@ function returnedSection(data) {
 					str+="<td style='width:36px;' class='"+makeTextArray(itemKind ,["header","section","code","test","moment","link","group","message"])+" "+ hideState + "'>";
 					str+="<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
 					str+="</td>";
-				}
+				}				
 
 				str += "</tr>";
 				str += "</table></div>";

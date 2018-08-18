@@ -12,6 +12,7 @@ ALTER TABLE fileLink ADD COLUMN vers VARCHAR(8);
 
 /* Add groupID to listentries e.g. listentry participates in groupid */
 ALTER TABLE listentries add column groupID INT DEFAULT NULL;
+ALTER TABLE listentries add column groupKind VARCHAR(4) DEFAULT NULL;
 
 ALTER TABLE quiz add column jsondeadline VARCHAR(2048);
 
