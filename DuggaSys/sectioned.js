@@ -115,7 +115,7 @@ function toggleHamburger() {
 //----------------------------------------------------------------------------------
 
 function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group = "UNK") {
-	
+
 	nameSet = false;
 	if (entryname == "undefined") entryname = "New Header";
 	if (kind == "undefined") kind = 0;
@@ -128,24 +128,24 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
 	// Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
 	$("#gradesys").html(makeoptions(gradesys,["-","U-G-VG","U-G","U-3-4-5"],[0,1,2,3]));
-	$("#type").html(makeoptions(kind,["Header","Section","Code","Test","Moment","Link","Group Activity","Message"],[0,1,2,3,4,5,6,7]));	
+	$("#type").html(makeoptions(kind,["Header","Section","Code","Test","Moment","Link","Group Activity","Message"],[0,1,2,3,4,5,6,7]));
 	$("#visib").html(makeoptions(evisible,["Hidden","Public","Login"],[0,1,2]));
 	$("#tabs").html(makeoptions(gradesys,["0 tabs","1 tabs","2 tabs","3 tabs","end","1 tab + end","2 tabs + end"],[0,1,2,3,4,5,6]));
-	$("#highscoremode").html(makeoptions(highscoremode,["None","Time Based","Click Based"],[0,1,2]));	
+	$("#highscoremode").html(makeoptions(highscoremode,["None","Time Based","Click Based"],[0,1,2]));
 	$("#group").html("<option value='UNK'>Select Group</option>"+makeoptionsItem(group,retdata['groups'],"groupName","groupID"));
-	
+
 	// Set Link
-	$("#link").val(elink);	
+	$("#link").val(elink);
 	if(kind==2){
-			$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
+			$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));
 	}else if(kind==3){
-			$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'qname','id'));	
+			$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'qname','id'));
 	}else if(kind==5){
-			$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
+			$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));
 	}else{
-			$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");		
+			$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");
 	}
-	
+
 	// Set Moments - requires iteration since we only process kind 4
 	str = "";
 	if (retdata['entries'].length > 0) {
@@ -190,13 +190,13 @@ function changedType(kind)
 {
 		// Prepares option list for code example (2)/dugga (3) dropdown/links (5) / Not applicable
 		if(kind==2){
-				$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
+				$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));
 		}else if(kind==3){
-				$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'id','qname'));		
+				$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'id','qname'));
 		}else if(kind==5){
-				$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
+				$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));
 		}else{
-				$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");		
+				$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");
 		}
 }
 
@@ -205,7 +205,7 @@ function changedType(kind)
 //----------------------------------------------------------------------------------
 
 function showEditVersion() {
-		
+
 	startdate = new Date(retdata['startdate'])
 	enddate = new Date(retdata['enddate'])
 	var startHour = startdate.getHours()
@@ -303,13 +303,13 @@ function addColorsToTabSections(kind, visible,spkind){
 			retStr += "opacity:0.3;";
 		}
 	}
-	
+
 	if(spkind=="E"){
 			retStr+="'><div class='spacerEnd'></div></td>";
 	}else{
-			retStr+="'><div class='spacerLeft'></div></td>";	
+			retStr+="'><div class='spacerLeft'></div></td>";
 	}
-		
+
 	return retStr;
 }
 
@@ -327,7 +327,7 @@ function prepareItem()
 		// Storing tabs in gradesys column!
 		var kind=$("#type").val()
 		if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7) param.gradesys = $("#tabs").val();
-		
+
 		param.lid = $("#lid").val();
 		param.kind = kind;
 		param.link = $("#link").val();
@@ -338,7 +338,7 @@ function prepareItem()
 		param.gradesys = $("#gradesys").val();
 		param.comments = $("#comments").val();
 		param.group = $("#group").val();
-	
+
 		return param;
 }
 
@@ -357,9 +357,9 @@ function deleteItem(item_lid = null) {
 //----------------------------------------------------------------------------------
 
 function updateItem() {
-	
+
 	AJAXService("UPDATE", prepareItem(), "SECTION");
-	
+
 	$("#sectionConfirmBox").css("display", "none");
 	$("#editSection").css("display", "none");
 
@@ -373,16 +373,21 @@ function newItem() {
 
 	AJAXService("NEW", prepareItem(), "SECTION");
 	$("#editSection").css("display", "none");
-	
-	setTimeout(scrollToBottom, 200); // Scroll to the bottom to show newly created items.
+
+	setTimeout(scrollToNewItem, 200);
+
 }
 
+function scrollToNewItem() {
+	$(window).scrollTop($("#Sectionlistc")[0].scrollHeight);
+
+}
 //----------------------------------------------------------------------------------
 // createVersion: New Version of Course
 //----------------------------------------------------------------------------------
 
 function createVersion() {
-	
+
 	var param={};
 	param.courseid = querystring['courseid'];
 	param.versid = document.getElementById("versid").value;
@@ -393,7 +398,7 @@ function createVersion() {
 	param.makeactive = 2+$("#emakeactive").is(':checked');
 	param.startdate = getDateFormat(new Date($("#startdate").val()+" "+$("#hourPickerStartNewVersion").val()+":"+$("#minutePickerStartNewVersion").val()),"hourMinuteSecond");
 	param.enddate = getDateFormat(new Date($("#enddate").val()+" "+$("#hourPickerEndNewVersion").val()+":"+$("#minutePickerEndNewVersion").val()),"hourMinuteSecond");
-	
+
 	newversid = param.versid;
 
 	if(param.versid == "" || param.versname == ""){
@@ -415,9 +420,9 @@ function createVersion() {
 //----------------------------------------------------------------------------------
 
 function updateVersion() {
-	
+
 	var param={};
-	
+
 	param.courseid=querystring['courseid'];
 	param.versid = document.getElementById("eversid").value;
 	param.versname = document.getElementById("eversname").value;
@@ -427,7 +432,7 @@ function updateVersion() {
 	param.makeactive = 2+$("#emakeactive").is(':checked');
 	param.startdate = getDateFormat(new Date($("#estartdate").val()+" "+$("#hourPickerStartEditVersion").val()+":"+$("#minutePickerStartEditVersion").val()),"hourMinuteSecond");
 	param.enddate = getDateFormat(new Date($("#eenddate").val()+" "+$("#hourPickerEndEditVersion").val()+":"+$("#minutePickerEndEditVersion").val()),"hourMinuteSecond");
-	
+
 	AJAXService("UPDATEVRS", param, "SECTION");
 
 	/*
@@ -465,7 +470,7 @@ function returnedSection(data) {
 	retdata = data;
 
 	if (data['debug'] != "NONE!") alert(data['debug']);
-	
+
 	var now = new Date();
 	var startdate = new Date(retdata['startdate']);
 	var enddate = new Date(retdata['enddate']);
@@ -478,7 +483,7 @@ function returnedSection(data) {
 		}
 	}
 
-	// Fill section list with information	
+	// Fill section list with information
 	if (querystring['coursevers'] != "null") {
 		var versionname = "";
 		if (retdata['versions'].length > 0) {
@@ -498,7 +503,7 @@ function returnedSection(data) {
 		document.getElementById("course-coursecode").innerHTML=retdata['coursecode'];
 		document.getElementById("course-coursename").innerHTML=retdata['coursename'];
 		document.getElementById("course-versname").innerHTML=versionname;
-		
+
 		var str = "";
 
 		if (data['writeaccess']) {
@@ -515,14 +520,14 @@ function returnedSection(data) {
 						}
 						if(querystring['coursevers']==item['vers']) versnme=item['versname'];
 				}
-				
+
 				document.getElementById("courseDropdownTop").innerHTML = bstr;
 				document.getElementById("copyvers").innerHTML = bstr;
-			
+
 				// Show FAB / Menu
 				document.getElementById("TopMenuStatic").style.display = "Block";
 				document.getElementById("FABStatic").style.display = "Block";
-			
+
 				// Show addElement Button
 				document.getElementById("addElement").style.display="Block";
 		} else {
@@ -531,7 +536,7 @@ function returnedSection(data) {
 			document.getElementById("FABStatic").style.display = "None";
 
 		}
-		
+
 		// hide som elements if to narrow
 		var hiddenInline = "";
 		var showInline = true;
@@ -542,13 +547,13 @@ function returnedSection(data) {
 			showInline = true;
 			hiddenInline = "inline";
 		}
-	
+
 		str += "<div id='Sectionlistc'>";
 
 		// For now we only have two kinds of sections
 		if (data['entries'].length > 0){
 			var kk = 0;
-			
+
 			for (i = 0; i < data['entries'].length; i++) {
 				var item = data['entries'][i];
 				var deadline = item['deadline'];
@@ -557,7 +562,7 @@ function returnedSection(data) {
 				// Separating sections into different classes
 				var valarr=["header","section","code","test","moment","link","group","message"];
 				str+="<div id='"+makeTextArray(item['kind'],valarr)+menuState.idCounter+data.coursecode+"' class='"+makeTextArray(item['kind'],valarr)+"' style='display:block'>";
-				
+
 				menuState.idCounter++;
 				// All are visible according to database
 
@@ -577,7 +582,7 @@ function returnedSection(data) {
 
 				// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment
 				var itemKind = parseInt(item['kind']);
-				
+
 				if (itemKind === 3 || itemKind === 4 || itemKind === 6) {
 
 					// Styling for quiz row e.g. add a tab spacer
@@ -617,10 +622,10 @@ function returnedSection(data) {
 										}
 								}
 							}
-							
+
 						}
 					}
-					
+
 					if (itemKind === 3 || itemKind === 6) {
 						str += "<td class='LightBox" + hideState + "'>";
 					} else if (itemKind === 4) {
@@ -723,26 +728,26 @@ function returnedSection(data) {
 					str+="<img src='../Shared/icons/desc_complement.svg' id='arrowComp"+arrowID+"' class='arrowComp' style='display:inline-block;'>";
 					str+="<img src='../Shared/icons/right_complement.svg'"+"id='arrowRight"+arrowID+"' class='arrowRight' style='display:none;'>";
 					str+="</div>";
-				}else if (itemKind == 2){ 
+				}else if (itemKind == 2){
 					// Code Example
 					var param={'exampleid':item['link'],'courseid':querystring['courseid'],'cvers':querystring['coursevers']};
 					str +="<div class='ellipsis nowrap'><span>"+makeanchor("codeviewer.php",hideState,"margin-left:15px;",item['entryname'],false,param)+"</span></div>";
-				}else if (itemKind == 3){ 
+				}else if (itemKind == 3){
 					// Test / Dugga
 					var param={'did':item['link'],'cid':querystring['courseid'],'coursevers':querystring['coursevers'],'moment':item['lid'],'segment':momentexists,highscoremode:item['highscoremode'],comment:item['comments'],deadline:item['deadline']};
 					str +="<div class='ellipsis nowrap'><span>"+makeanchor("showDugga.php",hideState,"cursor:pointer;margin-left:15px;",item['entryname'],false,param)+"</span></div>";
-				}else if (itemKind == 5){ 
+				}else if (itemKind == 5){
 					// Link
 					if (item['link'].substring(0, 4) === "http") {
 						str+=makeanchor(item['link'],hideState,"cursor:pointer;margin-left:15px;",item['entryname'],false,{});
 					} else {
-						var param={'exampleid':item['link'],'courseid':querystring['courseid'],'coursevers':querystring['coursevers'],'fname':item['link']};						
+						var param={'exampleid':item['link'],'courseid':querystring['courseid'],'coursevers':querystring['coursevers'],'fname':item['link']};
 						str+=makeanchor("showdoc.php",hideState,"cursor:pointer;margin-left:15px;",item['entryname'],false,param);
 					}
-				}else if (itemKind == 6){ 
+				}else if (itemKind == 6){
 					// Group
 					str +="<div class='ellipsis nowrap'><span>"+makeanchor("#",hideState,"margin-left:15px;",item['entryname'],false,{})+"</span></div>";
-				}else if (itemKind == 7){ 
+				}else if (itemKind == 7){
 					// Message
 					str +="<span style='padding-left:5px;' title='"+item['entryname']+"'>"+item['entryname']+"</span>";
 				}
@@ -786,11 +791,11 @@ function returnedSection(data) {
 				// Cog Wheel
 				if (data['writeaccess']) {
 					str +="<td style='width:32px;' ";
-					
+
 					if(itemKind===0) str+="class='header"+hideState+"' ";
 					if(itemKind===1) str+="class='section"+hideState+"' ";
 					if(itemKind===4) str+="class='moment"+hideState+"' ";
-				
+
 					str +="><img id='dorf' class='margin-4' src='../Shared/icons/Cogwheel.svg' ";
 					str +=" onclick='selectItem("+makeparams([item['lid'],item['entryname'], item['kind'],item['visible'],item['link'],momentexists,item['gradesys'],item['highscoremode'],item['comments']])+");' />";
 					str +="</td>";
@@ -815,10 +820,10 @@ function returnedSection(data) {
 		}
 
 		str += "</div></div>";
-		
+
 		var slist = document.getElementById('Sectionlisti');
 		slist.innerHTML = str;
-		
+
 		if (resave == true) {
 			str = "";
 			$("#Sectionlist").find(".item").each(function (i) {
@@ -831,7 +836,7 @@ function returnedSection(data) {
 			AJAXService("REORDER", { order: str }, "SECTION");
 			resave = false;
 		}
-		
+
 		if (data['writeaccess']) {
 			// Enable sorting always if we are superuser as we refresh list on update
 
@@ -856,9 +861,9 @@ function returnedSection(data) {
 		}
 	} else {
 		str = "<div class='err'><span style='font-weight:bold;'>Bummer!</span>This version does not seem to exist!</div>";
-		
+
 		document.getElementById('Sectionlist').innerHTML = str;
-		
+
 		if (data['writeaccess']) {
 				showCreateVersion();
 		}
@@ -927,7 +932,7 @@ function svgPie(cx,cy,radius,startpct,endpct,fill,stroke)
 
    	x2 = cx + (radius*Math.cos(6.28*endpct));
    	y2 = cy + (radius*Math.sin(6.28*endpct));
-	
+
 		return "<path d='M"+cx+","+cy+" L" + x1 + "," + y1 + "  A"+radius+","+radius+" 0 0,1 " + x2 + "," + y2 + " z' fill='"+fill+"' />";
 }
 
@@ -949,8 +954,8 @@ function drawPieChart() {
 
 		// Calculate passed, failed and not graded quizes.
 		for(var i = 0; i < retdata['results'].length; i++) {
-				// Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these	
-				if(retdata['results'][i]['useranswer'] != null){ 
+				// Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
+				if(retdata['results'][i]['useranswer'] != null){
 						if(retdata['results'][i].grade == 2){
 							passedQuizes++;
 						}else if(retdata['results'][i].grade == 1){
@@ -962,11 +967,11 @@ function drawPieChart() {
 		}
 
 		// if a course has no tests, the chart will show that the student has 100% not submitted tests.
-		if(totalQuizes == 0){ 	
-			totalQuizes++; 			
+		if(totalQuizes == 0){
+			totalQuizes++;
 			notSubmittedQuizes++;
 		}
-	
+
 		// PCT = Percentage
 		var notGradedPCT = (notGradedQuizes / totalQuizes)-0.25;
 		var passedPCT = (passedQuizes / totalQuizes);
@@ -978,18 +983,18 @@ function drawPieChart() {
 		str+="<circle cx='150' cy='100' r='90' fill='#BDBDBD' />";
 		str+=svgPie(150,100,90,-0.25,notGradedPCT,"#FFEB3B","#000");
 		str+=svgPie(150,100,90,notGradedPCT,notGradedPCT+passedPCT,"#00E676","#000");
-		str+=svgPie(150,100,90,notGradedPCT+passedPCT,notGradedPCT+passedPCT+failedPCT,"#E53935","#000");	
+		str+=svgPie(150,100,90,notGradedPCT+passedPCT,notGradedPCT+passedPCT+failedPCT,"#E53935","#000");
 
 		str+="<rect x='36' y='200' width='11' height='11' fill='#00E676' />";
 		str+="<rect x='36' y='220' width='11' height='11' fill='#E53935' />";
 		str+="<rect x='166' y='200' width='11' height='11' fill='#FFEB3B' />";
 		str+="<rect x='166' y='220' width='11' height='11' fill='#BDBDBD' />";
-	
+
 		str+="<text x='55' y='211' font-family='Arial' font-size='12px' fill='black'>Passed: ("+Math.round(passedPCT*100)+"%)</text>";
 		str+="<text x='55' y='231' font-family='Arial' font-size='12px' fill='black'>Failed: ("+Math.round(failedPCT*100)+"%)</text>";
 		str+="<text x='185' y='211' font-family='Arial' font-size='12px' fill='black'>Pending: ("+Math.round((notGradedPCT+0.25)*100)+"%)</text>";
 		str+="<text x='185' y='231' font-family='Arial' font-size='12px' fill='black'>N/A: ("+Math.round(notSubmittedPCT*100)+"%)</text>";
-	
+
 		document.getElementById("pieChartSVG").innerHTML=str;
 }
 
@@ -1001,7 +1006,7 @@ function fixDeadlineInfoBoxesText(){
 
 	var closestDeadlineArray = [];
 	var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-	
+
 	var str="<tr><th style='padding:4px;'>Test</th><th style='padding:4px;'>Release</th><th style='padding:4px;'>Deadline</th></tr>";
 
 	var deadlineEntries = [];
@@ -1011,13 +1016,13 @@ function fixDeadlineInfoBoxesText(){
 			var start=new Date(retdata['entries'][i].qstart);
 			if((retdata['entries'][i].kind == 3)&&(datediff(deadline,current)<17)){
 					deadlineEntries.push({'deadline':deadline,'start':start,'text':retdata['entries'][i].entryname});
-			}				
+			}
 	}
-	
+
 	deadlineEntries.sort(function(a, b) {
   		return a.deadline - b.deadline;
 	});
-	
+
 	// At most 5
 	var cnt=deadlineEntries.length;
 	if(deadlineEntries.length>5) cnt=5;
@@ -1030,10 +1035,10 @@ function fixDeadlineInfoBoxesText(){
 			}
 			str+="<td style='padding:4px;'>"+entry.text+"</td>";
 			str+="<td style='padding:4px;'>"+months[entry.start.getMonth()]+" "+entry.start.getDate()+"</td>";
-			str+="<td style='padding:4px;'>"+months[entry.deadline.getMonth()]+" "+entry.deadline.getDate()+"</td>";	
+			str+="<td style='padding:4px;'>"+months[entry.deadline.getMonth()]+" "+entry.deadline.getDate()+"</td>";
 			str+="</tr>";
 	}
-	
+
 	if(deadlineEntries.length == 0){ // if we have no deadlines, put this nice text instead
 			document.getElementById("deadlineList").innerHTML="<tr><td>There are no near-term deadlines</td></tr>";
 	}else{
@@ -1050,7 +1055,7 @@ function drawSwimlanes(){
 	var deadlineEntries = [];
 	var momentEntries = {};
 	var current=new Date();
-	var momentno=0; 
+	var momentno=0;
 	for(var i=0;i<retdata['entries'].length;i++){
 			var deadline=new Date(retdata['entries'][i].deadline);
 			var start=new Date(retdata['entries'][i].qstart);
@@ -1069,7 +1074,7 @@ function drawSwimlanes(){
 			}else if(retdata['entries'][i].kind == 4){
 					momentEntries[retdata['entries'][i].lid]=retdata['entries'][i].entryname;
 					momentno++;
-			}				
+			}
 	}
 
 	var weekLength = weeksBetween(startdate, enddate);
@@ -1082,25 +1087,25 @@ function drawSwimlanes(){
 	for(var i=0;i<weekLength;i++){
 		str+="<rect x='"+(i*weekwidth)+"' y='"+(15)+"' width='"+(weekwidth)+"' height='"+(weekheight*(deadlineEntries.length+1))+"' ";
 		if((i%2)==0){
-				str+="fill='#ededed' />";		
+				str+="fill='#ededed' />";
 		}else{
-				str+="fill='#ffffff' />";				
+				str+="fill='#ffffff' />";
 		}
 		str+="<text x='"+((i*weekwidth)+(weekwidth*0.5))+"' y='"+(33)+"' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>"+(i+1)+"</text>";
 	}
-	
+
 	for(var i=1;i<(deadlineEntries.length+2);i++){
 			str+="<line x1='0' y1='"+((i*weekheight)+15)+"' x2='"+(weekLength*weekwidth)+"' y2='"+((i*weekheight)+15)+"' stroke='black' />";
 	}
 
-	
+
 	var weeky=weekheight+15;
 	for(obj in momentEntries){
 			console.log(obj+" "+momentEntries[obj]);
 			for(var i=0;i<deadlineEntries.length;i++){
 					entry=deadlineEntries[i];
 					if(obj==entry.moment){
-							// Now we generate a SVG element for this 
+							// Now we generate a SVG element for this
 							startweek=weeksBetween(startdate, entry.start);
 							deadlineweek=weeksBetween(startdate, entry.deadline);
 
@@ -1111,7 +1116,7 @@ function drawSwimlanes(){
 
 							str+="<rect opacity='0.7' x='"+(startweek*weekwidth)+"' y='"+(weeky)+"' width='"+(deadlineweek*weekwidth)+"' height='"+weekheight+"' fill='"+fillcol+"' />";
 							str+="<text x='"+(12)+"' y='"+(weeky+18)+"' font-family='Arial' font-size='12px' fill='black' text-anchor='left'>"+entry.text+"</text>";
-						
+
 							console.log(entry.submitted+" "+entry.gradee+" "+entry.text);
 
 							weeky+=weekheight;
@@ -1119,9 +1124,9 @@ function drawSwimlanes(){
 			}
 
 	}
-	
-	str+="<line x1='"+((weekwidth*currentWeek))+"' y1='"+(15+weekheight)+"' x2='"+((weekwidth*currentWeek))+"' y2='"+(((1+deadlineEntries.length)*weekheight)+15)+"' stroke-width='3' stroke='red' />";	
-	
+
+	str+="<line x1='"+((weekwidth*currentWeek))+"' y1='"+(15+weekheight)+"' x2='"+((weekwidth*currentWeek))+"' y2='"+(((1+deadlineEntries.length)*weekheight)+15)+"' stroke-width='3' stroke='red' />";
+
 	document.getElementById("swimlaneSVG").innerHTML=str;
 
 }
@@ -1142,7 +1147,7 @@ $(document).on("touchstart", function(e){
 		mouseDown(e);
 		FABDown(e);
 });
-							 
+
 $(document).on("touchend", function(e){
 		mouseUp(e);
 		FABUp(e);
@@ -1165,7 +1170,7 @@ function mouseDown(e){
 	} else {
 		isClickedElementBox = false;
 	}
-	
+
 }
 
 //----------------------------------------------------------------------------------
@@ -1221,9 +1226,9 @@ $(window).keyup(function (event) {
 });
 
 // React to scroll events
-$(document).scroll(function(e){
-	localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
-});						 
+ $(document).scroll(function(e){
+ 	localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
+});
 
 // Functions to prevent collapsing when clicking icons
 $(document).on('click', '#corf', function (e) {
@@ -1236,7 +1241,7 @@ $(document).on('click', '#dorf', function (e) {
 
 // The event handler returns two elements. The following two if statements gets the element of interest.
 $(document).on('click', '.moment, .section, .statistics', function () {
-	
+
 	if (this.id.length > 0) {
 		saveHiddenElementIDs(this.id);
 	}
@@ -1269,7 +1274,7 @@ $(window).load(function () {
 	$('#enddate').datepicker({
 		dateFormat: "yy-mm-dd"
 	});
-	
+
 	var timestr=makeoptions(null,["00","05","10","15","20","25","30","35","40","45","50","55"],[0,5,10,15,20,25,30,35,40,45,50,55]);
 	$("#minutePickerStartNewVersion").html(timestr);
 	$("#minutePickerEndNewVersion").html(timestr);
@@ -1281,5 +1286,5 @@ $(window).load(function () {
 	$("#hourPickerEndNewVersion").html(timestr);
 	$("#hourPickerStartEditVersion").html(timestr);
 	$("#hourPickerEndEditVersion").html(timestr);
-	
+
 });
