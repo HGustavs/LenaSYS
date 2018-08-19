@@ -126,8 +126,15 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	$("#I" + lid).css("border", "2px dashed #FC5");
 	$("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
 
+	//kind 0 == Header || 1 == Section || 2 == Code  || 3 == Test (Dugga)|| 4 == Moment || 5 == Link || 6 == Group Activity || 7 == Message
+	// Removes the abilty to set grading system where they don't make sense
+	if(kind==0 || kind==1 || kind==5 || kind == 7){
+		$("#gradesys").html(makeoptions(gradesys,["-"],[0]));
+	}else{
+		$("#gradesys").html(makeoptions(gradesys,["-","U-G-VG","U-G","U-3-4-5"],[0,1,2,3]));
+	}
+
 	// Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
-	$("#gradesys").html(makeoptions(gradesys,["-","U-G-VG","U-G","U-3-4-5"],[0,1,2,3]));
 	$("#type").html(makeoptions(kind,["Header","Section","Code","Test","Moment","Link","Group Activity","Message"],[0,1,2,3,4,5,6,7]));
 	$("#visib").html(makeoptions(evisible,["Hidden","Public","Login"],[0,1,2]));
 	$("#tabs").html(makeoptions(gradesys,["0 tabs","1 tabs","2 tabs","3 tabs","end","1 tab + end","2 tabs + end"],[0,1,2,3,4,5,6]));
@@ -145,6 +152,8 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	}else{
 			$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");
 	}
+
+
 
 	// Set Moments - requires iteration since we only process kind 4
 	str = "";
