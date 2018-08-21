@@ -389,31 +389,37 @@ function newItem() {
 
 function createVersion() {
 	
-	var param={};
-	param.courseid = querystring['courseid'];
-	param.versid = document.getElementById("versid").value;
-	param.versname = document.getElementById("versname").value;
-	param.copycourse = document.getElementById("copyvers").value;
-	param.coursecode = document.getElementById("course-coursecode").innerHTML;
-	param.coursename = document.getElementById("course-coursename").innerHTML;
-	param.makeactive = 2+$("#emakeactive").is(':checked');
-	param.startdate = getDateFormat(new Date($("#startdate").val()+" "+$("#hourPickerStartNewVersion").val()+":"+$("#minutePickerStartNewVersion").val()),"hourMinuteSecond");
-	param.enddate = getDateFormat(new Date($("#enddate").val()+" "+$("#hourPickerEndNewVersion").val()+":"+$("#minutePickerEndNewVersion").val()),"hourMinuteSecond");
-	
-	newversid = param.versid;
+		var param={};		
+		//param.courseid = querystring['courseid'];
+		param.cid = querystring['courseid'];
+		param.versid = document.getElementById("versid").value;
+		param.versname = document.getElementById("versname").value;
+		param.copycourse = document.getElementById("copyvers").value;
+		param.coursecode = document.getElementById("course-coursecode").innerHTML;
+		param.coursename = document.getElementById("course-coursename").innerHTML;
+		param.makeactive = 2+$("#makeactive").is(':checked');
+		/*
+			param.startdate = getDateFormat(new Date($("#startdate").val()+" "+$("#hourPickerStartNewVersion").val()+":"+$("#minutePickerStartNewVersion").val()),"hourMinuteSecond");
+			param.enddate = getDateFormat(new Date($("#enddate").val()+" "+$("#hourPickerEndNewVersion").val()+":"+$("#minutePickerEndNewVersion").val()),"hourMinuteSecond");
+		*/
+		param.startdate = getDateFormat(new Date($("#startdate").val()));
+		param.enddate = getDateFormat(new Date($("#enddate").val()));
+		console.log(param.startdate,param.enddate)
 
-	if(param.versid == "" || param.versname == ""){
-			alert("Version Name and Version ID must be entered!");
-	}else{
-			if(copycourse != "None"){
-				//create a copy of course version
-				AJAXService("CPYVRS", param, "COURSE");
-			}else{
-				//create a fresh course version
-				AJAXService("NEWVRS", param, "COURSE");
-			}
-			$("#newCourseVersion").css("display", "none");
-	}
+		newversid = param.versid;
+
+		if(param.versid == "" || param.versname == ""){
+				alert("Version Name and Version ID must be entered!");
+		}else{
+				if(param.copycourse != "None"){
+						//create a copy of course version
+						AJAXService("CPYVRS", param, "COURSE");
+				}else{
+						//create a fresh course version
+						AJAXService("NEWVRS", param, "COURSE");
+				}
+				$("#newCourseVersion").css("display", "none");
+		}
 }
 
 //----------------------------------------------------------------------------------
@@ -422,32 +428,39 @@ function createVersion() {
 
 function updateVersion() {
 	
-	var param={};
-	
-	param.courseid=querystring['courseid'];
-	param.versid = document.getElementById("eversid").value;
-	param.versname = document.getElementById("eversname").value;
-	param.copycourse = document.getElementById("copyvers").value;
-	param.coursecode = document.getElementById("course-coursecode").innerHTML;
-	param.coursename = document.getElementById("course-coursename").innerHTML;
-	param.makeactive = 2+$("#emakeactive").is(':checked');
-	param.startdate = getDateFormat(new Date($("#estartdate").val()+" "+$("#hourPickerStartEditVersion").val()+":"+$("#minutePickerStartEditVersion").val()),"hourMinuteSecond");
-	param.enddate = getDateFormat(new Date($("#eenddate").val()+" "+$("#hourPickerEndEditVersion").val()+":"+$("#minutePickerEndEditVersion").val()),"hourMinuteSecond");
-	
-	AJAXService("UPDATEVRS", param, "SECTION");
+		var param={};
+		
+		param.courseid=querystring['courseid'];
+		param.cid=querystring['courseid'];
+		param.versid = document.getElementById("eversid").value;
+		param.versname = document.getElementById("eversname").value;
+		param.copycourse = document.getElementById("copyvers").value;
+		param.coursecode = document.getElementById("course-coursecode").innerHTML;
+		param.coursename = document.getElementById("course-coursename").innerHTML;
+		param.makeactive = 2+$("#emakeactive").is(':checked');
+		/*
+		param.startdate = getDateFormat(new Date($("#estartdate").val()+" "+$("#hourPickerStartEditVersion").val()+":"+$("#minutePickerStartEditVersion").val()),"hourMinuteSecond");
+		param.enddate = getDateFormat(new Date($("#eenddate").val()+" "+$("#hourPickerEndEditVersion").val()+":"+$("#minutePickerEndEditVersion").val()),"hourMinuteSecond");
+		*/
+		param.startdate = getDateFormat(new Date($("#estartdate").val()));
+		param.enddate = getDateFormat(new Date($("#eenddate").val()));
 
-	/*
-	if (param.makeactive) {
-		AJAXService("CHGVERS", param, "SECTION");
-	}
-	*/
+		console.log(param.startdate,param.enddate)
+		AJAXService("UPDATEVRS", param, "SECTION");
 
-	$("#editCourseVersion").css("display", "none");
+		/*
+		if (param.makeactive) {
+			AJAXService("CHGVERS", param, "SECTION");
+		}
+		*/
+
+		$("#editCourseVersion").css("display", "none");
 }
 
 function goToVersion(selected) {
-	var value = selected.value;
-	changeURL("sectioned.php" + value)
+		var value = selected.value;
+		//changeURL("sectioned.php" + value)
+		changeURL("sectioned.php?courseid=" + querystring["courseid"] + "&coursename=" + querystring["coursename"] + "&coursevers=" + value);
 }
 
 function accessCourse() {
@@ -1122,7 +1135,7 @@ function drawSwimlanes(){
 	
 	var weeky=weekheight+15;
 	for(obj in momentEntries){
-			console.log(obj+" "+momentEntries[obj]);
+			//console.log(obj+" "+momentEntries[obj]);
 			for(var i=0;i<deadlineEntries.length;i++){
 					entry=deadlineEntries[i];
 					if(obj==entry.moment){
@@ -1138,7 +1151,7 @@ function drawSwimlanes(){
 							str+="<rect opacity='0.7' x='"+(startweek*weekwidth)+"' y='"+(weeky)+"' width='"+(deadlineweek*weekwidth)+"' height='"+weekheight+"' fill='"+fillcol+"' />";
 							str+="<text x='"+(12)+"' y='"+(weeky+18)+"' font-family='Arial' font-size='12px' fill='black' text-anchor='left'>"+entry.text+"</text>";
 						
-							console.log(entry.submitted+" "+entry.gradee+" "+entry.text);
+							//console.log(entry.submitted+" "+entry.gradee+" "+entry.text);
 
 							weeky+=weekheight;
 					}

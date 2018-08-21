@@ -84,6 +84,7 @@ if(checklogin()){
 			$query->bindParam(':coursename', $coursename);
 			$query->bindParam(':coursenamealt', $coursenamealt);
 
+			/*
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error updating entries".$error[2];
@@ -110,17 +111,33 @@ if(checklogin()){
 				}
 			}
 
-		}else if(strcmp($opt,"UPDATEVRS")===0){
-			$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
-			$query->bindParam(':cid', $courseid);
-			$query->bindParam(':coursecode', $coursecode);
-			$query->bindParam(':vers', $versid);
-			$query->bindParam(':versname', $versname);
-
+			*/
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
-				$debug="Error updating entries".$error[2];
-			}
+				$debug="Error inserting entries".$error[2];
+			} 
+
+		}else if(strcmp($opt,"UPDATEVRS")===0){
+				$query = $pdo->prepare("UPDATE vers SET versname=:versname WHERE cid=:cid AND coursecode=:coursecode AND vers=:vers;");
+				$query->bindParam(':cid', $courseid);
+				$query->bindParam(':coursecode', $coursecode);
+				$query->bindParam(':vers', $versid);
+				$query->bindParam(':versname', $versname);
+
+				if(!$query->execute()) {
+						$error=$query->errorInfo();
+						$debug="Error updating entries".$error[2];
+				}
+				if($makeactive==3){
+						$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
+						$query->bindParam(':cid', $courseid);
+						$query->bindParam(':vers', $versid);
+		
+						if(!$query->execute()) {
+								$error=$query->errorInfo();
+								$debug="Error updating entries".$error[2];
+						}	
+				}
 		}else if(strcmp($opt,"CHGVERS")===0){
 			$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
 			$query->bindParam(':cid', $courseid);
@@ -353,7 +370,7 @@ if(checklogin()){
 
 				}
 
-        if($makeactive==="true"){
+        if($makeactive==3){
             $query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
             $query->bindParam(':cid', $cid);
             $query->bindParam(':vers', $versid);
@@ -367,6 +384,7 @@ if(checklogin()){
 			// Create groups when copying
 
 			// Add default groups
+			/*
 			$defaultGroups = array(
 				"I", "II", "III", "IV", "V", "VI", "VII", "VIII",
 				"1", "2", "3", "4", "5", "6", "7", "8",
@@ -375,18 +393,18 @@ if(checklogin()){
 			
 
 			foreach($defaultGroups as $group) {
-				$stmt = $pdo->prepare("INSERT INTO groups(courseID, vers, groupName) VALUES(:courseID, :vers, :groupName)");
-				
-				$stmt->bindParam(':courseID', $cid);
-				$stmt->bindParam(':vers', $versid);
-				$stmt->bindParam(':groupName', $group);
+					$stmt = $pdo->prepare("INSERT INTO `groups`(courseID, vers, groupName) VALUES(:courseID, :vers, :groupName)");
+					
+					$stmt->bindParam(':courseID', $cid);
+					$stmt->bindParam(':vers', $versid);
+					$stmt->bindParam(':groupName', $group);
 
-				if (!$stmt->execute()) {
-					$error = $stmt->errorInfo();
-					$debug = "Error adding groups " . $error[2];
-				}
+					if (!$stmt->execute()) {
+							$error = $stmt->errorInfo();
+							$debug = "Error adding groups " . $error[2];
+					}
 			}
-
+			*/
 
 			}else if(strcmp($opt,"UPDATE")===0){
 			$query = $pdo->prepare("UPDATE course SET coursename=:coursename, visibility=:visibility, coursecode=:coursecode WHERE cid=:cid;");
