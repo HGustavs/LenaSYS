@@ -398,13 +398,8 @@ function createVersion() {
 		param.coursecode = document.getElementById("course-coursecode").innerHTML;
 		param.coursename = document.getElementById("course-coursename").innerHTML;
 		param.makeactive = 2+$("#makeactive").is(':checked');
-		/*
-			param.startdate = getDateFormat(new Date($("#startdate").val()+" "+$("#hourPickerStartNewVersion").val()+":"+$("#minutePickerStartNewVersion").val()),"hourMinuteSecond");
-			param.enddate = getDateFormat(new Date($("#enddate").val()+" "+$("#hourPickerEndNewVersion").val()+":"+$("#minutePickerEndNewVersion").val()),"hourMinuteSecond");
-		*/
 		param.startdate = getDateFormat(new Date($("#startdate").val()));
 		param.enddate = getDateFormat(new Date($("#enddate").val()));
-		console.log(param.startdate,param.enddate)
 
 		newversid = param.versid;
 
@@ -438,21 +433,10 @@ function updateVersion() {
 		param.coursecode = document.getElementById("course-coursecode").innerHTML;
 		param.coursename = document.getElementById("course-coursename").innerHTML;
 		param.makeactive = 2+$("#emakeactive").is(':checked');
-		/*
-		param.startdate = getDateFormat(new Date($("#estartdate").val()+" "+$("#hourPickerStartEditVersion").val()+":"+$("#minutePickerStartEditVersion").val()),"hourMinuteSecond");
-		param.enddate = getDateFormat(new Date($("#eenddate").val()+" "+$("#hourPickerEndEditVersion").val()+":"+$("#minutePickerEndEditVersion").val()),"hourMinuteSecond");
-		*/
 		param.startdate = getDateFormat(new Date($("#estartdate").val()));
 		param.enddate = getDateFormat(new Date($("#eenddate").val()));
 
-		console.log(param.startdate,param.enddate)
 		AJAXService("UPDATEVRS", param, "SECTION");
-
-		/*
-		if (param.makeactive) {
-			AJAXService("CHGVERS", param, "SECTION");
-		}
-		*/
 
 		$("#editCourseVersion").css("display", "none");
 }
@@ -536,6 +520,7 @@ function returnedSection(data) {
 				}
 				
 				document.getElementById("courseDropdownTop").innerHTML = bstr;
+				bstr="<option value='None'>None</option>"+bstr;
 				document.getElementById("copyvers").innerHTML = bstr;
 			
 				// Show FAB / Menu
