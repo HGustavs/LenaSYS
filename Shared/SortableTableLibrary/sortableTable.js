@@ -252,7 +252,7 @@ function SortableTable(param)
     var columnfilter = [];
     var sortcolumn = "UNK";
     var sortkind = -1;
-    var windowWidth=-1;
+    var windowWidth=window.innerWidth;
     
     // Keeps track of the last picked sorting order
     var tableSort;
