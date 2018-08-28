@@ -13,7 +13,9 @@ ALTER TABLE fileLink ADD COLUMN vers VARCHAR(8);
 /* Add groupID to listentries e.g. listentry participates in groupid */
 ALTER TABLE listentries add column groupID INT DEFAULT NULL;
 ALTER TABLE listentries add column groupKind VARCHAR(4) DEFAULT NULL;
-
+/*
+Unknown column 'jsondeadline' in 'field list'
+*/
 ALTER TABLE quiz add column jsondeadline VARCHAR(2048);
 
 /* Adding groups column for user in course */
@@ -68,3 +70,31 @@ NONE!Error changing group: Table 'imperious.user_group' doesn't exist
 
 Error retreiving userAnswers. (row 394) 0 row(s) were found. Error code: Unknown column 'timesGraded' in 'field list'
 */
+
+/*
+show variables like 'sql_mode' ; 
++---------------+------------------------------------------------------------------------------------------------------------------------+
+| Variable_name | Value                                                                                                                  |
++---------------+------------------------------------------------------------------------------------------------------------------------+
+| sql_mode      | STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
++---------------+------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+mysql> SET sql_mode='STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+*/
+
+/*
+Error reading user entriesUnknown column 'requestedpasswordchange' in 'field list'
+*/
+ALTER TABLE `user` ADD COLUMN securityquestion VARCHAR(256) DEFAULT NULL;
+ALTER TABLE `user` ADD COLUMN requestedpasswordchange	TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+
+/*
+Error retreiving userAnswers. (row 394) 0 row(s) were found. Error code: Unknown column 'timesGraded' in 'field list'
+*/
+ALTER TABLE userAnswer ADD COLUMN timesGraded INTEGER NOT NULL DEFAULT 0;
+
+/*
+Error retreiving userAnswers. (row 394) 0 row(s) were found. Error code: Unknown column 'gradeExpire' in 'field list'
+*/
+ALTER TABLE userAnswer ADD COLUMN gradeExpire TIMESTAMP NULL DEFAULT NULL;

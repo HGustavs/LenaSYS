@@ -339,7 +339,7 @@ if(strcmp($opt,"CHGR")!==0){
 		}
 		*/
 		$query = $pdo->prepare("
-      SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class,user_course.access,user_course.teacher
+      SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class,user_course.access,user_course.examiner
       FROM user,user_course
       WHERE user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;
     ");
@@ -364,7 +364,7 @@ if(strcmp($opt,"CHGR")!==0){
 				'ssn' => $row['ssn'],
 				'class' => $row['class'],
 				'access' => $row['access'],
-				'teacher' => $row['teacher']
+				'examiner' => $row['examiner']
 			);
 /*
 			$entry = array(
@@ -575,7 +575,7 @@ if(isset($_SERVER["REQUEST_TIME_FLOAT"])){
 $teachers=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query = $pdo->prepare("
-    SELECT teacher, uid
+    SELECT examiner, uid
     FROM user_course;
   ");
 	$query->bindParam(':cid', $cid);
@@ -585,7 +585,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$teacher = array(
-				'teacher' => $row['teacher'],
+				'teacher' => $row['examiner'],
 				'tuid' => $row['uid'],
 			);
 			array_push($teachers, $teacher);
@@ -595,7 +595,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 $courseteachers=array();
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query = $pdo->prepare("
-    SELECT DISTINCT teacher
+    SELECT DISTINCT examiner
     FROM user_course where cid=$cid;
   ");
 	$query->bindParam(':cid', $cid);
@@ -605,7 +605,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$teacher = array(
-				'teacher' => $row['teacher'],
+				'teacher' => $row['examiner'],
 			);
 			array_push($courseteachers, $teacher);
 		}
