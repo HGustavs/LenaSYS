@@ -211,26 +211,11 @@ function changedType(kind)
 //----------------------------------------------------------------------------------
 
 function showEditVersion() {
-		
-	startdate = new Date(retdata['startdate'])
-	enddate = new Date(retdata['enddate'])
-	var startHour = startdate.getHours()
-	var startMinute = startdate.getMinutes()
-	var endHour = enddate.getHours()
-	var endMinute = enddate.getMinutes()
-	startdate = getDateFormat(startdate);
-	enddate = getDateFormat(enddate);
-
-	$("#eversname").val(versnme);
-	$("#eversid").val(querystring['coursevers']);
-	$("#estartdate").val(startdate);
-	$("#eenddate").val(enddate);
-	$("#hourPickerStartEditVersion").val(startHour);
-	$("#minutePickerStartEditVersion").val(startMinute);
-	$("#hourPickerEndEditVersion").val(endHour);
-	$("#minutePickerEndEditVersion").val(endMinute);
-	$("#editCourseVersion").css("display", "flex");
-
+    $("#eversname").val(versnme);
+    $("#eversid").val(querystring['coursevers']);
+    $("#estartdate").val(retdata['startdate'].substr(0,10));
+    $("#eenddate").val(retdata['enddate'].substr(0,10));
+    $("#editCourseVersion").css("display", "flex");
 }
 
 function displaymessage() {
@@ -432,9 +417,9 @@ function updateVersion() {
 		param.copycourse = document.getElementById("copyvers").value;
 		param.coursecode = document.getElementById("course-coursecode").innerHTML;
 		param.coursename = document.getElementById("course-coursename").innerHTML;
-		param.makeactive = 2+$("#emakeactive").is(':checked');
-		param.startdate = getDateFormat(new Date($("#estartdate").val()));
-		param.enddate = getDateFormat(new Date($("#eenddate").val()));
+    param.makeactive = 2+$("#emakeactive").is(':checked');
+		param.startdate = $("#estartdate").val();
+		param.enddate = $("#eenddate").val();
 
 		AJAXService("UPDATEVRS", param, "SECTION");
 
@@ -1284,30 +1269,5 @@ $(window).load(function () {
 	});
 	$(".messagebox").mouseout(function () {
 		$("#testbutton").css("background-color", "#614875");
-	});
-	$('#estartdate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#eenddate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#startdate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#enddate').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	
-	var timestr=makeoptions(null,["00","05","10","15","20","25","30","35","40","45","50","55"],[0,5,10,15,20,25,30,35,40,45,50,55]);
-	$("#minutePickerStartNewVersion").html(timestr);
-	$("#minutePickerEndNewVersion").html(timestr);
-	$("#minutePickerStartEditVersion").html(timestr);
-	$("#minutePickerEndEditVersion").html(timestr);
-
-	var timestr=makeoptions(null,["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"],[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]);
-	$("#hourPickerStartNewVersion").html(timestr);
-	$("#hourPickerEndNewVersion").html(timestr);
-	$("#hourPickerStartEditVersion").html(timestr);
-	$("#hourPickerEndEditVersion").html(timestr);
-	
+  });	
 });

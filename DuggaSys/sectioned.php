@@ -285,10 +285,8 @@
 			<div style='padding:5px;'>
 				<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='versname' placeholder='Version Name' /></div>
 				<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='versid' placeholder='Version ID' maxlength='8'/></div>
-				<div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='startdate' value='' /></div>
-				<!--<div class='inputwrapperSmall'><select id='minutePickerStartNewVersion'></select><span>Min:</span><select id='hourPickerStartNewVersion'></select><span>Hr:</span></div>-->
-				<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='enddate' value='' /></div>
-				<!--<div class='inputwrapperSmall'><select id='minutePickerEndNewVersion'></select><span>Min:</span><select id='hourPickerEndNewVersion'></select><span>Hr:</span></div>-->
+				<div class='inputwrapper'><span>Start Date:</span><input class='textinput' type='date' id='startdate' value='' /></div>
+				<div class='inputwrapper'><span>End Date:</span><input class='textinput' type='date' id='enddate' value='' /></div>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="makeactive" id="makeactive" value="yes"></div>
 				<div class='inputwrapper'><span>Copy content from:</span><select id='copyvers'></select></div>
 			</div>
@@ -310,10 +308,8 @@
 				<input type='hidden' id='cid' value='Toddler' />
 				<div class='inputwrapper'><span>Version Name:</span><input class='textinput' type='text' id='eversname' placeholder='Version Name'/></div>
 				<div class='inputwrapper'><span>Version ID:</span><input class='textinput' type='text' id='eversid' placeholder='Version ID' /></div>
-				<div class='inputwrapper'><span>Start Date:</span><input class='textinput datepicker' type='text' id='estartdate' value='' /></div>
-				<!--<div class='inputwrapperSmall'><select id='minutePickerStartEditVersion'></select><span>Min:</span><select id='hourPickerStartEditVersion'></select><span>Hr:</span></div>-->
-				<div class='inputwrapper'><span>End Date:</span><input class='textinput datepicker' type='text' id='eenddate' value='' /></div>
-				<!--<div class='inputwrapperSmall'><select id='minutePickerEndEditVersion'></select><span>Min:</span><select id='hourPickerEndEditVersion'></select><span>Hr:</span></div>-->
+				<div class='inputwrapper'><span>Start Date:</span><input class='textinput' type='date' id='estartdate' value='' /></div>
+				<div class='inputwrapper'><span>End Date:</span><input class='textinput' type='date' id='eenddate' value='' /></div>
 				<div class='inputwrapper'><span>Change this to default version</span><input type="checkbox" name="emakeactive" id="emakeactive" value="yes"></div>
 			</div>
 			<div style='padding:5px;'>

@@ -221,7 +221,8 @@ if(checklogin()){
 				$query->bindParam(':coursecode', $coursecode);
 				$query->bindParam(':vers', $versid);
 				$query->bindParam(':versname', $versname);
-				// if start and end dates are null, insert mysql null value into database
+        // if start and end dates are null, insert mysql null value into database
+
 				if($startdate=="null") $query->bindValue(':startdate', null,PDO::PARAM_INT);
 				else $query->bindParam(':startdate', $startdate);
 				if($enddate=="null") $query->bindValue(':enddate', null,PDO::PARAM_INT);
