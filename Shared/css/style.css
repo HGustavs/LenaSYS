@@ -1923,6 +1923,10 @@ input.large-button {
 .sortableHeading {
   display: block;
   cursor: pointer;
+  text-overflow: ellipsis;
+  max-width: 150px;
+  overflow: hidden;
+  direction: rtl;  
 }
 
 #editpopover {
