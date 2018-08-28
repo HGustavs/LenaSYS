@@ -140,15 +140,15 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	}
 	$("#group").html("<option value='UNK'>Select Group</option>"+makeoptions(group,groups,groups));
 	
-	// Set Link
+  // Set Link
 	$("#link").val(elink);	
 	if(kind==2){
 			$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
 	}else if(kind==3){
 			$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'qname','id'));	
-	}else if(kind==5){
-			$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
-	}else{
+	}else if(kind==5||kind==7){
+      $("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
+  }else{
 			$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");		
 	}
 	
@@ -199,7 +199,7 @@ function changedType(kind)
 				$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
 		}else if(kind==3){
 				$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'id','qname'));		
-		}else if(kind==5){
+		}else if(kind==5||kind==7){
 				$("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
 		}else{
 				$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");		
@@ -694,7 +694,11 @@ function returnedSection(data) {
 					str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					kk++;
 				} else if (itemKind === 7) { //Message
-					str += "<td style='width:25px; padding:5px'><img src='../Shared/icons/Message_icon.svg' style='width:100%;'/></td><td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          //str += "<td style='width:25px; padding:5px'><img src='../Shared/icons/Message_icon.svg' style='width:100%;'/></td><td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          if(item['link']!=""){      
+              str+="<td style='width:25px; padding:5px'><img src='showdoc.php?courseid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"' style='width:100%;'></td>";
+          }
+					str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 				}
 
 				// Close Information

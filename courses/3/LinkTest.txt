@@ -1,4 +1,0 @@
-## Link test
-This is a test for links
-
-!!!diagram.php, This is a segue to diagram page!!!

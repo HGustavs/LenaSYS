@@ -1,8 +1,0 @@
-# Text styling Test
-This is a test for **bold** and __cursive__ text
-
-**This text should be bold**
-
-__This text should be cursive__
-
-____This text should be both____

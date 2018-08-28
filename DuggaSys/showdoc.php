@@ -476,7 +476,8 @@
 												case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
 												case "gif": $ctype="image/gif"; break;
 												case "png": $ctype="image/png"; break;
-												case "jpg": $ctype="image/jpg"; break;
+                        case "jpg": $ctype="image/jpg"; break;
+                        case "svg": $ctype="image/svg+xml"; break;                        
 												default: $ctype=mime_content_type($file); break;
 											}
 											header("Content-Type: ".$ctype);

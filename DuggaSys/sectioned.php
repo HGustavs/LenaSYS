@@ -210,7 +210,7 @@
 					<div class="tooltipDugga">
 						<span id="tooltipTxt" style="display: none;" class="tooltipDuggatext">Illegal characters found in the title!<br>Valid characters: A-Ö, 0-9, ()</span>
 					</div>
-					<input type='text' class='textinput' id='sectionname' value='sectionname' />
+					<input type='text' class='textinput' id='sectionname' value='sectionname' maxlength="64"/>
 				</div>
 				<div id='inputwrapper-type' class='inputwrapper'>
 					<span>Type:</span>
