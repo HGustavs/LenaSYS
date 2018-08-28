@@ -22,42 +22,6 @@ var searchterm = "";
 
 AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
 
-$(function () {
-	$("#release").datepicker({
-		dateFormat: "yy-mm-dd",
-		minDate: 0,
-		onSelect: function (date) {
-			var newDate = $('#release').datepicker('getDate');
-			$('#deadline').datepicker("option", "minDate", newDate);
-
-		}
-	});
-	$("#deadline2").datepicker({
-		dateFormat: "yy-mm-dd",
-		minDate: 0,
-		onSelect: function (date) {
-			var newDate = $('#release').datepicker('getDate');
-			$('#deadline').datepicker("option", "minDate", newDate);
-
-		}
-	});
-	$("#deadline3").datepicker({
-		dateFormat: "yy-mm-dd",
-		minDate: 0,
-		onSelect: function (date) {
-			var newDate = $('#release').datepicker('getDate');
-			$('#deadline').datepicker("option", "minDate", newDate);
-
-		}
-	});
-	$('#deadline').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-	$('#qstart').datepicker({
-		dateFormat: "yy-mm-dd"
-	});
-});
-
 // Needed for button clicks
 $(document).ready(function () {
 
@@ -84,7 +48,7 @@ $(window).load(function () {
 	$(window).keyup(function (event) {
 		if (event.keyCode == 27) {
 			closeWindows();
-			resetNameValidation();
+			//resetNameValidation();
 			showDuggaSaveButton();
 		}else if (event.keyCode == 13){
 			//Remember that keycode 13 = enter button
@@ -100,7 +64,7 @@ $(window).load(function () {
 		}
 	});
 });
-
+/*
 function clearEditForm() {
 	$('#name').val("New dugga");
 	$('#name').attr('placeholder','Empty dugga');
@@ -111,7 +75,7 @@ function clearEditForm() {
 	$('#deadline').val("");
 	$('#deadline').attr('placeholder', 'YYYY-MM-DD');
 }
-
+*/
 // Detects clicks
 $(document).mousedown(function (e) {
 	var box = $(e.target);
@@ -135,12 +99,14 @@ $(document).mouseup(function (e) {
 	}
 });
 
+/*
 function resetNameValidation() {
 	var nme = document.getElementById("name");
 	$('#tooltipTxt').fadeOut();
 	nme.value = "";
 	nme.style.backgroundColor = "#fff";
 }
+*/
 
 // DUGGA FUNCTIONS start
 function newDugga() {
@@ -181,12 +147,13 @@ function newDugga() {
 	$("#editDugga").css("display", "flex");
 	//$("#overlay").css("display","block");
 }
-
+/*
 function createDugga() {
 	var did = $("#did").val();
 	var nme = $("#name").val();
 	var autograde = $("#autograde").val();
-	var qstart = $("#qstart").val();
+  var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
+  alert("s",document.getElementById("qstart").value);
 	var gradesys = $("#gradesys").val();
 	var template = $("#template").val();
 	var release = $("#release").val();
@@ -200,54 +167,51 @@ function createDugga() {
 	//autograde, gradesystem, qname, quizFile, release, deadline, creator, vers
 	AJAXService("ADDUGGA", { cid: cid, autograde: autograde, gradesys: gradesys, nme: nme, template: template, release: release, deadline: deadline, jsondeadline: jsondeadline, coursevers: coursevers, qstart: qstart}, "DUGGA");
 }
-
+*/
 function selectDugga(qid) {
-
-	clearEditForm();
-
-	// Ensures that name validation is not set at start when selecting a dugga
-	resetNameValidation();
-	$('#saveDugga').prop("disabled", false);
-
-	AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'], qid: this.qid }, "GETQUIZ");
-
-	document.getElementById("editDuggaTitle").innerHTML = "Edit dugga";
-	$("#editDugga").css("display", "flex");
-	//$("#overlay").css("display","block");
-	$("#did").val(qid); // Set Variant ID
-	$("#name").val(name); // Set Dugga name
-	$("#qstart").val(qstart); // Set Start date name
-	$("#deadline").val(deadline); // Set Deadline date name
-	$("#release").val(release); // Set Release date name
-
-	//----------------------------------------------------
-	// Set Autograde
-	//----------------------------------------------------
-	var str = "";
-	if (autograde == 0) str += "<option selected='selected' value='0'>Off</option>"
-	else str += "<option value='0'>Hidden</option>";
-	if (autograde == 1) str += "<option selected='selected' value='1'>On</option>"
-	else str += "<option value='1'>Public</option>";
-	$("#autograde").html(str);
-
-	str = "";
-	if (gradesys == 1) str += "<option selected='selected' value='1'>U-G-VG</option>"
-	else str += "<option value='1'>U-G-VG</option>";
-	if (gradesys == 2) str += "<option selected='selected' value='2'>U-G</option>"
-	else str += "<option value='2'>U-G</option>";
-	if (gradesys == 3) str += "<option selected='selected' value='3'>U-3-4-5</option>"
-	else str += "<option value='3'>U-3-4-5</option>";
-	$("#gradesys").html(str);
-
-	str = "";
-	for (var j = 0; j < filez.length; j++) {
-		filen = filez[j];
-		if (filen != ".." && filen != ".") {
-			if (template == filen) str += "<option selected='selected' value='" + filen + "'>" + filen + "</option>"
-			else str += "<option value='" + filen + "'>" + filen + "</option>"
+//  var did = $('#did').val();
+  globalData['entries'].forEach(function (element) {
+		if (element['did'] == qid) {
+			quiz = element;
 		}
-	}
-	$("#template").html(str);
+	});
+
+  var tarro=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
+  var tarrv=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+  var marro=["00","05","10","15","20","25","30","35","40","45","50","55"];
+  var marrv=[0,5,10,15,20,25,30,35,40,45,50,55];
+
+	$("#did").val(quiz['arrow']);
+	$("#name").val(quiz['qname']);
+	$("#autograde").html(makeoptions(quiz['autograde'],["Hidden","Yes"],[0,1]));
+	$("#gradesys").html(makeoptions(quiz['gradesystem'],["U-G-VG","U-G","U-3-4-5"],[1,2,3]));
+	$("#template").html(makeoptions(quiz['quizFile'],globalData["files"],globalData["files"]));
+  if(quiz['qstart']===null)quiz['qstart']="";
+  $("#qstart").val(quiz['qstart'].substr(0,10));
+	$("#qstartt").html(makeoptions(quiz['qstart'].substr(11,2),tarro,tarrv));
+  $("#qstartm").html(makeoptions(quiz['qstart'].substr(14,2),marro,marrv));
+  
+  if(quiz['jsondeadline'].indexOf("'")>=0)quiz['jsondeadline']=quiz['jsondeadline'].replace(/'/g, "\"");
+  let dls=JSON.parse(quiz['jsondeadline']);
+    if(quiz['deadline']===null)quiz['deadline']="";
+  $("#deadline").val(quiz['deadline'].substr(0,10));
+  $("#deadlinecomments1").val(dls.comment1);
+	$("#deadlinet").html(makeoptions(quiz['deadline'].substr(11,2),tarro,tarrv));
+  $("#deadlinem").html(makeoptions(quiz['deadline'].substr(14,2),marro,marrv));
+  $("#deadline2").val(dls.deadline2.substr(0,10));
+  $("#deadlinecomments2").val(dls.comment2);
+	$("#deadlinet2").html(makeoptions(dls.deadline2.substr(11,2),tarro,tarrv));
+  $("#deadlinem2").html(makeoptions(dls.deadline2.substr(14,2),marro,marrv));
+  $("#deadline3").val(dls.deadline3.substr(0,10));
+  $("#deadlinecomments3").val(dls.comment3);
+	$("#deadlinet3").html(makeoptions(dls.deadline3.substr(11,2),tarro,tarrv));
+  $("#deadlinem3").html(makeoptions(dls.deadline3.substr(14,2),marro,marrv));
+  if(quiz['qrelease']===null)quiz['qrelease']="";
+  $("#release").val(quiz['qrelease']);
+	$("#releaset").html(makeoptions(quiz['qrelease'].substr(11,2),tarro,tarrv));
+  $("#releasem").html(makeoptions(quiz['qrelease'].substr(14,2),marro,marrv));
+
+  $("#editDugga").css("display", "flex");
 }
 
 function updateDugga() {
@@ -256,12 +220,36 @@ function updateDugga() {
 	var autograde = $("#autograde").val();
 	var gradesys = $("#gradesys").val();
 	var template = $("#template").val();
-	var qstart = $("#qstart").val();
-	var deadline = $("#deadline").val();
+  var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
+	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();;
 	var release = $("#release").val();
-	var jsondeadline = "{'deadline1':'"+$("#deadline").val()+"', 'comment1':'"+$("#deadlinecomments1").val()+"', 'deadline2':'"+$("#deadline2").val()+"', 'comment2':'"+$("#deadlinecomments2").val()+"', 'deadline3':'"+$("#deadline3").val()+"', 'comment3':'"+$("#deadlinecomments3").val()+"'}";
+  var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
+  if($("#deadline").val()!=""){        
+      jsondeadline.deadline1=deadline;
+      jsondeadline.comment1=$("#deadlinecomments1").val();
+  }else{
+      deadline="";
+      jsondeadline.deadline1="";
+      jsondeadline.comment1="";
+  }
 
-	resetNameValidation();
+  if($("#deadline2").val()!=""){
+      jsondeadline.deadline2=$("#deadline2").val()+" "+$("#deadlinet2").val()+":"+$("#deadlinem2").val();
+      jsondeadline.comment2=$("#deadlinecomments2").val();
+  }else{
+      jsondeadline.deadline2="";
+      jsondeadline.comment2="";
+  }
+
+  if($("#deadline3").val()!=""){
+      jsondeadline.deadline3=$("#deadline3").val()+" "+$("#deadlinet3").val()+":"+$("#deadlinem3").val();
+      jsondeadline.comment3=$("#deadlinecomments3").val();
+  }else{
+      jsondeadline.deadline3="";
+      jsondeadline.comment3="";
+  }
+  jsondeadline=JSON.stringify(jsondeadline);
+
 	closeWindows();
 
 	AJAXService("SAVDUGGA", { cid: querystring['cid'], qid: did, nme: nme, autograde: autograde, gradesys: gradesys, template: template, qstart: qstart, deadline: deadline, jsondeadline: jsondeadline, release: release, coursevers: querystring['coursevers'] }, "DUGGA");
@@ -478,7 +466,8 @@ function confirmBox(operation, item, type) {
 
 // Storing the celldata for future use. (Needed when editing and such)
 function returnedQuiz(data) {
-	var quiz = data;
+/*
+  var quiz = data;
 
 	var did = $('#did').val();
 	quiz['entries'].forEach(function (element) {
@@ -494,7 +483,8 @@ function returnedQuiz(data) {
 	$("#template").val(quiz['quizFile']);
 	$("#qstart").val(quiz['qstart']);
 	$("#deadline").val(quiz['deadline']);
-	$("#release").val(quiz['qrelease']);
+  $("#release").val(quiz['qrelease']);
+  */
 }
 
 // START OF RENDERING TABELS
@@ -537,28 +527,6 @@ function returnedDugga(data) {
 		tblbody: data['entries'],
 		tblfoot: {}
 	}
-	/*
-	duggaTable = new SortableTable(
-		tabledata,
-		"quiz",
-		null,
-		"",
-		renderCell,
-		renderSortOptionsDugga,
-		null,
-		duggaFilter,
-		[],
-		[],
-		"",
-		null,
-		null,
-		null,
-		null,
-		null,
-		null,
-		true
-	);
-	*/
 		var colOrder=["did","qname","autograde","gradesystem","quizFile","qstart","deadline","qrelease","modified","arrow","cogwheel","trashcan"];
 		duggaTable = new SortableTable({
 				data:tabledata,
@@ -635,28 +603,6 @@ function renderVariant(clickedElement) {
 				tblbody: globalData['entries'][clickedElement].variants,
 				tblfoot: {}
 		}
-		/*
-		variantTable = new SortableTable(
-			tabledata,
-			"variant",
-			null,
-			"",
-			renderCell,
-			renderSortOptionsVariant,
-			null,
-			variantFilter,
-			[],
-			[],
-			"",
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			false
-		);
-		*/
 		var colOrderVariant=["vid","param","modified","disabled","arrowVariant","cogwheelVariant","trashcanVariant"];
 		variantTable = new SortableTable({
 				data:tabledata,

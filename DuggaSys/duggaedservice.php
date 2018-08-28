@@ -173,7 +173,7 @@ if($query->execute()) {
 
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 
-	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qstart,deadline,qrelease,modified,vers FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;");
+	$query = $pdo->prepare("SELECT id,cid,autograde,gradesystem,qname,quizFile,qstart,deadline,qrelease,modified,vers,jsondeadline FROM quiz WHERE cid=:cid AND vers=:coursevers ORDER BY id;");
 	$query->bindParam(':cid', $cid);
 	$query->bindParam(':coursevers', $coursevers);
 	if(!$query->execute()){
@@ -217,10 +217,11 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 			'quizFile' => $row['quizFile'],
 			'qstart' => $row['qstart'],
 			'deadline' => $row['deadline'],
-      		'qrelease' => $row['qrelease'],
+      'qrelease' => $row['qrelease'],
 			'modified' => $row['modified'],
 			'arrow' => $row['id'],
 			'cogwheel' => $row['id'],
+			'jsondeadline' => html_entity_decode($row['jsondeadline']),
 			'trashcan' => $row['id']
 			);
 

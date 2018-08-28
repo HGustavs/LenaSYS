@@ -399,7 +399,7 @@ foreach($query->fetchAll() as $row) {
 $entries=array();
 
 if($cvisibility){
-  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, groupKind FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
+  $query = $pdo->prepare("SELECT lid,moment,entryname,pos,kind,link,visible,code_id,listentries.gradesystem,highscoremode,deadline,qrelease,comments, qstart, jsondeadline, groupKind FROM listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE listentries.cid=:cid and listentries.vers=:coursevers ORDER BY pos");
 	$query->bindParam(':cid', $courseid);
 	$query->bindParam(':coursevers', $coursevers);
 	$result=$query->execute();
@@ -435,10 +435,6 @@ if($cvisibility){
 						'qrelease' => $row['qrelease'],
 						'comments' => $row['comments'],
 						'qstart' => $row['qstart'],
-						/*
-						'group' => $row['groupID'],
-						'groupName' => $grpName
-						*/
 						'group' => $row['groupKind']
 					)
 				);
