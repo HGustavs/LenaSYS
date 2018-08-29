@@ -192,8 +192,9 @@ function selectDugga(qid) {
   $("#qstartm").html(makeoptions(quiz['qstart'].substr(14,2),marro,marrv));
   
   if(quiz['jsondeadline'].indexOf("'")>=0)quiz['jsondeadline']=quiz['jsondeadline'].replace(/'/g, "\"");
+  if(quiz['jsondeadline']===null||quiz['jsondeadline']=="")quiz['jsondeadline']='{"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""}';
   let dls=JSON.parse(quiz['jsondeadline']);
-    if(quiz['deadline']===null)quiz['deadline']="";
+  if(quiz['deadline']===null)quiz['deadline']="";
   $("#deadline").val(quiz['deadline'].substr(0,10));
   $("#deadlinecomments1").val(dls.comment1);
 	$("#deadlinet").html(makeoptions(quiz['deadline'].substr(11,2),tarro,tarrv));
