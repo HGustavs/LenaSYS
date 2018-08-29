@@ -88,7 +88,7 @@ function importUsers()
 	}
 	var newUserJSON = JSON.stringify(newUsersArr);
 
-	AJAXService("CLASS",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
+	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
 	hideImportUsersPopup();
 }
 
