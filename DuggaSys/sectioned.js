@@ -289,12 +289,6 @@ function createFABItem(kind,itemtitle) {
 
 function addColorsToTabSections(kind, visible,spkind){
 	var retStr = "<td style='width:36px;overflow:hidden;";
-	if(kind == 1){
-		retStr += "background-color:#927b9e;";
-		if(visible == 0){
-			retStr += "opacity:0.3;";
-		}
-	}
 	
 	if(spkind=="E"){
 			retStr+="'><div class='spacerEnd'></div></td>";
