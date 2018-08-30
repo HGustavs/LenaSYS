@@ -623,23 +623,20 @@ $stmt = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid AND vers=:vers")
 $stmt->bindParam(":cid", $courseid);
 $stmt->bindParam(":vers", $coursevers);
 */
-$stmt = $pdo->prepare("SELECT * FROM `groups`");
+$stmt = $pdo->prepare("SELECT groupKind,groupVal FROM groups");
 
 if (!$stmt->execute()) {
 		$error=$stmt->errorInfo();
 		$debug="Error getting groups " . $error[2];
 } else {
 		foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-				if($groups[$row['groupKind']]==null){
+				if(!isset($groups[$row['groupKind']])){
+				//if($groups[$row['groupKind']]==null){
 						$groups[$row['groupKind']]=array();
 				}
 				array_push($groups[$row['groupKind']],$row['groupVal']);				
 		}
 }
-$tst_data=array();
-$tst_data['Le']=array('A');
-$tst_data['No']=array('2');
-$tst_data['Vi']=array('VI');
 
 $array = array(
 	"entries" => $entries,
