@@ -130,6 +130,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	$("#gradesys").html(makeoptions(gradesys,["-","U-G-VG","U-G","U-3-4-5"],[0,1,2,3]));
 	$("#type").html(makeoptions(kind,["Header","Section","Code","Test","Moment","Link","Group Activity","Message"],[0,1,2,3,4,5,6,7]));	
 	$("#visib").html(makeoptions(evisible,["Hidden","Public","Login"],[0,1,2]));
+	alert(gradesys);
 	$("#tabs").html(makeoptions(gradesys,["0 tabs","1 tabs","2 tabs","3 tabs","end","1 tab + end","2 tabs + end"],[0,1,2,3,4,5,6]));
 	$("#highscoremode").html(makeoptions(highscoremode,["None","Time Based","Click Based"],[0,1,2]));	
 	var groups=[];
@@ -317,7 +318,11 @@ function prepareItem()
 
 		// Storing tabs in gradesys column!
 		var kind=$("#type").val()
-		if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7) param.gradesys = $("#tabs").val();
+		if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7){
+				param.gradesys = $("#tabs").val();
+		}else{
+				param.gradesys = $("#gradesys").val();
+		}
 		
 		param.lid = $("#lid").val();
 		param.kind = kind;
@@ -326,7 +331,6 @@ function prepareItem()
 		param.sectname = $("#sectionname").val();
 		param.visibility = $("#visib").val();
 		param.moment = $("#moment").val();
-		param.gradesys = $("#gradesys").val();
 		param.comments = $("#comments").val();
 		param.group = $("#group").val();
 	
@@ -769,7 +773,7 @@ function returnedSection(data) {
 					var yearFormat = "0000-";
 					var dateFormat = "00-00";
 
-					str += "<td class='dateSize' style='text-align:right;overflow:hidden;'><div class='margin-4' style='white-space:nowrap;'>";
+					str += "<td class='dateSize' style='text-align:right;overflow:hidden;'><div class='' style='white-space:nowrap;'>";
 
 					if (dl[1] == timeFilterAndFormat) {
 						str += "<div class='dateField'>";
@@ -804,7 +808,7 @@ function returnedSection(data) {
 					if(itemKind===1) str+="class='section"+hideState+"' ";
 					if(itemKind===4) str+="class='moment"+hideState+"' ";
 				
-					str +="><img id='dorf' class='margin-4' src='../Shared/icons/Cogwheel.svg' ";
+					str +="><img id='dorf' class='' src='../Shared/icons/Cogwheel.svg' ";
 					str +=" onclick='selectItem("+makeparams([item['lid'],item['entryname'], item['kind'],item['visible'],item['link'],momentexists,item['gradesys'],item['highscoremode'],item['comments'],item['group']])+");' />";
 					str +="</td>";
 				}
@@ -812,7 +816,7 @@ function returnedSection(data) {
 				// trashcan
 				if (data['writeaccess']) {
 					str+="<td style='width:36px;' class='"+makeTextArray(itemKind ,["header","section","code","test","moment","link","group","message"])+" "+ hideState + "'>";
-					str+="<img id='dorf' class='margin-4' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
+					str+="<img id='dorf' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
 					str+="</td>";
 				}				
 
