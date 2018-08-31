@@ -411,57 +411,6 @@ function markdownBlock(inString)
     return inString;
 }
 
-function cancelPreview() {
-
-    $(".previewWindow").hide();
-    $(".previewWindowContainer").css("display", "none");
-}
-
-function loadPreview(fileUrl, fileName, fileKind) {
-    $("#fileName").val(fileName);
-    $("#fileKind").val(fileKind);
-    $(".previewWindow").show();
-    $(".previewWindowContainer").css("display", "block");
-    $(".markdownPart").show();
-    $(".editFilePart").hide();
-    var fileContent = getFIleContents(fileUrl);
-    var tempFileName = fileUrl.split("/").pop().split(".")[0];
-    document.getElementById("mrkdwntxt").value = fileContent;
-
-    $(".fileName").html(tempFileName);
-    updatePreview(fileContent);
-    //updatePreview(document.getElementById("mrkdwntxt").value = fileContent);
-}
-
-function updatePreview(str) {
-    //This function is triggered when key is pressed down in the input field
-    if(str.length == 0){
-        /*Here we check if the input field is empty (str.length == 0).
-          If it is, clear the content of the txtHint placeholder
-          and exit the function.*/
-        document.getElementById("markdown").innerHTML = " ";
-        return;
-    }
-    else {
-        document.getElementById("markdown").innerHTML=parseMarkdown(str);
-    };
-}
-
-function getFIleContents(fileUrl){
-    var result = null;
-    $.ajax({
-        url: fileUrl,
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function(data) {
-            result = data;
-        }
-    });
-    return result;
-}
-
 
 function cursiveText() {
     this.setCarotPosition();

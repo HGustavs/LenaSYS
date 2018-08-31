@@ -111,7 +111,6 @@ pdoConnect();
             <h3 class ="fileName"></h3>
             <div style="cursor:pointer;" onclick="closePreview();">x</div>
         </div>
-        <form id="editForm" enctype="multipart/form-data" action="filereceive_preview.php" onsubmit="return validatePreviewForm()" method="POST">
             <input type='hidden' id='cID' name='cid' value='Toddler'/>
             <input type='hidden' id='courseVers' name='coursevers' value='Toddler'/>
             <input type='hidden' id='fileKind' name='kind' value='Toddler'/>
@@ -179,8 +178,6 @@ pdoConnect();
                     </div>
                 </div>
             </div>
-
-        </form>
     </div>
 </div>
 <!-- Markdown-preview and edit file functionality END -->

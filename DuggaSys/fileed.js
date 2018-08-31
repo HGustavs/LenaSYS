@@ -23,6 +23,9 @@ var searchterm = "";
 var pressTimer;
 var fabListIsVisible = true;
 var fabTimer;
+var filename;
+var filepath;
+var filekind;
 
 function setup() {
 	AJAXService("GET",{cid:querystring['cid']},"FILE");
@@ -408,8 +411,8 @@ function createQuickItem()
  *****************************************************************/
 
 function loadFile(fileUrl, fileNamez, fileKind) {
-    $("#fileName").val(fileNamez);
-    $("#fileKind").val(fileKind);
+    $("#fileName").val(fileNamez);    $("#fileKind").val(fileKind);
+	
     $(".previewWindow").show();
     $(".previewWindowContainer").css("display", "block");
     $(".markdownPart").hide();
@@ -439,15 +442,13 @@ function cancelEditFile() {
 }
 
 function saveMarkdown() {
-    $("#cID").val(querystring['cid']);
-    $("#courseVers").val(querystring['coursevers']);
-    $("#textField").val("markdowntext");
+		AJAXService("SAVEFILE",{cid:querystring['cid'],contents:document.getElementById("mrkdwntxt").value,filename:filename,filepath:filepath,kind:filekind},"FILE");
+    $(".previewWindow").hide();
+    $(".previewWindowContainer").css("display", "none");
 }
 
 function saveTextToFile() {
-    $("#cID").val(querystring['cid']);
-    $("#courseVers").val(querystring['coursevers']);
-    $("#textField").val("filetext");
+			alert("Floom!");
 }
 
 function validatePreviewForm(){
@@ -477,6 +478,64 @@ $(document).ready(function(){
 		}
 	});
 });
+
+
+function cancelPreview() {
+
+    $(".previewWindow").hide();
+    $(".previewWindowContainer").css("display", "none");
+}
+
+function loadPreview(fileUrl, fileName, fileKind) {
+	
+		filename=fileName;
+		filepath=fileUrl;
+		filekind=fileKind;
+	
+    $("#fileName").val(fileName);
+    $("#fileKind").val(fileKind);
+    $(".previewWindow").show();
+    $(".previewWindowContainer").css("display", "block");
+    $(".markdownPart").show();
+    $(".editFilePart").hide();
+    var fileContent = getFIleContents(fileUrl);
+    var tempFileName = fileUrl.split("/").pop().split(".")[0];
+    document.getElementById("mrkdwntxt").innerHTML = fileContent;
+
+    $(".fileName").html(tempFileName);
+    updatePreview(fileContent);
+    //updatePreview(document.getElementById("mrkdwntxt").value = fileContent);
+}
+
+function updatePreview(str) {
+    //This function is triggered when key is pressed down in the input field
+    if(str.length == 0){
+        /*Here we check if the input field is empty (str.length == 0).
+          If it is, clear the content of the txtHint placeholder
+          and exit the function.*/
+        document.getElementById("markdown").innerHTML = " ";
+        return;
+    }
+    else {
+        document.getElementById("markdown").innerHTML=parseMarkdown(str);
+    };
+}
+
+function getFIleContents(fileUrl){
+    var result = null;
+    $.ajax({
+        url: fileUrl,
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        cache: false,
+        success: function(data) {
+            result = data;
+        }
+    });
+    return result;
+}
+
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
