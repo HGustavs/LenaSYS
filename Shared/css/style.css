@@ -285,7 +285,7 @@ p {
 }
 
 .item {
-  padding-top: 4px;
+  /*padding-top: 4px;*/
   min-height: 30px;
   font-size: 14pt;
 }
@@ -305,8 +305,10 @@ p {
   color: #ffffff;
   background-color: #927b9e;
   cursor: pointer;
+  /*
   box-shadow: 0px 3px 0px #aaa;
   margin-bottom: 3px;
+  */
 }
 
 /*changes the cursor for the cogwheels*/
@@ -339,23 +341,26 @@ p {
 
 #Sectionlist .example {
   color: #434343;
-  font-size: 12pt;
-  padding-top: 5px;
+  /*font-size: 12pt;
+  padding-top: 5px;*/
   min-height: 26px;
 }
 
 #Sectionlist .spacerLeft {
-  height: 34px;
-  width: 20px;
-  margin-left: 20px;
+  height: 32px;
+  width: 15px;
+  margin-left: 15px;
   border-left: 2px solid black;
 }
 
 #Sectionlist .spacerEnd {
-  height: 18px;
-  width: 20px;
+  height: 15px;
+  width: 15px;
+  /*
   margin-left: 20px;
   margin-bottom: 14px;
+  */
+  margin: 0px 0px 15px 15px;
   border-left: 2px solid black;
   border-bottom: 2px solid black;
   border-bottom-left-radius: 6px;
@@ -415,13 +420,13 @@ p {
 }
 
 .LightBox {
-  width: 36px;
-  vertical-align: middle;
+  width: 32px;
+  /*vertical-align: middle;*/
   overflow: hidden;
 }
 
 .LightBoxFilled {
-  width: 36px;
+  width: 32px;
   vertical-align: middle;
   overflow: hidden;
   background-color: #927b9e;
@@ -433,10 +438,13 @@ p {
   border: 1px solid yellow;
   width: 26px;
   height: 26px;
+  /*
   margin-left: 3px;
   margin-right: 2px;
   margin-top: 2px;
   margin-bottom: 0px;
+  */
+  margin: 4px 2px 0px 2px;
   border-radius: 14px;
   border: 1px solid #000;
 }
@@ -1906,6 +1914,8 @@ input.large-button {
 #dorf {
   padding: 4px;
   border-radius: 2px;
+  display:block;
+  margin:auto;
 }
 
 #plorf {
