@@ -287,7 +287,7 @@ function createFABItem(kind,itemtitle) {
 }
 
 function addColorsToTabSections(kind, visible,spkind){
-	var retStr = "<td style='width:36px;overflow:hidden;";
+	var retStr = "<td style='width:32px;overflow:hidden;";
 	
 	if(spkind=="E"){
 			retStr+="'><div class='spacerEnd'></div></td>";
@@ -567,7 +567,7 @@ function returnedSection(data) {
 				if (itemKind === 3 || itemKind === 4 || itemKind === 6) {
 
 					// Styling for quiz row e.g. add a tab spacer
-					if (itemKind === 3) str += "<td style='width:36px;'><div class='spacerLeft'></div></td>";
+					if (itemKind === 3) str += "<td style='width:32px;'><div class='spacerLeft'></div></td>";
 					var grady = -1;
 					var status = "";
 					var marked;
@@ -676,9 +676,9 @@ function returnedSection(data) {
 					str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					kk++;
 				} else if (itemKind === 7) { //Message
-          //str += "<td style='width:25px; padding:5px'><img src='../Shared/icons/Message_icon.svg' style='width:100%;'/></td><td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-          if(item['link']!=""){      
-              str+="<td style='width:25px; padding:5px'><img src='showdoc.php?courseid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"' style='width:100%;'></td>";
+          //str += "<td style='width:25px; padding:5px'><img src='../Shared/icons/Message_icon.svg' style='width:100%;'/></td><td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";      
+          if(!(item['link']==""||item['link']=="---===######===---")){      
+              str+="<td style='width:32px;'><img src='showdoc.php?courseid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
           }
 					str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 				}
@@ -692,10 +692,10 @@ function returnedSection(data) {
 				// Content of Section Item
 				if (itemKind == 0) {
 					// Header
-					str += "<span style='padding-left:5px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
+					str += "<span style='margin-left:8px;' title='" + item['entryname'] + "'>" + item['entryname'] + "</span>";
 				}else if (itemKind == 1){
 					// Section
-					str +="<div class='nowrap"+ hideState + "' style='padding-left:5px;' title='"+ item['entryname'] + "'>";
+					str +="<div class='nowrap"+ hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='"+ item['entryname'] + "'>";
 					str+="<span class='ellipsis listentries-span'>"+ item['entryname'] + "</span>";
 					/*
 					if (item['groupName'].length) {
@@ -707,7 +707,7 @@ function returnedSection(data) {
 				}else if (itemKind == 4){
 					// Moment
 					var strz=makeTextArray(item['gradesys'],["","(U-G-VG)","(U-G)","(U-3-4-5)"]);
-					str+="<div class='nowrap"+hideState+"' style='padding-left:5px;' title='"+item['entryname']+"'>";
+					str+="<div class='nowrap"+hideState+"' style='margin-left:8px;display:flex;align-items:center;' title='"+item['entryname']+"'>";
 					str+="<span class='ellipsis listentries-span'>"+item['entryname']+" "+strz+" </span>";
 					/*
 					if (item['groupName'].length) {
@@ -720,25 +720,25 @@ function returnedSection(data) {
 				}else if (itemKind == 2){ 
 					// Code Example
 					var param={'exampleid':item['link'],'courseid':querystring['courseid'],'cvers':querystring['coursevers']};
-					str +="<div class='ellipsis nowrap'><span>"+makeanchor("codeviewer.php",hideState,"margin-left:15px;",item['entryname'],false,param)+"</span></div>";
+					str +="<div class='ellipsis nowrap'><span>"+makeanchor("codeviewer.php",hideState,"margin-left:8px;",item['entryname'],false,param)+"</span></div>";
 				}else if (itemKind == 3){ 
 					// Test / Dugga
 					var param={'did':item['link'],'cid':querystring['courseid'],'coursevers':querystring['coursevers'],'moment':item['lid'],'segment':momentexists,highscoremode:item['highscoremode'],comment:item['comments'],deadline:item['deadline']};
-					str +="<div class='ellipsis nowrap'><span>"+makeanchor("showDugga.php",hideState,"cursor:pointer;margin-left:15px;",item['entryname'],false,param)+"</span></div>";
+					str +="<div class='ellipsis nowrap'><span>"+makeanchor("showDugga.php",hideState,"cursor:pointer;margin-left:8px;",item['entryname'],false,param)+"</span></div>";
 				}else if (itemKind == 5){ 
 					// Link
 					if (item['link'].substring(0, 4) === "http") {
-						str+=makeanchor(item['link'],hideState,"cursor:pointer;margin-left:15px;",item['entryname'],false,{});
+						str+=makeanchor(item['link'],hideState,"cursor:pointer;margin-left:8px;",item['entryname'],false,{});
 					} else {
 						var param={'exampleid':item['link'],'courseid':querystring['courseid'],'coursevers':querystring['coursevers'],'fname':item['link']};						
-						str+=makeanchor("showdoc.php",hideState,"cursor:pointer;margin-left:15px;",item['entryname'],false,param);
+						str+=makeanchor("showdoc.php",hideState,"cursor:pointer;margin-left:8px;",item['entryname'],false,param);
 					}
 				}else if (itemKind == 6){ 
 					// Group
-					str +="<div class='ellipsis nowrap'><span>"+makeanchor("#",hideState,"margin-left:15px;",item['entryname'],false,{})+"</span></div>";
+					str +="<div class='ellipsis nowrap'><span>"+makeanchor("#",hideState,"margin-left:8px;",item['entryname'],false,{})+"</span></div>";
 				}else if (itemKind == 7){ 
 					// Message
-					str +="<span style='padding-left:5px;' title='"+item['entryname']+"'>"+item['entryname']+"</span>";
+					str +="<span style='margin-left:8px;' title='"+item['entryname']+"'>"+item['entryname']+"</span>";
 				}
 
 				str += "</td>";
@@ -808,7 +808,7 @@ function returnedSection(data) {
 
 				// trashcan
 				if (data['writeaccess']) {
-					str+="<td style='width:36px;' class='"+makeTextArray(itemKind ,["header","section","code","test","moment","link","group","message"])+" "+ hideState + "'>";
+					str+="<td style='width:32px;' class='"+makeTextArray(itemKind ,["header","section","code","test","moment","link","group","message"])+" "+ hideState + "'>";
 					str+="<img id='dorf' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
 					str+="</td>";
 				}				
