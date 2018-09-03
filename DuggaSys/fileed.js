@@ -411,18 +411,23 @@ function createQuickItem()
  *****************************************************************/
 
 function loadFile(fileUrl, fileNamez, fileKind) {
-    $("#fileName").val(fileNamez);    $("#fileKind").val(fileKind);
+    
+		$("#fileName").val(fileNamez);    
+		$("#fileKind").val(fileKind);
 	
     $(".previewWindow").show();
     $(".previewWindowContainer").css("display", "block");
     $(".markdownPart").hide();
     $(".editFilePart").show();
 
-    //$(".editFileWindowContainer").css("display", "block");
     var fileContent = getFIleContents(fileUrl);
-	var fileName = fileUrl.split("/").pop().split(".")[0];
+}
+
+function returnFile(data)
+{
+		var fileName = fileUrl.split("/").pop().split(".")[0];
     document.getElementById("filecont").value = fileContent;
-	$(".fileName").html(fileName);
+		$(".fileName").html(fileName);
     editFile(fileContent);
 }
 
@@ -498,13 +503,22 @@ function loadPreview(fileUrl, fileName, fileKind) {
     $(".previewWindowContainer").css("display", "block");
     $(".markdownPart").show();
     $(".editFilePart").hide();
-    var fileContent = getFIleContents(fileUrl);
+	
+    //$.ajax({url: fileUrl, type: 'get', dataType: 'html', success: returnedPreview});
+		$.ajax({url: "showdoc.php?courseid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+fileName+"&read=yes", type: 'post', dataType: 'html', success: returnedPreview});
+}
+
+function returnedPreview(data)
+{
+	/*
     var tempFileName = fileUrl.split("/").pop().split(".")[0];
     document.getElementById("mrkdwntxt").innerHTML = fileContent;
 
     $(".fileName").html(tempFileName);
-    updatePreview(fileContent);
-    //updatePreview(document.getElementById("mrkdwntxt").value = fileContent);
+		*/
+    updatePreview(data);
+		$('#mrkdwntxt').html(data);
+
 }
 
 function updatePreview(str) {
@@ -519,21 +533,6 @@ function updatePreview(str) {
     else {
         document.getElementById("markdown").innerHTML=parseMarkdown(str);
     };
-}
-
-function getFIleContents(fileUrl){
-    var result = null;
-    $.ajax({
-        url: fileUrl,
-        type: 'get',
-        dataType: 'html',
-        async: false,
-        cache: false,
-        success: function(data) {
-            result = data;
-        }
-    });
-    return result;
 }
 
 

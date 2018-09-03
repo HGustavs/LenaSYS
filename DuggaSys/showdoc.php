@@ -3,9 +3,26 @@
 		include_once "../Shared/basic.php";
 		include_once "../Shared/sessions.php";
 		
+		ob_start();
+		date_default_timezone_set("Europe/Stockholm");
+		
+		// Include basic application services!
+		session_start();
+		$readfile = false;
+		// Connect to database and start session
+		pdoConnect();
+		$cid=getOPG('cid');
+		$fid=getOPG('fid');
+		$fname=getOPG('fname');
+		$coursevers=getOPG('coursevers');
+		$preview = getOPG('read');
+
+		$hdrs=getOPG('headers');
+
 		$file_extension="UNK";
-        $tableAlignmentConf = [];
-        $openedSublists = [];
+		$tableAlignmentConf = [];
+		$openedSublists = [];
+
 		function parseMarkdown($inString)
 		{	
 				$inString=preg_replace("/\</", "&lt;",$inString);
@@ -325,20 +342,6 @@
 				return $instring;		
 		}
 
-		ob_start();
-		date_default_timezone_set("Europe/Stockholm");
-		
-		// Include basic application services!
-		session_start();
-		$readfile = false;
-		// Connect to database and start session
-		pdoConnect();
-		$cid=getOPG('cid');
-		$fid=getOPG('fid');
-		$fname=getOPG('fname');
-		$coursevers=getOPG('coursevers');
-
-		$hdrs=getOPG('headers');
 		
 		// If no course version is given, read course version from session
 		if($cid=="UNK"){
@@ -372,7 +375,7 @@
 				}
 			}
 		}
-		
+
 		if($hr){
 			// If we have access rights, read the file securely to document
 			if(is_numeric($fid)){ 
@@ -459,8 +462,10 @@
 		}else{
 				$bummer = "<div class='err'><span style='font-weight:bold;'>Bummer!</span> You have reached a non-navigable link!</div>";
 		}		
-		
-		if(!$readfile){
+
+		if(strcmp($preview,"UNK")!=0){
+				echo $bummer;
+		}else	if(!$readfile){
 				if($hdrs=="none"){
 				
 				}else{
