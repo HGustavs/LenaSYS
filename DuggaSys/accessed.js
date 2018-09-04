@@ -178,7 +178,11 @@ function renderCell(col,celldata,cellid) {
 		}else if(col=="access"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'>"+makeoptions(obj.access,["Teacher","Student"],["W","R"])	+"</select>";
 		}else if(col == "requestedpasswordchange") {
-				str = "<input class='submit-button' type='button' value='Reset PW' style='float:none;'";
+				if(parseFloat(obj.recent)>1440){
+						str = "<input class='submit-button' type='button' value='Reset PW' style=''";
+				}else{
+						str = "<input class='submit-button' type='button' value='Reset PW' style='background-color: #fecc56; color:#614875'";
+				}
 				str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
 				str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
 		}else if(col == "groups") {

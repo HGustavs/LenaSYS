@@ -178,9 +178,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$stmt->bindParam(':firstname', $firstname);
 					$stmt->bindParam(':lastname', $lastname);
 					$stmt->bindParam(':ssn', $ssn);
-					$stmt->bindParam(':password', standardPasswordHash($rnd));
+					$chipfoose=standardPasswordHash($rnd);
+					$stmt->bindParam(':password', $chipfoose);
 					$stmt->bindParam(':className', $className);
-					$stmt->bindParam(':addedtime', $addedtime);
 
 					if(!$stmt->execute()) {
 						$error=$stmt->errorInfo();
@@ -248,12 +248,11 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 			'lastname' => json_encode(['lastname' => $row['lastname'], 'uid' => $row['uid']]),
 			'class' => json_encode(['class' => $row['class'], 'uid' => $row['uid']]),
 			'modified' => $row['modified'],
-			//'teacher' => $row['teacher'],
 			'examiner' => json_encode(['examiner' => $row['examiner'], 'uid' => $row['uid']]),
 			'vers' => json_encode(['vers' => $row['vers'], 'uid' => $row['uid']]),
 			'access' => json_encode(['access' => $row['access'], 'uid' => $row['uid']]),
 			'groups' => json_encode(['groups' => $row['groups'], 'uid' => $row['uid']]),
-			'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid']])
+			'requestedpasswordchange' => json_encode(['username' => $row['username'], 'uid' => $row['uid'] ,'recent' => $row['newly'] ])
 		);
 		array_push($entries, $entry);
 	}
