@@ -193,6 +193,26 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$usr = $userquery->fetch(PDO::FETCH_ASSOC);
 					$uid = $usr['uid'];
 				}
+				
+				$cstmt = $pdo->prepare("SELECT class FROM class WHERE class=:clsnme;");
+				$cstmt->bindParam(':clsnme', $className);
+
+				if(!$cstmt->execute()) {
+					$error=$cstmt->errorInfo();
+					$debug.="Could not read class".$error[2];
+				}
+				
+				// If class does not exist
+				if($cstmt->rowCount() == 0){
+						$querystring='INSERT INTO class (class, responsible) VALUES(:className,1);';
+						$stmt = $pdo->prepare($querystring);
+						$stmt->bindParam(':className', $className);
+						if(!$stmt->execute()) {
+							$error=$stmt->errorInfo();
+							$debug.="Error updating klasse malmberg".$error[2];
+						}
+				}
+				
 			}
 
 			// We have a user, connect to current course
