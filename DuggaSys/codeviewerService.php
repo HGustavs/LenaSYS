@@ -445,7 +445,7 @@
 			
 					if($filekind==2){
 						// Global
-						$file = "../DuggaSys/templates/".$filename;
+						$file = "../courses/global/".$filename;
 					}else if($filekind==3){
 						// Course Local
 						$file = "../courses/".$courseId."/".$filename;
