@@ -319,6 +319,21 @@
 	</div>
 	<!-- Edit Version Dialog END -->
 
+<!-- Group Members Table START -->
+<div id='grptblContainer' class='loginBoxContainer' style='display:none;'>
+		<div class='loginBox'>
+			<div class='loginBoxheader'>
+				<h3>Groups</h3>
+				<div class='cursorPointer' onclick='closeWindows();'>x</div>
+			</div>
+			<div style='padding:5px;'>
+				<div id='grptbl'></div>
+			</div>
+		</div>
+	</div>
+	<!-- Group Members Table END -->
+
+
 	<!-- HighscoreBox START -->
 	<div id='HighscoreBox' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox' style='width:500px;'>

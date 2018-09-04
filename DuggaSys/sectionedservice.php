@@ -44,6 +44,8 @@ $unmarked = 0;
 // course start and end dates, for a version of a course, created for swimlane functionality
 $startdate=getOP('startdate');
 $enddate=getOP('enddate');
+$groups=array();
+$gm=array();
 
 if($gradesys=="UNK") $gradesys=0;
 
@@ -66,8 +68,60 @@ $hasread=hasAccess($userid, $courseid, 'r');
 $haswrite=hasAccess($userid, $courseid, 'w');
 
 if(checklogin()){
-	$isSuperUserVar=isSuperUser($userid);
+    $stmt = $pdo->prepare("SELECT groupKind,groupVal FROM `groups`");
+          
+    if (!$stmt->execute()) {
+        $error=$stmt->errorInfo();
+        $debug="Error getting groups " . $error[2];
+    } else {
+        foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
+            if(!isset($groups[$row['groupKind']])){
+                $groups[$row['groupKind']]=array();
+            }
+            array_push($groups[$row['groupKind']],$row['groupVal']);				
+        }
+    }
 
+    if(strcmp($opt,"GRP")===0) {       
+        $query = $pdo->prepare("SELECT user.firstname,user.lastname,user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers");
+        $query->bindParam(':cid', $courseid);
+        $query->bindParam(':vers', $coursevers);
+        if($query->execute()) {
+            foreach($query->fetchAll() as $row) {      
+                if(isset($row['groups'])){
+                    $grpArr = explode(" ", $row['groups']);
+                    foreach($grpArr as $grp){
+                      /*
+                        let count=0;
+                        for(let i=0;i<data['groupmember'].length;i++){
+                            let member=data['groupmember'][i];
+                            if(data['groups'][item['group']].includes(member)){
+                                if(count>0)str+=",";
+                                str+=" "+data['groupmember'][i];
+                                count++;
+                            }
+                        }
+                        */
+                        foreach($groups as $groupKind=>$group){
+                            if(in_array($grp,$group)){
+                                if(!isset($gm[$groupKind])){
+                                    $gm[$groupKind]=array();
+                                }
+                                if(!isset($gm[$groupKind][$grp])){
+                                    $gm[$groupKind][$grp]=array();
+                                }
+                                array_push($gm[$groupKind][$grp], array($row['firstname'],$row['lastname'],$row['email']));
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            $debug="Failed to get group members!";
+        }    
+    }
+
+	$isSuperUserVar=isSuperUser($userid);
 	$ha = $haswrite || $isSuperUserVar;
 
 	if($ha) {
@@ -259,36 +313,6 @@ if(checklogin()){
 			$courseversions = $stmt->fetchAll(PDO::FETCH_COLUMN);
 			$totalGroups = 24 * count($courseversions);
 
-			/*
-			// Check if groups exists. If not add them
-			$stmt = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid");
-			$stmt->bindParam(":cid", $courseid);
-			$stmt->execute();
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			
-			
-			if (count($result) < $totalGroups) {
-				foreach($courseversions as $v) {
-					$defaultGroups = array(
-						"I", "II", "III", "IV", "V", "VI", "VII", "VIII",
-						"1", "2", "3", "4", "5", "6", "7", "8",
-						"A", "B", "C", "D", "E", "F", "G", "H",
-					);
-					
-					foreach($defaultGroups as $group) {
-						$stmt = $pdo->prepare("INSERT INTO groups(courseID, vers, groupName) VALUES(:courseID, :vers, :groupName)");
-						$stmt->bindParam(':courseID', $courseid);
-						$stmt->bindParam(':vers', $v);
-						$stmt->bindParam(':groupName', $group);
-
-						if (!$stmt->execute()) {
-							$error = $stmt->errorInfo();
-							$debug = "Error adding group " . $v;
-						}
-					}
-				}
-			}
-			*/
 		}
 	} 
 }
@@ -342,7 +366,7 @@ foreach($query->fetchAll() as $row) {
 		)
 	);
 }
-$groupmember=array();
+$groupmember="UNK";
 $query = $pdo->prepare("SELECT `groups` FROM user_course WHERE uid=:uid AND cid=:cid;");
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':uid', $userid);
@@ -410,13 +434,6 @@ if($cvisibility){
 	}
 
 	foreach($query->fetchAll() as $row) {
-		/*
-		$stmt = $pdo->prepare("SELECT groupName FROM groups WHERE groupID=:groupID");
-		$stmt->bindParam(":groupID", $row['groupID']);
-		$stmt->execute();
-		$grpName = $stmt->fetchAll(PDO::FETCH_COLUMN);
-		*/
-		// Push info
 		if($isSuperUserVar||$row['visible']==1||($row['visible']==2&&($hasread||$haswrite))||($row['visible']==0&&$haswrite==true)){
 				array_push(
 					$entries,
@@ -615,29 +632,6 @@ if($ha){
   }
 }
 
-// Declare groups array if no groups are found
-$groups=array();
-
-/*
-$stmt = $pdo->prepare("SELECT * FROM groups WHERE courseID=:cid AND vers=:vers");
-$stmt->bindParam(":cid", $courseid);
-$stmt->bindParam(":vers", $coursevers);
-*/
-$stmt = $pdo->prepare("SELECT groupKind,groupVal FROM groups");
-
-if (!$stmt->execute()) {
-		$error=$stmt->errorInfo();
-		$debug="Error getting groups " . $error[2];
-} else {
-		foreach($stmt->fetchAll(PDO::FETCH_ASSOC) as $row){
-				if(!isset($groups[$row['groupKind']])){
-				//if($groups[$row['groupKind']]==null){
-						$groups[$row['groupKind']]=array();
-				}
-				array_push($groups[$row['groupKind']],$row['groupVal']);				
-		}
-}
-
 $array = array(
 	"entries" => $entries,
 	"debug" => $debug,
@@ -656,7 +650,8 @@ $array = array(
 	"startdate" => $startdate,
 	"enddate" => $enddate,
 	"groups" => $groups,
-	"groupmember" => $groupmember
+  "groupmember" => $groupmember,
+  "gm" => $gm
 );
 
 echo json_encode($array);

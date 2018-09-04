@@ -691,14 +691,22 @@ function AJAXService(opt,apara,kind)
 				success: returnedAccess
 			});
 	}else if(kind=="SECTION"){
-			$.ajax({
-				url: "sectionedservice.php",
-				type: "POST",
-				data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
-				dataType: "json",
-				success: returnedSection
-			});
-    }else if(kind=="SWIMLANE"){
+    $.ajax({
+      url: "sectionedservice.php",
+      type: "POST",
+      data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
+      dataType: "json",
+      success: returnedSection
+    });
+  }else if(kind=="GRP"){
+    $.ajax({
+      url: "sectionedservice.php",
+      type: "POST",
+      data: "courseid="+querystring['courseid']+"&coursename="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&comment="+querystring['comments']+"&opt="+opt+para,
+      dataType: "json",
+      success: returnedGroups
+    });
+  }else if(kind=="SWIMLANE"){
   			$.ajax({
   				url: "swimlaneservice.php",
   				type: "POST",

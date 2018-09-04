@@ -438,6 +438,39 @@ function returnedCourse(data) {
 	}, 1000);
 }
 
+function returnedGroups(data) {
+    if (data['debug'] != "NONE!") alert(data['debug']);    
+    var groups=data['gm'];
+    var str="";
+    for (var grpKind in groups) {
+        // skip loop if the property is from prototype
+        if (!groups.hasOwnProperty(grpKind)) continue;
+        str+="<table><caption>"+grpKind+"</caption>";
+        var obj = groups[grpKind];
+        console.log(obj);
+        for (var prop in obj) {
+            // skip loop if the property is from prototype
+            if(!obj.hasOwnProperty(prop)) continue;
+            str+="<thead><tr><th>Group "+prop+"</th></tr></thead>";
+            str+="<tbody>";
+            for(let i=0;i<obj[prop].length;i++){
+                str+="<tr>";
+                str+="<td>"+(i+1)+"</td>";
+                for(let j=0;j<obj[prop][i].length;j++){
+                    str+="<td>"+obj[prop][i][j]+"</td>";
+                }
+                str+="</tr>";
+            }
+            str+="</tbody>";
+        }
+        str+="</table><br>";
+    }
+    
+    $("#grptbl").html(str);
+    $("#grptblContainer").css("display", "flex");
+}
+
+
 function returnedSection(data) {
 	retdata = data;
 
@@ -668,8 +701,8 @@ function returnedSection(data) {
 					str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					kk++;
 				} else if (itemKind === 6) { //Group
-						str+="<td style='width:32px;'><img src='../Shared/icons/ManDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
-						str+="<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+						str+="<td style='width:32px;' onclick='getGroups();'><img src='../Shared/icons/ManDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+						str+="<td class='section-message item' onclick='getGroups();' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 				}else if (itemKind === 7) { //Message
 						if(!(item['link']==""||item['link']=="---===######===---")){      
 								str+="<td style='width:32px;'><img src='showdoc.php?courseid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
@@ -703,11 +736,6 @@ function returnedSection(data) {
 					var strz=makeTextArray(item['gradesys'],["","(U-G-VG)","(U-G)","(U-3-4-5)"]);
 					str+="<div class='nowrap"+hideState+"' style='margin-left:8px;display:flex;align-items:center;' title='"+item['entryname']+"'>";
 					str+="<span class='ellipsis listentries-span'>"+item['entryname']+" "+strz+" </span>";
-					/*
-					if (item['groupName'].length) {
-						str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%;min-width:18px;'/> " + item['groupName'];
-					}
-					*/
 					str+="<img src='../Shared/icons/desc_complement.svg' id='arrowComp"+arrowID+"' class='arrowComp' style='display:inline-block;'>";
 					str+="<img src='../Shared/icons/right_complement.svg'"+"id='arrowRight"+arrowID+"' class='arrowRight' style='display:none;'>";
 					str+="</div>";
@@ -729,24 +757,22 @@ function returnedSection(data) {
 					}
 				}else if (itemKind == 6){ 
 					// Group
-//					str +="<div class='ellipsis nowrap'><span>"+makeanchor("#",hideState,"margin-left:8px;",item['entryname'],false,{});
-					str +="<div class='ellipsis nowrap'><span>"+item['entryname'];
+          str +="<div class='ellipsis nowrap'>"+item['entryname'];
+          gstr=" &laquo;Not assigned yet&raquo";
 					if(item['group']!=null){						
 						let count=0;
 						for(let i=0;i<data['groupmember'].length;i++){
 								let member=data['groupmember'][i];
 								if(data['groups'][item['group']].includes(member)){
 										if(count>0)str+=",";
-										str+=" "+data['groupmember'][i];
+										gstr=" "+data['groupmember'][i];
 										count++;
 								}
 						}
 					}else if(document.getElementById("userName").innerHTML=="Guest"){
-							str+=" &laquo;Not logged in&raquo";
-					}else{
-							str+=" &laquo;Not assigned yet&raquo";
+							gstr=" &laquo;Not logged in&raquo";
 					}						
-					str+="</span></div>";
+					str+=gstr+"</span></div>";
 
 				}else if (itemKind == 7){ 
 					// Message
@@ -908,6 +934,10 @@ function returnedSection(data) {
 
 function showHighscore(did, lid) {
 	AJAXService("GET", { did: did, lid: lid }, "DUGGAHIGHSCORE");
+}
+
+function getGroups() {
+	AJAXService("GRP", { }, "GRP");
 }
 
 function returnedHighscore(data) {
