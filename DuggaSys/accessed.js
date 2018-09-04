@@ -264,10 +264,10 @@ function compare(a,b) {
 //  Callback function for showing a cell editing interface
 //--------------------------------------------------------------------------
 function displayCellEdit(celldata,rowno,rowelement,cellelement,column,colno,rowdata,coldata,tableid) {
-		let str = "";
-		if (column == "firstname"||column == "lastname"||column == "ssn"||column == "username") {
-				celldata=JSON.parse(celldata)
-				str += "<input type='hidden' id='popoveredit_uid' class='popoveredit' style='flex-grow:1;' value='" + celldata.uid + "'/>";
+		let str = false;
+		if (column == "firstname"||column == "lastname") {
+				celldata=JSON.parse(celldata);
+				str = "<input type='hidden' id='popoveredit_uid' class='popoveredit' style='flex-grow:1;' value='" + celldata.uid + "'/>";
 				str += "<input type='text' id='popoveredit_"+column+"' class='popoveredit' style='flex-grow:1;width:auto;' value='" + celldata[column] + "' size=" + celldata[column].toString().length + "/>";
 		} 
 		return str;
@@ -279,7 +279,7 @@ function displayCellEdit(celldata,rowno,rowelement,cellelement,column,colno,rowd
 //  Callback function for updating a cell value after editing a cell
 //--------------------------------------------------------------------------
 function updateCellCallback(rowno,colno,column,tableid) {
-		if (column == "firstname"||column == "lastname"||column == "ssn"||column == "username") {
+		if (column == "firstname"||column == "lastname") {
 				// TODO: Check of individual parts needs to be done.
 				var obj = {uid:parseInt(document.getElementById("popoveredit_uid").value)};
 				obj[column]=document.getElementById("popoveredit_"+column).value;
@@ -353,7 +353,6 @@ function returnedAccess(data) {
 		rowFilterCallback:rowFilter,
 		displayCellEditCallback:displayCellEdit,
 		updateCellCallback:updateCellCallback,
-		readOnlyColumns:["ssn","username","requestedpasswordchange","modified","class","examiner","vers","access","groups"],
 		columnOrder:colOrder,
 		freezePaneIndex:4,
 		hasRowHighlight:true,

@@ -108,20 +108,20 @@ function clickedInternal(event,clickdobj)
     var tableid = match[2];
     var columnname=match[3]
 
-    if(sortableTable.currentTable.readOnlyColumns.indexOf(columnname)==-1){
-      var str = "";
-      var rowdata = sortableTable.currentTable.getRow(rowno);
-      var coldata = rowdata[columnname];
-  
-      sortableTable.edit_rowno = rowno;
-      sortableTable.edit_row = rowdata;
-      sortableTable.edit_columnno = columnno;
-      sortableTable.edit_columnname = columnname;
-      sortableTable.edit_tableid = tableid;
-      sortableTable.edit_celldata = coldata;
-  
+    var str = "";
+    var rowdata = sortableTable.currentTable.getRow(rowno);
+    var coldata = rowdata[columnname];
+
+    sortableTable.edit_rowno = rowno;
+    sortableTable.edit_row = rowdata;
+    sortableTable.edit_columnno = columnno;
+    sortableTable.edit_columnname = columnname;
+    sortableTable.edit_tableid = tableid;
+    sortableTable.edit_celldata = coldata;
+    var estr=sortableTable.currentTable.showEditCell(coldata,rowno,rowelement,cellelement,columnname,columnno,rowdata,coldata,tableid);
+    if(estr!==false){
       str += "<div id='input-container' style='flex-grow:1'>";
-      str += sortableTable.currentTable.showEditCell(coldata,rowno,rowelement,cellelement,columnname,columnno,rowdata,coldata,tableid);
+      str += estr;
       str += "</div>";
       str += "<img id='popovertick' class='icon' src='../Shared/SortableTableLibrary/Icon_Tick.svg' onclick='updateCellInternal();'>";
       str += "<img id='popovercross' class='icon' src='../Shared/SortableTableLibrary/Icon_Cross.svg' onclick='clearUpdateCellInternal();'>";
