@@ -143,11 +143,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   // Set Link
 	$("#link").val(elink);	
 	if(kind==2){
-			$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
+			$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'sectionname','exampleid'));		
 	}else if(kind==3){
 			$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'qname','id'));	
 	}else if(kind==5||kind==7){
-      $("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','filename'));		
+      $("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','fileid'));		
   }else{
 			$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");		
 	}
