@@ -114,7 +114,7 @@ function returned(data)
 	if((retData['templateid'] == 0)){
 		if(retData['writeaccess'] == "w"){
 			alert("A template has not been chosen for this example. Please choose one.");
-			$("#chooseTemplate").css("display","block");
+			$("#chooseTemplateContainer").css("display","flex");
 			return;
 		}else{
 			alert("The administrator of this code example has not yet chosen a template.");
@@ -388,7 +388,7 @@ function displayEditExample(boxid)
 	}
 	$("#before").html(bestr);
 	$("#after").html(afstr);
-	$("#editExample").css("display","block");
+	$("#editExampleContainer").css("display","flex");
 }
 
 //----------------------------------------------------------------------------------
@@ -482,7 +482,7 @@ function displayEditContent(boxid)
 		}
 	};
 	$("#improws").html(str);
-	$("#editContent").css("display","block");
+	$("#editContentContainer").css("display","flex");
 }
 
 //----------------------------------------------------------------------------------
@@ -1665,7 +1665,7 @@ function changetemplate(templateno)
 function updateTemplate()
 {
 	templateno=$("#templateno").val();
-	$("#chooseTemplate").css("display","none");
+	$("#chooseTemplateContainer").css("display","none");
 	try{
 		var courseid = querystring['courseid'];
 		var exampleid = querystring['exampleid'];
@@ -1691,7 +1691,7 @@ function updateTemplate()
 function closeEditContent()
 {
 	$("#boxtitle2").attr("contenteditable", true);
-	$("#editContent").css("display","none");
+	$("#editContentContainer").css("display","none");
 	openBoxID = null;
 }
 //----------------------------------------------------------------------------------
@@ -1700,7 +1700,7 @@ function closeEditContent()
 //----------------------------------------------------------------------------------
 function closeEditExample()
 {
-	$("#editExample").css("display","none");
+	$("#editExampleContainer").css("display","none");
 }
 //----------------------------------------------------------------------------------
 // openTemplateWindow:
@@ -1708,7 +1708,7 @@ function closeEditExample()
 //----------------------------------------------------------------------------------
 function openTemplateWindow()
 {
-	$("#chooseTemplate").css("display","block");
+	$("#chooseTemplateContainer").css("display","flex");
 }
 //----------------------------------------------------------------------------------
 // closeTemplateWindow: 
@@ -1716,7 +1716,7 @@ function openTemplateWindow()
 //----------------------------------------------------------------------------------
 function closeTemplateWindow()
 {
-	$("#chooseTemplate").css("display","none");
+	$("#chooseTemplateContainer").css("display","none");
 }
 //----------------------------------------------------------------------------------
 // Play:

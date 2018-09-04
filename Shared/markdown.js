@@ -552,6 +552,7 @@ function tabKey(){
     txtarea.selectionEnd=end+2;
     updatePreview(txtarea.value);
 }
+
 $(document).ready(function(){
    $(".headerType").click(function(){
         $("#select-header").toggle();
