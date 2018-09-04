@@ -48,7 +48,7 @@ function saveArrowIds(clickedElement) {
 /* Hide all child elements to the moment and section elements in the
    hiddenElements array. */
 function hideCollapsedMenus() {
-	$('.header, .section, .code, .test, .link, .group, .statisticsContent').show();
+	$('.header, .section, .code, .test, .link, .group, .statisticsContent, .message').show();
 	for (var i = 0; i < menuState.hiddenElements.length; i++) {
 		var ancestor = findAncestor($("#" + menuState.hiddenElements[i])[0], "moment");
 		if ((ancestor != undefined || ancestor != null) && ancestor.classList.contains('moment')) {
@@ -142,15 +142,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 	
   // Set Link
 	$("#link").val(elink);	
-	if(kind==2){
-			$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'sectionname','exampleid'));		
-	}else if(kind==3){
-			$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'qname','id'));	
-	}else if(kind==5||kind==7){
-      $("#link").html(makeoptionsItem(xelink,retdata['links'],'filename','fileid'));		
-  }else{
-			$("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");		
-	}
+	changedType(kind);
 	
 	// Set Moments - requires iteration since we only process kind 4
 	str = "";
@@ -196,7 +188,7 @@ function changedType(kind)
 {
 		// Prepares option list for code example (2)/dugga (3) dropdown/links (5) / Not applicable
 		if(kind==2){
-				$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'exampleid','sectionname'));		
+				$("#link").html(makeoptionsItem(xelink,retdata['codeexamples'],'sectionname','exampleid'));		
 		}else if(kind==3){
 				$("#link").html(makeoptionsItem(xelink,retdata['duggor'],'id','qname'));		
 		}else if(kind==5||kind==7){
@@ -311,7 +303,7 @@ function prepareItem()
 
 		// Storing tabs in gradesys column!
 		var kind=$("#type").val()
-		if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 7){
+		if (kind == 0 || kind == 1 || kind == 2 || kind == 5 || kind == 6 || kind == 7){
 				param.gradesys = $("#tabs").val();
 		}else{
 				param.gradesys = $("#gradesys").val();
@@ -564,7 +556,7 @@ function returnedSection(data) {
 				// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 Group-Moment
 				var itemKind = parseInt(item['kind']);
 				
-				if (itemKind === 3 || itemKind === 4 || itemKind === 6) {
+				if (itemKind === 3 || itemKind === 4) {
 
 					// Styling for quiz row e.g. add a tab spacer
 					if (itemKind === 3) str += "<td style='width:32px;'><div class='spacerLeft'></div></td>";
@@ -607,7 +599,7 @@ function returnedSection(data) {
 						}
 					}
 					
-					if (itemKind === 3 || itemKind === 6) {
+					if (itemKind === 3) {
 						str += "<td class='LightBox" + hideState + "'>";
 					} else if (itemKind === 4) {
 						str += "<td class='LightBoxFilled" + hideState + "'>";
@@ -630,7 +622,7 @@ function returnedSection(data) {
 
 				// Make tabs to align each section element
 				// kind 0 == Header || 1 == Section || 2 == Code  ||�3 == Test (Dugga)|| 4 == Moment�|| 5 == Link || 6 == Group || 7 == Comment
-				if(itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 || itemKind === 7 ){
+				if(itemKind === 0 || itemKind === 1 || itemKind === 2 || itemKind === 5 || itemKind === 6 || itemKind === 7 ){
 					var itemGradesys = parseInt(item['gradesys']);
 					var itemVisible = item['visible'];
 					if (itemGradesys > 0 && itemGradesys < 4){
@@ -661,7 +653,7 @@ function returnedSection(data) {
 				} else if (itemKind === 2){
 					str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					kk++;
-				} else if (itemKind === 3 || itemKind === 6){
+				} else if (itemKind === 3){
 					if (item['highscoremode'] != 0 && itemKind == 3) {
 						str += "<td style='width:20px;'><img style=';' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\"" + item['link'] + "\",\"" + item['lid'] + "\")'/></td>";
 					}
@@ -675,12 +667,14 @@ function returnedSection(data) {
 				} else if (itemKind === 5) {					// Link
 					str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					kk++;
-				} else if (itemKind === 7) { //Message
-          //str += "<td style='width:25px; padding:5px'><img src='../Shared/icons/Message_icon.svg' style='width:100%;'/></td><td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";      
-          if(!(item['link']==""||item['link']=="---===######===---")){      
-              str+="<td style='width:32px;'><img src='showdoc.php?courseid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
-          }
-					str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+				} else if (itemKind === 6) { //Group
+						str+="<td style='width:32px;'><img src='../Shared/icons/ManDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+						str+="<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+				}else if (itemKind === 7) { //Message
+						if(!(item['link']==""||item['link']=="---===######===---")){      
+								str+="<td style='width:32px;'><img src='showdoc.php?courseid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+						}
+						str += "<td class='section-message item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 				}
 
 				// Close Information
@@ -735,7 +729,25 @@ function returnedSection(data) {
 					}
 				}else if (itemKind == 6){ 
 					// Group
-					str +="<div class='ellipsis nowrap'><span>"+makeanchor("#",hideState,"margin-left:8px;",item['entryname'],false,{})+"</span></div>";
+//					str +="<div class='ellipsis nowrap'><span>"+makeanchor("#",hideState,"margin-left:8px;",item['entryname'],false,{});
+					str +="<div class='ellipsis nowrap'><span>"+item['entryname'];
+					if(item['group']!=null){						
+						let count=0;
+						for(let i=0;i<data['groupmember'].length;i++){
+								let member=data['groupmember'][i];
+								if(data['groups'][item['group']].includes(member)){
+										if(count>0)str+=",";
+										str+=" "+data['groupmember'][i];
+										count++;
+								}
+						}
+					}else if(document.getElementById("userName").innerHTML=="Guest"){
+							str+=" &laquo;Not logged in&raquo";
+					}else{
+							str+=" &laquo;Not assigned yet&raquo";
+					}						
+					str+="</span></div>";
+
 				}else if (itemKind == 7){ 
 					// Message
 					str +="<span style='margin-left:8px;' title='"+item['entryname']+"'>"+item['entryname']+"</span>";
@@ -743,7 +755,8 @@ function returnedSection(data) {
 
 				str += "</td>";
 
-				// group						
+				// group
+				/*
 				if(item['group']!=null){						
 						str+="<td>";				
 						str+="<span style='white-space:nowrap;'>You belong to group:";
@@ -758,7 +771,7 @@ function returnedSection(data) {
 						}
 						str+="</span></td>";		
 				}
-
+				*/
 				// Add generic td for deadlines if one exists
 				if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
 					var dl = deadline.split(" ");
