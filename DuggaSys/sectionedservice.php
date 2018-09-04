@@ -82,26 +82,19 @@ if(checklogin()){
         }
     }
 
+    $isSuperUserVar=isSuperUser($userid);
+    $ha = $haswrite || $isSuperUserVar;
     if(strcmp($opt,"GRP")===0) {       
-        $query = $pdo->prepare("SELECT user.firstname,user.lastname,user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers");
+        $query = $pdo->prepare("SELECT user.uid,user.firstname,user.lastname,user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers");
         $query->bindParam(':cid', $courseid);
         $query->bindParam(':vers', $coursevers);
+        $currUserGrp="UNK";
         if($query->execute()) {
             foreach($query->fetchAll() as $row) {      
                 if(isset($row['groups'])){
+                    if($userid==$row['uid']){$currUserGrp=$row['groups'];}
                     $grpArr = explode(" ", $row['groups']);
                     foreach($grpArr as $grp){
-                      /*
-                        let count=0;
-                        for(let i=0;i<data['groupmember'].length;i++){
-                            let member=data['groupmember'][i];
-                            if(data['groups'][item['group']].includes(member)){
-                                if(count>0)str+=",";
-                                str+=" "+data['groupmember'][i];
-                                count++;
-                            }
-                        }
-                        */
                         foreach($groups as $groupKind=>$group){
                             if(in_array($grp,$group)){
                                 if(!isset($gm[$groupKind])){
@@ -118,11 +111,13 @@ if(checklogin()){
             }
         }else{
             $debug="Failed to get group members!";
-        }    
+        }
+        
+        if(!ha){
+            // Remove groups that current uid is not part of.
+            // Only keep groups present in $currUserGrp in $gm 
+        }
     }
-
-	$isSuperUserVar=isSuperUser($userid);
-	$ha = $haswrite || $isSuperUserVar;
 
 	if($ha) {
 		// The code for modification using sessions

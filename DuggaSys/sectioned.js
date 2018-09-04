@@ -759,7 +759,7 @@ function returnedSection(data) {
 					// Group
           str +="<div class='ellipsis nowrap'>"+item['entryname'];
           gstr=" &laquo;Not assigned yet&raquo";
-					if(item['group']!=null){						
+					if(item['group']!=null && document.getElementById("userName").innerHTML!="Guest"){						
 						let count=0;
 						for(let i=0;i<data['groupmember'].length;i++){
 								let member=data['groupmember'][i];
