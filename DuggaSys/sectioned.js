@@ -465,9 +465,10 @@ function returnedGroups(data) {
         }
         str+="</table><br>";
     }
-    
-    $("#grptbl").html(str);
-    $("#grptblContainer").css("display", "flex");
+    if (str!=""){
+        $("#grptbl").html(str);
+        $("#grptblContainer").css("display", "flex");  
+    }
 }
 
 
