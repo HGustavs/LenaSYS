@@ -194,16 +194,16 @@ function renderCell(col,celldata,cellid) {
 				var optstr="";
 				for(var i=0;i<tgroups.length;i++){
 						if(i>0) optstr+=" ";
-						optstr+=tgroups[i];
+						optstr+=tgroups[i].substr(1+tgroups[i].indexOf("_"));
 				}
 				str= "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
 				str+= "<select><option>"+optstr+"</option></select><div class='overSelect'></div></div><div class='checkboxes' id='grp"+obj.uid+"' >";
 				for(var i=0;i<filez['groups'].length;i++){
 						var group=filez['groups'][i];
-						if(tgroups.indexOf(group.groupval)>-1){
-								str += "<label><input type='checkbox' checked id='g"+obj.uid+"' />"+group.groupval+"</label>";						
+						if(tgroups.indexOf((group.groupkind+"_"+group.groupval))>-1){
+								str += "<label><input type='checkbox' checked id='g"+obj.uid+"' value='"+group.groupkind+"_"+group.groupval+"' />"+group.groupval+"</label>";						
 						}else{
-								str += "<label><input type='checkbox' id='g"+obj.uid+"' />"+group.groupval+"</label>";												
+								str += "<label><input type='checkbox' id='g"+obj.uid+"' value='"+group.groupkind+"_"+group.groupval+"' />"+group.groupval+"</label>";												
 						}
 				}
 				str += '</div></div>';
@@ -432,9 +432,10 @@ function mouseUp(e){
 			var str="";
 			for(i=0;i<checkboxes.childNodes.length;i++){
 					if(checkboxes.childNodes[i].childNodes[0].checked){
-							str+=checkboxes.childNodes[i].textContent+" ";
+							str+=checkboxes.childNodes[i].childNodes[0].value+" ";
 					}
 			}
+			alert(str);
 			expanded=false;
 			if(str!="")changeProperty(checkboxes.id.substr(3),"group",str);
 		}

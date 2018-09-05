@@ -59,6 +59,22 @@ INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VI",6);
 INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VII",7);
 INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VIII",8);
 
+mysql> ALTER TABLE groups MODIFY groupKind VARCHAR(8);
+Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> update groups set groupkind="Letter" where groupKind="Le";
+Query OK, 8 rows affected (0.00 sec)
+Rows matched: 8  Changed: 8  Warnings: 0
+
+mysql> update groups set groupkind="Number" where groupKind="No";
+Query OK, 8 rows affected (0.00 sec)
+Rows matched: 8  Changed: 8  Warnings: 0
+
+mysql> update groups set groupkind="Romano" where groupKind="Ro";
+Query OK, 0 rows affected (0.01 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
 /*
 
 Notice: Undefined variable: duggaVisibility in /Library/WebServer/Documents/LenaSYS_HT2017/DuggaSys/showdoc.php on line 408
