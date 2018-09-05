@@ -8,6 +8,9 @@ include_once "../Shared/basic.php";
 pdoConnect();
 session_start();
 
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 }else{
@@ -153,6 +156,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					}
 				}
 			} else if (count($user) > 1 && count($user) <= 6){
+
 				$ssn = $user[0];
 				$tmp = explode(',', $user[1]);
 				$firstname = trim($tmp[1]);
@@ -161,7 +165,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$className = trim($user[4]);
 				}
 				$tmp2 = explode('@', $user[count($user)-1]);
+
 				$username = $tmp2[0];
+				
 				//$debug.=$ssn." ".$username."#".$firstname."#".$lastname."\n";
 				$userquery = $pdo->prepare("SELECT uid,username FROM user WHERE username=:username or ssn=:ssn");
 				$userquery->bindParam(':username', $username);
@@ -170,6 +176,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				// If there isn't we'll register a new user and give them a randomly
 				// assigned password which can be printed later.
 				if ($userquery->execute() && $userquery->rowCount() <= 0 && !empty($username)) {
+
 					$rnd=makeRandomString(9);
 					$querystring='INSERT INTO user (username, email, firstname, lastname, ssn, password,addedtime, class) VALUES(:username,:email,:firstname,:lastname,:ssn,:password,now(),:className);';
 					$stmt = $pdo->prepare($querystring);
@@ -217,21 +224,26 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 			// We have a user, connect to current course
 			if($uid!="UNK"){
-				$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access,vers,vershistory) VALUES(:uid, :cid,'R',:vers,'') ON DUPLICATE KEY UPDATE vers=:vers, vershistory=CONCAT(vershistory, CONCAT(:vers,','))");
+				$stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access,vers,vershistory) VALUES(:uid, :cid,'R',:vers,'') ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers,','))");
 				$stmt->bindParam(':uid', $uid);
 				$stmt->bindParam(':cid', $cid);
 				$stmt->bindParam(':vers', $coursevers);
+				$stmt->bindParam(':avers', $coursevers);
+				$stmt->bindParam(':bvers', $coursevers);
 
 				// Insert the user into the database.
-				if(!$stmt->execute()) {
-					$error=$stmt->errorInfo();
-					$debug.="Error connecting user to course: ".$error[2];
+				try {
+					if(!$stmt->execute()) {
+						$error=$stmt->errorInfo();
+						$debug.="Error connecting user to course: ".$error[2];
+					}
+				}catch(Exception $e) {
+						
 				}
 			}
 
 		// End of foreach user
 		}
-
 	} 
 }
 
