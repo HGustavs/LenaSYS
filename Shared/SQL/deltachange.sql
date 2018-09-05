@@ -12,7 +12,7 @@ ALTER TABLE fileLink ADD COLUMN vers VARCHAR(8);
 
 /* Add groupID to listentries e.g. listentry participates in groupid */
 ALTER TABLE listentries add column groupID INT DEFAULT NULL;
-ALTER TABLE listentries add column groupKind VARCHAR(4) DEFAULT NULL;
+ALTER TABLE listentries add column groupKind VARCHAR(16) DEFAULT NULL;
 /*
 Unknown column 'jsondeadline' in 'field list'
 */
@@ -114,3 +114,9 @@ ALTER TABLE userAnswer ADD COLUMN timesGraded INTEGER NOT NULL DEFAULT 0;
 Error retreiving userAnswers. (row 394) 0 row(s) were found. Error code: Unknown column 'gradeExpire' in 'field list'
 */
 ALTER TABLE userAnswer ADD COLUMN gradeExpire TIMESTAMP NULL DEFAULT NULL;
+
+ALTER TABLE groups MODIFY groupKind VARCHAR(16);
+ALTER TABLE listentries MODIFY groupKind VARCHAR(16);
+UPDATE groups SET groupKind="Number" WHERE groupKind="No";
+UPDATE groups SET groupKind="Letter" WHERE groupKind="Le";
+UPDATE groups SET groupKind="Roman" WHERE groupKind="VI";

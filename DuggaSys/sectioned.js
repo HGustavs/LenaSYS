@@ -114,7 +114,7 @@ function toggleHamburger() {
 // selectItem: Prepare item editing dialog after cog-wheel has been clicked
 //----------------------------------------------------------------------------------
 
-function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, group) {
+function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, highscoremode, comments, grptype) {
 	
 	nameSet = false;
 	if (entryname == "undefined") entryname = "New Header";
@@ -138,7 +138,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 			if (!retdata['groups'].hasOwnProperty(key)) continue;
 			groups.push(key);
 	}
-	$("#group").html("<option value='UNK'>Select Group</option>"+makeoptions(group,groups,groups));
+	$("#grptype").html("<option value='UNK'>Select Group type</option>"+makeoptions(grptype,groups,groups));
 	
   // Set Link
 	$("#link").val(elink);	
@@ -317,7 +317,7 @@ function prepareItem()
 		param.visibility = $("#visib").val();
 		param.moment = $("#moment").val();
 		param.comments = $("#comments").val();
-		param.group = $("#group").val();
+		param.grptype = $("#grptype").val();
 	
 		return param;
 }
@@ -440,7 +440,7 @@ function returnedCourse(data) {
 
 function returnedGroups(data) {
     if (data['debug'] != "NONE!") alert(data['debug']);    
-    var groups=data['gm'];
+    var groups=data['grplst'];
     var str="";
     for (var grpKind in groups) {
         // skip loop if the property is from prototype
@@ -701,9 +701,26 @@ function returnedSection(data) {
 				} else if (itemKind === 5) {					// Link
 					str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					kk++;
-				} else if (itemKind === 6) { //Group
-						str+="<td style='width:32px;' onclick='getGroups();'><img src='../Shared/icons/ManDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
-						str+="<td class='section-message item' onclick='getGroups();' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+        } else if (itemKind === 6) { //Group
+            var grp="UNK";
+            gstr=" &laquo;Not assigned yet&raquo";
+            if(item['grptype']!=null && document.getElementById("userName").innerHTML!="Guest"){						
+              var lst=data['groups'][item['grptype']];
+              if(typeof(lst)!="undefined"){
+                for(let i=0;i<data['grpmembershp'].length;i++){
+                  let member=data['grpmembershp'][i];
+                  if(lst.indexOf(member)>=0){
+                      if(gstr!="")gstr+=",";
+                      grp=member;
+                      gstr=" "+member;
+                  }
+                }
+              }
+            }else if(document.getElementById("userName").innerHTML=="Guest"){
+                gstr=" &laquo;Not logged in&raquo";
+            }						
+						str+="<td style='width:32px;' onclick='getGroups(\""+grp+"\");'><img src='../Shared/icons/ManDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+						str+="<td class='section-message item' onclick='getGroups(\""+grp+"\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 				}else if (itemKind === 7) { //Message
 						if(!(item['link']==""||item['link']=="---===######===---")){      
 								str+="<td style='width:32px;'><img src='showdoc.php?courseid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
@@ -713,7 +730,6 @@ function returnedSection(data) {
 
 				// Close Information
 				str += ">";
-
 				// Generate ID for collapsing arrows
 				var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
 
@@ -725,11 +741,6 @@ function returnedSection(data) {
 					// Section
 					str +="<div class='nowrap"+ hideState + "' style='margin-left:8px;display:flex;align-items:center;' title='"+ item['entryname'] + "'>";
 					str+="<span class='ellipsis listentries-span'>"+ item['entryname'] + "</span>";
-					/*
-					if (item['groupName'].length) {
-						str += " <img src='../Shared/icons/groupicon2.svg' class='' style='max-height: 25px; max-width:8%; min-width:18px;'/> " + item['groupName'];
-					}
-					*/
 					str+="<img src='../Shared/icons/desc_complement.svg' id='arrowComp"+arrowID+"' class='arrowComp' style='display:inline-block;'>";
 					str+="<img src='../Shared/icons/right_complement.svg' id='arrowRight"+arrowID+"' class='arrowRight' style='display:none;'></div>";
 				}else if (itemKind == 4){
@@ -757,22 +768,8 @@ function returnedSection(data) {
 						str+=makeanchor("showdoc.php",hideState,"cursor:pointer;margin-left:8px;",item['entryname'],false,param);
 					}
 				}else if (itemKind == 6){ 
-					// Group
+          // Group
           str +="<div class='ellipsis nowrap'>"+item['entryname'];
-          gstr=" &laquo;Not assigned yet&raquo";
-					if(item['group']!=null && document.getElementById("userName").innerHTML!="Guest"){						
-						let count=0;
-						for(let i=0;i<data['groupmember'].length;i++){
-								let member=data['groupmember'][i];
-								if(data['groups'][item['group']].includes(member)){
-										if(count>0)str+=",";
-										gstr=" "+data['groupmember'][i];
-										count++;
-								}
-						}
-					}else if(document.getElementById("userName").innerHTML=="Guest"){
-							gstr=" &laquo;Not logged in&raquo";
-					}						
 					str+=gstr+"</span></div>";
 
 				}else if (itemKind == 7){ 
@@ -782,23 +779,6 @@ function returnedSection(data) {
 
 				str += "</td>";
 
-				// group
-				/*
-				if(item['group']!=null){						
-						str+="<td>";				
-						str+="<span style='white-space:nowrap;'>You belong to group:";
-						let count=0;
-						for(let i=0;i<data['groupmember'].length;i++){
-								let member=data['groupmember'][i];
-								if(data['groups'][item['group']].includes(member)){
-										if(count>0)str+=",";
-										str+=data['groupmember'][i];
-										count++;
-								}
-						}
-						str+="</span></td>";		
-				}
-				*/
 				// Add generic td for deadlines if one exists
 				if ((itemKind === 3) && (deadline !== null || deadline === "undefined")) {
 					var dl = deadline.split(" ");
@@ -842,7 +822,7 @@ function returnedSection(data) {
 					if(itemKind===4) str+="class='moment"+hideState+"' ";
 				
 					str +="><img id='dorf' class='' src='../Shared/icons/Cogwheel.svg' ";
-					str +=" onclick='selectItem("+makeparams([item['lid'],item['entryname'], item['kind'],item['visible'],item['link'],momentexists,item['gradesys'],item['highscoremode'],item['comments'],item['group']])+");' />";
+					str +=" onclick='selectItem("+makeparams([item['lid'],item['entryname'], item['kind'],item['visible'],item['link'],momentexists,item['gradesys'],item['highscoremode'],item['comments'],item['grptype']])+");' />";
 					str +="</td>";
 				}
 
@@ -937,8 +917,8 @@ function showHighscore(did, lid) {
 	AJAXService("GET", { did: did, lid: lid }, "DUGGAHIGHSCORE");
 }
 
-function getGroups() {
-	AJAXService("GRP", { }, "GRP");
+function getGroups(grp) {
+	  AJAXService("GRP", {showgrp:grp}, "GRP");
 }
 
 function returnedHighscore(data) {

@@ -38,32 +38,32 @@ CREATE TABLE groups (
 
 /* Usergroup and user_usergroup relation */
 
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","1",1);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","2",2);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","3",3);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","4",4);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","5",5);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","6",6);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","7",7);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("No","8",8);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Number","1",1);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Number","2",2);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Number","3",3);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Number","4",4);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Number","5",5);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Number","6",6);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Number","7",7);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Number","8",8);
 
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","A",1);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","B",2);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","C",3);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","D",4);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","E",5);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","F",6);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","G",7);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Le","H",8);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Letter","A",1);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Letter","B",2);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Letter","C",3);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Letter","D",4);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Letter","E",5);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Letter","F",6);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Letter","G",7);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Letter","H",8);
 
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","I",1);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","II",2);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","III",3);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","IV",4);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","V",5);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VI",6);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VII",7);
-INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Vi","VIII",8);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Roman","I",1);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Roman","II",2);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Roman","III",3);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Roman","IV",4);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Roman","V",5);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Roman","VI",6);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Roman","VII",7);
+INSERT INTO groups(groupKind,groupVal,groupInt) VALUES ("Roman","VIII",8);
 
 /**
  * Course table contains the most essential information relating to study courses in the database.

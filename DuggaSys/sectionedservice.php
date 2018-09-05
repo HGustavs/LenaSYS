@@ -39,13 +39,15 @@ $coursecode=getOP('coursecode');
 $coursenamealt=getOP('coursenamealt');
 $comments=getOP('comments');
 $makeactive=getOP('makeactive');
-$grp=getOP('group');
-$unmarked = 0;
-// course start and end dates, for a version of a course, created for swimlane functionality
 $startdate=getOP('startdate');
 $enddate=getOP('enddate');
+$showgrp=getOP('showgrp');
+$grptype=getOP('grptype');
+
+$grpmembershp="UNK";
+$unmarked = 0;
 $groups=array();
-$gm=array();
+$grplst=array();
 
 if($gradesys=="UNK") $gradesys=0;
 
@@ -68,6 +70,7 @@ $hasread=hasAccess($userid, $courseid, 'r');
 $haswrite=hasAccess($userid, $courseid, 'w');
 
 if(checklogin()){
+  
     $stmt = $pdo->prepare("SELECT groupKind,groupVal FROM `groups`");
           
     if (!$stmt->execute()) {
@@ -88,34 +91,51 @@ if(checklogin()){
         $query = $pdo->prepare("SELECT user.uid,user.firstname,user.lastname,user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers");
         $query->bindParam(':cid', $courseid);
         $query->bindParam(':vers', $coursevers);
-        $currUserGrp="UNK";
+        /*
+        $glst=array();
+        if($showgrp!="UNK"){
+            foreach($groups as $grptype){
+                if(in_array($showgrp,$grptype)){
+                    $glst=$grptype;
+                    break;
+                }
+            }
+        }
+        */
         if($query->execute()) {
+            if($ha)$showgrp=$showgrp.substr(0,strpos($showgrp,"_"));
+            foreach($query->fetchAll() as $row) {                      
+                if(strpos($row['groups'],$showgrp)!==false){
+                    array_push($grplst, array($showgrp,$row['firstname'],$row['lastname'],$row['email'],$row['groups']));
+                }              
+            }
+            /*
             foreach($query->fetchAll() as $row) {      
                 if(isset($row['groups'])){
-                    if($userid==$row['uid']){$currUserGrp=$row['groups'];}
-                    $grpArr = explode(" ", $row['groups']);
-                    foreach($grpArr as $grp){
-                        foreach($groups as $groupKind=>$group){
-                            if(in_array($grp,$group)){
-                                if(!isset($gm[$groupKind])){
-                                    $gm[$groupKind]=array();
+                    $grpmembershp = explode(" ", $row['groups']);
+
+                    foreach($grpmembershp as $member){
+                        if($ha||in_array($member,$glst)){
+                          foreach($groups as $groupKind=>$group){
+                            if(in_array($member,$group)){
+                                if(!isset($grplst[$groupKind])){
+                                    $grplst[$groupKind]=array();
                                 }
-                                if(!isset($gm[$groupKind][$grp])){
-                                    $gm[$groupKind][$grp]=array();
+                                if(!isset($grplst[$groupKind][$member])){
+                                    $grplst[$groupKind][$member]=array();
                                 }
-                                array_push($gm[$groupKind][$grp], array($row['firstname'],$row['lastname'],$row['email']));
+                                array_push($grplst[$groupKind][$member], array($row['firstname'],$row['lastname'],$row['email']));
                             }
+                          }
+
                         }
+  
                     }
                 }
             }
+            */
         }else{
             $debug="Failed to get group members!";
-        }
-        
-        if(!ha){
-            // Remove groups that current uid is not part of.
-            // Only keep groups present in $currUserGrp in $gm 
         }
     }
 
@@ -153,7 +173,7 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 			}
 
-			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment, :gradesys, :highscoremode, :group)");
+			$query = $pdo->prepare("INSERT INTO listentries (cid,vers, entryname, link, kind, pos, visible,creator,comments, gradesystem, highscoremode, groupKind) VALUES(:cid,:cvs,:entryname,:link,:kind,'100',:visible,:usrid,:comment, :gradesys, :highscoremode, :groupkind)");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':cvs', $coursevers);
 			$query->bindParam(':usrid', $userid);
@@ -165,10 +185,10 @@ if(checklogin()){
 			$query->bindParam(':visible', $visibility);
 			$query->bindParam(':highscoremode', $highscoremode);
 
-			if ($grp != "UNK") {
-				$query->bindParam(':group', $grp);
+			if ($grptype != "UNK") {
+				$query->bindParam(':groupkind', $grptype);
 			} else {
-				$query->bindValue(':group', null, PDO::PARAM_STR);
+				$query->bindValue(':groupkind', null, PDO::PARAM_STR);
 			} 
 
 
@@ -178,6 +198,7 @@ if(checklogin()){
 			}
 
     	} else if(strcmp($opt,"REORDER")===0) {
+        $debug="tomten";
 			$orderarr=explode(",",$order);
 
 			foreach ($orderarr as $key => $value) {
@@ -227,16 +248,16 @@ if(checklogin()){
 					$link=$pdo->lastInsertId();
 			}
 
-			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupKind=:group WHERE lid=:lid;");
+			$query = $pdo->prepare("UPDATE listentries set highscoremode=:highscoremode, moment=:moment,entryname=:entryname,kind=:kind,link=:link,visible=:visible,gradesystem=:gradesys,comments=:comments,groupKind=:groupkind WHERE lid=:lid;");
 			$query->bindParam(':lid', $sectid);
 			$query->bindParam(':entryname', $sectname);
 			$query->bindParam(':comments', $comments);
 			$query->bindParam(':highscoremode', $highscoremode);
 
-			if ($grp != "UNK") {
-				$query->bindParam(':group', $grp);
+			if ($grptype != "UNK") {
+				$query->bindParam(':groupkind', $grptype);
 			} else {
-				$query->bindValue(':group', null, PDO::PARAM_STR);
+				$query->bindValue(':groupkind', null, PDO::PARAM_STR);
 			} 
 
 			if($moment=="null") $query->bindValue(':moment', null,PDO::PARAM_INT);
@@ -361,7 +382,7 @@ foreach($query->fetchAll() as $row) {
 		)
 	);
 }
-$groupmember="UNK";
+
 $query = $pdo->prepare("SELECT `groups` FROM user_course WHERE uid=:uid AND cid=:cid;");
 $query->bindParam(':cid', $courseid);
 $query->bindParam(':uid', $userid);
@@ -373,8 +394,8 @@ if(!$query->execute()) {
 }
 
 foreach($query->fetchAll() as $row) {
-	$groupmember=trim($row['groups']);	
-	$groupmember=explode(" ", $groupmember);	
+	$grpmembershp=trim($row['groups']);	
+	$grpmembershp=explode(" ", $grpmembershp);	
 }
 
 $resulties=array();
@@ -447,7 +468,7 @@ if($cvisibility){
 						'qrelease' => $row['qrelease'],
 						'comments' => $row['comments'],
 						'qstart' => $row['qstart'],
-						'group' => $row['groupKind']
+						'grptype' => $row['groupKind']
 					)
 				);
 		}
@@ -645,8 +666,8 @@ $array = array(
 	"startdate" => $startdate,
 	"enddate" => $enddate,
 	"groups" => $groups,
-  "groupmember" => $groupmember,
-  "gm" => $gm
+  "grpmembershp" => $grpmembershp,
+  "grplst" => $grplst
 );
 
 echo json_encode($array);
