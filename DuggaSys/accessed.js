@@ -435,7 +435,6 @@ function mouseUp(e){
 							str+=checkboxes.childNodes[i].childNodes[0].value+" ";
 					}
 			}
-			alert(str);
 			expanded=false;
 			if(str!="")changeProperty(checkboxes.id.substr(3),"group",str);
 		}
