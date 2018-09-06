@@ -19,8 +19,9 @@ var querystring=parseGet();
 // adapted from https://stackoverflow.com/questions/20798477/how-to-find-index-of-all-occurrences-of-element-in-array
 //----------------------------------------------------------------------------------
 function getAllIndexes(haystack, needle) {
-    let i = haystack.indexOf(needle);
     let indexes = [];
+    if(haystack===null||needle===null||needle==="") return indexes;
+    let i = haystack.indexOf(needle);
     while (i !== -1) {
         indexes.push(i);
         i = haystack.indexOf(needle, ++i);
