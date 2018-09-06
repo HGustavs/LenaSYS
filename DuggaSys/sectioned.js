@@ -702,37 +702,67 @@ function returnedSection(data) {
 					str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 					kk++;
         } else if (itemKind === 6) { //Group
+            // Alt 1
             var grp="UNK";
-            gstr="";
-            if(item['grptype']!=null && document.getElementById("userName").innerHTML!="Guest"){
-              let memberArr=getAllIndexes(data['grpmembershp'], item['grptype']);
-              for(let j=0;j<memberArr.length;j++){
-                  let spos=memberArr[j]+item['grptype'].length+1;
-                  let epos=data['grpmembershp'].indexOf(' ',spos);
-                  if(gstr!="")gstr+=",";
-                  gstr+=data['grpmembershp'].slice(spos,epos);
-              }
-              if(gstr==""){
-                  gstr=" &laquo;Not assigned yet&raquo";
-              }
-              /*
-              var lst=data['groups'][item['grptype']];
-              if(typeof(lst)!="undefined"){
-                grp=item['grptype']+"_UNK";
-                for(let i=0;i<data['grpmembershp'].length;i++){
-                  let member=data['grpmembershp'][i];
-                  if(lst.indexOf(member)>=0){
-                      if(gstr!="")gstr+=",";
-                      grp=member;
-                      gstr=" "+member;
-                  }
+            let grpmembershp=data['grpmembershp'].split(" ");
+            let grptype=item['grptype']+"_";
+
+            if(document.getElementById("userName").innerHTML!="Guest"){
+                for (let i=0;i<grpmembershp.length;i++){
+                    let g=grpmembershp[i].replace(grptype,"");
+                    if(g.length<grpmembershp[i].length){
+                        if(grp!=="UNK"){
+                            grp+=",";
+                        }else{
+                            grp="";  
+                        }
+                        grp+=g;
+                    }                
                 }
-              }*/
-            }else if(document.getElementById("userName").innerHTML=="Guest"){
-                gstr=" &laquo;Not logged in&raquo";
-            }						
-						str+="<td style='width:32px;' onclick='getGroups(\""+grp+"\");'><img src='../Shared/icons/ManDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
-						str+="<td class='section-message item' onclick='getGroups(\""+grp+"\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+            }	
+            /*
+            // Alt 2
+            var grp="UNK";
+            let grpmembershp=data['grpmembershp'];
+            let grptype=item['grptype']+"_";
+
+            if(document.getElementById("userName").innerHTML!="Guest"){
+                var ex="(?:"+grptype+")([A-Z0-9])(?:\s?)";
+                var regex = new RegExp(ex,"g");
+                while((found = regex.exec(grpmembershp)) !== null) {
+                    if(grp!=="UNK"){
+                        grp+=",";
+                    }else{
+                        grp="";  
+                    }
+                    grp+=found[1];
+                } 
+            }
+            */
+            /*
+            // Alt 3
+            var grp="UNK";
+            let grpmembershp=data['grpmembershp'];
+            let grptype=item['grptype']+"_";
+
+            if(document.getElementById("userName").innerHTML!="Guest"){
+                let memberArr=getAllIndexes(grpmembershp, grptype);
+                for(let j=0;j<memberArr.length;j++){
+                    let spos=memberArr[j]+item['grptype'].length;
+                    let epos=data['grpmembershp'].indexOf(' ',spos);
+                    let g=data['grpmembershp'].slice(spos,epos);
+                    if(grp!=="UNK"){
+                        grp+=",";
+                    }else{
+                        grp="";  
+                    }
+                    grp+=g;
+                }
+            }
+            */					
+            str+="<td style='width:32px;' onclick='getGroups(\""+grp+"\");'><img src='../Shared/icons/ManDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+            str+="<td class='section-message item' onclick='getGroups(\""+grp+"\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";    
+
 				}else if (itemKind === 7) { //Message
 						if(!(item['link']==""||item['link']=="---===######===---")){      
 								str+="<td style='width:32px;'><img src='showdoc.php?courseid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&fname="+item['link']+"' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
@@ -782,8 +812,13 @@ function returnedSection(data) {
 				}else if (itemKind == 6){ 
           // Group
           str +="<div class='ellipsis nowrap'>"+item['entryname'];
-					str+=gstr+"</span></div>";
-
+          if(document.getElementById("userName").innerHTML=="Guest"){
+              str+="  &laquo;Not logged in&raquo</span></div>";
+          }else if(grp==="UNK"){
+              str+=" &laquo;Not assigned yet&raquo</span></div>";
+          }else{
+              str+=grp+"</span></div>";
+          }
 				}else if (itemKind == 7){ 
 					// Message
 					str +="<span style='margin-left:8px;' title='"+item['entryname']+"'>"+item['entryname']+"</span>";
