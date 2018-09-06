@@ -14,14 +14,19 @@ var inParams = "UNK";;
 var MAX_SUBMIT_LENGTH = 5000;
 var querystring=parseGet();
 
-//Show or hide security notification based on localstorage variables
-/*
-$( document ).ready(function() {
-    if (localStorage.getItem("securityquestion") === null && localStorage.getItem("securitynotification") == "on"){
-        showSecurityPopup();
-    }
-});
-*/
+//----------------------------------------------------------------------------------
+// get all the indexes where a substring (needle) is found in a string (haystack)
+// adapted from https://stackoverflow.com/questions/20798477/how-to-find-index-of-all-occurrences-of-element-in-array
+//----------------------------------------------------------------------------------
+function getAllIndexes(haystack, needle) {
+    let i = haystack.indexOf(needle);
+    let indexes = [];
+    while (i !== -1) {
+        indexes.push(i);
+        i = haystack.indexOf(needle, ++i);
+    }    
+    return indexes;
+}
 
 //Set the localstorage item securitynotifaction to on or off
 function setSecurityNotifaction(param){
@@ -588,7 +593,7 @@ function AJAXService(opt,apara,kind)
   }
 	apara.log_uuid = tex;
 
-	var para="";
+  var para="";
 	for (var key in apara) {
 		var old = apara[key];
 		if (typeof(apara[key]) != "undefined" && apara[key] != "" && apara[key] != null) {

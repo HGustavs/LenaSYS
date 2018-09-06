@@ -106,7 +106,11 @@ if(checklogin()){
             if($ha)$showgrp=$showgrp.substr(0,strpos($showgrp,"_"));
             foreach($query->fetchAll() as $row) {                      
                 if(strpos($row['groups'],$showgrp)!==false){
-                    array_push($grplst, array($showgrp,$row['firstname'],$row['lastname'],$row['email'],$row['groups']));
+                    if($ha){
+                        array_push($grplst, array($showgrp,$row['firstname'],$row['lastname'],$row['email'],$row['groups']));
+                    }else{
+                        array_push($grplst, array($showgrp,$row['firstname'],$row['lastname'],$row['email'],"UNK"));
+                    }
                 }              
             }
             /*
@@ -394,8 +398,9 @@ if(!$query->execute()) {
 }
 
 foreach($query->fetchAll() as $row) {
-	$grpmembershp=trim($row['groups']);	
-	$grpmembershp=explode(" ", $grpmembershp);	
+	$grpmembershp=$row['groups'];	
+	//$grpmembershp=trim($row['groups']);	
+	//$grpmembershp=explode(" ", $grpmembershp);	
 }
 
 $resulties=array();

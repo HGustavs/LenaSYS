@@ -703,10 +703,22 @@ function returnedSection(data) {
 					kk++;
         } else if (itemKind === 6) { //Group
             var grp="UNK";
-            gstr=" &laquo;Not assigned yet&raquo";
-            if(item['grptype']!=null && document.getElementById("userName").innerHTML!="Guest"){						
+            gstr="";
+            if(item['grptype']!=null && document.getElementById("userName").innerHTML!="Guest"){
+              let memberArr=getAllIndexes(data['grpmembershp'], item['grptype']);
+              for(let j=0;j<memberArr.length;j++){
+                  let spos=memberArr[j]+item['grptype'].length+1;
+                  let epos=data['grpmembershp'].indexOf(' ',spos);
+                  if(gstr!="")gstr+=",";
+                  gstr+=data['grpmembershp'].slice(spos,epos);
+              }
+              if(gstr==""){
+                  gstr=" &laquo;Not assigned yet&raquo";
+              }
+              /*
               var lst=data['groups'][item['grptype']];
               if(typeof(lst)!="undefined"){
+                grp=item['grptype']+"_UNK";
                 for(let i=0;i<data['grpmembershp'].length;i++){
                   let member=data['grpmembershp'][i];
                   if(lst.indexOf(member)>=0){
@@ -715,7 +727,7 @@ function returnedSection(data) {
                       gstr=" "+member;
                   }
                 }
-              }
+              }*/
             }else if(document.getElementById("userName").innerHTML=="Guest"){
                 gstr=" &laquo;Not logged in&raquo";
             }						
@@ -1256,7 +1268,9 @@ $(window).keyup(function (event) {
 
 // React to scroll events
 $(document).scroll(function(e){
-	localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
+    if(typeof(retdata)!=="undefined"){
+        localStorage.setItem("sectionEdScrollPosition" + retdata.coursecode, $(window).scrollTop());
+    }
 });						 
 
 // Functions to prevent collapsing when clicking icons
