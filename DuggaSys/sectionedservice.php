@@ -41,7 +41,7 @@ $comments=getOP('comments');
 $makeactive=getOP('makeactive');
 $startdate=getOP('startdate');
 $enddate=getOP('enddate');
-$showgrp=getOP('showgrp');
+$showgrps=getOP('showgrp');
 $grptype=getOP('grptype');
 
 $grpmembershp="UNK";
@@ -103,6 +103,8 @@ if(checklogin()){
         }
         */
         if($query->execute()) {
+            $showgrps=explode(',',$showgrps);                 
+            $showgrp=$showgrps[0];
             if($ha)$showgrp=explode('_',$showgrp)[0];
             foreach($query->fetchAll() as $row) {
                 $grpmembershp=$row['groups'];
@@ -112,7 +114,7 @@ if(checklogin()){
                     array_push($grplst, array($grp,$row['firstname'],$row['lastname'],$row['email'],));
                     $idx=strpos($grpmembershp,$showgrp,$idx+1);
                 }              
-            }
+            }  
             sort($grplst);
             /*
             foreach($query->fetchAll() as $row) {      

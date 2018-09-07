@@ -735,19 +735,19 @@ function returnedSection(data) {
         } else if (itemKind === 6) { //Group
             // Alt 1
             let grpmembershp=data['grpmembershp'].split(" ");
-            let grptype=item['grptype']+"_";
+            var grptype=item['grptype']+"_";
             var grp=grptype+"UNK";
 
             if(document.getElementById("userName").innerHTML!="Guest"){
                 for (let i=0;i<grpmembershp.length;i++){
                     let g=grpmembershp[i].replace(grptype,"");
                     if(g.length<grpmembershp[i].length){
-                        if(grp!=="UNK"){
+                        if(grp!==grptype+"UNK"){
                             grp+=",";
                         }else{
                             grp="";  
                         }
-                        grp+=g;
+                        grp+=grptype+g;
                     }                
                 }
             }	
@@ -843,6 +843,8 @@ function returnedSection(data) {
 				}else if (itemKind == 6){ 
           // Group
           str +="<div class='ellipsis nowrap'>"+item['entryname'];
+          let re=new RegExp(grptype,"g");
+          grp=grp.replace(re,"");
           if(document.getElementById("userName").innerHTML=="Guest"){
               str+="  &laquo;Not logged in&raquo</span></div>";
           }else if(grp.indexOf("UNK")>=0){
