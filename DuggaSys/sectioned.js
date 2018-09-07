@@ -441,7 +441,6 @@ function returnedCourse(data) {
 function returnedGroups(data) {
     if (data['debug'] != "NONE!") alert(data['debug']);    
     var grpmembers=data['grplst'];
-    console.log(grpmembers)
     var str="";    
     let grp="";
     let grpemail="";
@@ -452,14 +451,14 @@ function returnedGroups(data) {
         if(cgrp!=grp){
             if(grp!=""){
                 str+="</tbody>";
-                str+="<tfoot><tr><td><a href='mailto:"+grpemail+"'>Email group</a></td><tr></tfoot>"
-                str+="</table><br>";
+                str+="</table>";
+                str+="<div style='text-align:right;border-top:2px solid #434343'><a href='mailto:"+grpemail+"'>Email group</a></div>"
                 grpemail="";
             }
             grp=cgrp;
             cgrp=cgrp.split('_');
-            str+="<table><caption>Group "+cgrp[1]+"</caption>";
-            str+="<thead><tr><th>Name</th></tr></thead>";
+            str+="<table>";
+            str+="<thead><tr><th style='text-align:left;'>Group "+cgrp[1]+"</th></tr></thead>";
             str+="<tbody>";
         }
         str+="<tr><td><a href='mailto:"+member[3]+"'>"+member[1]+" "+member[2]+"</a></td></tr>";
@@ -468,8 +467,8 @@ function returnedGroups(data) {
     }
     if(grp!=""){
         str+="</tbody>";
-        str+="<tfoot><tr><td><a href='mailto:"+grpemail+"'>Email group</a></td><tr></tfoot>"
-        str+="</table><br>";
+        str+="</table>";
+        str+="<div style='text-align:right;border-top:2px solid #434343'><a href='mailto:"+grpemail+"'>Email group</a></div>"
         grpemail="";
     }
     /*

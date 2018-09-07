@@ -323,7 +323,7 @@
 <div id='grptblContainer' class='loginBoxContainer' style='display:none;'>
 		<div class='loginBox'>
 			<div class='loginBoxheader'>
-				<h3>Groups</h3>
+				<h3>Group Members</h3>
 				<div class='cursorPointer' onclick='closeWindows();'>x</div>
 			</div>
 			<div style='padding:5px;'>
