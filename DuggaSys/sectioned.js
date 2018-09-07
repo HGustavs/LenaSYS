@@ -440,8 +440,39 @@ function returnedCourse(data) {
 
 function returnedGroups(data) {
     if (data['debug'] != "NONE!") alert(data['debug']);    
-    var groups=data['grplst'];
-    var str="";
+    var grpmembers=data['grplst'];
+    console.log(grpmembers)
+    var str="";    
+    let grp="";
+    let grpemail="";
+    for (let i=0;i<grpmembers.length;i++) {
+        let member=grpmembers[i];
+        let cgrp=member[0];
+        
+        if(cgrp!=grp){
+            if(grp!=""){
+                str+="</tbody>";
+                str+="<tfoot><tr><td><a href='mailto:"+grpemail+"'>Email group</a></td><tr></tfoot>"
+                str+="</table><br>";
+                grpemail="";
+            }
+            grp=cgrp;
+            cgrp=cgrp.split('_');
+            str+="<table><caption>Group "+cgrp[1]+"</caption>";
+            str+="<thead><tr><th>Name</th></tr></thead>";
+            str+="<tbody>";
+        }
+        str+="<tr><td><a href='mailto:"+member[3]+"'>"+member[1]+" "+member[2]+"</a></td></tr>";
+        if(grpemail!="")grpemail+=",";
+        grpemail+=member[3];
+    }
+    if(grp!=""){
+        str+="</tbody>";
+        str+="<tfoot><tr><td><a href='mailto:"+grpemail+"'>Email group</a></td><tr></tfoot>"
+        str+="</table><br>";
+        grpemail="";
+    }
+    /*
     for (var grpKind in groups) {
         // skip loop if the property is from prototype
         if (!groups.hasOwnProperty(grpKind)) continue;
@@ -465,6 +496,7 @@ function returnedGroups(data) {
         }
         str+="</table><br>";
     }
+    */
     if (str!=""){
         $("#grptbl").html(str);
         $("#grptblContainer").css("display", "flex");  
@@ -703,9 +735,9 @@ function returnedSection(data) {
 					kk++;
         } else if (itemKind === 6) { //Group
             // Alt 1
-            var grp="UNK";
             let grpmembershp=data['grpmembershp'].split(" ");
             let grptype=item['grptype']+"_";
+            var grp=grptype+"UNK";
 
             if(document.getElementById("userName").innerHTML!="Guest"){
                 for (let i=0;i<grpmembershp.length;i++){
@@ -814,7 +846,7 @@ function returnedSection(data) {
           str +="<div class='ellipsis nowrap'>"+item['entryname'];
           if(document.getElementById("userName").innerHTML=="Guest"){
               str+="  &laquo;Not logged in&raquo</span></div>";
-          }else if(grp==="UNK"){
+          }else if(grp.indexOf("UNK")>=0){
               str+=" &laquo;Not assigned yet&raquo</span></div>";
           }else{
               str+=grp+"</span></div>";

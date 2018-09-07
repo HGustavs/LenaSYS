@@ -103,16 +103,17 @@ if(checklogin()){
         }
         */
         if($query->execute()) {
-            if($ha)$showgrp=$showgrp.substr(0,strpos($showgrp,"_"));
-            foreach($query->fetchAll() as $row) {                      
-                if(strpos($row['groups'],$showgrp)!==false){
-                    if($ha){
-                        array_push($grplst, array($showgrp,$row['firstname'],$row['lastname'],$row['email'],$row['groups']));
-                    }else{
-                        array_push($grplst, array($showgrp,$row['firstname'],$row['lastname'],$row['email'],"UNK"));
-                    }
+            if($ha)$showgrp=explode('_',$showgrp)[0];
+            foreach($query->fetchAll() as $row) {
+                $grpmembershp=$row['groups'];
+                $idx=strpos($grpmembershp,$showgrp);                      
+                while($idx!==false){
+                    $grp=substr($grpmembershp,$idx,strpos($grpmembershp,' ',$idx)-$idx);
+                    array_push($grplst, array($grp,$row['firstname'],$row['lastname'],$row['email'],));
+                    $idx=strpos($grpmembershp,$showgrp,$idx+1);
                 }              
             }
+            sort($grplst);
             /*
             foreach($query->fetchAll() as $row) {      
                 if(isset($row['groups'])){
