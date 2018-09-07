@@ -205,7 +205,6 @@ if(checklogin()){
 			}
 
     	} else if(strcmp($opt,"REORDER")===0) {
-        $debug="tomten";
 			$orderarr=explode(",",$order);
 
 			foreach ($orderarr as $key => $value) {
