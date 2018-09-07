@@ -30,7 +30,7 @@ INSERT INTO user(username,password,newpassword,creator,ssn) values ("Tester", "$
 
 CREATE TABLE groups (
   groupID INTEGER unsigned NOT NULL AUTO_INCREMENT,
-  groupKind VARCHAR(4) NOT NULL,
+  groupKind VARCHAR(16) NOT NULL,
 	groupVal VARCHAR(8) NOT NULL,
 	groupInt INTEGER NOT NULL,
   PRIMARY KEY (groupID)
