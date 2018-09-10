@@ -400,9 +400,14 @@ if(!$query->execute()) {
 }
 
 foreach($query->fetchAll() as $row) {
-	$grpmembershp=$row['groups'];	
-	//$grpmembershp=trim($row['groups']);	
-	//$grpmembershp=explode(" ", $grpmembershp);	
+    if(is_null($row['groups'])){
+        $grpmembershp="UNK";	
+    }else{
+        $grpmembershp=$row['groups'];
+    }
+    
+    //$grpmembershp=trim($row['groups']);	
+    //$grpmembershp=explode(" ", $grpmembershp);	
 }
 
 $resulties=array();
