@@ -73,7 +73,7 @@
     white-space: pre;
     white-space: pre-wrap;
     background: #ffffff;
-    display: inline-block;
+    display: block;
     padding: 1em;
     margin: 0.5em 0px;
     border: 1px solid #bebab0;
