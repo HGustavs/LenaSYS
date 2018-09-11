@@ -216,29 +216,18 @@
 }
 
 #markdown h4, #markdown h5, #markdown h6 {
-	margin-top: 25px !important;
+	margin: 0;
 }
 
 #markdown h3{
     font-size:16px;
     margin: 2px 0px 2px 0px;
+    border-bottom: 2px solid #aaa;
 }
-#markdown h2 {
-  font-size:18px;
-  margin: 2px 0px 2px 0px;
-
-}
-#markdown h1 {
-  font-size:22px;
-  margin: 2px 0px 2px 0px;
-}
-
-#markdown h2 {
-    font-size:18px;
-    margin: 2px 0px 2px 0px;
-}
-
-#markdown h1 {
-    font-size:22px;
-    margin: 2px 0px 2px 0px;
+#markdown hr {
+    height:4px;  
+    padding:0;
+    margin:16px 0;
+    color:#e1e4e8;
+    border:0;
 }
