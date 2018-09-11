@@ -100,7 +100,7 @@ function parseMarkdown(inString)
 
     //One line break
     //inString=inString.replace(/(\r\n|\n|\r){3}/gm,"<br>");
-    inString=inString.replace(/(\n)$/gm, "<br>");
+    //inString=inString.replace(/(\n)$/gm, "<br>");
 
     //Tab
     inString=inString.replace(/(\t)/gm, "<span style=\"padding-left:4em\"></span>");
@@ -178,7 +178,11 @@ function identifier(prevLine, currentLine, markdown, nextLine){
         markdown += handleTable(currentLine, prevLine, nextLine);
     }else{
         // If its ordinary text then show it directly
-        markdown += markdownBlock(currentLine);
+        let lastChar=currentLine.substr(currentLine.length - 1);
+        let markedStr=markdownBlock(currentLine);
+        let markedStrLastChar=markedStr.substr(markedStr.length - 1);
+        if(lastChar===markedStrLastChar)markedStr+="<BR>"
+        markdown += markedStr;
     }
     // close table
     if(!isTable(currentLine) && !isTable(nextLine)){
@@ -189,11 +193,13 @@ function identifier(prevLine, currentLine, markdown, nextLine){
 // Check if its an unordered list
 function isUnorderdList(item) {
     // return true if space followed by a dash or astersik
+    console.log(item,/^\s*(?:\-|\*)\s.*$/gm.test(item));
     return /^\s*(?:\-|\*)\s.*$/gm.test(item);
 }
 // Check if its an ordered list
 function isOrderdList(item) {
     // return true if space followed by a digit and a dot
+    console.log(item,/^\s*\d\.\s.*$/gm.test(item));
     return /^\s*\d\.\s.*$/gm.test(item);
 }
 // CHeck if its a table
@@ -325,8 +331,7 @@ function handleTable(currentLine, prevLine, nextLine) {
 //
 //----------------------------------------------------------------------------------
 function markdownBlock(inString)
-{
-
+{        
     //Regular expressions for italics and bold formatting
     inString = inString.replace(/\*{4}(.*?\S)\*{4}/g, '<strong><em>$1</em></strong>');
     inString = inString.replace(/\*{3}(.*?\S)\*{3}/g, '<strong>$1</strong>');
@@ -349,19 +354,23 @@ function markdownBlock(inString)
     // External img src !!!
     // |||src,thumbnail width in px,full size width in px|||
     // Markdown image zoom rollover: All images are normally shown as a thumbnail but when rollover original image size will appear
+    inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}$/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" /><br>');
+    inString = inString.replace(/\|{3}(.*?\S)\|{3}$/g, '<img class="imgzoom" src="$1" /><br>');
     inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
     inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" />');
 
     // Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
     // markdown below does not work correctly
 
+    /*
     inString = inString.replace(/(\r\n){3}/gm,"<br><br>");
     inString = inString.replace(/(\r\n){2}/gm,"<br>");
     inString = inString.replace(/(\n){3}/gm,"<br><br>");
     inString = inString.replace(/(\n){2}/gm,"<br>");
     inString = inString.replace(/(\r){3}/gm,"<br><br>");
     inString = inString.replace(/(\r){2}/gm,"<br>");
-
+    */
+   
     // Hyperlink !!!
     // !!!url,text to show!!!
     inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
