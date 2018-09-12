@@ -500,12 +500,13 @@
 				// Only .md files are supported
 				if($file_extension=="md"){
 						// If markdown -- perform replacements in code
-            //$bummer=parseMarkdown($bummer);            
-            $bummer="<script>";
-            $bummer.="function returnedPreview(data){document.getElementById('mdtarget').innerHTML=parseMarkdown(data);}";
-            $bummer.="$( document ).ready($.ajax({url: \"showdoc.php?courseid=".$cid."&coursevers=".$coursevers."&fname=".$fname."&read=yes\", type: \"post\", dataType: \"html\", success: returnedPreview}));";
-            $bummer.="</script>";
-            $bummer.="<div id='mdtarget' class='descbox'></div>";            
+            $bummer=str_replace("\n","\\n",$bummer);
+            $bummer=str_replace("\r","\\r",$bummer);
+            $mstr="<script>";
+            $mstr.="var plorf=\"".$bummer."\";";
+            $mstr.="document.getElementById('content').innerHTML=parseMarkdown(plorf);";
+            $mstr.="</script>";
+            $bummer=$mstr;
 				}
 				
 				echo $bummer;
