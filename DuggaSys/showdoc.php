@@ -502,9 +502,10 @@
 						// If markdown -- perform replacements in code
             $bummer=str_replace("\n","\\n",$bummer);
             $bummer=str_replace("\r","\\r",$bummer);
-            $mstr="<script>";
+            $mstr="<div id='mdtarget' class='descbox'></div>";
+            $mstr.="<script>";
             $mstr.="var plorf=\"".$bummer."\";";
-            $mstr.="document.getElementById('content').innerHTML=parseMarkdown(plorf);";
+            $mstr.="document.getElementById('mdtarget').innerHTML=parseMarkdown(plorf);";
             $mstr.="</script>";
             $bummer=$mstr;
 				}
