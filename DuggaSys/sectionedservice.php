@@ -88,7 +88,7 @@ if(checklogin()){
     $isSuperUserVar=isSuperUser($userid);
     $ha = $haswrite || $isSuperUserVar;
     if(strcmp($opt,"GRP")===0) {       
-        $query = $pdo->prepare("SELECT user.uid,user.firstname,user.lastname,user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers");
+        $query = $pdo->prepare("SELECT user.uid,user.username,user.firstname,user.lastname,user.email,user_course.groups FROM user,user_course WHERE user.uid=user_course.uid AND cid=:cid AND vers=:vers");
         $query->bindParam(':cid', $courseid);
         $query->bindParam(':vers', $coursevers);
         /*
@@ -111,7 +111,11 @@ if(checklogin()){
                 $idx=strpos($grpmembershp,$showgrp);                      
                 while($idx!==false){
                     $grp=substr($grpmembershp,$idx,strpos($grpmembershp,' ',$idx)-$idx);
-                    array_push($grplst, array($grp,$row['firstname'],$row['lastname'],$row['email'],));
+                    $email=$row['email'];
+                    if(is_null($email)){
+                        $email=$row['username']."@student.his.se";
+                    }
+                    array_push($grplst, array($grp,$row['firstname'],$row['lastname'],$email));
                     $idx=strpos($grpmembershp,$showgrp,$idx+1);
                 }              
             }  

@@ -444,24 +444,26 @@ function returnedGroups(data) {
     var str="";    
     let grp="";
     let grpemail="";
+    let j=1;
     for (let i=0;i<grpmembers.length;i++) {
         let member=grpmembers[i];
         let cgrp=member[0];
         
         if(cgrp!=grp){
+            j=1;
             if(grp!=""){
                 str+="</tbody>";
                 str+="</table>";
-                str+="<div style='text-align:right;border-top:2px solid #434343'><a href='mailto:"+grpemail+"'>Email group</a></div>"
+                str+="<div style='text-align:right;border-top:2px solid #434343'><a style='white-space:nowrap' href='mailto:"+grpemail+"'>Email group</a></div>"
                 grpemail="";
             }
             grp=cgrp;
             cgrp=cgrp.split('_');
             str+="<table>";
-            str+="<thead><tr><th style='text-align:left;'>Group "+cgrp[1]+"</th></tr></thead>";
+            str+="<thead><tr><th rowspan=2 style='text-align:left;'>Group "+cgrp[1]+"</th></tr></thead>";
             str+="<tbody>";
         }
-        str+="<tr><td><a href='mailto:"+member[3]+"'>"+member[1]+" "+member[2]+"</a></td></tr>";
+        str+="<tr><td>"+(j++)+"</td><td><a  style='white-space:nowrap' href='mailto:"+member[3]+"'>"+member[1]+" "+member[2]+"</a></td></tr>";
         if(grpemail!="")grpemail+=",";
         grpemail+=member[3];
     }
