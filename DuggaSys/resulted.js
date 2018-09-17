@@ -545,7 +545,6 @@ function saveResponse()
 
 function returnedResults(data)
 {
-	alert(data.gradeupdated);
 	if (data.gradeupdated === true){
   	// Update the the local array studentInfo when grade is updated.
     for (var student in studentInfo){
