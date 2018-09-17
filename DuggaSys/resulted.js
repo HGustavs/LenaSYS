@@ -296,12 +296,12 @@ $(function()
 
 function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire){
 
-    closeWindows();
+		closeWindows();
 
-	var uidGrab = uid;
-	var momentGrab = moment;
-    var currentTime = new Date();
-	var currentTimeGetTime = currentTime.getTime();
+		var uidGrab = uid;
+		var momentGrab = moment;
+		var currentTime = new Date();
+		var currentTimeGetTime = currentTime.getTime();
 
     if ($(e.target ).hasClass("Uc")){
         changeGrade(1, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid);
@@ -329,7 +329,7 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 	                var newDateObj = new Date(newGradeExpire.getTime() + allowedRegradeTime);
                     var newGradeExpirePlusOneDay = newDateObj.getTime();
 
-					// Compair the gradeExpire value to the current time, if no grade is set, we can always set it no matter the last change
+					// Compare the gradeExpire value to the current time, if no grade is set, we can always set it no matter the last change
 					if(newGradeExpirePlusOneDay > currentTimeGetTime){
 						//The user must press the ctrl-key to activate if-statement
 						if(event.ctrlKey || event.metaKey){
@@ -545,7 +545,8 @@ function saveResponse()
 
 function returnedResults(data)
 {
-  if (data.gradeupdated === true){
+	alert(data.gradeupdated);
+	if (data.gradeupdated === true){
   	// Update the the local array studentInfo when grade is updated.
     for (var student in studentInfo){
       var studentObject = studentInfo[student]["lid:" + data.duggaid];

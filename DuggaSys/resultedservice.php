@@ -172,7 +172,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 					$listname = $row['entryname'];
 					$coursename = $row['coursename'];
-					$results = sendPushNotification($luid, "$listname for $coursename has been graded");
+					// $results = sendPushNotification($luid, "$listname for $coursename has been graded");
 					// Ignore results of whether the push notification was sent or not, as this notification is only for user convenience
 				}
 			}

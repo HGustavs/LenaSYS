@@ -357,18 +357,6 @@ function markdownBlock(inString)
     inString = inString.replace(/\|{3}(.*?\S),(.*?\S),(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" onmouseover="originalImg(this, $3)" onmouseout="thumbnailImg(this, $2)" width="$2px" style="border: 3px solid #614875;" />');
     inString = inString.replace(/\|{3}(.*?\S)\|{3}/g, '<img class="imgzoom" src="$1" />');
 
-    // Markdown for hard new lines -- \n\n and \n\n\n (supports windows \r\n, unix \n, and mac \r styles for new lines)
-    // markdown below does not work correctly
-
-    /*
-    inString = inString.replace(/(\r\n){3}/gm,"<br><br>");
-    inString = inString.replace(/(\r\n){2}/gm,"<br>");
-    inString = inString.replace(/(\n){3}/gm,"<br><br>");
-    inString = inString.replace(/(\n){2}/gm,"<br>");
-    inString = inString.replace(/(\r){3}/gm,"<br><br>");
-    inString = inString.replace(/(\r){2}/gm,"<br>");
-    */
-   
     // Hyperlink !!!
     // !!!url,text to show!!!
     inString = inString.replace(/\!{3}(.*?\S),(.*?\S)\!{3}/g, '<a href="$1" target="_blank">$2</a>');
