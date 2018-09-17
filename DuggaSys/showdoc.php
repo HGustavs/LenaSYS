@@ -501,7 +501,9 @@
 				if($file_extension=="md"){
 						// If markdown -- perform replacements in code
             $bummer=str_replace("\n","\\n",$bummer);
-            $bummer=str_replace("\r","\\r",$bummer);
+            $bummer=str_replace("\r","",$bummer);
+            $bummer=str_replace('"','\\"',$bummer);
+					
             $mstr="<div id='mdtarget' class='descbox'></div>";
             $mstr.="<script>";
             $mstr.="var plorf=\"".$bummer."\";";

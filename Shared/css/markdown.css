@@ -18,39 +18,6 @@
 	}
 }
 
-/*
-.descbox h1, .descbox h2, .descbox h3
-.descbox h4, .descbox h5, .descbox h6{
-		text-align: left;
-		font-weight: 600;
-		line-height: 1.25;
-		margin-bottom: 16px;
-		margin-top: 24px;
-}
-.descbox h1 {
-		font-size: 2em;
-		padding-bottom: 0.3em;
-}
-
-.descbox h2 {
-		font-size: 1.5em;
-		padding-bottom: 0.3em;
-}
-
-.descbox h3 {
-	font-size: 1.25em;
-}
-
-.descbox h4 {
-	color: #000;
-	text-align: left;
-	font-style: normal;
-	font-size: 1em;
-	line-height: 1.5em;
-	font-weight: bold;
-}
-*/
-
 .descbox pre {
     font-family: Hack, "Courier 10 Pitch", Courier, monospace;
     font-size: 12px;
@@ -66,6 +33,13 @@
     border: 10px solid black;
     height: 125px;
 }
+
+#markdown img{
+		box-shadow: 2px 2px 4px RGBA(0,0,0,0.7);
+		border: 2px solid black;
+		border-radius: 2px;
+}
+
 .descbox code {
     font-family: Hack, MyWebFont,Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
     font-size: 10px;
@@ -224,6 +198,7 @@
     margin: 2px 0px 2px 0px;
     border-bottom: 2px solid #aaa;
 }
+
 #markdown hr {
     height:4px;  
     padding:0;
