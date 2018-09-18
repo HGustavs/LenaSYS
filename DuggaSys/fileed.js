@@ -411,6 +411,9 @@ function createQuickItem()
  *****************************************************************/
 
 function loadFile(fileUrl, fileNamez, fileKind) {
+    filename=fileNamez;
+    filepath=fileUrl;
+    filekind=fileKind;
     
 		$("#fileName").val(fileNamez);    
 		$("#fileKind").val(fileKind);
@@ -420,15 +423,14 @@ function loadFile(fileUrl, fileNamez, fileKind) {
     $(".markdownPart").hide();
     $(".editFilePart").show();
 
-    var fileContent = getFIleContents(fileUrl);
+    $.ajax({url: "showdoc.php?courseid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+fileNamez+"&read=yes", type: 'post', dataType: 'html', success: returnFile});
 }
 
 function returnFile(data)
 {
-		var fileName = fileUrl.split("/").pop().split(".")[0];
-    document.getElementById("filecont").value = fileContent;
+    document.getElementById("filecont").innerHTML = data;
 		$(".fileName").html(fileName);
-    editFile(fileContent);
+    editFile(data);
 }
 
 function editFile(str){
@@ -453,8 +455,10 @@ function saveMarkdown() {
 }
 
 function saveTextToFile() {
-			alert("Floom!");
-}
+      AJAXService("SAVEFILE",{cid:querystring['cid'],contents:document.getElementById("filecont").value,filename:filename,filepath:filepath,kind:filekind},"FILE");
+      $(".previewWindow").hide();
+      $(".previewWindowContainer").css("display", "none");
+  }
 
 function validatePreviewForm(){
 	if(document.getElementById("cID").value == "Toddler"){
@@ -510,12 +514,6 @@ function loadPreview(fileUrl, fileName, fileKind) {
 
 function returnedPreview(data)
 {
-	/*
-    var tempFileName = fileUrl.split("/").pop().split(".")[0];
-    document.getElementById("mrkdwntxt").innerHTML = fileContent;
-
-    $(".fileName").html(tempFileName);
-		*/
     updatePreview(data);
 		$('#mrkdwntxt').html(data);
 
