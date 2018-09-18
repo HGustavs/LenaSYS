@@ -59,7 +59,7 @@ if (checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 						// Only edit the file if it already exisiting
 						if(file_exists($currcwd)){
 								// Uppdate the database if the save was successful
-								if(file_put_contents($currcwd, $contents)){
+								if(file_put_contents($currcwd, html_entity_decode($contents))){
 										$fileSize = filesize($currcwd);
 
 										if($kind == 2) {
