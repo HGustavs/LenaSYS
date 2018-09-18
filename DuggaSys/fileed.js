@@ -449,7 +449,8 @@ function cancelEditFile() {
 }
 
 function saveMarkdown() {
-		AJAXService("SAVEFILE",{cid:querystring['cid'],contents:document.getElementById("mrkdwntxt").value,filename:filename,filepath:filepath,kind:filekind},"FILE");
+    AJAXService("SAVEFILE",{cid:querystring['cid'],contents:document.getElementById("mrkdwntxt").value,filename:filename,filepath:filepath,kind:filekind},"FILE");
+    document.getElementById("mrkdwntxt").innerHTML="";
     $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
 }
@@ -515,8 +516,9 @@ function loadPreview(fileUrl, fileName, fileKind) {
 function returnedPreview(data)
 {
     updatePreview(data);
-		$('#mrkdwntxt').html(data);
-
+    //$('#mrkdwntxt').html(data);
+    // https://stackoverflow.com/questions/1927593/cant-update-textarea-with-javascript-after-writing-to-it-manually
+    document.getElementById("mrkdwntxt").value=data;
 }
 
 function updatePreview(str) {
