@@ -4646,3 +4646,7 @@ textarea#filecont{
     justify-content: space-between;
     align-items: flex-start;
 }
+
+.active-variant {
+    background-color: #fbcd47 !important;
+}

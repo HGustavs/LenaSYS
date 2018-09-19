@@ -51,7 +51,8 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "duggaedservice.php",
 //------------------------------------------------------------------------------------------------
 $writeaccess = false;
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
-	$writeaccess = true;
+  $writeaccess = true;
+  /*
 	if(strcmp($opt,"ADDUGGA")===0){
 		$querystring="INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart, jsondeadline) VALUES (:cid,:autograde,:gradesystem,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart, :jsondeadline)";
 		$stmt = $pdo->prepare($querystring);
@@ -64,9 +65,9 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		$stmt->bindParam(':template', $template);
 		$stmt->bindParam(':jsondeadline', $jsondeadline);
 
-		if ($deadline == "UNK") $deadline = null;
-		if ($qstart == "UNK") $qstart = null;
-		if ($release == "UNK") $release = null;
+		if (strrpos("UNK",$deadline)!==false) $deadline = null;
+		if (strrpos("UNK",$qstart)!==false) $qstart = null;
+		if (strrpos("UNK",$release)!==false) $release = null;
 
 		$stmt->bindParam(':release', $release);
 		$stmt->bindParam(':deadline', $deadline);
@@ -75,27 +76,36 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))){
 		if (!$stmt->execute()) {
 			$debug=$stmt->errorInfo()[2];
 		}
-	}else if(strcmp($opt,"SAVDUGGA")===0){
-		$query = $pdo->prepare("UPDATE quiz SET qname=:name,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qstart=:qstart,deadline=:deadline,qrelease=:release,jsondeadline=:jsondeadline WHERE id=:qid;");
-		$query->bindParam(':qid', $qid);
-		$query->bindParam(':name', $name);
-		$query->bindParam(':autograde', $autograde);
-		$query->bindParam(':gradesys', $gradesys);
-		$query->bindParam(':template', $template);
-		$query->bindParam(':jsondeadline', $jsondeadline);
+  }else
+  */
+  if(strcmp($opt,"SAVDUGGA")===0){
+    $query=null;
+    if(is_null($qid)||strcmp($qid,"UNK")===0){
+        $query = $pdo->prepare("INSERT INTO quiz(cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,creator,vers,qstart,jsondeadline) VALUES (:cid,:autograde,:gradesys,:qname,:template,:release,:deadline,:uid,:coursevers,:qstart,:jsondeadline)");
+        $query->bindParam(':cid', $cid);
+        $query->bindParam(':uid', $userid);
+        $query->bindParam(':coursevers', $coursevers);
+    }else{
+        $query = $pdo->prepare("UPDATE quiz SET qname=:qname,autograde=:autograde,gradesystem=:gradesys,quizFile=:template,qstart=:qstart,deadline=:deadline,qrelease=:release,jsondeadline=:jsondeadline WHERE id=:qid;");
+        $query->bindParam(':qid', $qid);
+    }
+    $query->bindParam(':qname', $name);
+    $query->bindParam(':autograde', $autograde);
+    $query->bindParam(':gradesys', $gradesys);
+    $query->bindParam(':template', $template);
+    $query->bindParam(':jsondeadline', $jsondeadline);
 
-		if($qstart=="UNK") $query->bindValue(':qstart', null, PDO::PARAM_INT);
-		else $query->bindParam(':qstart', $qstart);
-
-		if($deadline=="UNK") $query->bindValue(':deadline', null, PDO::PARAM_INT);
-		else $query->bindParam(':deadline', $deadline);
-
-        if($release=="UNK") $query->bindValue(':release', null, PDO::PARAM_INT);
-		else $query->bindParam(':release', $release);
+    if (strrpos("UNK",$deadline)!==false) $deadline = null;
+    if (strrpos("UNK",$qstart)!==false) $qstart = null;
+    if (strrpos("UNK",$release)!==false) $release = null;
+    
+    $query->bindParam(':release', $release);
+    $query->bindParam(':deadline', $deadline);
+    $query->bindParam(':qstart', $qstart);
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error updating dugga ".$error[2];
+			$debug.="Error updating dugga ".$error[2];
 		}
 	}else if(strcmp($opt,"DELDU")===0){
         $query = $pdo->prepare("DELETE FROM quiz WHERE id=:qid");

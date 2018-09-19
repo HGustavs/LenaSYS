@@ -25,24 +25,32 @@ AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursever
 // Needed for button clicks
 $(document).ready(function () {
 
-	addVariantSubmissionRow();
-
+  /*
+  addVariantSubmissionRow();
+  $("#disableVariant").attr('disabled',true);
+  $("#enableVariant").attr('disabled',true);  
+  $("#saveVariant").attr('disabled',true);    
+*/
+/*
 	$(document).on('click', '.delButton', function () {
 		if ($(this).parent().parent().children().length > 1) {
 			$(this).parent().remove();
 		}
 		return false;
-	});
-
+  });
+  */
+/*
 	$('#addfieldname').click(function () {
 		addVariantSubmissionRow();
 	});
 
 	$('#createjson').click(function () {
 		$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
-	});
+  });
+  */
 });
 
+/*
 $(window).load(function () {
 	//There is an issue with using this code, it generates errors that stop execution
 	$(window).keyup(function (event) {
@@ -64,6 +72,7 @@ $(window).load(function () {
 		}
 	});
 });
+*/
 /*
 function clearEditForm() {
 	$('#name').val("New dugga");
@@ -109,9 +118,10 @@ function resetNameValidation() {
 */
 
 // DUGGA FUNCTIONS start
+/*
 function newDugga() {
 	$("#editDuggaTitle").html("New dugga");
-	clearEditForm();
+	//clearEditForm();
 
 	// Set submitDugga button to disabled
 	$('#submitDugga').prop("disabled", true);
@@ -147,6 +157,7 @@ function newDugga() {
 	$("#editDugga").css("display", "flex");
 	//$("#overlay").css("display","block");
 }
+*/
 /*
 function createDugga() {
 	var did = $("#did").val();
@@ -170,16 +181,19 @@ function createDugga() {
 */
 function selectDugga(qid) {
 //  var did = $('#did').val();
-  globalData['entries'].forEach(function (element) {
-		if (element['did'] == qid) {
-			quiz = element;
-		}
-	});
-
   var tarro=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var tarrv=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
   var marro=["00","05","10","15","20","25","30","35","40","45","50","55"];
   var marrv=[0,5,10,15,20,25,30,35,40,45,50,55];
+  if(qid=="UNK"){
+      quiz={"arrow":"UNK","qname":"New Dugga","autograde":0,"gradesystem":1,"quizFile":0,"qstart":"UNK","deadline":"UNK","jsondeadline":"","qrelease":"UNK"};
+  }else{
+      globalData['entries'].forEach(function (element) {
+          if (element['did'] == qid) {
+              quiz = element;
+          }
+      });      
+  }
 
 	$("#did").val(quiz['arrow']);
 	$("#name").val(quiz['qname']);
@@ -215,6 +229,7 @@ function selectDugga(qid) {
   $("#editDugga").css("display", "flex");
 }
 
+
 function updateDugga() {
 	var did = $("#did").val();
 	var nme = $("#name").val();
@@ -222,14 +237,16 @@ function updateDugga() {
 	var gradesys = $("#gradesys").val();
 	var template = $("#template").val();
   var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
-	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();;
-	var release = $("#release").val();
+  if($("#qstart").val()=="")qstart="UNK";
+	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
+  var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
+  if($("#release").val()=="")release="UNK";
   var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
   if($("#deadline").val()!=""){        
       jsondeadline.deadline1=deadline;
       jsondeadline.comment1=$("#deadlinecomments1").val();
   }else{
-      deadline="";
+      deadline="UNK";
       jsondeadline.deadline1="";
       jsondeadline.comment1="";
   }
@@ -293,9 +310,9 @@ function validateDuggaName() {
 
 // VARIANT FUNCTIONS start
 function newVariant() {
-	showVariantDisableButton();
-	$("#submitVariant").css("display", "block");
-	$("#saveVariant").css("display", "none");
+	//showVariantDisableButton();
+	//$("#submitVariant").css("display", "block");
+	//$("#saveVariant").css("display", "none");
 	document.getElementById('variantSearch').value = '';
 	document.getElementById('filelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
@@ -309,24 +326,27 @@ function newVariant() {
 function createVariant() {
 	var qid = $("#did").val();
 	var answer = $("#variantanswerText").val();
-	var parameter = $("#variantparameterText").val();
+  var parameter = $("#variantparameterText").val();
+  /*
 	var disabled;
 	if ($('#disableVariant').is(':visible')) {
 		disabled = '0';
 	} else if ($('#enableVariant').is(':visible')) {
 		disabled = '1';
 	}
-
-	AJAXService("ADDVARI", { cid: querystring['cid'], qid: qid, disabled: disabled, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
+  */
+	AJAXService("ADDVARI", { cid: querystring['cid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
-function selectVariant(vid) {
-	var target_variant;
+function selectVariant(vid, el) {  
+  var target_variant;
+  markSelectedVariant(el);
 	globalData['entries'].forEach(element => {
 		var tempVariant = element['variants'];
 		tempVariant.forEach(variant => {
 			if (variant['vid'] == vid) {
-				target_variant = variant;
+        target_variant = variant;
+        $("#saveVariant").attr('disabled',false);    
 			}
 		});
 	});
@@ -337,26 +357,32 @@ function selectVariant(vid) {
 	$("#variantparameterText").val(target_variant['param']); // Set Variant ID
 	$("#variantanswerText").val(target_variant['variantanswer']); // Set Variant ID
 
-	var disabled = (target_variant['disabled']);
-	if (disabled == '0') {
-		showVariantDisableButton();
-	}
-	else if (disabled == '1') {
-		showVariantEnableButton();
+  var disabled = (target_variant['disabled']);
+  $("#disabled").val(disabled);
+	if (disabled == 0) {
+      //showVariantDisableButton();
+      $("#disableVariant").attr('disabled',false);
+      $("#enableVariant").attr('disabled',true);    
+	}else{
+      //showVariantEnableButton();
+      $("#disableVariant").attr('disabled',true);
+      $("#enableVariant").attr('disabled',false);
 	}
 }
 
-function updateVariant() {
+function updateVariant(status) {
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
-	var parameter = $("#variantparameterText").val();
+  var parameter = $("#variantparameterText").val();
+  /*
 	var disabled;
 	if ($('#disableVariant').is(':visible')) {
 		disabled = '0';
 	} else if ($('#enableVariant').is(':visible')) {
 		disabled = '1';
-	}
-	AJAXService("SAVVARI", { cid: querystring['cid'], vid: vid, disabled: disabled, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
+  }
+  */
+	AJAXService("SAVVARI", { cid: querystring['cid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
 function deleteVariant(vid) {
@@ -370,23 +396,26 @@ function updateVariantTitle(number) {
 
 // Opens the variant editor.
 function showVariantEditor() {
+  addVariantSubmissionRow();
+  $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
 }
 
 // Adds a submission row
 function addVariantSubmissionRow() {
 	$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>" +
-		"<select name='s_type' id='submissionType' style='width:65px;'>" +
+		"<select name='s_type' id='submissionType' style='width:65px;' onchange='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'>" +
 		"<option value='pdf'>PDF</option>" +
 		"<option value='zip'>Zip</option>" +
 		"<option value='link'>Link</option>" +
 		"<option value='text'>Text</option>" +
 		"</select>" +
-		"<input type='text' name='s_fieldname' id='fieldname" + submissionRow + "' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>" +
-		"<input type='text' name='s_instruction' id='instruction" + submissionRow + "' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeydown='if (event.keyCode == 13) return false;'/>" +
+		"<input type='text' name='s_fieldname' id='fieldname" + submissionRow + "' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeyup='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'/>" +
+		"<input type='text' name='s_instruction' id='instruction" + submissionRow + "' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeyup='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'/>" +
 		"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>" +
 		"</div>");
-	submissionRow++;
+  submissionRow++;
+  $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 }
 
 function createJSONString(formData) {
@@ -425,20 +454,34 @@ function createJSONString(formData) {
 	background color of the table row.
 */
 function markSelectedVariant(el) {
-	var activeTableRow = findAncestor(el, 'TR', 'elName');
-	removeVariantTableHighlights();
-	activeTableRow.style.backgroundColor = '#fbcd47';
-}
+    /*
+    var activeTableRow = findAncestor(el, 'TR', 'elName');
+    removeVariantTableHighlights();
+    activeTableRow.style.backgroundColor = '#fbcd47';
+    */
+    $('.active-variant').each(function() {
+        $(this).removeClass('active-variant');
+    });
 
-function removeVariantTableHighlights() {
-	var allRows = [];
-	$('#variant_body').find('tr').each(function() {
-		allRows.push(this);
-	});
-	for(var row of allRows) {
-		row.removeAttribute('style'); // Remove background color from previously marked rows.
-	}
+    let row=el.closest("tr");
+    $(row).addClass('active-variant');
 }
+/*
+function removeVariantTableHighlights() {
+
+    var allRows = [];
+    $('#variant_body').find('tr').each(function() {
+      allRows.push(this);
+    });
+    for(var row of allRows) {
+      row.removeAttribute('style'); // Remove background color from previously marked rows.
+    }
+    $('#variant_body').find('tr').each(function() {
+        $(this).removeClass('active-variant');
+    });
+
+}
+*/
 
 /*
 	Change the styling of variantsTable. The variants list will be scrollable, and its
@@ -495,7 +538,11 @@ function returnedDugga(data) {
 	globalData = data;
 
 	if (data['debug'] != "NONE!") alert(data['debug']);
-	
+
+    $("#disableVariant").attr('disabled',true);
+    $("#enableVariant").attr('disabled',true);  
+    $("#saveVariant").attr('disabled',true);    
+
 	if (data['writeaccess']) {
 		$('#quiz').show();
 		$('.fixed-action-button').show();
@@ -618,8 +665,10 @@ function renderVariant(clickedElement) {
 		});
 		searchterm = '';
 		variantTable.renderTable();
-		newVariant();
-		$('#did').val(globalData['entries'][clickedElement].arrow);
+    newVariant();
+    $('#did').val(globalData['entries'][clickedElement].arrow);
+    $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
+
 }
 
 // Rendring specific cells
@@ -723,7 +772,7 @@ function renderCell(col, celldata, cellid) {
 	else if (col == "cogwheelVariant") {
 		object = JSON.parse(celldata);
 		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
-		str += " onclick='selectVariant(" + object + ");markSelectedVariant(this);' >";
+		str += " onclick='selectVariant(" + object + ",this);' >";
 		return str;
 	}
 
@@ -830,6 +879,7 @@ function variantFilter(row) {
 }
 
 // START OF closers and openers
+/*
 function showDuggaSubmitButton() {
 	$("#submitDugga").css("display", "block");
 	$("#saveDugga").css("display", "none");
@@ -849,6 +899,7 @@ function showVariantDisableButton() {
 	$("#enableVariant").css("display", "none");
 	$("#disableVariant").css("display", "block");
 }
+*/
 //END OF closers and openers
 
 function getVariantPreview(vid) {
@@ -947,8 +998,8 @@ function mouseUp(e){
 }
 
 function createQuickItem(){
-		newDugga();
-		createDugga();
+		selectDugga("UNK");
+		//createDugga();
 }
 
 // End of functions handling the FAB-button functionality
