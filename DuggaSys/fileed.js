@@ -517,8 +517,9 @@ function returnedPreview(data)
 {
     updatePreview(data);
     //$('#mrkdwntxt').html(data);
-    // https://stackoverflow.com/questions/1927593/cant-update-textarea-with-javascript-after-writing-to-it-manually
-    document.getElementById("mrkdwntxt").value=data;
+    //https://stackoverflow.com/questions/1147359/how-to-decode-html-entities-using-jquery/1395954#1395954
+    decoded=$('<textarea/>').html(data).text();
+    document.getElementById("mrkdwntxt").value=decoded;
 }
 
 function updatePreview(str) {
