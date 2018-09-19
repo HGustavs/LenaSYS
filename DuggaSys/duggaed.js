@@ -22,69 +22,6 @@ var searchterm = "";
 
 AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
 
-// Needed for button clicks
-$(document).ready(function () {
-
-  /*
-  addVariantSubmissionRow();
-  $("#disableVariant").attr('disabled',true);
-  $("#enableVariant").attr('disabled',true);  
-  $("#saveVariant").attr('disabled',true);    
-*/
-/*
-	$(document).on('click', '.delButton', function () {
-		if ($(this).parent().parent().children().length > 1) {
-			$(this).parent().remove();
-		}
-		return false;
-  });
-  */
-/*
-	$('#addfieldname').click(function () {
-		addVariantSubmissionRow();
-	});
-
-	$('#createjson').click(function () {
-		$('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
-  });
-  */
-});
-
-/*
-$(window).load(function () {
-	//There is an issue with using this code, it generates errors that stop execution
-	$(window).keyup(function (event) {
-		if (event.keyCode == 27) {
-			closeWindows();
-			//resetNameValidation();
-			showDuggaSaveButton();
-		}else if (event.keyCode == 13){
-			//Remember that keycode 13 = enter button
-			var saveButtonDisplay = ($('#saveDugga').css('display'));
-			var editSectionDisplay = ($('#editDugga').css('display'));
-			var submitButtonDisplay = ($('#submitDugga').css('display'));
-			if (saveButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid()) {
-				updateDugga();
-			} else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex' && isNameValid()) {
-				createDugga();
-			}
-			document.activeElement.blur();
-		}
-	});
-});
-*/
-/*
-function clearEditForm() {
-	$('#name').val("New dugga");
-	$('#name').attr('placeholder','Empty dugga');
-	$('#qstart').val("");
-	$('#qstart').attr('placeholder', 'YYYY-MM-DD');
-	$('#release').val("");
-	$('#release').attr('placeholder', 'YYYY-MM-DD');
-	$('#deadline').val("");
-	$('#deadline').attr('placeholder', 'YYYY-MM-DD');
-}
-*/
 // Detects clicks
 $(document).mousedown(function (e) {
 	var box = $(e.target);
@@ -108,79 +45,7 @@ $(document).mouseup(function (e) {
 	}
 });
 
-/*
-function resetNameValidation() {
-	var nme = document.getElementById("name");
-	$('#tooltipTxt').fadeOut();
-	nme.value = "";
-	nme.style.backgroundColor = "#fff";
-}
-*/
-
-// DUGGA FUNCTIONS start
-/*
-function newDugga() {
-	$("#editDuggaTitle").html("New dugga");
-	//clearEditForm();
-
-	// Set submitDugga button to disabled
-	$('#submitDugga').prop("disabled", true);
-
-	//----------------------------------------------------
-	// Set Autograde
-	//----------------------------------------------------
-	var str = "";
-	if (autograde == 0) str += "<option selected='selected' value='0'>Off</option>"
-	else str += "<option value='0'>Hidden</option>";
-	if (autograde == 1) str += "<option selected='selected' value='1'>On</option>"
-	else str += "<option value='1'>Public</option>";
-	$("#autograde").html(str);
-
-	str = "";
-	if (gradesys == 1) str += "<option selected='selected' value='1'>U-G-VG</option>"
-	else str += "<option value='1'>U-G-VG</option>";
-	if (gradesys == 2) str += "<option selected='selected' value='2'>U-G</option>"
-	else str += "<option value='2'>U-G</option>";
-	if (gradesys == 3) str += "<option selected='selected' value='3'>U-3-4-5</option>"
-	else str += "<option value='3'>U-3-4-5</option>";
-	$("#gradesys").html(str);
-
-	str = "";
-	for (var j = 0; j < filez.length; j++) {
-		filen = filez[j];
-		if (filen != ".." && filen != ".") {
-			if (template == filen) str += "<option selected='selected' value='" + filen + "'>" + filen + "</option>"
-			else str += "<option value='" + filen + "'>" + filen + "</option>"
-		}
-	}
-	$("#template").html(str);
-	$("#editDugga").css("display", "flex");
-	//$("#overlay").css("display","block");
-}
-*/
-/*
-function createDugga() {
-	var did = $("#did").val();
-	var nme = $("#name").val();
-	var autograde = $("#autograde").val();
-  var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
-  alert("s",document.getElementById("qstart").value);
-	var gradesys = $("#gradesys").val();
-	var template = $("#template").val();
-	var release = $("#release").val();
-	var deadline = $("#deadline").val();
-	var jsondeadline = "{'deadline1':'"+$("#deadline").val()+"', 'comment1':'"+$("#deadlinecomments1").val()+"', 'deadline2':'"+$("#deadline2").val()+"', 'comment2':'"+$("#deadlinecomments2").val()+"', 'deadline3':'"+$("#deadline3").val()+"', 'comment3':'"+$("#deadlinecomments3").val()+"'}";
-	var cid = querystring['cid'];
-	var coursevers = querystring['coursevers'];
-	$("#editDugga").css("display", "none");
-	//$("#overlay").css("display","none");
-
-	//autograde, gradesystem, qname, quizFile, release, deadline, creator, vers
-	AJAXService("ADDUGGA", { cid: cid, autograde: autograde, gradesys: gradesys, nme: nme, template: template, release: release, deadline: deadline, jsondeadline: jsondeadline, coursevers: coursevers, qstart: qstart}, "DUGGA");
-}
-*/
 function selectDugga(qid) {
-//  var did = $('#did').val();
   var tarro=["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
   var tarrv=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
   var marro=["00","05","10","15","20","25","30","35","40","45","50","55"];
@@ -310,9 +175,6 @@ function validateDuggaName() {
 
 // VARIANT FUNCTIONS start
 function newVariant() {
-	//showVariantDisableButton();
-	//$("#submitVariant").css("display", "block");
-	//$("#saveVariant").css("display", "none");
 	document.getElementById('variantSearch').value = '';
 	document.getElementById('filelink').placeholder = 'File link';
 	document.getElementById('extraparam').value = '';
@@ -327,14 +189,6 @@ function createVariant() {
 	var qid = $("#did").val();
 	var answer = $("#variantanswerText").val();
   var parameter = $("#variantparameterText").val();
-  /*
-	var disabled;
-	if ($('#disableVariant').is(':visible')) {
-		disabled = '0';
-	} else if ($('#enableVariant').is(':visible')) {
-		disabled = '1';
-	}
-  */
 	AJAXService("ADDVARI", { cid: querystring['cid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
@@ -374,14 +228,6 @@ function updateVariant(status) {
 	var vid = $("#vid").val();
 	var answer = $("#variantanswerText").val();
   var parameter = $("#variantparameterText").val();
-  /*
-	var disabled;
-	if ($('#disableVariant').is(':visible')) {
-		disabled = '0';
-	} else if ($('#enableVariant').is(':visible')) {
-		disabled = '1';
-  }
-  */
 	AJAXService("SAVVARI", { cid: querystring['cid'], vid: vid, disabled: status, variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
@@ -454,11 +300,6 @@ function createJSONString(formData) {
 	background color of the table row.
 */
 function markSelectedVariant(el) {
-    /*
-    var activeTableRow = findAncestor(el, 'TR', 'elName');
-    removeVariantTableHighlights();
-    activeTableRow.style.backgroundColor = '#fbcd47';
-    */
     $('.active-variant').each(function() {
         $(this).removeClass('active-variant');
     });
@@ -466,22 +307,6 @@ function markSelectedVariant(el) {
     let row=el.closest("tr");
     $(row).addClass('active-variant');
 }
-/*
-function removeVariantTableHighlights() {
-
-    var allRows = [];
-    $('#variant_body').find('tr').each(function() {
-      allRows.push(this);
-    });
-    for(var row of allRows) {
-      row.removeAttribute('style'); // Remove background color from previously marked rows.
-    }
-    $('#variant_body').find('tr').each(function() {
-        $(this).removeClass('active-variant');
-    });
-
-}
-*/
 
 /*
 	Change the styling of variantsTable. The variants list will be scrollable, and its
@@ -877,30 +702,6 @@ function variantFilter(row) {
 		return false;
 	}
 }
-
-// START OF closers and openers
-/*
-function showDuggaSubmitButton() {
-	$("#submitDugga").css("display", "block");
-	$("#saveDugga").css("display", "none");
-}
-
-function showDuggaSaveButton() {
-	$("#submitDugga").css("display", "none");
-	$("#saveDugga").css("display", "block");
-}
-
-function showVariantEnableButton() {
-	$("#enableVariant").css("display", "block");
-	$("#disableVariant").css("display", "none");
-}
-
-function showVariantDisableButton() {
-	$("#enableVariant").css("display", "none");
-	$("#disableVariant").css("display", "block");
-}
-*/
-//END OF closers and openers
 
 function getVariantPreview(vid) {
 	var did = document.getElementById("did").value;
