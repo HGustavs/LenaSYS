@@ -449,17 +449,21 @@ function cancelEditFile() {
 }
 
 function saveMarkdown() {
-    AJAXService("SAVEFILE",{cid:querystring['cid'],contents:document.getElementById("mrkdwntxt").value,filename:filename,filepath:filepath,kind:filekind},"FILE");
+    let content=document.getElementById("mrkdwntxt").value;
+    content=content.replace(/\+/g, '%2B');
+    AJAXService("SAVEFILE",{cid:querystring['cid'],contents:content,filename:filename,filepath:filepath,kind:filekind},"FILE");
     document.getElementById("mrkdwntxt").innerHTML="";
     $(".previewWindow").hide();
     $(".previewWindowContainer").css("display", "none");
 }
 
 function saveTextToFile() {
-      AJAXService("SAVEFILE",{cid:querystring['cid'],contents:document.getElementById("filecont").value,filename:filename,filepath:filepath,kind:filekind},"FILE");
-      $(".previewWindow").hide();
-      $(".previewWindowContainer").css("display", "none");
-  }
+    let content=document.getElementById("filecont").value;
+    content=content.replace(/\+/g, '%2B');
+    AJAXService("SAVEFILE",{cid:querystring['cid'],contents:content,filename:filename,filepath:filepath,kind:filekind},"FILE");
+    $(".previewWindow").hide();
+    $(".previewWindowContainer").css("display", "none");
+}
 
 function validatePreviewForm(){
 	if(document.getElementById("cID").value == "Toddler"){
