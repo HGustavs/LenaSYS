@@ -28,6 +28,7 @@ pdoConnect();
 	<script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
 
 	<script src="../Shared/dugga.js"></script>
+	<script src="../Shared/markdown.js"></script>
 	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
 	<script src="resulted.js"></script>
 
