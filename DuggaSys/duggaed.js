@@ -543,7 +543,7 @@ function renderCell(col, celldata, cellid) {
 	else if (col == "cogwheel") {
 		object = JSON.parse(celldata);
 		str = "<img id='dorf' src='../Shared/icons/Cogwheel.svg' ";
-		str += " onclick='showDuggaSaveButton(); selectDugga(\"" + object + "\");' >";
+		str += " onclick='selectDugga(\"" + object + "\");' >";
 
 		return str;
 	}
