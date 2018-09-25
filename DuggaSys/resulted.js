@@ -122,23 +122,23 @@ function process()
 		for(var j=0;j<momtmp.length;j++){
 			// If it is a feedback quiz -- we have special handling.
 			if(momtmp[j].quizfile=="feedback_dugga"){
-				var momentresult=restmp[momtmp[j].lid];
+        var momentresult=restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
 				if(typeof momentresult!='undefined'){
-					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname, deadline:new Date(momtmp[j].deadline),});
+					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.markedts*1000)),submitted:new Date((momentresult.submittedts*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname, deadline:new Date(momtmp[j].deadlinets),});
 				}else{
 					student.push({ishere:true,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,vers:querystring['coursevers'],gradeSystem:momtmp[j].gradesystem,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, userAnswer:"UNK", quizfile:momtmp[j].quizfile, gradeExpire:null,firstname:entries[i].firstname,lastname:entries[i].lastname, deadline:new Date(momtmp[j].deadline),});
 				}
 			}else{
-				var momentresult=restmp[momtmp[j].lid];
+        var momentresult=restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
 				if(typeof momentresult!='undefined'){
-					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.marked*1000)),submitted:new Date((momentresult.submitted*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant,quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname,  deadline:new Date(momtmp[j].deadline),});
+					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.markedts*1000)),submitted:new Date((momentresult.submittedts*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant,quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname,  deadline:new Date((momtmp[j].deadlinets*1000)),});
 				}else{
 					student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile,  deadline:new Date(momtmp[j].deadline),});
 				}
 			}
-		}
+    }
 		students.push(student);
 	}
 	// Update filter list from local storage.
@@ -431,7 +431,7 @@ function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, mar
 	menu += "<h3>Grade</h3>";
 	menu += "</div>";
 	menu += "<table>";
-	menu += "<tr><td>";
+  menu += "<tr><td>";
 	if ((foundgrade === null && submitted === null )) {
 		menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I", parseInt(qvariant), parseInt(qid));
 	}else if (foundgrade == -1){
@@ -545,13 +545,14 @@ function saveResponse()
 
 function returnedResults(data)
 {
-	if (data.gradeupdated === true){
-  	// Update the the local array studentInfo when grade is updated.
+  if (data.gradeupdated === true){
+    // Update the the local array studentInfo when grade is updated.
     for (var student in studentInfo){
       var studentObject = studentInfo[student]["lid:" + data.duggaid];
+      console.log(studentObject);
       if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
         studentObject.grade = parseInt(data.results);
-        studentObject.timesGraded = parseInt(data.duggatimesgraded);
+        studentObject.timesGraded = parseInt(data.timesgraded);
         studentObject.gradeExpire = data.duggaexpire;
         if (data.results > 0) {
         	studentObject.needMarking = false;
@@ -682,12 +683,12 @@ function renderCell(col,celldata,cellid) {
 			return str;
 		} else {
 			// color based on pass,fail,pending,assigned,unassigned
-			str = "<div class='resultTableCell resultTableMini ";
+      str = "<div class='resultTableCell resultTableMini ";
 				if(celldata.kind==4) { str += "dugga-moment "; }
-				if (celldata.grade === 1) {str += "dugga-fail";}
-				else if (celldata.grade > 1) {str += "dugga-pass";}
-				else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
-				else if (celldata.kind != 4 && celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
+				if (celldata.grade > 1) {str += "dugga-pass";}
+				else if (celldata.submittedts <= celldata.deadlinets) {str += "dugga-pending";}
+				else if (celldata.kind != 4 && celldata.submittedts > celldata.deadlinets) {str += "dugga-pending-late-submission";}
+				else if (celldata.grade === 1) {str += "dugga-fail";}
 				else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
 				else {str += "dugga-unassigned";}
 			str += "'>";
@@ -711,19 +712,20 @@ function renderCell(col,celldata,cellid) {
 
 	} else {
 		// color based on pass,fail,pending,assigned,unassigned
-		str = "<div style='height:70px;' class='resultTableCell ";
-			if(celldata.kind==4) { str += "dugga-moment "; }
-			if (celldata.grade === 1) {str += "dugga-fail";}
-			else if (celldata.grade > 1) {str += "dugga-pass";}
-			else if (celldata.needMarking === true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
-			else if (celldata.kind != 4 && celldata.needMarking === true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
-			else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
-			else {str += "dugga-unassigned";}
+    str = "<div style='height:70px;' class='resultTableCell ";
+    console.log(celldata);
+    if(celldata.kind==4) { str += "dugga-moment "; }
+    if (celldata.grade > 1) {str += "dugga-pass";}
+    else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
+    else if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
+    else if (celldata.grade === 1) {str += "dugga-fail";}
+    else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
+    else {str += "dugga-unassigned";}
 		str += "'>";
 
 		// Creation of grading buttons
 		if(celldata.ishere===true){
-			str += "<div class='gradeContainer resultTableText'>";
+			  str += "<div class='gradeContainer resultTableText'>";
 				if (celldata.grade === null ) {
 					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
 				} else if (celldata.grade === -1 ) {

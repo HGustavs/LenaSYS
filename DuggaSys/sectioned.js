@@ -1067,9 +1067,9 @@ function drawPieChart() {
 		for(var i = 0; i < retdata['results'].length; i++) {
 				// Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these	
 				if(retdata['results'][i]['useranswer'] != null){ 
-						if(retdata['results'][i].grade == 2){
+						if(retdata['results'][i].grade > 1){
 							passedQuizes++;
-						}else if(retdata['results'][i].grade == 1){
+						}else if(retdata['results'][i].grade == 1 && retdata['results'][i].submitted < retdata['results'][i].marked){
 							failedQuizes++;
 						}else {
 							notGradedQuizes++;

@@ -50,6 +50,7 @@ $duggauser="";
 $duggafeedback="";
 $duggaexpire="";
 $duggatimesgraded="";
+$duggagrade="";
 $gradeupdated=false;
 
 $entries=array();
@@ -69,7 +70,7 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php"
 // Services
 //------------------------------------------------------------------------------------------------
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
-	if(strcmp($opt,"CHGR")==0){
+	if(strcmp($opt,"CHGR")===0){
 		if($ukind=="U"){
 			if ($mark == "UNK"){
 				$mark = null;
@@ -177,7 +178,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				}
 			}
 			// Get gradeExpire and timesGraded in order to update the local arrays of resulted.js whenever a grade is updated.
-			$query = $pdo->prepare("SELECT gradeExpire, timesGraded FROM useranswer WHERE uid=:luid AND moment=:moment AND cid=:cid AND vers=:vers LIMIT 1");
+			$query = $pdo->prepare("SELECT gradeExpire, timesGraded FROM userAnswer WHERE uid=:luid AND moment=:moment AND cid=:cid AND vers=:vers LIMIT 1");
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':vers', $vers);
 			$query->bindParam(':moment', $listentry);
@@ -338,11 +339,7 @@ if(strcmp($opt,"CHGR")!==0){
 
 		}
 		*/
-		$query = $pdo->prepare("
-      SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class,user_course.access,user_course.examiner
-      FROM user,user_course
-      WHERE user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;
-    ");
+		$query = $pdo->prepare("SELECT user_course.cid AS cid,user.uid AS uid,username,firstname,lastname,ssn,class,user_course.access,user_course.examiner FROM user,user_course WHERE user.uid=user_course.uid AND user_course.cid=:cid AND user_course.vers=:coursevers;");
 		//		$query = $pdo->prepare("select user_course.cid as cid,user.uid as uid,username,firstname,lastname,ssn,access from user,user_course where user.uid=user_course.uid and user_course.cid=:cid;");
 		$query->bindParam(':coursevers', $vers);
 		$query->bindParam(':cid', $cid);
@@ -381,11 +378,7 @@ if(strcmp($opt,"CHGR")!==0){
 		}
 
 		// All results from current course and vers?
-		$query = $pdo->prepare("
-      SELECT aid,quiz,variant,userAnswer.moment AS dugga,grade,uid,useranswer,UNIX_TIMESTAMP(submitted) AS submitted,userAnswer.vers,UNIX_TIMESTAMP(marked) AS marked,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,listentries.moment AS moment,if((submitted > marked && !isnull(marked))||(isnull(marked) && !isnull(useranswer)), true, false) AS needMarking,timesGraded,gradeExpire
-      FROM userAnswer,listentries
-      WHERE userAnswer.cid=:cid AND userAnswer.vers=:vers AND userAnswer.moment=listentries.lid;
-    ");
+		$query = $pdo->prepare("SELECT aid,quiz,variant,userAnswer.moment AS dugga,grade,uid,useranswer,submitted,UNIX_TIMESTAMP(submitted) AS submittedts,userAnswer.vers,marked,UNIX_TIMESTAMP(marked) AS markedts,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,listentries.moment AS moment,if((UNIX_TIMESTAMP(submitted) > UNIX_TIMESTAMP(marked) && !isnull(marked))||(isnull(marked) && !isnull(useranswer)), true, false) AS needMarking,timesGraded,gradeExpire,deadline,UNIX_TIMESTAMP(deadline) AS deadlinets FROM userAnswer,listentries,quiz WHERE listentries.link=quiz.id AND userAnswer.cid=:cid AND userAnswer.vers=:vers AND userAnswer.moment=listentries.lid;");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 
@@ -410,15 +403,19 @@ if(strcmp($opt,"CHGR")!==0){
 					'uid' => (int)$row['uid'],
 					'useranswer' => $row['useranswer'],
 					'submitted'=> $row['submitted'],
+					'submittedts'=> $row['submittedts'],
 					'vers'=> $row['vers'],
 					'marked' => $row['marked'],
+					'markedts' => $row['markedts'],
 					'timeUsed' => $row['timeUsed'],
 					'totalTimeUsed' => $row['totalTimeUsed'],
 					'stepsUsed' => $row['stepsUsed'],
 					'totalStepsUsed' => $row['totalStepsUsed'],
 					'needMarking' => (bool)$row['needMarking'],
 					'timesGraded' => (int)$row['timesGraded'],
-					'gradeExpire' => $row['gradeExpire'],
+          'gradeExpire' => $row['gradeExpire'],
+          'deadline' => $row['deadline'],
+          'deadlinets' => $row['deadlinets']
 				)
 			);
 		}
@@ -427,7 +424,7 @@ if(strcmp($opt,"CHGR")!==0){
 		//$query = $pdo->prepare("SELECT listentries.*,quizFile FROM listentries,quiz WHERE listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) ORDER BY pos");
 		//$query = $pdo->prepare("SELECT listentries.*,quizFile,variant.vid as qvariant FROM listentries,quiz,variant WHERE quiz.id=variant.quizID AND listentries.cid=:cid and listentries.link=quiz.id and listentries.vers=:vers and (listentries.kind=3 or listentries.kind=4) GROUP BY lid ORDER BY pos;");
 		$query = $pdo->prepare("
-      SELECT listentries.*,quizFile,COUNT(variant.vid) AS qvariant, quiz.deadline
+      SELECT listentries.*,quizFile,COUNT(variant.vid) AS qvariant, quiz.deadline,UNIX_TIMESTAMP(quiz.deadline) as deadlinets
       FROM listentries
       LEFT JOIN quiz ON listentries.link=quiz.id
       LEFT JOIN variant ON quiz.id=variant.quizID
@@ -458,7 +455,8 @@ if(strcmp($opt,"CHGR")!==0){
 					'quizfile' => $row['quizFile'],
 					'gradesystem' => (int)$row['gradesystem'],
 					'qvariant' => $row['qvariant'],
-					'deadline' => $row['deadline']
+					'deadline' => $row['deadline'],
+					'deadlinets' => $row['deadlinets']
 				)
 			);
 		}
