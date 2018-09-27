@@ -124,6 +124,7 @@ if ($storefile) {
         "odt" => ["application/vnd.oasis.opendocument.text"],
         "md" => ["text/markdown"],
         "dtd" => ["application/octet-stream"],
+        "py" => ["text/plain"],
         //	"xslt"	=> [
         "xsl" => ["text/xml"]
         //	"sl"		=> [
