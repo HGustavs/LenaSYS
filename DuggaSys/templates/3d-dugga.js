@@ -122,7 +122,7 @@ function returnedDugga(data)
       } 
       fb += "</tbody></table>";
       document.getElementById('feedbackTable').innerHTML = fb;		
-      document.getElementById('feedbackBox').style.display = "block";
+      document.getElementById('feedback').style.display = "block";
   }
   $("#submitButtonTable").appendTo("#content");
 	$("#lockedDuggaInfo").prependTo("#content");
