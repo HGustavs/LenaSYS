@@ -13,9 +13,9 @@
 
   <div id="foo"></div>
 
-  <div id="infobox" style="width:300px;">
+  <div id="infobox" style="width:300px;height:100vh;display:flex;flex-direction: column;">
   <div id="quizInstructions"></div>
-  <div class="pane-container">
+  <div style="max-height:50%;min-height: 50%;overflow: scroll" class="pane-container">
       <div class="pane-header">
           <div id="vertexPane" class='pane pane-active pane-id-0' onclick="changePane(this);">Vertice<span id="vertexPaneNumber" style="display:none" class='badge'></span></div>
           <div id="trianglePane" class='pane pane-id-1' onclick="changePane(this);">Triangle<span id="trianglePaneNumber"  style="display:none" class='badge'></span></div>
@@ -93,10 +93,22 @@
                   </tbody>
               </table>
           </div>
-              <div id="result"></div>
+          <div id="result"></div>
       </div>
   </div>
-    
+  <div style="max-height:50%;min-height: 50%;overflow: scroll">
+    <div id="feedback" class="loginBox" style="display:none;">
+        <div class='loginBoxheader'>
+            <h3>Feedback Log</h3>
+            <div class='cursorPointer' onclick="hideReceiptPopup()">x</div>
+        </div>
+        <div class="table-wrap" id="feedbackTable">
+            <table>
+                <tr><th>Date</th><th>Feedback</th></tr>
+            </table>
+        </div>
+    </div>      
+</div>
 </div>
 </div>
 
@@ -113,15 +125,4 @@
             <tr><td>Submissions</td><td></td><td id="duggaTotalSubmissions"></td></tr>
         </table>
       </div>
-</div>
-<div id="feedbackBox" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
-    <div class='loginBoxheader'>
-        <h3>Feedback Log</h3>
-        <div class='cursorPointer' onclick="hideReceiptPopup()">x</div>
-    </div>
-    <div class="table-wrap" id="feedbackTable">
-        <table>
-            <tr><th>Date</th><th>Feedback</th></tr>
-        </table>
-    </div>
 </div>
