@@ -152,8 +152,8 @@
 
 		<!-- Statistics List -->
 		
-		<div id='statisticsList'>
-				<div id='statistics' class='statistics' style='display:inline-block; cursor:pointer;'>
+		<div id='statisticsList' style="">
+				<div id='statistics' class='statistics' style='cursor:pointer;'>
 						<div style='margin:10px;'>
 								<img src='../Shared/icons/right_complement.svg' id='arrowStatisticsOpen'>
 								<img src='../Shared/icons/desc_complement.svg' id='arrowStatisticsClosed'>
@@ -162,25 +162,25 @@
 								<span class='listentries-span noselect' style='writing-mode:vertical-rl;text-orientation: sideways;'>Deadlines</span>
 						</div>
 				</div>
-				<div class='statisticsContent' style='display:inline-block;'>
+				<div class='statisticsContent' style='display:flex;flex-direction:column;'>
 						<div id='statisticsPie' class='statisticsInnerBox'>
-								<svg id="pieChartSVG" width='300px' height='255px' style='padding: 10px; display:flex; margin: auto;border:1px dotted green;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
+								<svg id="pieChartSVG" width='300px' height='255px' style='padding: 10px; margin: auto;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
 						</div>
 						<div id='deadlineInfoBox' class='statisticsInnerBox' style='padding: 10px;'>
-								<h2 id='deadlineInfoTitle'>Recent and Upcoming Deadlines</h2>
-								<table id="deadlineList">
+								<h3 id='deadlineInfoTitle'>Recent and Upcoming Deadlines</h3>
+								<table id="deadlineList" style="table-layout: fixed;width:300px;">
 								</table>
 						</div>
-						<div id='statisticsSwimlanes' class='statisticsInnerBox' style='display:block;'>
-								<svg id="swimlaneSVG" width='300px' height='255px' style='padding: 10px; display:flex; margin: auto;border:1px dotted green;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
+						<div id='statisticsSwimlanes' class='statisticsInnerBox' style=''>
+								<svg id="swimlaneSVG" width='300px' style='padding: 10px; margin: auto;' viewBox="0 0 300 255" xmlns="http://www.w3.org/2000/svg"></svg>
 						</div>
-						<div style='display:flex;'>
+						<!--<div style='display:flex;'>
 							<canvas id='swimlanesMoments' style='padding:10px;'></canvas>
 						</div>
 						<div style='width: 350px; overflow-x: auto; white-space: nowrap; display: inline-block; margin: 10px 10px 10px -10px'>
 							<canvas id='swimlanesWeeks'></canvas>
 						</div>
-
+            -->
 				</div>
 		</div>
 		<!-- Statistics List END-->

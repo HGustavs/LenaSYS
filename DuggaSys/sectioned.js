@@ -1110,43 +1110,44 @@ function drawPieChart() {
 }
 
 //----------------------------------------------------------------------------------
-// fixDeadlineInfoBoxesText: Makes an on-screen table containing at most 5 next deadlines
+// fixDeadlineInfoBoxesText: Makes an on-screen table containing deadlines
 //----------------------------------------------------------------------------------
 
-function fixDeadlineInfoBoxesText(){
-
+function fixDeadlineInfoBoxesText()
+{
 	var closestDeadlineArray = [];
 	var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 	
-	var str="<tr><th style='padding:4px;'>Test</th><th style='padding:4px;'>Release</th><th style='padding:4px;'>Deadline</th></tr>";
+	var str="<tr><th style='padding:4px;text-align:left;'>Test</th><th style='padding:4px;width:60px;text-align:left;'>Release</th><th style='padding:4px;width:60px;text-align:left;'>Deadline</th></tr>";
 
 	var deadlineEntries = [];
-	var current=new Date();
+  var current=new Date();
 	for(var i=0;i<retdata['entries'].length;i++){
-			var deadline=new Date(retdata['entries'][i].deadline);
-			var start=new Date(retdata['entries'][i].qstart);
-			if((retdata['entries'][i].kind == 3)&&(datediff(deadline,current)<17)){
-					deadlineEntries.push({'deadline':deadline,'start':start,'text':retdata['entries'][i].entryname});
-			}				
+      if(retdata['entries'][i].kind == 3){
+          var deadline=new Date(retdata['entries'][i].deadline);
+          var start=new Date(retdata['entries'][i].qstart);
+          //let deadlineDistance=datediff(deadline,current);
+          let deadlineDistance=(deadline-current)/(24*60*60*1000);
+          if(deadlineDistance>-7&&deadlineDistance<14){
+              deadlineEntries.push({'deadline':deadline,'start':start,'text':retdata['entries'][i].entryname});
+          }				
+      }
 	}
 	
 	deadlineEntries.sort(function(a, b) {
   		return a.deadline - b.deadline;
 	});
-	
-	// At most 5
-	var cnt=deadlineEntries.length;
-	if(deadlineEntries.length>5) cnt=5;
-	for(i=0;i<cnt;i++){
+  
+	for(i=0;i<deadlineEntries.length;i++){
 			var entry=deadlineEntries[i];
 			if(entry.deadline<current){
 					str+="<tr style='color:red;'>";
 			}else{
 					str+="<tr style='color:black;'>";
 			}
-			str+="<td style='padding:4px;'>"+entry.text+"</td>";
-			str+="<td style='padding:4px;'>"+months[entry.start.getMonth()]+" "+entry.start.getDate()+"</td>";
-			str+="<td style='padding:4px;'>"+months[entry.deadline.getMonth()]+" "+entry.deadline.getDate()+"</td>";	
+			str+="<td style='padding:4px;'><div style='white-space:nowrap;text-overflow:ellipsis;overflow:hidden' title='"+entry.text+"'>"+entry.text+"</div></td>";
+			str+="<td style='padding:4px;white-space:nowrap;'>"+months[entry.start.getMonth()]+" "+entry.start.getDate()+"</td>";
+			str+="<td style='padding:4px;white-space:nowrap;'>"+months[entry.deadline.getMonth()]+" "+entry.deadline.getDate()+"</td>";	
 			str+="</tr>";
 	}
 	
@@ -1210,12 +1211,12 @@ function drawSwimlanes(){
 	}
 
 	
-	var weeky=weekheight+15;
+  var weeky=15;
 	for(obj in momentEntries){
-			//console.log(obj+" "+momentEntries[obj]);
 			for(var i=0;i<deadlineEntries.length;i++){
 					entry=deadlineEntries[i];
 					if(obj==entry.moment){
+              weeky+=weekheight;
 							// Now we generate a SVG element for this 
 							startweek=weeksBetween(startdate, entry.start);
 							deadlineweek=weeksBetween(startdate, entry.deadline);
@@ -1226,19 +1227,16 @@ function drawSwimlanes(){
 							else if((entry.submitted!=null)&&(entry.grade==1)) fillcol="#E53935";
 
 							str+="<rect opacity='0.7' x='"+(startweek*weekwidth)+"' y='"+(weeky)+"' width='"+(deadlineweek*weekwidth)+"' height='"+weekheight+"' fill='"+fillcol+"' />";
-							str+="<text x='"+(12)+"' y='"+(weeky+18)+"' font-family='Arial' font-size='12px' fill='black' text-anchor='left'>"+entry.text+"</text>";
-						
-							//console.log(entry.submitted+" "+entry.gradee+" "+entry.text);
-
-							weeky+=weekheight;
+							str+="<text x='"+(12)+"' y='"+(weeky+18)+"' font-family='Arial' font-size='12px' fill='black' text-anchor='left'>"+entry.text+"</text>";						
 					}
 			}
 
 	}
-	
 	str+="<line x1='"+((weekwidth*currentWeek))+"' y1='"+(15+weekheight)+"' x2='"+((weekwidth*currentWeek))+"' y2='"+(((1+deadlineEntries.length)*weekheight)+15)+"' stroke-width='3' stroke='red' />";	
+	let svgHeight=((1+deadlineEntries.length)*weekheight)+15;
 	
-	document.getElementById("swimlaneSVG").innerHTML=str;
+  document.getElementById("swimlaneSVG").innerHTML=str;
+  document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 "+svgHeight); 
 
 }
 
