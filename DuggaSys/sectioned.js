@@ -1189,9 +1189,12 @@ function drawSwimlanes(){
 			}				
 	}
 
-	var weekLength = weeksBetween(startdate, enddate);
-	var currentWeek = weeksBetween(current,startdate);
-	var weekwidth=30;
+	//var weekLength = weeksBetween(startdate, enddate);
+  var weekLength = Math.ceil((enddate-startdate)/(7*24*60*60*1000));
+  var currentWeek = weeksBetween(current,startdate);
+  var daySinceStart=Math.ceil((current-startdate)/(24*60*60*1000));
+  var daywidth=4
+	var weekwidth=daywidth*7;
 	var colwidth=60;
 	var weekheight=25;
 
@@ -1218,23 +1221,25 @@ function drawSwimlanes(){
 					if(obj==entry.moment){
               weeky+=weekheight;
 							// Now we generate a SVG element for this 
-							startweek=weeksBetween(startdate, entry.start);
-							deadlineweek=weeksBetween(startdate, entry.deadline);
-
+							//startweek=weeksBetween(startdate, entry.start);
+							//deadlineweek=weeksBetween(startdate, entry.deadline);
+							startday=Math.floor((entry.start-startdate)/(24*60*60*1000));
+							duggalength=Math.ceil((entry.deadline-entry.start)/(24*60*60*1000));
+              console.log(startday,duggalength,entry.text);
 							var fillcol="#BDBDBD";
 							if((entry.submitted!=null)&&(entry.grade==undefined)) fillcol="#FFEB3B"
 							else if((entry.submitted!=null)&&(entry.grade>1)) fillcol="#00E676"
 							else if((entry.submitted!=null)&&(entry.grade==1)) fillcol="#E53935";
 
-							str+="<rect opacity='0.7' x='"+(startweek*weekwidth)+"' y='"+(weeky)+"' width='"+(deadlineweek*weekwidth)+"' height='"+weekheight+"' fill='"+fillcol+"' />";
+							str+="<rect opacity='0.7' x='"+(startday*daywidth)+"' y='"+(weeky)+"' width='"+(duggalength*daywidth)+"' height='"+weekheight+"' fill='"+fillcol+"' />";
 							str+="<text x='"+(12)+"' y='"+(weeky+18)+"' font-family='Arial' font-size='12px' fill='black' text-anchor='left'>"+entry.text+"</text>";						
 					}
 			}
 
 	}
-	str+="<line x1='"+((weekwidth*currentWeek))+"' y1='"+(15+weekheight)+"' x2='"+((weekwidth*currentWeek))+"' y2='"+(((1+deadlineEntries.length)*weekheight)+15)+"' stroke-width='3' stroke='red' />";	
+	str+="<line x1='"+((daywidth*daySinceStart))+"' y1='"+(15+weekheight)+"' x2='"+((daywidth*daySinceStart))+"' y2='"+(((1+deadlineEntries.length)*weekheight)+15)+"' stroke-width='4' stroke='red' />";	
 	let svgHeight=((1+deadlineEntries.length)*weekheight)+15;
-	
+	console.log(currentWeek);
   document.getElementById("swimlaneSVG").innerHTML=str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 "+svgHeight); 
 
