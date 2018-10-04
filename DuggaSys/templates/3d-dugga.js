@@ -1,4 +1,3 @@
-
 //----------------------------------------------------------------------------------
 // Globals
 //----------------------------------------------------------------------------------
@@ -7,7 +6,7 @@ var dataV;
 var timer=0;
 var DEFAULT_CAMERA_POSITION_Z = 1000;
 var	DEFAULT_CAMERA_POSITION_X = 500;
-var	DEFAULT_CAMERA_POSITION_Y = 500;
+var	DEFAULT_CAMERA_POSITION_Y = 200;
 
 // Help function 
 function isInteger(id) {
@@ -30,7 +29,7 @@ var vertexL = [];
 var triangleL = [];
 var textureArray = [];
 
-var camera, scene, renderer, rendererDOMElement;
+var camera, scene, renderer, rendererDOMElement,fov=30;
 var object, lineR, lineG, lineB;
 var light, light1;
 var highlightCubes = [];
@@ -57,21 +56,10 @@ var goalObject;
 
 function setup() 
 {
-	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
-	.done( function(script) {
-		acanvas = document.getElementById('foo');
-		renderer = new THREE.WebGLRenderer();
-		
+    acanvas = document.getElementById('foo');
+    renderer = new THREE.WebGLRenderer();
+    acanvas.addEventListener('click', toggleRotate, false);
 		AJAXService("GETPARAM", { }, "PDUGGA");
-		acanvas.addEventListener('click', toggleRotate, false);
-
-	})
-	.fail(function( jqxhr, settings, exception ) {
-	  	console.log(jqxhr);
-	  	console.log(settings);
-	  	console.log(exception);	    
-	});
-
 }
 
 //----------------------------------------------------------------------------------
@@ -101,11 +89,19 @@ function returnedDugga(data)
 			triangleL = JSON.parse(prev[1]);
 			renderVertexTable();
 			renderTriangleTable();
-		}
+    }
+    var params = JSON.parse(data['param']);
 
-  	init();
-		goalObject = data['param'];
-		createGoalObject(goalObject);
+    //console.log(params);
+    //console.log(fov);
+    if(typeof(params.camera)!=="undefined"){
+        if(typeof(params.camera.fov)!=="undefined"){
+            fov=params.camera.fov;
+        }
+    }
+
+    init();
+		createGoalObject(params);
 		updateGeometry();
 		animate();
 
@@ -146,7 +142,8 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	console.log(ans.vertex);
 	console.log(ans.triangle);
 
-	// Setup code
+  // Setup code
+  /*
 	$.getScript("//cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.min.js")
 	.done( function( script, textStatus ) {
 		acanvas = document.getElementById('container');
@@ -200,6 +197,59 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	  	console.log(settings);
 	  	console.log(exception);	    
 	});
+*/
+acanvas = document.getElementById('container');
+renderer = new THREE.WebGLRenderer();
+acanvas.addEventListener('click', toggleRotate, false);
+
+// Parse student answer and dugga answer
+var studentPreviousAnswer = "";
+var params = jQuery.parseJSON(param);
+if (uanswer !== null && uanswer !== "UNK"){
+  var previous = uanswer.split(' ');
+  var prevRaw = previous[3];
+  prevRaw = prevRaw.replace(/&quot;/g, '"');
+  var prev = prevRaw.split('|');
+  vertexL = JSON.parse(prev[0]);
+  triangleL = JSON.parse(prev[1]);
+  renderVertexTable();
+  renderTriangleTable();
+}
+
+if (renderId != undefined){
+    cancelAnimationFrame(renderId);
+    renderId=undefined;
+}
+
+//console.log(params);
+//console.log(fov);
+if(typeof(params.camera)!=="undefined"){
+    if(typeof(params.camera.fov)!=="undefined"){
+        fov=params.camera.fov;
+    }
+}
+
+init();
+//goalObject = param;
+createGoalObject(params);    
+updateGeometry();
+animate();
+
+//document.getElementById("vertexPaneNumber").innerHTML=vertexL.length;
+if (vertexL.length === ans.vertex) {
+  document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
+  document.getElementById("vertexPaneNumber").innerHTML+=" = " + ans.vertex;
+} else {
+  document.getElementById("vertexPaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
+  document.getElementById("vertexPaneNumber").innerHTML+=" != " + ans.vertex;
+}
+if (triangleL.length === ans.triangle) {
+  document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:green;";
+  document.getElementById("trianglePaneNumber").innerHTML+=" = " + ans.triangle;
+} else {
+  document.getElementById("trianglePaneNumber").style="display:inline-block; line-height: 11px;background-color:red;";
+  document.getElementById("trianglePaneNumber").innerHTML+=" != " + ans.triangle;
+}
 
   // Teacher feedback
 	var fb = "<table><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
@@ -583,8 +633,7 @@ function init()
 	rendererDOMElement.height = $("#content").width() - 250;
 	fitToContainer();
 	acanvas.appendChild(rendererDOMElement);
-
-	camera = new THREE.PerspectiveCamera(60, rendererDOMElement.width / rendererDOMElement.height, 1, 10000);
+	camera = new THREE.PerspectiveCamera(fov, rendererDOMElement.width / rendererDOMElement.height, 1, 10000);
 
 	scene = new THREE.Scene();
 
@@ -659,8 +708,7 @@ function init()
 
 }
 
-function createGoalObject(goalObjectDataString) {
-	var goalObjectData = JSON.parse(goalObjectDataString);
+function createGoalObject(goalObjectData) {
 	var geom = new THREE.Geometry();
 	for (var i = 0; i < goalObjectData.vertice.length; i++) {
 		geom.vertices.push(new THREE.Vector3(goalObjectData.vertice[i].x, goalObjectData.vertice[i].y, goalObjectData.vertice[i].z));
@@ -714,7 +762,7 @@ function updateGeometry() {
 }
 
 function addColorsToGeometry(geom) {
-	var colors = [0x777777, 0xcc0000, 0x00cc00, 0x0000cc, 0x00cccc, 0xcc00cc, 0xcccc00];
+	var colors = [0xC0C0C0, 0x808080, 0xFF0000, 0x800000, 0xFFFF00, 0x808000, 0x00FF00,0x008000,0x00FFFF,0x008080,0x0000FF,0x000080,0xFF00FF,0x800080];
 	var colorIndex = 0;
 	for (var i = 0; i < geom.faces.length; i++) {
 		var face = geom.faces[i];
@@ -745,26 +793,26 @@ function resetRotationForAllObjects() {
 }
 
 function createTextures(){
-	for (var i=0;i<20;i++){
-		var text = i;
-		var padding = 2;
-		var canvas = document.createElement("canvas");
-		var context = canvas.getContext("2d");
-	    canvas.width = 32;
-	    canvas.height = 32;
-	    context.font = "24px Verdana";
+    for (var i=0;i<20;i++){
+        var text = i;
+        var padding = 2;
+        var canvas = document.createElement("canvas");
+        var context = canvas.getContext("2d");
+        canvas.width = 32;
+        canvas.height = 32;
+        context.font = "24px Verdana";
 
-		context.fillStyle = "#ffffff";
-	    context.strokeStyle = 'black';
-	    context.lineWidth = 1;
-		context.fillRect(0, 0, canvas.width, canvas.height);	
-		context.strokeRect(0.5,0.5,canvas.width-1,canvas.height-1);
-	    context.textAlign = "center";
-	    context.textBaseline = "middle";
-	    context.fillStyle = "#ff0000";
-	    context.fillText(text, 16 , 18);
-		textureArray[i] = canvas;			
-	}
+        context.fillStyle = "#ffffff";
+        context.strokeStyle = 'black';
+        context.lineWidth = 1;
+        context.fillRect(0, 0, canvas.width, canvas.height);	
+        context.strokeRect(0.5,0.5,canvas.width-1,canvas.height-1);
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillStyle = "#ff0000";
+        context.fillText(text, 16 , 18);
+        textureArray[i] = canvas;			
+    }
 }
 
 
