@@ -125,6 +125,7 @@ if ($storefile) {
         "md" => ["text/markdown"],
         "dtd" => ["application/octet-stream"],
         "py" => ["text/plain"],
+        "bat" => ["text/plain"],
         //	"xslt"	=> [
         "xsl" => ["text/xml"]
         //	"sl"		=> [
