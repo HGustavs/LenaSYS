@@ -37,7 +37,7 @@ var dataV;
 
 function setup()
 {
-	inParams = parseGet();
+	  inParams = parseGet();
 		canvas = document.getElementById('a');
 		if (canvas) {
 				context = canvas.getContext("2d");
@@ -93,17 +93,17 @@ function show(){
         if(isTeacher){
             fb+="<textarea id='newFeedback'></textarea><div class='feedback-info'>* grade to save feedback.</div>"
         }
-        fb+="<table class='list feedback-list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
+        fb+="<table class='list'><thead><tr><th>Date</th><th>Feedback</th></tr></thead><tbody>";
         if(hasFeedback){
             var feedbackArr = feedback.split("||");
             for (var k=feedbackArr.length-1;k>=0;k--){
                 var fb_tmp = feedbackArr[k].split("%%");
-                fb+="<tr><td>"+fb_tmp[0]+"</td><td>"+fb_tmp[1]+"</td></tr>";
+                fb+="<tr><td style='vertical-align:top;width:40px;'>"+fb_tmp[0].slice(0,10)+"</td><td>"+fb_tmp[1]+"</td></tr>";
             }
         }
 				fb += "</tbody></table>";
 				document.getElementById('feedbackTable').innerHTML = fb;
-				document.getElementById('feedbackBox').style.display = "block";
+				document.getElementById('feedback').style.display = "block";
 		}
 
     if(hasFacit){
@@ -204,7 +204,6 @@ function saveClick()
 // -----------------------------------------------------------------------------------------------
 function showFacit(param, uanswer, danswer, userStats_, files_, moment_, feedback_)
 {
-
     requiresParams=false;
     if (param!==null){
         duggaParams=jQuery.parseJSON(param);
@@ -214,7 +213,7 @@ function showFacit(param, uanswer, danswer, userStats_, files_, moment_, feedbac
         hasSavedAnswer=true
         savedAnswer=uanswer;
     }
-
+    
     isTeacher=true;
     if(!(feedback_ === null || feedback_ === "" || feedback_ === "UNK")) {
         hasFeedback=true;
@@ -222,7 +221,9 @@ function showFacit(param, uanswer, danswer, userStats_, files_, moment_, feedbac
     }
 
     hasFacit=true;
-    if(!(danswer === null || danswer === "UNK")){
+    /*
+    alert(typeof(danswer))
+    if(!(danswer === null && danswer === "UNK" && danswer === "")){
         facit=jQuery.parseJSON(danswer);
     }
 
@@ -230,7 +231,7 @@ function showFacit(param, uanswer, danswer, userStats_, files_, moment_, feedbac
       hasUserStats=true;
       userStats=userStats_;
     }
-
+*/
 		setup();
 }
 

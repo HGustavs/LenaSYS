@@ -1,5 +1,5 @@
-<div id="container" style="display:flex; justify-content:flex-end;">
-    <div id='duggaInfoBox2' style="inline-block; width:300px;">
+<div id="container" style="display:flex; justify-content:flex-start;">
+    <div id='duggaInfoBox2' style="width:300px;min-width: 300px;">
       
           <div class='loginBoxheader'>
                 <h3>Transformations-dugga</h3>
@@ -14,67 +14,82 @@
 
     <canvas id='a' style='background-color:#FFFFFF; border:2px solid black; display:block;'></canvas>
 
-    <div id="toolbox" style="min-width:340px;width:340px;display:inline-block;">
-        <div class='loginBoxheader'>
-            <h3>Ritverktyg</h3>
-        </div>
-     	<div style="display:flex;justify-content:center;">
-    			<select id="function" name="function" >
-              <optgroup label="Planets">
-                  <option value="D1">Draw R</option>
-                  <option value="D2">Draw G</option>
-                  <option value="D3">Draw B</option>
-              </optgroup>
-              <optgroup label="State">
-                  <option value="PUSH">Push (remember state)</option>
-        					<option value="POP">Pop (jump back)</option>
-              </optgroup>
-              <optgroup label="Translate">          
-        					<option value="T1">Translate 1</option>
-        					<option value="T2">Translate 2</option>
-        					<option value="T3">Translate 3</option>
-        					<option value="T4">Translate 4</option>
-        					<option value="T5">Translate 5</option>
-        					<option value="T6">Translate 6</option>
-        					<option value="T7">Translate 7</option>
-        					<option value="T8">Translate 8</option>
-              </optgroup>
-              <optgroup label="Rotate">          
-        					<option value="R0">Rotate +3</option>
-        					<option value="R1">Rotate +2</option>
-        					<option value="R2">Rotate +1</option>
-        					<option value="R3">Rotate +0.3</option>
-        					<option value="R4">Rotate +0.2</option>
-        					<option value="R5">Rotate -0.2</option>
-        					<option value="R6">Rotate -0.3</option>
-        					<option value="R7">Rotate -1</option>
-        					<option value="R8">Rotate -2</option>
-        					<option value="R9">Rotate -3</option>
-              </optgroup>
-              <optgroup label="Scale">          
-        					<option value="S0">Scale 0.2</option>
-        					<option value="S1">Scale 0.3</option>
-        					<option value="S2">Scale 0.5</option>
-        					<option value="S3">Scale 1.0</option>
-        					<option value="S4">Scale 1.25</option>
-              </optgroup>
-    			</select>			
-    			
-    			<input id="addOpButton" class='submit-button' type='button' value='Add Op.' onclick="newbutton();" />
-        </div>
-    		<div id="opTableContainer" style="min-height:300px;background-color:#FFF; overflow-y:scroll;">
-            <table id="opTable" style="width:100%;">
-                <caption>Operations</caption>
-                <thead>
-                    <tr><th>Op#</th>
-                        <th>Operation</th>
-                        <th colspan="3">Modify</th>
-                    </tr>
-                </thead>
-                <tbody id="operationList" ></tbody>
-            </table>			
-    		</div>
-    	</div>
+    <div id="toolbox" style="min-width:340px;width:340px;display: flex;flex-direction: column;justify-content: flex-start;">
+        <!-- Draw tools -->
+        <div style="flex-grow: 1">     
+            <div class='loginBoxheader'>
+                <h3>Ritverktyg</h3>
+            </div>
+            <div style="display:flex;justify-content:center;">
+                <select id="function" name="function" >
+                    <optgroup label="Planets">
+                        <option value="D1">Draw R</option>
+                        <option value="D2">Draw G</option>
+                        <option value="D3">Draw B</option>
+                    </optgroup>
+                    <optgroup label="State">
+                        <option value="PUSH">Push (remember state)</option>
+                        <option value="POP">Pop (jump back)</option>
+                    </optgroup>
+                    <optgroup label="Translate">          
+                        <option value="T1">Translate 1</option>
+                        <option value="T2">Translate 2</option>
+                        <option value="T3">Translate 3</option>
+                        <option value="T4">Translate 4</option>
+                        <option value="T5">Translate 5</option>
+                        <option value="T6">Translate 6</option>
+                        <option value="T7">Translate 7</option>
+                        <option value="T8">Translate 8</option>
+                    </optgroup>
+                    <optgroup label="Rotate">          
+                        <option value="R0">Rotate +3</option>
+                        <option value="R1">Rotate +2</option>
+                        <option value="R2">Rotate +1</option>
+                        <option value="R3">Rotate +0.3</option>
+                        <option value="R4">Rotate +0.2</option>
+                        <option value="R5">Rotate -0.2</option>
+                        <option value="R6">Rotate -0.3</option>
+                        <option value="R7">Rotate -1</option>
+                        <option value="R8">Rotate -2</option>
+                        <option value="R9">Rotate -3</option>
+                    </optgroup>
+                    <optgroup label="Scale">          
+                        <option value="S0">Scale 0.2</option>
+                        <option value="S1">Scale 0.3</option>
+                        <option value="S2">Scale 0.5</option>
+                        <option value="S3">Scale 1.0</option>
+                        <option value="S4">Scale 1.25</option>
+                    </optgroup>
+                </select>			
+                
+                <input id="addOpButton" class='submit-button' type='button' value='Add Op.' onclick="newbutton();" />
+              </div>
+              <div id="opTableContainer" style="min-height:300px;background-color:#FFF; overflow-y:scroll;">
+                  <table id="opTable" style="width:100%;">
+                      <caption>Operations</caption>
+                      <thead>
+                          <tr><th>Op#</th>
+                              <th>Operation</th>
+                              <th colspan="3">Modify</th>
+                          </tr>
+                      </thead>
+                      <tbody id="operationList" ></tbody>
+                  </table>			
+              </div>
+          </div>        
+        <!-- End Draw tools -->
+        <!-- Feedback -->
+            <div id="feedback" class="loginBox" style="flex-grow: 1">
+                <div class='loginBoxheader'>
+                    <h3>Feedback Log</h3>
+                </div>
+                <div class="table-wrap" id="feedbackTable">
+                    <table>
+                        <tr><th>Date</th><th>Feedback</th></tr>
+                    </table>
+                </div>
+            </div>            
+        <!-- End Feedback -->
     </div>
 
 </div>
@@ -115,17 +130,6 @@
             <tr><td>Clicks</td><td id="duggaClicks"></td><td id="duggaTotalClicks"></td></tr>
             <tr><td>Time</td><td id="duggaTime"></td><td id="duggaTotalTime"></td></tr>
             <tr><td>Submissions</td><td></td><td id="duggaTotalSubmissions"></td></tr>
-        </table>
-    </div>
-</div>
-<div id="feedbackBox" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
-    <div class='loginBoxheader'>
-        <h3>Feedback Log</h3>
-        <div onclick="hideReceiptPopup()">x</div>
-    </div>
-    <div class="table-wrap" id="feedbackTable">
-        <table>
-            <tr><th>Date</th><th>Feedback</th></tr>
         </table>
     </div>
 </div>
