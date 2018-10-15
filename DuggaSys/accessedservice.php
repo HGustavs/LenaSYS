@@ -144,8 +144,9 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$uid="UNK";
 			if (count($user) == 1) {
 				// See if we have added with username or SSN
-				$userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:usernameorssn or ssn=:usernameorssn");
-				$userquery->bindParam(':usernameorssn', $user[0]);
+				$userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:username or ssn=:ssn");
+        $userquery->bindParam(':username', $user[0]);
+        $userquery->bindParam(':ssn', $user[0]);
 
 				if(!$userquery->execute()) {
 					$error=$userquery->errorInfo();
@@ -154,7 +155,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					foreach($userquery->fetchAll(PDO::FETCH_ASSOC) as $row){
 						$uid = $row["uid"];
 					}
-				}
+        }
 			} else if (count($user) > 1 && count($user) <= 6){
 
 				$ssn = $user[0];
