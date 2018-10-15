@@ -65,15 +65,13 @@ function hideCollapsedMenus() {
 	}
 }
 
-/* Show down arrow by default and then hide this arrow and show the right
-   arrow if it is in the arrowIcons array.
-	 The other way around for the statistics section. */
+// Show down arrow by default and then hide this arrow and show the right
+//   arrow if it is in the arrowIcons array.
+//	 The other way around for the statistics section.
 function toggleArrows() {
 	$('.arrowComp').show();
 	$('.arrowRight').hide();
 	for (var i = 0; i < menuState.arrowIcons.length; i++) {
-		/* If the string 'arrowComp' is a part of the string on the current
-		   index of the arrowIcons array, hide down arrow and show right arrow. */
 		if (menuState.arrowIcons[i].indexOf('arrowComp') > -1) {
 			$('#' + menuState.arrowIcons[i]).hide();
 		} else {
@@ -90,7 +88,7 @@ function toggleArrows() {
 		}
 	}
 }
-
+menuState
 // Finds all ancestors to the element with classname Hamburger and toggles them.
 // added some if-statements so escapePress wont always toggle
 function hamburgerChange(operation = 'click') {
@@ -806,7 +804,8 @@ function returnedSection(data) {
 				// Close Information
 				str += ">";
 				// Generate ID for collapsing arrows
-				var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
+        //var arrowID = item['entryname'].split(' ').join('').split(',').join('') + data.coursecode;
+        var arrowID = item['moment'];
 
 				// Content of Section Item
 				if (itemKind == 0) {
@@ -1242,7 +1241,6 @@ function drawSwimlanes(){
 	}
 	str+="<line opacity='0.7' x1='"+((daywidth*daySinceStart)-daywidth)+"' y1='"+(15+weekheight)+"' x2='"+((daywidth*daySinceStart)-daywidth)+"' y2='"+(((1+deadlineEntries.length)*weekheight)+15)+"' stroke-width='4' stroke='red' />";	
 	let svgHeight=((1+deadlineEntries.length)*weekheight)+15;
-	console.log(currentWeek);
   document.getElementById("swimlaneSVG").innerHTML=str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 "+svgHeight); 
 
