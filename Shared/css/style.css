@@ -170,9 +170,8 @@ p {
 
 #content {
   background: #fff;
-  /*min-height: calc(100vh - 90px);*/
-  padding: 65px 10px 25px 10px;
-  margin-bottom: 60px;
+  min-height: calc(100vh - 80px);
+  margin: 65px 10px 15px 10px;
 }
 
 #accessedcontent {
@@ -521,7 +520,7 @@ p {
    background-color: #927b9e;
    color: white;
    width: 36px;
-   height: 100%;
+   min-height: calc(100vh - 122px);
    box-shadow: 3px 0px 0px #aaa;
    margin-right: 3px;
    font-size: 14pt;
