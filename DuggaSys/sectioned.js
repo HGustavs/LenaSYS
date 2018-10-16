@@ -1035,6 +1035,24 @@ function returnedHighscore(data) {
 	$("#HighscoreBox").css("display", "block");
 }
 
+
+function svgPie(cx,cy,radius,startpct,endpct,fill,stroke)
+{
+    x1 = cx + (radius*Math.cos(6.28*startpct));
+    y1 = cy + (radius*Math.sin(6.28*startpct));
+    x2 = cx + (radius*Math.cos(6.28*endpct));
+    y2 = cy + (radius*Math.sin(6.28*endpct));
+    console.log(endpct-startpct);
+    if(endpct-startpct>0.5){
+        var halfsies=(endpct-startpct)*0.5;
+        var p1=svgPie(cx,cy,radius,startpct,startpct+halfsies+0.003,fill,stroke);
+        var p2=svgPie(cx,cy,radius,startpct+halfsies,endpct,fill,stroke);
+        return p1+p2;
+    }else{
+        return "<path d='M"+cx+","+cy+" L" + x1 + "," + y1 + " A"+radius+","+radius+" 0 0,1 " + x2 + "," + y2 + " z' fill='"+fill+"' />";
+    }
+} 
+/*
 function svgPie(cx,cy,radius,startpct,endpct,fill,stroke)
 {
 		x1 = cx + (radius*Math.cos(6.28*startpct));
@@ -1042,10 +1060,16 @@ function svgPie(cx,cy,radius,startpct,endpct,fill,stroke)
 
    	x2 = cx + (radius*Math.cos(6.28*endpct));
    	y2 = cy + (radius*Math.sin(6.28*endpct));
-	
-		return "<path d='M"+cx+","+cy+" L" + x1 + "," + y1 + "  A"+radius+","+radius+" 0 0,1 " + x2 + "," + y2 + " z' fill='"+fill+"' />";
-}
 
+    //alert(endpct-startpct);
+    if(endpct-startpct>0.5){
+        return "<path d='M"+cx+","+cy+" L" + x2 + "," + y2 + "  A"+radius+","+radius+" 0 0,1 " + x1 + "," + y1 + " z' fill='"+fill+"' />"; 
+    }else{
+        return "<path d='M"+cx+","+cy+" L" + x1 + "," + y1 + "  A"+radius+","+radius+" 0 0,1 " + x2 + "," + y2 + " z' fill='"+fill+"' />";
+    }
+     //return "<path d='M"+cx+","+cy+" L" + x1 + "," + y1 + "  A"+radius+","+radius+" 0 0,1 " + x2 + "," + y2 + " z' fill='"+fill+"' />";
+}
+*/
 //----------------------------------------------------------------------------------
 // drawPieChart: Statistic-sections functions, for drawing out all the statistics (pie chart and swimlanes) and upcomming deadlines.
 //----------------------------------------------------------------------------------
