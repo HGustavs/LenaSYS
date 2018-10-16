@@ -35,8 +35,6 @@ var tableCellName = "resultTableCell";
 function setup(){
   //Benchmarking function
   //benchmarkData = performance.timing;
-  //console.log("Network Latency: "+(benchmarkData.responseEnd-benchmarkData.fetchStart));
-  //console.log("responseEnd -> onload: "+(benchmarkData.loadEventEnd-benchmarkData.responseEnd));
 
   /*    Add filter menu   */
   var filt ="";
@@ -106,7 +104,7 @@ function process()
 		}
 
 		// All results of this student
-		var res=results[uid];
+    var res=results[uid];
 		var restmp=new Array;
 
 		if (typeof res != 'undefined'){
@@ -120,7 +118,11 @@ function process()
 		student.push({grade:("<div class='dugga-result-div'>"+entries[i].firstname+" "+entries[i].lastname+"</div><div class='dugga-result-div'>"+entries[i].username+" / "+entries[i].class+"</div><div class='dugga-result-div'>"+entries[i].ssn+"</div><div class='dugga-result-div'>"+setTeacher+"</div>"),firstname:entries[i].firstname,lastname:entries[i].lastname,ssn:entries[i].ssn,class:entries[i].class,access:entries[i].access,setTeacher,username:entries[i].username});
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for(var j=0;j<momtmp.length;j++){
-			// If it is a feedback quiz -- we have special handling.
+      if(momtmp[j].kind==4){
+          momtmp[j].link=-1;
+          momtmp[j].qvariant=-1;
+      }
+      // If it is a feedback quiz -- we have special handling.
 			if(momtmp[j].quizfile=="feedback_dugga"){
         var momentresult=restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
@@ -133,9 +135,48 @@ function process()
         var momentresult=restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
 				if(typeof momentresult!='undefined'){
-					student.push({ishere:true,grade:momentresult.grade,marked:new Date((momentresult.markedts*1000)),submitted:new Date((momentresult.submittedts*1000)),kind:momtmp[j].kind,lid:momtmp[j].lid,uid:uid,needMarking:momentresult.needMarking,gradeSystem:momtmp[j].gradesystem,vers:momentresult.vers,userAnswer:momentresult.useranswer,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant,quizfile:momtmp[j].quizfile, timesGraded:momentresult.timesGraded, gradeExpire:momentresult.gradeExpire,firstname:entries[i].firstname,lastname:entries[i].lastname,  deadline:new Date((momtmp[j].deadlinets*1000)),});
+          student.push({
+            ishere:true,
+            grade:momentresult.grade,
+            marked:new Date((momentresult.markedts*1000)),
+            submitted:new Date((momentresult.submittedts*1000)),
+            kind:momtmp[j].kind,
+            lid:momtmp[j].lid,
+            uid:uid,
+            needMarking:momentresult.needMarking,
+            gradeSystem:momtmp[j].gradesystem,
+            vers:momentresult.vers,
+            userAnswer:momentresult.useranswer,
+            quizId:momtmp[j].link, 
+            qvariant:momtmp[j].qvariant,
+            quizfile:momtmp[j].quizfile, 
+            timesGraded:momentresult.timesGraded, 
+            gradeExpire:momentresult.gradeExpire,
+            firstname:entries[i].firstname,
+            lastname:entries[i].lastname,  
+            deadline:new Date((momtmp[j].deadlinets*1000)),});
 				}else{
-					student.push({ishere:false,kind:momtmp[j].kind,grade:"",lid:momtmp[j].lid,uid:uid,needMarking:false,marked:new Date(0),submitted:new Date(0),grade:-1,quizId:momtmp[j].link, qvariant:momtmp[j].qvariant, quizfile:momtmp[j].quizfile,  deadline:new Date(momtmp[j].deadline),});
+          student.push({
+            ishere:false,
+            kind:momtmp[j].kind,
+            grade:"UNK",
+            lid:momtmp[j].lid,
+            uid:uid,
+            needMarking:false,
+            gradeSystem:momtmp[j].gradesystem,
+            vers:momtmp[j].vers,
+            userAnswer:"UNK",
+            marked:new Date(0),
+            submitted:new Date(0),
+            grade:null,
+            quizId:momtmp[j].link, 
+            qvariant:momtmp[j].qvariant,
+            quizfile:momtmp[j].quizfile, 
+            timesGraded:0, 
+            gradeExpire:"UNK",
+            firstname:entries[i].firstname,
+            lastname:entries[i].lastname,  
+            deadline:new Date(momtmp[j].deadline),});
 				}
 			}
     }
@@ -193,7 +234,6 @@ function process()
 	document.getElementById("dropdowns").innerHTML=dstr;
 
 	resort();
-	//console.log(performance.now()-tim);
 }
 
 function makeCustomFilter(filtername, labeltext){
@@ -295,7 +335,6 @@ $(function()
 //----------------------------------------
 
 function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, qid, gradeExpire){
-
 		closeWindows();
 
 		var uidGrab = uid;
@@ -350,12 +389,11 @@ function gradeDugga(e, gradesys, cid, vers, moment, uid, mark, ukind, qversion, 
 }
 
 function makeImg(gradesys, cid, vers, moment, uid, mark, ukind,gfx,cls,qvariant,qid){
-  return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
+    return "<img src=\""+gfx+"\" id=\"grade-"+moment+"-"+uid+"\" class=\""+cls+"\" onclick=\"gradeDugga(event,"+gradesys+","+cid+",'"+vers+"',"+moment+","+uid+","+mark+",'"+ukind+"',"+qvariant+","+qid+");\"  />";
 }
 
 function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid)
 {
-
     var str = "";
 
     // Irrespective of marking system we allways print - and U
@@ -545,11 +583,11 @@ function saveResponse()
 
 function returnedResults(data)
 {
+  if (data['debug'] !== "NONE!") alert(data['debug']);
   if (data.gradeupdated === true){
     // Update the the local array studentInfo when grade is updated.
     for (var student in studentInfo){
       var studentObject = studentInfo[student]["lid:" + data.duggaid];
-      console.log(studentObject);
       if (studentObject != null && studentObject.uid === parseInt(data.duggauser) && studentObject.lid === parseInt(data.duggaid)) {
         studentObject.grade = parseInt(data.results);
         studentObject.timesGraded = parseInt(data.timesgraded);
@@ -574,9 +612,7 @@ function returnedResults(data)
 
     //tim=performance.now();
 
-    subheading=0;
-
-    if (data['debug'] !== "NONE!") alert(data['debug']);
+    subheading=0;    
 
     $(document).ready(function () {
             $("#dropdownc").mouseleave(function () {
@@ -644,6 +680,7 @@ function buildStudentInfo() {
 function createSortableTable(data){
 		var tblhead = buildDynamicHeaders();
 		studentInfo = buildStudentInfo();
+
 
 		var tabledata = {
 			tblhead,
@@ -713,7 +750,6 @@ function renderCell(col,celldata,cellid) {
 	} else {
 		// color based on pass,fail,pending,assigned,unassigned
     str = "<div style='height:70px;' class='resultTableCell ";
-    console.log(celldata);
     if(celldata.kind==4) { str += "dugga-moment "; }
     if (celldata.grade > 1) {str += "dugga-pass";}
     else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
@@ -724,7 +760,7 @@ function renderCell(col,celldata,cellid) {
 		str += "'>";
 
 		// Creation of grading buttons
-		if(celldata.ishere===true){
+		if(celldata.ishere===true||celldata.kind==4){
 			  str += "<div class='gradeContainer resultTableText'>";
 				if (celldata.grade === null ) {
 					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);

@@ -122,7 +122,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
-				$debug="Error updating entries\n".$error[2];
+				$debug="Error inserting userAnswer\n".$error[2];
 			} else {
 				$gradeupdated=true;
 				$duggauser=$luid;
@@ -138,7 +138,8 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 			$query->bindParam(':moment', $listentry);
 			$query->bindParam(':vers', $vers);
 			$query->bindParam(':uid', $luid);
-			$query->bindParam(':quizid', $quizId);
+      $query->bindParam(':quizid', $quizId);
+      if(!is_int($qvariant)){$qvariant=-1;}
 			$query->bindParam(':variant', $qvariant);
 
 			if(!$query->execute()) {
@@ -378,7 +379,8 @@ if(strcmp($opt,"CHGR")!==0){
 		}
 
 		// All results from current course and vers?
-		$query = $pdo->prepare("SELECT aid,quiz,variant,userAnswer.moment AS dugga,grade,uid,useranswer,submitted,UNIX_TIMESTAMP(submitted) AS submittedts,userAnswer.vers,marked,UNIX_TIMESTAMP(marked) AS markedts,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,listentries.moment AS moment,if((UNIX_TIMESTAMP(submitted) > UNIX_TIMESTAMP(marked) && !isnull(marked))||(isnull(marked) && !isnull(useranswer)), true, false) AS needMarking,timesGraded,gradeExpire,deadline,UNIX_TIMESTAMP(deadline) AS deadlinets FROM userAnswer,listentries,quiz WHERE listentries.link=quiz.id AND userAnswer.cid=:cid AND userAnswer.vers=:vers AND userAnswer.moment=listentries.lid;");
+		//$query = $pdo->prepare("SELECT aid,quiz,variant,userAnswer.moment AS dugga,grade,uid,useranswer,submitted,UNIX_TIMESTAMP(submitted) AS submittedts,userAnswer.vers,marked,UNIX_TIMESTAMP(marked) AS markedts,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,listentries.moment AS moment,if((UNIX_TIMESTAMP(submitted) > UNIX_TIMESTAMP(marked) && !isnull(marked))||(isnull(marked) && !isnull(useranswer)), true, false) AS needMarking,timesGraded,gradeExpire,deadline,UNIX_TIMESTAMP(deadline) AS deadlinets FROM userAnswer,listentries,quiz WHERE listentries.link=quiz.id AND userAnswer.cid=:cid AND userAnswer.vers=:vers AND userAnswer.moment=listentries.lid GROUP BY listentries.lid;");
+		$query = $pdo->prepare("SELECT aid,quiz,variant,userAnswer.moment AS dugga,grade,uid,useranswer,submitted,UNIX_TIMESTAMP(submitted) AS submittedts,userAnswer.vers,marked,UNIX_TIMESTAMP(marked) AS markedts,timeUsed,totalTimeUsed,stepsUsed,totalStepsUsed,listentries.moment AS moment,if((UNIX_TIMESTAMP(submitted) > UNIX_TIMESTAMP(marked) && !isnull(marked))||(isnull(marked) && !isnull(useranswer)), true, false) AS needMarking,timesGraded,gradeExpire,deadline,UNIX_TIMESTAMP(deadline) AS deadlinets FROM userAnswer,listentries LEFT OUTER JOIN quiz ON listentries.link=quiz.id WHERE userAnswer.cid=:cid AND userAnswer.vers=:vers AND userAnswer.moment=listentries.lid GROUP BY uid,listentries.lid;");
 		$query->bindParam(':cid', $cid);
 		$query->bindParam(':vers', $vers);
 
