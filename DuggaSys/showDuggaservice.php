@@ -222,7 +222,8 @@ if($demo){
 			$savedvariant=$newvariant;
 			//------------------------------
 			//mark segment as started on
-			//------------------------------
+      //------------------------------
+      /*
 			$query = $pdo->prepare("INSERT INTO userAnswer(uid,cid,quiz,moment,vers,variant) VALUES(:uid,:cid,:did,:moment,:coursevers,:variant);");
 			$query->bindParam(':cid', $courseid);
 			$query->bindParam(':coursevers', $coursevers);
@@ -233,7 +234,8 @@ if($demo){
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				$debug="Error inserting variant (row ".__LINE__.") ".$query->rowCount()." row(s) were inserted. Error code: ".$error[2];
-			}
+      }
+      */
 		}
 	}
 	// Retrieve variant
