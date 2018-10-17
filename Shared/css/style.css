@@ -2230,6 +2230,10 @@ span.arrow {
   /* Black w/ opacity */
 }
 
+.resultTableCell{
+		margin:2px;
+}
+
 .tableCellHighlightning {
 	box-shadow: inset 0px 0px 0px 3px rgba(97,72,117,1) !important;
 }
@@ -2490,47 +2494,27 @@ span.arrow {
 }
 
 .dugga-pass {
-  background-color: rgb(221, 255, 238);
-}
-
-.dugga-pass-highlighted {
-  background-color: rgb(181, 215, 168) !important;
+  background-color: RGBA(100,255,80,0.3);
 }
 
 .dugga-pending {
-  background-color: rgb(255, 255, 221);
-}
-
-.dugga-pending-highlighted {
-  background-color: rgb(215, 215, 181) !important;
+  background-color: RGBA(255, 255, 40, 0.3);
 }
 
 .dugga-pending-late-submission {
-	background-color: rgb(255, 200, 70);
+	background-color: RGBA(255, 80, 0, 0.45);
 }
 
 .dugga-fail {
-  background-color: rgb(255, 170, 170);
-}
-
-.dugga-fail-highlighted {
-  background-color: rgb(215, 155, 155) !important;
+  background-color: RGBA(255, 60, 50, 0.4);
 }
 
 .dugga-assigned {
-  background-color: rgb(248, 232, 248);
-}
-
-.dugga-assigned-highlighted {
-  background-color: rgb(208, 192, 208) !important;
+  background-color: RGBA(255, 120, 240, 0.2);
 }
 
 .dugga-unassigned {
   min-width: 140px;
-}
-
-.dugga-unassigned-highlighted {
-  background-color: rgb(215, 215, 215) !important;
 }
 
 .result-header {
