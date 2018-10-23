@@ -1032,7 +1032,7 @@ function compare(a,b) {
 
         if(atmp==btmp && a.submitted>b.submitted)atmp+=10;
         if(atmp==btmp && b.submitted>a.submitted)btmp+=10;
-        console.log(kind,atmp,btmp)
+        console.log(a,b,kind,atmp,btmp)
         return btmp-atmp;
 
 		}
@@ -1041,9 +1041,12 @@ function compare(a,b) {
 function conv(item,kind){
     var tmp=7;
     if(typeof(item)!=="undefined"){      
-        if(item.grade==0)tmp=1; // Pending
-        if(item.grade>=1 && item.grade<=2)tmp=2; // Pass / G / VG 
-        if(item.grade==3)tmp=6; // U
+        if(item.grade===null )tmp=7; // N/A i.e. not opened 
+        if(item.grade===0)tmp=1; // Pending
+        if(item.grade===0 && item.userAnswer===null)tmp=7; // Not submitted anything 
+        if(item.grade==1)tmp=6; // U
+        if(item.grade==1 && item.submitted>item.marked)tmp=1; // Pending 
+        if(item.grade>=2 && item.grade<=3)tmp=2; // Pass / G / VG         
     }     
     if(tmp<kind)tmp+=8;
 
