@@ -902,18 +902,18 @@ function renderSortOptions(col,status,colname) {
 								str+="</div>"
 						}
 				}else{
-						if(status==0) {
-								str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colname + "<span style='display:inline-block;background-color:#ffffdd;width:16px;height:16px;border-radius:8px;'></span></span>";
-						}else if(status==1){
-								str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colname + "<span style='display:inline-block;background-color:#B5D7A8;width:16px;height:16px;border-radius:8px;'></span></span>";
-						}else if(status==2){
-								str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",3)'>" + colname + "<span style='display:inline-block;background-color:#d79b9b;width:16px;height:16px;border-radius:8px;'></span></span>";
-						}else if(status==3){
-								str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colname + "<span style='display:inline-block;background-color:#d0c0d0;width:16px;height:16px;border-radius:8px;'></span></span>";
-						}else{
-								str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<span style='display:inline-block;background-color:#eae8eb;width:16px;height:16px;border-radius:8px;'></span></span>";
-						}
-				}
+            if(status==0) {
+                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'><span style='display:inline-block;background-color:#ffffdd;width:16px;height:16px;border-radius:8px;'></span>"+colname+"</span>";
+            }else if(status==1){
+                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'><span style='display:inline-block;background-color:#B5D7A8;width:16px;height:16px;border-radius:8px;'></span>"+colname+"</span>";
+            }else if(status==2){
+                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",3)'><span style='display:inline-block;background-color:#d79b9b;width:16px;height:16px;border-radius:8px;'></span>"+colname+"</span>";
+            }else if(status==3){
+                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",4)'><span style='display:inline-block;background-color:#d0c0d0;width:16px;height:16px;border-radius:8px;'></span>"+colname+"</span>";
+            }else{
+                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'><span style='display:inline-block;background-color:#eae8eb;width:16px;height:16px;border-radius:8px;'></span>"+colname+"</span>";
+            }
+        }
 		}
 		return str;
 }
