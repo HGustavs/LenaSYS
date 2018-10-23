@@ -949,84 +949,6 @@ function compare(a,b) {
 						return 0;
 				}
 		} else {
-        /*
-				// Sorting rotates:
-				// Need marking --> Passed --> Failed --> Opened --> Not opened
-				tempA=0;
-				tempB=0;
-				if(kind==0){
-						if(a['needMarking'] == true) {tempA += 1000000;}
-						if(b['needMarking'] == true) {tempB += 1000000;}
-						if(a['grade'] == 2) {tempA += 100000;}
-						if(b['grade'] == 2) {tempB += 100000;}
-						if(a['grade'] == 1) {tempA += 10000;}
-						if(b['grade'] == 1) {tempB += 10000;}
-						if(a['ishere'] == true) {tempA += 1000;}
-						if(b['ishere'] == true) {tempB += 1000;}	
-				}else if(kind==1){
-						if(a['needMarking'] == true) {tempA += 1000;}
-						if(b['needMarking'] == true) {tempB += 1000;}
-						if(a['grade'] == 2) {tempA += 1000000;}
-						if(b['grade'] == 2) {tempB += 1000000;}
-						if(a['grade'] == 1) {tempA += 100000;}
-						if(b['grade'] == 1) {tempB += 100000;}
-						if(a['ishere'] == true) {tempA += 10000;}
-						if(b['ishere'] == true) {tempB += 10000;}	
-				}else if(kind==2){
-						if(a['needMarking'] == true) {tempA += 10000;}
-						if(b['needMarking'] == true) {tempB += 10000;}
-						if(a['grade'] == 2) {tempA += 1000;}
-						if(b['grade'] == 2) {tempB += 1000;}
-						if(a['grade'] == 1) {tempA += 1000000;}
-						if(b['grade'] == 1) {tempB += 1000000;}
-						if(a['ishere'] == true) {tempA += 100000;}
-						if(b['ishere'] == true) {tempB += 100000;}	
-				}else if(kind==3){
-						if(a['needMarking'] == true) {tempA += 100000;}
-						if(b['needMarking'] == true) {tempB += 100000;}
-						if(a['grade'] == 2) {tempA += 10000;}
-						if(b['grade'] == 2) {tempB += 10000;}
-						if(a['grade'] == 1) {tempA += 1000;}
-						if(b['grade'] == 1) {tempB += 1000;}
-						if(a['ishere'] == true && a['grade'] == 0) {tempA += 1000000;}
-						if(b['ishere'] == true && b['grade'] == 0) {tempB += 1000000;}	
-			}else{
-						if(a['needMarking'] == true) {tempA += 100000;}
-						if(b['needMarking'] == true) {tempB += 100000;}
-						if(a['grade'] == 2) {tempA += 1000;}
-						if(b['grade'] == 2) {tempB += 1000;}
-						if(a['grade'] == 1) {tempA += 100000;}
-						if(b['grade'] == 1) {tempB += 100000;}
-						if(a['ishere'] == true && a['grade'] == 0) {tempA += 1000000;}
-						if(b['ishere'] == true && b['grade'] == 0) {tempB += 1000000;}	
-						if(a['ishere'] == false && a['grade'] == -1) {tempA += 10000000;}
-						if(b['ishere'] == false && b['grade'] == -1) {tempB += 10000000;}	
-				}
-
-				if(a['submitted'] < b['submitted']) {
-						tempA += 1;
-				}else if(a['submitted'] > b['submitted']){
-						tempB += 1;
-				}
-
-				if(kind==0||kind==2||kind==4){
-						if (tempA < tempB) {
-								return 1;
-						} else if (tempA > tempB) {
-								return -1;
-						} else {
-								return 0;
-						}
-				}else{
-						if (tempA > tempB) {
-								return 1;
-						} else if (tempA < tempB) {
-								return -1;
-						} else {
-								return 0;
-						}
-        }
-        */
         let atmp=conv(a,kind);
         let btmp=conv(b,kind);                
 
@@ -1034,7 +956,6 @@ function compare(a,b) {
         if(atmp==btmp && b.submitted>a.submitted)btmp+=10;
         console.log(a,b,kind,atmp,btmp)
         return btmp-atmp;
-
 		}
 }
 
