@@ -903,15 +903,15 @@ function renderSortOptions(col,status,colname) {
 						}
 				}else{
             if(status==0) {
-                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'><span style='display:inline-block;background-color:#ffffdd;width:16px;height:16px;border-radius:8px;'></span>"+colname+"</span>";
+                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'><span style='display:inline-block;background-color:#ffffdd;width:16px;height:16px;border-radius:8px;'>P</span>"+colname+"</span>";
             }else if(status==1){
-                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'><span style='display:inline-block;background-color:#B5D7A8;width:16px;height:16px;border-radius:8px;'></span>"+colname+"</span>";
+                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'><span style='display:inline-block;background-color:#B5D7A8;width:16px;height:16px;border-radius:8px;'>U</span>"+colname+"</span>";
             }else if(status==2){
-                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",3)'><span style='display:inline-block;background-color:#d79b9b;width:16px;height:16px;border-radius:8px;'></span>"+colname+"</span>";
+                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",3)'><span style='display:inline-block;background-color:#d79b9b;width:16px;height:16px;border-radius:8px;'>G</span>"+colname+"</span>";
             }else if(status==3){
-                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",4)'><span style='display:inline-block;background-color:#d0c0d0;width:16px;height:16px;border-radius:8px;'></span>"+colname+"</span>";
+                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",4)'><span style='display:inline-block;background-color:#d0c0d0;width:16px;height:16px;border-radius:8px;'>VG</span>"+colname+"</span>";
             }else{
-                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'><span style='display:inline-block;background-color:#eae8eb;width:16px;height:16px;border-radius:8px;'></span>"+colname+"</span>";
+                str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'><span style='display:inline-block;background-color:#eae8eb;width:16px;height:16px;border-radius:8px;'>-</span>"+colname+"</span>";
             }
         }
 		}
@@ -949,6 +949,7 @@ function compare(a,b) {
 						return 0;
 				}
 		} else {
+        /*
 				// Sorting rotates:
 				// Need marking --> Passed --> Failed --> Opened --> Not opened
 				tempA=0;
@@ -1024,8 +1025,29 @@ function compare(a,b) {
 						} else {
 								return 0;
 						}
-				}
+        }
+        */
+        let atmp=conv(a,kind);
+        let btmp=conv(b,kind);                
+
+        if(atmp==btmp && a.submitted>b.submitted)atmp+=10;
+        if(atmp==btmp && b.submitted>a.submitted)btmp+=10;
+        console.log(kind,atmp,btmp)
+        return btmp-atmp;
+
 		}
+}
+
+function conv(item,kind){
+    var tmp=7;
+    if(typeof(item)!=="undefined"){      
+        if(item.grade==0)tmp=1; // Pending
+        if(item.grade>=1 && item.grade<=2)tmp=2; // Pass / G / VG 
+        if(item.grade==3)tmp=6; // U
+    }     
+    if(tmp<kind)tmp+=8;
+
+    return tmp*100;
 }
 
 function renderColumnFilter(col,status,colname) {

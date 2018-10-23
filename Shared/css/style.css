@@ -2498,11 +2498,11 @@ span.arrow {
 }
 
 .dugga-pending {
-  background-color: RGBA(255, 255, 40, 0.3);
+  background-color: RGBA(255, 255, 0, 0.3);
 }
 
 .dugga-pending-late-submission {
-	background-color: RGBA(255, 80, 0, 0.45);
+	background-color: RGBA(255, 160, 0, 0.45);
 }
 
 .dugga-fail {
