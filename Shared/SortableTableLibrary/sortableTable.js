@@ -12,11 +12,6 @@ var sortableTable = {
 
 var DELIMITER="___";
 
-// Returns property or value of json data in property
-// var obj={"olle":"6",trumma:'{"x":100,"y":100}'};
-// alert(LeFunc(obj,"trumma.y"));
-// alert(LeFunc(obj,"olle"));					
-
 function byString(inpobj,paramstr){
 		params=paramstr.split(".");
 		return inpobj[params[1]];
@@ -50,18 +45,17 @@ function defaultRowFilter()
 // Global sorting function global
 function sortableInternalSort(a,b)
 {
-	var ret = 0;
+    var ret = 0;
     //var colname = sortableTable.currentTable.getKeyByValue();
     var colname = sortableTable.currentTable.getSortcolumn();
-    
-	if (sortableTable.currentTable.ascending) {
-		//alert("Compare: "+a+" "+b);
-		ret = compare(a[colname],b[colname]);
-	} else {
-		//alert("Compare: "+b+" "+a);
-		ret = compare(b[colname],a[colname]);
-	}
-	return ret;
+    if ((sortableTable.currentTable.sortkind % 2)==0) {
+      //alert("Compare: "+a+" "+b);
+      ret = compare(a[colname],b[colname]);
+    } else {
+      //alert("Compare: "+b+" "+a);
+      ret = compare(b[colname],a[colname]);
+    }
+    return ret;
 }
 
 function clearUpdateCellInternal()
@@ -107,11 +101,10 @@ function clickedInternal(event,clickdobj)
     var columnno = null; // Not used anymore
     var tableid = match[2];
     var columnname=match[3]
-
-    var str = "";
-    var rowdata = sortableTable.currentTable.getRow(rowno);
-    var coldata = rowdata[columnname];
-
+    var str = ""; 
+    var rowdata = sortableTable.currentTable.getRow(rowno); 
+    var coldata = rowdata[columnname]; 
+    
     sortableTable.edit_rowno = rowno;
     sortableTable.edit_row = rowdata;
     sortableTable.edit_columnno = columnno;
@@ -123,8 +116,8 @@ function clickedInternal(event,clickdobj)
       str += "<div id='input-container' style='flex-grow:1'>";
       str += estr;
       str += "</div>";
-      str += "<img id='popovertick' class='icon' src='../Shared/SortableTableLibrary/Icon_Tick.svg' onclick='updateCellInternal();'>";
-      str += "<img id='popovercross' class='icon' src='../Shared/SortableTableLibrary/Icon_Cross.svg' onclick='clearUpdateCellInternal();'>";
+      str += "<img id='popovertick' class='icon' src='Icon_Tick.svg' onclick='updateCellInternal();'>";
+      str += "<img id='popovercross' class='icon' src='Icon_Cross.svg' onclick='clearUpdateCellInternal();'>";
       var lmnt = cellelement.getBoundingClientRect();
       var popoverelement = document.getElementById("editpopover");
   
@@ -239,7 +232,6 @@ function SortableTable(param)
     this.updateCell = getparam(param.updateCellCallback,null);
 		this.hasMagicHeadings = getparam(param.hasMagicHeadings,false);
     this.hasCounter = getparam(param.hasCounterColumn,false);
-    this.readOnlyColumns = getparam(param.readOnlyColumns,[]);
 
 		// Prepare head and order with columns from rowsum list
 		for(let i=0;i<rowsumList.length;i++){
@@ -261,8 +253,6 @@ function SortableTable(param)
     var freezePane = freezePane;
     var freezePaneArr = [];
         
-    this.ascending = false;
-
     // Local variable that contains html code for main table and local variable that contains magic headings table
     var str = "";
     var mhstr = "";
@@ -280,6 +270,7 @@ function SortableTable(param)
     }
 
     this.reRender = function() {
+
     	this.rowIndex = 1;
     	// Local variable that contains html code for main table and local variable that contains magic headings table
     	str = "<table style='border-collapse: collapse;' id='"+this.tableid+DELIMITER+"tbl' class='list list--nomargin'>";
@@ -311,7 +302,27 @@ function SortableTable(param)
           if (renderColumnFilter != null) filterstr += renderColumnFilter(columnOrder[columnOrderIdx],columnfilter[columnOrderIdx],tbl.tblhead[columnOrder[columnOrderIdx]]);
       }
       localStorage.setItem(this.tableid+DELIMITER+"filtercolnames",JSON.stringify(columnfilter));
-  
+			
+			// Retrieve sort column from local storage if we have one
+      if(localStorage.getItem(this.tableid+DELIMITER+"sortcol")!==null){
+					var tmpsortcolumn = localStorage.getItem(this.tableid+DELIMITER+"sortcol");
+
+					// Check that the sorting column is visible, if not, clear it.
+				
+					if(columnfilter.indexOf(tmpsortcolumn)>-1){
+							sortcolumn=tmpsortcolumn;
+							sortkind=parseInt(localStorage.getItem(this.tableid+DELIMITER+"sortkind"));
+					}else{
+							sortcolumn="UNK";
+							sortkind=-1;
+					}
+      }   
+			
+      // Sort the body of the table again
+      if(columnfilter.indexOf(sortcolumn)!==-1){
+          tbl.tblbody.sort(sortableInternalSort);
+      }
+			
       if (renderColumnFilter != null) {
     		  document.getElementById(filterid).innerHTML = filterstr;
     	}
@@ -341,22 +352,22 @@ function SortableTable(param)
           
       		if (columnfilter[columnOrderIdx] !== null) {
         			if (renderSortOptions !== null) {
-          				if (columnOrderIdx < freezePaneIndex) {
-            					if (colname == sortcolumn){
-              				 		mhfstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhf' class='"+this.tableid+"'>"+renderSortOptions(colname,sortkind,col)+"</th>";
-              				 		mhvstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'>"+renderSortOptions(colname,sortkind,col)+"</th>";
-            				 	} else {
-              				 		mhfstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhf' class='"+this.tableid+"'>"+renderSortOptions(colname,-1,col)+"</th>";
-              				 		mhvstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'>"+renderSortOptions(colname,-1,col)+"</th>";
-            				 	}
-          				}
-          				if (colname == sortcolumn) {
-            					str += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl' class='"+this.tableid+"'>"+renderSortOptions(colname,sortkind,col)+"</th>";
-            					mhstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mh' class='"+this.tableid+"'>"+renderSortOptions(colname,sortkind,col)+"</th>";
-          				} else {
-            					str += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl' class='"+this.tableid+"'>"+renderSortOptions(colname,-1,col)+"</th>";
-            					mhstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mh' class='"+this.tableid+"'>"+renderSortOptions(colname,-1,col)+"</th>";
-          				}
+									if (columnOrderIdx < freezePaneIndex) {
+												if (colname == sortcolumn){
+														mhfstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhf' class='"+this.tableid+"'>"+renderSortOptions(colname,sortkind,col)+"</th>";
+														mhvstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'>"+renderSortOptions(colname,sortkind,col)+"</th>";
+												} else {
+														mhfstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhf' class='"+this.tableid+"'>"+renderSortOptions(colname,-1,col)+"</th>";
+														mhvstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'>"+renderSortOptions(colname,-1,col)+"</th>";
+												}
+									}
+									if (colname == sortcolumn) {
+												str += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl' class='"+this.tableid+"'>"+renderSortOptions(colname,sortkind,col)+"</th>";
+												mhstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mh' class='"+this.tableid+"'>"+renderSortOptions(colname,sortkind,col)+"</th>";
+									} else {
+												str += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl' class='"+this.tableid+"'>"+renderSortOptions(colname,-1,col)+"</th>";
+												mhstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mh' class='"+this.tableid+"'>"+renderSortOptions(colname,-1,col)+"</th>";
+									}
         			} else {
           				if (columnOrderIdx < freezePaneIndex) {                    
           				 	if (colname == sortcolumn){
@@ -487,15 +498,13 @@ function SortableTable(param)
     	// Assign currently active table
     	sortableTable.currentTable = this;
 
+			// Save column name to local storage!
+			localStorage.setItem(this.tableid+DELIMITER+"sortcol",col);
+			localStorage.setItem(this.tableid+DELIMITER+"sortkind",kind);
+			
     	sortcolumn = col;
     	sortkind = kind;
-
-    	// Even kind numbers will sort in ascending order
-    	this.ascending = kind % 2 === 0;
-
-    	// Sort the body of the table again
-    	tbl.tblbody.sort(sortableInternalSort);
-
+			
     	this.reRender();
     }
 
@@ -559,10 +568,9 @@ function SortableTable(param)
             				var thetabhead = document.getElementById(table.tableid+DELIMITER+"tblhead").getBoundingClientRect();
             				// If top is negative and top+height is positive draw mh otherwise hide
             				// Vertical
-            				if (thetabhead.top < 50 && thetab.bottom > 0) {
-                      document.getElementById(table.tableid+DELIMITER+"tbl"+DELIMITER+"mh").style.top = "50px";
-                      document.getElementById(table.tableid+DELIMITER+"tbl"+DELIMITER+"mh").style.left = thetab.left+"px";
-                      document.getElementById(table.tableid+DELIMITER+"tbl"+DELIMITER+"mh").style.display = "table";
+            				if (thetabhead.top < 0 && thetab.bottom > 0) {
+              					document.getElementById(table.tableid+DELIMITER+"tbl"+DELIMITER+"mh").style.left = thetab.left+"px";
+              					document.getElementById(table.tableid+DELIMITER+"tbl"+DELIMITER+"mh").style.display = "table";
             				}
             				 else {
                         document.getElementById(table.tableid+DELIMITER+"tbl"+DELIMITER+"mh").style.display = "none";
