@@ -31,14 +31,6 @@ pdoConnect();
 	<script src="../Shared/markdown.js"></script>
 	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
 	<script src="resulted.js"></script>
-
-  <script>
-      function ladexport()
-      {
-          alert(myTable.export("csv"));
-      }
-  </script>
-
 </head>
 <body onload="setup();">
 	<?php
@@ -51,8 +43,12 @@ pdoConnect();
 
 	<?php
 		include '../Shared/loginbox.php';
-	?>
-  <button onclick="ladexport();" value="" style="position:absolute;top:100px;z-index:10000000;">LadExport</button>
+  ?>
+  <div style="position:absolute;top:100px;z-index:10000000;">
+      <select id="ladselect"></select>
+      <input id="laddate" type="date" style="font-size:12px;">
+      <button onclick="ladexport();">LadExport</button>
+  </div>
 	<!-- content START -->
 	<div id="content">
 		<div class="titles">

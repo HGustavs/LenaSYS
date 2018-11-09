@@ -610,6 +610,17 @@ function returnedResults(data)
     teacher=data.teachers;
     courseteachers=data.courseteachers;
 
+    let ladmoments="";
+    for(let i=0;i<moments.length;i++){
+        let dugga=moments[i];
+        if(dugga.kind===4){
+            console.log(dugga);            
+            ladmoments+="<option value='"+dugga.entryname+"'>"+dugga.entryname+"</option>";
+        }
+    }
+    document.getElementById("ladselect").innerHTML=ladmoments;
+    document.getElementById("laddate").valueAsDate=new Date();
+
     //tim=performance.now();
 
     subheading=0;    
@@ -995,7 +1006,7 @@ function exportCell(format,cell,colname) {
   str="";
   if(format==="csv"){
       if(colname=="FnameLnameSSN"){
-          str=cell.ssn+",";
+          str="19"+cell.ssn+",";
           str+=cell.firstname+" "+cell.lastname;
       }else{
           if(cell===null){
@@ -1030,8 +1041,15 @@ function exportColumnHeading(format,heading,colname) {
   str="";
   if(format==="csv"){
       if(colname=="FnameLnameSSN"){
-          str="pnr,name";
+          str="Personnummer,Namn";
       }else{
+          heading=heading.replace("&aring;","å");
+          heading=heading.replace("&Aring;","Å");
+          heading=heading.replace("&auml;","ä");
+          heading=heading.replace("&Auml;","Ä");
+          heading=heading.replace("&ouml;","ö");
+          heading=heading.replace("&Ouml;","Ö");
+          if(document.getElementById("ladselect").value==heading)heading="Betyg";
           str=heading.replace(",",".");
       }
   }else{
@@ -1039,3 +1057,12 @@ function exportColumnHeading(format,heading,colname) {
   }
   return str;
 }
+
+function ladexport()
+{
+    let expo=document.getElementById("ladselect").value+"\n";
+    expo+=document.getElementById("laddate").value+"\n";
+    expo+=myTable.export("csv");
+    alert(expo);
+}
+
