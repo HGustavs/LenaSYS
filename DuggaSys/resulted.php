@@ -32,6 +32,13 @@ pdoConnect();
 	<script src="../Shared/SortableTableLibrary/sortableTable.js"></script>
 	<script src="resulted.js"></script>
 
+  <script>
+      function ladexport()
+      {
+          alert(myTable.export("csv"));
+      }
+  </script>
+
 </head>
 <body onload="setup();">
 	<?php
@@ -45,7 +52,7 @@ pdoConnect();
 	<?php
 		include '../Shared/loginbox.php';
 	?>
-
+  <button onclick="ladexport();" value="" style="position:absolute;top:100px;z-index:10000000;">LadExport</button>
 	<!-- content START -->
 	<div id="content">
 		<div class="titles">
@@ -60,7 +67,7 @@ pdoConnect();
 			</h1>
 		</div>
 		<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>
-			<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.renderTable();'/>
+			<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>
 			<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>
 				<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
 			</button>

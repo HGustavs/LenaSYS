@@ -693,6 +693,8 @@ function createSortableTable(data){
 				tableElementId:tableName,
 				filterElementId:"columnfilter",
 				renderCellCallback:renderCell,
+				exportCellCallback:exportCell,
+				exportColumnHeadingCallback:exportColumnHeading,
 				renderSortOptionsCallback:renderSortOptions,
 				renderColumnFilterCallback:renderColumnFilter,
 				rowFilterCallback:rowFilter,
@@ -987,4 +989,53 @@ function renderColumnFilter(col,status,colname) {
 			str += "</div>"
 		}
 		return str;
+}
+
+function exportCell(format,cell,colname) {
+  str="";
+  if(format==="csv"){
+      if(colname=="FnameLnameSSN"){
+          str=cell.ssn+",";
+          str+=cell.firstname+" "+cell.lastname;
+      }else{
+          if(cell===null){
+              str="-";
+          }else{
+            if(cell.grade===null){
+                str="-";
+            }else{
+                if(cell.gradeSystem===1||cell.gradeSystem===2){
+                    if(cell.grade===1){
+                        str="U";
+                    }else if(cell.grade===2){
+                        str="G";
+                    }else if(cell.grade===3){
+                        str="VG";
+                    }else{
+                        str="-";
+                    }
+                }else{
+                    str="UNK";
+                }
+            }        
+          }
+      }
+  }else{
+      console.log("Export format: "+format+" not supported!");
+  }
+  return str;
+}
+
+function exportColumnHeading(format,heading,colname) {
+  str="";
+  if(format==="csv"){
+      if(colname=="FnameLnameSSN"){
+          str="pnr,name";
+      }else{
+          str=heading.replace(",",".");
+      }
+  }else{
+      console.log("Export format: "+format+" not supported!");
+  }
+  return str;
 }

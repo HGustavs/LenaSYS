@@ -217,6 +217,8 @@ function SortableTable(param)
     var filterid = getparam(param.filterElementId,"UNK");	
     var caption = getparam(param.tableCaption,"UNK");
     var renderCell = getparam(param.renderCellCallback,null);
+    var exportCell = getparam(param.exportCellCallback,null);
+    var exportColumnHeading = getparam(param.exportColumnHeadingCallback,null);
     var renderSortOptions = getparam(param.renderSortOptionsCallback,null);
     var renderColumnFilter = getparam(param.renderColumnFilterCallback,null);
     var rowFilter = getparam(param.rowFilterCallback,defaultRowFilter);
@@ -610,5 +612,25 @@ function SortableTable(param)
             columnOrder=newOrderList;
             this.reRender();          
         }
+    }
+    
+    this.export=function(format)
+    {
+        var str="";
+        for(let k=0;k<columnOrder.length;k++){
+            if(k!==0)str+=",";
+            str+=exportColumnHeading(format,tbl.tblhead[columnOrder[k]],columnOrder[k]);
+        }
+        str+="\n";        
+        for(let i=0;i<tbl.tblbody.length; i++) {
+            let row=tbl.tblbody[i];
+            for(let k=0;k<columnOrder.length;k++){                
+                let colname=columnOrder[k];
+                if(k!==0)str+=",";
+                str+=exportCell(format,row[colname],colname);
+            }
+            str+="\n";
+          }
+        return str;
     }
 }
