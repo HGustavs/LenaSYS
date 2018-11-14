@@ -44,12 +44,7 @@ pdoConnect();
 	<?php
 		include '../Shared/loginbox.php';
   ?>
-  <div style="position:absolute;top:100px;z-index:10000000;">
-      <select id="ladselect"></select>
-      <input id="laddate" type="date" style="font-size:12px;">
-      <button onclick="ladexport();">LadExport</button>
-  </div>
-	<!-- content START -->
+  <!-- content START -->
 	<div id="content">
 		<div class="titles">
 			<h1 style='	width:100%;
@@ -61,7 +56,12 @@ pdoConnect();
 									top:0;'>
 									Result
 			</h1>
-		</div>
+    </div>
+    <div id="ladexportContainer">
+      <select id="ladselect"></select>
+      <input id="laddate" type="date" style="font-size:12px;">
+      <button onclick="ladexport();">LadExport</button>
+    </div>
 		<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>
 			<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>
 			<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>
