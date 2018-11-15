@@ -46,30 +46,23 @@ pdoConnect();
   ?>
   <!-- content START -->
 	<div id="content">
-		<div class="titles">
-			<h1 style='	width:100%;
-									margin-top:30px;
-									padding-top:50px;
-									padding-bottom:50px;
-									text-align:center;
-									position:fixed;
-									top:0;'>
-									Result
-			</h1>
+		<div class="titles" style="justify-content:center;">
+			<h1>Result</h1>
     </div>
     <div id="ladexportContainer">
       <select id="ladselect"></select>
       <input id="laddate" type="date" style="font-size:12px;">
       <button onclick="ladexport();">LadExport</button>
     </div>
-		<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>
+		<!--<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>-->
+		<div id='searchBar' style='test-align:right;margin-bottom:5px;'>
 			<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>
 			<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>
 				<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
 			</button>
 		</div>
-		<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>
-		</div>
+		<!--<div id="resultTable" style='width:fit-content; white-space: nowrap; position: absolute; margin-top: 100px; margin-bottom: 30px;'>-->
+		<div id="resultTable"></div>
 	</div>
 	<!-- content END -->
 
