@@ -614,7 +614,6 @@ function returnedResults(data)
     for(let i=0;i<moments.length;i++){
         let dugga=moments[i];
         if(dugga.kind===4){
-            console.log(dugga);            
             ladmoments+="<option value='"+dugga.entryname+"'>"+dugga.entryname+"</option>";
         }
     }
@@ -967,7 +966,6 @@ function compare(a,b) {
 
         if(atmp==btmp && a.submitted>b.submitted)atmp+=10;
         if(atmp==btmp && b.submitted>a.submitted)btmp+=10;
-        console.log(a,b,kind,atmp,btmp)
         return btmp-atmp;
 		}
 }
@@ -1016,16 +1014,16 @@ function exportCell(format,cell,colname) {
                 str="-";
             }else{
                 if(cell.gradeSystem===1||cell.gradeSystem===2){
-                    if(cell.grade===1){
-                        str="U";
-                    }else if(cell.grade===2){
-                        str="G";
-                    }else if(cell.grade===3){
-                        str="VG";
-                    }else{
-                        str="-";
-                    }
-                }else{
+                  if(cell.grade===1){
+                      str="U";
+                  }else if(cell.grade===2){
+                      str="G";
+                  }else if(cell.grade===3){
+                      str="VG";
+                  }else{
+                      str="-";
+                  }
+              }else{
                     str="UNK";
                 }
             }        
@@ -1060,7 +1058,9 @@ function exportColumnHeading(format,heading,colname) {
 
 function ladexport()
 {
-    let expo=document.getElementById("ladselect").value+"\n";
+    let expo="";
+    expo+=document.getElementById("ladselect").value+"\n";
+    expo+=document.getElementById("ladgradescale").value+"\n";
     expo+=document.getElementById("laddate").value+"\n";
     expo+=myTable.export("csv");
     alert(expo);

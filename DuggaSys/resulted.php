@@ -51,6 +51,7 @@ pdoConnect();
     </div>
     <div id="ladexportContainer">
       <select id="ladselect"></select>
+      <input id="ladgradescale" type="text" style="font-size:12px;">
       <input id="laddate" type="date" style="font-size:12px;">
       <button onclick="ladexport();">LadExport</button>
     </div>
