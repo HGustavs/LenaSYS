@@ -620,7 +620,7 @@ function SortableTable(param)
 			
 				// Export visible columns
 				var rendcnt=0;
-        for(let k=0;k<columnOrder.length;k++){
+        for(let columnOrderIdx=0;columnOrderIdx<columnOrder.length;columnOrderIdx++){
 						var colname=columnOrder[columnOrderIdx];
 						var col=tbl.tblhead[colname];
 						if (columnfilter[columnOrderIdx] !== null) {
@@ -636,7 +636,7 @@ function SortableTable(param)
         for(let i=0;i<tbl.tblbody.length; i++) {
             let row=tbl.tblbody[i];
 
-						for(let k=0;k<columnOrder.length;k++){
+						for(let columnOrderIdx=0;columnOrderIdx<columnOrder.length;columnOrderIdx++){
 								var colname=columnOrder[columnOrderIdx];
 								var col=tbl.tblhead[colname];
 								if (columnfilter[columnOrderIdx] !== null) {
