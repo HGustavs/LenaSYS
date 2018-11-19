@@ -625,17 +625,16 @@ function SortableTable(param)
 						var col=tbl.tblhead[colname];
 						if (columnfilter[columnOrderIdx] !== null) {
 								if(rendcnt!==0)str+=",";
-								str+=exportColumnHeading(format,tbl.tblhead[columnOrder[k]],columnOrder[k]);
+								str+=exportColumnHeading(format,tbl.tblhead[columnOrder[columnOrderIdx]],columnOrder[columnOrderIdx]);
 								rendcnt++;
 						}
         }
         str+="\n"; 
 				
 				// Export data for visible columns
-				rendcnt=0;
         for(let i=0;i<tbl.tblbody.length; i++) {
             let row=tbl.tblbody[i];
-
+						rendcnt=0;
 						for(let columnOrderIdx=0;columnOrderIdx<columnOrder.length;columnOrderIdx++){
 								var colname=columnOrder[columnOrderIdx];
 								var col=tbl.tblhead[colname];
