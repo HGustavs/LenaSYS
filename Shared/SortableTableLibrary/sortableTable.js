@@ -617,18 +617,34 @@ function SortableTable(param)
     this.export=function(format)
     {
         var str="";
+			
+				// Export visible columns
+				var rendcnt=0;
         for(let k=0;k<columnOrder.length;k++){
-            if(k!==0)str+=",";
-            str+=exportColumnHeading(format,tbl.tblhead[columnOrder[k]],columnOrder[k]);
+						var colname=columnOrder[columnOrderIdx];
+						var col=tbl.tblhead[colname];
+						if (columnfilter[columnOrderIdx] !== null) {
+								if(rendcnt!==0)str+=",";
+								str+=exportColumnHeading(format,tbl.tblhead[columnOrder[k]],columnOrder[k]);
+								rendcnt++;
+						}
         }
-        str+="\n";        
+        str+="\n"; 
+				
+				// Export data for visible columns
+				rendcnt=0;
         for(let i=0;i<tbl.tblbody.length; i++) {
             let row=tbl.tblbody[i];
-            for(let k=0;k<columnOrder.length;k++){                
-                let colname=columnOrder[k];
-                if(k!==0)str+=",";
-                str+=exportCell(format,row[colname],colname);
-            }
+
+						for(let k=0;k<columnOrder.length;k++){
+								var colname=columnOrder[columnOrderIdx];
+								var col=tbl.tblhead[colname];
+								if (columnfilter[columnOrderIdx] !== null) {
+										if(rendcnt!==0)str+=",";
+                		str+=exportCell(format,row[colname],colname);
+										rendcnt++;
+								}
+						}
             str+="\n";
           }
         return str;
