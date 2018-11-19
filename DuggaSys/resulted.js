@@ -941,6 +941,8 @@ function compare(a,b) {
 		var tempA;
 		var tempB;
 
+		if((typeof a == "undefined")||(typeof b == "undefined")) console.log("sort fail: ",a,b,col,kind)
+	
 		if(typeof a == "undefined") return 1;
 		if(typeof b == "undefined") return -1;
 	
