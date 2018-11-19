@@ -929,6 +929,9 @@ function compare(a,b) {
 		var tempA;
 		var tempB;
 
+		if(typeof a == "undefined") return 1;
+		if(typeof b == "undefined") return -1;
+	
 		if (col == "FnameLnameSSN") {
 				if(kind==0||kind==1){
 						tempA=a['firstname'].toUpperCase();
