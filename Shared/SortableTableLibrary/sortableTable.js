@@ -614,9 +614,13 @@ function SortableTable(param)
         }
     }
     
-    this.export=function(format)
+    this.export=function(format,del)
     {
         var str="";
+
+        if(del==="undefined"||del===null){
+          del=",";
+        }
 			
 				// Export visible columns
 				var rendcnt=0;
@@ -624,7 +628,7 @@ function SortableTable(param)
 						var colname=columnOrder[columnOrderIdx];
 						var col=tbl.tblhead[colname];
 						if (columnfilter[columnOrderIdx] !== null) {
-								if(rendcnt!==0)str+=",";
+								if(rendcnt!==0)str+=del;
 								str+=exportColumnHeading(format,tbl.tblhead[columnOrder[columnOrderIdx]],columnOrder[columnOrderIdx]);
 								rendcnt++;
 						}
@@ -639,7 +643,7 @@ function SortableTable(param)
 								var colname=columnOrder[columnOrderIdx];
 								var col=tbl.tblhead[colname];
 								if (columnfilter[columnOrderIdx] !== null) {
-										if(rendcnt!==0)str+=",";
+										if(rendcnt!==0)str+=del;
                 		str+=exportCell(format,row[colname],colname);
 										rendcnt++;
 								}

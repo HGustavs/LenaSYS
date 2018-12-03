@@ -1011,7 +1011,7 @@ function exportCell(format,cell,colname) {
   str="";
   if(format==="csv"){
       if(colname=="FnameLnameSSN"){
-          str="19"+cell.ssn+",";
+          str="19"+cell.ssn+";";
           str+=cell.firstname+" "+cell.lastname;
       }else{
           if(cell===null){
@@ -1046,7 +1046,7 @@ function exportColumnHeading(format,heading,colname) {
   str="";
   if(format==="csv"){
       if(colname=="FnameLnameSSN"){
-          str="Personnummer,Namn";
+          str="Personnummer;Namn";
       }else{
           heading=heading.replace("&aring;","å");
           heading=heading.replace("&Aring;","Å");
@@ -1054,8 +1054,9 @@ function exportColumnHeading(format,heading,colname) {
           heading=heading.replace("&Auml;","Ä");
           heading=heading.replace("&ouml;","ö");
           heading=heading.replace("&Ouml;","Ö");
-          if(document.getElementById("ladselect").value==heading)heading="Betyg";
-          str=heading.replace(",",".");
+//          if(document.getElementById("ladselect").value==heading)heading="Betyg";
+//          str=heading.replace(",",".");
+          str=heading;
       }
   }else{
       console.log("Export format: "+format+" not supported!");
@@ -1069,7 +1070,7 @@ function ladexport()
     expo+=document.getElementById("ladselect").value+"\n";
     expo+=document.getElementById("ladgradescale").value+"\n";
     expo+=document.getElementById("laddate").value+"\n";
-    expo+=myTable.export("csv");
+    expo+=myTable.export("csv",";");
     alert(expo);
 }
 
