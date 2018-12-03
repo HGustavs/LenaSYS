@@ -928,6 +928,8 @@ function compare(a,b) {
 		let kind = sortableTable.currentTable.getSortkind();
 		var tempA;
 		var tempB;
+    
+    if (a==null||b==null||typeof(a)==="undefined"||typeof(b)==="undefined") return false;
 
 		if (col == "FnameLnameSSN") {
 				if(kind==0||kind==1){
@@ -954,7 +956,6 @@ function compare(a,b) {
 
         if(atmp==btmp && a.submitted>b.submitted)atmp+=10;
         if(atmp==btmp && b.submitted>a.submitted)btmp+=10;
-        console.log(a,b,kind,atmp,btmp)
         return btmp-atmp;
 		}
 }

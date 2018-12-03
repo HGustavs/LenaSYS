@@ -229,7 +229,7 @@ function renderSortOptions(col,status,colname) {
 //----------------------------------------------------------------
 // rowFilter <- Callback function that sorts rows in the table
 //----------------------------------------------------------------
-
+/*
 function compare(a,b) {
 	var col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
@@ -257,6 +257,33 @@ function compare(a,b) {
 	} else {
 		return 0;
 	}
+}
+*/
+function compare(a,b)
+{
+    // Find out which column and part of column are we sorting on from currentTable
+    let col = sortableTable.currentTable.getSortcolumn();
+    let kind = sortableTable.currentTable.getSortkind();
+    let val=0;  
+  
+    if (col == "firstname") {
+        a=JSON.parse(a);
+        b=JSON.parse(b);
+        a.firstname=$('<div/>').html(a.firstname).text();
+        b.firstname=$('<div/>').html(b.firstname).text();        
+        if(kind==0){
+            val = b.firstname.toLocaleUpperCase().localeCompare(a.firstname.toLocaleUpperCase());
+        }else{
+            val = a.firstname.toLocaleUpperCase().localeCompare(b.firstname.toLocaleUpperCase());
+        }
+    }else{
+        if((kind%2)==0){
+            val=a<b;
+        }else{
+            val=b<a;
+        }
+    }
+    return val;
 }
 //--------------------------------------------------------------------------
 // editCell

@@ -52,7 +52,6 @@ function returnedDugga(data)
 		ClickCounter.initialize();
 		if(data['score'] > 0){
 			ClickCounter.score = data['score'];
-			console.log(ClickCounter.score);
 		}
 		ClickCounter.showClicker();
 	}
@@ -63,8 +62,12 @@ function returnedDugga(data)
 			alert("UNKNOWN DUGGA!");
 	}else{
 		retdata=jQuery.parseJSON(data['param']);
-		$("#fargnamn").html(retdata['colorname']);
-		$("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
+    $("#fargnamn").html(retdata['colorname']);
+    if(typeof(retdata['color-url'])==="string"){
+        $("#fargen").attr("src", retdata['color-url']);
+    }else{
+        $("#fargen").attr("src", "templates/color_"+retdata['color']+".png");
+    }
 		// Add our previous answer
 		if (data['answer'] != null){
 			var previous = data['answer'].split(' ');
@@ -160,8 +163,14 @@ function showFacit(param, uanswer, danswer, userStats, files, moment, feedback)
 	}
 	$("#feedbackBox").css("display","none");
 	var p = jQuery.parseJSON(param.replace(/\*/g, '"'));
-	$("#fargnamn").html(p['colorname']);
-	$("#fargen").attr("src", "templates/color_"+p['color']+".png");
+  $("#fargnamn").html(p['colorname']);
+  if(typeof(p['color-url'])==="string"){
+      $("#fargen").attr("src", p['color-url']);
+  }else{
+      $("#fargen").attr("src", "templates/color_"+p['color']+".png");
+  }
+
+	//$("#fargen").attr("src", p['color']);
 	
 	// Add our previous answer
 	if (uanswer != null){
