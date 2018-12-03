@@ -610,6 +610,16 @@ function returnedResults(data)
     teacher=data.teachers;
     courseteachers=data.courseteachers;
 
+    let ladmoments="";
+    for(let i=0;i<moments.length;i++){
+        let dugga=moments[i];
+        if(dugga.kind===4){
+            ladmoments+="<option value='"+dugga.entryname+"'>"+dugga.entryname+"</option>";
+        }
+    }
+    document.getElementById("ladselect").innerHTML=ladmoments;
+    document.getElementById("laddate").valueAsDate=new Date();
+
     //tim=performance.now();
 
     subheading=0;    
@@ -693,6 +703,8 @@ function createSortableTable(data){
 				tableElementId:tableName,
 				filterElementId:"columnfilter",
 				renderCellCallback:renderCell,
+				exportCellCallback:exportCell,
+				exportColumnHeadingCallback:exportColumnHeading,
 				renderSortOptionsCallback:renderSortOptions,
 				renderColumnFilterCallback:renderColumnFilter,
 				rowFilterCallback:rowFilter,
@@ -931,6 +943,11 @@ function compare(a,b) {
     
     if (a==null||b==null||typeof(a)==="undefined"||typeof(b)==="undefined") return false;
 
+		if((typeof a == "undefined")||(typeof b == "undefined")) console.log("sort fail: ",a,b,col,kind)
+	
+		if(typeof a == "undefined") return 1;
+		if(typeof b == "undefined") return -1;
+	
 		if (col == "FnameLnameSSN") {
 				if(kind==0||kind==1){
 						tempA=a['firstname'].toUpperCase();
@@ -989,3 +1006,70 @@ function renderColumnFilter(col,status,colname) {
 		}
 		return str;
 }
+
+function exportCell(format,cell,colname) {
+  str="";
+  if(format==="csv"){
+      if(colname=="FnameLnameSSN"){
+          str="19"+cell.ssn+",";
+          str+=cell.firstname+" "+cell.lastname;
+      }else{
+          if(cell===null){
+              str="-";
+          }else{
+            if(cell.grade===null){
+                str="-";
+            }else{
+                if(cell.gradeSystem===1||cell.gradeSystem===2){
+                  if(cell.grade===1){
+                      str="U";
+                  }else if(cell.grade===2){
+                      str="G";
+                  }else if(cell.grade===3){
+                      str="VG";
+                  }else{
+                      str="-";
+                  }
+              }else{
+                    str="UNK";
+                }
+            }        
+          }
+      }
+  }else{
+      console.log("Export format: "+format+" not supported!");
+  }
+  return str;
+}
+
+function exportColumnHeading(format,heading,colname) {
+  str="";
+  if(format==="csv"){
+      if(colname=="FnameLnameSSN"){
+          str="Personnummer,Namn";
+      }else{
+          heading=heading.replace("&aring;","å");
+          heading=heading.replace("&Aring;","Å");
+          heading=heading.replace("&auml;","ä");
+          heading=heading.replace("&Auml;","Ä");
+          heading=heading.replace("&ouml;","ö");
+          heading=heading.replace("&Ouml;","Ö");
+          if(document.getElementById("ladselect").value==heading)heading="Betyg";
+          str=heading.replace(",",".");
+      }
+  }else{
+      console.log("Export format: "+format+" not supported!");
+  }
+  return str;
+}
+
+function ladexport()
+{
+    let expo="";
+    expo+=document.getElementById("ladselect").value+"\n";
+    expo+=document.getElementById("ladgradescale").value+"\n";
+    expo+=document.getElementById("laddate").value+"\n";
+    expo+=myTable.export("csv");
+    alert(expo);
+}
+
