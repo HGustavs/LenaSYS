@@ -1081,6 +1081,16 @@ function ladexport()
     expo+=document.getElementById("ladgradescale").value+"\n";
     expo+=document.getElementById("laddate").value+"\n";
     expo+=myTable.export("csv",";");
-    alert(expo);
+    
+    //alert(expo);
+    document.getElementById("resultlistheader").innerHTML="Results for: "+document.getElementById("ladselect").value;
+    document.getElementById("resultlistarea").value=expo;
+    document.getElementById("resultlistpopover").style.display="flex";
+
 }
 
+function closeLadexport()
+{
+    document.getElementById("resultlistarea").value="";
+    document.getElementById("resultlistpopover").style.display="none";
+}
