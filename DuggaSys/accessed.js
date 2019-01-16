@@ -84,9 +84,15 @@ function importUsers()
 	newusers=$("#import").val();
 	var myArr=newusers.split("\n");
 	for (var i=0; i<myArr.length; i++){
-			newUsersArr.push(myArr[i].split("\t"));
-	}
-	var newUserJSON = JSON.stringify(newUsersArr);
+    myArr[i]=myArr[i].split(";");
+    for (var j=0; j<myArr[i].length; j++){
+        myArr[i][j]=myArr[i][j].trim();
+    }
+
+    //newUsersArr.push(myArr[i]);
+    
+  }
+	var newUserJSON = JSON.stringify(myArr);
 
 	AJAXService("ADDUSR",{cid:querystring['cid'],newusers:newUserJSON,coursevers:querystring['coursevers']},"ACCESS");
 	hideImportUsersPopup();
