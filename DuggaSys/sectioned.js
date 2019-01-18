@@ -203,8 +203,10 @@ function changedType(kind)
 function showEditVersion() {
     $("#eversname").val(versnme);
     $("#eversid").val(querystring['coursevers']);
-    $("#estartdate").val(retdata['startdate'].substr(0,10));
-    $("#eenddate").val(retdata['enddate'].substr(0,10));
+    let sdate=retdata['startdate'];
+    let edate=retdata['enddate'];
+    if(sdate!==null)$("#estartdate").val(sdate.substr(0,10));
+    if(edate!==null)$("#eenddate").val(edate.substr(0,10));
     $("#editCourseVersion").css("display", "flex");
 }
 
@@ -1042,7 +1044,7 @@ function svgPie(cx,cy,radius,startpct,endpct,fill,stroke)
     y1 = cy + (radius*Math.sin(6.28*startpct));
     x2 = cx + (radius*Math.cos(6.28*endpct));
     y2 = cy + (radius*Math.sin(6.28*endpct));
-    console.log(endpct-startpct);
+    //console.log(endpct-startpct);
     if(endpct-startpct>0.5){
         var halfsies=(endpct-startpct)*0.5;
         var p1=svgPie(cx,cy,radius,startpct,startpct+halfsies+0.003,fill,stroke);
