@@ -298,7 +298,7 @@ function compare(a,b)
 //--------------------------------------------------------------------------
 function displayCellEdit(celldata,rowno,rowelement,cellelement,column,colno,rowdata,coldata,tableid) {
 		let str = false;
-		if (column == "firstname"||column == "lastname") {
+		if (column == "firstname"||column == "lastname"||column == "username") {
 				celldata=JSON.parse(celldata);
 				str = "<input type='hidden' id='popoveredit_uid' class='popoveredit' style='flex-grow:1;' value='" + celldata.uid + "'/>";
 				str += "<input type='text' id='popoveredit_"+column+"' class='popoveredit' style='flex-grow:1;width:auto;' value='" + celldata[column] + "' size=" + celldata[column].toString().length + "/>";
@@ -312,7 +312,7 @@ function displayCellEdit(celldata,rowno,rowelement,cellelement,column,colno,rowd
 //  Callback function for updating a cell value after editing a cell
 //--------------------------------------------------------------------------
 function updateCellCallback(rowno,colno,column,tableid) {
-		if (column == "firstname"||column == "lastname") {
+		if (column == "firstname"||column == "lastname"||column == "username") {
 				// TODO: Check of individual parts needs to be done.
 				var obj = {uid:parseInt(document.getElementById("popoveredit_uid").value)};
 				obj[column]=document.getElementById("popoveredit_"+column).value;
