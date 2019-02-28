@@ -426,30 +426,51 @@ if(!$query->execute()) {
 	$debug="Error reading results".$error[2];
 }
 
+$today_dt=new DateTime($today);
 foreach($query->fetchAll() as $row) {
-	if(isset($releases[$row['quiz']])){
-			$release=$releases[$row['quiz']]['release'];
-			if($release<$today){
-					$resulty=$row['grade'];
-					$markedy=$row['marked'];
-			}else{
-					$resulty=-1;
-					$markedy=null;
-			}
-	}else{
-        	$resulty=$row['grade'];
-        	$markedy=$row['marked'];
-	}
-	array_push(
-		$resulties,
-		array(
-			'moment' => $row['moment'],
-			'grade' => $resulty,
-			'submitted' => $row['submitted'],
-			'marked' => $markedy,
-			'useranswer' => $row['useranswer']
-		)
-	);
+    /*
+    if(isset($releases[$row['quiz']])){
+        if(is_null($releases[$row['quiz']]['release'])){
+            $release_dt=new DateTime();
+            $debug=$release_dt->format('Y-m-d\TH:i:s.u');
+        }else{
+            $release_dt=new DateTime($releases[$row['quiz']]['release']);
+        }
+        if($release_dt<$today_dt){
+            $resulty=$row['grade'];
+            $markedy=$row['marked'];
+        }else{
+            $resulty=-1;
+            $markedy=null;
+        }
+    }else{
+        $resulty=$row['grade'];
+        $markedy=$row['marked'];
+    }*/
+
+    $resulty=$row['grade'];
+    $markedy=$row['marked'];
+
+    // Remove grade and feedback if a release date is set and has not occured
+    if(isset($releases[$row['quiz']])){
+        if(!is_null($releases[$row['quiz']]['release'])){
+            $release_dt=new DateTime($releases[$row['quiz']]['release']);
+            if($release_dt>$today_dt){
+                $resulty=-1;
+                $markedy=null;
+            }
+        }
+    }
+    array_push(
+      $resulties,
+      array(
+        'moment' => $row['moment'],
+        'grade' => $resulty,
+        'submitted' => $row['submitted'],
+        'marked' => $markedy,
+        'useranswer' => $row['useranswer']
+      )
+    );
 }
 
 $entries=array();
