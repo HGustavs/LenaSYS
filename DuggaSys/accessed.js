@@ -84,7 +84,7 @@ function importUsers()
 	newusers=$("#import").val();
 	var myArr=newusers.split("\n");
 	for (var i=0; i<myArr.length; i++){
-			newUsersArr.push(myArr[i].split("\t"));
+			newUsersArr.push(myArr[i].replace(/\"/g, '').split(";"));		
 	}
 	var newUserJSON = JSON.stringify(newUsersArr);
 
