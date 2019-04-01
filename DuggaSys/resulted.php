@@ -49,10 +49,24 @@ pdoConnect();
 		<div class="titles" style="justify-content:center;">
 			<h1>Result</h1>
     </div>
-    <div id="ladexportContainer">
-      <select id="ladselect"></select>
-      <input id="ladgradescale" type="text" style="font-size:12px;">
-      <input id="laddate" type="date" style="font-size:12px;">
+    <div id="ladexportContainer" style="display:flex;">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
+        <label>Delkurs</label>
+        <select id="ladselect"></select>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
+        <label>Betygsskala</label>
+        <!--<input id="ladgradescale" type="text" style="font-size:12px;">-->
+        <select id="ladgradescale">
+          <option value="U-G-VG" selected>U-G-VG</option>
+          <option value="U-G">U-G</option>
+          <option value="U-3-4-5">U-3-4-5</option>
+        </select>
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
+        <label>Betygsdatum</label>
+        <input id="laddate" type="date" style="font-size:12px;">
+      </div>
       <button onclick="ladexport();">LadExport</button>
     </div>
 		<!--<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>-->
@@ -126,6 +140,17 @@ pdoConnect();
 			<h3 style='width:100%;' id='Nameof'>Collective results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
 	</div>
+
+	<div id='resultlistpopover' class='previewpopover' style='display:none;flex-direction:column;'>
+		<div class='loginBoxheader'>
+			<h3 style='width:100%;' id='resultlistheader'>Collective results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
+    </div>
+    <div style='display:flex;flex-direction:column;flex:1;'>
+      <textarea id='resultlistarea' style='flex:1;overflow:scroll;padding:5px;margin:5px 0 5px 0;'></textarea>
+      <input type='button' value='Close' onclick='closeLadexport();' style='width:100px;align-self:flex-end'>
+    </div>
+	</div>
+
 
 </body>
 </html>

@@ -229,7 +229,7 @@ function renderSortOptions(col,status,colname) {
 //----------------------------------------------------------------
 // rowFilter <- Callback function that sorts rows in the table
 //----------------------------------------------------------------
-
+/*
 function compare(a,b) {
 	var col = sortableTable.currentTable.getSortcolumn();
 	var tempA = a;
@@ -258,6 +258,33 @@ function compare(a,b) {
 		return 0;
 	}
 }
+*/
+function compare(a,b)
+{
+    // Find out which column and part of column are we sorting on from currentTable
+    let col = sortableTable.currentTable.getSortcolumn();
+    let kind = sortableTable.currentTable.getSortkind();
+    let val=0;  
+  
+    if (col == "firstname") {
+        a=JSON.parse(a);
+        b=JSON.parse(b);
+        a.firstname=$('<div/>').html(a.firstname).text();
+        b.firstname=$('<div/>').html(b.firstname).text();        
+        if(kind==0){
+            val = b.firstname.toLocaleUpperCase().localeCompare(a.firstname.toLocaleUpperCase());
+        }else{
+            val = a.firstname.toLocaleUpperCase().localeCompare(b.firstname.toLocaleUpperCase());
+        }
+    }else{
+        if((kind%2)==0){
+            val=a<b;
+        }else{
+            val=b<a;
+        }
+    }
+    return val;
+}
 //--------------------------------------------------------------------------
 // editCell
 // ---------------
@@ -265,7 +292,7 @@ function compare(a,b) {
 //--------------------------------------------------------------------------
 function displayCellEdit(celldata,rowno,rowelement,cellelement,column,colno,rowdata,coldata,tableid) {
 		let str = false;
-		if (column == "firstname"||column == "lastname") {
+		if (column == "firstname"||column == "lastname"||column == "username") {
 				celldata=JSON.parse(celldata);
 				str = "<input type='hidden' id='popoveredit_uid' class='popoveredit' style='flex-grow:1;' value='" + celldata.uid + "'/>";
 				str += "<input type='text' id='popoveredit_"+column+"' class='popoveredit' style='flex-grow:1;width:auto;' value='" + celldata[column] + "' size=" + celldata[column].toString().length + "/>";
@@ -279,7 +306,7 @@ function displayCellEdit(celldata,rowno,rowelement,cellelement,column,colno,rowd
 //  Callback function for updating a cell value after editing a cell
 //--------------------------------------------------------------------------
 function updateCellCallback(rowno,colno,column,tableid) {
-		if (column == "firstname"||column == "lastname") {
+		if (column == "firstname"||column == "lastname"||column == "username") {
 				// TODO: Check of individual parts needs to be done.
 				var obj = {uid:parseInt(document.getElementById("popoveredit_uid").value)};
 				obj[column]=document.getElementById("popoveredit_"+column).value;

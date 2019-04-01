@@ -940,6 +940,8 @@ function compare(a,b) {
 		let kind = sortableTable.currentTable.getSortkind();
 		var tempA;
 		var tempB;
+    
+    if (a==null||b==null||typeof(a)==="undefined"||typeof(b)==="undefined") return false;
 
 		if((typeof a == "undefined")||(typeof b == "undefined")) console.log("sort fail: ",a,b,col,kind)
 	
@@ -1009,8 +1011,18 @@ function exportCell(format,cell,colname) {
   str="";
   if(format==="csv"){
       if(colname=="FnameLnameSSN"){
-          str="19"+cell.ssn+",";
+          if(cell.ssn.length>11){
+            str=cell.ssn+";";
+          }else{
+            str="19"+cell.ssn+";";
+          }
           str+=cell.firstname+" "+cell.lastname;
+          str=str.replace(/\&aring\;/g,"å");
+          str=str.replace(/\&Aring\;/g,"Å");
+          str=str.replace(/\&auml\;/g,"ä");
+          str=str.replace(/\&Auml\;/g,"Ä");
+          str=str.replace(/\&ouml\;/g,"ö");
+          str=str.replace(/\&Ouml\;/g,"Ö");
       }else{
           if(cell===null){
               str="-";
@@ -1044,16 +1056,17 @@ function exportColumnHeading(format,heading,colname) {
   str="";
   if(format==="csv"){
       if(colname=="FnameLnameSSN"){
-          str="Personnummer,Namn";
+          str="Personnummer;Namn";
       }else{
-          heading=heading.replace("&aring;","å");
-          heading=heading.replace("&Aring;","Å");
-          heading=heading.replace("&auml;","ä");
-          heading=heading.replace("&Auml;","Ä");
-          heading=heading.replace("&ouml;","ö");
-          heading=heading.replace("&Ouml;","Ö");
-          if(document.getElementById("ladselect").value==heading)heading="Betyg";
-          str=heading.replace(",",".");
+          heading=heading.replace(/\&aring\;/g,"å");
+          heading=heading.replace(/\&Aring\;/g,"Å");
+          heading=heading.replace(/\&auml\;/g,"ä");
+          heading=heading.replace(/\&Auml\;/g,"Ä");
+          heading=heading.replace(/\&ouml\;/g,"ö");
+          heading=heading.replace(/\&Ouml\;/g,"Ö");
+//          if(document.getElementById("ladselect").value==heading)heading="Betyg";
+//          str=heading.replace(",",".");
+          str=heading;
       }
   }else{
       console.log("Export format: "+format+" not supported!");
@@ -1067,7 +1080,17 @@ function ladexport()
     expo+=document.getElementById("ladselect").value+"\n";
     expo+=document.getElementById("ladgradescale").value+"\n";
     expo+=document.getElementById("laddate").value+"\n";
-    expo+=myTable.export("csv");
-    alert(expo);
+    expo+=myTable.export("csv",";");
+    
+    //alert(expo);
+    document.getElementById("resultlistheader").innerHTML="Results for: "+document.getElementById("ladselect").value;
+    document.getElementById("resultlistarea").value=expo;
+    document.getElementById("resultlistpopover").style.display="flex";
+
 }
 
+function closeLadexport()
+{
+    document.getElementById("resultlistarea").value="";
+    document.getElementById("resultlistpopover").style.display="none";
+}
