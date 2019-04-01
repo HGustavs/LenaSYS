@@ -141,7 +141,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
         $newUserData = json_decode(htmlspecialchars_decode($newusers));
         foreach ($newUserData as $user) {
             $uid="UNK";                    
-            if (count($user) == 1&&strcmp($user[0],"")===1) {                        
+            if (count($user) == 1&&strcmp($user[0],"")!==0) {                        
                 // See if we have added with username or SSN
                 $userquery = $pdo->prepare("SELECT uid FROM user WHERE username=:usernameorssn1 or ssn=:usernameorssn2");
                 $userquery->bindParam(':usernameorssn1', $user[0]);
@@ -152,6 +152,11 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
                   $debug.="Error adding user by ssn or username: ".$error[2];
                 }	else {
                   foreach($userquery->fetchAll(PDO::FETCH_ASSOC) as $row){ $uid = $row["uid"];}
+                }
+                
+                if(strcmp($uid,"UNK")===0){
+                    if(strcmp($debug,"NONE!")===0){$debug="";}
+                    $debug.=$user[0]." was not found as a user in the system!\n";                                        
                 }
             } else if (count($user) > 1){
               $ssn = $user[0];
@@ -218,7 +223,8 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
                 }
 
                 // We have a user, connect to current course
-                if($uid!="UNK"){
+                /*
+                if($uid!="UNK"){  
                   $stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access,vers,vershistory) VALUES(:uid, :cid,'R',:vers,'') ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers,','))");
                   $stmt->bindParam(':uid', $uid);
                   $stmt->bindParam(':cid', $cid);
@@ -235,8 +241,29 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
                   }catch(Exception $e) {
                       
                   }
-              }
+                }*/
+              
           }
+          // We have a user, connect to current course
+          if($uid!="UNK"){
+            $stmt = $pdo->prepare("INSERT INTO user_course (uid, cid, access,vers,vershistory) VALUES(:uid, :cid,'R',:vers,'') ON DUPLICATE KEY UPDATE vers=:avers, vershistory=CONCAT(vershistory, CONCAT(:bvers,','))");
+            $stmt->bindParam(':uid', $uid);
+            $stmt->bindParam(':cid', $cid);
+            $stmt->bindParam(':vers', $coursevers);
+            $stmt->bindParam(':avers', $coursevers);
+            $stmt->bindParam(':bvers', $coursevers);
+
+            // Insert the user into the database.
+            try {
+                if(!$stmt->execute()) {
+                    $error=$stmt->errorInfo();
+                    $debug.="Error connecting user to course: ".$error[2];
+                }
+            }catch(Exception $e) {
+                
+            }
+          }
+
       } // End of foreach user
 	} // End ADD_USER
 }
