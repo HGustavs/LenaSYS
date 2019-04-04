@@ -384,8 +384,7 @@ function returnedAccess(data) {
 		freezePaneIndex:4,
 		hasRowHighlight:true,
 		hasMagicHeadings:false,
-		hasCounterColumn:true,
-		hasRequestedPwReset: data['queryResult']
+		hasCounterColumn:true
 	});
 
 	myTable.renderTable();

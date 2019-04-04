@@ -401,7 +401,8 @@ function SortableTable(param)
       		if (rowFilter(row)) {
               str += "<tr id='"+this.tableid+DELIMITER+i+"'"
               if (this.hasRowHighlight)str+=" onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
-              if ((hasRequestedPwReset[1] == row["uid"]) && (hasRequestedPwReset[0] == 1)) {
+              obj = JSON.parse(row["requestedpasswordchange"])
+              if (obj.requested == 1) {
                   str+=" style='box-sizing:border-box; background-color: red'>";
               } else {
                   str+=" style='box-sizing:border-box'>";
