@@ -295,6 +295,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 	}
 	foreach($result as $row){
+		$queryResult = array($row['requestedpasswordchange'], $row['uid']);
+
 		$entry = array(
 			'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
 			'ssn' => json_encode(['ssn' => $row['ssn'], 'uid' => $row['uid']]),

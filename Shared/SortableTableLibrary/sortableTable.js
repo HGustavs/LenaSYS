@@ -227,6 +227,7 @@ function SortableTable(param)
     var rowsumList = getparam(param.rowSum,[]);
   	var sumFunc = getparam(param.columnSumCallback,null);
     var freezePaneIndex = getparam(param.freezePaneIndex,-1);
+    let hasRequestedPwReset = getparam(param.hasRequestedPwReset, []);
     this.hasRowHighlight = getparam(param.hasRowHighlight,false);
     this.highlightRow = getparam(param.rowHighlightOnCallback,defaultRowHighlightOn);
     this.deHighlightRow = getparam(param.rowHighlightOffCallback,defaultRowHighlightOff);
@@ -400,7 +401,11 @@ function SortableTable(param)
       		if (rowFilter(row)) {
               str += "<tr id='"+this.tableid+DELIMITER+i+"'"
               if (this.hasRowHighlight)str+=" onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
-              str+=" style='box-sizing:border-box'>";
+              if ((hasRequestedPwReset[1] == row["uid"]) && (hasRequestedPwReset[0] == 1)) {
+                  str+=" style='box-sizing:border-box; background-color: red'>";
+              } else {
+                  str+=" style='box-sizing:border-box'>";
+              }
               mhvstr += "<tr id='"+this.tableid+DELIMITER+i+DELIMITER+"mhv' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 
         			// Add Counter cell to the row. The class <tableid>_counter can be used to style the counterText
