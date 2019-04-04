@@ -278,6 +278,7 @@ $teachers=array();
 $classes=array();
 $groups=array();
 $courses=array();
+$queryResult=array();
 
 if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query = $pdo->prepare("SELECT user.uid as uid,username,access,firstname,lastname,ssn,class,modified,vers,requestedpasswordchange,examiner,`groups`, TIME_TO_SEC(TIMEDIFF(now(),addedtime))/60 AS newly FROM user, user_course WHERE cid=:cid AND user.uid=user_course.uid");
@@ -295,7 +296,8 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 		}
 	}
 	foreach($result as $row){
-		$queryResult = array($row['requestedpasswordchange'], $row['uid']);
+		$hasRequested = array($row['requestedpasswordchange'], $row['uid']);
+		array_push($queryResult, $hasRequested);
 
 		$entry = array(
 			'username' => json_encode(['username' => $row['username'], 'uid' => $row['uid']]),
