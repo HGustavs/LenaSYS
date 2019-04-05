@@ -1,5 +1,4 @@
 <?php
-#kommentar test
     session_start();
     include_once "../../coursesyspw.php";
     include_once "../Shared/sessions.php";
@@ -359,11 +358,13 @@
            fwrite($overwriteID,$a);
         }
         */
+        
         if(isset($_POST['StringDiagram'])) {
             $str = $_POST['StringDiagram'];
             $hash = $_POST['Hash'];
             save($str,$hash);
         }
+
         function save($data, $hash) {
             $getID = fopen("Save/id.txt", "r");
             $a = intval(fread($getID,filesize("Save/id.txt")));

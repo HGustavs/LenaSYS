@@ -19,12 +19,13 @@
     }
     $log_db = new PDO('sqlite:../../GHdataD.db');
     $gituser = $loginname;
-    $startweek = strtotime('2015-03-29');                                   // First monday in january
+    $startweek = strtotime('2015-03-29');                           // First monday in january
     $currentweek = $startweek;
     $currentweekend = strtotime("+1 week", $currentweek);
     $weekno = 1;
     $weeks = array();
     $debug = "NONE!";
+    
     do {
         // Number of issues created by user during the interval
         $issues = array();
