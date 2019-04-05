@@ -403,7 +403,7 @@ function SortableTable(param)
               if (this.hasRowHighlight)str+=" onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
               obj = JSON.parse(row["requestedpasswordchange"])
               if (obj.requested == 1) {
-                  str+=" style='box-sizing:border-box; background-color: red'>";
+                  str+=" style='box-sizing:border-box; background-color: #ff3f4c'>";
               } else {
                   str+=" style='box-sizing:border-box'>";
               }
