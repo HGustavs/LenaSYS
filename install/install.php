@@ -9,20 +9,27 @@
     $errors = 0;
     // Create a version of dirname for <PHP7 compability
     function cdirname($path, $level) {
-      $paths = explode("/", $path);
-      $r = '';
-      if(count($paths) <= $level) {
-        $r = '/';
-      } else {
-        $r = '/';
-        for($i = 0; $i < count($paths) - $level; $i++) {
-          if($i > 1) {
-            $r .= '/';
-          }
-          $r .= $paths[$i];
+        $prefix = '';
+        if (preg_match("/^.:\\\\/", $path)) {
+            $prefix = substr($path, 0, 2);
+            $path = substr($path, 2);
+            $path = str_replace("\\", "/", $path);
         }
-      }
-      return $r;
+
+        $paths = explode("/", $path);
+        $r = '';
+        if(count($paths) <= $level) {
+            $r = '/';
+        } else {
+            $r = '/';
+            for($i = 0; $i < count($paths) - $level; $i++) {
+            if($i > 1) {
+                $r .= '/';
+            }
+            $r .= $paths[$i];
+            }
+        }
+        return $prefix . $r;
     };
 
     ob_start();
