@@ -883,10 +883,8 @@ function eraseSelectedObject() {
     //Issue: Need to remove the crosses
     if(selected_objects.length == 0){
         showMenu().innerHTML = "No item selected<type='text'>";
-        //Issue: Change title.
         changeLoginBoxTitleDelete();
-        $(".loginBox").draggable();
-        
+        $(".loginBox").draggable();        
     }
     for(var i = 0; i < selected_objects.length; i++){
         eraseObject(selected_objects[i]);
