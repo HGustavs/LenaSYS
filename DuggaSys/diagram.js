@@ -104,6 +104,12 @@ window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
 
+//--------------------------------------------------------------------
+// diagram - Stores a global list of diagram objects
+// A diagram object could for instance be a path, or a symbol
+//--------------------------------------------------------------------
+var diagram = [];
+
 function keyDownHandler(e){
     var key = e.keyCode;
     if(appearanceMenuOpen) return;
@@ -165,7 +171,7 @@ function keyDownHandler(e){
 
 }
 
-// removes all the lines that has been drawn when in the free draw mode. 
+// removes all the lines that has been drawn when in the free draw mode.
 function cancelFreeDraw(){
     if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
         for (var i = 0; i < numberOfPointsInFigure; i++) {
@@ -377,11 +383,7 @@ points.clearAllSelects = function() {
     }
 }
 
-//--------------------------------------------------------------------
-// diagram - Stores a global list of diagram objects
-// A diagram object could for instance be a path, or a symbol
-//--------------------------------------------------------------------
-var diagram = [];
+
 
 //--------------------------------------------------------------------
 // draw - Executes draw methond in all diagram objects
@@ -677,7 +679,7 @@ diagram.updateLineRelations = function() {
 diagram.sortConnectors = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
-            diagram[i].sortAllConnectors();
+            diagram[i].sortAllConnectors(); //this function is defined in diagram_symbol.js
         }
     }
 }
@@ -938,6 +940,7 @@ function connectedObjects(line) {
     return privateObjects;
 }
 
+//crosses are only visible in developermode
 function cross(xCoordinate, yCoordinate) {
     ctx.strokeStyle = "#4f6";
     ctx.lineWidth = 3;
@@ -980,6 +983,8 @@ function drawGrid() {
     }
 }
 
+//draws the whole background gridlayout
+
 function gridToSVG(width, height) {
     var str = "", stroke = "";
     for (var i = 0; i < width; i++) {
@@ -1008,6 +1013,7 @@ function clearCanvas() {
     SaveState();
 }
 
+//the purpose is not very clear
 var consloe = {};
 consloe.log = function(gobBluth) {
     document.getElementById("consloe").innerHTML = ((JSON.stringify(gobBluth) + "<br>") + document.getElementById("consloe").innerHTML);
@@ -1032,7 +1038,10 @@ function debugMode() {
     updateGraphics();
 }
 
-//calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram. it also save the local diagram
+/********************************************************************************************
+calculate the hash. does this by converting all objects to strings from diagram.
+then do some sort of calculation. used to save the diagram. it also save the local diagram
+********************************************************************************************/
 function hashFunction() {
     var diagramToString = "";
     var hash = 0;
@@ -1400,8 +1409,8 @@ function diagramToSVG() {
 }
 
 /********************************************************************************
- Global functions which are used to change the apperance of each object       
- that has been drawn on the screen                                            
+Functions which are used to change the globalvapperance of each object
+ that has been drawn on the screen
 ********************************************************************************/
 
 // Changes the thickness of the lines between objects,
