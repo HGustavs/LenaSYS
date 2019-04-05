@@ -1068,8 +1068,11 @@ function hashFunction() {
     }
 }
 
-//This function is used to hash the current diagram, but not storing it locally, so we can compare the current hash with the hash after we have made some changes
-// to see if it need to be saved.
+//-------------------------------------------------------------------------------
+//This function is used to hash the current diagram, but not storing it locally,
+//so we can compare the current hash with the hash after we have made some changes
+//to see if it need to be saved.
+//--------------------------------------------------------------------------------
 function hashCurrent() {
     var hash = 0;
     var diagramToString = "";
@@ -1134,6 +1137,7 @@ function loadDiagram() {
     SaveState();
 }
 
+//this function is running when you click the button clear diagram
 function removeLocalStorage() {
     for (var i = 0; i < localStorage.length; i++) {
         localStorage.removeItem("localdiagram");
@@ -1160,9 +1164,9 @@ function returnedSection(data) {
     }
 }
 
-//--------------------------------------------------------------------
-// Refresh
-//--------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
+// Handles refresh-makes sure that the diagram after the refresh is equal to the diagram before refresh.
+//------------------------------------------------------------------------------------------------------
 function refreshFunction() {
     console.log("refreshFunction running");
     refreshTimer = setRefreshTime();
@@ -1187,7 +1191,7 @@ function setRefreshTime() {
   }
   return time;
 }
-
+//the selected objects are locked
 function lockSelected(){
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].locked = !selected_objects[i].locked;
@@ -1222,7 +1226,9 @@ function align(mode){
     updateGraphics();
     hashFunction();
 }
-
+//-----------------------------------------------------------------------
+//these functions moves the objects either left, right, top or bottom
+//-----------------------------------------------------------------------
 function alignLeft(selected_objects){
     var lowest_x = 99999;
     for(var i = 0; i < selected_objects.length; i++){
@@ -1270,7 +1276,9 @@ function alignBottom(selected_objects){
         selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
     }
 }
-
+//-----------------------------------------------------------------------
+//these functions moves the objects either horizontal or vertical
+//-----------------------------------------------------------------------
 function alignVerticalCenter(selected_objects){
     var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
     for(var i = 0; i < selected_objects.length; i++){
@@ -1332,6 +1340,7 @@ function sortObjects(selected_objects, mode){
   return private_objects;
 }
 
+//unclear what the purpose is of distribute, does not seem to work at all
 function distribute(axis){
     var spacing = 32;
     var selected_objects = [];
@@ -1347,12 +1356,11 @@ function distribute(axis){
     }else if(axis=='horizontally'){
         distributeHorizontally(selected_objects, spacing);
     }
-    /*
-        There is a posibility for more types
-    */
+        //There is a posibility for more types
     updateGraphics();
     hashFunction();
 }
+
 
 function distributeVertically(selected_objects, spacing){
     selected_objects = sortObjects(selected_objects, 'vertically');
@@ -1408,13 +1416,12 @@ function diagramToSVG() {
     return str;
 }
 
-/********************************************************************************
-Functions which are used to change the globalvapperance of each object
- that has been drawn on the screen
-********************************************************************************/
+//------------------------------------------------------------------------
+//Functions which are used to change the globalvapperance of each object
+// that has been drawn on the screen
+//-------------------------------------------------------------------------
 
-// Changes the thickness of the lines between objects,
-// and the lines surrounding each object
+// Changes the thickness of the lines between objects,and the lines surrounding each object
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
         diagram[i].lineWidth = document.getElementById('line-thickness').value;
