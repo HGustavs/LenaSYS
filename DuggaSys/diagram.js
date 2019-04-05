@@ -862,12 +862,23 @@ function eraseObject(object) {
     updateGraphics();
 }
 
+function changeLoginBoxTitleDelete() {
+    document.getElementById("loginBoxTitle").innerHTML = "Delete Object";
+}
+
+function changeLoginBoxTitleAppearance() {
+    document.getElementById("loginBoxTitle").innerHTML = "Appearance";
+  }
+
 function eraseSelectedObject() {
     canvas.style.cursor = "default";
     //Issue: Need to remove the crosses
     if(selected_objects.length == 0){
         showMenu().innerHTML = "No item selected<type='text'>";
+        //Issue: Change title.
+        changeLoginBoxTitleDelete();
         $(".loginBox").draggable();
+        
     }
     for(var i = 0; i < selected_objects.length; i++){
         eraseObject(selected_objects[i]);
