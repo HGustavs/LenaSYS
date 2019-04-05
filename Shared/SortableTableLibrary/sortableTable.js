@@ -227,7 +227,6 @@ function SortableTable(param)
     var rowsumList = getparam(param.rowSum,[]);
   	var sumFunc = getparam(param.columnSumCallback,null);
     var freezePaneIndex = getparam(param.freezePaneIndex,-1);
-    let hasRequestedPwReset = getparam(param.hasRequestedPwReset, []);
     this.hasRowHighlight = getparam(param.hasRowHighlight,false);
     this.highlightRow = getparam(param.rowHighlightOnCallback,defaultRowHighlightOn);
     this.deHighlightRow = getparam(param.rowHighlightOffCallback,defaultRowHighlightOff);
