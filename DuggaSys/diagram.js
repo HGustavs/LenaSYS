@@ -862,13 +862,21 @@ function eraseObject(object) {
     updateGraphics();
 }
 
+//-------------------------------------------------------------------------//
+// Create function that changes the id "loginBoxTitle" to "Delete Object".
+//-------------------------------------------------------------------------//
+
 function changeLoginBoxTitleDelete() {
     document.getElementById("loginBoxTitle").innerHTML = "Delete Object";
 }
 
+//-------------------------------------------------------------------------//
+// Create function that changes the id "loginBoxTitle" to "Appearance".
+//-------------------------------------------------------------------------//
+
 function changeLoginBoxTitleAppearance() {
     document.getElementById("loginBoxTitle").innerHTML = "Appearance";
-  }
+}
 
 function eraseSelectedObject() {
     canvas.style.cursor = "default";
