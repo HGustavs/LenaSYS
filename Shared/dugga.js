@@ -784,6 +784,22 @@ function AJAXService(opt,apara,kind)
 			dataType: "json",
 			success: returnedTitle
 		});
+	}else if(kind=="UMVSTUDENT") {
+			$.ajax({
+				url: "usermanagementviewservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: renderStudentView
+			});
+	}else if(kind=="UMVTEACHER") {
+			$.ajax({
+				url: "usermanagementviewservice.php",
+				type:"POST",
+				data: "opt="+opt+para,
+				dataType: "json",
+				success: renderTeacherView
+			});
 	}else if(kind=="STATS") {
 		$.ajax({
 			url: "stats.php",
