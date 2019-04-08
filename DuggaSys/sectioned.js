@@ -124,11 +124,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $(".item").css("box-shadow", "none");
   $("#I" + lid).css("border", "2px dashed #FC5");
   $("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
+
+  // Default showing of gradesystem. Will show if has type "Test" or "Moment"
   if (kind != 3 || kind != 4) {
-    // $("#inputwrapper-gradesystem").hide();
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   } else {
-    // $("#inputwrapper-gradesystem").show();
     document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
   }
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
@@ -189,6 +189,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 // changedType: When kind of section has been changed we must update dropdown lists accordingly
 //----------------------------------------------------------------------------------
 
+// If type "Test" or "Moment" then Grade system will be shown
 function changedType(kind) {
   // Prepares option list for code example (2)/dugga (3) dropdown/links (5) / Not applicable
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
