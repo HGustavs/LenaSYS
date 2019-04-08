@@ -750,36 +750,38 @@ function drawVirtualA4(){
 
     // the correct size of a4 to pixels 
     const pixelsPerMillimeter = 11.81;
-    const a4Width = 210;
-    const a4Height = 297;
 
-    const holeOffsetX = 12;
+    const a4Width = 210*pixelsPerMillimeter;
+    const a4Height = 297*pixelsPerMillimeter;
+
+    const holeOffsetX = 12*pixelsPerMillimeter;
     const holeRadius = 3*pixelsPerMillimeter;
 
     ctx.save();
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
     ctx.translate(0, 0);
-    ctx.strokeRect(0,0, a4Width * pixelsPerMillimeter, a4Height * pixelsPerMillimeter);
+    ctx.strokeRect(0,0, a4Width, a4Height);
 
-    ctx.translate(0,0);
     //Upper 2 holes
-    drawCircle(holeOffsetX*pixelsPerMillimeter, ((a4Height*pixelsPerMillimeter) / 2) - (56*pixelsPerMillimeter), holeRadius);
-    drawCircle(0, 21*pixelsPerMillimeter, holeRadius);
+    drawCircle(holeOffsetX, (a4Height / 2) - (34+21)*pixelsPerMillimeter, holeRadius);
+    drawCircle(holeOffsetX, (a4Height / 2) - 34*pixelsPerMillimeter, holeRadius);
    
     //Latter two holes
-    drawCircle(0, 70*pixelsPerMillimeter,holeRadius);
-    drawCircle(0, 21*pixelsPerMillimeter, holeRadius);
+    drawCircle(holeOffsetX, (a4Height / 2) + (34+21)*pixelsPerMillimeter, holeRadius);
+    drawCircle(holeOffsetX, (a4Height / 2) + 34*pixelsPerMillimeter, holeRadius);
 
     ctx.restore();
 }
 
 function drawCircle(cx, cy, radius) {
+    ctx.save();
     ctx.translate(cx, cy);
     ctx.beginPath();
     ctx.arc(0,0, radius, 0, Math.PI * 2);
     ctx.closePath();
     ctx.stroke();
+    ctx.restore();
 }
 
 // Opens the dialog menu for import
