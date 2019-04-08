@@ -1,4 +1,9 @@
 <?php
+    /********************************************************************
+    *                                                                   *
+    *               This file needs better documentation                *
+    *                                                                   *
+    *********************************************************************/
     date_default_timezone_set("Europe/Stockholm");
     // Include basic application services!
     include_once "../Shared/sessions.php";
