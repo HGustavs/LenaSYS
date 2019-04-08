@@ -265,6 +265,7 @@ function showCreateVersion() {
 
 }
 
+// Testkommentar av Anton
 function createQuickItem() {
   selectItem("undefined", "New Code", "2", "undefined", "undefined", "0", "undefined", "undefined", "UNK");
   newItem();
