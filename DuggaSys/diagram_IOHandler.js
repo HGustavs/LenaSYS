@@ -172,7 +172,7 @@ function LoadFile() {
     updateGraphics();
 }
 
-// not clear when or how this method is used.
+// not clear what the purpose of this function is
 function getUpload() {
     document.getElementById('buttonids').addEventListener('click', openDialog);
     function openDialog() {
