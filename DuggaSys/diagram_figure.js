@@ -30,6 +30,7 @@ function Path() {
         this.calculateBoundingBox();
     }
 
+//is used to adjust the points of each symbol when moved
     this.adjust = function(){
         if(this.figureType == "Square"){
             if(!sel) return;
@@ -149,7 +150,7 @@ function Path() {
             }
             // Reset opacity so that following draw operations are unaffected
             ctx.globalAlpha = 1.0;
-            
+
             if (strokestate) {
                 ctx.stroke();
             }
@@ -396,6 +397,7 @@ function Path() {
         }
     }
 
+    // attempts to erase the selected objects completely from the canvas
     this.erase = function() {
         for (i = 0; i < this.segments.length; i++) {
             points[this.segments[i].pa] = waldoPoint;

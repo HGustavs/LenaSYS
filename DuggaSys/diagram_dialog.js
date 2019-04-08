@@ -247,7 +247,7 @@ function objectAppearanceMenu(form) {
         textAppearanceOpen = true;
         loadTextForm(form, 'diagram_forms.php?form=textType');
     }
-    // not clear what this represents. In diagram_symbol.js, kind == 2 is always true for symbols
+    // fill color of the object
     else if (diagram[lastSelectedObject].kind == 1) {
         loadFormIntoElement(form, 'diagram_forms.php?form=figureType');
     }
