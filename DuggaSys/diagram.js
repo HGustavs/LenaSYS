@@ -145,9 +145,10 @@ function keyDownHandler(e){
         SaveState();
     }
 
-    else if (key == 90 && ctrlIsClicked) undoDiagram();
-    else if (key == 89 && ctrlIsClicked) redoDiagram();
-    else if (key == 65 && ctrlIsClicked) {
+
+    else if (key == 90 && e.Ctrl && ctrlIsClicked) undoDiagram(); //Key: Ctrl + Z
+    else if (key == 89 && ctrlIsClicked) redoDiagram(); //Key: Ctrl + Y
+    else if (key == 65 && ctrlIsClicked) { // Key: A
       e.preventDefault();
       for(var i = 0; i < diagram.length; i++){
         selected_objects.push(diagram[i]);
@@ -155,11 +156,11 @@ function keyDownHandler(e){
       }
       updateGraphics();
     }
-    else if(key == 17 || key == 91)
+    else if(key == 17 || key == 91) // Key: Ctrl || Key: Windows key
     {
       ctrlIsClicked = true;
     }
-    else if(key == 27){
+    else if(e.key == "Escape"){ // Key; Escape
       cancelFreeDraw();
     }
 
