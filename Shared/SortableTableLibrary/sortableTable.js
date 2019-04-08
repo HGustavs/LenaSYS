@@ -444,7 +444,7 @@ function SortableTable(param)
 
                     // if(columnOrderIdx<freezePaneIndex){
                     //     mhvstr+="<td style='white-space:nowrap;' id='"+cellid+DELIMITER+"mhv' onclick='clickedInternal(event,this);' class='"+this.tableid+"-"+columnOrder[columnOrderIdx]+"'>"+renderCell(columnOrder[columnOrderIdx],tbl.tblbody[i][columnOrder[columnOrderIdx]],cellid)+"</td>";
-                    // }
+                    // } bjkhukhguuh
         				}
       			}
       			str += "</tr>";
