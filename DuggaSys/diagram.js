@@ -1305,10 +1305,10 @@ function alignHorizontalCenter(selected_objects){
     console.log("Size of list: " + temporary_objects.length);
     for(var i = 1; i < temporary_objects.length; i++){  
         console.log("hej");      
-        if(points[temporary_objects[i].centerPoint].y < points[temporary_objects[i-1].centerPoint].y + 100){
-            console.log("i: " + points[temporary_objects[i].centerPoint].y);
-            console.log("i-1: " + points[temporary_objects[i-1].centerPoint].y);
-            temporary_objects[i].move(0, 10);
+        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 10){
+            var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 10;
+            console.log("Difference: " + difference);
+            temporary_objects[i].move(0, -difference);
             console.log("i again: " + points[temporary_objects[i].centerPoint].y);
         }
     }
