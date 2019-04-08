@@ -9,7 +9,7 @@
 function Symbol(kind) {
     this.kind = 2;                  // Diagram object kind is always 2 for symbols
     this.targeted = false;
-    this.symbolkind = kind;         // Symbol kind (1 UML diagram symbol 2 ER Attribute)
+    this.symbolkind = kind;         // Symbol kind (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textLines = [];                 // Free text array
