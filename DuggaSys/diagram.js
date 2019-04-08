@@ -1297,25 +1297,16 @@ function alignHorizontalCenter(selected_objects){
         var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
         selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
-    temporary_objects = sortObjects(selected_objects, 'vertically');
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(temporary_objects[i].topLeft < temporary_objects[i-1].bottomRight){
-            var object = findObject(selected_objects);
-            object.move(temporary_objects[i-1].bottomRight + 10, 0);
-            temporary_objects[i].bottomRight = object.bottomRight;
+
+    selected_objects.sort(function(a, b){return a.centerPoint - b.centerPoint});
+    for(var i = 1; i < selected_objects.length; i++){        
+        if(selected_objects[i].centerPoint < selected_objects[i-1].centerPoint + 3){
+            console.log("i: " + selected_objects[i].centerPoint);
+            console.log("i-1: " + selected_objects[i-1].centerPoint);
+            selected_objects[i].move(0, 10);
+            console.log("i again: " + selected_objects[i].centerPoint);
         }
     }
-}
-
-function findObject(selected_objects){
-    var position = [];
-    console.log(selected_objects.length);
-    for(var j = 0; j < selected_objects.length; j++){
-        console.log("hej");
-    }
-    // This should not happen
-    console.log("WTF");
-    return false;
 }
 
 function sortObjects(selected_objects, mode){
@@ -1342,6 +1333,7 @@ function sortObjects(selected_objects, mode){
               }
             }
         }
+
   return private_objects;
 }
 
