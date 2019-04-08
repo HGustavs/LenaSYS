@@ -1298,15 +1298,30 @@ function alignHorizontalCenter(selected_objects){
         selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
 
-    selected_objects.sort(function(a, b){return a.centerPoint - b.centerPoint});
-    for(var i = 1; i < selected_objects.length; i++){        
-        if(selected_objects[i].centerPoint < selected_objects[i-1].centerPoint + 3){
-            console.log("i: " + selected_objects[i].centerPoint);
-            console.log("i-1: " + selected_objects[i-1].centerPoint);
-            selected_objects[i].move(0, 10);
-            console.log("i again: " + selected_objects[i].centerPoint);
+    temporary_objects = removeDuplicatesInList(selected_objects);
+    console.log(points[temporary_objects[0].centerPoint].y);
+    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
+    //temporary_objects = sortObjects(selected_objects, 'vertically');
+    console.log("Size of list: " + temporary_objects.length);
+    for(var i = 1; i < temporary_objects.length; i++){  
+        console.log("hej");      
+        if(points[temporary_objects[i].centerPoint].y < points[temporary_objects[i-1].centerPoint].y + 100){
+            console.log("i: " + points[temporary_objects[i].centerPoint].y);
+            console.log("i-1: " + points[temporary_objects[i-1].centerPoint].y);
+            temporary_objects[i].move(0, 10);
+            console.log("i again: " + points[temporary_objects[i].centerPoint].y);
         }
     }
+}
+
+function removeDuplicatesInList(selected_objects){
+    var temporary_objects = [];
+    for(var i = 0; i < selected_objects.length; i++){
+        if(temporary_objects.indexOf(selected_objects[i]) == -1){
+            temporary_objects.push(selected_objects[i]);
+        }
+    }
+    return temporary_objects;
 }
 
 function sortObjects(selected_objects, mode){
