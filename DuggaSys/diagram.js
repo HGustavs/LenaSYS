@@ -454,8 +454,6 @@ diagram.adjustPoints = function() {
 // deleteObject - Deletes passed object from diagram
 //--------------------------------------------------------------------
 diagram.deleteObject = function(object) {
-        // trying to figure out what diagram is exactly.
-        console.log(diagram);
     for (var i = 0; i < this.length; i++) {
         if (this[i] == object) {
             this.splice(i, 1);
