@@ -22,6 +22,23 @@ function toggleToolbarMinimize(){
     }
 }
 
+function toggleToolbarLayout(){
+    if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()){
+        $(".application-toolbar").css({"display": "flex", "flex-wrap": "wrap"});
+        $(".toolbarArrows").css({"width": "1.7em"});
+        $("#diagram-toolbar").css({"width":"auto"});
+        $("#toolbar-switcher").css({"width": "1.7em", "width": "100%","justify-content":"center", "margin": "0 30%"});
+        $(".application-header").css({"width": "100%"});
+        $(".label").css({"padding": "0 0 0 15px"});
+    }else{
+        $(".application-toolbar").css({"display": "inline-block", "flex-wrap": ""});
+        $(".toolbarArrows").css({"width": "20%"});
+        $("#diagram-toolbar").css({"width":"125px"});
+        $("#toolbar-switcher").css({"width": "", "width": "auto","justify-content":"", "margin": "0"});
+        $(".label").css({"padding": "0 4px"});
+    }
+}
+
 //function for switching the toolbar state (All, ER, UML)
 function switchToolbar(direction){
   var text = ["All", "ER", "UML", "Free"];

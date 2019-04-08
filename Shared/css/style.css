@@ -1171,6 +1171,7 @@ input {
 
 #diagram-toolbar {
   width: 125px;
+  height: auto;
 }
 
 .application-toolbar-wrap {
@@ -1213,8 +1214,7 @@ input {
   padding: 0px 4px 0px 4px;
 }
 
-#toolbar-minimize {
-  position: absolute;
+#toolbar-minimize, #toolbar-toggleLayout {
   display: inline-block;
   width: 30px;
   height: 25px;
@@ -1225,6 +1225,13 @@ input {
 }
 
 #minimizeArrow {
+  width: 10px;
+  height: 10px;
+  filter: invert(100%);
+  transition: 0.2s;
+}
+
+#layoutArrow {
   width: 10px;
   height: 10px;
   filter: invert(100%);
@@ -1933,7 +1940,7 @@ input.large-button {
   text-overflow: ellipsis;
   max-width: 150px;
   overflow: hidden;
-  direction: rtl;  
+  direction: rtl;
 }
 
 #editpopover {
