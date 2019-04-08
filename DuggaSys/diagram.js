@@ -751,11 +751,11 @@ function drawVirtualA4(){
     // the correct size of a4 to pixels 
     const pixelsPerMillimeter = 11.81;
 
-    const a4Width = 210*pixelsPerMillimeter;
-    const a4Height = 297*pixelsPerMillimeter;
+    const a4Width = 210 * pixelsPerMillimeter;
+    const a4Height = 297 * pixelsPerMillimeter;
 
-    const holeOffsetX = 12*pixelsPerMillimeter;
-    const holeRadius = 3*pixelsPerMillimeter;
+    const holeOffsetX = 12 * pixelsPerMillimeter;
+    const holeRadius = 3 * pixelsPerMillimeter;
 
     ctx.save();
     ctx.strokeStyle = "black"
@@ -764,12 +764,12 @@ function drawVirtualA4(){
     ctx.strokeRect(0,0, a4Width, a4Height);
 
     //Upper 2 holes
-    drawCircle(holeOffsetX, (a4Height / 2) - (34+21)*pixelsPerMillimeter, holeRadius);
-    drawCircle(holeOffsetX, (a4Height / 2) - 34*pixelsPerMillimeter, holeRadius);
+    drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
+    drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
    
     //Latter two holes
-    drawCircle(holeOffsetX, (a4Height / 2) + (34+21)*pixelsPerMillimeter, holeRadius);
-    drawCircle(holeOffsetX, (a4Height / 2) + 34*pixelsPerMillimeter, holeRadius);
+    drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
+    drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
 
     ctx.restore();
 }
