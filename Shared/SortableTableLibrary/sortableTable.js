@@ -570,11 +570,10 @@ function SortableTable(param)
             				var thetabhead = document.getElementById(table.tableid+DELIMITER+"tblhead").getBoundingClientRect();
             				// If top is negative and top+height is positive draw mh otherwise hide
 
-                    // Issue - Denna redigerar positionen på counters endast
-
             				// Vertical
-            				if (thetabhead.top < 0 && thetab.bottom > 0) {
+            				if (thetabhead.top < 50 && thetab.bottom > 0) {
               					document.getElementById(table.tableid+DELIMITER+"tbl"+DELIMITER+"mh").style.left = thetab.left+"px";
+                        document.getElementById(table.tableid+DELIMITER+"tbl"+DELIMITER+"mh").style.top = 50+"px";
               					document.getElementById(table.tableid+DELIMITER+"tbl"+DELIMITER+"mh").style.display = "table";
             				}
             				 else {
