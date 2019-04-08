@@ -174,7 +174,6 @@ function LoadFile() {
 
 // not clear when or how this method is used.
 function getUpload() {
-    console.log("in function: getUpload");
     document.getElementById('buttonids').addEventListener('click', openDialog);
     function openDialog() {
         document.getElementById('fileids').click();
