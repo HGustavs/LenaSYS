@@ -1,4 +1,5 @@
 <?php
+//xd
 	session_start();
 	include_once "../../coursesyspw.php";
 	include_once "../Shared/sessions.php";
@@ -7,6 +8,7 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
@@ -114,7 +116,7 @@
 
 		<!-- FAB Start -->
 
-		<div class='fixed-action-button' id="FABStatic" style="display: none">
+		<div class='fixed-action-button' id="FABStatic" style="display:none">
 				<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>
 				<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
@@ -130,6 +132,8 @@
 
 		<!-- FAB END -->
 
+		<!-- + button --->
+
 		<div id='Sectionlist'>
 
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end;'>
@@ -140,13 +144,16 @@
 				</div>
 
 				<div id='course-newitem' style='display: flex;'>
-						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItemdefaultNewItem();'>
+						<input id='addElement' style="display:none;" type='button' value='-' class='submit-button-newitem' title='New Item' onclick='createFABItem("2", "New Testest");'>
 				</div>
+				<!-- test #1 -->
 
 				<div id='course-coursevers' style='display:none; margin-right:10px;' >UNK</div>
 				<div id='course-courseid' style='display:none; margin-right:10px;' >UNK</div>
 
 		</div>
+
+		<!-- + button END -->
 
 		<div id='courseList'>
 
@@ -348,4 +355,5 @@
 	</div>
 	<!-- HighscoreBox END -->
 </body>
+
 </html>
