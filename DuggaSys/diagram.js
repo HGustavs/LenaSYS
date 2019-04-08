@@ -107,20 +107,13 @@ var ctrlIsClicked = false;
 function keyDownHandler(e){
     var key = e.keyCode;
 
-    //This is the variables for the keyCode.
-    const escape = key;
-    const ctrlZ = key;
-    const ctrlY = key;
-    const a = key;
-    const ctrl = key;
-    const windowsKey = key;
-
+    const vbKeySpace = key;
 
     if(appearanceMenuOpen) return;
     if((key == 46 || key == 8)){
         eraseSelectedObject();
         SaveState();
-    } else if(key == 32){
+    } else if(key == vbKeySpace){ //Key: Spacebar: keycode: 32
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
@@ -156,9 +149,9 @@ function keyDownHandler(e){
     }
 
 
-    else if (key == ctrlZ && ctrlIsClicked) undoDiagram(); //Key: Ctrl + Z: Keycode: 90
-    else if (key == ctrlY && ctrlIsClicked) redoDiagram(); //Key: Ctrl + Y: Keycode: 89
-    else if (key == a && ctrlIsClicked) { // Key: A: Keycode: 65
+    else if (key == 90 && ctrlIsClicked) undoDiagram(); //Key: Ctrl + Z: Keycode: 90
+    else if (key == 89 && ctrlIsClicked) redoDiagram(); //Key: Ctrl + Y: Keycode: 89
+    else if (key == 65 && ctrlIsClicked) { // Key: A: Keycode: 65
       e.preventDefault();
       for(var i = 0; i < diagram.length; i++){
         selected_objects.push(diagram[i]);
@@ -166,11 +159,11 @@ function keyDownHandler(e){
       }
       updateGraphics();
     }
-    else if(key == ctrl || key == windowsKey) // Key: Ctrl: Keycode: 17 || Key: Windows key: Keycode: 91
+    else if(key == 17 || key == 91) // Key: Ctrl: Keycode: 17 || Key: Windows key: Keycode:91
     {
       ctrlIsClicked = true;
     }
-    else if(key == escape){ // Key; Escape: Keycode 27
+    else if(key == vbKeyEscape){ // Key; Escape
       cancelFreeDraw();
     }
 
