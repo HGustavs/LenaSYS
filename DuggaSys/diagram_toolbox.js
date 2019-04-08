@@ -24,18 +24,19 @@ function toggleToolbarMinimize(){
 
 function toggleToolbarLayout(){
     if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()){
-        $(".application-toolbar").css({"display": "flex", "flex-wrap": "wrap"});
+        $(".application-toolbar").css({"display": "flex", "flex-direction": "column"});
         $(".toolbarArrows").css({"width": "1.7em"});
         $("#diagram-toolbar").css({"width":"auto"});
-        $("#toolbar-switcher").css({"width": "1.7em", "width": "100%","justify-content":"center", "margin": "0 30%"});
-        $(".application-header").css({"width": "100%"});
+        $("#toolbar-switcher").css({"width": "1.7em", "width": "","justify-content":"center", "margin": "0 30%", "padding": "0"});
         $(".label").css({"padding": "0 0 0 15px"});
+        $(".toolsContainer").css({"display": "flex"});
     }else{
-        $(".application-toolbar").css({"display": "inline-block", "flex-wrap": ""});
+        $(".application-toolbar").css({"display": "", "flex-wrap": ""});
         $(".toolbarArrows").css({"width": "20%"});
-        $("#diagram-toolbar").css({"width":"125px"});
-        $("#toolbar-switcher").css({"width": "", "width": "auto","justify-content":"", "margin": "0"});
+        $("#diagram-toolbar").css({"width":""});
+        $("#toolbar-switcher").css({"width": "auto","justify-content":"", "margin": "0", "padding": ""});
         $(".label").css({"padding": "0 4px"});
+        $(".toolsContainer").css({"display": ""});
     }
 }
 

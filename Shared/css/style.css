@@ -1170,7 +1170,7 @@ input {
 /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
 
 #diagram-toolbar {
-  width: 125px;
+  width: 130px;
   height: auto;
 }
 
@@ -1189,7 +1189,7 @@ input {
   vertical-align: bottom;
   cursor: move;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin: 0px;
 }
 
@@ -1232,8 +1232,9 @@ input {
 }
 
 #layoutArrow {
-  width: 10px;
-  height: 10px;
+  width: 15px;
+  height: 15px;
+  margin: 5px;
   filter: invert(100%);
   transition: 0.2s;
 }
