@@ -401,7 +401,6 @@ function Symbol(kind) {
                 c.from == symbol.topLeft || c.from == symbol.bottomRight || c.from == symbol.centerPoint || c.from == symbol.middleDivider);
             count = tmp.length;
         }
-
         return count;
     }
 
@@ -472,7 +471,7 @@ function Symbol(kind) {
         if(!c){
              c = this.corners();
         }
-        //we have correct points in the four corners of a square.
+        // we have correct points in the four corners of a square.
         if(mx > c.tl.x && mx < c.tr.x){
             if(my > c.tl.y && my < c.bl.y){
                 return true;
@@ -481,7 +480,7 @@ function Symbol(kind) {
         return false;
     }
 
-    //init four points, the four corners based on the two cornerpoints in the symbol.
+    // init four points, the four corners based on the two cornerpoints in the symbol.
     this.corners = function(){
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
@@ -638,6 +637,8 @@ function Symbol(kind) {
             }
         }
     }
+
+    // adds each corner point to an array and returns the array
     this.getPoints = function() {
         var privatePoints = [];
         if(this.symbolkind==3){
@@ -707,7 +708,7 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     //     beginpath - moveto - lineto
     //
-    //     För att göra streckad linje rita med
+    //     To make a dashed line, draw with:
     //     ctx.setLineDash(segments);
     //--------------------------------------------------------------------
     this.draw = function () {
@@ -726,21 +727,28 @@ function Symbol(kind) {
         ctx.textBaseline = "middle";
         ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
 
+        // 1 = UML
         if(this.symbolkind == 1){
             this.drawUML(x1, y1, x2, y2);
         }
+        // 2 = ER attribute
         else if(this.symbolkind == 2){
             this.drawERAttribute(x1, y1, x2, y2);
         }
+        // 3 = entity
         else if(this.symbolkind == 3){
             this.drawEntity(x1, y1, x2, y2);
         }
+        // 4 = line
         else if(this.symbolkind == 4){
             this.drawLine(x1, y1, x2, y2);
         }
+        // 5 = ER relation
         else if(this.symbolkind == 5){
             this.drawRelation(x1, y1, x2, y2);
-        } else if (this.symbolkind == 6){
+        } 
+        // 6 = Text
+        else if (this.symbolkind == 6){
             this.drawText(x1, y1, x2, y2);
         }
 
@@ -774,8 +782,10 @@ function Symbol(kind) {
 
 
     }
-    this.drawUML = function(x1, y1, x2, y2)
-    {
+    //---------------------------------------------------------
+    // functions used to draw objects
+    //---------------------------------------------------------
+    this.drawUML = function(x1, y1, x2, y2) {
         var midy = points[this.middleDivider].y;
         ctx.font = "bold " + parseInt(textsize) + "px Arial";
 
@@ -851,7 +861,7 @@ function Symbol(kind) {
         }
         ctx.clip();
 
-        //drawing an derived attribute
+        //drawing a derived attribute
         if (this.key_type == 'Drive') {
             ctx.setLineDash([5, 4]);
         }
@@ -863,7 +873,6 @@ function Symbol(kind) {
             ctx.moveTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
             ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
             ctx.strokeStyle = this.strokeColor;
-
         }
         ctx.stroke();
         ctx.setLineDash([]);
