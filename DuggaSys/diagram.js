@@ -862,12 +862,29 @@ function eraseObject(object) {
     updateGraphics();
 }
 
+//-------------------------------------------------------------------------//
+// Create function that changes the id "loginBoxTitle" to "Delete Object".
+//-------------------------------------------------------------------------//
+
+function changeLoginBoxTitleDelete() {
+    document.getElementById("loginBoxTitle").innerHTML = "Delete Object";
+}
+
+//-------------------------------------------------------------------------//
+// Create function that changes the id "loginBoxTitle" to "Appearance".
+//-------------------------------------------------------------------------//
+
+function changeLoginBoxTitleAppearance() {
+    document.getElementById("loginBoxTitle").innerHTML = "Appearance";
+}
+
 function eraseSelectedObject() {
     canvas.style.cursor = "default";
     //Issue: Need to remove the crosses
     if(selected_objects.length == 0){
         showMenu().innerHTML = "No item selected<type='text'>";
-        $(".loginBox").draggable();
+        changeLoginBoxTitleDelete();
+        $(".loginBox").draggable();        
     }
     for(var i = 0; i < selected_objects.length; i++){
         eraseObject(selected_objects[i]);
