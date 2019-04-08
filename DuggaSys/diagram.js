@@ -107,13 +107,11 @@ var ctrlIsClicked = false;
 function keyDownHandler(e){
     var key = e.keyCode;
 
-    const vbKeySpace = key;
-
     if(appearanceMenuOpen) return;
-    if((key == 46 || key == 8)){
+    if((key == 46 || key == 8)){        // Key: Delete, KeyCode: 46 || Key: backSpace, KeyCode: 8
         eraseSelectedObject();
         SaveState();
-    } else if(key == vbKeySpace){ //Key: Spacebar: keycode: 32
+    } else if(key == 32){               //Key: Spacebar: keycode: 32
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
@@ -125,14 +123,14 @@ function keyDownHandler(e){
             deactivateMovearound();
         }
         updateGraphics();
-    } else if(key == 37 || key == 38 || key == 39 || key == 40){//arrow keys
+    } else if(key == 37 || key == 38 || key == 39 || key == 40) {   //Key: Up, down, left, right arrow
         arrowKeyPressed(key);
-    } else if(key == 17 || key == 91){
+    } else if(key == 17 || key == 91){   //Key: Ctrl, KeyCode 17 || Key: WindowsKey, keyCode: 91
         ctrlIsClicked = true;
-    } else if(ctrlIsClicked && key == 67){
+    } else if(ctrlIsClicked && key == 67){  //Key: C, keyCode 67
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == 86 ){
+    } else if(ctrlIsClicked && key == 86 ){ //Key: V, keyCode 86
         //Ctrl + v
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++){
@@ -163,7 +161,7 @@ function keyDownHandler(e){
     {
       ctrlIsClicked = true;
     }
-    else if(key == vbKeyEscape){ // Key; Escape
+    else if(key == 27){ // Key; Escape
       cancelFreeDraw();
     }
 
@@ -204,13 +202,13 @@ window.onkeyup = function(event) {
 function arrowKeyPressed(key){
   var xNew = 0, yNew = 0;
 
-  if(key == 37){//left
+  if(key == 37){        //Key: left-arrow
     xNew = -5;
-  }else if(key == 38){//up
+  }else if(key == 38){  //Key: up-arrow
     yNew = -5;
-  }else if(key == 39){//right
+  }else if(key == 39){  //Key: right-arrow
     xNew = 5;
-  }else if(key == 40){//down
+  }else if(key == 40){  //Key: down-arrow
     yNew = 5;
   }
   for(var i = 0; i < selected_objects.length; i++){
