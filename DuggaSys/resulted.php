@@ -70,6 +70,7 @@ pdoConnect();
 
 			<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Sortera efter</label>
+				<input id="laddate" type="date" style="font-size:12px;">
 			</div>
 
       <button onclick="ladexport();">LadExport</button>
