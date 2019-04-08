@@ -194,6 +194,7 @@ function changedType(kind) {
   if (kind == 2) {
     $("#link").html(makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid'));
   } else if (kind == 3) {
+    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
     $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
   } else if (kind == 5 || kind == 7) {
     $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
