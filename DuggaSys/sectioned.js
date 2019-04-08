@@ -124,10 +124,11 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $(".item").css("box-shadow", "none");
   $("#I" + lid).css("border", "2px dashed #FC5");
   $("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
-  if (kind != 0 || kind != 1) {
-    $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G", "U-3-4-5"], [0, 1, 2, 3]));
+  if (kind == 0) {
+    $("#inputwrapper-gradesystem").hide();
   }
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
+  $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G", "U-3-4-5"], [0, 1, 2, 3]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
   $("#visib").html(makeoptions(evisible, ["Hidden", "Public", "Login"], [0, 1, 2]));
   $("#tabs").html(makeoptions(gradesys, ["0 tabs", "1 tabs", "2 tabs", "3 tabs", "end", "1 tab + end", "2 tabs + end"], [0, 1, 2, 3, 4, 5, 6]));
