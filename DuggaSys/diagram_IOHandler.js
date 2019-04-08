@@ -171,7 +171,10 @@ function LoadFile() {
     //Redrawn old state.
     updateGraphics();
 }
+
+// not clear when or how this method is used.
 function getUpload() {
+    console.log("in function: getUpload");
     document.getElementById('buttonids').addEventListener('click', openDialog);
     function openDialog() {
         document.getElementById('fileids').click();
@@ -187,6 +190,7 @@ function getUpload() {
         }
     }
 }
+
 function Load() {
     // Implement a JSON.parse() that will unmarshall a b c, so we can add
     // them to their respecive array so it can redraw the desired canvas.
@@ -231,6 +235,7 @@ function ExportSVG(el) {
     el.setAttribute("download", "diagram.svg");
 }
 
+// used when exporting the file as a .jpg image.
 $(document).ready(function(){
     function downloadCanvas(link, canvasId, filename) {
         link.href = document.getElementById(canvasId).toDataURL();
