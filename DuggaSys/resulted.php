@@ -18,7 +18,7 @@ pdoConnect();
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Result Editor</title>
+	<title>Result Editor HEJSAN</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
