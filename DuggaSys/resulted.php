@@ -64,7 +64,7 @@ pdoConnect();
         </select>
       </div>
       <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
-        <label>Betygsdatum</label>
+        <label>Betygsdatum_KORV</label>
         <input id="laddate" type="date" style="font-size:12px;">
       </div>
 
