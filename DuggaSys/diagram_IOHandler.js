@@ -107,7 +107,8 @@ function Save() {
         c[i] = c[i].replace(/"/g,"");
     }
     var obj = {diagram:diagram, points:points, diagramNames:c};
-    a = JSON.stringify(obj);
+    a = JSON.stringify(obj, null, "\t");
+    
    // saveToServer(a);
     console.log("State is saved");
 }
