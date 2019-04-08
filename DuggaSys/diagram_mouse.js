@@ -29,13 +29,14 @@ function findPos(obj) {
 }
 
 function updateActivePoint() {
-    if (sel.distance <= tolerance) {
+    if (sel.distance <= tolerance) { // sel.distance = the distance of the mouse from each corner point of the object
         activePoint = sel.point;
     } else {
         activePoint = null;
     }
 }
 
+//condition ? value-if-true : value-if-false
 function pointDistance(point1, point2) {
     var width = (point1.x > point2.x)? point1.x - point2.x: point2.x - point1.x;
     var height = (point1.y > point2.y)? point1.y - point2.y: point2.y - point1.y;
@@ -49,13 +50,13 @@ function mousemoveevt(ev, t) {
     oldMouseCoordinateX = currentMouseCoordinateX;
     oldMouseCoordinateY = currentMouseCoordinateY;
     hovobj = diagram.itemClicked();
-    if (ev.pageX || ev.pageY == 0) { // Chrome
+    if (ev.pageX || ev.pageY == 0) { // tracking mousemovement in Chrome
         currentMouseCoordinateX = (((ev.pageX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.pageY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
-    } else if (ev.layerX || ev.layerX == 0) { // Firefox
+    } else if (ev.layerX || ev.layerX == 0) { // tracking mousemovement in Firefox
         currentMouseCoordinateX = (((ev.layerX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.layerY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
-    } else if (ev.offsetX || ev.offsetX == 0) { // Opera
+    } else if (ev.offsetX || ev.offsetX == 0) { // tracking mousemovement in Opera
         currentMouseCoordinateX = (((ev.offsetX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.offsetY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
     }
@@ -391,6 +392,8 @@ function mouseupevt(ev) {
             }
         }
     }
+
+    //code for creating symbols when mouse is released
     if (uimode == "CreateClass" && md == 4) {
         classB = new Symbol(1);
         classB.name = "New" + diagram.length;
@@ -490,6 +493,7 @@ function mouseupevt(ev) {
 
 }
 
+//adding a new textbox when you doubleclick
 function doubleclick(ev) {
     var posistionX = (sx + xPos);
     var posistionY = (sy + yPos);
@@ -499,7 +503,6 @@ function doubleclick(ev) {
 
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
-        //console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
     } else {
         createText(posX, posY);
     }
@@ -533,6 +536,7 @@ function createText(posX, posY) {
     updateGraphics();
 }
 
+//function used when either making the object smaller or bigger
 function resize() {
     if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
