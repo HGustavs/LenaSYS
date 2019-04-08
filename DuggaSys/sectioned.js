@@ -264,7 +264,7 @@ function showCreateVersion() {
   $("#newCourseVersion").css("display", "flex");
 
 }
-// det är detta vi kommer behöva ändra för att fixa issue 6504
+
 function createQuickItem() {
   selectItem("undefined", "New Code", "2", "undefined", "undefined", "0", "undefined", "undefined", "UNK");
   newItem();
