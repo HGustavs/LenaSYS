@@ -1,5 +1,5 @@
 /* --------------================################================-------------- *
- *                               Fonts                                          *
+ *                               Fonts 1                                         *
  * --------------================################================-------------- */
 
 @font-face {
@@ -2475,7 +2475,7 @@ span.arrow {
   width:50px;
   height:50px;
   border-radius:25px;
-  box-shadow:0px 0px 15px #888;
+  box-shadow:0px 2px 5px #888;
   bottom:35px;
   right:50px;
   font-size:24px;
@@ -2486,11 +2486,10 @@ span.arrow {
   border:0;
   outline: none;
   cursor: pointer;
-
  }
 
 .fab:hover {
-  transform: scale(1.1);
+  filter: brightness(103%);
 }
 
 .dugga-pass {
