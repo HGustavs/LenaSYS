@@ -191,6 +191,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 
 function changedType(kind) {
   // Prepares option list for code example (2)/dugga (3) dropdown/links (5) / Not applicable
+    document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   if (kind == 2) {
     $("#link").html(makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid'));
   } else if (kind == 3) {
@@ -202,9 +203,6 @@ function changedType(kind) {
     $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
   } else {
     $("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");
-  }
-  if (kind != 3 || kind != 4) {
-    document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   }
 }
 
