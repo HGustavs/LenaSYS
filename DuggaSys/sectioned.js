@@ -124,7 +124,7 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $(".item").css("box-shadow", "none");
   $("#I" + lid).css("border", "2px dashed #FC5");
   $("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
-  if (kind == 0) {
+  if (kind != 3 || kind != 4) {
     // $("#inputwrapper-gradesystem").hide();
     document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   } else {
@@ -196,10 +196,15 @@ function changedType(kind) {
   } else if (kind == 3) {
     document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
     $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
+  } else if (kind == 4) {
+    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
   } else if (kind == 5 || kind == 7) {
     $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
   } else {
     $("#link").html("<option value='-1'>-=# Not Applicable #=-</option>");
+  }
+  if (kind != 3 || kind != 4) {
+    document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   }
 }
 
