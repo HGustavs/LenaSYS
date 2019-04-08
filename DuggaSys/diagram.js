@@ -52,6 +52,7 @@ var p1 = null;                      // When creating a new figure, these two var
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
 var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;              // Will the clients actions snap to grid
+var toggleA4 = false;               //
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
@@ -732,6 +733,55 @@ function toggleGrid() {
     }
 }
 
+function toggleVirtualA4(){
+    if (toggleA4){
+        toggleA4 = false;
+        updateGraphics();
+    } else{
+        toggleA4 = true;
+        updateGraphics();
+    }
+}
+
+function drawVirtualA4(){
+    if(!toggleA4){
+        return;
+    }
+
+    // the correct size of a4 to pixels 
+    const pixelsPerMillimeter = 11.81;
+    const a4Width = 210;
+    const a4Height = 297;
+
+    const holeOffsetX = 12;
+    const holeRadius = 3*pixelsPerMillimeter;
+
+    ctx.save();
+    ctx.strokeStyle = "black"
+    ctx.setLineDash([10]);
+    ctx.translate(0, 0);
+    ctx.strokeRect(0,0, a4Width * pixelsPerMillimeter, a4Height * pixelsPerMillimeter);
+
+    ctx.translate(0,0);
+    //Upper 2 holes
+    drawCircle(holeOffsetX*pixelsPerMillimeter, ((a4Height*pixelsPerMillimeter) / 2) - (56*pixelsPerMillimeter), holeRadius);
+    drawCircle(0, 21*pixelsPerMillimeter, holeRadius);
+   
+    //Latter two holes
+    drawCircle(0, 70*pixelsPerMillimeter,holeRadius);
+    drawCircle(0, 21*pixelsPerMillimeter, holeRadius);
+
+    ctx.restore();
+}
+
+function drawCircle(cx, cy, radius) {
+    ctx.translate(cx, cy);
+    ctx.beginPath();
+    ctx.arc(0,0, radius, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.stroke();
+}
+
 // Opens the dialog menu for import
 function openImportDialog() {
     $("#import").css("display", "flex");
@@ -790,6 +840,7 @@ function updateGraphics() {
     diagram.sortConnectors();
     diagram.draw();
     points.drawPoints();
+    drawVirtualA4();
 }
 
 function getConnectedLines(object) {
