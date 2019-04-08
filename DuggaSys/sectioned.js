@@ -266,7 +266,7 @@ function showCreateVersion() {
 }
 // det är detta vi kommer behöva ändra för att fixa issue 6504
 function createQuickItem() {
-  selectItem("undefined", "New Item", "2", "undefined", "undefined", "0", "undefined", "undefined", "UNK");
+  selectItem("undefined", "New Code", "2", "undefined", "undefined", "0", "undefined", "undefined", "UNK");
   newItem();
 }
 
