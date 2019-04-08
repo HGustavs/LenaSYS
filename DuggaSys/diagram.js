@@ -1302,6 +1302,7 @@ function alignHorizontalCenter(selected_objects){
     console.log(points[temporary_objects[0].centerPoint].y);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
     //temporary_objects = sortObjects(selected_objects, 'vertically');
+    //?
     console.log("Size of list: " + temporary_objects.length);
     for(var i = 1; i < temporary_objects.length; i++){  
         console.log("hej");      
