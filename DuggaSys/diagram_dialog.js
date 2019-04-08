@@ -79,6 +79,7 @@ function dimDialogMenu(dim) {
     }
 }
 
+// Loads the menu which is used to change apperance of ER and free draw objects.
 function loadFormIntoElement(element, dir){
   //Ajax
   var file = new XMLHttpRequest();
@@ -106,6 +107,7 @@ function loadFormIntoElement(element, dir){
   file.send();
 }
 
+// Loads the menu to change cardinality
 function loadLineForm(element, dir){
     //Ajax
     var file = new XMLHttpRequest();
@@ -182,6 +184,7 @@ function loadTextForm(element, dir){
   file.send();
 }
 
+// used to implement the changes to apperances that has been made
 function setSelectedOption(type, value){
   if(type != null){
     for(var i = 0; i < document.getElementById(type).options.length; i++){
@@ -218,27 +221,33 @@ function objectAppearanceMenu(form) {
     form.innerHTML = "No item selected<type='text'>";
     //if no item has been selected
     if(!diagram[lastSelectedObject]){ return;}
-
+    // UML selected
     if (diagram[lastSelectedObject].symbolkind == 1) {
         classAppearanceOpen = true;
         loadUMLForm(form, 'diagram_forms.php?form=classType');
     }
+    // ER attributes selected
     else if (diagram[lastSelectedObject].symbolkind == 2) {
         loadFormIntoElement(form, 'diagram_forms.php?form=attributeType');
     }
+    // ER entity selected
     else if (diagram[lastSelectedObject].symbolkind == 3) {
         loadFormIntoElement(form, 'diagram_forms.php?form=entityType');
     }
+    // Lines selected
     else if (diagram[lastSelectedObject].symbolkind == 4) {
         loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
     }
+    // ER relation selected
     else if (diagram[lastSelectedObject].symbolkind == 5) {
         loadFormIntoElement(form, 'diagram_forms.php?form=relationType');
     }
+    // Text selected
     else if (diagram[lastSelectedObject].symbolkind == 6) {
         textAppearanceOpen = true;
         loadTextForm(form, 'diagram_forms.php?form=textType');
     }
+    // not clear what this represents. In diagram_symbol.js, kind == 2 is always true for symbols
     else if (diagram[lastSelectedObject].kind == 1) {
         loadFormIntoElement(form, 'diagram_forms.php?form=figureType');
     }

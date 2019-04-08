@@ -1417,7 +1417,7 @@ function diagramToSVG() {
 }
 
 //------------------------------------------------------------------------
-//Functions which are used to change the globalvapperance of each object
+//Functions which are used to change the global apperance of each object
 // that has been drawn on the screen
 //-------------------------------------------------------------------------
 
