@@ -126,6 +126,8 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
   if (kind == 0) {
     $("#inputwrapper-gradesystem").hide();
+  } else {
+    $("#inputwrapper-gradesystem").show();
   }
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
   $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G", "U-3-4-5"], [0, 1, 2, 3]));
