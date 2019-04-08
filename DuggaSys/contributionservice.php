@@ -31,7 +31,7 @@ if(checklogin() && isSuperUser($_SESSION['uid'])) {
     $query = $log_db->prepare('select distinct(usr) from ( select blameuser as usr from blame where blamedate>"2018-03-25" and blamedate<"2019-01-01" union select author as usr from event where eventtime>"2018-03-25" and eventtime<"2019-01-01" union select author as usr from issue where issuetime>"2018-03-25" and issuetime<"2019-01-08") order by usr;');
     if(!$query->execute()) {
         $error=$query->errorInfo();
-        $debug="Error reading entries".$error[2];
+        $debug="Error reading entries\n".$error[2];
     }
     $rows = $query->fetchAll();
     foreach($rows as $row){
@@ -76,7 +76,7 @@ $i=1;
 $query = $log_db->prepare('SELECT COUNT(*) as rowk, author FROM commitgit WHERE thedate>"2018-03-25" AND thedate<"2019-01-01" GROUP BY author ORDER BY rowk DESC;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
-    $debug="Error reading entries".$error[2];
+    $debug="Error reading entries\n".$error[2];
 }
 $rows = $query->fetchAll();
 foreach($rows as $row){
@@ -96,7 +96,7 @@ $i=1;
 $query = $log_db->prepare('SELECT sum(rowcnt) as rowk, blameuser FROM Bfile,Blame WHERE Blame.fileid=Bfile.id and blamedate>"2018-03-25" and blamedate<"2019-01-01" group by blameuser order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
-    $debug="Error reading entries".$error[2];
+    $debug="Error reading entries\n".$error[2];
 }
 $rows = $query->fetchAll();
 foreach($rows as $row){
@@ -116,7 +116,7 @@ $i=1;
 $query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2018-03-25" AND  eventtime<"2019-01-01" and eventtime!="undefined" group by author order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
-    $debug="Error reading entries".$error[2];
+    $debug="Error reading entries\n".$error[2];
 }
 $rows = $query->fetchAll();
 foreach($rows as $row){
@@ -136,7 +136,7 @@ $i=1;
 $query = $log_db->prepare('SELECT count(*) as rowk, author FROM event where eventtime>"2018-03-25" and eventtime!="undefined" and eventtime<"2019-01-01" and kind="comment" group by author order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
-    $debug="Error reading entries".$error[2];
+    $debug="Error reading entries\n".$error[2];
 }
 $rows = $query->fetchAll();
 foreach($rows as $row){
@@ -156,7 +156,7 @@ $i=1;
 $query = $log_db->prepare('SELECT count(*) as rowk, author FROM issue where issuetime>"2018-03-25" and issuetime<"2019-01-01" and issuetime!="undefined" group by author order by rowk desc;');
 if(!$query->execute()) {
     $error=$query->errorInfo();
-    $debug="Error reading entries".$error[2];
+    $debug="Error reading entries\n".$error[2];
 }
 $rows = $query->fetchAll();
 foreach($rows as $row){
@@ -203,7 +203,7 @@ do{
 		$query = $log_db->prepare('SELECT * FROM issue WHERE author=:gituser AND issuetime>:issuefrom AND issuetime<:issueto;');
         if(!$query->execute()) {
             $error=$query->errorInfo();
-            $debug="Error reading entries".$error[2];
+            $debug="Error reading entries\n".$error[2];
         }
 		$query->bindParam(':gituser', $gituser);
 		$query->bindParam(':issuefrom', $currentweekdate);
@@ -226,7 +226,7 @@ do{
 		$query->bindParam(':eventto', $currentweekenddate );				
         if(!$query->execute()) {
             $error=$query->errorInfo();
-            $debug="Error reading entries".$error[2];
+            $debug="Error reading entries\n".$error[2];
         }
 
         $rows = $query->fetchAll();
@@ -246,7 +246,7 @@ do{
 		$query->bindParam(':eventto', $currentweekenddate );	
     if(!$query->execute()) {
 				$error=$query->errorInfo();
-				$debug="Error reading entries".$error[2];
+				$debug="Error reading entries\n".$error[2];
 		}
 		$rows = $query->fetchAll();
 		foreach($rows as $row){
@@ -265,7 +265,7 @@ do{
 		$query->bindParam(':eventto', $currentweekenddate );	
     if(!$query->execute()) {
 				$error=$query->errorInfo();
-				$debug="Error reading entries".$error[2];
+				$debug="Error reading entries\n".$error[2];
 		}
 		$rows = $query->fetchAll();
 		foreach($rows as $row){
@@ -284,7 +284,7 @@ do{
 		$query->bindParam(':gituser', $gituser);
         if(!$query->execute()) {
             $error=$query->errorInfo();
-            $debug="Error reading entries".$error[2];
+            $debug="Error reading entries\n".$error[2];
 		}
 		$rows = $query->fetchAll();
 		foreach($rows as $row){

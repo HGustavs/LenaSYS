@@ -90,7 +90,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
-				$debug="Error updating entries".$error[2];
+				$debug="Error updating entries\n".$error[2];
 			} else {
 				$gradeupdated=true;
 				$duggauser=$luid;
@@ -107,7 +107,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$query->bindParam(':uid', $luid);
 					if(!$query->execute()) {
 						$error=$query->errorInfo();
-						$debug="Error updating dugga feedback".$error[2];
+						$debug="Error updating dugga feedback\n".$error[2];
 					}
 			}
 		}else if($ukind=="I"){
@@ -160,7 +160,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 						$query->bindParam(':uid', $luid);
 						if(!$query->execute()) {
 							$error=$query->errorInfo();
-							$debug="Error updating dugga feedback".$error[2];
+							$debug="Error updating dugga feedback\n".$error[2];
 						}
 				}
 			}
@@ -210,7 +210,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error reading entries".$error[2];
+			$debug="Error reading entries\n".$error[2];
 		}
 
 		if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -254,7 +254,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 				if(!$queryp->execute()) {
 					$error=$queryp->errorInfo();
-					$debug="Error reading param".$error[2]." ". __LINE__;
+					$debug="Error reading param\n".$error[2]." ". __LINE__;
 				}
 				if ($row = $queryp->fetch(PDO::FETCH_ASSOC)) {
 					$duggaparam=html_entity_decode($row["param"]);
@@ -285,7 +285,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 			if(!$query->execute()) {
 					$error=$query->errorInfo();
-					$debug="Error updating entries".$error[2];
+					$debug="Error updating entries\n".$error[2];
 			}
 
 			if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -347,7 +347,7 @@ if(strcmp($opt,"CHGR")!==0){
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error retreiving users. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			$debug="Error retreiving users. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code:\n".$error[2];
 		}
 
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -386,7 +386,7 @@ if(strcmp($opt,"CHGR")!==0){
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error retreiving userAnswers. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			$debug="Error retreiving userAnswers. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code:\n".$error[2];
 		}
 
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -437,7 +437,7 @@ if(strcmp($opt,"CHGR")!==0){
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error retreiving moments and duggas. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			$debug="Error retreiving moments and duggas. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code:\n".$error[2];
 		}
 
 		$currentMoment=null;
@@ -468,7 +468,7 @@ if(strcmp($opt,"CHGR")!==0){
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error retreiving. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+			$debug="Error retreiving. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code:\n".$error[2];
 		}
 
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -498,7 +498,7 @@ if(strcmp($opt,"DUGGA")===0){
 
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
-		$debug="Error retreiving submissions. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code: ".$error[2];
+		$debug="Error retreiving submissions. (row ".__LINE__.") ".$query->rowCount()." row(s) were found. Error code:\n".$error[2];
 	}
 
 
@@ -581,7 +581,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
-		$debug="Error reading user entries".$error[2];
+		$debug="Error reading user entries\n".$error[2];
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$teacher = array(
@@ -601,7 +601,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
-		$debug="Error reading user entries".$error[2];
+		$debug="Error reading user entries\n".$error[2];
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$teacher = array(
