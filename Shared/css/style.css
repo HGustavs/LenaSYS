@@ -3330,9 +3330,6 @@ only screen and (max-device-width: 1085px) {
     -moz-transition: opacity 300ms, width 300ms, margin 300ms;
     -o-transition: opacity 300ms, width 300ms, margin 300ms;
   }
-  .dateSize {
-    width: 50px;
-  }
 }
 
 @media only screen and (max-width: 800px),
