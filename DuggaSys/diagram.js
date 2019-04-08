@@ -1261,9 +1261,12 @@ function alignBottom(selected_objects){
         selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
     }
 }
+
 function alignVerticalCenter(selected_objects){
     var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
+    var temporary_objects = [];
     for(var i = 0; i < selected_objects.length; i++){
+        temporary_objects.push(selected_objects[i]);
         if(points[selected_objects[i].bottomRight].y > highest_y){
             highest_y = points[selected_objects[i].bottomRight].y;
         }
@@ -1277,8 +1280,10 @@ function alignVerticalCenter(selected_objects){
         selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
     }
 }
+
 function alignHorizontalCenter(selected_objects){
     var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
+    var temporary_objects = [];
     for(var i = 0; i < selected_objects.length; i++){
         if(points[selected_objects[i].topLeft].x > highest_x){
             highest_x = points[selected_objects[i].bottomRight].x;
@@ -1292,6 +1297,25 @@ function alignHorizontalCenter(selected_objects){
         var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
         selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
+    temporary_objects = sortObjects(selected_objects, 'vertically');
+    for(var i = 1; i < temporary_objects.length; i++){
+        if(temporary_objects[i].topLeft < temporary_objects[i-1].bottomRight){
+            var object = findObject(selected_objects);
+            object.move(temporary_objects[i-1].bottomRight + 10, 0);
+            temporary_objects[i].bottomRight = object.bottomRight;
+        }
+    }
+}
+
+function findObject(selected_objects){
+    var position = [];
+    console.log(selected_objects.length);
+    for(var j = 0; j < selected_objects.length; j++){
+        console.log("hej");
+    }
+    // This should not happen
+    console.log("WTF");
+    return false;
 }
 
 function sortObjects(selected_objects, mode){
@@ -1320,6 +1344,7 @@ function sortObjects(selected_objects, mode){
         }
   return private_objects;
 }
+
 function distribute(axis){
     var spacing = 32;
     var selected_objects = [];
@@ -1341,6 +1366,7 @@ function distribute(axis){
     updateGraphics();
     hashFunction();
 }
+
 function distributeVertically(selected_objects, spacing){
     selected_objects = sortObjects(selected_objects, 'vertically');
 
@@ -1351,6 +1377,7 @@ function distributeVertically(selected_objects, spacing){
         selected_objects[i].move(0, newy+object_height+spacing);
     }
 }
+
 function distributeHorizontally(selected_objects, spacing){
     selected_objects = sortObjects(selected_objects, 'horizontally');
 
