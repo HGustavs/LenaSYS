@@ -64,13 +64,13 @@ pdoConnect();
         </select>
       </div>
       <div style="display:flex;flex-direction:column;justify-content:space-between;margin:5px;">
-        <label>Betygsdatum_KORV</label>
+        <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
       </div>
 
+			// TODO: Lista för att kunna välja olika sätt att sortera betygen på.
 			<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Sortera efter</label>
-				<input id="laddate" type="date" style="font-size:12px;">
 			</div>
 
       <button onclick="ladexport();">LadExport</button>
