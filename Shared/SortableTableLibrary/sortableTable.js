@@ -394,14 +394,14 @@ function SortableTable(param)
 
     	// Render table body
     	str += "<tbody id='"+this.tableid+DELIMITER+"body'>";
-    	mhvstr += "<tbody style='top:38px;' id='"+this.tableid+DELIMITER+"mhvbody'>";
+    	mhvstr += "<tbody style='tr:nth(odd) {background-color: gray;}' id='"+this.tableid+DELIMITER+"mhvbody'>";
     	for (var i = 0; i < tbl.tblbody.length; i++) {
       		var row = tbl.tblbody[i];
       		if (rowFilter(row)) {
               str += "<tr id='"+this.tableid+DELIMITER+i+"'"
               if (this.hasRowHighlight)str+=" onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
               str+=" style='box-sizing:border-box'>";
-                mhvstr += "<tr id='"+this.tableid+DELIMITER+i+DELIMITER+"mhv' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box; background-color: gray; z-index: 5'>";
+                mhvstr += "<tr id='"+this.tableid+DELIMITER+i+DELIMITER+"mhv' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box;'>";
 
 
         			// Add Counter cell to the row. The class <tableid>_counter can be used to style the counterText
