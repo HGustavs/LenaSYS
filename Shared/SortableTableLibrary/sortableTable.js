@@ -277,7 +277,7 @@ function SortableTable(param)
     	// Local variable that contains html code for main table and local variable that contains magic headings table
     	str = "<table style='border-collapse: collapse;' id='"+this.tableid+DELIMITER+"tbl' class='list list--nomargin'>";
     	mhstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;top:0px;left:0px;z-index:2000;margin-top:0px;border-bottom:none;background-color:ffffff' class='list' id='"+this.tableid+DELIMITER+"tbl"+DELIMITER+"mh'>";
-    	mhvstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;background-color:ffffff' id='"+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv'>";
+    	mhvstr = "<table style='tr:nth-child(odd) background-color:blue;table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;z-index:1000;background-color:ffffff' id='"+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv'>";
     	mhfstr = "<table style='table-layout:fixed;border-collapse: collapse;position:fixed;left:0px;top:0px;z-index:3000;background-color:ffffff' id='"+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhf'>";
 
       // Local variable that contains summing array
@@ -394,7 +394,7 @@ function SortableTable(param)
 
     	// Render table body
     	str += "<tbody id='"+this.tableid+DELIMITER+"body'>";
-    	mhvstr += "<tbody style='tr:nth-child(odd) {background-color: gray;}' id='"+this.tableid+DELIMITER+"mhvbody'>";
+    	mhvstr += "<tbody id='"+this.tableid+DELIMITER+"mhvbody'>";
     	for (var i = 0; i < tbl.tblbody.length; i++) {
       		var row = tbl.tblbody[i];
       		if (rowFilter(row)) {
