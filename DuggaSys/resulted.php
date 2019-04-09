@@ -71,10 +71,10 @@ pdoConnect();
 			<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Sortera efter</label>
 				<select id="gradeSortScale">
-					<option value="Sort-none" selected onclick="updateTable()">inget</option>
-					<option value="Sort-G" onclick="updateTable()">G</option>
-					<option value="Sort-U" onclick="updateTable()">U</option>
-					<option value="Sort-VG" onclick="updateTable()">VG</option>
+					<option value="Sort-none" selected onselect="updateTable()">inget</option>
+					<option value="Sort-G" onselect="updateTable()">G</option>
+					<option value="Sort-U" onselect="updateTable()">U</option>
+					<option value="Sort-VG" onselect="updateTable()">VG</option>
 				</select>
 				<div>
 					<button onclick="updateTable()">Sort</button>
