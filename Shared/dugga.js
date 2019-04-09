@@ -1336,12 +1336,18 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							tab+="<tr'>"
 
 							tab+="<td>";
-							// Button for making / viewing feedback - note - only button for given feedback to students.
+
 							if (ctype == "link"){
 									tab+="<a href='"+filez[i].content+"' ><img src='../Shared/icons/file_download.svg' /></a>";
 							} else {
 									tab+="<a href='"+filelink+"' ><img src='../Shared/icons/file_download.svg' /></a>";
 							}
+
+              // if type is pdf, add an extenral_open icon to open in new tab next to download icon.
+              if (ctype == "pdf") {
+                tab +="\t<tab><a href='"+filelink+"' target='_blank'><img src='../Shared/icons/external_link_open.svg' /></a></tab>";
+              }
+
 							tab+="</td>";
 							tab+="<td>";
                             if (ctype == "link"){
@@ -1350,11 +1356,6 @@ function findfilevers(filez,cfield,ctype,displaystate)
                                     tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>"+filez[i].filename+"."+filez[i].extension+"</span>";
 							}
 
-              // if type is pdf, add a button to open in new tab.
-              if (ctype == "pdf") {
-                  tab +=" <span> hej </span>"
-                  // FIXME: fixa en target _blank länk här på en ikon som visar att det är ny tab.
-              }
 
 							tab+="</td><td>";
 							tab+=filez[i].updtime;+"</td>";
