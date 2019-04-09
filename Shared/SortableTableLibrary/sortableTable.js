@@ -401,7 +401,9 @@ function SortableTable(param)
               str += "<tr id='"+this.tableid+DELIMITER+i+"'"
               if (this.hasRowHighlight)str+=" onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
               str+=" style='box-sizing:border-box'>";
-              mhvstr += "<tr id='"+this.tableid+DELIMITER+i+DELIMITER+"mhv' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
+             mhvstr += "<tr id='"+this.tableid+DELIMITER+i+"'"
+              if (this.hasRowHighlight)mhvstr+=" onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
+              mhvstr+=" style='box-sizing:border-box'>";
 
         			// Add Counter cell to the row. The class <tableid>_counter can be used to style the counterText
         			if(this.hasCounter) {
