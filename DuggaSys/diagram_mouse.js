@@ -391,6 +391,7 @@ function mouseupevt(ev) {
             }
         }
     }
+    // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
     if (uimode == "CreateClass" && md == 4) {
         classB = new Symbol(1);
         classB.name = "New" + diagram.length;
