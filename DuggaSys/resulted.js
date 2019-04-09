@@ -732,6 +732,8 @@ function renderCell(col,celldata,cellid) {
 			return str;
 		}
 
+    // Must be another elseif-statement above this that checks a variable that reads the value of the "Sortera efter" part of the resulted.php
+    // to see if it should sort after passed or un-passed grades.
     else if (celldata.grade > 1) {
 			// color based on pass,fail,pending,assigned,unassigned
       str = "<div class='resultTableCell resultTableMini ";
@@ -750,6 +752,9 @@ function renderCell(col,celldata,cellid) {
 
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
+if(celldata.grade > 1)
+{
+
 	if (col == "FnameLnameSSN"){
 		str = "<div class='resultTableCell resultTableNormal'>";
 			str += "<div class='resultTableText'>";
@@ -761,7 +766,11 @@ function renderCell(col,celldata,cellid) {
 		str += "</div>";
 		return str;
 
-	} else if(celldata.grade > 1){
+	}
+
+  // Must be another elseif-statement above this that checks a variable that reads the value of the "Sortera efter" part of the resulted.php
+  // to see if it should sort after passed or un-passed grades.
+  else{
 		// color based on pass,fail,pending,assigned,unassigned
     str = "<div style='height:70px;' class='resultTableCell ";
     if(celldata.kind==4) { str += "dugga-moment "; }
@@ -819,7 +828,7 @@ function renderCell(col,celldata,cellid) {
 	}
 	return celldata;
 }
-
+}
 
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
