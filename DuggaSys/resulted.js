@@ -721,6 +721,7 @@ function createSortableTable(data){
 }
 
 function renderCell(col,celldata,cellid) {
+  mytable.renderTable();
   // getting the alternative that the sorting have.
     var sortingGrade = 0;
     var element = document.getElementById("gradeSortScale");
