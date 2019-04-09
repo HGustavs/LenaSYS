@@ -724,6 +724,7 @@ function renderCell(col,celldata,cellid) {
 // getting the alternative that the sorting have.
   var sortingGrade = 0;
   var argument = document.getElementById("gradeSortScale");
+  console.log(argument);
   switch(argument)
   {
     case "Sort-G":
@@ -756,8 +757,7 @@ function renderCell(col,celldata,cellid) {
 					str += celldata.firstname + " " + celldata.lastname;
 				str += "</div>";
 			str += "</div>";
-      return "<div>argument</div>";
-		//	return str;
+		  return str;
 		}
 
     // Must be another elseif-statement above this that checks a variable that reads the value of the "Sortera efter" part of the resulted.php
