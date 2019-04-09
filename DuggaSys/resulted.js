@@ -721,13 +721,9 @@ function createSortableTable(data){
 }
 
 function renderCell(col,celldata,cellid) {
-
-mytable.renderTable();
-
   // getting the alternative that the sorting have.
     var sortingGrade = 0;
     var argument = document.getElementById("gradeSortScale").options[element.selectedIndex].value;
-    console.log(argument);
     switch(argument)
     {
       case "Sort-G":
@@ -766,7 +762,7 @@ mytable.renderTable();
     // Must be another elseif-statement above this that checks a variable that reads the value of the "Sortera efter" part of the resulted.php
     // to see if it should sort after passed or un-passed grades. Also set a variable to either to 0, 1 or 2 (depending) on the result of the
     // first else if and use it in the argument of the second else if instead of using hardcoded numbers.
-    else if (celldata.grade == 1) {
+    else if (sortingGrade === "none" || celldata.grade === sortingGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
       str = "<div class='resultTableCell resultTableMini ";
 				if(celldata.kind==4) { str += "dugga-moment "; }
