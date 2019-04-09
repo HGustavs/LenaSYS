@@ -1931,7 +1931,6 @@ input.large-button {
   display: block;
   cursor: pointer;
   text-overflow: ellipsis;
-  max-width: 150px;
   overflow: hidden;
 }
 
