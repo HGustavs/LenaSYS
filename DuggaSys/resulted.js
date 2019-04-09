@@ -147,13 +147,13 @@ function process()
             gradeSystem:momtmp[j].gradesystem,
             vers:momentresult.vers,
             userAnswer:momentresult.useranswer,
-            quizId:momtmp[j].link, 
+            quizId:momtmp[j].link,
             qvariant:momtmp[j].qvariant,
-            quizfile:momtmp[j].quizfile, 
-            timesGraded:momentresult.timesGraded, 
+            quizfile:momtmp[j].quizfile,
+            timesGraded:momentresult.timesGraded,
             gradeExpire:momentresult.gradeExpire,
             firstname:entries[i].firstname,
-            lastname:entries[i].lastname,  
+            lastname:entries[i].lastname,
             deadline:new Date((momtmp[j].deadlinets*1000)),});
 				}else{
           student.push({
@@ -169,13 +169,13 @@ function process()
             marked:new Date(0),
             submitted:new Date(0),
             grade:null,
-            quizId:momtmp[j].link, 
+            quizId:momtmp[j].link,
             qvariant:momtmp[j].qvariant,
-            quizfile:momtmp[j].quizfile, 
-            timesGraded:0, 
+            quizfile:momtmp[j].quizfile,
+            timesGraded:0,
             gradeExpire:"UNK",
             firstname:entries[i].firstname,
-            lastname:entries[i].lastname,  
+            lastname:entries[i].lastname,
             deadline:new Date(momtmp[j].deadline),});
 				}
 			}
@@ -622,7 +622,7 @@ function returnedResults(data)
 
     //tim=performance.now();
 
-    subheading=0;    
+    subheading=0;
 
     $(document).ready(function () {
             $("#dropdownc").mouseleave(function () {
@@ -787,6 +787,13 @@ function renderCell(col,celldata,cellid) {
 					}
 					str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
 				str += "/>";
+        // Print times graded
+  			str += "<span class='text-center resultTableText'>";
+  				if(celldata.ishere===true && celldata.timesGraded!==0){
+  					str += "Times Graded: " + celldata.timesGraded;
+  				}
+  			str += "</span>";
+        //
 			str += "</div>";
 
 			// Print submitted time and change color to red if passed deadline
@@ -805,12 +812,6 @@ function renderCell(col,celldata,cellid) {
 				}
 			str += "</div>";
 
-			// Print times graded
-			str += "<div class='text-center resultTableText'>";
-				if(celldata.ishere===true && celldata.timesGraded!==0){
-					str += "Times Graded: " + celldata.timesGraded;
-				}
-			str += "</div>";
 		}
 		str += "</div>";
 		return str;
@@ -940,14 +941,14 @@ function compare(a,b) {
 		let kind = sortableTable.currentTable.getSortkind();
 		var tempA;
 		var tempB;
-    
+
     if (a==null||b==null||typeof(a)==="undefined"||typeof(b)==="undefined") return false;
 
 		if((typeof a == "undefined")||(typeof b == "undefined")) console.log("sort fail: ",a,b,col,kind)
-	
+
 		if(typeof a == "undefined") return 1;
 		if(typeof b == "undefined") return -1;
-	
+
 		if (col == "FnameLnameSSN") {
 				if(kind==0||kind==1){
 						tempA=a['firstname'].toUpperCase();
@@ -957,7 +958,7 @@ function compare(a,b) {
 						tempB=b['lastname'].toUpperCase();
 				}else{
 						tempA=a['ssn'].toUpperCase();
-						tempB=b['ssn'].toUpperCase();	
+						tempB=b['ssn'].toUpperCase();
 				}
 
 				if (tempA > tempB) {
@@ -969,7 +970,7 @@ function compare(a,b) {
 				}
 		} else {
         let atmp=conv(a,kind);
-        let btmp=conv(b,kind);                
+        let btmp=conv(b,kind);
 
         if(atmp==btmp && a.submitted>b.submitted)atmp+=10;
         if(atmp==btmp && b.submitted>a.submitted)btmp+=10;
@@ -979,14 +980,14 @@ function compare(a,b) {
 
 function conv(item,kind){
     var tmp=7;
-    if(typeof(item)!=="undefined"){      
-        if(item.grade===null )tmp=7; // N/A i.e. not opened 
+    if(typeof(item)!=="undefined"){
+        if(item.grade===null )tmp=7; // N/A i.e. not opened
         if(item.grade===0)tmp=1; // Pending
-        if(item.grade===0 && item.userAnswer===null)tmp=7; // Not submitted anything 
+        if(item.grade===0 && item.userAnswer===null)tmp=7; // Not submitted anything
         if(item.grade==1)tmp=6; // U
-        if(item.grade==1 && item.submitted>item.marked)tmp=1; // Pending 
-        if(item.grade>=2 && item.grade<=3)tmp=2; // Pass / G / VG         
-    }     
+        if(item.grade==1 && item.submitted>item.marked)tmp=1; // Pending
+        if(item.grade>=2 && item.grade<=3)tmp=2; // Pass / G / VG
+    }
     if(tmp<kind)tmp+=8;
 
     return tmp*100;
@@ -1043,7 +1044,7 @@ function exportCell(format,cell,colname) {
               }else{
                     str="UNK";
                 }
-            }        
+            }
           }
       }
   }else{
@@ -1081,7 +1082,7 @@ function ladexport()
     expo+=document.getElementById("ladgradescale").value+"\n";
     expo+=document.getElementById("laddate").value+"\n";
     expo+=myTable.export("csv",";");
-    
+
     //alert(expo);
     document.getElementById("resultlistheader").innerHTML="Results for: "+document.getElementById("ladselect").value;
     document.getElementById("resultlistarea").value=expo;
