@@ -328,7 +328,6 @@ function returnedCourse(data)
 		str += "<div class='fixed-action-button'>";
 		str += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='newCourse()'>+</a>";
 		str += "</div>";
-		//str += "<input class='fab' type='button' value='+' onclick='newCourse();' title='Create new course' />";
 		str += "</div>";
 	}
 
