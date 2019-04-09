@@ -56,6 +56,13 @@ body {
   border: 0;
 }
 
+#buttonDiv {
+  position: fixed;
+  margin-top: -7vw;
+  border-bottom: 1px solid black;
+  height: 20px;
+}
+
 body {
   font-family: 'Roboto', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -1933,7 +1940,7 @@ input.large-button {
   text-overflow: ellipsis;
   max-width: 150px;
   overflow: hidden;
-  direction: rtl;  
+  direction: rtl;
 }
 
 #editpopover {
