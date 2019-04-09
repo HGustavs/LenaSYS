@@ -1914,7 +1914,7 @@ input.large-button {
   padding: 4px;
   border-radius: 2px;
   display:block;
-  margin:auto;
+  margin:0;
 }
 
 #plorf {
@@ -1933,7 +1933,7 @@ input.large-button {
   text-overflow: ellipsis;
   max-width: 150px;
   overflow: hidden;
-  direction: rtl;  
+  direction: rtl;
 }
 
 #editpopover {
