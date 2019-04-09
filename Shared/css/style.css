@@ -1932,6 +1932,8 @@ input.large-button {
   cursor: pointer;
   text-overflow: ellipsis;
   overflow: hidden;
+  padding-left:16px;
+  padding-right:16px;
 }
 
 #editpopover {
