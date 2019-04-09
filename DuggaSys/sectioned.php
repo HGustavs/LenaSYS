@@ -140,7 +140,7 @@
 				</div>
 
 				<div id='course-newitem' style='display: flex;'>
-						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='newItem();'>
+						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='createQuickItem();'>
 				</div>
 
 				<div id='course-coursevers' style='display:none; margin-right:10px;' >UNK</div>
