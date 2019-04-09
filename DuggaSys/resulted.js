@@ -830,6 +830,7 @@ function renderCell(col,celldata,cellid) {
       if(celldata.kind==4) { str += "dugga-moment "; }
       str += "dugga-unassigned";
       str += "'>";
+      return str;
   }
 
 	return celldata;
