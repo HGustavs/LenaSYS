@@ -201,8 +201,14 @@
                         <div class="drop-down-item">
                             <a href="#" onclick="toggleGrid(this)">Snap to grid</a>
                         </div>
+                        <div class="drop-down-divider">
+                        
+                        </div>
                         <div class="drop-down-item">
                             <a href="#" onclick="toggleVirtualA4()">Display Virtual A4</a>
+                        </div>
+                        <div class="drop-down-item">
+                                <a href="#" onclick='toggleVirtualA4Holes();'>Toggle A4 Holes</a>
                         </div>
                     </div>
                 </div>
