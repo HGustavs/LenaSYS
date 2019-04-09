@@ -18,7 +18,7 @@ pdoConnect();
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Result Editor HEJSAN</title>
+	<title>Result Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
@@ -68,9 +68,13 @@ pdoConnect();
         <input id="laddate" type="date" style="font-size:12px;">
       </div>
 
-			// TODO: Lista för att kunna välja olika sätt att sortera betygen på.
 			<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Sortera efter</label>
+				<select id="gradeSortScale">
+					<option>G</option>
+					<option>U</option>
+					<option>VG</option>
+				</select>
 			</div>
 
       <button onclick="ladexport();">LadExport</button>
