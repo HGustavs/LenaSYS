@@ -1933,7 +1933,6 @@ input.large-button {
   text-overflow: ellipsis;
   max-width: 150px;
   overflow: hidden;
-  direction: rtl;  
 }
 
 #editpopover {

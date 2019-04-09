@@ -865,7 +865,7 @@ function renderSortOptions(col,status,colname) {
 		if (status ==- 1) {
 				if(col=="FnameLnameSSN"){
 						let colnameArr=colname.split("/");
-						str+="<div style='white-space:nowrap;cursor:pointer'>"
+						str+="<div style='cursor:pointer'>"
 						str+="<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
 						str+="<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
 						str+="<span onclick='myTable.toggleSortStatus(\"" + col + "\",4)'>" + colnameArr[2] + "</span>";
@@ -877,7 +877,7 @@ function renderSortOptions(col,status,colname) {
 				if(col=="FnameLnameSSN"){
 						let colnameArr=colname.split("/");
 						if (status == 0 || status == 1) {
-								str+="<div style='white-space:nowrap;cursor:pointer'>"
+								str+="<div style='cursor:pointer'>"
 								if(status==0){
 										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",1)'>" + colnameArr[0] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
 										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
@@ -889,7 +889,7 @@ function renderSortOptions(col,status,colname) {
 							}
 							str+="</div>"
 						} else if(status == 2 || status == 3) {
-								str+="<div style='white-space:nowrap;cursor:pointer'>"
+								str+="<div style='cursor:pointer'>"
 								if(status==2){
 										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
 										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",3)'>" + colnameArr[1] + "<img class='sortingArrow' src='../Shared/icons/desc_white.svg'/></span>/";
@@ -901,7 +901,7 @@ function renderSortOptions(col,status,colname) {
 								}
 								str+="</div>"
 						}else {
-								str+="<div style='white-space:nowrap;cursor:pointer'>"
+								str+="<div style='cursor:pointer'>"
 								if(status==4){
 										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",0)'>" + colnameArr[0] + "</span>/";
 										str += "<span onclick='myTable.toggleSortStatus(\"" + col + "\",2)'>" + colnameArr[1] + "</span>/";
