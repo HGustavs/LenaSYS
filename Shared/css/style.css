@@ -58,9 +58,9 @@ body {
 
 #buttonDiv {
   position: fixed;
-  margin-top: -7vw;
-  border-bottom: 1px solid black;
+  margin-top: -4%;
   height: 20px;
+  background-color: white;
 }
 
 body {
