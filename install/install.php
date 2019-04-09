@@ -800,7 +800,7 @@ define(\"DB_HOST\",\"".$serverName."\");
 define(\"DB_NAME\",\"".$databaseName."\");
 ?>";
           // end of coursesyspw content
-          file_put_contents($putFileHere."/coursesyspw2.php",$filePutContent);
+          file_put_contents($putFileHere."/coursesyspw.php",$filePutContent);
         } catch (\Exception $e) {
           echo "<br><b>To make installation work please make a
           file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
