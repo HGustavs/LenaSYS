@@ -242,7 +242,7 @@ strong {font-weight: bold;}
 }
 
 /* Change odd rows on resulted bg colour */
-#resultTable___tbl___mhv tbody tr:nth-child(odd) {background-color:#dbd0d8;}
+#resultTable___tbl___mhv tbody tr:nth-child(odd) {background-color:#ccc;}
 
 table tbody tr:nth-child(even) {background-color:#F0F0F0;}
 .selectedOp {background-color: #c6cdb8 !important;}
