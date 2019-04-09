@@ -723,7 +723,8 @@ function renderCell(col,celldata,cellid) {
 
 // getting the alternative that the sorting have.
   var sortingGrade = 0;
-  var argument = document.getElementById("gradeSortScale").value;
+  var element = document.getElementById("gradeSortScale");
+  var argument = element.options[element.selectedIndex].value;
   console.log(argument);
   switch(argument)
   {
