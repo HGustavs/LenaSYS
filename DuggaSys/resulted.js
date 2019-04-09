@@ -734,11 +734,8 @@ function gradeSortHandler()
       case "Sort-U":
         sortingGrade = 1;
         break;
-      case "Sort-VG":
+      case "Sort-VG":   // There is no duggas that can have VG at the moment so this will refer to G.
         sortingGrade = 2;
-        break;
-      case "Sort-none":
-        sortingGrade = "none";
         break;
       default:
         sortingGrade = "none";
@@ -845,7 +842,7 @@ function renderCell(col,celldata,cellid) {
 		return str;
 	}
 
-// When sorting is activated then this "hides" all other data than what is specified.
+  // When sorting is activated then this "hides" all other data than what is specified.
   else {
       str = "<div style='height:70px;' class='resultTableCell ";
       if(celldata.kind==4) { str += "dugga-moment "; }
@@ -896,16 +893,6 @@ function rowFilter(row) {
 			}
 		}
 	}
-
-  // For removing rows that don't have anythng in common with the sorting in place.
-  for(column in row)
-  {
-    if(column.grade===sortingGrade)
-    {
-      return true;
-    }
-  }
-
 	return false;
 }
 
