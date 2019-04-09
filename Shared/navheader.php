@@ -113,3 +113,10 @@
 		$(".dropdown-list-container").css("display", "none");
 	}
 </script>
+<script type="text/javascript">
+	(function(proxied) {
+		window.alert = function() {
+			return <?php echo checkLogin() && isSuperUser($_SESSION['uid']) ? "proxied.apply(this, arguments)" : "null" ?>;
+		};
+	})(window.alert);
+</script>
