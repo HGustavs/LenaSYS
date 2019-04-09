@@ -125,6 +125,13 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
   $("#I" + lid).css("border", "2px dashed #FC5");
   $("#I" + lid).css("box-shadow", "1px 1px 3px #000 inset");
 
+  // Default showing of gradesystem. Will show if has type "Test" or "Moment"
+  if (kind != 3 || kind != 4) {
+    document.querySelector("#inputwrapper-gradesystem").style.display = "none";
+  } else {
+    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
+  }
+
   // Set GradeSys, Kind, Visibility, Tabs (tabs use gradesys)
   $("#gradesys").html(makeoptions(gradesys, ["-", "U-G-VG", "U-G", "U-3-4-5"], [0, 1, 2, 3]));
   $("#type").html(makeoptions(kind, ["Header", "Section", "Code", "Test", "Moment", "Link", "Group Activity", "Message"], [0, 1, 2, 3, 4, 5, 6, 7]));
@@ -183,12 +190,18 @@ function selectItem(lid, entryname, kind, evisible, elink, moment, gradesys, hig
 // changedType: When kind of section has been changed we must update dropdown lists accordingly
 //----------------------------------------------------------------------------------
 
+
+// If type "Test" or "Moment" then Grade system will be shown
 function changedType(kind) {
   // Prepares option list for code example (2)/dugga (3) dropdown/links (5) / Not applicable
+    document.querySelector("#inputwrapper-gradesystem").style.display = "none";
   if (kind == 2) {
     $("#link").html(makeoptionsItem(xelink, retdata['codeexamples'], 'sectionname', 'exampleid'));
   } else if (kind == 3) {
+    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
     $("#link").html(makeoptionsItem(xelink, retdata['duggor'], 'qname', 'id'));
+  } else if (kind == 4) {
+    document.querySelector("#inputwrapper-gradesystem").style.display = "initial";
   } else if (kind == 5 || kind == 7) {
     $("#link").html(makeoptionsItem(xelink, retdata['links'], 'filename', 'filename'));
   } else {
