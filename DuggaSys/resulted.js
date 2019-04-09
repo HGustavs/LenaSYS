@@ -826,6 +826,8 @@ function renderCell(col,celldata,cellid) {
 
 // Testing sorting here
   else {
+      str = "<div style='height:70px;' class='resultTableCell ";
+      if(celldata.kind==4) { str += "dugga-moment "; }
       str += "dugga-unassigned";
       str += "'>";
   }
