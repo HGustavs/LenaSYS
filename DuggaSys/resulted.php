@@ -71,9 +71,10 @@ pdoConnect();
 			<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Sortera efter</label>
 				<select id="gradeSortScale">
-					<option>G</option>
-					<option>U</option>
-					<option>VG</option>
+					<option value="Sort-none" selected>inget</option>
+					<option value="Sort-G">G</option>
+					<option value="Sort-U">U</option>
+					<option value="Sort-VG">VG</option>
 				</select>
 			</div>
 
