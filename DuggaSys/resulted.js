@@ -698,34 +698,6 @@ function createSortableTable(data){
 			tblfoot:[]
 		}
 
-    // getting the alternative that the sorting have.
-      var sortingGrade = 0;
-      var element = document.getElementById("gradeSortScale");
-      var argument = element.options[element.selectedIndex].value;
-      console.log(argument);
-      switch(argument)
-      {
-        case "Sort-G":
-          sortingGrade = 2;
-          break;
-
-        case "Sort-U":
-          sortingGrade = 1;
-          break;
-
-        case "Sort-VG":
-          sortingGrade = 2;
-          break;
-
-        case "Sort-none":
-          sortingGrade = "none";
-          break;
-
-        default:
-          sortingGrade = "none";
-          break;
-      }
-
 		var colOrder=buildColumnOrder();
 		myTable = new SortableTable({
 				data:tabledata,
@@ -749,6 +721,35 @@ function createSortableTable(data){
 }
 
 function renderCell(col,celldata,cellid) {
+
+  // getting the alternative that the sorting have.
+    var sortingGrade = 0;
+    var element = document.getElementById("gradeSortScale");
+    var argument = element.options[element.selectedIndex].value;
+    console.log(argument);
+    switch(argument)
+    {
+      case "Sort-G":
+        sortingGrade = 2;
+        break;
+
+      case "Sort-U":
+        sortingGrade = 1;
+        break;
+
+      case "Sort-VG":
+        sortingGrade = 2;
+        break;
+
+      case "Sort-none":
+        sortingGrade = "none";
+        break;
+
+      default:
+        sortingGrade = "none";
+        break;
+    }
+
 	// Render minimodef
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
