@@ -722,10 +722,11 @@ function createSortableTable(data){
 
 function renderCell(col,celldata,cellid) {
 
+mytable.renderTable();
+
   // getting the alternative that the sorting have.
     var sortingGrade = 0;
-    var element = document.getElementById("gradeSortScale");
-    var argument = element.options[element.selectedIndex].value;
+    var argument = document.getElementById("gradeSortScale").options[element.selectedIndex].value;
     console.log(argument);
     switch(argument)
     {
