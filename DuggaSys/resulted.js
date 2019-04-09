@@ -752,9 +752,6 @@ function renderCell(col,celldata,cellid) {
 
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
-if(celldata.grade > 1)
-{
-
 	if (col == "FnameLnameSSN"){
 		str = "<div class='resultTableCell resultTableNormal'>";
 			str += "<div class='resultTableText'>";
@@ -770,7 +767,7 @@ if(celldata.grade > 1)
 
   // Must be another elseif-statement above this that checks a variable that reads the value of the "Sortera efter" part of the resulted.php
   // to see if it should sort after passed or un-passed grades.
-  else{
+  elseif (celldata.grade > 1){
 		// color based on pass,fail,pending,assigned,unassigned
     str = "<div style='height:70px;' class='resultTableCell ";
     if(celldata.kind==4) { str += "dugga-moment "; }
@@ -827,7 +824,6 @@ if(celldata.grade > 1)
 		return str;
 	}
 	return celldata;
-}
 }
 
 //----------------------------------------------------------------
