@@ -9,7 +9,8 @@
 
     // Saving away old execution time setting and setting new to 120 (default is 30).
     // this is done in order to avoid a php timeout, especially on windows where Database
-    // query time also affects php executiion time.
+    // query time also affects php executiion time. This will not work when php is running
+    // in safe mode.
     $timeOutSeconds = ini_get('max_execution_time');
     set_time_limit(120);
 
@@ -95,13 +96,9 @@
     $dbUsername = "";
     $dbHostname = "";
     $dbName = "";
-    // did they have a $credentialsFile before we started install process(true/false)
-    $credentialsFileExisted = false;
 
     $credentialsFile = "../../coursesyspw.php";
     if(file_exists("../../coursesyspw.php")) {
-      // credentialsfile existed.
-      $credentialsFileExisted = true;
       $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
 
       // check if the credentials exists in the file, store them if they do
@@ -771,6 +768,10 @@
         echo "<b>Installation finished.</b><br>";
         flush();
         ob_flush();
+
+        // resetting timeout to what it was prior to installation
+        set_time_limit($timeOutSeconds);
+
         echo "</div>";
         echo "<div id='inputFooter'><span title='Show or hide progress.'  id='showHideInstallation'>Show/hide installation progress.</span><br>
                 <span id='errorCount'>Errors: " . $errors . "</span></div>"; # Will show how many errors installation finished with.
@@ -784,20 +785,40 @@
         $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
         echo "<div id='doThisWrapper'>";
         echo "<h1><span id='warningH1' />!!!READ BELOW!!!</span></h1>";
-        echo "<br><b>To make installation work please make a
-            file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
-        echo "<b>Bash command to complete all this (Copy all code below/just click the box and paste it into bash shell as one statement):</b><br>";
-        echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox1\")'><code id='codeBox1'>";
-        echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
-        echo 'define(\"DB_USER\",\"' . $username . '\");\n';
-        echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
-        echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
-        echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
-        echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
-        echo "</code></div>";
+        // Trying to put content and/or create coursesyspw.php.
+        // If there already is a file it will be filled with the entered
+        // credentials in case they don't match what was originally in the file
+        // and if no file exists create one with credentials, if it fails
+        // give instructions on how to create the file.
+        try {
+          // Start of Content to put in coursesyspw.
+          $filePutContent = "<?php
+define(\"DB_USER\",\"".$username."\");
+define(\"DB_PASSWORD\",\"".$password."\");
+define(\"DB_HOST\",\"".$serverName."\");
+define(\"DB_NAME\",\"".$databaseName."\");
+?>";
+          // end of coursesyspw content
+          file_put_contents($putFileHere."/coursesyspw2.php",$filePutContent);
+        } catch (\Exception $e) {
+          echo "<br><b>To make installation work please make a
+          file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
 
-        echo '<div id="copied1">Copied to clipboard!<br></div>';
+          echo "<b>We tried to create one for you but an error occured: see below how to do it yourself! </b></br>";
+          echo "<b>Bash command to complete all this (Copy all code below/just click the box and paste it into bash shell as one statement):</b><br>";
+          echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox1\")'><code id='codeBox1'>";
+          echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
+          echo 'define(\"DB_USER\",\"' . $username . '\");\n';
+          echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
+          echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
+          echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
+          echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
+          echo "</code></div>";
+
+          echo '<div id="copied1">Copied to clipboard!<br></div>';
+        }
+
 
         echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
