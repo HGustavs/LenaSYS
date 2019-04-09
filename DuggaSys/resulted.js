@@ -720,6 +720,28 @@ function createSortableTable(data){
 }
 
 function renderCell(col,celldata,cellid) {
+
+// getting the alternativ that the sorting have.
+  var sortingGrade;
+  switch(gradeSortScale.value)
+  {
+    case "Sort-G":
+      sortingGrade = 1;
+      break;
+
+    case "Sort-U":
+      sortingGrade = 0;
+      break;
+
+    case "Sort-VG":
+      sortingGrade = 2;
+      break;
+
+    default:
+      sortingGrade = 2;
+      break;
+  }
+
 	// Render minimodef
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
@@ -733,7 +755,8 @@ function renderCell(col,celldata,cellid) {
 		}
 
     // Must be another elseif-statement above this that checks a variable that reads the value of the "Sortera efter" part of the resulted.php
-    // to see if it should sort after passed or un-passed grades.
+    // to see if it should sort after passed or un-passed grades. Also set a variable to either to 0, 1 or 2 (depending) on the result of the
+    // first else if and use it in the argument of the second else if instead of using hardcoded numbers.
     else if (celldata.grade > 1) {
 			// color based on pass,fail,pending,assigned,unassigned
       str = "<div class='resultTableCell resultTableMini ";
@@ -766,8 +789,9 @@ function renderCell(col,celldata,cellid) {
 	}
 
   // Must be another elseif-statement above this that checks a variable that reads the value of the "Sortera efter" part of the resulted.php
-  // to see if it should sort after passed or un-passed grades.
-  else if ( celldata.grade <= 1 ){ //|| celldata.grade != 0 && !(celldata.grade > 0) ){
+  // to see if it should sort after passed or un-passed grades. Also set a variable to either to 0, 1 or 2 (depending) on the result of the
+  // first else if and use it in the argument of the second else if instead of using hardcoded numbers.
+  else if ( celldata.grade <= sortingGrade ){
 		// color based on pass,fail,pending,assigned,unassigned
     str = "<div style='height:70px;' class='resultTableCell ";
     if(celldata.kind==4) { str += "dugga-moment "; }
@@ -824,7 +848,7 @@ function renderCell(col,celldata,cellid) {
 		return str;
 	}
 
-// Testing sorting here
+// When sorting is activated then this "hides" all other data than what is specified.
   else {
       str = "<div style='height:70px;' class='resultTableCell ";
       if(celldata.kind==4) { str += "dugga-moment "; }
@@ -1011,7 +1035,7 @@ function conv(item,kind){
 }
 
 function renderColumnFilter(col,status,colname) {
-		str = "";
+    str = "";
 		if (colname == "FnameLnameSSN") return str;
 		if (status) {
 			str = "<div class='checkbox-dugga'>";
