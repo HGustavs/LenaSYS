@@ -739,11 +739,11 @@ function renderCell(col,celldata,cellid) {
       break;
 
     case "Sort-none":
-      sortingGrade = 2;
+      sortingGrade = "none";
       break;
 
     default:
-      sortingGrade = 2;
+      sortingGrade = "none";
       break;
   }
 
@@ -796,7 +796,7 @@ function renderCell(col,celldata,cellid) {
   // Must be another elseif-statement above this that checks a variable that reads the value of the "Sortera efter" part of the resulted.php
   // to see if it should sort after passed or un-passed grades. Also set a variable to either to 0, 1 or 2 (depending) on the result of the
   // first else if and use it in the argument of the second else if instead of using hardcoded numbers.
-  else if ( celldata.grade == sortingGrade ){
+  else if ( sortingGrade === "none" || celldata.grade === sortingGrade ){
 		// color based on pass,fail,pending,assigned,unassigned
     str = "<div style='height:70px;' class='resultTableCell ";
     if(celldata.kind==4) { str += "dugga-moment "; }
