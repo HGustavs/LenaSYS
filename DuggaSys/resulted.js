@@ -827,6 +827,7 @@ function renderCell(col,celldata,cellid) {
 // Testing sorting here
   else {
       str += "dugga-unassigned";
+      str += "'>";
   }
 
 	return celldata;
