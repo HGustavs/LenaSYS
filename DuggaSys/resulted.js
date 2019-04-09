@@ -1119,6 +1119,7 @@ function ladexport()
     expo+=document.getElementById("ladselect").value+"\n";
     expo+=document.getElementById("ladgradescale").value+"\n";
     expo+=document.getElementById("laddate").value+"\n";
+    expo+=document.getElementById("gradeSortScale").value+"\n";
     expo+=myTable.export("csv",";");
 
     //alert(expo);
