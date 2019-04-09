@@ -739,11 +739,11 @@ function renderCell(col,celldata,cellid) {
       break;
 
     case "Sort-none":
-      sortingGrade = "none";
+      sortingGrade = 2;
       break;
 
     default:
-      sortingGrade = "none";
+      sortingGrade = 2;
       break;
   }
 
