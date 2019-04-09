@@ -721,9 +721,6 @@ function createSortableTable(data){
 
 function renderCell(col,celldata,cellid) {
 	// Render minimodef
-if(celldata.grade > 1)
-{
-
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
 		if (col == "FnameLnameSSN"){
@@ -733,7 +730,9 @@ if(celldata.grade > 1)
 				str += "</div>";
 			str += "</div>";
 			return str;
-		} else {
+		}
+
+    else if (celldata.grade > 1) {
 			// color based on pass,fail,pending,assigned,unassigned
       str = "<div class='resultTableCell resultTableMini ";
 				if(celldata.kind==4) { str += "dugga-moment "; }
@@ -748,13 +747,9 @@ if(celldata.grade > 1)
 			return str;
 		}
 	}
-}
+
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
-
-if(celldata.grade > 1)
-{
-
 	if (col == "FnameLnameSSN"){
 		str = "<div class='resultTableCell resultTableNormal'>";
 			str += "<div class='resultTableText'>";
@@ -766,7 +761,7 @@ if(celldata.grade > 1)
 		str += "</div>";
 		return str;
 
-	} else {
+	} else if(celldata.grade > 1){
 		// color based on pass,fail,pending,assigned,unassigned
     str = "<div style='height:70px;' class='resultTableCell ";
     if(celldata.kind==4) { str += "dugga-moment "; }
@@ -824,7 +819,7 @@ if(celldata.grade > 1)
 	}
 	return celldata;
 }
-}
+
 
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
