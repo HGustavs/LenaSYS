@@ -722,8 +722,8 @@ function createSortableTable(data){
 function renderCell(col,celldata,cellid) {
 
 // getting the alternativ that the sorting have.
-  var sortingGrade = 1;
-  switch(gradeSortScale.value)
+  var sortingGrade;
+  switch(document.getElementById("gradeSortScale"))
   {
     case "Sort-G":
       sortingGrade = 1;
