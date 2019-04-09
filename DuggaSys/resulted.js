@@ -767,7 +767,7 @@ function renderCell(col,celldata,cellid) {
 
   // Must be another elseif-statement above this that checks a variable that reads the value of the "Sortera efter" part of the resulted.php
   // to see if it should sort after passed or un-passed grades.
-  else if (celldata.grade > 1){
+  else if (celldata.grade < 1){
 		// color based on pass,fail,pending,assigned,unassigned
     str = "<div style='height:70px;' class='resultTableCell ";
     if(celldata.kind==4) { str += "dugga-moment "; }
