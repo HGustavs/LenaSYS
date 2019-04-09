@@ -19,7 +19,7 @@ strong {font-weight: bold;}
 	border-collapse: collapse;
 }
 
-.noll { 
+.noll {
 	text-align:center;
 	vertical-align:middle;
 	background:#523;
@@ -30,7 +30,7 @@ strong {font-weight: bold;}
 	cursor:pointer;
 }
 
-.ett { 
+.ett {
 	text-align:center;
 	vertical-align:middle;
 	background:#c9a;
@@ -41,7 +41,7 @@ strong {font-weight: bold;}
 	cursor:pointer;
 }
 
-.hexo { 
+.hexo {
 	text-align:center;
 	vertical-align:middle;
 	background:#c9a;
@@ -52,7 +52,7 @@ strong {font-weight: bold;}
 	cursor:pointer;
 }
 
-.hexbutt { 
+.hexbutt {
 	text-align:center;
 	vertical-align:middle;
 	background:#b89;
@@ -71,12 +71,12 @@ strong {font-weight: bold;}
 	padding: 8px;
 	background-color:#523;
 	/* border: 2px outset #000; */
-	background: linear-gradient(to bottom, #fff 10px, #fde 90%); 
+	background: linear-gradient(to bottom, #fff 10px, #fde 90%);
 	border-radius:8px;
 }
 
 .popover, .popover:before {
-	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);  
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 }
 
 .popover:before,
@@ -103,7 +103,7 @@ strong {font-weight: bold;}
 .popover.arrow-top:after {
 	bottom: 100%;
 	left: 10px;
-	margin-bottom: -7px; 
+	margin-bottom: -7px;
 	border-bottom: 0;
 	border-right: 0;
 	background: #fff;
@@ -113,7 +113,7 @@ strong {font-weight: bold;}
 .popover.arrow-topr:after {
 	bottom: 100%;
 	right: 10px;
-	margin-bottom: -7px; 
+	margin-bottom: -7px;
 	border-bottom: 0;
 	border-right: 0;
 	background: #fff;
@@ -131,12 +131,12 @@ strong {font-weight: bold;}
 .instructions-content {
 	-webkit-columns: 2 200px;
 	-moz-columns: 2 200px;
-	columns: 2 200px; 
-	-webkit-column-gap: 40px;        
+	columns: 2 200px;
+	-webkit-column-gap: 40px;
 	-moz-column-gap: 40px;
-	column-gap: 40px; 
+	column-gap: 40px;
 	padding:15px;
-	border:1px solid #ccc;	
+	border:1px solid #ccc;
 }
 
 .instructions-button {
@@ -152,7 +152,7 @@ strong {font-weight: bold;}
 }
 .instructions-button:after {
 	content: '';
-	display: block;  
+	display: block;
 	position: absolute;
 	left: 49%;
 	left: -webkit-calc(50% - 15px);
@@ -175,7 +175,7 @@ strong {font-weight: bold;}
 }
 
 .instructions-button:hover {
-	background-color:#939393;	
+	background-color:#939393;
 }
 
 /* --------------================################================-------------- *
@@ -199,7 +199,7 @@ strong {font-weight: bold;}
 
 .quiz-question{
 	background-color:#614875;
-	padding:6px 15px 6px 15px;	
+	padding:6px 15px 6px 15px;
 }
 
 .quiz-question h3{
@@ -207,7 +207,7 @@ strong {font-weight: bold;}
 }
 
 .quiz-answer{
-	padding:6px 15px 6px 15px;	
+	padding:6px 15px 6px 15px;
 }
 
 
@@ -232,15 +232,16 @@ strong {font-weight: bold;}
     	cursor:pointer;
     	font-size:14px;
     	transition:1s background-color;
-    	border-radius:4px;	
+    	border-radius:4px;
 
 }
 
 .submit:hover {
     	background-color:#7B5A96;
-    	border-radius:4px;	
+    	border-radius:4px;
 }
-						
+
+#resultTable___tbl___mhv tbody tr:nth-child(odd) {background-color:blue;}						
 table tbody tr:nth-child(even) {background-color:#F0F0F0;}
 .selectedOp {background-color: #c6cdb8 !important;}
 svg text {
