@@ -406,7 +406,7 @@ function SortableTable(param)
         			// Add Counter cell to the row. The class <tableid>_counter can be used to style the counterText
         			if(this.hasCounter) {
                   str += "<td style='white-space:nowrap;' onclick='clickedInternal(event,this);' class='" + this.tableid + DELIMITER+"counter'><span>"+ this.rowIndex +"</span></td>";
-                  mhvstr += "<td style='white-space:nowrap;' onclick='clickedInternal(event,this);' class='" + this.tableid + DELIMITER+"counter'><span>"+ this.rowIndex +"</span></td>";
+                  mhvstr += "<td style='white-space:nowrap;' onclick='clickedInternal(event,this);' class='" + this.tableid + DELIMITER+"counter'><span>"+ this.rowIndex++ +"</span></td>";
               }
         			result++;
               for(var columnOrderIdx=0;columnOrderIdx<columnOrder.length;columnOrderIdx++){
@@ -434,9 +434,9 @@ function SortableTable(param)
 
                     var cellid = "r"+i+DELIMITER+this.tableid+DELIMITER+columnOrder[columnOrderIdx];
           					str += "<td style='white-space:nowrap;' id='"+cellid+"' onclick='clickedInternal(event,this);' class='"+this.tableid+"-"+columnOrder[columnOrderIdx]+"'>"+renderCell(columnOrder[columnOrderIdx],tbl.tblbody[i][columnOrder[columnOrderIdx]],cellid)+"</td>";
-                    if(columnOrderIdx<freezePaneIndex){
-                        mhvstr+="<td style='white-space:nowrap;' id='"+cellid+DELIMITER+"mhv' onclick='clickedInternal(event,this);' class='"+this.tableid+"-"+columnOrder[columnOrderIdx]+"'>"+renderCell(columnOrder[columnOrderIdx],tbl.tblbody[i][columnOrder[columnOrderIdx]],cellid)+"</td>";
-                    }
+                    var cellid = "r"+i+DELIMITER+this.tableid+DELIMITER+columnOrder[columnOrderIdx];
+          					mhvstr += "<td style='white-space:nowrap;' id='"+cellid+"' onclick='clickedInternal(event,this);' class='"+this.tableid+"-"+columnOrder[columnOrderIdx]+"'>"+renderCell(columnOrder[columnOrderIdx],tbl.tblbody[i][columnOrder[columnOrderIdx]],cellid)+"</td>";
+                    
         				}
       			}
       			str += "</tr>";
