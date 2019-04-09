@@ -721,9 +721,12 @@ function createSortableTable(data){
 
 function renderCell(col,celldata,cellid) {
 
-// getting the alternativ that the sorting have.
-  var sortingGrade;
+// getting the alternative that the sorting have.
+  var sortingGrade = 0;
   var argument = document.getElementById("gradeSortScale");
+
+return "<div>argument</div>";
+
   switch(argument)
   {
     case "Sort-G":
@@ -739,11 +742,11 @@ function renderCell(col,celldata,cellid) {
       break;
 
     case "Sort-none":
-      sortingGrade = 2;
+      sortingGrade = "none";
       break;
 
     default:
-      sortingGrade = 2;
+      sortingGrade = "none";
       break;
   }
 
