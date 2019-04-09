@@ -14,7 +14,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title id="sectionedPageTitle">Section Editor hurr durr</title>
+	<title id="sectionedPageTitle">Section Editor</title>
 
 	<link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
 	<link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
@@ -144,7 +144,7 @@
 				</div>
 
 				<div id='course-newitem' style='display: flex;'>
-						<input id='addElement' style="display:none;" type='button' value='-' class='submit-button-newitem' title='New Item' onclick='createFABItem("2", "New Testest");'>
+						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='createFABItem("2", "New Code");'>
 				</div>
 				<!-- test #1 -->
 
