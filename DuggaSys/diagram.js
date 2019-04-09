@@ -1303,6 +1303,34 @@ function alignBottom(selected_objects){
 }
 
 function alignVerticalCenter(selected_objects){
+    var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
+    var temporary_objects = [];
+    for(var i = 0; i < selected_objects.length; i++){
+        if(points[selected_objects[i].topLeft].x > highest_x){
+            highest_x = points[selected_objects[i].bottomRight].x;
+        }
+        if(points[selected_objects[i].bottomRight].x < lowest_x){
+            lowest_x = points[selected_objects[i].topLeft].x;
+        }
+    }
+    selected_center_x = (highest_x-lowest_x)/2;
+    for(var i = 0; i < selected_objects.length; i++){
+        var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
+        selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
+    }
+
+    // Added spacing when there are objects that overlap eachother.
+    temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
+    for(var i = 1; i < temporary_objects.length; i++){       
+        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
+            var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
+            temporary_objects[i].move(0, -difference);
+        }
+    }
+}
+
+function alignHorizontalCenter(selected_objects){
     var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
     var temporary_objects = [];
     for(var i = 0; i < selected_objects.length; i++){
@@ -1327,34 +1355,6 @@ function alignVerticalCenter(selected_objects){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
-        }
-    }
-}
-
-function alignHorizontalCenter(selected_objects){
-    var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
-    var temporary_objects = [];
-    for(var i = 0; i < selected_objects.length; i++){
-        if(points[selected_objects[i].topLeft].x > highest_x){
-            highest_x = points[selected_objects[i].bottomRight].x;
-        }
-        if(points[selected_objects[i].bottomRight].x < lowest_x){
-            lowest_x = points[selected_objects[i].topLeft].x;
-        }
-    }
-    selected_center_x = (highest_x-lowest_x)/2;
-    for(var i = 0; i < selected_objects.length; i++){
-        var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
-        selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
-    }
-
-    // Added spacing when there are objects that overlap eachother.
-    temporary_objects = removeDuplicatesInList(selected_objects);
-    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
-        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
-            var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
-            temporary_objects[i].move(0, -difference);
         }
     }
 }
