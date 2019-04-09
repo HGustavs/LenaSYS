@@ -861,7 +861,7 @@ function renderCell(col,celldata,cellid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-	// Custom filters that remove rows before an actual search
+  // Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
 	if (filterList["onlyPending"]) {
 		var rowPending = false;
@@ -896,6 +896,16 @@ function rowFilter(row) {
 			}
 		}
 	}
+
+  // For removing rows that don't have anythng in common with the sorting in place.
+  for(column in row)
+  {
+    if(column.grade===sortingGrade)
+    {
+      return true;
+    }
+  }
+
 	return false;
 }
 
