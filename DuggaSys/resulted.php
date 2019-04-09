@@ -76,9 +76,6 @@ pdoConnect();
 					<option value="Sort-U">U</option>
 					<option value="Sort-VG">VG</option>
 				</select>
-				<div>
-					<button onclick="updateTable()">Sort</button>
-				</div>
 			</div>
 
       <button onclick="ladexport();">LadExport</button>
