@@ -25,7 +25,7 @@ function getAllIndexes(haystack, needle) {
     while (i !== -1) {
         indexes.push(i);
         i = haystack.indexOf(needle, ++i);
-    }    
+    }
     return indexes;
 }
 
@@ -213,7 +213,7 @@ function makeoptionsItem(option,optionlist,optionstring,valuestring)
 }
 
 //----------------------------------------------------------------------------------
-// makeparams: Help function for hassle free preparation of a clickable param list 
+// makeparams: Help function for hassle free preparation of a clickable param list
 //----------------------------------------------------------------------------------
 
 function makeparams(paramarray)
@@ -1349,6 +1349,13 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							} else {
                                     tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>"+filez[i].filename+"."+filez[i].extension+"</span>";
 							}
+
+              // if type is pdf, add a button to open in new tab.
+              if (ctype == "pdf") {
+                  tab +=" <span> hej </span>"
+                  // FIXME: fixa en target _blank länk här på en ikon som visar att det är ny tab.
+              }
+
 							tab+="</td><td>";
 							tab+=filez[i].updtime;+"</td>";
 
@@ -1505,7 +1512,7 @@ function FABUp(e)
 				createQuickItem();
 		}else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
 				FABToggle();
-		}	
+		}
 }
 
 //----------------------------------------------------------------------------------
