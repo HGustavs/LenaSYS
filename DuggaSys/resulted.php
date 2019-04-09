@@ -67,7 +67,6 @@ pdoConnect();
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
       </div>
-
 			<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
 				<label>Sortera efter</label>
 				<select id="gradeSortScale" onchange="updateTable();">
@@ -77,7 +76,6 @@ pdoConnect();
 					<option value="Sort-VG">VG</option>
 				</select>
 			</div>
-
       <button onclick="ladexport();">LadExport</button>
     </div>
 		<!--<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>-->
