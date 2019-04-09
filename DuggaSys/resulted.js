@@ -720,11 +720,9 @@ function createSortableTable(data){
 }
 
 function renderCell(col,celldata,cellid) {
-	// Render minimode
-var test = false;
-  if(test === true)
-  {
-
+	// Render minimodef
+if(celldata.grade > 1)
+{
 
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
@@ -751,10 +749,10 @@ var test = false;
 		}
 	}
 }
-
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
-if(test === true)
+
+if(celldata.grade > 1)
 {
 
 	if (col == "FnameLnameSSN"){
