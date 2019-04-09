@@ -39,7 +39,7 @@ function switchToolbar(direction){
   document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
-  if(toolbarState == 1){
+  if(toolbarState == 1){              //The 1 stands for ER Toolbar
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -53,7 +53,7 @@ function switchToolbar(direction){
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-  }else if( toolbarState == 2){
+  }else if( toolbarState == 2){      //The 2 stand for UML Toolbar
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -65,7 +65,7 @@ function switchToolbar(direction){
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
-  }else if(toolbarState == 3){
+  }else if(toolbarState == 3){      //The 3 stand for Free Toolbar
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
     $("#drawerUndo").show();
@@ -76,7 +76,7 @@ function switchToolbar(direction){
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
-  else{
+  else{                             //This is the Toolbar All
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();
