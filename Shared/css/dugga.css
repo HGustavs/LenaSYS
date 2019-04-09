@@ -241,7 +241,9 @@ strong {font-weight: bold;}
     	border-radius:4px;
 }
 
-#resultTable___tbl___mhv tbody tr:nth-child(odd) {background-color:blue;}						
+/* Change odd rows on resulted bg colour */
+#resultTable___tbl___mhv tbody tr:nth-child(odd) {background-color:blue;}
+
 table tbody tr:nth-child(even) {background-color:#F0F0F0;}
 .selectedOp {background-color: #c6cdb8 !important;}
 svg text {
