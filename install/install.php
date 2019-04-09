@@ -10,9 +10,12 @@
     // Create a version of dirname for <PHP7 compability
     function cdirname($path, $level) {
       $prefix = '';
+      // Check if $path starts with a windows style 'C:\' prefix
       if (preg_match("/^.:\\\\/", $path)) {
+        // Cut off the drive letter and store it in $prefix
         $prefix = substr($path, 0, 2);
         $path = substr($path, 2);
+        // Replace all windows '\' with unix '/' in the path string
         $path = str_replace("\\", "/", $path);
       }
 
@@ -29,6 +32,7 @@
           $r .= $paths[$i];
         }
       }
+      // Re-add the drive letter if there was one ('C:' + '/.../')
       return $prefix . $r;
     };
 
