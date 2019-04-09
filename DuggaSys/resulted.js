@@ -726,7 +726,6 @@ function gradeSortHandler()
   // getting the alternative that the sorting have.
     sortingGrade = 0;
     var argument = document.getElementById("gradeSortScale").value;
-    //var argument = element.options[element.selectedIndex].value;
     switch(argument)
     {
       case "Sort-G":
