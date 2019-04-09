@@ -336,7 +336,7 @@ function SortableTable(param)
     	// Make headings Clean Contains headings using only A-Z a-z 0-9 ... move to function removes lines of code and removes redundant code/data!?
       str += "<thead class='listHeading' id='"+this.tableid+DELIMITER+"tblhead'><tr>";
       mhstr += "<thead class='listHeading' id='"+this.tableid+DELIMITER+"tblhead_mh'><tr>";
-      mhvstr += "<thead class='listHeading' id='"+this.tableid+DELIMITER+"tblhead_mhv'><tr>";
+      // mhvstr += "<thead class='listHeading' id='"+this.tableid+DELIMITER+"tblhead_mhv'><tr>";
       mhfstr += "<thead class='listHeading' id='"+this.tableid+DELIMITER+"tblhead_mhf'><tr>";
 
     	//var freezePaneIndex = tbl.tblhead.indexOf(freezePane);
@@ -345,7 +345,7 @@ function SortableTable(param)
     	if(this.hasCounter) {
           str += "<th style='white-space:nowrap;' id='counter"+DELIMITER+this.tableid+DELIMITER+"tbl' class='"+this.tableid+"'></th>";
           mhstr += "<th style='white-space:nowrap;' id='counter"+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mh' class='"+this.tableid+"'></th>";
-          mhvstr += "<th style='white-space:nowrap;' id='counter"+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'></th>";
+          // mhvstr += "<th style='white-space:nowrap;' id='counter"+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'></th>";
           mhfstr += "<th style='white-space:nowrap;' id='counter"+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhf' class='"+this.tableid+"'></th>";
       }
       for(var columnOrderIdx=0;columnOrderIdx<columnOrder.length;columnOrderIdx++){
@@ -357,10 +357,10 @@ function SortableTable(param)
 									if (columnOrderIdx < freezePaneIndex) {
 												if (colname == sortcolumn){
 														mhfstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhf' class='"+this.tableid+"'>"+renderSortOptions(colname,sortkind,col)+"</th>";
-														mhvstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'>"+renderSortOptions(colname,sortkind,col)+"</th>";
+														// mhvstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'>"+renderSortOptions(colname,sortkind,col)+"</th>";
 												} else {
 														mhfstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhf' class='"+this.tableid+"'>"+renderSortOptions(colname,-1,col)+"</th>";
-														mhvstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'>"+renderSortOptions(colname,-1,col)+"</th>";
+														// mhvstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'>"+renderSortOptions(colname,-1,col)+"</th>";
 												}
 									}
 									if (colname == sortcolumn) {
@@ -374,7 +374,7 @@ function SortableTable(param)
           				if (columnOrderIdx < freezePaneIndex) {
           				 	if (colname == sortcolumn){
           				 		mhfstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhf' class='"+this.tableid+"'>"+col+"</th>";
-          				 		mhvstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'>"+col+"</th>";
+          				 		// mhvstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'>"+col+"</th>";
           				 	} else {
           				 		mhfstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhf' class='"+this.tableid+"'>"+col+"</th>";
           				 		mhvstr += "<th style='white-space:nowrap;' id='"+colname+DELIMITER+this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv' class='"+this.tableid+"'>"+col+"</th>";
@@ -437,9 +437,9 @@ function SortableTable(param)
 
           					str += "<td style='white-space:nowrap;' id='"+cellid+"' onclick='clickedInternal(event,this);' class='"+this.tableid+"-"+columnOrder[columnOrderIdx]+"'>"+renderCell(columnOrder[columnOrderIdx],tbl.tblbody[i][columnOrder[columnOrderIdx]],cellid)+"</td>";
 
-                            
-                    //Prints student name to mvh 
-                    if (columnOrderIdx <1) {    
+
+                    //Prints student name to mvh
+                    if (columnOrderIdx <1) {
           					mhvstr += "<td style='white-space:nowrap;' id='"+cellid+DELIMITER+"mhv' onclick='clickedInternal(event,this);' class='"+this.tableid+"-"+columnOrder[columnOrderIdx]+"'>"+renderCell(columnOrder[columnOrderIdx],tbl.tblbody[i][columnOrder[columnOrderIdx]],cellid)+"</td>";
                     }
         				}
