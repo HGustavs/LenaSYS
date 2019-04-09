@@ -44,6 +44,11 @@ function pointDistance(point1, point2) {
 }
 
 function mousemoveevt(ev, t) {
+    // Get canvasMouse coordinates for both X & Y.
+    canvasMouseX = (ev.clientX - canvas.offsetLeft) * (1 / zoomValue);
+    canvasMouseY = (ev.clientY - canvas.offsetTop) * (1 / zoomValue);
+    // Call reWrite() to update canvasMouseX & canvasMouseY
+    reWrite();
     xPos = ev.clientX;
     yPos = ev.clientY;
     oldMouseCoordinateX = currentMouseCoordinateX;
