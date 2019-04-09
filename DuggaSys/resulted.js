@@ -714,7 +714,8 @@ function createSortableTable(data){
 				hasCounterColumn:true
 		});
 
-		myTable.renderTable();
+    myTable.renderTable();
+    
 
 		if(data['debug']!="NONE!") alert(data['debug']);
 }
