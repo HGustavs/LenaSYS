@@ -731,19 +731,15 @@ function gradeSortHandler()
       case "Sort-G":
         sortingGrade = 2;
         break;
-
       case "Sort-U":
         sortingGrade = 1;
         break;
-
       case "Sort-VG":
         sortingGrade = 2;
         break;
-
       case "Sort-none":
         sortingGrade = "none";
         break;
-
       default:
         sortingGrade = "none";
         break;
@@ -763,7 +759,7 @@ function renderCell(col,celldata,cellid) {
 				str += "</div>";
 			str += "</div>";
 		  return str;
-		} else if (sortingGrade === "none" || celldata.grade === sortingGrade) {
+		} else if (sortingGrade==="none" || celldata.grade===sortingGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
       str = "<div class='resultTableCell resultTableMini ";
 				if(celldata.kind==4) { str += "dugga-moment "; }
@@ -792,7 +788,7 @@ function renderCell(col,celldata,cellid) {
 		str += "</div>";
 		return str;
 
-	} else if ( sortingGrade === "none" || celldata.grade === sortingGrade ){
+	} else if (sortingGrade==="none" || celldata.grade===sortingGrade){
 		// color based on pass,fail,pending,assigned,unassigned
     str = "<div style='height:70px;' class='resultTableCell ";
     if(celldata.kind==4) { str += "dugga-moment "; }
