@@ -31,6 +31,7 @@ var duggaArray = [[]];
 var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
+var sortingGrade;
 
 function setup(){
   //Benchmarking function
@@ -723,7 +724,7 @@ function createSortableTable(data){
 function gradeSortHandler()
 {
   // getting the alternative that the sorting have.
-    var sortingGrade = 0;
+    sortingGrade = 0;
     var element = document.getElementById("gradeSortScale");
     var argument = element.options[element.selectedIndex].value;
     switch(argument)
