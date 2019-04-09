@@ -438,7 +438,7 @@ function SortableTable(param)
           					str += "<td style='white-space:nowrap;' id='"+cellid+"' onclick='clickedInternal(event,this);' class='"+this.tableid+"-"+columnOrder[columnOrderIdx]+"'>"+renderCell(columnOrder[columnOrderIdx],tbl.tblbody[i][columnOrder[columnOrderIdx]],cellid)+"</td>";
 
                             if {
-          					mhvstr += "<td style='white-space:nowrap;' id='"+cellid+DELIMETER+"mhv' onclick='clickedInternal(event,this);' class='"+this.tableid+"-"+columnOrder[columnOrderIdx]+"'>"+renderCell(columnOrder[columnOrderIdx],tbl.tblbody[i][columnOrder[columnOrderIdx]],cellid)+"</td>";
+          					mhvstr += "<td style='white-space:nowrap;' id='"+cellid+DELIMITER+"mhv' onclick='clickedInternal(event,this);' class='"+this.tableid+"-"+columnOrder[columnOrderIdx]+"'>"+renderCell(columnOrder[columnOrderIdx],tbl.tblbody[i][columnOrder[columnOrderIdx]],cellid)+"</td>";
                             }
         				}
       			}
