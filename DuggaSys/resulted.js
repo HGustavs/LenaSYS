@@ -746,6 +746,9 @@ function gradeFilterHandler()
 function renderCell(col,celldata,cellid) {
   gradeFilterHandler()
 
+  if(sortingGrade===0)
+    celdata.king = 4;
+
 	// Render minimodef
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
