@@ -148,6 +148,13 @@ p {
  *                               Lists and Content                              *
  * --------------================################================-------------- */
 
+ #buttonDiv {
+   position: fixed;
+   margin-top: -4%;
+   height: 20px;
+   background-color: white;
+ }
+
 .version {
   color: #EFF;
   text-shadow: 1px 1px #000;
