@@ -449,7 +449,7 @@ $queryreg = $pdo->prepare("SELECT cid FROM user_course WHERE uid=:uid");
 $queryreg->bindParam(':uid', $userid);
 
 if(!$queryreg->execute()) {
-    $error=$queryz->errorInfo();
+    $error=$queryreg->errorInfo();
     $debug="Error reading courses".$error[2];
 }
 
