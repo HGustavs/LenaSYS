@@ -723,7 +723,7 @@ function createSortableTable(data){
 
 function gradeFilterHandler()
 {
-    // getting the alternative that the sorting have.
+    // getting the alternative that the filter have.
     sortingGrade = 0;
     var argument = document.getElementById("gradeFilterScale").value;
     switch(argument)
@@ -842,7 +842,7 @@ function renderCell(col,celldata,cellid) {
 		return str;
 	}
 
-  // When sorting is activated then this "hides" all other data than what is specified.
+  // When Filtering is activated then this "hides" all other data than what is specified.
   else {
       str = "<div style='height:70px;' class='resultTableCell ";
       if(celldata.kind==4) { str += "dugga-moment "; }
