@@ -1498,7 +1498,7 @@ function globalTextSize() {
 function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
-            diagram[i].symbolColor = document.getElementById('FillColor').value;
+            diagram[i].properties['symbolColor'] = document.getElementById('FillColor').value;
         } else { diagram[i].fillColor = document.getElementById('FillColor').value;}
     }
 }

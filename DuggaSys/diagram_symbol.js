@@ -717,7 +717,7 @@ function Symbol(kind) {
     this.draw = function () {
         ctx.lineWidth = this.lineWidth * 2;
         textsize = this.getFontsize();
-        ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.strokeColor;
+        ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
 
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
@@ -804,7 +804,7 @@ function Symbol(kind) {
         ctx.stroke();
         ctx.clip();
 
-        ctx.fillStyle = this.fontColor;
+        ctx.fillStyle = this.properties['fontColor'];
         // Write Class Name
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -820,7 +820,7 @@ function Symbol(kind) {
             ctx.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
             ctx.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
             ctx.lineTo(x1 + ((x2 - x1) * 0.5) + linelength, y1 + (0.85 * this.textsize) + 10);
-            ctx.strokeStyle = this.strokeColor;
+            ctx.strokeStyle = this.properties['strokeColor'];
             ctx.stroke();
         }
         // Change Alignment and Font
@@ -838,7 +838,7 @@ function Symbol(kind) {
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2){
-        ctx.fillStyle = this.symbolColor;
+        ctx.fillStyle = this.properties['symbolColor'];
         //This is a temporary solution to the black symbol problem
         // Drawing a multivalue attribute
         if (this.key_type == 'Multivalue') {
@@ -866,12 +866,12 @@ function Symbol(kind) {
             ctx.beginPath(1);
             ctx.moveTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
             ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-            ctx.strokeStyle = this.strokeColor;
+            ctx.strokeStyle = this.properties['strokeColor'];
 
         }
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = this.fontColor;
+        ctx.fillStyle = this.properties['fontColor'];
         if(ctx.measureText(this.name).width > (x2-x1) - 4){
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 4 , (y1 + ((y2 - y1) * 0.5)));
@@ -881,7 +881,7 @@ function Symbol(kind) {
     }
 
     this.drawEntity = function(x1, y1, x2, y2){
-        ctx.fillStyle = this.symbolColor;
+        ctx.fillStyle = this.properties['symbolColor'];
         ctx.beginPath();
         if (this.key_type == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
@@ -903,7 +903,7 @@ function Symbol(kind) {
         ctx.clip();
         ctx.stroke();
 
-        ctx.fillStyle = this.fontColor;
+        ctx.fillStyle = this.properties['fontColor'];
 
         if(ctx.measureText(this.name).width >= (x2-x1) - 5){
             ctx.textAlign = "start";
@@ -981,14 +981,14 @@ function Symbol(kind) {
         ctx.lineTo(x1, midy);
         ctx.lineTo(midx, y1);
 
-        ctx.fillStyle = this.symbolColor;
+        ctx.fillStyle = this.properties['symbolColor'];
         this.makeShadow();
         ctx.fill();
         ctx.closePath();
         ctx.clip();
 
         ctx.stroke();
-        ctx.fillStyle = this.fontColor;
+        ctx.fillStyle = this.properties['fontColor'];
         if(ctx.measureText(this.name).width >= (x2-x1) - 12){
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 10 , (y1 + ((y2 - y1) * 0.5)));
@@ -1009,7 +1009,7 @@ function Symbol(kind) {
         }
         this.textsize = this.getFontsize();
 
-        ctx.fillStyle = this.fontColor;
+        ctx.fillStyle = this.properties['fontColor'];
         ctx.textAlign = this.textAlign;
 
         for (var i = 0; i < this.textLines.length; i++) {
@@ -1042,18 +1042,18 @@ function Symbol(kind) {
 
             // Box
             svgPos = x1+","+y1+" "+x2+","+y1+" "+x2+","+y2+" "+x1+","+y2;
-            svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
+            svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+";stroke-width:"+strokeWidth+";";
             svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
             str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
 
-            svgStyle = "stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
+            svgStyle = "stroke:"+this.properties['strokeColor']+";stroke-width:"+strokeWidth+";";
             // Top Divider
             str += "<line x1='"+x1+"' y1='"+(y1+(fontsize*1.5))+"' x2='"+x2+"' y2='"+(y1+(fontsize*1.5))+"' style='"+svgStyle+"' />";
             // Middle Divider
             str += "<line x1='"+x1+"' y1='"+midy+"' x2='"+x2+"' y2='"+midy+"' style='"+svgStyle+"' />";
 
             // Name
-            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
             var nameLength = ctx.measureText(this.name).width;
             if(nameLength >= (x2-x1) - 2){
                 svgPos = "x='"+(x1+2)+"' y='"+(y1+(0.85*this.textsize))+"' text-anchor='middle' dominant-baseline='central'";
@@ -1069,7 +1069,7 @@ function Symbol(kind) {
             }
 
             font = parseInt(fontsize) + "px Arial";
-            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
             for (var i = 0; i < this.attributes.length; i++) {
                 svgPos = "x='"+(x1+(fontsize*0.3))+"' y='"+(y1+(fontsize*1.7)+(fontsize*i))+"'";
                 str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.attributes[i].text+"</text>";
@@ -1080,7 +1080,7 @@ function Symbol(kind) {
                 str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.operations[i].text+"</text>";
             }
 		} else if (this.symbolkind == 2) {
-            svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+            svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
             // Outer oval for multivalued attributes
             if (this.key_type == "Multivalue") {
                 str += this.ovalToSVG(x1-7, y1-7, x2+7, y2+7, svgStyle);
@@ -1102,7 +1102,7 @@ function Symbol(kind) {
                 str += "<line x1='"+(tmpX-(linelength/2))+"' y1='"+tmpY+"' x2='"+(tmpX+(linelength/2))+"' y2='"+tmpY+"' style='"+svgStyle+"' stroke-dasharray='"+lineDash+"' />";
             }
             // Text
-            svgStyle = "fill:"+this.fontColor+"; font:"+font+";";
+            svgStyle = "fill:"+this.properties['fontColor']+"; font:"+font+";";
             if (linelength > (x2-x1) - 4) {
 				svgPos = "x='"+(x1+4)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
 			} else {
@@ -1110,7 +1110,7 @@ function Symbol(kind) {
 			}
             str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
 		} else if (this.symbolkind == 3) {
-			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+			svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 			// Add extra box if weak entity
 			if (this.key_type == "Weak") {
 				svgPos = (x1-5)+","+(y1-5)+" "+(x2+5)+","+(y1-5)+" "+(x2+5)+","+(y2+5)+" "+(x1-5)+","+(y2+5);
@@ -1121,7 +1121,7 @@ function Symbol(kind) {
 			svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
 			// Text
-			svgStyle = "fill:"+this.fontColor+"; font:"+font+";";
+			svgStyle = "fill:"+this.properties['fontColor']+"; font:"+font+";";
 			if (ctx.measureText(this.name).width > (x2-x1) - 5) {
 				svgPos = "x='"+(x1+3)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
 			} else {
@@ -1139,7 +1139,7 @@ function Symbol(kind) {
 			if (this.key_type == "Forced") {
 				// Thick line that will be divided into two lines using thin line
 				strokeWidth = this.lineWidth * 3;
-				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 
 				// Thin line used to divide thick line into two lines
@@ -1148,28 +1148,28 @@ function Symbol(kind) {
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 			} else if (this.key_type == "Derived") {
 				strokeWidth = this.lineWidth * 2;
-				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' stroke-dasharray='"+lineDash+"' />";
 			} else {
-				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 			}
 		} else if (this.symbolkind == 5) {
 			var midx = points[this.centerPoint].x;
 			var midy = points[this.centerPoint].y;
 			// Relation
-			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+			svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 			svgPos = midx+","+y1+" "+x2+","+midy+" "+midx+","+y2+" "+x1+","+midy+" "+midx+","+y1;
 			svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
 			// Weak relation
 			if (this.key_type == "Weak") {
-				svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+				svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				svgPos = midx+","+(y1+5)+" "+(x2-9)+","+midy+" "+midx+","+(y2-5)+" "+(x1+9)+","+midy+" "+midx+","+(y1+5);
 				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			}
 			// Text
-			svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+			svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
 			if(ctx.measureText(this.name).width >= (x2-x1) - 12){
 				svgPos = "x='"+(x1+10)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
 			}else{
@@ -1178,7 +1178,7 @@ function Symbol(kind) {
 			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
 		} else if (this.symbolkind == 6) {
             var midx = points[this.centerPoint].x;
-            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
             var textAlignment = this.textAlign;
             if (this.textAlign == "center") textAlignment = "middle";
             for (var i = 0; i < this.textLines.length; i++) {
