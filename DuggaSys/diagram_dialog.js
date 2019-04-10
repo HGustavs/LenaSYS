@@ -10,11 +10,12 @@ function showMenu(){
     hashCurrent();
     return document.getElementById("f01");
 }
+
 function openAppearanceDialogMenu() {
     /*
      * Opens the dialog menu for appearance.
      */
-
+    
     $(".loginBox").draggable();
     var form = showMenu();
     appearanceMenuOpen = true;
