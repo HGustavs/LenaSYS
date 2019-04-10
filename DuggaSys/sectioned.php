@@ -144,7 +144,7 @@
 				</div>
 
 				<div id='course-newitem' style='display: flex;'>
-						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='createFABItem("2", "New Code");'>
+						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='createQuickItem();'>
 				</div>
 				<!-- test #1 -->
 
