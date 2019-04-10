@@ -38,8 +38,15 @@ function switchToolbar(direction){
   }
   document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
   localStorage.setItem("toolbarState", toolbarState);
+
+  //Sets a variable that will hold the value of each toolbar
+  var toolbarAll = 0;
+  var toolbarER = 1;
+  var toolbarUML = 2;
+  var toolbarFree = 3;
+
   //hides irrelevant buttons, and shows relevant buttons
-  if(toolbarState == 1){              //The 1 stands for ER Toolbar
+  if(toolbarState == toolbarER){
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -53,7 +60,7 @@ function switchToolbar(direction){
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-  }else if( toolbarState == 2){      //The 2 stand for UML Toolbar
+  }else if( toolbarState == toolbarUML){
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -65,7 +72,7 @@ function switchToolbar(direction){
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
-  }else if(toolbarState == 3){      //The 3 stand for Free Toolbar
+  }else if(toolbarState == toolbarFree){      //The 3 stand for Free Toolbar
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
     $("#drawerUndo").show();
@@ -76,7 +83,7 @@ function switchToolbar(direction){
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
-  else{                             //This is the Toolbar All
+  else{                            
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();
