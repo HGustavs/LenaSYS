@@ -40,10 +40,10 @@ function switchToolbar(direction){
   localStorage.setItem("toolbarState", toolbarState);
 
   //Sets a variable that will hold the value of each toolbar
-  var toolbarAll = 0;
-  var toolbarER = 1;
-  var toolbarUML = 2;
-  var toolbarFree = 3;
+  const toolbarAll = 0;
+  const toolbarER = 1;
+  const toolbarUML = 2;
+  const toolbarFree = 3;
 
   //hides irrelevant buttons, and shows relevant buttons
   if(toolbarState == toolbarER){
@@ -83,7 +83,7 @@ function switchToolbar(direction){
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
-  else{                            
+  else{
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();
