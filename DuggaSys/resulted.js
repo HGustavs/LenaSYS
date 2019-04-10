@@ -31,7 +31,6 @@ var duggaArray = [[]];
 var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
-var filterGrade;
 
 function setup(){
   //Benchmarking function
@@ -698,7 +697,6 @@ function createSortableTable(data){
 			tblbody: studentInfo,
 			tblfoot:[]
 		}
-
 		var colOrder=buildColumnOrder();
 		myTable = new SortableTable({
 				data:tabledata,
@@ -744,9 +742,7 @@ function gradeFilterHandler()
 }
 
 function renderCell(col,celldata,cellid) {
-  gradeFilterHandler()
-
-	// Render minimodef
+	// Render minimode
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
 		if (col == "FnameLnameSSN"){
@@ -755,8 +751,8 @@ function renderCell(col,celldata,cellid) {
 					str += celldata.firstname + " " + celldata.lastname;
 				str += "</div>";
 			str += "</div>";
-		  return str;
-		} else if (filterGrade==="none" || celldata.grade===filterGrade) {
+			return str;
+		} else {
 			// color based on pass,fail,pending,assigned,unassigned
       str = "<div class='resultTableCell resultTableMini ";
 				if(celldata.kind==4) { str += "dugga-moment "; }
@@ -785,7 +781,7 @@ function renderCell(col,celldata,cellid) {
 		str += "</div>";
 		return str;
 
-	} else if (filterGrade==="none" || celldata.grade===filterGrade){
+	} else {
 		// color based on pass,fail,pending,assigned,unassigned
     str = "<div style='height:70px;' class='resultTableCell ";
     if(celldata.kind==4) { str += "dugga-moment "; }
@@ -858,7 +854,7 @@ function renderCell(col,celldata,cellid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-  // Custom filters that remove rows before an actual search
+	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1) return false;
 	if (filterList["onlyPending"]) {
 		var rowPending = false;
@@ -1029,7 +1025,7 @@ function conv(item,kind){
 }
 
 function renderColumnFilter(col,status,colname) {
-    str = "";
+		str = "";
 		if (colname == "FnameLnameSSN") return str;
 		if (status) {
 			str = "<div class='checkbox-dugga'>";
@@ -1116,7 +1112,6 @@ function ladexport()
     expo+=document.getElementById("ladselect").value+"\n";
     expo+=document.getElementById("ladgradescale").value+"\n";
     expo+=document.getElementById("laddate").value+"\n";
-    expo+=document.getElementById("gradeFilterScale").value+"\n";
     expo+=myTable.export("csv",";");
 
     //alert(expo);
@@ -1130,9 +1125,4 @@ function closeLadexport()
 {
     document.getElementById("resultlistarea").value="";
     document.getElementById("resultlistpopover").style.display="none";
-}
-
-function updateTable()
-{
-  myTable.renderTable();
 }
