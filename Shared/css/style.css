@@ -2247,8 +2247,11 @@ span.arrow {
 
 .resultTableText {
   margin-left: 3px;
-  margin-right: 10px;
+  margin-right: 3px;
   font-size: 13px;
+  font-weight: bold;
+  font-size: 15px;
+  margin: 0 auto;
 }
 
 .resultTableNormal {
