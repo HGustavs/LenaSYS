@@ -804,6 +804,7 @@ function renderCell(col,celldata,cellid) {
     {
       celldata.kind = 4;
       celldata.ishere = true;
+      console.log("filtergrade: " + filterGrade + "\n");
     }
 
 		// Creation of grading buttons
