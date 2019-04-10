@@ -120,7 +120,7 @@ function loadLineForm(element, dir){
                 var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
                 var tempCardinalityUML = cardinalityValUML == "" || cardinalityValUML == null ? "None" : cardinalityValUML;
 
-                setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type');
+                setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
                 setSelectedOption('cardinality', tempCardinality);
                 if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
