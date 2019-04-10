@@ -104,13 +104,19 @@ window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
 
+//--------------------------------------------------------------------
+// diagram - Stores a global list of diagram objects
+// A diagram object could for instance be a path, or a symbol
+//--------------------------------------------------------------------
+var diagram = [];
+
 function keyDownHandler(e){
     var key = e.keyCode;
     if(appearanceMenuOpen) return;
-    if((key == 46 || key == 8)){
+    if((key == 46 || key == 8)){ // delete, backspace
         eraseSelectedObject();
         SaveState();
-    } else if(key == 32){
+    } else if(key == 32){ //space
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
@@ -122,14 +128,14 @@ function keyDownHandler(e){
             deactivateMovearound();
         }
         updateGraphics();
-    } else if(key == 37 || key == 38 || key == 39 || key == 40){//arrow keys
+    } else if(key == 37 || key == 38 || key == 39 || key == 40){ // left, up, right, down
         arrowKeyPressed(key);
-    } else if(key == 17 || key == 91){
+    } else if(key == 17 || key == 91){ // left ctrl, left window key
         ctrlIsClicked = true;
-    } else if(ctrlIsClicked && key == 67){
+    } else if(ctrlIsClicked && key == 67){ // c key
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == 86 ){
+    } else if(ctrlIsClicked && key == 86 ){ // v key
         //Ctrl + v
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++){
@@ -374,12 +380,6 @@ points.clearAllSelects = function() {
         this[i].isSelected = 0;
     }
 }
-
-//--------------------------------------------------------------------
-// diagram - Stores a global list of diagram objects
-// A diagram object could for instance be a path, or a symbol
-//--------------------------------------------------------------------
-var diagram = [];
 
 //--------------------------------------------------------------------
 // draw - Executes draw methond in all diagram objects
@@ -884,7 +884,7 @@ function eraseSelectedObject() {
     if(selected_objects.length == 0){
         showMenu().innerHTML = "No item selected<type='text'>";
         changeLoginBoxTitleDelete();
-        $(".loginBox").draggable();        
+        $(".loginBox").draggable();
     }
     for(var i = 0; i < selected_objects.length; i++){
         eraseObject(selected_objects[i]);
@@ -1245,7 +1245,7 @@ function alignLeft(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
@@ -1267,7 +1267,7 @@ function alignTop(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
@@ -1289,7 +1289,7 @@ function alignRight(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
@@ -1311,7 +1311,7 @@ function alignBottom(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
@@ -1339,7 +1339,7 @@ function alignVerticalCenter(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
@@ -1368,7 +1368,7 @@ function alignHorizontalCenter(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
@@ -1376,7 +1376,7 @@ function alignHorizontalCenter(selected_objects){
     }
 }
 // ----------------------------------------------------------------------------
-// Objects in selected_objects get duplicated for some reason. 
+// Objects in selected_objects get duplicated for some reason.
 // This function returns a list without the duplicated objects.
 // ----------------------------------------------------------------------------
 
