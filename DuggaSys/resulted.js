@@ -751,7 +751,7 @@ function renderCell(col,celldata,cellid) {
 
   if(filterGrade === 0)
   {
-    console.log(celldata.submittedts + "\n");
+    console.log(celldata.submitted + "\n");
     if(celldata.grade === 0)
       console.log("filtergrade: " + filterGrade + "\n" + celldata.grade);
   }
