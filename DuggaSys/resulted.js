@@ -719,6 +719,28 @@ function createSortableTable(data){
 		if(data['debug']!="NONE!") alert(data['debug']);
 }
 
+function gradeFilterHandler()
+{
+    // getting the alternative that the filter have.
+    filterGrade = 0;
+    var argument = document.getElementById("gradeFilterScale").value;
+    switch(argument)
+    {
+      case "Filter-VG":
+        filterGrade = 3;
+        break;
+      case "Filter-G":
+        filterGrade = 2;
+        break;
+      case "Filter-U":
+        filterGrade = 1;
+        break;
+      default:
+        filterGrade = "none";
+        break;
+    }
+}
+
 function renderCell(col,celldata,cellid) {
 	// Render minimode
 	if (filterList["minimode"]) {
@@ -815,6 +837,16 @@ function renderCell(col,celldata,cellid) {
 		str += "</div>";
 		return str;
 	}
+
+  // When Filtering is activated then this "hides" all other data than what is specified.
+  else {
+      str = "<div style='height:70px;' class='resultTableCell ";
+      if(celldata.kind==4) { str += "dugga-moment "; }
+      str += "dugga-unassigned";
+      str += "'>";
+      return str;
+  }
+
 	return celldata;
 }
 
