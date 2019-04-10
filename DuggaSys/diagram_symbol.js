@@ -1010,7 +1010,7 @@ function Symbol(kind) {
         this.textsize = this.getFontsize();
 
         ctx.fillStyle = this.properties['fontColor'];
-        ctx.textAlign = this.textAlign;
+        ctx.textAlign = this.properties['textAlign'];
 
         for (var i = 0; i < this.textLines.length; i++) {
             ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.textsize * 1.7) / 2 + (this.textsize * i));
@@ -1180,8 +1180,8 @@ function Symbol(kind) {
 		} else if (this.symbolkind == 6) {
             var midx = points[this.centerPoint].x;
             svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
-            var textAlignment = this.textAlign;
-            if (this.textAlign == "center") textAlignment = "middle";
+            var textAlignment = this.properties['textAlign'];
+            if (this.properties['textAlign'] == "center") textAlignment = "middle";
             for (var i = 0; i < this.textLines.length; i++) {
                 svgPos = "x='"+this.getTextX(x1, midx, x2)+"' y='"+(y1+(fontsize*1.7)/2+(fontsize*i))+"' text-anchor='"+textAlignment+"' dominant-baseline='central'";
                 str += "<text "+svgPos+" style='"+svgStyle+"' >"+this.textLines[i].text+"</text>";
@@ -1193,8 +1193,8 @@ function Symbol(kind) {
 
     this.getTextX = function(x1, midX, x2) {
         var textX = 0;
-        if (this.textAlign == "start") textX = x1 + 10;
-        else if (this.textAlign == "end") textX = x2 - 10;
+        if (this.properties['textAlign'] == "start") textX = x1 + 10;
+        else if (this.properties['textAlign'] == "end") textX = x2 - 10;
         else textX = midX;
         return textX;
     }
@@ -1225,10 +1225,10 @@ function Symbol(kind) {
 
     this.makeShadow = function(){
         ctx.save();
-        ctx.shadowBlur = this.shadowBlur;
+        ctx.shadowBlur = this.properties['shadowBlur'];
         ctx.shadowOffsetX = this.this.properties['shadowOffsetX'];
         ctx.shadowOffsetY = this.properties['shadowOffsetY'];
-        ctx.shadowColor = this.shadowColor;
+        ctx.shadowColor = this.properties['shadowColor'];
         ctx.fill();
         ctx.restore();
     }
