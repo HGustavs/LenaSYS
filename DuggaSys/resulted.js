@@ -751,7 +751,8 @@ function renderCell(col,celldata,cellid) {
 
   if(filterGrade === 0)
   {
-    console.log("filtergrade: " + filterGrade + "\n" + celldata.grade);
+    if(celldata.grade === 0)
+      console.log("filtergrade: " + filterGrade + "\n" + celldata.grade);
   }
 
 	// Render minimodef
