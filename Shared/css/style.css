@@ -2686,6 +2686,7 @@ span.arrow {
   height: 24px;
   width: 24px;
   cursor: pointer;
+  margin-right: 10px;
 }
 
 .result-header-inverse {
