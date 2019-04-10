@@ -814,7 +814,7 @@ function Symbol(kind) {
         }else{
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
         }
-        if (this.key_type == 'Primary key') {
+        if (this.properties['key_type'] == 'Primary key') {
             var linelength = ctx.measureText(this.name).width;
             ctx.beginPath(1);
             ctx.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
@@ -841,7 +841,7 @@ function Symbol(kind) {
         ctx.fillStyle = this.symbolColor;
         //This is a temporary solution to the black symbol problem
         // Drawing a multivalue attribute
-        if (this.key_type == 'Multivalue') {
+        if (this.properties['key_type'] == 'Multivalue') {
             drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
             ctx.stroke();
             this.makeShadow();
@@ -856,12 +856,12 @@ function Symbol(kind) {
         ctx.clip();
 
         //drawing an derived attribute
-        if (this.key_type == 'Drive') {
+        if (this.properties['key_type'] == 'Drive') {
             ctx.setLineDash([5, 4]);
         }
-        else if (this.key_type == 'Primary key' || this.key_type == 'Partial key') {
+        else if (this.properties['key_type'] == 'Primary key' || this.properties['key_type'] == 'Partial key') {
             ctx.stroke();
-            this.key_type == 'Partial key' ? ctx.setLineDash([5, 4]) : ctx.setLineDash([]);
+            this.properties['key_type'] == 'Partial key' ? ctx.setLineDash([5, 4]) : ctx.setLineDash([]);
             var linelength = ctx.measureText(this.name).width;
             ctx.beginPath(1);
             ctx.moveTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
@@ -883,7 +883,7 @@ function Symbol(kind) {
     this.drawEntity = function(x1, y1, x2, y2){
         ctx.fillStyle = this.symbolColor;
         ctx.beginPath();
-        if (this.key_type == "Weak") {
+        if (this.properties['key_type'] == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
             ctx.lineTo(x2 + 5, y1 - 5);
             ctx.lineTo(x2 + 5, y2 + 5);
@@ -941,7 +941,7 @@ function Symbol(kind) {
 
 
         ctx.lineWidth = this.lineWidth;
-        if (this.key_type == "Forced") {
+        if (this.properties['key_type'] == "Forced") {
             //Draw a thick black line
             ctx.lineWidth = this.lineWidth*3;
             ctx.beginPath();
@@ -952,7 +952,7 @@ function Symbol(kind) {
             ctx.lineWidth = this.lineWidth;
             ctx.strokeStyle = "#fff";
         }
-        else if (this.key_type == "Derived") {
+        else if (this.properties['key_type'] == "Derived") {
             ctx.lineWidth = this.lineWidth * 2;
             ctx.setLineDash([5, 4]);
         }
@@ -967,7 +967,7 @@ function Symbol(kind) {
         var midx = points[this.centerPoint].x;
         var midy = points[this.centerPoint].y;
         ctx.beginPath();
-        if (this.key_type == 'Weak') {
+        if (this.properties['key_type'] == 'Weak') {
             ctx.lineWidth = this.lineWidth;
             ctx.moveTo(midx, y1 + 5);
             ctx.lineTo(x2 - 9, midy + 0);
@@ -1062,7 +1062,7 @@ function Symbol(kind) {
             }
             str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.name+"</text>";
 
-            if (this.key_type == "Primary key") {
+            if (this.properties['key_type'] == "Primary key") {
                 svgPos = (x1+((x2-x1)*0.5))+","+(y1+(0.85*fontsize))+" "+(x1+((x2-x1)*0.5))+","+(y1+(0.85*fontsize))+" ";
                 svgPos += (x1+((x2-x1)*0.5)+nameLength)+","+(y1+(0.85*fontsize)+10);
                 str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
@@ -1082,11 +1082,11 @@ function Symbol(kind) {
 		} else if (this.symbolkind == 2) {
             svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
             // Outer oval for multivalued attributes
-            if (this.key_type == "Multivalue") {
+            if (this.properties['key_type'] == "Multivalue") {
                 str += this.ovalToSVG(x1-7, y1-7, x2+7, y2+7, svgStyle);
             }
             // Oval
-            if (this.key_type == "Drive") {
+            if (this.properties['key_type'] == "Drive") {
                 str += this.ovalToSVG(x1, y1, x2, y2, svgStyle, lineDash);
             } else {
                 str += this.ovalToSVG(x1, y1, x2, y2, svgStyle, "");
@@ -1096,9 +1096,9 @@ function Symbol(kind) {
             var linelength = ctx.measureText(this.name).width;
             var tmpX = (x1+((x2-x1)/2));
             var tmpY = ((y1+(y2-y1)/2)+10);
-            if (this.key_type == "Primary key") {
+            if (this.properties['key_type'] == "Primary key") {
                 str += "<line x1='"+(tmpX-(linelength/2))+"' y1='"+tmpY+"' x2='"+(tmpX+(linelength/2))+"' y2='"+tmpY+"' style='"+svgStyle+"' />";
-            } else if (this.key_type == "Partial key") {
+            } else if (this.properties['key_type'] == "Partial key") {
                 str += "<line x1='"+(tmpX-(linelength/2))+"' y1='"+tmpY+"' x2='"+(tmpX+(linelength/2))+"' y2='"+tmpY+"' style='"+svgStyle+"' stroke-dasharray='"+lineDash+"' />";
             }
             // Text
@@ -1112,7 +1112,7 @@ function Symbol(kind) {
 		} else if (this.symbolkind == 3) {
 			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 			// Add extra box if weak entity
-			if (this.key_type == "Weak") {
+			if (this.properties['key_type'] == "Weak") {
 				svgPos = (x1-5)+","+(y1-5)+" "+(x2+5)+","+(y1-5)+" "+(x2+5)+","+(y2+5)+" "+(x1-5)+","+(y2+5);
 				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			}
@@ -1136,7 +1136,7 @@ function Symbol(kind) {
 				str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.cardinality[0].value+"</text>";
 			}
 			svgPos = "x1='"+x1+"' y1='"+y1+"' x2='"+x2+"' y2='"+y2+"'";
-			if (this.key_type == "Forced") {
+			if (this.properties['key_type'] == "Forced") {
 				// Thick line that will be divided into two lines using thin line
 				strokeWidth = this.lineWidth * 3;
 				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
@@ -1146,7 +1146,7 @@ function Symbol(kind) {
 				strokeWidth = this.lineWidth;
 				svgStyle = "stroke:#fff; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
-			} else if (this.key_type == "Derived") {
+			} else if (this.properties['key_type'] == "Derived") {
 				strokeWidth = this.lineWidth * 2;
 				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' stroke-dasharray='"+lineDash+"' />";
@@ -1163,7 +1163,7 @@ function Symbol(kind) {
 			svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
 			// Weak relation
-			if (this.key_type == "Weak") {
+			if (this.properties['key_type'] == "Weak") {
 				svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
 				svgPos = midx+","+(y1+5)+" "+(x2-9)+","+midy+" "+midx+","+(y2-5)+" "+(x1+9)+","+midy+" "+midx+","+(y1+5);
 				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";

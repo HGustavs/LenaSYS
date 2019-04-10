@@ -930,7 +930,7 @@ function setTextSizeEntity() {
 function setType() {
     var elementVal = document.getElementById('object_type').value;
 
-    diagram[lastSelectedObject].key_type = elementVal;
+    diagram[lastSelectedObject].properties['key_type'] = elementVal;
     updateGraphics();
 }
 
