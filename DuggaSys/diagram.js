@@ -1465,14 +1465,14 @@ function distributeHorizontally(selected_objects, spacing){
 //Do we really need 5 functions that more or less do the same thing
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
-        diagram[i].lineWidth = document.getElementById('line-thickness').value;
+        diagram[i].properties['lineWidth'] = document.getElementById('line-thickness').value;
     }
 }
 //change the font on all entities to the same font.
 function globalFont() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && (diagram[i].symbolkind == 1 || diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
-            diagram[i].font = document.getElementById('font').value;
+            diagram[i].properties['font'] = document.getElementById('font').value;
         }
     }
 }
