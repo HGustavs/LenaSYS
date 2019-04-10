@@ -734,8 +734,8 @@ function gradeFilterHandler()
       case "Filter-U":
         sortingGrade = 1;
         break;
-      case "Filter-VG":   // There is no duggas that can have VG at the moment so this will refer to G.
-        sortingGrade = 2;
+      case "Filter-Ungraded":
+        sortingGrade = 0;
         break;
       default:
         sortingGrade = "none";
