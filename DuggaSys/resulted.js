@@ -31,7 +31,7 @@ var duggaArray = [[]];
 var filterList;
 var tableName = "resultTable";
 var tableCellName = "resultTableCell";
-var sortingGrade;
+var filterGrade;
 
 function setup(){
   //Benchmarking function
@@ -724,24 +724,24 @@ function createSortableTable(data){
 function gradeFilterHandler()
 {
     // getting the alternative that the filter have.
-    sortingGrade = 0;
+    filterGrade = 0;
     var argument = document.getElementById("gradeFilterScale").value;
     switch(argument)
     {
       case "Filter-VG":
-        sortingGrade = 3;
+        filterGrade = 3;
         break;
       case "Filter-G":
-        sortingGrade = 2;
+        filterGrade = 2;
         break;
       case "Filter-U":
-        sortingGrade = 1;
+        filterGrade = 1;
         break;
       case "Filter-Ungraded":
-        sortingGrade = 0;
+        filterGrade = 0;
         break;
       default:
-        sortingGrade = "none";
+        filterGrade = "none";
         break;
     }
 }
@@ -759,7 +759,7 @@ function renderCell(col,celldata,cellid) {
 				str += "</div>";
 			str += "</div>";
 		  return str;
-		} else if (sortingGrade==="none" || celldata.grade===sortingGrade) {
+		} else if (filterGrade==="none" || celldata.grade===filterGrade) {
 			// color based on pass,fail,pending,assigned,unassigned
       str = "<div class='resultTableCell resultTableMini ";
 				if(celldata.kind==4) { str += "dugga-moment "; }
@@ -775,6 +775,11 @@ function renderCell(col,celldata,cellid) {
 		}
 	}
 
+  if(filterGrade === 0)
+  {
+    celldata.needMarking = true;
+  }
+
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
 	if (col == "FnameLnameSSN"){
@@ -788,7 +793,7 @@ function renderCell(col,celldata,cellid) {
 		str += "</div>";
 		return str;
 
-	} else if (sortingGrade==="none" || celldata.grade===sortingGrade){
+	} else if (filterGrade==="none" || celldata.grade===filterGrade){
 		// color based on pass,fail,pending,assigned,unassigned
     str = "<div style='height:70px;' class='resultTableCell ";
     if(celldata.kind==4) { str += "dugga-moment "; }
@@ -799,9 +804,6 @@ function renderCell(col,celldata,cellid) {
     else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
     else {str += "dugga-unassigned";}
 		str += "'>";
-
-    if(celldata.grade === 0)
-      celldata.kind = 4;
 
 		// Creation of grading buttons
 		if(celldata.ishere===true||celldata.kind==4){
