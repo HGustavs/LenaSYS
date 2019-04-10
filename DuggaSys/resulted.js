@@ -737,9 +737,6 @@ function gradeFilterHandler()
       case "Filter-U":
         filterGrade = 1;
         break;
-      case "Filter-Ungraded":
-        filterGrade = 0;
-        break;
       default:
         filterGrade = "none";
         break;
