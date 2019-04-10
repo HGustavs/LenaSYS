@@ -111,7 +111,7 @@ function keyDownHandler(e){
     if((key == 46 || key == 8)){  // Key: Delete and Key: Backspace
         eraseSelectedObject();
         SaveState();
-    } else if(key == 32){  // Key: Spacebar
+    } else if(key == 32){  // Key: Spacebars
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
