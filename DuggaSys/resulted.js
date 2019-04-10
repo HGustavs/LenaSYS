@@ -775,11 +775,6 @@ function renderCell(col,celldata,cellid) {
 		}
 	}
 
-  if(filterGrade === 0)
-  {
-    celldata.needMarking = true;
-  }
-
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
 	if (col == "FnameLnameSSN"){
@@ -804,6 +799,11 @@ function renderCell(col,celldata,cellid) {
     else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
     else {str += "dugga-unassigned";}
 		str += "'>";
+
+    if(filterGrade === 0)
+    {
+      celldata.kind = 4;
+    }
 
 		// Creation of grading buttons
 		if(celldata.ishere===true||celldata.kind==4){
