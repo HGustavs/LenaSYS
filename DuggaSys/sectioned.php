@@ -1,4 +1,5 @@
 <?php
+//xd
 	session_start();
 	include_once "../../coursesyspw.php";
 	include_once "../Shared/sessions.php";
@@ -7,6 +8,7 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
 	<link rel="icon" type="image/ico" href="../Shared/icons/favicon.ico"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
@@ -32,9 +34,9 @@
 
 	<!-- content START -->
 	<div id="content">
-		
+
 		<div id='TopMenuStatic' style="display:none;">
-		
+
 			<table class='navheader' style='overflow: hidden; table-layout: fixed;'>
 				<tr class='trsize nowrap'>
 					<td style='display: inline-block;'>
@@ -106,14 +108,13 @@
 						</div>
 					</td>
 				</tr>
-			
+
 			</table>
 
 		</div>
 		<!-- Static Top Menu END -->
 
 		<!-- FAB Start -->
-		
 		<div class='fixed-action-button sectioned' id="FABStatic" style="display:none">
 				<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>
 				<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>
@@ -127,31 +128,36 @@
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out noselect' data-tooltip='Message' onclick='createFABItem("7","New Quote");'><i class='material-icons'>format_quote</i></a></li>
 				</ol>
 		</div>
-		
+
 		<!-- FAB END -->
 
+		<!-- + button --->
+
 		<div id='Sectionlist'>
-		
+
 		<div class='course' style='display:flex; align-items:center; justify-content:flex-end;'>
 				<div style='flex-grow:1'>
 						<span id='course-coursename' class='nowrap ellipsis' style='margin-left: 90px;margin-right:10px;' title='"+data.coursename+" "+data.coursecode+" "+versionname+"'>UNK</span>
 						<span id='course-coursecode' style='margin-right:10px;'>UNK</span>
 						<span id='course-versname' class='courseVersionField'>UNK</span>
 				</div>
-			
+
 				<div id='course-newitem' style='display: flex;'>
-						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='selectItemdefaultNewItem();'>
+						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='createFABItem("2", "New Code");'>
 				</div>
+				<!-- test #1 -->
 
 				<div id='course-coursevers' style='display:none; margin-right:10px;' >UNK</div>
 				<div id='course-courseid' style='display:none; margin-right:10px;' >UNK</div>
 
 		</div>
 
+		<!-- + button END -->
+
 		<div id='courseList'>
 
 		<!-- Statistics List -->
-		
+
 		<div id='statisticsList' style="">
 				<div id='statistics' class='statistics' style='cursor:pointer;'>
 						<div style='margin:10px;'>
@@ -184,10 +190,10 @@
 				</div>
 		</div>
 		<!-- Statistics List END-->
-			
+
 		<!-- Section List -->
 		<div id='Sectionlisti'>
-		
+
 		</div>
 	</div>
 	<!-- content END -->
@@ -348,4 +354,5 @@
 	</div>
 	<!-- HighscoreBox END -->
 </body>
+
 </html>

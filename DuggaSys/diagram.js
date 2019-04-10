@@ -862,12 +862,29 @@ function eraseObject(object) {
     updateGraphics();
 }
 
+//-------------------------------------------------------------------------//
+// Create function that changes the id "loginBoxTitle" to "Delete Object".
+//-------------------------------------------------------------------------//
+
+function changeLoginBoxTitleDelete() {
+    document.getElementById("loginBoxTitle").innerHTML = "Delete Object";
+}
+
+//-------------------------------------------------------------------------//
+// Create function that changes the id "loginBoxTitle" to "Appearance".
+//-------------------------------------------------------------------------//
+
+function changeLoginBoxTitleAppearance() {
+    document.getElementById("loginBoxTitle").innerHTML = "Appearance";
+}
+
 function eraseSelectedObject() {
     canvas.style.cursor = "default";
     //Issue: Need to remove the crosses
     if(selected_objects.length == 0){
         showMenu().innerHTML = "No item selected<type='text'>";
-        $(".loginBox").draggable();
+        changeLoginBoxTitleDelete();
+        $(".loginBox").draggable();        
     }
     for(var i = 0; i < selected_objects.length; i++){
         eraseObject(selected_objects[i]);
@@ -1224,6 +1241,16 @@ function alignLeft(selected_objects){
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
     }
+
+    // Added spacing when there are objects that overlap eachother.
+    temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
+    for(var i = 1; i < temporary_objects.length; i++){       
+        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
+            var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
+            temporary_objects[i].move(0, -difference);
+        }
+    }
 }
 
 function alignTop(selected_objects){
@@ -1235,6 +1262,16 @@ function alignTop(selected_objects){
     }
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
+    }
+
+    // Added spacing when there are objects that overlap eachother.
+    temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
+    for(var i = 1; i < temporary_objects.length; i++){       
+        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
+            var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
+            temporary_objects[i].move(-difference, 0);
+        }
     }
 }
 
@@ -1248,6 +1285,16 @@ function alignRight(selected_objects){
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
     }
+
+    // Added spacing when there are objects that overlap eachother.
+    temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
+    for(var i = 1; i < temporary_objects.length; i++){       
+        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
+            var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
+            temporary_objects[i].move(0, -difference);
+        }
+    }
 }
 
 function alignBottom(selected_objects){
@@ -1260,25 +1307,21 @@ function alignBottom(selected_objects){
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
     }
+
+    // Added spacing when there are objects that overlap eachother.
+    temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
+    for(var i = 1; i < temporary_objects.length; i++){       
+        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
+            var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
+            temporary_objects[i].move(-difference, 0);
+        }
+    }
 }
+
 function alignVerticalCenter(selected_objects){
-    var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
-    for(var i = 0; i < selected_objects.length; i++){
-        if(points[selected_objects[i].bottomRight].y > highest_y){
-            highest_y = points[selected_objects[i].bottomRight].y;
-        }
-        if(points[selected_objects[i].topLeft].y < lowest_y){
-            lowest_y = points[selected_objects[i].topLeft].y;
-        }
-    }
-    selected_center_y = (highest_y-lowest_y)/2;
-    for(var i = 0; i < selected_objects.length; i++){
-        var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
-        selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
-    }
-}
-function alignHorizontalCenter(selected_objects){
     var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
+    var temporary_objects = [];
     for(var i = 0; i < selected_objects.length; i++){
         if(points[selected_objects[i].topLeft].x > highest_x){
             highest_x = points[selected_objects[i].bottomRight].x;
@@ -1292,6 +1335,59 @@ function alignHorizontalCenter(selected_objects){
         var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
         selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
+
+    // Added spacing when there are objects that overlap eachother.
+    temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
+    for(var i = 1; i < temporary_objects.length; i++){       
+        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
+            var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
+            temporary_objects[i].move(0, -difference);
+        }
+    }
+}
+
+function alignHorizontalCenter(selected_objects){
+    var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
+    var temporary_objects = [];
+    for(var i = 0; i < selected_objects.length; i++){
+        temporary_objects.push(selected_objects[i]);
+        if(points[selected_objects[i].bottomRight].y > highest_y){
+            highest_y = points[selected_objects[i].bottomRight].y;
+        }
+        if(points[selected_objects[i].topLeft].y < lowest_y){
+            lowest_y = points[selected_objects[i].topLeft].y;
+        }
+    }
+    selected_center_y = (highest_y-lowest_y)/2;
+    for(var i = 0; i < selected_objects.length; i++){
+        var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
+        selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
+    }
+
+    // Added spacing when there are objects that overlap eachother.
+    temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
+    for(var i = 1; i < temporary_objects.length; i++){       
+        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
+            var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
+            temporary_objects[i].move(-difference, 0);
+        }
+    }
+}
+// ----------------------------------------------------------------------------
+// Objects in selected_objects get duplicated for some reason. 
+// This function returns a list without the duplicated objects.
+// ----------------------------------------------------------------------------
+
+function removeDuplicatesInList(selected_objects){
+    var temporary_objects = [];
+    for(var i = 0; i < selected_objects.length; i++){
+        if(temporary_objects.indexOf(selected_objects[i]) == -1){
+            temporary_objects.push(selected_objects[i]);
+        }
+    }
+    return temporary_objects;
 }
 
 function sortObjects(selected_objects, mode){
@@ -1318,8 +1414,10 @@ function sortObjects(selected_objects, mode){
               }
             }
         }
+
   return private_objects;
 }
+
 function distribute(axis){
     var spacing = 32;
     var selected_objects = [];
@@ -1341,6 +1439,7 @@ function distribute(axis){
     updateGraphics();
     hashFunction();
 }
+
 function distributeVertically(selected_objects, spacing){
     selected_objects = sortObjects(selected_objects, 'vertically');
 
@@ -1351,6 +1450,7 @@ function distributeVertically(selected_objects, spacing){
         selected_objects[i].move(0, newy+object_height+spacing);
     }
 }
+
 function distributeHorizontally(selected_objects, spacing){
     selected_objects = sortObjects(selected_objects, 'horizontally');
 

@@ -62,6 +62,9 @@
                             <img id="minimizeArrow" class="toolbarMaximized" src="../Shared/icons/arrow.svg">
                           </div>
                           <h3>Toolbar</h3>
+                          <div id="toolbar-toggleLayout"  onclick="toggleToolbarLayout();"> 
+                              <img id="layoutArrow" class="toolbarMaximized" src="../Shared/icons/rotateButton.svg">
+                            </div>
                         </div>
                         <div class='application-toolbar'>
                           <div id="toolbar-switcher">
@@ -73,54 +76,62 @@
                               <img id="toolbarRightArrow" src="../Shared/icons/arrow.svg">
                             </div>
                           </div>
-                        <h4 class="label tlabel" id="labelTools">Tools</h4>
-                        <div class="toolbar-drawer" id="drawerTools">
-                            <div class="tooltipdialog">
-                                <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
-                                    <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
+                          <div class="toolsContainer">
+                            <div class="labelToolContainer">
+                              <h4 class="label tlabel" id="labelTools">Tools</h4>
+                              <div class="toolbar-drawer" id="drawerTools">
+                                  <div class="tooltipdialog">
+                                      <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
+                                          <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
+                                      </button>
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="labelToolContainer">
+                              <h4 class="label tlabel" id="labelCreate">Create</h4>
+                              <div class="toolbar-drawer" id="drawerCreate">
+                                  <div class="tooltipdialog">
+                                      <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Attribute">
+                                          <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
+                                      </button>
+                                      <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Entity">
+                                          <img class="toolboxButtons" src="../Shared/icons/diagram_create_entity.svg">
+                                      </button>
+                                      <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Relation">
+                                          <img class="toolboxButtons" src="../Shared/icons/diagram_create_relation.svg">
+                                      </button>
+                                      <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Class">
+                                          <img class="toolboxButtons" src="../Shared/icons/diagram_create_class.svg">
+                                    </button>
+                                      <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Text">
+                                          <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
+                                      </button>
+                                  </div>
+                              </div>
+                            </div>
+                          <div class="labelToolContainer">
+                            <h4 class="label tlabel" id="labelDraw">Draw</h4>
+                            <div class="toolbar-drawer" id="drawerDraw">
+                                <button id='squarebutton' onclick="setMode('Square');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Square">
+                                    <img class="toolboxButtons" src="../Shared/icons/diagram_draw_square.svg">
+                                </button>
+                                <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Free">
+                                    <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
+                                </button>
+                            </div>
+                          </div>
+                          <div class="labelToolContainer">
+                            <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
+                            <div class="toolbar-drawer" id="drawerUndo" style="text-align: center">
+                                <button class="diagramAction" id="undoButton" onclick='undoDiagram()' data="Undo">
+                                    <img src="../Shared/icons/undo.svg" style="filter: invert(100%);">
+                                </button>
+                                <button class="diagramAction" id="redoButton" onclick='redoDiagram()' data="Redo">
+                                    <img src="../Shared/icons/redo.svg" style="filter: invert(100%);">
                                 </button>
                             </div>
                         </div>
-                        <h4 class="label tlabel" id="labelCreate">Create</h4>
-                        <div class="toolbar-drawer" id="drawerCreate">
-                            <div class="tooltipdialog">
-                                <button id='attributebutton' onclick='setMode("CreateERAttr");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Attribute">
-                                    <img class="toolboxButtons" src="../Shared/icons/diagram_create_attribute.svg">
-                                </button>
-                                <button id='entitybutton' onclick='setMode("CreateEREntity");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Entity">
-                                    <img class="toolboxButtons" src="../Shared/icons/diagram_create_entity.svg">
-                                </button>
-                            </div>
-                            <div class="tooltipdialog">
-                                <button id='relationbutton' onclick='setMode("CreateERRelation");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Relation">
-                                    <img class="toolboxButtons" src="../Shared/icons/diagram_create_relation.svg">
-                                </button>
-                                <button id='classbutton' onclick='setMode("CreateClass");' style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Create Class">
-                                    <img class="toolboxButtons" src="../Shared/icons/diagram_create_class.svg">
-                              </button>
-                                <button id='drawtextbutton' onclick="setMode('Text');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Text">
-                                    <img id='textButton' src="../Shared/icons/textbox.svg" style="filter: invert(100%);">
-                                </button>
-                            </div>
-                        </div>
-                        <h4 class="label tlabel" id="labelDraw">Draw</h4>
-                        <div class="toolbar-drawer" id="drawerDraw">
-                            <button id='squarebutton' onclick="setMode('Square');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Square">
-                                <img class="toolboxButtons" src="../Shared/icons/diagram_draw_square.svg">
-                            </button>
-                            <button id='drawfreebutton' onclick="setMode('Free');" style="display: inline; border-radius: 5px" class='buttonsStyle unpressed' data="Draw Free">
-                                <img class="toolboxButtons" src="../Shared/icons/diagram_draw_free.svg">
-                            </button>
-                        </div>
-                        <h4 class="label tlabel" id="labelUndo">Undo/Redo</h4>
-                        <div class="toolbar-drawer" id="drawerUndo" style="text-align: center">
-                            <button class="diagramAction" id="undoButton" onclick='undoDiagram()' data="Undo">
-                                <img src="../Shared/icons/undo.svg" style="filter: invert(100%);">
-                            </button>
-                            <button class="diagramAction" id="redoButton" onclick='redoDiagram()' data="Redo">
-                                <img src="../Shared/icons/redo.svg" style="filter: invert(100%);">
-                            </button>
-                        </div>
+                      </div>
                     </div>
                 </div>
                 <div class="menu-drop-down">
@@ -262,13 +273,6 @@
 
             <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
             <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
-            <div class="tooltipdialog">
-                <button id='moveButton' class='unpressed' title="Move Around" style="visibility:hidden">
-                    <img src="../Shared/icons/diagram_move_arrows.svg">
-                </button>
-            </div>
-            <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
-            <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
 
             <!--
                 Needs to be implemented in the new navbar
@@ -284,6 +288,15 @@
             -->
 
             </div>
+
+            <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
+            <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
+            <div class="tooltipdialog">
+                <button id='moveButton' class='unpressed' title="Move Around" style="visibility:hidden">
+                    <img src="../Shared/icons/diagram_move_arrows.svg">
+                </button>
+            </div>
+
             <div id="canvasDiv"></div>
             <div id="consoleDiv">
             <!--
@@ -311,8 +324,8 @@
     <div id="appearance" class='loginBoxContainer' style='display: none; background-color: rgba(0,0,0,0)'>
         <div class='loginBox'>
             <div class='loginBoxheader'>
-                <h3>Appearance</h3>
-                <div class='cursorPointer' onclick='closeAppearanceDialogMenu()'>x</div>
+                <h3 id='loginBoxTitle'>Appearance</h3>
+                <div class='cursorPointer' onclick='closeAppearanceDialogMenu();changeLoginBoxTitleAppearance();'>x</div>
             </div>
             <div class='table-wrap'>
                 <div id="f01"></div>

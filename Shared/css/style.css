@@ -115,7 +115,7 @@ hr {
 }
 
 .hidden {
-  opacity: 0.5;
+  opacity: 0.7;
   /* border-radius:4px; */
   margin-left: 16px;
 }
@@ -147,6 +147,13 @@ p {
 /* --------------================################================-------------- *
  *                               Lists and Content                              *
  * --------------================################================-------------- */
+
+ #buttonDiv {
+   position: fixed;
+   margin-top: -4%;
+   height: 20px;
+   background-color: white;
+ }
 
 .version {
   color: #EFF;
@@ -259,10 +266,6 @@ p {
   min-height: 30px;
   margin-right: 8px;
   padding-right: 8px;
-}
-
-.hidden {
-  opacity: 0.3 !important;
 }
 
 .login {
@@ -1170,7 +1173,8 @@ input {
 /*                    vIEW DIAGRAM.PHP FOR EXAMPLE OF USAGE                     */
 
 #diagram-toolbar {
-  width: 125px;
+  width: 130px;
+  height: auto;
 }
 
 .application-toolbar-wrap {
@@ -1188,7 +1192,7 @@ input {
   vertical-align: bottom;
   cursor: move;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin: 0px;
 }
 
@@ -1213,8 +1217,7 @@ input {
   padding: 0px 4px 0px 4px;
 }
 
-#toolbar-minimize {
-  position: absolute;
+#toolbar-minimize, #toolbar-toggleLayout {
   display: inline-block;
   width: 30px;
   height: 25px;
@@ -1227,6 +1230,14 @@ input {
 #minimizeArrow {
   width: 10px;
   height: 10px;
+  filter: invert(100%);
+  transition: 0.2s;
+}
+
+#layoutArrow {
+  width: 15px;
+  height: 15px;
+  margin: 5px;
   filter: invert(100%);
   transition: 0.2s;
 }
@@ -1931,9 +1942,9 @@ input.large-button {
   display: block;
   cursor: pointer;
   text-overflow: ellipsis;
-  max-width: 150px;
   overflow: hidden;
-  direction: rtl;  
+  padding-left:16px;
+  padding-right:16px;
 }
 
 #editpopover {
