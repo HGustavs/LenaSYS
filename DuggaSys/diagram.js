@@ -1199,6 +1199,13 @@ function setRefreshTime() {
 function lockSelected(){
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].locked = !selected_objects[i].locked;
+        
+        if(selected_objects[i].locked){
+            selected_objects[i].drawLock();
+        } 
+        else{
+            updateGraphics();
+        }
     }
 }
 
