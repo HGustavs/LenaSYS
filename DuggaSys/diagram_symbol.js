@@ -8,29 +8,16 @@
 //--------------------------------------------------------------------
 function Symbol(kind) {
     this.kind = 2;                  // Diagram object kind is always 2 for symbols
+    this.name = "New Class";        // New Class default name in new class
     this.targeted = false;
     this.symbolkind = kind;         // Symbol kind (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
-    this.textLines = [];                 // Free text array
-    this.textsize = 14;             // 14 pixels text size is default
-    this.symbolColor = '#ffffff';   // change background colors on entities
-    this.strokeColor = '#000000';   // change standard line color
-    this.font = "Arial";             // set the standard font
-    this.lineWidth = 2;
-    this.fontColor = '#000000';
-    this.name = "New Class";        // Default name is new class
-    this.key_type = "normal";       // Defult key tyoe for a class.
-    this.sizeOftext = "Tiny";       // Used to set size of text.
-    this.textAlign = "center";      // Used to change alignment of free text
+    this.textLines = [];            // Free text array
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
-    this.shadowBlur = 10;           // Shadowblur for all objects
-    this.shadowOffsetX = 3;         // The horizontal distance of the shadow for the object.
-    this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
-    this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
     this.cardinality = [
       {"value": null, "isCorrectSide": null, "symbolKind":null}
     ];
@@ -42,6 +29,23 @@ function Symbol(kind) {
     this.connectorBottom = [];
     this.connectorLeft = [];
     this.connectorRight = [];
+
+    // Properties array that stores different kind of objects. Refer to the properties with "properties['symbolColor']"
+    this.properties = {
+        'symbolColor': '#ffffff',                       // Change background colors on entities.
+        'strokeColor': '#000000',                       // Change standard line color.
+        'fontColor': '#000000',                         // Change the color of the font.
+        'font': 'Arial',                                // Set the standard font.
+        'lineWidth': '2',                               // LineWidth preset is 2.
+        'textSize': '14',                               // 14 pixels text size is default.
+        'sizeOftext': 'Tiny',                           // Used to set size of text.
+        'textAlign': 'center',                          // Used to change alignment of free text.
+        'shadowColor': 'rgba(0, 0, 0, 0.3',             // The shadow color.
+        'shadowBlur': '10',                             // Shadowblur for all objects.
+        'shadowOffsetX': '3',                           // The horizontal distance of the shadow for the object.
+        'shadowOffsetY': '6',                           // The vertical distance of the shadow for the object.
+        'key_type': 'normal'                            // Defult key type for a class.
+    };
 
     //--------------------------------------------------------------------
     // Returns the quadrant for a x,y coordinate in relation to bounding box and box center
