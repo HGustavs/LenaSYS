@@ -849,10 +849,7 @@ function renderCell(col,celldata,cellid) {
   else {
       str = "<div style='height:70px;' class='resultTableCell ";
       if(celldata.kind==4) { str += "dugga-moment "; }
-      if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
-      else {
-          str += "dugga-unassigned";
-      }
+      str += "dugga-unassigned";
       str += "'>";
       return str;
   }
