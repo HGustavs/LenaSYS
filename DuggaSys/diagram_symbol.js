@@ -911,7 +911,7 @@ function Symbol(kind) {
         }else{
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
-        ctx.font = parseInt(properties['textSize']) + "px " + this.properties['font'];
+        ctx.font = parseInt(this.properties['textSize']) + "px " + this.properties['font'];
     }
 
     this.drawLine = function(x1, y1, x2, y2){
