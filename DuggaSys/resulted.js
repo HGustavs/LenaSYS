@@ -721,20 +721,20 @@ function createSortableTable(data){
 		if(data['debug']!="NONE!") alert(data['debug']);
 }
 
-function gradeSortHandler()
+function gradeFilterHandler()
 {
-  // getting the alternative that the sorting have.
+    // getting the alternative that the sorting have.
     sortingGrade = 0;
-    var argument = document.getElementById("gradeSortScale").value;
+    var argument = document.getElementById("gradeFilterScale").value;
     switch(argument)
     {
-      case "Sort-G":
+      case "Filter-G":
         sortingGrade = 2;
         break;
-      case "Sort-U":
+      case "Filter-U":
         sortingGrade = 1;
         break;
-      case "Sort-VG":   // There is no duggas that can have VG at the moment so this will refer to G.
+      case "Filter-VG":   // There is no duggas that can have VG at the moment so this will refer to G.
         sortingGrade = 2;
         break;
       default:
@@ -744,7 +744,7 @@ function gradeSortHandler()
 }
 
 function renderCell(col,celldata,cellid) {
-  gradeSortHandler()
+  gradeFilterHandler()
 
 	// Render minimodef
 	if (filterList["minimode"]) {

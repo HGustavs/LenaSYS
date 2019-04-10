@@ -68,12 +68,12 @@ pdoConnect();
         <input id="laddate" type="date" style="font-size:12px;">
       </div>
 			<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
-				<label>Sortera efter</label>
-				<select id="gradeSortScale" onchange="updateTable();">
-					<option value="Sort-none" selected>inget</option>
-					<option value="Sort-G">G</option>
-					<option value="Sort-U">U</option>
-					<option value="Sort-VG">VG</option>
+				<label>Filtrera efter</label>
+				<select id="gradeFilterScale" onchange="updateTable();">
+					<option value="Filter-none" selected>inget</option>
+					<option value="Filter-G">G</option>
+					<option value="Filter-U">U</option>
+					<option value="Filter-VG">VG</option>
 				</select>
 			</div>
       <button onclick="ladexport();">LadExport</button>
