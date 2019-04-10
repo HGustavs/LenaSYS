@@ -746,7 +746,7 @@ function gradeFilterHandler()
 function renderCell(col,celldata,cellid) {
   gradeFilterHandler()
 
-  if(sortingGrade===0)
+  if(sortingGrade===0 && celldata.gradeSystem != 1)
     celldata.kind = 4;
 
 	// Render minimodef
