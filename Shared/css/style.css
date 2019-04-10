@@ -1,5 +1,5 @@
 /* --------------================################================-------------- *
- *                               Fonts                                          *
+ *                               Fonts 1                                         *
  * --------------================################================-------------- */
 
 @font-face {
@@ -115,7 +115,7 @@ hr {
 }
 
 .hidden {
-  opacity: 0.5;
+  opacity: 0.7;
   /* border-radius:4px; */
   margin-left: 16px;
 }
@@ -266,10 +266,6 @@ p {
   min-height: 30px;
   margin-right: 8px;
   padding-right: 8px;
-}
-
-.hidden {
-  opacity: 0.3 !important;
 }
 
 .login {
@@ -1946,9 +1942,9 @@ input.large-button {
   display: block;
   cursor: pointer;
   text-overflow: ellipsis;
-  max-width: 150px;
   overflow: hidden;
-  direction: rtl;
+  padding-left:16px;
+  padding-right:16px;
 }
 
 #editpopover {
@@ -2490,7 +2486,7 @@ span.arrow {
   width:50px;
   height:50px;
   border-radius:25px;
-  box-shadow:0px 0px 15px #888;
+  box-shadow:0px 2px 5px #888;
   bottom:35px;
   right:50px;
   font-size:24px;
@@ -2501,11 +2497,10 @@ span.arrow {
   border:0;
   outline: none;
   cursor: pointer;
-
  }
 
 .fab:hover {
-  transform: scale(1.1);
+  filter: brightness(103%);
 }
 
 .dugga-pass {
@@ -3344,9 +3339,6 @@ only screen and (max-device-width: 1085px) {
     -webkit-transition: opacity 300ms, width 300ms, margin 300ms;
     -moz-transition: opacity 300ms, width 300ms, margin 300ms;
     -o-transition: opacity 300ms, width 300ms, margin 300ms;
-  }
-  .dateSize {
-    width: 50px;
   }
 }
 
