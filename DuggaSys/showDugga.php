@@ -24,14 +24,14 @@
 	<script>var querystring=parseGet();</script>
 	<script>
 		// If the user leaves contribution.php, leave the iframe
-		let ctx = null;
+		var ctx = null;
 		function checkLeaveFrame(frame) {
 			if (ctx === null) {
 				ctx = frame.contentWindow.location.href;
 				document.body.style.overflow = "hidden";
 			}
 			if (ctx !== frame.contentWindow.location.href) {
-				const frame = document.getElementById('contributionFrame');
+				var frame = document.getElementById('contributionFrame');
 				window.location.href = frame.contentWindow.location.href;
 				frame.parentNode.removeChild(frame);
 			}
