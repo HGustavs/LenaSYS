@@ -262,13 +262,6 @@
 
             <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
             <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
-            <div class="tooltipdialog">
-                <button id='moveButton' class='unpressed' title="Move Around" style="visibility:hidden">
-                    <img src="../Shared/icons/diagram_move_arrows.svg">
-                </button>
-            </div>
-            <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
-            <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
 
             <!--
                 Needs to be implemented in the new navbar
@@ -284,6 +277,15 @@
             -->
 
             </div>
+
+            <!-- THESE OBJECTS ARE NOT IN THE TOOLBOX OR THE MENU-->
+            <!-- AS THEY PROBABLY SHOULD BE IMPLEMENTED SOMEWHERE WITHIN ISSUE #3750-->
+            <div class="tooltipdialog">
+                <button id='moveButton' class='unpressed' title="Move Around" style="visibility:hidden">
+                    <img src="../Shared/icons/diagram_move_arrows.svg">
+                </button>
+            </div>
+
             <div id="canvasDiv"></div>
             <div id="consoleDiv">
             <!--
