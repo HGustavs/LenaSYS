@@ -787,6 +787,20 @@ function renderCell(col,celldata,cellid) {
 					}
 					str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
 				str += "/>";
+        //changing here
+        str += "<div class='text-center resultTableText'>";
+          if(celldata.ishere===true && celldata.timesGraded!==0){
+            str += "Times Graded: " + celldata.timesGraded;
+          }
+        str += "</div>";
+      }
+      str += "</div>";
+      return str;
+    }
+    return celldata;
+  }
+        //To there
+
 			str += "</div>";
 
 			// Print submitted time and change color to red if passed deadline
@@ -806,17 +820,7 @@ function renderCell(col,celldata,cellid) {
 			str += "</div>";
 
 			// Print times graded
-			str += "<div class='text-center resultTableText'>";
-				if(celldata.ishere===true && celldata.timesGraded!==0){
-					str += "Times Graded: " + celldata.timesGraded;
-				}
-			str += "</div>";
-		}
-		str += "</div>";
-		return str;
-	}
-	return celldata;
-}
+
 
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
