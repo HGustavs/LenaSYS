@@ -924,7 +924,7 @@ $(document).ready(function(){
 });
 
 function setTextSizeEntity() {
-    diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
+    diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
 }
 
 function setType() {
@@ -1489,7 +1489,7 @@ function globalFontColor() {
 function globalTextSize() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
-            diagram[i].sizeOftext = document.getElementById('TextSize').value;
+            diagram[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
         }
     }
 }

@@ -1213,11 +1213,11 @@ function Symbol(kind) {
 
 	this.getFontsize = function() {
 		var fontsize = 14;
-		if (this.sizeOftext == 'Small') {
+		if (this.properties['sizeOftext'] == 'Small') {
 			fontsize = 20;
-		} else if (this.sizeOftext == 'Medium') {
+		} else if (this.properties['sizeOftext'] == 'Medium') {
 			fontsize = 30;
-		} else if (this.sizeOftext == 'Large') {
+		} else if (this.properties['sizeOftext'] == 'Large') {
 			fontsize = 50;
 		}
 		return fontsize;
