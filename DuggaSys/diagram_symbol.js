@@ -911,7 +911,7 @@ function Symbol(kind) {
         }else{
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
-        ctx.font = parseInt(properties['textSize']) + "px " + this.font;
+        ctx.font = parseInt(properties['textSize']) + "px " + this.properties['font'];
     }
 
     this.drawLine = function(x1, y1, x2, y2){
@@ -1026,7 +1026,7 @@ function Symbol(kind) {
 		var y2 = points[this.bottomRight].y;
 		// Set font
 		var fontsize = this.getFontsize();
-		var font = "bold " + parseInt(fontsize) + "px " + this.font;
+		var font = "bold " + parseInt(fontsize) + "px " + this.properties['font'];
 		ctx.font = font; // Set canvas font in order for measureText to work
 		// Style and positions
 		var svgObj = "", svgStyle = "", svgPos = "";
