@@ -108,10 +108,10 @@ function keyDownHandler(e){
     var key = e.keyCode;
 
     if(appearanceMenuOpen) return;
-    if((key == 46 || key == 8)){        // Key: Delete, KeyCode: 46 || Key: backSpace, KeyCode: 8
+    if((key == 46 || key == 8)){  // Key: Delete and Key: Backspace
         eraseSelectedObject();
         SaveState();
-    } else if(key == 32){               //Key: Spacebar: keycode: 32
+    } else if(key == 32){  // Key: Spacebar
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
@@ -123,14 +123,14 @@ function keyDownHandler(e){
             deactivateMovearound();
         }
         updateGraphics();
-    } else if(key == 37 || key == 38 || key == 39 || key == 40) {   //Key: Up, down, left, right arrow
+    } else if(key == 37 || key == 38 || key == 39 || key == 40){ //Key: Up, down, left, right arrow keys
         arrowKeyPressed(key);
-    } else if(key == 17 || key == 91){   //Key: Ctrl, KeyCode 17 || Key: WindowsKey, keyCode: 91
+    } else if(key == 17 || key == 91){  //Key: Ctrl and windowsKey
         ctrlIsClicked = true;
-    } else if(ctrlIsClicked && key == 67){  //Key: C, keyCode 67
+    } else if(ctrlIsClicked && key == 67){ //Key: C
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == 86 ){ //Key: V, keyCode 86
+    } else if(ctrlIsClicked && key == 86 ){ //Key: V
         //Ctrl + v
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++){
@@ -146,10 +146,9 @@ function keyDownHandler(e){
         SaveState();
     }
 
-
-    else if (key == 90 && ctrlIsClicked) undoDiagram(); //Key: Ctrl + Z: Keycode: 90
-    else if (key == 89 && ctrlIsClicked) redoDiagram(); //Key: Ctrl + Y: Keycode: 89
-    else if (key == 65 && ctrlIsClicked) { // Key: A: Keycode: 65
+    else if (key == 90 && ctrlIsClicked) undoDiagram(); //Key: Z
+    else if (key == 89 && ctrlIsClicked) redoDiagram(); //Key: Y
+    else if (key == 65 && ctrlIsClicked) {              //Key: A
       e.preventDefault();
       for(var i = 0; i < diagram.length; i++){
         selected_objects.push(diagram[i]);
@@ -157,11 +156,11 @@ function keyDownHandler(e){
       }
       updateGraphics();
     }
-    else if(key == 17 || key == 91) // Key: Ctrl: Keycode: 17 || Key: Windows key: Keycode:91
+    else if(key == 17 || key == 91)                     //Key: Ctrl and windowsKey
     {
       ctrlIsClicked = true;
     }
-    else if(key == 27){ // Key; Escape
+    else if(key == 27){                                 //Key: Escape
       cancelFreeDraw();
     }
 
@@ -193,7 +192,7 @@ function fillCloneArray(){
 
 //Not used yet
 window.onkeyup = function(event) {
-    if(event.which == 17 || event.which == 91) {
+    if(event.which == 17 || event.which == 91) { //Key: Ctrl and Key: WindowsKey
         ctrlIsClicked = false;
     }
   }
@@ -202,13 +201,13 @@ window.onkeyup = function(event) {
 function arrowKeyPressed(key){
   var xNew = 0, yNew = 0;
 
-  if(key == 37){        //Key: left-arrow
+  if(key == 37){//left-arrow
     xNew = -5;
-  }else if(key == 38){  //Key: up-arrow
+  }else if(key == 38){//Key: Up-arrow
     yNew = -5;
-  }else if(key == 39){  //Key: right-arrow
+  }else if(key == 39){//Key: Right-arrow
     xNew = 5;
-  }else if(key == 40){  //Key: down-arrow
+  }else if(key == 40){//Key: Down-arrow
     yNew = 5;
   }
   for(var i = 0; i < selected_objects.length; i++){
