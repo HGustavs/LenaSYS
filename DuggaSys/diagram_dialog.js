@@ -94,7 +94,7 @@ function loadFormIntoElement(element, dir){
         setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
         setSelectedOption('font', diagram[lastSelectedObject].font);
         setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
-        setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+        setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
         setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
       }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1){
         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
@@ -176,7 +176,7 @@ function loadTextForm(element, dir){
         setSelectedOption('font', diagram[lastSelectedObject].font);
         setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
         setSelectedOption('textAlign', diagram[lastSelectedObject].textAlign);
-        setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+        setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
       }
     }
   }
@@ -278,13 +278,13 @@ function changeObjectAppearance(object_type){
         diagram[lastSelectedObject].fontColor = document.getElementById('fontColor').value;
         diagram[lastSelectedObject].font = document.getElementById('font').value;
         diagram[lastSelectedObject].textAlign = document.getElementById('textAlign').value;
-        diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
+        diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
     } else {
         diagram[lastSelectedObject].symbolColor = document.getElementById('symbolColor').value;
         diagram[lastSelectedObject].name = document.getElementById('nametext').value;
         diagram[lastSelectedObject].fontColor = document.getElementById('fontColor').value;
         diagram[lastSelectedObject].font = document.getElementById('font').value;
-        diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
+        diagram[lastSelectedObject].properties['sizeOftext']t = document.getElementById('TextSize').value;
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
         diagram[lastSelectedObject].properties['strokeColor'] = document.getElementById('LineColor').value;
     }
