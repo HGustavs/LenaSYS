@@ -605,6 +605,13 @@ function mousemoveposcanvas(e) {
     mouseDiffY = (mousedownY - mousemoveY);
     sx += mouseDiffX;
     sy += mouseDiffY;
+    //Checks if sx or sy are below 0 the coordinates will stop at 0
+    if(sx < 0){
+      sx = 0;
+    }
+    if(sy < 0){
+      sy = 0;
+    }
     mousedownX = mousemoveX;
     mousedownY = mousemoveY;
     moveValue = 1;

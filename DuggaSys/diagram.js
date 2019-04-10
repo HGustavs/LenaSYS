@@ -781,6 +781,14 @@ window.addEventListener('resize', canvasSize);
 function updateGraphics() {
     ctx.clearRect(sx, sy, (widthWindow / zoomValue), (heightWindow / zoomValue));
     if (moveValue == 1) {
+      // If the canvas is moved towards the left and x coordinate is at 0, dont move the canvas
+      if(mouseDiffX < 0 && sx == 0){
+        mouseDiffX = 0;
+      }
+      // If the canvas is moved upwards and y coordinate is at 0, dont move the canvas
+      if(mouseDiffY < 0 && sy == 0){
+        mouseDiffY = 0;
+      }
         ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
     }
@@ -884,7 +892,7 @@ function eraseSelectedObject() {
     if(selected_objects.length == 0){
         showMenu().innerHTML = "No item selected<type='text'>";
         changeLoginBoxTitleDelete();
-        $(".loginBox").draggable();        
+        $(".loginBox").draggable();
     }
     for(var i = 0; i < selected_objects.length; i++){
         eraseObject(selected_objects[i]);
@@ -1245,7 +1253,7 @@ function alignLeft(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
@@ -1267,7 +1275,7 @@ function alignTop(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
@@ -1289,7 +1297,7 @@ function alignRight(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
@@ -1311,7 +1319,7 @@ function alignBottom(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
@@ -1339,7 +1347,7 @@ function alignVerticalCenter(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
@@ -1368,7 +1376,7 @@ function alignHorizontalCenter(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
@@ -1376,7 +1384,7 @@ function alignHorizontalCenter(selected_objects){
     }
 }
 // ----------------------------------------------------------------------------
-// Objects in selected_objects get duplicated for some reason. 
+// Objects in selected_objects get duplicated for some reason.
 // This function returns a list without the duplicated objects.
 // ----------------------------------------------------------------------------
 
