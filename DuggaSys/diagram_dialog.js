@@ -95,11 +95,11 @@ function loadFormIntoElement(element, dir){
         setSelectedOption('font', diagram[lastSelectedObject].font);
         setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
         setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
-        setSelectedOption('LineColor', diagram[lastSelectedObject].strokeColor);
+        setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
       }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1){
         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
         document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
-        setSelectedOption('LineColor',  diagram[lastSelectedObject].strokeColor);
+        setSelectedOption('LineColor',  diagram[lastSelectedObject].properties['strokeColor']);
 
       }
     }
@@ -120,7 +120,7 @@ function loadLineForm(element, dir){
                 var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
                 var tempCardinalityUML = cardinalityValUML == "" || cardinalityValUML == null ? "None" : cardinalityValUML;
 
-                setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type');
+                setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
                 setSelectedOption('cardinality', tempCardinality);
                 if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
@@ -268,7 +268,7 @@ function changeObjectAppearance(object_type){
     } else if (diagram[lastSelectedObject].kind == 1){
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
-        diagram[lastSelectedObject].strokeColor = document.getElementById('LineColor').value;
+        diagram[lastSelectedObject].properties['strokeColor'] = document.getElementById('LineColor').value;
     } else if (diagram[lastSelectedObject].symbolkind == 6) {
         diagram[lastSelectedObject].textLines = [];
         var textArray = $('#freeText').val().split('\n');
@@ -286,7 +286,7 @@ function changeObjectAppearance(object_type){
         diagram[lastSelectedObject].font = document.getElementById('font').value;
         diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
-        diagram[lastSelectedObject].strokeColor = document.getElementById('LineColor').value;
+        diagram[lastSelectedObject].properties['strokeColor'] = document.getElementById('LineColor').value;
     }
     updateGraphics();
 }

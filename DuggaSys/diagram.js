@@ -1507,7 +1507,7 @@ function globalFillColor() {
 //change the strokecolor on all entities to the same size.
 function globalStrokeColor() {
     for (var i = 0; i < diagram.length; i++) {
-            diagram[i].strokeColor = document.getElementById('StrokeColor').value;
+            diagram[i].properties['strokeColor'] = document.getElementById('StrokeColor').value;
     }
 }
 
