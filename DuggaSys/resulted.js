@@ -749,13 +749,6 @@ function gradeFilterHandler()
 function renderCell(col,celldata,cellid) {
   gradeFilterHandler()
 
-  if(filterGrade === 0)
-  {
-    console.log(celldata.submitted + "\n");
-    if(celldata.grade === 0)
-      console.log("filtergrade: " + filterGrade + "\n" + celldata.grade);
-  }
-
 	// Render minimodef
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
@@ -856,7 +849,10 @@ function renderCell(col,celldata,cellid) {
   else {
       str = "<div style='height:70px;' class='resultTableCell ";
       if(celldata.kind==4) { str += "dugga-moment "; }
-      str += "dugga-unassigned";
+      if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
+      else {
+          str += "dugga-unassigned";
+      }
       str += "'>";
       return str;
   }
