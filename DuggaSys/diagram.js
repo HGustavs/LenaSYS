@@ -112,6 +112,7 @@ const vKey = 86;
 const zKey = 90;
 const yKey = 89;
 const aKey = 65;
+const escapeKey = 27;
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
@@ -174,7 +175,7 @@ function keyDownHandler(e){
     {
       ctrlIsClicked = true;
     }
-    else if(key == 27){                                 //Key: Escape
+    else if(key == escapeKey){                                 //Key: Escape
       cancelFreeDraw();
     }
 
