@@ -2249,6 +2249,9 @@ span.arrow {
   margin-left: 3px;
   margin-right: 3px;
   font-size: 13px;
+}
+
+.WriteOutTimesGraded{
   font-weight: bold;
   font-size: 15px;
   margin: 0 auto;
