@@ -391,6 +391,15 @@ foreach($query->fetchAll() as $row) {
 			'deadline' => $row['deadline']
 		)
 	);
+	array_push(
+		$duggor,
+		array(
+			'id' => '9999',
+			'qname' => 'Contribution',
+			'release' => '',
+			'deadline' => ''
+		)
+	);
 }
 
 $query = $pdo->prepare("SELECT `groups` FROM user_course WHERE uid=:uid AND cid=:cid;");
