@@ -67,6 +67,16 @@ pdoConnect();
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
       </div>
+			<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
+				<label>Filtrera efter</label>
+				<select id="gradeFilterScale" onchange="updateTable();">
+					<option value="Filter-none" selected>inget</option>
+					<option value="Filter-G">G</option>
+					<option value="Filter-VG">VG</option>
+					<option value="Filter-U">U</option>
+					<option value="Filter-Ungraded">Ej betygsatta</option>
+				</select>
+			</div>
       <button onclick="ladexport();">LadExport</button>
     </div>
 		<!--<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>-->
