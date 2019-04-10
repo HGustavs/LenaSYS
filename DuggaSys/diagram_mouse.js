@@ -186,6 +186,7 @@ function mousemoveevt(ev, t) {
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
         } else if(uimode == "CreateLine") {
+            // Path settings for preview line
             ctx.setLineDash([3, 3]);
             ctx.beginPath();
             ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
