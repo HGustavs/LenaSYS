@@ -1480,7 +1480,7 @@ function globalFont() {
 function globalFontColor() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
-            diagram[i].fontColor = document.getElementById('fontColor').value;
+            diagram[i].properties['fontColor'] = document.getElementById('fontColor').value;
         }
     }
 }
