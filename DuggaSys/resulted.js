@@ -788,7 +788,7 @@ function renderCell(col,celldata,cellid) {
 					str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
 				str += "/>";
         //changing here
-        str += "<div class='text-center resultTableText'  style='font-weight:bold;'>";
+        str += "<div class='text-center resultTableText'  style='font-weight:bold; font-size: 10px;'>";
           if(celldata.ishere===true && celldata.timesGraded!==0){
             str += celldata.timesGraded;
           }
