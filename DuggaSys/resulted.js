@@ -793,11 +793,7 @@ function renderCell(col,celldata,cellid) {
                     str += "(" + celldata.timesGraded + ")";
                   }
                 str += "</div>";
-
         str += "</div>";
-
-
-
 
 			// Print submitted time and change color to red if passed deadline
 			str += "<div class='text-center resultTableText'";
