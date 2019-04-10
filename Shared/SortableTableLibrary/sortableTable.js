@@ -396,9 +396,20 @@ function SortableTable(param)
       		if (rowFilter(row)) {
               str += "<tr id='"+this.tableid+DELIMITER+i+"'"
               if (this.hasRowHighlight)str+=" onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)'";
-              str+=" style='box-sizing:border-box'>";
-                mhvstr += "<tr id='"+this.tableid+DELIMITER+i+DELIMITER+"mhv' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box;'>";
 
+              //Check if row contains requestedpasswordchange & set styling accordingly
+              if (row["requestedpasswordchange"] != null) {
+				  obj = JSON.parse(row["requestedpasswordchange"])
+				  if (obj.requested == 1) {
+					  str+=" style='box-sizing:border-box; background-color: #ff3f4c'>";
+				  } else {
+					  str+=" style='box-sizing:border-box'>";
+				  }
+			  } else {
+				  str+=" style='box-sizing:border-box'>";
+			  }
+
+              mhvstr += "<tr id='"+this.tableid+DELIMITER+i+DELIMITER+"mhv' onmouseover='rowHighlightInternal(event,this)' onmouseout='rowDeHighlightInternal(event,this)' style='box-sizing:border-box'>";
 
         			// Add Counter cell to the row. The class <tableid>_counter can be used to style the counterText
         			if(this.hasCounter) {
