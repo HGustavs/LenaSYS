@@ -803,6 +803,7 @@ function renderCell(col,celldata,cellid) {
     if(filterGrade === 0)
     {
       celldata.kind = 4;
+      celldata.ishere = true;
     }
 
 		// Creation of grading buttons
