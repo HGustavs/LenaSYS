@@ -787,7 +787,7 @@ function renderCell(col,celldata,cellid) {
 					}
 					str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
 				str += "/>";
-        //print times graded
+        //print times graded next to grade buttons
         str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
                   if(celldata.ishere===true && celldata.timesGraded!==0){
                     str += "(" + celldata.timesGraded + ")";
