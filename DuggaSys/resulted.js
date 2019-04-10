@@ -787,17 +787,15 @@ function renderCell(col,celldata,cellid) {
 					}
 					str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
 				str += "/>";
-
-        str += "<div class='text-center resultTableText'  style='font-weight:bold; font-size: 15px; margin: 0 auto;'>";
+        //print times graded
+        str += "<div class='text-center resultTableText'>";
                   if(celldata.ishere===true && celldata.timesGraded!==0){
                     str += "(" + celldata.timesGraded + ")";
                   }
                 str += "</div>";
 
         str += "</div>";
-        // Print times graded
 
-        //To there
 
 
 
