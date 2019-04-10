@@ -1309,12 +1309,18 @@ function drawSwimlanes() {
 
 $(document).mousedown(function (e) {
   mouseDown(e);
-  FABDown(e);
+
+  if (e.button == 0) {
+    FABDown(e);
+  }
 });
 
 $(document).mouseup(function (e) {
   mouseUp(e);
-  FABUp(e);
+
+  if (e.button == 0) {
+    FABUp(e);
+  }
 });
 
 $(document).on("touchstart", function (e) {
