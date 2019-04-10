@@ -92,7 +92,8 @@
 */
 	// If the dugga is the Contribution dugga, show an iFrame with contribution.php
 	if ($quizid == '9999') {
-		echo "<iframe id='contributionFrame' src='contribution.php' style='position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none' onLoad='checkLeaveFrame(this)'>";
+		echo "<iframe id='contributionFrame' src='contribution.php?cid=".$cid."&coursevers=".$vers;
+		echo "' style='position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none' onLoad='checkLeaveFrame(this)'>";
 		echo "</iframe>";
 		die;
 	} 
