@@ -1257,13 +1257,19 @@ function drawSwimlanes(){
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
 $(document).mousedown(function (e) {
-		mouseDown(e);
+	mouseDown(e);
+
+	if (e.button == 0) {
 		FABDown(e);
+	}
 });
 
 $(document).mouseup(function (e) {
-		mouseUp(e);
+	mouseUp(e);
+
+	if (e.button == 0) {
 		FABUp(e);
+	}
 });
 
 $(document).on("touchstart", function(e){
