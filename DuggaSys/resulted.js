@@ -751,9 +751,7 @@ function renderCell(col,celldata,cellid) {
 
   if(filterGrade === 0)
   {
-    celldata.kind = 4;
-    celldata.ishere = true;
-    console.log("filtergrade: " + filterGrade + "\n");
+    console.log("filtergrade: " + filterGrade + "\n" + celldata.grade);
   }
 
 	// Render minimodef
