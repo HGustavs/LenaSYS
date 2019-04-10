@@ -728,6 +728,9 @@ function gradeFilterHandler()
     var argument = document.getElementById("gradeFilterScale").value;
     switch(argument)
     {
+      case "Filter-VG":
+        sortingGrade = 3;
+        break;
       case "Filter-G":
         sortingGrade = 2;
         break;

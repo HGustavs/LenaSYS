@@ -72,6 +72,7 @@ pdoConnect();
 				<select id="gradeFilterScale" onchange="updateTable();">
 					<option value="Filter-none" selected>inget</option>
 					<option value="Filter-G">G</option>
+					<option value="Filter-VG">VG</option>
 					<option value="Filter-U">U</option>
 					<option value="Filter-Ungraded">Ej betygsatta</option>
 				</select>
