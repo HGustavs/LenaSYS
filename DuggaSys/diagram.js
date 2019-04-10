@@ -730,6 +730,7 @@ function toggleGrid() {
     } else {
         snapToGrid = false;
     }
+    setCheckbox($("a:contains('Snap to grid')"), snapToGrid);
 }
 
 // Opens the dialog menu for import
@@ -1047,6 +1048,7 @@ function debugMode() {
         ghostingCrosses = true;
     }
     updateGraphics();
+    setCheckbox($("a:contains('Developer mode')"), !ghostingCrosses);
 }
 
 //calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram. it also save the local diagram
@@ -1538,4 +1540,18 @@ function diagramToSVG() {
         if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
     }
     return str;
+}
+
+// Check or uncheck the checkbox contained in 'element'
+// This function adds a checkbox element if there is none
+function setCheckbox(element, check) {
+    if ($(element).children(".material-icons").length == 0) {
+        $(element).append("<i class=\"material-icons\" style=\"float: right; padding-right: 8px; font-size: 18px;\">check</i>");
+    }
+
+    if (check) {
+        $(element).children(".material-icons").show();
+    }else {
+        $(element).children(".material-icons").hide();
+    }
 }
