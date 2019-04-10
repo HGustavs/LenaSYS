@@ -98,6 +98,20 @@ var symbolEndKind;                      // Is used to store which kind of object
 
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
 
+const deleteKey = 46;
+const backspaceKey = 8;
+const spacebarKey = 32;
+const upArrow = 37;
+const downArrow = 38;
+const leftArrow = 39;
+const rightArrow = 40;
+const ctrlKey = 17;
+const windowsKey = 91;
+const cKey = 67;
+const vKey = 86;
+const zKey = 90;
+const yKey = 89;
+const aKey = 65;
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
@@ -108,10 +122,10 @@ function keyDownHandler(e){
     var key = e.keyCode;
 
     if(appearanceMenuOpen) return;
-    if((key == 46 || key == 8)){  // Key: Delete and Key: Backspace
+    if((key == deleteKey || key == backspaceKey)){  // Key: Delete and Key: Backspace
         eraseSelectedObject();
         SaveState();
-    } else if(key == 32){  // Key: Spacebars
+    } else if(key == spacebarKey){  // Key: Spacebars
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
@@ -123,14 +137,14 @@ function keyDownHandler(e){
             deactivateMovearound();
         }
         updateGraphics();
-    } else if(key == 37 || key == 38 || key == 39 || key == 40){ //Key: Up, down, left, right arrow keys
+    } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow){ //Key: Up, down, left, right arrow keys
         arrowKeyPressed(key);
-    } else if(key == 17 || key == 91){  //Key: Ctrl and windowsKey
+    } else if(key == ctrlKey || key == windowsKey){  //Key: Ctrl and windowsKey
         ctrlIsClicked = true;
-    } else if(ctrlIsClicked && key == 67){ //Key: C
+    } else if(ctrlIsClicked && key == cKey){ //Key: C
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == 86 ){ //Key: V
+    } else if(ctrlIsClicked && key == vKey ){ //Key: V
         //Ctrl + v
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++){
@@ -146,9 +160,9 @@ function keyDownHandler(e){
         SaveState();
     }
 
-    else if (key == 90 && ctrlIsClicked) undoDiagram(); //Key: Z
-    else if (key == 89 && ctrlIsClicked) redoDiagram(); //Key: Y
-    else if (key == 65 && ctrlIsClicked) {              //Key: A
+    else if (key == zKey && ctrlIsClicked) undoDiagram(); //Key: Z
+    else if (key == yKey && ctrlIsClicked) redoDiagram(); //Key: Y
+    else if (key == aKey && ctrlIsClicked) {              //Key: A
       e.preventDefault();
       for(var i = 0; i < diagram.length; i++){
         selected_objects.push(diagram[i]);
@@ -156,7 +170,7 @@ function keyDownHandler(e){
       }
       updateGraphics();
     }
-    else if(key == 17 || key == 91)                     //Key: Ctrl and windowsKey
+    else if(key == ctrlKey || key == windowsKey)          //Key: Ctrl and windowsKey
     {
       ctrlIsClicked = true;
     }
@@ -192,7 +206,7 @@ function fillCloneArray(){
 
 //Not used yet
 window.onkeyup = function(event) {
-    if(event.which == 17 || event.which == 91) { //Key: Ctrl and Key: WindowsKey
+    if(event.which == ctrlKey || event.which == windowsKey) { //Key: Ctrl and Key: WindowsKey
         ctrlIsClicked = false;
     }
   }
@@ -201,13 +215,13 @@ window.onkeyup = function(event) {
 function arrowKeyPressed(key){
   var xNew = 0, yNew = 0;
 
-  if(key == 37){//left-arrow
+  if(key == leftArrow){//left-arrow
     xNew = -5;
-  }else if(key == 38){//Key: Up-arrow
+  }else if(key == upArrow){//Key: Up-arrow
     yNew = -5;
-  }else if(key == 39){//Key: Right-arrow
+  }else if(key == rightArrow){//Key: Right-arrow
     xNew = 5;
-  }else if(key == 40){//Key: Down-arrow
+  }else if(key == downArrow){//Key: Down-arrow
     yNew = 5;
   }
   for(var i = 0; i < selected_objects.length; i++){
