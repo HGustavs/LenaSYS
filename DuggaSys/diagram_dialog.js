@@ -284,7 +284,7 @@ function changeObjectAppearance(object_type){
         diagram[lastSelectedObject].name = document.getElementById('nametext').value;
         diagram[lastSelectedObject].fontColor = document.getElementById('fontColor').value;
         diagram[lastSelectedObject].font = document.getElementById('font').value;
-        diagram[lastSelectedObject].properties['sizeOftext']t = document.getElementById('TextSize').value;
+        diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
         diagram[lastSelectedObject].properties['strokeColor'] = document.getElementById('LineColor').value;
     }

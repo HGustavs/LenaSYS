@@ -1226,7 +1226,7 @@ function Symbol(kind) {
     this.makeShadow = function(){
         ctx.save();
         ctx.shadowBlur = this.shadowBlur;
-        ctx.shadowOffsetX = this.this.properties['shadowOffsetX'];
+        ctx.shadowOffsetX = this.properties['shadowOffsetX'];
         ctx.shadowOffsetY = this.properties['shadowOffsetY'];
         ctx.shadowColor = this.shadowColor;
         ctx.fill();
