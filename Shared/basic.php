@@ -84,74 +84,9 @@ function swizzleArray(&$filepost) {
 }
 
 //---------------------------------------------------------------------------------------------------------------
-// connect log database - Open log database and create tables if they do not exist
+// connect log database - Open log database
 //---------------------------------------------------------------------------------------------------------------
-
 $log_db = new PDO('sqlite:../../log/loglena4.db');
-$sql = '
-	CREATE TABLE IF NOT EXISTS logEntries (
-		id INTEGER PRIMARY KEY,
-		eventType INTEGER,
-		description TEXT,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-		userAgent TEXT
-	);
-	CREATE TABLE IF NOT EXISTS userLogEntries (
-		id INTEGER PRIMARY KEY,
-		uid INTEGER(10),
-		eventType INTEGER,
-		description VARCHAR(50),
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-		userAgent TEXT,
-		remoteAddress VARCHAR(15)
-	);
-	CREATE TABLE IF NOT EXISTS serviceLogEntries (
-		id INTEGER PRIMARY KEY,
-		uuid CHAR(15),
-		eventType INTEGER,
-		service VARCHAR(15),
-		userid VARCHAR(8),
-		timestamp INTEGER,
-		userAgent TEXT,
-		operatingSystem VARCHAR(100),
-		info TEXT,
-		referer TEXT,
-		IP TEXT,
-		browser VARCHAR(100)
-	);
-	CREATE TABLE IF NOT EXISTS clickLogEntries (
-		id INTEGER PRIMARY KEY,
-		target TEXT,
-		mouseX TEXT,
-		mouseY TEXT,
-		clientResX TEXT,
-		clientResY TEXT,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	);
-	CREATE TABLE IF NOT EXISTS mousemoveLogEntries (
-		id INTEGER PRIMARY KEY,
-		page TEXT,
-		mouseX TEXT,
-		mouseY TEXT,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	);
-	CREATE TABLE IF NOT EXISTS exampleLoadLogEntries(
-		id INTEGER PRIMARY KEY,
-		type INTEGER,
-		courseid INTEGER,
-		exampleid INTEGER,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	);
-	CREATE TABLE IF NOT EXISTS duggaLoadLogEntries(
-		id INTEGER PRIMARY KEY,
-		type INTEGER,
-		cid INTEGER,
-		vers INTEGER,
-		quizid INTEGER,
-		timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-	);
-';
-$log_db->exec($sql);
 
 //------------------------------------------------------------------------------------------------
 // logEvent - Creates a new log entry in the log database (log.db, located at the root directory)
