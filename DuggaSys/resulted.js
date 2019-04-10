@@ -800,6 +800,9 @@ function renderCell(col,celldata,cellid) {
     else {str += "dugga-unassigned";}
 		str += "'>";
 
+    if(celldata.grade === 0)
+      celldata.kind = 4;
+
 		// Creation of grading buttons
 		if(celldata.ishere===true||celldata.kind==4){
 			  str += "<div class='gradeContainer resultTableText'>";
