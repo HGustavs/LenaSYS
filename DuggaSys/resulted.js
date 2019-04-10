@@ -790,7 +790,7 @@ function renderCell(col,celldata,cellid) {
         //changing here
         str += "<div class='text-center resultTableText'  style='font-weight:bold; font-size: 15px;'>";
           if(celldata.ishere===true && celldata.timesGraded!==0){
-            str += ( + celldata.timesGraded + );
+            str += "(" + celldata.timesGraded + ")";
           }
         str += "</div>";
       }
