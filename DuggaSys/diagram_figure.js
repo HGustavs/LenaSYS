@@ -13,8 +13,8 @@ function Path() {
     this.tmplist = Array();         // Temporary list for testing of intersections
     this.auxlist = Array();         // Auxillary temp list for testing of intersections
     this.fillColor = '#ffffff';     // Fill color (default is white)
-    this.opacity = 1;             // Opacity valuefor figures
-    this.strokeColor = '#000000';      // Stroke color (default is black)
+    this.opacity = 1;               // Opacity valuefor figures
+    this.strokeColor = '#000000';   // Stroke color (default is black)
     this.lineWidth = 2;             // Line Width (stroke width - default is 2 pixels)
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
     this.targeted = true;                    // An organized path can contain several sub-path, each of which must be organized

@@ -751,7 +751,6 @@ function Symbol(kind) {
         ctx.restore();
         ctx.setLineDash([]);
 
-
         //Highlighting points when targeted, makes it easier to resize
         if(this.targeted && this.symbolkind != 6){
             ctx.beginPath();
