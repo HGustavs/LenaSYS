@@ -65,8 +65,9 @@ if ($requestType=="mail"){
 	foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row){
 		array_push($emailsArray,$row['email']);
 	}
+	$emailsArray=explode(';',$emailsArray);
 	print_r($emailsArray);
-	echo $emailsArray;
+	echo json_encode($emailsArray);
 }	else {
 
 		// Store current day in string
