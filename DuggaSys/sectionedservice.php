@@ -65,7 +65,7 @@ if ($requestType=="mail"){
 			'uid' => $row['uid']
 		);
 		//array_push($teachers, $teacher);
-		echo $teacher;
+		echo "Hej";
 	}
 
 	// $mailTest = $pdo->query("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers")
