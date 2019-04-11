@@ -107,8 +107,8 @@
 							<input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='navigatePage("accessed.php");'/>
 						</div>
 					</td>
-					<td class='mail menuButton' style='display: inline-block;'>
-						<div class='mail menuButton'>
+					<td class='access menuButton' style='display: inline-block;'>
+						<div class='access menuButton'>
 							<input type='button' value='Mail' class='submit-button' title='Send mail' onclick='getEmails("305", "12305");'/>
 						</div>
 					</td>
