@@ -1202,8 +1202,8 @@ function lockSelected(){
         
         if(selected_objects[i].locked){
             selected_objects[i].drawLock();
-        } 
-        else{
+        }
+        else {
             updateGraphics();
         }
     }
