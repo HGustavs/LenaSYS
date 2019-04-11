@@ -1440,13 +1440,19 @@ $(window).load(function () {
   });
 });
 
-function getEmails(cidMail, versMail) {
+function getEmails() {
   // In i databasen och hämta email adresserna.
   // Tryck in email adresserna till en container (array???)
   // Skicka container till "mailto:"
 
 //   var email = $('#email').val();
   var reqType = "mail";
+
+  var url_string = window.location.href;
+  var url = new URL(url_string);
+  var cname = url.searchParams.get("coursename");
+  var cidMail = url.searchParams.get("courseid");
+  var versMail = url.searchParams.get("coursevers");
 
   $.ajax({
     url: "sectionedservice.php",
@@ -1458,7 +1464,7 @@ function getEmails(cidMail, versMail) {
     },
     dataType: "json",
     success: function(data){
-      window.location.assign("mailto:" + data);
+      window.location.assign("mailto:" + data + "?subject=Testing out mailto!");
     }
   });
 }
