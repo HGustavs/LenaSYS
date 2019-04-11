@@ -1439,3 +1439,28 @@ $(window).load(function () {
     $("#testbutton").css("background-color", "#614875");
   });
 });
+
+// Function for automatically create a mail with participating students in current course
+function mail() {
+  var reqType = "mail";
+
+  var url_string = window.location.href;
+  var url = new URL(url_string);
+  var cname = url.searchParams.get("coursename");
+  var cidMail = url.searchParams.get("courseid");
+  var versMail = url.searchParams.get("coursevers");
+
+  $.ajax({
+    url: "sectionedservice.php",
+    type: "POST",
+    data: {
+      'courseid': cidMail,
+      'coursevers': versMail,
+      'requestType': reqType
+    },
+    dataType: "json",
+    success: function(data){
+      window.location.assign("mailto:" + data + "?subject=" + "!!! Notification !!! " + cname);
+    }
+  });
+}
