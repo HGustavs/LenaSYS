@@ -99,8 +99,7 @@ function loadFormIntoElement(element, dir){
       }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1){
         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
         document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
-        setSelectedOption('LineColor',  diagram[lastSelectedObject].properties['strokeColor']);
-
+        setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
       }
     }
   }
@@ -268,7 +267,7 @@ function changeObjectAppearance(object_type){
     } else if (diagram[lastSelectedObject].kind == 1){
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
-        diagram[lastSelectedObject].properties['strokeColor'] = document.getElementById('LineColor').value;
+        diagram[lastSelectedObject].strokeColor = document.getElementById('LineColor').value;
     } else if (diagram[lastSelectedObject].symbolkind == 6) {
         diagram[lastSelectedObject].textLines = [];
         var textArray = $('#freeText').val().split('\n');
