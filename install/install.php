@@ -583,10 +583,10 @@
         # Check if all fields are filled.
         $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
         foreach ($fields AS $fieldname) { //Loop trough each field
-            if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname])) {
+            if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname]) && !$_POST[$fieldname] === "rootPwd") {
                 $errors++;
                 exit ("<span id='failText' />Please fill all fields.</span><br>
-                    <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
+                <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
             }
         }
 
