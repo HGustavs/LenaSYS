@@ -53,11 +53,11 @@ $grplst=array();
 if($gradesys=="UNK") $gradesys=0;
 
 if ($requestType=="mail"){
-	$mailQuery = $pdo->prepare("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid = $courseid, user_course.vers = $coursevers");
+	$mailQuery = $pdo->prepare("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid, user_course.vers=:vers");
+	$mailQuery->bindParam(':cid', $courseid);
+	$mailQuery->bindParam(':vers', $coursevers);
 
 	if (!$mailQuery->execute()) {
-			$error=$stmt->errorInfo();
-			$debug="Error getting groups " . $error[2];
 			printf($debug);
 	} else {
 		$mailList =	$mailQuery->fetchAll();
