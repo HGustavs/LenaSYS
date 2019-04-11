@@ -1313,6 +1313,14 @@ input {
   padding: 0px 6px;
 }
 
+.menu-drop-down span.drop-down-label{
+  display: block;
+  height: 22px;
+  line-height: 22px;
+  padding: 0px 8px;
+  cursor: pointer;
+}
+
 .document-settings span.label:hover {
   cursor: pointer;
   background-color: rgb(240, 240, 240);

@@ -62,7 +62,7 @@
                             <img id="minimizeArrow" class="toolbarMaximized" src="../Shared/icons/arrow.svg">
                           </div>
                           <h3>Toolbar</h3>
-                          <div id="toolbar-toggleLayout"  onclick="toggleToolbarLayout();"> 
+                          <div id="toolbar-toggleLayout"  onclick="toggleToolbarLayout();">
                               <img id="layoutArrow" class="toolbarMaximized" src="../Shared/icons/rotateButton.svg">
                             </div>
                         </div>
@@ -135,7 +135,7 @@
                     </div>
                 </div>
                 <div class="menu-drop-down">
-                    <span class="label">File</span>
+                    <span class="drop-down-label">File</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <a href="#" value='Save'>Save</a>
@@ -175,7 +175,7 @@
                     </div>
                 </div>
                 <div class="menu-drop-down">
-                    <span class="label">Edit</span>
+                    <span class="drop-down-label">Edit</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <a href="#" onclick='undoDiagram()'>Undo</a>
@@ -204,7 +204,7 @@
                     </div>
                 </div>
                 <div class="menu-drop-down">
-                    <span class="label">View</span>
+                    <span class="drop-down-label">View</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <a href="#" onclick='debugMode();'>Developer mode</a>
@@ -215,7 +215,7 @@
                     </div>
                 </div>
                 <div class="menu-drop-down">
-                    <span class="label">Align</span>
+                    <span class="drop-down-label">Align</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <a href="#" onclick="align('top');">Top</a>
@@ -242,7 +242,7 @@
                     </div>
                 </div>
                 <div class="menu-drop-down">
-                    <span class="label">Distribute</span>
+                    <span class="drop-down-label">Distribute</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <a href="#" onclick="distribute('horizontally');">Horizontal</a>
@@ -254,7 +254,7 @@
                 </div>
 
                 <div class="menu-drop-down">
-                    <span class="label">Help</span>
+                    <span class="drop-down-label">Help</span>
                     <div class="drop-down">
                         <div class="drop-down-text">
                             <a href="#">Move grid</a>
