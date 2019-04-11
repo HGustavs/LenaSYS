@@ -1458,9 +1458,6 @@ function getEmails(cidMail, versMail) {
     },
     dataType: "json",
     success: function(data){
-      //var test = data;
-      //console.log(test);
-      //var myJSON = JSON.stringify(data);
       window.location.assign("mailto:" + data);
     }
   });

@@ -53,20 +53,22 @@ $grplst=array();
 if($gradesys=="UNK") $gradesys=0;
 
 if ($requestType=="mail"){
+	// sql_query to get the emails from the users going the specified courseid and coursevers.
 	$mailQuery = $pdo->prepare("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers");
 	$mailQuery->bindParam(':cid', $courseid);
 	$mailQuery->bindParam(':vers', $coursevers);
 	$emailsArray = array();
-	//VAR_DUMP($mailQuery);
 	if(!$mailQuery->execute()){
 		$error=$query->errorInfo();
 		$debug="Error reading user entries".$error[2];
 	}
+	// Fetches the emails from the sql_query result $mailQuery and then pushes it into the array $emailsArray.
 	foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row){
 		array_push($emailsArray,$row['email']);
 	}
+	// Seperates the emails with a ;.
 	$implodedEmails=implode('; ',$emailsArray);
-	//print_r($implodedEmails);
+	// Returns the emails in a string representation.
 	echo json_encode($implodedEmails);
 }	else {
 
