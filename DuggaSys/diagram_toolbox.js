@@ -8,8 +8,6 @@ function initToolbox(){
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
     element.style.display = "inline-block";
-    //element.style.height = (bound.bottom-bound.top-200+"px");
-    //element.style.height = (400+"px");
 }
 
 function toggleToolbarMinimize(){

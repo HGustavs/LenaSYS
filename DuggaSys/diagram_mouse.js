@@ -248,11 +248,7 @@ function mousedownevt(ev) {
 
     } else if (sel.distance < tolerance) {
         for (var i = 0; i < diagram.length; i++) {
-            /*if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
-                md = 3;
-                handleSelect();
-                return;
-            }*/
+            
         }
         md = 2;
     } else if (movobj != -1) {
@@ -452,7 +448,6 @@ function mouseupevt(ev) {
             selected_objects.push(diagram[lastSelectedObject]);
             createCardinality();
             updateGraphics();
-            //diagram.createAritySymbols(diagram[lastSelectedObject]);
         }
 
     } else if (uimode == "CreateERRelation" && md == 4) {
@@ -501,7 +496,6 @@ function doubleclick(ev) {
 
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
-        //console.log("Error:\nFollowing error is prompted because the element has not successfully been loaded\ninto the document before trying to find it by ID. These dialogs are loaded into\nthe diagram dynamically as of Issue #3733");
     } else {
         createText(posX, posY);
     }

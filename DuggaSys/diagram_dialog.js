@@ -73,10 +73,8 @@ function clickEnterOnDialogMenu(ev) {
 function dimDialogMenu(dim) {
     if (dim == true) {
         $("#appearance").css("display", "flex");
-        //$("#overlay").css("display", "block");
     } else {
         $("#appearance").css("display", "none");
-        //$("#overlay").css("display", "none");
     }
 }
 
