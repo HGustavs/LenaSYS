@@ -1,6 +1,6 @@
-/*
+/************************************************************************
 ----- THIS FILE HANDLES THE SAVE, DOWNLOAD AND EXPORT FUNCTIONALITY -----
-*/
+************************************************************************/
 
 var a;
 var c;
@@ -48,7 +48,6 @@ function redirect(doc){
         data: {'GetID':a },
 
         success: function(data){ // <-- note the parameter here, not in your code
-                //
             return false;
         }
 
@@ -108,7 +107,7 @@ function Save() {
     }
     var obj = {diagram:diagram, points:points, diagramNames:c};
     a = JSON.stringify(obj, null, "\t");
-    
+
    // saveToServer(a);
     console.log("State is saved");
 }
