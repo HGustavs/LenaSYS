@@ -67,7 +67,7 @@ if ($requestType=="mail"){
 	}
 	$implodedEmails=implode('; ',$emailsArray);
 	//print_r($implodedEmails);
-	echo $implodedEmails;
+	echo json_encode($implodedEmails);
 }	else {
 
 		// Store current day in string
