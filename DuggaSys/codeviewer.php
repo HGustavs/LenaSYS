@@ -86,6 +86,8 @@ Testing Link:
 -->
 
 	<body onload="setup();">
+		<!-- loader START -->
+		<div id="loader"></div>
 		<!-- content START -->
 		<div id="content">
 		<?php 
