@@ -53,19 +53,19 @@ $grplst=array();
 if($gradesys=="UNK") $gradesys=0;
 
 if ($requestType=="mail"){
-	$query = $pdo->prepare("SELECT user.firstname,user.uid, user.lastname FROM user, user_course WHERE user_course.access = 'W' AND user.uid=user_course.uid GROUP by user.firstname,user.lastname, user.uid ORDER BY user.firstname, user.lastname;");
-	$query->bindParam(':cid', $cid);
-	if(!$query->execute()){
+	$mailQuery = $pdo->prepare("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers");
+	$mailQuery->bindParam(':cid', $courseid);
+	$mailQuery->bindParam(':vers', $coursevers);
+	if(!$mailQuery->execute()){
 		$error=$query->errorInfo();
 		$debug="Error reading user entries".$error[2];
 	}
-	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
-		$teacher = array(
-			'name' => $row['firstname']." ".$row['lastname'],
-			'uid' => $row['uid']
-		);
+	foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row){
+		$emailArray = array(
+			'name' => $row['email']
+	);
 		//array_push($teachers, $teacher);
-		echo "Hej";
+		echo "emailArray";
 	}
 
 	// $mailTest = $pdo->query("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers")
