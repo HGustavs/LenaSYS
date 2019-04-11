@@ -172,6 +172,8 @@ function LoadFile() {
     //Redrawn old state.
     updateGraphics();
 }
+
+// not clear what the purpose of this function is
 function getUpload() {
     document.getElementById('buttonids').addEventListener('click', openDialog);
     function openDialog() {
@@ -232,6 +234,7 @@ function ExportSVG(el) {
     el.setAttribute("download", "diagram.svg");
 }
 
+// used when exporting the file as a .jpg image.
 $(document).ready(function(){
     function downloadCanvas(link, canvasId, filename) {
         link.href = document.getElementById(canvasId).toDataURL();
