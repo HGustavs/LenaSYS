@@ -25,7 +25,7 @@ function getAllIndexes(haystack, needle) {
     while (i !== -1) {
         indexes.push(i);
         i = haystack.indexOf(needle, ++i);
-    }    
+    }
     return indexes;
 }
 
@@ -213,7 +213,7 @@ function makeoptionsItem(option,optionlist,optionstring,valuestring)
 }
 
 //----------------------------------------------------------------------------------
-// makeparams: Help function for hassle free preparation of a clickable param list 
+// makeparams: Help function for hassle free preparation of a clickable param list
 //----------------------------------------------------------------------------------
 
 function makeparams(paramarray)
@@ -358,7 +358,6 @@ function closeWindows(){
 	});
 
 	if (index_highest > 0){
-			e.style.display = "none";
 			/* Overlay is only present for loginbox which has z-index of 9000,
          so if we closed such a window, hide the overlay and clear any values as well. */
 			if (index_highest < 10000) {
@@ -1489,7 +1488,7 @@ function FABUp(e)
 				createQuickItem();
 		}else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
 				FABToggle();
-		}	
+		}
 }
 
 //----------------------------------------------------------------------------------
