@@ -1,0 +1,38 @@
+<div id="container">
+	<div class='instructions-container'>
+		<div class='instructions-button' onclick='toggleInstructions(this)'><h3>Instructions</h3></div>	
+        <div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " id="snus">
+            <div id="mdtarget" class="descbox">
+                <div id="markdown">
+                    <h1>Dagboken</h1>
+                    Alla icke-triviala bidrag som en student bidrar till skall dokumenteras i dagboks-duggan. Ange datum, issue-nummer samt en kort beskrivning på en mening beskriver vad som gjorts. Detta inkluderar icke-triviala kommentarer till issues. Ge dig själv och oss en bild av vad du jobbat med under dagen."
+                    <br>
+                    <br>
+                    Till exempel:
+                    <br>
+                    <br>
+                    14/4: Skapade issue #12334 - The marking page for the html_and_css_light dugga is not working och submittade en fix till issue #3214 - Ändrade ordningen vid inläsning av data.
+                </div>
+            </div>
+        </div>	
+    </div>
+    <div class='instructions-container'>
+		<div class='instructions-button' onclick='toggleInstructions(this)'><h3>Submission</h3></div>	
+        <div class="instructions-content" style=" -webkit-columns: 1; -moz-columns: 1; columns: 1; " id="tomten"></div>	
+	</div>
+</div>
+<div id="duggaStats" class="loginBox" style="display:none;position:absolute;top:0;right:0;">
+    <div class='loginBoxheader'>
+        <h3>Dugga Stats</h3>
+        <div class='cursorPointer' onclick="hideDuggaStatsPopup()">x</div>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <tr><th></th><th>Highscore</th><th>Total</th></tr>
+            <tr><td>Clicks</td><td id="duggaClicks"></td><td id="duggaTotalClicks"></td></tr>
+            <tr><td>Time</td><td id="duggaTime"></td><td id="duggaTotalTime"></td></tr>
+            <tr><td>Submissions</td><td></td><td id="duggaTotalSubmissions"></td></tr>
+        </table>
+    </div>
+</div>
+
