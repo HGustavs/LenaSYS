@@ -2266,6 +2266,12 @@ span.arrow {
   font-size: 13px;
 }
 
+.WriteOutTimesGraded{
+  font-weight: bold;
+  font-size: 15px;
+  margin: 0 auto;
+}
+
 .resultTableNormal {
   height:70px;
   align-items:center;
@@ -2694,6 +2700,7 @@ span.arrow {
   height: 24px;
   width: 24px;
   cursor: pointer;
+  margin-right: 10px;
 }
 
 .result-header-inverse {
