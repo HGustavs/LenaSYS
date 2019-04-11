@@ -651,19 +651,11 @@ header td {
 }
 
 .loggedout {
-  background-color: #c75050;
-}
-
-.loggedout:hover {
   background-color: #50a750;
 }
 
 .loggedin {
-  background-color: #50a750;
-}
-
-.loggedin:hover {
-  background-color: #c75050;
+    background-color: #e60000;
 }
 
 #loginbutton {
