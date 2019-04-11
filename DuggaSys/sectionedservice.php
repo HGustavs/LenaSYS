@@ -62,11 +62,9 @@ if ($requestType=="mail"){
 		$debug="Error reading user entries".$error[2];
 	}
 	foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row){
-		$emailArray = array(
-			'emailArray' => $row['email']
-	);
-		echo $emailArray;
+		$emails = $row['email']. ";";
 	}
+	echo $emails;
 }	else {
 
 		// Store current day in string
