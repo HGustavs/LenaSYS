@@ -94,6 +94,9 @@ function selectDugga(qid) {
   $("#editDugga").css("display", "flex");
 }
 
+function valish(){
+	return "Piss";
+}
 
 function updateDugga() {
 	var did = $("#did").val();
@@ -105,7 +108,7 @@ function updateDugga() {
   if($("#qstart").val()=="")qstart="UNK";
 	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
   var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
-  if($("#release").val()=="")release="UNK";
+  if($("#release").val()=="")release=valish();
   var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
   if($("#deadline").val()!=""){        
       jsondeadline.deadline1=deadline;
