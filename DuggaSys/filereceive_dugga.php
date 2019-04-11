@@ -64,7 +64,6 @@ if($ha){
 
 		// Create folder if link textinput or file
 		$currcvd=getcwd();
-
 		if(!file_exists($currcvd."/submissions")) {
 				if(!mkdir($currcvd."/submissions")) {
 						echo "Error creating folder: ".$currcvd."/submissions";
@@ -109,8 +108,52 @@ if($ha){
 						$error=true;
 				}
 		}
+		if($fieldtype === "timesheet"){
+			$inputJSON = jsonifyUserInput();
 
-		if($inputtext!="UNK"){
+			$fname=$fieldtype;
+			$fname=preg_replace("/[^a-zA-Z0-9._]/", "", $fname);	
+
+			$extension="json";
+			$mime="json";
+
+			$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
+			$query->bindParam(':did', $duggaid);
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':fname', $fname);
+			$query->bindParam(':uid', $userid);
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				echo "Error reading submissions a".$error[2];
+			}			 				
+			foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
+						$seq=$row['Dusty'];
+			}
+			$seq++;			
+
+			$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
+			$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;	
+			file_put_contents($movname, $inputJSON);
+
+			$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now());");
+			$query->bindParam(':uid', $userid);
+			$query->bindParam(':cid', $cid);
+			$query->bindParam(':vers', $vers);
+			$query->bindParam(':did', $duggaid);
+			$query->bindParam(':filepath', $filepath);
+			$query->bindParam(':filename', $fname);
+			$query->bindParam(':extension', $extension);
+			$query->bindParam(':mime', $mime);
+			$query->bindParam(':field', $fieldtype);
+			$query->bindParam(':kind', $fieldkind);
+			$query->bindParam(':seq', $seq);
+			$query->bindParam(':segment', $moment);
+			
+			if(!$query->execute()) {
+				$error=$query->errorInfo();
+				echo "Error updating file entries".$error[2];
+			}
+		} else if($inputtext!="UNK"){
 				
 				$fname=$fieldtype;
 				$fname=preg_replace("/[^a-zA-Z0-9._]/", "", $fname);				
@@ -290,7 +333,26 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive_dugga.php"
 if(!$error){
 		echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
+function jsonifyUserInput(){
+	$entries = (count($_POST) - 7) / 4;
+	$inputData = array();
 
+	for($entryIdx = 0; $entryIdx < $entries; $entryIdx++) {
+		$date=getOP('tsDate_'.$entryIdx);					
+		$type=getOP('tsType_'.$entryIdx);
+		$number=getOP('tsNumber_'.$entryIdx);
+		$comment=getOP('tsComment_'.$entryIdx);
+
+		$rawData = array(
+			'date' => $date,
+			'type' => $type,
+			'number' => $number,
+			'comment' => $comment
+		);
+		array_push($inputData, $rawData);
+	}
+	return json_encode($inputData, JSON_FORCE_OBJECT);
+}
 ?>
 </head>
 <body>

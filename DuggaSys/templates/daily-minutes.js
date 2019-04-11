@@ -25,7 +25,6 @@ function setup()
 
 function newRow() {
 	var tblRows = document.getElementById("tsTableBody").childNodes;
-	console.log(tblRows);
 	var lastRowIdx = parseInt(tblRows[tblRows.length - 1].attributes[0].value);
 	var idx = lastRowIdx += 1;
 
@@ -325,9 +324,12 @@ function createFileUploadArea(){
 	form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";
 	form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
 	form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
+	form +="<input type='hidden' name='field' value='timesheet' />";
+	form +="<input type='hidden' name='kind' value='3' />";
 	form +="<tfoot><td colspan='4'>";
 	form +="<span class='newRowButton' onclick='addRow()'>Lägg till rad</span>";
-	form +="</td></tfoot></table></form>";
+	form +="</td></tfoot></table>";
+	form +="<input type='submit' value='Upload' /></form>";
 
 	str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
 	str += "<div style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
@@ -337,6 +339,7 @@ function createFileUploadArea(){
 	str += "</div>";
 	str += "</div>"
 	str += "</div>"
+
 
 	document.getElementById("tomten").innerHTML=str;
 }
