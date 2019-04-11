@@ -108,7 +108,7 @@
 					</td>
 					<td class='access menuButton' style='display: inline-block;'>
 							<div class='access menuButton'>
-									<input type='button' value='Mail' class='submit-button' title='Mail' onclick='getEmails();'/>
+									<input type='button' value='Mail' class='submit-button' title='Mail' onclick='mail();'/>
 							</div>
 					</td>
 				</tr>

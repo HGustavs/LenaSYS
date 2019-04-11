@@ -1440,7 +1440,8 @@ $(window).load(function () {
   });
 });
 
-function getEmails() {
+// Function for automatically create a mail with participating students in current course
+function mail() {
   var reqType = "mail";
 
   var url_string = window.location.href;
@@ -1459,7 +1460,7 @@ function getEmails() {
     },
     dataType: "json",
     success: function(data){
-      window.location.assign("mailto:" + data + "?subject=" + "!!! Notification !!! " + cname + " " + cidMail);
+      window.location.assign("mailto:" + data + "?subject=" + "!!! Notification !!! " + cname);
     }
   });
 }
