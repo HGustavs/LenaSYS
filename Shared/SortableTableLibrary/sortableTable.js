@@ -559,7 +559,6 @@ function SortableTable(param)
         			document.getElementById(children[i].id.slice(0, -1)+"f").style.boxSizing = "border-box";
       		}
           document.getElementById(this.tableid+DELIMITER+"tblhead_mh").style.height = Math.round(document.getElementById(this.tableid+DELIMITER+"tblhead").getBoundingClientRect().height)+"px";
-          document.getElementById(this.tableid+DELIMITER+"tblhead_mhv").style.height = Math.round(document.getElementById(this.tableid+DELIMITER+"tblhead").getBoundingClientRect().height)+"px";
           document.getElementById(this.tableid+DELIMITER+"tblhead_mhf").style.height = Math.round(document.getElementById(this.tableid+DELIMITER+"tblhead").getBoundingClientRect().height)+"px";
     	} else {
     		  document.getElementById(this.tableid).innerHTML = str;
