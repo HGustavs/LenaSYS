@@ -62,7 +62,7 @@
                             <img id="minimizeArrow" class="toolbarMaximized" src="../Shared/icons/arrow.svg">
                           </div>
                           <h3>Toolbar</h3>
-                          <div id="toolbar-toggleLayout"  onclick="toggleToolbarLayout();"> 
+                          <div id="toolbar-toggleLayout"  onclick="toggleToolbarLayout();">
                               <img id="layoutArrow" class="toolbarMaximized" src="../Shared/icons/rotateButton.svg">
                             </div>
                         </div>
@@ -256,13 +256,14 @@
                 <div class="menu-drop-down">
                     <span class="label">Help</span>
                     <div class="drop-down">
-                        <div class="drop-down-text">
+                        <!--<div class="drop-down-text">
                             <a href="#">Move grid</a>
                             <div id="hotkey-space"><i>Blankspace</i></div>
-                        </div>
-                        <div class="drop-down-divider"></div>
+                        </div>-->
+                        <!--<div class="drop-down-divider"></div>-->
                         <div class="drop-down-text">
                             <a href="#">Select multiple objects</a>
+                            <!--<div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>-->
                            <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
                         </div>
                     </div>

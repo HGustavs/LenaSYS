@@ -117,7 +117,8 @@ function keyDownHandler(e){
             e.preventDefault();
         }
         if(uimode != "MoveAround"){
-            activateMovearound();
+            //remove comment below to enable canvas movement
+            //activateMovearound();
         } else{
             deactivateMovearound();
         }
@@ -704,7 +705,7 @@ function initializeCanvas() {
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 80);
     document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%"; //Remove comment to bring back coordinates tooltip -> /*"%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";*/
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -1159,9 +1160,9 @@ function removeLocalStorage() {
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
-     + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+     + Math.round((zoomValue * 100)) + "%"; /*Remove comment to bring back coordinates tooltip -> + "   |   <b>Coordinates:</b> "
      + "X=" + sx
-     + " & Y=" + sy + "</p>";
+     + " & Y=" + sy + "</p>";*/
 }
 
 //----------------------------------------
