@@ -783,7 +783,7 @@ function renderCell(col,celldata,cellid) {
 
 	} else {
 		// color based on pass,fail,pending,assigned,unassigned
-    str = "<div style='height:70px;' class='resultTableCell ";
+    str = "<div style='padding:10px;' class='resultTableCell ";
     if(celldata.kind==4) { str += "dugga-moment "; }
     if (celldata.grade > 1) {str += "dugga-pass";}
     else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
