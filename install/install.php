@@ -42,13 +42,13 @@
     $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
     echo "
                     <div id='warning' class='modal'>
-                
+
                         <!-- Modal content -->
                         <div class='modal-content'>
                             <span title='Close pop-up' class='close''>&times;</span>
                                 <span id='dialogText'></span>
                         </div>
-                
+
                     </div>";
     ?>
 
@@ -250,7 +250,11 @@
                         var found = false; /* Is an empty field found? */
                         for (var i = 0; i < fields.length; i++) {
                             if (fields[i].value === ''){
-                                found = true; /* Empty field found */
+                                if (inputPage === 2 && inpufields[1]) {
+                                    found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
+                                }else {
+                                    found = true;  /* Empty field found */
+                                }
                                 /* Set background of text field to light red */
                                 fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
                             }
@@ -297,7 +301,11 @@
                                     var found = false; /* Is an empty field found? */
                                     for (var i = 0; i < fields.length; i++) {
                                         if (fields[i].value === ''){
-                                            found = true; /* Empty field found */
+                                          if (inputPage === 2 && inpufields[1]) {
+                                              found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
+                                          }else {
+                                              found = true;  /* Empty field found */
+                                          }
                                             /* Set background of text field to light red */
                                             fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
                                         }
@@ -428,13 +436,13 @@
         /* Pop-up window when installation is done. Hidden from start. */
         echo "
                     <div id='warning' class='modal'>
-                
+
                         <!-- Modal content -->
                         <div class='modal-content'>
                             <span title='Close pop-up' class='close''>&times;</span>
                                 <span id='dialogText'></span>
                         </div>
-                
+
                     </div>";
 
         /* Javascripts for warning pop-up */
@@ -445,12 +453,12 @@
                 var btn = document.getElementById('showModalBtn'); // Get the button that opens the modal
                 var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
                 var filePath = '{$putFileHere}';
-                
+
                 document.getElementById('dialogText').innerHTML = '<div><h1>!!!WARNING!!!</h1><br>' +
                     '<h2>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
                     '<p>If you don\'t follow these instructions nothing will work. Group 3 will not take any ' +
                     'responsibility for your failing system.</p>';
-                
+
                 // When the user clicks on <span> (x), close the modal
                 span.onclick = function() {
                     modal.style.display = 'none';
@@ -514,17 +522,17 @@
             truncateDecimals = function (number) {
                 return Math[number < 0 ? 'ceil' : 'floor'](number);
             };
-            
+
             var totalSteps = {$totalSteps};
             var completedStepsLatest = 0; // This variable is used on window resize.
-            
+
             function updateProgressBar(completedSteps){
                 var totalWidth = document.getElementById(\"progressBar\").clientWidth;
                 var stepWidth = totalWidth / totalSteps;
                 var completedWidth;
-                
-                /* if window was resized (completedsteps = -1) take latest copleted steps. 
-                 * Else update to new completed step. 
+
+                /* if window was resized (completedsteps = -1) take latest copleted steps.
+                 * Else update to new completed step.
                  */
                 if (completedSteps === -1) {
                     completedWidth = stepWidth * completedStepsLatest;
@@ -532,15 +540,15 @@
                     completedStepsLatest = completedSteps;
                     completedWidth = stepWidth * completedSteps;
                 }
-                
+
                 /* Calculate length */
                 document.getElementById(\"progressRect\").setAttribute(\"width\", \"\" + completedWidth + \"\");
-                
+
                 /* Update percentage text */
-                document.getElementById(\"percentageText\").innerHTML = \"\" + 
-                truncateDecimals((document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth) * 100) + 
+                document.getElementById(\"percentageText\").innerHTML = \"\" +
+                truncateDecimals((document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth) * 100) +
                 \"%\";
-                
+
                 /* Decide color depending on how far progress has gone */
                 if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.33){
                     document.getElementById(\"progressRect\").setAttribute(\"fill\", \"rgb(197,81,83)\");
@@ -618,7 +626,7 @@
                 echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
                 } catch (PDOException $e) {
                 $errors++;
-                echo "<span id='failText' />User with name {$username} 
+                echo "<span id='failText' />User with name {$username}
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
                 $completedSteps++;
@@ -633,7 +641,7 @@
                     echo "<span id='successText' />Successfully removed old database, {$databaseName}.</span><br>";
                 } catch (PDOException $e) {
                     $errors++;
-                    echo "<span id='failText' />Database with name {$databaseName} 
+                    echo "<span id='failText' />Database with name {$databaseName}
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
                 $completedSteps++;
@@ -799,7 +807,7 @@
 
         echo '<div id="copied1">Copied to clipboard!<br></div>';
 
-        echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br> 
+        echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
                 (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
         echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
