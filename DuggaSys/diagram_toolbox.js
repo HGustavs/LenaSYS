@@ -1,6 +1,5 @@
 var toolbarState;
 
-const toolbarAll = 0;
 const toolbarER = 1;
 const toolbarUML = 2;
 const toolbarFree = 3;
