@@ -536,7 +536,7 @@ function returnedSection(data) {
     }
   }
 
-  // Fill section list with information	
+  // Fill section list with information
   if (querystring['coursevers'] != "null") {
     var versionname = "";
     if (retdata['versions'].length > 0) {
@@ -780,10 +780,10 @@ function returnedSection(data) {
                   if(grp!=="UNK"){
                       grp+=",";
                   }else{
-                      grp="";  
+                      grp="";
                   }
                   grp+=found[1];
-              } 
+              }
           }
           */
           /*
@@ -801,7 +801,7 @@ function returnedSection(data) {
                   if(grp!=="UNK"){
                       grp+=",";
                   }else{
-                      grp="";  
+                      grp="";
                   }
                   grp+=g;
               }
@@ -1112,7 +1112,7 @@ function drawPieChart() {
 
   // Calculate passed, failed and not graded quizes.
   for (var i = 0; i < retdata['results'].length; i++) {
-    // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these	
+    // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
     if (retdata['results'][i]['useranswer'] != null) {
       if (retdata['results'][i].grade > 1) {
         passedQuizes++;
@@ -1278,7 +1278,7 @@ function drawSwimlanes() {
       entry = deadlineEntries[i];
       if (obj == entry.moment) {
         weeky += weekheight;
-        // Now we generate a SVG element for this 
+        // Now we generate a SVG element for this
         //startweek=weeksBetween(startdate, entry.start);
         //deadlineweek=weeksBetween(startdate, entry.deadline);
         startday = Math.floor((entry.start - startdate) / (24 * 60 * 60 * 1000));

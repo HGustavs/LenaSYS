@@ -360,7 +360,8 @@ function closeWindows(){
 	if (index_highest > 0){
 			/* Overlay is only present for loginbox which has z-index of 9000,
          so if we closed such a window, hide the overlay and clear any values as well. */
-			if (index_highest < 10000) {
+         e.style.display= "none";
+    	if (index_highest < 10000) {
 					status=1;
 					//toggleloginnewpass();
 					//$("#overlay").css("display","none");
