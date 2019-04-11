@@ -4640,3 +4640,47 @@ textarea#filecont{
 .active-variant {
     background-color: #fbcd47 !important;
 }
+
+/* Styling for timesheet table */
+.tsTable {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.tsTable td, th {
+  border: 1px solid #000;
+}
+.tsTable thead {
+  background: #cdd0d6;
+}
+.tsTable th {
+  padding: 10px;
+}
+.tsTable tbody, tfoot {
+  text-align: center;
+}
+.tsTable td {
+  padding: 5px 10px 5px 10px;
+}
+.tsTable select {
+  height: 30px;
+  padding: 3px 0px 3px 5px;
+  width: 150px;
+}
+.tsTable input {
+  padding: 5px;
+}
+.tsTable tfoot {
+  background: #F0F0F0;
+}
+.tsTable tfoot:hover {
+  background: #E0E0E0;
+}
+.tsTable tfoot td {
+  padding: 0;
+}
+.newRowButton {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+}

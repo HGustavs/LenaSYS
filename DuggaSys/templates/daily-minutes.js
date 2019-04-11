@@ -309,24 +309,25 @@ function createFileUploadArea(){
 	var form = "";
 
 	form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php'>";
-	form +="<table align='center' style='border 1px solid #000; margin-top: 20px; border-collapse: collapse'><thead style='background: #cdd0d6'>";
-	form +="<th style='padding: 10px'>Datum</th><th style='padding: 10px'>Issue/Pull Request</th>";
-	form +="<th style='padding: 10px'>Nummer</th><th style='padding: 10px'>Kommentar</th></thead>";	
-	form +="<tbody id='tsTableBody' style='text-align: center'><tr data-idx=0>";
-	form +="<td style='padding: 5px 10px 5px 10px'><input type='date' name='tsDate_0' /></td>";
-	form +="<td style='padding: 5px 10px 5px 10px'><select name='tsType_0'>";
+	form +="<table align='center' class='tsTable'><thead>";
+	form +="<th>Datum</th><th>Issue/Pull Request</th>";
+	form +="<th>Nummer</th><th>Kommentar</th></thead>";	
+	form +="<tbody id='tsTableBody'><tr data-idx=0>";
+	form +="<td><input type='date' name='tsDate_0' /></td>";
+	form +="<td><select name='tsType_0'>";
 	form +="<option value='issue'>Issue</option><option value='pullrequest'>Pull request</option>";
 	form +="</select></td>";
-	form +="<td style='padding: 5px 10px 5px 10px'><input type='text' name='tsNumber_0' style='width: 50px' /></td>";
-	form +="<td style='padding: 5px 10px 5px 10px'><input type='text' name='tsComment_0' style='width: 500px' /></td>";
-	form +="</tr></tbody></table>";
+	form +="<td><input type='number' name='tsNumber_0' style='width: 55px' /></td>";
+	form +="<td><input type='text' name='tsComment_0' style='width: 500px' /></td>";
+	form +="</tr></tbody>";
 	form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 	form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
 	form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";
 	form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
 	form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
-	form +="</form>";
-	form +="<button onclick='addRow()'' style='display: block; margin: 20px'>Ny rad</button>";
+	form +="<tfoot><td colspan='4'>";
+	form +="<span class='newRowButton' onclick='addRow()'>Lägg till rad</span>";
+	form +="</td></tfoot></table></form>";
 
 	str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
 	str += "<div style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
