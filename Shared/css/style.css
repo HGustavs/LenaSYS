@@ -3829,6 +3829,12 @@ only screen and (max-device-width: 320px) {
   right: 24px;
   z-index: 500;
 }
+.fixed-action-button.sectioned {
+  right: 75px;
+}
+#Courselist div.fixed-action-button a:hover {
+  text-decoration: none;
+}
 
 /* FAB base */
 
