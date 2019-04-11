@@ -172,7 +172,7 @@ function LoadFile() {
     updateGraphics();
 }
 
-// not clear what the purpose of this function is
+// this function adds eventlisteners to the buttons when html body is loaded
 function getUpload() {
     document.getElementById('buttonids').addEventListener('click', openDialog);
     function openDialog() {
