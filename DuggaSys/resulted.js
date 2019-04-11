@@ -1,3 +1,4 @@
+// Test comment
 
 /********************************************************************************
    Globals
@@ -742,6 +743,7 @@ function gradeFilterHandler()
 }
 
 function renderCell(col,celldata,cellid) {
+  gradeFilterHandler();
 	// Render minimode
 	if (filterList["minimode"]) {
 		// First column (Fname/Lname/SSN)
@@ -752,7 +754,7 @@ function renderCell(col,celldata,cellid) {
 				str += "</div>";
 			str += "</div>";
 			return str;
-		} else {
+		} else if(filterGrade==="none" || celldata.grade===filterGrade){
 			// color based on pass,fail,pending,assigned,unassigned
       str = "<div class='resultTableCell resultTableMini ";
 				if(celldata.kind==4) { str += "dugga-moment "; }
@@ -781,7 +783,7 @@ function renderCell(col,celldata,cellid) {
 		str += "</div>";
 		return str;
 
-	} else {
+	} else if(filterGrade==="none" || celldata.grade===filterGrade){
 		// color based on pass,fail,pending,assigned,unassigned
     str = "<div style='height:70px;' class='resultTableCell ";
     if(celldata.kind==4) { str += "dugga-moment "; }
