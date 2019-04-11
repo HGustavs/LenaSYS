@@ -1152,6 +1152,21 @@ function hideDuggaInfoPopup()
 		startDuggaHighScore();
 	}
 }
+
+//----------------------------------------------------------------------------------
+//	LOADER:	Makes the page content hidden until it is loaded completely and displays a 
+//  loading gif until page has loaded fully     
+//----------------------------------------------------------------------------------
+document.onreadystatechange = function () {
+  var state = document.readyState
+  if (state == 'interactive') {
+       document.getElementById('content').style.visibility="hidden";
+  } else if (state == 'complete') {
+      document.getElementById('loader').style.visibility="hidden";
+      document.getElementById('content').style.visibility="visible";
+  }
+}
+
 //----------------------------------------------------------------------------------
 // Simple page reload function
 //----------------------------------------------------------------------------------
