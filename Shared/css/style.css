@@ -2273,7 +2273,7 @@ span.arrow {
 }
 
 .resultTableNormal {
-  height:70px;
+  padding: 10px;
   align-items:center;
   display:flex;
 }
