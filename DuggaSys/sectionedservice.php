@@ -53,16 +53,21 @@ $grplst=array();
 if($gradesys=="UNK") $gradesys=0;
 
 if ($requestType=="mail"){
-	$mailQuery = $pdo->prepare("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers");
-	$mailQuery->bindParam(':cid', $courseid);
-	$mailQuery->bindParam(':vers', $coursevers);
-
-	if (!$mailQuery->execute()) {
-			printf($debug);
-	} else {
-		$mailList =	$mailQuery->fetchAll();
-		echo json_encode($mailList);
+	$mailTest = $pdo->query("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers")
+	while($line = $mailTest->fetch(PDO::FETCH_ASSOC)) {
+		echo $line['email']
 	}
+
+	// $mailQuery = $pdo->prepare("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers");
+	// $mailQuery->bindParam(':cid', $courseid);
+	// $mailQuery->bindParam(':vers', $coursevers);
+
+	// if (!$mailQuery->execute()) {
+	// 		printf($debug);
+	// } else {
+	// 	$mailList =	$mailQuery->fetchAll();
+	// 	echo json_encode($mailList);
+	// }
 	//echo "test";
 }	else {
 
