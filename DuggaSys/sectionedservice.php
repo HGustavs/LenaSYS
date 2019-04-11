@@ -55,7 +55,7 @@ if($gradesys=="UNK") $gradesys=0;
 if ($requestType=="mail"){
 	$mailTest = $pdo->query("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers")
 	while($line = $mailTest->fetch(PDO::FETCH_ASSOC)) {
-		echo $line['email']
+		echo $line
 	}
 
 	// $mailQuery = $pdo->prepare("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers");
