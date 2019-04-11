@@ -360,7 +360,6 @@ function returnedQuiz(data) {
 // START OF RENDERING TABELS
 //Table for duggas
 function returnedDugga(data) {
-	console.log(data);
 	filez = data;
 	globalData = data;
 

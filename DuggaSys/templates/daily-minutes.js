@@ -13,15 +13,72 @@ Example seed
 */
 
 //------------==========########### GLOBALS ###########==========------------
-var score = -1;
-var elapsedTime = 0;
+
 
 //------------==========########### STANDARD MANDATORY FUNCTIONS ###########==========------------
 
 function setup()
 {
 	inParams = parseGet();
-	AJAXService("GETPARAM", { }, "PDUGGA");
+	createFileUploadArea();
+}
+
+function newRow() {
+	var tblRows = document.getElementById("tsTableBody").childNodes;
+	console.log(tblRows);
+	var lastRowIdx = parseInt(tblRows[tblRows.length - 1].attributes[0].value);
+	var idx = lastRowIdx += 1;
+
+	var row = document.createElement("tr");
+	var cell = document.createElement("td");
+	var input = document.createElement("input");
+	var select = document.createElement("select");
+	var option = document.createElement("option");
+
+	input.setAttribute("type", "date");
+	input.setAttribute("name", "tsDate_"+idx);
+	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
+	cell.appendChild(input);
+	row.appendChild(cell);
+
+	cell = document.createElement("td");
+	select.setAttribute("name", "tsType_"+idx);
+	option.setAttribute("value", "issue");
+	option.innerHTML = "Issue";
+	select.appendChild(option);
+	option = document.createElement("option");
+	option.setAttribute("value", "pullrequest");
+	option.innerHTML = "Pull request";
+	select.appendChild(option);
+	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
+	cell.appendChild(select);
+	row.appendChild(cell);
+
+	cell = document.createElement("td");
+	input = document.createElement("input");
+	input.setAttribute("type", "text");
+	input.setAttribute("name", "tsNumber_"+idx);
+	input.setAttribute("style", "width: 50px");
+	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
+	cell.appendChild(input);
+	row.appendChild(cell);
+
+	cell = document.createElement("td");
+	input = document.createElement("input");
+	input.setAttribute("type", "text");
+	input.setAttribute("name", "tsComment_"+idx);
+	input.setAttribute("style", "width: 500px");
+	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
+	cell.appendChild(input);
+	row.appendChild(cell);
+
+	row.setAttribute("data-idx", idx);
+	return row;
+}
+
+function addRow() {
+	var tsTableBody = document.getElementById("tsTableBody");
+	tsTableBody.appendChild(newRow());
 }
 
 function returnedDugga(data)
@@ -125,17 +182,6 @@ function returnedDugga(data)
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
 
-function reset()
-{
-	alert("This will remove everything and reset timers and step counters. Giving you a new chance at the highscore.");
-
-
-	Timer.stopTimer();
-	Timer.score=0;
-	Timer.startTimer();
-	ClickCounter.initialize();
-
-}
 
 function saveClick()
 {
@@ -258,92 +304,38 @@ function closeFacit()
 //                                  Local Functions
 //--------------------================############================--------------------
 
-function createFileUploadArea(fileuploadfileds){
+function createFileUploadArea(){
 	var str ="";
-	for (var l = 0; l < fileuploadfileds.length; l++){
+	var form = "";
 
-		var type = fileuploadfileds[l].type;
-		var fieldname = fileuploadfileds[l].fieldname;
+	form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php'>";
+	form +="<table align='center' style='border 1px solid #000; margin-top: 20px; border-collapse: collapse'><thead style='background: #cdd0d6'>";
+	form +="<th style='padding: 10px'>Datum</th><th style='padding: 10px'>Issue/Pull Request</th>";
+	form +="<th style='padding: 10px'>Nummer</th><th style='padding: 10px'>Kommentar</th></thead>";	
+	form +="<tbody id='tsTableBody' style='text-align: center'><tr data-idx=0>";
+	form +="<td style='padding: 5px 10px 5px 10px'><input type='date' name='tsDate_0' /></td>";
+	form +="<td style='padding: 5px 10px 5px 10px'><select name='tsType_0'>";
+	form +="<option value='issue'>Issue</option><option value='pullrequest'>Pull request</option>";
+	form +="</select></td>";
+	form +="<td style='padding: 5px 10px 5px 10px'><input type='text' name='tsNumber_0' style='width: 50px' /></td>";
+	form +="<td style='padding: 5px 10px 5px 10px'><input type='text' name='tsComment_0' style='width: 500px' /></td>";
+	form +="</tr></tbody></table>";
+	form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
+	form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
+	form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";
+	form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
+	form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
+	form +="</form>";
+	form +="<button onclick='addRow()'' style='display: block; margin: 20px'>Ny rad</button>";
 
-		var form = "";
-		form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php' >";
+	str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
+	str += "<div style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
+	str += "</div>";
+	str += "<div>";
+	str += form;
+	str += "</div>";
+	str += "</div>"
+	str += "</div>"
 
-		if(type=="link"){
-				form +="<input name='link' type='text' size='40' maxlength='256' />";
-				form +="<input type='hidden' name='kind' value='2' />";
-		}else if(type=="text"){
-				form +="<textarea rows='15' name='inputtext'  id='"+fieldname+"Text' style='-webkit-box-sizing: border-box; -moz-box-sizing: border-box;box-sizing: border-box;	width: 80%;background:#f8f8ff;padding:10px;margin-bottom:10px;border: 2px solid #e8e6e6;' placeholder='Enter your text and upload.' onkeyup='disableSave();'></textarea><br>";
-				form +="<input type='hidden' name='kind' value='3' />";
-		}else{
-				form +="<input name='uploadedfile[]' type='file' id='inputfile" + l + "' class='inputfile' multiple='multiple' onchange='this.form.submit();'/>";
-                form +="<label for='inputfile" + l + "'><img src='../Shared/icons/file-upload-icon.png' width='15px' height='15px' style='padding-left:5px; padding-right: 5px;'/> Choose files&#160;&#160;</label>&#160;&#160;";
-				form +="<input type='hidden' name='kind' value='1' />";
-		}
-
-		form +="<input type='submit' name='okGo' id='okGo" + l + "' class='inputfile' value='Upload'>";
-        form +="<label for='okGo" + l + "' style='padding-left:20px; padding-right:20px'>Upload</label>";
-		form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
-		form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
-		form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";
-		form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
-		form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
-
-		form +="<input type='hidden' name='field' value='"+fieldname+"' />";
-		form +="</form>";
-
-		str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
-		str += "<div style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
-		if (type === "pdf"){
-			str += "<h4>Pdf Submission and Preview</h4>";
-		} else if (type === "link"){
-			str += "<h4>Link Submission and Preview</h4>";
-		} else if (type === "zip") {
-			str += "<h4>Zip / Rar file Upload</h4>";
-		} else if (type === "multi"){
-			str += "<h4>Multiple file Upload</h4>";
-		} else if (type === "text"){
-			str += "<h4>Text Submission</h4>";
-			str += "</div>";
-            str +="<div id='"+fieldname+"Prev' style='min-height:100px;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'><span style='font-style:italic;M'>Submission History</span></div>";
-			str += "<div style='padding:10px;'>";
-			str +="<table style='width:100%;'>";
-			str +="<tr>";
-			str +="<td id='"+fieldname+"'>";
-			str += form;
-			str += "</td>";
-			str += "</tr>";
-			str += "</table>";
-			str += "</div>"
-			str += "</div>"
-		}
-		str += "</div>";
-		str += "<div>";
-		if (type !== "text"){
-            str +="<div id='"+fieldname+"Prev' style='min-height:100px;background:#f8f8ff;padding:10px;border-top:2px 2px solid #d3d3d3;border-bottom:2px 2px solid #d3d3d3;'><span style='font-stile:italic;'>Submission History</span></div>";
-            str +="<div style='padding:10px;'>";
-            str +="<h4>Instructions</h4>";
-            str +="<div id='"+fieldname+"Instruction' style='font-style: italic;padding:0px;'></div>"
-            str +="<br />";
-			str +="<h4>New submission</h4>";
-			str +="<table>";
-			str +="<tr>";
-			str +="<td id='"+fieldname+"'>";
-			str += form;
-		}
-		str += "</td>";
-//      Until I can figure out what these do, except mess with the design, I'll have them commented, for the sake of the design
-//		str += "<td>";
-//		str += "<span id='"+fieldname+"File' style='margin:4px;' ></span>";
-//		str += "</td>";
-//		str += "<td>";
-//		str += "<span id='"+fieldname+"Date' style='margin:4px;' ></span>";
-//		str += "</td>";
-//		str += "</tr>";
-		str += "</table>";
-        str += "</div>";
-		str += "</div>"
-		str += "</div>"
-
-	}
 	document.getElementById("tomten").innerHTML=str;
 }
