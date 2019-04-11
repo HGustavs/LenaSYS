@@ -1128,3 +1128,8 @@ function closeLadexport()
     document.getElementById("resultlistarea").value="";
     document.getElementById("resultlistpopover").style.display="none";
 }
+
+function updateTable()
+{
+  myTable.renderTable();
+}
