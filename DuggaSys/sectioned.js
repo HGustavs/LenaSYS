@@ -1460,8 +1460,8 @@ function getEmails(cidMail, versMail) {
     success: function(data){
       //sendEmails(data);
       //console.log(data);
-      var myJSON = JSON.stringify(data);
-      window.location.assign("mailto:" + myJSON);
+      //var myJSON = JSON.stringify(data);
+      window.location.assign("mailto:" + data);
     }
   });
 }
