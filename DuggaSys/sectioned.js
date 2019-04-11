@@ -1464,7 +1464,7 @@ function getEmails() {
     },
     dataType: "json",
     success: function(data){
-      window.location.assign("mailto:" + data + "?subject=Testing out mailto!");
+      window.location.assign("mailto:" + data + "?subject=" + cname + cidMail);
     }
   });
 }
