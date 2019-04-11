@@ -117,6 +117,8 @@
 		include '../Shared/navheader.php';
 	?>
 
+	<!-- loader START -->
+	<div id="loader"></div>
 	<!-- content START -->
 	<div id="content">
 		<?php
