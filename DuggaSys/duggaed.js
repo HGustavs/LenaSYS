@@ -164,7 +164,7 @@ function validateDuggaName() {
 		$('#tooltipTxt').fadeOut();
 		$('#saveDugga').removeAttr('disabled');
 		$('#submitDugga').removeAttr('disabled');
-		nme.style.backgroundColor = "#FF7F50";
+		nme.style.backgroundColor = "#FFDAB9";
 		retValue = true;
 	} else {
 		$('#tooltipTxt').fadeIn();
