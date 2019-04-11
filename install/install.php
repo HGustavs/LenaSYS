@@ -18,13 +18,12 @@
         // Replace all windows '\' with unix '/' in the path string
         $path = str_replace("\\", "/", $path);
       }
+
       $paths = explode("/", $path);
       $r = '';
-	  
       if(count($paths) <= $level) {
         $r = '/';
-      }
-	  else {
+      } else {
         $r = '/';
         for($i = 0; $i < count($paths) - $level; $i++) {
           if($i > 1) {
@@ -36,7 +35,9 @@
       // Re-add the drive letter if there was one ('C:' + '/.../')
       return $prefix . $r;
     };
+
     ob_start();
+
     /************* MODAL TO SHOW STEPS BEFORE AND AFTER ****************/
     $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
     echo "
@@ -56,6 +57,7 @@
         var modal = document.getElementById('warning'); // Get the modal
         var span = document.getElementsByClassName("close")[0]; // Get the button that opens the modal
         var filePath = "<?php echo $putFileHere; ?>";
+
         document.getElementById('dialogText').innerHTML="<div><h1>" +
             "!!!!!!READ THIS BEFORE YOU START!!!!!!</h1><br>" +
             "<h2>Make sure you set ownership of LenaSYS directory to 'www-data'.<br>" +
@@ -65,6 +67,7 @@
             "<br>" +
             "<input title='I have completed necessary steps' onclick='if(this.checked){haveRead(true)}else{haveRead(false)}' class='startCheckbox' type='checkbox' value='1' autofocus>" +
             "<i>I promise i have done this and will not complain that it's not working</i></div>";
+
         function haveRead(isTrue) {
             modalRead = isTrue;
         }
@@ -96,9 +99,11 @@
     $dbUsername = "";
     $dbHostname = "";
     $dbName = "";
+
     $credentialsFile = "../../coursesyspw.php";
     if(file_exists("../../coursesyspw.php")) {
       $credentialsArray = file($credentialsFile, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+
       // check if the credentials exists in the file, store them if they do
       foreach($credentialsArray as $cred) {
         if(stripos(trim($cred), 'DB_') !== FALSE){
@@ -211,6 +216,7 @@
                 var submitButton = document.getElementById('submitInput');
                 var inputPage = 1;
                 var previousInputPage = 0;
+
                 /* Function to focus the right box on the page */
                 function focusTheRightBox() {
                     if (inputPage === 1 || inputPage === 2) {
@@ -229,12 +235,14 @@
                         }
                     }
                 }
+
                 leftArrow.onclick = function() {
                     previousInputPage = inputPage;
                     if(inputPage > 1) inputPage--;
                     updateInputPage();
                     focusTheRightBox();
                 };
+
                 rightArrow.onclick = function() {
                     /* Only continue if all fields on current page are filled out */
                     if (inputPage === 1 || inputPage === 2) {
@@ -267,6 +275,7 @@
                         updateInputPage();
                     }
                 };
+
                 /* Remove default behaviour (click submit button) when pressing enter */
                 $(document).ready(function() {
                     $(window).keydown(function(event){
@@ -276,6 +285,7 @@
                         }
                     });
                 });
+
                 /* You want to be able to press enter to continue, this function fixes this. */
                 document.addEventListener("keydown", function(e) {
                     if(e.keyCode === 13){
@@ -317,11 +327,13 @@
                         }
                     }
                 });
+
                 function updateInputPage(){
                     /* Hide current input page */
                     hideInputPage();
                     /* Show the new input page when animation is done */
                     window.setTimeout(showInputPage,500);
+
                     /* Dont show left arrow on first page and dont show right arrow on last page */
                     if (inputPage === 1) {
                         document.getElementById('leftArrow').style.display = "none";
@@ -334,6 +346,7 @@
                         document.getElementById('rightArrow').style.display = "block";
                     }
                 }
+
                 function hideInputPage(){
                     /* Slide away the old page from the right direction depending on new page */
                     if (inputPage > previousInputPage) {
@@ -344,6 +357,7 @@
                         $('#td' + previousInputPage).hide("slide", {direction: "right" }, 500);
                     }
                 }
+
                 function showInputPage(){
                     /* Slide the new page from the right direction depending on previous page */
                     if (inputPage > previousInputPage) {
@@ -366,6 +380,7 @@
                         focusTheRightBox();
                     }
                 }
+
                 /* When the user clicks anywhere outside of the modal, close it */
                 window.onclick = function(event) {
                     if (event.target == modal && modalRead) {
@@ -373,10 +388,12 @@
                         focusTheRightBox();
                     }
                 }
+
                 var writeOver1 = document.getElementById('writeOver1');
                 writeOver1.onclick = function() {
                     focusTheRightBox();
                 }
+
                 /* Hide testdata boxes when testdata is un-checked */
                 function fillDBchange(checkbox) {
                     if (checkbox.checked === true){
@@ -385,6 +402,7 @@
                         $("#testdataBoxes").hide("slide", {direction: "left" }, 500);
                     }
                 }
+
                 function createDBchange(checkbox) {
                     if (checkbox.checked === true){
                         $("#DBboxes").show("slide", {direction: "left" }, 500);
@@ -406,6 +424,7 @@
     <?php if (isset($_GET["mode"]) && $_GET["mode"] == "install") {
         $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
         ob_end_clean(); // Remove form and start installation.
+
         /* Pop-up window when installation is done. Hidden from start. */
         echo "
                     <div id='warning' class='modal'>
@@ -417,6 +436,7 @@
                         </div>
                 
                     </div>";
+
         /* Javascripts for warning pop-up */
         echo "
             <script>
@@ -435,6 +455,7 @@
                 span.onclick = function() {
                     modal.style.display = 'none';
                 }
+
                 // When the user clicks anywhere outside of the modal, close it
                 window.onclick = function(event) {
                     if (event.target == modal) {
@@ -445,10 +466,12 @@
         ";
         flush();
         ob_flush();
+
         /***** START of installation progress ******/
         $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
         $totalSteps = 1; // Variable to hold the total steps to complete.
         $completedSteps = 0; // Variable to hold the current completed steps.
+
         /* The following if-block will decide how many steps there are to complete installation. */
         if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
             $totalSteps += 4;
@@ -471,6 +494,7 @@
                   }
             }
         }
+
         /* Header.
          * Will contain title and progress bar.
          */
@@ -482,6 +506,7 @@
                 <span id='percentageText'></span>
                 <a title='Restart installation.' href='install.php' id='goBackBtn' ><b>Restart installation</b></a>
             </div>";
+
         /* Javascripts to calculate length of progressRect. This will show the current progress in progressBar. */
         echo "
             <script>
@@ -528,6 +553,7 @@
         </script>";
         flush();
         ob_flush();
+
         echo "<div id='installationProgressWrap'>";
         # Test permissions on directory before starting installation.
         if(!mkdir("{$putFileHere}/testPermissionsForInstallationToStartDir", 0777)) {
@@ -545,6 +571,7 @@
         }
         $completedSteps++;
         echo "<script>updateProgressBar({$completedSteps});</script>";
+
         # Check if all fields are filled.
         $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
         foreach ($fields AS $fieldname) { //Loop trough each field
@@ -554,14 +581,18 @@
                     <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
             }
         }
+
         # Only create DB if box is ticked.
         if (isset($_POST["createDB"]) && $_POST["createDB"] == 'Yes') {
+
             $username = $_POST["newUser"];
             $password = $_POST["password"];
             $databaseName = $_POST["DBName"];
             $serverName = $_POST["hostname"];
+
             $rootUser = $_POST["mysqlRoot"];
             $rootPwd = $_POST["rootPwd"];
+
             # Connect to database with root access.
             try {
                 $connection = new PDO("mysql:host=$serverName", $rootUser, $rootPwd);
@@ -578,6 +609,7 @@
             echo "<script>updateProgressBar({$completedSteps});</script>";
             flush();
             ob_flush();
+
             # If checked, write over existing database and user
             if (isset($_POST["writeOverUSR"]) && $_POST["writeOverUSR"] == 'Yes') {
                 # User
@@ -609,6 +641,7 @@
                 flush();
                 ob_flush();
             }
+
             # Create new database
             try {
                 $connection->query("CREATE DATABASE {$databaseName}");
@@ -621,6 +654,7 @@
             echo "<script>updateProgressBar({$completedSteps});</script>";
             flush();
             ob_flush();
+
             # Create new user and grant privileges to created database.
             try {
                 $connection->query("FLUSH PRIVILEGES");
@@ -636,8 +670,10 @@
             echo "<script>updateProgressBar({$completedSteps});</script>";
             flush();
             ob_flush();
+
             /**************************** Init database. *************************************/
             $initQuery = file_get_contents("SQL/init_db.sql");
+
             # This loop will find comments in the sql file and remove these.
             # Comments are removed because some comments included semi-colons which wont work.
             while(true) {
@@ -649,6 +685,7 @@
                 $removeThisText = substr($initQuery, $startPos, ($endPos + 2) - $startPos);
                 $initQuery = str_replace($removeThisText, '', $initQuery);
             }
+
             # Split the sql file at semi-colons to send each query separated.
             $initQueryArray = explode(";", $initQuery);
             $initSuccess = false;
@@ -660,6 +697,7 @@
                 $blockStarted = false;
                 foreach ($initQueryArray AS $query) {
                     $completeQuery = $query . ";";
+
                     # This commented code in this block could work if delimiters are fixed/removed in sql files.
                     # TODO: Fix handling of delimiters. Now this part only removes code between them.
                     if (!$blockStarted && strpos(strtolower($completeQuery), "delimiter //")) {
@@ -688,15 +726,18 @@
             echo "<script>updateProgressBar({$completedSteps});</script>";
             flush();
             ob_flush();
+
             /*************** Fill database with test data if this was checked. ****************/
             if (isset($_POST["fillDB"]) && $_POST["fillDB"] == 'Yes' && $initSuccess) {
                 addTestData("testdata", $connection);
+
                 # Copy md files to the right place.
                 if (isset($_POST["mdSupport"]) && $_POST["mdSupport"] == 'Yes') {
                     copyTestFiles("{$putFileHere}/install/md/", "{$putFileHere}/DuggaSys/templates/");
                 } else {
                     echo "Skipped adding markdown files<br>";
                 }
+
                 # Check which languages to add from checkboxes.
                 $checkBoxes = array("html", "java", "php", "plain", "sql", "sr");
                 foreach ($checkBoxes AS $boxName) { //Loop trough each field
@@ -708,6 +749,7 @@
                         }
                     }
                 }
+
                 /************* Copy test code files to the right place *****************/
                 if(@!mkdir("{$putFileHere}/courses", 0770, true)){
                     echo "Did not create courses directory, it already exists.<br>";
@@ -719,27 +761,32 @@
             } else {
                 echo "Skipped filling database with test data.<br>";
             }
+
         } else {
             echo "Skipped creating database.<br>";
         }
         $completedSteps++;
         echo "<script>updateProgressBar({$completedSteps});</script>";
+
         echo "<b>Installation finished.</b><br>";
         flush();
         ob_flush();
         echo "</div>";
         echo "<div id='inputFooter'><span title='Show or hide progress.'  id='showHideInstallation'>Show/hide installation progress.</span><br>
                 <span id='errorCount'>Errors: " . $errors . "</span></div>"; # Will show how many errors installation finished with.
+
         # Collapse progress only if there are no errors.
         if ($errors == 0) {
             echo "<script>$('#installationProgressWrap').toggle(500);</script>";
         }
+
         # All this code prints further instructions to complete installation.
         $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
         echo "<div id='doThisWrapper'>";
         echo "<h1><span id='warningH1' />!!!READ BELOW!!!</span></h1>";
         echo "<br><b>To make installation work please make a
             file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
+
         echo "<b>Bash command to complete all this (Copy all code below/just click the box and paste it into bash shell as one statement):</b><br>";
         echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox1\")'><code id='codeBox1'>";
         echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
@@ -749,7 +796,9 @@
         echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
         echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
         echo "</code></div>";
+
         echo '<div id="copied1">Copied to clipboard!<br></div>';
+
         echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br> 
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
                 (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
@@ -760,23 +809,24 @@
         echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
         echo "</code></div>";
         echo '<div id="copied2">Copied to clipboard!<br></div>';
-		
+
         $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
 		if(substr($lenaInstall, 0 , 2) == '/') {
 			$lenaInstall = substr($lenaInstall, 1);
 		}
-		
         echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
 		
         echo "<br><input title='Go to LenaSYS' class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
         echo "</form>";
         echo "</div>";
     }
+
     # Function to add testdata from specified file. Parameter file = sql file name without .sql.
     function addTestData($file, $connection){
         global $errors;
         global $completedSteps;
         $testDataQuery = @file_get_contents("SQL/{$file}.sql");
+
         if ($testDataQuery === FALSE) {
             $errors++;
             echo "<span id='failText' />Could not find SQL/{$file}.sql, skipped this test data.</span><br>";
@@ -802,6 +852,7 @@
         flush();
         ob_flush();
     }
+
     # Function to copy test files
     function copyTestFiles($fromDir,$destDir) {
         global $completedSteps;
@@ -825,15 +876,18 @@
         /* Show modal */
         modal.style.display = "block";
         var showHideButton = document.getElementById('showHideInstallation');
+
         if (showHideButton !== null){
             showHideButton.onclick = function(){
                 toggleInstallationProgress();
             }
         }
+
         /* Show/Hide installation progress. */
         function toggleInstallationProgress(){
             $('#installationProgressWrap').toggle(500);
         }
+
         /* Function to select and copy text inside code boxes at end of installation. */
         function selectText(containerid) {
             /* Get selection inside div. */
@@ -849,10 +903,13 @@
                 selection.removeAllRanges();
                 selection.addRange(range);
             }
+
             /* Copy selection. */
             document.execCommand("copy");
+
             /* Remove selection. */
             window.getSelection().removeAllRanges();
+
             /* Show the 'copied' text to let user know that text was copied to clipboard.
              * After show animation is done it will call hide function to hide text again.
              */
@@ -864,6 +921,7 @@
                 window.setTimeout(function() { hideCopiedAgain("#copied2")}, 2000);
             }
         }
+
         /* Hide 'copied' text */
         function hideCopiedAgain(text) {
             $(text).hide("slide", {direction: "right"}, 1000)
@@ -871,4 +929,3 @@
     </script>
 
 </body>
-
