@@ -56,6 +56,7 @@ if ($requestType=="mail"){
 	$mailQuery = $pdo->prepare("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers");
 	$mailQuery->bindParam(':cid', $courseid);
 	$mailQuery->bindParam(':vers', $coursevers);
+	echo $mailQuery;
 	if(!$mailQuery->execute()){
 		$error=$query->errorInfo();
 		$debug="Error reading user entries".$error[2];
@@ -64,7 +65,7 @@ if ($requestType=="mail"){
 		$emailArray = array(
 			'emailArray' => $row['email']
 	);
-		echo emailArray;
+		echo $emailArray;
 	}
 }	else {
 
