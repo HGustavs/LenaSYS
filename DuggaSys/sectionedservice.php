@@ -56,16 +56,17 @@ if ($requestType=="mail"){
 	$mailQuery = $pdo->prepare("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers");
 	$mailQuery->bindParam(':cid', $courseid);
 	$mailQuery->bindParam(':vers', $coursevers);
+	$emailsArray = array();
 	//VAR_DUMP($mailQuery);
 	if(!$mailQuery->execute()){
 		$error=$query->errorInfo();
 		$debug="Error reading user entries".$error[2];
 	}
 	foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row){
-		$emails = $row['email']. ";";
+		array_push($emailsArray,$row['email']);
 	}
-	VAR_DUMP($emails);
-	echo $emails;
+	print_r($emailsArray);
+	echo $emailsArray;
 }	else {
 
 		// Store current day in string
