@@ -105,7 +105,7 @@ function updateDugga() {
 	var gradesys = $("#gradesys").val();
 	var template = $("#template").val();
   var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
-  if($("#qstart").val()=="")qstart="UNK";
+  if($("#qstart").val()=="")qstart=valish();
 	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
   var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
   if($("#release").val()=="")release=valish();
@@ -164,7 +164,7 @@ function validateDuggaName() {
 		$('#tooltipTxt').fadeOut();
 		$('#saveDugga').removeAttr('disabled');
 		$('#submitDugga').removeAttr('disabled');
-		nme.style.backgroundColor = "#fff";
+		nme.style.backgroundColor = "#FF7F50";
 		retValue = true;
 	} else {
 		$('#tooltipTxt').fadeIn();
