@@ -1318,7 +1318,11 @@ input {
   height: 22px;
   line-height: 22px;
   padding: 0px 8px;
+}
+
+.menu-drop-down span.drop-down-label:hover {
   cursor: pointer;
+  background-color: rgb(240, 240, 240);
 }
 
 .document-settings span.label:hover {
