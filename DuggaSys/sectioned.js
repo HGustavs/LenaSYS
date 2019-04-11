@@ -1441,11 +1441,6 @@ $(window).load(function () {
 });
 
 function getEmails() {
-  // In i databasen och hämta email adresserna.
-  // Tryck in email adresserna till en container (array???)
-  // Skicka container till "mailto:"
-
-//   var email = $('#email').val();
   var reqType = "mail";
 
   var url_string = window.location.href;
@@ -1464,8 +1459,7 @@ function getEmails() {
     },
     dataType: "json",
     success: function(data){
-      window.location.assign("mailto:" + data + "?subject=" + cname + cidMail);
+      window.location.assign("mailto:" + data + "?subject=" + "!!! Notification !!! " + cname + " " + cidMail);
     }
   });
 }
-//function sendEmails(data){}
