@@ -250,7 +250,7 @@
                         var found = false; /* Is an empty field found? */
                         for (var i = 0; i < fields.length; i++) {
                             if (fields[i].value === ''){
-                                if (inputPage === 2 && inpufields[1]) {
+                                if (inputPage === 2 && fields[1]) {
                                     found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
                                 }else {
                                     found = true;  /* Empty field found */
@@ -301,7 +301,7 @@
                                     var found = false; /* Is an empty field found? */
                                     for (var i = 0; i < fields.length; i++) {
                                         if (fields[i].value === ''){
-                                          if (inputPage === 2 && inpufields[1]) {
+                                          if (inputPage === 2 && fields[1]) {
                                               found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
                                           }else {
                                               found = true;  /* Empty field found */
