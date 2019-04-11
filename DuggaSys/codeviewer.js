@@ -2705,6 +2705,20 @@ function setResizableToPer(boxValArray)
 }
 
 //----------------------------------------------------------------------------------
+//	LOADER:	Makes the page content hidden until it is loaded completely and displays a 
+//  loading gif until page has loaded fully     
+//----------------------------------------------------------------------------------
+document.onreadystatechange = function () {
+  var state = document.readyState
+  if (state == 'interactive') {
+       document.getElementById('content').style.visibility="hidden";
+  } else if (state == 'complete') {
+      document.getElementById('loader').style.visibility="hidden";
+      document.getElementById('content').style.visibility="visible";
+  }
+}
+
+//----------------------------------------------------------------------------------
 // addHtmlLineBreak: This function will replace all '\n' line breaks in a string
 //					 with <br> tags.
 //                Is called by returned in codeviewer.js
