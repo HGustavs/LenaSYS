@@ -164,13 +164,13 @@ function validateDuggaName() {
 		$('#tooltipTxt').fadeOut();
 		$('#saveDugga').removeAttr('disabled');
 		$('#submitDugga').removeAttr('disabled');
-		nme.style.backgroundColor = "#FFDAB9";
+		nme.style.backgroundColor = "#fff";
 		retValue = true;
 	} else {
 		$('#tooltipTxt').fadeIn();
 		$('#submitDugga').attr('disabled', 'disabled');
 		$('#saveDugga').attr('disabled', 'disabled');
-		nme.style.backgroundColor = "#f57";
+		nme.style.backgroundColor = "#FFDAB9";
 	}
 	return retValue;
 }
