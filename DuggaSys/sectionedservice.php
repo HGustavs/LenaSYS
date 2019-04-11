@@ -64,6 +64,7 @@ if ($requestType=="mail"){
 	foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$emails = $row['email']. ";";
 	}
+	VAR_DUMP($emails);
 	echo $emails;
 }	else {
 
