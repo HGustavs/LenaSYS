@@ -168,17 +168,17 @@ function keyDownHandler(e){
     else if (key == aKey && ctrlIsClicked) {
         e.preventDefault();
         for(var i = 0; i < diagram.length; i++){
-          selected_objects.push(diagram[i]);
-          diagram[i].targeted = true;
+            selected_objects.push(diagram[i]);
+            diagram[i].targeted = true;
         }
         updateGraphics();
     }
     else if(key == ctrlKey || key == windowsKey)
     {
-      ctrlIsClicked = true;
+        ctrlIsClicked = true;
     }
     else if(key == 27){
-      cancelFreeDraw();
+        cancelFreeDraw();
     }
 }
 
