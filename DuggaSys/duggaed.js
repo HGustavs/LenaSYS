@@ -103,13 +103,17 @@ var reelsees="";
 
 if($("#release").val()==""){
 	reelsees = "Release date";
-}else if($("#qstart").val()==""){
+}
+if($("#qstart").val()==""){
 	qstarttt = "Start";
-}else if($("#deadline1").val()==""){
+}
+if($("#deadline1").val()==""){
 	dead1 = "Deadline 1";
-}else if($("#deadline2").val()==""){
+}
+if($("#deadline2").val()==""){
 	dead2 = "Deadline 2";
-}else if$("#deadline3").val()==""(){
+}
+if($("#deadline3").val()==""){
 	dead3 = "Deadline 3";
 }
 
