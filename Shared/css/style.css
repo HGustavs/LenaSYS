@@ -395,12 +395,10 @@ p {
 
 .code .item a:hover {
   color: #A96FC4;
-  transition-duration: 0.3s;
 }
 
 .link .item a:hover {
   color: #D876B4;
-  transition-duration: 0.3s;
 }
 
 #Sectionlist .norm {
