@@ -27,7 +27,7 @@ function renderRankTable(){
 // sort rank based on column, col
 function sortRank( col ){
     if(col===0){
-        contribDataArr.sort(function compare(a,b){                        
+        contribDataArr.sort(function compare(a,b){
             if(a.name>b.name){
                 return 1;
             }else if(a.name<b.name){
@@ -73,9 +73,9 @@ function sortRank( col ){
 function intervaltocolor(size,val)
 {
     if(val<size*0.25){
-        return "#cf9";        
+        return "#cf9";
     }else if(val<size*0.5){
-        return "#ff9";             
+        return "#ff9";
     }else if(val<size*0.75){
         return "#fc9";
     }else{
@@ -97,15 +97,15 @@ function returnedSection(data)
 
   contribDataArr = [];
 	var str="";
-    
+
     if(data['allusers'].length>0){
         str+="<select id='userid' onchange='selectuser();'>";
         for(i=0;i<data['allusers'].length;i++){
             str+="<option>"+data['allusers'][i]+"</option>";
         }
         str+="</select>";
-    } 
-    
+    }
+
     str+="<h2 class='section'>Project statistics for GitHub user: " + data['githubuser'] + "</h2>";
   	str+="<table class='fumho'>";
 	str+="<tr style='position:relative;box-shadow:1px 3px 5px rgba(0,0,0,0.5);z-index:400;'>";
@@ -142,7 +142,7 @@ function returnedSection(data)
     str+="<td>GIT Commit</td>"
     str+="<td>"+data['commitrankno']+"</td>"
     str+="<td style='background-color:"+intervaltocolor(41,data['commitrank'])+"'>"+data['commitrank']+"</td>";
-    str+="</tr>";	
+    str+="</tr>";
     str+="</table>";
 
     // Table heading
@@ -157,9 +157,9 @@ function returnedSection(data)
 	var weeks=data.weeks;
 	for(i=0;i<weeks.length;i++){
 			var week=weeks[i];
-			
+
 			str+="<tr>";
-			
+
 			str+="<td>"+week.weekno+"</td>";
 
 			str+="<td>";
@@ -170,9 +170,9 @@ function returnedSection(data)
 
 			// Start of file contributions
 			str+="<td>";
-			
+
 			var files=week.files;
-		
+
       for(var j=0;j<files.length;j++){
 					var file=files[j];
 
@@ -190,70 +190,70 @@ function returnedSection(data)
 
 					str+="</div>";
 			}
-			
+
 			// End of file contrbutions
 			str+="</td>";
-			
+
 			// Start of Github contributions
 			str+="<td>";
-        
+
 			if(week.issues.length>0||week.comments.length>0||week.events.length>0){
 						str+="<div class='contrib'>";
 						str+="<div class='contribcontent'>";
 
 						if(week.commits.length>0){
-								str+="<div class='createissue'>Made "+week.commits.length+" commits.</div>";									
+								str+="<div class='createissue'>Made "+week.commits.length+" commits.</div>";
 								for(j=0;j<week.commits.length;j++){
 										var message=week.commits[j].message;
 										var hash=week.commits[j].cid;
 										str+="<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/commit/"+hash+"'>"+message+"</a></div>";
 								}
 						}
-				
-				
+
+
 						if(week.issues.length>0){
-								str+="<div class='createissue'>Creeated "+week.issues.length+" issues.</div>";									
+								str+="<div class='createissue'>Creeated "+week.issues.length+" issues.</div>";
 								for(j=0;j<week.issues.length;j++){
 										var issue=week.issues[j];
 										var issuestr=issue.issueno+" "+issue.title;
 										str+="<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/"+issue.issueno.substr(1)+"'>"+issuestr+"</a></div>";
 								}
-								
+
 						}
 
 						if(week.comments.length>0){
-								str+="<div class='createissue'>Made "+week.comments.length+" comments.</div>";		
+								str+="<div class='createissue'>Made "+week.comments.length+" comments.</div>";
 								for(j=0;j<week.comments.length;j++){
 										var comment=week.comments[j];
 										var issuestr=comment.issueno+" "+comment.content;
 										str+="<div class='contentissue'><a href='https://github.com/HGustavs/LenaSYS/issues/"+comment.issueno.substr(1)+"'>"+issuestr+"</a></div>";
 								}
-								
+
 						}
 
 						if(week.events.length>0){
-								str+="<div class='createissue'>Performed "+week.events.length+" events.</div>";		
+								str+="<div class='createissue'>Performed "+week.events.length+" events.</div>";
 								for(j=0;j<week.events.length;j++){
 										var eve=week.events[j];
 										str+="<div class='contentissue'>"+eve.kind+" "+eve.cnt+"</div>";
 								}
-								
+
 						}
-						
+
 						str+="</div>";
 						str+="</div>";
-						
+
 			}
-			
+
 			str +="</td>";
-			
+
 			str+="</tr>";
 	}
-	
+
 	// End of table
 
 	str+="</table><div id='rankTable'></div>";
-	
+
     var contribData = [];
 
 	if(data['allrowranks'].length>0){
@@ -261,9 +261,9 @@ function returnedSection(data)
           if(data['allrowranks'][i][1].length < 9){
             if (contribData[data['allrowranks'][i][1]] == undefined){
               contribData[data['allrowranks'][i][1]]={name:data['allrowranks'][i][1]};
-              contribData[data['allrowranks'][i][1]].allrowrank=parseInt(data['allrowranks'][i][0]);                            
+              contribData[data['allrowranks'][i][1]].allrowrank=parseInt(data['allrowranks'][i][0]);
               // Also add -1 for allrowrank,allcommentranks,alleventranks
-              contribData[data['allrowranks'][i][1]].allrank=parseInt(-1);                           
+              contribData[data['allrowranks'][i][1]].allrank=parseInt(-1);
               contribData[data['allrowranks'][i][1]].allcommentranks=parseInt(-1);
               contribData[data['allrowranks'][i][1]].alleventranks=parseInt(-1);
 
@@ -272,7 +272,7 @@ function returnedSection(data)
             }
           }
         }
-    }    
+    }
 
     if(data['allcommentranks'].length>0){
         for(i=0;i<data['allcommentranks'].length;i++){
@@ -281,7 +281,7 @@ function returnedSection(data)
               contribData[data['allcommentranks'][i][1]]={name:data['allcommentranks'][i][1]};
               contribData[data['allcommentranks'][i][1]].allcommentranks=parseInt(data['allcommentranks'][i][0]);
               // Also add -1 for allrowrank,alleventranks,allrank
-              contribData[data['allcommentranks'][i][1]].allrowrank=parseInt(-1);                           
+              contribData[data['allcommentranks'][i][1]].allrowrank=parseInt(-1);
               contribData[data['allcommentranks'][i][1]].allrank=parseInt(-1);
               contribData[data['allcommentranks'][i][1]].alleventranks=parseInt(-1);
             } else {
@@ -289,7 +289,7 @@ function returnedSection(data)
             }
           }
         }
-    }    
+    }
 
     if(data['alleventranks'].length>0){
         for(i=0;i<data['alleventranks'].length;i++){
@@ -302,18 +302,18 @@ function returnedSection(data)
                     contribData[student].alleventranks=parseInt(-1);
                   } else {
                     contribData[student].alleventranks=parseInt(studentRank);
-                  }              
+                  }
                   // Also add -1 for allrowrank,allcommentranks,alleventranks
-                  contribData[student].allrank=parseInt(-1);                           
-                  contribData[student].allrowrank=parseInt(-1);                           
+                  contribData[student].allrank=parseInt(-1);
+                  contribData[student].allrowrank=parseInt(-1);
                   contribData[student].allcommentranks=parseInt(-1);
-                  contribData[student].allcommitranks=parseInt(-1);								
+                  contribData[student].allcommitranks=parseInt(-1);
               } else {
                 contribData[student].alleventranks=parseInt(studentRank);
               }
-            }            
+            }
         }
-    }    
+    }
 
     if(data['allcommitranks'].length>0){
         for(i=0;i<data['allcommitranks'].length;i++){
@@ -326,18 +326,18 @@ function returnedSection(data)
                     contribData[student].allcommitrank=parseInt(-1);
                   } else {
                     contribData[student].allcommitrank=parseInt(studentRank);
-                  }              
+                  }
                   // Also add -1 for allrowrank,allcommentranks,alleventranks
-                  contribData[student].allrank=parseInt(-1);                           
-                  contribData[student].allrowrank=parseInt(-1);                           
+                  contribData[student].allrank=parseInt(-1);
+                  contribData[student].allrowrank=parseInt(-1);
                   contribData[student].allcommentranks=parseInt(-1);
               } else {
                 contribData[student].allcommitrank=parseInt(studentRank);
               }
-            }            
+            }
         }
-    }    
-	
+    }
+
     for (var stud in contribData){
         contribDataArr.push(contribData[stud]);
     }
