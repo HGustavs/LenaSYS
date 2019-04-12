@@ -758,12 +758,12 @@ function returnedSection(data) {
             return (link_element.host !== window.location.host);
           }
 
-          var links = document.getElementsByTagName('a');
-          for (var i = 0; i < links.length; i++) {
-            if (link_is_external(links[i])) {
-              console.log(links[i]);
-            }
-          }
+          // var links = document.getElementsByTagName('a');
+          // for (var i = 0; i < links.length; i++) {
+          //   if (link_is_external(links[i])) {
+          //     console.log(links[i]);
+          //   }
+          // }
           str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
 
