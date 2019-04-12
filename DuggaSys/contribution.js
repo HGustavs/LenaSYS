@@ -2,7 +2,7 @@ var querystring=parseGet();
 var retdata;
 var contribDataArr = [];
 
-AJAXService("get",{userid:"b14larek"},"CONTRIBUTION");
+AJAXService("get",{userid:"HGustavs"},"CONTRIBUTION");
 
 //----------------------------------------
 // Renderer
