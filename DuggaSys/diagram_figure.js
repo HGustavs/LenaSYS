@@ -13,12 +13,14 @@ function Path() {
     this.tmplist = Array();         // Temporary list for testing of intersections
     this.auxlist = Array();         // Auxillary temp list for testing of intersections
     this.fillColor = '#ffffff';     // Fill color (default is white)
-    this.opacity = 1;             // Opacity valuefor figures
-    this.strokeColor = '#000000';      // Stroke color (default is black)
-    this.lineWidth = 2;             // Line Width (stroke width - default is 2 pixels)
+    this.opacity = 1;               // Opacity valuefor figures
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
-    this.targeted = true;                    // An organized path can contain several sub-path, each of which must be organized
+    this.targeted = true;           // An organized path can contain several sub-path, each of which must be organized
     this.figureType = "Square";
+    this.properties = {
+        'strokeColor': '#000000',   // Stroke color (default is black)
+        'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
+    };
     //--------------------------------------------------------------------
     // Performs a delta-move on all points in a path
     //--------------------------------------------------------------------
@@ -30,6 +32,7 @@ function Path() {
         this.calculateBoundingBox();
     }
 
+    // Is used to adjust the points of each symbol when moved
     this.adjust = function(){
         if(this.figureType == "Square"){
             if(!sel) return;
@@ -118,10 +121,10 @@ function Path() {
               shouldFill = false;
             }
 
-            ctx.strokeStyle = this.targeted ? "#F82" : this.strokeColor;
+            ctx.strokeStyle = this.targeted ? "#F82" : this.properties['strokeColor'];
             ctx.fillStyle = this.fillColor;
             ctx.globalAlpha = this.opacity;
-            ctx.lineWidth = this.lineWidth;
+            ctx.lineWidth = this.properties['lineWidth'];
 
             ctx.beginPath();
             var pseg = this.segments[0];
@@ -382,7 +385,7 @@ function Path() {
     //--------------------------------------------------------------------
     this.drawsegments = function (segmentlist, color) {
         // Draw aux set
-        ctx.lineWidth = this.lineWidth;
+        ctx.lineWidth = this.properties['lineWidth'];
         ctx.strokeStyle = "#46f";
         for (var i = 0; i < segmentlist.length; i++) {
             var line = segmentlist[i];
@@ -396,6 +399,7 @@ function Path() {
         }
     }
 
+    // Attempts to erase the selected objects completely from the canvas
     this.erase = function() {
         for (i = 0; i < this.segments.length; i++) {
             points[this.segments[i].pa] = waldoPoint;
@@ -407,7 +411,7 @@ function Path() {
         var str = "";
         if (this.isorganized && this.segments.length > 0) {
             str += "<g>";
-            var svgStyle = "fill:"+this.fillColor+";fill-opacity:"+this.opacity+";stroke:"+this.strokeColor+";stroke-width:"+this.lineWidth+";";
+            var svgStyle = "fill:"+this.fillColor+";fill-opacity:"+this.opacity+";stroke:"+this.properties['strokeColor']+";stroke-width:"+this.properties['lineWidth']+";";
             var pseg = this.segments[0];
             svgPos = "M"+points[pseg.pa].x+","+points[pseg.pa].y;
             for (var i = 0; i < this.segments.length; i++) {

@@ -1,5 +1,9 @@
 var toolbarState;
 
+const toolbarER = 1;
+const toolbarUML = 2;
+const toolbarFree = 3;
+
 function initToolbox(){
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
@@ -40,7 +44,7 @@ function toggleToolbarLayout(){
     }
 }
 
-//function for switching the toolbar state (All, ER, UML)
+//function for switching the toolbar state (All, ER, UML), not sure what the numbers 0 an 3 mean
 function switchToolbar(direction){
   var text = ["All", "ER", "UML", "Free"];
   if(direction == 'left'){
@@ -57,7 +61,7 @@ function switchToolbar(direction){
   document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
-  if(toolbarState == 1){
+  if(toolbarState == toolbarER){
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -71,7 +75,7 @@ function switchToolbar(direction){
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-  }else if( toolbarState == 2){
+  }else if( toolbarState == toolbarUML){
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -83,7 +87,7 @@ function switchToolbar(direction){
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
-  }else if(toolbarState == 3){
+  }else if(toolbarState == toolbarFree){
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
     $("#drawerUndo").show();
@@ -94,7 +98,7 @@ function switchToolbar(direction){
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
-  else{
+  else{ // shows all alternatives in the toolbar
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();

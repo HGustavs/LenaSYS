@@ -80,6 +80,7 @@ function dimDialogMenu(dim) {
     }
 }
 
+// Loads the menu which is used to change apperance of ER and free draw objects.
 function loadFormIntoElement(element, dir){
   //Ajax
   var file = new XMLHttpRequest();
@@ -90,23 +91,23 @@ function loadFormIntoElement(element, dir){
       element.innerHTML = file.responseText;
       if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 2){
         document.getElementById('nametext').value = diagram[lastSelectedObject].name;
-        setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
-        setSelectedOption('symbolColor', diagram[lastSelectedObject].symbolColor);
-        setSelectedOption('font', diagram[lastSelectedObject].font);
-        setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
-        setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
-        setSelectedOption('LineColor', diagram[lastSelectedObject].strokeColor);
+        setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
+        setSelectedOption('symbolColor', diagram[lastSelectedObject].properties['symbolColor']);
+        setSelectedOption('font', diagram[lastSelectedObject].properties['font']);
+        setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
+        setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
+        setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
       }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1){
         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
         document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
-        setSelectedOption('LineColor',  diagram[lastSelectedObject].strokeColor);
-
+        setSelectedOption('LineColor', diagram[lastSelectedObject].strokeColor);
       }
     }
   }
   file.send();
 }
 
+// Loads the menu to change cardinality
 function loadLineForm(element, dir){
     //Ajax
     var file = new XMLHttpRequest();
@@ -120,7 +121,7 @@ function loadLineForm(element, dir){
                 var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
                 var tempCardinalityUML = cardinalityValUML == "" || cardinalityValUML == null ? "None" : cardinalityValUML;
 
-                setSelectedOption('object_type', diagram[lastSelectedObject].key_type);
+                setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
                 setSelectedOption('cardinality', tempCardinality);
                 if(cardinalityValUML) setSelectedOption('cardinalityUml', tempCardinalityUML);
             }
@@ -173,16 +174,17 @@ function loadTextForm(element, dir){
             if (i < diagram[lastSelectedObject].textLines.length - 1) text += "\n";
         }
         textarea.value = text;
-        setSelectedOption('font', diagram[lastSelectedObject].font);
-        setSelectedOption('fontColor', diagram[lastSelectedObject].fontColor);
-        setSelectedOption('textAlign', diagram[lastSelectedObject].textAlign);
-        setSelectedOption('TextSize', diagram[lastSelectedObject].sizeOftext);
+        setSelectedOption('font', diagram[lastSelectedObject].properties['font']);
+        setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
+        setSelectedOption('textAlign', diagram[lastSelectedObject].properties['textAlign']);
+        setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
       }
     }
   }
   file.send();
 }
 
+// used to implement the changes to apperances that has been made
 function setSelectedOption(type, value){
   if(type != null){
     for(var i = 0; i < document.getElementById(type).options.length; i++){
@@ -219,27 +221,33 @@ function objectAppearanceMenu(form) {
     form.innerHTML = "No item selected<type='text'>";
     //if no item has been selected
     if(!diagram[lastSelectedObject]){ return;}
-
+    // UML selected
     if (diagram[lastSelectedObject].symbolkind == 1) {
         classAppearanceOpen = true;
         loadUMLForm(form, 'diagram_forms.php?form=classType');
     }
+    // ER attributes selected
     else if (diagram[lastSelectedObject].symbolkind == 2) {
         loadFormIntoElement(form, 'diagram_forms.php?form=attributeType');
     }
+    // ER entity selected
     else if (diagram[lastSelectedObject].symbolkind == 3) {
         loadFormIntoElement(form, 'diagram_forms.php?form=entityType');
     }
+    // Lines selected
     else if (diagram[lastSelectedObject].symbolkind == 4) {
         loadLineForm(form, 'diagram_forms.php?form=lineType&cardinality=' + diagram[lastSelectedObject].cardinality[0].symbolKind);
     }
+    // ER relation selected
     else if (diagram[lastSelectedObject].symbolkind == 5) {
         loadFormIntoElement(form, 'diagram_forms.php?form=relationType');
     }
+    // Text selected
     else if (diagram[lastSelectedObject].symbolkind == 6) {
         textAppearanceOpen = true;
         loadTextForm(form, 'diagram_forms.php?form=textType');
     }
+    // Fill color of the object
     else if (diagram[lastSelectedObject].kind == 1) {
         loadFormIntoElement(form, 'diagram_forms.php?form=figureType');
     }
@@ -264,7 +272,7 @@ function changeObjectAppearance(object_type){
       }
 
     } else if (diagram[lastSelectedObject].symbolkind == 4) {
-        diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
+        diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
     } else if (diagram[lastSelectedObject].kind == 1){
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
@@ -275,18 +283,18 @@ function changeObjectAppearance(object_type){
         for(var i = 0; i < textArray.length; i++){
           diagram[lastSelectedObject].textLines.push({text:textArray[i]});
         }
-        diagram[lastSelectedObject].fontColor = document.getElementById('fontColor').value;
-        diagram[lastSelectedObject].font = document.getElementById('font').value;
-        diagram[lastSelectedObject].textAlign = document.getElementById('textAlign').value;
-        diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
+        diagram[lastSelectedObject].properties['fontColor'] = document.getElementById('fontColor').value;
+        diagram[lastSelectedObject].properties['font'] = document.getElementById('font').value;
+        diagram[lastSelectedObject].properties['textAlign'] = document.getElementById('textAlign').value;
+        diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
     } else {
-        diagram[lastSelectedObject].symbolColor = document.getElementById('symbolColor').value;
+        diagram[lastSelectedObject].properties['symbolColor'] = document.getElementById('symbolColor').value;
         diagram[lastSelectedObject].name = document.getElementById('nametext').value;
-        diagram[lastSelectedObject].fontColor = document.getElementById('fontColor').value;
-        diagram[lastSelectedObject].font = document.getElementById('font').value;
-        diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
-        diagram[lastSelectedObject].key_type = document.getElementById('object_type').value;
-        diagram[lastSelectedObject].strokeColor = document.getElementById('LineColor').value;
+        diagram[lastSelectedObject].properties['fontColor'] = document.getElementById('fontColor').value;
+        diagram[lastSelectedObject].properties['font'] = document.getElementById('font').value;
+        diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
+        diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
+        diagram[lastSelectedObject].properties['strokeColor'] = document.getElementById('LineColor').value;
     }
     updateGraphics();
 }
