@@ -397,6 +397,10 @@ p {
   color: #A96FC4;
 }
 
+.link .item a:hover {
+  color: #D876B4;
+}
+
 #Sectionlist .norm {
   background-color: #fff;
   color: #000;
