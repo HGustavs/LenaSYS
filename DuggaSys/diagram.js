@@ -985,13 +985,13 @@ $(document).ready(function(){
 });
 
 function setTextSizeEntity() {
-    diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
+    diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
 }
 
 function setType() {
     var elementVal = document.getElementById('object_type').value;
 
-    diagram[lastSelectedObject].key_type = elementVal;
+    diagram[lastSelectedObject].properties['key_type'] = elementVal;
     updateGraphics();
 }
 
@@ -1533,14 +1533,15 @@ function distributeHorizontally(selected_objects, spacing){
 //Do we really need 5 functions that more or less do the same thing
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
-        diagram[i].lineWidth = document.getElementById('line-thickness').value;
+        diagram[i].properties['lineWidth'] = document.getElementById('line-thickness').value;
     }
 }
+
 //change the font on all entities to the same font.
 function globalFont() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && (diagram[i].symbolkind == 1 || diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
-            diagram[i].font = document.getElementById('font').value;
+            diagram[i].properties['font'] = document.getElementById('font').value;
         }
     }
 }
@@ -1548,7 +1549,7 @@ function globalFont() {
 function globalFontColor() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
-            diagram[i].fontColor = document.getElementById('fontColor').value;
+            diagram[i].properties['fontColor'] = document.getElementById('fontColor').value;
         }
     }
 }
@@ -1557,7 +1558,7 @@ function globalFontColor() {
 function globalTextSize() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
-            diagram[i].sizeOftext = document.getElementById('TextSize').value;
+            diagram[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
         }
     }
 }
@@ -1566,7 +1567,7 @@ function globalTextSize() {
 function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
-            diagram[i].symbolColor = document.getElementById('FillColor').value;
+            diagram[i].properties['symbolColor'] = document.getElementById('FillColor').value;
         } else { diagram[i].fillColor = document.getElementById('FillColor').value;}
     }
 }
@@ -1575,7 +1576,7 @@ function globalFillColor() {
 //change the strokecolor on all entities to the same size.
 function globalStrokeColor() {
     for (var i = 0; i < diagram.length; i++) {
-            diagram[i].strokeColor = document.getElementById('StrokeColor').value;
+            diagram[i].properties['strokeColor'] = document.getElementById('StrokeColor').value;
     }
 }
 
