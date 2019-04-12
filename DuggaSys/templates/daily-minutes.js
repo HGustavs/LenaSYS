@@ -25,60 +25,20 @@ function setup()
 }
 
 function newRow() {
-	var tblRows = document.getElementById("tsTableBody").childNodes;
+	var tsTableBody = document.getElementById("tsTableBody");
+	var tblRows = tsTableBody.childNodes;
 	var lastRowIdx = parseInt(tblRows[tblRows.length - 1].attributes[0].value);
 	var idx = lastRowIdx += 1;
 
-	var row = document.createElement("tr");
-	var cell = document.createElement("td");
-	var input = document.createElement("input");
-	var select = document.createElement("select");
-	var option = document.createElement("option");
+	var rowStr = "<tr data-idx="+idx+"><td>";
+	rowStr += "<input type='date' name='tsDate_"+idx+"' /></td>";
+	rowStr += "<td><select name='tsType_"+idx+"'>";
+	rowStr += "<option value='issue'>Issue</option><option value='pullrequest'>Pull request</option>";
+	rowStr += "</select></td>";
+	rowStr += "<td><input type='number' name='tsRef_"+idx+"' style='width: 55px' /></td>";
+	rowStr +="<td><input type='text' name='tsComment_"+idx+"' style='width: 500px' /></td>";
 
-	input.setAttribute("type", "date");
-	input.setAttribute("name", "tsDate_"+idx);
-	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
-	cell.appendChild(input);
-	row.appendChild(cell);
-
-	cell = document.createElement("td");
-	select.setAttribute("name", "tsType_"+idx);
-	option.setAttribute("value", "issue");
-	option.innerHTML = "Issue";
-	select.appendChild(option);
-	option = document.createElement("option");
-	option.setAttribute("value", "pullrequest");
-	option.innerHTML = "Pull request";
-	select.appendChild(option);
-	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
-	cell.appendChild(select);
-	row.appendChild(cell);
-
-	cell = document.createElement("td");
-	input = document.createElement("input");
-	input.setAttribute("type", "text");
-	input.setAttribute("name", "tsRef_"+idx);
-	input.setAttribute("style", "width: 50px");
-	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
-	cell.appendChild(input);
-	row.appendChild(cell);
-
-	cell = document.createElement("td");
-	input = document.createElement("input");
-	input.setAttribute("type", "text");
-	input.setAttribute("name", "tsComment_"+idx);
-	input.setAttribute("style", "width: 500px");
-	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
-	cell.appendChild(input);
-	row.appendChild(cell);
-
-	row.setAttribute("data-idx", idx);
-	return row;
-}
-
-function addRow() {
-	var tsTableBody = document.getElementById("tsTableBody");
-	tsTableBody.appendChild(newRow());
+	tsTableBody.innerHTML += rowStr;
 }
 
 function returnedDugga(data)
@@ -327,7 +287,7 @@ function createFileUploadArea(){
 	form +="<input type='hidden' name='field' value='timesheet' />";
 	form +="<input type='hidden' name='kind' value='3' />";
 	form +="<tfoot><td colspan='4'>";
-	form +="<span class='newRowButton' onclick='addRow()'>Lägg till rad</span>";
+	form +="<span class='newRowButton' onclick='newRow()'>Lägg till rad</span>";
 	form +="</td></tfoot></table>";
 	form +="<input type='submit' value='Upload' /></form>";
 
