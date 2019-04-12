@@ -166,21 +166,20 @@ function keyDownHandler(e){
     else if (key == zKey && ctrlIsClicked) undoDiagram();
     else if (key == yKey && ctrlIsClicked) redoDiagram();
     else if (key == aKey && ctrlIsClicked) {
-        e.preventDefault();
-        for(var i = 0; i < diagram.length; i++){
+      e.preventDefault();
+      for(var i = 0; i < diagram.length; i++){
         selected_objects.push(diagram[i]);
         diagram[i].targeted = true;
       }
-        updateGraphics();
+      updateGraphics();
     }
     else if(key == ctrlKey || key == windowsKey)
     {
-        ctrlIsClicked = true;
+      ctrlIsClicked = true;
     }
     else if(key == 27){
-        cancelFreeDraw();
+      cancelFreeDraw();
     }
-
 }
 
 function cancelFreeDraw(){
@@ -212,26 +211,26 @@ window.onkeyup = function(event) {
     if(event.which == ctrlKey || event.which == windowsKey) {
         ctrlIsClicked = false;
     }
-  }
+}
 
 //Handler for when pressing arrow keys
 function arrowKeyPressed(key){
     var xNew = 0, yNew = 0;
 
     if(key == leftArrow){//left
-      xNew = -5;
+        xNew = -5;
     }else if(key == upArrow){//up
-      yNew = -5;
+        yNew = -5;
     }else if(key == rightArrow){//right
-      xNew = 5;
+        xNew = 5;
     }else if(key == downArrow){//down
-      yNew = 5;
+        yNew = 5;
     }
-      for(var i = 0; i < selected_objects.length; i++){
-          selected_objects[i].move(xNew, yNew);
-        }
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].move(xNew, yNew);
+    }
     updateGraphics();
-  }
+}
 
 
 //--------------------------------------------------------------------
