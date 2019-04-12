@@ -94,7 +94,6 @@ function selectDugga(qid) {
   $("#editDugga").css("display", "flex");
 }
 
-
 function updateDugga() {
 	var did = $("#did").val();
 	var nme = $("#name").val();
@@ -111,6 +110,7 @@ function updateDugga() {
       jsondeadline.deadline1=deadline;
       jsondeadline.comment1=$("#deadlinecomments1").val();
   }else{
+		alert("Missing");
       deadline="UNK";
       jsondeadline.deadline1="";
       jsondeadline.comment1="";
