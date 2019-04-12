@@ -736,14 +736,6 @@ function returnedSection(data) {
         } else if (itemKind === 2) {
           str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 
-          $(document).ready(function(){
-            $("a").hover(function(){
-              $(this).css("background-color", "yellow");
-              }, function(){
-              $(this).css("background-color", "pink");
-            });
-          });
-
           kk++;
 
         } else if (itemKind === 3) {
