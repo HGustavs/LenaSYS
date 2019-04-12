@@ -752,7 +752,9 @@ function returnedSection(data) {
           kk = 0;
 
         } else if (itemKind === 5) { // Link
-          console.log(document.links.href);
+          if (document.links.href.indexOf('dugga')) {
+            alert("Ja!");
+          }
           str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
 
