@@ -753,7 +753,11 @@ function returnedSection(data) {
 
         } else if (itemKind === 5) { // Link
 
-          console.log(document.links.href);
+          var x = document.links;
+          var i;
+          for (i = 0; i < x.length; i++) {
+             console.log(x[i].href);
+          }
 
           str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
