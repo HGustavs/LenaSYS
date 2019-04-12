@@ -752,14 +752,19 @@ function returnedSection(data) {
           kk = 0;
 
         } else if (itemKind === 5) { // Link
+          var comp = new RegExp(location.host);
 
-          var x = document.links;
-          var i;
-          for (i = 0; i < x.length; i++) {
-            if (x[i].href.indexOf("dugga")) {
-              str += "<td class='example code item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-            }
-          }
+          $('a').each(function(){
+             if(comp.test($(this).attr('href'))){
+                 // a link that contains the current host
+                 $(this).addClass('local');
+             }
+             else{
+                 // a link that does not contain the current host
+                 $(this).addClass('external');
+             }
+          });
+
 
           str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
