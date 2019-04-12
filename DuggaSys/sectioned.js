@@ -734,7 +734,7 @@ function returnedSection(data) {
           kk = 0;
 
         } else if (itemKind === 2) {
-          str += "<td class='example item style='hover {background.color:green;}' " + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          str += "<td class='example item' style='background-color:green;' " + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
 
         } else if (itemKind === 3) {
