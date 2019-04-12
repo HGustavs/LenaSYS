@@ -20,6 +20,7 @@ Example seed
 function setup()
 {
 	inParams = parseGet();
+	//AJAXService("GETPARAM", { }, "PDUGGA");
 	createFileUploadArea();
 }
 
@@ -56,7 +57,7 @@ function newRow() {
 	cell = document.createElement("td");
 	input = document.createElement("input");
 	input.setAttribute("type", "text");
-	input.setAttribute("name", "tsNumber_"+idx);
+	input.setAttribute("name", "tsRef_"+idx);
 	input.setAttribute("style", "width: 50px");
 	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
 	cell.appendChild(input);
@@ -82,7 +83,6 @@ function addRow() {
 
 function returnedDugga(data)
 {
-	console.log(data);
 	dataV = data;
 	if (data['debug'] != "NONE!") { alert(data['debug']); }
 
@@ -316,7 +316,7 @@ function createFileUploadArea(){
 	form +="<td><select name='tsType_0'>";
 	form +="<option value='issue'>Issue</option><option value='pullrequest'>Pull request</option>";
 	form +="</select></td>";
-	form +="<td><input type='number' name='tsNumber_0' style='width: 55px' /></td>";
+	form +="<td><input type='number' name='tsRef_0' style='width: 55px' /></td>";
 	form +="<td><input type='text' name='tsComment_0' style='width: 500px' /></td>";
 	form +="</tr></tbody>";
 	form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";

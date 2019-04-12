@@ -135,6 +135,30 @@ if($ha){
 			$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;	
 			file_put_contents($movname, $inputJSON);
 
+			$postEntries = count(preg_grep("/ts.+_\d/", array_keys($_POST))) / 4;
+			for($entryIdx = 0; $entryIdx < $postEntries; $entryIdx++) {
+				$date=getOP('tsDate_'.$entryIdx);					
+				$type=getOP('tsType_'.$entryIdx);
+				$ref=getOP('tsRef_'.$entryIdx);
+				$comment=getOP('tsComment_'.$entryIdx);
+
+				$query = $pdo->prepare("INSERT INTO timesheet(uid, cid, did, vers, moment, day, type, reference, comment) VALUES(:uid,:cid,:did,:vers,:moment,:date,:type,:reference,:comment);");
+				$query->bindParam(':uid', $userid);
+				$query->bindParam(':cid', $cid);
+				$query->bindParam(':vers', $vers);
+				$query->bindParam(':did', $duggaid);
+				$query->bindParam(':moment', $moment);
+				$query->bindParam(':date', $date);
+				$query->bindParam(':type', $type);
+				$query->bindParam(':reference', $ref);
+				$query->bindParam(':comment', $comment);
+
+				if(!$query->execute()) {
+					$error=$query->errorInfo();
+					echo "Error updating file entries".$error[2];
+				}
+			}
+
 			$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now());");
 			$query->bindParam(':uid', $userid);
 			$query->bindParam(':cid', $cid);
@@ -340,7 +364,7 @@ function jsonifyUserInput(){
 	for($entryIdx = 0; $entryIdx < $entries; $entryIdx++) {
 		$date=getOP('tsDate_'.$entryIdx);					
 		$type=getOP('tsType_'.$entryIdx);
-		$number=getOP('tsNumber_'.$entryIdx);
+		$number=getOP('tsRef_'.$entryIdx);
 		$comment=getOP('tsComment_'.$entryIdx);
 
 		$rawData = array(
