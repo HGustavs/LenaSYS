@@ -1016,11 +1016,11 @@ input {
 }
 
 .loginBoxheader {
-  height: 60px;
+  height: 25px;
   background-color: #614875;
   vertical-align: bottom;
   padding-left: 10px;
-  cursor: move;
+  /* cursor: move; */
   display: flex;
   justify-content: space-around;
 }
