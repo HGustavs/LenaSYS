@@ -150,7 +150,7 @@ p {
 
  #buttonDiv {
    position: fixed;
-   margin-top: -4%;
+   margin-top: -20px;
    height: 20px;
    background-color: white;
  }
@@ -1311,6 +1311,18 @@ input {
   height: 22px;
   line-height: 22px;
   padding: 0px 6px;
+}
+
+.menu-drop-down span.drop-down-label{
+  display: block;
+  height: 22px;
+  line-height: 22px;
+  padding: 0px 8px;
+}
+
+.menu-drop-down span.drop-down-label:hover {
+  cursor: pointer;
+  background-color: rgb(240, 240, 240);
 }
 
 .document-settings span.label:hover {

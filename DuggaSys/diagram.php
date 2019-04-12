@@ -136,7 +136,7 @@
                     </div>
                 </div>
                 <div class="menu-drop-down">
-                    <span class="label">File</span>
+                    <span class="drop-down-label">File</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <span class="drop-down-option">Save</span>
@@ -174,7 +174,7 @@
                     </div>
                 </div>
                 <div class="menu-drop-down">
-                    <span class="label">Edit</span>
+                    <span class="drop-down-label">Edit</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='undoDiagram()'>Undo</span>
@@ -204,7 +204,7 @@
                     </div>
                 </div>
                 <div class="menu-drop-down">
-                    <span class="label">View</span>
+                    <span class="drop-down-label">View</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='debugMode();'>Developer mode</span>
@@ -223,7 +223,7 @@
                     </div>
                 </div>
                 <div class="menu-drop-down">
-                    <span class="label">Align</span>
+                    <span class="drop-down-label">Align</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleGrid(this)">Snap to grid</span>
@@ -253,7 +253,7 @@
                     </div>
                 </div>
                 <div class="menu-drop-down">
-                    <span class="label">Distribute</span>
+                    <span class="drop-down-label">Distribute</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="distribute('horizontally');">Horizontal</span>
@@ -264,7 +264,7 @@
                     </div>
                 </div>
                 <div class="menu-drop-down">
-                    <span class="label">Help</span>
+                    <span class="drop-down-label">Help</span>
                     <div class="drop-down">
                         <div class="drop-down-text">
                             <span class="drop-down-option">Move grid</span>
