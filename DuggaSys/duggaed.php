@@ -80,7 +80,7 @@ pdoConnect();
         		</div>
         		<div style='padding:5px;display:flex;justify-content:space-between'>
         			<input id='closeDugga' class='submit-button' style='' type='button' value='Cancel' onclick='closeWindows();' />
-        			<input id='saveDugga' class='submit-button' style='' type='button' value='Save' onclick='checkDugga();' />
+        			<input id='saveDugga' class='submit-button' style='' type='button' value='Save' onclick='checkDugga(); updatedugga();' />
         		</div>
         </div>
   	</div>
