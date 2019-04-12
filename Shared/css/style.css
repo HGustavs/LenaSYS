@@ -393,6 +393,10 @@ p {
   text-decoration: underline;
 }
 
+.code .item a:hover {
+  color: #A96FC4;
+}
+
 #Sectionlist .norm {
   background-color: #fff;
   color: #000;
