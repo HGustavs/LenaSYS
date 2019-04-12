@@ -120,7 +120,7 @@ if($("#deadline3").val()==""){
 if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()=="" || $("#qstart").val()=="" || $("#release").val()==""){
 	alert("Missing: " + dead1 + " " + dead2 + " " + dead3 +" " + qstarttt + " " + reelsees);
 }else{
-	
+	return updateDugga();
 }
 }
 
