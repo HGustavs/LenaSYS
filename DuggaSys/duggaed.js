@@ -138,7 +138,7 @@ var dead3 ="";
       jsondeadline.comment3="";
 	}
 	
-	if( $("#deadline1").val()!="" || $("#deadline2").val()!="" || $("#deadline3").val()!=""){
+	if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()==""){
 			alert("Missing: " + dead1 + " " + dead2 + " " + dead3);
 	}
 
