@@ -29,7 +29,7 @@ function findPos(obj) {
 }
 
 function updateActivePoint() {
-    if (sel.distance <= tolerance) {
+    if (sel.distance <= tolerance) { // sel.distance = the distance of the mouse from each corner point of the object
         activePoint = sel.point;
     } else {
         activePoint = null;
@@ -37,6 +37,7 @@ function updateActivePoint() {
 }
 
 function pointDistance(point1, point2) {
+    //condition ? value-if-true : value-if-false
     var width = (point1.x > point2.x)? point1.x - point2.x: point2.x - point1.x;
     var height = (point1.y > point2.y)? point1.y - point2.y: point2.y - point1.y;
 
@@ -44,18 +45,23 @@ function pointDistance(point1, point2) {
 }
 
 function mousemoveevt(ev, t) {
+    // Get canvasMouse coordinates for both X & Y.
+    canvasMouseX = (ev.clientX - canvas.offsetLeft) * (1 / zoomValue);
+    canvasMouseY = -(ev.clientY - canvas.offsetTop) * (1 / zoomValue);
+    // Call reWrite() to update the canvasMouseX & canvasMouseY on the page.
+    reWrite();
     xPos = ev.clientX;
     yPos = ev.clientY;
     oldMouseCoordinateX = currentMouseCoordinateX;
     oldMouseCoordinateY = currentMouseCoordinateY;
     hovobj = diagram.itemClicked();
-    if (ev.pageX || ev.pageY == 0) { // Chrome
+    if (ev.pageX || ev.pageY == 0) { // Chrome. Tracking mouse movement
         currentMouseCoordinateX = (((ev.pageX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.pageY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
-    } else if (ev.layerX || ev.layerX == 0) { // Firefox
+    } else if (ev.layerX || ev.layerX == 0) { // Firefox. Tracking mouse movement
         currentMouseCoordinateX = (((ev.layerX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.layerY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
-    } else if (ev.offsetX || ev.offsetX == 0) { // Opera
+    } else if (ev.offsetX || ev.offsetX == 0) { // Opera. Tracking mouse movement
         currentMouseCoordinateX = (((ev.offsetX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.offsetY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
     }
@@ -388,9 +394,11 @@ function mouseupevt(ev) {
             }
         }
     }
+
+    // Code for creating symbols when mouse is released
     // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
     if (uimode == "CreateClass" && md == 4) {
-        classB = new Symbol(1);
+        classB = new Symbol(1); // UML
         classB.name = "New" + diagram.length;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
@@ -404,7 +412,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateERAttr" && md == 4) {
-        erAttributeA = new Symbol(2);
+        erAttributeA = new Symbol(2); // ER attributes
         erAttributeA.name = "Attr" + diagram.length;
         erAttributeA.topLeft = p1;
         erAttributeA.bottomRight = p2;
@@ -418,7 +426,7 @@ function mouseupevt(ev) {
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateEREntity" && md == 4) {
-        erEnityA = new Symbol(3);
+        erEnityA = new Symbol(3); // ER entity
         erEnityA.name = "Entity" + diagram.length;
         erEnityA.topLeft = p1;
         erEnityA.bottomRight = p2;
@@ -435,7 +443,7 @@ function mouseupevt(ev) {
     } else if (uimode == "CreateLine" && md == 4){
         //Code for making a line, if start and end object are different, except attributes
         if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine){
-            erLineA = new Symbol(4);
+            erLineA = new Symbol(4); // Lines
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
             erLineA.object_type = "";
@@ -449,9 +457,8 @@ function mouseupevt(ev) {
             createCardinality();
             updateGraphics();
         }
-
     } else if (uimode == "CreateERRelation" && md == 4) {
-        erRelationA = new Symbol(5);
+        erRelationA = new Symbol(5); // ER Relation
         erRelationA.name = "Relation" + diagram.length;
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
@@ -529,6 +536,7 @@ function createText(posX, posY) {
     updateGraphics();
 }
 
+// This is used when making the objects bigger or smaller
 function resize() {
     if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {

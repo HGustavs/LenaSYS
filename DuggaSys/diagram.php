@@ -15,6 +15,7 @@
     <title>Section Editor</title>
     <link type="text/css" href="../Shared/css/style.css" rel="stylesheet">
     <link type="text/css" href="../Shared/css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="../Shared/js/jquery-1.11.0.min.js"></script>
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
@@ -62,7 +63,7 @@
                             <img id="minimizeArrow" class="toolbarMaximized" src="../Shared/icons/arrow.svg">
                           </div>
                           <h3>Toolbar</h3>
-                          <div id="toolbar-toggleLayout"  onclick="toggleToolbarLayout();"> 
+                          <div id="toolbar-toggleLayout"  onclick="toggleToolbarLayout();">
                               <img id="layoutArrow" class="toolbarMaximized" src="../Shared/icons/rotateButton.svg">
                             </div>
                         </div>
@@ -138,31 +139,29 @@
                     <span class="label">File</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <a href="#" value='Save'>Save</a>
-
+                            <span class="drop-down-option">Save</span>
                         </div>
                         <div class="drop-down-item">
-                            <a href="#">Load</a>
+                            <span class="drop-down-option">Load</span>
                         </div>
                         <div class="drop-down-divider">
 
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" id="buttonid" onclick="openImportDialog();" value='getImage'>Import</a>
+                            <span class="drop-down-option" id="buttonid" onclick="openImportDialog();" value='getImage'>Import</span>
                         </div>
 
-
                         <div class="drop-down-item export-drop-down-head">
-                            <a href="#" id="exportid">Export...</a>
+                            <span class="drop-down-option" id="exportid">Export...</span>
                             <div class="export-drop-down">
                                 <div class="export-drop-down-item">
-                                    <a href="#" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
+                                    <span class="drop-down-option" id="fileid" onclick='SaveFile(this);'>Export JSON</span>
                                 </div>
                                 <div class="export-drop-down-item">
-                                    <a href="#" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
+                                    <span class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</span>
                                 </div>
                                 <div class="export-drop-down-item">
-                                    <a href="#" id="picid">Export Picture</a>
+                                    <span class="drop-down-option" id="picid">Export Picture</span>
                                 </div>
                             </div>
                         </div>
@@ -170,7 +169,7 @@
 
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</a>
+                            <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
                         </div>
                     </div>
                 </div>
@@ -178,28 +177,29 @@
                     <span class="label">Edit</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <a href="#" onclick='undoDiagram()'>Undo</a>
+                            <span class="drop-down-option" onclick='undoDiagram()'>Undo</span>
                             <i id="hotkey-undo">Ctrl + Z</i>
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick='redoDiagram()'>Redo</a>
+                            <span class="drop-down-option" onclick='redoDiagram()'>Redo</span>
                             <i id="hotkey-redo">Ctrl + Y</i>
                         </div>
                         <div class="drop-down-divider">
+
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick='globalAppearanceMenu();'>Global Appearance</a>
+                            <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
                         </div>
-                         <div class="drop-down-item">
-                            <a href="#" onclick='openAppearanceDialogMenu();'>Change Appearance</a>
+                        <div class="drop-down-item">
+                                <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
                         </div>
                         <div class="drop-down-divider">
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick='lockSelected()'>Lock/Unlock selected</a>
+                            <span class="drop-down-option" onclick='lockSelected()'>Lock/Unlock selected</span>
                         </div>
-                         <div class="drop-down-item">
-                            <a href="#" onclick='eraseSelectedObject();'>Delete Object</a>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
                         </div>
                     </div>
                 </div>
@@ -207,10 +207,18 @@
                     <span class="label">View</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <a href="#" onclick='debugMode();'>Developer mode</a>
+                            <span class="drop-down-option" onclick='debugMode();'>Developer mode</span>
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick="toggleGrid(this)">Snap to grid</a>
+                            <span class="drop-down-option" onclick="toggleGrid(this)">Snap to grid</span>
+                        </div>
+                        <div class="drop-down-divider">
+                        </div>
+                        <div class="drop-down-item">
+                            <a href="#" onclick="toggleVirtualA4()">Display Virtual A4</a>
+                        </div>
+                        <div class="drop-down-item">
+                                <a href="#" onclick='toggleVirtualA4Holes();'>Toggle A4 Holes</a>
                         </div>
                     </div>
                 </div>
@@ -218,52 +226,54 @@
                     <span class="label">Align</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <a href="#" onclick="align('top');">Top</a>
-                        </div>
-                        <div class="drop-down-item">
-                            <a href="#" onclick="align('right');">Right</a>
-                        </div>
-                        <div class="drop-down-item">
-                            <a href="#" onclick="align('bottom');">Bottom</a>
-                        </div>
-                        <div class="drop-down-item">
-                            <a href="#" onclick="align('left');">Left</a>
+                            <span class="drop-down-option" onclick="toggleGrid(this)">Snap to grid</span>
                         </div>
                         <div class="drop-down-divider">
-
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick="align('horizontalCenter');">Horizontal center</a>
+                            <span class="drop-down-option" onclick="align('top');">Top</span>
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick="align('verticalCenter');">Vertical center</a>
+                            <span class="drop-down-option" onclick="align('right');">Right</span>
                         </div>
-
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick="align('bottom');">Bottom</span>
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick="align('left');">Left</span>
+                        </div>
+                        <div class="drop-down-divider">
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick="align('horizontalCenter');">Horizontal center</span>
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick="align('verticalCenter');">Vertical center</span>
+                        </div>
                     </div>
                 </div>
                 <div class="menu-drop-down">
                     <span class="label">Distribute</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
-                            <a href="#" onclick="distribute('horizontally');">Horizontal</a>
+                            <span class="drop-down-option" onclick="distribute('horizontally');">Horizontal</span>
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick="distribute('vertically');">Vertical</a>
+                            <span class="drop-down-option" onclick="distribute('vertically');">Vertical</span>
                         </div>
                     </div>
                 </div>
-
                 <div class="menu-drop-down">
                     <span class="label">Help</span>
                     <div class="drop-down">
                         <div class="drop-down-text">
-                            <a href="#">Move grid</a>
+                            <span class="drop-down-option">Move grid</span>
                             <div id="hotkey-space"><i>Blankspace</i></div>
                         </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-text">
-                            <a href="#">Select multiple objects</a>
-                           <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
+                            <span class="drop-down-option">Select multiple objects</span>
+                            <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
                         </div>
                     </div>
                 </div>
@@ -372,7 +382,6 @@
             $myfile = fopen("Save/$a/$hash.txt", "w");
             fwrite($myfile, $data);
         }
-
     ?>
 </body>
 </html>

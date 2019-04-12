@@ -1,6 +1,6 @@
-/*
+/************************************************************************
 ----- THIS FILE HANDLES THE SAVE, DOWNLOAD AND EXPORT FUNCTIONALITY -----
-*/
+************************************************************************/
 
 var a;
 var c;
@@ -48,7 +48,6 @@ function redirect(doc){
         data: {'GetID':a },
 
         success: function(data){ // <-- note the parameter here, not in your code
-                //
             return false;
         }
 
@@ -77,12 +76,7 @@ function loadStoredFolders(f){
 
     document.getElementById('showStoredFolders').style.display = "block";
 }
-function loadUpload(){
 
-}
-function loadExample(){
-
-}
 function getImage() {
 
 }
@@ -95,7 +89,7 @@ function Save() {
     }
     var obj = {diagram:diagram, points:points, diagramNames:c};
     a = JSON.stringify(obj, null, "\t");
-    
+
     console.log("State is saved");
 }
 
@@ -158,6 +152,8 @@ function LoadFile() {
     //Redrawn old state.
     updateGraphics();
 }
+
+// this function adds eventlisteners to the buttons when html body is loaded
 function getUpload() {
     document.getElementById('buttonids').addEventListener('click', openDialog);
     function openDialog() {
@@ -213,6 +209,7 @@ function ExportSVG(el) {
     el.setAttribute("download", "diagram.svg");
 }
 
+// used when exporting the file as a .jpg image.
 $(document).ready(function(){
     function downloadCanvas(link, canvasId, filename) {
         link.href = document.getElementById(canvasId).toDataURL();
