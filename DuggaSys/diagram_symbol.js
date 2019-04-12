@@ -20,7 +20,7 @@ function Symbol(kind) {
     this.lineWidth = 2;
     this.fontColor = '#000000';
     this.name = "New Class";        // Default name is new class
-    this.key_type = "normal";       // Defult key tyoe for a class.
+    this.key_type = "normal";       // Defult key type for a class.
     this.sizeOftext = "Tiny";       // Used to set size of text.
     this.textAlign = "center";      // Used to change alignment of free text
     this.topLeft;                   // Top Left Point

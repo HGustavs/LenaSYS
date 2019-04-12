@@ -77,25 +77,20 @@ function loadStoredFolders(f){
 
     document.getElementById('showStoredFolders').style.display = "block";
     //e.preventDefault();
-//
+    //
     //$.ajax({
     //    url: 'diagram_IOHandler.php',
     //    type: 'POST', // GET or POST
     //    data: {F: f},
     //    success: function(resp) {
-//
+    //
     //        $('#adsds').html(resp);
     //    }
     //    });
-////
+    //
 
 }
-function loadUpload(){
 
-}
-function loadExample(){
-
-}
 function getImage() {
     //window.open(canvas.toDataURL("image/png"), 'Image');
 }
