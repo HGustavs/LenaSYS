@@ -128,7 +128,8 @@ if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").va
   var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
   if($("#release").val()=="")release="UNK";
   var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
-  if($("#deadline").val()!=""){        
+}
+	if($("#deadline").val()!=""){        
       jsondeadline.deadline1=deadline;
       jsondeadline.comment1=$("#deadlinecomments1").val();
   }else{
@@ -151,8 +152,7 @@ if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").va
   }else{
       jsondeadline.deadline3="";
       jsondeadline.comment3="";
-	}}
-
+	}
 
   jsondeadline=JSON.stringify(jsondeadline);
 
