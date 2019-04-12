@@ -98,8 +98,21 @@ function updateDugga() {
 var dead1 ="";
 var dead2 ="";
 var dead3 ="";
-	
-	if($("#deadline").val()!=""){        
+
+
+
+	var did = $("#did").val();
+	var nme = $("#name").val();
+	var autograde = $("#autograde").val();
+	var gradesys = $("#gradesys").val();
+	var template = $("#template").val();
+  var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
+  if($("#qstart").val()=="")qstart="UNK";
+	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
+  var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
+  if($("#release").val()=="")release="UNK";
+  var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
+  if($("#deadline").val()!=""){        
       jsondeadline.deadline1=deadline;
       jsondeadline.comment1=$("#deadlinecomments1").val();
   }else{
@@ -126,23 +139,11 @@ var dead3 ="";
       jsondeadline.deadline3="";
       jsondeadline.comment3="";
 	}
-
-	if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()==""){
-		alert("Missing: " + dead1 + " " + dead2 + " " + dead3);
+	
+	if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()=="" || $("#qstart").val()=="" || $("#release").val()==""){
+			alert("Missing: " + dead1 + " " + dead2 + " " + dead3 +" " + qstart + " " + release);
 	}
 
-	var did = $("#did").val();
-	var nme = $("#name").val();
-	var autograde = $("#autograde").val();
-	var gradesys = $("#gradesys").val();
-	var template = $("#template").val();
-  var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
-  if($("#qstart").val()=="")qstart="UNK";
-	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
-  var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
-  if($("#release").val()=="")release="UNK";
-  var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
-	
   jsondeadline=JSON.stringify(jsondeadline);
 
 	closeWindows();
