@@ -98,8 +98,24 @@ function updateDugga() {
 var dead1 ="";
 var dead2 ="";
 var dead3 ="";
+var qstarttt="";
+var reelsees="";
 
+if($("#release").val()==""){
+	reelsees = "Release date";
+}else if($("#qstart").val()==""){
+	qstarttt = "Start";
+}else if($("#deadline1").val()==""){
+	dead1 = "Deadline 1";
+}else if($("#deadline2").val()==""){
+	dead2 = "Deadline 2";
+}else if$("#deadline3").val()==""(){
+	dead3 = "Deadline 3";
+}
 
+if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()=="" || $("#qstart").val()=="" || $("#release").val()==""){
+	alert("Missing: " + dead1 + " " + dead2 + " " + dead3 +" " + qstarttt + " " + reelsees);
+}else{
 
 	var did = $("#did").val();
 	var nme = $("#name").val();
@@ -116,7 +132,6 @@ var dead3 ="";
       jsondeadline.deadline1=deadline;
       jsondeadline.comment1=$("#deadlinecomments1").val();
   }else{
-		dead1 = "Deadline 1";
       deadline="UNK";
       jsondeadline.deadline1="";
       jsondeadline.comment1="";
@@ -126,7 +141,6 @@ var dead3 ="";
       jsondeadline.deadline2=$("#deadline2").val()+" "+$("#deadlinet2").val()+":"+$("#deadlinem2").val();
       jsondeadline.comment2=$("#deadlinecomments2").val();
   }else{
-		dead2="Deadline 2";
       jsondeadline.deadline2="";
       jsondeadline.comment2="";
   }
@@ -135,20 +149,17 @@ var dead3 ="";
       jsondeadline.deadline3=$("#deadline3").val()+" "+$("#deadlinet3").val()+":"+$("#deadlinem3").val();
       jsondeadline.comment3=$("#deadlinecomments3").val();
   }else{
-		dead3="Deadline 3";
       jsondeadline.deadline3="";
       jsondeadline.comment3="";
 	}
-	
-	if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()=="" || $("#qstart").val()=="" || $("#release").val()==""){
-			alert("Missing: " + dead1 + " " + dead2 + " " + dead3 +" " + qstart + " " + release);
-	}
+
 
   jsondeadline=JSON.stringify(jsondeadline);
 
 	closeWindows();
 
 	AJAXService("SAVDUGGA", { cid: querystring['cid'], qid: did, nme: nme, autograde: autograde, gradesys: gradesys, template: template, qstart: qstart, deadline: deadline, jsondeadline: jsondeadline, release: release, coursevers: querystring['coursevers'] }, "DUGGA");
+}
 }
 
 function deleteDugga(did) {
