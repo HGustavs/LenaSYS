@@ -62,7 +62,7 @@
                             <img id="minimizeArrow" class="toolbarMaximized" src="../Shared/icons/arrow.svg">
                           </div>
                           <h3>Toolbar</h3>
-                          <div id="toolbar-toggleLayout"  onclick="toggleToolbarLayout();"> 
+                          <div id="toolbar-toggleLayout"  onclick="toggleToolbarLayout();">
                               <img id="layoutArrow" class="toolbarMaximized" src="../Shared/icons/rotateButton.svg">
                             </div>
                         </div>
@@ -213,7 +213,6 @@
                             <a href="#" onclick="toggleGrid(this)">Snap to grid</a>
                         </div>
                         <div class="drop-down-divider">
-
                         </div>
                         <div class="drop-down-item">
                             <a href="#" onclick="toggleVirtualA4()">Display Virtual A4</a>
@@ -227,6 +226,11 @@
                     <span class="label">Align</span>
                     <div class="drop-down">
                         <div class="drop-down-item">
+                            <a href="#" onclick="toggleGrid(this)">Snap to grid</a>
+                        </div>
+                        <div class="drop-down-divider">
+                        </div>
+                        <div class="drop-down-item">
                             <a href="#" onclick="align('top');">Top</a>
                         </div>
                         <div class="drop-down-item">
@@ -239,7 +243,6 @@
                             <a href="#" onclick="align('left');">Left</a>
                         </div>
                         <div class="drop-down-divider">
-
                         </div>
                         <div class="drop-down-item">
                             <a href="#" onclick="align('horizontalCenter');">Horizontal center</a>
@@ -247,7 +250,6 @@
                         <div class="drop-down-item">
                             <a href="#" onclick="align('verticalCenter');">Vertical center</a>
                         </div>
-
                     </div>
                 </div>
                 <div class="menu-drop-down">
@@ -261,7 +263,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="menu-drop-down">
                     <span class="label">Help</span>
                     <div class="drop-down">
@@ -394,7 +395,6 @@
             //?//>";</script>
             //<script type="text/javascript" src="diagram_IOHandler.js"></script>
         }
-
     ?>
 </body>
 </html>
