@@ -94,30 +94,6 @@ function selectDugga(qid) {
   $("#editDugga").css("display", "flex");
 }
 
-function checkDugga(){
-	var dead1 ="";
-var dead2 ="";
-var dead3 ="";
-var qstarttt="";
-var reelsees="";
-
-if($("#release").val()==""){
-	reelsees = "Release date";
-}else if($("#qstart").val()==""){
-	qstarttt = "Start";
-}else if($("#deadline1").val()==""){
-	dead1 = "Deadline 1";
-}else if($("#deadline2").val()==""){
-	dead2 = "Deadline 2";
-}else if$("#deadline3").val()==""(){
-	dead3 = "Deadline 3";
-}
-
-if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()=="" || $("#qstart").val()=="" || $("#release").val()==""){
-	alert("Missing: " + dead1 + " " + dead2 + " " + dead3 +" " + qstarttt + " " + reelsees);
-}
-}
-
 function updateDugga() {
 
 	var did = $("#did").val();
