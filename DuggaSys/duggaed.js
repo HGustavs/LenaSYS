@@ -94,8 +94,8 @@ function selectDugga(qid) {
   $("#editDugga").css("display", "flex");
 }
 
-function updateDugga() {
-var dead1 ="";
+function checkDugga(){
+	var dead1 ="";
 var dead2 ="";
 var dead3 ="";
 var qstarttt="";
@@ -116,6 +116,11 @@ if($("#release").val()==""){
 if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()=="" || $("#qstart").val()=="" || $("#release").val()==""){
 	alert("Missing: " + dead1 + " " + dead2 + " " + dead3 +" " + qstarttt + " " + reelsees);
 }else{
+	updateDugga();
+}
+}
+
+function updateDugga() {
 
 	var did = $("#did").val();
 	var nme = $("#name").val();
@@ -128,7 +133,7 @@ if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").va
   var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
   if($("#release").val()=="")release="UNK";
   var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
-}
+
 	if($("#deadline").val()!=""){        
       jsondeadline.deadline1=deadline;
       jsondeadline.comment1=$("#deadlinecomments1").val();
