@@ -754,19 +754,18 @@ function returnedSection(data) {
         } else if (itemKind === 5) { // Link
           var comp = new RegExp(location.host);
 
-          $('a').each(function(){
-             if(comp.test($(this).attr('href'))){
-                 // a link that contains the current host
-                 $(this).addClass('local');
-             }
-             else{
-                 // a link that does not contain the current host
-                 $(this).addClass('external');
-             }
-          });
+          function link_is_external(link_element) {
+            return (link_element.host !== window.location.host);
+          }
 
-
-          str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          var links = document.getElementsByTagName('a');
+          for (var i = 0; i < links.length; i++) {
+            if (link_is_external(links[i])) {
+              str += "<td class='example external item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+            }
+          } else {
+            str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+          }      
           kk++;
 
         } else if (itemKind === 6) { //Group
