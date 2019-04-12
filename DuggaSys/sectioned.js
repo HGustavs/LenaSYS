@@ -753,6 +753,13 @@ function returnedSection(data) {
 
         } else if (itemKind === 5) { // Link
 
+          var x = document.links;
+          var i;
+          for (i = 0; i < x.length; i++) {
+            if (x[i].href.indexOf("dugga")) {
+              str += "<td class='example code item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+            }
+          }
 
           str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
