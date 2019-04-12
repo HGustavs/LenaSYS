@@ -20,7 +20,7 @@ Example seed
 function setup()
 {
 	inParams = parseGet();
-	//AJAXService("GETPARAM", { }, "PDUGGA");
+	AJAXService("GETPARAM", { }, "PDUGGA");
 	createFileUploadArea();
 }
 
