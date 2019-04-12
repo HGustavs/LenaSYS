@@ -29,7 +29,7 @@ function Symbol(kind) {
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
     this.cardinality = [
-      {"value": null, "isCorrectSide": null, "symbolKind":null}
+      {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null}
     ];
     this.minWidth;
     this.minHeight;
@@ -490,9 +490,12 @@ function Symbol(kind) {
         }
         return false;
     }
-
-    // Init four points, the four corners based on the two cornerpoints in the symbol.
-    this.corners = function(){
+  
+    //-------------------------------------------------------------------------------
+    //init four points, the four corners based on the two cornerpoints in the symbol.
+    //-------------------------------------------------------------------------------
+    
+  this.corners = function(){
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
         if(p1.x < p2.x){
@@ -518,6 +521,47 @@ function Symbol(kind) {
                 br = {x:tr.x, y:bl.y};
             }else{
                 // We are in the bottomright
+                br = {x:p1.x, y:p1.y};
+                tl = {x:p2.x, y:p2.y};
+                bl = {x:tl.x, y:br.y};
+                tr = {x:br.x, y:tl.y};
+            }
+        }
+        return {
+            tl: tl,
+            tr: tr,
+            br: br,
+            bl: bl
+        };
+    }
+
+    //-------------------------------------------------------------------------------
+    //init four points, the four corners based on the two cornerpoints in the symbol.
+    //-------------------------------------------------------------------------------
+    function getCorners(p1, p2){
+    	if(p1.x < p2.x){
+            if(p1.y < p2.y){
+                //we are in the topleft
+                tl = {x:p1.x, y:p1.y};
+                br = {x:p2.x, y:p2.y};
+                tr = {x:br.x, y:tl.y};
+                bl = {x:tl.x, y:br.y};
+            }else{
+                //we are in the bottomleft
+                tr = {x:p2.x, y:p2.y};
+                bl = {x:p1.x, y:p1.y};
+                tl = {x:bl.x, y:tr.y};
+                br = {x:tr.x, y:bl.y};
+            }
+        }else{
+            if(p1.y < p2.y){
+                //we are in the topright
+                tr = {x:p1.x, y:p1.y};
+                bl = {x:p2.x, y:p2.y};
+                tl = {x:bl.x, y:tr.y};
+                br = {x:tr.x, y:bl.y};
+            }else{
+                //we are in the bottomright
                 br = {x:p1.x, y:p1.y};
                 tl = {x:p2.x, y:p2.y};
                 bl = {x:tl.x, y:br.y};
@@ -942,13 +986,11 @@ function Symbol(kind) {
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
             }
             else if(this.cardinality[0].isCorrectSide){
-                this.cardinality[0].x = x1 > x2 ? x1-10 : x1+10;
-                this.cardinality[0].y = y1 > y2 ? y1-10 : y1+10;
+                this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
                 ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
             else {
-                this.cardinality[0].x = x2 > x1 ? x2-10 : x2+10;
-                this.cardinality[0].y = y2 > y1 ? y2-10 : y2+10;
+                this.moveCardinality(x1, y1, x2, y2, "IncorrectSide");
                 ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
         }
@@ -975,6 +1017,87 @@ function Symbol(kind) {
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
+    }
+
+    //---------------------------------------------------------------
+    // Moves the value of the cardinality to avoid overlap with line
+    //---------------------------------------------------------------
+    this.moveCardinality = function(x1, y1, x2, y2, side){
+        let boxCorners = this.corners();
+        let dtlx, dlty, dbrx, dbry;			// Corners for diagram objects and line
+
+        const cardinality = this.cardinality[0];
+
+        // Correct corner e.g. top left, top right, bottom left or bottom right
+        let correctCorner = getCorrectCorner(cardinality, 
+    										boxCorners.tl.x, 
+    										boxCorners.tl.y, 
+    										boxCorners.br.x, 
+    										boxCorners.br.y);
+
+        // Find which box the cardinality number is connected to
+        for(var i = 0; i < diagram.length; i++){
+            dtlx = diagram[i].corners().tl.x;
+            dtly = diagram[i].corners().tl.y;
+            dbrx = diagram[i].corners().br.x;
+            dbry = diagram[i].corners().br.y;
+
+            if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry){
+                cardinality.parentBox = diagram[i];
+                break;
+            }
+        }    
+
+	    // Decide whether x1 and y1 is relevant or x2 and y2
+	    if(side == "CorrectSide"){
+		    if(cardinality.parentBox != null) {
+		        var correctBox = getCorners(points[cardinality.parentBox.topLeft], points[cardinality.parentBox.bottomRight]);
+		        // Determine on which side of the box the cardinality should be placed
+		        if(correctBox.tl.x < x1 && correctBox.br.x > x1){
+		            cardinality.axis = "X";
+		        }
+		        if(correctBox.tl.y < y1 && correctBox.br.y > y1){
+		            cardinality.axis = "Y";
+		        }
+		    }
+
+		    // Move the value from the line
+		    cardinality.x = x1 > x2 ? x1-10 : x1+10;        
+		    cardinality.y = y1 > y2 ? y1-10 : y1+10;
+
+		    // Change side of the line to avoid overlap
+		    if(cardinality.axis == "X"){
+		        cardinality.x = x1 > x2 ? x1+10 : x1-10;
+		    }
+		    else if(cardinality.axis == "Y"){   
+		        cardinality.y = y1 > y2 ? y1+10 : y1-10;                    
+		    }
+	    }
+	    else if(side == "IncorrectSide"){
+		    if(cardinality.parentBox != null) {
+		        var correctBox = getCorners(points[this.cardinality[0].parentBox.topLeft], points[this.cardinality[0].parentBox.bottomRight]);
+		        // Determine on which side of the box the cardinality should be placed
+		        if(correctBox.tl.x < x2 && correctBox.br.x > x2){
+		            cardinality.axis = "X";
+		        }
+		        if(correctBox.tl.y < y2 && correctBox.br.y > y2){
+		            cardinality.axis = "Y";
+		        }
+		    }
+
+		    // Move the value from the line
+		    cardinality.x = x2 > x1 ? x2-10 : x2+10;        
+		    cardinality.y = y2 > y1 ? y2-10 : y2+10;
+
+		    // Change side of the line to avoid overlap
+		    if(cardinality.axis == "X"){
+		        cardinality.x = x2 > x1 ? x2+10 : x2-10;
+		    }
+		    else if(cardinality.axis == "Y"){   
+		        cardinality.y = y2 > y1 ? y2+10 : y2-10;                    
+		    }
+
+	    }
     }
 
     this.drawRelation = function(x1, y1, x2, y2){
@@ -1316,4 +1439,37 @@ function pointToLineDistance(P1, P2, x, y){
     numerator = Math.abs((P2.y-P1.y)*x - (P2.x - P1.x)*y + P2.x * P1.y - P2.y*P1.x);
     denominator = Math.sqrt((P2.y - P1.y)*(P2.y - P1.y) + (P2.x - P1.x)*(P2.x - P1.x));
     return numerator/denominator;
+}
+
+//----------------------------------------------------------------------
+// Helper function for getting correct corner of a line with cardinality
+//----------------------------------------------------------------------
+function getCorrectCorner(cardinality, ltlx, ltly, lbrx, lbry){
+		let cornerX, cornerY;
+
+		// Top left corner
+        if(Math.abs(cardinality.x - ltlx) + Math.abs(cardinality.y - ltly) == 20){
+            cornerX = ltlx;
+            cornerY = ltly;
+        }
+        // Top right corner
+        else if(Math.abs(cardinality.x - lbrx) + Math.abs(cardinality.y - ltly) == 20){
+            cornerX = lbrx;
+            cornerY = ltly;
+        }
+        // Bottom left corner
+        else if(Math.abs(cardinality.x - ltlx) + Math.abs(cardinality.y - lbry) == 20){
+            cornerX = ltlx;
+            cornerY = lbry;
+        }
+        // Bottom right corner
+        else if(Math.abs(cardinality.x - lbrx) + Math.abs(cardinality.y - lbry) == 20){
+            cornerX = lbrx;
+            cornerY = lbry;
+        }
+
+        return {
+        	x: cornerX,
+        	y: cornerY
+        }
 }
