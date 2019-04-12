@@ -409,8 +409,8 @@ function returnedDugga(data) {
 				renderSortOptionsCallback:renderSortOptionsDugga,
 				rowFilterCallback:duggaFilter,
 				columnOrder:colOrder,
-				hasRowHighlight:false,
-				hasMagicHeadings:false,
+				hasRowHighlight:true,
+				hasMagicHeadings:true,
 				hasCounterColumn:false
 		});
 
@@ -485,8 +485,8 @@ function renderVariant(clickedElement) {
 				renderSortOptionsCallback:renderSortOptionsVariant,
 				rowFilterCallback:variantFilter,
 				columnOrder:colOrderVariant,
-				hasRowHighlight:false,
-				hasMagicHeadings:false,
+				hasRowHighlight:true,
+				hasMagicHeadings:true,
 				hasCounterColumn:false
 		});
 		searchterm = '';
