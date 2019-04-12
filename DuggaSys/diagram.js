@@ -52,6 +52,8 @@ var p1 = null;                      // When creating a new figure, these two var
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
 var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;              // Will the clients actions snap to grid
+var toggleA4 = false;               // toggle if a4 outline is drawn
+var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
@@ -732,6 +734,64 @@ function toggleGrid() {
     }
 }
 
+function toggleVirtualA4(){
+    if (toggleA4){
+        toggleA4 = false;
+        updateGraphics();
+    } else{
+        toggleA4 = true;
+        updateGraphics();
+    }
+}
+
+function drawVirtualA4(){
+    if(!toggleA4){
+        return;
+    }
+    // the correct according to 96dpi size, of a4 milimeters to pixels 
+    const pixelsPerMillimeter = 3.781;
+    const a4Width = 210 * pixelsPerMillimeter;
+    const a4Height = 297 * pixelsPerMillimeter;
+    // size of a4 hole, from specification ISO 838 and the swedish "triohålning"
+    const holeOffsetX = 12 * pixelsPerMillimeter;
+    const holeRadius = 3 * pixelsPerMillimeter;
+    ctx.save();
+    ctx.strokeStyle = "black"
+    ctx.setLineDash([10]);
+    ctx.translate(0, 0);
+    ctx.strokeRect(0,0, a4Width, a4Height);
+
+    if(toggleA4Holes){
+        //Upper 2 holes
+        drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
+        drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
+        //Latter two holes
+        drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
+        drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
+    }    
+    ctx.restore();
+}
+
+function drawCircle(cx, cy, radius) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.beginPath();
+    ctx.arc(0,0, radius, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+}
+
+function toggleVirtualA4Holes(){
+    if (toggleA4Holes){
+        toggleA4Holes = false;
+        updateGraphics();
+    } else{
+        toggleA4Holes = true;
+        updateGraphics();
+    }
+}
+
 // Opens the dialog menu for import
 function openImportDialog() {
     $("#import").css("display", "flex");
@@ -790,6 +850,7 @@ function updateGraphics() {
     diagram.sortConnectors();
     diagram.draw();
     points.drawPoints();
+    drawVirtualA4();
 }
 
 function getConnectedLines(object) {
@@ -1199,6 +1260,13 @@ function setRefreshTime() {
 function lockSelected(){
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].locked = !selected_objects[i].locked;
+        
+        if(selected_objects[i].locked){
+            selected_objects[i].drawLock();
+        }
+        else {
+            updateGraphics();
+        }
     }
 }
 

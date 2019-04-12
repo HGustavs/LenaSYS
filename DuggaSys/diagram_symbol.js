@@ -14,6 +14,16 @@ function Symbol(kind) {
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textLines = [];            // Free text array
+    this.textsize = 14;             // 14 pixels text size is default
+    this.symbolColor = '#ffffff';   // change background colors on entities
+    this.strokeColor = '#000000';   // change standard line color
+    this.font = "Arial";            // set the standard font
+    this.lineWidth = 2;
+    this.fontColor = '#000000';
+    this.name = "New Class";        // Default name is new class
+    this.key_type = "normal";       // Defult key type for a class.
+    this.sizeOftext = "Tiny";       // Used to set size of text.
+    this.textAlign = "center";      // Used to change alignment of free text
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
@@ -724,6 +734,14 @@ function Symbol(kind) {
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
 
+        if(this.locked){
+            this.drawLock();
+
+            if(this.isHovered){
+                this.drawLockedTooltip();
+            }
+        }
+
         ctx.save();
 
         ctx.textAlign = "center";
@@ -1229,6 +1247,58 @@ function Symbol(kind) {
         ctx.shadowOffsetY = this.properties['shadowOffsetY'];
         ctx.shadowColor = this.shadowColor;
         ctx.fill();
+        ctx.restore();
+    }
+
+    this.getLockPosition = function() {
+        let y1 = points[this.topLeft].y;
+        let x2 = points[this.bottomRight].x;
+        let y2 = points[this.bottomRight].y;
+
+        let offset = 10;
+
+        return { 
+                x: x2 + offset, 
+                y: y2 - (y2-y1)/2
+            };
+    }
+
+    this.drawLock = function() {
+        let position = this.getLockPosition();
+
+        ctx.save();
+
+        ctx.translate(position.x, position.y);
+        ctx.fillStyle = "orange";
+        ctx.strokeStyle = "orange";
+        ctx.lineWidth = 1;
+        //Draws the upper part of the lock
+        ctx.beginPath();
+        ctx.arc(5, 0, 4, 1 * Math.PI, 2 * Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        //Draws the lock body
+        ctx.fillRect(0,0, 10, 10);
+
+        ctx.restore();
+    }
+
+    this.drawLockedTooltip = function() {
+        ctx.save();
+
+        let position = this.getLockPosition();
+        let offset = 25;
+
+        ctx.translate(position.x, position.y + offset);
+        //Draw tooltip background, -12 to accommodate that rectangles and text is drawn differently in canvas
+        ctx.fillStyle = "#f5f5f5";
+        ctx.fillRect(0, -12, 125, 16);
+
+        //Draws text, uses fillStyle to override default hover change.
+        ctx.fillStyle = "black";
+        ctx.font = "12px Arial";
+        ctx.fillText("Entity position is locked", 0, 0);
+
         ctx.restore();
     }
 }
