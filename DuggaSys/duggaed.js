@@ -94,9 +94,13 @@ function selectDugga(qid) {
   $("#editDugga").css("display", "flex");
 }
 
-function valish(){
-	return "Piss";
+function checkDugga(){
+	if(!#deadline  && !#deadline2 && !#deadline3 && !#release ){
+		alert("Something is missing, check again");
+
+	}
 }
+
 
 function updateDugga() {
 	var did = $("#did").val();
@@ -105,10 +109,10 @@ function updateDugga() {
 	var gradesys = $("#gradesys").val();
 	var template = $("#template").val();
   var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
-  if($("#qstart").val()=="")qstart=valish();
+  if($("#qstart").val()=="")qstart="UNK";
 	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
   var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
-  if($("#release").val()=="")release=valish();
+  if($("#release").val()=="")release="UNK";
   var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
   if($("#deadline").val()!=""){        
       jsondeadline.deadline1=deadline;
@@ -170,7 +174,7 @@ function validateDuggaName() {
 		$('#tooltipTxt').fadeIn();
 		$('#submitDugga').attr('disabled', 'disabled');
 		$('#saveDugga').attr('disabled', 'disabled');
-		nme.style.backgroundColor = "#FFDAB9";
+		nme.style.backgroundColor = "#f57";
 	}
 	return retValue;
 }
