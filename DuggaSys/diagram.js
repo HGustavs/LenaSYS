@@ -108,13 +108,19 @@ window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
 
+//--------------------------------------------------------------------
+// diagram - Stores a global list of diagram objects
+// A diagram object could for instance be a path, or a symbol
+//--------------------------------------------------------------------
+var diagram = [];
+
 function keyDownHandler(e){
     var key = e.keyCode;
     if(appearanceMenuOpen) return;
-    if((key == 46 || key == 8)){
+    if((key == 46 || key == 8)){ // delete, backspace
         eraseSelectedObject();
         SaveState();
-    } else if(key == 32){
+    } else if(key == 32){ //space
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
@@ -126,14 +132,14 @@ function keyDownHandler(e){
             deactivateMovearound();
         }
         updateGraphics();
-    } else if(key == 37 || key == 38 || key == 39 || key == 40){//arrow keys
+    } else if(key == 37 || key == 38 || key == 39 || key == 40){ // left, up, right, down
         arrowKeyPressed(key);
-    } else if(key == 17 || key == 91){
+    } else if(key == 17 || key == 91){ // left ctrl, left window key
         ctrlIsClicked = true;
-    } else if(ctrlIsClicked && key == 67){
+    } else if(ctrlIsClicked && key == 67){ // c key
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == 86 ){
+    } else if(ctrlIsClicked && key == 86 ){ // v key
         //Ctrl + v
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++){
@@ -149,9 +155,9 @@ function keyDownHandler(e){
         SaveState();
     }
 
-    else if (key == 90 && ctrlIsClicked) undoDiagram();
-    else if (key == 89 && ctrlIsClicked) redoDiagram();
-    else if (key == 65 && ctrlIsClicked) {
+    else if (key == 90 && ctrlIsClicked) undoDiagram(); // z key
+    else if (key == 89 && ctrlIsClicked) redoDiagram(); // y key
+    else if (key == 65 && ctrlIsClicked) {             // a key
       e.preventDefault();
       for(var i = 0; i < diagram.length; i++){
         selected_objects.push(diagram[i]);
@@ -159,16 +165,16 @@ function keyDownHandler(e){
       }
       updateGraphics();
     }
-    else if(key == 17 || key == 91)
+    else if(key == 17 || key == 91) // ctrl, left window key
     {
       ctrlIsClicked = true;
     }
-    else if(key == 27){
+    else if(key == 27){ // escape key
       cancelFreeDraw();
     }
 
 }
-
+// removes all the lines that has been drawn when in the free draw mode
 function cancelFreeDraw(){
     if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
         for (var i = 0; i < numberOfPointsInFigure; i++) {
@@ -179,7 +185,7 @@ function cancelFreeDraw(){
         updateGraphics();
       }
 }
-
+// used for copy and paste functionality in the keyDownHandlerFunction
 function fillCloneArray(){
     cloneTempArray = [];
     for(var i = 0; i < selected_objects.length; i++){
@@ -200,7 +206,7 @@ window.onkeyup = function(event) {
     }
   }
 
-//Handler for when pressing arrow keys
+//Handler for when pressing arrow keys when space has been pressed
 function arrowKeyPressed(key){
   var xNew = 0, yNew = 0;
 
@@ -378,12 +384,6 @@ points.clearAllSelects = function() {
         this[i].isSelected = 0;
     }
 }
-
-//--------------------------------------------------------------------
-// diagram - Stores a global list of diagram objects
-// A diagram object could for instance be a path, or a symbol
-//--------------------------------------------------------------------
-var diagram = [];
 
 //--------------------------------------------------------------------
 // draw - Executes draw methond in all diagram objects
@@ -653,11 +653,6 @@ diagram.getRelationObjects = function() {
 }
 
 //--------------------------------------------------------------------
-// Creates an arity symbol for the line specified.
-// An arity symbol includes a line of text on both sides of the line.
-//--------------------------------------------------------------------
-
-//--------------------------------------------------------------------
 // updateLineRelations - Updates a line's relation depending on
 // what object it is connected to
 //--------------------------------------------------------------------
@@ -682,7 +677,7 @@ diagram.updateLineRelations = function() {
 diagram.sortConnectors = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
-            diagram[i].sortAllConnectors();
+            diagram[i].sortAllConnectors(); // this function is defined in diagram_symbol.js
         }
     }
 }
@@ -840,6 +835,7 @@ function canvasSize() {
 // Listen if the window is the resized
 window.addEventListener('resize', canvasSize);
 
+// used to redraw each object on the screen
 function updateGraphics() {
     ctx.clearRect(sx, sy, (widthWindow / zoomValue), (heightWindow / zoomValue));
     if (moveValue == 1) {
@@ -947,7 +943,7 @@ function eraseSelectedObject() {
     if(selected_objects.length == 0){
         showMenu().innerHTML = "No item selected<type='text'>";
         changeLoginBoxTitleDelete();
-        $(".loginBox").draggable();        
+        $(".loginBox").draggable();
     }
     for(var i = 0; i < selected_objects.length; i++){
         eraseObject(selected_objects[i]);
@@ -1018,6 +1014,7 @@ function connectedObjects(line) {
     return privateObjects;
 }
 
+// crosses are only visible in developermode
 function cross(xCoordinate, yCoordinate) {
     ctx.strokeStyle = "#4f6";
     ctx.lineWidth = 3;
@@ -1060,6 +1057,7 @@ function drawGrid() {
     }
 }
 
+// draws the whole background gridlayout
 function gridToSVG(width, height) {
     var str = "", stroke = "";
     for (var i = 0; i < width; i++) {
@@ -1088,6 +1086,7 @@ function clearCanvas() {
     SaveState();
 }
 
+// the purpose is not very clear
 var consloe = {};
 consloe.log = function(gobBluth) {
     document.getElementById("consloe").innerHTML = ((JSON.stringify(gobBluth) + "<br>") + document.getElementById("consloe").innerHTML);
@@ -1112,7 +1111,10 @@ function debugMode() {
     updateGraphics();
 }
 
-//calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram. it also save the local diagram
+/******************************************************************************************
+calculate the hash. does this by converting all objects to strings from diagram.
+then do some sort of calculation. used to save the diagram. it also save the local diagram
+*******************************************************************************************/
 function hashFunction() {
     var diagramToString = "";
     var hash = 0;
@@ -1139,8 +1141,11 @@ function hashFunction() {
     }
 }
 
-//This function is used to hash the current diagram, but not storing it locally, so we can compare the current hash with the hash after we have made some changes
+//--------------------------------------------------------------------------------
+//This function is used to hash the current diagram, but not storing it locally,
+//so we can compare the current hash with the hash after we have made some changes
 // to see if it need to be saved.
+//--------------------------------------------------------------------------------
 function hashCurrent() {
     var hash = 0;
     var diagramToString = "";
@@ -1205,6 +1210,7 @@ function loadDiagram() {
     SaveState();
 }
 
+// this function is running when you click the button clear diagram
 function removeLocalStorage() {
     for (var i = 0; i < localStorage.length; i++) {
         localStorage.removeItem("localdiagram");
@@ -1232,7 +1238,8 @@ function returnedSection(data) {
 }
 
 //--------------------------------------------------------------------
-// Refresh
+// Handles refresh, makes sure that the diagram after the refresh
+// is equal to the diagram before refresh
 //--------------------------------------------------------------------
 function refreshFunction() {
     console.log("refreshFunction running");
@@ -1259,6 +1266,7 @@ function setRefreshTime() {
   return time;
 }
 
+// the selected objects are locked
 function lockSelected(){
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].locked = !selected_objects[i].locked;
@@ -1271,7 +1279,6 @@ function lockSelected(){
         }
     }
 }
-
 
 function align(mode){
     for(var i = 0; i < diagram.length; i++){
@@ -1301,6 +1308,10 @@ function align(mode){
     updateGraphics();
     hashFunction();
 }
+
+//---------------------------------------------------------------------
+// these functions moves the objects either left, right, top or bottom
+//---------------------------------------------------------------------
 function alignLeft(selected_objects){
     var lowest_x = 99999;
     for(var i = 0; i < selected_objects.length; i++){
@@ -1315,7 +1326,7 @@ function alignLeft(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
@@ -1337,7 +1348,7 @@ function alignTop(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
@@ -1359,7 +1370,7 @@ function alignRight(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
@@ -1381,7 +1392,7 @@ function alignBottom(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
@@ -1389,6 +1400,9 @@ function alignBottom(selected_objects){
     }
 }
 
+//--------------------------------------------------------------------
+// these functions move the objects either horizontal or vertical
+//--------------------------------------------------------------------
 function alignVerticalCenter(selected_objects){
     var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
     var temporary_objects = [];
@@ -1409,14 +1423,13 @@ function alignVerticalCenter(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
         }
     }
 }
-
 function alignHorizontalCenter(selected_objects){
     var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
     var temporary_objects = [];
@@ -1438,7 +1451,7 @@ function alignHorizontalCenter(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
@@ -1446,7 +1459,7 @@ function alignHorizontalCenter(selected_objects){
     }
 }
 // ----------------------------------------------------------------------------
-// Objects in selected_objects get duplicated for some reason. 
+// Objects in selected_objects get duplicated for some reason.
 // This function returns a list without the duplicated objects.
 // ----------------------------------------------------------------------------
 
@@ -1488,6 +1501,7 @@ function sortObjects(selected_objects, mode){
   return private_objects;
 }
 
+// unclear what the purpose is of distribute, does not seem to work at all
 function distribute(axis){
     var spacing = 32;
     var selected_objects = [];
@@ -1503,9 +1517,7 @@ function distribute(axis){
     }else if(axis=='horizontally'){
         distributeHorizontally(selected_objects, spacing);
     }
-    /*
-        There is a posibility for more types
-    */
+        // There is a posibility for more types
     updateGraphics();
     hashFunction();
 }
@@ -1532,7 +1544,44 @@ function distributeHorizontally(selected_objects, spacing){
     }
 }
 
-//Do we really need 5 functions that more or less do the same thing
+// removes the last object that was drawn
+function undoDiagram() {
+    if (diagramNumberHistory > 1) diagramNumberHistory--;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (tmpDiagram != null) LoadImport(tmpDiagram);
+}
+
+// restores the last object that was removed
+function redoDiagram() {
+    if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (tmpDiagram != null) LoadImport(tmpDiagram);
+}
+
+// not clear where this method is used
+function diagramToSVG() {
+    var str = "";
+    // Convert figures to SVG first so they appear behind other objects
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == 1) str += diagram[i].figureToSVG();
+    }
+    // Convert lines to SVG second so they appear behind other symbols but above figures
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == 2 && diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+    }
+    // Convert other objects to SVG
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
+    }
+    return str;
+}
+
+//------------------------------------------------------------------------------
+// functions which are used to change the global appearance of each object
+// that has been drawn on the screen
+//------------------------------------------------------------------------------
+
+// changes the thickness of the lines between objects, and the lines surrounding each object
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
         diagram[i].properties['lineWidth'] = document.getElementById('line-thickness').value;
@@ -1580,33 +1629,4 @@ function globalStrokeColor() {
     for (var i = 0; i < diagram.length; i++) {
             diagram[i].properties['strokeColor'] = document.getElementById('StrokeColor').value;
     }
-}
-
-function undoDiagram() {
-    if (diagramNumberHistory > 1) diagramNumberHistory--;
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
-    if (tmpDiagram != null) LoadImport(tmpDiagram);
-}
-
-function redoDiagram() {
-    if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
-    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
-    if (tmpDiagram != null) LoadImport(tmpDiagram);
-}
-
-function diagramToSVG() {
-    var str = "";
-    // Convert figures to SVG first so they appear behind other objects
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 1) str += diagram[i].figureToSVG();
-    }
-    // Convert lines to SVG second so they appear behind other symbols but above figures
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
-    }
-    // Convert other objects to SVG
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
-    }
-    return str;
 }

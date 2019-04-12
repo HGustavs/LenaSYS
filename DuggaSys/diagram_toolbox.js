@@ -44,7 +44,7 @@ function toggleToolbarLayout(){
     }
 }
 
-//function for switching the toolbar state (All, ER, UML)
+//function for switching the toolbar state (All, ER, UML), not sure what the numbers 0 an 3 mean
 function switchToolbar(direction){
   var text = ["All", "ER", "UML", "Free"];
   if(direction == 'left'){
@@ -98,7 +98,7 @@ function switchToolbar(direction){
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
-  else{
+  else{ // shows all alternatives in the toolbar
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();

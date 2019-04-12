@@ -486,7 +486,7 @@ function Symbol(kind) {
         if(!c){
              c = this.corners();
         }
-        //we have correct points in the four corners of a square.
+        // We have correct points in the four corners of a square.
         if(mx > c.tl.x && mx < c.tr.x){
             if(my > c.tl.y && my < c.bl.y){
                 return true;
@@ -495,19 +495,19 @@ function Symbol(kind) {
         return false;
     }
 
-    //init four points, the four corners based on the two cornerpoints in the symbol.
+    // Init four points, the four corners based on the two cornerpoints in the symbol.
     this.corners = function(){
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
         if(p1.x < p2.x){
             if(p1.y < p2.y){
-                //we are in the topleft
+                // We are in the topleft
                 tl = {x:p1.x, y:p1.y};
                 br = {x:p2.x, y:p2.y};
                 tr = {x:br.x, y:tl.y};
                 bl = {x:tl.x, y:br.y};
             }else{
-                //we are in the bottomleft
+                // We are in the bottomleft
                 tr = {x:p2.x, y:p2.y};
                 bl = {x:p1.x, y:p1.y};
                 tl = {x:bl.x, y:tr.y};
@@ -515,13 +515,13 @@ function Symbol(kind) {
             }
         }else{
             if(p1.y < p2.y){
-                //we are in the topright
+                // We are in the topright
                 tr = {x:p1.x, y:p1.y};
                 bl = {x:p2.x, y:p2.y};
                 tl = {x:bl.x, y:tr.y};
                 br = {x:tr.x, y:bl.y};
             }else{
-                //we are in the bottomright
+                // We are in the bottomright
                 br = {x:p1.x, y:p1.y};
                 tl = {x:p2.x, y:p2.y};
                 bl = {x:tl.x, y:br.y};
@@ -652,6 +652,8 @@ function Symbol(kind) {
             }
         }
     }
+
+    // Adds each corner point to an array and returns the array
     this.getPoints = function() {
         var privatePoints = [];
         if(this.symbolkind==3){
@@ -720,8 +722,8 @@ function Symbol(kind) {
     // Redraws graphics
     //--------------------------------------------------------------------
     //     beginpath - moveto - lineto
-    //
-    //     För att göra streckad linje rita med
+    //      
+    //     To make a dashed line, draw with:
     //     ctx.setLineDash(segments);
     //--------------------------------------------------------------------
     this.draw = function () {
@@ -748,21 +750,28 @@ function Symbol(kind) {
         ctx.textBaseline = "middle";
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
 
+        // 1 = UML
         if(this.symbolkind == 1){
             this.drawUML(x1, y1, x2, y2);
         }
+        // 2 = ER attribute
         else if(this.symbolkind == 2){
             this.drawERAttribute(x1, y1, x2, y2);
         }
+        // 3 = entity
         else if(this.symbolkind == 3){
             this.drawEntity(x1, y1, x2, y2);
         }
+        // 4 = line
         else if(this.symbolkind == 4){
             this.drawLine(x1, y1, x2, y2);
         }
+        // 5 = ER relation
         else if(this.symbolkind == 5){
             this.drawRelation(x1, y1, x2, y2);
-        } else if (this.symbolkind == 6){
+        }
+        // 6 = Text 
+        else if (this.symbolkind == 6){
             this.drawText(x1, y1, x2, y2);
         }
 
@@ -795,6 +804,10 @@ function Symbol(kind) {
 
 
     }
+
+    //---------------------------------------------------------
+    // Functions used to draw objects
+    //---------------------------------------------------------
     this.drawUML = function(x1, y1, x2, y2)
     {
         var midy = points[this.middleDivider].y;
@@ -871,9 +884,10 @@ function Symbol(kind) {
             this.makeShadow();
         }
         ctx.clip();
-
+      
         //drawing an derived attribute
         if (this.properties['key_type'] == 'Drive') {
+
             ctx.setLineDash([5, 4]);
         }
         else if (this.properties['key_type'] == 'Primary key' || this.properties['key_type'] == 'Partial key') {
