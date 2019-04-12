@@ -149,7 +149,7 @@ function Path() {
             }
             // Reset opacity so that following draw operations are unaffected
             ctx.globalAlpha = 1.0;
-            
+
             if (strokestate) {
                 ctx.stroke();
             }
@@ -498,9 +498,12 @@ function figureFreeDraw() {
 //--------------------------------------------------------------------
 function figureSquare() {
     if (isFirstPoint) {
+      console.log("if");
         p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         isFirstPoint = false;
     } else {
+      console.log("else");
+      console.log(points[1]);
         p3 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         p2 = points.addPoint(points[p1].x, points[p3].y, false);
         p4 = points.addPoint(points[p3].x, points[p1].y, false);
