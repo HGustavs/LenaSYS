@@ -110,7 +110,6 @@ function updateDugga() {
       jsondeadline.deadline1=deadline;
       jsondeadline.comment1=$("#deadlinecomments1").val();
   }else{
-		alert("Missing");
       deadline="UNK";
       jsondeadline.deadline1="";
       jsondeadline.comment1="";
@@ -130,7 +129,12 @@ function updateDugga() {
   }else{
       jsondeadline.deadline3="";
       jsondeadline.comment3="";
-  }
+	}
+	
+	if( $("#deadline1").val()!="" || $("#deadline2").val()!="" || $("#deadline3").val()!=""){
+			alert("Missing");
+	}
+
   jsondeadline=JSON.stringify(jsondeadline);
 
 	closeWindows();
