@@ -281,11 +281,7 @@ function Symbol(kind) {
             points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
             points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
             points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
-            // Static size of relation. Makes resizing of relation impossible.
-            /*points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
-            points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
-            points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
-            points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;*/
+            
         } else if (this.symbolkind == 6){
             var fontsize = this.getFontsize();
             ctx.font = "bold " + fontsize + "px " + this.properties['font'];
@@ -552,18 +548,9 @@ function Symbol(kind) {
             } else if (this.symbolkind == 2 || this.symbolkind == 5 || this.symbolkind == 3 || this.symbolkind == 6) {
                 points[this.centerPoint].x += movex;
                 points[this.centerPoint].y += movey;
-            } /*else if (this.symbolkind == 3) {
-                for (var i = 0; i < this.arity.length; i++) {
-                    for (var j = 0; j < this.arity[i].length; j++) {
-                        this.arity[i][j].x += movex;
-                        this.arity[i][j].y += movey;
-                    }
-                }
-            }*/
+            } 
         }
     }
-
-
 
     //--------------------------------------------------------------------
     // erase/delete
@@ -579,25 +566,21 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.emptyConnectors = function () {
         for (var i = 0; i < this.connectorTop.length; i++) {
-            //points[this.connectorTop[i].to] = "";
             points[this.connectorTop[i].from] = "";
             this.connectorTop.splice(i, 1);
             i--;
         }
         for(var i = 0; i < this.connectorRight.length; i++) {
-            //points[this.connectorRight[i].to] = "";
             points[this.connectorRight[i].from] = "";
             this.connectorRight.splice(i, 1);
             i--;
         }
         for (var i = 0; i < this.connectorBottom.length; i++) {
-            //points[this.connectorBottom[i].to] = "";
             points[this.connectorBottom[i].from] = "";
             this.connectorBottom.splice(i, 1);
             i--;
         }
         for (var i = 0; i < this.connectorLeft.length; i++) {
-            //points[this.connectorLeft[i].to] = "";
             points[this.connectorLeft[i].from] = "";
             this.connectorLeft.splice(i, 1);
             i--;

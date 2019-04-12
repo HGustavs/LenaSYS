@@ -254,11 +254,7 @@ function mousedownevt(ev) {
 
     } else if (sel.distance < tolerance) {
         for (var i = 0; i < diagram.length; i++) {
-            /*if (diagram[i].middleDivider == sel.index || diagram[i].centerPoint == sel.index) {
-                md = 3;
-                handleSelect();
-                return;
-            }*/
+            
         }
         md = 2;
     } else if (movobj != -1) {
@@ -460,7 +456,6 @@ function mouseupevt(ev) {
             selected_objects.push(diagram[lastSelectedObject]);
             createCardinality();
             updateGraphics();
-            //diagram.createAritySymbols(diagram[lastSelectedObject]);
         }
     } else if (uimode == "CreateERRelation" && md == 4) {
         erRelationA = new Symbol(5); // ER Relation

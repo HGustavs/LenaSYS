@@ -21,7 +21,6 @@ AJAXService("get", {}, "DIAGRAM");
 
 // Global settings
 var gridSize = 16;
-//var arityBuffer = gridSize / 2;
 var crossSize = 4.0;                // Size of point cross
 var tolerance = 8;                  // Size of tolerance area around the point
 var ctx;                  // Canvas context
@@ -197,8 +196,6 @@ function fillCloneArray(){
 // Keeps track of if the CTRL or CMD key is active or not
 //--------------------------------------------------------------------
 
-//var selectedItems = [];
-
 //Not used yet
 window.onkeyup = function(event) {
     if(event.which == 17 || event.which == 91) {
@@ -225,45 +222,12 @@ function arrowKeyPressed(key){
   updateGraphics();
 }
 
-
 //--------------------------------------------------------------------
 // points - stores a global list of points
 // A point can not be physically deleted but marked as deleted in order to reuse
 // the sequence number again. e.g. point[5] will remain point[5] until it is deleted
 //--------------------------------------------------------------------
-var points = [
-    /*
-    // Points for example code.
-    // Path A -- Segment 1 (0, 1, 2, 3)
-    {x:20, y:200, isSelected:0}, {x:60, y:200, isSelected:0}, {x:100, y:40, isSelected:0}, {x:140, y:40, isSelected:0},
-    // Path B -- Segment 1 (4, 5 and 17, 18)
-    {x:180, y:200, isSelected:0}, {x:220, y:200, isSelected:0},
-    // Path A -- Segment 2 (6, 7, 8, 9)
-    {x:300, y:250, isSelected:0}, {x:320, y:250, isSelected:0}, {x:320, y:270, isSelected:0}, {x:300, y:270, isSelected:0},
-    // Path C -- Segment 1 (10, 11, 12, 13)
-    {x:70, y:130, isSelected:0}, {x:70, y:145, isSelected:0}, {x:170, y:130, isSelected:0}, {x:170, y:145, isSelected:0},
-    // Class A -- TopLeft BottomRight MiddleDivider 14, 15, 16
-    {x:310, y:60, isSelected:0}, {x:400, y:160, isSelected:0}, {x:355, y:115, isSelected:0},
-    // Path B -- Segment 1 (4, 5 and 17, 18)
-    {x:100, y:40, isSelected:0}, {x:140, y:40, isSelected:0},
-    // ER Attribute A -- TopLeft BottomRight MiddlePointConnector 19, 20, 21
-    {x:300, y:200, isSelected:0}, {x:400, y:250, isSelected:0}, {x:350, y:225, isSelected:0},
-    // ER Attribute B -- TopLeft BottomRight MiddlePointConnector 22, 23, 24
-    {x:300, y:275, isSelected:0}, {x:400, y:325, isSelected:0}, {x:350, y:300, isSelected:0},
-    // ER Entity A -- TopLeft BottomRight MiddlePointConnector 25, 26, 27
-    {x:150, y:275, isSelected:0}, {x:250, y:325, isSelected:0}, {x:200, y:300, isSelected:0},
-    // ER Entity Connector Right Points -- 28, 29
-    {x:225, y:290, isSelected:1}, {x:225, y:310, isSelected:1},
-    // ER Attribute C -- TopLeft BottomRight MiddlePointConnector 30, 31, 32
-    {x:15, y:275, isSelected:0}, {x:115, y:325, isSelected:0}, {x:65, y:300, isSelected:0},
-    // ER Attribute D -- TopLeft BottomRight MiddlePointConnector 33, 34, 35
-    {x:15, y:350, isSelected:0}, {x:115, y:400, isSelected:0}, {x:65, y:375, isSelected:0},
-    // ER Attribute E -- TopLeft BottomRight MiddlePointConnector 36, 37, 38
-    {x:15, y:200, isSelected:0}, {x:115, y:250, isSelected:0}, {x:65, y:225, isSelected:0},
-    // ER Entity Connector Left Points -- 39, 40, 41
-    {x:150, y:225, isSelected:0}, {x:150, y:235, isSelected:0}, {x:150, y:245, isSelected:0}
-    */
-];
+var points = [];
 
 //--------------------------------------------------------------------
 // addPoint - Creates a new point with inserted parameters and
@@ -708,7 +672,6 @@ function initializeCanvas() {
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
-    // generateExampleCode();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
     updateGraphics();
@@ -716,7 +679,6 @@ function initializeCanvas() {
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
-    //canvas.addEventListener('mouseup', saveLocalStorage, false);
     $("#ZoomSelect").click(function() {
         $(this).parent().find(".ikonPil").toggleClass("ikonPilRotation");
     });
@@ -844,7 +806,6 @@ function updateGraphics() {
         moveValue = 0;
     }
     diagram.updateQuadrants();
-    //diagram.updateArity();
     drawGrid();
     diagram.sortConnectors();
     diagram.draw();

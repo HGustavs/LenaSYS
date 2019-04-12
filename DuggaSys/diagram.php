@@ -370,17 +370,7 @@
         if(isset($_POST['id'])){
 
         }
-        /*
-        if(!isset($_POST['StringDiagram']) ){
-           mkdir("Save", 0777,true);
-           $getID = fopen("Save/id.txt", "r");
-           $a = intval(fread($getID,filesize("Save/id.txt")));
-           $a += 1;
-           $overwriteID = fopen("Save/id.txt", "w");
-           mkdir ("Save/$a", 0777, true);
-           fwrite($overwriteID,$a);
-        }
-        */
+        
         if(isset($_POST['StringDiagram'])) {
             $str = $_POST['StringDiagram'];
             $hash = $_POST['Hash'];
@@ -391,9 +381,6 @@
             $a = intval(fread($getID,filesize("Save/id.txt")));
             $myfile = fopen("Save/$a/$hash.txt", "w");
             fwrite($myfile, $data);
-            //<script type="text/javascript">var c_id = "<?= $a
-            //?//>";</script>
-            //<script type="text/javascript" src="diagram_IOHandler.js"></script>
         }
     ?>
 </body>

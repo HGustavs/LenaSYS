@@ -75,23 +75,10 @@ function loadStored(){
 function loadStoredFolders(f){
 
     document.getElementById('showStoredFolders').style.display = "block";
-    //e.preventDefault();
-    //
-    //$.ajax({
-    //    url: 'diagram_IOHandler.php',
-    //    type: 'POST', // GET or POST
-    //    data: {F: f},
-    //    success: function(resp) {
-    //
-    //        $('#adsds').html(resp);
-    //    }
-    //    });
-    //
-
 }
 
 function getImage() {
-    //window.open(canvas.toDataURL("image/png"), 'Image');
+
 }
 
 function Save() {
@@ -103,7 +90,6 @@ function Save() {
     var obj = {diagram:diagram, points:points, diagramNames:c};
     a = JSON.stringify(obj, null, "\t");
 
-   // saveToServer(a);
     console.log("State is saved");
 }
 
@@ -200,11 +186,7 @@ function Load() {
     for (var i = 0; i < b.diagram.length; i++) {
         diagram[i] = b.diagram[i];
     }
-    // Points fix
-    // Currently unused, reimplement this when figures are reimplemented
-    /*for (var i = 0; i < b.points.length; i++) {
-        //b.points[i] = Object.assign(new Path, b.points[i]);
-    }*/
+    
     points.length = b.points.length;
     for (var i = 0; i < b.points.length; i++) {
         points[i] = b.points[i];
@@ -221,7 +203,6 @@ function ExportSVG(el) {
     svgstr += gridToSVG(width, height);
     svgstr += diagramToSVG();
     svgstr += "</svg>";
-    //$("#canvasDiv").html(svgstr);
     var data = "text/json;charset=utf-8," + encodeURIComponent(svgstr);
     el.setAttribute("class", 'icon-download');
     el.setAttribute("href", "data:" + data);
