@@ -736,8 +736,8 @@ function returnedSection(data) {
         } else if (itemKind === 2) {
           str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 
-          $("a.item").hover(function() {
-            $(this).css("color","red")
+          $(".item").hover(function() {
+            $(this).css("background-color","red")
           });
 
           kk++;
