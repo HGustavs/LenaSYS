@@ -151,7 +151,7 @@ if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").va
   }else{
       jsondeadline.deadline3="";
       jsondeadline.comment3="";
-	}
+	}}
 
 
   jsondeadline=JSON.stringify(jsondeadline);
@@ -160,7 +160,7 @@ if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").va
 
 	AJAXService("SAVDUGGA", { cid: querystring['cid'], qid: did, nme: nme, autograde: autograde, gradesys: gradesys, template: template, qstart: qstart, deadline: deadline, jsondeadline: jsondeadline, release: release, coursevers: querystring['coursevers'] }, "DUGGA");
 }
-}
+
 
 function deleteDugga(did) {
 	AJAXService("DELDU", { cid: querystring['cid'], qid: did, coursevers: querystring['coursevers'] }, "DUGGA");
