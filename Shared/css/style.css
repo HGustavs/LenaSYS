@@ -150,7 +150,7 @@ p {
 
  #buttonDiv {
    position: fixed;
-   margin-top: -4%;
+   margin-top: -20px;
    height: 20px;
    background-color: white;
  }
@@ -1313,6 +1313,18 @@ input {
   padding: 0px 6px;
 }
 
+.menu-drop-down span.drop-down-label{
+  display: block;
+  height: 22px;
+  line-height: 22px;
+  padding: 0px 8px;
+}
+
+.menu-drop-down span.drop-down-label:hover {
+  cursor: pointer;
+  background-color: rgb(240, 240, 240);
+}
+
 .document-settings span.label:hover {
   cursor: pointer;
   background-color: rgb(240, 240, 240);
@@ -1367,9 +1379,20 @@ input {
   padding: 8px 0px 8px 8px;
 }
 
+.drop-down-option{
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  display: inline-block;
+  width: 252px;
+  height: 16px;
+  line-height: 16px;
+  padding: 8px 0px 8px 8px;
+}
+
 .drop-down-item:hover,
 .export-drop-down-item:hover {
   background-color: rgb(240, 240, 240);
+  cursor: pointer;
 }
 
 .drop-down-text>a {

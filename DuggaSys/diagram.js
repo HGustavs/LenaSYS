@@ -21,7 +21,6 @@ AJAXService("get", {}, "DIAGRAM");
 
 // Global settings
 var gridSize = 16;
-//var arityBuffer = gridSize / 2;
 var crossSize = 4.0;                // Size of point cross
 var tolerance = 8;                  // Size of tolerance area around the point
 var ctx;                  // Canvas context
@@ -33,6 +32,8 @@ var startMouseCoordinateX = 0;
 var startMouseCoordinateY = 0;
 var oldMouseCoordinateX = 0;
 var oldMouseCoordinateY = 0;
+var canvasMouseX = 0;               // Variable for the mouse coordinate X in the canvas on the diagram page.
+var canvasMouseY = 0;               // Variable for the mouse coordinate Y in the canvas on the diagram page.
 var zoomValue = 1.00;
 var md = 0;                         // Mouse state
 var hovobj = -1;
@@ -52,6 +53,8 @@ var p1 = null;                      // When creating a new figure, these two var
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
 var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;              // Will the clients actions snap to grid
+var toggleA4 = false;               // toggle if a4 outline is drawn
+var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
@@ -104,13 +107,19 @@ window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
 
+//--------------------------------------------------------------------
+// diagram - Stores a global list of diagram objects
+// A diagram object could for instance be a path, or a symbol
+//--------------------------------------------------------------------
+var diagram = [];
+
 function keyDownHandler(e){
     var key = e.keyCode;
     if(appearanceMenuOpen) return;
-    if((key == 46 || key == 8)){
+    if((key == 46 || key == 8)){ // delete, backspace
         eraseSelectedObject();
         SaveState();
-    } else if(key == 32){
+    } else if(key == 32){ //space
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
@@ -122,14 +131,14 @@ function keyDownHandler(e){
             deactivateMovearound();
         }
         updateGraphics();
-    } else if(key == 37 || key == 38 || key == 39 || key == 40){//arrow keys
+    } else if(key == 37 || key == 38 || key == 39 || key == 40){ // left, up, right, down
         arrowKeyPressed(key);
-    } else if(key == 17 || key == 91){
+    } else if(key == 17 || key == 91){ // left ctrl, left window key
         ctrlIsClicked = true;
-    } else if(ctrlIsClicked && key == 67){
+    } else if(ctrlIsClicked && key == 67){ // c key
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == 86 ){
+    } else if(ctrlIsClicked && key == 86 ){ // v key
         //Ctrl + v
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++){
@@ -145,9 +154,9 @@ function keyDownHandler(e){
         SaveState();
     }
 
-    else if (key == 90 && ctrlIsClicked) undoDiagram();
-    else if (key == 89 && ctrlIsClicked) redoDiagram();
-    else if (key == 65 && ctrlIsClicked) {
+    else if (key == 90 && ctrlIsClicked) undoDiagram(); // z key
+    else if (key == 89 && ctrlIsClicked) redoDiagram(); // y key
+    else if (key == 65 && ctrlIsClicked) {             // a key
       e.preventDefault();
       for(var i = 0; i < diagram.length; i++){
         selected_objects.push(diagram[i]);
@@ -155,16 +164,16 @@ function keyDownHandler(e){
       }
       updateGraphics();
     }
-    else if(key == 17 || key == 91)
+    else if(key == 17 || key == 91) // ctrl, left window key
     {
       ctrlIsClicked = true;
     }
-    else if(key == 27){
+    else if(key == 27){ // escape key
       cancelFreeDraw();
     }
 
 }
-
+// removes all the lines that has been drawn when in the free draw mode
 function cancelFreeDraw(){
     if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
         for (var i = 0; i < numberOfPointsInFigure; i++) {
@@ -175,7 +184,7 @@ function cancelFreeDraw(){
         updateGraphics();
       }
 }
-
+// used for copy and paste functionality in the keyDownHandlerFunction
 function fillCloneArray(){
     cloneTempArray = [];
     for(var i = 0; i < selected_objects.length; i++){
@@ -187,8 +196,6 @@ function fillCloneArray(){
 // Keeps track of if the CTRL or CMD key is active or not
 //--------------------------------------------------------------------
 
-//var selectedItems = [];
-
 //Not used yet
 window.onkeyup = function(event) {
     if(event.which == 17 || event.which == 91) {
@@ -196,7 +203,7 @@ window.onkeyup = function(event) {
     }
   }
 
-//Handler for when pressing arrow keys
+//Handler for when pressing arrow keys when space has been pressed
 function arrowKeyPressed(key){
   var xNew = 0, yNew = 0;
 
@@ -215,45 +222,12 @@ function arrowKeyPressed(key){
   updateGraphics();
 }
 
-
 //--------------------------------------------------------------------
 // points - stores a global list of points
 // A point can not be physically deleted but marked as deleted in order to reuse
 // the sequence number again. e.g. point[5] will remain point[5] until it is deleted
 //--------------------------------------------------------------------
-var points = [
-    /*
-    // Points for example code.
-    // Path A -- Segment 1 (0, 1, 2, 3)
-    {x:20, y:200, isSelected:0}, {x:60, y:200, isSelected:0}, {x:100, y:40, isSelected:0}, {x:140, y:40, isSelected:0},
-    // Path B -- Segment 1 (4, 5 and 17, 18)
-    {x:180, y:200, isSelected:0}, {x:220, y:200, isSelected:0},
-    // Path A -- Segment 2 (6, 7, 8, 9)
-    {x:300, y:250, isSelected:0}, {x:320, y:250, isSelected:0}, {x:320, y:270, isSelected:0}, {x:300, y:270, isSelected:0},
-    // Path C -- Segment 1 (10, 11, 12, 13)
-    {x:70, y:130, isSelected:0}, {x:70, y:145, isSelected:0}, {x:170, y:130, isSelected:0}, {x:170, y:145, isSelected:0},
-    // Class A -- TopLeft BottomRight MiddleDivider 14, 15, 16
-    {x:310, y:60, isSelected:0}, {x:400, y:160, isSelected:0}, {x:355, y:115, isSelected:0},
-    // Path B -- Segment 1 (4, 5 and 17, 18)
-    {x:100, y:40, isSelected:0}, {x:140, y:40, isSelected:0},
-    // ER Attribute A -- TopLeft BottomRight MiddlePointConnector 19, 20, 21
-    {x:300, y:200, isSelected:0}, {x:400, y:250, isSelected:0}, {x:350, y:225, isSelected:0},
-    // ER Attribute B -- TopLeft BottomRight MiddlePointConnector 22, 23, 24
-    {x:300, y:275, isSelected:0}, {x:400, y:325, isSelected:0}, {x:350, y:300, isSelected:0},
-    // ER Entity A -- TopLeft BottomRight MiddlePointConnector 25, 26, 27
-    {x:150, y:275, isSelected:0}, {x:250, y:325, isSelected:0}, {x:200, y:300, isSelected:0},
-    // ER Entity Connector Right Points -- 28, 29
-    {x:225, y:290, isSelected:1}, {x:225, y:310, isSelected:1},
-    // ER Attribute C -- TopLeft BottomRight MiddlePointConnector 30, 31, 32
-    {x:15, y:275, isSelected:0}, {x:115, y:325, isSelected:0}, {x:65, y:300, isSelected:0},
-    // ER Attribute D -- TopLeft BottomRight MiddlePointConnector 33, 34, 35
-    {x:15, y:350, isSelected:0}, {x:115, y:400, isSelected:0}, {x:65, y:375, isSelected:0},
-    // ER Attribute E -- TopLeft BottomRight MiddlePointConnector 36, 37, 38
-    {x:15, y:200, isSelected:0}, {x:115, y:250, isSelected:0}, {x:65, y:225, isSelected:0},
-    // ER Entity Connector Left Points -- 39, 40, 41
-    {x:150, y:225, isSelected:0}, {x:150, y:235, isSelected:0}, {x:150, y:245, isSelected:0}
-    */
-];
+var points = [];
 
 //--------------------------------------------------------------------
 // addPoint - Creates a new point with inserted parameters and
@@ -374,12 +348,6 @@ points.clearAllSelects = function() {
         this[i].isSelected = 0;
     }
 }
-
-//--------------------------------------------------------------------
-// diagram - Stores a global list of diagram objects
-// A diagram object could for instance be a path, or a symbol
-//--------------------------------------------------------------------
-var diagram = [];
 
 //--------------------------------------------------------------------
 // draw - Executes draw methond in all diagram objects
@@ -649,11 +617,6 @@ diagram.getRelationObjects = function() {
 }
 
 //--------------------------------------------------------------------
-// Creates an arity symbol for the line specified.
-// An arity symbol includes a line of text on both sides of the line.
-//--------------------------------------------------------------------
-
-//--------------------------------------------------------------------
 // updateLineRelations - Updates a line's relation depending on
 // what object it is connected to
 //--------------------------------------------------------------------
@@ -678,7 +641,7 @@ diagram.updateLineRelations = function() {
 diagram.sortConnectors = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
-            diagram[i].sortAllConnectors();
+            diagram[i].sortAllConnectors(); // this function is defined in diagram_symbol.js
         }
     }
 }
@@ -709,7 +672,6 @@ function initializeCanvas() {
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
     }
-    // generateExampleCode();
     document.getElementById("moveButton").addEventListener('click', movemode, false);
     document.getElementById("moveButton").style.visibility = 'hidden';
     updateGraphics();
@@ -717,7 +679,6 @@ function initializeCanvas() {
     canvas.addEventListener('touchmove', mousemoveevt, false);
     canvas.addEventListener('touchstart', mousedownevt, false);
     canvas.addEventListener('touchend', mouseupevt, false);
-    //canvas.addEventListener('mouseup', saveLocalStorage, false);
     $("#ZoomSelect").click(function() {
         $(this).parent().find(".ikonPil").toggleClass("ikonPilRotation");
     });
@@ -729,6 +690,65 @@ function toggleGrid() {
         snapToGrid = true;
     } else {
         snapToGrid = false;
+    }
+    setCheckbox($("a:contains('Snap to grid')"), snapToGrid);
+}
+
+function toggleVirtualA4(){
+    if (toggleA4){
+        toggleA4 = false;
+        updateGraphics();
+    } else{
+        toggleA4 = true;
+        updateGraphics();
+    }
+}
+
+function drawVirtualA4(){
+    if(!toggleA4){
+        return;
+    }
+    // the correct according to 96dpi size, of a4 milimeters to pixels 
+    const pixelsPerMillimeter = 3.781;
+    const a4Width = 210 * pixelsPerMillimeter;
+    const a4Height = 297 * pixelsPerMillimeter;
+    // size of a4 hole, from specification ISO 838 and the swedish "triohålning"
+    const holeOffsetX = 12 * pixelsPerMillimeter;
+    const holeRadius = 3 * pixelsPerMillimeter;
+    ctx.save();
+    ctx.strokeStyle = "black"
+    ctx.setLineDash([10]);
+    ctx.translate(0, 0);
+    ctx.strokeRect(0,0, a4Width, a4Height);
+
+    if(toggleA4Holes){
+        //Upper 2 holes
+        drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
+        drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
+        //Latter two holes
+        drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
+        drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
+    }    
+    ctx.restore();
+}
+
+function drawCircle(cx, cy, radius) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.beginPath();
+    ctx.arc(0,0, radius, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+}
+
+function toggleVirtualA4Holes(){
+    if (toggleA4Holes){
+        toggleA4Holes = false;
+        updateGraphics();
+    } else{
+        toggleA4Holes = true;
+        updateGraphics();
     }
 }
 
@@ -778,6 +798,7 @@ function canvasSize() {
 // Listen if the window is the resized
 window.addEventListener('resize', canvasSize);
 
+// used to redraw each object on the screen
 function updateGraphics() {
     ctx.clearRect(sx, sy, (widthWindow / zoomValue), (heightWindow / zoomValue));
     if (moveValue == 1) {
@@ -785,11 +806,11 @@ function updateGraphics() {
         moveValue = 0;
     }
     diagram.updateQuadrants();
-    //diagram.updateArity();
     drawGrid();
     diagram.sortConnectors();
     diagram.draw();
     points.drawPoints();
+    drawVirtualA4();
 }
 
 function getConnectedLines(object) {
@@ -884,7 +905,7 @@ function eraseSelectedObject() {
     if(selected_objects.length == 0){
         showMenu().innerHTML = "No item selected<type='text'>";
         changeLoginBoxTitleDelete();
-        $(".loginBox").draggable();        
+        $(".loginBox").draggable();
     }
     for(var i = 0; i < selected_objects.length; i++){
         eraseObject(selected_objects[i]);
@@ -924,13 +945,13 @@ $(document).ready(function(){
 });
 
 function setTextSizeEntity() {
-    diagram[lastSelectedObject].sizeOftext = document.getElementById('TextSize').value;
+    diagram[lastSelectedObject].properties['sizeOftext'] = document.getElementById('TextSize').value;
 }
 
 function setType() {
     var elementVal = document.getElementById('object_type').value;
 
-    diagram[lastSelectedObject].key_type = elementVal;
+    diagram[lastSelectedObject].properties['key_type'] = elementVal;
     updateGraphics();
 }
 
@@ -955,6 +976,7 @@ function connectedObjects(line) {
     return privateObjects;
 }
 
+// crosses are only visible in developermode
 function cross(xCoordinate, yCoordinate) {
     ctx.strokeStyle = "#4f6";
     ctx.lineWidth = 3;
@@ -997,6 +1019,7 @@ function drawGrid() {
     }
 }
 
+// draws the whole background gridlayout
 function gridToSVG(width, height) {
     var str = "", stroke = "";
     for (var i = 0; i < width; i++) {
@@ -1025,6 +1048,7 @@ function clearCanvas() {
     SaveState();
 }
 
+// the purpose is not very clear
 var consloe = {};
 consloe.log = function(gobBluth) {
     document.getElementById("consloe").innerHTML = ((JSON.stringify(gobBluth) + "<br>") + document.getElementById("consloe").innerHTML);
@@ -1047,9 +1071,13 @@ function debugMode() {
         ghostingCrosses = true;
     }
     updateGraphics();
+    setCheckbox($("a:contains('Developer mode')"), !ghostingCrosses);
 }
 
-//calculate the hash. does this by converting all objects to strings from diagram. then do some sort of calculation. used to save the diagram. it also save the local diagram
+/******************************************************************************************
+calculate the hash. does this by converting all objects to strings from diagram.
+then do some sort of calculation. used to save the diagram. it also save the local diagram
+*******************************************************************************************/
 function hashFunction() {
     var diagramToString = "";
     var hash = 0;
@@ -1076,8 +1104,11 @@ function hashFunction() {
     }
 }
 
-//This function is used to hash the current diagram, but not storing it locally, so we can compare the current hash with the hash after we have made some changes
+//--------------------------------------------------------------------------------
+//This function is used to hash the current diagram, but not storing it locally,
+//so we can compare the current hash with the hash after we have made some changes
 // to see if it need to be saved.
+//--------------------------------------------------------------------------------
 function hashCurrent() {
     var hash = 0;
     var diagramToString = "";
@@ -1142,6 +1173,7 @@ function loadDiagram() {
     SaveState();
 }
 
+// this function is running when you click the button clear diagram
 function removeLocalStorage() {
     for (var i = 0; i < localStorage.length; i++) {
         localStorage.removeItem("localdiagram");
@@ -1152,8 +1184,8 @@ function removeLocalStorage() {
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
      + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-     + "X=" + sx
-     + " & Y=" + sy + "</p>";
+     + "X=" + canvasMouseX
+     + " & Y=" + canvasMouseY + "</p>";
 }
 
 //----------------------------------------
@@ -1169,7 +1201,8 @@ function returnedSection(data) {
 }
 
 //--------------------------------------------------------------------
-// Refresh
+// Handles refresh, makes sure that the diagram after the refresh
+// is equal to the diagram before refresh
 //--------------------------------------------------------------------
 function refreshFunction() {
     console.log("refreshFunction running");
@@ -1196,12 +1229,19 @@ function setRefreshTime() {
   return time;
 }
 
+// the selected objects are locked
 function lockSelected(){
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].locked = !selected_objects[i].locked;
+        
+        if(selected_objects[i].locked){
+            selected_objects[i].drawLock();
+        }
+        else {
+            updateGraphics();
+        }
     }
 }
-
 
 function align(mode){
     for(var i = 0; i < diagram.length; i++){
@@ -1231,6 +1271,10 @@ function align(mode){
     updateGraphics();
     hashFunction();
 }
+
+//---------------------------------------------------------------------
+// these functions moves the objects either left, right, top or bottom
+//---------------------------------------------------------------------
 function alignLeft(selected_objects){
     var lowest_x = 99999;
     for(var i = 0; i < selected_objects.length; i++){
@@ -1245,7 +1289,7 @@ function alignLeft(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
@@ -1267,7 +1311,7 @@ function alignTop(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
@@ -1289,7 +1333,7 @@ function alignRight(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
@@ -1311,7 +1355,7 @@ function alignBottom(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
@@ -1319,6 +1363,9 @@ function alignBottom(selected_objects){
     }
 }
 
+//--------------------------------------------------------------------
+// these functions move the objects either horizontal or vertical
+//--------------------------------------------------------------------
 function alignVerticalCenter(selected_objects){
     var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
     var temporary_objects = [];
@@ -1339,14 +1386,13 @@ function alignVerticalCenter(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
         }
     }
 }
-
 function alignHorizontalCenter(selected_objects){
     var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
     var temporary_objects = [];
@@ -1368,7 +1414,7 @@ function alignHorizontalCenter(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){       
+    for(var i = 1; i < temporary_objects.length; i++){
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
@@ -1376,7 +1422,7 @@ function alignHorizontalCenter(selected_objects){
     }
 }
 // ----------------------------------------------------------------------------
-// Objects in selected_objects get duplicated for some reason. 
+// Objects in selected_objects get duplicated for some reason.
 // This function returns a list without the duplicated objects.
 // ----------------------------------------------------------------------------
 
@@ -1418,6 +1464,7 @@ function sortObjects(selected_objects, mode){
   return private_objects;
 }
 
+// unclear what the purpose is of distribute, does not seem to work at all
 function distribute(axis){
     var spacing = 32;
     var selected_objects = [];
@@ -1433,9 +1480,7 @@ function distribute(axis){
     }else if(axis=='horizontally'){
         distributeHorizontally(selected_objects, spacing);
     }
-    /*
-        There is a posibility for more types
-    */
+        // There is a posibility for more types
     updateGraphics();
     hashFunction();
 }
@@ -1462,67 +1507,21 @@ function distributeHorizontally(selected_objects, spacing){
     }
 }
 
-//Do we really need 5 functions that more or less do the same thing
-function globalLineThickness() {
-    for (var i = 0; i < diagram.length; i++) {
-        diagram[i].lineWidth = document.getElementById('line-thickness').value;
-    }
-}
-//change the font on all entities to the same font.
-function globalFont() {
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 1 || diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
-            diagram[i].font = document.getElementById('font').value;
-        }
-    }
-}
-//change the font color on all entities to the same color.
-function globalFontColor() {
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
-            diagram[i].fontColor = document.getElementById('fontColor').value;
-        }
-    }
-}
-
-//change the text size on all entities to the same size.
-function globalTextSize() {
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
-            diagram[i].sizeOftext = document.getElementById('TextSize').value;
-        }
-    }
-}
-
-//change the fillcolor on all entities to the same size.
-function globalFillColor() {
-    for (var i = 0; i < diagram.length; i++) {
-        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
-            diagram[i].symbolColor = document.getElementById('FillColor').value;
-        } else { diagram[i].fillColor = document.getElementById('FillColor').value;}
-    }
-}
-
-
-//change the strokecolor on all entities to the same size.
-function globalStrokeColor() {
-    for (var i = 0; i < diagram.length; i++) {
-            diagram[i].strokeColor = document.getElementById('StrokeColor').value;
-    }
-}
-
+// removes the last object that was drawn
 function undoDiagram() {
     if (diagramNumberHistory > 1) diagramNumberHistory--;
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
+// restores the last object that was removed
 function redoDiagram() {
     if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
+// not clear where this method is used
 function diagramToSVG() {
     var str = "";
     // Convert figures to SVG first so they appear behind other objects
@@ -1538,4 +1537,98 @@ function diagramToSVG() {
         if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
     }
     return str;
+}
+
+//------------------------------------------------------------------------------
+// functions which are used to change the global appearance of each object
+// that has been drawn on the screen
+//------------------------------------------------------------------------------
+
+// changes the thickness of the lines between objects, and the lines surrounding each object
+function globalLineThickness() {
+    for (var i = 0; i < diagram.length; i++) {
+        diagram[i].properties['lineWidth'] = document.getElementById('line-thickness').value;
+    }
+}
+
+//change the font on all entities to the same font.
+function globalFont() {
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 1 || diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
+            diagram[i].properties['font'] = document.getElementById('font').value;
+        }
+    }
+}
+//change the font color on all entities to the same color.
+function globalFontColor() {
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
+            diagram[i].properties['fontColor'] = document.getElementById('fontColor').value;
+        }
+    }
+}
+
+//change the text size on all entities to the same size.
+function globalTextSize() {
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
+            diagram[i].properties['sizeOftext'] = document.getElementById('TextSize').value;
+        }
+    }
+}
+
+//change the fillcolor on all entities to the same size.
+function globalFillColor() {
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
+            diagram[i].properties['symbolColor'] = document.getElementById('FillColor').value;
+        } else { diagram[i].fillColor = document.getElementById('FillColor').value;}
+    }
+}
+
+//change the strokecolor on all entities to the same size.
+function globalStrokeColor() {
+    for (var i = 0; i < diagram.length; i++) {
+            diagram[i].properties['strokeColor'] = document.getElementById('StrokeColor').value;
+    }
+}
+
+function undoDiagram() {
+    if (diagramNumberHistory > 1) diagramNumberHistory--;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (tmpDiagram != null) LoadImport(tmpDiagram);
+}
+function redoDiagram() {
+    if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
+    var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
+    if (tmpDiagram != null) LoadImport(tmpDiagram);
+}
+function diagramToSVG() {
+    var str = "";
+    // Convert figures to SVG first so they appear behind other objects
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == 1) str += diagram[i].figureToSVG();
+    }
+    // Convert lines to SVG second so they appear behind other symbols but above figures
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == 2 && diagram[i].symbolkind == 4) str += diagram[i].symbolToSVG(i);
+    }
+    // Convert other objects to SVG
+    for (var i = 0; i < diagram.length; i++) {
+        if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) str += diagram[i].symbolToSVG(i);
+    }
+    return str;
+}
+// Check or uncheck the checkbox contained in 'element'
+// This function adds a checkbox element if there is none
+function setCheckbox(element, check) {
+    if ($(element).children(".material-icons").length == 0) {
+        $(element).append("<i class=\"material-icons\" style=\"float: right; padding-right: 8px; font-size: 18px;\">check</i>");
+    }
+
+    if (check) {
+        $(element).children(".material-icons").show();
+    }else {
+        $(element).children(".material-icons").hide();
+    }
 }
