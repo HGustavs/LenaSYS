@@ -106,7 +106,7 @@ function switchToolbar(direction){
 $( function() {
     $( "#diagram-toolbar" ).draggable();
 } );
-=======
+
 var toolbarState;
 
 const toolbarER = 1;
