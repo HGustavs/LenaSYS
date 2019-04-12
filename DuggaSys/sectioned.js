@@ -734,7 +734,12 @@ function returnedSection(data) {
           kk = 0;
 
         } else if (itemKind === 2) {
-          str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' style='a:hover{color:green;}' ";
+          str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+
+          $("a.item").hover(function() {
+            $(this).css("color","red")
+          });
+
           kk++;
 
         } else if (itemKind === 3) {
