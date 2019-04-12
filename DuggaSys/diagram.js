@@ -748,17 +748,13 @@ function drawVirtualA4(){
     if(!toggleA4){
         return;
     }
-
-    // the correct size of a4 to pixels 
+    // the correct according to 96dpi size, of a4 milimeters to pixels 
     const pixelsPerMillimeter = 3.781;
-
     const a4Width = 210 * pixelsPerMillimeter;
     const a4Height = 297 * pixelsPerMillimeter;
-
     // size of a4 hole, from specification ISO 838 and the swedish "triohålning"
     const holeOffsetX = 12 * pixelsPerMillimeter;
     const holeRadius = 3 * pixelsPerMillimeter;
-
     ctx.save();
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
@@ -769,7 +765,6 @@ function drawVirtualA4(){
         //Upper 2 holes
         drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
         drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
-
         //Latter two holes
         drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
         drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
