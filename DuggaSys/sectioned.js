@@ -752,12 +752,8 @@ function returnedSection(data) {
           kk = 0;
 
         } else if (itemKind === 5) { // Link
-          //var exa = document.getElementsByTagName('a');
-          if (document.getElementsByTagName('a').innerHTML.indexOf("Example") !== -1) {
-            str += "<td class='example code item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-          } else {
-            str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-          }
+          console.log(document.links);
+          str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
 
         } else if (itemKind === 6) { //Group
