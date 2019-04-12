@@ -1468,6 +1468,7 @@ function globalLineThickness() {
         diagram[i].properties['lineWidth'] = document.getElementById('line-thickness').value;
     }
 }
+
 //change the font on all entities to the same font.
 function globalFont() {
     for (var i = 0; i < diagram.length; i++) {
