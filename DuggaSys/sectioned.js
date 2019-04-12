@@ -761,11 +761,10 @@ function returnedSection(data) {
           var links = document.getElementsByTagName('a');
           for (var i = 0; i < links.length; i++) {
             if (link_is_external(links[i])) {
-              str += "<td class='example external item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-            } else {
-              str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
-            }            
+              console.log(links[i]);
+            }
           }
+          str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
 
         } else if (itemKind === 6) { //Group
