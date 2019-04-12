@@ -152,7 +152,7 @@ function Path() {
             }
             // Reset opacity so that following draw operations are unaffected
             ctx.globalAlpha = 1.0;
-            
+
             if (strokestate) {
                 ctx.stroke();
             }
