@@ -118,7 +118,7 @@ if($("#deadline3").val()==""){
 }
 
 if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()=="" || $("#qstart").val()=="" || $("#release").val()==""){
-	alert("Missing: " + dead1 + " " + dead2 + " " + dead3 +" " + qstarttt + " " + reelsees);
+	alert("Missing: " + dead1 + "/n " + dead2 + "/n " + dead3 +"/n " + qstarttt + "/n " + reelsees);
 }else{
 	return updateDugga();
 }
