@@ -1031,6 +1031,7 @@ input {
   line-height: 0.5em;
   color: #fff;
   width: 100%;
+  cursor: default;
 }
 
 .loginBoxheader div {
