@@ -1,5 +1,9 @@
 var toolbarState;
 
+const toolbarER = 1;
+const toolbarUML = 2;
+const toolbarFree = 3;
+
 function initToolbox(){
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
@@ -57,7 +61,7 @@ function switchToolbar(direction){
   document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
-  if(toolbarState == 1){ // 1=shows ER alternatives in the toolbar
+  if(toolbarState == toolbarER){
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -71,7 +75,7 @@ function switchToolbar(direction){
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-  }else if( toolbarState == 2){ // 2=shows UML alternatives in the toolbar
+  }else if( toolbarState == toolbarUML){
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -83,7 +87,7 @@ function switchToolbar(direction){
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
-  }else if(toolbarState == 3){ // 3=shows free alternatives in the toolbar
+  }else if(toolbarState == toolbarFree){
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
     $("#drawerUndo").show();
