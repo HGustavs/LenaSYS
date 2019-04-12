@@ -94,13 +94,6 @@ function selectDugga(qid) {
   $("#editDugga").css("display", "flex");
 }
 
-function checkDugga(){
-	if(!#deadline  && !#deadline2 && !#deadline3 && !#release ){
-		alert("Something is missing, check again");
-
-	}
-}
-
 
 function updateDugga() {
 	var did = $("#did").val();
