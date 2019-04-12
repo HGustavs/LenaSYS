@@ -99,6 +99,10 @@ var dead1 ="";
 var dead2 ="";
 var dead3 ="";
 
+if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()==""){
+	alert("Missing: " + dead1 + " " + dead2 + " " + dead3 + " " + qstart + " " + release);
+}
+
 	var did = $("#did").val();
 	var nme = $("#name").val();
 	var autograde = $("#autograde").val();
@@ -114,7 +118,7 @@ var dead3 ="";
       jsondeadline.deadline1=deadline;
       jsondeadline.comment1=$("#deadlinecomments1").val();
   }else{
-		dead1 = "1";
+		dead1 = "Deadline 1";
       deadline="UNK";
       jsondeadline.deadline1="";
       jsondeadline.comment1="";
@@ -124,7 +128,7 @@ var dead3 ="";
       jsondeadline.deadline2=$("#deadline2").val()+" "+$("#deadlinet2").val()+":"+$("#deadlinem2").val();
       jsondeadline.comment2=$("#deadlinecomments2").val();
   }else{
-		dead2="2";
+		dead2="Deadline 2";
       jsondeadline.deadline2="";
       jsondeadline.comment2="";
   }
@@ -133,15 +137,11 @@ var dead3 ="";
       jsondeadline.deadline3=$("#deadline3").val()+" "+$("#deadlinet3").val()+":"+$("#deadlinem3").val();
       jsondeadline.comment3=$("#deadlinecomments3").val();
   }else{
-		dead3="3";
+		dead3="Deadline 3";
       jsondeadline.deadline3="";
       jsondeadline.comment3="";
 	}
 	
-	if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()==""){
-			alert("Missing: " + dead1 + " " + dead2 + " " + dead3);
-	}
-
   jsondeadline=JSON.stringify(jsondeadline);
 
 	closeWindows();
