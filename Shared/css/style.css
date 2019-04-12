@@ -1020,7 +1020,7 @@ input {
   background-color: #614875;
   vertical-align: bottom;
   padding-left: 10px;
-  /* cursor: move; */
+  cursor: pointer;
   display: flex;
   justify-content: space-around;
 }
@@ -1031,7 +1031,6 @@ input {
   line-height: 0.5em;
   color: #fff;
   width: 100%;
-  cursor: default;
 }
 
 .loginBoxheader div {
