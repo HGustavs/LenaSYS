@@ -95,11 +95,11 @@ function selectDugga(qid) {
 }
 
 function checkDugga(){
-	var dead1Miss ="";
-	var dead2Miss ="";
-	var dead3Miss ="";
-	var qstartMiss="";
-	var releaseMiss="";
+	var dead1Miss;
+	var dead2Miss;
+	var dead3Miss;
+	var qstartMiss;
+	var releaseMiss;
 
 	if($("#release").val()==""){
 		releaseMiss = "Release date";
