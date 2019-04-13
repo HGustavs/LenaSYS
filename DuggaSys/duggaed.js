@@ -95,30 +95,30 @@ function selectDugga(qid) {
 }
 
 function checkDugga(){
-var dead1 ="";
-var dead2 ="";
-var dead3 ="";
-var qstarttt="";
-var reelsees="";
+var dead1Miss ="";
+var dead2Miss ="";
+var dead3Miss ="";
+var qstartMiss="";
+var releaseMiss="";
 
 if($("#release").val()==""){
-	reelsees = "Release date";
+	releaseMiss = "Release date";
 }
 if($("#qstart").val()==""){
-	qstarttt = "Start";
+	qstartMiss = "Start";
 }
 if($("#deadline1").val()==""){
-	dead1 = "Deadline 1";
+	dead1Miss = "Deadline 1";
 }
 if($("#deadline2").val()==""){
-	dead2 = "Deadline 2";
+	dead2Miss = "Deadline 2";
 }
 if($("#deadline3").val()==""){
-	dead3 = "Deadline 3";
+	dead3Miss = "Deadline 3";
 }
 
 if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()=="" || $("#qstart").val()=="" || $("#release").val()==""){
-	alert("Missing: " + dead1 + " " + dead2 + " " + dead3 +" " + qstarttt + " " + reelsees);
+	alert("Missing: " + qstartMiss + " " + dead1Miss + " " + dead2Miss +" " + dead3Miss + " " + releaseMiss);
 }else{
 	return updateDugga();
 }
