@@ -95,7 +95,6 @@ function selectDugga(qid) {
 }
 
 function checkDugga(){
-	var dead1Miss;
 	var dead2Miss;
 	var dead3Miss;
 	var qstartMiss;
@@ -108,6 +107,7 @@ function checkDugga(){
 		qstartMiss = "Start date";
 	}
 	if($("#deadline").val()==""){
+		var dead1Miss;
 		dead1Miss = "Deadline 1";
 	}
 	if($("#deadline2").val()==""){
