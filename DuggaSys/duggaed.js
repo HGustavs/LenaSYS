@@ -102,19 +102,19 @@ function checkDugga(){
 	var releaseMiss="";
 
 	if($("#release").val()==""){
-		releaseMiss = "Release date";
+		releaseMiss = "Release date \n";
 	}
 	if($("#qstart").val()==""){
-		qstartMiss = "Start date";
+		qstartMiss = "Start date \n";
 	}
 	if($("#deadline").val()==""){
-		dead1Miss = "Deadline 1";
+		dead1Miss = "Deadline 1 \n";
 	}
 	if($("#deadline2").val()==""){
-		dead2Miss = "Deadline 2";
+		dead2Miss = "Deadline 2 \n";
 	}
 	if($("#deadline3").val()==""){
-		dead3Miss = "Deadline 3";
+		dead3Miss = "Deadline 3 \n";
 	}
 
 	if( $("#deadline").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()=="" || $("#qstart").val()=="" || $("#release").val()==""){
