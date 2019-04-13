@@ -107,7 +107,7 @@ if($("#release").val()==""){
 if($("#qstart").val()==""){
 	qstartMiss = "Start";
 }
-if($("#deadline1").val()==""){
+if($("#deadline").val()==""){
 	dead1Miss = "Deadline 1";
 }
 if($("#deadline2").val()==""){
@@ -117,8 +117,8 @@ if($("#deadline3").val()==""){
 	dead3Miss = "Deadline 3";
 }
 
-if( $("#deadline1").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()=="" || $("#qstart").val()=="" || $("#release").val()==""){
-	alert("Missing: " + qstartMiss + " " + dead1Miss + " " + dead2Miss +" " + dead3Miss + " " + releaseMiss);
+if( $("#deadline").val()=="" || $("#deadline2").val()=="" || $("#deadline3").val()=="" || $("#qstart").val()=="" || $("#release").val()==""){
+	alert("Missing: " + qstartMiss + " /n" + dead1Miss + " " + dead2Miss +" " + dead3Miss + " " + releaseMiss);
 }else{
 	return updateDugga();
 }
