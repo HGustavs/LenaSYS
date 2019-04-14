@@ -397,7 +397,7 @@ p {
   color: #D876B4;
 }
 
-.link .item a:hover {
+.external-link:hover {
   color: #A96FC4;
 }
 
