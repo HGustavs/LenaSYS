@@ -752,13 +752,7 @@ function returnedSection(data) {
           kk = 0;
 
         } else if (itemKind === 5) { // Link
-          var comp = new RegExp(location.host);
-
-          function link_is_external(link_element) {
-            return (link_element.host !== window.location.host);
-          }
-
-          console.log(document.links);
+      
           str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
 
