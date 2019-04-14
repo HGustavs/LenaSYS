@@ -1437,6 +1437,7 @@ $(document).on('click', '.moment, .section, .statistics', function () {
 
 });
 
+// Checks if <a> link is external
 function link_is_external(link_element) {
     return (link_element.host == window.location.host);
 }
@@ -1450,10 +1451,14 @@ $(window).load(function () {
     $("#testbutton").css("background-color", "#614875");
   });
 
+  // Adds classes to <a> links depending on if they are external / internal
   var links = document.getElementsByTagName('a');
+
   for (var i = 0; i < links.length; i++) {
     if (link_is_external(links[i])) {
-        console.log(links[i]);
+      links[i].classList.add("external-link");
+    } else {
+      links[i].classList.add("internal-link");
     }
 }
 
