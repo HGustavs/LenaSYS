@@ -1443,8 +1443,11 @@ $(document).on('click', '.moment, .section, .statistics', function () {
 
 });
 
-// Setup (when loaded rather than when ready)
+function link_is_external(link_element) {
+    return (link_element.host !== window.location.host);
+}
 
+// Setup (when loaded rather than when ready)
 $(window).load(function () {
   $(".messagebox").hover(function () {
     $("#testbutton").css("background-color", "red");
@@ -1452,4 +1455,12 @@ $(window).load(function () {
   $(".messagebox").mouseout(function () {
     $("#testbutton").css("background-color", "#614875");
   });
+
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (link_is_external(links[i])) {
+        console.log(links);
+    }
+}
+
 });
