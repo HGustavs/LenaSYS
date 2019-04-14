@@ -752,7 +752,7 @@ function returnedSection(data) {
           kk = 0;
 
         } else if (itemKind === 5) { // Link
-      
+
           str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
 
@@ -1453,7 +1453,7 @@ $(window).load(function () {
   var links = document.getElementsByTagName('a');
   for (var i = 0; i < links.length; i++) {
     if (link_is_external(links[i])) {
-        console.log(links);
+        console.log(links[i]);
     }
 }
 
