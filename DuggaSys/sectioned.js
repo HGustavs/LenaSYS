@@ -1438,7 +1438,7 @@ $(document).on('click', '.moment, .section, .statistics', function () {
 });
 
 function link_is_external(link_element) {
-    return (link_element.host !== window.location.host);
+    return (link_element.host == window.location.host);
 }
 
 // Setup (when loaded rather than when ready)
