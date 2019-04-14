@@ -1311,6 +1311,8 @@ function drawSwimlanes() {
   document.getElementById("swimlaneSVG").innerHTML = str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 " + svgHeight);
 
+  addClasses();
+
 }
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
@@ -1450,8 +1452,11 @@ $(window).load(function () {
   $(".messagebox").mouseout(function () {
     $("#testbutton").css("background-color", "#614875");
   });
+});
 
-  // Adds classes to <a> links depending on if they are external / internal
+
+// Adds classes to <a> links depending on if they are external / internal
+function addClasses() {
   var links = document.getElementsByTagName('a');
 
   for (var i = 0; i < links.length; i++) {
@@ -1460,6 +1465,5 @@ $(window).load(function () {
     } else {
       links[i].classList.add("internal-link");
     }
+  }
 }
-
-});
