@@ -394,11 +394,15 @@ p {
 }
 /**/
 .code .item a:hover {
-  color: #D876B4;
+  color: #C47FAA;
+}
+
+.internal-link:hover {
+  color: #A96FC4;
 }
 
 .external-link:hover {
-  color: #A96FC4;
+  color: #7E7BCA;
 }
 
 #Sectionlist .norm {
