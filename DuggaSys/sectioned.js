@@ -1455,7 +1455,7 @@ function link_is_external(link_element) {
     return (link_element.host !== window.location.host);
 }
 
-// Adds classes to <a> links depending on if they are external / internal
+// Adds classes to <a> element depending on if they are external / internal
 function addClasses() {
   var links = document.getElementsByTagName('a');
 
