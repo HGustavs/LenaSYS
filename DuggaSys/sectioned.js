@@ -1439,10 +1439,6 @@ $(document).on('click', '.moment, .section, .statistics', function () {
 
 });
 
-// Checks if <a> link is external
-function link_is_external(link_element) {
-    return (link_element.host == window.location.host);
-}
 
 // Setup (when loaded rather than when ready)
 $(window).load(function () {
@@ -1454,6 +1450,10 @@ $(window).load(function () {
   });
 });
 
+// Checks if <a> link is external
+function link_is_external(link_element) {
+    return (link_element.host !== window.location.host);
+}
 
 // Adds classes to <a> links depending on if they are external / internal
 function addClasses() {
