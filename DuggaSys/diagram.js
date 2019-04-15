@@ -1495,44 +1495,44 @@ function alignTop(selected_objects) {
     }
 }
 
-function alignRight(selected_objects){
+function alignRight(selected_objects) {
     var highest_x = 0;
-    for(var i = 0; i < selected_objects.length; i++){
-        if(points[selected_objects[i].bottomRight].x > highest_x){
+    for(var i = 0; i < selected_objects.length; i++) {
+        if(points[selected_objects[i].bottomRight].x > highest_x) {
             highest_x = points[selected_objects[i].bottomRight].x;
         }
     }
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
     }
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
+    for(var i = 1; i < temporary_objects.length; i++) {
+        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
         }
     }
 }
 
-function alignBottom(selected_objects){
+function alignBottom(selected_objects) {
     var highest_y = 0;
-    for(var i = 0; i < selected_objects.length; i++){
-        if(points[selected_objects[i].bottomRight].y > highest_y){
+    for(var i = 0; i < selected_objects.length; i++) {
+        if(points[selected_objects[i].bottomRight].y > highest_y) {
             highest_y = points[selected_objects[i].bottomRight].y;
         }
     }
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
     }
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
+    for(var i = 1; i < temporary_objects.length; i++) {
+        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
         }
@@ -1542,19 +1542,19 @@ function alignBottom(selected_objects){
 //--------------------------------------------------------------------
 // these functions move the objects either horizontal or vertical
 //--------------------------------------------------------------------
-function alignVerticalCenter(selected_objects){
+function alignVerticalCenter(selected_objects) {
     var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
     var temporary_objects = [];
-    for(var i = 0; i < selected_objects.length; i++){
-        if(points[selected_objects[i].topLeft].x > highest_x){
+    for(var i = 0; i < selected_objects.length; i++) {
+        if(points[selected_objects[i].topLeft].x > highest_x) {
             highest_x = points[selected_objects[i].bottomRight].x;
         }
-        if(points[selected_objects[i].bottomRight].x < lowest_x){
+        if(points[selected_objects[i].bottomRight].x < lowest_x) {
             lowest_x = points[selected_objects[i].topLeft].x;
         }
     }
     selected_center_x = (highest_x-lowest_x)/2;
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
         selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
@@ -1562,27 +1562,27 @@ function alignVerticalCenter(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
+    for(var i = 1; i < temporary_objects.length; i++) {
+        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
         }
     }
 }
-function alignHorizontalCenter(selected_objects){
+function alignHorizontalCenter(selected_objects) {
     var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
     var temporary_objects = [];
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         temporary_objects.push(selected_objects[i]);
-        if(points[selected_objects[i].bottomRight].y > highest_y){
+        if(points[selected_objects[i].bottomRight].y > highest_y) {
             highest_y = points[selected_objects[i].bottomRight].y;
         }
-        if(points[selected_objects[i].topLeft].y < lowest_y){
+        if(points[selected_objects[i].topLeft].y < lowest_y) {
             lowest_y = points[selected_objects[i].topLeft].y;
         }
     }
     selected_center_y = (highest_y-lowest_y)/2;
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
         selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
     }
@@ -1590,8 +1590,8 @@ function alignHorizontalCenter(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
+    for(var i = 1; i < temporary_objects.length; i++) {
+        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
         }
@@ -1602,21 +1602,21 @@ function alignHorizontalCenter(selected_objects){
 // This function returns a list without the duplicated objects.
 // ----------------------------------------------------------------------------
 
-function removeDuplicatesInList(selected_objects){
+function removeDuplicatesInList(selected_objects) {
     var temporary_objects = [];
-    for(var i = 0; i < selected_objects.length; i++){
-        if(temporary_objects.indexOf(selected_objects[i]) == -1){
+    for(var i = 0; i < selected_objects.length; i++) {
+        if(temporary_objects.indexOf(selected_objects[i]) == -1) {
             temporary_objects.push(selected_objects[i]);
         }
     }
     return temporary_objects;
 }
 
-function sortObjects(selected_objects, mode){
+function sortObjects(selected_objects, mode) {
   //Sorts objects by X or Y position
   var position = [];
 
-      for(var i = 0; i < selected_objects.length; i++){
+      for(var i = 0; i < selected_objects.length; i++) {
         if(mode=='vertically') position.push(points[selected_objects[i].topLeft].y);
         else if(mode=='horizontally') position.push(points[selected_objects[i].topLeft].x);
       }
@@ -1625,9 +1625,9 @@ function sortObjects(selected_objects, mode){
       var private_objects = selected_objects.splice([]);
       var swap = null;
 
-      for(var i = 0; i < private_objects.length; i++){
+      for(var i = 0; i < private_objects.length; i++) {
         swap = private_objects[i];
-          for(var j = 0; j < position.length; j++){
+          for(var j = 0; j < position.length; j++) {
             if(i==j) continue;
               if((mode=='vertically' && points[private_objects[i].topLeft].y == position[j])
               || (mode=='horizontally' && points[private_objects[i].topLeft].x == position[j])){
@@ -1641,19 +1641,19 @@ function sortObjects(selected_objects, mode){
 }
 
 // unclear what the purpose is of distribute, does not seem to work at all
-function distribute(axis){
+function distribute(axis) {
     var spacing = 32;
     var selected_objects = [];
 
-    for(var i = 0; i < diagram.length; i++){
-        if(diagram[i].targeted == true  && selected_objects.indexOf(diagram[i]) > -1){
+    for(var i = 0; i < diagram.length; i++) {
+        if(diagram[i].targeted == true  && selected_objects.indexOf(diagram[i]) > -1) {
             selected_objects.push(diagram[i]);
         }
     }
 
-    if(axis=='vertically'){
+    if(axis=='vertically') {
         distributeVertically(selected_objects, spacing);
-    }else if(axis=='horizontally'){
+    }else if(axis=='horizontally') {
         distributeHorizontally(selected_objects, spacing);
     }
         // There is a posibility for more types
@@ -1661,10 +1661,10 @@ function distribute(axis){
     hashFunction();
 }
 
-function distributeVertically(selected_objects, spacing){
+function distributeVertically(selected_objects, spacing) {
     selected_objects = sortObjects(selected_objects, 'vertically');
 
-    for(var i = 1; i < selected_objects.length; i++){
+    for(var i = 1; i < selected_objects.length; i++) {
         var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
 
         var newy = ((points[selected_objects[i-1].topLeft].y)-(points[selected_objects[i].topLeft].y));
@@ -1672,10 +1672,10 @@ function distributeVertically(selected_objects, spacing){
     }
 }
 
-function distributeHorizontally(selected_objects, spacing){
+function distributeHorizontally(selected_objects, spacing) {
     selected_objects = sortObjects(selected_objects, 'horizontally');
 
-    for(var i = 1; i < selected_objects.length; i++){
+    for(var i = 1; i < selected_objects.length; i++) {
         var object_width = (points[selected_objects[i].bottomRight].x - points[selected_objects[i].topLeft].x);
 
         var newx = ((points[selected_objects[i-1].topLeft].x)-(points[selected_objects[i].topLeft].x));
@@ -1810,12 +1810,11 @@ function setCheckbox(element, check) {
 }
 
 // ----------------------------------------------------------------------------
-// Diagram toolbox
+// DIAGRAM TOOLBOX SECTION
 // ----------------------------------------------------------------------------
-
 var toolbarState;
 
-function initToolbox(){
+function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     var bound = myCanvas.getBoundingClientRect();
@@ -1825,18 +1824,18 @@ function initToolbox(){
     element.style.display = "inline-block";
 }
 
-function toggleToolbarMinimize(){
-    if($("#minimizeArrow").hasClass("toolbarMaximized")){
+function toggleToolbarMinimize() {
+    if($("#minimizeArrow").hasClass("toolbarMaximized")) {
         $(".application-toolbar").slideUp("fast");
         $("#minimizeArrow").removeClass("toolbarMaximized").addClass("toolbarMinimized");
-    }else{
+    }else {
         $(".application-toolbar").slideDown("fast");
         $("#minimizeArrow").removeClass("toolbarMinimized").addClass("toolbarMaximized");
     }
 }
 
-function toggleToolbarLayout(){
-    if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()){
+function toggleToolbarLayout() {
+    if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()) {
         $(".application-toolbar").css({"display": "flex", "flex-direction": "column"});
         $(".toolbarArrows").css({"width": "1.7em"});
         $("#diagram-toolbar").css({"width":"auto"});
@@ -1854,23 +1853,23 @@ function toggleToolbarLayout(){
 }
 
 //function for switching the toolbar state (All, ER, UML)
-function switchToolbar(direction){
+function switchToolbar(direction) {
   var text = ["All", "ER", "UML", "Free"];
-  if(direction == 'left'){
+  if(direction == 'left') {
     toolbarState--;
-    if(toolbarState < 0){
+    if(toolbarState < 0) {
       toolbarState = 3;
     }
-  }else if(direction == 'right'){
+  }else if(direction == 'right') {
     toolbarState++;
-    if(toolbarState > 3){
+    if(toolbarState > 3) {
       toolbarState = 0;
     }
   }
   document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
-  if(toolbarState == 1){
+  if(toolbarState == 1) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -1884,7 +1883,7 @@ function switchToolbar(direction){
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-  }else if( toolbarState == 2){
+  }else if( toolbarState == 2) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -1896,7 +1895,7 @@ function switchToolbar(direction){
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
-  }else if(toolbarState == 3){
+  }else if(toolbarState == 3) {
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
     $("#drawerUndo").show();
@@ -1907,7 +1906,7 @@ function switchToolbar(direction){
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
-  else{
+  else {
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();
@@ -1927,7 +1926,7 @@ const toolbarER = 1;
 const toolbarUML = 2;
 const toolbarFree = 3;
 
-function initToolbox(){
+function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     var bound = myCanvas.getBoundingClientRect();
@@ -1939,25 +1938,25 @@ function initToolbox(){
     //element.style.height = (400+"px");
 }
 
-function toggleToolbarMinimize(){
-    if($("#minimizeArrow").hasClass("toolbarMaximized")){
+function toggleToolbarMinimize() {
+    if($("#minimizeArrow").hasClass("toolbarMaximized")) {
         $(".application-toolbar").slideUp("fast");
         $("#minimizeArrow").removeClass("toolbarMaximized").addClass("toolbarMinimized");
-    }else{
+    }else {
         $(".application-toolbar").slideDown("fast");
         $("#minimizeArrow").removeClass("toolbarMinimized").addClass("toolbarMaximized");
     }
 }
 
-function toggleToolbarLayout(){
-    if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()){
+function toggleToolbarLayout() {
+    if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()) {
         $(".application-toolbar").css({"display": "flex", "flex-direction": "column"});
         $(".toolbarArrows").css({"width": "1.7em"});
         $("#diagram-toolbar").css({"width":"auto"});
         $("#toolbar-switcher").css({"width": "1.7em", "width": "","justify-content":"center", "margin": "0 30%", "padding": "0"});
         $(".label").css({"padding": "0 0 0 15px"});
         $(".toolsContainer").css({"display": "flex"});
-    }else{
+    }else {
         $(".application-toolbar").css({"display": "", "flex-wrap": ""});
         $(".toolbarArrows").css({"width": "20%"});
         $("#diagram-toolbar").css({"width":""});
@@ -1968,23 +1967,23 @@ function toggleToolbarLayout(){
 }
 
 //function for switching the toolbar state (All, ER, UML), not sure what the numbers 0 an 3 mean
-function switchToolbar(direction){
+function switchToolbar(direction) {
   var text = ["All", "ER", "UML", "Free"];
-  if(direction == 'left'){
+  if(direction == 'left') {
     toolbarState--;
-    if(toolbarState < 0){
+    if(toolbarState < 0) {
       toolbarState = 3;
     }
-  }else if(direction == 'right'){
+  }else if(direction == 'right') {
     toolbarState++;
-    if(toolbarState > 3){
+    if(toolbarState > 3) {
       toolbarState = 0;
     }
   }
   document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
-  if(toolbarState == toolbarER){
+  if(toolbarState == toolbarER) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -1998,7 +1997,7 @@ function switchToolbar(direction){
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-  }else if( toolbarState == toolbarUML){
+  }else if( toolbarState == toolbarUML) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -2010,7 +2009,7 @@ function switchToolbar(direction){
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
-  }else if(toolbarState == toolbarFree){
+  }else if(toolbarState == toolbarFree) {
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
     $("#drawerUndo").show();
@@ -2021,7 +2020,7 @@ function switchToolbar(direction){
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
-  else{ // shows all alternatives in the toolbar
+  else { // shows all alternatives in the toolbar
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();
