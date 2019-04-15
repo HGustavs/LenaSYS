@@ -2963,7 +2963,7 @@ table {
   border-bottom-right-radius: 5px;
   border: 1px solid #ccc;
   border-bottom: 0;
-  padding: 0 0 0 2px;
+  padding: 5px 0 0 2px;
 }
 
 #searchbutton {
