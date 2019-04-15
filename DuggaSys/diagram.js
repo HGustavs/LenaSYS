@@ -740,6 +740,7 @@ function toggleVirtualA4(){
         toggleA4 = true;
         updateGraphics();
     }
+    setCheckbox($("a:contains('Display Virtual A4')"), toggleA4);
 }
 
 function drawVirtualA4(){
@@ -788,6 +789,7 @@ function toggleVirtualA4Holes(){
         toggleA4Holes = true;
         updateGraphics();
     }
+    setCheckbox($("a:contains('Toggle A4 Holes')"), toggleA4Holes);
 }
 
 // Opens the dialog menu for import
