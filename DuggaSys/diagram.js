@@ -1859,7 +1859,7 @@ $( function() {
 } );
 
 // ----------------------------------
-// Diagram Mouse
+// DIAGRAM MOUSE SECTION
 // ----------------------------------
 
 // Function for the zoom in and zoom out in the canvas element
@@ -2084,7 +2084,6 @@ function mousemoveevt(ev, t) {
         }
     }
 }
-
 
 function mousedownevt(ev) {
 
