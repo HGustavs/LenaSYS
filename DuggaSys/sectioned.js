@@ -1479,9 +1479,10 @@ function mail() {
 
 function hasGraceTimeExpired(myDate, deadline, dateTimeSubmitted) {
   //console.log("Submit dagen är: " , parameterMyDate.getDay(), " timmen är: ", parameterMyDate.getHours(), " minuten är: ", parameterMyDate.getMinutes());
-  var graceDeadline = dateTimeSubmitted;
+  var testDateTimeSubmitted = new Date(dateTimeSubmitted);
+  var graceDeadline = testDateTimeSubmitted;
   var testDeadline = new Date(deadline);
-  console.log(dateTimeSubmitted);
+  console.log(testDateTimeSubmitted);
   if (testDeadline.getHours() >= 17) {
     graceDeadline.setHours(7);
     graceDeadline.setMinutes(59);
@@ -1495,7 +1496,7 @@ function hasGraceTimeExpired(myDate, deadline, dateTimeSubmitted) {
       graceDeadline.setDate(testDeadline.getDate() + 2);
     }
   }
-  if (dateTimeSubmitted > graceDeadline) {
+  if (testDateTimeSubmitted > graceDeadline) {
     return true;
   }
   else {
