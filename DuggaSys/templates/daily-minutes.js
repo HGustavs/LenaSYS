@@ -30,15 +30,62 @@ function newRow() {
 	var lastRowIdx = parseInt(tblRows[tblRows.length - 1].attributes[0].value);
 	var idx = lastRowIdx += 1;
 
-	var rowStr = "<tr data-idx="+idx+"><td>";
-	rowStr += "<input type='date' name='tsDate_"+idx+"' /></td>";
-	rowStr += "<td><select name='tsType_"+idx+"'>";
-	rowStr += "<option value='issue'>Issue</option><option value='pullrequest'>Pull request</option>";
-	rowStr += "</select></td>";
-	rowStr += "<td><input type='number' name='tsRef_"+idx+"' style='width: 55px' /></td>";
-	rowStr +="<td><input type='text' name='tsComment_"+idx+"' style='width: 500px' /></td>";
+	/* Must use appendChild here to preserve user input
+	   when adding a new row */
 
-	tsTableBody.innerHTML += rowStr;
+	var row = document.createElement("tr");
+	var cell = document.createElement("td");
+	var input = document.createElement("input");
+	var select = document.createElement("select");
+	var option = document.createElement("option");
+
+	row.setAttribute("data-idx", idx);
+
+	input.setAttribute("type", "date");
+	input.setAttribute("name", "tsDate_"+idx);
+	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
+	cell.appendChild(input);
+	row.appendChild(cell);
+
+	cell = document.createElement("td");
+	select.setAttribute("name", "tsType_"+idx);
+	option.setAttribute("value", "issue");
+	option.innerHTML = "Issue";
+	select.appendChild(option);
+	option = document.createElement("option");
+	option.setAttribute("value", "pullrequest");
+	option.innerHTML = "Pull request";
+	select.appendChild(option);
+	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
+	cell.appendChild(select);
+	row.appendChild(cell);
+
+	cell = document.createElement("td");
+	input = document.createElement("input");
+	input.setAttribute("type", "text");
+	input.setAttribute("name", "tsRef_"+idx);
+	input.setAttribute("style", "width: 50px");
+	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
+	cell.appendChild(input);
+	row.appendChild(cell);
+
+	cell = document.createElement("td");
+	input = document.createElement("input");
+	input.setAttribute("type", "text");
+	input.setAttribute("name", "tsComment_"+idx);
+	input.setAttribute("style", "width: 500px");
+	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
+	cell.appendChild(input);
+	row.appendChild(cell);
+
+	cell = document.createElement("td");
+	cell.innerHTML = "X";
+	cell.setAttribute("style", "background: #ff3f4c; cursor: pointer");
+	row.appendChild(cell);
+	cell.addEventListener('click', function () {
+		tsTableBody.removeChild(row);
+	});
+	tsTableBody.appendChild(row);
 }
 
 function returnedDugga(data)
@@ -50,7 +97,6 @@ function returnedDugga(data)
 		alert("UNKNOWN DUGGA!");
 	} else {
 		duggaParams = jQuery.parseJSON(data['param']);
-        console.log(duggaParams);
 		if(duggaParams["type"]==="pdf"){
 				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
 		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
@@ -94,7 +140,6 @@ function returnedDugga(data)
 	    		if (duggaParams['uploadInstruction'] !== null){
 					document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
 				}
-
 			}
 			if (typeof duggaFiles !== "undefined"){
 				for (var version=0; version < duggaFiles.length;version++){
@@ -268,16 +313,16 @@ function createFileUploadArea(){
 	var form = "";
 
 	form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php'>";
-	form +="<table align='center' class='tsTable'><thead>";
+	form +="<table class='tsTable'><thead>";
 	form +="<th>Datum</th><th>Issue/Pull Request</th>";
 	form +="<th>Nummer</th><th>Kommentar</th></thead>";	
 	form +="<tbody id='tsTableBody'><tr data-idx=0>";
-	form +="<td><input type='date' name='tsDate_0' /></td>";
-	form +="<td><select name='tsType_0'>";
+	form +="<td><input required type='date' name='tsDate_0' /></td>";
+	form +="<td><select required name='tsType_0'>";
 	form +="<option value='issue'>Issue</option><option value='pullrequest'>Pull request</option>";
 	form +="</select></td>";
-	form +="<td><input type='number' name='tsRef_0' style='width: 55px' /></td>";
-	form +="<td><input type='text' name='tsComment_0' style='width: 500px' /></td>";
+	form +="<td><input type='number' required name='tsRef_0' style='width: 55px' /></td>";
+	form +="<td><input type='text' required name='tsComment_0' style='width: 500px' /></td>";
 	form +="</tr></tbody>";
 	form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 	form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
@@ -297,8 +342,9 @@ function createFileUploadArea(){
 	str += "<div>";
 	str += form;
 	str += "</div>";
-	str += "</div>"
-	str += "</div>"
+	str += "</div>";
+	str +="<div id='timesheetPrev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
+	str += "</div>";
 
 
 	document.getElementById("tomten").innerHTML=str;

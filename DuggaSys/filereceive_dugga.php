@@ -109,13 +109,13 @@ if($ha){
 				}
 		}
 		if($fieldtype === "timesheet"){
-			$inputJSON = jsonifyUserInput();
+			$formattedInput = formatTimeSheetInput();
 
 			$fname=$fieldtype;
 			$fname=preg_replace("/[^a-zA-Z0-9._]/", "", $fname);	
 
-			$extension="json";
-			$mime="json";
+			$extension="txt";
+			$mime="txt";
 
 			$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
 			$query->bindParam(':did', $duggaid);
@@ -133,7 +133,7 @@ if($ha){
 
 			$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
 			$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;	
-			file_put_contents($movname, $inputJSON);
+			file_put_contents($movname, $formattedInput);
 
 			$postEntries = count(preg_grep("/ts.+_\d/", array_keys($_POST))) / 4;
 			for($entryIdx = 0; $entryIdx < $postEntries; $entryIdx++) {
@@ -357,9 +357,9 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive_dugga.php"
 if(!$error){
 		echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
-function jsonifyUserInput(){
+function formatTimeSheetInput(){
 	$entries = (count($_POST) - 7) / 4;
-	$inputData = array();
+	$inputString = "";
 
 	for($entryIdx = 0; $entryIdx < $entries; $entryIdx++) {
 		$date=getOP('tsDate_'.$entryIdx);					
@@ -367,15 +367,10 @@ function jsonifyUserInput(){
 		$number=getOP('tsRef_'.$entryIdx);
 		$comment=getOP('tsComment_'.$entryIdx);
 
-		$rawData = array(
-			'date' => $date,
-			'type' => $type,
-			'number' => $number,
-			'comment' => $comment
-		);
-		array_push($inputData, $rawData);
+		$inputString .= $date." - ".$type." #".$number.": ".$comment."\n";
 	}
-	return json_encode($inputData, JSON_FORCE_OBJECT);
+	
+	return $inputString;
 }
 ?>
 </head>

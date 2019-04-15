@@ -4643,10 +4643,9 @@ textarea#filecont{
 
 /* Styling for timesheet table */
 .tsTable {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 20px 0px 20px 50px;
 }
-.tsTable td, th {
+.tsTable td, .tsTable th {
   border: 1px solid #000;
 }
 .tsTable thead {
@@ -4655,7 +4654,7 @@ textarea#filecont{
 .tsTable th {
   padding: 10px;
 }
-.tsTable tbody, tfoot {
+.tsTable tbody, .tsTable tfoot {
   text-align: center;
 }
 .tsTable td {
