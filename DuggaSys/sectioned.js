@@ -536,7 +536,7 @@ function returnedSection(data) {
     }
   }
 
-  // Fill section list with information	
+  // Fill section list with information
   if (querystring['coursevers'] != "null") {
     var versionname = "";
     if (retdata['versions'].length > 0) {
@@ -780,10 +780,10 @@ function returnedSection(data) {
                   if(grp!=="UNK"){
                       grp+=",";
                   }else{
-                      grp="";  
+                      grp="";
                   }
                   grp+=found[1];
-              } 
+              }
           }
           */
           /*
@@ -801,7 +801,7 @@ function returnedSection(data) {
                   if(grp!=="UNK"){
                       grp+=",";
                   }else{
-                      grp="";  
+                      grp="";
                   }
                   grp+=g;
               }
@@ -923,8 +923,20 @@ function returnedSection(data) {
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
           // create a warning if the dugga is submitted after the set deadline
-          if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+  //        if ((status === "pending") && (dateTimeSubmitted > deadline)) {
+  //          str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+  //        }
+  //      }
+
+        // Tests FIXME
+        var is_weekend =  function(date1){
+        var dt = new Date(date1);
+
+        if(dt.getDay() == 6 || dt.getDay() == 0)
+          {
+            if ((status === "pending") && (dateTimeSubmitted > deadline)) {
+              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='Test WEEKEND' src='../Shared/icons/warningTriangle.svg'/></td>";
+            }
           }
         }
 
@@ -1112,7 +1124,7 @@ function drawPieChart() {
 
   // Calculate passed, failed and not graded quizes.
   for (var i = 0; i < retdata['results'].length; i++) {
-    // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these	
+    // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
     if (retdata['results'][i]['useranswer'] != null) {
       if (retdata['results'][i].grade > 1) {
         passedQuizes++;
@@ -1278,7 +1290,7 @@ function drawSwimlanes() {
       entry = deadlineEntries[i];
       if (obj == entry.moment) {
         weeky += weekheight;
-        // Now we generate a SVG element for this 
+        // Now we generate a SVG element for this
         //startweek=weeksBetween(startdate, entry.start);
         //deadlineweek=weeksBetween(startdate, entry.deadline);
         startday = Math.floor((entry.start - startdate) / (24 * 60 * 60 * 1000));
