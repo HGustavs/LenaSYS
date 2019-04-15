@@ -672,7 +672,7 @@
             ob_flush();
 
             /**************************** Init database. *************************************/
-            $initQuery = file_get_contents("SQL/init_db.sql");
+            $initQuery = file_get_contents("../Shared/SQL/init_db.sql");
 
             # This loop will find comments in the sql file and remove these.
             # Comments are removed because some comments included semi-colons which wont work.
