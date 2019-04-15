@@ -1,5 +1,7 @@
 /************************************************************************
------ THIS FILE HANDLES THE SAVE, DOWNLOAD AND EXPORT FUNCTIONALITY -----
+      
+    THIS FILE HANDLES THE SAVE, DOWNLOAD AND EXPORT FUNCTIONALITY
+
 ************************************************************************/
 
 var a;
@@ -153,7 +155,9 @@ function LoadFile() {
     updateGraphics();
 }
 
-// this function adds eventlisteners to the buttons when html body is loaded
+//-------------------------------------------------------------------------------
+// getUpload: this function adds eventlisteners to the buttons when html body is loaded
+//-------------------------------------------------------------------------------
 function getUpload() {
     document.getElementById('buttonids').addEventListener('click', openDialog);
     function openDialog() {
@@ -209,7 +213,9 @@ function ExportSVG(el) {
     el.setAttribute("download", "diagram.svg");
 }
 
+//------------------------------------------------
 // used when exporting the file as a .jpg image.
+//------------------------------------------------
 $(document).ready(function(){
     function downloadCanvas(link, canvasId, filename) {
         link.href = document.getElementById(canvasId).toDataURL();
