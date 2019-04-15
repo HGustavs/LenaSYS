@@ -7,6 +7,7 @@ var expanded = false;
 var searchterm = "";
 var tableName = "accessTable";
 var tableCellName = "accessTableCell";
+var myTable;
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -346,7 +347,6 @@ function rowFilter(row) {
 		return false;
 }
 
-var myTable;
 
 //----------------------------------------------------------------------------
 //-------------==========########## Renderer ##########==========-------------
