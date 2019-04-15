@@ -8,31 +8,28 @@
 //--------------------------------------------------------------------
 function Symbol(kind) {
     this.kind = 2;                  // Diagram object kind is always 2 for symbols
+    this.name = "New Class";        // New Class default name in new class
     this.targeted = false;
-    this.symbolkind = kind;         // Symbol kind (1 UML diagram symbol 2 ER Attribute)
+    this.symbolkind = kind;         // Symbol kind (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
-    this.textLines = [];                 // Free text array
+    this.textLines = [];            // Free text array
     this.textsize = 14;             // 14 pixels text size is default
     this.symbolColor = '#ffffff';   // change background colors on entities
     this.strokeColor = '#000000';   // change standard line color
-    this.font = "Arial";             // set the standard font
+    this.font = "Arial";            // set the standard font
     this.lineWidth = 2;
     this.fontColor = '#000000';
     this.name = "New Class";        // Default name is new class
-    this.key_type = "normal";       // Defult key tyoe for a class.
+    this.key_type = "normal";       // Defult key type for a class.
     this.sizeOftext = "Tiny";       // Used to set size of text.
     this.textAlign = "center";      // Used to change alignment of free text
     this.topLeft;                   // Top Left Point
     this.bottomRight;               // Bottom Right Point
     this.middleDivider;             // Middle divider Point
     this.centerPoint;               // centerPoint
-    this.shadowBlur = 10;           // Shadowblur for all objects
-    this.shadowOffsetX = 3;         // The horizontal distance of the shadow for the object.
-    this.shadowOffsetY = 6;         // The vertical distance of the shadow for the object.
-    this.shadowColor = "rgba(0, 0, 0, 0.3)"; // The shadow color
     this.cardinality = [
-      {"value": null, "isCorrectSide": null, "symbolKind":null}
+      {"value": null, "isCorrectSide": null, "symbolKind": null, "axis": null, "parentBox": null}
     ];
     this.minWidth;
     this.minHeight;
@@ -42,6 +39,23 @@ function Symbol(kind) {
     this.connectorBottom = [];
     this.connectorLeft = [];
     this.connectorRight = [];
+
+    // Properties array that stores different kind of objects. Refer to the properties with "properties['symbolColor']"
+    this.properties = {
+        'symbolColor': '#ffffff',                       // Change background colors on entities.
+        'strokeColor': '#000000',                       // Change standard line color.
+        'fontColor': '#000000',                         // Change the color of the font.
+        'font': 'Arial',                                // Set the standard font.
+        'lineWidth': '2',                               // LineWidth preset is 2.
+        'textSize': '14',                               // 14 pixels text size is default.
+        'sizeOftext': 'Tiny',                           // Used to set size of text.
+        'textAlign': 'center',                          // Used to change alignment of free text.
+        'shadowColor': 'rgba(0, 0, 0, 0.3',             // The shadow color.
+        'shadowBlur': '10',                             // Shadowblur for all objects.
+        'shadowOffsetX': '3',                           // The horizontal distance of the shadow for the object.
+        'shadowOffsetY': '6',                           // The vertical distance of the shadow for the object.
+        'key_type': 'normal'                            // Defult key type for a class.
+    };
 
     //--------------------------------------------------------------------
     // Returns the quadrant for a x,y coordinate in relation to bounding box and box center
@@ -267,14 +281,10 @@ function Symbol(kind) {
             points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
             points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
             points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
-            // Static size of relation. Makes resizing of relation impossible.
-            /*points[this.topLeft].x = points[this.centerPoint].x-relationTemplate.width/2;
-            points[this.topLeft].y = points[this.centerPoint].y-relationTemplate.height/2;
-            points[this.bottomRight].x = points[this.centerPoint].x+relationTemplate.width/2;
-            points[this.bottomRight].y = points[this.centerPoint].y+relationTemplate.height/2;*/
+            
         } else if (this.symbolkind == 6){
             var fontsize = this.getFontsize();
-            ctx.font = "bold " + fontsize + "px " + this.font;
+            ctx.font = "bold " + fontsize + "px " + this.properties['font'];
 
             var longestStr = "";
             for (var i = 0; i < this.textLines.length; i++) {
@@ -472,7 +482,7 @@ function Symbol(kind) {
         if(!c){
              c = this.corners();
         }
-        //we have correct points in the four corners of a square.
+        // We have correct points in the four corners of a square.
         if(mx > c.tl.x && mx < c.tr.x){
             if(my > c.tl.y && my < c.bl.y){
                 return true;
@@ -480,12 +490,56 @@ function Symbol(kind) {
         }
         return false;
     }
-
+  
+    //-------------------------------------------------------------------------------
     //init four points, the four corners based on the two cornerpoints in the symbol.
-    this.corners = function(){
+    //-------------------------------------------------------------------------------
+    
+  this.corners = function(){
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
         if(p1.x < p2.x){
+            if(p1.y < p2.y){
+                // We are in the topleft
+                tl = {x:p1.x, y:p1.y};
+                br = {x:p2.x, y:p2.y};
+                tr = {x:br.x, y:tl.y};
+                bl = {x:tl.x, y:br.y};
+            }else{
+                // We are in the bottomleft
+                tr = {x:p2.x, y:p2.y};
+                bl = {x:p1.x, y:p1.y};
+                tl = {x:bl.x, y:tr.y};
+                br = {x:tr.x, y:bl.y};
+            }
+        }else{
+            if(p1.y < p2.y){
+                // We are in the topright
+                tr = {x:p1.x, y:p1.y};
+                bl = {x:p2.x, y:p2.y};
+                tl = {x:bl.x, y:tr.y};
+                br = {x:tr.x, y:bl.y};
+            }else{
+                // We are in the bottomright
+                br = {x:p1.x, y:p1.y};
+                tl = {x:p2.x, y:p2.y};
+                bl = {x:tl.x, y:br.y};
+                tr = {x:br.x, y:tl.y};
+            }
+        }
+        return {
+            tl: tl,
+            tr: tr,
+            br: br,
+            bl: bl
+        };
+    }
+
+    //-------------------------------------------------------------------------------
+    //init four points, the four corners based on the two cornerpoints in the symbol.
+    //-------------------------------------------------------------------------------
+    function getCorners(p1, p2){
+    	if(p1.x < p2.x){
             if(p1.y < p2.y){
                 //we are in the topleft
                 tl = {x:p1.x, y:p1.y};
@@ -538,18 +592,9 @@ function Symbol(kind) {
             } else if (this.symbolkind == 2 || this.symbolkind == 5 || this.symbolkind == 3 || this.symbolkind == 6) {
                 points[this.centerPoint].x += movex;
                 points[this.centerPoint].y += movey;
-            } /*else if (this.symbolkind == 3) {
-                for (var i = 0; i < this.arity.length; i++) {
-                    for (var j = 0; j < this.arity[i].length; j++) {
-                        this.arity[i][j].x += movex;
-                        this.arity[i][j].y += movey;
-                    }
-                }
-            }*/
+            } 
         }
     }
-
-
 
     //--------------------------------------------------------------------
     // erase/delete
@@ -565,25 +610,21 @@ function Symbol(kind) {
     //--------------------------------------------------------------------
     this.emptyConnectors = function () {
         for (var i = 0; i < this.connectorTop.length; i++) {
-            //points[this.connectorTop[i].to] = "";
             points[this.connectorTop[i].from] = "";
             this.connectorTop.splice(i, 1);
             i--;
         }
         for(var i = 0; i < this.connectorRight.length; i++) {
-            //points[this.connectorRight[i].to] = "";
             points[this.connectorRight[i].from] = "";
             this.connectorRight.splice(i, 1);
             i--;
         }
         for (var i = 0; i < this.connectorBottom.length; i++) {
-            //points[this.connectorBottom[i].to] = "";
             points[this.connectorBottom[i].from] = "";
             this.connectorBottom.splice(i, 1);
             i--;
         }
         for (var i = 0; i < this.connectorLeft.length; i++) {
-            //points[this.connectorLeft[i].to] = "";
             points[this.connectorLeft[i].from] = "";
             this.connectorLeft.splice(i, 1);
             i--;
@@ -638,6 +679,8 @@ function Symbol(kind) {
             }
         }
     }
+
+    // Adds each corner point to an array and returns the array
     this.getPoints = function() {
         var privatePoints = [];
         if(this.symbolkind==3){
@@ -706,47 +749,61 @@ function Symbol(kind) {
     // Redraws graphics
     //--------------------------------------------------------------------
     //     beginpath - moveto - lineto
-    //
-    //     För att göra streckad linje rita med
+    //      
+    //     To make a dashed line, draw with:
     //     ctx.setLineDash(segments);
     //--------------------------------------------------------------------
     this.draw = function () {
-        ctx.lineWidth = this.lineWidth * 2;
-        textsize = this.getFontsize();
-        ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.strokeColor;
+        ctx.lineWidth = this.properties['lineWidth'] * 2;
+        this.properties['textSize'] = this.getFontsize();
+        ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
 
         var x1 = points[this.topLeft].x;
         var y1 = points[this.topLeft].y;
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
 
+        if(this.locked){
+            this.drawLock();
+
+            if(this.isHovered){
+                this.drawLockedTooltip();
+            }
+        }
+
         ctx.save();
 
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.font = "bold " + parseInt(textsize) + "px " + this.font;
+        ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
 
+        // 1 = UML
         if(this.symbolkind == 1){
             this.drawUML(x1, y1, x2, y2);
         }
+        // 2 = ER attribute
         else if(this.symbolkind == 2){
             this.drawERAttribute(x1, y1, x2, y2);
         }
+        // 3 = entity
         else if(this.symbolkind == 3){
             this.drawEntity(x1, y1, x2, y2);
         }
+        // 4 = line
         else if(this.symbolkind == 4){
             this.drawLine(x1, y1, x2, y2);
         }
+        // 5 = ER relation
         else if(this.symbolkind == 5){
             this.drawRelation(x1, y1, x2, y2);
-        } else if (this.symbolkind == 6){
+        }
+        // 6 = Text 
+        else if (this.symbolkind == 6){
             this.drawText(x1, y1, x2, y2);
         }
 
         ctx.restore();
         ctx.setLineDash([]);
-
 
         //Highlighting points when targeted, makes it easier to resize
         if(this.targeted && this.symbolkind != 6){
@@ -774,14 +831,18 @@ function Symbol(kind) {
 
 
     }
+
+    //---------------------------------------------------------
+    // Functions used to draw objects
+    //---------------------------------------------------------
     this.drawUML = function(x1, y1, x2, y2)
     {
         var midy = points[this.middleDivider].y;
-        ctx.font = "bold " + parseInt(textsize) + "px Arial";
+        ctx.font = "bold " + parseInt(this.properties['textSize']) + "px Arial";
 
         // Clear Class Box
         ctx.fillStyle = "#fff";
-        ctx.lineWidth = this.lineWidth;
+        ctx.lineWidth = this.properties['lineWidth'];
         // Box
         ctx.beginPath();
         ctx.moveTo(x1, y1);
@@ -792,52 +853,52 @@ function Symbol(kind) {
         this.makeShadow();
         ctx.closePath();
         // Top Divider
-        ctx.moveTo(x1, y1 + (this.textsize * 1.5));
-        ctx.lineTo(x2, y1 + (this.textsize * 1.5));
+        ctx.moveTo(x1, y1 + (this.properties['textSize'] * 1.5));
+        ctx.lineTo(x2, y1 + (this.properties['textSize'] * 1.5));
         // Middie Divider
         ctx.moveTo(x1, midy);
         ctx.lineTo(x2, midy);
         ctx.stroke();
         ctx.clip();
 
-        ctx.fillStyle = this.fontColor;
+        ctx.fillStyle = this.properties['fontColor'];
         // Write Class Name
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         if(ctx.measureText(this.name).width >= (x2-x1) - 2){
             ctx.textAlign = "start";
-            ctx.fillText(this.name, x1 + 2 , y1 + (0.85 * this.textsize));
+            ctx.fillText(this.name, x1 + 2 , y1 + (0.85 * this.properties['textSize']));
         }else{
-            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
+            ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
         }
-        if (this.key_type == 'Primary key') {
+        if (this.properties['key_type'] == 'Primary key') {
             var linelength = ctx.measureText(this.name).width;
             ctx.beginPath(1);
-            ctx.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
-            ctx.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.textsize));
-            ctx.lineTo(x1 + ((x2 - x1) * 0.5) + linelength, y1 + (0.85 * this.textsize) + 10);
-            ctx.strokeStyle = this.strokeColor;
+            ctx.moveTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
+            ctx.lineTo(x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
+            ctx.lineTo(x1 + ((x2 - x1) * 0.5) + linelength, y1 + (0.85 * this.properties['textSize']) + 10);
+            ctx.strokeStyle = this.properties['strokeColor'];
             ctx.stroke();
         }
         // Change Alignment and Font
         ctx.textAlign = "start";
         ctx.textBaseline = "top";
-        ctx.font = parseInt(this.textsize) + "px Arial";
+        ctx.font = parseInt(this.properties['textSize']) + "px Arial";
 
         for (var i = 0; i < this.attributes.length; i++) {
-            ctx.fillText(this.attributes[i].text, x1 + (this.textsize * 0.3), y1 + (this.textsize * 1.7) + (this.textsize * i));
+            ctx.fillText(this.attributes[i].text, x1 + (this.properties['textSize'] * 0.3), y1 + (this.properties['textSize'] * 1.7) + (this.properties['textSize'] * i));
         }
 
         for (var i = 0; i < this.operations.length; i++) {
-            ctx.fillText(this.operations[i].text, x1 + (this.textsize * 0.3), midy + (this.textsize * 0.2) + (this.textsize * i));
+            ctx.fillText(this.operations[i].text, x1 + (this.properties['textSize'] * 0.3), midy + (this.properties['textSize'] * 0.2) + (this.properties['textSize'] * i));
         }
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2){
-        ctx.fillStyle = this.symbolColor;
+        ctx.fillStyle = this.properties['symbolColor'];
         //This is a temporary solution to the black symbol problem
         // Drawing a multivalue attribute
-        if (this.key_type == 'Multivalue') {
+        if (this.properties['key_type'] == 'Multivalue') {
             drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
             ctx.stroke();
             this.makeShadow();
@@ -850,24 +911,25 @@ function Symbol(kind) {
             this.makeShadow();
         }
         ctx.clip();
-
+      
         //drawing an derived attribute
-        if (this.key_type == 'Drive') {
+        if (this.properties['key_type'] == 'Drive') {
+
             ctx.setLineDash([5, 4]);
         }
-        else if (this.key_type == 'Primary key' || this.key_type == 'Partial key') {
+        else if (this.properties['key_type'] == 'Primary key' || this.properties['key_type'] == 'Partial key') {
             ctx.stroke();
-            this.key_type == 'Partial key' ? ctx.setLineDash([5, 4]) : ctx.setLineDash([]);
+            this.properties['key_type'] == 'Partial key' ? ctx.setLineDash([5, 4]) : ctx.setLineDash([]);
             var linelength = ctx.measureText(this.name).width;
             ctx.beginPath(1);
             ctx.moveTo(x1 + ((x2 - x1) * 0.5) - (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
             ctx.lineTo(x1 + ((x2 - x1) * 0.5) + (linelength * 0.5), (y1 + ((y2 - y1) * 0.5)) + 10);
-            ctx.strokeStyle = this.strokeColor;
+            ctx.strokeStyle = this.properties['strokeColor'];
 
         }
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = this.fontColor;
+        ctx.fillStyle = this.properties['fontColor'];
         if(ctx.measureText(this.name).width > (x2-x1) - 4){
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 4 , (y1 + ((y2 - y1) * 0.5)));
@@ -877,16 +939,16 @@ function Symbol(kind) {
     }
 
     this.drawEntity = function(x1, y1, x2, y2){
-        ctx.fillStyle = this.symbolColor;
+        ctx.fillStyle = this.properties['symbolColor'];
         ctx.beginPath();
-        if (this.key_type == "Weak") {
+        if (this.properties['key_type'] == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
             ctx.lineTo(x2 + 5, y1 - 5);
             ctx.lineTo(x2 + 5, y2 + 5);
             ctx.lineTo(x1 - 5, y2 + 5);
             ctx.lineTo(x1 - 5, y1 - 5);
             ctx.stroke();
-            ctx.lineWidth = this.lineWidth;
+            ctx.lineWidth = this.properties['lineWidth'];
         }
 
         ctx.moveTo(x1, y1);
@@ -899,7 +961,7 @@ function Symbol(kind) {
         ctx.clip();
         ctx.stroke();
 
-        ctx.fillStyle = this.fontColor;
+        ctx.fillStyle = this.properties['fontColor'];
 
         if(ctx.measureText(this.name).width >= (x2-x1) - 5){
             ctx.textAlign = "start";
@@ -907,7 +969,7 @@ function Symbol(kind) {
         }else{
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
-        ctx.font = parseInt(textsize) + "px " + this.font;
+        ctx.font = parseInt(this.properties['textSize']) + "px " + this.properties['font'];
     }
 
     this.drawLine = function(x1, y1, x2, y2){
@@ -924,32 +986,30 @@ function Symbol(kind) {
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
             }
             else if(this.cardinality[0].isCorrectSide){
-                this.cardinality[0].x = x1 > x2 ? x1-10 : x1+10;
-                this.cardinality[0].y = y1 > y2 ? y1-10 : y1+10;
+                this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
                 ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
             else {
-                this.cardinality[0].x = x2 > x1 ? x2-10 : x2+10;
-                this.cardinality[0].y = y2 > y1 ? y2-10 : y2+10;
+                this.moveCardinality(x1, y1, x2, y2, "IncorrectSide");
                 ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
         }
 
 
-        ctx.lineWidth = this.lineWidth;
-        if (this.key_type == "Forced") {
+        ctx.lineWidth = this.properties['lineWidth'];
+        if (this.properties['key_type'] == "Forced") {
             //Draw a thick black line
-            ctx.lineWidth = this.lineWidth*3;
+            ctx.lineWidth = this.properties['lineWidth']*3;
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
             ctx.stroke();
             //Draw a white line in the middle to simulate space (2 line illusion);
-            ctx.lineWidth = this.lineWidth;
+            ctx.lineWidth = this.properties['lineWidth'];
             ctx.strokeStyle = "#fff";
         }
-        else if (this.key_type == "Derived") {
-            ctx.lineWidth = this.lineWidth * 2;
+        else if (this.properties['key_type'] == "Derived") {
+            ctx.lineWidth = this.properties['lineWidth'] * 2;
             ctx.setLineDash([5, 4]);
         }
 
@@ -959,12 +1019,93 @@ function Symbol(kind) {
         ctx.stroke();
     }
 
+    //---------------------------------------------------------------
+    // Moves the value of the cardinality to avoid overlap with line
+    //---------------------------------------------------------------
+    this.moveCardinality = function(x1, y1, x2, y2, side){
+        let boxCorners = this.corners();
+        let dtlx, dlty, dbrx, dbry;			// Corners for diagram objects and line
+
+        const cardinality = this.cardinality[0];
+
+        // Correct corner e.g. top left, top right, bottom left or bottom right
+        let correctCorner = getCorrectCorner(cardinality, 
+    										boxCorners.tl.x, 
+    										boxCorners.tl.y, 
+    										boxCorners.br.x, 
+    										boxCorners.br.y);
+
+        // Find which box the cardinality number is connected to
+        for(var i = 0; i < diagram.length; i++){
+            dtlx = diagram[i].corners().tl.x;
+            dtly = diagram[i].corners().tl.y;
+            dbrx = diagram[i].corners().br.x;
+            dbry = diagram[i].corners().br.y;
+
+            if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry){
+                cardinality.parentBox = diagram[i];
+                break;
+            }
+        }    
+
+	    // Decide whether x1 and y1 is relevant or x2 and y2
+	    if(side == "CorrectSide"){
+		    if(cardinality.parentBox != null) {
+		        var correctBox = getCorners(points[cardinality.parentBox.topLeft], points[cardinality.parentBox.bottomRight]);
+		        // Determine on which side of the box the cardinality should be placed
+		        if(correctBox.tl.x < x1 && correctBox.br.x > x1){
+		            cardinality.axis = "X";
+		        }
+		        if(correctBox.tl.y < y1 && correctBox.br.y > y1){
+		            cardinality.axis = "Y";
+		        }
+		    }
+
+		    // Move the value from the line
+		    cardinality.x = x1 > x2 ? x1-10 : x1+10;        
+		    cardinality.y = y1 > y2 ? y1-10 : y1+10;
+
+		    // Change side of the line to avoid overlap
+		    if(cardinality.axis == "X"){
+		        cardinality.x = x1 > x2 ? x1+10 : x1-10;
+		    }
+		    else if(cardinality.axis == "Y"){   
+		        cardinality.y = y1 > y2 ? y1+10 : y1-10;                    
+		    }
+	    }
+	    else if(side == "IncorrectSide"){
+		    if(cardinality.parentBox != null) {
+		        var correctBox = getCorners(points[this.cardinality[0].parentBox.topLeft], points[this.cardinality[0].parentBox.bottomRight]);
+		        // Determine on which side of the box the cardinality should be placed
+		        if(correctBox.tl.x < x2 && correctBox.br.x > x2){
+		            cardinality.axis = "X";
+		        }
+		        if(correctBox.tl.y < y2 && correctBox.br.y > y2){
+		            cardinality.axis = "Y";
+		        }
+		    }
+
+		    // Move the value from the line
+		    cardinality.x = x2 > x1 ? x2-10 : x2+10;        
+		    cardinality.y = y2 > y1 ? y2-10 : y2+10;
+
+		    // Change side of the line to avoid overlap
+		    if(cardinality.axis == "X"){
+		        cardinality.x = x2 > x1 ? x2+10 : x2-10;
+		    }
+		    else if(cardinality.axis == "Y"){   
+		        cardinality.y = y2 > y1 ? y2+10 : y2-10;                    
+		    }
+
+	    }
+    }
+
     this.drawRelation = function(x1, y1, x2, y2){
         var midx = points[this.centerPoint].x;
         var midy = points[this.centerPoint].y;
         ctx.beginPath();
-        if (this.key_type == 'Weak') {
-            ctx.lineWidth = this.lineWidth;
+        if (this.properties['key_type'] == 'Weak') {
+            ctx.lineWidth = this.properties['lineWidth'];
             ctx.moveTo(midx, y1 + 5);
             ctx.lineTo(x2 - 9, midy + 0);
             ctx.lineTo(midx + 0, y2 - 5);
@@ -977,14 +1118,14 @@ function Symbol(kind) {
         ctx.lineTo(x1, midy);
         ctx.lineTo(midx, y1);
 
-        ctx.fillStyle = this.symbolColor;
+        ctx.fillStyle = this.properties['symbolColor'];
         this.makeShadow();
         ctx.fill();
         ctx.closePath();
         ctx.clip();
 
         ctx.stroke();
-        ctx.fillStyle = this.fontColor;
+        ctx.fillStyle = this.properties['fontColor'];
         if(ctx.measureText(this.name).width >= (x2-x1) - 12){
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 10 , (y1 + ((y2 - y1) * 0.5)));
@@ -1003,13 +1144,13 @@ function Symbol(kind) {
             ctx.rect(x1, y1, x2-x1, y2-y1);
             ctx.stroke();
         }
-        this.textsize = this.getFontsize();
+        this.properties['textSize'] = this.getFontsize();
 
-        ctx.fillStyle = this.fontColor;
+        ctx.fillStyle = this.properties['fontColor'];
         ctx.textAlign = this.textAlign;
 
         for (var i = 0; i < this.textLines.length; i++) {
-            ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.textsize * 1.7) / 2 + (this.textsize * i));
+            ctx.fillText(this.textLines[i].text, this.getTextX(x1, midx, x2), y1 + (this.properties['textSize'] * 1.7) / 2 + (this.properties['textSize'] * i));
         }
     }
 
@@ -1022,12 +1163,12 @@ function Symbol(kind) {
 		var y2 = points[this.bottomRight].y;
 		// Set font
 		var fontsize = this.getFontsize();
-		var font = "bold " + parseInt(fontsize) + "px " + this.font;
+		var font = "bold " + parseInt(fontsize) + "px " + this.properties['font'];
 		ctx.font = font; // Set canvas font in order for measureText to work
 		// Style and positions
 		var svgObj = "", svgStyle = "", svgPos = "";
 		var lineDash = "5, 4"; // Use this for dashed line
-		var strokeWidth = this.lineWidth;
+		var strokeWidth = this.properties['lineWidth'];
 
 		// Create SVG string
 		str += "<g>";
@@ -1038,34 +1179,34 @@ function Symbol(kind) {
 
             // Box
             svgPos = x1+","+y1+" "+x2+","+y1+" "+x2+","+y2+" "+x1+","+y2;
-            svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
+            svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+";stroke-width:"+strokeWidth+";";
             svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
             str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
 
-            svgStyle = "stroke:"+this.strokeColor+";stroke-width:"+strokeWidth+";";
+            svgStyle = "stroke:"+this.properties['strokeColor']+";stroke-width:"+strokeWidth+";";
             // Top Divider
             str += "<line x1='"+x1+"' y1='"+(y1+(fontsize*1.5))+"' x2='"+x2+"' y2='"+(y1+(fontsize*1.5))+"' style='"+svgStyle+"' />";
             // Middle Divider
             str += "<line x1='"+x1+"' y1='"+midy+"' x2='"+x2+"' y2='"+midy+"' style='"+svgStyle+"' />";
 
             // Name
-            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
             var nameLength = ctx.measureText(this.name).width;
             if(nameLength >= (x2-x1) - 2){
-                svgPos = "x='"+(x1+2)+"' y='"+(y1+(0.85*this.textsize))+"' text-anchor='middle' dominant-baseline='central'";
+                svgPos = "x='"+(x1+2)+"' y='"+(y1+(0.85*this.properties['textSize']))+"' text-anchor='middle' dominant-baseline='central'";
             }else{
                 svgPos = "x='"+(x1+((x2 - x1)*0.5))+"' y='"+(y1+(0.85*fontsize))+"' text-anchor='middle' dominant-baseline='central'";
             }
             str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.name+"</text>";
 
-            if (this.key_type == "Primary key") {
+            if (this.properties['key_type'] == "Primary key") {
                 svgPos = (x1+((x2-x1)*0.5))+","+(y1+(0.85*fontsize))+" "+(x1+((x2-x1)*0.5))+","+(y1+(0.85*fontsize))+" ";
                 svgPos += (x1+((x2-x1)*0.5)+nameLength)+","+(y1+(0.85*fontsize)+10);
                 str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
             }
 
             font = parseInt(fontsize) + "px Arial";
-            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
             for (var i = 0; i < this.attributes.length; i++) {
                 svgPos = "x='"+(x1+(fontsize*0.3))+"' y='"+(y1+(fontsize*1.7)+(fontsize*i))+"'";
                 str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.attributes[i].text+"</text>";
@@ -1076,13 +1217,13 @@ function Symbol(kind) {
                 str += "<text "+svgPos+" style='"+svgStyle+"' text-anchor='start' dominant-baseline='hanging'>"+this.operations[i].text+"</text>";
             }
 		} else if (this.symbolkind == 2) {
-            svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+            svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
             // Outer oval for multivalued attributes
-            if (this.key_type == "Multivalue") {
+            if (this.properties['key_type'] == "Multivalue") {
                 str += this.ovalToSVG(x1-7, y1-7, x2+7, y2+7, svgStyle);
             }
             // Oval
-            if (this.key_type == "Drive") {
+            if (this.properties['key_type'] == "Drive") {
                 str += this.ovalToSVG(x1, y1, x2, y2, svgStyle, lineDash);
             } else {
                 str += this.ovalToSVG(x1, y1, x2, y2, svgStyle, "");
@@ -1092,13 +1233,13 @@ function Symbol(kind) {
             var linelength = ctx.measureText(this.name).width;
             var tmpX = (x1+((x2-x1)/2));
             var tmpY = ((y1+(y2-y1)/2)+10);
-            if (this.key_type == "Primary key") {
+            if (this.properties['key_type'] == "Primary key") {
                 str += "<line x1='"+(tmpX-(linelength/2))+"' y1='"+tmpY+"' x2='"+(tmpX+(linelength/2))+"' y2='"+tmpY+"' style='"+svgStyle+"' />";
-            } else if (this.key_type == "Partial key") {
+            } else if (this.properties['key_type'] == "Partial key") {
                 str += "<line x1='"+(tmpX-(linelength/2))+"' y1='"+tmpY+"' x2='"+(tmpX+(linelength/2))+"' y2='"+tmpY+"' style='"+svgStyle+"' stroke-dasharray='"+lineDash+"' />";
             }
             // Text
-            svgStyle = "fill:"+this.fontColor+"; font:"+font+";";
+            svgStyle = "fill:"+this.properties['fontColor']+"; font:"+font+";";
             if (linelength > (x2-x1) - 4) {
 				svgPos = "x='"+(x1+4)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
 			} else {
@@ -1106,9 +1247,9 @@ function Symbol(kind) {
 			}
             str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
 		} else if (this.symbolkind == 3) {
-			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+			svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 			// Add extra box if weak entity
-			if (this.key_type == "Weak") {
+			if (this.properties['key_type'] == "Weak") {
 				svgPos = (x1-5)+","+(y1-5)+" "+(x2+5)+","+(y1-5)+" "+(x2+5)+","+(y2+5)+" "+(x1-5)+","+(y2+5);
 				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			}
@@ -1117,7 +1258,7 @@ function Symbol(kind) {
 			svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
 			// Text
-			svgStyle = "fill:"+this.fontColor+"; font:"+font+";";
+			svgStyle = "fill:"+this.properties['fontColor']+"; font:"+font+";";
 			if (ctx.measureText(this.name).width > (x2-x1) - 5) {
 				svgPos = "x='"+(x1+3)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
 			} else {
@@ -1132,40 +1273,41 @@ function Symbol(kind) {
 				str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.cardinality[0].value+"</text>";
 			}
 			svgPos = "x1='"+x1+"' y1='"+y1+"' x2='"+x2+"' y2='"+y2+"'";
-			if (this.key_type == "Forced") {
+			if (this.properties['key_type'] == "Forced") {
 				// Thick line that will be divided into two lines using thin line
-				strokeWidth = this.lineWidth * 3;
-				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+				strokeWidth = this.properties['lineWidth'] * 3;
+				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 
 				// Thin line used to divide thick line into two lines
-				strokeWidth = this.lineWidth;
+				strokeWidth = this.properties['lineWidth'];
 				svgStyle = "stroke:#fff; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
-			} else if (this.key_type == "Derived") {
-				strokeWidth = this.lineWidth * 2;
-				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+			} else if (this.properties['key_type'] == "Derived") {
+				strokeWidth = this.properties['lineWidth'] * 2;
+				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' stroke-dasharray='"+lineDash+"' />";
 			} else {
-				svgStyle = "stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+				svgStyle = "stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				str += "<line "+svgPos+" style='"+svgStyle+"' />";
 			}
 		} else if (this.symbolkind == 5) {
 			var midx = points[this.centerPoint].x;
 			var midy = points[this.centerPoint].y;
 			// Relation
-			svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+			svgStyle = "fill:"+this.properties['symbolColor']+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 			svgPos = midx+","+y1+" "+x2+","+midy+" "+midx+","+y2+" "+x1+","+midy+" "+midx+","+y1;
 			svgObj = "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			str += "<clipPath id='"+this.name+symbolID+"'>"+svgObj+"</clipPath>"+svgObj;
 			// Weak relation
-			if (this.key_type == "Weak") {
-				svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.strokeColor+"; stroke-width:"+strokeWidth+";";
+
+			if (this.properties['key_type'] == "Weak") {
+				svgStyle = "fill:"+this.symbolColor+"; stroke:"+this.properties['strokeColor']+"; stroke-width:"+strokeWidth+";";
 				svgPos = midx+","+(y1+5)+" "+(x2-9)+","+midy+" "+midx+","+(y2-5)+" "+(x1+9)+","+midy+" "+midx+","+(y1+5);
 				str += "<polygon points='"+svgPos+"' style='"+svgStyle+"' />";
 			}
 			// Text
-			svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+			svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
 			if(ctx.measureText(this.name).width >= (x2-x1) - 12){
 				svgPos = "x='"+(x1+10)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
 			}else{
@@ -1174,7 +1316,7 @@ function Symbol(kind) {
 			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
 		} else if (this.symbolkind == 6) {
             var midx = points[this.centerPoint].x;
-            svgStyle = "fill:"+this.fontColor+";font:"+font+";";
+            svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
             var textAlignment = this.textAlign;
             if (this.textAlign == "center") textAlignment = "middle";
             for (var i = 0; i < this.textLines.length; i++) {
@@ -1208,11 +1350,11 @@ function Symbol(kind) {
 
 	this.getFontsize = function() {
 		var fontsize = 14;
-		if (this.sizeOftext == 'Small') {
+		if (this.properties['sizeOftext'] == 'Small') {
 			fontsize = 20;
-		} else if (this.sizeOftext == 'Medium') {
+		} else if (this.properties['sizeOftext'] == 'Medium') {
 			fontsize = 30;
-		} else if (this.sizeOftext == 'Large') {
+		} else if (this.properties['sizeOftext'] == 'Large') {
 			fontsize = 50;
 		}
 		return fontsize;
@@ -1221,10 +1363,62 @@ function Symbol(kind) {
     this.makeShadow = function(){
         ctx.save();
         ctx.shadowBlur = this.shadowBlur;
-        ctx.shadowOffsetX = this.shadowOffsetX;
-        ctx.shadowOffsetY = this.shadowOffsetY;
+        ctx.shadowOffsetX = this.properties['shadowOffsetX'];
+        ctx.shadowOffsetY = this.properties['shadowOffsetY'];
         ctx.shadowColor = this.shadowColor;
         ctx.fill();
+        ctx.restore();
+    }
+
+    this.getLockPosition = function() {
+        let y1 = points[this.topLeft].y;
+        let x2 = points[this.bottomRight].x;
+        let y2 = points[this.bottomRight].y;
+
+        let offset = 10;
+
+        return { 
+                x: x2 + offset, 
+                y: y2 - (y2-y1)/2
+            };
+    }
+
+    this.drawLock = function() {
+        let position = this.getLockPosition();
+
+        ctx.save();
+
+        ctx.translate(position.x, position.y);
+        ctx.fillStyle = "orange";
+        ctx.strokeStyle = "orange";
+        ctx.lineWidth = 1;
+        //Draws the upper part of the lock
+        ctx.beginPath();
+        ctx.arc(5, 0, 4, 1 * Math.PI, 2 * Math.PI);
+        ctx.stroke();
+        ctx.closePath();
+        //Draws the lock body
+        ctx.fillRect(0,0, 10, 10);
+
+        ctx.restore();
+    }
+
+    this.drawLockedTooltip = function() {
+        ctx.save();
+
+        let position = this.getLockPosition();
+        let offset = 25;
+
+        ctx.translate(position.x, position.y + offset);
+        //Draw tooltip background, -12 to accommodate that rectangles and text is drawn differently in canvas
+        ctx.fillStyle = "#f5f5f5";
+        ctx.fillRect(0, -12, 125, 16);
+
+        //Draws text, uses fillStyle to override default hover change.
+        ctx.fillStyle = "black";
+        ctx.font = "12px Arial";
+        ctx.fillText("Entity position is locked", 0, 0);
+
         ctx.restore();
     }
 }
@@ -1245,4 +1439,37 @@ function pointToLineDistance(P1, P2, x, y){
     numerator = Math.abs((P2.y-P1.y)*x - (P2.x - P1.x)*y + P2.x * P1.y - P2.y*P1.x);
     denominator = Math.sqrt((P2.y - P1.y)*(P2.y - P1.y) + (P2.x - P1.x)*(P2.x - P1.x));
     return numerator/denominator;
+}
+
+//----------------------------------------------------------------------
+// Helper function for getting correct corner of a line with cardinality
+//----------------------------------------------------------------------
+function getCorrectCorner(cardinality, ltlx, ltly, lbrx, lbry){
+		let cornerX, cornerY;
+
+		// Top left corner
+        if(Math.abs(cardinality.x - ltlx) + Math.abs(cardinality.y - ltly) == 20){
+            cornerX = ltlx;
+            cornerY = ltly;
+        }
+        // Top right corner
+        else if(Math.abs(cardinality.x - lbrx) + Math.abs(cardinality.y - ltly) == 20){
+            cornerX = lbrx;
+            cornerY = ltly;
+        }
+        // Bottom left corner
+        else if(Math.abs(cardinality.x - ltlx) + Math.abs(cardinality.y - lbry) == 20){
+            cornerX = ltlx;
+            cornerY = lbry;
+        }
+        // Bottom right corner
+        else if(Math.abs(cardinality.x - lbrx) + Math.abs(cardinality.y - lbry) == 20){
+            cornerX = lbrx;
+            cornerY = lbry;
+        }
+
+        return {
+        	x: cornerX,
+        	y: cornerY
+        }
 }

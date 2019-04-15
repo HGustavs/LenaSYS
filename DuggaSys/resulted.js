@@ -147,13 +147,13 @@ function process()
             gradeSystem:momtmp[j].gradesystem,
             vers:momentresult.vers,
             userAnswer:momentresult.useranswer,
-            quizId:momtmp[j].link, 
+            quizId:momtmp[j].link,
             qvariant:momtmp[j].qvariant,
-            quizfile:momtmp[j].quizfile, 
-            timesGraded:momentresult.timesGraded, 
+            quizfile:momtmp[j].quizfile,
+            timesGraded:momentresult.timesGraded,
             gradeExpire:momentresult.gradeExpire,
             firstname:entries[i].firstname,
-            lastname:entries[i].lastname,  
+            lastname:entries[i].lastname,
             deadline:new Date((momtmp[j].deadlinets*1000)),});
 				}else{
           student.push({
@@ -169,13 +169,13 @@ function process()
             marked:new Date(0),
             submitted:new Date(0),
             grade:null,
-            quizId:momtmp[j].link, 
+            quizId:momtmp[j].link,
             qvariant:momtmp[j].qvariant,
-            quizfile:momtmp[j].quizfile, 
-            timesGraded:0, 
+            quizfile:momtmp[j].quizfile,
+            timesGraded:0,
             gradeExpire:"UNK",
             firstname:entries[i].firstname,
-            lastname:entries[i].lastname,  
+            lastname:entries[i].lastname,
             deadline:new Date(momtmp[j].deadline),});
 				}
 			}
@@ -622,7 +622,7 @@ function returnedResults(data)
 
     //tim=performance.now();
 
-    subheading=0;    
+    subheading=0;
 
     $(document).ready(function () {
             $("#dropdownc").mouseleave(function () {
@@ -719,6 +719,28 @@ function createSortableTable(data){
 		if(data['debug']!="NONE!") alert(data['debug']);
 }
 
+function gradeFilterHandler()
+{
+    // getting the alternative that the filter have.
+    filterGrade = 0;
+    var argument = document.getElementById("gradeFilterScale").value;
+    switch(argument)
+    {
+      case "Filter-VG":
+        filterGrade = 3;
+        break;
+      case "Filter-G":
+        filterGrade = 2;
+        break;
+      case "Filter-U":
+        filterGrade = 1;
+        break;
+      default:
+        filterGrade = "none";
+        break;
+    }
+}
+
 function renderCell(col,celldata,cellid) {
 	// Render minimode
 	if (filterList["minimode"]) {
@@ -754,8 +776,8 @@ function renderCell(col,celldata,cellid) {
 				str += "<div style='font-weight:bold'>"+celldata.firstname+" "+celldata.lastname+"</div>";
 				str += "<div>"+celldata.username+" / "+celldata.class+"</div>";
 				str += "<div>"+celldata.ssn+"</div>";
-				str += "<div style='font-style:italic;text-align:right;'>"+celldata.setTeacher+"</div>";
-			str += "</div>";
+			//	str += "<div style='font-style:italic;text-align:right;'>"+celldata.setTeacher+"</div>";
+		//	str += "</div>";
 		str += "</div>";
 		return str;
 
@@ -815,6 +837,16 @@ function renderCell(col,celldata,cellid) {
 		str += "</div>";
 		return str;
 	}
+
+  // When Filtering is activated then this "hides" all other data than what is specified.
+  else {
+      str = "<div style='height:70px;' class='resultTableCell ";
+      if(celldata.kind==4) { str += "dugga-moment "; }
+      str += "dugga-unassigned";
+      str += "'>";
+      return str;
+  }
+
 	return celldata;
 }
 
@@ -940,14 +972,14 @@ function compare(a,b) {
 		let kind = sortableTable.currentTable.getSortkind();
 		var tempA;
 		var tempB;
-    
+
     if (a==null||b==null||typeof(a)==="undefined"||typeof(b)==="undefined") return false;
 
 		if((typeof a == "undefined")||(typeof b == "undefined")) console.log("sort fail: ",a,b,col,kind)
-	
+
 		if(typeof a == "undefined") return 1;
 		if(typeof b == "undefined") return -1;
-	
+
 		if (col == "FnameLnameSSN") {
 				if(kind==0||kind==1){
 						tempA=a['firstname'].toUpperCase();
@@ -957,7 +989,7 @@ function compare(a,b) {
 						tempB=b['lastname'].toUpperCase();
 				}else{
 						tempA=a['ssn'].toUpperCase();
-						tempB=b['ssn'].toUpperCase();	
+						tempB=b['ssn'].toUpperCase();
 				}
 
 				if (tempA > tempB) {
@@ -969,7 +1001,7 @@ function compare(a,b) {
 				}
 		} else {
         let atmp=conv(a,kind);
-        let btmp=conv(b,kind);                
+        let btmp=conv(b,kind);
 
         if(atmp==btmp && a.submitted>b.submitted)atmp+=10;
         if(atmp==btmp && b.submitted>a.submitted)btmp+=10;
@@ -979,14 +1011,14 @@ function compare(a,b) {
 
 function conv(item,kind){
     var tmp=7;
-    if(typeof(item)!=="undefined"){      
-        if(item.grade===null )tmp=7; // N/A i.e. not opened 
+    if(typeof(item)!=="undefined"){
+        if(item.grade===null )tmp=7; // N/A i.e. not opened
         if(item.grade===0)tmp=1; // Pending
-        if(item.grade===0 && item.userAnswer===null)tmp=7; // Not submitted anything 
+        if(item.grade===0 && item.userAnswer===null)tmp=7; // Not submitted anything
         if(item.grade==1)tmp=6; // U
-        if(item.grade==1 && item.submitted>item.marked)tmp=1; // Pending 
-        if(item.grade>=2 && item.grade<=3)tmp=2; // Pass / G / VG         
-    }     
+        if(item.grade==1 && item.submitted>item.marked)tmp=1; // Pending
+        if(item.grade>=2 && item.grade<=3)tmp=2; // Pass / G / VG
+    }
     if(tmp<kind)tmp+=8;
 
     return tmp*100;
@@ -1043,7 +1075,7 @@ function exportCell(format,cell,colname) {
               }else{
                     str="UNK";
                 }
-            }        
+            }
           }
       }
   }else{
@@ -1081,7 +1113,7 @@ function ladexport()
     expo+=document.getElementById("ladgradescale").value+"\n";
     expo+=document.getElementById("laddate").value+"\n";
     expo+=myTable.export("csv",";");
-    
+
     //alert(expo);
     document.getElementById("resultlistheader").innerHTML="Results for: "+document.getElementById("ladselect").value;
     document.getElementById("resultlistarea").value=expo;

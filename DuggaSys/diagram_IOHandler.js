@@ -1,6 +1,6 @@
-/*
+/************************************************************************
 ----- THIS FILE HANDLES THE SAVE, DOWNLOAD AND EXPORT FUNCTIONALITY -----
-*/
+************************************************************************/
 
 var a;
 var c;
@@ -48,7 +48,6 @@ function redirect(doc){
         data: {'GetID':a },
 
         success: function(data){ // <-- note the parameter here, not in your code
-                //
             return false;
         }
 
@@ -76,28 +75,10 @@ function loadStored(){
 function loadStoredFolders(f){
 
     document.getElementById('showStoredFolders').style.display = "block";
-    //e.preventDefault();
-//
-    //$.ajax({
-    //    url: 'diagram_IOHandler.php',
-    //    type: 'POST', // GET or POST
-    //    data: {F: f},
-    //    success: function(resp) {
-//
-    //        $('#adsds').html(resp);
-    //    }
-    //    });
-////
-
 }
-function loadUpload(){
 
-}
-function loadExample(){
-
-}
 function getImage() {
-    //window.open(canvas.toDataURL("image/png"), 'Image');
+
 }
 
 function Save() {
@@ -107,8 +88,8 @@ function Save() {
         c[i] = c[i].replace(/"/g,"");
     }
     var obj = {diagram:diagram, points:points, diagramNames:c};
-    a = JSON.stringify(obj);
-   // saveToServer(a);
+    a = JSON.stringify(obj, null, "\t");
+
     console.log("State is saved");
 }
 
@@ -171,6 +152,8 @@ function LoadFile() {
     //Redrawn old state.
     updateGraphics();
 }
+
+// this function adds eventlisteners to the buttons when html body is loaded
 function getUpload() {
     document.getElementById('buttonids').addEventListener('click', openDialog);
     function openDialog() {
@@ -203,11 +186,7 @@ function Load() {
     for (var i = 0; i < b.diagram.length; i++) {
         diagram[i] = b.diagram[i];
     }
-    // Points fix
-    // Currently unused, reimplement this when figures are reimplemented
-    /*for (var i = 0; i < b.points.length; i++) {
-        //b.points[i] = Object.assign(new Path, b.points[i]);
-    }*/
+    
     points.length = b.points.length;
     for (var i = 0; i < b.points.length; i++) {
         points[i] = b.points[i];
@@ -224,13 +203,13 @@ function ExportSVG(el) {
     svgstr += gridToSVG(width, height);
     svgstr += diagramToSVG();
     svgstr += "</svg>";
-    //$("#canvasDiv").html(svgstr);
     var data = "text/json;charset=utf-8," + encodeURIComponent(svgstr);
     el.setAttribute("class", 'icon-download');
     el.setAttribute("href", "data:" + data);
     el.setAttribute("download", "diagram.svg");
 }
 
+// used when exporting the file as a .jpg image.
 $(document).ready(function(){
     function downloadCanvas(link, canvasId, filename) {
         link.href = document.getElementById(canvasId).toDataURL();
