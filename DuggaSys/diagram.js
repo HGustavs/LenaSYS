@@ -508,7 +508,7 @@ diagram.draw = function() {
     }
     //Draws all lines first so that they appear behind the object instead
     for(var i = 0; i < this.length; i++) {
-        if(this[i].symbolkind == 4){
+        if(this[i].symbolkind == 4) {
             this[i].draw();
         }
     }
@@ -840,7 +840,7 @@ function drawVirtualA4() {
     ctx.translate(0, 0);
     ctx.strokeRect(0,0, a4Width, a4Height);
 
-    if(toggleA4Holes){
+    if(toggleA4Holes) {
         //Upper 2 holes
         drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
         drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
@@ -1105,7 +1105,7 @@ function setMode(mode) { //"CreateClass" yet to be implemented in .php
 }
 
 $(document).ready(function() {
-    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton").click(function(){
+    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton").click(function() {
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
@@ -1630,7 +1630,7 @@ function sortObjects(selected_objects, mode) {
           for(var j = 0; j < position.length; j++) {
             if(i==j) continue;
               if((mode=='vertically' && points[private_objects[i].topLeft].y == position[j])
-              || (mode=='horizontally' && points[private_objects[i].topLeft].x == position[j])){
+              || (mode=='horizontally' && points[private_objects[i].topLeft].x == position[j])) {
                   private_objects[i] = private_objects[j];
                   private_objects[j] = swap;
               }
@@ -2306,7 +2306,7 @@ function mousedownevt(ev) {
             lastSelectedObject = -1;
             selected_objects = [];
         }
-        if(uimode == "CreateFigure" && figureType == "Square"){
+        if(uimode == "CreateFigure" && figureType == "Square") {
             createFigure();
         }
     }
@@ -2409,7 +2409,7 @@ function mouseupevt(ev) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
                 } else if(symbolEndKind == 5 && symbolStartKind == 5) {
                     okToMakeLine = false;
-                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)){
+                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)) {
                     okToMakeLine = false;
                 }
                 if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
@@ -2475,7 +2475,8 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateLine" && md == 4) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine){
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) 
+        || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine) {
             erLineA = new Symbol(4); // Lines
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
@@ -2956,13 +2957,13 @@ function changeObjectAppearance(object_type) {
 
 function createCardinality() {
     //Setting cardinality on new line
-    if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3){
+    if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
     }
     else if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
     }
-    else if(diagram[lineStartObj].symbolkind == 1 && diagram[hovobj].symbolkind == 1){
+    else if(diagram[lineStartObj].symbolkind == 1 && diagram[hovobj].symbolkind == 1) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
     }
 }
