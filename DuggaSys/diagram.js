@@ -1,5 +1,5 @@
 /*
------ THIS FILE HANDLES THE REST OF THE DIAGRAM -----
+----- THIS FILE HANDLES THE MAIN FUNCTIONS OF THE DIAGRAM -----
 */
 
 var querystring = parseGet();
@@ -23,7 +23,7 @@ AJAXService("get", {}, "DIAGRAM");
 var gridSize = 16;
 var crossSize = 4.0;                // Size of point cross
 var tolerance = 8;                  // Size of tolerance area around the point
-var ctx;                  // Canvas context
+var ctx;                            // Canvas context
 var canvas;                         // Canvas Element
 var sel;                            // Selection state
 var currentMouseCoordinateX = 0;
@@ -45,14 +45,14 @@ var figureType = null;              // Specification of uimode, when Create Figu
 var widthWindow;                    // The width on the users screen is saved is in this var.
 var heightWindow;                   // The height on the users screen is saved is in this var.
 var consoleInt = 0;
-var sx = 0, sy = 0;         // Current X- and Y-coordinant from which the canvas start from
+var sx = 0, sy = 0;                 // Current X- and Y-coordinant from which the canvas start from
 var waldoPoint = "";
 var moveValue = 0;                  // Used to deside if the canvas should translate or not
 var activePoint = null;             // This point indicates what point is being hovered by the user
 var p1 = null;                      // When creating a new figure, these two variables are used ...
 var p2 = null;                      // to keep track of points created with mousedownevt and mouseupevt
 var p3 = null;                      // Middlepoint/centerPoint
-var snapToGrid = false;              // Will the clients actions snap to grid
+var snapToGrid = false;             // Will the clients actions snap to grid
 var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
@@ -60,11 +60,11 @@ var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
 var minEntityX = 100;               //the minimum size for an Enitny are set by the values seen below.
 var minEntityY = 50;
-var hashUpdateTimer = 5000;              // set timer varibale for hash and saving
+var hashUpdateTimer = 5000;         // set timer varibale for hash and saving
 var currentHash = 0;
 var lastDiagramEdit = localStorage.getItem('lastEdit');          // the last date the diagram was change in milisecounds.
 var refreshTimer = setRefreshTime();              //  set how often the diagram should be refreshed.
-var refresh_lock = false;               // used to set if the digram should stop refreshing or not.
+var refresh_lock = false;           // used to set if the digram should stop refreshing or not.
 var attributeTemplate = {           // Defines entity/attribute/relations predefined sizes
   width: 7 * gridSize,
   height: 4 * gridSize
@@ -116,7 +116,7 @@ var diagram = [];
 function keyDownHandler(e){
     var key = e.keyCode;
     if(appearanceMenuOpen) return;
-    if((key == 46 || key == 8)){ // delete, backspace
+    if((key == 46 || key == 8)){        // delete, backspace
         eraseSelectedObject();
         SaveState();
     } else if(key == 32){ //space
@@ -133,9 +133,9 @@ function keyDownHandler(e){
         updateGraphics();
     } else if(key == 37 || key == 38 || key == 39 || key == 40){ // left, up, right, down
         arrowKeyPressed(key);
-    } else if(key == 17 || key == 91){ // left ctrl, left window key
+    } else if(key == 17 || key == 91){      // left ctrl, left window key
         ctrlIsClicked = true;
-    } else if(ctrlIsClicked && key == 67){ // c key
+    } else if(ctrlIsClicked && key == 67){  // c key
         //Ctrl + c
         fillCloneArray();
     } else if(ctrlIsClicked && key == 86 ){ // v key
@@ -156,7 +156,7 @@ function keyDownHandler(e){
 
     else if (key == 90 && ctrlIsClicked) undoDiagram(); // z key
     else if (key == 89 && ctrlIsClicked) redoDiagram(); // y key
-    else if (key == 65 && ctrlIsClicked) {             // a key
+    else if (key == 65 && ctrlIsClicked) {              // a key
       e.preventDefault();
       for(var i = 0; i < diagram.length; i++){
         selected_objects.push(diagram[i]);
@@ -164,7 +164,7 @@ function keyDownHandler(e){
       }
       updateGraphics();
     }
-    else if(key == 17 || key == 91) // ctrl, left window key
+    else if(key == 17 || key == 91)                     // ctrl, left window key
     {
       ctrlIsClicked = true;
     }
@@ -180,7 +180,7 @@ function cancelFreeDraw(){
             diagram.pop();
         }
         cleanUp();
-        md = 0; //Prevents the dashed line box, when drawing a square, to appear immediately
+        md = 0;             //Prevents the dashed line box, when drawing a square, to appear immediately
         updateGraphics();
       }
 }
@@ -338,8 +338,6 @@ points.closestPoint = function(xCoordinate, yCoordinate, pointIndex) {
     return {distance:Math.sqrt(distance), index:index};
 }
 
-
-
 //--------------------------------------------------------------------
 // clearAllSelects - Clears all selects from the array "points"
 //--------------------------------------------------------------------
@@ -352,7 +350,6 @@ points.clearAllSelects = function() {
 //--------------------------------------------------------------------
 // draw - Executes draw methond in all diagram objects
 //--------------------------------------------------------------------
-
 diagram.closestPoint = function(mx, my){
     var distance = 50000000;
     var point;
@@ -684,7 +681,10 @@ function initializeCanvas() {
     });
 }
 
-// Function to enable and disable the grid, functionality is related to currentMouseCoordinateX and currentMouseCoordinateY
+//-----------------------------------------------------------------------------------
+// Function to enable and disable the grid
+// functionality is related to currentMouseCoordinateX and currentMouseCoordinateY
+//-----------------------------------------------------------------------------------
 function toggleGrid() {
     if (snapToGrid == false) {
         snapToGrid = true;
