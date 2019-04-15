@@ -931,7 +931,7 @@ function returnedSection(data) {
           //FIXME
           // create a warning if the dugga is submitted after the set deadline
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-            if (hasGraceTimeExpired(myDate, deadline)) {
+            if (hasGraceTimeExpired(myDate, deadline, dateTimeSubmitted)) {
               str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
             }
           }
@@ -1477,7 +1477,7 @@ function mail() {
   });
 }
 
-function hasGraceTimeExpired(myDate, deadline) {
+function hasGraceTimeExpired(myDate, deadline, dateTimeSubmitted) {
   //console.log("Submit dagen är: " , parameterMyDate.getDay(), " timmen är: ", parameterMyDate.getHours(), " minuten är: ", parameterMyDate.getMinutes());
   var graceDeadline = dateTimeSubmitted;
   if (deadline.getHours() >= 17) {
