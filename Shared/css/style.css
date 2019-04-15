@@ -2948,9 +2948,6 @@ table {
 
 #searchBar {
   display: inline-flex;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  padding: 5px;
   height: 24px;
   border-radius: 5px;
   float: right;
