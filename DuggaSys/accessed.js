@@ -160,6 +160,16 @@ function changeProperty(targetobj,propertyname,propertyvalue)
 // renderCell <- Callback function that renders cells in the table
 //----------------------------------------------------------------
 
+function isChecked(id)
+{
+  console.log("object id = g"+id);
+  // if(document.getElementById("g"+id).checked == true)
+  // {
+  //   document.getElementById("g"+id).checked = false;
+  // }
+}
+
+var tgroups=[];
 function renderCell(col,celldata,cellid) {
 		var str="UNK";
 		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "class"||col == "examiner"||col == "groups"||col == "vers"||col == "access"||col == "requestedpasswordchange"){
