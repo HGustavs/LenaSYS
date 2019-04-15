@@ -1031,11 +1031,11 @@ function renderColumnFilter(col,status,colname) {
 		if (colname == "FnameLnameSSN") return str;
 		if (status) {
 			str = "<div class='checkbox-dugga'>";
-			str += "<input type='checkbox' checked onclick='myTable.toggleColumn(\"" + col + "\",\"" + status + "\")'><label class='headerlabel'>" + colname + "</label>";
+			str += "<input id=\""+colname+"\" type='checkbox' checked onclick='onToggleFilter(\""+col+"\")'><label class='headerlabel'>" + colname + "</label>";
 			str += "</div>"
 		} else {
 			str = "<div class='checkbox-dugga'>";
-			str += "<input type='checkbox' onclick='myTable.toggleColumn(\"" + col + "\",\"" + status + "\")'><label class='headerlabel'>" + colname + "</label>";
+			str += "<input id=\""+colname+"\" type='checkbox' onclick='onToggleFilter(\""+col+"\")'><label class='headerlabel'>" + colname + "</label>";
 			str += "</div>"
 		}
 		return str;
