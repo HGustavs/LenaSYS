@@ -2108,12 +2108,12 @@ function mousemoveevt(ev, t) {
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
-        if(!sel.point.fake){
+        if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;
             //If we changed a point of a path object,
             //  we need to recalculate the bounding-box so that it will remain clickable.
-            if(diagram[lastSelectedObject].kind == 1){
+            if(diagram[lastSelectedObject].kind == 1) {
                 diagram[lastSelectedObject].calculateBoundingBox();
             }
         } else {
@@ -2128,7 +2128,7 @@ function mousemoveevt(ev, t) {
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true && !diagram[movobj].locked) {
-                    if(snapToGrid){
+                    if(snapToGrid) {
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                     }
@@ -2146,7 +2146,7 @@ function mousemoveevt(ev, t) {
     updateGraphics();
     // Draw select or create dotted box
     if (md == 4) {
-        if (figureType == "Free" && uimode == "CreateFigure"){
+        if (figureType == "Free" && uimode == "CreateFigure") {
             if(p2 != null && !(isFirstPoint)) {
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
@@ -2161,7 +2161,7 @@ function mousemoveevt(ev, t) {
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
                 }
             }
-        }else if(uimode == "CreateFigure" && figureType == "Square"){
+        }else if(uimode == "CreateFigure" && figureType == "Square") {
             ctx.setLineDash([3, 3]);
             ctx.beginPath(1);
             ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
@@ -2178,7 +2178,7 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
-        }else if (uimode == "CreateEREntity"){
+        }else if (uimode == "CreateEREntity") {
             ctx.setLineDash([3, 3]);
             ctx.beginPath(1);
             ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
@@ -2195,7 +2195,7 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
-        } else if(uimode == "CreateERRelation"){
+        } else if(uimode == "CreateERRelation") {
             ctx.setLineDash([3, 3]);
             var midx = startMouseCoordinateX+((currentMouseCoordinateX-startMouseCoordinateX)/2);
             var midy = startMouseCoordinateY+((currentMouseCoordinateY-startMouseCoordinateY)/2);
@@ -2214,7 +2214,7 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
-        } else if(uimode == "CreateERAttr"){
+        } else if(uimode == "CreateERAttr") {
             ctx.setLineDash([3, 3]);
             drawOval(startMouseCoordinateX, startMouseCoordinateY, currentMouseCoordinateX, currentMouseCoordinateY);
             ctx.strokeStyle = "#000";
@@ -2262,7 +2262,7 @@ function mousemoveevt(ev, t) {
 
 function mousedownevt(ev) {
 
-    if(uimode == "Moved" && md != 4){
+    if(uimode == "Moved" && md != 4) {
         uimode = "normal";
         md = 0;
     }
@@ -2295,11 +2295,11 @@ function mousedownevt(ev) {
         handleSelect();
     } else {
         md = 4; // Box select or Create mode.
-        if(uimode != "CreateFigure"){
+        if(uimode != "CreateFigure") {
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
         }
-        if(uimode != "MoveAround" && !ctrlIsClicked){
+        if(uimode != "MoveAround" && !ctrlIsClicked) {
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
             }
@@ -2322,13 +2322,13 @@ function handleSelect() {
         // Will add multiple selected diagram objects if the
         // CTRL/CMD key is currently active
         if (ctrlIsClicked) {
-            if(selected_objects.indexOf(last) < 0){
+            if(selected_objects.indexOf(last) < 0) {
                 selected_objects.push(last);
                 last.targeted = true;
             }
             for (var i = 0; i < selected_objects.length; i++) {
                 if (selected_objects[i].targeted == false) {
-                    if(selected_objects.indexOf(last) < 0){
+                    if(selected_objects.indexOf(last) < 0) {
                         selected_objects.push(last);
                     }
                     selected_objects[i].targeted = true;
@@ -2339,10 +2339,10 @@ function handleSelect() {
             selected_objects.push(last);
             last.targeted = true;
         }
-    } else if(uimode != "MoveAround"){
-        if(ctrlIsClicked){
+    } else if(uimode != "MoveAround") {
+        if(ctrlIsClicked) {
             var index = selected_objects.indexOf(last);
-            if(index > -1){
+            if(index > -1) {
                 selected_objects.splice(index, 1);
             }
             last.targeted = false;
@@ -2354,7 +2354,7 @@ function handleSelect() {
 
 function mouseupevt(ev) {
     if (uimode == "CreateFigure" && md == 4) {
-        if(figureType == "Text"){
+        if(figureType == "Text") {
             createText(currentMouseCoordinateX, currentMouseCoordinateY);
         }
         createFigure();
@@ -2378,7 +2378,7 @@ function mouseupevt(ev) {
         //Check if you release on canvas or try to draw a line from entity to entity
          if (hovobj == -1 || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 3) {
             md = 0;
-         }else{
+         }else {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
 
@@ -2386,7 +2386,7 @@ function mouseupevt(ev) {
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if(symbolStartKind != 4 && symbolEndKind != 4){
+            if(symbolStartKind != 4 && symbolEndKind != 4) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == 2) {
                     p1 = diagram[lineStartObj].centerPoint;
@@ -2395,30 +2395,30 @@ function mouseupevt(ev) {
                 }
 
                 //Code for making sure enitities not connect to the same attribute multiple times
-                if(symbolEndKind == 3 && symbolStartKind == 2){
-                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0){
+                if(symbolEndKind == 3 && symbolStartKind == 2) {
+                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
                         okToMakeLine= false;
                     }
-                } else if(symbolEndKind == 2 && symbolStartKind == 3){
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0){
+                } else if(symbolEndKind == 2 && symbolStartKind == 3) {
+                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0) {
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == 3 && symbolStartKind == 5) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
                 } else if(symbolEndKind == 5 && symbolStartKind == 3) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == 5 && symbolStartKind == 5){
+                } else if(symbolEndKind == 5 && symbolStartKind == 5) {
                     okToMakeLine = false;
                 } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)){
                     okToMakeLine = false;
                 }
                 if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
-                if(okToMakeLine){
+                if(okToMakeLine) {
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     if (diagram[hovobj].symbolkind == 2) {
                         p2 = diagram[hovobj].centerPoint;
-                    } else{
+                    } else {
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     }
                     diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
@@ -2473,7 +2473,7 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (uimode == "CreateLine" && md == 4){
+    } else if (uimode == "CreateLine" && md == 4) {
         //Code for making a line, if start and end object are different, except attributes
         if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine){
             erLineA = new Symbol(4); // Lines
@@ -2507,7 +2507,7 @@ function mouseupevt(ev) {
     }
     else if(uimode != "Moved" && !ctrlIsClicked && md != 4) {
         //Unselects every object.
-        for(var i = 0; i < diagram.length; i++){
+        for(var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
         }
         //Sets the clicked object as targeted
@@ -2583,7 +2583,8 @@ function resize() {
             currentMouseCoordinateY = startMouseCoordinateY;
             startMouseCoordinateY = tempY;
         }
-        if(uimode == "CreateERRelation" && (currentMouseCoordinateX - startMouseCoordinateX < relationTemplate.width || currentMouseCoordinateY - startMouseCoordinateY < relationTemplate.height)){
+        if(uimode == "CreateERRelation" && (currentMouseCoordinateX - startMouseCoordinateX < relationTemplate.width 
+            || currentMouseCoordinateY - startMouseCoordinateY < relationTemplate.height)) {
             currentMouseCoordinateX = startMouseCoordinateX + relationTemplate.width;
             currentMouseCoordinateY = startMouseCoordinateY + relationTemplate.height;
         }
@@ -2620,11 +2621,11 @@ function movemode(e, t) {
     }
 }
 
-function activateMovearound(){
+function activateMovearound() {
    movemode();
 }
 
-function deactivateMovearound(){
+function deactivateMovearound() {
     movemode();
 }
 
@@ -2658,7 +2659,7 @@ function mouseupcanvas(e) {
 // Basic functionality
 // The building blocks for creating the menu
 //--------------------------------------------------------------------
-function showMenu(){
+function showMenu() {
     canvas.style.cursor = "default";
     $("#appearance").show();
     $("#appearance").width("auto");
@@ -2682,7 +2683,7 @@ function closeAppearanceDialogMenu() {
      * Closes the dialog menu for appearance.
      */
      //if the X
-     if(globalAppearanceValue == 1){
+     if(globalAppearanceValue == 1) {
        var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
        if (tmpDiagram != null) LoadImport(tmpDiagram);
      }
@@ -2735,15 +2736,15 @@ function dimDialogMenu(dim) {
 }
 
 // Loads the menu which is used to change apperance of ER and free draw objects.
-function loadFormIntoElement(element, dir){
+function loadFormIntoElement(element, dir) {
   //Ajax
   var file = new XMLHttpRequest();
   file.open('GET', dir);
-  file.onreadystatechange = function(){
+  file.onreadystatechange = function() {
 
-    if(file.readyState === 4){
+    if(file.readyState === 4) {
       element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 2){
+      if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 2) {
         document.getElementById('nametext').value = diagram[lastSelectedObject].name;
         setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
         setSelectedOption('symbolColor', diagram[lastSelectedObject].properties['symbolColor']);
@@ -2751,7 +2752,7 @@ function loadFormIntoElement(element, dir){
         setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
         setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
         setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
-      }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1){
+      }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1) {
         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
         document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
         setSelectedOption('LineColor', diagram[lastSelectedObject].strokeColor);
@@ -2762,14 +2763,14 @@ function loadFormIntoElement(element, dir){
 }
 
 // Loads the menu to change cardinality
-function loadLineForm(element, dir){
+function loadLineForm(element, dir) {
     //Ajax
     var file = new XMLHttpRequest();
     file.open('GET', dir);
-    file.onreadystatechange = function(){
-        if(file.readyState === 4){
+    file.onreadystatechange = function() {
+        if(file.readyState === 4) {
             element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0){
+            if(globalAppearanceValue == 0) {
                 var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value
                 var cardinalityValUML = diagram[lastSelectedObject].cardinality[0].valueUML;
                 var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
@@ -2785,22 +2786,22 @@ function loadLineForm(element, dir){
 }
 
 //Loads the appearance menu for UML-class
-function loadUMLForm(element, dir){
+function loadUMLForm(element, dir) {
   var file = new XMLHttpRequest();
   file.open('GET', dir);
-  file.onreadystatechange = function(){
-    if(file.readyState === 4){
+  file.onreadystatechange = function() {
+    if(file.readyState === 4) {
       element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0){
+      if(globalAppearanceValue == 0) {
         var attributesText = "";
         var operationsText = "";
         var attributesTextArea = document.getElementById('UMLAttributes');
         var operationsTextArea = document.getElementById('UMLOperations');
-        for(var i = 0; i < diagram[lastSelectedObject].attributes.length;i++){
+        for(var i = 0; i < diagram[lastSelectedObject].attributes.length;i++) {
           attributesText += diagram[lastSelectedObject].attributes[i].text;
           if(i < diagram[lastSelectedObject].attributes.length - 1) attributesText += "\n";
         }
-        for(var i = 0; i < diagram[lastSelectedObject].operations.length;i++){
+        for(var i = 0; i < diagram[lastSelectedObject].operations.length;i++) {
           operationsText += diagram[lastSelectedObject].operations[i].text
           if(i < diagram[lastSelectedObject].operations.length - 1) operationsText += "\n";
         }
@@ -2814,13 +2815,13 @@ function loadUMLForm(element, dir){
   file.send();
 }
 //Loads the appearance menu for text
-function loadTextForm(element, dir){
+function loadTextForm(element, dir) {
   var file = new XMLHttpRequest();
   file.open('GET', dir);
-  file.onreadystatechange = function(){
-    if(file.readyState === 4){
+  file.onreadystatechange = function() {
+    if(file.readyState === 4) {
       element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0){
+      if(globalAppearanceValue == 0) {
         var text = "";
         var textarea = document.getElementById('freeText');
         for (var i = 0; i < diagram[lastSelectedObject].textLines.length; i++) {
@@ -2839,14 +2840,14 @@ function loadTextForm(element, dir){
 }
 
 // used to implement the changes to apperances that has been made
-function setSelectedOption(type, value){
-  if(type != null){
-    for(var i = 0; i < document.getElementById(type).options.length; i++){
-      if(value == document.getElementById(type).options[i].value){
+function setSelectedOption(type, value) {
+  if(type != null) {
+    for(var i = 0; i < document.getElementById(type).options.length; i++) {
+      if(value == document.getElementById(type).options[i].value) {
         document.getElementById(type).value = value;
         document.getElementById(type).options[i].selected = "true";
         break;
-      }else{
+      }else {
         document.getElementById(type).options[i].selected = "false";
       }
     }
@@ -2858,7 +2859,7 @@ function setSelectedOption(type, value){
 // Different types of dialog windows
 //--------------------------------------------------------------------
 
-function globalAppearanceMenu(){
+function globalAppearanceMenu() {
     globalAppearanceValue = 1;
     //open a menu to change appearance on all entities.
     $(".loginBox").draggable();
@@ -2874,7 +2875,7 @@ function objectAppearanceMenu(form) {
 
     form.innerHTML = "No item selected<type='text'>";
     //if no item has been selected
-    if(!diagram[lastSelectedObject]){ return;}
+    if(!diagram[lastSelectedObject]) { return;}
     // UML selected
     if (diagram[lastSelectedObject].symbolkind == 1) {
         classAppearanceOpen = true;
@@ -2906,11 +2907,11 @@ function objectAppearanceMenu(form) {
         loadFormIntoElement(form, 'diagram_forms.php?form=figureType');
     }
 }
-function changeObjectAppearance(object_type){
+function changeObjectAppearance(object_type) {
     /*
     * USES DIALOG TO CHANGE OBJECT APPEARANCE
     */
-    if(diagram[lastSelectedObject].symbolkind == 1){//UML-class appearance
+    if(diagram[lastSelectedObject].symbolkind == 1) {//UML-class appearance
       diagram[lastSelectedObject].name = document.getElementById('nametext').value;
       var attributeLines = $('#UMLAttributes').val().split('\n');
       var operationLines = $('#UMLOperations').val().split('\n');
@@ -2918,23 +2919,23 @@ function changeObjectAppearance(object_type){
       diagram[lastSelectedObject].operations = [];
 
       //Inserts text for attributes and operations
-      for(var i = 0;i < attributeLines.length;i++){
+      for(var i = 0;i < attributeLines.length;i++) {
         diagram[lastSelectedObject].attributes.push({text:attributeLines[i]});
       }
-      for(var i = 0; i < operationLines.length; i++){
+      for(var i = 0; i < operationLines.length; i++) {
         diagram[lastSelectedObject].operations.push({text:operationLines[i]});
       }
 
     } else if (diagram[lastSelectedObject].symbolkind == 4) {
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
-    } else if (diagram[lastSelectedObject].kind == 1){
+    } else if (diagram[lastSelectedObject].kind == 1) {
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
         diagram[lastSelectedObject].strokeColor = document.getElementById('LineColor').value;
     } else if (diagram[lastSelectedObject].symbolkind == 6) {
         diagram[lastSelectedObject].textLines = [];
         var textArray = $('#freeText').val().split('\n');
-        for(var i = 0; i < textArray.length; i++){
+        for(var i = 0; i < textArray.length; i++) {
           diagram[lastSelectedObject].textLines.push({text:textArray[i]});
         }
         diagram[lastSelectedObject].properties['fontColor'] = document.getElementById('fontColor').value;
@@ -2953,7 +2954,7 @@ function changeObjectAppearance(object_type){
     updateGraphics();
 }
 
-function createCardinality(){
+function createCardinality() {
     //Setting cardinality on new line
     if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3){
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
@@ -2965,20 +2966,20 @@ function createCardinality(){
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
     }
 }
-function changeCardinality(isUML){
+function changeCardinality(isUML) {
     var val = document.getElementById('cardinality').value;
     var valUML;
-    if(isUML){
+    if(isUML) {
         valUML = document.getElementById('cardinalityUml').value;
     }
 
     //Setting existing cardinality value on line
     if(val == "None") val = "";
     if(valUML == "None") valUML = "";
-    if(diagram[lastSelectedObject].cardinality[0].value != null){
-        if(diagram[lastSelectedObject].cardinality[0].symbolKind != 1){
+    if(diagram[lastSelectedObject].cardinality[0].value != null) {
+        if(diagram[lastSelectedObject].cardinality[0].symbolKind != 1) {
             diagram[lastSelectedObject].cardinality[0].value = val;
-        } else{
+        } else {
             diagram[lastSelectedObject].cardinality[0].valueUML = valUML;
             diagram[lastSelectedObject].cardinality[0].value = val;
         }
