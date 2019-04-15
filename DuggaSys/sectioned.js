@@ -925,6 +925,7 @@ function returnedSection(data) {
           var dayOfSubmit = submitted.toJSON().slice(8, 10).replace(/-/g, '-');
           var myDate = new Date();
           myDate.setFullYear(yearOfSubmit, monthOfSubmit, dayOfSubmit);
+          console.log("myDate =: ", myDate)
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
           //FIXME
