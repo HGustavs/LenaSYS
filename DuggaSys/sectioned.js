@@ -1477,6 +1477,6 @@ function mail() {
 }
 
 function hasGraceTimeExpired(parameterMyDate, parameterDeadline) {
-  console.log("Deadline dagen är: " , parameterDeadline.getDay(), " timmen är: ", parameterDeadline.getHours(), " minuten är: ", parameterDeadline.getMinutes());
+  console.log("Submit dagen är: " , parameterMyDate.getDay(), " timmen är: ", parameterMyDate.getHours(), " minuten är: ", parameterMyDate.getMinutes());
     return true;
 }
