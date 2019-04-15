@@ -2956,13 +2956,14 @@ table {
 
 #searchinput {
   margin-right: 0;
+  margin-bottom: 10px;
   margin-top: 10px;
   border-right: 0;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   border: 1px solid #ccc;
   border-bottom: 0;
-  padding: 5px 5px 5px 2px;
+  padding: 0 0 0 2px;
 }
 
 #searchbutton {
