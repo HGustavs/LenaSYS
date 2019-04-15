@@ -929,7 +929,7 @@ function returnedSection(data) {
 
           // create a warning if the dugga is submitted after the set deadline
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline. $myDate' src='../Shared/icons/warningTriangle.svg'/></td>";
+            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.',myDate src='../Shared/icons/warningTriangle.svg'/></td>";
           }
         }
 
