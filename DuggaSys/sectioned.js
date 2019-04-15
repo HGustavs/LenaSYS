@@ -923,23 +923,27 @@ function returnedSection(data) {
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
           // create a warning if the dugga is submitted after the set deadline
-  //        if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-  //          str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
-  //        }
-  //      }
+/*          if ((status === "pending") && (dateTimeSubmitted > deadline)) {
+            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+          }
+        }
+        */
+
+        if ((status === "pending") && (dateTimeSubmitted > deadline)) {
+          str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='Testing shit' src='../Shared/icons/warningTriangle.svg'/></td>";
+        }
+      }
 
         // Tests FIXME
-        var is_weekend =  function(date1){
+/*        var is_weekend =  function(date1){
         var dt = new Date(date1);
 
         if(dt.getDay() == 6 || dt.getDay() == 0)
           {
-            if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='Test WEEKEND' src='../Shared/icons/warningTriangle.svg'/></td>";
-            }
+            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='Test WEEKEND' src='../Shared/icons/warningTriangle.svg'/></td>";
           }
         }
-
+*/
         // Cog Wheel
         if (data['writeaccess']) {
           str += "<td style='width:32px;' ";
