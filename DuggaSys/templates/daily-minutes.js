@@ -4,11 +4,13 @@
 
 *********************************************************************************
 
-Example seed
----------------------
-	 Example seed
-	 Param: {"type":"pdf","filelink":"instructions.pdf", "submissions":[{"fieldname":"Inl1Document","type":"pdf"},{"fieldname":"Inl2Document","type":"zip", "instruction":"Zip your project folder and submit the file here."},{"fieldname":"Inl3Document","type":"multi", "instruction":"Upload all of your graphics, i.e., all the generated png and svg files."}]}
-	 Answer:
+Use daily-minutes as template when creating the dugga in the test editor. 
+Add custom instructions via the variant parameters. Example parameters:
+{"type":"html","filelink":"daily-minutes-instructions.html","submissions":
+[{"type":"timesheet","fieldname":"timesheet","instruction":"Fyll i din aktivitet i projektet"}]}
+
+Data is saved to the timesheet table in the database, and to DuggaSys/submissions/cid/vers/duggaid/user/.
+
 -------------==============######## Documentation End ###########==============-------------
 */
 
