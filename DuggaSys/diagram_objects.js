@@ -6,6 +6,7 @@
 
 //--------------------------------------------------------------------
 // Symbol - stores a diagram symbol
+// Function Symbol() handles the CREATE-functions in the diagram.
 //--------------------------------------------------------------------
 function Symbol(kind) {
     this.kind = 2;                  // Diagram object kind is always 2 for symbols
@@ -537,7 +538,7 @@ function Symbol(kind) {
     }
 
     //-------------------------------------------------------------------------------
-    //init four points, the four corners based on the two cornerpoints in the symbol.
+    // init four points, the four corners based on the two cornerpoints in the symbol.
     //-------------------------------------------------------------------------------
     function getCorners(p1, p2){
     	if(p1.x < p2.x){
@@ -1097,7 +1098,6 @@ function Symbol(kind) {
 		    else if(cardinality.axis == "Y"){   
 		        cardinality.y = y2 > y1 ? y2+10 : y2-10;                    
 		    }
-
 	    }
     }
 
@@ -1476,7 +1476,8 @@ function getCorrectCorner(cardinality, ltlx, ltly, lbrx, lbry){
 }
 
 //--------------------------------------------------------------------
-// path - stores a number of segments
+// Path - stores a number of segments
+// Function Path() handles e.g the two DRAW-functions in the diagram.
 //--------------------------------------------------------------------
 
 function Path() {
@@ -1486,7 +1487,7 @@ function Path() {
     this.tmplist = Array();         // Temporary list for testing of intersections
     this.auxlist = Array();         // Auxillary temp list for testing of intersections
     this.fillColor = '#ffffff';     // Fill color (default is white)
-    this.opacity = 1;               // Opacity valuefor figures
+    this.opacity = 1;               // Opacity value for figures
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
     this.targeted = true;           // An organized path can contain several sub-path, each of which must be organized
     this.figureType = "Square";
@@ -1494,6 +1495,7 @@ function Path() {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
     };
+
     //--------------------------------------------------------------------
     // Performs a delta-move on all points in a path
     //--------------------------------------------------------------------
