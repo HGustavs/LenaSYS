@@ -1423,7 +1423,7 @@ function lockSelected(){
 
 function align(mode){
     for(var i = 0; i < diagram.length; i++){
-        if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1){
+        if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1 && diagram[i].symbolkind != 4){
             selected_objects.push(diagram[i]);
         }
     }
