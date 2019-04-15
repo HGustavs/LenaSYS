@@ -36,6 +36,7 @@ var canvasMouseX = 0;               // Variable for the mouse coordinate X in th
 var canvasMouseY = 0;               // Variable for the mouse coordinate Y in the canvas on the diagram page.
 var zoomValue = 1.00;
 var md = 0;                         // Mouse state
+var globalMouseState = 0;           // Global mouse state (not only for canvas)
 var hovobj = -1;
 var lineStartObj = -1;
 var movobj = -1;                    // Moving object ID

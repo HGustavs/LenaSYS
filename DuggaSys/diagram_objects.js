@@ -1970,13 +1970,30 @@ function figureFreeDraw() {
     }
 }
 
+function mouseDown() { 
+    globalMouseState = 1;
+}
+
+function mouseUp() {
+    globalMouseState = 0;
+}
+
+function toggleFirstPoint(){
+    if(globalMouseState == 0){
+        isFirstPoint = false;
+    }
+    else {
+        isFirstPoint = true;
+    }
+}
+
 //--------------------------------------------------------------------
 // Draws a square between p1 and p2.
 //--------------------------------------------------------------------
 function figureSquare() {
     if (isFirstPoint) {
         p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-        isFirstPoint = false;
+        toggleFirstPoint();
     } else {
         p3 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         p2 = points.addPoint(points[p1].x, points[p3].y, false);
