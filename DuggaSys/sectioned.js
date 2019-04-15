@@ -931,7 +931,6 @@ function returnedSection(data) {
           // create a warning if the dugga is submitted after the set deadline
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
             if (hasGraceTimeExpired(myDate, deadline)) {
-              alert(myDate.getTime);
               str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
             }
           }
@@ -1478,6 +1477,6 @@ function mail() {
 }
 
 function hasGraceTimeExpired(parameterMyDate, parameterDeadline) {
-  console.log("Deadline tiden är: " , parameterDeadline.getTime);
+  console.log("Deadline dagen är: " , parameterDeadline.getDay(), " timmen är: ", parameterDeadline.getHours(), " minuten är: ", parameterDeadline.getMinutes());
     return true;
 }
