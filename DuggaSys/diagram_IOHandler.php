@@ -143,7 +143,7 @@ include '../Shared/navheader.php';
     ?>
 
 
-<!--------------------------------------------------------
+<!---------------------------------------------------------
     The Appearance menu. Default state is display: none; 
 ---------------------------------------------------------->
 <div id="appearance" class='loginBox' style='display: none;'>
