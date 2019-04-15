@@ -27,13 +27,12 @@ function setup()
 function newRow() {
 	var tsTableBody = document.getElementById("tsTableBody");
 	var tblRows = tsTableBody.childNodes;
-	var lastRowIdx = parseInt(tblRows[tblRows.length - 1].attributes[1].value);
-	var idx = lastRowIdx += 1;
+	var idx = tblRows.length;
 	var inputRows = document.getElementsByClassName("tsInputRow");
 	var str = "";
 
 	for (var i = 0; i < inputRows.length; i++) {
-		str += "<tr class='tsInputRow' data-idx="+i+"><td>";
+		str += "<tr class='tsInputRow' id=tsTableRow_"+i+"><td>";
 		var inputValue = document.getElementById("tsDate_"+i).value;
 		str += "<input id='tsDate_"+i+"' required type='date' name='tsDate_"+i+"' value="+inputValue+" /></td>";
 		inputValue = document.getElementById("tsType_"+i).value;
@@ -47,17 +46,27 @@ function newRow() {
 		inputValue = document.getElementById("tsRef_"+i).value;
 		str += "<td><input id='tsRef_"+i+"' required type='number' name='tsRef_"+i+"' style='width: 55px' value="+inputValue+" /></td>";
 		inputValue = document.getElementById("tsComment_"+i).value;
-		str +="<td><input id='tsComment_"+i+"' required type='text' name='tsComment_"+i+"' style='width: 500px' value="+inputValue+" /></td>";
+		str += "<td><input id='tsComment_"+i+"' required type='text' name='tsComment_"+i+"' style='width: 500px' value="+inputValue+" /></td>";
+		if (i > 0) {
+			str += "<td style='background: #ff3f4c; cursor: pointer' onclick='deleteRow("+i+")'>X</td>";
+		}
 	}
-	str += "<tr class='tsInputRow' data-idx="+idx+"><td>";
+	str += "<tr class='tsInputRow' id=tsTableRow_"+idx+"><td>";
 	str += "<input id='tsDate_"+idx+"' required type='date' name='tsDate_"+idx+"' /></td>";
 	str += "<td><select id='tsType_"+idx+"' required name='tsType_"+idx+"'>";
 	str += "<option value='issue'>Issue</option><option value='pullrequest'>Pull request</option>";
 	str += "</select></td>";
 	str += "<td><input id='tsRef_"+idx+"' required type='number' name='tsRef_"+idx+"' style='width: 55px' /></td>";
-	str +="<td><input id='tsComment_"+idx+"' required type='text' name='tsComment_"+idx+"' style='width: 500px' /></td>";
+	str += "<td><input id='tsComment_"+idx+"' required type='text' name='tsComment_"+idx+"' style='width: 500px' /></td>";
+	str += "<td style='background: #ff3f4c; cursor: pointer' onclick='deleteRow("+idx+")'>X</td>";
 
 	tsTableBody.innerHTML = str;
+}
+
+function deleteRow(row) {
+	var tsTableBody = document.getElementById("tsTableBody");
+	var row = document.getElementById("tsTableRow_"+row);
+	tsTableBody.removeChild(row);
 }
 
 function returnedDugga(data)
@@ -288,7 +297,7 @@ function createFileUploadArea(){
 	form +="<table class='tsTable'><thead>";
 	form +="<th>Datum</th><th>Issue/Pull Request</th>";
 	form +="<th>Nummer</th><th>Kommentar</th></thead>";	
-	form +="<tbody id='tsTableBody'><tr class='tsInputRow' data-idx=0>";
+	form +="<tbody id='tsTableBody'><tr class='tsInputRow' id='tsTableRow_0'>";
 	form +="<td><input id='tsDate_0' required type='date' name='tsDate_0' /></td>";
 	form +="<td><select id='tsType_0' required name='tsType_0'>";
 	form +="<option value='issue'>Issue</option><option value='pullrequest'>Pull request</option>";

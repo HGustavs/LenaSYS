@@ -134,13 +134,14 @@ if($ha){
 			$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
 			$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;	
 			file_put_contents($movname, $formattedInput);
-
-			$postEntries = count(preg_grep("/ts.+_\d/", array_keys($_POST))) / 4;
+			
+			$indexedPOST = array_values($_POST);
+			$postEntries = count(preg_grep("/ts.+_\d+/", array_keys($_POST))) / 4;
 			for($entryIdx = 0; $entryIdx < $postEntries; $entryIdx++) {
-				$date=getOP('tsDate_'.$entryIdx);					
-				$type=getOP('tsType_'.$entryIdx);
-				$ref=getOP('tsRef_'.$entryIdx);
-				$comment=getOP('tsComment_'.$entryIdx);
+				$date=$indexedPOST[0 + ($entryIdx * 4)];					
+				$type=$indexedPOST[1 + ($entryIdx * 4)];
+				$ref=$indexedPOST[2 + ($entryIdx * 4)];
+				$comment=$indexedPOST[3 + ($entryIdx * 4)];
 
 				$query = $pdo->prepare("INSERT INTO timesheet(uid, cid, did, vers, moment, day, type, reference, comment) VALUES(:uid,:cid,:did,:vers,:moment,:date,:type,:reference,:comment);");
 				$query->bindParam(':uid', $userid);
@@ -358,16 +359,16 @@ if(!$error){
 		echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
 function formatTimeSheetInput(){
-	$entries = (count($_POST) - 7) / 4;
 	$inputString = "";
-
+	$indexedPOST = array_values($_POST);
+	$entries = count(preg_grep("/ts.+_\d+/", array_keys($_POST))) / 4;
 	for($entryIdx = 0; $entryIdx < $entries; $entryIdx++) {
-		$date=getOP('tsDate_'.$entryIdx);					
-		$type=getOP('tsType_'.$entryIdx);
-		$number=getOP('tsRef_'.$entryIdx);
-		$comment=getOP('tsComment_'.$entryIdx);
+		$date=$indexedPOST[0 + ($entryIdx * 4)];					
+		$type=$indexedPOST[1 + ($entryIdx * 4)];
+		$ref=$indexedPOST[2 + ($entryIdx * 4)];
+		$comment=$indexedPOST[3 + ($entryIdx * 4)];
 
-		$inputString .= $date." - ".$type." #".$number.": ".$comment."\n";
+		$inputString .= $date." - ".$type." #".$ref.": ".$comment."\n";
 	}
 	
 	return $inputString;
