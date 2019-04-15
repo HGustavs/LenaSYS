@@ -1460,9 +1460,13 @@ function addClasses() {
   var links = document.getElementsByTagName('a');
 
   for (var i = 0; i < links.length; i++) {
-    if (link_is_external(links[i])) {
+    if ((links[i].innerHTML.indexOf("Example") !== -1) || (links[i].innerHTML.indexOf("Exempel") !== -1)) {
+      links[i].classList.add("internal-link");
+    }
+    else if (link_is_external(links[i])) {
       links[i].classList.add("external-link");
-    } else {
+    }
+    else {
       links[i].classList.add("internal-link");
     }
   }
