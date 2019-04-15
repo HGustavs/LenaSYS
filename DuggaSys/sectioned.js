@@ -920,18 +920,12 @@ function returnedSection(data) {
         if (submitted) {
           var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
           var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
-          var yearOfSubmit = submitted.toJSON().slice(0, 4).replace(/-/g, '-');
-          var monthOfSubmit = submitted.toJSON().slice(5, 7).replace(/-/g, '-');
-          var dayOfSubmit = submitted.toJSON().slice(8, 10).replace(/-/g, '-');
-          var myDate = new Date();
-          myDate.setFullYear(yearOfSubmit, monthOfSubmit, dayOfSubmit);
-          console.log("myDate =: ", myDate)
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
           //FIXME
           // create a warning if the dugga is submitted after the set deadline
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-            if (hasGraceTimeExpired(myDate, deadline, dateTimeSubmitted)) {
+            if (hasGraceTimeExpired(deadline, dateTimeSubmitted)) {
               str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
             }
           }
@@ -1477,10 +1471,9 @@ function mail() {
   });
 }
 
-function hasGraceTimeExpired(myDate, deadline, dateTimeSubmitted) {
-  //console.log("Submit dagen är: " , parameterMyDate.getDay(), " timmen är: ", parameterMyDate.getHours(), " minuten är: ", parameterMyDate.getMinutes());
+function hasGraceTimeExpired(deadline, dateTimeSubmitted) {
   var m_dateTimeSubmitted = new Date(dateTimeSubmitted);
-  var graceDeadline = new Date(m_dateTimeSubmitted);
+  var graceDeadline = new Date(deadline);
   var m_deadline = new Date(deadline);
   console.log(graceDeadline);
 
