@@ -397,8 +397,12 @@ p {
   color: #C47FAA;
 }
 
+.example-link:hover {
+  color: #C47FAA;
+}
+
 .internal-link:hover {
-  color: #A96FC4;
+  color: #B06DC3;
 }
 
 .external-link:hover {
