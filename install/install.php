@@ -6,6 +6,12 @@
 </head>
 <body>
     <?php
+    // Saving away old execution time setting and setting new to 120 (default is 30).
+    // this is done in order to avoid a php timeout, especially on windows where Database
+    // query time also affects php executiion time. This will not work when php is running
+    // in safe mode.
+    $timeOutSeconds = ini_get('max_execution_time');
+    set_time_limit(120);
     $errors = 0;
     // Create a version of dirname for <PHP7 compability
     function cdirname($path, $level) {
@@ -42,13 +48,13 @@
     $putFileHere = cdirname(getcwd(), 1); // Path to lenasys
     echo "
                     <div id='warning' class='modal'>
-                
+
                         <!-- Modal content -->
                         <div class='modal-content'>
                             <span title='Close pop-up' class='close''>&times;</span>
                                 <span id='dialogText'></span>
                         </div>
-                
+
                     </div>";
     ?>
 
@@ -428,13 +434,13 @@
         /* Pop-up window when installation is done. Hidden from start. */
         echo "
                     <div id='warning' class='modal'>
-                
+
                         <!-- Modal content -->
                         <div class='modal-content'>
                             <span title='Close pop-up' class='close''>&times;</span>
                                 <span id='dialogText'></span>
                         </div>
-                
+
                     </div>";
 
         /* Javascripts for warning pop-up */
@@ -445,12 +451,12 @@
                 var btn = document.getElementById('showModalBtn'); // Get the button that opens the modal
                 var span = document.getElementsByClassName('close')[0]; // Get the button that opens the modal
                 var filePath = '{$putFileHere}';
-                
+
                 document.getElementById('dialogText').innerHTML = '<div><h1>!!!WARNING!!!</h1><br>' +
                     '<h2>READ INSTRUCTIONS UNDER INSTALL PROGRESS.</h2>' +
                     '<p>If you don\'t follow these instructions nothing will work. Group 3 will not take any ' +
                     'responsibility for your failing system.</p>';
-                
+
                 // When the user clicks on <span> (x), close the modal
                 span.onclick = function() {
                     modal.style.display = 'none';
@@ -514,17 +520,17 @@
             truncateDecimals = function (number) {
                 return Math[number < 0 ? 'ceil' : 'floor'](number);
             };
-            
+
             var totalSteps = {$totalSteps};
             var completedStepsLatest = 0; // This variable is used on window resize.
-            
+
             function updateProgressBar(completedSteps){
                 var totalWidth = document.getElementById(\"progressBar\").clientWidth;
                 var stepWidth = totalWidth / totalSteps;
                 var completedWidth;
-                
-                /* if window was resized (completedsteps = -1) take latest copleted steps. 
-                 * Else update to new completed step. 
+
+                /* if window was resized (completedsteps = -1) take latest copleted steps.
+                 * Else update to new completed step.
                  */
                 if (completedSteps === -1) {
                     completedWidth = stepWidth * completedStepsLatest;
@@ -532,15 +538,15 @@
                     completedStepsLatest = completedSteps;
                     completedWidth = stepWidth * completedSteps;
                 }
-                
+
                 /* Calculate length */
                 document.getElementById(\"progressRect\").setAttribute(\"width\", \"\" + completedWidth + \"\");
-                
+
                 /* Update percentage text */
-                document.getElementById(\"percentageText\").innerHTML = \"\" + 
-                truncateDecimals((document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth) * 100) + 
+                document.getElementById(\"percentageText\").innerHTML = \"\" +
+                truncateDecimals((document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth) * 100) +
                 \"%\";
-                
+
                 /* Decide color depending on how far progress has gone */
                 if (document.getElementById(\"progressRect\").getAttribute(\"width\") / totalWidth < 0.33){
                     document.getElementById(\"progressRect\").setAttribute(\"fill\", \"rgb(197,81,83)\");
@@ -618,7 +624,7 @@
                 echo "<span id='successText' />Successfully removed old user, {$username}.</span><br>";
                 } catch (PDOException $e) {
                 $errors++;
-                echo "<span id='failText' />User with name {$username} 
+                echo "<span id='failText' />User with name {$username}
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
                 $completedSteps++;
@@ -633,7 +639,7 @@
                     echo "<span id='successText' />Successfully removed old database, {$databaseName}.</span><br>";
                 } catch (PDOException $e) {
                     $errors++;
-                    echo "<span id='failText' />Database with name {$databaseName} 
+                    echo "<span id='failText' />Database with name {$databaseName}
                             does not already exist. Will only make a new one (not write over).</span><br>";
                 }
                 $completedSteps++;
@@ -771,6 +777,8 @@
         echo "<b>Installation finished.</b><br>";
         flush();
         ob_flush();
+        // resetting timeout to what it was prior to installation
+        set_time_limit($timeOutSeconds);
         echo "</div>";
         echo "<div id='inputFooter'><span title='Show or hide progress.'  id='showHideInstallation'>Show/hide installation progress.</span><br>
                 <span id='errorCount'>Errors: " . $errors . "</span></div>"; # Will show how many errors installation finished with.
@@ -784,22 +792,38 @@
         $putFileHere = cdirname(getcwd(), 2); // Path to lenasys
         echo "<div id='doThisWrapper'>";
         echo "<h1><span id='warningH1' />!!!READ BELOW!!!</span></h1>";
-        echo "<br><b>To make installation work please make a
-            file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
+        // Trying to put content and/or create coursesyspw.php.
+        // If there already is a file it will be filled with the entered
+        // credentials in case they don't match what was originally in the file
+        // and if no file exists create one with credentials, if it fails
+        // give instructions on how to create the file.
+        try {
+          // Start of Content to put in coursesyspw.
+          $filePutContent = "<?php
+define(\"DB_USER\",\"".$username."\");
+define(\"DB_PASSWORD\",\"".$password."\");
+define(\"DB_HOST\",\"".$serverName."\");
+define(\"DB_NAME\",\"".$databaseName."\");
+?>";
+          // end of coursesyspw content
+          file_put_contents($putFileHere."/coursesyspw.php",$filePutContent);
+        } catch (\Exception $e) {
+          echo "<br><b>To make installation work please make a
+          file named 'coursesyspw.php' at {$putFileHere} with some code.</b><br>";
+          echo "<b>We tried to create one for you but an error occured: see below how to do it yourself! </b></br>";
+          echo "<b>Bash command to complete all this (Copy all code below/just click the box and paste it into bash shell as one statement):</b><br>";
+          echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox1\")'><code id='codeBox1'>";
+          echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
+          echo 'define(\"DB_USER\",\"' . $username . '\");\n';
+          echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
+          echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
+          echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
+          echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
+          echo "</code></div>";
+          echo '<div id="copied1">Copied to clipboard!<br></div>';
+        }
 
-        echo "<b>Bash command to complete all this (Copy all code below/just click the box and paste it into bash shell as one statement):</b><br>";
-        echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox1\")'><code id='codeBox1'>";
-        echo 'sudo printf "' . htmlspecialchars("<?php") . '\n';
-        echo 'define(\"DB_USER\",\"' . $username . '\");\n';
-        echo 'define(\"DB_PASSWORD\",\"' . $password . '\");\n';
-        echo 'define(\"DB_HOST\",\"' . $serverName . '\");\n';
-        echo 'define(\"DB_NAME\",\"' . $databaseName . '\");\n';
-        echo htmlspecialchars("?>") . '" > ' . $putFileHere . '/coursesyspw.php';
-        echo "</code></div>";
-
-        echo '<div id="copied1">Copied to clipboard!<br></div>';
-
-        echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br> 
+        echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
                 with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
                 (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
         echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
