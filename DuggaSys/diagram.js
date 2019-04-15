@@ -116,8 +116,6 @@ const yKey = 89;
 const aKey = 65;
 const escapeKey = 27;
 
-
-
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
 
@@ -293,7 +291,7 @@ function keyDownHandler(e){
         cancelFreeDraw();
     }
 }
-// removes all the lines that has been drawn when in the free draw mode
+// Removes all the lines that has been drawn when in the free draw mode
 function cancelFreeDraw(){
     if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
         for (var i = 0; i < numberOfPointsInFigure; i++) {
@@ -304,7 +302,7 @@ function cancelFreeDraw(){
         updateGraphics();
       }
 }
-// used for copy and paste functionality in the keyDownHandlerFunction
+// Used for copy and paste functionality in the keyDownHandlerFunction
 function fillCloneArray(){
     cloneTempArray = [];
     for(var i = 0; i < selected_objects.length; i++){
@@ -316,14 +314,15 @@ function fillCloneArray(){
 // Keeps track of if the CTRL or CMD key is active or not
 //--------------------------------------------------------------------
 
-//Not used yet
+// Not used yet
 window.onkeyup = function(event) {
     if(event.which == ctrlKey || event.which == windowsKey) {
         ctrlIsClicked = false;
     }
 }
-
-//Handler for when pressing arrow keys when space has been pressed
+// ----------------------------------------------------------------
+// Handler for when pressing arrow keys when space has been pressed
+// ----------------------------------------------------------------
 function arrowKeyPressed(key){
     var xNew = 0, yNew = 0;
 
@@ -342,11 +341,11 @@ function arrowKeyPressed(key){
     updateGraphics();
 }
 
-//--------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 // points - stores a global list of points
 // A point can not be physically deleted but marked as deleted in order to reuse
 // the sequence number again. e.g. point[5] will remain point[5] until it is deleted
-//--------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 var points = [];
 
 //--------------------------------------------------------------------
