@@ -143,7 +143,9 @@ include '../Shared/navheader.php';
     ?>
 
 
-<!-- The Appearance menu. Default state is display: none; -->
+<!--------------------------------------------------------
+    The Appearance menu. Default state is display: none; 
+---------------------------------------------------------->
 <div id="appearance" class='loginBox' style='display: none;'>
     <div class='loginBoxheader'>
         <h3>Apperance</h3>
@@ -180,6 +182,7 @@ include '../Shared/navheader.php';
         </div>
     </div>
 <!-- content END -->
+
 <?php
 include '../Shared/loginbox.php';
 ?>
