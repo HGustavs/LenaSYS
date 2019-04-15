@@ -928,9 +928,13 @@ function returnedSection(data) {
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
           // create a warning if the dugga is submitted after the set deadline
-          if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.',myDate src='../Shared/icons/warningTriangle.svg'/></td>";
+/*          if ((status === "pending") && (dateTimeSubmitted > deadline)) {
+            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
           }
+        }
+*/
+        if(myDate.getDay() == 6 || myDate.getDay() == 0) {
+          str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='Weekend.' src='../Shared/icons/warningTriangle.svg'/></td>";
         }
 
         // Cog Wheel
