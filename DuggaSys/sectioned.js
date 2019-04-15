@@ -930,15 +930,14 @@ function returnedSection(data) {
           //FIXME
           // create a warning if the dugga is submitted after the set deadline
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-            if (isItWorkday(myDate)) {
-              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='On time!.' src='../Shared/icons/smiling.svg'/></td>";
-
-            }
-            else {
+            if (hasGraceTimeExpired(myDate)) {
+              alert(myDate.getTime);
               str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
             }
           }
-      //    if(myDate.getDay() == 6 || myDate.getDay() == 0) alert('Weekend!');
+          else {
+            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='On time!.' src='../Shared/icons/smiling.svg'/></td>";
+          }
         }
 
         // Cog Wheel
@@ -1479,10 +1478,6 @@ function mail() {
 }
 
 function isItWorkday(parameter) {
-  if(parameter.getDay() == 6 || parameter.getDay() == 0) {
-    return false;
-  }
-  else {
+//  if(parameter.getDay() == 6 || parameter.getDay() == 0) {
     return true;
-  }
 }
