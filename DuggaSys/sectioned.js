@@ -1460,8 +1460,8 @@ function addClasses() {
   var links = document.getElementsByTagName('a');
 
   for (var i = 0; i < links.length; i++) {
-    if ((links[i].innerHTML.indexOf("Example") !== -1) || (links[i].innerHTML.indexOf("Exempel") !== -1)) {
-      links[i].classList.add("example-page");
+    if ((links[i].innerHTML.indexOf("Example") !== -1) || (links[i].innerHTML.indexOf("Exempel") !== -1) || (links[i].innerHTML.indexOf("example") !== -1) || (links[i].innerHTML.indexOf("exempel") !== -1)) {
+      links[i].classList.add("example-link");
     }
     else if (link_is_external(links[i])) {
       links[i].classList.add("external-link");
