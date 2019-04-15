@@ -1479,24 +1479,25 @@ function mail() {
 
 function hasGraceTimeExpired(myDate, deadline, dateTimeSubmitted) {
   //console.log("Submit dagen är: " , parameterMyDate.getDay(), " timmen är: ", parameterMyDate.getHours(), " minuten är: ", parameterMyDate.getMinutes());
-  var testDateTimeSubmitted = new Date(dateTimeSubmitted);
-  var graceDeadline = testDateTimeSubmitted;
-  var testDeadline = new Date(deadline);
-  console.log(testDateTimeSubmitted);
-  if (testDeadline.getHours() >= 17) {
+  var m_dateTimeSubmitted = new Date(dateTimeSubmitted);
+  var graceDeadline = new Date(m_dateTimeSubmitted);
+  var m_deadline = new Date(deadline);
+  console.log(graceDeadline);
+
+  if (m_deadline.getHours() >= 17) {
     graceDeadline.setHours(7);
     graceDeadline.setMinutes(59);
-    if (testDeadline.getDay() <= 4) {
-      graceDeadline.setDate(testDeadline.getDate() + 1);
+    if (m_deadline.getDay() <= 4) {
+      graceDeadline.setDate(m_deadline.getDate() + 1);
     }
-    else if (testDeadline.getDay() == 5){
-      graceDeadline.setDate(testDeadline.getDate() + 3);
+    else if (m_deadline.getDay() == 5){
+      graceDeadline.setDate(m_deadline.getDate() + 3);
     }
-    else if (testDeadline.getDay() == 6){
-      graceDeadline.setDate(testDeadline.getDate() + 2);
+    else if (m_deadline.getDay() == 6){
+      graceDeadline.setDate(m_deadline.getDate() + 2);
     }
   }
-  if (testDateTimeSubmitted > graceDeadline) {
+  if (m_dateTimeSubmitted > graceDeadline) {
     return true;
   }
   else {
