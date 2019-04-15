@@ -38,9 +38,9 @@ function newRow() {
 		inputValue = document.getElementById("tsType_"+i).value;
 		str += "<td><select id='tsType_"+i+"' required name='tsType_"+i+"'>";
 		if (inputValue === "issue") {
-			str += "<option value='issue' selected>Issue</option><option value='pullrequest'>Pull request</option>";
+			str += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 0);
 		} else {
-			str += "<option value='issue'>Issue</option><option value='pullrequest' selected>Pull request</option>";
+			str += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 1);
 		}
 		str += "</select></td>";
 		inputValue = document.getElementById("tsRef_"+i).value;
@@ -54,7 +54,7 @@ function newRow() {
 	str += "<tr class='tsInputRow' id=tsTableRow_"+idx+"><td>";
 	str += "<input id='tsDate_"+idx+"' required type='date' name='tsDate_"+idx+"' /></td>";
 	str += "<td><select id='tsType_"+idx+"' required name='tsType_"+idx+"'>";
-	str += "<option value='issue'>Issue</option><option value='pullrequest'>Pull request</option>";
+	str += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 0);
 	str += "</select></td>";
 	str += "<td><input id='tsRef_"+idx+"' required type='number' name='tsRef_"+idx+"' style='width: 55px' /></td>";
 	str += "<td><input id='tsComment_"+idx+"' required type='text' name='tsComment_"+idx+"' style='width: 500px' /></td>";
@@ -295,12 +295,12 @@ function createFileUploadArea(){
 
 	form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php'>";
 	form +="<table class='tsTable'><thead>";
-	form +="<th>Datum</th><th>Issue/Pull Request</th>";
-	form +="<th>Nummer</th><th>Kommentar</th></thead>";	
+	form +="<th>Date</th><th>Type</th>";
+	form +="<th>Reference</th><th>Comment</th></thead>";	
 	form +="<tbody id='tsTableBody'><tr class='tsInputRow' id='tsTableRow_0'>";
 	form +="<td><input id='tsDate_0' required type='date' name='tsDate_0' /></td>";
 	form +="<td><select id='tsType_0' required name='tsType_0'>";
-	form +="<option value='issue'>Issue</option><option value='pullrequest'>Pull request</option>";
+	form += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 0);
 	form +="</select></td>";
 	form +="<td><input id='tsRef_0' type='number' required name='tsRef_0' style='width: 55px' /></td>";
 	form +="<td><input id='tsComment_0' type='text' required name='tsComment_0' style='width: 500px' /></td>";
@@ -313,7 +313,7 @@ function createFileUploadArea(){
 	form +="<input type='hidden' name='field' value='timesheet' />";
 	form +="<input type='hidden' name='kind' value='3' />";
 	form +="<tfoot><td colspan='4'>";
-	form +="<span class='newRowButton' onclick='newRow()'>Lägg till rad</span>";
+	form +="<span class='newRowButton' onclick='newRow()'>Add row</span>";
 	form +="</td></tfoot></table>";
 	form +="<input type='submit' value='Upload' /></form>";
 
