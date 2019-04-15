@@ -2948,6 +2948,8 @@ table {
 
 #searchBar {
   display: inline-flex;
+  margin-top: 5px;
+  margin-bottom: 5px;
   height: 24px;
   border-radius: 5px;
   float: right;
@@ -2978,8 +2980,6 @@ table {
 }
 .searchField{
   height: 25px;
-  margin-top: 5px;
-  margin-bottom: 5px;
   border-bottom-right-radius: 0px;
   border-top-right-radius: 0px;
   border-right: 0px;
