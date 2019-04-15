@@ -4683,3 +4683,13 @@ textarea#filecont{
   padding: 10px;
   cursor: pointer;
 }
+#tsSubmit {
+  margin-left: 50px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+#tsSubmit:hover {
+  background: #614875;
+  color: #fff;
+  border: 2px solid #614875;
+}

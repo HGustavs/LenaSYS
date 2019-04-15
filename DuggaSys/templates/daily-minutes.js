@@ -21,7 +21,6 @@ function setup()
 {
 	inParams = parseGet();
 	AJAXService("GETPARAM", { }, "PDUGGA");
-	createFileUploadArea();
 }
 
 function newRow() {
@@ -34,7 +33,7 @@ function newRow() {
 	for (var i = 0; i < inputRows.length; i++) {
 		str += "<tr class='tsInputRow' id=tsTableRow_"+i+"><td>";
 		var inputValue = document.getElementById("tsDate_"+i).value;
-		str += "<input id='tsDate_"+i+"' required type='date' name='tsDate_"+i+"' value="+inputValue+" /></td>";
+		str += "<input id='tsDate_"+i+"' required type='date' name='tsDate_"+i+"' value='"+inputValue+"' /></td>";
 		inputValue = document.getElementById("tsType_"+i).value;
 		str += "<td><select id='tsType_"+i+"' required name='tsType_"+i+"'>";
 		if (inputValue === "issue") {
@@ -44,9 +43,9 @@ function newRow() {
 		}
 		str += "</select></td>";
 		inputValue = document.getElementById("tsRef_"+i).value;
-		str += "<td><input id='tsRef_"+i+"' required type='number' name='tsRef_"+i+"' style='width: 55px' value="+inputValue+" /></td>";
+		str += "<td><input id='tsRef_"+i+"' required type='number' name='tsRef_"+i+"' style='width: 55px' value='"+inputValue+"' /></td>";
 		inputValue = document.getElementById("tsComment_"+i).value;
-		str += "<td><input id='tsComment_"+i+"' required type='text' name='tsComment_"+i+"' style='width: 500px' value="+inputValue+" /></td>";
+		str += "<td><input id='tsComment_"+i+"' required type='text' name='tsComment_"+i+"' style='width: 500px' value='"+inputValue+"' /></td>";
 		if (i > 0) {
 			str += "<td style='background: #ff3f4c; cursor: pointer' onclick='deleteRow("+i+")'>X</td>";
 		}
@@ -161,8 +160,6 @@ function returnedDugga(data)
 			// We have previous answer
 
 		}
-
-
 	}
 	displayDuggaStatus(data["answer"],data["grade"],data["submitted"],data["marked"]);
 }
@@ -191,107 +188,17 @@ function saveClick()
 	saveDuggaResult(bitstr);
 }
 
-function showFacit(param, uanswer, danswer, userStats, files, moment)
-{
-	if (userStats != null){
-		document.getElementById('duggaTime').innerHTML=userStats[0];
-		document.getElementById('duggaTotalTime').innerHTML=userStats[1];
-		document.getElementById('duggaClicks').innerHTML=userStats[2];
-		document.getElementById('duggaTotalClicks').innerHTML=userStats[3];
-		$("#duggaStats").css("display","block");
-		$("#duggaStats").draggable({ handle:'.loginBoxheader'});
-	}
-
-	inParams = parseGet();
-
-	if (param == "UNK") {
-		alert("UNKNOWN DUGGA!");
-	} else {
-		duggaParams = jQuery.parseJSON(param);
-
-		if(duggaParams["type"]==="pdf"){
-				document.getElementById("snus").innerHTML="<embed src='showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"' width='100%' height='1000px' type='application/pdf'>";
-		}else if(duggaParams["type"]==="md" || duggaParams["type"]==="html"){
-			$.ajax({url: "showdoc.php?cid="+inParams["cid"]+"&fname="+duggaParams["filelink"]+"&headers=none", success: function(result){
-        		$("#snus").html(result);
-        		// Placeholder code
-				var pl = duggaParams.placeholders;
-				if (pl !== undefined) {
-					for (var m=0;m<pl.length;m++){
-						for (placeholderId in pl[m]) {
-							if (document.getElementById("placeholder-"+placeholderId) !== null){
-								for (placeholderDataKey in pl[m][placeholderId]) {
-									if (pl[m][placeholderId][placeholderDataKey] !== ""){
-										document.getElementById("placeholder-"+placeholderId).innerHTML='<a href="'+pl[m][placeholderId][placeholderDataKey]+'" target="_blank">'+placeholderDataKey+'</a>';
-									} else {
-										document.getElementById("placeholder-"+placeholderId).innerHTML=placeholderDataKey;
-									}
-								}
-							}
-						}
-					}
-				}
-    		}});
-		}else if(duggaParams["type"]==="link"){
-			var filename=duggaParams["filelink"];
-			if(window.location.protocol === "https:"){
-					filename=filename.replace("http://", "https://");
-			}else{
-					filename=filename.replace("https://", "http://");
-			}
-			document.getElementById("snus").innerHTML="<iframe src='"+filename+"' width='100%' height='1000px' type='application/pdf'></iframe>";
-		}else {
-			// UNK
-		}
-
-		$("#snus").parent().find(".instructions-content").slideToggle("slow");
-
-		var duggaFiles = [];
-		if (moment != null) {
-			duggaFiles = files[moment];
-		}
-
-		createFileUploadArea(duggaParams["submissions"]);
-		for (var k=0; k < duggaParams["submissions"].length; k++){
-			findfilevers(duggaFiles, duggaParams["submissions"][k].fieldname,duggaParams["submissions"][k].type, 1);
-    		if (duggaParams['uploadInstruction'] !== null){
-				document.getElementById(duggaParams["submissions"][k].fieldname+"Instruction").innerHTML=duggaParams["submissions"][k].instruction;
-			}
-
-		}
-
-		// ----------------========#############========----------------
-		// This is in show facit marking view NOT official running version!
-		// ----------------========#############========----------------
-
-		for (var version=0; version < duggaFiles.length;version++){
-				if (duggaFiles[version].kind == "3"){
-					if (document.getElementById(duggaFiles[version].fieldnme+"Text") != null){
-					 		document.getElementById(duggaFiles[version].fieldnme+"Text").innerHTML=duggaFiles[version].content;
-					}
-				}
-		}
-
-		// Bring up the feedback tools
-		document.getElementById('markMenuPlaceholder').style.display = "block";
-//		document.getElementById('markSaveButton').style.display = "block";
-
-	}
-}
-
-function closeFacit()
-{
-	clearInterval(tickInterval);
-	running = false;
-}
-
 //--------------------================############================--------------------
 //                                  Local Functions
 //--------------------================############================--------------------
 
-function createFileUploadArea(){
+function createFileUploadArea(params){
 	var str ="";
 	var form = "";
+	var fieldname = "timesheet";
+	if (params) {
+		fieldname = params[0].fieldname;
+	}
 
 	form +="<form enctype='multipart/form-data' method='post' action='filereceive_dugga.php'>";
 	form +="<table class='tsTable'><thead>";
@@ -310,21 +217,20 @@ function createFileUploadArea(){
 	form +="<input type='hidden' name='coursevers' value='"+inParams["coursevers"]+"' />";
 	form +="<input type='hidden' name='did' value='"+inParams["did"]+"' />";
 	form +="<input type='hidden' name='segment' value='"+inParams["segment"]+"' />";
-	form +="<input type='hidden' name='field' value='timesheet' />";
+	form +="<input type='hidden' name='field' value='"+fieldname+"' />";
 	form +="<input type='hidden' name='kind' value='3' />";
 	form +="<tfoot><td colspan='4'>";
 	form +="<span class='newRowButton' onclick='newRow()'>Add row</span>";
 	form +="</td></tfoot></table>";
-	form +="<input type='submit' value='Upload' /></form>";
-
+	form +="<input id='tsSubmit' type='submit' value='Upload' /></form>";
 	str += "<div style='border:1px solid #614875; margin: 5px auto; margin-bottom:10px;'>";
-	str += "<div style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
+	str += "<div id='"+fieldname+"Instruction' style='height:20px;background-color:#614875;padding:9px;color:#FFF;'>";
 	str += "</div>";
 	str += "<div>";
 	str += form;
 	str += "</div>";
 	str += "</div>";
-	str +="<div id='timesheetPrev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
+	str +="<div id='"+fieldname+"Prev' style='height:100px;overflow:scroll;background:#f8f8ff;border-radius:8px;box-shadow: 2px 2px 4px #888 inset;padding:4px;'><span style='font-style:italic;M'>Submission History</span></div>";
 	str += "</div>";
 
 
