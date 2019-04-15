@@ -27,69 +27,37 @@ function setup()
 function newRow() {
 	var tsTableBody = document.getElementById("tsTableBody");
 	var tblRows = tsTableBody.childNodes;
-	var lastRowIdx = parseInt(tblRows[tblRows.length - 1].attributes[0].value);
+	var lastRowIdx = parseInt(tblRows[tblRows.length - 1].attributes[1].value);
 	var idx = lastRowIdx += 1;
+	var inputRows = document.getElementsByClassName("tsInputRow");
+	var str = "";
 
-	/* Must use appendChild here to preserve user input
-	   when adding a new row */
+	for (var i = 0; i < inputRows.length; i++) {
+		str += "<tr class='tsInputRow' data-idx="+i+"><td>";
+		var inputValue = document.getElementById("tsDate_"+i).value;
+		str += "<input id='tsDate_"+i+"' required type='date' name='tsDate_"+i+"' value="+inputValue+" /></td>";
+		inputValue = document.getElementById("tsType_"+i).value;
+		str += "<td><select id='tsType_"+i+"' required name='tsType_"+i+"'>";
+		if (inputValue === "issue") {
+			str += "<option value='issue' selected>Issue</option><option value='pullrequest'>Pull request</option>";
+		} else {
+			str += "<option value='issue'>Issue</option><option value='pullrequest' selected>Pull request</option>";
+		}
+		str += "</select></td>";
+		inputValue = document.getElementById("tsRef_"+i).value;
+		str += "<td><input id='tsRef_"+i+"' required type='number' name='tsRef_"+i+"' style='width: 55px' value="+inputValue+" /></td>";
+		inputValue = document.getElementById("tsComment_"+i).value;
+		str +="<td><input id='tsComment_"+i+"' required type='text' name='tsComment_"+i+"' style='width: 500px' value="+inputValue+" /></td>";
+	}
+	str += "<tr class='tsInputRow' data-idx="+idx+"><td>";
+	str += "<input id='tsDate_"+idx+"' required type='date' name='tsDate_"+idx+"' /></td>";
+	str += "<td><select id='tsType_"+idx+"' required name='tsType_"+idx+"'>";
+	str += "<option value='issue'>Issue</option><option value='pullrequest'>Pull request</option>";
+	str += "</select></td>";
+	str += "<td><input id='tsRef_"+idx+"' required type='number' name='tsRef_"+idx+"' style='width: 55px' /></td>";
+	str +="<td><input id='tsComment_"+idx+"' required type='text' name='tsComment_"+idx+"' style='width: 500px' /></td>";
 
-	var row = document.createElement("tr");
-	var cell = document.createElement("td");
-	var input = document.createElement("input");
-	var select = document.createElement("select");
-	var option = document.createElement("option");
-
-	row.setAttribute("data-idx", idx);
-
-	input.setAttribute("type", "date");
-	input.setAttribute("name", "tsDate_"+idx);
-	input.required = true;
-	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
-	cell.appendChild(input);
-	row.appendChild(cell);
-
-	cell = document.createElement("td");
-	select.setAttribute("name", "tsType_"+idx);
-	option.setAttribute("value", "issue");
-	option.innerHTML = "Issue";
-	select.appendChild(option);
-	option = document.createElement("option");
-	option.setAttribute("value", "pullrequest");
-	option.innerHTML = "Pull request";
-	select.appendChild(option);
-	select.required = true;
-	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
-	cell.appendChild(select);
-	row.appendChild(cell);
-
-	cell = document.createElement("td");
-	input = document.createElement("input");
-	input.setAttribute("type", "text");
-	input.setAttribute("name", "tsRef_"+idx);
-	input.setAttribute("style", "width: 50px");
-	input.required = true;
-	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
-	cell.appendChild(input);
-	row.appendChild(cell);
-
-	cell = document.createElement("td");
-	input = document.createElement("input");
-	input.setAttribute("type", "text");
-	input.setAttribute("name", "tsComment_"+idx);
-	input.setAttribute("style", "width: 500px");
-	input.required = true;
-	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
-	cell.appendChild(input);
-	row.appendChild(cell);
-
-	cell = document.createElement("td");
-	cell.innerHTML = "X";
-	cell.setAttribute("style", "background: #ff3f4c; cursor: pointer");
-	row.appendChild(cell);
-	cell.addEventListener('click', function () {
-		tsTableBody.removeChild(row);
-	});
-	tsTableBody.appendChild(row);
+	tsTableBody.innerHTML = str;
 }
 
 function returnedDugga(data)
@@ -320,13 +288,13 @@ function createFileUploadArea(){
 	form +="<table class='tsTable'><thead>";
 	form +="<th>Datum</th><th>Issue/Pull Request</th>";
 	form +="<th>Nummer</th><th>Kommentar</th></thead>";	
-	form +="<tbody id='tsTableBody'><tr data-idx=0>";
-	form +="<td><input required type='date' name='tsDate_0' /></td>";
-	form +="<td><select required name='tsType_0'>";
+	form +="<tbody id='tsTableBody'><tr class='tsInputRow' data-idx=0>";
+	form +="<td><input id='tsDate_0' required type='date' name='tsDate_0' /></td>";
+	form +="<td><select id='tsType_0' required name='tsType_0'>";
 	form +="<option value='issue'>Issue</option><option value='pullrequest'>Pull request</option>";
 	form +="</select></td>";
-	form +="<td><input type='number' required name='tsRef_0' style='width: 55px' /></td>";
-	form +="<td><input type='text' required name='tsComment_0' style='width: 500px' /></td>";
+	form +="<td><input id='tsRef_0' type='number' required name='tsRef_0' style='width: 55px' /></td>";
+	form +="<td><input id='tsComment_0' type='text' required name='tsComment_0' style='width: 500px' /></td>";
 	form +="</tr></tbody>";
 	form +="<input type='hidden' name='moment' value='"+inParams["moment"]+"' />";
 	form +="<input type='hidden' name='cid' value='"+inParams["cid"]+"' />";
