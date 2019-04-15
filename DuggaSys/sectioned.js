@@ -936,13 +936,7 @@ function returnedSection(data) {
 */
         //FIXME
         if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-          if(myDate.getDay() == 6 || myDate.getDay() == 0) {
-            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='Weekend.' src='../Shared/icons/warningTriangle.svg'/></td>";
-          }
-          else {
-            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
-          }
-
+          str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
       }
 
 
