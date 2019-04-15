@@ -261,12 +261,12 @@
                 <div class="menu-drop-down">
                     <span class="drop-down-label">Help</span>
                     <div class="drop-down">
-                        <div class="drop-down-text-non-clickable">
+                        <div class="drop-down-text">
                             <span class="drop-down-option">Move grid</span>
                             <div id="hotkey-space"><i>Blankspace</i></div>
                         </div>
                         <div class="drop-down-divider"></div>
-                        <div class="drop-down-text-non-clickable">
+                        <div class="drop-down-text">
                             <span class="drop-down-option">Select multiple objects</span>
                             <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
                         </div>
