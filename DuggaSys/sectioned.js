@@ -1038,6 +1038,8 @@ function returnedSection(data) {
 
   // Change the scroll position to where the user was last time.
   $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
+
+  addClasses();
 }
 
 function showHighscore(did, lid) {
@@ -1310,8 +1312,6 @@ function drawSwimlanes() {
   let svgHeight = ((1 + deadlineEntries.length) * weekheight) + 15;
   document.getElementById("swimlaneSVG").innerHTML = str;
   document.getElementById("swimlaneSVG").setAttribute("viewBox", "0 0 300 " + svgHeight);
-
-  addClasses();
 
 }
 
