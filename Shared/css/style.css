@@ -392,6 +392,18 @@ p {
 .item a:hover {
   text-decoration: underline;
 }
+/**/
+.code .item a:hover {
+  color: #C47FAA;
+}
+
+.internal-link:hover {
+  color: #A96FC4;
+}
+
+.external-link:hover {
+  color: #7E7BCA;
+}
 
 #Sectionlist .norm {
   background-color: #fff;
