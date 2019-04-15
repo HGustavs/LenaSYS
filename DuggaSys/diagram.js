@@ -745,7 +745,7 @@ diagram.updateLineRelations = function() {
 diagram.sortConnectors = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
-            diagram[i].sortAllConnectors(); // this function is defined in diagram_symbol.js
+            diagram[i].sortAllConnectors();
         }
     }
 }
