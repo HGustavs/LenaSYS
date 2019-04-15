@@ -2957,7 +2957,7 @@ table {
 #searchinput {
   margin-right: 0;
   margin-bottom: 5px;
-  margin-top: 10px;
+  margin-top: 5px;
   border-right: 0;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -2977,7 +2977,7 @@ table {
   box-shadow: none;
 }
 .searchField{
-  height: 30px;
+  height: 25px;
   border-bottom-right-radius: 0px;
   border-top-right-radius: 0px;
   border-right: 0px;
