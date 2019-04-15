@@ -930,20 +930,22 @@ function returnedSection(data) {
         */
 
         if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-          str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='Testing shit' src='../Shared/icons/warningTriangle.svg'/></td>";
+          // Tests FIXME
+          var is_weekend =  function(date1){
+          var dt = new Date(date1);
+
+          if(dt.getDay() == 6 || dt.getDay() == 0)
+            {
+
+              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='Test WEEKEND' src='../Shared/icons/warningTriangle.svg'/></td>";
+            }
+          }
+          else {
+            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='NOT WEEKEND' src='../Shared/icons/warningTriangle.svg'/></td>";
+          }
         }
       }
 
-        // Tests FIXME
-/*        var is_weekend =  function(date1){
-        var dt = new Date(date1);
-
-        if(dt.getDay() == 6 || dt.getDay() == 0)
-          {
-            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='Test WEEKEND' src='../Shared/icons/warningTriangle.svg'/></td>";
-          }
-        }
-*/
         // Cog Wheel
         if (data['writeaccess']) {
           str += "<td style='width:32px;' ";
