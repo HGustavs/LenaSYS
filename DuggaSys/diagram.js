@@ -98,8 +98,24 @@ var classAppearanceOpen = false;
 var symbolStartKind;                    // Is used to store which kind of object you start on
 var symbolEndKind;                      // Is used to store which kind of object you end on
 
-
 var cloneTempArray = [];                // Is used to store all selected objects when ctrl+c is pressed
+
+const deleteKey = 46;
+const backspaceKey = 8;
+const spacebarKey = 32;
+const upArrow = 37;
+const downArrow = 38;
+const leftArrow = 39;
+const rightArrow = 40;
+const ctrlKey = 17;
+const windowsKey = 91;
+const cKey = 67;
+const vKey = 86;
+const zKey = 90;
+const yKey = 89;
+const aKey = 65;
+const escapeKey = 27;
+
 
 
 //this block of the code is used to handel keyboard input;
@@ -223,10 +239,10 @@ var diagram = [];
 function keyDownHandler(e){
     var key = e.keyCode;
     if(appearanceMenuOpen) return;
-    if((key == 46 || key == 8)){        // delete, backspace
+    if((key == deleteKey || key == backspaceKey)){
         eraseSelectedObject();
         SaveState();
-    } else if(key == 32){ //space
+    } else if(key == spacebarKey){
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
@@ -238,14 +254,14 @@ function keyDownHandler(e){
             deactivateMovearound();
         }
         updateGraphics();
-    } else if(key == 37 || key == 38 || key == 39 || key == 40){ // left, up, right, down
+    } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow){//arrow keys
         arrowKeyPressed(key);
-    } else if(key == 17 || key == 91){      // left ctrl, left window key
+    } else if(key == ctrlKey || key == windowsKey){
         ctrlIsClicked = true;
-    } else if(ctrlIsClicked && key == 67){  // c key
+    } else if(ctrlIsClicked && key == cKey){
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == 86 ){ // v key
+    } else if(ctrlIsClicked && key == vKey ){
         //Ctrl + v
         var temp = [];
         for(var i = 0; i < cloneTempArray.length; i++){
@@ -260,25 +276,22 @@ function keyDownHandler(e){
         updateGraphics();
         SaveState();
     }
-
-    else if (key == 90 && ctrlIsClicked) undoDiagram(); // z key
-    else if (key == 89 && ctrlIsClicked) redoDiagram(); // y key
-    else if (key == 65 && ctrlIsClicked) {              // a key
-      e.preventDefault();
-      for(var i = 0; i < diagram.length; i++){
-        selected_objects.push(diagram[i]);
-        diagram[i].targeted = true;
-      }
-      updateGraphics();
+    else if (key == zKey && ctrlIsClicked) undoDiagram();
+    else if (key == yKey && ctrlIsClicked) redoDiagram();
+    else if (key == aKey && ctrlIsClicked) {
+        e.preventDefault();
+        for(var i = 0; i < diagram.length; i++){
+            selected_objects.push(diagram[i]);
+            diagram[i].targeted = true;
+        }
+        updateGraphics();
     }
-    else if(key == 17 || key == 91)                     // ctrl, left window key
-    {
-      ctrlIsClicked = true;
+    else if(key == ctrlKey || key == windowsKey) {
+        ctrlIsClicked = true;
     }
-    else if(key == 27){ // escape key
-      cancelFreeDraw();
+    else if(key == 27){
+        cancelFreeDraw();
     }
-
 }
 // removes all the lines that has been drawn when in the free draw mode
 function cancelFreeDraw(){
@@ -305,28 +318,28 @@ function fillCloneArray(){
 
 //Not used yet
 window.onkeyup = function(event) {
-    if(event.which == 17 || event.which == 91) {
+    if(event.which == ctrlKey || event.which == windowsKey) {
         ctrlIsClicked = false;
     }
-  }
+}
 
 //Handler for when pressing arrow keys when space has been pressed
 function arrowKeyPressed(key){
-  var xNew = 0, yNew = 0;
+    var xNew = 0, yNew = 0;
 
-  if(key == 37){//left
-    xNew = -5;
-  }else if(key == 38){//up
-    yNew = -5;
-  }else if(key == 39){//right
-    xNew = 5;
-  }else if(key == 40){//down
-    yNew = 5;
-  }
-  for(var i = 0; i < selected_objects.length; i++){
-    selected_objects[i].move(xNew, yNew);
-  }
-  updateGraphics();
+    if(key == leftArrow){//left
+        xNew = -5;
+    }else if(key == upArrow){//up
+        yNew = -5;
+    }else if(key == rightArrow){//right
+        xNew = 5;
+    }else if(key == downArrow){//down
+        yNew = 5;
+    }
+    for(var i = 0; i < selected_objects.length; i++){
+        selected_objects[i].move(xNew, yNew);
+    }
+    updateGraphics();
 }
 
 //--------------------------------------------------------------------
@@ -836,6 +849,64 @@ function drawVirtualA4(){
         drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
         drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
     }    
+    ctx.restore();
+}
+
+function drawCircle(cx, cy, radius) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.beginPath();
+    ctx.arc(0,0, radius, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+}
+
+function toggleVirtualA4Holes(){
+    if (toggleA4Holes){
+        toggleA4Holes = false;
+        updateGraphics();
+    } else{
+        toggleA4Holes = true;
+        updateGraphics();
+    }
+}
+
+function toggleVirtualA4(){
+    if (toggleA4){
+        toggleA4 = false;
+        updateGraphics();
+    } else{
+        toggleA4 = true;
+        updateGraphics();
+    }
+}
+
+function drawVirtualA4(){
+    if(!toggleA4){
+        return;
+    }
+    // the correct according to 96dpi size, of a4 milimeters to pixels
+    const pixelsPerMillimeter = 3.781;
+    const a4Width = 210 * pixelsPerMillimeter;
+    const a4Height = 297 * pixelsPerMillimeter;
+    // size of a4 hole, from specification ISO 838 and the swedish "triohålning"
+    const holeOffsetX = 12 * pixelsPerMillimeter;
+    const holeRadius = 3 * pixelsPerMillimeter;
+    ctx.save();
+    ctx.strokeStyle = "black"
+    ctx.setLineDash([10]);
+    ctx.translate(0, 0);
+    ctx.strokeRect(0,0, a4Width, a4Height);
+
+    if(toggleA4Holes){
+        //Upper 2 holes
+        drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
+        drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
+        //Latter two holes
+        drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
+        drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
+    }
     ctx.restore();
 }
 
