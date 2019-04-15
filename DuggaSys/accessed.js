@@ -275,8 +275,7 @@ function compare(a,b)
     // Find out which column and part of column are we sorting on from currentTable
     let col = sortableTable.currentTable.getSortcolumn();
     let kind = sortableTable.currentTable.getSortkind();
-    let val=0;  
-  
+    let val=0;
     if (col == "firstname") {
         a=JSON.parse(a);
         b=JSON.parse(b);
