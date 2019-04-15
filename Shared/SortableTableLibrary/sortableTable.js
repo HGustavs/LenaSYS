@@ -546,7 +546,7 @@ function SortableTable(param) {
         document.getElementById(children[i].id.slice(0, -1) + "f").style.boxSizing = "border-box";
       }
       document.getElementById(this.tableid + DELIMITER + "tblhead_mh").style.height = Math.round(document.getElementById(this.tableid + DELIMITER + "tblhead").getBoundingClientRect().height) + "px";
-      // commented this line out, becuase the line where the corresponding div is createad is also commented out. This caused error before.
+      //commented this line out, becuase the line where the corresponding div is createad is also commented out. This caused error before.
       //document.getElementById(this.tableid+DELIMITER+"tblhead_mhv").style.height = Math.round(document.getElementById(this.tableid+DELIMITER+"tblhead").getBoundingClientRect().height)+"px";
       document.getElementById(this.tableid + DELIMITER + "tblhead_mhf").style.height = Math.round(document.getElementById(this.tableid + DELIMITER + "tblhead").getBoundingClientRect().height) + "px";
     } else {
