@@ -874,18 +874,8 @@ function toggleVirtualA4Holes() {
     setCheckbox($("a:contains('Toggle A4 Holes')"), toggleA4Holes);
 }
 
-function toggleVirtualA4() {
-    if (toggleA4) {
-        toggleA4 = false;
-        updateGraphics();
-    } else {
-        toggleA4 = true;
-        updateGraphics();
-    }
-}
-
-function drawVirtualA4() {
-    if(!toggleA4) {
+function drawVirtualA4(){
+    if(!toggleA4){
         return;
     }
     // the correct according to 96dpi size, of a4 milimeters to pixels
@@ -920,16 +910,6 @@ function drawCircle(cx, cy, radius) {
     ctx.closePath();
     ctx.stroke();
     ctx.restore();
-}
-
-function toggleVirtualA4Holes() {
-    if (toggleA4Holes) {
-        toggleA4Holes = false;
-        updateGraphics();
-    } else {
-        toggleA4Holes = true;
-        updateGraphics();
-    }
 }
 
 // Opens the dialog menu for import
