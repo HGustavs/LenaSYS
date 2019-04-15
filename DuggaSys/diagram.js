@@ -234,37 +234,37 @@ function generateExampleCode() {
 //--------------------------------------------------------------------
 var diagram = [];
 
-function keyDownHandler(e){
+function keyDownHandler(e) {
     var key = e.keyCode;
     if(appearanceMenuOpen) return;
-    if((key == deleteKey || key == backspaceKey)){
+    if((key == deleteKey || key == backspaceKey)) {
         eraseSelectedObject();
         SaveState();
-    } else if(key == spacebarKey){
+    } else if(key == spacebarKey) {
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
             e.preventDefault();
         }
-        if(uimode != "MoveAround"){
+        if(uimode != "MoveAround") {
             activateMovearound();
-        } else{
+        } else {
             deactivateMovearound();
         }
         updateGraphics();
-    } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow){//arrow keys
+    } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) {//arrow keys
         arrowKeyPressed(key);
-    } else if(key == ctrlKey || key == windowsKey){
+    } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
-    } else if(ctrlIsClicked && key == cKey){
+    } else if(ctrlIsClicked && key == cKey) {
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == vKey ){
+    } else if(ctrlIsClicked && key == vKey ) {
         //Ctrl + v
         var temp = [];
-        for(var i = 0; i < cloneTempArray.length; i++){
+        for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != 4){
+            if(cloneTempArray[i].symbolkind != 4) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
             }
@@ -278,7 +278,7 @@ function keyDownHandler(e){
     else if (key == yKey && ctrlIsClicked) redoDiagram();
     else if (key == aKey && ctrlIsClicked) {
         e.preventDefault();
-        for(var i = 0; i < diagram.length; i++){
+        for(var i = 0; i < diagram.length; i++) {
             selected_objects.push(diagram[i]);
             diagram[i].targeted = true;
         }
@@ -287,13 +287,13 @@ function keyDownHandler(e){
     else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
     }
-    else if(key == 27){
+    else if(key == 27) {
         cancelFreeDraw();
     }
 }
 // Removes all the lines that has been drawn when in the free draw mode
-function cancelFreeDraw(){
-    if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
+function cancelFreeDraw() {
+    if(uimode == "CreateFigure" && figureType == "Free" && md == 4) {
         for (var i = 0; i < numberOfPointsInFigure; i++) {
             diagram.pop();
         }
@@ -303,9 +303,9 @@ function cancelFreeDraw(){
       }
 }
 // Used for copy and paste functionality in the keyDownHandlerFunction
-function fillCloneArray(){
+function fillCloneArray() {
     cloneTempArray = [];
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         cloneTempArray.push(selected_objects[i]);
     }
 }
@@ -323,19 +323,19 @@ window.onkeyup = function(event) {
 // ----------------------------------------------------------------
 // Handler for when pressing arrow keys when space has been pressed
 // ----------------------------------------------------------------
-function arrowKeyPressed(key){
+function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
 
-    if(key == leftArrow){//left
+    if(key == leftArrow) { //left
         xNew = -5;
-    }else if(key == upArrow){//up
+    }else if(key == upArrow) { //up
         yNew = -5;
-    }else if(key == rightArrow){//right
+    }else if(key == rightArrow) { //right
         xNew = 5;
-    }else if(key == downArrow){//down
+    }else if(key == downArrow) { //down
         yNew = 5;
     }
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].move(xNew, yNew);
     }
     updateGraphics();
@@ -354,8 +354,8 @@ var points = [];
 //--------------------------------------------------------------------
 points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
     //If we have an unused index we use it first
-    for(var i = 0; i < points.length; i++){
-        if(points[i] == ""){
+    for(var i = 0; i < points.length; i++) {
+        if(points[i] == "") {
             points[i] = {x:xCoordinate, y:yCoordinate, isSelected:isSelected};
             return i;
         }
@@ -366,7 +366,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 }
 
 //Clone an object
-function copySymbol(symbol){
+function copySymbol(symbol) {
     var clone = Object.assign(new Symbol(), symbol);
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
     topLeftClone.x += 10;
@@ -381,20 +381,20 @@ function copySymbol(symbol){
     middleDividerClone.x += 10;
     middleDividerClone.y += 10;
 
-    if(symbol.symbolkind == 1){
+    if(symbol.symbolkind == 1) {
         clone.name = "New" + diagram.length;
-    }else if(symbol.symbolkind == 2){
+    }else if(symbol.symbolkind == 2) {
         clone.name = "Attr" + diagram.length;
-    }else if(symbol.symbolkind == 3){
+    }else if(symbol.symbolkind == 3) {
         clone.name = "Entity" + diagram.length;
-    }else if(symbol.symbolkind == 4){
+    }else if(symbol.symbolkind == 4) {
         clone.name = "Line" + diagram.length;
     }else{
         clone.name = "Relation" + diagram.length;
     }
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
-    if(clone.symbolkind != 1){
+    if(clone.symbolkind != 1) {
         clone.centerPoint = points.push(centerPointClone) - 1;
     }
     else{
