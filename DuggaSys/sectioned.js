@@ -935,7 +935,7 @@ function returnedSection(data) {
               str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
             }
           }
-          else {
+          elseif (status === "pending") {
             str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='On time!.' src='../Shared/icons/smiling.svg'/></td>";
           }
         }
