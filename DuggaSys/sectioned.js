@@ -924,8 +924,8 @@ function returnedSection(data) {
           var yearOfSubmit = submitted.toJSON().slice(0, 4).replace(/-/g, '-');
           var monthOfSubmit = submitted.toJSON().slice(5, 7).replace(/-/g, '-');
           var dayOfSubmit = submitted.toJSON().slice(8, 10).replace(/-/g, '-');
-          var myDate = new Date();
-          myDate.setFullYear(yearOfSubmit, monthOfSubmit, dayOfSubmit);
+  //        var myDate = new Date();
+  //        myDate.setFullYear(yearOfSubmit, monthOfSubmit, dayOfSubmit);
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 /*
           // create a warning if the dugga is submitted after the set deadline
