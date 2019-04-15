@@ -920,15 +920,16 @@ function returnedSection(data) {
         if (submitted) {
           var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
           var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
-          var yearOfSubmit = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
-          var monthOfSubmit = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
-          var dayOfSubmit = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
-          var myDate = new Date(2009, 7, 25);
+          //FIXME
+          var yearOfSubmit = submitted.toJSON().slice(0, 4).replace(/-/g, '-');
+          var monthOfSubmit = submitted.toJSON().slice(5, 7).replace(/-/g, '-');
+          var dayOfSubmit = submitted.toJSON().slice(8, 10).replace(/-/g, '-');
+          var myDate = new Date(yearOfSubmit, monthOfSubmit, dayOfSubmit);
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
           // create a warning if the dugga is submitted after the set deadline
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline. $myDate' src='../Shared/icons/warningTriangle.svg'/></td>";
           }
         }
 
