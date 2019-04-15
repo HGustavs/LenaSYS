@@ -20,7 +20,6 @@ pdoConnect();
     <script src="../Shared/dugga.js"></script>
     <script src="diagram.js"></script>
     <script src="diagram_symbol.js"></script>
-    <script src="diagram_figure.js"></script>
     <script src="diagram_example.js"></script>
     <script src="diagram_IOHandler.js"></script>
 </head>
