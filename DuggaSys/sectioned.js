@@ -924,7 +924,8 @@ function returnedSection(data) {
           var yearOfSubmit = submitted.toJSON().slice(0, 4).replace(/-/g, '-');
           var monthOfSubmit = submitted.toJSON().slice(5, 7).replace(/-/g, '-');
           var dayOfSubmit = submitted.toJSON().slice(8, 10).replace(/-/g, '-');
-          var myDate = new Date(2019, 5, 1);
+          var myDate = new Date();
+          myDate.setFullYear(yearOfSubmit, monthOfSubmit, dayOfSubmit);
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
           // create a warning if the dugga is submitted after the set deadline
@@ -932,14 +933,14 @@ function returnedSection(data) {
             str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
           }
         }
-*/
+
         if(myDate.getDay() == 6 || myDate.getDay() == 0) {
           str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='Weekend.' src='../Shared/icons/warningTriangle.svg'/></td>";
         }
         else {
           str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
         }
-
+*/
         // Cog Wheel
         if (data['writeaccess']) {
           str += "<td style='width:32px;' ";
