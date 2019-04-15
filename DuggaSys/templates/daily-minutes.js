@@ -43,6 +43,7 @@ function newRow() {
 
 	input.setAttribute("type", "date");
 	input.setAttribute("name", "tsDate_"+idx);
+	input.required = true;
 	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
 	cell.appendChild(input);
 	row.appendChild(cell);
@@ -56,6 +57,7 @@ function newRow() {
 	option.setAttribute("value", "pullrequest");
 	option.innerHTML = "Pull request";
 	select.appendChild(option);
+	select.required = true;
 	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
 	cell.appendChild(select);
 	row.appendChild(cell);
@@ -65,6 +67,7 @@ function newRow() {
 	input.setAttribute("type", "text");
 	input.setAttribute("name", "tsRef_"+idx);
 	input.setAttribute("style", "width: 50px");
+	input.required = true;
 	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
 	cell.appendChild(input);
 	row.appendChild(cell);
@@ -74,6 +77,7 @@ function newRow() {
 	input.setAttribute("type", "text");
 	input.setAttribute("name", "tsComment_"+idx);
 	input.setAttribute("style", "width: 500px");
+	input.required = true;
 	cell.setAttribute("style", "padding: 5px 10px 5px 10px");
 	cell.appendChild(input);
 	row.appendChild(cell);
