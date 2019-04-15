@@ -811,7 +811,7 @@ function toggleGrid() {
     } else {
         snapToGrid = false;
     }
-    setCheckbox($("a:contains('Snap to grid')"), snapToGrid);
+    setCheckbox($("span:contains('Snap to grid')"), snapToGrid);
 }
 
 function toggleVirtualA4(){
@@ -1249,7 +1249,7 @@ function debugMode() {
         ghostingCrosses = true;
     }
     updateGraphics();
-    setCheckbox($("a:contains('Developer mode')"), !ghostingCrosses);
+    setCheckbox($("span:contains('Developer mode')"), !ghostingCrosses);
 }
 
 /******************************************************************************************
