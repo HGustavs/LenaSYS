@@ -138,24 +138,6 @@ CREATE TABLE variant(
 	FOREIGN KEY (quizID) REFERENCES quiz(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
-CREATE TABLE timesheet(
-	tid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	uid						INT UNSIGNED NOT NULL,
-	cid						INT UNSIGNED NOT NULL,
-	vers					VARCHAR(8) NOT NULL,
-	did						INT(11) NOT NULL,
-	moment				INT UNSIGNED NOT NULL,
-	day						DATETIME NOT NULL,
-	type					VARCHAR(20),
-	reference			VARCHAR(10),
-	comment				TEXT,
-	PRIMARY KEY (tid),
-	FOREIGN KEY (uid) REFERENCES user(uid),
-	FOREIGN KEY (cid) REFERENCES course(cid),
-	FOREIGN KEY (did) REFERENCES quiz(id),
-	FOREIGN KEY (moment) REFERENCES listentries(lid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
-
 CREATE TABLE userAnswer (
 	aid						INT(11) NOT NULL AUTO_INCREMENT,
 	cid						INT UNSIGNED NOT NULL,
