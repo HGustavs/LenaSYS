@@ -512,7 +512,7 @@ p {
 }
 
 #Sectionlistc { /* Move up later*/
-  display: inline-block;
+  display: block;
 }
 
  #statisticsList {
