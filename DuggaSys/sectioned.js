@@ -1477,7 +1477,7 @@ function mail() {
   });
 }
 
-function isItWorkday(parameter) {
+function hasGraceTimeExpired(parameter) {
 //  if(parameter.getDay() == 6 || parameter.getDay() == 0) {
     return true;
 }
