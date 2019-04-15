@@ -2960,9 +2960,9 @@ table {
   margin-bottom: 5px;
   margin-top: 5px;
   border-right: 0;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  /* border: 1px solid #ccc; */
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border: 1px solid #ccc;
   border-bottom: 0;
   padding: 0 0 0 2px;
 }
