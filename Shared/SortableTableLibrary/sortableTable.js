@@ -491,12 +491,19 @@ function SortableTable(param)
     	freezePaneHandler();
     }
 
-    this.toggleColumn = function(colname,col) {
+    this.toggleColumn = function(colname,col,override) {  // override to ensure that new code still supports old "versions" ny toggling
+    var forceOff = false;
+    var forceOn = false;
+    if(typeof(override)!=="undefined")
+    {
+      forceOff=!override;
+      forceOn=override;
+    }
     	// Assign currently active table
     	sortableTable.currentTable = this;
       for(var idx=0;idx<columnOrder.length;idx++){
           if(columnOrder[idx]===colname){
-              if(columnfilter[idx]){
+              if(forceOff || (!forceOn && columnfilter[idx])){
                   columnfilter[idx]=null;
               }else{
                   columnfilter[idx]=columnOrder[idx];
