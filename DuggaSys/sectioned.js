@@ -1477,7 +1477,26 @@ function mail() {
   });
 }
 
-function hasGraceTimeExpired(parameterMyDate, parameterDeadline) {
-  console.log("Submit dagen är: " , parameterMyDate.getDay(), " timmen är: ", parameterMyDate.getHours(), " minuten är: ", parameterMyDate.getMinutes());
+function hasGraceTimeExpired(myDate, deadline) {
+  //console.log("Submit dagen är: " , parameterMyDate.getDay(), " timmen är: ", parameterMyDate.getHours(), " minuten är: ", parameterMyDate.getMinutes());
+  var graceDeadline = dateTimeSubmitted;
+  if (deadline.getHours() >= 17) {
+    graceDeadline.setHours(7);
+    graceDeadline.setMinutes(59);
+    if (deadline.getDay() <= 4) {
+      graceDeadline.setDate(deadline.getDate() + 1);
+    }
+    else if (deadline.getDay() == 5){
+      graceDeadline.setDate(deadline.getDate() + 2);
+    }
+    else if (deadline.getDay() == 6){
+      graceDeadline.setDate(deadline.getDate() + 3);
+    }
+  }
+  if (dateTimeSubmitted > graceDeadline) {
     return true;
+  }
+  else {
+    return false;
+  }
 }
