@@ -276,12 +276,25 @@ function compare(a,b)
         }else{
             val = a.firstname.toLocaleUpperCase().localeCompare(b.firstname.toLocaleUpperCase());
         }
-    }else{
+    }else if (col == "requestedpasswordchange") {
+			  a=JSON.parse(a);
+				b=JSON.parse(b);
+				if(kind==0){
+					val = b.requested<a.requested;
+			  }else{
+					val = a.requested<b.requested;
+			  }
+		} else {
         if((kind%2)==0){
-            val=a<b;
+						val=a<b;
         }else{
             val=b<a;
         }
+		}
+		if (val === true) {
+      val = 1;
+    } else if (val === false) {
+      val = -1;
     }
     return val;
 }
