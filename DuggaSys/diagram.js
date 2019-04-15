@@ -828,7 +828,7 @@ function drawVirtualA4(){
     if(!toggleA4){
         return;
     }
-    // the correct according to 96dpi size, of a4 milimeters to pixels 
+    // the correct according to 96dpi size, of a4 milimeters to pixels
     const pixelsPerMillimeter = 3.781;
     const a4Width = 210 * pixelsPerMillimeter;
     const a4Height = 297 * pixelsPerMillimeter;
@@ -848,7 +848,7 @@ function drawVirtualA4(){
         //Latter two holes
         drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
         drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
-    }    
+    }
     ctx.restore();
 }
 
@@ -1411,7 +1411,7 @@ function setRefreshTime() {
 function lockSelected(){
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].locked = !selected_objects[i].locked;
-        
+
         if(selected_objects[i].locked){
             selected_objects[i].drawLock();
         }
@@ -2044,7 +2044,7 @@ $( function() {
 function zoomInMode() {
     var oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
-    var newScale = (zoomValue/oldZoom);
+    var newScale = Math.round(zoomValue/oldZoom);
     ctx.scale(newScale,newScale);
     reWrite();
     updateGraphics();
@@ -2290,7 +2290,7 @@ function mousedownevt(ev) {
 
     } else if (sel.distance < tolerance) {
         for (var i = 0; i < diagram.length; i++) {
-            
+
         }
         md = 2;
     } else if (movobj != -1) {
@@ -2674,7 +2674,7 @@ function openAppearanceDialogMenu() {
     /*
      * Opens the dialog menu for appearance.
      */
-    
+
     $(".loginBox").draggable();
     var form = showMenu();
     appearanceMenuOpen = true;
