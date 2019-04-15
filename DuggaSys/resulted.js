@@ -1041,6 +1041,41 @@ function renderColumnFilter(col,status,colname) {
 		return str;
 }
 
+function onToggleFilter(colId)
+{
+  var idParts = colId.split(":");
+  for(var i = 0; i < moments.length; i++)
+  {
+    var element = moments[i]; // All data in an array
+    var elementId = element[idParts[0]]; // id, ex [0]==lid & [1]==2001, get the element id (lib)
+
+    if(elementId==idParts[1]) // elementid == colId.id ex 2001
+    {
+      if(element["lid"]==element["moment"]) // Pressed a category like bitduggor 1hp
+      {
+        var txt = document.createElement("textarea");
+        txt.innerHTML = element.entryname;
+        var checkBoxId = txt.value;
+        var isChecked = document.getElementById(checkBoxId).checked;
+
+        for(var j = 0; j<moments.length;j++)
+        {
+          if(moments[j].moment==idParts[1]) // moment-lid = parent-lid
+          {
+            var childColId = "lid:"+moments[j].lid;
+            myTable.toggleColumn(childColId,childColId,isChecked);
+          }
+        }
+      }
+      else
+      {
+        myTable.toggleColumn(colId, colId);
+      }
+    }
+  }
+
+}
+
 function exportCell(format,cell,colname) {
   str="";
   if(format==="csv"){
