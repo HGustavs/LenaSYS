@@ -1479,8 +1479,9 @@ function mail() {
 }
 
 function isItWorkday(parameter) {
-  if(parameter.getDay() == 6 || parameter.getDay() == 0);
-  return false;
+  if(parameter.getDay() == 6 || parameter.getDay() == 0) {
+    return false;
+  }
   else {
     return true;
   }
