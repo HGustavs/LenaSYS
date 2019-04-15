@@ -222,10 +222,10 @@ function Symbol(kind) {
         var hw = (points[this.bottomRight].x - x1) * 0.5;
         var hh = (points[this.bottomRight].y - y1) * 0.5;
         if (this.symbolkind == 2 || this.symbolkind == 3) {
-            if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width){
+            if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width) {
                 points[this.bottomRight].x = points[this.topLeft].x + entityTemplate.width;
             }
-            if(points[this.bottomRight].y - points[this.topLeft].y < entityTemplate.height){
+            if(points[this.bottomRight].y - points[this.topLeft].y < entityTemplate.height) {
                 points[this.bottomRight].y = points[this.topLeft].y + entityTemplate.height;
             }
             points[this.centerPoint].x = x1 + hw;
@@ -236,54 +236,54 @@ function Symbol(kind) {
             points[this.topLeft].y = y1;
 
             var attrHeight, opHeight;
-            if(this.attributes.length > 0){
+            if(this.attributes.length > 0) {
                 //Height of text + padding
                 attrHeight = (this.attributes.length*14)+35;
             }
-            if(this.operations.length > 0){
+            if(this.operations.length > 0) {
                 opHeight = (this.operations.length*14)+15;
             }
             this.minHeight = attrHeight + opHeight;
 
             //Finding the longest string
             var longestStr = this.name;
-            for(var i = 0; i < this.operations.length; i++){
+            for(var i = 0; i < this.operations.length; i++) {
                 if(this.operations[i].text.length > longestStr.length)
                     longestStr = this.operations[i].text;
             }
-            for(var i = 0; i < this.attributes.length; i++){
+            for(var i = 0; i < this.attributes.length; i++) {
                 if(this.attributes[i].text.length > longestStr.length)
                     longestStr = this.attributes[i].text;
             }
             ctx.font = "14px Arial";
             this.minWidth = ctx.measureText(longestStr).width + 15;
 
-            if(points[this.middleDivider].y + opHeight > points[this.bottomRight].y){
+            if(points[this.middleDivider].y + opHeight > points[this.bottomRight].y) {
                 points[this.middleDivider].y = points[this.bottomRight].y - opHeight;
                 points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
             }
-            if(points[this.topLeft].y + attrHeight > points[this.middleDivider].y){
+            if(points[this.topLeft].y + attrHeight > points[this.middleDivider].y) {
                 points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
                 points[this.topLeft].y = points[this.middleDivider].y - attrHeight;
             }
-            if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight){
+            if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
                 points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
             }
-            if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth){
+            if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth) {
                 points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
             }
-        } else if (this.symbolkind == 5){
-            if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2){
+        } else if (this.symbolkind == 5) {
+            if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2) {
                 points[this.bottomRight].x = points[this.topLeft].x + relationTemplate.width/2;
             }
-            if(points[this.bottomRight].y - points[this.topLeft].y < relationTemplate.height/2){
+            if(points[this.bottomRight].y - points[this.topLeft].y < relationTemplate.height/2) {
                 points[this.bottomRight].y = points[this.topLeft].y + relationTemplate.height/2;
             }
             points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
             points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
             points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
             
-        } else if (this.symbolkind == 6){
+        } else if (this.symbolkind == 6) {
             var fontsize = this.getFontsize();
             ctx.font = "bold " + fontsize + "px " + this.properties['font'];
 
@@ -309,7 +309,7 @@ function Symbol(kind) {
     // Sorts the connector
     //--------------------------------------------------------------------
     this.sortConnector = function (connector, direction, start, end, otherside) {
-        if(this.symbolkind != 5){
+        if(this.symbolkind != 5) {
             var delta = (end - start) / (connector.length + 1);
         } else {
             var delta = (end - start) / 2;
