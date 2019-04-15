@@ -933,9 +933,7 @@ function returnedSection(data) {
             str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
           }
         }
-
-
-
+        if(myDate.getDay() == 6 || myDate.getDay() == 0) alert('Weekend!');
 
         // Cog Wheel
         if (data['writeaccess']) {
