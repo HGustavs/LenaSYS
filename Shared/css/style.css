@@ -2963,7 +2963,7 @@ table {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border: 1px solid #ccc;
-  border-bottom: 0;
+  border-bottom: 1px;
   padding: 0 0 0 2px;
 }
 
