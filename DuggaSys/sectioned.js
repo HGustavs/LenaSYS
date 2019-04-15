@@ -920,7 +920,7 @@ function returnedSection(data) {
         if (submitted) {
           var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
           var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
-          var date1 = submitted.toJSON().slice(8, 10).replace(/-/g, '-');
+//          var date1 = submitted.toJSON().slice(8, 10).replace(/-/g, '-');
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
           /*
@@ -933,12 +933,11 @@ function returnedSection(data) {
 
         if ((status === "pending") && (dateTimeSubmitted > deadline)) {
           // Tests FIXME
-          var is_weekend =  function(date1){
+//          var is_weekend =  function(date1){
           var dt = new Date(date1);
 
           if(dt.getDay() == 6 || dt.getDay() == 0)
             {
-
               str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='Test WEEKEND' src='../Shared/icons/warningTriangle.svg'/></td>";
             }
           }
