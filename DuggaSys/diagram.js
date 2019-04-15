@@ -397,7 +397,7 @@ function copySymbol(symbol) {
     if(clone.symbolkind != 1) {
         clone.centerPoint = points.push(centerPointClone) - 1;
     }
-    else{
+    else {
         clone.middleDivider = points.push(middleDividerClone) - 1;
         clone.centerPoint = clone.middleDivider;
     }
@@ -469,7 +469,7 @@ points.clearAllSelects = function() {
 //--------------------------------------------------------------------
 // draw - Executes draw methond in all diagram objects
 //--------------------------------------------------------------------
-diagram.closestPoint = function(mx, my){
+diagram.closestPoint = function(mx, my) {
     var distance = 50000000;
     var point;
     this.filter(symbol => symbol.kind != 1 && symbol.symbolkind != 6).forEach(symbol => {
@@ -501,19 +501,19 @@ diagram.closestPoint = function(mx, my){
 
 diagram.draw = function() {
     this.adjustPoints();
-    for(var i = 0; i < this.length; i++){
+    for(var i = 0; i < this.length; i++) {
         if (this[i].kind == 1) {
             this[i].draw(1, 1);
         }
     }
     //Draws all lines first so that they appear behind the object instead
-    for(var i = 0; i < this.length; i++){
+    for(var i = 0; i < this.length; i++) {
         if(this[i].symbolkind == 4){
             this[i].draw();
         }
     }
     for (var i = 0; i < this.length; i++) {
-        if(this[i].kind == 2 && this[i].symbolkind != 4){
+        if(this[i].kind == 2 && this[i].symbolkind != 4) {
             this[i].draw();
         }
     }
@@ -570,14 +570,14 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                     pointsSelected++;
                 }
             }
-            if(!hover){
+            if(!hover) {
                 if (pointsSelected >= tempPoints.length) {
                     selected_objects.push(this[i]);
                     this[i].targeted = true;
                 } else {
                     this[i].targeted = false;
                 }
-            }else{
+            }else {
                 if (pointsSelected >= tempPoints.length) {
                     this[i].isHovered = true;
                 } else {
@@ -604,7 +604,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                     if (index >= 0) {
                         this[i].targeted = false;
                         selected_objects.splice(index, 1);
-                    } else if(!hover){
+                    } else if(!hover) {
                         this[i].targeted = true;
                         selected_objects.push(this[i]);
                     }
@@ -612,7 +612,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                     if (index < 0 && !hover) {
                         this[i].targeted = true;
                         selected_objects.push(this[i]);
-                    } else if(hover){
+                    } else if(hover) {
                         this[i].isHovered = true;
                     }
                 }
@@ -678,13 +678,13 @@ diagram.eraseLines = function(privateLines) {
         }
         var connected_objects = connectedObjects(privateLines[i]);
         if(!eraseLeft) {
-            for(var j = 0; j < connected_objects.length; j++){
+            for(var j = 0; j < connected_objects.length; j++) {
                 connected_objects[j].removePointFromConnector(privateLines[i].topLeft);
             }
             points[privateLines[i].topLeft] = waldoPoint;
         }
         if(!eraseRight) {
-            for(var j = 0; j < connected_objects.length; j++){
+            for(var j = 0; j < connected_objects.length; j++) {
                 connected_objects[j].removePointFromConnector(privateLines[i].bottomRight);
             }
             points[privateLines[i].bottomRight] = waldoPoint;
@@ -813,18 +813,18 @@ function toggleGrid() {
     setCheckbox($("a:contains('Snap to grid')"), snapToGrid);
 }
 
-function toggleVirtualA4(){
-    if (toggleA4){
+function toggleVirtualA4() {
+    if (toggleA4) {
         toggleA4 = false;
         updateGraphics();
-    } else{
+    } else {
         toggleA4 = true;
         updateGraphics();
     }
 }
 
-function drawVirtualA4(){
-    if(!toggleA4){
+function drawVirtualA4() {
+    if(!toggleA4) {
         return;
     }
     // the correct according to 96dpi size, of a4 milimeters to pixels 
@@ -861,28 +861,28 @@ function drawCircle(cx, cy, radius) {
     ctx.restore();
 }
 
-function toggleVirtualA4Holes(){
-    if (toggleA4Holes){
+function toggleVirtualA4Holes() {
+    if (toggleA4Holes) {
         toggleA4Holes = false;
         updateGraphics();
-    } else{
+    } else {
         toggleA4Holes = true;
         updateGraphics();
     }
 }
 
-function toggleVirtualA4(){
-    if (toggleA4){
+function toggleVirtualA4() {
+    if (toggleA4) {
         toggleA4 = false;
         updateGraphics();
-    } else{
+    } else {
         toggleA4 = true;
         updateGraphics();
     }
 }
 
-function drawVirtualA4(){
-    if(!toggleA4){
+function drawVirtualA4() {
+    if(!toggleA4) {
         return;
     }
     // the correct according to 96dpi size, of a4 milimeters to pixels
@@ -898,7 +898,7 @@ function drawVirtualA4(){
     ctx.translate(0, 0);
     ctx.strokeRect(0,0, a4Width, a4Height);
 
-    if(toggleA4Holes){
+    if(toggleA4Holes) {
         //Upper 2 holes
         drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
         drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
@@ -919,11 +919,11 @@ function drawCircle(cx, cy, radius) {
     ctx.restore();
 }
 
-function toggleVirtualA4Holes(){
-    if (toggleA4Holes){
+function toggleVirtualA4Holes() {
+    if (toggleA4Holes) {
         toggleA4Holes = false;
         updateGraphics();
-    } else{
+    } else {
         toggleA4Holes = true;
         updateGraphics();
     }
@@ -1016,7 +1016,7 @@ function eraseObject(object) {
     var objectsToDelete = [];
     if (object.kind == 2) {
         //None lines
-        if(object.symbolkind != 4){
+        if(object.symbolkind != 4) {
             var lines = diagram.filter(symbol => symbol.symbolkind == 4);
             objectsToDelete = lines.filter(
                 line => line.topLeft == object.middleDivider
@@ -1027,7 +1027,7 @@ function eraseObject(object) {
                         || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == 3 || object.symbolkind == 5))
             );
         //lines
-        }else{
+        }else {
             diagram.filter(
                 symbol => symbol.symbolkind == 3 || symbol.symbolkind == 5)
                     .filter(symbol =>   symbol.hasConnector(object.topLeft)
@@ -1079,12 +1079,12 @@ function changeLoginBoxTitleAppearance() {
 function eraseSelectedObject() {
     canvas.style.cursor = "default";
     //Issue: Need to remove the crosses
-    if(selected_objects.length == 0){
+    if(selected_objects.length == 0) {
         showMenu().innerHTML = "No item selected<type='text'>";
         changeLoginBoxTitleDelete();
         $(".loginBox").draggable();
     }
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         eraseObject(selected_objects[i]);
     }
     selected_objects = [];
@@ -1092,26 +1092,26 @@ function eraseSelectedObject() {
     updateGraphics();
 }
 
-function setMode(mode){ //"CreateClass" yet to be implemented in .php
+function setMode(mode) { //"CreateClass" yet to be implemented in .php
     canvas.style.cursor = "default";
     uimode = mode;
     if(mode == 'Square' || mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
-      if(figureType == "Free"){
+      if(figureType == "Free") {
           cancelFreeDraw();
       }
       figureType = mode;
     }
 }
 
-$(document).ready(function(){
+$(document).ready(function() {
     $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton").click(function(){
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
         $("#moveButton").removeClass("pressed").addClass("unpressed");
         $("#moveButton").css("visibility", "hidden");
-        if ($(this).hasClass("pressed")){
+        if ($(this).hasClass("pressed")) {
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             uimode = "normal";
         } else {
@@ -1127,7 +1127,6 @@ function setTextSizeEntity() {
 
 function setType() {
     var elementVal = document.getElementById('object_type').value;
-
     diagram[lastSelectedObject].properties['key_type'] = elementVal;
     updateGraphics();
 }
@@ -1398,7 +1397,7 @@ function getCurrentDate() {
 function setRefreshTime() {
   var time = 5000;
   lastDiagramEdit = localStorage.getItem('lastEdit');
-  if (typeof lastDiagramEdit !== "undefined"){
+  if (typeof lastDiagramEdit !== "undefined") {
     var timeDifference = getCurrentDate() - lastDiagramEdit;
     refresh_lock = timeDifference > 604800000 ? true : false;
     time = timeDifference <= 259200000 ? 5000 : 300000;
@@ -1407,11 +1406,11 @@ function setRefreshTime() {
 }
 
 // the selected objects are locked
-function lockSelected(){
-    for(var i = 0; i < selected_objects.length; i++){
+function lockSelected() {
+    for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].locked = !selected_objects[i].locked;
         
-        if(selected_objects[i].locked){
+        if(selected_objects[i].locked) {
             selected_objects[i].drawLock();
         }
         else {
@@ -1420,28 +1419,28 @@ function lockSelected(){
     }
 }
 
-function align(mode){
-    for(var i = 0; i < diagram.length; i++){
-        if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1){
+function align(mode) {
+    for(var i = 0; i < diagram.length; i++) {
+        if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1) {
             selected_objects.push(diagram[i]);
         }
     }
-    if(mode == 'top'){
+    if(mode == 'top') {
        alignTop(selected_objects);
     }
-    else if(mode == 'left'){
+    else if(mode == 'left') {
        alignLeft(selected_objects);
     }
-    else if(mode == 'bottom'){
+    else if(mode == 'bottom') {
        alignBottom(selected_objects);
     }
-    else if(mode == 'right'){
+    else if(mode == 'right') {
        alignRight(selected_objects);
     }
-    else if(mode == 'verticalCenter'){
+    else if(mode == 'verticalCenter') {
        alignVerticalCenter(selected_objects);
     }
-    else if(mode == 'horizontalCenter'){
+    else if(mode == 'horizontalCenter') {
        alignHorizontalCenter(selected_objects);
     }
 
@@ -1452,44 +1451,44 @@ function align(mode){
 //---------------------------------------------------------------------
 // these functions moves the objects either left, right, top or bottom
 //---------------------------------------------------------------------
-function alignLeft(selected_objects){
+function alignLeft(selected_objects) {
     var lowest_x = 99999;
-    for(var i = 0; i < selected_objects.length; i++){
-        if(points[selected_objects[i].topLeft].x < lowest_x){
+    for(var i = 0; i < selected_objects.length; i++) {
+        if(points[selected_objects[i].topLeft].x < lowest_x) {
             lowest_x = points[selected_objects[i].topLeft].x;
         }
     }
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
     }
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
+    for(var i = 1; i < temporary_objects.length; i++) {
+        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
         }
     }
 }
 
-function alignTop(selected_objects){
+function alignTop(selected_objects) {
     var lowest_y = 99999;
-    for(var i = 0; i < selected_objects.length; i++){
-        if(points[selected_objects[i].topLeft].y < lowest_y){
+    for(var i = 0; i < selected_objects.length; i++) {
+        if(points[selected_objects[i].topLeft].y < lowest_y) {
             lowest_y = points[selected_objects[i].topLeft].y;
         }
     }
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
     }
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
+    for(var i = 1; i < temporary_objects.length; i++) {
+        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
         }
