@@ -920,7 +920,6 @@ function returnedSection(data) {
         if (submitted) {
           var dateSubmitted = submitted.toJSON().slice(0, 10).replace(/-/g, '-');
           var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
-          //FIXME
           var yearOfSubmit = submitted.toJSON().slice(0, 4).replace(/-/g, '-');
           var monthOfSubmit = submitted.toJSON().slice(5, 7).replace(/-/g, '-');
           var dayOfSubmit = submitted.toJSON().slice(8, 10).replace(/-/g, '-');
@@ -928,11 +927,18 @@ function returnedSection(data) {
           myDate.setFullYear(yearOfSubmit, monthOfSubmit, dayOfSubmit);
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
+          //FIXME
           // create a warning if the dugga is submitted after the set deadline
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+            if (isItWorkday(myDate)) {
+              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='On time!.' src='../Shared/icons/smiling.svg'/></td>";
+
+            }
+            else {
+              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+            }
           }
-          if(myDate.getDay() == 6 || myDate.getDay() == 0) alert('Weekend!');
+      //    if(myDate.getDay() == 6 || myDate.getDay() == 0) alert('Weekend!');
         }
 
         // Cog Wheel
@@ -1470,4 +1476,12 @@ function mail() {
       window.location.assign("mailto:" + data + "?subject=" + "!!! Notification !!! " + cname);
     }
   });
+}
+
+function isItWorkday(parameter) {
+  if(parameter.getDay() == 6 || parameter.getDay() == 0);
+  return false;
+  else {
+    return true;
+  }
 }
