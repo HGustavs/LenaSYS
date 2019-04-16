@@ -922,15 +922,11 @@ function returnedSection(data) {
           var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
-          //FIXME
-          // create a warning if the dugga is submitted after the set deadline
+          // create a warning if the dugga is submitted after the set deadline and withing the grace period if one exists
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
             if (hasGraceTimeExpired(deadline, dateTimeSubmitted)) {
               str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
             }
-          }
-          else if (status === "pending") {
-            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='On time!.' src='../Shared/icons/smiling.svg'/></td>";
           }
         }
 
@@ -1471,25 +1467,26 @@ function mail() {
   });
 }
 
+// Function for checking if a grace time exists and if the submition time is withing that grace time window
 function hasGraceTimeExpired(deadline, dateTimeSubmitted) {
   var m_dateTimeSubmitted = new Date(dateTimeSubmitted);
-  var m_graceDeadline = new Date(deadline);
+  var m_gracetime = new Date(deadline);
   var m_deadline = new Date(deadline);
 
-  if (m_deadline.getHours() >= 15) {
-    m_graceDeadline.setHours(7);
-    m_graceDeadline.setMinutes(59);
+  if (m_deadline.getHours() >= 17) {
+    m_gracetime.setHours(7);
+    m_gracetime.setMinutes(59);
     if (m_deadline.getDay() <= 4) {
-      m_graceDeadline.setDate(m_deadline.getDate() + 1);
+      m_gracetime.setDate(m_deadline.getDate() + 1);
     }
     else if (m_deadline.getDay() == 5){
-      m_graceDeadline.setDate(m_deadline.getDate() + 3);
+      m_gracetime.setDate(m_deadline.getDate() + 3);
     }
     else if (m_deadline.getDay() == 6){
-      m_graceDeadline.setDate(m_deadline.getDate() + 2);
+      m_gracetime.setDate(m_deadline.getDate() + 2);
     }
   }
-  if (m_dateTimeSubmitted > m_graceDeadline) {
+  if (m_dateTimeSubmitted > m_gracetime) {
     return true;
   }
   else {
