@@ -1281,10 +1281,7 @@ function debugMode() {
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
-
         drawOrigo();
-        console.log('drawed origo');
-
         ghostingCrosses = false;
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
@@ -1292,6 +1289,7 @@ function debugMode() {
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
         ghostingCrosses = true;
     }
+    reWrite();
     updateGraphics();
     setCheckbox($("a:contains('Developer mode')"), !ghostingCrosses);
 }
@@ -1404,10 +1402,19 @@ function removeLocalStorage() {
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 function reWrite() {
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
-     + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-     + "X=" + canvasMouseX
-     + " & Y=" + canvasMouseY + " | origo(" + sx + ", " + sy + " )</p>";
+
+    if(!ghostingCrosses) {
+        //We are now in debug mode/developer mode
+        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
+         + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+         + "X=" + canvasMouseX
+         + " & Y=" + canvasMouseY + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
+    } else { 
+        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
+         + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+         + "X=" + canvasMouseX
+         + " & Y=" + canvasMouseY + "</p>";
+    }
 }
 
 //----------------------------------------
