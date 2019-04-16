@@ -17,6 +17,7 @@ function setup()
   AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 }
 
+/* Commented out this section because of the empty white box that appeared when mouseover the navbutt. Needs testing to assure it doesnt affect other pages.
 function hoverc()
 {
     $('#dropdowns').css('display','none');
@@ -28,7 +29,7 @@ function hovers()
   $('#dropdowns').css('display','block');
   $('#dropdownc').css('display','none');
 }
-
+*/
 function leavec()
 {
 		$('#dropdownc').css('display','none');
@@ -84,7 +85,7 @@ function importUsers()
 	newusers=$("#import").val();
 	var myArr=newusers.split("\n");
 	for (var i=0; i<myArr.length; i++){
-			newUsersArr.push(myArr[i].replace(/\"/g, '').split(";"));		
+			newUsersArr.push(myArr[i].replace(/\"/g, '').split(";"));
 	}
 	var newUserJSON = JSON.stringify(newUsersArr);
 
@@ -163,9 +164,9 @@ function changeProperty(targetobj,propertyname,propertyvalue)
 function renderCell(col,celldata,cellid) {
 		var str="UNK";
 		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "class"||col == "examiner"||col == "groups"||col == "vers"||col == "access"||col == "requestedpasswordchange"){
-					obj = JSON.parse(celldata);			
+					obj = JSON.parse(celldata);
 		}
-	
+
 		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"){
 			//str = "<div style='display:flex;'><input id='"+col+"_"+obj.uid+"' onKeyDown='if(event.keyCode==13) changeOpt(event)' value=\""+obj[col]+"\" style='margin:0 4px;flex-grow:1;font-size:11px;' size=" + obj[col].toString().length +"></div>";
 			str = "<div style='display:flex;'><span id='"+col+"_"+obj.uid+"' style='margin:0 4px;flex-grow:1;'>"+obj[col]+"</span></div>";
@@ -201,9 +202,9 @@ function renderCell(col,celldata,cellid) {
 				for(var i=0;i<filez['groups'].length;i++){
 						var group=filez['groups'][i];
 						if(tgroups.indexOf((group.groupkind+"_"+group.groupval))>-1){
-								str += "<label><input type='checkbox' checked id='g"+obj.uid+"' value='"+group.groupkind+"_"+group.groupval+"' />"+group.groupval+"</label>";						
+								str += "<label><input type='checkbox' checked id='g"+obj.uid+"' value='"+group.groupkind+"_"+group.groupval+"' />"+group.groupval+"</label>";
 						}else{
-								str += "<label><input type='checkbox' id='g"+obj.uid+"' value='"+group.groupkind+"_"+group.groupval+"' />"+group.groupval+"</label>";												
+								str += "<label><input type='checkbox' id='g"+obj.uid+"' value='"+group.groupkind+"_"+group.groupval+"' />"+group.groupval+"</label>";
 						}
 				}
 				str += '</div></div>';
@@ -211,7 +212,7 @@ function renderCell(col,celldata,cellid) {
 				str="<div style='display:flex;'><div style='margin:0 4px;flex-grow:1;'>"+celldata+"</div></div>";
 		}
 		return str;
-	
+
 }
 
 function renderSortOptions(col,status,colname) {
@@ -264,24 +265,37 @@ function compare(a,b)
     // Find out which column and part of column are we sorting on from currentTable
     let col = sortableTable.currentTable.getSortcolumn();
     let kind = sortableTable.currentTable.getSortkind();
-    let val=0;  
-  
+    let val=0;
+
     if (col == "firstname") {
         a=JSON.parse(a);
         b=JSON.parse(b);
         a.firstname=$('<div/>').html(a.firstname).text();
-        b.firstname=$('<div/>').html(b.firstname).text();        
+        b.firstname=$('<div/>').html(b.firstname).text();
         if(kind==0){
             val = b.firstname.toLocaleUpperCase().localeCompare(a.firstname.toLocaleUpperCase());
         }else{
             val = a.firstname.toLocaleUpperCase().localeCompare(b.firstname.toLocaleUpperCase());
         }
-    }else{
+    }else if (col == "requestedpasswordchange") {
+			  a=JSON.parse(a);
+				b=JSON.parse(b);
+				if(kind==0){
+					val = b.requested<a.requested;
+			  }else{
+					val = a.requested<b.requested;
+			  }
+		} else {
         if((kind%2)==0){
-            val=a<b;
+						val=a<b;
         }else{
             val=b<a;
         }
+		}
+		if (val === true) {
+      val = 1;
+    } else if (val === false) {
+      val = -1;
     }
     return val;
 }
@@ -296,7 +310,7 @@ function displayCellEdit(celldata,rowno,rowelement,cellelement,column,colno,rowd
 				celldata=JSON.parse(celldata);
 				str = "<input type='hidden' id='popoveredit_uid' class='popoveredit' style='flex-grow:1;' value='" + celldata.uid + "'/>";
 				str += "<input type='text' id='popoveredit_"+column+"' class='popoveredit' style='flex-grow:1;width:auto;' value='" + celldata[column] + "' size=" + celldata[column].toString().length + "/>";
-		} 
+		}
 		return str;
 }
 
@@ -312,14 +326,14 @@ function updateCellCallback(rowno,colno,column,tableid) {
 				obj[column]=document.getElementById("popoveredit_"+column).value;
 				changeProperty(obj.uid,column,obj[column])
 				return JSON.stringify(obj);
-		}		
+		}
 }
 
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 var searchterm = "";
-function rowFilter(row) {	
+function rowFilter(row) {
 		if(searchterm == ""){
 				return true;
 		}else{
@@ -331,7 +345,7 @@ function rowFilter(row) {
 							}
 						}
 					}
-				}   
+				}
 		}
 		return false;
 }
@@ -345,12 +359,12 @@ var myTable;
 function returnedAccess(data) {
 
 	filez = data;
-	
+
 	if(data['debug']!="NONE!") alert(data['debug']);
-	
+
 	if(data["entries"].length>0){
 			document.getElementById("sort").style.display="table-cell";
-			document.getElementById("select").style.display="table-cell";		
+			document.getElementById("select").style.display="table-cell";
 	}
 
 	var tabledata = {
@@ -388,7 +402,7 @@ function returnedAccess(data) {
 	});
 
 	myTable.renderTable();
-	
+
 }
 
 //excuted onclick button for quick searching in table
@@ -429,7 +443,7 @@ $(document).on("touchstart", function(e){
 		mouseDown(e);
 		FABDown(e);
 });
-							 
+
 $(document).on("touchend", function(e){
 		mouseUp(e);
 		FABUp(e);
@@ -440,7 +454,7 @@ $(document).on("touchend", function(e){
 //----------------------------------------------------------------------------------
 
 function mouseDown(e){
-	
+
 }
 
 //----------------------------------------------------------------------------------
@@ -448,7 +462,7 @@ function mouseDown(e){
 //----------------------------------------------------------------------------------
 
 function mouseUp(e){
-	
+
 	// if the target of the click isn't the container nor a descendant of the container
 	if (activeElement) {
 		var checkboxes = $(activeElement).find(".checkboxes");
