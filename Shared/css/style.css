@@ -1020,7 +1020,6 @@ input {
   background-color: #614875;
   vertical-align: bottom;
   padding-left: 10px;
-  /* cursor: move; */
   display: flex;
   justify-content: space-around;
 }
