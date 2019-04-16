@@ -1358,16 +1358,13 @@ function removeLocalStorage() {
     }
 }
 
-function coord(x) {
-  return Number.parseFloat(canvasMouseX, canvasMouseY).toFixed(1);
-}
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
      + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-     + "X=" + coord(canvasMouseX)
-     + " & Y=" + coord(canvasMouseY) + "</p>";
+     + "X=" + canvasMouseX
+     + " & Y=" + canvasMouseY + "</p>";
 }
 //----------------------------------------
 // Renderer
