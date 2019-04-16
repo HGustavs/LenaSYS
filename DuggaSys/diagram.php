@@ -150,13 +150,13 @@
                             <span class="drop-down-option" id="exportid">Export...</span>
                             <div class="export-drop-down">
                                 <div class="export-drop-down-item">
-                                    <span class="drop-down-option" id="fileid" onclick='SaveFile(this);'>Export JSON</span>
+                                    <a class="drop-down-option" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
                                 </div>
                                 <div class="export-drop-down-item">
-                                    <span class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</span>
+                                    <a class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
                                 </div>
                                 <div class="export-drop-down-item">
-                                    <span class="drop-down-option" id="picid">Export Picture</span>
+                                    <a class="drop-down-option" id="picid">Export Picture</a>
                                 </div>
                             </div>
                         </div>
