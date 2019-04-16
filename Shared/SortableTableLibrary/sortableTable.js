@@ -42,8 +42,6 @@ function defaultRowFilter()
 	return true;
 }
 
-
-
 // Global sorting function global
 function sortableInternalSort(a,b)
 {
@@ -52,27 +50,13 @@ function sortableInternalSort(a,b)
     var colname = sortableTable.currentTable.getSortcolumn();
     if ((sortableTable.currentTable.sortkind % 2)==0) {
       //alert("Compare: "+a+" "+b);
-      ret = newCompare(a[colname],b[colname]);
+      ret = compare(a[colname],b[colname]);
     } else {
       //alert("Compare: "+b+" "+a);
-      ret = newCompare(b[colname],a[colname]);
+      ret = compare(b[colname],a[colname]);
     }
     return ret;
 }
-// function sortableInternalSort(a,b)
-// {
-//     var ret = 0;
-//     //var colname = sortableTable.currentTable.getKeyByValue();
-//     var colname = sortableTable.currentTable.getSortcolumn();7
-//     if ((sortableTable.currentTable.sortkind % 2)==0) {
-//       //alert("Compare: "+a+" "+b);
-//       ret = compare(a[colname],b[colname]);
-//     } else {
-//       //alert("Compare: "+b+" "+a);
-//       ret = compare(b[colname],a[colname]);
-//     }
-//     return ret;
-// }
 
 function clearUpdateCellInternal()
 {
@@ -684,58 +668,4 @@ function SortableTable(param)
 
         return str;
     }
-}
-function newCompare(firstCell,secoundCell)
-{
-    let col = sortableTable.currentTable.getSortcolumn(); // Get column name
-    let status = sortableTable.currentTable.getSortkind(); // Get if the sort arrow is up or down.
-    let val=0;
-    let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
-    var firstCellTemp;
-    var secoundCellTemp;
-
-    console.log(firstCell);
-    console.log(secoundCell);
-    //Check if the cell is a valid cell in the table.
-    if (colOrder.includes(col)) {
-        //Check if the cells contains a date object.
-        if(Date.parse(firstCell) && Date.parse(secoundCell)){
-        firstCellTemp = firstCell;
-        secoundCellTemp = secoundCell;
-        }else{
-          //Check if any cell is null.
-            if(firstCell === null || secoundCell === null){
-              firstCellTemp = firstCell;
-              secoundCellTemp = secoundCell;
-            }else{
-              //Convert to json object
-              if(JSON.stringify(firstCell) || JSON.stringify(secoundCell)){
-                firstCellTemp = firstCell;
-                secoundCellTemp = secoundCell;
-              }else{
-                firstCell=JSON.parse(firstCell);
-                secoundCell=JSON.parse(secoundCell);
-                //Get the first letter from the value.
-                firstCellTemp = Object.values(firstCell)[0];
-                secoundCellTemp = Object.values(secoundCell)[0];
-            }
-          }
-       }
-
-        firstCellTemp=$('<div/>').html(firstCellTemp).text();
-        secoundCellTemp=$('<div/>').html(secoundCellTemp).text();
-        if(status==0){
-            val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase());
-        }else{
-            val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase());
-        }
-    }
-    else{
-        if((status%2)==0){
-            val=firstCellTemp<secoundCell;
-        }else{
-            val=secoundCell<firstCellTemp;
-        }
-    }
-    return val;
 }
