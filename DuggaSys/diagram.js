@@ -1362,12 +1362,8 @@ function removeLocalStorage() {
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
      + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-     + "X=" + koordinater(canvasMouseX)
-     + " & Y=" +koordinater(canvasMouseY) + "</p>";
-}
-
-function koordinater(x) {
-  return Number.parseFloat(x).toFixed(1);
+     + "X=" + canvasMouseX
+     + " & Y=" +canvasMouseY + "</p>";
 }
 
 
