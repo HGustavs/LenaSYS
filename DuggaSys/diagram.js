@@ -1368,8 +1368,8 @@ function decimalPrecision(value, precision){
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
      + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-     + "X=" + decimalPrecision(canvasMouseX, 2).toFixed(2)
-     + " & Y=" + decimalPrecision(canvasMouseY, 2).toFixed(2) + "</p>";
+     + "X=" + decimalPrecision(canvasMouseX, 2).toFixed(1)
+     + " & Y=" + decimalPrecision(canvasMouseY, 2).toFixed(1) + "</p>";
 }
 //----------------------------------------
 // Renderer
