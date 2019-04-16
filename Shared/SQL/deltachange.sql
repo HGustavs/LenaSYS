@@ -120,22 +120,3 @@ ALTER TABLE listentries MODIFY groupKind VARCHAR(16);
 UPDATE groups SET groupKind="Number" WHERE groupKind="No";
 UPDATE groups SET groupKind="Letter" WHERE groupKind="Le";
 UPDATE groups SET groupKind="Roman" WHERE groupKind="VI";
-
-/* New table for time sheets */
-CREATE TABLE timesheet(
-	tid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
-	uid						INT UNSIGNED NOT NULL,
-	cid						INT UNSIGNED NOT NULL,
-	vers					VARCHAR(8) NOT NULL,
-	did						INT(11) NOT NULL,
-	moment				INT UNSIGNED NOT NULL,
-	day						DATETIME NOT NULL,
-	type					VARCHAR(20),
-	reference			VARCHAR(10),
-	comment				TEXT,
-	PRIMARY KEY (tid),
-	FOREIGN KEY (uid) REFERENCES user(uid),
-	FOREIGN KEY (cid) REFERENCES course(cid),
-	FOREIGN KEY (did) REFERENCES quiz(id),
-	FOREIGN KEY (moment) REFERENCES listentries(lid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
