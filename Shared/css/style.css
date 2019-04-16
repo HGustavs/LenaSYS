@@ -629,7 +629,7 @@ header td {
 
 .navName:hover {
   font-size: 0.8em;
-  text-shadow: 1px 1px 4px #50A750;
+  text-shadow: 2px 2px 4px rgb(0, 0, 0);
   color: #FFFFFF;
   cursor: default;
   text-decoration: underline;
