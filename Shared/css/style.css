@@ -4686,13 +4686,11 @@ textarea#filecont{
   padding: 0;
 }
 .tsTableDeleteCell {
-  cursor: pointer;
   border-radius: 0px 5px 5x 0px;
   -moz-border-radius: 0px 5px 5px 0px;
   -webkit-border-radius: 0px 5px 5px 0px;
 }
-.tsTableDeleteCell:hover {
-  color: #964C4D;
+.tsTableDeleteCell img:hover {
   cursor: pointer;
 }
 .newRowButton {
