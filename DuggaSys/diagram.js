@@ -1,6 +1,8 @@
-/*
------ THIS FILE HANDLES THE MAIN FUNCTIONS OF THE DIAGRAM -----
-*/
+/************************************************************
+      
+    THIS FILE HANDLES THE MAIN FUNCTIONS OF THE DIAGRAM
+
+************************************************************/
 
 var querystring = parseGet();
 var retdata;
@@ -19,7 +21,12 @@ AJAXService("get", {}, "DIAGRAM");
     Point - A 2d coordinate
 */
 
-// Global settings
+/************************************************************
+  
+    Globals
+ 
+************************************************************/
+
 var gridSize = 16;
 var crossSize = 4.0;                // Size of point cross
 var tolerance = 8;                  // Size of tolerance area around the point
@@ -123,9 +130,10 @@ window.addEventListener("keydown", this.keyDownHandler);
 
 var ctrlIsClicked = false;
 
-// -------------------------------------------------------------
+//--------------------------------------------------------------
 // DIAGRAM EXAMPLE DATA SECTION
-// -------------------------------------------------------------
+//--------------------------------------------------------------
+
 var erEntityA;
 
 function generateExampleCode() {
@@ -232,7 +240,7 @@ function generateExampleCode() {
 
 //--------------------------------------------------------------------
 // diagram - Stores a global list of diagram objects
-// A diagram object could for instance be a path, or a symbol
+//           A diagram object could for instance be a path, or a symbol
 //--------------------------------------------------------------------
 var diagram = [];
 
@@ -293,7 +301,11 @@ function keyDownHandler(e){
         cancelFreeDraw();
     }
 }
-// removes all the lines that has been drawn when in the free draw mode
+
+//----------------------------------------------------------------------
+// cancelFreeDraw: removes all the lines that has been drawn when in the free draw mode
+//----------------------------------------------------------------------
+
 function cancelFreeDraw(){
     if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
         for (var i = 0; i < numberOfPointsInFigure; i++) {
@@ -304,7 +316,10 @@ function cancelFreeDraw(){
         updateGraphics();
       }
 }
-// used for copy and paste functionality in the keyDownHandlerFunction
+
+//----------------------------------------------------------------------
+// fillCloneArray: used for copy and paste functionality in the keyDownHandlerFunction
+//----------------------------------------------------------------------
 function fillCloneArray(){
     cloneTempArray = [];
     for(var i = 0; i < selected_objects.length; i++){
@@ -323,7 +338,9 @@ window.onkeyup = function(event) {
     }
 }
 
-//Handler for when pressing arrow keys when space has been pressed
+//----------------------------------------------------------------------
+// arrowKeyPressed: Handler for when pressing arrow keys when space has been pressed
+//----------------------------------------------------------------------
 function arrowKeyPressed(key){
     var xNew = 0, yNew = 0;
 
@@ -344,15 +361,16 @@ function arrowKeyPressed(key){
 
 //--------------------------------------------------------------------
 // points - stores a global list of points
-// A point can not be physically deleted but marked as deleted in order to reuse
-// the sequence number again. e.g. point[5] will remain point[5] until it is deleted
+//          A point can not be physically deleted but marked as deleted in order to reuse
+//          the sequence number again. e.g. point[5] will remain point[5] until it is deleted
 //--------------------------------------------------------------------
 var points = [];
 
 //--------------------------------------------------------------------
-// addPoint - Creates a new point with inserted parameters and
-// returns index of that point
+// addPoint: Creates a new point with inserted parameters and
+//           returns index of that point
 //--------------------------------------------------------------------
+
 points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
     //If we have an unused index we use it first
     for(var i = 0; i < points.length; i++){
@@ -366,7 +384,10 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
     return this.length - 1;
 }
 
-//Clone an object
+//----------------------------------------------------------------------
+// copySymbol: Clone an object
+//----------------------------------------------------------------------
+
 function copySymbol(symbol){
     var clone = Object.assign(new Symbol(), symbol);
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
@@ -412,8 +433,9 @@ function copySymbol(symbol){
 }
 
 //--------------------------------------------------------------------
-// drawPoints - Draws each of the points as a cross
+// drawPoints: Draws each of the points as a cross
 //--------------------------------------------------------------------
+
 points.drawPoints = function() {
     ctx.strokeStyle = crossStrokeStyle1;
     ctx.lineWidth = 2;
@@ -439,9 +461,10 @@ points.drawPoints = function() {
 
 
 //--------------------------------------------------------------------
-// closestPoint - Returns the distance and index of the point closest
-// to the cotargetItemsInsideSelectionBoxordinates passed as parameters.
+// closestPoint: Returns the distance and index of the point closest
+//               to the cotargetItemsInsideSelectionBoxordinates passed as parameters.
 //--------------------------------------------------------------------
+
 points.closestPoint = function(xCoordinate, yCoordinate, pointIndex) {
     var distance = 50000000;
     var index = -1;
@@ -459,17 +482,15 @@ points.closestPoint = function(xCoordinate, yCoordinate, pointIndex) {
 }
 
 //--------------------------------------------------------------------
-// clearAllSelects - Clears all selects from the array "points"
+// clearAllSelects: Clears all selects from the array "points"
 //--------------------------------------------------------------------
+
 points.clearAllSelects = function() {
     for (var i = 0; i < this.length; i++) {
         this[i].isSelected = 0;
     }
 }
 
-//--------------------------------------------------------------------
-// draw - Executes draw methond in all diagram objects
-//--------------------------------------------------------------------
 diagram.closestPoint = function(mx, my){
     var distance = 50000000;
     var point;
@@ -500,6 +521,10 @@ diagram.closestPoint = function(mx, my){
     return {distance:Math.sqrt(distance), point:point};
 }
 
+//--------------------------------------------------------------------
+// draw: Executes draw method in all diagram objects
+//--------------------------------------------------------------------
+
 diagram.draw = function() {
     this.adjustPoints();
     for(var i = 0; i < this.length; i++){
@@ -522,9 +547,10 @@ diagram.draw = function() {
 }
 
 //--------------------------------------------------------------------
-// adjustPoints - Adjusts all the fixed midpoints or other points of
-// interest to the actual geometric midpoint of the symbol
+// adjustPoints: Adjusts all the fixed midpoints or other points of
+//               interest to the actual geometric midpoint of the symbol
 //--------------------------------------------------------------------
+
 diagram.adjustPoints = function() {
     for (var i = 0 ; i < this.length; i++) {
         this[i].adjust();
@@ -532,8 +558,9 @@ diagram.adjustPoints = function() {
 }
 
 //--------------------------------------------------------------------
-// deleteObject - Deletes passed object from diagram
+// deleteObject: Deletes passed object from diagram
 //--------------------------------------------------------------------
+
 diagram.deleteObject = function(object) {
     for (var i = 0; i < this.length; i++) {
         if (this[i] == object) {
@@ -543,9 +570,10 @@ diagram.deleteObject = function(object) {
 }
 
 //--------------------------------------------------------------------
-// targetItemsInsideSelectionBox - Targets all items inside the
-// selection box (dragged by the user)
+// targetItemsInsideSelectionBox: Targets all items inside the
+//                                selection box (dragged by the user)
 //--------------------------------------------------------------------
+
 diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
     //ensure that an entity cannot scale below the minimum size
     if (sx > ex) {
@@ -626,8 +654,9 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
 }
 
 //--------------------------------------------------------------------
-// itemClicked - Returns the index of the first clicked item
+// itemClicked: Returns the index of the first clicked item
 //--------------------------------------------------------------------
+
 diagram.itemClicked = function() {
     if(uimode == "MoveAround") return -1;
     var obj = this.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
@@ -636,9 +665,10 @@ diagram.itemClicked = function() {
 }
 
 //--------------------------------------------------------------------
-// isHovered - Executes isHovered methond in all diagram objects
-// (currently only of kind==2 && symbolkind == 4 (aka. lines))
+// checkForHover: Executes isHovered method in all diagram objects
+//                (currently only of kind==2 && symbolkind == 4 (aka. lines))
 //--------------------------------------------------------------------
+
 diagram.checkForHover = function(posX, posY) {
     for (var i = 0; i < this.length; i++) {
         this[i].isHovered = false;
@@ -661,8 +691,9 @@ diagram.checkForHover = function(posX, posY) {
 }
 
 //--------------------------------------------------------------------
-// eraseLines - removes all the lines connected to an object
+// eraseLines: removes all the lines connected to an object
 //--------------------------------------------------------------------
+
 diagram.eraseLines = function(privateLines) {
     for (var i = 0; i < privateLines.length; i++) {
         var eraseLeft = false;
@@ -695,8 +726,9 @@ diagram.eraseLines = function(privateLines) {
 }
 
 //--------------------------------------------------------------------
-// getEntityObjects - Returns a list of all entities
+// getEntityObjects: Returns a list of all entities
 //--------------------------------------------------------------------
+
 diagram.getEntityObjects = function() {
     var entities = [];
     for (var i = 0; i < diagram.length; i++) {
@@ -708,8 +740,9 @@ diagram.getEntityObjects = function() {
 }
 
 //--------------------------------------------------------------------
-// getLineObjects - Returns a list of all lines
+// getLineObjects: Returns a list of all lines
 //--------------------------------------------------------------------
+
 diagram.getLineObjects = function() {
     var lines = [];
     for (var i = 0; i < this.length; i++) {
@@ -721,8 +754,9 @@ diagram.getLineObjects = function() {
 }
 
 //--------------------------------------------------------------------
-// getRelationObjects - Returns a list of all relations
+// getRelationObjects: Returns a list of all relations
 //--------------------------------------------------------------------
+
 diagram.getRelationObjects = function() {
     var relations = [];
     for (var i = 0; i < diagram.length; i++) {
@@ -734,9 +768,10 @@ diagram.getRelationObjects = function() {
 }
 
 //--------------------------------------------------------------------
-// updateLineRelations - Updates a line's relation depending on
-// what object it is connected to
+// updateLineRelations: Updates a line's relation depending on
+//                      what object it is connected to
 //--------------------------------------------------------------------
+
 diagram.updateLineRelations = function() {
     var privateLines = this.getLineObjects();
     for (var i = 0; i < privateLines.length; i++) {
@@ -753,8 +788,9 @@ diagram.updateLineRelations = function() {
 }
 
 //--------------------------------------------------------------------
-// Sort all connectors related to entity.
+// sortConnectors: Sort all connectors related to entity.
 //--------------------------------------------------------------------
+
 diagram.sortConnectors = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
@@ -764,8 +800,9 @@ diagram.sortConnectors = function() {
 }
 
 //--------------------------------------------------------------------
-// Updates all lines connected to an entity.
+// updateQuadrants: Updates all lines connected to an entity.
 //--------------------------------------------------------------------
+
 diagram.updateQuadrants = function() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5 || diagram[i].symbolkind == 1) {
@@ -802,9 +839,10 @@ function initializeCanvas() {
 }
 
 //-----------------------------------------------------------------------------------
-// Function to enable and disable the grid
-// functionality is related to currentMouseCoordinateX and currentMouseCoordinateY
+// toggleGrid: Function to enable and disable the grid
+//             functionality is related to currentMouseCoordinateX and currentMouseCoordinateY
 //-----------------------------------------------------------------------------------
+
 function toggleGrid() {
     if (snapToGrid == false) {
         snapToGrid = true;
@@ -930,17 +968,26 @@ function toggleVirtualA4Holes(){
     }
 }
 
-// Opens the dialog menu for import
+//---------------------------------------
+// openImportDialog: Opens the dialog menu for import
+//---------------------------------------
+
 function openImportDialog() {
     $("#import").css("display", "flex");
 }
 
-// Closes the dialog menu for import.
+//---------------------------------------
+// closeImportDialog: Closes the dialog menu for import.
+//---------------------------------------
+
 function closeImportDialog() {
     $("#import").css("display", "none");
 }
 
-// Import file
+//---------------------------------------
+// importFile: Import file
+//---------------------------------------
+
 function importFile() {
     var file = document.getElementById("importFile").files[0];
     if (!file) return;
@@ -960,8 +1007,11 @@ function importFile() {
     reader.readAsText(file, "UTF-8");
 }
 
-// Function that is used for the resize
-// Making the page more responsive
+//-------------------------------------------
+// canvasSize: Function that is used for the resize
+//             Making the page more responsive
+//-------------------------------------------
+
 function canvasSize() {
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 144);
@@ -976,7 +1026,10 @@ function canvasSize() {
 // Listen if the window is the resized
 window.addEventListener('resize', canvasSize);
 
-// used to redraw each object on the screen
+//-------------------------------------------
+// updateGraphics: used to redraw each object on the screen
+//-------------------------------------------
+
 function updateGraphics() {
     ctx.clearRect(sx, sy, (widthWindow / zoomValue), (heightWindow / zoomValue));
     if (moveValue == 1) {
@@ -1016,7 +1069,7 @@ function eraseObject(object) {
     canvas.style.cursor = "default";
     var objectsToDelete = [];
     if (object.kind == 2) {
-        //None lines
+        // None lines
         if(object.symbolkind != 4){
             var lines = diagram.filter(symbol => symbol.symbolkind == 4);
             objectsToDelete = lines.filter(
@@ -1027,7 +1080,7 @@ function eraseObject(object) {
                         || (object.hasConnectorFromPoint(line.topLeft) && (object.symbolkind == 3 || object.symbolkind == 5))
                         || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == 3 || object.symbolkind == 5))
             );
-        //lines
+        // lines
         }else{
             diagram.filter(
                 symbol => symbol.symbolkind == 3 || symbol.symbolkind == 5)
@@ -1039,7 +1092,7 @@ function eraseObject(object) {
                     });
 
             var attributesAndRelations = diagram.filter(symbol => symbol.symbolkind == 2 || symbol.symbolkind == 5);
-            //Check if the line has a common point with a centerpoint of attributes or relations.
+            // Check if the line has a common point with a centerpoint of attributes or relations.
             var removeTopleft = attributesAndRelations
                         .filter(symbol => symbol.centerPoint == object.topLeft
                                        || symbol.middleDivider == object.topLeft
@@ -1061,17 +1114,19 @@ function eraseObject(object) {
     updateGraphics();
 }
 
-//-------------------------------------------------------------------------//
-// Create function that changes the id "loginBoxTitle" to "Delete Object".
-//-------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
+// changeLoginBoxTitleDelete: Create function that changes 
+//                            the id "loginBoxTitle" to "Delete Object"
+//-------------------------------------------------------------------------
 
 function changeLoginBoxTitleDelete() {
     document.getElementById("loginBoxTitle").innerHTML = "Delete Object";
 }
 
-//-------------------------------------------------------------------------//
-// Create function that changes the id "loginBoxTitle" to "Appearance".
-//-------------------------------------------------------------------------//
+//-------------------------------------------------------------------------
+// changeLoginBoxTitleAppearance: Create function that changes 
+//                                the id "loginBoxTitle" to "Appearance"
+//-------------------------------------------------------------------------
 
 function changeLoginBoxTitleAppearance() {
     document.getElementById("loginBoxTitle").innerHTML = "Appearance";
@@ -1154,7 +1209,10 @@ function connectedObjects(line) {
     return privateObjects;
 }
 
-// crosses are only visible in developermode
+//--------------------------------------------------
+// cross: crosses are only visible in developermode
+//--------------------------------------------------
+
 function cross(xCoordinate, yCoordinate) {
     ctx.strokeStyle = "#4f6";
     ctx.lineWidth = 3;
@@ -1197,7 +1255,10 @@ function drawGrid() {
     }
 }
 
-// draws the whole background gridlayout
+//-------------------------------------------
+// gridToSVG: draws the whole background gridlayout
+//-------------------------------------------
+
 function gridToSVG(width, height) {
     var str = "", stroke = "";
     for (var i = 0; i < width; i++) {
@@ -1213,7 +1274,10 @@ function gridToSVG(width, height) {
     return str;
 }
 
-//remove all elements in the diagram array. it hides the points by placing them beyond the users view.
+//------------------------------------------------------------------------------
+// clearCanvas: remove all elements in the diagram array. 
+//              it hides the points by placing them beyond the users view.
+//------------------------------------------------------------------------------
 function clearCanvas() {
     while (diagram.length > 0) {
         diagram[diagram.length - 1].erase();
@@ -1233,8 +1297,10 @@ consloe.log = function(gobBluth) {
 }
 
 
+//------------------------------------------------------------------------------
+// debugMode: this function show and hides crosses and the consol.
+//------------------------------------------------------------------------------
 
-//debugMode this function show and hides crosses and the consol.
 var ghostingCrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
 function debugMode() {
     if(ghostingCrosses) {
@@ -1252,10 +1318,11 @@ function debugMode() {
     setCheckbox($("a:contains('Developer mode')"), !ghostingCrosses);
 }
 
-/******************************************************************************************
-calculate the hash. does this by converting all objects to strings from diagram.
-then do some sort of calculation. used to save the diagram. it also save the local diagram
-*******************************************************************************************/
+//------------------------------------------------------------------------------
+// hashFunction: calculate the hash. does this by converting all objects to strings from diagram.
+//               then do some sort of calculation. used to save the diagram. it also save the local diagram
+//------------------------------------------------------------------------------
+
 function hashFunction() {
     var diagramToString = "";
     var hash = 0;
@@ -1283,10 +1350,11 @@ function hashFunction() {
 }
 
 //--------------------------------------------------------------------------------
-//This function is used to hash the current diagram, but not storing it locally,
-//so we can compare the current hash with the hash after we have made some changes
-// to see if it need to be saved.
+// hashCurrent: This function is used to hash the current diagram, but not storing it locally,
+//              so we can compare the current hash with the hash after we have made some changes
+//              to see if it need to be saved.
 //--------------------------------------------------------------------------------
+
 function hashCurrent() {
     var hash = 0;
     var diagramToString = "";
@@ -1301,7 +1369,10 @@ function hashCurrent() {
     currentHash = hash.toString(16);
 }
 
-// retrive an old diagram if it exist.
+//---------------------------------------------
+// loadDiagram: retrive an old diagram if it exist.
+//---------------------------------------------
+
 function loadDiagram() {
     var checkLocalStorage = localStorage.getItem('localdiagram');
     //loacal storage and hash
@@ -1351,14 +1422,20 @@ function loadDiagram() {
     SaveState();
 }
 
-// this function is running when you click the button clear diagram
+//----------------------------------------------------------------------
+// removeLocalStorage: this function is running when you click the button clear diagram
+//----------------------------------------------------------------------
+
 function removeLocalStorage() {
     for (var i = 0; i < localStorage.length; i++) {
         localStorage.removeItem("localdiagram");
     }
 }
 
-// Function that rewrites the values of zoom and x+y that's under the canvas element
+//----------------------------------------------------------------------
+// reWrite: Function that rewrites the values of zoom and x+y that's under the canvas element
+//----------------------------------------------------------------------
+
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
      + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
@@ -1379,8 +1456,8 @@ function returnedSection(data) {
 }
 
 //--------------------------------------------------------------------
-// Handles refresh, makes sure that the diagram after the refresh
-// is equal to the diagram before refresh
+// refreshFunction: Handles refresh, makes sure that the diagram after the refresh
+//                  is equal to the diagram before refresh
 //--------------------------------------------------------------------
 function refreshFunction() {
     console.log("refreshFunction running");
@@ -1407,7 +1484,9 @@ function setRefreshTime() {
   return time;
 }
 
-// the selected objects are locked
+//----------------------------------------------------------------------
+// lockSelected: the selected objects are locked
+//----------------------------------------------------------------------
 function lockSelected(){
     for(var i = 0; i < selected_objects.length; i++){
         selected_objects[i].locked = !selected_objects[i].locked;
@@ -1451,8 +1530,9 @@ function align(mode){
 }
 
 //---------------------------------------------------------------------
-// these functions moves the objects either left, right, top or bottom
+// These functions moves the objects either left, right, top or bottom
 //---------------------------------------------------------------------
+
 function alignLeft(selected_objects){
     var lowest_x = 99999;
     for(var i = 0; i < selected_objects.length; i++){
@@ -1542,8 +1622,9 @@ function alignBottom(selected_objects){
 }
 
 //--------------------------------------------------------------------
-// these functions move the objects either horizontal or vertical
+// These functions move the objects either horizontal or vertical
 //--------------------------------------------------------------------
+
 function alignVerticalCenter(selected_objects){
     var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
     var temporary_objects = [];
@@ -1599,9 +1680,10 @@ function alignHorizontalCenter(selected_objects){
         }
     }
 }
+
 // ----------------------------------------------------------------------------
-// Objects in selected_objects get duplicated for some reason.
-// This function returns a list without the duplicated objects.
+// removeDuplicatesInList: Objects in selected_objects get duplicated for some reason.
+//                         This function returns a list without the duplicated objects.
 // ----------------------------------------------------------------------------
 
 function removeDuplicatesInList(selected_objects){
@@ -1642,7 +1724,10 @@ function sortObjects(selected_objects, mode){
   return private_objects;
 }
 
-// unclear what the purpose is of distribute, does not seem to work at all
+//----------------------------------------------------------------------
+// distribute: unclear what the purpose is of distribute, 
+//            does not seem to work at all
+//----------------------------------------------------------------------
 function distribute(axis){
     var spacing = 32;
     var selected_objects = [];
@@ -1685,21 +1770,29 @@ function distributeHorizontally(selected_objects, spacing){
     }
 }
 
-// removes the last object that was drawn
+//----------------------------------------------------------------------
+// undoDiagram: removes the last object that was drawn
+//----------------------------------------------------------------------
+
 function undoDiagram() {
     if (diagramNumberHistory > 1) diagramNumberHistory--;
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
-// restores the last object that was removed
+//----------------------------------------------------------------------
+// redoDiagram: restores the last object that was removed
+//----------------------------------------------------------------------
+
 function redoDiagram() {
     if (diagramNumberHistory < diagramNumber) diagramNumberHistory++;
     var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
     if (tmpDiagram != null) LoadImport(tmpDiagram);
 }
 
-// not clear where this method is used
+//----------------------------------------------------------------------
+// diagramToSVG: not clear where this method is used
+//----------------------------------------------------------------------
 function diagramToSVG() {
     var str = "";
     // Convert figures to SVG first so they appear behind other objects
@@ -1718,18 +1811,25 @@ function diagramToSVG() {
 }
 
 //------------------------------------------------------------------------------
-// functions which are used to change the global appearance of each object
+// Functions which are used to change the global appearance of each object
 // that has been drawn on the screen
 //------------------------------------------------------------------------------
 
-// changes the thickness of the lines between objects, and the lines surrounding each object
+//----------------------------------------------------------------------
+// globalLineThickness: changes the thickness of the lines between objects, 
+//                      and the lines surrounding each object
+//----------------------------------------------------------------------
+
 function globalLineThickness() {
     for (var i = 0; i < diagram.length; i++) {
         diagram[i].properties['lineWidth'] = document.getElementById('line-thickness').value;
     }
 }
 
-//change the font on all entities to the same font.
+//----------------------------------------------------------------------
+// globalFont: change the font on all entities to the same font.
+//----------------------------------------------------------------------
+
 function globalFont() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && (diagram[i].symbolkind == 1 || diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
@@ -1737,7 +1837,10 @@ function globalFont() {
         }
     }
 }
-//change the font color on all entities to the same color.
+//----------------------------------------------------------------------
+// globalFontColor: change the font color on all entities to the same color.
+//----------------------------------------------------------------------
+
 function globalFontColor() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
@@ -1746,7 +1849,10 @@ function globalFontColor() {
     }
 }
 
-//change the text size on all entities to the same size.
+//----------------------------------------------------------------------
+// globalTextSize: change the text size on all entities to the same size.
+//----------------------------------------------------------------------
+
 function globalTextSize() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
@@ -1755,7 +1861,10 @@ function globalTextSize() {
     }
 }
 
-//change the fillcolor on all entities to the same size.
+//----------------------------------------------------------------------
+// globalFillColor: change the fillcolor on all entities to the same size.
+//----------------------------------------------------------------------
+
 function globalFillColor() {
     for (var i = 0; i < diagram.length; i++) {
         if (diagram[i].kind == 2 && (diagram[i].symbolkind == 2 || diagram[i].symbolkind == 3 || diagram[i].symbolkind == 5)) {
@@ -1764,7 +1873,10 @@ function globalFillColor() {
     }
 }
 
-//change the strokecolor on all entities to the same size.
+//----------------------------------------------------------------------
+// globalStrokeColor: change the strokecolor on all entities to the same size.
+//----------------------------------------------------------------------
+
 function globalStrokeColor() {
     for (var i = 0; i < diagram.length; i++) {
             diagram[i].properties['strokeColor'] = document.getElementById('StrokeColor').value;
@@ -1797,8 +1909,11 @@ function diagramToSVG() {
     }
     return str;
 }
-// Check or uncheck the checkbox contained in 'element'
-// This function adds a checkbox element if there is none
+
+//----------------------------------------------------------------------
+// setCheckbox: Check or uncheck the checkbox contained in 'element'
+//              This function adds a checkbox element if there is none
+//----------------------------------------------------------------------
 function setCheckbox(element, check) {
     if ($(element).children(".material-icons").length == 0) {
         $(element).append("<i class=\"material-icons\" style=\"float: right; padding-right: 8px; font-size: 18px;\">check</i>");
@@ -1855,7 +1970,10 @@ function toggleToolbarLayout(){
     }
 }
 
-//function for switching the toolbar state (All, ER, UML)
+//----------------------------------------------------------------------
+// switchToolbar: function for switching the toolbar state (All, ER, UML)
+//----------------------------------------------------------------------
+
 function switchToolbar(direction){
   var text = ["All", "ER", "UML", "Free"];
   if(direction == 'left'){
@@ -1937,8 +2055,10 @@ function initToolbox(){
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
     element.style.display = "inline-block";
-    //element.style.height = (bound.bottom-bound.top-200+"px");
-    //element.style.height = (400+"px");
+    /*
+    element.style.height = (bound.bottom-bound.top-200+"px");
+    element.style.height = (400+"px");
+    */
 }
 
 function toggleToolbarMinimize(){
@@ -1969,7 +2089,10 @@ function toggleToolbarLayout(){
     }
 }
 
-//function for switching the toolbar state (All, ER, UML), not sure what the numbers 0 an 3 mean
+//----------------------------------------------------------------------
+// switchToolbar: function for switching the toolbar state (All, ER, UML), 
+//                not sure what the numbers 0 an 3 mean
+//----------------------------------------------------------------------
 function switchToolbar(direction){
   var text = ["All", "ER", "UML", "Free"];
   if(direction == 'left'){
@@ -2040,7 +2163,10 @@ $( function() {
 // DIAGRAM MOUSE SECTION
 // ----------------------------------
 
-// Function for the zoom in and zoom out in the canvas element
+//----------------------------------------------------------------------
+// zoomInMode: Function for the zoom in and zoom out in the canvas element
+//----------------------------------------------------------------------
+
 function zoomInMode() {
     var oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
@@ -2050,7 +2176,10 @@ function zoomInMode() {
     updateGraphics();
 }
 
-// Recursive Pos of div in document - should work in most browsers
+//----------------------------------------------------------------------
+// findPos: Recursive Pos of div in document - should work in most browsers
+//----------------------------------------------------------------------
+
 function findPos(obj) {
     var curleft = 0;
     var curtop = 0;
@@ -2433,6 +2562,8 @@ function mouseupevt(ev) {
 
     // Code for creating symbols when mouse is released
     // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
+    //----------------------------------------------------------------------
+
     if (uimode == "CreateClass" && md == 4) {
         classB = new Symbol(1); // UML
         classB.name = "New" + diagram.length;
@@ -2572,7 +2703,10 @@ function createText(posX, posY) {
     updateGraphics();
 }
 
-// This is used when making the objects bigger or smaller
+//----------------------------------------------------------------------
+// resize: This is used when making the objects bigger or smaller
+//----------------------------------------------------------------------
+
 function resize() {
     if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
@@ -2661,6 +2795,7 @@ function mouseupcanvas(e) {
 // Basic functionality
 // The building blocks for creating the menu
 //--------------------------------------------------------------------
+
 function showMenu(){
     canvas.style.cursor = "default";
     $("#appearance").show();
@@ -2670,20 +2805,22 @@ function showMenu(){
     return document.getElementById("f01");
 }
 
-function openAppearanceDialogMenu() {
-    /*
-     * Opens the dialog menu for appearance.
-     */
-    
+//----------------------------------------------------------------------
+//  openAppearanceDialogMenu: Opens the dialog menu for appearance.
+//----------------------------------------------------------------------
+
+function openAppearanceDialogMenu() {    
     $(".loginBox").draggable();
     var form = showMenu();
     appearanceMenuOpen = true;
     objectAppearanceMenu(form);
 }
+
+//----------------------------------------------------------------------
+// closeAppearanceDialogMenu: Closes the dialog menu for appearance.
+//----------------------------------------------------------------------
+
 function closeAppearanceDialogMenu() {
-    /*
-     * Closes the dialog menu for appearance.
-     */
      //if the X
      if(globalAppearanceValue == 1){
        var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
@@ -2700,10 +2837,11 @@ function closeAppearanceDialogMenu() {
     document.removeEventListener("click", clickOutsideDialogMenu);
 }
 
+//----------------------------------------------------------------------
+// clickOutsideDialogMenu: Closes the dialog menu when click is done outside box.
+//----------------------------------------------------------------------
+
 function clickOutsideDialogMenu(ev) {
-    /*
-     * Closes the dialog menu when click is done outside box.
-     */
     $(document).mousedown(function (ev) {
         var container = $("#appearance");
         if (!container.is(ev.target) && container.has(ev.target).length === 0) {
@@ -2713,10 +2851,11 @@ function clickOutsideDialogMenu(ev) {
     });
 }
 
+//----------------------------------------------------------------------
+// clickEnterOnDialogMenu: Closes the dialog menu when the enter button is pressed.
+//----------------------------------------------------------------------
+
 function clickEnterOnDialogMenu(ev) {
-    /*
-     * Closes the dialog menu when the enter button is pressed.
-     */
     $(document).keypress(function (ev) {
         var container = $("#appearance");
         if (ev.which == 13 && appearanceMenuOpen && !classAppearanceOpen && !textAppearanceOpen) {
@@ -2737,7 +2876,10 @@ function dimDialogMenu(dim) {
     }
 }
 
-// Loads the menu which is used to change apperance of ER and free draw objects.
+//----------------------------------------------------------------------
+// loadFormIntoElement: Loads the menu which is used to change apperance of ER and free draw objects.
+//----------------------------------------------------------------------
+
 function loadFormIntoElement(element, dir){
   //Ajax
   var file = new XMLHttpRequest();
@@ -2764,7 +2906,10 @@ function loadFormIntoElement(element, dir){
   file.send();
 }
 
-// Loads the menu to change cardinality
+//----------------------------------------------------------------------
+// loadLineForm: Loads the menu to change cardinality
+//----------------------------------------------------------------------
+
 function loadLineForm(element, dir){
     //Ajax
     var file = new XMLHttpRequest();
@@ -2787,7 +2932,10 @@ function loadLineForm(element, dir){
     file.send();
 }
 
-//Loads the appearance menu for UML-class
+//----------------------------------------------------------------------
+// loadUMLForm: Loads the appearance menu for UML-class
+//----------------------------------------------------------------------
+
 function loadUMLForm(element, dir){
   var file = new XMLHttpRequest();
   file.open('GET', dir);
@@ -2816,7 +2964,11 @@ function loadUMLForm(element, dir){
   }
   file.send();
 }
-//Loads the appearance menu for text
+
+//----------------------------------------------------------------------
+// loadTextForm: Loads the appearance menu for text
+//----------------------------------------------------------------------
+
 function loadTextForm(element, dir){
   var file = new XMLHttpRequest();
   file.open('GET', dir);
@@ -2841,7 +2993,10 @@ function loadTextForm(element, dir){
   file.send();
 }
 
-// used to implement the changes to apperances that has been made
+//----------------------------------------------------------------------
+// setSelectedOption: used to implement the changes to apperances that has been made
+//----------------------------------------------------------------------
+
 function setSelectedOption(type, value){
   if(type != null){
     for(var i = 0; i < document.getElementById(type).options.length; i++){
@@ -2861,20 +3016,23 @@ function setSelectedOption(type, value){
 // Different types of dialog windows
 //--------------------------------------------------------------------
 
+//----------------------------------------------------------------------
+// globalAppearanceMenu: open a menu to change appearance on all entities.
+//----------------------------------------------------------------------
+
 function globalAppearanceMenu(){
     globalAppearanceValue = 1;
-    //open a menu to change appearance on all entities.
     $(".loginBox").draggable();
     var form = showMenu();
     //AJAX
     loadFormIntoElement(form,'diagram_forms.php?form=globalType');
 }
 
-function objectAppearanceMenu(form) {
-    /*
-    * EDITS A SINGLE OBJECT WITHIN THE DIAGRAM
-    */
+//----------------------------------------------------------------------
+// objectAppearanceMenu: EDITS A SINGLE OBJECT WITHIN THE DIAGRAM
+//----------------------------------------------------------------------
 
+function objectAppearanceMenu(form) {
     form.innerHTML = "No item selected<type='text'>";
     //if no item has been selected
     if(!diagram[lastSelectedObject]){ return;}
@@ -2909,11 +3067,13 @@ function objectAppearanceMenu(form) {
         loadFormIntoElement(form, 'diagram_forms.php?form=figureType');
     }
 }
+
+//----------------------------------------------------------------------
+// changeObjectAppearance: USES DIALOG TO CHANGE OBJECT APPEARANC
+//----------------------------------------------------------------------
+
 function changeObjectAppearance(object_type){
-    /*
-    * USES DIALOG TO CHANGE OBJECT APPEARANCE
-    */
-    if(diagram[lastSelectedObject].symbolkind == 1){//UML-class appearance
+    if(diagram[lastSelectedObject].symbolkind == 1){ // UML-class appearance
       diagram[lastSelectedObject].name = document.getElementById('nametext').value;
       var attributeLines = $('#UMLAttributes').val().split('\n');
       var operationLines = $('#UMLOperations').val().split('\n');
@@ -2968,6 +3128,7 @@ function createCardinality(){
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
     }
 }
+
 function changeCardinality(isUML){
     var val = document.getElementById('cardinality').value;
     var valUML;
