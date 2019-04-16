@@ -73,7 +73,7 @@ if ($ha) {
     } else if ($kind == "GFILE") {
         //  if it is a global file, check if "/templates" exists, if not create the directory
         if (!file_exists($currcvd . "/courses/global")) {
-            $storefile = mkdir($currcvd . "/courses/global");
+            $storefile = mkdir($currcvd . "/courses/global",0777,true);
         } else {
             $storefile = true;
         }
@@ -81,13 +81,13 @@ if ($ha) {
         //  if it is a local file or a Course Local File, check if the folder exists under "/courses", if not create the directory
         if (!file_exists($currcvd . "/courses/" . $cid)) {
             echo $currcvd . "/courses/" . $cid;
-            $storefile = mkdir($currcvd . "/courses/" . $cid);
+            $storefile = mkdir($currcvd . "/courses/" . $cid,0777,true);
         } else {
             $storefile = true;
         }
         if ($kind == "LFILE") {
             if (!file_exists($currcvd . "/courses/" . $cid . "/" . $vers)) {
-                $storefile = mkdir($currcvd . "/courses/" . $cid . "/" . $vers);
+                $storefile = mkdir($currcvd . "/courses/" . $cid . "/" . $vers,0777,true);
             } else {
                 $storefile = true;
             }
