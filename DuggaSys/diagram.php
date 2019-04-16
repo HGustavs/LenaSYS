@@ -43,7 +43,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();" onmouseup="mouseupevt(event)">
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();" onmousedown="mouseDown()" onmouseup="mouseUp()">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
