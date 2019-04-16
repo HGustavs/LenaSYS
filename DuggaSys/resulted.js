@@ -1090,13 +1090,9 @@ function exportCell(format,cell,colname) {
                     str="UNK";
                 }
             }
-          } else {
-            str = "UNK";
-          }
         }
       }
-    }
-  } else {
+    } else {
     console.log("Export format: " + format + " not supported!");
   }
   return str;
