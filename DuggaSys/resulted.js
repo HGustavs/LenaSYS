@@ -1,5 +1,3 @@
-// Test comment
-
 /********************************************************************************
    Globals
 *********************************************************************************/
@@ -1054,7 +1052,7 @@ function onToggleFilter(colId)
     var element = moments[i];
     var elementId = element[idParts[0]];
 
-    if(elementId==idParts[1]) // elementId == colId.id ex 2001
+    if(elementId==idParts[1]) // Checks if the moment id is the id of the currently pressed checkbox
     {
       if(element["lid"]==element["moment"]) // Checks if the pressed checkbox was a Moment or just a test (aka sub-moment)
       {
@@ -1063,10 +1061,10 @@ function onToggleFilter(colId)
         txt.innerHTML = element.entryname;
         var checkBoxId = txt.value;
         var isChecked = document.getElementById(checkBoxId).checked;
-
+        
         for(var j = 0; j<moments.length;j++)
         {
-          if(moments[j].moment==idParts[1]) // moment-lid = parent-lid
+          if(moments[j].moment==idParts[1]) // Find all childs of the moment
           {
             var childColId = "lid:"+moments[j].lid;
             myTable.toggleColumn(childColId,childColId,isChecked);
