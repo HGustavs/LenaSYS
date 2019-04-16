@@ -430,7 +430,7 @@ function returnedDugga(data) {
 				rowFilterCallback:duggaFilter,
 				columnOrder:colOrder,
 				hasRowHighlight:true,
-				hasMagicHeadings:true,
+				hasMagicHeadings:false ,
 				hasCounterColumn:false
 		});
 
@@ -506,7 +506,7 @@ function renderVariant(clickedElement) {
 				rowFilterCallback:variantFilter,
 				columnOrder:colOrderVariant,
 				hasRowHighlight:true,
-				hasMagicHeadings:true,
+				hasMagicHeadings:false,
 				hasCounterColumn:false
 		});
 		searchterm = '';
