@@ -4644,9 +4644,17 @@ textarea#filecont{
 /* Styling for timesheet table */
 .tsTable {
   margin: 20px 0px 20px 50px;
+  border-collapse: separate;
+  border-spacing: 0;
 }
+.tsTable td:first-of-type {
+  border-left: 1px solid #cdd0d6;
+} 
+.tsTable td:last-of-type {
+  border-right: 1px solid #cdd0d6;
+} 
 .tsTable td, .tsTable th {
-  border: 1px solid #000;
+  border-bottom: 1px solid #cdd0d6;
 }
 .tsTable thead {
   background: #cdd0d6;
@@ -4676,6 +4684,16 @@ textarea#filecont{
 }
 .tsTable tfoot td {
   padding: 0;
+}
+.tsTableDeleteCell {
+  cursor: pointer;
+  border-radius: 0px 5px 5x 0px;
+  -moz-border-radius: 0px 5px 5px 0px;
+  -webkit-border-radius: 0px 5px 5px 0px;
+}
+.tsTableDeleteCell:hover {
+  color: #964C4D;
+  cursor: pointer;
 }
 .newRowButton {
   display: block;
