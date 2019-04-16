@@ -1473,24 +1473,24 @@ function mail() {
 
 function hasGraceTimeExpired(deadline, dateTimeSubmitted) {
   var m_dateTimeSubmitted = new Date(dateTimeSubmitted);
-  var graceDeadline = new Date(deadline);
+  var m_graceDeadline = new Date(deadline);
   var m_deadline = new Date(deadline);
   console.log(graceDeadline);
 
   if (m_deadline.getHours() >= 15) {
-    graceDeadline.setHours(7);
-    graceDeadline.setMinutes(59);
+    m_graceDeadline.setHours(7);
+    m_graceDeadline.setMinutes(59);
     if (m_deadline.getDay() <= 4) {
-      graceDeadline.setDate(m_deadline.getDate() + 1);
+      m_graceDeadline.setDate(m_deadline.getDate() + 1);
     }
     else if (m_deadline.getDay() == 5){
-      graceDeadline.setDate(m_deadline.getDate() + 3);
+      m_graceDeadline.setDate(m_deadline.getDate() + 3);
     }
     else if (m_deadline.getDay() == 6){
-      graceDeadline.setDate(m_deadline.getDate() + 2);
+      m_graceDeadline.setDate(m_deadline.getDate() + 2);
     }
   }
-  if (m_dateTimeSubmitted > graceDeadline) {
+  if (m_dateTimeSubmitted > m_graceDeadline) {
     return true;
   }
   else {
