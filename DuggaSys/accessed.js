@@ -160,16 +160,6 @@ function changeProperty(targetobj,propertyname,propertyvalue)
 //----------------------------------------------------------------
 // renderCell <- Callback function that renders cells in the table
 //----------------------------------------------------------------
-
-function isChecked(id)
-{
-  console.log("object id = g"+id);
-  // if(document.getElementById("g"+id).checked == true)
-  // {
-  //   document.getElementById("g"+id).checked = false;
-  // }
-}
-
 var tgroups=[];
 
 function renderCell(col,celldata,cellid) {
@@ -217,7 +207,6 @@ function renderCell(col,celldata,cellid) {
 								str += "<label><input type='checkbox' checked id='g"+obj.uid+"' value='"+group.groupkind+"_"+group.groupval+"' />"+group.groupval+"</label>";
 						}else{
 								str += "<label><input type='checkbox' id='g"+obj.uid+"' value='"+group.groupkind+"_"+group.groupval+"' />"+group.groupval+"</label>";
-                //onclick=isChecked(\"" + obj.uid + "\") <== Just here for reference.
             }
 				}
 				str += '</div></div>';

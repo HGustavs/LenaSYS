@@ -1024,11 +1024,6 @@ function conv(item,kind){
     return tmp*100;
 }
 
-// MAN VILL SKICKA MED COLNAME I toggleColumn FUNKTIONEN SÅ ATT MAN DÄR KAN ANVÄNDA DOKUMENT.funktionen FÖR ATT
-// KUNNA HITTA DESS ID FÖR ATT DÅ KUNNA STÄNGA AV DEM SAMT BINDA IHOP OM FLERA DUGGOR HÖR IHOP AKA SAMMA DEMÅL / DELKURS!
-
-
-// Om moment är sitt egna id är det parent och då ska alla childs vars momentär parentid bort också.
 function renderColumnFilter(col,status,colname) {
 		str = "";
 		if (colname == "FnameLnameSSN") return str;
@@ -1061,7 +1056,7 @@ function onToggleFilter(colId)
         txt.innerHTML = element.entryname;
         var checkBoxId = txt.value;
         var isChecked = document.getElementById(checkBoxId).checked;
-        
+
         for(var j = 0; j<moments.length;j++)
         {
           if(moments[j].moment==idParts[1]) // Find all childs of the moment
