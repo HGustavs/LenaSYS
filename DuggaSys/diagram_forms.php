@@ -39,7 +39,7 @@
         ';
   $okButton = '<button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(); setType(); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>OK</button>';
   //form for attributes
-  if($form == 'attributeType'){
+  if($form == 'attributeType') {
       echo'Attribute name:</br>
       <input onkeyup="changeObjectAppearance(\'attributeType\');" id=\'nametext\' type=\'text\'></br>
       Attribute type: </br>
@@ -54,24 +54,21 @@
       '.$backgroundColor.$fontFamily.$fontColor.$textSize.$lineColors.$okButton;
   }
   //form for classes
-  else if($form == 'classType'){
+  else if($form == 'classType') {
       echo'Class name: </br>
       <input onkeyup="changeObjectAppearance(\'classType\');" id=\'nametext\' type=\'text\'></br>
+      
       Attributes:<br>
-
-      <textarea id="UMLAttributes" class="UMLTextarea" style="height:100px; resize:none"></textarea><br>
-
+      <textarea onkeyup="changeObjectAppearance(\'classType\');" id="UMLAttributes" class="UMLTextarea" style="height:100px; resize:none"></textarea><br>
 
       Operations:<br>
-
-      <textarea id="UMLOperations" class="UMLTextarea" style="height:100px; resize:none"></textarea><br>
-
+      <textarea onkeyup="changeObjectAppearance(\'classType\');" id="UMLOperations" class="UMLTextarea" style="height:100px; resize:none"></textarea><br>
 
       <button type=\'submit\' class=\'submit-button\' onclick="changeObjectAppearance(\'classType\'); closeAppearanceDialogMenu();" style=\'float: none; display: block; margin: 10px auto;\'>Ok</button>
       ';
   }
   //form for entities
-  else if($form == 'entityType'){
+  else if($form == 'entityType') {
       echo'Entity name: </br>
       <input onkeyup="changeObjectAppearance(\'entityType\');" id=\'nametext\' type=\'text\'></br>
       Entity type: </br>
@@ -82,7 +79,7 @@
       '.$backgroundColor.$fontFamily.$fontColor.$textSize.$lineColors.$okButton;
   }
   //form for figures
-  else if($form == 'figureType'){
+  else if($form == 'figureType') {
       echo'Fill color:<br>
       <select onchange="changeObjectAppearance(\'figureType\');" id=\'figureFillColor\'>
       <option value=\'noFill\'>No Fill</option>
@@ -94,7 +91,7 @@
       ';
   }
   //form for global
-  else if($form == 'globalType'){
+  else if($form == 'globalType') {
       echo'Font family:<br>
       <select id=\'font\' onchange=\'globalFont(); hashFunction(); updateGraphics();\'>
       <option value=\'\' selected> - Choose font - </option>
@@ -130,10 +127,10 @@
       ';
   }
   //form for lines
-  else if($form == 'lineType'){
+  else if($form == 'lineType') {
       $cardinality = $_GET['cardinality'];
 
-      if($cardinality != 1){
+      if($cardinality != 1) {
         echo"
         Line type: </br>
         <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
@@ -149,7 +146,7 @@
           <option value='M'>M</option>
         </select><br/>
         ";
-      }else{
+      }else {
         echo"
         Line type: </br>
         <select onchange=\"changeObjectAppearance('lineType');\" id='object_type'>
@@ -178,7 +175,7 @@
 
   }
   //form for relations
-  else if($form == 'relationType'){
+  else if($form == 'relationType') {
       echo'Relation name:</br>
       <input onkeyup="changeObjectAppearance(\'relationType\');" id=\'nametext\' type=\'text\'></br>
       Relation type: </br>
@@ -189,7 +186,7 @@
       '.$backgroundColor.$fontFamily.$fontColor.$textSize.$lineColors.$okButton;
   }
   //form for text
-  else if($form == 'textType'){
+  else if($form == 'textType') {
       echo'Text:</br>
       <textarea id="freeText" class="FreeTextTextarea" oninput="changeObjectAppearance(\'textType\')" style="height:100px;resize:none;"></textarea><br>
       '.$fontFamily.$fontColor

@@ -38,10 +38,10 @@ function saveToServer(dia) {
     });
 
 }
-function createFolder(name){
+function createFolder(name) {
 
 }
-function redirect(doc){
+function redirect(doc) {
     var a = doc.value;
 
     $.ajax({
@@ -49,7 +49,7 @@ function redirect(doc){
         url: "diagram_IOHandler.php",
         data: {'GetID':a },
 
-        success: function(data){ // <-- note the parameter here, not in your code
+        success: function(data) { // <-- note the parameter here, not in your code
             return false;
         }
 
@@ -58,23 +58,23 @@ function redirect(doc){
     location.href="diagram.php?id="+0+"&folder="+a;
 
 }
-function redirectas(doc,folder){
+function redirectas(doc,folder) {
         location.href="diagram.php?id="+doc.value+"&folder="+folder;
 }
-function newProject(){
+function newProject() {
     document.getElementById('newProject').style.display = "block";
 }
-function loadNew(){
+function loadNew() {
 
     document.getElementById('showStoredFolders').style.display = "none";
     document.getElementById('showStored').style.display = "none";
     document.getElementById('showNew').style.display = "block";
 }
-function loadStored(){
+function loadStored() {
     document.getElementById('showNew').style.display = "none";
     document.getElementById('showStored').style.display = "block";
 }
-function loadStoredFolders(f){
+function loadStoredFolders(f) {
 
     document.getElementById('showStoredFolders').style.display = "block";
 }
@@ -216,13 +216,14 @@ function ExportSVG(el) {
 //------------------------------------------------
 // used when exporting the file as a .jpg image.
 //------------------------------------------------
-$(document).ready(function(){
+
+$(document).ready(function() {
     function downloadCanvas(link, canvasId, filename) {
         link.href = document.getElementById(canvasId).toDataURL();
         link.download = filename;
     }
 
-    document.getElementById('picid').addEventListener('click', function(){
+    document.getElementById('picid').addEventListener('click', function() {
         downloadCanvas(this, 'myCanvas', 'picture.jpg');
     }, false);
 });

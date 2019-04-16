@@ -2952,10 +2952,13 @@ table {
   border-radius: 5px;
   float: right;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
+  margin-bottom: 5px;
 }
 
 #searchinput {
   margin-right: 0;
+  margin-bottom: 5px;
+  margin-top: 5px;
   border-right: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -2973,6 +2976,7 @@ table {
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
   box-shadow: none;
+  margin-bottom: 5px;
 }
 .searchField{
   height: 25px;

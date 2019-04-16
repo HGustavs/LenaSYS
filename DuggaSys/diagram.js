@@ -43,6 +43,7 @@ var canvasMouseX = 0;               // Variable for the mouse coordinate X in th
 var canvasMouseY = 0;               // Variable for the mouse coordinate Y in the canvas on the diagram page.
 var zoomValue = 1.00;
 var md = 0;                         // Mouse state
+var globalMouseState = 0;           // Global mouse state (not only for canvas)
 var hovobj = -1;
 var lineStartObj = -1;
 var movobj = -1;                    // Moving object ID
@@ -122,8 +123,6 @@ const zKey = 90;
 const yKey = 89;
 const aKey = 65;
 const escapeKey = 27;
-
-
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
@@ -244,37 +243,37 @@ function generateExampleCode() {
 //--------------------------------------------------------------------
 var diagram = [];
 
-function keyDownHandler(e){
+function keyDownHandler(e) {
     var key = e.keyCode;
     if(appearanceMenuOpen) return;
-    if((key == deleteKey || key == backspaceKey)){
+    if((key == deleteKey || key == backspaceKey)) {
         eraseSelectedObject();
         SaveState();
-    } else if(key == spacebarKey){
+    } else if(key == spacebarKey) {
         //Use space for movearound
         if (e.stopPropagation) {
             e.stopPropagation();
             e.preventDefault();
         }
-        if(uimode != "MoveAround"){
+        if(uimode != "MoveAround") {
             activateMovearound();
-        } else{
+        } else {
             deactivateMovearound();
         }
         updateGraphics();
-    } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow){//arrow keys
+    } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) {//arrow keys
         arrowKeyPressed(key);
-    } else if(key == ctrlKey || key == windowsKey){
+    } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
-    } else if(ctrlIsClicked && key == cKey){
+    } else if(ctrlIsClicked && key == cKey) {
         //Ctrl + c
         fillCloneArray();
-    } else if(ctrlIsClicked && key == vKey ){
+    } else if(ctrlIsClicked && key == vKey ) {
         //Ctrl + v
         var temp = [];
-        for(var i = 0; i < cloneTempArray.length; i++){
+        for(var i = 0; i < cloneTempArray.length; i++) {
             //Display cloned objects except lines
-            if(cloneTempArray[i].symbolkind != 4){
+            if(cloneTempArray[i].symbolkind != 4) {
                 const cloneIndex = copySymbol(cloneTempArray[i]) - 1;
                 temp.push(diagram[cloneIndex]);
             }
@@ -288,7 +287,7 @@ function keyDownHandler(e){
     else if (key == yKey && ctrlIsClicked) redoDiagram();
     else if (key == aKey && ctrlIsClicked) {
         e.preventDefault();
-        for(var i = 0; i < diagram.length; i++){
+        for(var i = 0; i < diagram.length; i++) {
             selected_objects.push(diagram[i]);
             diagram[i].targeted = true;
         }
@@ -297,7 +296,7 @@ function keyDownHandler(e){
     else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
     }
-    else if(key == 27){
+    else if(key == 27) {
         cancelFreeDraw();
     }
 }
@@ -306,8 +305,8 @@ function keyDownHandler(e){
 // cancelFreeDraw: removes all the lines that has been drawn when in the free draw mode
 //----------------------------------------------------------------------
 
-function cancelFreeDraw(){
-    if(uimode == "CreateFigure" && figureType == "Free" && md == 4){
+function cancelFreeDraw() {
+    if(uimode == "CreateFigure" && figureType == "Free" && md == 4) {
         for (var i = 0; i < numberOfPointsInFigure; i++) {
             diagram.pop();
         }
@@ -320,9 +319,9 @@ function cancelFreeDraw(){
 //----------------------------------------------------------------------
 // fillCloneArray: used for copy and paste functionality in the keyDownHandlerFunction
 //----------------------------------------------------------------------
-function fillCloneArray(){
+function fillCloneArray() {
     cloneTempArray = [];
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         cloneTempArray.push(selected_objects[i]);
     }
 }
@@ -331,7 +330,7 @@ function fillCloneArray(){
 // Keeps track of if the CTRL or CMD key is active or not
 //--------------------------------------------------------------------
 
-//Not used yet
+// Not used yet
 window.onkeyup = function(event) {
     if(event.which == ctrlKey || event.which == windowsKey) {
         ctrlIsClicked = false;
@@ -341,29 +340,30 @@ window.onkeyup = function(event) {
 //----------------------------------------------------------------------
 // arrowKeyPressed: Handler for when pressing arrow keys when space has been pressed
 //----------------------------------------------------------------------
-function arrowKeyPressed(key){
+function arrowKeyPressed(key) {
     var xNew = 0, yNew = 0;
 
-    if(key == leftArrow){//left
+    if(key == leftArrow) { //left
         xNew = -5;
-    }else if(key == upArrow){//up
+    }else if(key == upArrow) { //up
         yNew = -5;
-    }else if(key == rightArrow){//right
+    }else if(key == rightArrow) { //right
         xNew = 5;
-    }else if(key == downArrow){//down
+    }else if(key == downArrow) { //down
         yNew = 5;
     }
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].move(xNew, yNew);
     }
     updateGraphics();
 }
 
-//--------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 // points - stores a global list of points
 //          A point can not be physically deleted but marked as deleted in order to reuse
 //          the sequence number again. e.g. point[5] will remain point[5] until it is deleted
-//--------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
+
 var points = [];
 
 //--------------------------------------------------------------------
@@ -373,8 +373,8 @@ var points = [];
 
 points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
     //If we have an unused index we use it first
-    for(var i = 0; i < points.length; i++){
-        if(points[i] == ""){
+    for(var i = 0; i < points.length; i++) {
+        if(points[i] == "") {
             points[i] = {x:xCoordinate, y:yCoordinate, isSelected:isSelected};
             return i;
         }
@@ -388,7 +388,7 @@ points.addPoint = function(xCoordinate, yCoordinate, isSelected) {
 // copySymbol: Clone an object
 //----------------------------------------------------------------------
 
-function copySymbol(symbol){
+function copySymbol(symbol) {
     var clone = Object.assign(new Symbol(), symbol);
     var topLeftClone = Object.assign({}, points[symbol.topLeft]);
     topLeftClone.x += 10;
@@ -403,23 +403,23 @@ function copySymbol(symbol){
     middleDividerClone.x += 10;
     middleDividerClone.y += 10;
 
-    if(symbol.symbolkind == 1){
+    if(symbol.symbolkind == 1) {
         clone.name = "New" + diagram.length;
-    }else if(symbol.symbolkind == 2){
+    }else if(symbol.symbolkind == 2) {
         clone.name = "Attr" + diagram.length;
-    }else if(symbol.symbolkind == 3){
+    }else if(symbol.symbolkind == 3) {
         clone.name = "Entity" + diagram.length;
-    }else if(symbol.symbolkind == 4){
+    }else if(symbol.symbolkind == 4) {
         clone.name = "Line" + diagram.length;
     }else{
         clone.name = "Relation" + diagram.length;
     }
     clone.topLeft = points.push(topLeftClone) - 1;
     clone.bottomRight = points.push(bottomRightClone) - 1;
-    if(clone.symbolkind != 1){
+    if(clone.symbolkind != 1) {
         clone.centerPoint = points.push(centerPointClone) - 1;
     }
-    else{
+    else {
         clone.middleDivider = points.push(middleDividerClone) - 1;
         clone.centerPoint = clone.middleDivider;
     }
@@ -491,7 +491,7 @@ points.clearAllSelects = function() {
     }
 }
 
-diagram.closestPoint = function(mx, my){
+diagram.closestPoint = function(mx, my) {
     var distance = 50000000;
     var point;
     this.filter(symbol => symbol.kind != 1 && symbol.symbolkind != 6).forEach(symbol => {
@@ -527,19 +527,19 @@ diagram.closestPoint = function(mx, my){
 
 diagram.draw = function() {
     this.adjustPoints();
-    for(var i = 0; i < this.length; i++){
+    for(var i = 0; i < this.length; i++) {
         if (this[i].kind == 1) {
             this[i].draw(1, 1);
         }
     }
     //Draws all lines first so that they appear behind the object instead
-    for(var i = 0; i < this.length; i++){
-        if(this[i].symbolkind == 4){
+    for(var i = 0; i < this.length; i++) {
+        if(this[i].symbolkind == 4) {
             this[i].draw();
         }
     }
     for (var i = 0; i < this.length; i++) {
-        if(this[i].kind == 2 && this[i].symbolkind != 4){
+        if(this[i].kind == 2 && this[i].symbolkind != 4) {
             this[i].draw();
         }
     }
@@ -599,14 +599,14 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                     pointsSelected++;
                 }
             }
-            if(!hover){
+            if(!hover) {
                 if (pointsSelected >= tempPoints.length) {
                     selected_objects.push(this[i]);
                     this[i].targeted = true;
                 } else {
                     this[i].targeted = false;
                 }
-            }else{
+            }else {
                 if (pointsSelected >= tempPoints.length) {
                     this[i].isHovered = true;
                 } else {
@@ -633,7 +633,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                     if (index >= 0) {
                         this[i].targeted = false;
                         selected_objects.splice(index, 1);
-                    } else if(!hover){
+                    } else if(!hover) {
                         this[i].targeted = true;
                         selected_objects.push(this[i]);
                     }
@@ -641,7 +641,7 @@ diagram.targetItemsInsideSelectionBox = function (ex, ey, sx, sy, hover) {
                     if (index < 0 && !hover) {
                         this[i].targeted = true;
                         selected_objects.push(this[i]);
-                    } else if(hover){
+                    } else if(hover) {
                         this[i].isHovered = true;
                     }
                 }
@@ -710,13 +710,13 @@ diagram.eraseLines = function(privateLines) {
         }
         var connected_objects = connectedObjects(privateLines[i]);
         if(!eraseLeft) {
-            for(var j = 0; j < connected_objects.length; j++){
+            for(var j = 0; j < connected_objects.length; j++) {
                 connected_objects[j].removePointFromConnector(privateLines[i].topLeft);
             }
             points[privateLines[i].topLeft] = waldoPoint;
         }
         if(!eraseRight) {
-            for(var j = 0; j < connected_objects.length; j++){
+            for(var j = 0; j < connected_objects.length; j++) {
                 connected_objects[j].removePointFromConnector(privateLines[i].bottomRight);
             }
             points[privateLines[i].bottomRight] = waldoPoint;
@@ -852,18 +852,18 @@ function toggleGrid() {
     setCheckbox($("a:contains('Snap to grid')"), snapToGrid);
 }
 
-function toggleVirtualA4(){
-    if (toggleA4){
+function toggleVirtualA4() {
+    if (toggleA4) {
         toggleA4 = false;
         updateGraphics();
-    } else{
+    } else {
         toggleA4 = true;
         updateGraphics();
     }
 }
 
-function drawVirtualA4(){
-    if(!toggleA4){
+function drawVirtualA4() {
+    if(!toggleA4) {
         return;
     }
     // the correct according to 96dpi size, of a4 milimeters to pixels 
@@ -879,7 +879,7 @@ function drawVirtualA4(){
     ctx.translate(0, 0);
     ctx.strokeRect(0,0, a4Width, a4Height);
 
-    if(toggleA4Holes){
+    if(toggleA4Holes) {
         //Upper 2 holes
         drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
         drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
@@ -900,28 +900,28 @@ function drawCircle(cx, cy, radius) {
     ctx.restore();
 }
 
-function toggleVirtualA4Holes(){
-    if (toggleA4Holes){
+function toggleVirtualA4Holes() {
+    if (toggleA4Holes) {
         toggleA4Holes = false;
         updateGraphics();
-    } else{
+    } else {
         toggleA4Holes = true;
         updateGraphics();
     }
 }
 
-function toggleVirtualA4(){
-    if (toggleA4){
+function toggleVirtualA4() {
+    if (toggleA4) {
         toggleA4 = false;
         updateGraphics();
-    } else{
+    } else {
         toggleA4 = true;
         updateGraphics();
     }
 }
 
-function drawVirtualA4(){
-    if(!toggleA4){
+function drawVirtualA4() {
+    if(!toggleA4) {
         return;
     }
     // the correct according to 96dpi size, of a4 milimeters to pixels
@@ -937,7 +937,7 @@ function drawVirtualA4(){
     ctx.translate(0, 0);
     ctx.strokeRect(0,0, a4Width, a4Height);
 
-    if(toggleA4Holes){
+    if(toggleA4Holes) {
         //Upper 2 holes
         drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
         drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
@@ -958,11 +958,11 @@ function drawCircle(cx, cy, radius) {
     ctx.restore();
 }
 
-function toggleVirtualA4Holes(){
-    if (toggleA4Holes){
+function toggleVirtualA4Holes() {
+    if (toggleA4Holes) {
         toggleA4Holes = false;
         updateGraphics();
-    } else{
+    } else {
         toggleA4Holes = true;
         updateGraphics();
     }
@@ -1070,7 +1070,7 @@ function eraseObject(object) {
     var objectsToDelete = [];
     if (object.kind == 2) {
         // None lines
-        if(object.symbolkind != 4){
+        if(object.symbolkind != 4) {
             var lines = diagram.filter(symbol => symbol.symbolkind == 4);
             objectsToDelete = lines.filter(
                 line => line.topLeft == object.middleDivider
@@ -1081,7 +1081,7 @@ function eraseObject(object) {
                         || (object.hasConnectorFromPoint(line.bottomRight) && (object.symbolkind == 3 || object.symbolkind == 5))
             );
         // lines
-        }else{
+        }else {
             diagram.filter(
                 symbol => symbol.symbolkind == 3 || symbol.symbolkind == 5)
                     .filter(symbol =>   symbol.hasConnector(object.topLeft)
@@ -1135,12 +1135,12 @@ function changeLoginBoxTitleAppearance() {
 function eraseSelectedObject() {
     canvas.style.cursor = "default";
     //Issue: Need to remove the crosses
-    if(selected_objects.length == 0){
+    if(selected_objects.length == 0) {
         showMenu().innerHTML = "No item selected<type='text'>";
         changeLoginBoxTitleDelete();
         $(".loginBox").draggable();
     }
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         eraseObject(selected_objects[i]);
     }
     selected_objects = [];
@@ -1148,26 +1148,26 @@ function eraseSelectedObject() {
     updateGraphics();
 }
 
-function setMode(mode){ //"CreateClass" yet to be implemented in .php
+function setMode(mode) { //"CreateClass" yet to be implemented in .php
     canvas.style.cursor = "default";
     uimode = mode;
     if(mode == 'Square' || mode == 'Free' || mode == 'Text') {
       uimode = "CreateFigure";
-      if(figureType == "Free"){
+      if(figureType == "Free") {
           cancelFreeDraw();
       }
       figureType = mode;
     }
 }
 
-$(document).ready(function(){
-    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton").click(function(){
+$(document).ready(function() {
+    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton").click(function() {
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
         $("#moveButton").removeClass("pressed").addClass("unpressed");
         $("#moveButton").css("visibility", "hidden");
-        if ($(this).hasClass("pressed")){
+        if ($(this).hasClass("pressed")) {
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             uimode = "normal";
         } else {
@@ -1183,7 +1183,6 @@ function setTextSizeEntity() {
 
 function setType() {
     var elementVal = document.getElementById('object_type').value;
-
     diagram[lastSelectedObject].properties['key_type'] = elementVal;
     updateGraphics();
 }
@@ -1476,7 +1475,7 @@ function getCurrentDate() {
 function setRefreshTime() {
   var time = 5000;
   lastDiagramEdit = localStorage.getItem('lastEdit');
-  if (typeof lastDiagramEdit !== "undefined"){
+  if (typeof lastDiagramEdit !== "undefined") {
     var timeDifference = getCurrentDate() - lastDiagramEdit;
     refresh_lock = timeDifference > 604800000 ? true : false;
     time = timeDifference <= 259200000 ? 5000 : 300000;
@@ -1487,11 +1486,12 @@ function setRefreshTime() {
 //----------------------------------------------------------------------
 // lockSelected: the selected objects are locked
 //----------------------------------------------------------------------
-function lockSelected(){
-    for(var i = 0; i < selected_objects.length; i++){
+
+function lockSelected() {
+    for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].locked = !selected_objects[i].locked;
         
-        if(selected_objects[i].locked){
+        if(selected_objects[i].locked) {
             selected_objects[i].drawLock();
         }
         else {
@@ -1500,28 +1500,28 @@ function lockSelected(){
     }
 }
 
-function align(mode){
-    for(var i = 0; i < diagram.length; i++){
-        if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1){
+function align(mode) {
+    for(var i = 0; i < diagram.length; i++) {
+        if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1) {
             selected_objects.push(diagram[i]);
         }
     }
-    if(mode == 'top'){
+    if(mode == 'top') {
        alignTop(selected_objects);
     }
-    else if(mode == 'left'){
+    else if(mode == 'left') {
        alignLeft(selected_objects);
     }
-    else if(mode == 'bottom'){
+    else if(mode == 'bottom') {
        alignBottom(selected_objects);
     }
-    else if(mode == 'right'){
+    else if(mode == 'right') {
        alignRight(selected_objects);
     }
-    else if(mode == 'verticalCenter'){
+    else if(mode == 'verticalCenter') {
        alignVerticalCenter(selected_objects);
     }
-    else if(mode == 'horizontalCenter'){
+    else if(mode == 'horizontalCenter') {
        alignHorizontalCenter(selected_objects);
     }
 
@@ -1533,88 +1533,88 @@ function align(mode){
 // These functions moves the objects either left, right, top or bottom
 //---------------------------------------------------------------------
 
-function alignLeft(selected_objects){
+function alignLeft(selected_objects) {
     var lowest_x = 99999;
-    for(var i = 0; i < selected_objects.length; i++){
-        if(points[selected_objects[i].topLeft].x < lowest_x){
+    for(var i = 0; i < selected_objects.length; i++) {
+        if(points[selected_objects[i].topLeft].x < lowest_x) {
             lowest_x = points[selected_objects[i].topLeft].x;
         }
     }
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].move(lowest_x-points[selected_objects[i].topLeft].x, 0);
     }
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
+    for(var i = 1; i < temporary_objects.length; i++) {
+        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
         }
     }
 }
 
-function alignTop(selected_objects){
+function alignTop(selected_objects) {
     var lowest_y = 99999;
-    for(var i = 0; i < selected_objects.length; i++){
-        if(points[selected_objects[i].topLeft].y < lowest_y){
+    for(var i = 0; i < selected_objects.length; i++) {
+        if(points[selected_objects[i].topLeft].y < lowest_y) {
             lowest_y = points[selected_objects[i].topLeft].y;
         }
     }
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].move(0, lowest_y-points[selected_objects[i].topLeft].y);
     }
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
+    for(var i = 1; i < temporary_objects.length; i++) {
+        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
         }
     }
 }
 
-function alignRight(selected_objects){
+function alignRight(selected_objects) {
     var highest_x = 0;
-    for(var i = 0; i < selected_objects.length; i++){
-        if(points[selected_objects[i].bottomRight].x > highest_x){
+    for(var i = 0; i < selected_objects.length; i++) {
+        if(points[selected_objects[i].bottomRight].x > highest_x) {
             highest_x = points[selected_objects[i].bottomRight].x;
         }
     }
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].move(highest_x-points[selected_objects[i].bottomRight].x, 0);
     }
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
+    for(var i = 1; i < temporary_objects.length; i++) {
+        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
         }
     }
 }
 
-function alignBottom(selected_objects){
+function alignBottom(selected_objects) {
     var highest_y = 0;
-    for(var i = 0; i < selected_objects.length; i++){
-        if(points[selected_objects[i].bottomRight].y > highest_y){
+    for(var i = 0; i < selected_objects.length; i++) {
+        if(points[selected_objects[i].bottomRight].y > highest_y) {
             highest_y = points[selected_objects[i].bottomRight].y;
         }
     }
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].move(0, highest_y-points[selected_objects[i].bottomRight].y);
     }
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
+    for(var i = 1; i < temporary_objects.length; i++) {
+        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
         }
@@ -1625,19 +1625,19 @@ function alignBottom(selected_objects){
 // These functions move the objects either horizontal or vertical
 //--------------------------------------------------------------------
 
-function alignVerticalCenter(selected_objects){
+function alignVerticalCenter(selected_objects) {
     var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
     var temporary_objects = [];
-    for(var i = 0; i < selected_objects.length; i++){
-        if(points[selected_objects[i].topLeft].x > highest_x){
+    for(var i = 0; i < selected_objects.length; i++) {
+        if(points[selected_objects[i].topLeft].x > highest_x) {
             highest_x = points[selected_objects[i].bottomRight].x;
         }
-        if(points[selected_objects[i].bottomRight].x < lowest_x){
+        if(points[selected_objects[i].bottomRight].x < lowest_x) {
             lowest_x = points[selected_objects[i].topLeft].x;
         }
     }
     selected_center_x = (highest_x-lowest_x)/2;
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
         selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
@@ -1645,27 +1645,27 @@ function alignVerticalCenter(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30){
+    for(var i = 1; i < temporary_objects.length; i++) {
+        if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
             var difference = points[temporary_objects[i].topLeft].y - points[temporary_objects[i-1].bottomRight].y - 30;
             temporary_objects[i].move(0, -difference);
         }
     }
 }
-function alignHorizontalCenter(selected_objects){
+function alignHorizontalCenter(selected_objects) {
     var highest_y = 0, lowest_y = 99999, selected_center_y = 0;
     var temporary_objects = [];
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         temporary_objects.push(selected_objects[i]);
-        if(points[selected_objects[i].bottomRight].y > highest_y){
+        if(points[selected_objects[i].bottomRight].y > highest_y) {
             highest_y = points[selected_objects[i].bottomRight].y;
         }
-        if(points[selected_objects[i].topLeft].y < lowest_y){
+        if(points[selected_objects[i].topLeft].y < lowest_y) {
             lowest_y = points[selected_objects[i].topLeft].y;
         }
     }
     selected_center_y = (highest_y-lowest_y)/2;
-    for(var i = 0; i < selected_objects.length; i++){
+    for(var i = 0; i < selected_objects.length; i++) {
         var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
         selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
     }
@@ -1673,8 +1673,8 @@ function alignHorizontalCenter(selected_objects){
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
-    for(var i = 1; i < temporary_objects.length; i++){
-        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30){
+    for(var i = 1; i < temporary_objects.length; i++) {
+        if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
             var difference = points[temporary_objects[i].topLeft].x - points[temporary_objects[i-1].bottomRight].x - 30;
             temporary_objects[i].move(-difference, 0);
         }
@@ -1686,21 +1686,21 @@ function alignHorizontalCenter(selected_objects){
 //                         This function returns a list without the duplicated objects.
 // ----------------------------------------------------------------------------
 
-function removeDuplicatesInList(selected_objects){
+function removeDuplicatesInList(selected_objects) {
     var temporary_objects = [];
-    for(var i = 0; i < selected_objects.length; i++){
-        if(temporary_objects.indexOf(selected_objects[i]) == -1){
+    for(var i = 0; i < selected_objects.length; i++) {
+        if(temporary_objects.indexOf(selected_objects[i]) == -1) {
             temporary_objects.push(selected_objects[i]);
         }
     }
     return temporary_objects;
 }
 
-function sortObjects(selected_objects, mode){
+function sortObjects(selected_objects, mode) {
   //Sorts objects by X or Y position
   var position = [];
 
-      for(var i = 0; i < selected_objects.length; i++){
+      for(var i = 0; i < selected_objects.length; i++) {
         if(mode=='vertically') position.push(points[selected_objects[i].topLeft].y);
         else if(mode=='horizontally') position.push(points[selected_objects[i].topLeft].x);
       }
@@ -1709,12 +1709,12 @@ function sortObjects(selected_objects, mode){
       var private_objects = selected_objects.splice([]);
       var swap = null;
 
-      for(var i = 0; i < private_objects.length; i++){
+      for(var i = 0; i < private_objects.length; i++) {
         swap = private_objects[i];
-          for(var j = 0; j < position.length; j++){
+          for(var j = 0; j < position.length; j++) {
             if(i==j) continue;
               if((mode=='vertically' && points[private_objects[i].topLeft].y == position[j])
-              || (mode=='horizontally' && points[private_objects[i].topLeft].x == position[j])){
+              || (mode=='horizontally' && points[private_objects[i].topLeft].x == position[j])) {
                   private_objects[i] = private_objects[j];
                   private_objects[j] = swap;
               }
@@ -1728,19 +1728,19 @@ function sortObjects(selected_objects, mode){
 // distribute: unclear what the purpose is of distribute, 
 //            does not seem to work at all
 //----------------------------------------------------------------------
-function distribute(axis){
+function distribute(axis) {
     var spacing = 32;
     var selected_objects = [];
 
-    for(var i = 0; i < diagram.length; i++){
-        if(diagram[i].targeted == true  && selected_objects.indexOf(diagram[i]) > -1){
+    for(var i = 0; i < diagram.length; i++) {
+        if(diagram[i].targeted == true  && selected_objects.indexOf(diagram[i]) > -1) {
             selected_objects.push(diagram[i]);
         }
     }
 
-    if(axis=='vertically'){
+    if(axis=='vertically') {
         distributeVertically(selected_objects, spacing);
-    }else if(axis=='horizontally'){
+    }else if(axis=='horizontally') {
         distributeHorizontally(selected_objects, spacing);
     }
         // There is a posibility for more types
@@ -1748,10 +1748,10 @@ function distribute(axis){
     hashFunction();
 }
 
-function distributeVertically(selected_objects, spacing){
+function distributeVertically(selected_objects, spacing) {
     selected_objects = sortObjects(selected_objects, 'vertically');
 
-    for(var i = 1; i < selected_objects.length; i++){
+    for(var i = 1; i < selected_objects.length; i++) {
         var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
 
         var newy = ((points[selected_objects[i-1].topLeft].y)-(points[selected_objects[i].topLeft].y));
@@ -1759,10 +1759,10 @@ function distributeVertically(selected_objects, spacing){
     }
 }
 
-function distributeHorizontally(selected_objects, spacing){
+function distributeHorizontally(selected_objects, spacing) {
     selected_objects = sortObjects(selected_objects, 'horizontally');
 
-    for(var i = 1; i < selected_objects.length; i++){
+    for(var i = 1; i < selected_objects.length; i++) {
         var object_width = (points[selected_objects[i].bottomRight].x - points[selected_objects[i].topLeft].x);
 
         var newx = ((points[selected_objects[i-1].topLeft].x)-(points[selected_objects[i].topLeft].x));
@@ -1927,12 +1927,11 @@ function setCheckbox(element, check) {
 }
 
 // ----------------------------------------------------------------------------
-// Diagram toolbox
+// DIAGRAM TOOLBOX SECTION
 // ----------------------------------------------------------------------------
-
 var toolbarState;
 
-function initToolbox(){
+function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     var bound = myCanvas.getBoundingClientRect();
@@ -1942,18 +1941,18 @@ function initToolbox(){
     element.style.display = "inline-block";
 }
 
-function toggleToolbarMinimize(){
-    if($("#minimizeArrow").hasClass("toolbarMaximized")){
+function toggleToolbarMinimize() {
+    if($("#minimizeArrow").hasClass("toolbarMaximized")) {
         $(".application-toolbar").slideUp("fast");
         $("#minimizeArrow").removeClass("toolbarMaximized").addClass("toolbarMinimized");
-    }else{
+    }else {
         $(".application-toolbar").slideDown("fast");
         $("#minimizeArrow").removeClass("toolbarMinimized").addClass("toolbarMaximized");
     }
 }
 
-function toggleToolbarLayout(){
-    if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()){
+function toggleToolbarLayout() {
+    if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()) {
         $(".application-toolbar").css({"display": "flex", "flex-direction": "column"});
         $(".toolbarArrows").css({"width": "1.7em"});
         $("#diagram-toolbar").css({"width":"auto"});
@@ -1974,23 +1973,23 @@ function toggleToolbarLayout(){
 // switchToolbar: function for switching the toolbar state (All, ER, UML)
 //----------------------------------------------------------------------
 
-function switchToolbar(direction){
+function switchToolbar(direction) {
   var text = ["All", "ER", "UML", "Free"];
-  if(direction == 'left'){
+  if(direction == 'left') {
     toolbarState--;
-    if(toolbarState < 0){
+    if(toolbarState < 0) {
       toolbarState = 3;
     }
-  }else if(direction == 'right'){
+  }else if(direction == 'right') {
     toolbarState++;
-    if(toolbarState > 3){
+    if(toolbarState > 3) {
       toolbarState = 0;
     }
   }
   document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
-  if(toolbarState == 1){
+  if(toolbarState == 1) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -2004,7 +2003,7 @@ function switchToolbar(direction){
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-  }else if( toolbarState == 2){
+  }else if( toolbarState == 2) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -2016,7 +2015,7 @@ function switchToolbar(direction){
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
-  }else if(toolbarState == 3){
+  }else if(toolbarState == 3) {
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
     $("#drawerUndo").show();
@@ -2027,7 +2026,7 @@ function switchToolbar(direction){
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
-  else{
+  else {
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();
@@ -2047,7 +2046,7 @@ const toolbarER = 1;
 const toolbarUML = 2;
 const toolbarFree = 3;
 
-function initToolbox(){
+function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     var bound = myCanvas.getBoundingClientRect();
@@ -2061,25 +2060,25 @@ function initToolbox(){
     */
 }
 
-function toggleToolbarMinimize(){
-    if($("#minimizeArrow").hasClass("toolbarMaximized")){
+function toggleToolbarMinimize() {
+    if($("#minimizeArrow").hasClass("toolbarMaximized")) {
         $(".application-toolbar").slideUp("fast");
         $("#minimizeArrow").removeClass("toolbarMaximized").addClass("toolbarMinimized");
-    }else{
+    }else {
         $(".application-toolbar").slideDown("fast");
         $("#minimizeArrow").removeClass("toolbarMinimized").addClass("toolbarMaximized");
     }
 }
 
-function toggleToolbarLayout(){
-    if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()){
+function toggleToolbarLayout() {
+    if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()) {
         $(".application-toolbar").css({"display": "flex", "flex-direction": "column"});
         $(".toolbarArrows").css({"width": "1.7em"});
         $("#diagram-toolbar").css({"width":"auto"});
         $("#toolbar-switcher").css({"width": "1.7em", "width": "","justify-content":"center", "margin": "0 30%", "padding": "0"});
         $(".label").css({"padding": "0 0 0 15px"});
         $(".toolsContainer").css({"display": "flex"});
-    }else{
+    }else {
         $(".application-toolbar").css({"display": "", "flex-wrap": ""});
         $(".toolbarArrows").css({"width": "20%"});
         $("#diagram-toolbar").css({"width":""});
@@ -2093,23 +2092,23 @@ function toggleToolbarLayout(){
 // switchToolbar: function for switching the toolbar state (All, ER, UML), 
 //                not sure what the numbers 0 an 3 mean
 //----------------------------------------------------------------------
-function switchToolbar(direction){
+function switchToolbar(direction) {
   var text = ["All", "ER", "UML", "Free"];
-  if(direction == 'left'){
+  if(direction == 'left') {
     toolbarState--;
-    if(toolbarState < 0){
+    if(toolbarState < 0) {
       toolbarState = 3;
     }
-  }else if(direction == 'right'){
+  }else if(direction == 'right') {
     toolbarState++;
-    if(toolbarState > 3){
+    if(toolbarState > 3) {
       toolbarState = 0;
     }
   }
   document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
-  if(toolbarState == toolbarER){
+  if(toolbarState == toolbarER) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -2123,7 +2122,7 @@ function switchToolbar(direction){
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-  }else if( toolbarState == toolbarUML){
+  }else if( toolbarState == toolbarUML) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
@@ -2135,7 +2134,7 @@ function switchToolbar(direction){
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
-  }else if(toolbarState == toolbarFree){
+  }else if(toolbarState == toolbarFree) {
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
     $("#drawerUndo").show();
@@ -2146,7 +2145,7 @@ function switchToolbar(direction){
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
-  else{ // shows all alternatives in the toolbar
+  else { // shows all alternatives in the toolbar
     $(".toolbar-drawer").show();
     $(".label").show();
     $(".buttonsStyle").show();
@@ -2240,12 +2239,12 @@ function mousemoveevt(ev, t) {
     } else if (md == 1) {
         // If mouse is pressed down and no point is close show selection box
     } else if (md == 2) {
-        if(!sel.point.fake){
+        if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;
             //If we changed a point of a path object,
             //  we need to recalculate the bounding-box so that it will remain clickable.
-            if(diagram[lastSelectedObject].kind == 1){
+            if(diagram[lastSelectedObject].kind == 1) {
                 diagram[lastSelectedObject].calculateBoundingBox();
             }
         } else {
@@ -2260,7 +2259,7 @@ function mousemoveevt(ev, t) {
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             for (var i = 0; i < diagram.length; i++) {
                 if (diagram[i].targeted == true && !diagram[movobj].locked) {
-                    if(snapToGrid){
+                    if(snapToGrid) {
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                     }
@@ -2278,7 +2277,7 @@ function mousemoveevt(ev, t) {
     updateGraphics();
     // Draw select or create dotted box
     if (md == 4) {
-        if (figureType == "Free" && uimode == "CreateFigure"){
+        if (figureType == "Free" && uimode == "CreateFigure") {
             if(p2 != null && !(isFirstPoint)) {
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
@@ -2293,7 +2292,7 @@ function mousemoveevt(ev, t) {
                     crossFillStyle = "rgba(255, 102, 68, 0.0)";
                 }
             }
-        }else if(uimode == "CreateFigure" && figureType == "Square"){
+        }else if(uimode == "CreateFigure" && figureType == "Square") {
             ctx.setLineDash([3, 3]);
             ctx.beginPath(1);
             ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
@@ -2310,7 +2309,7 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
-        }else if (uimode == "CreateEREntity"){
+        }else if (uimode == "CreateEREntity") {
             ctx.setLineDash([3, 3]);
             ctx.beginPath(1);
             ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
@@ -2327,7 +2326,7 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
-        } else if(uimode == "CreateERRelation"){
+        } else if(uimode == "CreateERRelation") {
             ctx.setLineDash([3, 3]);
             var midx = startMouseCoordinateX+((currentMouseCoordinateX-startMouseCoordinateX)/2);
             var midy = startMouseCoordinateY+((currentMouseCoordinateY-startMouseCoordinateY)/2);
@@ -2346,7 +2345,7 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
-        } else if(uimode == "CreateERAttr"){
+        } else if(uimode == "CreateERAttr") {
             ctx.setLineDash([3, 3]);
             drawOval(startMouseCoordinateX, startMouseCoordinateY, currentMouseCoordinateX, currentMouseCoordinateY);
             ctx.strokeStyle = "#000";
@@ -2394,7 +2393,7 @@ function mousemoveevt(ev, t) {
 
 function mousedownevt(ev) {
 
-    if(uimode == "Moved" && md != 4){
+    if(uimode == "Moved" && md != 4) {
         uimode = "normal";
         md = 0;
     }
@@ -2427,18 +2426,18 @@ function mousedownevt(ev) {
         handleSelect();
     } else {
         md = 4; // Box select or Create mode.
-        if(uimode != "CreateFigure"){
+        if(uimode != "CreateFigure") {
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
         }
-        if(uimode != "MoveAround" && !ctrlIsClicked){
+        if(uimode != "MoveAround" && !ctrlIsClicked) {
             for (var i = 0; i < selected_objects.length; i++) {
                 selected_objects[i].targeted = false;
             }
             lastSelectedObject = -1;
             selected_objects = [];
         }
-        if(uimode == "CreateFigure" && figureType == "Square"){
+        if(uimode == "CreateFigure" && figureType == "Square") {
             createFigure();
         }
     }
@@ -2454,13 +2453,13 @@ function handleSelect() {
         // Will add multiple selected diagram objects if the
         // CTRL/CMD key is currently active
         if (ctrlIsClicked) {
-            if(selected_objects.indexOf(last) < 0){
+            if(selected_objects.indexOf(last) < 0) {
                 selected_objects.push(last);
                 last.targeted = true;
             }
             for (var i = 0; i < selected_objects.length; i++) {
                 if (selected_objects[i].targeted == false) {
-                    if(selected_objects.indexOf(last) < 0){
+                    if(selected_objects.indexOf(last) < 0) {
                         selected_objects.push(last);
                     }
                     selected_objects[i].targeted = true;
@@ -2471,10 +2470,10 @@ function handleSelect() {
             selected_objects.push(last);
             last.targeted = true;
         }
-    } else if(uimode != "MoveAround"){
-        if(ctrlIsClicked){
+    } else if(uimode != "MoveAround") {
+        if(ctrlIsClicked) {
             var index = selected_objects.indexOf(last);
-            if(index > -1){
+            if(index > -1) {
                 selected_objects.splice(index, 1);
             }
             last.targeted = false;
@@ -2486,7 +2485,7 @@ function handleSelect() {
 
 function mouseupevt(ev) {
     if (uimode == "CreateFigure" && md == 4) {
-        if(figureType == "Text"){
+        if(figureType == "Text") {
             createText(currentMouseCoordinateX, currentMouseCoordinateY);
         }
         createFigure();
@@ -2510,7 +2509,7 @@ function mouseupevt(ev) {
         //Check if you release on canvas or try to draw a line from entity to entity
          if (hovobj == -1 || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 3) {
             md = 0;
-         }else{
+         }else {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
 
@@ -2518,7 +2517,7 @@ function mouseupevt(ev) {
             //Check if you not start on a line and not end on a line, if then, set point1 and point2
             //okToMakeLine is a flag for this
             var okToMakeLine = true;
-            if(symbolStartKind != 4 && symbolEndKind != 4){
+            if(symbolStartKind != 4 && symbolEndKind != 4) {
                 var createNewPoint = false;
                 if (diagram[lineStartObj].symbolkind == 2) {
                     p1 = diagram[lineStartObj].centerPoint;
@@ -2527,30 +2526,30 @@ function mouseupevt(ev) {
                 }
 
                 //Code for making sure enitities not connect to the same attribute multiple times
-                if(symbolEndKind == 3 && symbolStartKind == 2){
-                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0){
+                if(symbolEndKind == 3 && symbolStartKind == 2) {
+                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
                         okToMakeLine= false;
                     }
-                } else if(symbolEndKind == 2 && symbolStartKind == 3){
-                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0){
+                } else if(symbolEndKind == 2 && symbolStartKind == 3) {
+                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0) {
                         okToMakeLine= false;
                     }
                 } else if(symbolEndKind == 3 && symbolStartKind == 5) {
                     if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
                 } else if(symbolEndKind == 5 && symbolStartKind == 3) {
                     if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
-                } else if(symbolEndKind == 5 && symbolStartKind == 5){
+                } else if(symbolEndKind == 5 && symbolStartKind == 5) {
                     okToMakeLine = false;
-                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)){
+                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)) {
                     okToMakeLine = false;
                 }
                 if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
-                if(okToMakeLine){
+                if(okToMakeLine) {
                     saveState = true;
                     if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     if (diagram[hovobj].symbolkind == 2) {
                         p2 = diagram[hovobj].centerPoint;
-                    } else{
+                    } else {
                         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
                     }
                     diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
@@ -2607,9 +2606,10 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (uimode == "CreateLine" && md == 4){
+    } else if (uimode == "CreateLine" && md == 4) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine){
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) 
+        || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine) {
             erLineA = new Symbol(4); // Lines
             erLineA.name = "Line" + diagram.length
             erLineA.topLeft = p1;
@@ -2641,7 +2641,7 @@ function mouseupevt(ev) {
     }
     else if(uimode != "Moved" && !ctrlIsClicked && md != 4) {
         //Unselects every object.
-        for(var i = 0; i < diagram.length; i++){
+        for(var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
         }
         //Sets the clicked object as targeted
@@ -2720,7 +2720,8 @@ function resize() {
             currentMouseCoordinateY = startMouseCoordinateY;
             startMouseCoordinateY = tempY;
         }
-        if(uimode == "CreateERRelation" && (currentMouseCoordinateX - startMouseCoordinateX < relationTemplate.width || currentMouseCoordinateY - startMouseCoordinateY < relationTemplate.height)){
+        if(uimode == "CreateERRelation" && (currentMouseCoordinateX - startMouseCoordinateX < relationTemplate.width 
+            || currentMouseCoordinateY - startMouseCoordinateY < relationTemplate.height)) {
             currentMouseCoordinateX = startMouseCoordinateX + relationTemplate.width;
             currentMouseCoordinateY = startMouseCoordinateY + relationTemplate.height;
         }
@@ -2757,11 +2758,11 @@ function movemode(e, t) {
     }
 }
 
-function activateMovearound(){
+function activateMovearound() {
    movemode();
 }
 
-function deactivateMovearound(){
+function deactivateMovearound() {
     movemode();
 }
 
@@ -2796,7 +2797,7 @@ function mouseupcanvas(e) {
 // The building blocks for creating the menu
 //--------------------------------------------------------------------
 
-function showMenu(){
+function showMenu() {
     canvas.style.cursor = "default";
     $("#appearance").show();
     $("#appearance").width("auto");
@@ -2822,7 +2823,7 @@ function openAppearanceDialogMenu() {
 
 function closeAppearanceDialogMenu() {
      //if the X
-     if(globalAppearanceValue == 1){
+     if(globalAppearanceValue == 1) {
        var tmpDiagram = localStorage.getItem("diagram" + diagramNumberHistory);
        if (tmpDiagram != null) LoadImport(tmpDiagram);
      }
@@ -2880,15 +2881,15 @@ function dimDialogMenu(dim) {
 // loadFormIntoElement: Loads the menu which is used to change apperance of ER and free draw objects.
 //----------------------------------------------------------------------
 
-function loadFormIntoElement(element, dir){
+function loadFormIntoElement(element, dir) {
   //Ajax
   var file = new XMLHttpRequest();
   file.open('GET', dir);
-  file.onreadystatechange = function(){
+  file.onreadystatechange = function() {
 
-    if(file.readyState === 4){
+    if(file.readyState === 4) {
       element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 2){
+      if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 2) {
         document.getElementById('nametext').value = diagram[lastSelectedObject].name;
         setSelectedOption('object_type', diagram[lastSelectedObject].properties['key_type']);
         setSelectedOption('symbolColor', diagram[lastSelectedObject].properties['symbolColor']);
@@ -2896,7 +2897,7 @@ function loadFormIntoElement(element, dir){
         setSelectedOption('fontColor', diagram[lastSelectedObject].properties['fontColor']);
         setSelectedOption('TextSize', diagram[lastSelectedObject].properties['sizeOftext']);
         setSelectedOption('LineColor', diagram[lastSelectedObject].properties['strokeColor']);
-      }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1){
+      }else if(globalAppearanceValue == 0 && diagram[lastSelectedObject].kind == 1) {
         setSelectedOption('figureFillColor', diagram[lastSelectedObject].fillColor);
         document.getElementById('figureOpacity').value = (diagram[lastSelectedObject].opacity * 100);
         setSelectedOption('LineColor', diagram[lastSelectedObject].strokeColor);
@@ -2910,14 +2911,14 @@ function loadFormIntoElement(element, dir){
 // loadLineForm: Loads the menu to change cardinality
 //----------------------------------------------------------------------
 
-function loadLineForm(element, dir){
+function loadLineForm(element, dir) {
     //Ajax
     var file = new XMLHttpRequest();
     file.open('GET', dir);
-    file.onreadystatechange = function(){
-        if(file.readyState === 4){
+    file.onreadystatechange = function() {
+        if(file.readyState === 4) {
             element.innerHTML = file.responseText;
-            if(globalAppearanceValue == 0){
+            if(globalAppearanceValue == 0) {
                 var cardinalityVal = diagram[lastSelectedObject].cardinality[0].value
                 var cardinalityValUML = diagram[lastSelectedObject].cardinality[0].valueUML;
                 var tempCardinality = cardinalityVal == "" || cardinalityVal == null ? "None" : cardinalityVal;
@@ -2936,22 +2937,22 @@ function loadLineForm(element, dir){
 // loadUMLForm: Loads the appearance menu for UML-class
 //----------------------------------------------------------------------
 
-function loadUMLForm(element, dir){
+function loadUMLForm(element, dir) {
   var file = new XMLHttpRequest();
   file.open('GET', dir);
-  file.onreadystatechange = function(){
-    if(file.readyState === 4){
+  file.onreadystatechange = function() {
+    if(file.readyState === 4) {
       element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0){
+      if(globalAppearanceValue == 0) {
         var attributesText = "";
         var operationsText = "";
         var attributesTextArea = document.getElementById('UMLAttributes');
         var operationsTextArea = document.getElementById('UMLOperations');
-        for(var i = 0; i < diagram[lastSelectedObject].attributes.length;i++){
+        for(var i = 0; i < diagram[lastSelectedObject].attributes.length;i++) {
           attributesText += diagram[lastSelectedObject].attributes[i].text;
           if(i < diagram[lastSelectedObject].attributes.length - 1) attributesText += "\n";
         }
-        for(var i = 0; i < diagram[lastSelectedObject].operations.length;i++){
+        for(var i = 0; i < diagram[lastSelectedObject].operations.length;i++) {
           operationsText += diagram[lastSelectedObject].operations[i].text
           if(i < diagram[lastSelectedObject].operations.length - 1) operationsText += "\n";
         }
@@ -2969,13 +2970,13 @@ function loadUMLForm(element, dir){
 // loadTextForm: Loads the appearance menu for text
 //----------------------------------------------------------------------
 
-function loadTextForm(element, dir){
+function loadTextForm(element, dir) {
   var file = new XMLHttpRequest();
   file.open('GET', dir);
-  file.onreadystatechange = function(){
-    if(file.readyState === 4){
+  file.onreadystatechange = function() {
+    if(file.readyState === 4) {
       element.innerHTML = file.responseText;
-      if(globalAppearanceValue == 0){
+      if(globalAppearanceValue == 0) {
         var text = "";
         var textarea = document.getElementById('freeText');
         for (var i = 0; i < diagram[lastSelectedObject].textLines.length; i++) {
@@ -2997,14 +2998,14 @@ function loadTextForm(element, dir){
 // setSelectedOption: used to implement the changes to apperances that has been made
 //----------------------------------------------------------------------
 
-function setSelectedOption(type, value){
-  if(type != null){
-    for(var i = 0; i < document.getElementById(type).options.length; i++){
-      if(value == document.getElementById(type).options[i].value){
+function setSelectedOption(type, value) {
+  if(type != null) {
+    for(var i = 0; i < document.getElementById(type).options.length; i++) {
+      if(value == document.getElementById(type).options[i].value) {
         document.getElementById(type).value = value;
         document.getElementById(type).options[i].selected = "true";
         break;
-      }else{
+      }else {
         document.getElementById(type).options[i].selected = "false";
       }
     }
@@ -3020,7 +3021,7 @@ function setSelectedOption(type, value){
 // globalAppearanceMenu: open a menu to change appearance on all entities.
 //----------------------------------------------------------------------
 
-function globalAppearanceMenu(){
+function globalAppearanceMenu() {
     globalAppearanceValue = 1;
     $(".loginBox").draggable();
     var form = showMenu();
@@ -3035,7 +3036,7 @@ function globalAppearanceMenu(){
 function objectAppearanceMenu(form) {
     form.innerHTML = "No item selected<type='text'>";
     //if no item has been selected
-    if(!diagram[lastSelectedObject]){ return;}
+    if(!diagram[lastSelectedObject]) { return;}
     // UML selected
     if (diagram[lastSelectedObject].symbolkind == 1) {
         classAppearanceOpen = true;
@@ -3072,8 +3073,8 @@ function objectAppearanceMenu(form) {
 // changeObjectAppearance: USES DIALOG TO CHANGE OBJECT APPEARANC
 //----------------------------------------------------------------------
 
-function changeObjectAppearance(object_type){
-    if(diagram[lastSelectedObject].symbolkind == 1){ // UML-class appearance
+function changeObjectAppearance(object_type) {
+    if(diagram[lastSelectedObject].symbolkind == 1) { // UML-class appearance
       diagram[lastSelectedObject].name = document.getElementById('nametext').value;
       var attributeLines = $('#UMLAttributes').val().split('\n');
       var operationLines = $('#UMLOperations').val().split('\n');
@@ -3081,23 +3082,23 @@ function changeObjectAppearance(object_type){
       diagram[lastSelectedObject].operations = [];
 
       //Inserts text for attributes and operations
-      for(var i = 0;i < attributeLines.length;i++){
+      for(var i = 0;i < attributeLines.length;i++) {
         diagram[lastSelectedObject].attributes.push({text:attributeLines[i]});
       }
-      for(var i = 0; i < operationLines.length; i++){
+      for(var i = 0; i < operationLines.length; i++) {
         diagram[lastSelectedObject].operations.push({text:operationLines[i]});
       }
 
     } else if (diagram[lastSelectedObject].symbolkind == 4) {
         diagram[lastSelectedObject].properties['key_type'] = document.getElementById('object_type').value;
-    } else if (diagram[lastSelectedObject].kind == 1){
+    } else if (diagram[lastSelectedObject].kind == 1) {
         diagram[lastSelectedObject].fillColor = document.getElementById('figureFillColor').value;
         diagram[lastSelectedObject].opacity = document.getElementById('figureOpacity').value / 100;
         diagram[lastSelectedObject].strokeColor = document.getElementById('LineColor').value;
     } else if (diagram[lastSelectedObject].symbolkind == 6) {
         diagram[lastSelectedObject].textLines = [];
         var textArray = $('#freeText').val().split('\n');
-        for(var i = 0; i < textArray.length; i++){
+        for(var i = 0; i < textArray.length; i++) {
           diagram[lastSelectedObject].textLines.push({text:textArray[i]});
         }
         diagram[lastSelectedObject].properties['fontColor'] = document.getElementById('fontColor').value;
@@ -3116,33 +3117,33 @@ function changeObjectAppearance(object_type){
     updateGraphics();
 }
 
-function createCardinality(){
+function createCardinality() {
     //Setting cardinality on new line
-    if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3){
+    if(diagram[lineStartObj].symbolkind == 5 && diagram[hovobj].symbolkind == 3) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": false});
     }
     else if(diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 5) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "isCorrectSide": true});
     }
-    else if(diagram[lineStartObj].symbolkind == 1 && diagram[hovobj].symbolkind == 1){
+    else if(diagram[lineStartObj].symbolkind == 1 && diagram[hovobj].symbolkind == 1) {
         diagram[diagram.length-1].cardinality[0] = ({"value": "", "symbolKind": 1})
     }
 }
 
-function changeCardinality(isUML){
+function changeCardinality(isUML) {
     var val = document.getElementById('cardinality').value;
     var valUML;
-    if(isUML){
+    if(isUML) {
         valUML = document.getElementById('cardinalityUml').value;
     }
 
     //Setting existing cardinality value on line
     if(val == "None") val = "";
     if(valUML == "None") valUML = "";
-    if(diagram[lastSelectedObject].cardinality[0].value != null){
-        if(diagram[lastSelectedObject].cardinality[0].symbolKind != 1){
+    if(diagram[lastSelectedObject].cardinality[0].value != null) {
+        if(diagram[lastSelectedObject].cardinality[0].symbolKind != 1) {
             diagram[lastSelectedObject].cardinality[0].value = val;
-        } else{
+        } else {
             diagram[lastSelectedObject].cardinality[0].valueUML = valUML;
             diagram[lastSelectedObject].cardinality[0].value = val;
         }
