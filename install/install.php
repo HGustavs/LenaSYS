@@ -799,24 +799,24 @@
 
         echo '<div id="copied1">Copied to clipboard!<br></div>';
 
-        echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br> 
-                with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
-                (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
-        echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
-        echo "mkdir " . $putFileHere . "/log && ";
-        echo "chmod 777 " . $putFileHere . "/log && ";
-        echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
-        echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
-        echo "</code></div>";
-        echo '<div id="copied2">Copied to clipboard!<br></div>';
-
+        if(!connectLogDB()){
+            echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br> 
+            with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
+            (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
+            echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
+            echo "mkdir " . $putFileHere . "/log && ";
+            echo "chmod 777 " . $putFileHere . "/log && ";
+            echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
+            echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
+            echo "</code></div>";
+            echo '<div id="copied2">Copied to clipboard!<br></div>';
+        }
         $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
         echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
         echo "<br><input title='Go to LenaSYS' class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
         echo "</form>";
         echo "</div>";
 
-        connectLogDB();
     }
 
     # Function to add testdata from specified file. Parameter file = sql file name without .sql.
@@ -869,11 +869,17 @@
         ob_flush();
     }
     function connectLogDB() {
+        if(!file_exists ('../../log')) {
+            if(!mkdir('../../log')){
+                echo "Error creating folder: log";
+                return false;
+            }
+        }
         try {
             $log_db = new PDO('sqlite:../../log/loglena4.db');
         } catch (PDOException $e) {
             echo "Failed to connect to the database";
-            throw $e;
+            return false;
         }
         
         $sql = '
@@ -940,6 +946,7 @@
             );
         ';
         $log_db->exec($sql);
+        return true;
     }
     ?>
 
