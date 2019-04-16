@@ -1358,13 +1358,18 @@ function removeLocalStorage() {
     }
 }
 
+function decimalPrecision(value, precision){
+  var multipler = Math.pow(10, precision || 0);
+  return Math.round(value * multipler) / multipler;
+
+}
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
      + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-     + "X=" + canvasMouseX
-     + " & Y=" + canvasMouseY + "</p>";
+     + "X=" + decimalPrecision(canvasMouseX, 1)
+     + " & Y=" + decimalPrecision(canvasMouseY, 1) + "</p>";
 }
 //----------------------------------------
 // Renderer
@@ -2083,8 +2088,8 @@ function pointDistance(point1, point2) {
 
 function mousemoveevt(ev, t) {
     // Get canvasMouse coordinates for both X & Y.
-    canvasMouseX = Math.round(ev.clientX - canvas.offsetLeft) * (1 / zoomValue)
-    canvasMouseY = Math.round(-(ev.clientY - canvas.offsetTop) * (1 / zoomValue))
+    canvasMouseX = (ev.clientX - canvas.offsetLeft) * (1 / zoomValue)
+    canvasMouseY = -(ev.clientY - canvas.offsetTop) * (1 / zoomValue)
     // Call reWrite() to update the canvasMouseX & canvasMouseY on the page.
     reWrite();
     xPos = ev.clientX;
