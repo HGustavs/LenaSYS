@@ -696,6 +696,4 @@ function SortableTable(param) {
 
 		return str;
 	}
-
-	this.reRender();
 }
