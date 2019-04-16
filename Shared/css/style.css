@@ -3827,6 +3827,7 @@ only screen and (max-device-width: 320px) {
   position: fixed;
   bottom: 24px;
   right: 24px;
+  z-index: 1;
 }
 .fixed-action-button.sectioned {
   right: 75px;
