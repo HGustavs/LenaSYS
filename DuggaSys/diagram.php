@@ -204,9 +204,9 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='debugMode();'>Developer mode</span>
                         </div>
-                        <div class="drop-down-item">
+                        <!-- <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleGrid(this)">Snap to grid</span>
-                        </div>
+                        </div> -->
                         <div class="drop-down-divider">
                         </div>
                         <div class="drop-down-item">
@@ -365,7 +365,7 @@
         if(isset($_POST['id'])) {
 
         }
-        
+
         if(isset($_POST['StringDiagram'])) {
             $str = $_POST['StringDiagram'];
             $hash = $_POST['Hash'];
