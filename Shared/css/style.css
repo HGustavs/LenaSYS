@@ -512,7 +512,7 @@ p {
 }
 
 #Sectionlistc { /* Move up later*/
-  display: inline-block;
+  display: block;
 }
 
  #statisticsList {
@@ -629,7 +629,7 @@ header td {
 
 .navName:hover {
   font-size: 0.8em;
-  text-shadow: 1px 1px 4px #50A750;
+  text-shadow: 2px 2px 4px rgb(0, 0, 0);
   color: #FFFFFF;
   cursor: default;
   text-decoration: underline;
@@ -3827,6 +3827,7 @@ only screen and (max-device-width: 320px) {
   position: fixed;
   bottom: 24px;
   right: 24px;
+  z-index: 1;
 }
 .fixed-action-button.sectioned {
   right: 75px;
