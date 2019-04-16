@@ -1364,9 +1364,9 @@ function coord(x) {
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
-     + coord((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-     + "X=" + canvasMouseX
-     + " & Y=" + canvasMouseY + "</p>";
+     + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+     + "X=" + coord(canvasMouseX)
+     + " & Y=" + coord(canvasMouseY) + "</p>";
 }
 //----------------------------------------
 // Renderer
