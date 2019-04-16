@@ -1357,11 +1357,14 @@ function removeLocalStorage() {
         localStorage.removeItem("localdiagram");
     }
 }
+function coord(x) {
+  return Number.parseFloat(x).toFixed(2);
+}
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
-     + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+     + coord((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
      + "X=" + canvasMouseX
      + " & Y=" + canvasMouseY + "</p>";
 }
