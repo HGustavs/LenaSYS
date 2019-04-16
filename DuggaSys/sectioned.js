@@ -929,9 +929,11 @@ function returnedSection(data) {
           var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
-          // create a warning if the dugga is submitted after the set deadline
+          // create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+            if (hasGracetimeExpired(deadline, dateTimeSubmitted)) {
+              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+            }
           }
         }
 
@@ -1492,4 +1494,32 @@ function mail() {
       window.location.assign("mailto:" + data + "?subject=" + "!!! Notification !!! " + cname);
     }
   });
+}
+
+// Function for checking if a grace time exists and if the submition time is withing that grace time window
+function hasGracetimeExpired(deadline, dateTimeSubmitted) {
+  var m_dateTimeSubmitted = new Date(dateTimeSubmitted);
+  var m_gracetime = new Date(deadline);
+  var m_deadline = new Date(deadline);
+
+  if ((m_deadline.getHours() >= 17) || (m_deadline.getday() > 5)) {
+    if (m_deadline.getDay() <= 4) {
+      m_gracetime.setDate(m_deadline.getDate() + 1);
+    }
+    else if (m_deadline.getDay() == 5){
+      m_gracetime.setDate(m_deadline.getDate() + 3);
+    }
+    else if (m_deadline.getDay() == 6){
+      m_gracetime.setDate(m_deadline.getDate() + 2);
+    }
+      m_gracetime.setHours(8);
+      m_gracetime.setMinutes(00);
+      m_gracetime.setSeconds(00);
+  }
+  if (m_dateTimeSubmitted > m_gracetime) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
