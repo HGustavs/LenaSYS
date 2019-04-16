@@ -1502,7 +1502,7 @@ function hasGracetimeExpired(deadline, dateTimeSubmitted) {
   var m_gracetime = new Date(deadline);
   var m_deadline = new Date(deadline);
 
-  if ((m_deadline.getHours() >= 17) || (m_deadline.getday() > 5)) {
+  if ((m_deadline.getHours() >= 17) || (m_deadline.getDay() > 5)) {
     if (m_deadline.getDay() <= 4) {
       m_gracetime.setDate(m_deadline.getDate() + 1);
     }
