@@ -204,9 +204,6 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='debugMode();'>Developer mode</span>
                         </div>
-                        <!-- <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="toggleGrid(this)">Snap to grid</span>
-                        </div> -->
                         <div class="drop-down-divider">
                         </div>
                         <div class="drop-down-item">
