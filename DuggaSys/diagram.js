@@ -1361,8 +1361,6 @@ function removeLocalStorage() {
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 function reWrite() {
-    canvasMouseX = canvasMouseX.toFixed(1);
-    canvasMouseY = canvasMouseY.toFixed(1);
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
      + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
      + "X=" + canvasMouseX
