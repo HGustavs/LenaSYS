@@ -1363,10 +1363,8 @@ function reWrite() {
     document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
      + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
      + "X=" + canvasMouseX
-     + " & Y=" +canvasMouseY + "</p>";
+     + " & Y=" + canvasMouseY + "</p>";
 }
-
-
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -2045,7 +2043,7 @@ $( function() {
 function zoomInMode() {
     var oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
-    var newScale = Math.round(zoomValue/oldZoom);
+    var newScale = (zoomValue/oldZoom);
     ctx.scale(newScale,newScale);
     reWrite();
     updateGraphics();
