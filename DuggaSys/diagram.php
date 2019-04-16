@@ -43,7 +43,7 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();" onmouseup="mouseupevt(event)">
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();" onmousedown="mouseDown()" onmouseup="mouseUp()">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
@@ -150,13 +150,13 @@
                             <span class="drop-down-option" id="exportid">Export...</span>
                             <div class="export-drop-down">
                                 <div class="export-drop-down-item">
-                                    <span class="drop-down-option" id="fileid" onclick='SaveFile(this);'>Export JSON</span>
+                                    <a class="drop-down-option" id="fileid" onclick='SaveFile(this);'>Export JSON</a>
                                 </div>
                                 <div class="export-drop-down-item">
-                                    <span class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</span>
+                                    <a class="drop-down-option" id="svgid" onclick='ExportSVG(this);'>Export SVG</a>
                                 </div>
                                 <div class="export-drop-down-item">
-                                    <span class="drop-down-option" id="picid">Export Picture</span>
+                                    <a class="drop-down-option" id="picid">Export Picture</a>
                                 </div>
                             </div>
                         </div>
@@ -261,12 +261,12 @@
                 <div class="menu-drop-down">
                     <span class="drop-down-label">Help</span>
                     <div class="drop-down">
-                        <div class="drop-down-text">
+                        <div class="drop-down-text-non-clickable">
                             <span class="drop-down-option">Move grid</span>
                             <div id="hotkey-space"><i>Blankspace</i></div>
                         </div>
                         <div class="drop-down-divider"></div>
-                        <div class="drop-down-text">
+                        <div class="drop-down-text-non-clickable">
                             <span class="drop-down-option">Select multiple objects</span>
                             <div id="hotkey-ctrl"><i>Ctrl + leftclick</i></div>
                         </div>
