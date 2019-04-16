@@ -28,38 +28,46 @@ function setup()
 function newRow() {
 	var tsTableBody = document.getElementById("tsTableBody");
 	var tblRows = tsTableBody.childNodes;
-	var idx = tblRows.length;
+	var lastRow = tblRows[tblRows.length - 1];
+	var lastRowID = lastRow.attributes[1].value;
+	var splitID = lastRowID.split("_");
+	var lastRowIdx = parseInt(splitID[1]) + 1;
 	var inputRows = document.getElementsByClassName("tsInputRow");
 	var str = "";
 
 	for (var i = 0; i < inputRows.length; i++) {
-		str += "<tr class='tsInputRow' id=tsTableRow_"+i+"><td>";
-		var inputValue = document.getElementById("tsDate_"+i).value;
-		str += "<input id='tsDate_"+i+"' required type='date' name='tsDate_"+i+"' value='"+inputValue+"' /></td>";
-		inputValue = document.getElementById("tsType_"+i).value;
-		str += "<td><select id='tsType_"+i+"' required name='tsType_"+i+"'>";
+		var row = tblRows[i];
+		var rowID = row.attributes[1].value;
+		var splitID = rowID.split("_");
+		var idx = parseInt(splitID[1]);
+
+		str += "<tr class='tsInputRow' id=tsTableRow_"+idx+"><td>";
+		var inputValue = document.getElementById("tsDate_"+idx).value;
+		str += "<input id='tsDate_"+idx+"' required type='date' name='tsDate_"+idx+"' value='"+inputValue+"' /></td>";
+		inputValue = document.getElementById("tsType_"+idx).value;
+		str += "<td><select id='tsType_"+idx+"' required name='tsType_"+idx+"'>";
 		if (inputValue === "issue") {
 			str += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 0);
 		} else {
 			str += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 1);
 		}
 		str += "</select></td>";
-		inputValue = document.getElementById("tsRef_"+i).value;
-		str += "<td><input id='tsRef_"+i+"' required type='number' name='tsRef_"+i+"' style='width: 55px' value='"+inputValue+"' /></td>";
-		inputValue = document.getElementById("tsComment_"+i).value;
-		str += "<td><input id='tsComment_"+i+"' required type='text' name='tsComment_"+i+"' style='width: 500px' value='"+inputValue+"' /></td>";
-		if (i > 0) {
-			str += "<td class='tsTableDeleteCell' onclick='deleteRow("+i+")'><img src='../Shared/icons/Trashcan.svg'></td>";
+		inputValue = document.getElementById("tsRef_"+idx).value;
+		str += "<td><input id='tsRef_"+idx+"' required type='number' name='tsRef_"+idx+"' style='width: 55px' value='"+inputValue+"' /></td>";
+		inputValue = document.getElementById("tsComment_"+idx).value;
+		str += "<td><input id='tsComment_"+idx+"' required type='text' name='tsComment_"+idx+"' style='width: 500px' value='"+inputValue+"' /></td>";
+		if (idx > 0) {
+			str += "<td class='tsTableDeleteCell' onclick='deleteRow("+idx+")'><img src='../Shared/icons/Trashcan.svg'></td>";
 		}
 	}
-	str += "<tr class='tsInputRow' id=tsTableRow_"+idx+"><td>";
-	str += "<input id='tsDate_"+idx+"' required type='date' name='tsDate_"+idx+"' /></td>";
-	str += "<td><select id='tsType_"+idx+"' required name='tsType_"+idx+"'>";
+	str += "<tr class='tsInputRow' id=tsTableRow_"+lastRowIdx+"><td>";
+	str += "<input id='tsDate_"+lastRowIdx+"' required type='date' name='tsDate_"+lastRowIdx+"' /></td>";
+	str += "<td><select id='tsType_"+lastRowIdx+"' required name='tsType_"+lastRowIdx+"'>";
 	str += generateTimeSheetOptions(inParams["cid"], inParams["moment"], 0);
 	str += "</select></td>";
-	str += "<td><input id='tsRef_"+idx+"' required type='number' name='tsRef_"+idx+"' style='width: 55px' /></td>";
-	str += "<td><input id='tsComment_"+idx+"' required type='text' name='tsComment_"+idx+"' style='width: 500px' /></td>";
-	str += "<td class='tsTableDeleteCell' onclick='deleteRow("+idx+")'><img src='../Shared/icons/Trashcan.svg'></td>";
+	str += "<td><input id='tsRef_"+lastRowIdx+"' required type='number' name='tsRef_"+lastRowIdx+"' style='width: 55px' /></td>";
+	str += "<td><input id='tsComment_"+lastRowIdx+"' required type='text' name='tsComment_"+lastRowIdx+"' style='width: 500px' /></td>";
+	str += "<td class='tsTableDeleteCell' onclick='deleteRow("+lastRowIdx+")'><img src='../Shared/icons/Trashcan.svg'></td>";
 
 	tsTableBody.innerHTML = str;
 }
