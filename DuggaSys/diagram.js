@@ -983,13 +983,17 @@ function updateGraphics() {
         ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
     }
+
     diagram.updateQuadrants();
     drawGrid();
     diagram.sortConnectors();
     diagram.draw();
     points.drawPoints();
     drawVirtualA4();
-    drawOrigo();
+
+     if(!ghostingCrosses) {
+        drawOrigo();
+    }
 }
 
 function getConnectedLines(object) {
@@ -1229,7 +1233,7 @@ function drawOrigo() {
         ctx.fill();
         ctx.stroke();
     }
-    
+
     ctx.restore();
 }
 
@@ -1277,6 +1281,10 @@ function debugMode() {
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
+
+        drawOrigo();
+        console.log('drawed origo');
+
         ghostingCrosses = false;
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
