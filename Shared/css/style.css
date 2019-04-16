@@ -393,6 +393,22 @@ p {
   text-decoration: underline;
 }
 
+.code .item a:hover {
+  color: #C47FAA;
+}
+
+.example-link:hover {
+  color: #C47FAA;
+}
+
+.internal-link:hover {
+  color: #B06DC3;
+}
+
+.external-link:hover {
+  color: #7E7BCA;
+}
+
 #Sectionlist .norm {
   background-color: #fff;
   color: #000;
@@ -2662,7 +2678,8 @@ span.arrow {
 .dropdown-list-container {
   padding: 8px;
   width: 300px;
-  overflow: hidden;
+  height: 300px;
+  overflow: scroll;
   font-size: 12px;
   display: none;
   position: absolute;

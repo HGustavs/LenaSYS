@@ -1,5 +1,3 @@
-// Test comment 2
-
 /********************************************************************************
    Globals
 *********************************************************************************/
@@ -446,23 +444,32 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid
   return str;
 }
 
-function hoverResult(cid, vers, moment, firstname, lastname, uid, submitted, marked) {
-  $("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
-
-  // Start counting pixels
-  msx = -1;
-  msy = -1;
-
-  AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid }, "RESULT");
+function hideHover(){
+  $("#hoverRes").css({display: "none", opacity: 0});
 }
 
-function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid) {
-  $("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
-  var menu = "<div class='' style='width:100px;display:block;'>";
-  menu += "<div class='loginBoxheader'>";
-  menu += "<h3>Grade</h3>";
-  menu += "</div>";
-  menu += "<table>";
+function hoverResult()
+{
+  $("#hoverRes").css({display: "block", opacity: 1, zIndex : 5, top: '50px'});
+      $("#hoverRes").html( $("#Nameof").html());
+
+}
+// Function for shortening date format
+function formatDateShorter(longDate) {
+  var d = new Date(longDate)
+
+    return  d.toLocaleString()
+}
+
+function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid){
+ $("#Nameof").html(firstname + " " + lastname   + " - Submitted: " + formatDateShorter(submitted) + " / Marked: " + formatDateShorter(marked ));
+ // $("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
+
+	var menu = "<div class='' style='width:100px;display:block;'>";
+	menu += "<div class='loginBoxheader'>";
+	menu += "<h3>Grade</h3>";
+	menu += "</div>";
+	menu += "<table>";
   menu += "<tr><td>";
   if ((foundgrade === null && submitted === null)) {
     menu += makeSelect(parseInt(gradeSystem), querystring['cid'], querystring['coursevers'], parseInt(lid), parseInt(uid), null, "I", parseInt(qvariant), parseInt(qid));
@@ -742,87 +749,86 @@ function renderCell(col, celldata, cellid) {
     } else if (filterGrade === "none" || celldata.grade === filterGrade) {
       // color based on pass,fail,pending,assigned,unassigned
       str = "<div class='resultTableCell resultTableMini ";
-      if (celldata.kind == 4) { str += "dugga-moment "; }
-      if (celldata.grade > 1) { str += "dugga-pass"; }
-      else if (celldata.submittedts <= celldata.deadlinets) { str += "dugga-pending"; }
-      else if (celldata.kind != 4 && celldata.submittedts > celldata.deadlinets) { str += "dugga-pending-late-submission"; }
-      else if (celldata.grade === 1) { str += "dugga-fail"; }
-      else if (celldata.grade === 0 || isNaN(celldata.grade)) { str += "dugga-assigned"; }
-      else { str += "dugga-unassigned"; }
-      str += "'>";
-      str += "</div>";
-      return str;
-    }
-  }
+				if(celldata.kind==4) { str += "dugga-moment "; }
+				if (celldata.grade > 1) {str += "dugga-pass";}
+				else if (celldata.submittedts <= celldata.deadlinets) {str += "dugga-pending";}
+				else if (celldata.kind != 4 && celldata.submittedts > celldata.deadlinets) {str += "dugga-pending-late-submission";}
+				else if (celldata.grade === 1) {str += "dugga-fail";}
+				else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
+				else {str += "dugga-unassigned";}
+			str += "'>";
+			str += "</div>";
+			return str;
+		}
+	}
+	// Render normal mode
+	// First column (Fname/Lname/SSN)
+	if (col == "FnameLnameSSN"){
+		str = "<div class='resultTableCell resultTableNormal'>";
+			str += "<div class='resultTableText'>";
+				str += "<div style='font-weight:bold'>"+celldata.firstname+" "+celldata.lastname+"</div>";
+				str += "<div>"+celldata.username+" / "+celldata.class+"</div>";
+				str += "<div>"+celldata.ssn+"</div>";
+			//	str += "<div style='font-style:italic;text-align:right;'>"+celldata.setTeacher+"</div>";
+		//	str += "</div>";
+		str += "</div>";
+		return str;
 
-  // Render normal mode
-  // First column (Fname/Lname/SSN)
-  if (col == "FnameLnameSSN") {
-    str = "<div class='resultTableCell resultTableNormal'>";
-    str += "<div class='resultTableText'>";
-    str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
-    str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
-    str += "<div>" + celldata.ssn + "</div>";
-    //	str += "<div style='font-style:italic;text-align:right;'>"+celldata.setTeacher+"</div>";
-    //	str += "</div>";
-    str += "</div>";
-    return str;
-
-  } else if (filterGrade === "none" || celldata.grade === filterGrade) {
-    // color based on pass,fail,pending,assigned,unassigned
+	} else if(filterGrade==="none" || celldata.grade===filterGrade){
+		// color based on pass,fail,pending,assigned,unassigned
     str = "<div style='padding:10px;' class='resultTableCell ";
-    if (celldata.kind == 4) { str += "dugga-moment "; }
-    if (celldata.grade > 1) { str += "dugga-pass"; }
-    else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) { str += "dugga-pending"; }
-    else if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) { str += "dugga-pending-late-submission"; }
-    else if (celldata.grade === 1) { str += "dugga-fail"; }
-    else if (celldata.grade === 0 || isNaN(celldata.grade)) { str += "dugga-assigned"; }
-    else { str += "dugga-unassigned"; }
-    str += "'>";
+    if(celldata.kind==4) { str += "dugga-moment "; }
+    if (celldata.grade > 1) {str += "dugga-pass";}
+    else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
+    else if (celldata.kind != 4 && celldata.needMarking == true && celldata.submitted > celldata.deadline) {str += "dugga-pending-late-submission";}
+    else if (celldata.grade === 1) {str += "dugga-fail";}
+    else if (celldata.grade === 0 || isNaN(celldata.grade)) {str += "dugga-assigned";}
+    else {str += "dugga-unassigned";}
+		str += "'>";
 
-    // Creation of grading buttons
-    if (celldata.ishere === true || celldata.kind == 4) {
-      str += "<div class='gradeContainer resultTableText'>";
-      if (celldata.grade === null) {
-        str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
-      } else if (celldata.grade === -1) {
-        str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
-      } else {
-        str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
-      }
-      str += "<img id='korf' class='fist";
-      if (celldata.userAnswer === null && !(celldata.quizfile == "feedback_dugga")) { // Always shows fist. Should be re-evaluated
-        str += " grading-hidden";
-      }
-      str += "' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
-      str += "/>";
-      //Print times graded
-      str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
-      if (celldata.ishere === true && celldata.timesGraded !== 0) {
-        str += '(' + celldata.timesGraded + ')';
-      }
-      str += "</div>";
-      str += "</div>";
+		// Creation of grading buttons
+		if(celldata.ishere===true||celldata.kind==4){
+			  str += "<div class='gradeContainer resultTableText'>";
+				if (celldata.grade === null ) {
+					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'I', celldata.qvariant, celldata.quizId);
+				} else if (celldata.grade === -1 ) {
+					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'IFeedback', celldata.qvariant, celldata.quizId);
+				} else {
+					str += makeSelect(celldata.gradeSystem, querystring['cid'], celldata.vers, celldata.lid, celldata.uid, celldata.grade, 'U', celldata.qvariant, celldata.quizId);
+				}
+				str += "<img id='korf' class='fist";
+					if(celldata.userAnswer===null && !(celldata.quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
+						str += " grading-hidden";
+					}
+					str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid +  "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname +  "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
+				str += "/>";
+        //Print times graded
+        str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
+                if(celldata.ishere===true && celldata.timesGraded!==0){
+                  str += '(' + celldata.timesGraded + ')';
+                }
+              str += "</div>";
+			str += "</div>";
 
-      // Print submitted time and change color to red if passed deadline
-      str += "<div class='text-center resultTableText'";
-      for (var p = 0; p < moments.length; p++) {
-        if (moments[p].link == celldata.quizId) {
-          if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)) {
-            str += " style='color:red;'";
-          }
-          break;
-        }
-      }
-      str += ">";
-      if (celldata.submitted.getTime() !== timeZero.getTime()) {
-        str += celldata.submitted.toLocaleDateString() + " " + celldata.submitted.toLocaleTimeString();
-      }
-      str += "</div>";
-    }
-    str += "</div>";
-    return str;
-  }
+			// Print submitted time and change color to red if passed deadline
+			str += "<div class='text-center resultTableText'";
+				for (var p = 0; p < moments.length; p++){
+					if (moments[p].link == celldata.quizId){
+						if (Date.parse(moments[p].deadline) < Date.parse(celldata.submitted)){
+							str += " style='color:red;'";
+						}
+						break;
+					}
+				}
+				str += ">";
+				if (celldata.submitted.getTime() !== timeZero.getTime()){
+					str += celldata.submitted.toLocaleDateString()+ " " + celldata.submitted.toLocaleTimeString();
+				}
+			str += "</div>";
+		}
+		str += "</div>";
+		return str;
+	}
 
   // When Filtering is activated then this "hides" all other data than what is specified.
   else {
@@ -995,68 +1001,94 @@ function compare(a, b) {
   }
 }
 
-function conv(item, kind) {
-  var tmp = 7;
-  if (typeof (item) !== "undefined") {
-    if (item.grade === null) tmp = 7; // N/A i.e. not opened
-    if (item.grade === 0) tmp = 1; // Pending
-    if (item.grade === 0 && item.userAnswer === null) tmp = 7; // Not submitted anything
-    if (item.grade == 1) tmp = 6; // U
-    if (item.grade == 1 && item.submitted > item.marked) tmp = 1; // Pending
-    if (item.grade >= 2 && item.grade <= 3) tmp = 2; // Pass / G / VG
-  }
-  if (tmp < kind) tmp += 8;
 
-  return tmp * 100;
+function renderColumnFilter(col,status,colname) {
+		str = "";
+		if (colname == "FnameLnameSSN") return str;
+		if (status) {
+			str = "<div class='checkbox-dugga'>";
+			str += "<input id=\""+colname+"\" type='checkbox' checked onclick='onToggleFilter(\""+col+"\")'><label class='headerlabel'>" + colname + "</label>";
+			str += "</div>"
+		} else {
+			str = "<div class='checkbox-dugga'>";
+			str += "<input id=\""+colname+"\" type='checkbox' onclick='onToggleFilter(\""+col+"\")'><label class='headerlabel'>" + colname + "</label>";
+			str += "</div>"
+		}
+		return str;
 }
 
-function renderColumnFilter(col, status, colname) {
-  str = "";
-  if (colname == "FnameLnameSSN") return str;
-  if (status) {
-    str = "<div class='checkbox-dugga'>";
-    str += "<input type='checkbox' checked onclick='myTable.toggleColumn(\"" + col + "\",\"" + status + "\")'><label class='headerlabel'>" + colname + "</label>";
-    str += "</div>"
-  } else {
-    str = "<div class='checkbox-dugga'>";
-    str += "<input type='checkbox' onclick='myTable.toggleColumn(\"" + col + "\",\"" + status + "\")'><label class='headerlabel'>" + colname + "</label>";
-    str += "</div>"
-  }
-  return str;
-}
+function onToggleFilter(colId)
+{
+  var idParts = colId.split(":");   // divides the string into lib and the actual id number
+  for(var i = 0; i < moments.length; i++)
+  {
+    var element = moments[i];
+    var elementId = element[idParts[0]];
 
-function exportCell(format, cell, colname) {
-  str = "";
-  if (format === "csv") {
-    if (colname == "FnameLnameSSN") {
-      if (cell.ssn.length > 11) {
-        str = cell.ssn + ";";
-      } else {
-        str = "19" + cell.ssn + ";";
+    if(elementId==idParts[1]) // Checks if the moment id is the id of the currently pressed checkbox
+    {
+      if(element["lid"]==element["moment"]) // Checks if the pressed checkbox was a Moment or just a test (aka sub-moment)
+      {
+        // Due to moments having å,ä,ö in their names they will need to be "removed"/coverted before being used.
+        var txt = document.createElement("textarea");
+        txt.innerHTML = element.entryname;
+        var checkBoxId = txt.value;
+        var isChecked = document.getElementById(checkBoxId).checked;
+
+        for(var j = 0; j<moments.length;j++)
+        {
+          if(moments[j].moment==idParts[1]) // Find all childs of the moment
+          {
+            var childColId = "lid:"+moments[j].lid;
+            myTable.toggleColumn(childColId,childColId,isChecked);
+          }
+        }
       }
-      str += cell.firstname + " " + cell.lastname;
-      str = str.replace(/\&aring\;/g, "å");
-      str = str.replace(/\&Aring\;/g, "Å");
-      str = str.replace(/\&auml\;/g, "ä");
-      str = str.replace(/\&Auml\;/g, "Ä");
-      str = str.replace(/\&ouml\;/g, "ö");
-      str = str.replace(/\&Ouml\;/g, "Ö");
-    } else {
-      if (cell === null) {
-        str = "-";
-      } else {
-        if (cell.grade === null) {
-          str = "-";
-        } else {
-          if (cell.gradeSystem === 1 || cell.gradeSystem === 2) {
-            if (cell.grade === 1) {
-              str = "U";
-            } else if (cell.grade === 2) {
-              str = "G";
-            } else if (cell.grade === 3) {
-              str = "VG";
-            } else {
-              str = "-";
+      else
+      {
+        myTable.toggleColumn(colId, colId);
+      }
+    }
+  }
+
+}
+
+function exportCell(format,cell,colname) {
+  str="";
+  if(format==="csv"){
+      if(colname=="FnameLnameSSN"){
+          if(cell.ssn.length>11){
+            str=cell.ssn+";";
+          }else{
+            str="19"+cell.ssn+";";
+          }
+          str+=cell.firstname+" "+cell.lastname;
+          str=str.replace(/\&aring\;/g,"å");
+          str=str.replace(/\&Aring\;/g,"Å");
+          str=str.replace(/\&auml\;/g,"ä");
+          str=str.replace(/\&Auml\;/g,"Ä");
+          str=str.replace(/\&ouml\;/g,"ö");
+          str=str.replace(/\&Ouml\;/g,"Ö");
+      }else{
+          if(cell===null){
+              str="-";
+          }else{
+            if(cell.grade===null){
+                str="-";
+            }else{
+                if(cell.gradeSystem===1||cell.gradeSystem===2){
+                  if(cell.grade===1){
+                      str="U";
+                  }else if(cell.grade===2){
+                      str="G";
+                  }else if(cell.grade===3){
+                      str="VG";
+                  }else{
+                      str="-";
+                  }
+              }else{
+                    str="UNK";
+                }
             }
           } else {
             str = "UNK";

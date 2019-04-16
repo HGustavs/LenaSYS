@@ -479,16 +479,25 @@ function SortableTable(param) {
     freezePaneHandler();
   }
 
-  this.toggleColumn = function (colname, col) {
-    // Assign currently active table
-    sortableTable.currentTable = this;
-    for (var idx = 0; idx < columnOrder.length; idx++) {
-      if (columnOrder[idx] === colname) {
-        if (columnfilter[idx]) {
-          columnfilter[idx] = null;
-        } else {
-          columnfilter[idx] = columnOrder[idx];
-        }
+    this.toggleColumn = function(colname,col,override) {
+    var forceOff = false;
+    var forceOn = false;
+     // override ensures that the new code still supports old "versions" by toggling it off if not used/sent as an argument.
+    if(typeof(override)!=="undefined")
+    {
+      forceOff=!override;
+      forceOn=override;
+    }
+    	// Assign currently active table
+    	sortableTable.currentTable = this;
+      for(var idx=0;idx<columnOrder.length;idx++){
+          if(columnOrder[idx]===colname){
+              if(forceOff || (!forceOn && columnfilter[idx])){
+                  columnfilter[idx]=null;
+              }else{
+                  columnfilter[idx]=columnOrder[idx];
+              }
+          }
       }
     }
     localStorage.setItem(this.tableid + DELIMITER + "filtercolnames", JSON.stringify(columnfilter));
@@ -522,9 +531,36 @@ function SortableTable(param) {
     //return tbl.tblhead[sortcolumn];
   }
 
-  this.getSortkind = function () {
-    return sortkind;
-  }
+    this.magicHeader = function() {
+    	// Assign table and magic headings table(s)
+    	if (this.hasMagicHeadings) {
+      		document.getElementById(this.tableid).innerHTML = str+mhstr+mhvstr+mhfstr;
+      		document.getElementById(this.tableid+DELIMITER+"tbl"+DELIMITER+"mh").style.width=document.getElementById(this.tableid+DELIMITER+"tbl").getBoundingClientRect().width+"px";
+      		document.getElementById(this.tableid+DELIMITER+"tbl"+DELIMITER+"mh").style.boxSizing = "border-box";
+      		children=document.getElementById(this.tableid+DELIMITER+"tbl").getElementsByTagName('TH');
+      		for (i = 0; i < children.length; i++) {
+        			document.getElementById(children[i].id+DELIMITER+"mh").style.width = children[i].getBoundingClientRect().width+"px";
+        			document.getElementById(children[i].id+DELIMITER+"mh").style.boxSizing = "border-box";
+      		}
+
+      		document.getElementById(this.tableid+DELIMITER+"tbl"+DELIMITER+"mhf").style.width = Math.round(document.getElementById(this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv").getBoundingClientRect().width)+"px";
+      		document.getElementById(this.tableid+DELIMITER+"tbl"+DELIMITER+"mhf").style.boxSizing = "border-box";
+      		children=document.getElementById(this.tableid+DELIMITER+"tbl"+DELIMITER+"mhv").getElementsByTagName('TH');
+
+      		for (i = 0; i < children.length; i++) {
+        			document.getElementById(children[i].id.slice(0, -1)+"f").style.width = children[i].getBoundingClientRect().width+"px";
+        			document.getElementById(children[i].id.slice(0, -1)+"f").style.boxSizing = "border-box";
+      		}
+          document.getElementById(this.tableid+DELIMITER+"tblhead_mh").style.height = Math.round(document.getElementById(this.tableid+DELIMITER+"tblhead").getBoundingClientRect().height)+"px";
+          document.getElementById(this.tableid+DELIMITER+"tblhead_mhf").style.height = Math.round(document.getElementById(this.tableid+DELIMITER+"tblhead").getBoundingClientRect().height)+"px";
+    	} else {
+    		  document.getElementById(this.tableid).innerHTML = str;
+    	}
+
+    	if (tableSort != null) {
+    		  sortTable(tableSort, colSort, reverseSort);
+    	}
+    }
 
   this.magicHeader = function () {
     // Assign table and magic headings table(s)
