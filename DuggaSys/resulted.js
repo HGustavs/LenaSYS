@@ -1026,6 +1026,11 @@ function conv(item,kind){
     return tmp*100;
 }
 
+// MAN VILL SKICKA MED COLNAME I toggleColumn FUNKTIONEN SÅ ATT MAN DÄR KAN ANVÄNDA DOKUMENT.funktionen FÖR ATT
+// KUNNA HITTA DESS ID FÖR ATT DÅ KUNNA STÄNGA AV DEM SAMT BINDA IHOP OM FLERA DUGGOR HÖR IHOP AKA SAMMA DEMÅL / DELKURS!
+
+
+// Om moment är sitt egna id är det parent och då ska alla childs vars momentär parentid bort också.
 function renderColumnFilter(col,status,colname) {
 		str = "";
 		if (colname == "FnameLnameSSN") return str;
@@ -1043,16 +1048,17 @@ function renderColumnFilter(col,status,colname) {
 
 function onToggleFilter(colId)
 {
-  var idParts = colId.split(":");
+  var idParts = colId.split(":");   // divides the string into lib and the actual id number
   for(var i = 0; i < moments.length; i++)
   {
-    var element = moments[i]; // All data in an array
-    var elementId = element[idParts[0]]; // id, ex [0]==lid & [1]==2001, get the element id (lib)
+    var element = moments[i];
+    var elementId = element[idParts[0]];
 
-    if(elementId==idParts[1]) // elementid == colId.id ex 2001
+    if(elementId==idParts[1]) // elementId == colId.id ex 2001
     {
-      if(element["lid"]==element["moment"]) // Pressed a category like bitduggor 1hp
+      if(element["lid"]==element["moment"]) // Checks if the pressed checkbox was a Moment or just a test (aka sub-moment)
       {
+        // Due to moments having å,ä,ö in their names they will need to be "removed"/coverted before being used.
         var txt = document.createElement("textarea");
         txt.innerHTML = element.entryname;
         var checkBoxId = txt.value;

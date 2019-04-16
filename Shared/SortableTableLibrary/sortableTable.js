@@ -491,9 +491,10 @@ function SortableTable(param)
     	freezePaneHandler();
     }
 
-    this.toggleColumn = function(colname,col,override) {  // override to ensure that new code still supports old "versions" ny toggling
+    this.toggleColumn = function(colname,col,override) {
     var forceOff = false;
     var forceOn = false;
+     // override ensures that the new code still supports old "versions" by toggling it off if not used/sent as an argument.
     if(typeof(override)!=="undefined")
     {
       forceOff=!override;
