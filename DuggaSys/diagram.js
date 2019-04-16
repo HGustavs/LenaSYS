@@ -983,12 +983,17 @@ function updateGraphics() {
         ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
     }
+
     diagram.updateQuadrants();
     drawGrid();
     diagram.sortConnectors();
     diagram.draw();
     points.drawPoints();
     drawVirtualA4();
+
+     if(!ghostingCrosses) {
+        drawOrigo();
+    }
 }
 
 function getConnectedLines(object) {
@@ -1179,21 +1184,56 @@ function drawGrid() {
     for (var i = 0 + quadrantX; i < quadrantX + (widthWindow / zoomValue); i++) {
         if (i % 5 == 0) ctx.strokeStyle = "rgb(208, 208, 220)"; //This is a "thick" line
         else ctx.strokeStyle = "rgb(238, 238, 250)";
+
+        if(i == 0 ||i == -0){
+            ctx.strokeStyle = "#0fbcf9";
+        }  
+
         ctx.beginPath();
         ctx.moveTo(i * gridSize, 0 + sy);
         ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + sy);
         ctx.stroke();
         ctx.closePath();
     }
+
     for (var i = 0 + quadrantY; i < quadrantY + (heightWindow / zoomValue); i++) {
+
         if (i % 5 == 0) ctx.strokeStyle = "rgb(208, 208, 220)"; //This is a "thick" line
         else ctx.strokeStyle = "rgb(238, 238, 250)";
+
+        if(i == 0 ||i == -0){
+            ctx.strokeStyle = "#0fbcf9";
+        }  
+
         ctx.beginPath();
         ctx.moveTo(0 + sx, i * gridSize);
         ctx.lineTo((widthWindow / zoomValue) + sx, i * gridSize);
         ctx.stroke();
         ctx.closePath();
     }
+}
+
+function drawOrigo() {
+    const radius = 10;
+    const colors = ['#0fbcf9','transparent','#0fbcf9','transparent'];
+
+    ctx.save();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "#0fbcf9";
+
+    for(let i=0;i<4;i++){
+        let startAngle=i*Math.PI/2;
+        let endAngle=startAngle+Math.PI/2;
+        ctx.beginPath();
+        ctx.moveTo(0,0);
+        ctx.arc(0,0,radius,startAngle,endAngle);
+        ctx.closePath();
+        ctx.fillStyle=colors[i];
+        ctx.fill();
+        ctx.stroke();
+    }
+
+    ctx.restore();
 }
 
 // draws the whole background gridlayout
@@ -1240,6 +1280,7 @@ function debugMode() {
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
+        drawOrigo();
         ghostingCrosses = false;
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
@@ -1247,6 +1288,7 @@ function debugMode() {
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
         ghostingCrosses = true;
     }
+    reWrite();
     updateGraphics();
     setCheckbox($("a:contains('Developer mode')"), !ghostingCrosses);
 }
@@ -1359,10 +1401,19 @@ function removeLocalStorage() {
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
 function reWrite() {
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
-     + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-     + "X=" + canvasMouseX
-     + " & Y=" + canvasMouseY + "</p>";
+
+    if(!ghostingCrosses) {
+        //We are now in debug mode/developer mode
+        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
+         + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+         + "X=" + canvasMouseX
+         + " & Y=" + canvasMouseY + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
+    } else { 
+        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
+         + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
+         + "X=" + canvasMouseX
+         + " & Y=" + canvasMouseY + "</p>";
+    }
 }
 
 //----------------------------------------
@@ -2647,7 +2698,6 @@ function mousemoveposcanvas(e) {
     mousedownX = mousemoveX;
     mousedownY = mousemoveY;
     moveValue = 1;
-    drawGrid();
     updateGraphics();
     reWrite();
 }
