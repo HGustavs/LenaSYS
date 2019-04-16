@@ -1359,7 +1359,7 @@ function removeLocalStorage() {
 }
 
 function coord(x) {
-  return Number.parseFloat(x).toFixed(2);
+  return Number.toFixed(2);
 }
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
