@@ -26,13 +26,13 @@
     <!--this script fix so that the drop down menus close after you have clicked on something on them.-->
     <br/>
     <script>
-        $(document).ready(function(){
-            $(".menu-drop-down").hover(function(){
+        $(document).ready(function() {
+            $(".menu-drop-down").hover(function() {
                 $(this).find(".drop-down").show();
-            }, function(){
+            }, function() {
                 $(this).find(".drop-down").hide();
             });
-            $(".drop-down-item").click(function(){
+            $(".drop-down-item").click(function() {
                 $(this).closest(".drop-down").hide();
             });
 
@@ -362,7 +362,7 @@
     <!-- content END -->
     <?php
         include '../Shared/loginbox.php';
-        if(isset($_POST['id'])){
+        if(isset($_POST['id'])) {
 
         }
         
