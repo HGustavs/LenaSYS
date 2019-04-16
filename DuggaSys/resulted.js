@@ -783,7 +783,7 @@ function renderCell(col,celldata,cellid) {
 
 	} else if(filterGrade==="none" || celldata.grade===filterGrade){
 		// color based on pass,fail,pending,assigned,unassigned
-    str = "<div style='height:70px;' class='resultTableCell ";
+    str = "<div style='padding:10px;' class='resultTableCell ";
     if(celldata.kind==4) { str += "dugga-moment "; }
     if (celldata.grade > 1) {str += "dugga-pass";}
     else if (celldata.needMarking == true && celldata.submitted <= celldata.deadline) {str += "dugga-pending";}
@@ -809,6 +809,12 @@ function renderCell(col,celldata,cellid) {
 					}
 					str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
 				str += "/>";
+        //Print times graded
+        str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
+                if(celldata.ishere===true && celldata.timesGraded!==0){
+                  str += '(' + celldata.timesGraded + ')';
+                }
+              str += "</div>";
 			str += "</div>";
 
 			// Print submitted time and change color to red if passed deadline
@@ -824,13 +830,6 @@ function renderCell(col,celldata,cellid) {
 				str += ">";
 				if (celldata.submitted.getTime() !== timeZero.getTime()){
 					str += celldata.submitted.toLocaleDateString()+ " " + celldata.submitted.toLocaleTimeString();
-				}
-			str += "</div>";
-
-			// Print times graded
-			str += "<div class='text-center resultTableText'>";
-				if(celldata.ishere===true && celldata.timesGraded!==0){
-					str += "Times Graded: " + celldata.timesGraded;
 				}
 			str += "</div>";
 		}

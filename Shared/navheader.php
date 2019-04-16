@@ -92,10 +92,6 @@
 
 	?>
 </header>
-<?php
-// The below swimlane stuff should be moved to swimlane.php, and included here.
-	include_once("swimlane.php");
-?>
 <script type="text/javascript">
 		if(localStorage.getItem("cookieMessage")=="off"){
 			$("#cookiemsg").css("display", "none");

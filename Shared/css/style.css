@@ -393,6 +393,22 @@ p {
   text-decoration: underline;
 }
 
+.code .item a:hover {
+  color: #C47FAA;
+}
+
+.example-link:hover {
+  color: #C47FAA;
+}
+
+.internal-link:hover {
+  color: #B06DC3;
+}
+
+.external-link:hover {
+  color: #7E7BCA;
+}
+
 #Sectionlist .norm {
   background-color: #fff;
   color: #000;
@@ -2188,59 +2204,6 @@ span.arrow {
   background-color: #eae8eb;
 }
 
-/* Modal Content/Box */
-
-.SwimContentWrap {
-  position: absolute;
-  left: 1%;
-  top: 62px;
-  overflow: auto;
-  padding: 0;
-  margin: auto;
-}
-
-/* The Close Button */
-
-.SwimClose {
-  color: white;
-  position: absolute;
-  text-align: center;
-  float: right;
-  right: 0px;
-  top: 0px;
-  font-size: 28px;
-  font-weight: bold;
-  height: 30px;
-  width: 30px;
-  cursor: pointer;
-  background-color: rgb(204, 63, 65);
-}
-
-.SwimClose:hover {
-  opacity: 0.5;
-}
-
-.swimlaneOverlay {
-  display: none;
-  /* Hidden by default */
-  position: fixed;
-  /* Stay in place */
-  z-index: 10000;
-  /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100vw;
-  /* Full width */
-  height: 100vh;
-  /* Full height */
-  overflow: auto;
-  /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0);
-  /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.6);
-  /* Black w/ opacity */
-}
-
 .resultTableCell{
 		margin:2px;
 }
@@ -2264,6 +2227,12 @@ span.arrow {
   margin-left: 3px;
   margin-right: 3px;
   font-size: 13px;
+}
+
+.WriteOutTimesGraded{
+  font-weight: bold;
+  font-size: 15px;
+  margin: 0 auto;
 }
 
 .resultTableNormal {
@@ -2694,6 +2663,7 @@ span.arrow {
   height: 24px;
   width: 24px;
   cursor: pointer;
+  margin-right: 10px;
 }
 
 .result-header-inverse {
@@ -2708,7 +2678,8 @@ span.arrow {
 .dropdown-list-container {
   padding: 8px;
   width: 300px;
-  overflow: hidden;
+  height: 300px;
+  overflow: scroll;
   font-size: 12px;
   display: none;
   position: absolute;
@@ -2977,59 +2948,6 @@ table {
   border-radius: 2px;
   border: 0px;
   cursor: pointer;
-}
-
-/* Modal Content/Box */
-
-.SwimContentWrap {
-  position: absolute;
-  left: 1%;
-  top: 62px;
-  overflow: auto;
-  padding: 0;
-  margin: auto;
-}
-
-/* The Close Button */
-
-.SwimClose {
-  color: white;
-  position: absolute;
-  text-align: center;
-  float: right;
-  right: 0px;
-  top: 0px;
-  font-size: 28px;
-  font-weight: bold;
-  height: 30px;
-  width: 30px;
-  cursor: pointer;
-  background-color: rgb(204, 63, 65);
-}
-
-.SwimClose:hover {
-  opacity: 0.5;
-}
-
-.swimlaneOverlay {
-  display: none;
-  /* Hidden by default */
-  position: fixed;
-  /* Stay in place */
-  z-index: 10000;
-  /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100vw;
-  /* Full width */
-  height: 100vh;
-  /* Full height */
-  overflow: auto;
-  /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0);
-  /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.6);
-  /* Black w/ opacity */
 }
 
 /* Smartphones (portrait and landscape) ----------- */
