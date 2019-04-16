@@ -451,20 +451,27 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid
     return str;
 }
 
-function hoverResult(cid, vers, moment, firstname, lastname, uid, submitted, marked)
-{
-    $("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
-
-    // Start counting pixels
-    msx = -1;
-    msy = -1;
-
-    AJAXService("DUGGA", { cid : cid, vers : vers, moment : moment, luid : uid }, "RESULT");
+function hideHover(){
+  $("#hoverRes").css({display: "none", opacity: 0});
 }
 
-function clickResult(cid, vers, moment, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid)
+function hoverResult()
 {
-	$("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
+  $("#hoverRes").css({display: "block", opacity: 1, zIndex : 5, top: '50px'});
+      $("#hoverRes").html( $("#Nameof").html());
+
+}
+// Function for shortening date format
+function formatDateShorter(longDate) {
+  var d = new Date(longDate)
+
+    return  d.toLocaleString()
+}
+
+function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid){
+ $("#Nameof").html(firstname + " " + lastname   + " - Submitted: " + formatDateShorter(submitted) + " / Marked: " + formatDateShorter(marked ));
+ // $("#Nameof").html(firstname + " " + lastname + " - Submitted: " + submitted + " Marked: " + marked);
+
 	var menu = "<div class='' style='width:100px;display:block;'>";
 	menu += "<div class='loginBoxheader'>";
 	menu += "<h3>Grade</h3>";
@@ -769,7 +776,6 @@ function renderCell(col,celldata,cellid) {
 			return str;
 		}
 	}
-
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
 	if (col == "FnameLnameSSN"){
@@ -809,7 +815,7 @@ function renderCell(col,celldata,cellid) {
 					if(celldata.userAnswer===null && !(celldata.quizfile=="feedback_dugga")){ // Always shows fist. Should be re-evaluated
 						str += " grading-hidden";
 					}
-					str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid + "\",\"" + celldata.firstname + "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
+					str +="' src='../Shared/icons/FistV.png' onclick='clickResult(\"" + querystring['cid'] + "\",\"" + celldata.vers + "\",\"" + celldata.lid +  "\",\"" + celldata.quizfile + "\",\"" + celldata.firstname +  "\",\"" + celldata.lastname + "\",\"" + celldata.uid + "\",\"" + celldata.submitted + "\",\"" + celldata.marked + "\",\"" + celldata.grade + "\",\"" + celldata.gradeSystem + "\",\"" + celldata.lid + "\",\"" + celldata.qvariant + "\",\"" + celldata.quizId + "\");'";
 				str += "/>";
         //Print times graded
         str += "<div class='text-center resultTableText WriteOutTimesGraded'>";
