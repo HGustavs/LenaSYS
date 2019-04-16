@@ -823,7 +823,7 @@ define(\"DB_NAME\",\"".$databaseName."\");
           echo '<div id="copied1">Copied to clipboard!<br></div>';
         }
 
-
+        if(!connectLogDB()){
             echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
             with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
             (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
