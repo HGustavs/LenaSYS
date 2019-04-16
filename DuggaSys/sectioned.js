@@ -1475,7 +1475,6 @@ function hasGraceTimeExpired(deadline, dateTimeSubmitted) {
   var m_dateTimeSubmitted = new Date(dateTimeSubmitted);
   var m_graceDeadline = new Date(deadline);
   var m_deadline = new Date(deadline);
-  console.log(graceDeadline);
 
   if (m_deadline.getHours() >= 15) {
     m_graceDeadline.setHours(7);
