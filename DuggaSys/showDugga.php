@@ -22,7 +22,20 @@
 	<script src="timer.js"></script>
 	<script src="clickcounter.js"></script>
 	<script>var querystring=parseGet();</script>
-
+	<script>
+		// If the user leaves contribution.php, leave the iframe
+		var contributionURL = null;
+		function checkLeaveFrame(frame) {
+			if (contributionURL === null) {
+				contributionURL = frame.contentWindow.location.href;
+				document.body.style.overflow = "hidden";
+			}
+			if (contributionURL !== frame.contentWindow.location.href) {
+				window.location.href = frame.contentWindow.location.href;
+				frame.parentNode.removeChild(frame);
+			}
+		}
+	</script>
 <?php
 	date_default_timezone_set("Europe/Stockholm");
 
@@ -76,8 +89,14 @@
 			}
 		}
 */
-
-	//If we have permission, and if file exists, include javascript file.
+	// If the dugga is the Contribution dugga, show an iFrame with contribution.php
+	if ($quizid == '9999') {
+		echo "<iframe src='contribution.php?cid=".$cid."&coursevers=".$vers;
+		echo "' style='position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none' onLoad='checkLeaveFrame(this)'>";
+		echo "</iframe>";
+		die;
+	} 
+  //If we have permission, and if file exists, include javascript file.
 		if(isSuperUser($userid)){
       // If the user is a super user, get all quizes.
 			$query = $pdo->prepare("SELECT quiz.id as id,entryname,quizFile,qrelease,deadline FROM listentries,quiz WHERE listentries.cid=:cid AND kind=3 AND listentries.vers=:vers AND quiz.cid=listentries.cid AND quiz.id=:quizid AND listentries.link=quiz.id;");

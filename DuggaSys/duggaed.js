@@ -57,7 +57,7 @@ function selectDugga(qid) {
           if (element['did'] == qid) {
               quiz = element;
           }
-      });      
+      });
   }
 
 	$("#did").val(quiz['arrow']);
@@ -69,7 +69,7 @@ function selectDugga(qid) {
   $("#qstart").val(quiz['qstart'].substr(0,10));
 	$("#qstartt").html(makeoptions(quiz['qstart'].substr(11,2),tarro,tarrv));
   $("#qstartm").html(makeoptions(quiz['qstart'].substr(14,2),marro,marrv));
-  
+
   if(quiz['jsondeadline'].indexOf("'")>=0)quiz['jsondeadline']=quiz['jsondeadline'].replace(/'/g, "\"");
   if(quiz['jsondeadline']===null||quiz['jsondeadline']=="")quiz['jsondeadline']='{"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""}';
   let dls=JSON.parse(quiz['jsondeadline']);
@@ -107,7 +107,7 @@ function updateDugga() {
   var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
   if($("#release").val()=="")release="UNK";
   var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
-  if($("#deadline").val()!=""){        
+  if($("#deadline").val()!=""){
       jsondeadline.deadline1=deadline;
       jsondeadline.comment1=$("#deadlinecomments1").val();
   }else{
@@ -192,7 +192,7 @@ function createVariant() {
 	AJAXService("ADDVARI", { cid: querystring['cid'], qid: qid, disabled: "1", variantanswer: answer, parameter: parameter, coursevers: querystring['coursevers'] }, "DUGGA");
 }
 
-function selectVariant(vid, el) {  
+function selectVariant(vid, el) {
   var target_variant;
   markSelectedVariant(el);
 	globalData['entries'].forEach(element => {
@@ -200,7 +200,7 @@ function selectVariant(vid, el) {
 		tempVariant.forEach(variant => {
 			if (variant['vid'] == vid) {
         target_variant = variant;
-        $("#saveVariant").attr('disabled',false);    
+        $("#saveVariant").attr('disabled',false);
 			}
 		});
 	});
@@ -216,7 +216,7 @@ function selectVariant(vid, el) {
 	if (disabled == 0) {
       //showVariantDisableButton();
       $("#disableVariant").attr('disabled',false);
-      $("#enableVariant").attr('disabled',true);    
+      $("#enableVariant").attr('disabled',true);
 	}else{
       //showVariantEnableButton();
       $("#disableVariant").attr('disabled',true);
@@ -242,14 +242,18 @@ function updateVariantTitle(number) {
 
 // Opens the variant editor.
 function showVariantEditor() {
-  addVariantSubmissionRow();
+  if(submissionRow == 0){
+    // The submission row doesn't go away when leaving the modal
+    // so without the if statement a new submission div would be created each time.
+    addVariantSubmissionRow();
+  }
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
 	$("#editVariant").css("display", "flex"); //Display variant-window
 }
 
 // Adds a submission row
 function addVariantSubmissionRow() {
-	$('#submissions').append("<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>" +
+  var subDivContent = "<div style='width:100%;display:flex;flex-wrap:wrap;flex-direction:row;'>" +
 		"<select name='s_type' id='submissionType' style='width:65px;' onchange='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'>" +
 		"<option value='pdf'>PDF</option>" +
 		"<option value='zip'>Zip</option>" +
@@ -258,11 +262,28 @@ function addVariantSubmissionRow() {
 		"<option value='timesheet'>Timesheet</option>" +
 		"</select>" +
 		"<input type='text' name='s_fieldname' id='fieldname" + submissionRow + "' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeyup='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'/>" +
-		"<input type='text' name='s_instruction' id='instruction" + submissionRow + "' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeyup='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'/>" +
-		"<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;'></input><br/>" +
-		"</div>");
+		"<input type='text' name='s_instruction' id='instruction" + submissionRow + "' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeyup='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'/>"
+    if(submissionRow != 0){
+      // Can't/don't want the first submission row to be deleted so no point having a delete button.
+      subDivContent += "<input type='button' class='delButton submit-button' value='-' style='width:32px;margin:0px 0px 3px 5px;' onclick='removeVariantSubmissionRow(this);'></input><br/>";
+    }
+    subDivContent += "</div>";
+    $('#submissions').append(subDivContent);
+
   submissionRow++;
   $('#variantparameterText').val(createJSONString($('#jsonForm').serializeArray()));
+}
+
+// Removes the submissionRow on which the -(delete) was clicked on
+function removeVariantSubmissionRow(buttonElement){
+  // Get the parent element
+  submissionRow = buttonElement.parentElement
+  // loop through all chidlren and remove them (cruel)
+  while (submissionRow.firstChild) {
+    submissionRow.removeChild(submissionRow.firstChild);
+  }
+  // Remove parent once children are gone.
+  submissionRow.remove();
 }
 
 function createJSONString(formData) {
@@ -366,8 +387,8 @@ function returnedDugga(data) {
 	if (data['debug'] != "NONE!") alert(data['debug']);
 
     $("#disableVariant").attr('disabled',true);
-    $("#enableVariant").attr('disabled',true);  
-    $("#saveVariant").attr('disabled',true);    
+    $("#enableVariant").attr('disabled',true);
+    $("#saveVariant").attr('disabled',true);
 
 	if (data['writeaccess']) {
 		$('#quiz').show();
@@ -417,10 +438,10 @@ function returnedDugga(data) {
 		duggaTable.renderTable(); // Renders the dugga table
 
 		var content = "";
-		
+
 		// If the user has access to the dugga page, then render the content
 		if (data['writeaccess']) {
-			
+
 				/* Page title */
 				content += "<div class='titles' style='padding-top:10px;'>"
 						content += "<h1 style='flex:1;text-align:center;'>Tests</h1>"
@@ -433,7 +454,7 @@ function returnedDugga(data) {
 						content += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
 						content += "</button>"
 				content += "</div>"
-				
+
 				/* FAB Button */
 				content += "<div class='fixed-action-button'>"
 						content += "<a class='btn-floating fab-btn-lg noselect' id='fabBtn' onclick='createQuickItem();'><i class='material-icons'>add</i></a>"
@@ -444,10 +465,10 @@ function returnedDugga(data) {
 				alert("You don't have access to this page. You are now being redirected!")
 				changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers=" + querystring['coursevers'] + "");
 		}
-		
+
 		$("#headerContent").html(content);
-		
-		
+
+
 		$("content").html();
 		var result = 0;
 		filez = data['files'];
@@ -623,7 +644,7 @@ function renderSortOptionsDugga(col,status,colname) {
 		/*
 		if(col == "headingAddButton"){
 			str += "<input type='button' value='+' style='float:left;' class='submit-button-newitem' onclick='showDuggaSubmitButton(); newDugga();'>";
-		}	
+		}
 		else{
 			if (status ==- 1) {
 				str += "<span class='sortableHeading' onclick='duggaTable.toggleSortStatus(\"" + col + "\",0)'>" + colname + "</span>";
@@ -777,7 +798,7 @@ $(document).on("touchstart", function(e){
 		mouseDown(e);
 		FABDown(e);
 });
-						 
+
 $(document).on("touchend", function(e){
 		mouseUp(e);
 		FABUp(e);

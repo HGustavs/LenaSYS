@@ -351,8 +351,9 @@
 		}
 		if($coursevers=="UNK"){
 			if(isset($_SESSION['coursevers'])){
-					$coursevers=$_SESSION['coursevers'];
-			}					
+				$coursevers=$_SESSION['coursevers'];
+				$_GET['coursevers'] = $coursevers;
+			}			
 		}
 		
 		// Read User ID from session
@@ -360,7 +361,7 @@
 			$userid=$_SESSION['uid'];
 		}else{
 			$userid="UNK";		
-		} 	
+		} 
 		
 		// Get visibility from course table
 		$hr=false;

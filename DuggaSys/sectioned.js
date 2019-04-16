@@ -536,7 +536,7 @@ function returnedSection(data) {
     }
   }
 
-  // Fill section list with information	
+  // Fill section list with information
   if (querystring['coursevers'] != "null") {
     var versionname = "";
     if (retdata['versions'].length > 0) {
@@ -780,10 +780,10 @@ function returnedSection(data) {
                   if(grp!=="UNK"){
                       grp+=",";
                   }else{
-                      grp="";  
+                      grp="";
                   }
                   grp+=found[1];
-              } 
+              }
           }
           */
           /*
@@ -801,13 +801,13 @@ function returnedSection(data) {
                   if(grp!=="UNK"){
                       grp+=",";
                   }else{
-                      grp="";  
+                      grp="";
                   }
                   grp+=g;
               }
           }
           */
-          str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/ManDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+          str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
           str += "<td class='section-message item' onclick='getGroups(\"" + grp + "\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 
         } else if (itemKind === 7) { //Message
@@ -877,7 +877,7 @@ function returnedSection(data) {
           }
         } else if (itemKind == 6) {
           // Group
-          str += "<div class='ellipsis nowrap'>" + item['entryname'];
+          str += "<div class='ellipsis nowrap' style='cursor:pointer;'>" + item['entryname'];
           let re = new RegExp(grptype, "g");
           grp = grp.replace(re, "");
           if (document.getElementById("userName").innerHTML == "Guest") {
@@ -1112,7 +1112,7 @@ function drawPieChart() {
 
   // Calculate passed, failed and not graded quizes.
   for (var i = 0; i < retdata['results'].length; i++) {
-    // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these	
+    // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
     if (retdata['results'][i]['useranswer'] != null) {
       if (retdata['results'][i].grade > 1) {
         passedQuizes++;
@@ -1278,7 +1278,7 @@ function drawSwimlanes() {
       entry = deadlineEntries[i];
       if (obj == entry.moment) {
         weeky += weekheight;
-        // Now we generate a SVG element for this 
+        // Now we generate a SVG element for this
         //startweek=weeksBetween(startdate, entry.start);
         //deadlineweek=weeksBetween(startdate, entry.deadline);
         startday = Math.floor((entry.start - startdate) / (24 * 60 * 60 * 1000));
@@ -1309,12 +1309,18 @@ function drawSwimlanes() {
 
 $(document).mousedown(function (e) {
   mouseDown(e);
-  FABDown(e);
+
+  if (e.button == 0) {
+    FABDown(e);
+  }
 });
 
 $(document).mouseup(function (e) {
   mouseUp(e);
-  FABUp(e);
+
+  if (e.button == 0) {
+    FABUp(e);
+  }
 });
 
 $(document).on("touchstart", function (e) {
