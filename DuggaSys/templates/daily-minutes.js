@@ -49,7 +49,7 @@ function newRow() {
 		inputValue = document.getElementById("tsComment_"+i).value;
 		str += "<td><input id='tsComment_"+i+"' required type='text' name='tsComment_"+i+"' style='width: 500px' value='"+inputValue+"' /></td>";
 		if (i > 0) {
-			str += "<td class='tsTableDeleteCell'><img src='../Shared/icons/Trashcan.svg' onclick='deleteRow("+i+")'></td>";
+			str += "<td class='tsTableDeleteCell' onclick='deleteRow("+i+")'><img src='../Shared/icons/Trashcan.svg'></td>";
 		}
 	}
 	str += "<tr class='tsInputRow' id=tsTableRow_"+idx+"><td>";
@@ -59,7 +59,7 @@ function newRow() {
 	str += "</select></td>";
 	str += "<td><input id='tsRef_"+idx+"' required type='number' name='tsRef_"+idx+"' style='width: 55px' /></td>";
 	str += "<td><input id='tsComment_"+idx+"' required type='text' name='tsComment_"+idx+"' style='width: 500px' /></td>";
-	str += "<td class='tsTableDeleteCell'><img src='../Shared/icons/Trashcan.svg' onclick='deleteRow("+idx+")'></td>";
+	str += "<td class='tsTableDeleteCell' onclick='deleteRow("+idx+")'><img src='../Shared/icons/Trashcan.svg'></td>";
 
 	tsTableBody.innerHTML = str;
 }

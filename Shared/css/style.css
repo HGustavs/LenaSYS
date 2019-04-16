@@ -4690,7 +4690,7 @@ textarea#filecont{
   -moz-border-radius: 0px 5px 5px 0px;
   -webkit-border-radius: 0px 5px 5px 0px;
 }
-.tsTableDeleteCell img:hover {
+.tsTableDeleteCell:hover {
   cursor: pointer;
 }
 .newRowButton {
