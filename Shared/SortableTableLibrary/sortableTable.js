@@ -596,6 +596,7 @@ function SortableTable(param) {
   }
 
   setInterval(freezePaneHandler, 30);
+setInterval(freezePaneHandler, 30);
   function freezePaneHandler() {
     // Hide magic headings and find minimum overdraft
     for (var i = 0; i < sortableTable.sortableTables.length; i++) {
@@ -636,7 +637,6 @@ function SortableTable(param) {
         }
       }
     }
-  }
 
   this.updateCell = function () {
     tbl.tblbody[sortableTable.edit_rowno][sortableTable.edit_columnname] = updateCellCallback(sortableTable.edit_rowno, null, sortableTable.edit_columnname, sortableTable.edit_tableid, null, sortableTable.edit_rowid);
@@ -692,3 +692,4 @@ function SortableTable(param) {
 
     return str;
   }
+}
