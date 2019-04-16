@@ -188,7 +188,6 @@ function renderCell(col,celldata,cellid) {
 				str += " onclick='if(confirm(\"Reset password for " + obj.username + "?\")) ";
 				str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
 		}else if(col == "groups") {
-        console.log("obj.groups = "+obj.groups);
 				if(obj.groups==null){
 						tgroups=[];
 				}else{
