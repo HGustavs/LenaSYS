@@ -521,7 +521,6 @@ function returnedGroups(data) {
 
 function returnedSection(data) {
   retdata = data;
-
   if (data['debug'] != "NONE!") alert(data['debug']);
 
   var now = new Date();

@@ -1,5 +1,3 @@
-// Test comment
-
 /********************************************************************************
    Globals
 *********************************************************************************/
@@ -1030,14 +1028,50 @@ function renderColumnFilter(col,status,colname) {
 		if (colname == "FnameLnameSSN") return str;
 		if (status) {
 			str = "<div class='checkbox-dugga'>";
-			str += "<input type='checkbox' checked onclick='myTable.toggleColumn(\"" + col + "\",\"" + status + "\")'><label class='headerlabel'>" + colname + "</label>";
+			str += "<input id=\""+colname+"\" type='checkbox' checked onclick='onToggleFilter(\""+col+"\")'><label class='headerlabel'>" + colname + "</label>";
 			str += "</div>"
 		} else {
 			str = "<div class='checkbox-dugga'>";
-			str += "<input type='checkbox' onclick='myTable.toggleColumn(\"" + col + "\",\"" + status + "\")'><label class='headerlabel'>" + colname + "</label>";
+			str += "<input id=\""+colname+"\" type='checkbox' onclick='onToggleFilter(\""+col+"\")'><label class='headerlabel'>" + colname + "</label>";
 			str += "</div>"
 		}
 		return str;
+}
+
+function onToggleFilter(colId)
+{
+  var idParts = colId.split(":");   // divides the string into lib and the actual id number
+  for(var i = 0; i < moments.length; i++)
+  {
+    var element = moments[i];
+    var elementId = element[idParts[0]];
+
+    if(elementId==idParts[1]) // Checks if the moment id is the id of the currently pressed checkbox
+    {
+      if(element["lid"]==element["moment"]) // Checks if the pressed checkbox was a Moment or just a test (aka sub-moment)
+      {
+        // Due to moments having å,ä,ö in their names they will need to be "removed"/coverted before being used.
+        var txt = document.createElement("textarea");
+        txt.innerHTML = element.entryname;
+        var checkBoxId = txt.value;
+        var isChecked = document.getElementById(checkBoxId).checked;
+
+        for(var j = 0; j<moments.length;j++)
+        {
+          if(moments[j].moment==idParts[1]) // Find all childs of the moment
+          {
+            var childColId = "lid:"+moments[j].lid;
+            myTable.toggleColumn(childColId,childColId,isChecked);
+          }
+        }
+      }
+      else
+      {
+        myTable.toggleColumn(colId, colId);
+      }
+    }
+  }
+
 }
 
 function exportCell(format,cell,colname) {

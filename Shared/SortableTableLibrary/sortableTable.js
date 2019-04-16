@@ -491,12 +491,20 @@ function SortableTable(param)
     	freezePaneHandler();
     }
 
-    this.toggleColumn = function(colname,col) {
+    this.toggleColumn = function(colname,col,override) {
+    var forceOff = false;
+    var forceOn = false;
+     // override ensures that the new code still supports old "versions" by toggling it off if not used/sent as an argument.
+    if(typeof(override)!=="undefined")
+    {
+      forceOff=!override;
+      forceOn=override;
+    }
     	// Assign currently active table
     	sortableTable.currentTable = this;
       for(var idx=0;idx<columnOrder.length;idx++){
           if(columnOrder[idx]===colname){
-              if(columnfilter[idx]){
+              if(forceOff || (!forceOn && columnfilter[idx])){
                   columnfilter[idx]=null;
               }else{
                   columnfilter[idx]=columnOrder[idx];
@@ -559,7 +567,6 @@ function SortableTable(param)
         			document.getElementById(children[i].id.slice(0, -1)+"f").style.boxSizing = "border-box";
       		}
           document.getElementById(this.tableid+DELIMITER+"tblhead_mh").style.height = Math.round(document.getElementById(this.tableid+DELIMITER+"tblhead").getBoundingClientRect().height)+"px";
-          document.getElementById(this.tableid+DELIMITER+"tblhead_mhv").style.height = Math.round(document.getElementById(this.tableid+DELIMITER+"tblhead").getBoundingClientRect().height)+"px";
           document.getElementById(this.tableid+DELIMITER+"tblhead_mhf").style.height = Math.round(document.getElementById(this.tableid+DELIMITER+"tblhead").getBoundingClientRect().height)+"px";
     	} else {
     		  document.getElementById(this.tableid).innerHTML = str;
