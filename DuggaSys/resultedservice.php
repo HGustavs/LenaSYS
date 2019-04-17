@@ -23,7 +23,6 @@ if(isset($_SESSION['uid'])){
 
 $searchterm = getOP('searchterm');
 $courseid = getOP('courseid');
-$coursevers = getOP('coursevers');
 $opt = getOP('opt');
 $cid = getOP('cid');
 $luid = getOP('luid');

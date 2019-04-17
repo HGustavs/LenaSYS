@@ -1212,7 +1212,6 @@ function updateTable() {
 }
 
 function mail() {
-  console.log("Mail körs nu!");
   var reqType = "mail";
 
   var url_string = window.location.href;
