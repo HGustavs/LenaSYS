@@ -951,6 +951,71 @@ function Symbol(kind) {
             ctx.lineTo(x1 - 5, y1 - 5);
             ctx.stroke();
             ctx.lineWidth = this.properties['lineWidth'];
+            var relationCorners = [];
+            for(let i = 0; i < diagram.length; i++) {
+                if (diagram[i] != this) {
+                    dtlx = diagram[i].corners().tl.x;
+                    dtly = diagram[i].corners().tl.y;
+                    dbrx = diagram[i].corners().br.x;
+                    dbry = diagram[i].corners().br.y;
+                    
+                    dtrx = diagram[i].corners().tr.x;
+                    dtry = diagram[i].corners().tr.y;
+                    dblx = diagram[i].corners().bl.x;
+                    dbly = diagram[i].corners().bl.y;
+                    
+                    
+                    if (diagram[i].isRelation) {
+                        var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
+                        var relationMiddleY = ((dtly - dbly) / 2) + dtly;
+                        console.log("Relation found");
+                        relationCorners.push(relationMiddleX, relationMiddleY);
+                        console.log(relationCorners.length);
+                        console.log("rMidX: ", relationMiddleX);
+                        console.log("rMidY: ", relationMiddleY);
+                    }
+                    
+                    /*
+                    if (diagram[i].isLine) {
+                        console.log(y1 + "y1, " + dbly + "dbly, " + dbry + "dbry");
+                        console.log(y2 + "y2, " + dtly + "dtly, " + dtry + "dtry");
+                    }
+                    */
+                    if (!diagram[i].isOval && !diagram[i].isRelation) {
+                        // chcking if the line is already set to forced
+                        if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Forced') {
+                            console.log(dtrx + "dtrx, " + dtlx + "dtlx");
+                            console.log(x1 + "x1; " + x2 + "x2");
+                            for (let j = 0; j < relationCorners.length; j++) {
+                                    if (x1 == relationCorners[j] || x2 == relationCorners[j]) {
+                                        console.log("relation connected to line");
+                                    }
+                            }
+                            
+                            if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
+                                console.log("object is connected to " + this);
+                                console.log(x1 + "x1, " + dtrx + "dtrx");
+                                console.log(diagram[i].isLine);
+                                if (diagram[i].isLine) {
+                                    diagram[i].properties['key_type'] = 'Forced';
+                                }
+                            } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
+                                if (diagram[i].isLine) {
+                                    diagram[i].properties['key_type'] = 'Forced';
+                                }
+                            } else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
+                                if (diagram[i].isLine) {
+                                    diagram[i].properties['key_type'] = 'Forced';
+                                }
+                            } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
+                                if (diagram[i].isLine) {
+                                    diagram[i].properties['key_type'] = 'Forced';
+                                }
+                            }
+                        }
+                    }              
+                } 
+            }
         }
 
         ctx.moveTo(x1, y1);
