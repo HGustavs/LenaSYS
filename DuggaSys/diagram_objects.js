@@ -1016,7 +1016,43 @@ function Symbol(kind) {
                     }              
                 } 
             }
-        }
+        }else {
+                for(let i = 0; i < diagram.length; i++) {
+                    if (diagram[i] != this) {
+                        // getting each corner of the objects in the diagram array
+                        dtlx = diagram[i].corners().tl.x;
+                        dtly = diagram[i].corners().tl.y;
+                        dbrx = diagram[i].corners().br.x;
+                        dbry = diagram[i].corners().br.y;
+                        
+                        dtrx = diagram[i].corners().tr.x;
+                        dtry = diagram[i].corners().tr.y;
+                        dblx = diagram[i].corners().bl.x;
+                        dbly = diagram[i].corners().bl.y;
+
+                        if (!diagram[i].isOval && !diagram[i].isRelation) {
+                            if (diagram[i].isLine && diagram[i].properties['key_type'] != 'normal') {
+                                if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
+                                    if (diagram[i].isLine) {
+                                        diagram[i].properties['key_type'] = 'normal';
+                                    }
+                                } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
+                                    if (diagram[i].isLine) {
+                                        diagram[i].properties['key_type'] = 'normal';
+                                    }
+                                }  else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
+                                    if (diagram[i].isLine) {
+                                        diagram[i].properties['key_type'] = 'normal';
+                                    }
+                                } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
+                                    if (diagram[i].isLine) {
+                                        diagram[i].properties['key_type'] = 'normal';
+                                    }
+                                }
+                            }
+                        }
+                }
+            }
 
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y1);
