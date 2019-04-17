@@ -256,7 +256,11 @@
                         var found = false; /* Is an empty field found? */
                         for (var i = 0; i < fields.length; i++) {
                             if (fields[i].value === ''){
-                                found = true; /* Empty field found */
+                                if (inputPage === 2 && fields[1]) {
+                                    found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
+                                }else {
+                                    found = true;  /* Empty field found */
+                                }
                                 /* Set background of text field to light red */
                                 fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
                             }
@@ -303,7 +307,11 @@
                                     var found = false; /* Is an empty field found? */
                                     for (var i = 0; i < fields.length; i++) {
                                         if (fields[i].value === ''){
-                                            found = true; /* Empty field found */
+                                            if (inputPage === 2 && fields[1]) {
+                                                found = false;  /* Ignores empty if the input field is for root password, because the installation should not limit this */
+                                            }else {
+                                                found = true;  /* Empty field found */
+                                            }
                                             /* Set background of text field to light red */
                                             fields[i].setAttribute("style", "background-color:rgb(255,210,210)");
                                         }
@@ -581,7 +589,7 @@
         # Check if all fields are filled.
         $fields = array("newUser", "password", "DBName", "hostname", "mysqlRoot", "rootPwd");
         foreach ($fields AS $fieldname) { //Loop trough each field
-            if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname])) {
+            if (!isset($_POST[$fieldname]) || empty($_POST[$fieldname]) && !$_POST[$fieldname] === "rootPwd") {
                 $errors++;
                 exit ("<span id='failText' />Please fill all fields.</span><br>
                     <a title='Try again' href='install.php' class='returnButton'>Try again.</a>");
@@ -840,7 +848,7 @@ define(\"DB_NAME\",\"".$databaseName."\");
         if(substr($lenaInstall, 0 , 2) == '/') {
 			$lenaInstall = substr($lenaInstall, 1);
         }
-        
+
         echo "<form action=\"{$lenaInstall}/DuggaSys/courseed.php\">";
         echo "<br><input title='Go to LenaSYS' class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
         echo "</form>";
@@ -910,7 +918,7 @@ define(\"DB_NAME\",\"".$databaseName."\");
             echo "Failed to connect to the database";
             return false;
         }
-        
+
         $sql = '
             CREATE TABLE IF NOT EXISTS logEntries (
                 id INTEGER PRIMARY KEY,
