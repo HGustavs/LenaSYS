@@ -950,16 +950,6 @@ function drawCircle(cx, cy, radius) {
     ctx.restore();
 }
 
-function toggleVirtualA4Holes() {
-    if (toggleA4Holes) {
-        toggleA4Holes = false;
-        updateGraphics();
-    } else {
-        toggleA4Holes = true;
-        updateGraphics();
-    }
-}
-
 //---------------------------------------
 // openImportDialog: Opens the dialog menu for import
 //---------------------------------------
