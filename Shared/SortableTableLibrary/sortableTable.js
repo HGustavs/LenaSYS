@@ -503,9 +503,10 @@ function SortableTable(param) {
 				}
 			}
 		}
-	}
-
-	localStorage.setItem(this.tableid + DELIMITER + "filtercolnames", JSON.stringify(columnfilter));
+		
+		localStorage.setItem(this.tableid + DELIMITER + "filtercolnames", JSON.stringify(columnfilter));
+		this.reRender();
+	};
 
 	this.toggleSortStatus = function (col, kind) {
 		// Assign currently active table
