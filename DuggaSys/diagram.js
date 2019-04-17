@@ -849,7 +849,7 @@ function toggleGrid() {
     } else {
         snapToGrid = false;
     }
-    setCheckbox($("span:contains('Snap to grid')"), snapToGrid);
+    setCheckbox($(".drop-down-option:contains('Snap to grid')"), snapToGrid);
 }
 
 function toggleVirtualA4() {
@@ -860,7 +860,7 @@ function toggleVirtualA4() {
         toggleA4 = true;
         updateGraphics();
     }
-    setCheckbox($("a:contains('Display Virtual A4')"), toggleA4);
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
 
 function drawVirtualA4() {
@@ -909,7 +909,7 @@ function toggleVirtualA4Holes() {
         toggleA4Holes = true;
         updateGraphics();
     }
-    setCheckbox($("a:contains('Toggle A4 Holes')"), toggleA4Holes);
+    setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
 }
 
 function drawVirtualA4(){
@@ -948,16 +948,6 @@ function drawCircle(cx, cy, radius) {
     ctx.closePath();
     ctx.stroke();
     ctx.restore();
-}
-
-function toggleVirtualA4Holes() {
-    if (toggleA4Holes) {
-        toggleA4Holes = false;
-        updateGraphics();
-    } else {
-        toggleA4Holes = true;
-        updateGraphics();
-    }
 }
 
 //---------------------------------------
@@ -1348,7 +1338,7 @@ function debugMode() {
     }
     reWrite();
     updateGraphics();
-    setCheckbox($("span:contains('Developer mode')"), !ghostingCrosses);
+    setCheckbox($(".drop-down-option:contains('Developer mode')"), !ghostingCrosses);
 }
 
 //------------------------------------------------------------------------------
