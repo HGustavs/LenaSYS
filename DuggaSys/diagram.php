@@ -207,10 +207,15 @@
                         <div class="drop-down-divider">
                         </div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
-                        </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='toggleVirtualA4Holes();'>Toggle A4 Holes</span>
+                            <span class="drop-down-option">Display Virtual A4...</span>
+                            <div class="export-drop-down">
+                              <div class="drop-down-item">
+                                  <span class="drop-down-option" onclick='toggleVirtualA4(); toggleVirtualA4Holes();'>Without A4 Holes</span>
+                              </div>
+                                <div class="drop-down-item">
+                                    <span class="drop-down-option" onclick='toggleVirtualA4Holes();'>With A4 Holes</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
