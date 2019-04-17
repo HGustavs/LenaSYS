@@ -1265,6 +1265,12 @@ input.submit-button-newitem {
   transition:1s background-color;
   float:right;
 }
+
+input.submit-button-newitem:hover {
+  transition: 0.4s;
+  background-color: rgb(283, 233, 126);
+}
+
 input.diagram-sidebar-buttons {
    background-color:#7B5A96;
    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
