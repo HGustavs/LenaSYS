@@ -1399,10 +1399,10 @@ function removeLocalStorage() {
     }
 }
 
+// This function allows us to choose how many decimals (precision argument) that a value will be rounded down to.
 function decimalPrecision(value, precision){
   var multipler = Math.pow(10, precision || 0);
   return Math.round(value * multipler) / multipler;
-
 }
 
 // Function that rewrites the values of zoom and x+y that's under the canvas element
@@ -1411,13 +1411,13 @@ function reWrite() {
         //We are now in debug mode/developer mode
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-         + "X=" + decimalPrecision(canvasMouseX, 2).toFixed(1)
-         + " & Y=" + decimalPrecision(canvasMouseY, 2).toFixed(1) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
+         + "X=" + decimalPrecision(canvasMouseX, 1).toFixed(1)
+         + " & Y=" + decimalPrecision(canvasMouseY, 1).toFixed(1) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
     } else { 
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-         + "X=" + decimalPrecision(canvasMouseX, 2).toFixed(1)
-         + " & Y=" + decimalPrecision(canvasMouseY, 2).toFixed(1) + "</p>";
+         + "X=" + decimalPrecision(canvasMouseX, 1).toFixed(1)
+         + " & Y=" + decimalPrecision(canvasMouseY, 1).toFixed(1) + "</p>";
     }
 }
 //----------------------------------------
