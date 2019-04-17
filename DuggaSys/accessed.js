@@ -7,6 +7,7 @@ var expanded = false;
 var searchterm = "";
 var tableName = "accessTable";
 var tableCellName = "accessTableCell";
+var myTable;
 
 //----------------------------------------------------------------------------
 //----------==========########## User Interface ##########==========----------
@@ -160,6 +161,7 @@ function changeProperty(targetobj,propertyname,propertyvalue)
 //----------------------------------------------------------------
 // renderCell <- Callback function that renders cells in the table
 //----------------------------------------------------------------
+var tgroups=[];
 
 function renderCell(col,celldata,cellid) {
 		var str="UNK";
@@ -188,14 +190,14 @@ function renderCell(col,celldata,cellid) {
 				str += "resetPw(\""+ obj.uid +"\",\""+ obj.username + "\"); return false;'>";
 		}else if(col == "groups") {
 				if(obj.groups==null){
-						var tgroups=[];
+						tgroups=[];
 				}else{
-						var tgroups=obj.groups.split(" ");
+						tgroups=obj.groups.split(" ");
 				}
 				var optstr="";
 				for(var i=0;i<tgroups.length;i++){
 						if(i>0) optstr+=" ";
-						optstr+=tgroups[i].substr(1+tgroups[i].indexOf("_"));
+            optstr+=tgroups[i].substr(1+tgroups[i].indexOf("_"));
 				}
 				str= "<div class='multiselect-group'><div class='group-select-box' onclick='showCheckboxes(this)'>";
 				str+= "<select><option>"+optstr+"</option></select><div class='overSelect'></div></div><div class='checkboxes' id='grp"+obj.uid+"' >";
@@ -350,7 +352,6 @@ function rowFilter(row) {
 		return false;
 }
 
-var myTable;
 
 //----------------------------------------------------------------------------
 //-------------==========########## Renderer ##########==========-------------
