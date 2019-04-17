@@ -995,7 +995,7 @@ function importFile() {
 //-------------------------------------------
 
 function canvasSize() {
-    widthWindow = (window.innerWidth - 20);
+    widthWindow = (window.innerWidth - 30);
     heightWindow = (window.innerHeight - 144);
     canvas.setAttribute("width", widthWindow);
     canvas.setAttribute("height", heightWindow);

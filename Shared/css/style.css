@@ -181,6 +181,11 @@ p {
   margin: 65px 10px 15px 10px;
 }
 
+#contentDiagram {
+  background: #fff;
+  margin: 65px 10px 15px 10px;
+}
+
 #accessedcontent {
   margin: 0px auto;
   position: relative;
