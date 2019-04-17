@@ -74,8 +74,8 @@ if($requestType == "mail"){
 	{
 		case strpos($searchterm, ' ') !== false:
 			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND (user.firstname LIKE :searchterm1 OR user.lastname LIKE :searchterm2)");
-			$searchterm = explode(' ', $searchterm);
 			$searchterm = "%".$searchterm."%";
+			$searchterm = explode(' ', $searchterm);
 			$mailQuery->bindParam(':searchterm1', $searchterm[0]);
 			$mailQuery->bindParam(':searchterm2', $searchterm[1]);
 			break;
