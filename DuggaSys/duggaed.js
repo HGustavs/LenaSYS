@@ -103,15 +103,12 @@ function updateDugga() {
 	var template = $("#template").val();
   var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
   if($("#qstart").val()=="") {
-	alert("Missing Start Date"); 
-	return;
+		alert("Missing Start Date"); 
+		return;
   }
 	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
-  var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
-  if($("#release").val()=="") {
-	alert("Missing Release Date"); 
-	return;
-  }
+	var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
+	if($("#release").val()=="")release="UNK";
   var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
   if($("#deadline").val()!=""){
       jsondeadline.deadline1=deadline;
@@ -120,14 +117,9 @@ function updateDugga() {
       alert("Missing Deadline 1");
       return;
   }
-
-  if(release > qstart) {
-	alert("Release date after start date:\nRelease: "+release+" - Start: "+qstart);
-	return;
-  }
   if(deadline < qstart) {
-	alert("Deadline before start:\nDeadline: "+deadline+" - Start: "+qstart);
-	return;
+		alert("Deadline before start:\nDeadline: "+deadline+" - Start: "+qstart);
+		return;
   }
   if($("#deadline2").val()!=""){
       jsondeadline.deadline2=$("#deadline2").val()+" "+$("#deadlinet2").val()+":"+$("#deadlinem2").val();
