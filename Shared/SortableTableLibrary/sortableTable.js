@@ -532,6 +532,10 @@ function SortableTable(param) {
 	this.getSortcolumnNum = function () {
 		//return tbl.tblhead[sortcolumn];
 	}
+	
+	this.getSortkind = function () {
+		return sortkind;
+	}
 
 	this.magicHeader = function () {
 		// Assign table and magic headings table(s)
