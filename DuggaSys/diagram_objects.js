@@ -8,6 +8,7 @@
 
 //--------------------------------------------------------------------
 // Symbol - stores a diagram symbol
+// Function Symbol() handles the CREATE-functions in the diagram.
 //--------------------------------------------------------------------
 function Symbol(kind) {
     this.kind = 2;                  // Diagram object kind is always 2 for symbols
@@ -1475,7 +1476,7 @@ function getCorrectCorner(cardinality, ltlx, ltly, lbrx, lbry) {
 }
 
 //--------------------------------------------------------------------
-// Path - stores a number of segments
+// Path - stores a number of segments, handles e.g the two DRAW-functions in the diagram.
 //--------------------------------------------------------------------
 function Path() {
     this.kind = 1;                  // Path kind
@@ -1484,7 +1485,7 @@ function Path() {
     this.tmplist = Array();         // Temporary list for testing of intersections
     this.auxlist = Array();         // Auxillary temp list for testing of intersections
     this.fillColor = '#ffffff';     // Fill color (default is white)
-    this.opacity = 1;               // Opacity valuefor figures
+    this.opacity = 1;               // Opacity value for figures
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
     this.targeted = true;           // An organized path can contain several sub-path, each of which must be organized
     this.figureType = "Square";
