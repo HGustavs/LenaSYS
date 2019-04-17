@@ -2920,7 +2920,6 @@ table {
 #searchBar {
   display: inline-flex;
   height: 24px;
-  border-radius: 5px;
   float: right;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
   margin-bottom: 5px;
