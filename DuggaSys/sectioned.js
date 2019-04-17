@@ -1478,7 +1478,7 @@ function addClasses() {
 }
 
 // Function for automatically create a mail with participating students in current course
-function mail() {
+/*function mail() {
   var reqType = "mail";
 
   var url_string = window.location.href;
@@ -1500,7 +1500,7 @@ function mail() {
       window.location.assign("mailto:" + data + "?subject=" + "!!! Notification !!! " + cname);
     }
   });
-}
+}*/
 
 // Function for checking if a grace time exists and if the submition time is withing that grace time window
 function hasGracetimeExpired(deadline, dateTimeSubmitted) {
