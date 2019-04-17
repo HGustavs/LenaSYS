@@ -1148,7 +1148,7 @@ function setMode(mode) { //"CreateClass" yet to be implemented in .php
 }
 
 $(document).ready(function() {
-    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton").click(function() {
+    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton, #umllinebutton").click(function() {
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
@@ -2184,6 +2184,8 @@ function switchToolbar(direction) {
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
+    $("#linebutton").hide();
+    $("#umllinebutton").show(); 
   }else if(toolbarState == toolbarFree) {
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
