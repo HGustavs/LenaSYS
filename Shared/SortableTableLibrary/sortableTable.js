@@ -810,7 +810,7 @@ function SortableTable(param) {
 				}
 			}
 		}
-		
+
 		localStorage.setItem(this.tableid + DELIMITER + "filtercolnames", JSON.stringify(columnfilter));
 		this.reRender();
 	};
@@ -1017,8 +1017,7 @@ function newCompare(firstCell, secoundCell) {
 	var firstCellTemp;
 	var secoundCellTemp;
 
-	console.log(firstCell);
-	console.log(secoundCell);
+
 	//Check if the cell is a valid cell in the table.
 	if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
