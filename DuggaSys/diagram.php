@@ -210,10 +210,10 @@
                         <div class="drop-down-divider">
                         </div>
                         <div class="drop-down-item">
-                            <a href="#" onclick="toggleVirtualA4()">Display Virtual A4</a>
+                            <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
                         </div>
                         <div class="drop-down-item">
-                                <a href="#" onclick='toggleVirtualA4Holes();'>Toggle A4 Holes</a>
+                            <span class="drop-down-option" onclick='toggleVirtualA4Holes();'>Toggle A4 Holes</span>
                         </div>
                     </div>
                 </div>
