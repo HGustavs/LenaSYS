@@ -1021,6 +1021,155 @@ function Symbol(kind) {
         ctx.stroke();
     }
 
+    this.drawUMLLine = function(x1, y1, x2, y2) {
+        //Checks if there is cardinality set on this object
+        if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
+            //Updates x and y position
+            ctx.fillStyle = '#000';
+            if(this.cardinality[0].symbolKind == 1) {
+                var valX = x1 > x2 ? x1-15 : x1+15;
+                var valY = y1 > y2 ? y1-15 : y1+15;
+                var valY2 = y2 > y1 ? y2-15 : y2+15;
+                var valX2 = x2 > x1 ? x2-15 : x2+15;
+                ctx.fillText(this.cardinality[0].value, valX, valY);
+                ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
+            }
+            else if(this.cardinality[0].isCorrectSide) {
+                this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
+                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+            }
+            else {
+                this.moveCardinality(x1, y1, x2, y2, "IncorrectSide");
+                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+            }
+        }
+
+
+        ctx.lineWidth = this.properties['lineWidth'];
+        if (this.properties['key_type'] == "Forced") {
+            //Draw a thick black line
+            ctx.lineWidth = this.properties['lineWidth']*3;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            //Draw a white line in the middle to simulate space (2 line illusion);
+            ctx.lineWidth = this.properties['lineWidth'];
+            ctx.strokeStyle = "#fff";
+        }
+        else if (this.properties['key_type'] == "Derived") {
+            ctx.lineWidth = this.properties['lineWidth'] * 2;
+            ctx.setLineDash([5, 4]);
+        }
+
+        // Variables for UML line breakpoints
+        var breakpointStartX = 0;     // X Coordinate for start breakpoint
+        var breakpointStartY = 0;     // Y Coordinate for start breakpoint
+        var breakpointEndX = 0;       // X Coordinate for end breakpoint
+        var breakpointEndY = 0;       // Y Coordinate for start breakpoint
+        var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
+        var middleBreakPointY = 0;    // Y Coordinate for mid point between line start and end
+        var startLineDirection = "";  // Which side of the class the line starts from
+        var endLineDirection = "";    // Which side of the class the line ends in
+
+        // Calculating the mid point between start and end
+        if (x2 > x1) {
+          middleBreakPointX = x1 + (x2 - x1) / 2;
+        } else if (x1 > x2) {
+          middleBreakPointX = x2 + (x1 - x2) / 2;
+        } else {
+          middleBreakPointX = x1;
+        }
+
+        if (y2 > y1) { // The code breaks if you don't use Math.abs, can be removed if fixed
+          middleBreakPointY = Math.abs(y1) + Math.abs(y2 - y1) / 2;
+        } else if (y1 > y2) {
+          middleBreakPointY = Math.abs(y2) + Math.abs(y1 - y2) / 2;
+        } else {
+          middleBreakPointY = Math.abs(y1);
+        }
+
+        // Start line
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+
+        // Check all symbols in diagram and see if anyone matches current line's points coordinate
+        for (var i = 0; i < diagram.length; i++) {
+            if (diagram[i].symbolkind == 1) { // filter UML class
+                var currentSymbol = diagram[i].corners();
+
+                // Check if line's start point matches any class diagram
+                if (x1 == currentSymbol.tl.x) {
+                startLineDirection = "left";
+                breakpointStartX = x1 - 30;
+                breakpointStartY = y1;
+                } else if (x1 == currentSymbol.br.x) {
+                startLineDirection = "right";
+                breakpointStartX = x1 + 30;
+                breakpointStartY = y1;
+                } else if (y1 == currentSymbol.tl.y) {
+                startLineDirection = "up"
+                breakpointStartY = y1 - 30;
+                breakpointStartX = x1;
+                } else if (y1 == currentSymbol.br.y) {
+                startLineDirection = "down"
+                breakpointStartY = y1 + 30;
+                breakpointStartX = x1;
+                }
+
+                // Check if line's end point matches any class diagram
+                if (x2 == currentSymbol.tl.x) {
+                endLineDirection = "left";
+                breakpointEndX = x2 - 30;
+                breakpointEndY = y2;
+                } else if (x2 == currentSymbol.br.x) {
+                endLineDirection = "right";
+                breakpointEndX = x2 + 30;
+                breakpointEndY = y2;
+                } else if (y2 == currentSymbol.tl.y) {
+                endLineDirection = "up"
+                breakpointEndY = y2 - 30;
+                breakpointEndX = x2;
+                } else if (y2 == currentSymbol.br.y) {
+                endLineDirection = "down"
+                breakpointEndY = y2 + 30;
+                breakpointEndX = x2;
+                }
+
+
+            }
+        }
+  
+        // Draw to start breakpoint based on direction
+        if (startLineDirection == "left") {
+        ctx.lineTo(breakpointStartX, y1);
+        } else if (startLineDirection == "right") {
+        ctx.lineTo(breakpointStartX, y1);
+        } else if (startLineDirection == "up") {
+        ctx.lineTo(x1, breakpointStartY);
+        } else if (startLineDirection == "down") {
+        ctx.lineTo(x1, breakpointStartY);
+        }
+
+        ctx.lineTo(breakpointStartX, middleBreakPointY);
+        ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
+        ctx.lineTo(breakpointEndX, middleBreakPointY);
+
+        // Draw to end breakpoint based on direction
+        if (endLineDirection == "left") {
+        ctx.lineTo(breakpointEndX, y2);
+        } else if (endLineDirection == "right") {
+        ctx.lineTo(breakpointEndX, y2);
+        } else if (endLineDirection == "up") {
+        ctx.lineTo(x2, breakpointEndY);
+        } else if (endLineDirection == "down") {
+        ctx.lineTo(x2, breakpointEndY);
+        }
+
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    }
+
     //---------------------------------------------------------------
     // moveCardinality: Moves the value of the cardinality to avoid overlap with line
     //---------------------------------------------------------------
