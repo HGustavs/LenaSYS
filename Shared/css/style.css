@@ -60,7 +60,7 @@ body {
   font-family: 'Roboto', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-y: hidden;
+  overflow-y: scroll;
   width: 100%;
   height: 100%;
 }
@@ -176,6 +176,12 @@ p {
 }
 
 #content {
+  background: #fff;
+  min-height: calc(100vh - 80px);
+  margin: 65px 10px 15px 10px;
+}
+
+#contentDiagram {
   background: #fff;
   margin: 65px 10px 15px 10px;
 }

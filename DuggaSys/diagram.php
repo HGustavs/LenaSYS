@@ -43,13 +43,14 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();" onmousedown="mouseDown()" onmouseup="mouseUp()">
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();"
+ onmousedown="mouseDown()" onmouseup="mouseUp()" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
     ?>
     <!-- content START -->
-    <div id="content" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
+    <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
         <div id="buttonDiv">
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none">
