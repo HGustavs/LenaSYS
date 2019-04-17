@@ -711,7 +711,7 @@ function createSortableTable(data){
 				rowFilterCallback:rowFilter,
 				columnOrder:colOrder,
 				hasRowHighlight:true,
-				hasMagicHeadings:true,
+				hasMagicHeadings:false,
 				hasCounterColumn:true
 		});
 
