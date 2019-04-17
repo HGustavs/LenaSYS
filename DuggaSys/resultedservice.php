@@ -70,11 +70,24 @@ $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
 if($requestType == "mail"){
-	$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND (user.firstname LIKE :searchterm OR user.lastname LIKE :searchterm OR user.username LIKE :searchterm OR user.ssn LIKE :searchterm OR user.class LIKE :searchterm)");
+	switch($searchterm)
+	{
+		case strpos($searchterm, ' ') !== false:
+			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND (user.firstname LIKE :searchterm1 OR user.lastname LIKE :searchterm2)");
+			$searchterm = explode(' ', $searchterm);
+			$searchterm = "%".$searchterm."%";
+			$mailQuery->bindParam(':searchterm1', $searchterm[0]);
+			$mailQuery->bindParam(':searchterm2', $searchterm[1]);
+			break;
+
+		default:
+			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND (user.firstname LIKE :searchterm OR user.lastname LIKE :searchterm OR user.username LIKE :searchterm OR user.ssn LIKE :searchterm OR user.class LIKE :searchterm)");
+			$searchterm = "%".$searchterm."%";
+			$mailQuery->bindParam(':searchterm', $searchterm);
+			break;
+	}
 	$mailQuery->bindParam(':cid', $courseid);
 	$mailQuery->bindParam(':cvers', $coursevers);
-	$searchterm = "%".$searchterm."%";
-	$mailQuery->bindParam(':searchterm', $searchterm);
 	$emailsArray = array();
 	if(!$mailQuery->execute()){
 		$error=$mailQuery->errorInfo();
