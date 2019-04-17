@@ -49,7 +49,7 @@
         include '../Shared/navheader.php';
     ?>
     <!-- content START -->
-    <div id="content" style="padding-top: 40px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
+    <div id="content" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
         <div id="buttonDiv">
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none">
