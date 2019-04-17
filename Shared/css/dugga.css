@@ -290,22 +290,3 @@ svg text {
 /* --------------================################================-------------- *
  *                      	    Preview table style     				        *
  * --------------================################================-------------- */
-
-.previewTable {
-    width: 100%;
-    border: 1px solid #d4d1d1;
-}
-
-.previewTable th {
-    padding: 6px;
-    text-align: left;
-    background-color: #d4d1d1;
-}
-
-.previewTable td {
-    padding: 6px;
-}
-
-.previewTable tr:nth-child(even) {
-    background-color: #f1f1f1;
-}

@@ -18,6 +18,7 @@ function setup()
   AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 }
 
+/* Commented out this section because of the empty white box that appeared when mouseover the navbutt. Needs testing to assure it doesnt affect other pages.
 function hoverc()
 {
     $('#dropdowns').css('display','none');
@@ -29,7 +30,7 @@ function hovers()
   $('#dropdowns').css('display','block');
   $('#dropdownc').css('display','none');
 }
-
+*/
 function leavec()
 {
 		$('#dropdownc').css('display','none');
@@ -202,11 +203,11 @@ function renderCell(col,celldata,cellid) {
 				str+= "<select><option>"+optstr+"</option></select><div class='overSelect'></div></div><div class='checkboxes' id='grp"+obj.uid+"' >";
 				for(var i=0;i<filez['groups'].length;i++){
 						var group=filez['groups'][i];
-						if(tgroups.indexOf((group.groupkind+"_"+group.groupval)) > -1){
+						if(tgroups.indexOf((group.groupkind+"_"+group.groupval))>-1){
 								str += "<label><input type='checkbox' checked id='g"+obj.uid+"' value='"+group.groupkind+"_"+group.groupval+"' />"+group.groupval+"</label>";
 						}else{
 								str += "<label><input type='checkbox' id='g"+obj.uid+"' value='"+group.groupkind+"_"+group.groupval+"' />"+group.groupval+"</label>";
-            }
+						}
 				}
 				str += '</div></div>';
 		}else{
@@ -278,12 +279,25 @@ function compare(a,b)
         }else{
             val = a.firstname.toLocaleUpperCase().localeCompare(b.firstname.toLocaleUpperCase());
         }
-    }else{
+    }else if (col == "requestedpasswordchange") {
+			  a=JSON.parse(a);
+				b=JSON.parse(b);
+				if(kind==0){
+					val = b.requested<a.requested;
+			  }else{
+					val = a.requested<b.requested;
+			  }
+		} else {
         if((kind%2)==0){
-            val=a<b;
+						val=a<b;
         }else{
             val=b<a;
         }
+		}
+		if (val === true) {
+      val = 1;
+    } else if (val === false) {
+      val = -1;
     }
     return val;
 }

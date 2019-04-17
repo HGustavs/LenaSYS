@@ -424,6 +424,33 @@ if ($requestType=="mail"){
 			$error=$query->errorInfo();
 			$debug="Error reading results".$error[2];
 		}
+  
+// Create "duggor" array to store information about quizes and create "releases" to perform checks
+
+foreach($query->fetchAll() as $row) {
+	$releases[$row['id']]=array(
+			'release' => $row['qrelease'],
+			'deadline' => $row['deadline']
+	);
+	array_push(
+		$duggor,
+		array(
+			'id' => $row['id'],
+			'qname' => $row['qname'],
+			'release' => $row['qrelease'],
+			'deadline' => $row['deadline']
+		)
+	);
+}
+array_push(
+	$duggor,
+	array(
+		'id' => '9999',
+		'qname' => 'Contribution',
+		'release' => '',
+		'deadline' => ''
+	)
+);
 
 		foreach($query->fetchAll() as $row) {
 		    if(is_null($row['groups'])){

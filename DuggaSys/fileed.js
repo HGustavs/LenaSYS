@@ -75,7 +75,7 @@ function returnedFile(data) {
         rowFilterCallback:rowFilter,
         columnOrder:colOrder,
         hasRowHighlight:true,
-        hasMagicHeadings:true,
+        hasMagicHeadings:false,
         hasCounterColumn:true
 	  });
 
@@ -214,7 +214,7 @@ function renderCell(col,celldata,cellid) {
           str+= "<span>-</span>";
       }else{
           str+="<span>" + formatBytes(obj.size, 0) + "</span>";
-      }        
+      }
   } else if (col == "extension" || col=="uploaddate" || col=="kind") {
       str+="<span>" + celldata + "</span>";
 	} else if (col == "editor") {
@@ -414,10 +414,10 @@ function loadFile(fileUrl, fileNamez, fileKind) {
     filename=fileNamez;
     filepath=fileUrl;
     filekind=fileKind;
-    
-		$("#fileName").val(fileNamez);    
+
+		$("#fileName").val(fileNamez);
 		$("#fileKind").val(fileKind);
-	
+
     $(".previewWindow").show();
     $(".previewWindowContainer").css("display", "block");
     $(".markdownPart").hide();
@@ -501,18 +501,18 @@ function cancelPreview() {
 }
 
 function loadPreview(fileUrl, fileName, fileKind) {
-	
+
 		filename=fileName;
 		filepath=fileUrl;
 		filekind=fileKind;
-	
+
     $("#fileName").val(fileName);
     $("#fileKind").val(fileKind);
     $(".previewWindow").show();
     $(".previewWindowContainer").css("display", "block");
     $(".markdownPart").show();
     $(".editFilePart").hide();
-	
+
     //$.ajax({url: fileUrl, type: 'get', dataType: 'html', success: returnedPreview});
 		$.ajax({url: "showdoc.php?courseid="+querystring['cid']+"&coursevers="+querystring['coursevers']+"&fname="+fileName+"&read=yes", type: 'post', dataType: 'html', success: returnedPreview});
 }
@@ -554,7 +554,7 @@ $(document).mouseup(function (e) {
 $(document).on("touchstart", function(e){
   FABDown(e);
 });
-             
+
 $(document).on("touchend", function(e){
   FABUp(e);
 });

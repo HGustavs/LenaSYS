@@ -696,7 +696,6 @@ function createSortableTable(data) {
 	var tblhead = buildDynamicHeaders();
 	studentInfo = buildStudentInfo();
 
-
 	var tabledata = {
 		tblhead,
 		tblbody: studentInfo,
