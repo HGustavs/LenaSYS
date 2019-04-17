@@ -946,6 +946,7 @@ function Symbol(kind) {
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
         ctx.beginPath();
+        var relationCorners = [];
         if (this.properties['key_type'] == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
             ctx.lineTo(x2 + 5, y1 - 5);
@@ -954,7 +955,7 @@ function Symbol(kind) {
             ctx.lineTo(x1 - 5, y1 - 5);
             ctx.stroke();
             ctx.lineWidth = this.properties['lineWidth'];
-            var relationCorners = [];
+            
             for(let i = 0; i < diagram.length; i++) {
                 if (diagram[i] != this) {
                     dtlx = diagram[i].corners().tl.x;
@@ -966,7 +967,62 @@ function Symbol(kind) {
                     dtry = diagram[i].corners().tr.y;
                     dblx = diagram[i].corners().bl.x;
                     dbly = diagram[i].corners().bl.y;
+                    if (diagram[i].isRelation) {
+                        var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
+                        var relationMiddleY = ((dbly - dtly) / 2) + dtly;
+                        console.log("Relation found");
+                        relationCorners.push(relationMiddleX, relationMiddleY);
+                        console.log(relationCorners.length);
+                        console.log("rMidX: ", relationMiddleX);
+                        console.log("rMidY: ", relationMiddleY);
+                    }   
                     
+                    if (!diagram[i].isOval && !diagram[i].isRelation) {
+                        // chcking if the line is already set to forced
+                        if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Forced') {
+                        //  console.log(dtrx + "dtrx, " + dtlx + "dtlx");
+                            console.log(dtlx + "dtlx; " + dtrx + "dtrx");
+                            for (let j = 0; j < relationCorners.length; j++) {
+                                if (dtlx == relationCorners[j] || dtrx == relationCorners[j] || dtly == relationCorners[j] || dbly == relationCorners[j]) {
+                                    if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
+                                        console.log("object is connected to " + this);
+                                        console.log(x1 + "x1, " + dtrx + "dtrx");
+                                        console.log(diagram[i].isLine);
+                                        if (diagram[i].isLine) {
+                                            diagram[i].properties['key_type'] = 'Forced';
+                                        }
+                                    } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
+                                        if (diagram[i].isLine) {
+                                            diagram[i].properties['key_type'] = 'Forced';
+                                        }
+                                    } else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
+                                        if (diagram[i].isLine) {
+                                            diagram[i].properties['key_type'] = 'Forced';
+                                        }
+                                    } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
+                                        if (diagram[i].isLine) {
+                                            diagram[i].properties['key_type'] = 'Forced';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }              
+                } 
+            }
+        } else {
+            for(let i = 0; i < diagram.length; i++) {
+                if (diagram[i] != this) {
+                    // getting each corner of the objects in the diagram array
+                    dtlx = diagram[i].corners().tl.x;
+                    dtly = diagram[i].corners().tl.y;
+                    dbrx = diagram[i].corners().br.x;
+                    dbry = diagram[i].corners().br.y;
+                    
+                    dtrx = diagram[i].corners().tr.x;
+                    dtry = diagram[i].corners().tr.y;
+                    dblx = diagram[i].corners().bl.x;
+                    dbly = diagram[i].corners().bl.y;
                     
                     if (diagram[i].isRelation) {
                         var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
@@ -976,80 +1032,31 @@ function Symbol(kind) {
                         console.log(relationCorners.length);
                         console.log("rMidX: ", relationMiddleX);
                         console.log("rMidY: ", relationMiddleY);
-                    }
+                    } 
                     
-                    /*
-                    if (diagram[i].isLine) {
-                        console.log(y1 + "y1, " + dbly + "dbly, " + dbry + "dbry");
-                        console.log(y2 + "y2, " + dtly + "dtly, " + dtry + "dtry");
-                    }
-                    */
                     if (!diagram[i].isOval && !diagram[i].isRelation) {
-                        // chcking if the line is already set to forced
-                        if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Forced') {
-                            console.log(dtrx + "dtrx, " + dtlx + "dtlx");
-                            console.log(x1 + "x1; " + x2 + "x2");
+                        // setting the line types to normal if they are forced and the connected entity is strong.
+                        if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
+                            // looping through the midpoints for relation entities.
                             for (let j = 0; j < relationCorners.length; j++) {
-                                    if (x1 == relationCorners[j] || x2 == relationCorners[j]) {
-                                        console.log("relation connected to line");
-                                    }
-                            }
-                            
-                            if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
-                                console.log("object is connected to " + this);
-                                console.log(x1 + "x1, " + dtrx + "dtrx");
-                                console.log(diagram[i].isLine);
-                                if (diagram[i].isLine) {
-                                    diagram[i].properties['key_type'] = 'Forced';
-                                }
-                            } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
-                                if (diagram[i].isLine) {
-                                    diagram[i].properties['key_type'] = 'Forced';
-                                }
-                            } else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
-                                if (diagram[i].isLine) {
-                                    diagram[i].properties['key_type'] = 'Forced';
-                                }
-                            } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
-                                if (diagram[i].isLine) {
-                                    diagram[i].properties['key_type'] = 'Forced';
-                                }
-                            }
-                        }
-                    }              
-                } 
-            }
-        }else {
-                for(let i = 0; i < diagram.length; i++) {
-                    if (diagram[i] != this) {
-                        // getting each corner of the objects in the diagram array
-                        dtlx = diagram[i].corners().tl.x;
-                        dtly = diagram[i].corners().tl.y;
-                        dbrx = diagram[i].corners().br.x;
-                        dbry = diagram[i].corners().br.y;
-                        
-                        dtrx = diagram[i].corners().tr.x;
-                        dtry = diagram[i].corners().tr.y;
-                        dblx = diagram[i].corners().bl.x;
-                        dbly = diagram[i].corners().bl.y;
-
-                        if (!diagram[i].isOval && !diagram[i].isRelation) {
-                            if (diagram[i].isLine && diagram[i].properties['key_type'] != 'normal') {
-                                if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
-                                    if (diagram[i].isLine) {
-                                        diagram[i].properties['key_type'] = 'normal';
-                                    }
-                                } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
-                                    if (diagram[i].isLine) {
-                                        diagram[i].properties['key_type'] = 'normal';
-                                    }
-                                }  else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
-                                    if (diagram[i].isLine) {
-                                        diagram[i].properties['key_type'] = 'normal';
-                                    }
-                                } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
-                                    if (diagram[i].isLine) {
-                                        diagram[i].properties['key_type'] = 'normal';
+                                // checking if the line is connected to any of the midpoints.
+                                if (dtlx == relationCorners[j] || dtrx == relationCorners[j] || dtly == relationCorners[j] || dbly == relationCorners[j]) {
+                                    if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
+                                        if (diagram[i].isLine) {
+                                            diagram[i].properties['key_type'] = 'Normal';
+                                        }
+                                    } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
+                                        if (diagram[i].isLine) {
+                                            diagram[i].properties['key_type'] = 'Normal';
+                                        }
+                                    }  else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
+                                        if (diagram[i].isLine) {
+                                            diagram[i].properties['key_type'] = 'Normal';
+                                        }
+                                    } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
+                                        if (diagram[i].isLine) {
+                                            diagram[i].properties['key_type'] = 'Normal';
+                                        }
                                     }
                                 }
                             }
@@ -1057,6 +1064,7 @@ function Symbol(kind) {
                     }
                 }
             }
+        }
 
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y1);
@@ -1080,7 +1088,7 @@ function Symbol(kind) {
     }
 
     this.drawLine = function(x1, y1, x2, y2) {
-        isLine = true;
+        this.isLine = true;
         //Checks if there is cardinality set on this object
         if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
             //Updates x and y position
@@ -1208,7 +1216,7 @@ function Symbol(kind) {
     }
 
     this.drawRelation = function(x1, y1, x2, y2) {
-        isRelation = true;
+        this.isRelation = true;
         var midx = points[this.centerPoint].x;
         var midy = points[this.centerPoint].y;
         ctx.beginPath();
@@ -1532,7 +1540,7 @@ function Symbol(kind) {
 }
 
 this.drawOval = function (x1, y1, x2, y2) {
-    isOval = true;
+    this.isOval = true;
     var middleX = x1 + ((x2 - x1) * 0.5);
     var middleY = y1 + ((y2 - y1) * 0.5);
     ctx.beginPath();
