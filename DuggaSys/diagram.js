@@ -1985,7 +1985,7 @@ function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     var bound = myCanvas.getBoundingClientRect();
-    element.style.top = (bound.top+"px");
+    element.style.top = (150+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
     element.style.display = "inline-block";
@@ -2100,7 +2100,7 @@ function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     var bound = myCanvas.getBoundingClientRect();
-    element.style.top = (bound.top+"px");
+    element.style.top = (150+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
     element.style.display = "inline-block";
