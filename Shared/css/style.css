@@ -2923,12 +2923,12 @@ table {
   border-radius: 5px;
   float: right;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
-  margin-bottom: 7px;
+  margin-bottom: 5px;
 }
 
 #searchinput {
   margin-right: 0;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   margin-top: 5px;
   border-right: 0;
   border-top-right-radius: 0;
