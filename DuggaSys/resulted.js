@@ -1210,3 +1210,32 @@ function closeLadexport() {
 function updateTable() {
 	myTable.renderTable();
 }
+
+function mail() {
+  console.log("Mail körs nu!");
+  var reqType = "mail";
+
+  var url_string = window.location.href;
+  var url = new URL(url_string);
+  var cidMail = url.searchParams.get("cid");
+  var crsMail = url.searchParams.get("coursevers");
+
+  $.ajax({
+    url: "resultedservice.php",
+    type: "POST",
+    data: {
+      'courseid': cidMail,
+      'coursevers': crsMail,
+      'searchterm': searchterm,
+      'requestType': reqType
+    },
+    dataType: "JSON",
+    error: function(xhr, status, error) {
+      var err = eval("(" + xhr.responseText + ")");
+      console.log(err.Message);
+    },
+    success: function(data){
+      window.location.assign("mailto:" + data);
+    }
+  });
+}
