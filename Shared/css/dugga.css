@@ -4,6 +4,38 @@ h2{font-family: Calibri,sans-serif;font-size:1.5em; color: #000;}
 h3{font-family: Calibri,sans-serif;font-size:1.3em; color: #000;}
 h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 */
+/* --------------================################================-------------- *
+ *                                   Media Queries                                   *
+ * --------------================################================-------------- */
+ /*Meduim screens */
+@media screen and (max-width: 960px) {
+    #Nameof {
+         overflow: hidden;
+         text-overflow: ellipsis;
+         white-space: nowrap;
+    }
+
+}
+@media screen and (min-width: 959px) {
+        #Nameof {
+
+    /* No specific stuff if we want to show the text */
+    }
+}
+
+#Nameof {
+  margin: 5px 0px 0px 0px;
+  padding: 5px;
+}
+
+#hoverRes {
+  display: none;
+  background-color: #fff;
+  position: absolute;
+  padding: 5px;
+  left: 0;
+  border: 2px solid grey;
+}
 
 h1{color: #000;}
 
@@ -258,22 +290,3 @@ svg text {
 /* --------------================################================-------------- *
  *                      	    Preview table style     				        *
  * --------------================################================-------------- */
-
-.previewTable {
-    width: 100%;
-    border: 1px solid #d4d1d1;
-}
-
-.previewTable th {
-    padding: 6px;
-    text-align: left;
-    background-color: #d4d1d1;
-}
-
-.previewTable td {
-    padding: 6px;
-}
-
-.previewTable tr:nth-child(even) {
-    background-color: #f1f1f1;
-}

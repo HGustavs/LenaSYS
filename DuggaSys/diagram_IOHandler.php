@@ -19,9 +19,7 @@ pdoConnect();
     <script src="../Shared/js/jquery-ui-1.10.4.min.js"></script>
     <script src="../Shared/dugga.js"></script>
     <script src="diagram.js"></script>
-    <script src="diagram_symbol.js"></script>
-    <script src="diagram_figure.js"></script>
-    <script src="diagram_example.js"></script>
+    <script src="diagram_objects.js"></script>
     <script src="diagram_IOHandler.js"></script>
 </head>
 <body onload="getUpload()">
@@ -119,7 +117,7 @@ include '../Shared/navheader.php';
    </div>
 </div>
     <?php
-    if(isset($_POST["newFolderInFolder"])){
+    if(isset($_POST["newFolderInFolder"])) {
     $name = $_POST["newFolderInFolder"];
         ?>
         <script>
@@ -158,7 +156,7 @@ include '../Shared/navheader.php';
     <div id='showStoredFolders' style="display:none;position:absolute;left:360px;top:50px">
         <div id="adsds" style="position:fixed;height:100vh;width:160px;border-right:1px solid black;">
             <?php
-            if (isset($_POST["answer"]) && !empty($_POST)){
+            if (isset($_POST["answer"]) && !empty($_POST)) {
                 $newFolder = $_POST['answer'];
                 if ($handle = opendir("Save/$newFolder/")) {
                     $blacklist = array('.', '..', 'Save', 'id.txt');
@@ -182,17 +180,18 @@ include '../Shared/navheader.php';
         </div>
     </div>
 <!-- content END -->
+
 <?php
 include '../Shared/loginbox.php';
 ?>
     <?php
-    function createNewestFolder($ad){
+    function createNewestFolder($ad) {
         $value = $ad.value;
         redirect($ad);
     }
     ?>
 <?php
-if(isset($_POST["folderName"])){
+if(isset($_POST["folderName"])) {
     $name = $_POST["folderName"];
     $projectName = $_POST["projectName"];
         if(!is_dir("Save/$name")) {
@@ -208,7 +207,7 @@ if(isset($_POST["folderName"])){
 ?>
 
     <?php
-    if(isset($_POST["projectInFolder"])){
+    if(isset($_POST["projectInFolder"])) {
         $projectName = $_POST["projectInFolder"];
         $name = $_POST["Folder"];
 
@@ -223,7 +222,7 @@ if(isset($_POST["folderName"])){
         }
     ?>
     <?php
-    if(isset($_POST["answer"])){
+    if(isset($_POST["answer"])) {
         ?>
         <script>
             document.getElementById('showStoredFolders').style.display = "block";

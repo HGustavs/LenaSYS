@@ -18,9 +18,13 @@
 			// Generate different back buttons depending on which page is including
 			// this file navheader file. The switch case uses ternary operators to
 			// determine the href attribute value. (if(this) ? dothis : elsethis)
+			// If the current page is the course editor, don't display the back button
 			//---------------------------------------------------------------------
-			echo "<td class='navButt' id='back' title='Back'>";
-      if($noup=='COURSE'){
+			if($noup!='NONE') {
+				  echo "<td class='navButt' id='back' title='Back'>";
+			}
+			
+			if($noup=='COURSE'){
 					echo "<a class='navButt' href='../DuggaSys/courseed.php'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}else if($noup=='SECTION'){
@@ -33,7 +37,6 @@
 					echo "'>";
 					echo "<img src='../Shared/icons/Up.svg'></a></td>";
 			}
-
 
 			// Either generate code viewer specific nav menu or a spacer
 			if(isset($codeviewer)){
@@ -92,10 +95,6 @@
 
 	?>
 </header>
-<?php
-// The below swimlane stuff should be moved to swimlane.php, and included here.
-	include_once("swimlane.php");
-?>
 <script type="text/javascript">
 		if(localStorage.getItem("cookieMessage")=="off"){
 			$("#cookiemsg").css("display", "none");

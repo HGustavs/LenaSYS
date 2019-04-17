@@ -521,7 +521,6 @@ function returnedGroups(data) {
 
 function returnedSection(data) {
   retdata = data;
-
   if (data['debug'] != "NONE!") alert(data['debug']);
 
   var now = new Date();
@@ -536,7 +535,7 @@ function returnedSection(data) {
     }
   }
 
-  // Fill section list with information	
+  // Fill section list with information
   if (querystring['coursevers'] != "null") {
     var versionname = "";
     if (retdata['versions'].length > 0) {
@@ -727,27 +726,35 @@ function returnedSection(data) {
           // Styling for header row
           str += "</td><td class='header item" + hideState + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' ";
           kk = 0;
+
         } else if (itemKind === 1) {
           // Styling for Section row
           str += "<td class='section item" + hideState + "' placeholder='" + momentexists + "'id='I" + item['lid'] + "' style='cursor:pointer;' ";
           kk = 0;
+
         } else if (itemKind === 2) {
           str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
+
           kk++;
+
         } else if (itemKind === 3) {
           if (item['highscoremode'] != 0 && itemKind == 3) {
             str += "<td style='width:20px;'><img style=';' title='Highscore' src='../Shared/icons/top10.png' onclick='showHighscore(\"" + item['link'] + "\",\"" + item['lid'] + "\")'/></td>";
           }
           str += "<td class='example item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
+
         } else if (itemKind === 4) {
           //new moment bool equals true
           momentexists = item['lid'];
           str += "<td class='moment item" + hideState + "' placeholder='" + momentexists + "' id='I" + item['lid'] + "' style='cursor:pointer;' ";
           kk = 0;
+
         } else if (itemKind === 5) { // Link
+
           str += "<td class='example item' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
           kk++;
+
         } else if (itemKind === 6) { //Group
           // Alt 1
           let grpmembershp = data['grpmembershp'].split(" ");
@@ -780,10 +787,10 @@ function returnedSection(data) {
                   if(grp!=="UNK"){
                       grp+=",";
                   }else{
-                      grp="";  
+                      grp="";
                   }
                   grp+=found[1];
-              } 
+              }
           }
           */
           /*
@@ -801,13 +808,13 @@ function returnedSection(data) {
                   if(grp!=="UNK"){
                       grp+=",";
                   }else{
-                      grp="";  
+                      grp="";
                   }
                   grp+=g;
               }
           }
           */
-          str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/ManDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
+          str += "<td style='width:32px;' onclick='getGroups(\"" + grp + "\");'><img src='../Shared/icons/group-iconDrk.svg' style='display:block;margin:auto;max-width:32px;max-height:32px;overflow:hidden;'></td>";
           str += "<td class='section-message item' onclick='getGroups(\"" + grp + "\");' placeholder='" + momentexists + "' id='I" + item['lid'] + "' ";
 
         } else if (itemKind === 7) { //Message
@@ -877,7 +884,7 @@ function returnedSection(data) {
           }
         } else if (itemKind == 6) {
           // Group
-          str += "<div class='ellipsis nowrap'>" + item['entryname'];
+          str += "<div class='ellipsis nowrap' style='cursor:pointer;'>" + item['entryname'];
           let re = new RegExp(grptype, "g");
           grp = grp.replace(re, "");
           if (document.getElementById("userName").innerHTML == "Guest") {
@@ -922,9 +929,11 @@ function returnedSection(data) {
           var timeSubmitted = submitted.toJSON().slice(11, 19).replace(/-/g, '-');
           var dateTimeSubmitted = dateSubmitted + [' '] + timeSubmitted;
 
-          // create a warning if the dugga is submitted after the set deadline
+          // create a warning if the dugga is submitted after the set deadline and withing the grace time period if one exists
           if ((status === "pending") && (dateTimeSubmitted > deadline)) {
-            str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+            if (hasGracetimeExpired(deadline, dateTimeSubmitted)) {
+              str += "<td style='width:25px;'><img style='width:25px; padding-top:3px' title='This dugga is not guaranteed to be marked due to submition after deadline.' src='../Shared/icons/warningTriangle.svg'/></td>";
+            }
           }
         }
 
@@ -1030,6 +1039,8 @@ function returnedSection(data) {
 
   // Change the scroll position to where the user was last time.
   $(window).scrollTop(localStorage.getItem("sectionEdScrollPosition" + retdata.coursecode));
+
+  addClasses();
 }
 
 function showHighscore(did, lid) {
@@ -1112,7 +1123,7 @@ function drawPieChart() {
 
   // Calculate passed, failed and not graded quizes.
   for (var i = 0; i < retdata['results'].length; i++) {
-    // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these	
+    // Moments are also stored in ['results'] but do not have a useranswer, so we dont care about these
     if (retdata['results'][i]['useranswer'] != null) {
       if (retdata['results'][i].grade > 1) {
         passedQuizes++;
@@ -1278,7 +1289,7 @@ function drawSwimlanes() {
       entry = deadlineEntries[i];
       if (obj == entry.moment) {
         weeky += weekheight;
-        // Now we generate a SVG element for this 
+        // Now we generate a SVG element for this
         //startweek=weeksBetween(startdate, entry.start);
         //deadlineweek=weeksBetween(startdate, entry.deadline);
         startday = Math.floor((entry.start - startdate) / (24 * 60 * 60 * 1000));
@@ -1309,12 +1320,18 @@ function drawSwimlanes() {
 
 $(document).mousedown(function (e) {
   mouseDown(e);
-  FABDown(e);
+
+  if (e.button == 0) {
+    FABDown(e);
+  }
 });
 
 $(document).mouseup(function (e) {
   mouseUp(e);
-  FABUp(e);
+
+  if (e.button == 0) {
+    FABUp(e);
+  }
 });
 
 $(document).on("touchstart", function (e) {
@@ -1429,8 +1446,8 @@ $(document).on('click', '.moment, .section, .statistics', function () {
 
 });
 
-// Setup (when loaded rather than when ready)
 
+// Setup (when loaded rather than when ready)
 $(window).load(function () {
   $(".messagebox").hover(function () {
     $("#testbutton").css("background-color", "red");
@@ -1439,3 +1456,76 @@ $(window).load(function () {
     $("#testbutton").css("background-color", "#614875");
   });
 });
+
+// Checks if <a> link is external
+function link_is_external(link_element) {
+    return (link_element.host !== window.location.host);
+}
+
+// Adds classes to <a> element depending on if they are external / internal
+function addClasses() {
+  var links = document.getElementsByTagName('a');
+
+  for (var i = 0; i < links.length; i++) {
+    if ((links[i].innerHTML.toLowerCase().indexOf("example") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("exempel") !== -1) || (links[i].innerHTML.toLowerCase().indexOf("examples") !== -1)) {
+      links[i].classList.add("example-link");
+    } else if (link_is_external(links[i])) {
+      links[i].classList.add("external-link");
+    } else {
+      links[i].classList.add("internal-link");
+    }
+  }
+}
+
+// Function for automatically create a mail with participating students in current course
+function mail() {
+  var reqType = "mail";
+
+  var url_string = window.location.href;
+  var url = new URL(url_string);
+  var cname = url.searchParams.get("coursename");
+  var cidMail = url.searchParams.get("courseid");
+  var versMail = url.searchParams.get("coursevers");
+
+  $.ajax({
+    url: "sectionedservice.php",
+    type: "POST",
+    data: {
+      'courseid': cidMail,
+      'coursevers': versMail,
+      'requestType': reqType
+    },
+    dataType: "json",
+    success: function(data){
+      window.location.assign("mailto:" + data + "?subject=" + "!!! Notification !!! " + cname);
+    }
+  });
+}
+
+// Function for checking if a grace time exists and if the submition time is withing that grace time window
+function hasGracetimeExpired(deadline, dateTimeSubmitted) {
+  var m_dateTimeSubmitted = new Date(dateTimeSubmitted);
+  var m_gracetime = new Date(deadline);
+  var m_deadline = new Date(deadline);
+
+  if ((m_deadline.getHours() >= 17) || (m_deadline.getDay() > 5)) {
+    if (m_deadline.getDay() <= 4) {
+      m_gracetime.setDate(m_deadline.getDate() + 1);
+    }
+    else if (m_deadline.getDay() == 5){
+      m_gracetime.setDate(m_deadline.getDate() + 3);
+    }
+    else if (m_deadline.getDay() == 6){
+      m_gracetime.setDate(m_deadline.getDate() + 2);
+    }
+      m_gracetime.setHours(8);
+      m_gracetime.setMinutes(00);
+      m_gracetime.setSeconds(00);
+  }
+  if (m_dateTimeSubmitted > m_gracetime) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}

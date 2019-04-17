@@ -25,7 +25,7 @@ function getAllIndexes(haystack, needle) {
     while (i !== -1) {
         indexes.push(i);
         i = haystack.indexOf(needle, ++i);
-    }    
+    }
     return indexes;
 }
 
@@ -213,7 +213,7 @@ function makeoptionsItem(option,optionlist,optionstring,valuestring)
 }
 
 //----------------------------------------------------------------------------------
-// makeparams: Help function for hassle free preparation of a clickable param list 
+// makeparams: Help function for hassle free preparation of a clickable param list
 //----------------------------------------------------------------------------------
 
 function makeparams(paramarray)
@@ -358,10 +358,10 @@ function closeWindows(){
 	});
 
 	if (index_highest > 0){
-			e.style.display = "none";
 			/* Overlay is only present for loginbox which has z-index of 9000,
          so if we closed such a window, hide the overlay and clear any values as well. */
-			if (index_highest < 10000) {
+         e.style.display= "none";
+    	if (index_highest < 10000) {
 					status=1;
 					//toggleloginnewpass();
 					//$("#overlay").css("display","none");
@@ -712,15 +712,7 @@ function AJAXService(opt,apara,kind)
       dataType: "json",
       success: returnedGroups
     });
-  }else if(kind=="SWIMLANE"){
-  			$.ajax({
-  				url: "swimlaneservice.php",
-  				type: "POST",
-  				data: "courseid="+querystring['courseid']+"&coursevers="+querystring['coursevers']+"&opt="+opt+para,
-  				dataType: "json",
-  				success: returnedSwimlane
-  			});
-	}else if(kind=="CONTRIBUTION"){
+  }else if(kind=="CONTRIBUTION"){
 			$.ajax({
 				url: "contributionservice.php",
 				type: "POST",
@@ -1326,12 +1318,17 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							} else {
 									tab+="<a href='"+filelink+"' ><img src='../Shared/icons/file_download.svg' /></a>";
 							}
+
+              // if type is pdf, add an extenral_open icon to open in new tab next to download icon.
+              if (ctype == "pdf") {
+                tab +="\t<tab><a href='"+filelink+"' target='_blank'><img src='../Shared/icons/external_link_open.svg' /></a></tab>";
+              }
 							tab+="</td>";
 							tab+="<td>";
-                            if (ctype == "link"){
-                                    tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>"+filez[i].content+"</span>";
+              if (ctype == "link"){
+                tab+="<span style='cursor: pointer;text-decoration:underline;'  onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);'>"+filez[i].content+"</span>";
 							} else {
-                                    tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>"+filez[i].filename+"."+filez[i].extension+"</span>";
+                tab+="<span onclick='displayPreview(\""+filez[i].filepath+"\",\""+filez[i].filename+"\",\""+filez[i].seq+"\",\""+ctype+"\",\""+filez[i].extension+"\","+i+",0);' style='cursor: pointer;text-decoration:underline;'>"+filez[i].filename+"."+filez[i].extension+"</span>";
 							}
 							tab+="</td><td>";
 							tab+=filez[i].updtime;+"</td>";
@@ -1489,7 +1486,7 @@ function FABUp(e)
 				createQuickItem();
 		}else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
 				FABToggle();
-		}	
+		}
 }
 
 //----------------------------------------------------------------------------------
@@ -1505,4 +1502,16 @@ function FABToggle() {
 				$('.fab-btn-list').fadeIn(0);
 				$('.fab-btn-sm').toggleClass('scale-out');
 		}
+}
+
+function generateTimeSheetOptions(course, moment, selected) {
+	// Different courses / moments have the ability to generate different options for the type field
+
+	// Only one timesheet is available right now
+	if (selected === 0) {
+		return "<option value='issue' selected>Issue</option><option value='pullrequest'>Pull request</option>";
+	} else {
+		return "<option value='issue'>Issue</option><option value='pullrequest' selected>Pull request</option>";
+	}
+	
 }

@@ -107,6 +107,11 @@
 							<input type='button' value='Access' class='submit-button' title='Give students access to the selected version' onclick='navigatePage("accessed.php");'/>
 						</div>
 					</td>
+					<td class='access menuButton' style='display: inline-block;'>
+							<div class='access menuButton'>
+									<input type='button' value='Mail' class='submit-button' title='Mail' onclick='mail();'/>
+							</div>
+					</td>
 				</tr>
 
 			</table>
@@ -115,8 +120,7 @@
 		<!-- Static Top Menu END -->
 
 		<!-- FAB Start -->
-
-		<div class='fixed-action-button' id="FABStatic" style="display:none">
+		<div class='fixed-action-button sectioned' id="FABStatic" style="display:none">
 				<a class='btn-floating fab-btn-lg noselect' id='fabBtn'>+</a>
 				<ol class='fab-btn-list' style='margin: 0; padding: 0; display: none;' reversed>
 						<li><a class='btn-floating fab-btn-sm scale-transition scale-out' data-tooltip='Heading' onclick='createFABItem("0","New Heading");'><img class='fab-icon' src='../Shared/icons/heading-icon.svg'></a></li>
@@ -144,7 +148,7 @@
 				</div>
 
 				<div id='course-newitem' style='display: flex;'>
-						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='createFABItem("2", "New Code");'>
+						<input id='addElement' style="display:none;" type='button' value='+' class='submit-button-newitem' title='New Item' onclick='createQuickItem();'>
 				</div>
 				<!-- test #1 -->
 
@@ -231,7 +235,7 @@
 					<div id='inputwrapper-gradesystem' class='inputwrapper'><span>Grade system:</span><select id='gradesys' ></select></div>
 					<div id='inputwrapper-tabs' class='inputwrapper'><span>Tabs:</span><select id='tabs' ></select></div>
 					<div id='inputwrapper-highscore' class='inputwrapper'><span>High score:</span><select id='highscoremode' ></select></div>
-					<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment' disabled></select></div>
+					<div id='inputwrapper-moment' class='inputwrapper'><span>Moment:</span><select id='moment'></select></div>
 					<div id='inputwrapper-visibility' class='inputwrapper'><span>Visibility:</span><select style='align:right;' id='visib'></select></div>
 					<div id='inputwrapper-group' class='inputwrapper'><span>Group type:</span><select style='align:right;' id='grptype'></select></div>
 				</div>

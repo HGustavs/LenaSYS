@@ -150,7 +150,7 @@ p {
 
  #buttonDiv {
    position: fixed;
-   margin-top: -4%;
+   margin-top: -20px;
    height: 20px;
    background-color: white;
  }
@@ -393,6 +393,22 @@ p {
   text-decoration: underline;
 }
 
+.code .item a:hover {
+  color: #C47FAA;
+}
+
+.example-link:hover {
+  color: #C47FAA;
+}
+
+.internal-link:hover {
+  color: #B06DC3;
+}
+
+.external-link:hover {
+  color: #7E7BCA;
+}
+
 #Sectionlist .norm {
   background-color: #fff;
   color: #000;
@@ -512,7 +528,7 @@ p {
 }
 
 #Sectionlistc { /* Move up later*/
-  display: inline-block;
+  display: block;
 }
 
  #statisticsList {
@@ -629,7 +645,7 @@ header td {
 
 .navName:hover {
   font-size: 0.8em;
-  text-shadow: 1px 1px 4px #50A750;
+  text-shadow: 2px 2px 4px rgb(0, 0, 0);
   color: #FFFFFF;
   cursor: default;
   text-decoration: underline;
@@ -1020,7 +1036,7 @@ input {
   background-color: #614875;
   vertical-align: bottom;
   padding-left: 10px;
-  cursor: move;
+  cursor: default;
   display: flex;
   justify-content: space-around;
 }
@@ -1313,6 +1329,18 @@ input {
   padding: 0px 6px;
 }
 
+.menu-drop-down span.drop-down-label{
+  display: block;
+  height: 22px;
+  line-height: 22px;
+  padding: 0px 8px;
+}
+
+.menu-drop-down span.drop-down-label:hover {
+  cursor: pointer;
+  background-color: rgb(240, 240, 240);
+}
+
 .document-settings span.label:hover {
   cursor: pointer;
   background-color: rgb(240, 240, 240);
@@ -1367,9 +1395,20 @@ input {
   padding: 8px 0px 8px 8px;
 }
 
+.drop-down-option{
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+  display: inline-block;
+  width: 252px;
+  height: 16px;
+  line-height: 16px;
+  padding: 8px 0px 8px 8px;
+}
+
 .drop-down-item:hover,
 .export-drop-down-item:hover {
   background-color: rgb(240, 240, 240);
+  cursor: pointer;
 }
 
 .drop-down-text>a {
@@ -2188,59 +2227,6 @@ span.arrow {
   background-color: #eae8eb;
 }
 
-/* Modal Content/Box */
-
-.SwimContentWrap {
-  position: absolute;
-  left: 1%;
-  top: 62px;
-  overflow: auto;
-  padding: 0;
-  margin: auto;
-}
-
-/* The Close Button */
-
-.SwimClose {
-  color: white;
-  position: absolute;
-  text-align: center;
-  float: right;
-  right: 0px;
-  top: 0px;
-  font-size: 28px;
-  font-weight: bold;
-  height: 30px;
-  width: 30px;
-  cursor: pointer;
-  background-color: rgb(204, 63, 65);
-}
-
-.SwimClose:hover {
-  opacity: 0.5;
-}
-
-.swimlaneOverlay {
-  display: none;
-  /* Hidden by default */
-  position: fixed;
-  /* Stay in place */
-  z-index: 10000;
-  /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100vw;
-  /* Full width */
-  height: 100vh;
-  /* Full height */
-  overflow: auto;
-  /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0);
-  /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.6);
-  /* Black w/ opacity */
-}
-
 .resultTableCell{
 		margin:2px;
 }
@@ -2264,6 +2250,12 @@ span.arrow {
   margin-left: 3px;
   margin-right: 3px;
   font-size: 13px;
+}
+
+.WriteOutTimesGraded{
+  font-weight: bold;
+  font-size: 15px;
+  margin: 0 auto;
 }
 
 .resultTableNormal {
@@ -2694,6 +2686,7 @@ span.arrow {
   height: 24px;
   width: 24px;
   cursor: pointer;
+  margin-right: 10px;
 }
 
 .result-header-inverse {
@@ -2708,7 +2701,8 @@ span.arrow {
 .dropdown-list-container {
   padding: 8px;
   width: 300px;
-  overflow: hidden;
+  height: 300px;
+  overflow: scroll;
   font-size: 12px;
   display: none;
   position: absolute;
@@ -2929,10 +2923,13 @@ table {
   border-radius: 5px;
   float: right;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
+  margin-bottom: 5px;
 }
 
 #searchinput {
   margin-right: 0;
+  margin-bottom: 5px;
+  margin-top: 5px;
   border-right: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -2950,6 +2947,7 @@ table {
   border-bottom-right-radius: 5px;
   border-top-right-radius: 5px;
   box-shadow: none;
+  margin-bottom: 5px;
 }
 .searchField{
   height: 25px;
@@ -2977,59 +2975,6 @@ table {
   border-radius: 2px;
   border: 0px;
   cursor: pointer;
-}
-
-/* Modal Content/Box */
-
-.SwimContentWrap {
-  position: absolute;
-  left: 1%;
-  top: 62px;
-  overflow: auto;
-  padding: 0;
-  margin: auto;
-}
-
-/* The Close Button */
-
-.SwimClose {
-  color: white;
-  position: absolute;
-  text-align: center;
-  float: right;
-  right: 0px;
-  top: 0px;
-  font-size: 28px;
-  font-weight: bold;
-  height: 30px;
-  width: 30px;
-  cursor: pointer;
-  background-color: rgb(204, 63, 65);
-}
-
-.SwimClose:hover {
-  opacity: 0.5;
-}
-
-.swimlaneOverlay {
-  display: none;
-  /* Hidden by default */
-  position: fixed;
-  /* Stay in place */
-  z-index: 10000;
-  /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100vw;
-  /* Full width */
-  height: 100vh;
-  /* Full height */
-  overflow: auto;
-  /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0);
-  /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.6);
-  /* Black w/ opacity */
 }
 
 /* Smartphones (portrait and landscape) ----------- */
@@ -3827,7 +3772,13 @@ only screen and (max-device-width: 320px) {
   position: fixed;
   bottom: 24px;
   right: 24px;
-  z-index: 500;
+  z-index: 1;
+}
+.fixed-action-button.sectioned {
+  right: 75px;
+}
+#Courselist div.fixed-action-button a:hover {
+  text-decoration: none;
 }
 
 /* FAB base */
@@ -3949,120 +3900,120 @@ only screen and (max-device-width: 320px) {
 
 /* First item */
 
-.btn-floating li:nth-last-child(1) a {
+.fab-btn-list :nth-last-child(1) a {
   background-color: #6ead2a;
   color: white;
 }
 
-.btn-floating li:nth-last-child(1) a:hover {
+.fab-btn-list :nth-last-child(1) a:hover {
   background-color: #83ae55;
   color: white;
 }
 
 /* Second item */
 
-.btn-floating li:nth-last-child(2) a {
+.fab-btn-list :nth-last-child(2) a {
   background-color: #adc726;
   color: white;
 }
 
-.btn-floating li:nth-last-child(2) a:hover {
+.fab-btn-list :nth-last-child(2) a:hover {
   background-color: #b8cd4e;
   color: white;
 }
 
 /* Third item */
 
-.btn-floating li:nth-last-child(3) a {
+.fab-btn-list :nth-last-child(3) a {
   background-color: #e9a901;
   color: white;
 }
 
-.btn-floating li:nth-last-child(3) a:hover {
+.fab-btn-list :nth-last-child(4) a:hover {
   background-color: #ddae37;
   color: white;
 }
 
 /* Fourth item */
 
-.btn-floating li:nth-last-child(4) a {
+.fab-btn-list :nth-last-child(4) a {
   background-color: #dc7e34;
   color: white;
 }
 
-.btn-floating li:nth-last-child(4) a:hover {
+.fab-btn-list :nth-last-child(4) a:hover {
   background-color: #d78b50;
   color: white;
 }
 
 /* Fifth item */
 
-.btn-floating li:nth-last-child(5) a {
+.fab-btn-list :nth-last-child(5) a {
   background-color: #d14d58;
   color: white;
 }
 
-.btn-floating li:nth-last-child(5) a:hover {
+.fab-btn-list :nth-last-child(5) a:hover {
   background-color: #d16a72;
   color: white;
 }
 
 /* Sixth item */
 
-.btn-floating li:nth-last-child(6) a {
+.fab-btn-list :nth-last-child(6) a {
   background-color: #cb438d;
   color: white;
 }
 
-.btn-floating li:nth-last-child(6) a:hover {
+.fab-btn-list :nth-last-child(6) a:hover {
   background-color: #d0599a;
   color: white;
 }
 
 /* Seventh item */
 
-.btn-floating li:nth-last-child(7) a {
+.fab-btn-list :nth-last-child(7) a {
   background-color: #a844cc;
   color: white;
 }
 
-.btn-floating li:nth-last-child(7) a:hover {
+.fab-btn-list :nth-last-child(7) a:hover {
   background-color: #b560d3;
   color: white;
 }
 
 /* Eighth item */
 
-.btn-floating li:nth-last-child(8) a {
+.fab-btn-list :nth-last-child(8) a {
   background-color: #6f34dc;
   color: white;
 }
 
-.btn-floating li:nth-last-child(8) a:hover {
+.fab-btn-list :nth-last-child(8) a:hover {
   background-color: #7e4ed7;
   color: white;
 }
 
 /* Ninth item */
 
-.btn-floating li:nth-last-child(9) a {
+.fab-btn-list :nth-last-child(9) a {
   background-color: #1f65cd;
   color: white;
 }
 
-.btn-floating li:nth-last-child(9) a:hover {
+.fab-btn-list :nth-last-child(9) a:hover {
   background-color: #487fd1;
   color: white;
 }
 
 /* Tenth item */
 
-.btn-floating li:nth-last-child(10) a {
+.fab-btn-list :nth-last-child(10) a {
   background-color: blue;
   color: white;
 }
 
-.btn-floating li:nth-last-child(10) a:hover {
+.fab-btn-list :nth-last-child(10) a:hover {
   background-color: pink;
   color: white;
 }
@@ -4564,6 +4515,19 @@ textarea#filecont{
 }
 
 /* --------------================################================-------------- *
+ *                           codeviewer - Loader                                *
+ * --------------================################================-------------- */
+ #loader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url('../icons/loadingJS.gif')  50% 50% no-repeat rgb(93, 93, 93);
+}
+
+/* --------------================################================-------------- *
  *                           DuggaEd - Variants editor                          *
  * --------------================################================-------------- */
 
@@ -4639,4 +4603,73 @@ textarea#filecont{
 
 .active-variant {
     background-color: #fbcd47 !important;
+}
+
+/* Styling for timesheet table */
+.tsTable {
+  margin: 20px 0px 20px 50px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.tsTable td:first-of-type {
+  border-left: 1px solid #cdd0d6;
+} 
+.tsTable td:last-of-type {
+  border-right: 1px solid #cdd0d6;
+} 
+.tsTable td, .tsTable th {
+  border-bottom: 1px solid #cdd0d6;
+}
+.tsTable thead {
+  background: #cdd0d6;
+}
+.tsTable th {
+  padding: 10px;
+}
+.tsTable tbody, .tsTable tfoot {
+  text-align: center;
+}
+.tsTable td {
+  padding: 5px 10px 5px 10px;
+}
+.tsTable select {
+  height: 30px;
+  padding: 3px 0px 3px 5px;
+  width: 150px;
+}
+.tsTable input {
+  padding: 5px;
+}
+.tsTable tfoot {
+  background: #F0F0F0;
+}
+.tsTable tfoot:hover {
+  background: #E0E0E0;
+}
+.tsTable tfoot td {
+  padding: 0;
+}
+.tsTableDeleteCell {
+  border-radius: 0px 5px 5x 0px;
+  -moz-border-radius: 0px 5px 5px 0px;
+  -webkit-border-radius: 0px 5px 5px 0px;
+}
+.tsTableDeleteCell:hover {
+  cursor: pointer;
+}
+.newRowButton {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+}
+#tsSubmit {
+  margin-left: 50px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+#tsSubmit:hover {
+  background: #614875;
+  color: #fff;
+  border: 2px solid #614875;
 }
