@@ -209,7 +209,7 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
                         </div>
-                        <div class="drop-down-item">
+                        <div class="drop-down-item-disabled">
                             <span class="drop-down-option" onclick='toggleVirtualA4Holes();'>Toggle A4 Holes</span>
                         </div>
                     </div>

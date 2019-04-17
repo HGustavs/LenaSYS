@@ -1426,6 +1426,11 @@ input {
   cursor: default !important;
 }
 
+.drop-down-item-disabled {
+  opacity: 50%;
+  cursor: default !important;
+}
+
 #hotkey-space {
   position: absolute !important;
   font-size: 11px !important;
@@ -4613,10 +4618,10 @@ textarea#filecont{
 }
 .tsTable td:first-of-type {
   border-left: 1px solid #cdd0d6;
-} 
+}
 .tsTable td:last-of-type {
   border-right: 1px solid #cdd0d6;
-} 
+}
 .tsTable td, .tsTable th {
   border-bottom: 1px solid #cdd0d6;
 }
