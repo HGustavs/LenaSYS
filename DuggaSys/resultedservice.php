@@ -77,6 +77,7 @@ if($requestType == "mail"){
 			$searchterm = "%".$searchterm."%";
 			$searchterm = explode(' ', $searchterm);
 			$mailQuery->bindParam(':searchterm1', $searchterm[0]);
+			$searchterm[1] = $searchterm[1]."%";
 			$mailQuery->bindParam(':searchterm2', $searchterm[1]);
 			break;
 
