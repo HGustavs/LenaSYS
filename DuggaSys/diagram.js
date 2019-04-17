@@ -1569,7 +1569,6 @@ function align(mode) {
 //---------------------------------------------------------------------
 // These functions moves the objects either left, right, top or bottom
 //---------------------------------------------------------------------
-
 function alignLeft(selected_objects) {
     var lowest_x = 99999;
     for(var i = 0; i < selected_objects.length; i++) {
@@ -1583,6 +1582,7 @@ function alignLeft(selected_objects) {
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = removeLineObjectsFromList(temporary_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
     for(var i = 1; i < temporary_objects.length; i++) {
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
@@ -1605,6 +1605,7 @@ function alignTop(selected_objects) {
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = removeLineObjectsFromList(temporary_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
     for(var i = 1; i < temporary_objects.length; i++) {
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
@@ -1627,6 +1628,7 @@ function alignRight(selected_objects) {
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = removeLineObjectsFromList(temporary_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
     for(var i = 1; i < temporary_objects.length; i++) {
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
@@ -1649,6 +1651,7 @@ function alignBottom(selected_objects) {
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = removeLineObjectsFromList(temporary_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
     for(var i = 1; i < temporary_objects.length; i++) {
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
@@ -1661,7 +1664,6 @@ function alignBottom(selected_objects) {
 //--------------------------------------------------------------------
 // These functions move the objects either horizontal or vertical
 //--------------------------------------------------------------------
-
 function alignVerticalCenter(selected_objects) {
     var highest_x = 0, lowest_x = 99999, selected_center_x = 0;
     var temporary_objects = [];
@@ -1681,6 +1683,7 @@ function alignVerticalCenter(selected_objects) {
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = removeLineObjectsFromList(temporary_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].y - points[b.centerPoint].y});
     for(var i = 1; i < temporary_objects.length; i++) {
         if(points[temporary_objects[i].topLeft].y < points[temporary_objects[i-1].bottomRight].y + 30) {
@@ -1709,6 +1712,7 @@ function alignHorizontalCenter(selected_objects) {
 
     // Added spacing when there are objects that overlap eachother.
     temporary_objects = removeDuplicatesInList(selected_objects);
+    temporary_objects = removeLineObjectsFromList(temporary_objects);
     temporary_objects = temporary_objects.sort(function(a, b){return points[a.centerPoint].x - points[b.centerPoint].x});
     for(var i = 1; i < temporary_objects.length; i++) {
         if(points[temporary_objects[i].topLeft].x < points[temporary_objects[i-1].bottomRight].x + 30) {
@@ -1718,15 +1722,24 @@ function alignHorizontalCenter(selected_objects) {
     }
 }
 
-// ----------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------
 // removeDuplicatesInList: Objects in selected_objects get duplicated for some reason.
 //                         This function returns a list without the duplicated objects.
-// ----------------------------------------------------------------------------
-
+// -------------------------------------------------------------------------------------
 function removeDuplicatesInList(selected_objects) {
-    var temporary_objects = [];
-    for(var i = 0; i < selected_objects.length; i++) {
+    let temporary_objects = [];
+    for(let i = 0; i < selected_objects.length; i++) {
         if(temporary_objects.indexOf(selected_objects[i]) == -1) {
+            temporary_objects.push(selected_objects[i]);
+        }
+    }
+    return temporary_objects;
+}
+
+function removeLineObjectsFromList(selected_objects){
+    let temporary_objects = [];
+    for(let i = 0; i < selected_objects.length; i++) {
+        if(selected_objects[i].symbolkind != 4) {
             temporary_objects.push(selected_objects[i]);
         }
     }
