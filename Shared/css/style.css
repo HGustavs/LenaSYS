@@ -213,6 +213,7 @@ p {
   padding-top: 2px;
   padding-bottom: 2px;
   margin-right: 2px;
+  align-content: center;
 }
 
 .sys {
@@ -4613,10 +4614,10 @@ textarea#filecont{
 }
 .tsTable td:first-of-type {
   border-left: 1px solid #cdd0d6;
-} 
+}
 .tsTable td:last-of-type {
   border-right: 1px solid #cdd0d6;
-} 
+}
 .tsTable td, .tsTable th {
   border-bottom: 1px solid #cdd0d6;
 }
