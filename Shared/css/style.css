@@ -1235,7 +1235,6 @@ input {
 
 #toolbar-minimize, #toolbar-toggleLayout {
   display: inline-block;
-  position: absolute;
   width: 30px;
   height: 25px;
   left: 5px;
