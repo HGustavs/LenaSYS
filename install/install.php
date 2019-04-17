@@ -823,16 +823,18 @@ define(\"DB_NAME\",\"".$databaseName."\");
           echo '<div id="copied1">Copied to clipboard!<br></div>';
         }
 
-        echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
-                with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
-                (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
-        echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
-        echo "mkdir " . $putFileHere . "/log && ";
-        echo "chmod 777 " . $putFileHere . "/log && ";
-        echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
-        echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
-        echo "</code></div>";
-        echo '<div id="copied2">Copied to clipboard!<br></div>';
+        if(!connectLogDB()){
+            echo "<br><b> Now create a directory named 'log' (if you dont already have it)<br>
+            with a sqlite database inside at " . $putFileHere . " with permissions 777<br>
+            (Copy all code below/just click the box and paste it into bash shell as one statement to do this).</b><br>";
+    echo "<div title='Click to copy this!' class='codeBox' onclick='selectText(\"codeBox2\")'><code id='codeBox2'>";
+    echo "mkdir " . $putFileHere . "/log && ";
+    echo "chmod 777 " . $putFileHere . "/log && ";
+    echo "sqlite3 " . $putFileHere . '/log/loglena4.db "" && ';
+    echo "chmod 777 " . $putFileHere . "/log/loglena4.db";
+    echo "</code></div>";
+    echo '<div id="copied2">Copied to clipboard!<br></div>';
+        }
 
         $lenaInstall = cdirname($_SERVER['SCRIPT_NAME'], 2);
         if(substr($lenaInstall, 0 , 2) == '/') {
@@ -843,6 +845,7 @@ define(\"DB_NAME\",\"".$databaseName."\");
         echo "<br><input title='Go to LenaSYS' class='button2' type=\"submit\" value=\"I have made all the necessary things to make it work, so just take me to LenaSYS!\" />";
         echo "</form>";
         echo "</div>";
+
     }
 
     # Function to add testdata from specified file. Parameter file = sql file name without .sql.
@@ -893,6 +896,86 @@ define(\"DB_NAME\",\"".$databaseName."\");
         echo "<script>updateProgressBar({$completedSteps});</script>";
         flush();
         ob_flush();
+    }
+    function connectLogDB() {
+        if(!file_exists ('../../log')) {
+            if(!mkdir('../../log')){
+                echo "Error creating folder: log";
+                return false;
+            }
+        }
+        try {
+            $log_db = new PDO('sqlite:../../log/loglena4.db');
+        } catch (PDOException $e) {
+            echo "Failed to connect to the database";
+            return false;
+        }
+        
+        $sql = '
+            CREATE TABLE IF NOT EXISTS logEntries (
+                id INTEGER PRIMARY KEY,
+                eventType INTEGER,
+                description TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                userAgent TEXT
+            );
+            CREATE TABLE IF NOT EXISTS userLogEntries (
+                id INTEGER PRIMARY KEY,
+                uid INTEGER(10),
+                eventType INTEGER,
+                description VARCHAR(50),
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                userAgent TEXT,
+                remoteAddress VARCHAR(15)
+            );
+            CREATE TABLE IF NOT EXISTS serviceLogEntries (
+                id INTEGER PRIMARY KEY,
+                uuid CHAR(15),
+                eventType INTEGER,
+                service VARCHAR(15),
+                userid VARCHAR(8),
+                timestamp INTEGER,
+                userAgent TEXT,
+                operatingSystem VARCHAR(100),
+                info TEXT,
+                referer TEXT,
+                IP TEXT,
+                browser VARCHAR(100)
+            );
+            CREATE TABLE IF NOT EXISTS clickLogEntries (
+                id INTEGER PRIMARY KEY,
+                target TEXT,
+                mouseX TEXT,
+                mouseY TEXT,
+                clientResX TEXT,
+                clientResY TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE TABLE IF NOT EXISTS mousemoveLogEntries (
+                id INTEGER PRIMARY KEY,
+                page TEXT,
+                mouseX TEXT,
+                mouseY TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE TABLE IF NOT EXISTS exampleLoadLogEntries(
+                id INTEGER PRIMARY KEY,
+                type INTEGER,
+                courseid INTEGER,
+                exampleid INTEGER,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            );
+            CREATE TABLE IF NOT EXISTS duggaLoadLogEntries(
+                id INTEGER PRIMARY KEY,
+                type INTEGER,
+                cid INTEGER,
+                vers INTEGER,
+                quizid INTEGER,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            );
+        ';
+        $log_db->exec($sql);
+        return true;
     }
     ?>
 
