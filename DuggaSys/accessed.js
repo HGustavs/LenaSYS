@@ -229,78 +229,7 @@ function renderSortOptions(col,status,colname) {
 	return str;
 }
 
-//----------------------------------------------------------------
-// rowFilter <- Callback function that sorts rows in the table
-//----------------------------------------------------------------
-/*
-function compare(a,b) {
-	var col = sortableTable.currentTable.getSortcolumn();
-	var tempA = a;
-	var tempB = b;
 
-	// Needed so that the counter starts from 0
-	// everytime we sort the table
-	count = 0;
-	if (col == "examiner") {
-		if(tempA.examiner!=null)tempA = filez.teachers[tempA.examiner].name;
-		if(tempB.examiner!=null)tempB = filez.teachers[tempB.examiner].name;
-	}
-
-  if(tempA != null){
-    tempA = tempA.toUpperCase();
-  }
-  if(tempB != null){
-    tempB = tempB.toUpperCase();
-  }
-
-	if (tempA > tempB) {
-		return 1;
-	} else if (tempA < tempB) {
-		return -1;
-	} else {
-		return 0;
-	}
-}
-*/
-function compare(a,b)
-{
-    // Find out which column and part of column are we sorting on from currentTable
-    let col = sortableTable.currentTable.getSortcolumn();
-    let kind = sortableTable.currentTable.getSortkind();
-    let val=0;
-
-    if (col == "firstname") {
-        a=JSON.parse(a);
-        b=JSON.parse(b);
-        a.firstname=$('<div/>').html(a.firstname).text();
-        b.firstname=$('<div/>').html(b.firstname).text();
-        if(kind==0){
-            val = b.firstname.toLocaleUpperCase().localeCompare(a.firstname.toLocaleUpperCase());
-        }else{
-            val = a.firstname.toLocaleUpperCase().localeCompare(b.firstname.toLocaleUpperCase());
-        }
-    }else if (col == "requestedpasswordchange") {
-			  a=JSON.parse(a);
-				b=JSON.parse(b);
-				if(kind==0){
-					val = b.requested<a.requested;
-			  }else{
-					val = a.requested<b.requested;
-			  }
-		} else {
-        if((kind%2)==0){
-						val=a<b;
-        }else{
-            val=b<a;
-        }
-		}
-		if (val === true) {
-      val = 1;
-    } else if (val === false) {
-      val = -1;
-    }
-    return val;
-}
 //--------------------------------------------------------------------------
 // editCell
 // ---------------
