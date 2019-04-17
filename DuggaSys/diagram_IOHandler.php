@@ -180,6 +180,7 @@ include '../Shared/navheader.php';
         </div>
     </div>
 <!-- content END -->
+
 <?php
 include '../Shared/loginbox.php';
 ?>
