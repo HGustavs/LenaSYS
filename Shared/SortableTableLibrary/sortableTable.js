@@ -1017,8 +1017,6 @@ function newCompare(firstCell, secoundCell) {
 	var firstCellTemp;
 	var secoundCellTemp;
 
-	console.log(firstCell);
-	console.log(secoundCell);
 	//Check if the cell is a valid cell in the table.
 	if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
