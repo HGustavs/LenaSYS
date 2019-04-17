@@ -177,7 +177,6 @@ p {
 
 #content {
   background: #fff;
-  min-height: calc(100vh - 80px);
   margin: 65px 10px 15px 10px;
 }
 
