@@ -1511,3 +1511,15 @@ function FABToggle() {
 				$('.fab-btn-sm').toggleClass('scale-out');
 		}
 }
+
+function generateTimeSheetOptions(course, moment, selected) {
+	// Different courses / moments have the ability to generate different options for the type field
+
+	// Only one timesheet is available right now
+	if (selected === 0) {
+		return "<option value='issue' selected>Issue</option><option value='pullrequest'>Pull request</option>";
+	} else {
+		return "<option value='issue'>Issue</option><option value='pullrequest' selected>Pull request</option>";
+	}
+	
+}

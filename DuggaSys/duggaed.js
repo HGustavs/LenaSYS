@@ -259,6 +259,7 @@ function addVariantSubmissionRow() {
 		"<option value='zip'>Zip</option>" +
 		"<option value='link'>Link</option>" +
 		"<option value='text'>Text</option>" +
+		"<option value='timesheet'>Timesheet</option>" +
 		"</select>" +
 		"<input type='text' name='s_fieldname' id='fieldname" + submissionRow + "' placeholder='Submission name' style='flex:1;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeyup='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'/>" +
 		"<input type='text' name='s_instruction' id='instruction" + submissionRow + "' placeholder='Upload instruction' style='flex:3;margin-left:5px;margin-bottom:3px;height:24.8px;' onkeyup='$(\"#variantparameterText\").val(createJSONString($(\"#jsonForm\").serializeArray()));'/>"
