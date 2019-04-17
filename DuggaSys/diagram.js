@@ -867,7 +867,7 @@ function drawVirtualA4() {
     if(!toggleA4) {
         return;
     }
-    // the correct according to 96dpi size, of a4 milimeters to pixels 
+    // the correct according to 96dpi size, of a4 milimeters to pixels
     const pixelsPerMillimeter = 3.781;
     const a4Width = 210 * pixelsPerMillimeter;
     const a4Height = 297 * pixelsPerMillimeter;
@@ -887,7 +887,7 @@ function drawVirtualA4() {
         //Latter two holes
         drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
         drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
-    }    
+    }
     ctx.restore();
 }
 
@@ -1465,26 +1465,30 @@ function removeLocalStorage() {
     }
 }
 
+// This function allows us to choose how many decimals (precision argument) that a value will be rounded down to.
+function decimalPrecision(value, precision){
+  var multipler = Math.pow(10, precision || 0);
+  return Math.round(value * multipler) / multipler;
+}
+
 //----------------------------------------------------------------------
 // reWrite: Function that rewrites the values of zoom and x+y that's under the canvas element
 //----------------------------------------------------------------------
 
 function reWrite() {
-
     if(!ghostingCrosses) {
         //We are now in debug mode/developer mode
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-         + "X=" + canvasMouseX
-         + " & Y=" + canvasMouseY + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
+         + "X=" + decimalPrecision(canvasMouseX, 1).toFixed(1)
+         + " & Y=" + decimalPrecision(canvasMouseY, 1).toFixed(1) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
     } else { 
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-         + "X=" + canvasMouseX
-         + " & Y=" + canvasMouseY + "</p>";
+         + "X=" + decimalPrecision(canvasMouseX, 1).toFixed(1)
+         + " & Y=" + decimalPrecision(canvasMouseY, 1).toFixed(1) + "</p>";
     }
 }
-
 //----------------------------------------
 // Renderer
 //----------------------------------------
@@ -2461,7 +2465,7 @@ function mousedownevt(ev) {
 
     } else if (sel.distance < tolerance) {
         for (var i = 0; i < diagram.length; i++) {
-            
+
         }
         md = 2;
     } else if (movobj != -1) {
