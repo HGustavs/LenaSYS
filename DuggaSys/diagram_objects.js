@@ -1,11 +1,14 @@
 
-/*
------ THIS FILE HANDLES THE OBJECTS AND -----
------ PATHS USED BY THE DIAGRAM FUNCTIONS -----
-*/
+/************************************************
+    
+    THIS FILE HANDLES THE OBJECTS AND
+    PATHS USED BY THE DIAGRAM FUNCTIONS
+    
+************************************************/
 
 //--------------------------------------------------------------------
 // Symbol - stores a diagram symbol
+// Function Symbol() handles the CREATE-functions in the diagram.
 //--------------------------------------------------------------------
 function Symbol(kind) {
     this.kind = 2;                  // Diagram object kind is always 2 for symbols
@@ -59,11 +62,11 @@ function Symbol(kind) {
     };
 
     //--------------------------------------------------------------------
-    // Returns the quadrant for a x,y coordinate in relation to bounding box and box center
-    // Quadrant Layout:
-    //       0|1     Top = 0     Right = 1
-    //      -----    Bottom = 2  Left = 3
-    //       3|2
+    // getquadrant: Returns the quadrant for a x,y coordinate in relation to bounding box and box center
+    //              Quadrant Layout:
+    //                    0|1     Top = 0     Right = 1
+    //                   -----    Bottom = 2  Left = 3
+    //                    3|2
     //--------------------------------------------------------------------
     this.getquadrant = function (xk, yk) {
         // Read cardinal points
@@ -115,7 +118,7 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // Iterates over all relation ends and checks if any need to change quadrants
+    // quadrants: Iterates over all relation ends and checks if any need to change quadrants
     //--------------------------------------------------------------------
     this.quadrants = function () {
         // Fix right connector box (1)
@@ -211,8 +214,8 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // Moves midpoint or other fixed point to geometric center of object again
-    // Restricts resizing for classes
+    // adjust: Moves midpoint or other fixed point to geometric center of object again
+    //         Restricts resizing for classes
     //--------------------------------------------------------------------
     this.adjust = function () {
         var x1 = points[this.topLeft].x;
@@ -222,10 +225,10 @@ function Symbol(kind) {
         var hw = (points[this.bottomRight].x - x1) * 0.5;
         var hh = (points[this.bottomRight].y - y1) * 0.5;
         if (this.symbolkind == 2 || this.symbolkind == 3) {
-            if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width){
+            if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width) {
                 points[this.bottomRight].x = points[this.topLeft].x + entityTemplate.width;
             }
-            if(points[this.bottomRight].y - points[this.topLeft].y < entityTemplate.height){
+            if(points[this.bottomRight].y - points[this.topLeft].y < entityTemplate.height) {
                 points[this.bottomRight].y = points[this.topLeft].y + entityTemplate.height;
             }
             points[this.centerPoint].x = x1 + hw;
@@ -236,54 +239,54 @@ function Symbol(kind) {
             points[this.topLeft].y = y1;
 
             var attrHeight, opHeight;
-            if(this.attributes.length > 0){
+            if(this.attributes.length > 0) {
                 //Height of text + padding
                 attrHeight = (this.attributes.length*14)+35;
             }
-            if(this.operations.length > 0){
+            if(this.operations.length > 0) {
                 opHeight = (this.operations.length*14)+15;
             }
             this.minHeight = attrHeight + opHeight;
 
             //Finding the longest string
             var longestStr = this.name;
-            for(var i = 0; i < this.operations.length; i++){
+            for(var i = 0; i < this.operations.length; i++) {
                 if(this.operations[i].text.length > longestStr.length)
                     longestStr = this.operations[i].text;
             }
-            for(var i = 0; i < this.attributes.length; i++){
+            for(var i = 0; i < this.attributes.length; i++) {
                 if(this.attributes[i].text.length > longestStr.length)
                     longestStr = this.attributes[i].text;
             }
             ctx.font = "14px Arial";
             this.minWidth = ctx.measureText(longestStr).width + 15;
 
-            if(points[this.middleDivider].y + opHeight > points[this.bottomRight].y){
+            if(points[this.middleDivider].y + opHeight > points[this.bottomRight].y) {
                 points[this.middleDivider].y = points[this.bottomRight].y - opHeight;
                 points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
             }
-            if(points[this.topLeft].y + attrHeight > points[this.middleDivider].y){
+            if(points[this.topLeft].y + attrHeight > points[this.middleDivider].y) {
                 points[this.middleDivider].y = points[this.topLeft].y + attrHeight;
                 points[this.topLeft].y = points[this.middleDivider].y - attrHeight;
             }
-            if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight){
+            if(points[this.bottomRight].y-points[this.topLeft].y < this.minHeight) {
                 points[this.bottomRight].y = points[this.middleDivider].y + opHeight;
             }
-            if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth){
+            if(points[this.bottomRight].x-points[this.topLeft].x < this.minWidth) {
                 points[this.bottomRight].x = points[this.topLeft].x + this.minWidth;
             }
-        } else if (this.symbolkind == 5){
-            if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2){
+        } else if (this.symbolkind == 5) {
+            if(points[this.bottomRight].x - points[this.topLeft].x < relationTemplate.width/2) {
                 points[this.bottomRight].x = points[this.topLeft].x + relationTemplate.width/2;
             }
-            if(points[this.bottomRight].y - points[this.topLeft].y < relationTemplate.height/2){
+            if(points[this.bottomRight].y - points[this.topLeft].y < relationTemplate.height/2) {
                 points[this.bottomRight].y = points[this.topLeft].y + relationTemplate.height/2;
             }
             points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
             points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
             points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
             
-        } else if (this.symbolkind == 6){
+        } else if (this.symbolkind == 6) {
             var fontsize = this.getFontsize();
             ctx.font = "bold " + fontsize + "px " + this.properties['font'];
 
@@ -306,10 +309,10 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // Sorts the connector
+    // sortConnector: Sorts the connector
     //--------------------------------------------------------------------
     this.sortConnector = function (connector, direction, start, end, otherside) {
-        if(this.symbolkind != 5){
+        if(this.symbolkind != 5) {
             var delta = (end - start) / (connector.length + 1);
         } else {
             var delta = (end - start) / 2;
@@ -329,7 +332,7 @@ function Symbol(kind) {
             }
 
             for (var i = 0; i < connector.length; i++) {
-                if(this.symbolkind != 5){
+                if(this.symbolkind != 5) {
                     ycc += delta;
                 }
                 points[connector[i].from].y = ycc;
@@ -358,7 +361,7 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // Sorts all connectors
+    // sortAllConnectors: Sorts all connectors
     //--------------------------------------------------------------------
     this.sortAllConnectors = function () {
         var c = this.corners();
@@ -372,25 +375,25 @@ function Symbol(kind) {
         this.sortConnector(this.connectorBottom, 2, x1, x2, y2);
     }
 
-    //return true if connector contains a certain point
+    // return true if connector contains a certain point
     this.hasConnector = function(point) {
         for (var i = 0; i < this.connectorTop.length; i++) {
-            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
+            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point) {
                 return true;
             }
         }
         for(var i = 0; i < this.connectorRight.length; i++) {
-            if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
+            if(this.connectorRight[i].to == point || this.connectorRight[i].from == point) {
                 return true;
             }
         }
         for (var i = 0; i < this.connectorBottom.length; i++) {
-            if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
+            if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point) {
                 return true;
             }
         }
         for (var i = 0; i < this.connectorLeft.length; i++) {
-            if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
+            if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point) {
                 return true;
             }
         }
@@ -418,22 +421,22 @@ function Symbol(kind) {
 
     this.hasConnectorFromPoint = function(point) {
         for (var i = 0; i < this.connectorTop.length; i++) {
-            if(this.connectorTop[i].from == point){
+            if(this.connectorTop[i].from == point) {
                 return true;
             }
         }
         for(var i = 0; i < this.connectorRight.length; i++) {
-            if(this.connectorRight[i].from == point){
+            if(this.connectorRight[i].from == point) {
                 return true;
             }
         }
         for (var i = 0; i < this.connectorBottom.length; i++) {
-            if(this.connectorBottom[i].from == point){
+            if(this.connectorBottom[i].from == point) {
                 return true;
             }
         }
         for (var i = 0; i < this.connectorLeft.length; i++) {
-            if(this.connectorLeft[i].from == point){
+            if(this.connectorLeft[i].from == point) {
                 return true;
             }
         }
@@ -441,21 +444,21 @@ function Symbol(kind) {
 
 
     //--------------------------------------------------------------------
-    // Returns true if xk,yk is inside the bounding box of the symbol
+    // isClicked: Returns true if xk,yk is inside the bounding box of the symbol
     //--------------------------------------------------------------------
     this.isClicked = function(mx, my) {
         return this.checkForHover(mx, my);
     }
 
     //--------------------------------------------------------------------
-    // Returns line distance to segment object e.g. line objects (currently only relationship markers)
+    // checkForHover: Returns line distance to segment object e.g. line objects (currently only relationship markers)
     //--------------------------------------------------------------------
     this.checkForHover = function (mx, my) {
-        if(this.symbolkind == 4){
+        if(this.symbolkind == 4) {
             return this.linehover(mx, my);
-        }else if(this.symbolkind == 3){
+        }else if(this.symbolkind == 3) {
             return this.entityhover(mx, my);
-        }else{
+        }else {
             return this.entityhover(mx, my);
         }
     }
@@ -479,48 +482,47 @@ function Symbol(kind) {
         return pointToLineDistance(points[this.topLeft], points[this.bottomRight], mx, my) < 11;
     }
 
-    this.entityhover = function(mx, my, c){
-        if(!c){
+    this.entityhover = function(mx, my, c) {
+        if(!c) {
              c = this.corners();
         }
         // We have correct points in the four corners of a square.
-        if(mx > c.tl.x && mx < c.tr.x){
-            if(my > c.tl.y && my < c.bl.y){
+        if(mx > c.tl.x && mx < c.tr.x) {
+            if(my > c.tl.y && my < c.bl.y) {
                 return true;
             }
         }
         return false;
     }
-  
+
     //-------------------------------------------------------------------------------
-    //init four points, the four corners based on the two cornerpoints in the symbol.
+    // corners: init four points, the four corners based on the two cornerpoints in the symbol.
     //-------------------------------------------------------------------------------
-    
-  this.corners = function(){
+    this.corners = function() {
         var p1 = points[this.topLeft];
         var p2 = points[this.bottomRight];
-        if(p1.x < p2.x){
-            if(p1.y < p2.y){
+        if(p1.x < p2.x) {
+            if(p1.y < p2.y) {
                 // We are in the topleft
                 tl = {x:p1.x, y:p1.y};
                 br = {x:p2.x, y:p2.y};
                 tr = {x:br.x, y:tl.y};
                 bl = {x:tl.x, y:br.y};
-            }else{
+            }else {
                 // We are in the bottomleft
                 tr = {x:p2.x, y:p2.y};
                 bl = {x:p1.x, y:p1.y};
                 tl = {x:bl.x, y:tr.y};
                 br = {x:tr.x, y:bl.y};
             }
-        }else{
-            if(p1.y < p2.y){
+        }else {
+            if(p1.y < p2.y) {
                 // We are in the topright
                 tr = {x:p1.x, y:p1.y};
                 bl = {x:p2.x, y:p2.y};
                 tl = {x:bl.x, y:tr.y};
                 br = {x:tr.x, y:bl.y};
-            }else{
+            }else {
                 // We are in the bottomright
                 br = {x:p1.x, y:p1.y};
                 tl = {x:p2.x, y:p2.y};
@@ -537,31 +539,31 @@ function Symbol(kind) {
     }
 
     //-------------------------------------------------------------------------------
-    //init four points, the four corners based on the two cornerpoints in the symbol.
+    // getCorners: init four points, the four corners based on the two cornerpoints in the symbol.
     //-------------------------------------------------------------------------------
-    function getCorners(p1, p2){
-    	if(p1.x < p2.x){
-            if(p1.y < p2.y){
+    function getCorners(p1, p2) {
+    	if(p1.x < p2.x) {
+            if(p1.y < p2.y) {
                 //we are in the topleft
                 tl = {x:p1.x, y:p1.y};
                 br = {x:p2.x, y:p2.y};
                 tr = {x:br.x, y:tl.y};
                 bl = {x:tl.x, y:br.y};
-            }else{
+            }else {
                 //we are in the bottomleft
                 tr = {x:p2.x, y:p2.y};
                 bl = {x:p1.x, y:p1.y};
                 tl = {x:bl.x, y:tr.y};
                 br = {x:tr.x, y:bl.y};
             }
-        }else{
-            if(p1.y < p2.y){
+        }else {
+            if(p1.y < p2.y) {
                 //we are in the topright
                 tr = {x:p1.x, y:p1.y};
                 bl = {x:p2.x, y:p2.y};
                 tl = {x:bl.x, y:tr.y};
                 br = {x:tr.x, y:bl.y};
-            }else{
+            }else {
                 //we are in the bottomright
                 br = {x:p1.x, y:p1.y};
                 tl = {x:p2.x, y:p2.y};
@@ -578,11 +580,11 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // Updates all points referenced by symbol
+    // move: Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
         if(this.locked) return;
-        if(this.symbolkind != 4){
+        if(this.symbolkind != 4) {
             points[this.topLeft].x += movex;
             points[this.topLeft].y += movey;
             points[this.bottomRight].x += movex;
@@ -593,13 +595,12 @@ function Symbol(kind) {
             } else if (this.symbolkind == 2 || this.symbolkind == 5 || this.symbolkind == 3 || this.symbolkind == 6) {
                 points[this.centerPoint].x += movex;
                 points[this.centerPoint].y += movey;
-            } 
+            }
         }
     }
 
     //--------------------------------------------------------------------
-    // erase/delete
-    // attempts to erase object completely from canvas
+    // erase: attempts to erase object completely from canvas
     //--------------------------------------------------------------------
     this.erase = function () {
         this.movePoints();
@@ -607,7 +608,7 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // Empties every connector of the object
+    // emptyConnectors: Empties every connector of the object
     //--------------------------------------------------------------------
     this.emptyConnectors = function () {
         for (var i = 0; i < this.connectorTop.length; i++) {
@@ -633,8 +634,8 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // Moves all relevant points, within the object, off the canvas.
-    // IMP!: Should not be moved back on canvas after this function is run.
+    // movePoints: Moves all relevant points, within the object, off the canvas.
+    //             IMP!: Should not be moved back on canvas after this function is run.
     //--------------------------------------------------------------------
     this.movePoints = function () {
         if (this.symbolkind == 4) return;
@@ -643,36 +644,33 @@ function Symbol(kind) {
         points[this.centerPoint] = waldoPoint;
         points[this.middleDivider] = waldoPoint;
     }
-    //--------------------------------------------------------------------
-    // Moves all relevant points, within the object, off the canvas.
-    // IMP!: Should not be moved back on canvas after this function is run.
-    //--------------------------------------------------------------------
+
     this.removePointFromConnector = function(point) {
         var broken = false;
-        for(var i = 0; i < this.connectorTop.length; i++){
-            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point){
+        for(var i = 0; i < this.connectorTop.length; i++) {
+            if(this.connectorTop[i].to == point || this.connectorTop[i].from == point) {
                 this.connectorTop.splice(i,1);
                 broken = true;
                 break;
             }
         }
-        if(!broken){
-            for(var i = 0; i < this.connectorBottom.length; i++){
-                if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point){
+        if(!broken) {
+            for(var i = 0; i < this.connectorBottom.length; i++) {
+                if(this.connectorBottom[i].to == point || this.connectorBottom[i].from == point) {
                     this.connectorBottom.splice(i,1);
                     broken = true;
                     break;
                 }
             }
-            for(var i = 0; i < this.connectorRight.length; i++){
-                if(this.connectorRight[i].to == point || this.connectorRight[i].from == point){
+            for(var i = 0; i < this.connectorRight.length; i++) {
+                if(this.connectorRight[i].to == point || this.connectorRight[i].from == point) {
                     this.connectorRight.splice(i,1);
                     broken = true;
                     break;
                 }
             }
-            for(var i = 0; i < this.connectorLeft.length; i++){
-                if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point){
+            for(var i = 0; i < this.connectorLeft.length; i++) {
+                if(this.connectorLeft[i].to == point || this.connectorLeft[i].from == point) {
                     this.connectorLeft.splice(i,1);
                     broken = true;
                     break;
@@ -681,39 +679,41 @@ function Symbol(kind) {
         }
     }
 
-    // Adds each corner point to an array and returns the array
+    //-----------------------------------------------------------------------
+    // getPoints: Adds each corner point to an array and returns the array
+    //-----------------------------------------------------------------------
     this.getPoints = function() {
         var privatePoints = [];
-        if(this.symbolkind==3){
+        if(this.symbolkind==3) {
             for (var i = 0; i < this.connectorTop.length; i++) {
-                if(this.getquadrant(this.connectorTop[i].to.x,this.connectorTop[i].to.y) != -1){
+                if(this.getquadrant(this.connectorTop[i].to.x,this.connectorTop[i].to.y) != -1) {
                     privatePoints.push(this.connectorTop[i].to);
                 }
-                if(this.getquadrant(this.connectorTop[i].from.x,this.connectorTop[i].from.y) != -1){
+                if(this.getquadrant(this.connectorTop[i].from.x,this.connectorTop[i].from.y) != -1) {
                     privatePoints.push(this.connectorTop[i].from);
                 }
             }
             for (var i = 0; i < this.connectorRight.length; i++) {
-                if(this.getquadrant(this.connectorRight[i].to.x,this.connectorRight[i].to.y) != -1){
+                if(this.getquadrant(this.connectorRight[i].to.x,this.connectorRight[i].to.y) != -1) {
                     privatePoints.push(this.connectorRight[i].to);
                 }
-                if(this.getquadrant(this.connectorRight[i].from.x,this.connectorRight[i].from.y) != -1){
+                if(this.getquadrant(this.connectorRight[i].from.x,this.connectorRight[i].from.y) != -1) {
                     privatePoints.push(this.connectorRight[i].from);
                 }
             }
             for (var i = 0; i < this.connectorBottom.length; i++) {
-                if(this.getquadrant(this.connectorBottom[i].to.x,this.connectorBottom[i].to.y) != -1){
+                if(this.getquadrant(this.connectorBottom[i].to.x,this.connectorBottom[i].to.y) != -1) {
                     privatePoints.push(this.connectorBottom[i].to);
                 }
-                if(this.getquadrant(this.connectorBottom[i].from.x,this.connectorBottom[i].from.y) != -1){
+                if(this.getquadrant(this.connectorBottom[i].from.x,this.connectorBottom[i].from.y) != -1) {
                     privatePoints.push(this.connectorBottom[i].from);
                 }
             }
             for (var i = 0; i < this.connectorLeft.length; i++) {
-                if(this.getquadrant(this.connectorLeft[i].to.x,this.connectorLeft[i].to.y) != -1){
+                if(this.getquadrant(this.connectorLeft[i].to.x,this.connectorLeft[i].to.y) != -1) {
                     privatePoints.push(this.connectorLeft[i].to);
                 }
-                if(this.getquadrant(this.connectorLeft[i].from.x,this.connectorLeft[i].from.y) != -1){
+                if(this.getquadrant(this.connectorLeft[i].from.x,this.connectorLeft[i].from.y) != -1) {
                     privatePoints.push(this.connectorLeft[i].from);
                 }
             }
@@ -726,7 +726,7 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // Returns all the lines connected to the object
+    // getLines: Returns all the lines connected to the object
     //--------------------------------------------------------------------
     this.getLines = function() {
         var privatePoints = this.getPoints();
@@ -736,7 +736,7 @@ function Symbol(kind) {
             //Connected to connectors top, right, bottom and left; topLeft, bottomRight, centerPoint or middleDivider.
             for (var j = 0; j < privatePoints.length; j++) {
                 if (lines[i].topLeft == privatePoints[j] || lines[i].bottomRight == privatePoints[j]) {
-                    if(objectLines.indexOf(lines[i])==-1){
+                    if(objectLines.indexOf(lines[i])==-1) {
                         objectLines.push(lines[i]);
                         break;
                     }
@@ -747,13 +747,14 @@ function Symbol(kind) {
     }
 
     //--------------------------------------------------------------------
-    // Redraws graphics
+    // draw: Redraws graphics
     //--------------------------------------------------------------------
-    //     beginpath - moveto - lineto
+    //       beginpath - moveto - lineto
     //      
-    //     To make a dashed line, draw with:
-    //     ctx.setLineDash(segments);
+    //       To make a dashed line, draw with:
+    //       ctx.setLineDash(segments);
     //--------------------------------------------------------------------
+      
     this.draw = function () {
         ctx.lineWidth = this.properties['lineWidth'] * 2;
         this.properties['textSize'] = this.getFontsize();
@@ -764,10 +765,10 @@ function Symbol(kind) {
         var x2 = points[this.bottomRight].x;
         var y2 = points[this.bottomRight].y;
 
-        if(this.locked){
+        if(this.locked) {
             this.drawLock();
 
-            if(this.isHovered){
+            if(this.isHovered) {
                 this.drawLockedTooltip();
             }
         }
@@ -779,27 +780,27 @@ function Symbol(kind) {
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px " + this.properties['font'];
 
         // 1 = UML
-        if(this.symbolkind == 1){
+        if(this.symbolkind == 1) {
             this.drawUML(x1, y1, x2, y2);
         }
         // 2 = ER attribute
-        else if(this.symbolkind == 2){
+        else if(this.symbolkind == 2) {
             this.drawERAttribute(x1, y1, x2, y2);
         }
         // 3 = entity
-        else if(this.symbolkind == 3){
+        else if(this.symbolkind == 3) {
             this.drawEntity(x1, y1, x2, y2);
         }
         // 4 = line
-        else if(this.symbolkind == 4){
+        else if(this.symbolkind == 4) {
             this.drawLine(x1, y1, x2, y2);
         }
         // 5 = ER relation
-        else if(this.symbolkind == 5){
+        else if(this.symbolkind == 5) {
             this.drawRelation(x1, y1, x2, y2);
         }
         // 6 = Text 
-        else if (this.symbolkind == 6){
+        else if (this.symbolkind == 6) {
             this.drawText(x1, y1, x2, y2);
         }
 
@@ -807,7 +808,7 @@ function Symbol(kind) {
         ctx.setLineDash([]);
 
         //Highlighting points when targeted, makes it easier to resize
-        if(this.targeted && this.symbolkind != 6){
+        if(this.targeted && this.symbolkind != 6) {
             ctx.beginPath();
             ctx.arc(x1,y1,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
@@ -817,7 +818,7 @@ function Symbol(kind) {
             ctx.arc(x2,y2,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
-            if(this.symbolkind != 4){
+            if(this.symbolkind != 4) {
                 ctx.beginPath();
                 ctx.arc(x1,y2,5,0,2*Math.PI,false);
                 ctx.fillStyle = '#F82';
@@ -836,6 +837,7 @@ function Symbol(kind) {
     //---------------------------------------------------------
     // Functions used to draw objects
     //---------------------------------------------------------
+
     this.drawUML = function(x1, y1, x2, y2)
     {
         var midy = points[this.middleDivider].y;
@@ -866,10 +868,10 @@ function Symbol(kind) {
         // Write Class Name
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        if(ctx.measureText(this.name).width >= (x2-x1) - 2){
+        if(ctx.measureText(this.name).width >= (x2-x1) - 2) {
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 2 , y1 + (0.85 * this.properties['textSize']));
-        }else{
+        }else {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), y1 + (0.85 * this.properties['textSize']));
         }
         if (this.properties['key_type'] == 'Primary key') {
@@ -895,9 +897,8 @@ function Symbol(kind) {
         }
     }
 
-    this.drawERAttribute = function(x1, y1, x2, y2){
+    this.drawERAttribute = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
-        //This is a temporary solution to the black symbol problem
         // Drawing a multivalue attribute
         if (this.properties['key_type'] == 'Multivalue') {
             drawOval(x1 - 7, y1 - 7, x2 + 7, y2 + 7);
@@ -912,7 +913,7 @@ function Symbol(kind) {
             this.makeShadow();
         }
         ctx.clip();
-      
+
         //drawing an derived attribute
         if (this.properties['key_type'] == 'Drive') {
 
@@ -931,15 +932,15 @@ function Symbol(kind) {
         ctx.stroke();
         ctx.setLineDash([]);
         ctx.fillStyle = this.properties['fontColor'];
-        if(ctx.measureText(this.name).width > (x2-x1) - 4){
+        if(ctx.measureText(this.name).width > (x2-x1) - 4) {
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 4 , (y1 + ((y2 - y1) * 0.5)));
-        }else{
+        }else {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
 
-    this.drawEntity = function(x1, y1, x2, y2){
+    this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
         ctx.beginPath();
         if (this.properties['key_type'] == "Weak") {
@@ -964,21 +965,21 @@ function Symbol(kind) {
 
         ctx.fillStyle = this.properties['fontColor'];
 
-        if(ctx.measureText(this.name).width >= (x2-x1) - 5){
+        if(ctx.measureText(this.name).width >= (x2-x1) - 5) {
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 3 , (y1 + ((y2 - y1) * 0.5)));
-        }else{
+        }else {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
         ctx.font = parseInt(this.properties['textSize']) + "px " + this.properties['font'];
     }
 
-    this.drawLine = function(x1, y1, x2, y2){
+    this.drawLine = function(x1, y1, x2, y2) {
         //Checks if there is cardinality set on this object
-        if(this.cardinality[0].value != "" && this.cardinality[0].value != null){
+        if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
             //Updates x and y position
             ctx.fillStyle = '#000';
-            if(this.cardinality[0].symbolKind == 1){
+            if(this.cardinality[0].symbolKind == 1) {
                 var valX = x1 > x2 ? x1-15 : x1+15;
                 var valY = y1 > y2 ? y1-15 : y1+15;
                 var valY2 = y2 > y1 ? y2-15 : y2+15;
@@ -986,7 +987,7 @@ function Symbol(kind) {
                 ctx.fillText(this.cardinality[0].value, valX, valY);
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
             }
-            else if(this.cardinality[0].isCorrectSide){
+            else if(this.cardinality[0].isCorrectSide) {
                 this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
                 ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
             }
@@ -1021,87 +1022,86 @@ function Symbol(kind) {
     }
 
     //---------------------------------------------------------------
-    // Moves the value of the cardinality to avoid overlap with line
+    // moveCardinality: Moves the value of the cardinality to avoid overlap with line
     //---------------------------------------------------------------
-    this.moveCardinality = function(x1, y1, x2, y2, side){
+    this.moveCardinality = function(x1, y1, x2, y2, side) {
         let boxCorners = this.corners();
         let dtlx, dlty, dbrx, dbry;			// Corners for diagram objects and line
 
         const cardinality = this.cardinality[0];
 
         // Correct corner e.g. top left, top right, bottom left or bottom right
-        let correctCorner = getCorrectCorner(cardinality, 
-    										boxCorners.tl.x, 
-    										boxCorners.tl.y, 
-    										boxCorners.br.x, 
+        let correctCorner = getCorrectCorner(cardinality,
+    										boxCorners.tl.x,
+    										boxCorners.tl.y,
+    										boxCorners.br.x,
     										boxCorners.br.y);
 
         // Find which box the cardinality number is connected to
-        for(var i = 0; i < diagram.length; i++){
+        for(var i = 0; i < diagram.length; i++) {
             dtlx = diagram[i].corners().tl.x;
             dtly = diagram[i].corners().tl.y;
             dbrx = diagram[i].corners().br.x;
             dbry = diagram[i].corners().br.y;
 
-            if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry){
+            if(correctCorner.x == dtlx || correctCorner.x == dbrx || correctCorner.y == dtly || correctCorner.y == dbry) {
                 cardinality.parentBox = diagram[i];
                 break;
             }
-        }    
+        }
 
 	    // Decide whether x1 and y1 is relevant or x2 and y2
-	    if(side == "CorrectSide"){
+	    if(side == "CorrectSide") {
 		    if(cardinality.parentBox != null) {
 		        var correctBox = getCorners(points[cardinality.parentBox.topLeft], points[cardinality.parentBox.bottomRight]);
 		        // Determine on which side of the box the cardinality should be placed
-		        if(correctBox.tl.x < x1 && correctBox.br.x > x1){
+		        if(correctBox.tl.x < x1 && correctBox.br.x > x1) {
 		            cardinality.axis = "X";
 		        }
-		        if(correctBox.tl.y < y1 && correctBox.br.y > y1){
+		        if(correctBox.tl.y < y1 && correctBox.br.y > y1) {
 		            cardinality.axis = "Y";
 		        }
 		    }
 
 		    // Move the value from the line
-		    cardinality.x = x1 > x2 ? x1-10 : x1+10;        
+		    cardinality.x = x1 > x2 ? x1-10 : x1+10;
 		    cardinality.y = y1 > y2 ? y1-10 : y1+10;
 
 		    // Change side of the line to avoid overlap
-		    if(cardinality.axis == "X"){
+		    if(cardinality.axis == "X") {
 		        cardinality.x = x1 > x2 ? x1+10 : x1-10;
 		    }
-		    else if(cardinality.axis == "Y"){   
+		    else if(cardinality.axis == "Y") {   
 		        cardinality.y = y1 > y2 ? y1+10 : y1-10;                    
 		    }
 	    }
-	    else if(side == "IncorrectSide"){
+	    else if(side == "IncorrectSide") {
 		    if(cardinality.parentBox != null) {
 		        var correctBox = getCorners(points[this.cardinality[0].parentBox.topLeft], points[this.cardinality[0].parentBox.bottomRight]);
 		        // Determine on which side of the box the cardinality should be placed
-		        if(correctBox.tl.x < x2 && correctBox.br.x > x2){
+		        if(correctBox.tl.x < x2 && correctBox.br.x > x2) {
 		            cardinality.axis = "X";
 		        }
-		        if(correctBox.tl.y < y2 && correctBox.br.y > y2){
+		        if(correctBox.tl.y < y2 && correctBox.br.y > y2) {
 		            cardinality.axis = "Y";
 		        }
 		    }
 
 		    // Move the value from the line
-		    cardinality.x = x2 > x1 ? x2-10 : x2+10;        
+		    cardinality.x = x2 > x1 ? x2-10 : x2+10;
 		    cardinality.y = y2 > y1 ? y2-10 : y2+10;
 
 		    // Change side of the line to avoid overlap
-		    if(cardinality.axis == "X"){
+		    if(cardinality.axis == "X") {
 		        cardinality.x = x2 > x1 ? x2+10 : x2-10;
 		    }
-		    else if(cardinality.axis == "Y"){   
+		    else if(cardinality.axis == "Y") {   
 		        cardinality.y = y2 > y1 ? y2+10 : y2-10;                    
 		    }
-
 	    }
     }
 
-    this.drawRelation = function(x1, y1, x2, y2){
+    this.drawRelation = function(x1, y1, x2, y2) {
         var midx = points[this.centerPoint].x;
         var midy = points[this.centerPoint].y;
         ctx.beginPath();
@@ -1127,10 +1127,10 @@ function Symbol(kind) {
 
         ctx.stroke();
         ctx.fillStyle = this.properties['fontColor'];
-        if(ctx.measureText(this.name).width >= (x2-x1) - 12){
+        if(ctx.measureText(this.name).width >= (x2-x1) - 12) {
             ctx.textAlign = "start";
             ctx.fillText(this.name, x1 + 10 , (y1 + ((y2 - y1) * 0.5)));
-        }else{
+        }else {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
@@ -1193,9 +1193,9 @@ function Symbol(kind) {
             // Name
             svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
             var nameLength = ctx.measureText(this.name).width;
-            if(nameLength >= (x2-x1) - 2){
+            if(nameLength >= (x2-x1) - 2) {
                 svgPos = "x='"+(x1+2)+"' y='"+(y1+(0.85*this.properties['textSize']))+"' text-anchor='middle' dominant-baseline='central'";
-            }else{
+            }else {
                 svgPos = "x='"+(x1+((x2 - x1)*0.5))+"' y='"+(y1+(0.85*fontsize))+"' text-anchor='middle' dominant-baseline='central'";
             }
             str += "<text "+svgPos+" style='"+svgStyle+"'>"+this.name+"</text>";
@@ -1309,9 +1309,9 @@ function Symbol(kind) {
 			}
 			// Text
 			svgStyle = "fill:"+this.properties['fontColor']+";font:"+font+";";
-			if(ctx.measureText(this.name).width >= (x2-x1) - 12){
+			if(ctx.measureText(this.name).width >= (x2-x1) - 12) {
 				svgPos = "x='"+(x1+10)+"' y='"+(y1 + ((y2 - y1) * 0.5))+"' text-anchor='start' dominant-baseline='central'";
-			}else{
+			}else {
 				svgPos = "x='"+(x1+((x2-x1)*0.5))+"' y='"+(y1+((y2-y1)*0.5))+"' text-anchor='middle' dominant-baseline='central'";
 			}
 			str += "<text "+svgPos+" style='"+svgStyle+"' clip-path='url(#"+this.name+symbolID+")'>"+this.name+"</text>";
@@ -1361,7 +1361,7 @@ function Symbol(kind) {
 		return fontsize;
 	}
 
-    this.makeShadow = function(){
+    this.makeShadow = function() {
         ctx.save();
         ctx.shadowBlur = this.shadowBlur;
         ctx.shadowOffsetX = this.properties['shadowOffsetX'];
@@ -1378,8 +1378,8 @@ function Symbol(kind) {
 
         let offset = 10;
 
-        return { 
-                x: x2 + offset, 
+        return {
+                x: x2 + offset,
                 y: y2 - (y2-y1)/2
             };
     }
@@ -1435,7 +1435,7 @@ this.drawOval = function (x1, y1, x2, y2) {
     ctx.quadraticCurveTo(x1, y2, x1, middleY);
 }
 
-function pointToLineDistance(P1, P2, x, y){
+function pointToLineDistance(P1, P2, x, y) {
     var numerator, denominator;
     numerator = Math.abs((P2.y-P1.y)*x - (P2.x - P1.x)*y + P2.x * P1.y - P2.y*P1.x);
     denominator = Math.sqrt((P2.y - P1.y)*(P2.y - P1.y) + (P2.x - P1.x)*(P2.x - P1.x));
@@ -1443,28 +1443,28 @@ function pointToLineDistance(P1, P2, x, y){
 }
 
 //----------------------------------------------------------------------
-// Helper function for getting correct corner of a line with cardinality
+// getCorrectCorner: Helper function for getting correct corner of a line with cardinality
 //----------------------------------------------------------------------
-function getCorrectCorner(cardinality, ltlx, ltly, lbrx, lbry){
+function getCorrectCorner(cardinality, ltlx, ltly, lbrx, lbry) {
 		let cornerX, cornerY;
 
 		// Top left corner
-        if(Math.abs(cardinality.x - ltlx) + Math.abs(cardinality.y - ltly) == 20){
+        if(Math.abs(cardinality.x - ltlx) + Math.abs(cardinality.y - ltly) == 20) {
             cornerX = ltlx;
             cornerY = ltly;
         }
         // Top right corner
-        else if(Math.abs(cardinality.x - lbrx) + Math.abs(cardinality.y - ltly) == 20){
+        else if(Math.abs(cardinality.x - lbrx) + Math.abs(cardinality.y - ltly) == 20) {
             cornerX = lbrx;
             cornerY = ltly;
         }
         // Bottom left corner
-        else if(Math.abs(cardinality.x - ltlx) + Math.abs(cardinality.y - lbry) == 20){
+        else if(Math.abs(cardinality.x - ltlx) + Math.abs(cardinality.y - lbry) == 20) {
             cornerX = ltlx;
             cornerY = lbry;
         }
         // Bottom right corner
-        else if(Math.abs(cardinality.x - lbrx) + Math.abs(cardinality.y - lbry) == 20){
+        else if(Math.abs(cardinality.x - lbrx) + Math.abs(cardinality.y - lbry) == 20) {
             cornerX = lbrx;
             cornerY = lbry;
         }
@@ -1476,9 +1476,8 @@ function getCorrectCorner(cardinality, ltlx, ltly, lbrx, lbry){
 }
 
 //--------------------------------------------------------------------
-// path - stores a number of segments
+// Path - stores a number of segments, handles e.g the two DRAW-functions in the diagram.
 //--------------------------------------------------------------------
-
 function Path() {
     this.kind = 1;                  // Path kind
     this.segments = Array();        // Segments
@@ -1486,7 +1485,7 @@ function Path() {
     this.tmplist = Array();         // Temporary list for testing of intersections
     this.auxlist = Array();         // Auxillary temp list for testing of intersections
     this.fillColor = '#ffffff';     // Fill color (default is white)
-    this.opacity = 1;               // Opacity valuefor figures
+    this.opacity = 1;               // Opacity value for figures
     this.isorganized = true;        // This is true if segments are organized e.g. can be filled using a single command since segments follow a path 1,2-2,5-5,9 etc
     this.targeted = true;           // An organized path can contain several sub-path, each of which must be organized
     this.figureType = "Square";
@@ -1494,8 +1493,9 @@ function Path() {
         'strokeColor': '#000000',   // Stroke color (default is black)
         'lineWidth': '2'            // Line Width (stroke width - default is 2 pixels)
     };
+
     //--------------------------------------------------------------------
-    // Performs a delta-move on all points in a path
+    // move: Performs a delta-move on all points in a path
     //--------------------------------------------------------------------
     this.move = function(movex, movey) {
         for (var i = 0; i < this.segments.length; i++) {
@@ -1505,26 +1505,28 @@ function Path() {
         this.calculateBoundingBox();
     }
 
-    // Is used to adjust the points of each symbol when moved
-    this.adjust = function(){
-        if(this.figureType == "Square"){
+    //--------------------------------------------------------------------
+    // adjust: Is used to adjust the points of each symbol when moved
+    //--------------------------------------------------------------------
+    this.adjust = function() {
+        if(this.figureType == "Square") {
             if(!sel) return;
-            for(var i = 0; i < this.segments.length; i++){
+            for(var i = 0; i < this.segments.length; i++) {
                 var seg = this.segments[i];
-                if(points[seg.pa] == sel.point){
-                    if(i == 0){
+                if(points[seg.pa] == sel.point) {
+                    if(i == 0) {
                         points[seg.pb].x = sel.point.x;
                         points[seg.pb+1].y = sel.point.y;
                     }
-                    else if(i == 1){
+                    else if(i == 1) {
                         points[seg.pb-1].x = sel.point.x;
                         points[seg.pb].y = sel.point.y;
                     }
-                    else if(i == 2){
+                    else if(i == 2) {
                         points[seg.pb].x = sel.point.x;
                         points[seg.pb-1].y = sel.point.y;
                     }
-                    else if(i == 3){
+                    else if(i == 3) {
                         points[seg.pb+1].x = sel.point.x;
                         points[seg.pb].y = sel.point.y;
                     }
@@ -1535,7 +1537,7 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // Adds a segment to a path
+    // addsegment: Adds a segment to a path
     //--------------------------------------------------------------------
     this.addsegment = function(kind, p1, p2, p3, p4, p5, p6, p7, p8) {
         if (kind == 1) {
@@ -1550,9 +1552,9 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // Calculates a boundary box for the figure.
-    // Saves min and max values of X and Y.
-    // This is to faster check for clicks inside of the figure.
+    // calculateBoundingBox: Calculates a boundary box for the figure.
+    //                       Saves min and max values of X and Y.
+    //                       This is to faster check for clicks inside of the figure.
     //--------------------------------------------------------------------
     this.calculateBoundingBox = function() {
         var minX = points[this.segments[0].pa].x;
@@ -1580,7 +1582,7 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // Draws filled path to screen (or svg when that functionality is added)
+    // draw: Draws filled path to screen (or svg when that functionality is added)
     //--------------------------------------------------------------------
     this.draw = function (fillstate, strokestate) {
         if (this.isorganized == false) {
@@ -1590,7 +1592,7 @@ function Path() {
             // Assign stroke style, color, transparency etc
             var shouldFill = true;
 
-            if(this.fillColor == "noFill"){
+            if(this.fillColor == "noFill") {
               shouldFill = false;
             }
 
@@ -1630,10 +1632,10 @@ function Path() {
                 ctx.stroke();
             }
 
-            for(var i = 0; i < this.segments.length; i++){
+            for(var i = 0; i < this.segments.length; i++) {
                 var seg = points[this.segments[i].pa];
                 var segb = points[this.segments[i].pb];
-                if(this.targeted){
+                if(this.targeted) {
                     ctx.beginPath();
                     ctx.arc(seg.x,seg.y,5,0,2*Math.PI,false);
                     ctx.fillStyle = '#F82';
@@ -1649,7 +1651,7 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // Returns true if coordinate xk, yk falls inside the bounding box of the symbol
+    // isClicked: Returns true if coordinate xk, yk falls inside the bounding box of the symbol
     //--------------------------------------------------------------------
     this.isClicked = function(xCoordinate, yCoordinate) {
         var intersections = 0;
@@ -1683,7 +1685,7 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // Recursively splits a line at intersection points from top to bottom until there is no line left
+    // recursetest: Recursively splits a line at intersection points from top to bottom until there is no line left
     //--------------------------------------------------------------------
     this.recursetest = function(p1,p2) {
         var yk = 5000;
@@ -1714,8 +1716,8 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // Line to line intersection
-    // Does not detect intersections on end points (we do not want end points to be part of intersection set)
+    // intersection: Line to line intersection
+    //               Does not detect intersections on end points (we do not want end points to be part of intersection set)
     //--------------------------------------------------------------------
     this.intersection = function(p1, p2, p3, p4) {
         var x1 = points[p1].x;
@@ -1785,8 +1787,8 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // Checks if a line already exists but in the reverse direction
-    // Only checks lines, not bezier curves
+    // existsline: Checks if a line already exists but in the reverse direction
+    //             Only checks lines, not bezier curves
     //--------------------------------------------------------------------
     this.existsline = function (p1, p2, segmentset) {
         if (p1 == p2) {
@@ -1803,8 +1805,8 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // Line to line intersection
-    // Does not detect intersections on end points (we do not want end points to be part of intersection set)
+    // boolOp: Line to line intersection
+    //         Does not detect intersections on end points (we do not want end points to be part of intersection set)
     //--------------------------------------------------------------------
     this.boolOp = function(otherpath) {
         // Clear temporary lists used for merging paths
@@ -1854,7 +1856,7 @@ function Path() {
     }
 
     //--------------------------------------------------------------------
-    // Debug drawing of a segment set (for example for drawing tmplist, auxlist etc)
+    // drawsegments: Debug drawing of a segment set (for example for drawing tmplist, auxlist etc)
     //--------------------------------------------------------------------
     this.drawsegments = function (segmentlist, color) {
         // Draw aux set
@@ -1925,7 +1927,7 @@ function createFigure() {
 }
 
 //--------------------------------------------------------------------
-// Free draw, the user have to click for every point to draw on the canvas.
+// figureFreeDraw: Free draw, the user have to click for every point to draw on the canvas.
 //--------------------------------------------------------------------
 function figureFreeDraw() {
     p1 = null;
@@ -1943,7 +1945,7 @@ function figureFreeDraw() {
         }
         // Check if the new point is the starting point
         var closestPoint = points.closestPoint(points[p2].x, points[p2].y, p2);
-        if(closestPoint.index == startPosition && closestPoint.distance < 20){
+        if(closestPoint.index == startPosition && closestPoint.distance < 20) {
             // Delete all previous rendered lines
             for (var i = 0; i < numberOfPointsInFigure; i++) {
                 diagram.pop();
@@ -1970,13 +1972,30 @@ function figureFreeDraw() {
     }
 }
 
+function mouseDown() { 
+    globalMouseState = 1;
+}
+
+function mouseUp() {
+    globalMouseState = 0;
+}
+
+function toggleFirstPoint(){
+    if(globalMouseState == 0){
+        isFirstPoint = false;
+    }
+    else {
+        isFirstPoint = true;
+    }
+}
+
 //--------------------------------------------------------------------
-// Draws a square between p1 and p2.
+// figureSquare: Draws a square between p1 and p2.
 //--------------------------------------------------------------------
 function figureSquare() {
     if (isFirstPoint) {
         p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
-        isFirstPoint = false;
+        toggleFirstPoint();
     } else {
         p3 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         p2 = points.addPoint(points[p1].x, points[p3].y, false);
@@ -1993,7 +2012,7 @@ function figureSquare() {
 }
 
 //--------------------------------------------------------------------
-// Resets all varables to ther default start value.
+// cleanUp: Resets all varables to ther default start value.
 //--------------------------------------------------------------------
 function cleanUp() {
     figurePath = new Path;
