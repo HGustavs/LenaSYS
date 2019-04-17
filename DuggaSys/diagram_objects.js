@@ -38,6 +38,9 @@ function Symbol(kind) {
     this.minWidth;
     this.minHeight;
     this.locked = false;
+    this.isOval = false;
+    this.isRelation = false;
+    this.isLine = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -967,7 +970,7 @@ function Symbol(kind) {
                     
                     if (diagram[i].isRelation) {
                         var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
-                        var relationMiddleY = ((dtly - dbly) / 2) + dtly;
+                        var relationMiddleY = ((dbly - dtly) / 2) + dtly;
                         console.log("Relation found");
                         relationCorners.push(relationMiddleX, relationMiddleY);
                         console.log(relationCorners.length);
@@ -1051,6 +1054,7 @@ function Symbol(kind) {
                                 }
                             }
                         }
+                    }
                 }
             }
 
@@ -1076,6 +1080,7 @@ function Symbol(kind) {
     }
 
     this.drawLine = function(x1, y1, x2, y2) {
+        isLine = true;
         //Checks if there is cardinality set on this object
         if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
             //Updates x and y position
@@ -1203,6 +1208,7 @@ function Symbol(kind) {
     }
 
     this.drawRelation = function(x1, y1, x2, y2) {
+        isRelation = true;
         var midx = points[this.centerPoint].x;
         var midy = points[this.centerPoint].y;
         ctx.beginPath();
@@ -1526,6 +1532,7 @@ function Symbol(kind) {
 }
 
 this.drawOval = function (x1, y1, x2, y2) {
+    isOval = true;
     var middleX = x1 + ((x2 - x1) * 0.5);
     var middleY = y1 + ((y2 - y1) * 0.5);
     ctx.beginPath();
