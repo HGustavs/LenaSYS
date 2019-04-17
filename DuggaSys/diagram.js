@@ -860,7 +860,7 @@ function toggleVirtualA4() {
         toggleA4 = true;
         updateGraphics();
     }
-    $(".drop-down-option:contains('Display Virtual A4')").parent().toggleClass("drop-down-item drop-down-item-disabled");
+    $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
 }
 
