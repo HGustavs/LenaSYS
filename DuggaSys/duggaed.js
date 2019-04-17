@@ -87,7 +87,7 @@ function selectDugga(qid) {
 	$("#deadlinet3").html(makeoptions(dls.deadline3.substr(11,2),tarro,tarrv));
   $("#deadlinem3").html(makeoptions(dls.deadline3.substr(14,2),marro,marrv));
   if(quiz['qrelease']===null)quiz['qrelease']="";
-  $("#release").val(quiz['qrelease']);
+  $("#release").val(quiz['qrelease'].substr(0,10));
 	$("#releaset").html(makeoptions(quiz['qrelease'].substr(11,2),tarro,tarrv));
   $("#releasem").html(makeoptions(quiz['qrelease'].substr(14,2),marro,marrv));
 
