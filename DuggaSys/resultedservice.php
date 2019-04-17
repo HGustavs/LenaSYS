@@ -21,6 +21,7 @@ if(isset($_SESSION['uid'])){
 	$firstname="UNK";
 }
 
+$requestType = getOP('requestType');
 $searchterm = getOP('searchterm');
 $courseid = getOP('courseid');
 $opt = getOP('opt');
