@@ -879,7 +879,7 @@ function renderCell(col, celldata, cellid) {
 function rowFilter(row) {
   for(var i = 0; i < moments.length; i++)
   {
-    var lid = "lid:"+row["lid"];
+    var lid = "lid:"+moments[i]["lid"];
     console.log(row[lid]);
   }
 
