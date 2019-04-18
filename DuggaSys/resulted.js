@@ -914,7 +914,11 @@ function rowFilter(row) {
       {
         lid = "lid:"+moments[i]["lid"];
 
-        if(columnToSearch===row[lid].entryname)
+        var txt = document.createElement("textarea");
+        txt.innerHTML = row[lid].entryname;
+        var columnToFind = txt.value;
+        
+        if(columnToSearch===columnToFind)
         {
           if(row[lid].grade===2)
           {
