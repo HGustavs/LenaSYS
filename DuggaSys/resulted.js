@@ -137,6 +137,7 @@ function process() {
 				if (typeof momentresult != 'undefined') {
 					student.push({
 						ishere: true,
+						entryname: momtmp[j].entryname,
 						grade: momentresult.grade,
 						marked: new Date((momentresult.markedts * 1000)),
 						submitted: new Date((momentresult.submittedts * 1000)),
@@ -159,6 +160,7 @@ function process() {
 				} else {
 					student.push({
 						ishere: false,
+						entryname: momtmp[j].entryname,
 						kind: momtmp[j].kind,
 						grade: "UNK",
 						lid: momtmp[j].lid,
@@ -904,7 +906,7 @@ function rowFilter(row) {
 
 		// värdet som ska sökas
 		// console.log(splitSearch[i][1]);
-		if (splitSearch[i][0] == "column") {
+		if (splitSearch[i][0] == "markG") {
 			columnToSearch = splitSearch[i][1];
 		}
 	}
@@ -912,7 +914,6 @@ function rowFilter(row) {
 	// var obj = JSON.parse(row["lid:2001"]);
 	// console.log(obj);
 	for (colname in row) {
-		console.log(row["lid:2001"]);
 		if (colname == "FnameLnameSSN") {
 			var name = "";
 			if (row[colname]["firstname"] != null) {
@@ -923,7 +924,7 @@ function rowFilter(row) {
 			}
 			if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
 				if (searchterm != "")
-					console.log(row[columnToSearch]["firstname"] + " " + row[columnToSearch]["submitted"]);
+					console.log(row[columnToSearch]);
 				return true;
 			}
 
