@@ -1395,12 +1395,14 @@ function mouseUp(e) {
 //----------------------------------------------------------------------------------
 
 $(window).keyup(function (event) {
+  console.log(event.keyCode);
   if (event.keyCode == 27) {
+    // if key is escape
     closeWindows();
     closeSelect();
     showSaveButton();
     hamburgerChange("escapePress");
-    document.activeElement.blur(); // to lose focus from the newItem button when pressing enter
+    document.activeElement.blur(); // to lose focus from the newItem button when pressing escape
   } else if (event.keyCode == 13) {
     //Remember that keycode 13 = enter button
     document.activeElement.blur();
@@ -1414,6 +1416,9 @@ $(window).keyup(function (event) {
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
       showSaveButton();
+    } else if (deleteButtonDisplay == 'flex') {
+      // Delete the item, allow enter to act as clicking "yes"  
+      confirmBox("deleteItem");
     } else if (isTypeValid() && testsAvailable == true) {
       confirmBox("closeConfirmBox");
       testsAvailable = false;

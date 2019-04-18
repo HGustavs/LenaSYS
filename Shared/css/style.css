@@ -1208,7 +1208,7 @@ input {
   vertical-align: bottom;
   cursor: move;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 0px;
 }
 
@@ -4613,10 +4613,10 @@ textarea#filecont{
 }
 .tsTable td:first-of-type {
   border-left: 1px solid #cdd0d6;
-} 
+}
 .tsTable td:last-of-type {
   border-right: 1px solid #cdd0d6;
-} 
+}
 .tsTable td, .tsTable th {
   border-bottom: 1px solid #cdd0d6;
 }
