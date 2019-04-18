@@ -980,10 +980,10 @@ function Symbol(kind) {
             //Updates x and y position
             ctx.fillStyle = '#000';
             if(this.cardinality[0].symbolKind == 1) {
-                var valX = x1 > x2 ? x1-25 : x1+15;
+                var valX = x1 > x2 ? x1-15 : x1+15;
                 var valY = y1 > y2 ? y1-15 : y1+15;
                 var valY2 = y2 > y1 ? y2-15 : y2+15;
-                var valX2 = x2 > x1 ? x2-25 : x2+15;
+                var valX2 = x2 > x1 ? x2-15 : x2+15;
                 ctx.fillText(this.cardinality[0].value, valX, valY);
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
             }
@@ -1064,8 +1064,8 @@ function Symbol(kind) {
 		    }
 
 		    // Move the value from the line
-		    cardinality.x = x1 > x2 ? x1-10 : x1+10;
-		    cardinality.y = y1 > y2 ? y1-10 : y1+10;
+		    cardinality.x = x1 > x2 ? x1-20 : x1+20;
+		    cardinality.y = y1 > y2 ? y1-20 : y1+20;
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
