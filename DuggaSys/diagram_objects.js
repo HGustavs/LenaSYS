@@ -1,9 +1,9 @@
 
 /************************************************
-    
+
     THIS FILE HANDLES THE OBJECTS AND
     PATHS USED BY THE DIAGRAM FUNCTIONS
-    
+
 ************************************************/
 
 //--------------------------------------------------------------------
@@ -285,7 +285,7 @@ function Symbol(kind) {
             points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
             points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
             points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
-            
+
         } else if (this.symbolkind == 6) {
             var fontsize = this.getFontsize();
             ctx.font = "bold " + fontsize + "px " + this.properties['font'];
@@ -750,11 +750,11 @@ function Symbol(kind) {
     // draw: Redraws graphics
     //--------------------------------------------------------------------
     //       beginpath - moveto - lineto
-    //      
+    //
     //       To make a dashed line, draw with:
     //       ctx.setLineDash(segments);
     //--------------------------------------------------------------------
-      
+
     this.draw = function () {
         ctx.lineWidth = this.properties['lineWidth'] * 2;
         this.properties['textSize'] = this.getFontsize();
@@ -799,7 +799,7 @@ function Symbol(kind) {
         else if(this.symbolkind == 5) {
             this.drawRelation(x1, y1, x2, y2);
         }
-        // 6 = Text 
+        // 6 = Text
         else if (this.symbolkind == 6) {
             this.drawText(x1, y1, x2, y2);
         }
@@ -980,10 +980,10 @@ function Symbol(kind) {
             //Updates x and y position
             ctx.fillStyle = '#000';
             if(this.cardinality[0].symbolKind == 1) {
-                var valX = x1 > x2 ? x1-15 : x1+15;
-                var valY = y1 > y2 ? y1-15 : y1+15;
-                var valY2 = y2 > y1 ? y2-15 : y2+15;
-                var valX2 = x2 > x1 ? x2-15 : x2+15;
+                var valX = x1 > x2 ? x1-25 : x1+25;
+                var valY = y1 > y2 ? y1-25 : y1+25;
+                var valY2 = y2 > y1 ? y2-25 : y2+25;
+                var valX2 = x2 > x1 ? x2-25 : x2+25;
                 ctx.fillText(this.cardinality[0].value, valX, valY);
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
             }
@@ -1071,8 +1071,8 @@ function Symbol(kind) {
 		    if(cardinality.axis == "X") {
 		        cardinality.x = x1 > x2 ? x1+10 : x1-10;
 		    }
-		    else if(cardinality.axis == "Y") {   
-		        cardinality.y = y1 > y2 ? y1+10 : y1-10;                    
+		    else if(cardinality.axis == "Y") {
+		        cardinality.y = y1 > y2 ? y1+10 : y1-10;
 		    }
 	    }
 	    else if(side == "IncorrectSide") {
@@ -1095,8 +1095,8 @@ function Symbol(kind) {
 		    if(cardinality.axis == "X") {
 		        cardinality.x = x2 > x1 ? x2+10 : x2-10;
 		    }
-		    else if(cardinality.axis == "Y") {   
-		        cardinality.y = y2 > y1 ? y2+10 : y2-10;                    
+		    else if(cardinality.axis == "Y") {
+		        cardinality.y = y2 > y1 ? y2+10 : y2-10;
 		    }
 	    }
     }
@@ -1972,7 +1972,7 @@ function figureFreeDraw() {
     }
 }
 
-function mouseDown() { 
+function mouseDown() {
     globalMouseState = 1;
 }
 
