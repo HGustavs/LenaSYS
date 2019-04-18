@@ -803,6 +803,10 @@ function Symbol(kind) {
         else if (this.symbolkind == 6) {
             this.drawText(x1, y1, x2, y2);
         }
+        // 7 = uml line
+        else if(this.symbolkind == 7) {
+            this.drawUMLLine(x1, y1, x2, y2);
+        }
 
         ctx.restore();
         ctx.setLineDash([]);
@@ -818,7 +822,7 @@ function Symbol(kind) {
             ctx.arc(x2,y2,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
-            if(this.symbolkind != 4) {
+            if(this.symbolkind != 4 && this.symbolkind != 7) {
                 ctx.beginPath();
                 ctx.arc(x1,y2,5,0,2*Math.PI,false);
                 ctx.fillStyle = '#F82';
