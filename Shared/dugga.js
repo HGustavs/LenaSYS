@@ -1333,6 +1333,19 @@ function findfilevers(filez,cfield,ctype,displaystate)
 							tab+="</td><td>";
 							tab+=filez[i].updtime;+"</td>";
 
+              /*
+              * Week display
+              */
+              var date = new Date(filez[i].updtime);
+              var week1 = new Date(date.getFullYear(), 0, 4);
+              //calculation magic from: https://weeknumber.net/how-to/javascript
+              var week = 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000
+                        - 3 + (week1.getDay() + 6) % 7) / 7);
+              //date.setDate(filez[i].updtime
+              tab+="<td>";
+                  tab+= "W " + week;
+              tab+="</td>";
+
 							tab+="<td>";
 							// Button for making / viewing feedback - note - only button for given feedback to students.
 							if(filez[i].feedback!=="UNK"||displaystate){
