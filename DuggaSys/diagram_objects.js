@@ -946,7 +946,7 @@ function Symbol(kind) {
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
         ctx.beginPath();
-        var relationCorners = [];
+        var relationMidPoints = [];
         if (this.properties['key_type'] == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
             ctx.lineTo(x2 + 5, y1 - 5);
@@ -973,15 +973,15 @@ function Symbol(kind) {
                     if (diagram[i].isRelation) {
                         var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
                         var relationMiddleY = ((dbly - dtly) / 2) + dtly;
-                        relationCorners.push(relationMiddleX, relationMiddleY);
+                        relationMidPoints.push(relationMiddleX, relationMiddleY);
                     }   
                     if (!diagram[i].isOval && !diagram[i].isRelation) {
                         // Setting the line types to forced if they are normal and the connected entity is weak.
                         if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Forced') {
                             // Looping through the midpoints for relation entities.
-                            for (let j = 0; j < relationCorners.length; j++) {
+                            for (let j = 0; j < relationMidPoints.length; j++) {
                                 // Checking if the line is connected to any of the midpoints.
-                                if (dtlx == relationCorners[j] || dtrx == relationCorners[j] || dtly == relationCorners[j] || dbly == relationCorners[j]) {
+                                if (dtlx == relationMidPoints[j] || dtrx == relationMidPoints[j] || dtly == relationMidPoints[j] || dbly == relationMidPoints[j]) {
                                     // Making sure that only the correct lines are set to forced.
                                     if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
                                         if (diagram[i].isLine) {
@@ -1026,15 +1026,15 @@ function Symbol(kind) {
                     if (diagram[i].isRelation) {
                         var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
                         var relationMiddleY = ((dbly - dtly) / 2) + dtly;
-                        relationCorners.push(relationMiddleX, relationMiddleY);
+                        relationMidPoints.push(relationMiddleX, relationMiddleY);
                     } 
                     if (!diagram[i].isOval && !diagram[i].isRelation) {
                         // Setting the line types to normal if they are forced and the connected entity is strong.
                         if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
                             // Looping through the midpoints for relation entities.
-                            for (let j = 0; j < relationCorners.length; j++) {
+                            for (let j = 0; j < relationMidPoints.length; j++) {
                                 // checking if the line is connected to any of the midpoints.
-                                if (dtlx == relationCorners[j] || dtrx == relationCorners[j] || dtly == relationCorners[j] || dbly == relationCorners[j]) {
+                                if (dtlx == relationMidPoints[j] || dtrx == relationMidPoints[j] || dtly == relationMidPoints[j] || dbly == relationMidPoints[j]) {
                                     // Making sure that only the correct lines are set to normal
                                     if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
                                         if (diagram[i].isLine) {
