@@ -1069,10 +1069,9 @@ function Symbol(kind) {
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
-		        cardinality.x = x1 > x2 ? x1+10 : x1-10;
 		    }
 		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y1 > y2 ? y1+10 : y1-10;
+		        cardinality.y = y1 > y2 ? y1+20 : y1-20;
 		    }
 	    }
 	    else if(side == "IncorrectSide") {
@@ -1093,10 +1092,10 @@ function Symbol(kind) {
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
-		        cardinality.x = x2 > x1 ? x2+10 : x2-10;
+		        cardinality.x = x2 > x1 ? x2+20 : x2-20;
 		    }
 		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y2 > y1 ? y2+10 : y2-10;
+		        cardinality.y = y2 > y1 ? y2+20 : y2-20;
 		    }
 	    }
     }
