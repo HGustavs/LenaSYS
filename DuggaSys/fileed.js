@@ -543,18 +543,36 @@ function updatePreview(str) {
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
+$(document).mouseover(function (e) {
+	FABMouseOver(e);
+});
+
+$(document).mouseout(function (e) {
+	FABMouseOut(e);
+});
+
 $(document).mousedown(function (e) {
-  FABDown(e);
+	mouseDown(e);
+
+	if (e.button == 0) {
+		FABDown(e);
+	}
 });
 
 $(document).mouseup(function (e) {
-  FABUp(e);
+	mouseUp(e);
+
+	if (e.button == 0) {
+		FABUp(e);
+	}
 });
 
-$(document).on("touchstart", function(e){
-  FABDown(e);
+$(document).on("touchstart", function (e) {
+	mouseDown(e);
+	TouchFABDown(e);
 });
 
-$(document).on("touchend", function(e){
-  FABUp(e);
+$(document).on("touchend", function (e) {
+	mouseUp(e);
+	TouchFABUp(e);
 });

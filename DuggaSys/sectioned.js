@@ -1318,6 +1318,14 @@ function drawSwimlanes() {
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
+$(document).mouseover(function (e) {
+    FABMouseOver(e);
+});
+
+$(document).mouseout(function (e) {
+    FABMouseOut(e);
+});
+
 $(document).mousedown(function (e) {
   mouseDown(e);
 
@@ -1336,12 +1344,12 @@ $(document).mouseup(function (e) {
 
 $(document).on("touchstart", function (e) {
   mouseDown(e);
-  FABDown(e);
+  TouchFABDown(e);
 });
 
 $(document).on("touchend", function (e) {
   mouseUp(e);
-  FABUp(e);
+  TouchFABUp(e);
 });
 
 //----------------------------------------------------------------------------------
