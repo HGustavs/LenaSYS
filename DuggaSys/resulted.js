@@ -878,7 +878,7 @@ function renderCell(col, celldata, cellid) {
 //----------------------------------------------------------------
 function rowFilter(row) {
   for(var i = 0; i < moments.length; i++)
-    for(var j = 0; j < moments[i].length;j++)
+    for(var j = 0; j < moments.length;j++)
       console.log(moments[i][j]);
 
 	// Custom filters that remove rows before an actual search
