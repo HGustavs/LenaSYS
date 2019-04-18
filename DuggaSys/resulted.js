@@ -877,6 +877,10 @@ function renderCell(col, celldata, cellid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
+  for(var i = 0; i < moments.length; i++)
+    for(var j = 0; j < moments[i].length;j++)
+      console.log(moments[i][j]);
+
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
@@ -912,9 +916,6 @@ function rowFilter(row) {
 
 	// var obj = JSON.parse(row["lid:2001"]);
 	// console.log(obj);
-  for(var i = 0; i < moments.length; i++)
-    for(var j = 0; j < moments[i].length;j++)
-      console.log(moments[i][j]);
 
 	for (colname in row) {
 		if (colname == "FnameLnameSSN") {
