@@ -210,8 +210,7 @@
                             <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
                         </div>
                         <div id="a4-holes-item" class="drop-down-item-disabled">
-                          <img src="../Shared/icons/Arrow_down_right.png">
-                            <span class="drop-down-option" onclick='toggleVirtualA4Holes();'>Toggle A4 Holes</span>
+                            <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
                         </div>
                     </div>
                 </div>
