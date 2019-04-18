@@ -917,12 +917,12 @@ function rowFilter(row) {
         var txt = document.createElement("textarea");
         txt.innerHTML = row[lid].entryname;
         var columnToFind = txt.value;
-        
+
         if(columnToSearch===columnToFind)
         {
-          if(row[lid].grade===2)
+          if(row[lid].grade===1)
           {
-            // Filtrera
+            // DO SOME FILTERING HERE!
             console.log("VI HITTA COLUMNEN OCH GODKÄNDA BETYG! " + row[lid].entryname + " " + row[lid].grade);
           }
         }
