@@ -80,8 +80,10 @@ pdoConnect();
     </div>
 		<!--<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>-->
 		<div id='searchBar' style='test-align:right;margin-bottom:5px;'>
-			<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>
-			<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>
+			<!-- <input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/> -->
+						<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup=';'/>
+
+			<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>
 				<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>
 			</button>
 		</div>

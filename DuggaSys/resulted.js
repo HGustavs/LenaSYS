@@ -56,7 +56,7 @@ function setup() {
 		magicHeading()
 	};
 
-	AJAXService("GET", {cid: querystring['cid'], vers: querystring['coursevers']}, "RESULT");
+	AJAXService("GET", { cid: querystring['cid'], vers: querystring['coursevers'] }, "RESULT");
 }
 
 
@@ -115,7 +115,7 @@ function process() {
 		}
 		var student = new Array;
 		// Creates a string that displays the first <td> (the one that shows the studentname etc) and places it into an array
-		student.push({grade: ("<div class='dugga-result-div'>" + entries[i].firstname + " " + entries[i].lastname + "</div><div class='dugga-result-div'>" + entries[i].username + " / " + entries[i].class + "</div><div class='dugga-result-div'>" + entries[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entries[i].firstname, lastname: entries[i].lastname, ssn: entries[i].ssn, class: entries[i].class, access: entries[i].access, setTeacher, username: entries[i].username});
+		student.push({ grade: ("<div class='dugga-result-div'>" + entries[i].firstname + " " + entries[i].lastname + "</div><div class='dugga-result-div'>" + entries[i].username + " / " + entries[i].class + "</div><div class='dugga-result-div'>" + entries[i].ssn + "</div><div class='dugga-result-div'>" + setTeacher + "</div>"), firstname: entries[i].firstname, lastname: entries[i].lastname, ssn: entries[i].ssn, class: entries[i].class, access: entries[i].access, setTeacher, username: entries[i].username });
 		// Now we have a sparse array with results for each moment for current student... thus no need to loop through it
 		for (var j = 0; j < momtmp.length; j++) {
 			if (momtmp[j].kind == 4) {
@@ -127,9 +127,9 @@ function process() {
 				var momentresult = restmp[momtmp[j].lid];
 				// If moment result does not exist... either make "empty" student result or push mark
 				if (typeof momentresult != 'undefined') {
-					student.push({ishere: true, grade: momentresult.grade, marked: new Date((momentresult.markedts * 1000)), submitted: new Date((momentresult.submittedts * 1000)), kind: momtmp[j].kind, lid: momtmp[j].lid, uid: uid, needMarking: momentresult.needMarking, gradeSystem: momtmp[j].gradesystem, vers: momentresult.vers, userAnswer: momentresult.useranswer, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, quizfile: momtmp[j].quizfile, timesGraded: momentresult.timesGraded, gradeExpire: momentresult.gradeExpire, firstname: entries[i].firstname, lastname: entries[i].lastname, deadline: new Date(momtmp[j].deadlinets), });
+					student.push({ ishere: true, grade: momentresult.grade, marked: new Date((momentresult.markedts * 1000)), submitted: new Date((momentresult.submittedts * 1000)), kind: momtmp[j].kind, lid: momtmp[j].lid, uid: uid, needMarking: momentresult.needMarking, gradeSystem: momtmp[j].gradesystem, vers: momentresult.vers, userAnswer: momentresult.useranswer, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, quizfile: momtmp[j].quizfile, timesGraded: momentresult.timesGraded, gradeExpire: momentresult.gradeExpire, firstname: entries[i].firstname, lastname: entries[i].lastname, deadline: new Date(momtmp[j].deadlinets), });
 				} else {
-					student.push({ishere: true, kind: momtmp[j].kind, grade: "", lid: momtmp[j].lid, uid: uid, needMarking: false, marked: new Date(0), submitted: new Date(0), grade: -1, vers: querystring['coursevers'], gradeSystem: momtmp[j].gradesystem, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, userAnswer: "UNK", quizfile: momtmp[j].quizfile, gradeExpire: null, firstname: entries[i].firstname, lastname: entries[i].lastname, deadline: new Date(momtmp[j].deadline), });
+					student.push({ ishere: true, kind: momtmp[j].kind, grade: "", lid: momtmp[j].lid, uid: uid, needMarking: false, marked: new Date(0), submitted: new Date(0), grade: -1, vers: querystring['coursevers'], gradeSystem: momtmp[j].gradesystem, quizId: momtmp[j].link, qvariant: momtmp[j].qvariant, userAnswer: "UNK", quizfile: momtmp[j].quizfile, gradeExpire: null, firstname: entries[i].firstname, lastname: entries[i].lastname, deadline: new Date(momtmp[j].deadline), });
 				}
 			} else {
 				var momentresult = restmp[momtmp[j].lid];
@@ -331,8 +331,8 @@ function magicHeading() {
 }
 
 $(function () {
-	$("#release").datepicker({dateFormat: "yy-mm-dd"});
-	$("#deadline").datepicker({dateFormat: "yy-mm-dd"});
+	$("#release").datepicker({ dateFormat: "yy-mm-dd" });
+	$("#deadline").datepicker({ dateFormat: "yy-mm-dd" });
 });
 
 //----------------------------------------
@@ -454,12 +454,11 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid
 }
 
 function hideHover() {
-	$("#hoverRes").css({display: "none", opacity: 0});
+	$("#hoverRes").css({ display: "none", opacity: 0 });
 }
 
-function hoverResult()
-{
-	$("#hoverRes").css({display: "block", opacity: 1, zIndex: 5, top: '50px'});
+function hoverResult() {
+	$("#hoverRes").css({ display: "block", opacity: 1, zIndex: 5, top: '50px' });
 	$("#hoverRes").html($("#Nameof").html());
 
 }
@@ -467,7 +466,7 @@ function hoverResult()
 function formatDateShorter(longDate) {
 	var d = new Date(longDate)
 
-	return  d.toLocaleString()
+	return d.toLocaleString()
 }
 
 function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitted, marked, foundgrade, gradeSystem, lid, qvariant, qid) {
@@ -493,7 +492,7 @@ function clickResult(cid, vers, moment, qfile, firstname, lastname, uid, submitt
 	menu += "</table>";
 	menu += "</div> <!-- Menu Dialog END -->";
 	document.getElementById('markMenuPlaceholder').innerHTML = menu;
-	AJAXService("DUGGA", {cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers}, "RESULT");
+	AJAXService("DUGGA", { cid: cid, vers: vers, moment: moment, luid: uid, coursevers: vers }, "RESULT");
 }
 
 function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid, gradeExpire) {
@@ -501,7 +500,7 @@ function changeGrade(newMark, gradesys, cid, vers, moment, uid, mark, ukind, qva
 	if (document.getElementById('newFeedback') !== null) {
 		newFeedback = document.getElementById('newFeedback').value;
 	}
-	AJAXService("CHGR", {cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire}, "RESULT");
+	AJAXService("CHGR", { cid: cid, vers: vers, moment: moment, luid: uid, mark: newMark, ukind: ukind, newFeedback: newFeedback, qvariant: qvariant, quizId: qid, gradeExpire: gradeExpire }, "RESULT");
 }
 
 function moveDist(e) {
@@ -577,7 +576,7 @@ function saveResponse() {
 
 	var filename = allData["files"][allData["duggaentry"]][clickedindex].filename + allData["files"][allData["duggaentry"]][clickedindex].seq;
 
-	AJAXService("RESP", {cid: querystring['cid'], vers: querystring['coursevers'], resptext: respo, respfile: filename, duggaid: allData["duggaid"], luid: allData["duggauser"], moment: allData["duggaentry"], luid: allData["duggauser"]}, "RESULT");
+	AJAXService("RESP", { cid: querystring['cid'], vers: querystring['coursevers'], resptext: respo, respfile: filename, duggaid: allData["duggaid"], luid: allData["duggauser"], moment: allData["duggaentry"], luid: allData["duggauser"] }, "RESULT");
 	document.getElementById("responseArea").innerHTML = "";
 	$("#previewpopover").css("display", "none");
 }
@@ -663,7 +662,7 @@ var myTable;
 //----------------------------------------
 
 function buildDynamicHeaders() {
-	var tblhead = {"FnameLnameSSN": "Fname/Lname/SSN"};
+	var tblhead = { "FnameLnameSSN": "Fname/Lname/SSN" };
 	moments.forEach(function (entry) {
 		tblhead["lid:" + entry['lid']] = entry['entryname'];
 	});
@@ -681,7 +680,7 @@ function buildColumnOrder() {
 function buildStudentInfo() {
 	var i = 0;
 	students.forEach(function (entry) {
-		var row = {"FnameLnameSSN": entry[0]};
+		var row = { "FnameLnameSSN": entry[0] };
 		if (entry.length > 1) {
 			for (var j = 1; j < entry.length; j++) {
 				row["lid:" + entry[j]['lid']] = entry[j];
@@ -891,8 +890,29 @@ function rowFilter(row) {
 			return false;
 		}
 	}
+	// divides the search on &&
+	var tempSplitSearch = searchterm.split("&&");
+	var splitSearch = [];
+	tempSplitSearch.forEach(function (s) {
+		if (s.length > 0)
+			splitSearch.push(s.trim().split(":"));
+	})
+	var columnToSearch;
+	for (var i = 0; i < splitSearch.length; i++) {
+		//key som värdet ska sökas på
+		// console.log(splitSearch[i][0]);
 
+		// värdet som ska sökas
+		// console.log(splitSearch[i][1]);
+		if (splitSearch[i][0] == "column") {
+			columnToSearch = splitSearch[i][1];
+		}
+	}
+
+	// var obj = JSON.parse(row["lid:2001"]);
+	// console.log(obj);
 	for (colname in row) {
+		console.log(row["lid:2001"]);
 		if (colname == "FnameLnameSSN") {
 			var name = "";
 			if (row[colname]["firstname"] != null) {
@@ -901,8 +921,11 @@ function rowFilter(row) {
 			if (row[colname]["lastname"] != null) {
 				name += row[colname]["lastname"];
 			}
-			if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+			if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
+				if (searchterm != "")
+					console.log(row[columnToSearch]["firstname"] + " " + row[columnToSearch]["submitted"]);
 				return true;
+			}
 
 			if (row[colname]["ssn"] != null) {
 				if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
@@ -921,8 +944,10 @@ function rowFilter(row) {
 					return true;
 			}
 		}
+
 	}
 	return false;
+
 }
 
 function renderSortOptions(col, status, colname) {
@@ -1086,11 +1111,9 @@ function renderColumnFilter(col, status, colname) {
 	return str;
 }
 
-function onToggleFilter(colId)
-{
+function onToggleFilter(colId) {
 	var idParts = colId.split(":");   // divides the string into lib and the actual id number
-	for (var i = 0; i < moments.length; i++)
-	{
+	for (var i = 0; i < moments.length; i++) {
 		var element = moments[i];
 		var elementId = element[idParts[0]];
 
@@ -1104,16 +1127,14 @@ function onToggleFilter(colId)
 				var checkBoxId = txt.value;
 				var isChecked = document.getElementById(checkBoxId).checked;
 
-				for (var j = 0; j < moments.length; j++)
-				{
+				for (var j = 0; j < moments.length; j++) {
 					if (moments[j].moment == idParts[1]) // Find all childs of the moment
 					{
 						var childColId = "lid:" + moments[j].lid;
 						myTable.toggleColumn(childColId, childColId, isChecked);
 					}
 				}
-			} else
-			{
+			} else {
 				myTable.toggleColumn(colId, colId);
 			}
 		}
