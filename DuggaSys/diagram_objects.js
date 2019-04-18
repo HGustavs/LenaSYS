@@ -980,10 +980,10 @@ function Symbol(kind) {
             //Updates x and y position
             ctx.fillStyle = '#000';
             if(this.cardinality[0].symbolKind == 1) {
-                var valX = x1 > x2 ? x1-50 : x1+50;
-                var valY = y1 > y2 ? y1-50 : y1+50;
-                var valY2 = y2 > y1 ? y2-50 : y2+50;
-                var valX2 = x2 > x1 ? x2-50 : x2+50;
+                var valX = x1 > x2 ? x1-15 : x1+15;
+                var valY = y1 > y2 ? y1-15 : y1+15;
+                var valY2 = y2 > y1 ? y2-15 : y2+15;
+                var valX2 = x2 > x1 ? x2-15 : x2+15;
                 ctx.fillText(this.cardinality[0].value, valX, valY);
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
             }
@@ -1069,9 +1069,10 @@ function Symbol(kind) {
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
+          cardinality.x ) x1 > x2 ? x1+20 : x1-20;
 		    }
 		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y1 > y2 ? y1+5 : y1-5;
+		        cardinality.y = y1 > y2 ? y1+20 : y1-20;
 		    }
 	    }
 	    else if(side == "IncorrectSide") {
