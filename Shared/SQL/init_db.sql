@@ -214,7 +214,7 @@ CREATE TABLE template(
 	stylesheet 				VARCHAR(39) NOT NULL,
 	numbox					INTEGER NOT NULL,
 	PRIMARY KEY(templateid, stylesheet)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 
 /* Code Example contains a list of the code examples for a version of a course in the database
