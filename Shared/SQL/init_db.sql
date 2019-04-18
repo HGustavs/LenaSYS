@@ -188,7 +188,7 @@ CREATE TABLE vers(
 	enddate       			DATETIME,
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	PRIMARY KEY (cid,vers)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE fileLink(
 	fileid					INT(11) NOT NULL AUTO_INCREMENT,
