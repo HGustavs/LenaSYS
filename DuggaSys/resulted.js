@@ -903,7 +903,7 @@ function rowFilter(row) {
 	for (var i = 0; i < splitSearch.length; i++) {
 		//key som värdet ska sökas på
 		// console.log(splitSearch[i][0]);
-
+    console.log(moments[i]);
 		// värdet som ska sökas
 		// console.log(splitSearch[i][1]);
 		if (splitSearch[i][0] == "markG") {
@@ -913,7 +913,6 @@ function rowFilter(row) {
 
 	// var obj = JSON.parse(row["lid:2001"]);
 	// console.log(obj);
-  console.log(moments[0]);
 	for (colname in row) {
 		if (colname == "FnameLnameSSN") {
 			var name = "";
