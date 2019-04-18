@@ -900,7 +900,7 @@ function rowFilter(row) {
 			splitSearch.push(s.trim().split(":"));
 	})
 	var columnToSearch;
-  var lid;
+	var lid;
 	for (var i = 0; i < splitSearch.length; i++) {
 		//key som värdet ska sökas på
 		// console.log(splitSearch[i][0]);
@@ -910,29 +910,23 @@ function rowFilter(row) {
 		if (splitSearch[i][0] == "markG") {
 			columnToSearch = splitSearch[i][1];
 
-      for(var i = 0; i < moments.length; i++)
-      {
-        lid = "lid:"+moments[i]["lid"];
+			for (var i = 0; i < moments.length; i++) {
+				lid = "lid:" + moments[i]["lid"];
 
-        var txt = document.createElement("textarea");
-        txt.innerHTML = row[lid].entryname;
-        var columnToFind = txt.value;
+				var txt = document.createElement("textarea");
+				txt.innerHTML = row[lid].entryname;
+				var columnToFind = txt.value;
 
-        if(columnToSearch===columnToFind)
-        {
-          if(row[lid].grade===2)
-          {
-            // DO SOME FILTERING HERE!
-            console.log("VI HITTA COLUMNEN OCH GODKÄNDA BETYG! " + row[lid].entryname + " " + row[lid].grade);
-          }
-        }
+				if (columnToSearch === columnToFind) {
+					if (row[lid].grade === 2) {
+						// DO SOME FILTERING HERE!
+						console.log("VI HITTA COLUMNEN OCH GODKÄNDA BETYG! " + row[lid].entryname + " " + row[lid].grade);
+					}
+				}
 
-      }
+			}
 		}
 	}
-
-	// var obj = JSON.parse(row["lid:2001"]);
-	// console.log(obj);
 
 	for (colname in row) {
 		if (colname == "FnameLnameSSN") {
@@ -944,8 +938,6 @@ function rowFilter(row) {
 				name += row[colname]["lastname"];
 			}
 			if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
-				if (searchterm != "")
-					console.log(row[columnToSearch]);
 				return true;
 			}
 
