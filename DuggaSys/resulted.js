@@ -877,14 +877,6 @@ function renderCell(col, celldata, cellid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-
-  for(var i = 0; i < moments.length; i++)
-  {
-    var lid = "lid:"+moments[i]["lid"];
-    //console.log(row[lid]);
-    console.log(row[lid].entryname);
-  }
-
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
@@ -908,13 +900,30 @@ function rowFilter(row) {
 			splitSearch.push(s.trim().split(":"));
 	})
 	var columnToSearch;
+  var lid;
 	for (var i = 0; i < splitSearch.length; i++) {
 		//key som värdet ska sökas på
 		// console.log(splitSearch[i][0]);
 		// värdet som ska sökas
 		// console.log(splitSearch[i][1]);
+
 		if (splitSearch[i][0] == "markG") {
 			columnToSearch = splitSearch[i][1];
+
+      for(var i = 0; i < moments.length; i++)
+      {
+        lid = "lid:"+moments[i]["lid"];
+
+        if(columnToSearch===row[lid].entryname)
+        {
+          if(row[lid].grade===2)
+          {
+            // Filtrera
+            console.log("VI HITTA COLUMNEN OCH GODKÄNDA BETYG! " + row[lid].entryname + " " + row[lid].grade);
+          }
+        }
+
+      }
 		}
 	}
 
