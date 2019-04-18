@@ -77,6 +77,7 @@ pdoConnect();
 				</select>
 			</div>
       <button onclick="ladexport();">LadExport</button>
+			<button onclick="mail();">Mail students</button>
     </div>
 		<!--<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>-->
 		<div id='searchBar' style='test-align:right;margin-bottom:5px;'>
