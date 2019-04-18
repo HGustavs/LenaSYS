@@ -1474,7 +1474,6 @@ function FABMouseOver(e) {
 //----------------------------------------------------------------------------------
 function FABMouseOut(e) {
 	if (!$('.fab-btn-sm').hasClass('scale-out') && $(e.relatedTarget).parents(".fixed-action-button").length === 0 && !$(e.relatedTarget).hasClass("fixed-action-button")) {
-		console.log("Moved from: " + $(e.target).attr("class") + ", To: " + $(e.relatedTarget).attr("class"));
 		$('.fab-btn-sm').toggleClass('scale-out');
 		$('.fab-btn-list').delay(100).fadeOut(0);
 	}
