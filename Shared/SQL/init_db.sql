@@ -46,7 +46,7 @@ CREATE TABLE course(
 	courseHttpPage			VARCHAR(2000),
 	PRIMARY KEY (cid),
 	FOREIGN KEY (creator) REFERENCES user (uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci;
 
 /* This table represents a many-to-many relation between courses, to illustrate pre-requirements for courses. */
 CREATE TABLE course_req(
