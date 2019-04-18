@@ -924,6 +924,43 @@ function rowFilter(row) {
           {
             // DO SOME FILTERING HERE!
             console.log("VI HITTA COLUMNEN OCH GODKÄNDA BETYG! " + row[lid].entryname + " " + row[lid].grade);
+
+            for (colname in row) {
+          		if (colname == columnToFind) {
+          			var name = "";
+          			if (row[colname][columnToFind] != null) {
+          				name += row[colname][columnToFind] + " ";
+          			}
+          			if (row[colname][columnToFind] != null) {
+          				name += row[colname][columnToFind];
+          			}
+          			if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
+          				if (searchterm != "")
+          					console.log(row[columnToSearch]);
+          				return true;
+          			}
+
+          			if (row[colname][columnToFind] != null) {
+          				if (row[colname][columnToFind].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+          					return true;
+          			}
+          			if (row[colname][columnToFind] != null) {
+          				if (row[colname][columnToFind].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+          					return true;
+          			}
+          			if (row[colname][columnToFind] != null) {
+          				if (row[colname][columnToFind].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+          					return true;
+          			}
+          			if (row[colname][columnToFind] != null) {
+          				if (row[colname][columnToFind].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+          					return true;
+          			}
+          		}
+
+          	}
+          	return false;
+
           }
         }
 
