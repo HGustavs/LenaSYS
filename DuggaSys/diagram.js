@@ -2499,7 +2499,10 @@ function handleSelect() {
     var last = diagram[lastSelectedObject];
 
     // Test issue #5960
-    console.log(last.symbolkind);
+    if(last.symbolkind == 4) {
+        console.log("LINE");
+        console.log(connectedObjects(last) + "");
+    }
 
     if (last.targeted == false && uimode != "MoveAround") {
         for (var i = 0; i < diagram.length; i++) {
