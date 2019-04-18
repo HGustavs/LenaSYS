@@ -880,7 +880,7 @@ function rowFilter(row) {
   for(var i = 0; i < moments.length; i++)
   {
     var lid = "lid:200"+i;
-    console.log(row[lid];);
+    console.log(row[lid]);
   }
 
 	// Custom filters that remove rows before an actual search
