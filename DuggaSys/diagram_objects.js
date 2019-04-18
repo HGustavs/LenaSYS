@@ -1064,15 +1064,15 @@ function Symbol(kind) {
 		    }
 
 		    // Move the value from the line
-		    cardinality.x = x1 > x2 ? x1-20 : x1+20;
-		    cardinality.y = y1 > y2 ? y1-20 : y1+20;
+		    cardinality.x = x1 > x2 ? x1-15 : x1+15;
+		    cardinality.y = y1 > y2 ? y1-15 : y1+15;
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
-          cardinality.x = x1 > x2 ? x1+20 : x1-20;
+		        cardinality.x = x1 > x2 ? x1+10 : x1-10;
 		    }
 		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y1 > y2 ? y1+20 : y1-20;
+		        cardinality.y = y1 > y2 ? y1+10 : y1-10;
 		    }
 	    }
 	    else if(side == "IncorrectSide") {
@@ -1088,15 +1088,15 @@ function Symbol(kind) {
 		    }
 
 		    // Move the value from the line
-		    cardinality.x = x2 > x1 ? x2-20 : x2+20;
-		    cardinality.y = y2 > y1 ? y2-20 : y2+20;
+		    cardinality.x = x2 > x1 ? x2-15 : x2+15;
+		    cardinality.y = y2 > y1 ? y2-15 : y2+15;
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
-		        cardinality.x = x2 > x1 ? x2+20 : x2-20;
+		        cardinality.x = x2 > x1 ? x2+10 : x2-10;
 		    }
 		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y2 > y1 ? y2+20 : y2-20;
+		        cardinality.y = y2 > y1 ? y2+10 : y2-10;
 		    }
 	    }
     }
