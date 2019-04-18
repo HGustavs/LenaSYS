@@ -984,21 +984,13 @@ function Symbol(kind) {
                                 if (dtlx == relationMidPoints[j] || dtrx == relationMidPoints[j] || dtly == relationMidPoints[j] || dbly == relationMidPoints[j]) {
                                     // Making sure that only the correct lines are set to forced.
                                     if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
-                                        if (diagram[i].isLine) {
-                                            diagram[i].properties['key_type'] = 'Forced';
-                                        }
+                                        diagram[i].properties['key_type'] = 'Forced';
                                     } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
-                                        if (diagram[i].isLine) {
-                                            diagram[i].properties['key_type'] = 'Forced';
-                                        }
+                                        diagram[i].properties['key_type'] = 'Forced';
                                     } else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
-                                        if (diagram[i].isLine) {
-                                            diagram[i].properties['key_type'] = 'Forced';
-                                        }
+                                        diagram[i].properties['key_type'] = 'Forced';
                                     } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
-                                        if (diagram[i].isLine) {
-                                            diagram[i].properties['key_type'] = 'Forced';
-                                        }
+                                        diagram[i].properties['key_type'] = 'Forced';
                                     }
                                 }
                             }
@@ -1037,21 +1029,13 @@ function Symbol(kind) {
                                 if (dtlx == relationMidPoints[j] || dtrx == relationMidPoints[j] || dtly == relationMidPoints[j] || dbly == relationMidPoints[j]) {
                                     // Making sure that only the correct lines are set to normal
                                     if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
-                                        if (diagram[i].isLine) {
-                                            diagram[i].properties['key_type'] = 'Normal';
-                                        }
+                                        diagram[i].properties['key_type'] = 'Normal';
                                     } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
-                                        if (diagram[i].isLine) {
-                                            diagram[i].properties['key_type'] = 'Normal';
-                                        }
+                                        diagram[i].properties['key_type'] = 'Normal';
                                     }  else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
-                                        if (diagram[i].isLine) {
-                                            diagram[i].properties['key_type'] = 'Normal';
-                                        }
+                                        diagram[i].properties['key_type'] = 'Normal';
                                     } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
-                                        if (diagram[i].isLine) {
-                                            diagram[i].properties['key_type'] = 'Normal';
-                                        }
+                                        diagram[i].properties['key_type'] = 'Normal';
                                     }
                                 }
                             }
