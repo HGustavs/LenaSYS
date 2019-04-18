@@ -56,20 +56,6 @@ function sortableInternalSort(a, b) {
 	}
 	return ret;
 }
-// function sortableInternalSort(a,b)
-// {
-//     var ret = 0;
-//     //var colname = sortableTable.currentTable.getKeyByValue();
-//     var colname = sortableTable.currentTable.getSortcolumn();7
-//     if ((sortableTable.currentTable.sortkind % 2)==0) {
-//       //alert("Compare: "+a+" "+b);
-//       ret = compare(a[colname],b[colname]);
-//     } else {
-//       //alert("Compare: "+b+" "+a);
-//       ret = compare(b[colname],a[colname]);
-//     }
-//     return ret;
-// }
 
 function clearUpdateCellInternal() {
 	sortableTable.edit_rowno = -1;
@@ -723,8 +709,6 @@ function newCompare(firstCell, secoundCell) {
 	var firstCellTemp;
 	var secoundCellTemp;
 
-	console.log(firstCell);
-	console.log(secoundCell);
 	//Check if the cell is a valid cell in the table.
 	if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
