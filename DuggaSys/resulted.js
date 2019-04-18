@@ -1234,7 +1234,7 @@ function mail() {
       console.log(err.Message);
     },
     success: function(data){
-      window.location.assign("bcc:" + data);
+      window.location.assign("mailto:?bcc=" + data);
       //window.location.assign("mailto:" + data);
     //  mailto:astark1@unl.edu?bcc=ASTARK1@UNL.EDU
     }
