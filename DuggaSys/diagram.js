@@ -1002,8 +1002,8 @@ function canvasSize() {
     canvas.setAttribute("height", heightWindow);
     ctx.clearRect(sx, sy, widthWindow, heightWindow);
     ctx.translate(sx, sy);
-    distanceMoved.x = sx;
-    distanceMoved.y = sy;
+    distanceMoved.x = -sx;
+    distanceMoved.y = -sy;
     ctx.scale(1, 1);
     ctx.scale(zoomValue, zoomValue);
 }
