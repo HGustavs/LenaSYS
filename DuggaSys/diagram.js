@@ -2498,7 +2498,7 @@ function handleSelect() {
 
     // Test issue #5960
     if (lastSelectedObject.symbolKind == 4) {
-        console.log("" + connectedObjects(this));
+        console.log(lastSelectedObject.symbolKind);
     }
 
     var last = diagram[lastSelectedObject];
