@@ -955,7 +955,7 @@ function Symbol(kind) {
             ctx.lineTo(x1 - 5, y1 - 5);
             ctx.stroke();
             ctx.lineWidth = this.properties['lineWidth'];
-            
+            // Need to find the connected entities in order to change lines between relations and entities to forced.
             for(let i = 0; i < diagram.length; i++) {
                 if (diagram[i] != this) {
                     // Each corner for the current object
@@ -969,20 +969,20 @@ function Symbol(kind) {
                     dblx = diagram[i].corners().bl.x;
                     dbly = diagram[i].corners().bl.y;
 
-                    // stores the midpoints for the relations in an array.
+                    // Stores the midpoints for the relations in an array.
                     if (diagram[i].isRelation) {
                         var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
                         var relationMiddleY = ((dbly - dtly) / 2) + dtly;
                         relationCorners.push(relationMiddleX, relationMiddleY);
                     }   
                     if (!diagram[i].isOval && !diagram[i].isRelation) {
-                        // setting the line types to forced if they are normal and the connected entity is weak.
+                        // Setting the line types to forced if they are normal and the connected entity is weak.
                         if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Forced') {
-                            // looping through the midpoints for relation entities.
+                            // Looping through the midpoints for relation entities.
                             for (let j = 0; j < relationCorners.length; j++) {
-                                // checking if the line is connected to any of the midpoints.
+                                // Checking if the line is connected to any of the midpoints.
                                 if (dtlx == relationCorners[j] || dtrx == relationCorners[j] || dtly == relationCorners[j] || dbly == relationCorners[j]) {
-                                    // making sure that only the correct lines are set to forced.
+                                    // Making sure that only the correct lines are set to forced.
                                     if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
                                         if (diagram[i].isLine) {
                                             diagram[i].properties['key_type'] = 'Forced';
@@ -1003,13 +1003,15 @@ function Symbol(kind) {
                                 }
                             }
                         }
-                    }              
+                    }
+                                 
                 } 
             }
         } else {
+            // Need to find the connected entities in order to change lines between relations and entities to normal.
             for(let i = 0; i < diagram.length; i++) {
                 if (diagram[i] != this) {
-                    // getting each corner of the objects in the diagram array
+                    // Getting each corner of the objects in the diagram array
                     dtlx = diagram[i].corners().tl.x;
                     dtly = diagram[i].corners().tl.y;
                     dbrx = diagram[i].corners().br.x;
@@ -1020,21 +1022,20 @@ function Symbol(kind) {
                     dblx = diagram[i].corners().bl.x;
                     dbly = diagram[i].corners().bl.y;
                     
-                    // stores the midpoints for each corner of the relation in an array
+                    // Stores the midpoints for each corner of the relation in an array
                     if (diagram[i].isRelation) {
                         var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
                         var relationMiddleY = ((dbly - dtly) / 2) + dtly;
                         relationCorners.push(relationMiddleX, relationMiddleY);
                     } 
-                    
                     if (!diagram[i].isOval && !diagram[i].isRelation) {
-                        // setting the line types to normal if they are forced and the connected entity is strong.
+                        // Setting the line types to normal if they are forced and the connected entity is strong.
                         if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
-                            // looping through the midpoints for relation entities.
+                            // Looping through the midpoints for relation entities.
                             for (let j = 0; j < relationCorners.length; j++) {
                                 // checking if the line is connected to any of the midpoints.
                                 if (dtlx == relationCorners[j] || dtrx == relationCorners[j] || dtly == relationCorners[j] || dbly == relationCorners[j]) {
-                                    // making sure that only the correct lines are set to normal
+                                    // Making sure that only the correct lines are set to normal
                                     if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
                                         if (diagram[i].isLine) {
                                             diagram[i].properties['key_type'] = 'Normal';
