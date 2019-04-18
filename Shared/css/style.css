@@ -2702,7 +2702,7 @@ span.arrow {
   padding: 8px;
   width: 300px;
   height: 300px;
-  overflow: scroll;
+  overflow-y: scroll;
   font-size: 12px;
   display: none;
   position: absolute;
