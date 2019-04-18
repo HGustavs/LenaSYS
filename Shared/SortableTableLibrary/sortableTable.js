@@ -753,9 +753,9 @@ function newCompare(firstCell, secoundCell) {
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 
 		if (status == 0) {
-			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase());
+			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
-			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase());
+			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		}
 	}
 	else {
