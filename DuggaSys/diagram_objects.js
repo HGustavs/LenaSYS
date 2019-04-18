@@ -1071,7 +1071,7 @@ function Symbol(kind) {
 		    if(cardinality.axis == "X") {
 		    }
 		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y1 > y2 ? y1+20 : y1-20;
+		        cardinality.y = y1 > y2 ? y1+5 : y1-5;
 		    }
 	    }
 	    else if(side == "IncorrectSide") {
