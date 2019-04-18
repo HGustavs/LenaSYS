@@ -552,16 +552,12 @@ $(document).mouseout(function (e) {
 });
 
 $(document).mousedown(function (e) {
-	mouseDown(e);
-
 	if (e.button == 0) {
 		FABDown(e);
 	}
 });
 
 $(document).mouseup(function (e) {
-	mouseUp(e);
-
 	if (e.button == 0) {
 		FABUp(e);
 	}
@@ -572,7 +568,6 @@ $(document).on("touchstart", function (e) {
 		e.preventDefault();
 	}
 
-	mouseDown(e);
 	TouchFABDown(e);
 });
 
@@ -580,6 +575,5 @@ $(document).on("touchend", function (e) {
 	if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
 		e.preventDefault();
 	}
-	mouseUp(e);
 	TouchFABUp(e);
 });
