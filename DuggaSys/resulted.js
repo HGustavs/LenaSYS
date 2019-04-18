@@ -920,7 +920,7 @@ function rowFilter(row) {
 
         if(columnToSearch===columnToFind)
         {
-          if(row[lid].grade===1)
+          if(row[lid].grade===2)
           {
             // DO SOME FILTERING HERE!
             console.log("VI HITTA COLUMNEN OCH GODKÄNDA BETYG! " + row[lid].entryname + " " + row[lid].grade);
