@@ -981,9 +981,9 @@ function Symbol(kind) {
             ctx.fillStyle = '#000';
             if(this.cardinality[0].symbolKind == 1) {
                 var valX = x1 > x2 ? x1-25 : x1+25;
-                var valY = y1 > y2 ? y1-25 : y1+25;
+                var valY = y1 > y2 ? y1-15 : y1+15;
                 var valY2 = y2 > y1 ? y2-25 : y2+25;
-                var valX2 = x2 > x1 ? x2-25 : x2+25;
+                var valX2 = x2 > x1 ? x2-15 : x2+15;
                 ctx.fillText(this.cardinality[0].value, valX, valY);
                 ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
             }
