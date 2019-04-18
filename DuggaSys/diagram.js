@@ -2495,6 +2495,12 @@ function mousedownevt(ev) {
 
 function handleSelect() {
     lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
+
+    // Test issue #5960
+    if (lastSelectedObject.symbolKind == 4) {
+        console.log("" + connectedObjects(this));
+    }
+
     var last = diagram[lastSelectedObject];
     if (last.targeted == false && uimode != "MoveAround") {
         for (var i = 0; i < diagram.length; i++) {
