@@ -151,12 +151,12 @@
 	    <ol class="fab-btn-list" style="margin: 0; padding: 0; display: none;" reversed>
 	        <li onclick="showImportUsersPopup();" >
 							<a id="iFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Import user(s)'>
-									<img id="iFabBtnImg" class="fab-icon" src="../Shared/icons/global-icon.svg">
+									<img id="iFabBtnImg" class="fab-icon" src="../Shared/icons/importUser.svg">
 							</a>
 					</li>
 	        <li onclick="showCreateUserPopup();">
 							<a id="cFabBtn" class="btn-floating fab-btn-sm scale-transition scale-out" data-tooltip='Create user'>
-									<img id="cFabBtnImg" class="fab-icon" src="../Shared/icons/version_local-icon.svg">
+									<img id="cFabBtnImg" class="fab-icon" src="../Shared/icons/createUser.svg">
 							</a>
 					</li>
 	    </ol>
