@@ -1431,6 +1431,10 @@ input {
   cursor: default !important;
 }
 
+#a4-holes-item span {
+  padding-left: 24px !important;
+}
+
 #hotkey-space {
   position: absolute !important;
   font-size: 11px !important;

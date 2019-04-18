@@ -854,6 +854,9 @@ function toggleGrid() {
 
 function toggleVirtualA4() {
     if (toggleA4) {
+      if (toggleA4Holes) {
+        toggleVirtualA4Holes();
+      }
         toggleA4 = false;
         updateGraphics();
     } else {
@@ -862,6 +865,7 @@ function toggleVirtualA4() {
     }
     $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+
 }
 
 function drawVirtualA4() {
