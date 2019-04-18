@@ -55,7 +55,7 @@ CREATE TABLE course_req(
 	PRIMARY KEY (cid, req_cid),
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	FOREIGN KEY (req_cid) REFERENCES course(cid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci;
 
 /**
  * This table represents a many-to-many relation between users and courses. That is,
