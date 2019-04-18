@@ -1978,7 +1978,7 @@ input.large-button {
 }
 
 .sortableHeading {
-  display:inline;
+  display:inline !important;
   cursor: pointer;
   text-overflow: ellipsis;
   overflow: hidden;
