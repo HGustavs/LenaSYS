@@ -11,9 +11,9 @@ Execution order:
 -------------==============######## Documentation End ###########==============-------------
 */
 
-//----------------------------------------------------------------------------
-//-------------==========########## Globals ##########==========--------------
-//----------------------------------------------------------------------------
+/********************************************************************
+   Globals
+*********************************************************************/
 
 var sessionkind = 0;
 var querystring = parseGet();
@@ -45,7 +45,7 @@ $(function() {
 });
 
 //----------------------------------------------------------------------------
-//-------------==========########## Renderer ##########==========-------------
+// Renderer
 //----------------------------------------------------------------------------
 
 function returnedFile(data) {
@@ -195,7 +195,7 @@ function validateForm() {
 //----------------------------------------------------------------------------
 function renderCell(col,celldata,cellid) {
   var str="";
-  
+
   if (col == "trashcan" || col == "filename" || col == "filesize" || col == "editor") {
       obj = JSON.parse(celldata);
   }
@@ -307,8 +307,6 @@ function fileNameSearch(row, colName, searchName) {
 }
 
 //--------------------------------------------------------------------------
-// renderSortOptions
-// ---------------
 //  Callback function that renders the col filter div
 //--------------------------------------------------------------------------
 
@@ -326,10 +324,9 @@ function renderSortOptions(col,status,colname) {
 }
 
 //--------------------------------------------------------------------------
-// compare
-// ---------------
 //  Callback function with different compare alternatives for the column sort
 //--------------------------------------------------------------------------
+
 function compare(a,b) {
     var col = sortableTable.currentTable.getSortcolumn();
     var tempA = a;
@@ -403,11 +400,9 @@ function createQuickItem()
 }
 
 /*****************************************************************
- * --------------------------------------------------------------*
- * loadFile(), editFile(), cancelEditFile() and closeEditFile()  *
- * makes it possible to open and edit or modify an existing 	 *
- * file (js, css, html and php). Doesn't include markdown!		 *
- * --------------------------------------------------------------*
+  loadFile(), editFile(), cancelEditFile() and closeEditFile()
+  makes it possible to open and edit or modify an existing
+  file (js, css, html and php). Doesn't include markdown!
  *****************************************************************/
 
 function loadFile(fileUrl, fileNamez, fileKind) {
@@ -541,7 +536,9 @@ function updatePreview(str) {
 }
 
 
-// -------------==============######## Setup and Event listeners ###########==============-------------
+// ---------------------------------------------------
+// Event listeners for fab button
+//----------------------------------------------------
 
 $(document).mousedown(function (e) {
   FABDown(e);
