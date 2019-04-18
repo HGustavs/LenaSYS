@@ -878,7 +878,7 @@ function renderCell(col, celldata, cellid) {
 //----------------------------------------------------------------
 function rowFilter(row) {
   for(var i = 0; i < moments.length; i++)
-      console.log(row[moments[i]["entryname"]]);
+      console.log(row["entryname"]);
 
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
