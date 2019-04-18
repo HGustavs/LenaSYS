@@ -1481,26 +1481,26 @@ function FABMouseOut(e) {
 }
 
 //----------------------------------------------------------------------------------
-// FABDown : FAB Mouse Down / Touch Down
+// FABDown : FAB Mouse Down
 //----------------------------------------------------------------------------------
 function FABDown(e)
 {
-
+	//Unused at the moment but might be useful in the future to handle pressing down with mouse on FAB
 }
 
 //----------------------------------------------------------------------------------
-// FABUp : FAB Mouse Up / Touch Up
+// FABUp : FAB Mouse Up
 //----------------------------------------------------------------------------------
 function FABUp(e)
 {
-	// A quick item should be created on a "fast click" if the fab list isn't visible / Click outside the FAB list / if the target of the click isn't the container...
+	// Create
 	if ((e.target.id=="fabBtn")) {
 		createQuickItem();
 	}
 }
 
 //----------------------------------------------------------------------------------
-// FABDown : FAB Mouse Down / Touch Down
+// TouchFABDown : FAB Touch Down
 //----------------------------------------------------------------------------------
 function TouchFABDown(e)
 {
@@ -1515,7 +1515,7 @@ function TouchFABDown(e)
 }
 
 //----------------------------------------------------------------------------------
-// FABUp : FAB Mouse Up / Touch Up
+// TouchFABUp : FAB Touch Up
 //----------------------------------------------------------------------------------
 function TouchFABUp(e)
 {
