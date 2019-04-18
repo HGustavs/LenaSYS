@@ -120,7 +120,7 @@ CREATE TABLE quiz (
 	jsondeadline	VARCHAR(2048),
 	PRIMARY KEY (id),
 	FOREIGN KEY (cid) REFERENCES course(cid) ON DELETE CASCADE ON UPDATE CASCADE
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /**
  * A quiz tuple has a one-to-many relation with a tuple from thea variant table.
