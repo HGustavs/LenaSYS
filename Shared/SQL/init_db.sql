@@ -78,7 +78,7 @@ CREATE TABLE user_course(
 	PRIMARY KEY (uid, cid),
 	FOREIGN KEY (uid)REFERENCES user (uid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci;
 
 CREATE TABLE listentries (
 	lid 					INT UNSIGNED NOT NULL AUTO_INCREMENT,
