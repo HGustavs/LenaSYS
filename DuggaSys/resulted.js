@@ -924,91 +924,52 @@ function rowFilter(row) {
           {
             // DO SOME FILTERING HERE!
             console.log("VI HITTA COLUMNEN OCH GODKÄNDA BETYG! " + row[lid].entryname + " " + row[lid].grade);
-
-            for (colname in row) {
-          		if (colname == columnToFind) {
-          			var name = "";
-          			if (row[colname][columnToFind] != null) {
-          				name += row[colname][columnToFind] + " ";
-          			}
-          			if (row[colname][columnToFind] != null) {
-          				name += row[colname][columnToFind];
-          			}
-          			if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
-          				if (searchterm != "")
-          					console.log(row[columnToSearch]);
-          				return true;
-          			}
-
-          			if (row[colname][columnToFind] != null) {
-          				if (row[colname][columnToFind].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-          					return true;
-          			}
-          			if (row[colname][columnToFind] != null) {
-          				if (row[colname][columnToFind].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-          					return true;
-          			}
-          			if (row[colname][columnToFind] != null) {
-          				if (row[colname][columnToFind].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-          					return true;
-          			}
-          			if (row[colname][columnToFind] != null) {
-          				if (row[colname][columnToFind].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-          					return true;
-          			}
-          		}
-
-          	}
-          	return false;
-
           }
         }
 
       }
-		}else{
-      for (colname in row) {
-        if (colname == "FnameLnameSSN") {
-          var name = "";
-          if (row[colname]["firstname"] != null) {
-            name += row[colname]["firstname"] + " ";
-          }
-          if (row[colname]["lastname"] != null) {
-            name += row[colname]["lastname"];
-          }
-          if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
-            if (searchterm != "")
-              console.log(row[columnToSearch]);
-            return true;
-          }
-
-          if (row[colname]["ssn"] != null) {
-            if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-              return true;
-          }
-          if (row[colname]["username"] != null) {
-            if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-              return true;
-          }
-          if (row[colname]["class"] != null) {
-            if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-              return true;
-          }
-          if (row[colname]["setTeacher"] != null) {
-            if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-              return true;
-          }
-        }
-
-      }
-      return false;
-
-    }
+		}
 	}
 
 	// var obj = JSON.parse(row["lid:2001"]);
 	// console.log(obj);
 
-  // HÄR SKA KODEN VARA
+	for (colname in row) {
+		if (colname == "FnameLnameSSN") {
+			var name = "";
+			if (row[colname]["firstname"] != null) {
+				name += row[colname]["firstname"] + " ";
+			}
+			if (row[colname]["lastname"] != null) {
+				name += row[colname]["lastname"];
+			}
+			if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
+				if (searchterm != "")
+					console.log(row[columnToSearch]);
+				return true;
+			}
+
+			if (row[colname]["ssn"] != null) {
+				if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+					return true;
+			}
+			if (row[colname]["username"] != null) {
+				if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+					return true;
+			}
+			if (row[colname]["class"] != null) {
+				if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+					return true;
+			}
+			if (row[colname]["setTeacher"] != null) {
+				if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+					return true;
+			}
+		}
+
+	}
+	return false;
+
 }
 
 function renderSortOptions(col, status, colname) {
