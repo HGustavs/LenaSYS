@@ -2501,7 +2501,7 @@ function handleSelect() {
     // Test issue #5960
     if(last.symbolkind == 4) {
         console.log("LINE");
-        console.log(connectedObjects(last) + "");
+        console.log(connectedObjects(last));
     }
 
     if (last.targeted == false && uimode != "MoveAround") {
