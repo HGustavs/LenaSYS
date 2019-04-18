@@ -1303,7 +1303,7 @@ function findfilevers(filez,cfield,ctype,displaystate)
 		var foundfile=null;
 		var oldfile="";
 		var tab="<table class='previewTable'>";
-		tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th colspan=2>Teacher feedback</th></tr></thead>"
+		tab+="<thead><tr><th></th><th>Filename</th><th>Upload date</th><th>Week</th><th>Teacher feedback</th></tr></thead>"
 		tab +="<tbody>";
 		if (typeof filez !== "undefined"){
 			for (var i=filez.length-1;i>=0;i--){
@@ -1513,5 +1513,5 @@ function generateTimeSheetOptions(course, moment, selected) {
 	} else {
 		return "<option value='issue'>Issue</option><option value='pullrequest' selected>Pull request</option>";
 	}
-	
+
 }
