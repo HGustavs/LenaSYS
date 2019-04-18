@@ -202,7 +202,7 @@ CREATE TABLE fileLink(
     vers 					VARCHAR(8),
 	PRIMARY KEY (fileid),
 	FOREIGN KEY (cid) REFERENCES course (cid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /**
  * An entry in this table allow file locations to be related to specific courses.
