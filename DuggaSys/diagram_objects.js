@@ -1064,7 +1064,7 @@ function Symbol(kind) {
 		    }
 
 		    // Move the value from the line
-		    cardinality.x = x1 > x2 ? x1-10 : x1+20;
+		    cardinality.x = x1 > x2 ? x1-20 : x1+10;
 		    cardinality.y = y1 > y2 ? y1-10 : y1+10;
 
 		    // Change side of the line to avoid overlap
