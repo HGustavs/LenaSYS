@@ -1629,6 +1629,7 @@ function rendercode(codestring,boxid,wordlistid,boxfilename)
 // createCodeborder: function to create a border with line numbers
 //                Is called by rendercode in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function createCodeborder(lineno,improws){
 	var str="<div class='codeborder'>";
 
@@ -1659,6 +1660,7 @@ function createCodeborder(lineno,improws){
 // changetemplate: Change template by updating hidden field
 //                Is called at line 223-229 in EditorV50.php
 //----------------------------------------------------------------------------------
+
 function changetemplate(templateno)
 {
 	$(".tmpl").each(function( index ) {
@@ -1673,6 +1675,7 @@ function changetemplate(templateno)
 // updateTemplate: Write template hidden field to database
 //                Is called at line 234 in EditorV50.php
 //----------------------------------------------------------------------------------
+
 function updateTemplate()
 {
 	templateno=$("#templateno").val();
@@ -1699,40 +1702,49 @@ function updateTemplate()
 // closeEditContent:
 //                Is called at line 141 in EditorV50.php
 //----------------------------------------------------------------------------------
+
 function closeEditContent()
 {
 	$("#boxtitle2").attr("contenteditable", true);
 	$("#editContentContainer").css("display","none");
 	openBoxID = null;
 }
+
 //----------------------------------------------------------------------------------
 // closeEditExample:
 //                Is called at line 183 in EditorV50.php
 //----------------------------------------------------------------------------------
+
 function closeEditExample()
 {
 	$("#editExampleContainer").css("display","none");
 }
+
 //----------------------------------------------------------------------------------
 // openTemplateWindow:
 //                Is called at line 53 in EditorV50.php
 //----------------------------------------------------------------------------------
+
 function openTemplateWindow()
 {
 	$("#chooseTemplateContainer").css("display","flex");
 }
+
 //----------------------------------------------------------------------------------
 // closeTemplateWindow:
 //                Is called at line 218 in EditorV50.php
 //----------------------------------------------------------------------------------
+
 function closeTemplateWindow()
 {
 	$("#chooseTemplateContainer").css("display","none");
 }
+
 //----------------------------------------------------------------------------------
 // Play:
 //					Is called at line 195 in EditorV50.php and line 56 in navheader.php
 //----------------------------------------------------------------------------------
+
 function Play(event)
 {
 	if(retData['playlink']!=null){
@@ -1757,10 +1769,12 @@ function Play(event)
         }
 	}
 }
+
 //-----------------------------------------------------------------------------
 // resizeBoxes: Adding resize functionality for the boxes
 //					Is called by setup() in codeviewer.js
 //-----------------------------------------------------------------------------
+
 function resizeBoxes(parent, templateId)
 {
 	var boxValArray = initResizableBoxValues(parent);
@@ -2146,6 +2160,7 @@ function resizeBoxes(parent, templateId)
 //width adjustment for template 1, 4 and 8 (Two boxes beside eachother.)
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
 {
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
@@ -2168,6 +2183,7 @@ function alignBoxesWidth(boxValArray, boxNumBase, boxNumAlign)
 //width adjustment for template 3 & 8.
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function alignBoxesWidth3Boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
 {
 	var remainWidth = boxValArray['parent']['width'] - $(boxValArray['box' + boxNumBase]['id']).width();
@@ -2207,6 +2223,7 @@ function alignBoxesWidthTemplate8(boxValArray, boxNumBase, boxNumAlign, boxNumAl
 //Height adjustment for two boxes on top of eachother.
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame)
 {
 	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
@@ -2219,10 +2236,12 @@ function alignBoxesHeight2boxes(boxValArray, boxNumBase, boxNumSame)
 	boxValArray['box' + boxNumBase]['height'] = $(boxValArray['box' + boxNumBase]['id']).height();
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 }
+
 //----------------------------------------------------------------------------------
 //Height adjustment for boxes in template 4. (Two small boxes ontop of a big box.)
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig)
 {
 	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
@@ -2237,10 +2256,12 @@ function alignBoxesHeight3boxes(boxValArray, boxNumBase, boxNumSame, boxNumBig)
 	boxValArray['box' + boxNumSame]['height'] = $(boxValArray['box' + boxNumSame]['id']).height();
 	boxValArray['box' + boxNumBig]['height'] = $(boxValArray['box' + boxNumBig]['id']).height();
 }
+
 //----------------------------------------------------------------------------------
 //Height adjustment for boxes in template 5.
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 {
 	var remainHeight = boxValArray['parent']['height'] - $(boxValArray['box' + boxNumBase]['id']).height();
@@ -2258,9 +2279,9 @@ function alignBoxesHeight4boxes(boxValArray, boxNumBase, boxNumSame)
 	boxValArray['box4']['height'] = $(boxValArray['box4']['id']).height();
 }
 
-//----------------------
+//---------------------------------
 // WIDTH MEASURMENT FOR TEMPLATE 6
-//----------------------
+//---------------------------------
 
 function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
 
@@ -2287,9 +2308,10 @@ function alignWidth4boxes(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecon
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 
 }
-//----------------------
+
+//-----------------------------------
 // WIDTH MEASURMENT FOR TEMPLATE 7
-//----------------------
+//-----------------------------------
 
 function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond, boxNumAlignThird){
 
@@ -2313,9 +2335,9 @@ function alignWidthTemplate7(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSe
 	boxValArray['box' + boxNumAlignThird]['width'] = $(boxValArray['box' + boxNumAlignThird]['id']).width();
 }
 
-//----------------------
+//---------------------------------------
 // HEIGHT MEASURMENT FOR TEMPLATE 6 & 7
-//----------------------
+//---------------------------------------
 
 function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond){
 
@@ -2349,9 +2371,9 @@ function alignBoxesHeight3stack(boxValArray, boxNumBase, boxNumAlign, boxNumAlig
 	boxValArray['box' + boxNumAlignSecond]['height'] = $(boxValArray['box' + boxNumAlignSecond]['id']).height();
 }
 
-//----------------------
+//----------------------------------
 // HEIGHT MEASURMENT FOR TEMPLATE 6
-//----------------------
+//----------------------------------
 
 function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNumAlignSecond)
 {
@@ -2371,9 +2393,9 @@ function alignBoxesHeight3stackLower(boxValArray, boxNumBase, boxNumAlign, boxNu
 
 }
 
-//----------------------
+//----------------------------------
 // WIDTH MEASURMENT FOR TEMPLATE 9
-//----------------------
+//----------------------------------
 
 function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, boxFive){
 
@@ -2406,9 +2428,9 @@ function alignTemplate9Width(boxValArray, boxOne, boxTwo, boxThree, boxFour, box
 	boxValArray['box' + boxFive]['width'] = $(boxValArray['box' + boxFive]['id']).width();
 }
 
-//----------------------
+//-----------------------------------
 // HEIGHT MEASURMENT FOR TEMPLATE 9
-//----------------------
+//-----------------------------------
 
 function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour)
 {
@@ -2459,9 +2481,9 @@ function alignTemplate9Height(boxValArray, boxOne, boxTwo, boxThree, boxFour)
 	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
 }
 
-//----------------------
+//-----------------------------------
 // HEIGHT MEASURMENT FOR TEMPLATE 9
-//----------------------
+//-----------------------------------
 
 function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour){
 
@@ -2535,9 +2557,9 @@ function alignTemplate9Height3Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 	boxValArray['box' + boxFour]['height'] = $(boxValArray['box' + boxFour]['id']).height();
 }
 
-//----------------------
+//------------------------------------
 // HEIGHT MEASURMENT FOR TEMPLATE 9
-//----------------------
+//------------------------------------
 
 function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFour)
 {
@@ -2589,6 +2611,7 @@ function alignTemplate9Height2Stack(boxValArray, boxOne, boxTwo, boxThree, boxFo
 //Creates an array with all the properties needed for resize function.
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function initResizableBoxValues(parent)
 {
 	var parentWidth = $(parent).width();
@@ -2620,6 +2643,7 @@ function initResizableBoxValues(parent)
 //Saves the measurments in percent for the boxes on the screen in local storage.
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function setLocalStorageProperties(templateId, boxValArray)
 {
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
@@ -2646,6 +2670,7 @@ function setLocalStorageProperties(templateId, boxValArray)
 //	LOADER:	Makes the page content hidden until it is loaded completely and displays a
 //  loading gif until page has loaded fully
 //----------------------------------------------------------------------------------
+
 document.onreadystatechange = function () {
   var state = document.readyState
   if (state == 'interactive') {
@@ -2662,6 +2687,7 @@ document.onreadystatechange = function () {
 //		  TODO: Add handling for when localstorage is null or < 0
 //                Is called by resizeBoxes in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function getLocalStorageProperties(templateId, boxValArray)
 {
 	var numBoxes = $("[id ^=box][id $=wrapper]").length;
@@ -2681,6 +2707,7 @@ function getLocalStorageProperties(templateId, boxValArray)
 //removes percentage based gap
 //                Is called by getLocalStorageProperties in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function erasePercentGap(templateId, boxValArray)
 {
 	if(templateId == 1){
@@ -2717,6 +2744,7 @@ function erasePercentGap(templateId, boxValArray)
 //Solves problem of how resizable ui component only work with pixel based positioning.
 //                Is called by setLocalStorageProperties in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function setResizableToPer(boxValArray)
 {
 	$("[class ^=ui][class $=resizable]").each(function( index ) {
@@ -2734,6 +2762,7 @@ function setResizableToPer(boxValArray)
 //					 with <br> tags.
 //                Is called by returned in codeviewer.js
 //----------------------------------------------------------------------------------
+
 function addHtmlLineBreak(inString){
 	return inString.replace(/\n/g, '<br>');
 }
