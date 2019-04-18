@@ -1492,7 +1492,6 @@ function FABDown(e)
 //----------------------------------------------------------------------------------
 function FABUp(e)
 {
-	// Create
 	if ((e.target.id=="fabBtn")) {
 		createQuickItem();
 	}
