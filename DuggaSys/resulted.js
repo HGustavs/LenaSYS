@@ -877,10 +877,12 @@ function renderCell(col, celldata, cellid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
+
   for(var i = 0; i < moments.length; i++)
   {
     var lid = "lid:"+moments[i]["lid"];
-    console.log(row[lid]);
+    //console.log(row[lid]);
+    console.log(row[lid].entryname);
   }
 
 	// Custom filters that remove rows before an actual search
