@@ -921,9 +921,9 @@ function rowFilter(row) {
 					if (row[lid].grade === 2) {
 						// DO SOME FILTERING HERE!
 						console.log("VI HITTA COLUMNEN OCH GODKÄNDA BETYG! " + row[lid].entryname + " " + row[lid].grade);
+						console.log(row[lid]);
 					}
 				}
-
 			}
 		}
 	}
