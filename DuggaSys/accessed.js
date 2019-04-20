@@ -164,10 +164,11 @@ function changeProperty(targetobj,propertyname,propertyvalue)
 var tgroups=[];
 
 function hideSSN(ssn){
-var hiddenSSN;
-hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX'	);
-return hiddenSSN;
+	var hiddenSSN;
+	hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
+	return hiddenSSN;
 }
+
 function renderCell(col,celldata,cellid) {
 		var str="UNK";
 		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "class"||col == "examiner"||col == "groups"||col == "vers"||col == "access"||col == "requestedpasswordchange"){
