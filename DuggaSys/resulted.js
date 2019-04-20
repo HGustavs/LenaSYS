@@ -780,6 +780,7 @@ function renderCell(col, celldata, cellid) {
 			return str;
 		}
 	}
+
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
 	if (col == "FnameLnameSSN") {
@@ -788,8 +789,6 @@ function renderCell(col, celldata, cellid) {
 		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
 		str += "<div>" + celldata.ssn + "</div>";
-		//	str += "<div style='font-style:italic;text-align:right;'>"+celldata.setTeacher+"</div>";
-		//	str += "</div>";
 		str += "</div>";
 		return str;
 
