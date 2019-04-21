@@ -13,6 +13,21 @@ var myTable;
 //----------==========########## User Interface ##########==========----------
 //----------------------------------------------------------------------------
 
+if (data['writeaccess']) {
+	$('#wrappall').show();
+	$('#searchinput').show();
+	$('.fixed-action-button').show();
+	$('#searchbutton').show();
+}
+else {
+	$('#wrappall').hide();
+	$('#searchinput').hide();
+	$('.fixed-action-button').hide();
+	$('#searchbutton').hide();
+		changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
+			+ querystring['coursevers'] + "");
+}
+
 function setup()
 {
   AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
@@ -366,21 +381,6 @@ function returnedAccess(data) {
 	if(data["entries"].length>0){
 			document.getElementById("sort").style.display="table-cell";
 			document.getElementById("select").style.display="table-cell";
-	}
-
-	if (data['writeaccess']) {
-		$('#wrappall').show();
-		$('#searchinput').show();
-		$('.fixed-action-button').show();
-		$('#searchbutton').show();
-	}
-	else {
-		$('#wrappall').hide();
-		$('#searchinput').hide();
-		$('.fixed-action-button').hide();
-		$('#searchbutton').hide();
-			changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
-				+ querystring['coursevers'] + "");
 	}
 
 	var tabledata = {
