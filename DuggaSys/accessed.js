@@ -369,13 +369,15 @@ function returnedAccess(data) {
 	}
 
 	if (data['writeaccess']) {
-		$('#quiz').show();
+		$('#wrappall').show();
+		$('#newbutton').show();
 		$('.fixed-action-button').show();
 		$('.searchField').show();
 		$('#searchbutton').show();
 	}
 	else {
-		$('#quiz').hide();
+		$('#wrappall').hide();
+		$('#newbutton').hide();
 		$('.fixed-action-button').hide();
 		$('.searchField').hide();
 		$('#searchbutton').hide();
