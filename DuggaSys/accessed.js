@@ -370,13 +370,13 @@ function returnedAccess(data) {
 
 	if (data['writeaccess']) {
 		$('#wrappall').show();
-		$('h1').show();
+		$('#searchinput').show();
 		$('.fixed-action-button').show();
 		$('#searchbutton').show();
 	}
 	else {
 		$('#wrappall').hide();
-		$('h1').hide();
+		$('#searchinput').hide();
 		$('.fixed-action-button').hide();
 		$('#searchbutton').hide();
 			changeURL("sectioned.php?courseid=" + querystring['cid'] + "&coursename=" + data.coursename + "&coursevers="
