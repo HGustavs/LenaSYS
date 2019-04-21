@@ -49,7 +49,9 @@ logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "accessedservice.php"
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
+$writeaccess = false;
 if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESSION['uid']))) {
+	$writeaccess = true;
 
 	if(strcmp($opt,"UPDATE")==0){
 	
@@ -368,6 +370,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 $array = array(
 	'entries' => $entries,
 	'debug' => $debug,
+	'writeaccess' => $writeaccess,
 	'teachers' => $teachers,
 	'classes' => $classes,
 	'courses' => $courses,
