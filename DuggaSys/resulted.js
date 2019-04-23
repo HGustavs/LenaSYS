@@ -947,10 +947,8 @@ function smartSearch(splitSearch, row)
         }
       }else {
         if(sortingType <= sortingValue) {
-          console.log("KOM IN I ELSEN");
           for (colname in row) {
-            if (colname.deadline === row[lid].deadline) {
-              console.log("DEADLINE STÄMMER ÖVERRENS!");
+            if (colname == "lid:" + row[lid].lid) {
               var name = "";
               if (row[colname].entryname != null) {
                 name += row[colname].entryname + " ";
