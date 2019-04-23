@@ -197,6 +197,11 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
                         </div>
+                        <div class="drop-down-divider">
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick=' resetToolbarPosition();'> Reset toolbar position</span>
+                        </div>
                     </div>
                 </div>
                 <div class="menu-drop-down">
