@@ -906,7 +906,7 @@ function rowFilter(row) {
 	})
 	var columnToSearch;
 	var lid;
-  if(searchterm=="")
+  if(searchterm != "")
   {
 
 	for (var i = 0; i < splitSearch.length; i++) {
