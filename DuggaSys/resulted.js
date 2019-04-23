@@ -885,10 +885,10 @@ function smartSearch(splitSearch, row)
   for (var i = 0; i < splitSearch.length; i++) {
       columnToSearch = splitSearch[i][1];
 
-      for (var i = 0; i < moments.length; i++) {
+      for (var j = 0; j < moments.length; j++) {
         lid = "lid:" + moments[i]["lid"];
 
-        switch(splitSearch[i][0].toUpperCase())
+        switch(splitSearch[j][0].toUpperCase())
         {
           case "MARKG":
             sortingValue = 2;
