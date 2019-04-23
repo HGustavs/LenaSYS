@@ -877,9 +877,6 @@ function renderCell(col, celldata, cellid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function rowFilter(row) {
-
-  console.log(row);
-
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
@@ -926,49 +923,17 @@ function rowFilter(row) {
 
 				if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
 					if (row[lid].grade === 2) {
-						console.log("VI HITTA COLUMNEN OCH GODKÄNDA BETYG! " + row[lid].entryname + " " + row[lid].grade);
-						console.log(row[lid].lid);
-
             for (colname in row) {
               if (colname == "lid:"+row[lid].lid) {
-                console.log("Inne i colname "+"lid:"+row[lid].lid);
                 var name = "";
-                if (row[colname].entryname != null) {
+                if (row[colname].entryname] != null) {
                   name += row[colname][row[lid].entryname] + " ";
                 }
-                if (name.toUpperCase().indexOf(columnToFind.toUpperCase()) != -1) {
-                  name = "";
+                console.log(name + " - " + columnToSearch);
+                if (name.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
                   return true;
                 }
-                if (colname == "FnameLnameSSN")
-                  {
-                    var name = "";
-                    if (row[colname]["firstname"] != null) {
-                      name += row[colname]["firstname"] + " ";
-                    }
-                    if (row[colname]["lastname"] != null) {
-                      name += row[colname]["lastname"];
-                    }
-                    if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
-                      return true;
-                    }
-
-                    if (row[colname]["ssn"] != null) {
-                      if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-                        return true;
-                    }
-                    if (row[colname]["username"] != null) {
-                      if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-                        return true;
-                    }
-                    if (row[colname]["class"] != null) {
-                      if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-                        return true;
-                    }
-                    if (row[colname]["setTeacher"] != null) {
-                      if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-                        return true;
-                    }
+            }
 					}
           return false;
 				}
@@ -1012,7 +977,6 @@ function rowFilter(row) {
   return false;
 }
   // HÄR SKA ANNARS FILTRERINGEN VARA!
-}
 }
 
 function renderSortOptions(col, status, colname) {
