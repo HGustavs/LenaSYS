@@ -324,7 +324,7 @@ CREATE TABLE impwordlist(
 	PRIMARY KEY (wordid),
 	FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE submission(
 	subid					MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
