@@ -349,31 +349,31 @@ function closeWindows(){
 
 	//More effective to have a class for the div you want to search and pass that to your selector
 	$("*").each(function() {
-	    //Always use a radix when using parseInt
-	    var index_current = parseInt($(this).css("zIndex"), 10);
-	    if(index_current > index_highest && this.style.display == "block"||index_current > index_highest && this.style.display == "flex") {
-	        index_highest = index_current;
-					e=this;
-	    }
+		//Always use a radix when using parseInt
+		var index_current = parseInt($(this).css("zIndex"), 10);
+		if(index_current > index_highest && this.style.display == "block"||index_current > index_highest && this.style.display == "flex") {
+			index_highest = index_current;
+			e=this;
+		}
 	});
 
-	if (index_highest > 0){
-			/* Overlay is only present for loginbox which has z-index of 9000,
-         so if we closed such a window, hide the overlay and clear any values as well. */
-         e.style.display= "none";
-    	if (index_highest < 10000) {
-					status=1;
-					//toggleloginnewpass();
-					//$("#overlay").css("display","none");
-					resetFields();
-			}
+	if (index_highest > 0 && e.id !== "FABStatic"){
+		/* Overlay is only present for loginbox which has z-index of 9000,
+	 so if we closed such a window, hide the overlay and clear any values as well. */
+		e.style.display= "none";
+		if (index_highest < 10000) {
+			status=1;
+			//toggleloginnewpass();
+			//$("#overlay").css("display","none");
+			resetFields();
+		}
 	}
 
-  $(document).keyup(function(e) {
-    if (e.which == 27){
-      resetLoginStatus();
-    }
-  });
+	$(document).keyup(function(e) {
+		if (e.which == 27){
+			resetLoginStatus();
+		}
+	});
 
 	window.removeEventListener("keypress", loginEventHandler, false);
 }
