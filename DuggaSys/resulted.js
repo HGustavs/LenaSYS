@@ -949,19 +949,20 @@ function smartSearch(splitSearch, row)
         if(sortingType <= sortingValue) {
           console.log("KOM IN I DEN FÖRSTA");
           for (colname in row) {
-            if (colname.deadline.setHours(0,0,0,0).getTime() >= sortingValue) {
-              console.log("KOM IN I DEN ANDRA!");
-              var name = "";
-              if (row[colname].entryname != null) {
-                name += row[colname].entryname + " ";
-              }
-              var txt = document.createElement("textarea");
-              txt.innerHTML = name;
-              var newName2 = txt.value;
-              if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
-                return true;
-              }
-            }
+            console.log(colname);
+            // if (colname.deadline.setHours(0,0,0,0).getTime() >= sortingValue) {
+            //   console.log("KOM IN I DEN ANDRA!");
+            //   var name = "";
+            //   if (row[colname].entryname != null) {
+            //     name += row[colname].entryname + " ";
+            //   }
+            //   var txt = document.createElement("textarea");
+            //   txt.innerHTML = name;
+            //   var newName2 = txt.value;
+            //   if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
+            //     return true;
+            //   }
+            // }
           }
           return false;
       }
