@@ -39,6 +39,7 @@ function Symbol(kind) {
     this.minHeight;
     this.locked = false;
     this.isOval = false;
+    this.isAttribute = false;
     this.isRelation = false;
     this.isLine = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
@@ -901,6 +902,7 @@ function Symbol(kind) {
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2) {
+        this.isAttribute = true;
         ctx.fillStyle = this.properties['symbolColor'];
         // Drawing a multivalue attribute
         if (this.properties['key_type'] == 'Multivalue') {
@@ -947,6 +949,8 @@ function Symbol(kind) {
         ctx.fillStyle = this.properties['symbolColor'];
         ctx.beginPath();
         var relationMidPoints = [];
+        var relationMidYPoints = [];
+        var relationMidXPoints = [];
         if (this.properties['key_type'] == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
             ctx.lineTo(x2 + 5, y1 - 5);
@@ -971,17 +975,45 @@ function Symbol(kind) {
 
                     // Stores the midpoints for the relations in an array.
                     if (diagram[i].isRelation) {
-                        var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
+                        var relationMiddleX = ((dtrx - dtlx) / 2) + dtlx;
                         var relationMiddleY = ((dbly - dtly) / 2) + dtly;
                         relationMidPoints.push(relationMiddleX, relationMiddleY);
+                        relationMidXPoints.push(relationMiddleX, dtly, dbly);
+                        relationMidYPoints.push(relationMiddleY, dtlx, dtrx);
                     }   
+
+                    //TODO: Find the attributes midpoints and store them in an array
+                    if (diagram[i].isOval) {
+                        console.log("I am oval"); 
+                    }
+
                     if (!diagram[i].isOval && !diagram[i].isRelation) {
                         // Setting the line types to forced if they are normal and the connected entity is weak.
                         if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Forced') {
                             // Looping through the midpoints for relation entities.
+                            for (let j = 0; j < relationMidXPoints.length; j++) {
+                                for (let c = 0; c < relationMidXPoints.length; c++) {
+                                    if (dtlx == relationMidXPoints[j] || dtrx == relationMidXPoints[j]) {
+                                        if (dtly == relationMidXPoints[c] || dbly == relationMidXPoints[c]) {
+                                            
+                                            diagram[i].properties['key_type'] = 'Forced';
+                                        }
+                                    }
+                                }
+                            }
+                            for (let j = 0; j < relationMidYPoints.length; j++) {
+                                for (let c = 0; c < relationMidYPoints.length; c++) {
+                                    if (dtly == relationMidYPoints[j] || dbly == relationMidYPoints[j]) {
+                                        if (dtlx == relationMidYPoints[c] || dtrx == relationMidYPoints[c]) {
+                                            diagram[i].properties['key_type'] = 'Forced';
+                                        }
+                                    }
+                                }
+                            }
+                            /*
                             for (let j = 0; j < relationMidPoints.length; j++) {
                                 // Checking if the line is connected to any of the midpoints.
-                                if (dtlx == relationMidPoints[j] || dtrx == relationMidPoints[j] || dtly == relationMidPoints[j] || dbly == relationMidPoints[j]) {
+                                if ((dtlx == relationMidPoints[j] || dtrx == relationMidPoints[j]) || ( dtly == relationMidPoints[j] || dbly == relationMidPoints[j] )) {
                                     // Making sure that only the correct lines are set to forced.
                                     if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
                                         diagram[i].properties['key_type'] = 'Forced';
@@ -994,9 +1026,9 @@ function Symbol(kind) {
                                     }
                                 }
                             }
+                            */
                         }
                     }
-                                 
                 } 
             }
         } else {
