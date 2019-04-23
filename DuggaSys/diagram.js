@@ -66,6 +66,8 @@ var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
+var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
+var distanceMovedY = 0;
 var minEntityX = 100;               //the minimum size for an Enitny are set by the values seen below.
 var minEntityY = 50;
 var hashUpdateTimer = 5000;         // set timer varibale for hash and saving
@@ -971,6 +973,8 @@ function canvasSize() {
     canvas.setAttribute("height", heightWindow);
     ctx.clearRect(sx, sy, widthWindow, heightWindow);
     ctx.translate(sx, sy);
+    distanceMovedX = -sx;
+    distanceMovedY = -sy;
     ctx.scale(1, 1);
     ctx.scale(zoomValue, zoomValue);
 }
@@ -981,12 +985,13 @@ window.addEventListener('resize', canvasSize);
 //-------------------------------------------
 // updateGraphics: used to redraw each object on the screen
 //-------------------------------------------
-
 function updateGraphics() {
     ctx.clearRect(sx, sy, (widthWindow / zoomValue), (heightWindow / zoomValue));
     if (moveValue == 1) {
         ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
+        distanceMovedX += mouseDiffX;
+        distanceMovedY += mouseDiffY;
     }
 
     diagram.updateQuadrants();
@@ -999,6 +1004,16 @@ function updateGraphics() {
      if(!ghostingCrosses) {
         drawOrigo();
     }
+}
+
+//---------------------------------------
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas 
+//---------------------------------------
+function resetViewToOrigin(){
+    ctx.translate(distanceMovedX, distanceMovedY);
+    distanceMovedX = 0;
+    distanceMovedY = 0;
+    updateGraphics();
 }
 
 function getConnectedLines(object) {

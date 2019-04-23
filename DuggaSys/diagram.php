@@ -181,13 +181,12 @@
                             <i id="hotkey-redo">Ctrl + Y</i>
                         </div>
                         <div class="drop-down-divider">
-
                         </div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
                         </div>
                         <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
+                            <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
                         </div>
                         <div class="drop-down-divider">
                         </div>
@@ -196,6 +195,11 @@
                         </div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
+                        </div>
+                        <div class="drop-down-divider">
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='resetViewToOrigin();'> Reset view to origin</span>
                         </div>
                     </div>
                 </div>
