@@ -893,7 +893,6 @@ function rowFilter(row) {
 		}
 	}
 
-
 	// divides the search on &&
 	var tempSplitSearch = searchterm.split("&&");
 	var splitSearch = [];
@@ -901,16 +900,11 @@ function rowFilter(row) {
 		if (s.length > 0)
 			splitSearch.push(s.trim().split(":"));
 	})
+
 	var columnToSearch;
 	var lid;
-  console.log("splitSearch = "+splitSearch+" searchterm = "+searchterm+ " tempSplitSearch = "+tempSplitSearch);
 	if (searchterm != "" && splitSearch != searchterm) {
 		for (var i = 0; i < splitSearch.length; i++) {
-			// key som värdet ska sökas på
-			// console.log(splitSearch[i][0]);
-			// värdet som ska sökas
-			// console.log(splitSearch[i][1]);
-
 			if (splitSearch[i][0].toUpperCase() == "MARKG") {
 				columnToSearch = splitSearch[i][1];
 
@@ -977,7 +971,6 @@ function rowFilter(row) {
 		}
 		return false;
 	}
-	// HÄR SKA ANNARS FILTRERINGEN VARA!
 }
 
 function renderSortOptions(col, status, colname) {
