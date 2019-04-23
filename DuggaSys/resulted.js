@@ -946,9 +946,12 @@ function smartSearch(splitSearch, row)
         }
       }else {
           for (colname in row) {
-            sortingType = row[colname].deadline.setHours(0,0,0,0);
-            if(sortingType.getTime() <= sortingValue) {
-              return true;
+            if(row[colname]!="FnameLnameSSN"){
+              sortingType = row[colname].deadline.setHours(0,0,0,0);
+                if(sortingType.getTime() <= sortingValue) {
+                  console.log("GICK IGENOM!");
+                  return true;
+            }
             // if (colname.deadline.setHours(0,0,0,0).getTime() >= sortingValue) {
             //   console.log("KOM IN I DEN ANDRA!");
             //   var name = "";
