@@ -1,4 +1,38 @@
 /* --------------================################================-------------- *
+ *                                    Colors                                    *
+ * --------------================################================-------------- */
+
+ :root {
+  --color-text-primary: #775886;
+  --color-text-secondary: #434343;
+  --color-text-header: #fff;
+  --color-text-list: #000;
+  --color-text-logo: #fff;
+  --color-text-label: #000;
+
+  --color-logo1: #775886;
+  --color-logo2: #573866;
+
+  --color-primary: #614875;
+  --color-primary-hover: #7b5a96;
+  --color-primary-light: #927b9e;
+  --color-accent: #fecc56;
+  --color-accent-hover: #ffd369;
+  --color-background: #fff;
+  --color-background-2: #ccc;
+  --color-background-3: #f0f0f0;
+  --color-background-4: #c8c8c8;
+  --color-sectioned-table-hi: #dad8db;
+  --color-sectioned-table-lo: #eae8eb;
+  --color-statistics: #d8d7da;
+  --color-list-hover: #c6cdb8;
+  
+  --color-green: #50a750;
+  --color-red: #c75050;
+  --color-red-hover: #ce3d3d;
+}
+
+/* --------------================################================-------------- *
  *                               Fonts 1                                         *
  * --------------================################================-------------- */
 
@@ -63,6 +97,7 @@ body {
   overflow-y: scroll;
   width: 100%;
   height: 100%;
+  background-color: var(--color-background);
 }
 
 table {
@@ -176,7 +211,7 @@ p {
 }
 
 #content {
-  background: #fff;
+  background: var(--color-background);
   min-height: calc(100vh - 80px);
   margin: 65px 10px 15px 10px;
 }
@@ -185,7 +220,7 @@ p {
   margin: 0px auto;
   position: relative;
   padding: 10px 10px 10px 10px;
-  background: #fff;
+  background: var(--color-background);
   min-height: 200px;
 }
 
@@ -193,7 +228,7 @@ p {
   margin: 0px auto;
   position: relative;
   padding: 50px 12px 8px 8px;
-  background: #fff;
+  background: var(--color-background);
   min-height: 50px;
 }
 
@@ -205,9 +240,9 @@ p {
 
 .lena {
   border-radius: 6px 0px 0px 6px;
-  color: #FFF;
+  color: var(--color-text-logo);
   background-color: #775886;
-  background: linear-gradient(to bottom, #775886, #573866);
+  background: linear-gradient(to bottom, var(--color-logo1), var(--color-logo2));
   padding-left: 6px;
   padding-right: 6px;
   padding-top: 2px;
@@ -217,9 +252,9 @@ p {
 
 .sys {
   border-radius: 6px;
-  color: #775886;
+  color: var(--color-text-primary);
   border: 2px solid #775886;
-  background-color: #fff;
+  background-color: var(--color-background);
   padding-right: 4px;
   margin-right: 4px;
   text-decoration: none;
@@ -227,14 +262,14 @@ p {
 
 #Courselist {
   margin: 0px auto;
-  background-color: #fff;
-  color: #434343;
+  background-color: var(--color-background);
+  color: var(--color-text-secondary);
   display: block;
   padding-top: 1px;
 }
 
 #Courselist a {
-  color: #775886;
+  color: var(--color-text-primary);
   text-decoration: none;
 }
 
@@ -244,10 +279,10 @@ p {
 
 #Courselist .head {
   text-align: center;
-  color: #775886;
+  color: var(--color-text-primary);
   font-size: 18pt;
   display: block;
-  background-color: #FFF;
+  background-color: var(--color-background);
   padding-top: 7px;
   min-height: 30px;
   margin-top: 40px;
@@ -258,10 +293,10 @@ p {
 
 #Courselist .bigg {
   text-align: center;
-  color: #775886;
+  color: var(--color-text-primary);
   font-size: 14pt;
   display: block;
-  background-color: #fff;
+  background-color: var(--color-background);
   padding-top: 7px;
   min-height: 30px;
   margin-right: 8px;
@@ -279,8 +314,8 @@ p {
 
 #Sectionlist {
   margin: 0px auto;
-  background-color: #fff;
-  color: #434343;
+  background-color: var(--color-background);
+  color: var(--color-text-secondary);
   display: block;
   padding-top: 1px;
   border-radius: 5px;
@@ -293,19 +328,19 @@ p {
 }
 
 #Sectionlist .section {
-  color: #fff;
-  background-color: #927b9e;
+  color: var(--color-text-header);
+  background-color: var(--color-primary-light);
 }
 
 #Sectionlist .header {
-  color: #fff;
+  color: var(--color-text-header);
   background-color: #775886;
   text-align: center;
 }
 
 #Sectionlist .moment {
-  color: #ffffff;
-  background-color: #927b9e;
+  color: var(--color-text-header);
+  background-color: var(--color-primary-light);
   cursor: pointer;
   /*
   box-shadow: 0px 3px 0px #aaa;
@@ -342,7 +377,7 @@ p {
 }
 
 #Sectionlist .example {
-  color: #434343;
+  color: var(--color-text-secondary);
   /*font-size: 12pt;
   padding-top: 5px;*/
   min-height: 26px;
@@ -370,7 +405,7 @@ p {
 }
 
 #Sectionlist .quiz {
-  color: #434343;
+  color: var(--color-text-secondary);
   font-size: 12pt;
   padding-top: 5px;
   min-height: 26px;
@@ -379,14 +414,14 @@ p {
 #Sectionlist .course {
   padding: 6px;
   text-align: center;
-  color: #fff;
+  color: var(--color-text-header);
   font-size: 24px;
-  background-color: #614875;
+  background-color: var(--color-primary);
 }
 
 .item a {
   text-decoration: none;
-  color: #775886;
+  color: var(--color-text-primary);
 }
 
 .item a:hover {
@@ -410,31 +445,31 @@ p {
 }
 
 #Sectionlist .norm {
-  background-color: #fff;
-  color: #000;
+  background-color: var(--color-background);
+  color: var(--color-text-list);
 }
 
 #Sectionlist .norm:hover {
   background-color: #c6cdb8;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 #Sectionlist .hi:hover {
   background-color: #c6cdb8;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 #Sectionlist .lo:hover {
   background-color: #c6cdb8;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 .hi {
-  background-color: #dad8db !important;
+  background-color: var(--color-sectioned-table-hi) !important;
 }
 
 .lo {
-  background-color: #eae8eb !important;
+  background-color: var(--color-sectioned-table-lo) !important;
 }
 
 .LightBox {
@@ -447,7 +482,7 @@ p {
   width: 32px;
   vertical-align: middle;
   overflow: hidden;
-  background-color: #927b9e;
+  background-color: var(--color-primary-light);
 }
 
 .StopLight {
@@ -485,7 +520,7 @@ p {
 
 #Sectionlist .hiddensection {
   opacity: 0.3;
-  color: #000;
+  color: var(--color-text-list);
 }
 
 #Sectionlist .loginsection {
@@ -510,7 +545,7 @@ p {
 .tooltiptext {
   display: none;
   width: 160px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   color: white;
   text-align: center;
   border-radius: 6px;
@@ -536,7 +571,7 @@ p {
  }
 
  .statistics {
-   background-color: #927b9e;
+   background-color: var(--color-primary-light);
    color: white;
    width: 36px;
    min-height: calc(100vh - 122px);
@@ -548,13 +583,13 @@ p {
  .statisticsContent {
    width: 100%;
    height: 100%;
-   background-color: #d8d7da;
+   background-color: var(--color-statistics);
 }
 
 .statisticsInnerBox{
     margin: 10px 10px 10px 10px;
     border: 2px solid darkgray;
-    background-color: #eae8eb;
+    background-color: var(--color-sectioned-table-lo);
 }
 
 /* --------------================################================-------------- *
@@ -563,10 +598,10 @@ p {
 
 header {
   /*overflow: hidden;*/
-  color: #fff;
+  color: var(--color-text-header);
   height: 50px;
   width: 100%;
-  background: #614875;
+  background: var(--color-primary);
   position: fixed;
   z-index: 5000;
   top: 0px;
@@ -667,19 +702,19 @@ header td {
 }
 
 .loggedout {
-  background-color: #c75050;
+  background-color: var(--color-red);
 }
 
 .loggedout:hover {
-  background-color: #50a750;
+  background-color: var(--color-green);
 }
 
 .loggedin {
-  background-color: #50a750;
+  background-color: var(--color-green);
 }
 
 .loggedin:hover {
-  background-color: #c75050;
+  background-color: var(--color-red);
 }
 
 #loginbutton {
@@ -696,7 +731,7 @@ header td {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  background: #fff;
+  background: var(--color-background);
 }
 
 /* --------------================################================-------------- *
@@ -712,7 +747,7 @@ header td {
   z-index: 11000;
   box-shadow: 2px 2px 4px #000;
   padding: 4px;
-  background-color: #ccc;
+  background-color: var(--color-background-2);
   border: 2px solid #999;
 }
 
@@ -725,7 +760,7 @@ header td {
   z-index: 11000;
   box-shadow: 2px 2px 4px #000;
   padding: 4px;
-  background-color: #ccc;
+  background-color: var(--color-background-2);
   border: 2px solid #999;
 }
 
@@ -739,7 +774,7 @@ header td {
   z-index: 9000;
   box-shadow: 2px 2px 4px #000;
   padding: 4px;
-  background-color: #ccc;
+  background-color: var(--color-background-2);
   border: 2px solid #999;
 }
 
@@ -768,7 +803,7 @@ header td {
 
 .loginBox {
   padding: 4px;
-  background-color: #ccc;
+  background-color: var(--color-background-2);
   border: 2px solid #999;
   min-height: 100px;
   min-width: 200px;
@@ -795,7 +830,7 @@ header td {
   z-index:9000;
   box-shadow:2px 2px 4px #000;
   padding:4px;
-  background-color: #ccc;
+  background-color: var(--color-background-2);
   border: 2px solid #999;
 }
 
@@ -810,7 +845,7 @@ header td {
 
 .newpassword {
   padding: 4px;
-  background-color: #ccc;
+  background-color: var(--color-background-2);
   border: 2px solid #999;
   min-height: 100px;
   min-width: 200px;
@@ -821,7 +856,7 @@ header td {
 
 .showsecurityquestion {
   padding: 4px;
-  background-color: #ccc;
+  background-color: var(--color-background-2);
   border: 2px solid #999;
   min-height: 100px;
   min-width: 200px;
@@ -832,7 +867,7 @@ header td {
 
 .resetcomplete {
   padding: 4px;
-  background-color: #ccc;
+  background-color: var(--color-background-2);
   border: 2px solid #999;
   min-height: 100px;
   min-width: 200px;
@@ -845,7 +880,7 @@ header td {
 .endsessionmessagebox {
   display: block;
   padding: 4px;
-  background-color: #ccc;
+  background-color: var(--color-background-2);
   border: 2px solid #999;
   width: 350px;
   min-height: 100px;
@@ -858,7 +893,7 @@ header td {
 }
 
 #endsessionmessagebutton {
-  background-color: #614875;
+  background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 110px;
@@ -1033,7 +1068,7 @@ input {
 
 .loginBoxheader {
   height: 25px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   vertical-align: bottom;
   padding-left: 10px;
   cursor: default;
@@ -1045,7 +1080,7 @@ input {
   font-size: 14px;
   margin-top: 10px;
   line-height: 0.5em;
-  color: #fff;
+  color: var(--color-text-header);
   width: 100%;
 }
 
@@ -1096,7 +1131,7 @@ input {
   width: 80px;
   height: 25px;
   color: #fff;
-  background-color: #614875;
+  background-color: var(--color-primary);
   border: 0px;
   border-radius: 4px;
   margin-left: 1px;
@@ -1132,7 +1167,7 @@ input {
 
 .buttonLoginBox {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: #614875;
+  background-color: var(--color-primary);
   border: none;
   width: 260px;
   height: 40px;
@@ -1198,17 +1233,17 @@ input {
   z-index: 1000;
   border: 1px solid rgb(200, 200, 200);
   outline: 1px solid rgb(240, 240, 240);
-  background-color: #fff;
+  background-color: var(--color-background);
 }
 
 .application-header {
   height: 25px;
-  background-color: #614875;
-  color: #fff;
+  background-color: var(--color-primary);
+  color: var(--color-text-header);
   vertical-align: bottom;
   cursor: move;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin: 0px;
 }
 
@@ -1274,7 +1309,7 @@ input {
 }
 .toolbarArrows{
   width:20%;
-  background: #614875;
+  background: var(--color-primary);
   border-radius: 5px;
   cursor: pointer;
 }
@@ -1295,7 +1330,7 @@ input {
 }
 .diagramAction{
   border-radius: 5px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   width: 47%;
 }
 
@@ -1470,7 +1505,7 @@ input {
   font-size: 14px;
   line-height: 18px;
   color: #555;
-  background-color: #fff;
+  background-color: var(--color-background);
   background-image: none;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -1520,7 +1555,7 @@ button.option {
 }
 
 input.submit-button {
-  background-color: #614875;
+  background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 110px;
@@ -1536,7 +1571,7 @@ input.submit-button {
 }
 
 div.submit-button {
-  background-color: #614875;
+  background-color: var(--color-primary);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   border: 0px;
   width: 30px;
@@ -1555,7 +1590,7 @@ div.submit-button {
 input.submit-button-newitem {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
-  background-color: rgb(253, 203, 96);
+  background-color: var(--color-accent);
   border: 0px;
   width: 35px;
   height: 25px;
@@ -1610,13 +1645,13 @@ button.diagram-menu-buttons {
 }
 
 button.diagram-menu-buttons:hover {
-  background-color: #ffcc55;
+  background-color: var(--color-accent-hover);
   border-radius: 2px;
 }
 
 input.hide-moments-button {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: rgb(253, 203, 96);
+  background-color: var(--color-accent);
   border: 0px;
   width: 77px;
   height: 25px;
@@ -1633,7 +1668,7 @@ input.hide-moments-button {
 }
 
 input.fileed-button {
-  background-color: #614875;
+  background-color: var(--color-primary);
   margin: 0 0 4px 8px;
   float: right;
 }
@@ -1685,7 +1720,7 @@ div.submit-button:disabled {
   white-space: nowrap;
   z-index: 10;
   border-radius: 5px;
-  background: #614875;
+  background: var(--color-primary);
 }
 
 #moveButton {
@@ -1719,7 +1754,7 @@ div.submit-button:disabled {
 }
 
 .unpressed {
-  background: #614875;
+  background: var(--color-primary);
 }
 
 .pressed {
@@ -1833,7 +1868,7 @@ input.large-button {
   padding: 5px;
   padding-right: 10px;
   color: white;
-  background-color: #614875;
+  background-color: var(--color-primary);
   display: inline-block;
   cursor: pointer;
 }
@@ -1858,7 +1893,7 @@ input.large-button {
   margin-bottom: 10px;
   margin-top: -1;
   color: white;
-  background-color: #614875;
+  background-color: var(--color-primary);
   cursor: pointer;
   border: none;
   border-radius: 0;
@@ -1879,14 +1914,14 @@ input.large-button {
 }
 
 .innertable {
-  background: #fff;
+  background: var(--color-background);
   box-shadow: 2px 3px 2px #a09098 inset;
   border-top: 2px solid #dbd0d8;
   border-bottom: 2px solid #dbd0d8;
 }
 
 .innertable td {
-  color: #000;
+  color: var(--color-text-list);
   line-height: 28px;
   border: none;
   text-align: left !important;
@@ -1899,22 +1934,22 @@ input.large-button {
 }
 
 .list th {
-  background: #614875;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-text-header);
   line-height: 28px;
   font-weight: bold;
   padding: 5px;
 }
 
 .innertable {
-  background: #fff;
+  background: var(--color-background);
   box-shadow: 2px 3px 2px #a09098 inset;
   border-top: 2px solid #dbd0d8;
   border-bottom: 2px solid #dbd0d8;
 }
 
 .innertable td {
-  color: #000;
+  color: var(--color-text-list);
   line-height: 28px;
   border: none;
 }
@@ -2014,20 +2049,20 @@ input.large-button {
 }
 
 .list tbody tr:nth-child(odd) {
-  background-color: #ccc;
+  background-color: var(--color-background-2);
 }
 
 .list#testTable tr:nth-child(odd),
 .list#testTable tr:nth-child(even) {
-  background-color: #eae8eb;
+  background-color: var(--color-sectioned-table-lo);
 }
 
 .evenfumo {
-  background: #ccc !important;
+  background: var(--color-background-2) !important;
 }
 
 .oddfumo {
-  background: #eae8eb !important;
+  background: var(--color-sectioned-table-lo) !important;
 }
 
 .selectedtr {
@@ -2035,7 +2070,7 @@ input.large-button {
 }
 
 #testinnertable {
-  background: #fff;
+  background: var(--color-background);
   box-shadow: none;
   border-top: none;
   border-bottom: none;
@@ -2062,7 +2097,7 @@ span.arrow {
 }
 
 #testinnertable {
-  background: #fff;
+  background: var(--color-background);
   box-shadow: none;
   border-top: none;
   border-bottom: none;
@@ -2082,8 +2117,8 @@ span.arrow {
 }
 
 .markinglist th {
-  background: #614875;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-text-header);
   font-style: italic;
   font-size: 12px;
   white-space: nowrap;
@@ -2091,7 +2126,7 @@ span.arrow {
 
 .feedback-list caption {
   border-left: 2px solid #dbd0d8;
-  background: #614875;
+  background: var(--color-primary);
   color: #fff;
   line-height: 28px;
 }
@@ -2196,8 +2231,8 @@ span.arrow {
 /**************************/
 
 #tableheader {
-  background: #614875;
-  color: #FFFFFF;
+  background: var(--color-primary);
+  color: var(--color-text-header);
   margin-top: 10px;
   float: left;
   width: calc(100% - 200px);
@@ -2224,7 +2259,7 @@ span.arrow {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  background-color: #eae8eb;
+  background-color: var(--color-sectioned-table-lo);
 }
 
 .resultTableCell{
@@ -2339,13 +2374,13 @@ span.arrow {
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: #fff;
+  background-color: var(--color-background);
   border-radius: 10px;
   box-shadow: 2px 2px 5px #888;
 }
 
 .submit-button {
-  background-color: #614875;
+  background-color: var(--color-primary);
   border: 0px;
   width: 110px;
   height: 30px;
@@ -2389,7 +2424,7 @@ span.arrow {
 }
 
 #feedbackTable tbody tr:nth-child(odd) {
-  background-color: #FFF;
+  background-color: var(--color-background);
 }
 
 #feedbackBox {
@@ -2426,7 +2461,7 @@ span.arrow {
 .loginTransparent {
   display: block;
   height: 60px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   text-align: left;
 }
 
@@ -2454,11 +2489,11 @@ span.arrow {
   padding: 5px 15px 5px 15px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  color: #000000;
+  color: var(--color-text-list);
 }
 
 .pane-active {
-  background-color: #614875;
+  background-color: var(--color-primary);
   color: #FFFFFF;
 }
 
@@ -2483,7 +2518,7 @@ span.arrow {
   right:50px;
   font-size:24px;
   text-align:center;
-  background-color:#fecc56;
+  background-color: var(--color-accent);
   color:#614875;
   z-index:4000;
   border:0;
@@ -2664,7 +2699,7 @@ span.arrow {
 }
 
 .headerlabel {
-  color: black;
+  color: var(--color-text-label);
   font-size: 16px;
   direction: rtl;
   max-width: 140px;
@@ -2690,7 +2725,7 @@ span.arrow {
 }
 
 .result-header-inverse {
-  background-color: rgb(255, 204, 85) !important;
+  background-color: var(--color-accent) !important;
   color: #614875 !important;
 }
 
@@ -2707,7 +2742,7 @@ span.arrow {
   display: none;
   position: absolute;
   top: 10px;
-  background: #fff;
+  background: var(--color-background);
   box-shadow: 2px 2px 8px #888;
 }
 
@@ -2732,7 +2767,7 @@ span.arrow {
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  background-color: #fff;
+  background-color: var(--color-background);
   border-radius: 10px;
   box-shadow: 2px 2px 5px #888;
 }
@@ -2743,8 +2778,8 @@ span.arrow {
 }
 
 .vhighlight-border-color-inverse {
-  border: 4px solid #fecc56 !important;
-  box-shadow: 0px 0px 4px #ffcc55 inset;
+  border: 4px solid var(--color-accent) !important;
+  box-shadow: 0px 0px 4px var(--color-accent) inset;
 }
 
 .hhighlight-border-color {
@@ -2797,7 +2832,7 @@ span.arrow {
 
 .fumho th {
   background: #620;
-  color: #fff;
+  color: var(--color-text-header);
   font-family: Arial;
   font-weight: bold;
 }
@@ -2881,7 +2916,7 @@ table {
 }
 
 .fumho tr:nth-child(odd) {
-  background-color: #fff;
+  background-color: var(--color-background);
 }
 
 /* JQuery UI Complement for missing icons in the DatePicker */
@@ -2968,7 +3003,7 @@ table {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
   font-size: 14px;
   text-align: center;
-  background-color: #614875;
+  background-color: var(--color-primary);
   color: #fff;
   padding: 6px;
   margin: 1px;
@@ -2986,7 +3021,7 @@ table {
 /* and (max-device-width : 480px) { */
 
 .alertmsg {
-  background-color: #fecc56;
+  background-color: var(--color-accent);
   z-index: 1000;
   position: fixed;
   bottom: 0px;
@@ -3081,8 +3116,8 @@ table.navheader div.menuButton {
 .material-box h3 {
   margin: -20px -20px 10px -20px;
   border-radius: 2px 2px 0 0;
-  background: #614875;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-text-header);
   padding: 10px 20px;
 }
 
@@ -3115,7 +3150,7 @@ table.navheader div.hamburgerMenu {
   margin-top: 50px;
   margin-left: 5px;
   z-index: 1;
-  background-color: #ccc;
+  background-color: var(--color-background-2);
   border: 2px solid #999;
   display: none;
   overflow-x: hidden;
@@ -3158,7 +3193,7 @@ ul.hamburgerList button.menuButton {
 .bar3 {
   width: 17px;
   height: 3px;
-  background-color: #fff;
+  background-color: var(--color-background);
   margin: 3px 0;
   transition: 0.4s;
 }
@@ -3313,7 +3348,7 @@ only screen and (max-device-width: 768px) {
   }
 
   #cookiemsg {
-    background-color: #fecc56;
+    background-color: var(--color-accent);
     z-index: 1000;
     position: fixed;
     bottom: 0px;
@@ -3342,7 +3377,7 @@ only screen and (max-device-width: 768px) {
 
 .fileLink_counter {
     font-size: 16px;
-    color: #000;
+    color: var(--color-text-list);
 }
 .fileLink-editor, .fileLink-trashcan{
     width:initial;
@@ -3517,7 +3552,7 @@ only screen and (max-device-width: 530px) {
     left: 10%;*/
   }
   #cookiemsg {
-    background-color: #fecc56;
+    background-color: var(--color-accent);
     z-index: 1000;
     position: fixed;
     bottom: 0px;
@@ -3773,7 +3808,6 @@ only screen and (max-device-width: 320px) {
   bottom: 24px;
   right: 24px;
   z-index: 1;
-  touch-action: none;
 }
 .fixed-action-button.sectioned {
   right: 75px;
@@ -3815,8 +3849,8 @@ only screen and (max-device-width: 320px) {
     width: 56px;
     height: 56px;
     line-height: 56px;
-    background-color: #fecc56;
-    color: #614875;
+    background-color: var(--color-accent);
+    color: #614875 !important;
     font-size: 30px;
     vertical-align: middle;
 }
@@ -4083,7 +4117,7 @@ only screen and (max-device-width: 320px) {
 
 .save-close-button-md {
   border-radius: 4px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   border: 0px;
   width: 110px;
   height: 30px;
@@ -4126,14 +4160,14 @@ legend{
 
 .prevHead {
   height: 20px;
-  background-color: #614875;
-  color: #FFFFFF;
+  background-color: var(--color-primary);
+  color: var(--color-text-header);
   font-size: 14px;
   padding: 0px 5px 0px 5px;
 }
 
 .prevNav {
-  background-color: #614875;
+  background-color: var(--color-primary);
   height: 30px;
   color: #FFF;
   padding: 0px 5px 0px 5px;
@@ -4141,7 +4175,7 @@ legend{
 }
 
 .markNav {
-  background-color: #614875;
+  background-color: var(--color-primary);
   height: 30px;
   color: #FFF;
   padding: 0px 5px 0px 5px;
@@ -4227,8 +4261,8 @@ textarea#mrkdwntxt {
 .selectHeader > span {
     display: block;
     cursor: pointer;
-    color: #000;
-    background-color: #fff;
+    color: var(--color-text-list);
+    background-color: var(--color-background);
 }
 .selectHeader > span:hover {
       background-color: rgb(200, 200, 200);
@@ -4467,7 +4501,7 @@ textarea#mrkdwntxt {
 
 .save-close-button-fe{
   border-radius: 4px;
-  background-color: #614875;
+  background-color: var(--color-primary);
   border: 0px;
   width: 110px;
   height: 30px;
@@ -4603,7 +4637,7 @@ textarea#filecont{
 }
 
 .active-variant {
-    background-color: #fbcd47 !important;
+    background-color: var(--color-accent) !important;
 }
 
 /* Styling for timesheet table */
@@ -4614,10 +4648,10 @@ textarea#filecont{
 }
 .tsTable td:first-of-type {
   border-left: 1px solid #cdd0d6;
-}
+} 
 .tsTable td:last-of-type {
   border-right: 1px solid #cdd0d6;
-}
+} 
 .tsTable td, .tsTable th {
   border-bottom: 1px solid #cdd0d6;
 }
@@ -4642,7 +4676,7 @@ textarea#filecont{
   padding: 5px;
 }
 .tsTable tfoot {
-  background: #F0F0F0;
+  background: var(--color-background-3);
 }
 .tsTable tfoot:hover {
   background: #E0E0E0;
@@ -4670,7 +4704,7 @@ textarea#filecont{
   cursor: pointer;
 }
 #tsSubmit:hover {
-  background: #614875;
+  background: var(--color-primary);
   color: #fff;
   border: 2px solid #614875;
 }
