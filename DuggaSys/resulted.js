@@ -876,106 +876,110 @@ function renderCell(col, celldata, cellid) {
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
-function smartSearch(splitSearch, row)
-{
-  var columnToSearch;
-  var lid;
-  var sortingType;
-  var sortingValue;
-  var isDate = false;
-  for (var i = 0; i < splitSearch.length; i++) {
-      var index = i;
-      columnToSearch = splitSearch[i][1];
+function smartSearch(splitSearch, row) {
+	var columnToSearch;
+	var lid;
+	var sortingType;
+	var sortingValue;
+	var isDate = false;
+	for (var i = 0; i < splitSearch.length; i++) {
+		var index = i;
+		columnToSearch = splitSearch[i][1];
 
-      for (var i = 0; i < moments.length; i++) {
-        lid = "lid:" + moments[i]["lid"];
+		for (var i = 0; i < moments.length; i++) {
+			lid = "lid:" + moments[i]["lid"];
 
-        switch(splitSearch[index][0].toUpperCase())
-        {
-          case "MARKG":
-            sortingValue = 2;
-            sortingType = row[lid].grade;
-            isDate = false;
-            break;
-          case "MARKVG":
-            sortingValue = 3;
-            sortingType = row[lid].grade;
-            isDate = false;
-            break;
-          case "MARKU":
-            sortingValue = 1;
-            sortingType = row[lid].grade;
-            isDate = false;
-            break;
-          case "DEADLINE":
-          case "DATE":
-            isDate = true;
-            var newInputValue = splitSearch[index][1].split("-");
-            var date = new Date(splitSearch[index][1]);
-            date.setHours(0,0,0,0);
-            sortingValue = date.getTime();
-            sortingType = 0;
+			switch (splitSearch[index][0].toUpperCase()) {
+				case "MARKG":
+					sortingValue = 2;
+					sortingType = row[lid].grade;
+					isDate = false;
+					break;
+				case "MARKVG":
+					sortingValue = 3;
+					sortingType = row[lid].grade;
+					isDate = false;
+					break;
+				case "MARKU":
+					sortingValue = 1;
+					sortingType = row[lid].grade;
+					isDate = false;
+					break;
+				case "DEADLINE":
+				case "DATE":
+					isDate = true;
+					var newInputValue = splitSearch[index][1].split("-");
+					var date = new Date(splitSearch[index][1]);
+					// date.setHours(0, 0, 0, 0);
+					sortingValue = date;
+					sortingType = 0;
+					break;
+			}
 
-            console.log("SortingValue = "+sortingValue+" sortingType = "+sortingType);
+			if (!isDate) {
+				var txt = document.createElement("textarea");
+				txt.innerHTML = row[lid].entryname;
+				var columnToFind = txt.value;
+				if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
+					if (sortingType === sortingValue) {
+						for (colname in row) {
+							if (colname == "lid:" + row[lid].lid) {
+								var name = "";
+								if (row[colname].entryname != null) {
+									name += row[colname].entryname + " ";
+								}
+								var txt = document.createElement("textarea");
+								txt.innerHTML = name;
+								var newName2 = txt.value;
+								if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
+									return true;
+								}
+							}
+						}
+					}
+					return false;
+				}
+			} else {
+				var dates = "";
+				for (colname in row) {
+					if (row[colname].deadline >= sortingValue) {
+						dates += row[colname].deadline + " ";
 
-            break;
-        }
-
-        if(!isDate){
-        var txt = document.createElement("textarea");
-        txt.innerHTML = row[lid].entryname;
-        var columnToFind = txt.value;
-        if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
-          if (sortingType === sortingValue) {
-            for (colname in row) {
-              if (colname == "lid:" + row[lid].lid) {
-                var name = "";
-                if (row[colname].entryname != null) {
-                  name += row[colname].entryname + " ";
-                }
-                var txt = document.createElement("textarea");
-                txt.innerHTML = name;
-                var newName2 = txt.value;
-                if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
-                  return true;
-                }
-              }
-            }
-          }
-            return false;
-        }
-      }else {
-          for (colname in row) {
-            if(row[colname]!="FnameLnameSSN"){
-              sortingType = row[colname].deadline.setHours(0,0,0,0);
-                if(sortingType.getTime() <= sortingValue) {
-                  console.log("GICK IGENOM!");
-                  return true;
-            }
-            // if (colname.deadline.setHours(0,0,0,0).getTime() >= sortingValue) {
-            //   console.log("KOM IN I DEN ANDRA!");
-            //   var name = "";
-            //   if (row[colname].entryname != null) {
-            //     name += row[colname].entryname + " ";
-            //   }
-            //   var txt = document.createElement("textarea");
-            //   txt.innerHTML = name;
-            //   var newName2 = txt.value;
-            //   if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
-            //     return true;
-            //   }
-            // }
-          }
-          return false;
-      }
-    }
-  }
- }
+						if (dates.indexOf(sortingValue) != -1) {
+							console.log("finns")
+							return true;
+						}
+					}
+					// if (row[colname] != "FnameLnameSSN") {
+					// sortingType = row[colname].deadline.setHours(0, 0, 0, 0);
+					// if (sortingType.getTime() <= sortingValue) {
+					// console.log("GICK IGENOM!");
+					// return true;
+					// }
+					// if (colname.deadline.setHours(0,0,0,0).getTime() >= sortingValue) {
+					//   console.log("KOM IN I DEN ANDRA!");
+					//   var name = "";
+					//   if (row[colname].entryname != null) {
+					//     name += row[colname].entryname + " ";
+					//   }
+					//   var txt = document.createElement("textarea");
+					//   txt.innerHTML = name;
+					//   var newName2 = txt.value;
+					//   if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
+					//     return true;
+					//   }
+					// }
+					// }
+				}
+			}
+			return false;
+		}
+	}
 }
 
 function rowFilter(row) {
 
-console.log(row);
+	// console.log(row);
 
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
@@ -1002,7 +1006,7 @@ console.log(row);
 	})
 
 	if (searchterm != "" && splitSearch != searchterm) {
-		return smartSearch(splitSearch,row);
+		return smartSearch(splitSearch, row);
 	} else {
 		for (colname in row) {
 			if (colname == "FnameLnameSSN") {
