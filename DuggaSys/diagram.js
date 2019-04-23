@@ -1470,13 +1470,13 @@ function reWrite() {
         //We are now in debug mode/developer mode
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-         + "X=" + decimalPrecision(canvasMouseX, 1).toFixed(1)
-         + " & Y=" + decimalPrecision(canvasMouseY, 1).toFixed(1) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
+         + "X=" + decimalPrecision(canvasMouseX, 0).toFixed(0)
+         + " & Y=" + decimalPrecision(canvasMouseY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
     } else { 
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-         + "X=" + decimalPrecision(canvasMouseX, 1).toFixed(1)
-         + " & Y=" + decimalPrecision(canvasMouseY, 1).toFixed(1) + "</p>";
+         + "X=" + decimalPrecision(canvasMouseX, 0).toFixed(0)
+         + " & Y=" + decimalPrecision(canvasMouseY, 0).toFixed(0) + "</p>";
     }
 }
 //----------------------------------------
