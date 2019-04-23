@@ -367,7 +367,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 
 $array = array(
 	'entries' => $entries,
-	'debug' => S,
+	'debug' => $debug,
 	'teachers' => $teachers,
 	'classes' => $classes,
 	'courses' => $courses,
