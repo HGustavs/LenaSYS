@@ -909,8 +909,6 @@ function smartSearch(splitSearch, row)
             var newInputValue = splitSearch[index][1].split("-");
             var date = new Date(splitSearch[index][1]);
             console.log(date);
-            date.setHours(0,0,0,0);
-            row[lid].deadline.setHours(0,0,0,0);
             sortingValue = date.getTime();
             sortingType = row[lid].deadline.getTime();
             console.log("SortingValue = "+sortingValue+" sortingType = "+sortingType);
@@ -923,6 +921,7 @@ function smartSearch(splitSearch, row)
         var columnToFind = txt.value;
 
         if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
+          console.log("VI KOM IN I COLUMNSEARCH == COLUMNFIND IFEN");
           if(!isDate){
           if (sortingType === sortingValue) {
             for (colname in row) {
