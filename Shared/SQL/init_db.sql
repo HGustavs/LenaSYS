@@ -543,7 +543,7 @@ CREATE TABLE user_participant (
   PRIMARY KEY (id),
   FOREIGN KEY (lid) REFERENCES listentries (lid),
   FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 
 /* Opponents table used to save opponents for seminars */
