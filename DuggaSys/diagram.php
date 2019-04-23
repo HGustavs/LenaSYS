@@ -199,7 +199,7 @@
                         <div class="drop-down-divider">
                         </div>
                         <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='resetViewToOrigo();'> Reset view to origo</span>
+                            <span class="drop-down-option" onclick='resetViewToOrigin();'> Reset view to origin</span>
                         </div>
                     </div>
                 </div>

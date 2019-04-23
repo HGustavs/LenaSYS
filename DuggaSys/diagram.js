@@ -66,7 +66,7 @@ var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
-var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigo()
+var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
 var distanceMovedY = 0;
 var minEntityX = 100;               //the minimum size for an Enitny are set by the values seen below.
 var minEntityY = 50;
@@ -1037,9 +1037,9 @@ function updateGraphics() {
 }
 
 //---------------------------------------
-// resetViewToOrigo: moves the view to origo based on movement done in the canvas 
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas 
 //---------------------------------------
-function resetViewToOrigo(){
+function resetViewToOrigin(){
     ctx.translate(distanceMovedX, distanceMovedY);
     distanceMovedX = 0;
     distanceMovedY = 0;
