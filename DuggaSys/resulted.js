@@ -903,7 +903,7 @@ function rowFilter(row) {
 	})
 	var columnToSearch;
 	var lid;
-	if (searchterm != "") {
+	if (searchterm != "" && splitSearch != "") {
 		for (var i = 0; i < splitSearch.length; i++) {
 			// key som värdet ska sökas på
 			// console.log(splitSearch[i][0]);
