@@ -950,6 +950,7 @@ function smartSearch(splitSearch, row)
           console.log("KOM IN I ELSEN");
           for (colname in row) {
             if (colname.deadline == "lid:" + row[lid].deadline) {
+              console.log("DEADLINE STÄMMER ÖVERRENS!");
               var name = "";
               if (row[colname].entryname != null) {
                 name += row[colname].entryname + " ";
