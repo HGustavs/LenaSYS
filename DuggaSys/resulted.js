@@ -896,7 +896,6 @@ function smartSearch(splitSearch, row)
         break;
     }
 
-    if (splitSearch[i][0].toUpperCase() == "MARKG") {
       columnToSearch = splitSearch[i][1];
 
       for (var i = 0; i < moments.length; i++) {
@@ -928,7 +927,6 @@ function smartSearch(splitSearch, row)
       }
     }
   }
-}
 
 function rowFilter(row) {
 	// Custom filters that remove rows before an actual search
