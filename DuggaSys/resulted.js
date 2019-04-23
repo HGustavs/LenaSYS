@@ -945,10 +945,9 @@ function smartSearch(splitSearch, row)
             return false;
         }
       }else {
-        if(sortingType <= sortingValue) {
-          console.log("KOM IN I DEN FÖRSTA");
           for (colname in row) {
-
+          sortingType = row[colname].deadline.setHours(0,0,0,0);
+            if(sortingType <= sortingValue.getTime()) {
               return true;
             // if (colname.deadline.setHours(0,0,0,0).getTime() >= sortingValue) {
             //   console.log("KOM IN I DEN ANDRA!");
