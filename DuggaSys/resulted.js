@@ -938,8 +938,8 @@ function rowFilter(row) {
                   return true;
                 }
             }
-            return false;
 					}
+          return false;
 				}
 			}
     }
