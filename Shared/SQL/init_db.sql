@@ -255,7 +255,7 @@ CREATE TABLE wordlist(
 	uid						INT UNSIGNED NOT NULL,
 	PRIMARY KEY (wordlistid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /**
  * Delete and update all foreign keys before deleting a wordlist
