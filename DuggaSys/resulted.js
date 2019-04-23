@@ -780,6 +780,13 @@ function renderCell(col, celldata, cellid) {
 			return str;
 		}
 	}
+
+	function hideSSN(ssn){
+		var hiddenSSN;
+		hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
+		return hiddenSSN;
+	}
+
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
 	if (col == "FnameLnameSSN") {
@@ -787,9 +794,7 @@ function renderCell(col, celldata, cellid) {
 		str += "<div class='resultTableText'>";
 		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
-		str += "<div>" + celldata.ssn + "</div>";
-		//	str += "<div style='font-style:italic;text-align:right;'>"+celldata.setTeacher+"</div>";
-		//	str += "</div>";
+		str += "<div>" + hideSSN(celldata.ssn) + "</div>";
 		str += "</div>";
 		return str;
 
