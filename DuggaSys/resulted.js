@@ -946,7 +946,7 @@ function smartSearch(splitSearch, row) {
 						dates += row[colname].deadline + " ";
 
 						if (dates.indexOf(sortingValue) != -1) {
-							console.log("finns")
+							console.log("finns här")
 							return true;
 						}
 					}
