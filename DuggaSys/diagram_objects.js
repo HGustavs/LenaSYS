@@ -729,6 +729,87 @@ function Symbol(kind) {
         return privatePoints;
     }
 
+    //----------------------------------------------------------------
+    // getConnectedObjects: returns an array with the two objects that a specific line is connected to,
+    //                      function is used on line objects
+    //----------------------------------------------------------------
+
+    this.getConnectedObjects = function () {
+        if (this.symbolkind == 4) {
+            var privateObjects = [];
+
+            // Compare values of all symbols in diagram with current line
+            for (var i = 0; i < diagram.length; i++) {
+                if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) {
+                    // Top left and bottom right corners for the current object
+                    dtlx = diagram[i].corners().tl.x;
+                    dtly = diagram[i].corners().tl.y;
+                    dbrx = diagram[i].corners().br.x;
+                    dbry = diagram[i].corners().br.y;
+
+                    // Top left and bottom right corners (end points) for the clicked line
+                    ltlx = this.corners().tl.x;
+                    ltly = this.corners().tl.y;
+                    lbrx = this.corners().br.x;
+                    lbry = this.corners().br.y;
+
+                    if (diagram[i].symbolkind == 1) { // UML
+                        // If line's either end point is within the corners of the UML symbol
+                        // Can possibly be optimised, currently uses coordinates because the connector
+                        // points aren't saved somehow to the UML's points
+                        if ((ltlx >= dtlx && ltlx <= dbrx) || (lbrx >= dtlx && lbrx <= dbrx)) {
+                            if ((ltly >= dtly && ltly <= dbry) || (lbry >= dtly && lbry <= dbry)) {
+                                privateObjects.push(diagram[i]);
+                            }
+                        }
+                    } else if (diagram[i].symbolkind == 2) { // Attribute
+                        // If line's either end point is the same as an attribute's center point
+                        if (diagram[i].centerPoint == this.topLeft || diagram[i].centerPoint == this.bottomRight) {
+                            privateObjects.push(diagram[i]);
+                        }
+                    } else if (diagram[i].symbolkind == 3) { // Entity
+                        // If line's both end points are included in the entity's list of connectors
+                        if (diagram[i].getPoints().includes(this.topLeft) && diagram[i].getPoints().includes(this.bottomRight)) {
+                            privateObjects.push(diagram[i]);
+                        }
+                    } else if (diagram[i].symbolkind == 5) { // Relation
+                        // If line's either end points matches the coordinates of the Relation symbol's connector pointsSelected
+                        // This can be optimised if these points are added when a Relation symbol is created
+                        var connectedToRelation = false;
+
+                        // Finds middle point coordinates for relation symbols
+                        var relationMiddleX = ((dbrx - dtlx) / 2) + dtlx;
+                        var relationMiddleY = ((dbry - dtly) / 2) + dtly;
+
+                        // Line is connected to object if any of these are true
+                        if ((relationMiddleX == ltlx || relationMiddleX == lbrx) && (dtly == ltly || dtly == lbry)) {
+                            // Top point of diamond
+                            connectedToRelation = true;
+                        } else if ((relationMiddleY == ltly || relationMiddleY == lbry) && (dbrx == ltlx || dbrx == lbrx)) {
+                            // Right point of diamond
+                            connectedToRelation = true;
+                        } else if ((relationMiddleX == ltlx || relationMiddleX == lbrx) && (dbry == ltly || dbry == lbry)) {
+                            // Bottom point of diamond
+                            connectedToRelation = true;
+                        } else if ((relationMiddleY == ltly || relationMiddleY == lbry) && (dtlx == ltlx || dtlx == lbrx)) {
+                            // Left point of diamond
+                            connectedToRelation = true;
+                        }
+
+                        if (connectedToRelation) {
+                            privateObjects.push(diagram[i]);
+                        }
+                    }
+
+                    if (privateObjects.length >= 2) {
+                        break;
+                    }
+                }
+            }
+            return privateObjects;
+        }
+    }
+
     //--------------------------------------------------------------------
     // getLines: Returns all the lines connected to the object
     //--------------------------------------------------------------------
