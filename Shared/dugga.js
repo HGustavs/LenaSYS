@@ -1460,33 +1460,70 @@ function displayDuggaStatus(answer,grade,submitted,marked){
 		$("<td id='duggaStatus' align='center'>"+str+"</td>").insertAfter("#menuHook");
 }
 
-//----------------------------------------------------------------------------------
-// FABDown : FAB Mouse Down / Touch Down
-//----------------------------------------------------------------------------------
-function FABDown(e)
-{
-		// If the fab list is visible, there should be no timeout to toggle the list
-		if ($('.fab-btn-list').is(':visible')) {
-				if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) FABToggle();
-		} else {
-				if (e.target.id == "fabBtn") {
-						pressTimer = window.setTimeout(function() { FABToggle(); }, 200);
-				}
+function FABMouseOver(e) {
+	if (e.target.id === "fabBtn") {
+		if ($('.fab-btn-sm').hasClass('scale-out')) {
+			$('.fab-btn-list').fadeIn(0);
+			$('.fab-btn-sm').toggleClass('scale-out');
 		}
+	}
 }
 
 //----------------------------------------------------------------------------------
-// FABUp : FAB Mouse Up / Touch Up
+// FABMouseOut: FAB Mouse Out
+//----------------------------------------------------------------------------------
+function FABMouseOut(e) {
+	if (!$('.fab-btn-sm').hasClass('scale-out') && $(e.relatedTarget).parents(".fixed-action-button").length === 0 && !$(e.relatedTarget).hasClass("fixed-action-button")) {
+		$('.fab-btn-sm').toggleClass('scale-out');
+		$('.fab-btn-list').delay(100).fadeOut(0);
+	}
+}
+
+//----------------------------------------------------------------------------------
+// FABDown : FAB Mouse Down
+//----------------------------------------------------------------------------------
+function FABDown(e)
+{
+	//Unused at the moment but might be useful in the future to handle pressing down with mouse on FAB
+}
+
+//----------------------------------------------------------------------------------
+// FABUp : FAB Mouse Up
 //----------------------------------------------------------------------------------
 function FABUp(e)
 {
-		// A quick item should be created on a "fast click" if the fab list isn't visible / Click outside the FAB list / if the target of the click isn't the container...
-		if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
-				clearTimeout(pressTimer);
-				createQuickItem();
-		}else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
-				FABToggle();
+	if ((e.target.id=="fabBtn")) {
+		createQuickItem();
+	}
+}
+
+//----------------------------------------------------------------------------------
+// TouchFABDown : FAB Touch Down
+//----------------------------------------------------------------------------------
+function TouchFABDown(e)
+{
+	// If the fab list is visible, there should be no timeout to toggle the list
+	if ($('.fab-btn-list').is(':visible')) {
+		if ($('.fab-btn-list').is(':visible') && $('#fabBtn').is(e.target)) FABToggle();
+	} else {
+		if (e.target.id == "fabBtn") {
+			pressTimer = window.setTimeout(function() { FABToggle(); }, 200);
 		}
+	}
+}
+
+//----------------------------------------------------------------------------------
+// TouchFABUp : FAB Touch Up
+//----------------------------------------------------------------------------------
+function TouchFABUp(e)
+{
+	// A quick item should be created on a "fast click" if the fab list isn't visible / Click outside the FAB list / if the target of the click isn't the container...
+	if ((e.target.id=="fabBtn") && !$('.fab-btn-list').is(':visible')) {
+		clearTimeout(pressTimer);
+		createQuickItem();
+	}else if ($('.fab-btn-list').is(':visible') && (e.target.id!="fabBtn")) {
+		FABToggle();
+	}
 }
 
 //----------------------------------------------------------------------------------
@@ -1513,5 +1550,5 @@ function generateTimeSheetOptions(course, moment, selected) {
 	} else {
 		return "<option value='issue'>Issue</option><option value='pullrequest' selected>Pull request</option>";
 	}
-	
+
 }

@@ -359,24 +359,45 @@ function showCheckboxes(element) {
     }
 }
 
+$(document).mouseover(function (e) {
+	FABMouseOver(e);
+});
+
+$(document).mouseout(function (e) {
+	FABMouseOut(e);
+});
+
 $(document).mousedown(function (e) {
-		mouseDown(e);
+	mouseDown(e);
+
+	if (e.button == 0) {
 		FABDown(e);
+	}
 });
 
 $(document).mouseup(function (e) {
-		mouseUp(e);
+	mouseUp(e);
+
+	if (e.button == 0) {
 		FABUp(e);
+	}
 });
 
-$(document).on("touchstart", function(e){
-		mouseDown(e);
-		FABDown(e);
+$(document).on("touchstart", function (e) {
+	if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
+		e.preventDefault();
+	}
+
+	mouseDown(e);
+	TouchFABDown(e);
 });
 
-$(document).on("touchend", function(e){
-		mouseUp(e);
-		FABUp(e);
+$(document).on("touchend", function (e) {
+	if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
+		e.preventDefault();
+	}
+	mouseUp(e);
+	TouchFABUp(e);
 });
 
 //----------------------------------------------------------------------------------
