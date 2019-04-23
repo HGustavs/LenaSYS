@@ -908,8 +908,7 @@ function rowFilter(row) {
 	var lid;
   if(searchterm != "")
   {
-    console.log("searchterm was not empty "+searchterm);
-	for (var i = 0; i < splitSearch.length; i++) {
+    for (var i = 0; i < splitSearch.length; i++) {
 		// key som värdet ska sökas på
 		// console.log(splitSearch[i][0]);
 		// värdet som ska sökas
@@ -932,6 +931,7 @@ function rowFilter(row) {
 
             for (colname in row) {
               if (colname == "lid:"+row[lid].lid) {
+                console.log("Inne i colname "+"lid:"+row[lid].lid);
                 var name = "";
                 if (row[colname][row[lid].entryname] != null) {
                   name += row[colname][row[lid].entryname] + " ";
