@@ -486,7 +486,7 @@ CREATE TABLE user_push_registration (
 	PRIMARY KEY	(id),
 	KEY (endpoint),
 	FOREIGN KEY (uid) REFERENCES user(uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* Usergroup and user_usergroup relation */
 CREATE TABLE `groups` (
