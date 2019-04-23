@@ -237,7 +237,7 @@ CREATE TABLE codeexample(
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (templateid) REFERENCES template (templateid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* Table structure for sequence, holding the sequence order of a specific example sequence */
 CREATE TABLE sequence (
