@@ -1,5 +1,5 @@
 /************************************************************
-      
+
     THIS FILE HANDLES THE MAIN FUNCTIONS OF THE DIAGRAM
 
 ************************************************************/
@@ -22,9 +22,9 @@ AJAXService("get", {}, "DIAGRAM");
 */
 
 /************************************************************
-  
+
     Globals
- 
+
 ************************************************************/
 
 var gridSize = 16;
@@ -66,6 +66,8 @@ var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
+var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
+var distanceMovedY = 0;
 var minEntityX = 100;               //the minimum size for an Enitny are set by the values seen below.
 var minEntityY = 50;
 var hashUpdateTimer = 5000;         // set timer varibale for hash and saving
@@ -854,13 +856,18 @@ function toggleGrid() {
 
 function toggleVirtualA4() {
     if (toggleA4) {
+      if (toggleA4Holes) {
+        toggleVirtualA4Holes();
+      }
         toggleA4 = false;
         updateGraphics();
     } else {
         toggleA4 = true;
         updateGraphics();
     }
+    $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+
 }
 
 function drawVirtualA4() {
@@ -902,6 +909,9 @@ function drawCircle(cx, cy, radius) {
 }
 
 function toggleVirtualA4Holes() {
+    if(!toggleA4){
+      return;
+    }
     if (toggleA4Holes) {
         toggleA4Holes = false;
         updateGraphics();
@@ -910,44 +920,6 @@ function toggleVirtualA4Holes() {
         updateGraphics();
     }
     setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
-}
-
-function drawVirtualA4(){
-    if(!toggleA4){
-        return;
-    }
-    // the correct according to 96dpi size, of a4 milimeters to pixels
-    const pixelsPerMillimeter = 3.781;
-    const a4Width = 210 * pixelsPerMillimeter;
-    const a4Height = 297 * pixelsPerMillimeter;
-    // size of a4 hole, from specification ISO 838 and the swedish "triohålning"
-    const holeOffsetX = 12 * pixelsPerMillimeter;
-    const holeRadius = 3 * pixelsPerMillimeter;
-    ctx.save();
-    ctx.strokeStyle = "black"
-    ctx.setLineDash([10]);
-    ctx.translate(0, 0);
-    ctx.strokeRect(0,0, a4Width, a4Height);
-
-    if(toggleA4Holes) {
-        //Upper 2 holes
-        drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
-        drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
-        //Latter two holes
-        drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
-        drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
-    }
-    ctx.restore();
-}
-
-function drawCircle(cx, cy, radius) {
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.beginPath();
-    ctx.arc(0,0, radius, 0, Math.PI * 2);
-    ctx.closePath();
-    ctx.stroke();
-    ctx.restore();
 }
 
 //---------------------------------------
@@ -1001,6 +973,8 @@ function canvasSize() {
     canvas.setAttribute("height", heightWindow);
     ctx.clearRect(sx, sy, widthWindow, heightWindow);
     ctx.translate(sx, sy);
+    distanceMovedX = -sx;
+    distanceMovedY = -sy;
     ctx.scale(1, 1);
     ctx.scale(zoomValue, zoomValue);
 }
@@ -1011,12 +985,13 @@ window.addEventListener('resize', canvasSize);
 //-------------------------------------------
 // updateGraphics: used to redraw each object on the screen
 //-------------------------------------------
-
 function updateGraphics() {
     ctx.clearRect(sx, sy, (widthWindow / zoomValue), (heightWindow / zoomValue));
     if (moveValue == 1) {
         ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
+        distanceMovedX += mouseDiffX;
+        distanceMovedY += mouseDiffY;
     }
 
     diagram.updateQuadrants();
@@ -1029,6 +1004,16 @@ function updateGraphics() {
      if(!ghostingCrosses) {
         drawOrigo();
     }
+}
+
+//---------------------------------------
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas 
+//---------------------------------------
+function resetViewToOrigin(){
+    ctx.translate(distanceMovedX, distanceMovedY);
+    distanceMovedX = 0;
+    distanceMovedY = 0;
+    updateGraphics();
 }
 
 function getConnectedLines(object) {
@@ -1102,7 +1087,7 @@ function eraseObject(object) {
 }
 
 //-------------------------------------------------------------------------
-// changeLoginBoxTitleDelete: Create function that changes 
+// changeLoginBoxTitleDelete: Create function that changes
 //                            the id "loginBoxTitle" to "Delete Object"
 //-------------------------------------------------------------------------
 
@@ -1111,7 +1096,7 @@ function changeLoginBoxTitleDelete() {
 }
 
 //-------------------------------------------------------------------------
-// changeLoginBoxTitleAppearance: Create function that changes 
+// changeLoginBoxTitleAppearance: Create function that changes
 //                                the id "loginBoxTitle" to "Appearance"
 //-------------------------------------------------------------------------
 
@@ -1227,7 +1212,7 @@ function drawGrid() {
 
         if(i == 0 ||i == -0){
             ctx.strokeStyle = "#0fbcf9";
-        }  
+        }
 
         ctx.beginPath();
         ctx.moveTo(i * gridSize, 0 + sy);
@@ -1243,7 +1228,7 @@ function drawGrid() {
 
         if(i == 0 ||i == -0){
             ctx.strokeStyle = "#0fbcf9";
-        }  
+        }
 
         ctx.beginPath();
         ctx.moveTo(0 + sx, i * gridSize);
@@ -1296,7 +1281,7 @@ function gridToSVG(width, height) {
 }
 
 //------------------------------------------------------------------------------
-// clearCanvas: remove all elements in the diagram array. 
+// clearCanvas: remove all elements in the diagram array.
 //              it hides the points by placing them beyond the users view.
 //------------------------------------------------------------------------------
 function clearCanvas() {
@@ -1527,7 +1512,7 @@ function setRefreshTime() {
 function lockSelected() {
     for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].locked = !selected_objects[i].locked;
-        
+
         if(selected_objects[i].locked) {
             selected_objects[i].drawLock();
         }
@@ -1775,7 +1760,7 @@ function sortObjects(selected_objects, mode) {
 }
 
 //----------------------------------------------------------------------
-// distribute: unclear what the purpose is of distribute, 
+// distribute: unclear what the purpose is of distribute,
 //            does not seem to work at all
 //----------------------------------------------------------------------
 function distribute(axis) {
@@ -1866,7 +1851,7 @@ function diagramToSVG() {
 //------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------
-// globalLineThickness: changes the thickness of the lines between objects, 
+// globalLineThickness: changes the thickness of the lines between objects,
 //                      and the lines surrounding each object
 //----------------------------------------------------------------------
 
@@ -1981,117 +1966,6 @@ function setCheckbox(element, check) {
 // ----------------------------------------------------------------------------
 var toolbarState;
 
-function initToolbox() {
-    var element = document.getElementById('diagram-toolbar');
-    var myCanvas = document.getElementById('myCanvas');
-    var bound = myCanvas.getBoundingClientRect();
-    element.style.top = (bound.top+"px");
-    toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
-    switchToolbar();
-    element.style.display = "inline-block";
-}
-
-function toggleToolbarMinimize() {
-    if($("#minimizeArrow").hasClass("toolbarMaximized")) {
-        $(".application-toolbar").slideUp("fast");
-        $("#minimizeArrow").removeClass("toolbarMaximized").addClass("toolbarMinimized");
-    }else {
-        $(".application-toolbar").slideDown("fast");
-        $("#minimizeArrow").removeClass("toolbarMinimized").addClass("toolbarMaximized");
-    }
-}
-
-function toggleToolbarLayout() {
-    if($("#diagram-toolbar").height()>$("#diagram-toolbar").width()) {
-        $(".application-toolbar").css({"display": "flex", "flex-direction": "column"});
-        $(".toolbarArrows").css({"width": "1.7em"});
-        $("#diagram-toolbar").css({"width":"auto"});
-        $("#toolbar-switcher").css({"width": "1.7em", "width": "","justify-content":"center", "margin": "0 30%", "padding": "0"});
-        $(".label").css({"padding": "0 0 0 15px"});
-        $(".toolsContainer").css({"display": "flex"});
-    }else{
-        $(".application-toolbar").css({"display": "", "flex-wrap": ""});
-        $(".toolbarArrows").css({"width": "20%"});
-        $("#diagram-toolbar").css({"width":""});
-        $("#toolbar-switcher").css({"width": "auto","justify-content":"", "margin": "0", "padding": ""});
-        $(".label").css({"padding": "0 4px"});
-        $(".toolsContainer").css({"display": ""});
-    }
-}
-
-//----------------------------------------------------------------------
-// switchToolbar: function for switching the toolbar state (All, ER, UML)
-//----------------------------------------------------------------------
-
-function switchToolbar(direction) {
-  var text = ["All", "ER", "UML", "Free"];
-  if(direction == 'left') {
-    toolbarState--;
-    if(toolbarState < 0) {
-      toolbarState = 3;
-    }
-  }else if(direction == 'right') {
-    toolbarState++;
-    if(toolbarState > 3) {
-      toolbarState = 0;
-    }
-  }
-  document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
-  localStorage.setItem("toolbarState", toolbarState);
-  //hides irrelevant buttons, and shows relevant buttons
-  if(toolbarState == 1) {
-    $(".toolbar-drawer").hide();
-    $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
-    $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
-    $("#linebutton").show();
-    $("#attributebutton").show();
-    $("#entitybutton").show();
-    $("#relationbutton").show();
-  }else if( toolbarState == 2) {
-    $(".toolbar-drawer").hide();
-    $("#drawerTools").show();
-    $("#drawerCreate").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
-    $("#labelCreate").show();
-    $("#labelTools").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
-    $("#linebutton").show();
-    $("#classbutton").show();
-  }else if(toolbarState == 3) {
-    $(".toolbar-drawer").hide();
-    $("#drawerDraw").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
-    $("#labelDraw").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
-    $("#squarebutton").show();
-    $("#drawfreebutton").show();
-  }
-  else {
-    $(".toolbar-drawer").show();
-    $(".label").show();
-    $(".buttonsStyle").show();
-  }
-
-  document.getElementById('toolbar-switcher').value = toolbarState;
-}
-
-
-$( function() {
-    $( "#diagram-toolbar" ).draggable();
-} );
-
-var toolbarState;
-
 const toolbarER = 1;
 const toolbarUML = 2;
 const toolbarFree = 3;
@@ -2100,7 +1974,7 @@ function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
     var myCanvas = document.getElementById('myCanvas');
     var bound = myCanvas.getBoundingClientRect();
-    element.style.top = (bound.top+"px");
+    element.style.top = (150+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
     element.style.display = "inline-block";
@@ -2139,7 +2013,7 @@ function toggleToolbarLayout() {
 }
 
 //----------------------------------------------------------------------
-// switchToolbar: function for switching the toolbar state (All, ER, UML), 
+// switchToolbar: function for switching the toolbar state (All, ER, UML),
 //                not sure what the numbers 0 an 3 mean
 //----------------------------------------------------------------------
 function switchToolbar(direction) {
@@ -2658,7 +2532,7 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateLine" && md == 4) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) 
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)
         || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine) {
             erLineA = new Symbol(4); // Lines
             erLineA.name = "Line" + diagram.length
@@ -2770,7 +2644,7 @@ function resize() {
             currentMouseCoordinateY = startMouseCoordinateY;
             startMouseCoordinateY = tempY;
         }
-        if(uimode == "CreateERRelation" && (currentMouseCoordinateX - startMouseCoordinateX < relationTemplate.width 
+        if(uimode == "CreateERRelation" && (currentMouseCoordinateX - startMouseCoordinateX < relationTemplate.width
             || currentMouseCoordinateY - startMouseCoordinateY < relationTemplate.height)) {
             currentMouseCoordinateX = startMouseCoordinateX + relationTemplate.width;
             currentMouseCoordinateY = startMouseCoordinateY + relationTemplate.height;
@@ -2859,7 +2733,7 @@ function showMenu() {
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
 //----------------------------------------------------------------------
 
-function openAppearanceDialogMenu() {    
+function openAppearanceDialogMenu() {
     $(".loginBox").draggable();
     var form = showMenu();
     appearanceMenuOpen = true;

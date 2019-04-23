@@ -38,6 +38,10 @@ function Symbol(kind) {
     this.minWidth;
     this.minHeight;
     this.locked = false;
+    this.isOval = false;
+    this.isAttribute = false;
+    this.isRelation = false;
+    this.isLine = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -898,6 +902,7 @@ function Symbol(kind) {
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2) {
+        this.isAttribute = true;
         ctx.fillStyle = this.properties['symbolColor'];
         // Drawing a multivalue attribute
         if (this.properties['key_type'] == 'Multivalue') {
@@ -939,10 +944,160 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
+    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) 
+    {
+        var relationMidPoints = [];
+        // Need to find the connected entities in order to change lines between relations and entities to normal.
+        for(let i = 0; i < diagram.length; i++) {
+            if (diagram[i] != this) {
+                // Getting each (top) coordinate of the object
+                dtlx = diagram[i].corners().tl.x;
+                dtly = diagram[i].corners().tl.y;
+                dtrx = diagram[i].corners().tr.x;
+                dtry = diagram[i].corners().tr.y;
+                // Getting each (bottom) coordinate of the object
+                dbrx = diagram[i].corners().br.x;
+                dbry = diagram[i].corners().br.y;
+                dblx = diagram[i].corners().bl.x;
+                dbly = diagram[i].corners().bl.y;
+                
+                // Stores the midpoints for each corner of the relation in an array
+                if (diagram[i].isRelation) {
+                    var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
+                    var relationMiddleY = ((dbly - dtly) / 2) + dtly;
+                    relationMidPoints.push(relationMiddleX, relationMiddleY);
+                } 
+                // Setting the line types to normal if they are forced and the connected entity is strong.
+                if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
+                    // Looping through the midpoints for relation entities.
+                    for (let j = 0; j < relationMidPoints.length; j++) {
+                        // checking if the line is connected to any of the midpoints.
+                        if (dtlx == relationMidPoints[j] || dtrx == relationMidPoints[j] || dtly == relationMidPoints[j] || dbly == relationMidPoints[j]) {
+                            // Making sure that only the correct lines are set to normal
+                            if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
+                                diagram[i].properties['key_type'] = 'Normal';
+                            } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
+                                diagram[i].properties['key_type'] = 'Normal';
+                            }  else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
+                                diagram[i].properties['key_type'] = 'Normal';
+                            } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
+                                diagram[i].properties['key_type'] = 'Normal';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // This function is run when an entity is set to weak. Sets the lines to be forced if possible.
+    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2) 
+    {
+        var relationMidPoints = [];
+        var relationMidYPoints = [];
+        var relationMidXPoints = [];
+        var attributeMidPoint = [];
+
+        // Need to find the connected entities in order to change lines between relations and entities to forced.
+        for(let i = 0; i < diagram.length; i++) {
+            if (diagram[i] != this) {
+                // Each (top) coordinate for the current object
+                dtlx = diagram[i].corners().tl.x;
+                dtly = diagram[i].corners().tl.y;
+                dtrx = diagram[i].corners().tr.x;
+                dtry = diagram[i].corners().tr.y;
+                // Each (bottom) coordinate for the current object
+                dbrx = diagram[i].corners().br.x;
+                dbry = diagram[i].corners().br.y;
+                dblx = diagram[i].corners().bl.x;
+                dbly = diagram[i].corners().bl.y;
+
+                // Stores the midpoints for the relations in an array.
+                if (diagram[i].isRelation) {
+                    var relationMiddleX = ((dtrx - dtlx) / 2) + dtlx;
+                    var relationMiddleY = ((dbly - dtly) / 2) + dtly;
+                    relationMidPoints.push(relationMiddleX, relationMiddleY);
+                    relationMidXPoints.push(relationMiddleX, dtly, dbly);
+                    relationMidYPoints.push(relationMiddleY, dtlx, dtrx);
+                }   
+
+                // Stores the midpoints for the attributes in an array
+                if (diagram[i].isAttribute) {
+                    var attributeMiddleX = ((dtrx - dtlx) / 2) + dtlx;
+                    var attributeMiddleY = ((dbly - dtly) / 2) + dtly;
+                    attributeMidPoint.push(attributeMiddleX, attributeMiddleY);
+                }
+
+                // Setting the line types to forced if they are normal and the connected entity is weak.
+                if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Forced') {
+                    // Looping through the midpoints (top and bot) for relations.
+                    for (let j = 0; j < relationMidXPoints.length; j++) {
+                        for (let c = 0; c < relationMidXPoints.length; c++) {
+                            // Checking if the line X coordinate is the same as the relations middle X coordinate
+                            if (dtlx == relationMidXPoints[j] || dtrx == relationMidXPoints[j]) {
+                                // Checking if the line Y coordinate is the same as the coordinate for the relation middle top Y or bottom Y
+                                if (dtly == relationMidXPoints[c] || dbly == relationMidXPoints[c]) {
+                                    for (let y = 0; y < attributeMidPoint.length; y++) {
+                                        for (let k = 0; k < attributeMidPoint.length; k++) {
+                                            // Making sure that lines between relations and attributes aren't set to forced.
+                                            if ((dtlx == attributeMidPoint[y] || dtrx == attributeMidPoint[y]) || (dtly == attributeMidPoint[k] || dbly == attributeMidPoint[k])) {
+                                                diagram[i].properties['key_type'] = 'Normal';
+                                            } else {
+                                                // Checking the current object coordinates against the line coordinates.
+                                                if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                } else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // Looping through the midpoints (left and right) for relations.
+                    for (let j = 0; j < relationMidYPoints.length; j++) {
+                        for (let c = 0; c < relationMidYPoints.length; c++) {
+                            // checking if the line Y coordinate is the same as the relations middle Y coordinate.
+                            if (dtly == relationMidYPoints[j] || dbly == relationMidYPoints[j]) {
+                                if (dtlx == relationMidYPoints[c] || dtrx == relationMidYPoints[c]) {
+                                    for (let y = 0; y < attributeMidPoint.length; y++) {
+                                        for (let k = 0; k < attributeMidPoint.length; k++) {
+                                            // Making sure that lines between relations and attributes aren't set to forced.
+                                            if ((dtlx == attributeMidPoint[y] || dtrx == attributeMidPoint[y]) || (dtly == attributeMidPoint[k] || dbly == attributeMidPoint[k])) {
+                                                diagram[i].properties['key_type'] = 'Normal';
+                                            } else {
+                                                // Checking the current object coordinates against the line coordinates.
+                                                if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                } else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+    }
 
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
         ctx.beginPath();
+        
         if (this.properties['key_type'] == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
             ctx.lineTo(x2 + 5, y1 - 5);
@@ -951,6 +1106,9 @@ function Symbol(kind) {
             ctx.lineTo(x1 - 5, y1 - 5);
             ctx.stroke();
             ctx.lineWidth = this.properties['lineWidth'];
+            setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
+        } else {
+            removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2);
         }
 
         ctx.moveTo(x1, y1);
@@ -975,6 +1133,7 @@ function Symbol(kind) {
     }
 
     this.drawLine = function(x1, y1, x2, y2) {
+        this.isLine = true;
         //Checks if there is cardinality set on this object
         if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
             //Updates x and y position
@@ -1102,6 +1261,7 @@ function Symbol(kind) {
     }
 
     this.drawRelation = function(x1, y1, x2, y2) {
+        this.isRelation = true;
         var midx = points[this.centerPoint].x;
         var midy = points[this.centerPoint].y;
         ctx.beginPath();
@@ -1425,6 +1585,7 @@ function Symbol(kind) {
 }
 
 this.drawOval = function (x1, y1, x2, y2) {
+    this.isOval = true;
     var middleX = x1 + ((x2 - x1) * 0.5);
     var middleY = y1 + ((y2 - y1) * 0.5);
     ctx.beginPath();

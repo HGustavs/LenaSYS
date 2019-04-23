@@ -1316,6 +1316,7 @@ input {
 
 .document-settings {
   font-size: 14px;
+  top: 150px;
 }
 
 .export-drop-down {
@@ -1336,7 +1337,7 @@ input {
 
 .menu-drop-down span.drop-down-label{
   display: block;
-  height: 22px;
+  height: 20px;
   line-height: 22px;
   padding: 0px 8px;
 }
@@ -1428,6 +1429,11 @@ input {
 
 .drop-down-text:hover {
   background-color: rgb(240, 240, 240);
+  cursor: default !important;
+}
+
+.drop-down-item-disabled {
+  opacity: 0.5;
   cursor: default !important;
 }
 
@@ -4618,10 +4624,10 @@ textarea#filecont{
 }
 .tsTable td:first-of-type {
   border-left: 1px solid #cdd0d6;
-} 
+}
 .tsTable td:last-of-type {
   border-right: 1px solid #cdd0d6;
-} 
+}
 .tsTable td, .tsTable th {
   border-bottom: 1px solid #cdd0d6;
 }

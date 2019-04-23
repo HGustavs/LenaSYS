@@ -181,13 +181,12 @@
                             <i id="hotkey-redo">Ctrl + Y</i>
                         </div>
                         <div class="drop-down-divider">
-
                         </div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
                         </div>
                         <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
+                            <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
                         </div>
                         <div class="drop-down-divider">
                         </div>
@@ -196,6 +195,11 @@
                         </div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
+                        </div>
+                        <div class="drop-down-divider">
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='resetViewToOrigin();'> Reset view to origin</span>
                         </div>
                     </div>
                 </div>
@@ -210,8 +214,8 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
                         </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='toggleVirtualA4Holes();'>Toggle A4 Holes</span>
+                        <div id="a4-holes-item" class="drop-down-item-disabled">
+                            <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
                         </div>
                     </div>
                 </div>
