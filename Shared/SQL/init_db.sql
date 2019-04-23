@@ -574,7 +574,7 @@ CREATE TABLE timesheet(
 	vers					VARCHAR(8) NOT NULL,
 	did						INT(11) NOT NULL,
 	moment				INT UNSIGNED NOT NULL,
-	day						DATETIME NOT NULL,
+	day						DATE NOT NULL,
 	week					TINYINT,
 	type					VARCHAR(20),
 	reference			VARCHAR(10),
