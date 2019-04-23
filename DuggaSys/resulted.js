@@ -949,7 +949,7 @@ function smartSearch(splitSearch, row)
         if(sortingType <= sortingValue) {
           console.log("KOM IN I DEN FÖRSTA");
           for (colname in row) {
-            if (colname.deadline.getTime().setHours(0,0,0,0) >= sortingValue) {
+            if (colname.deadline.setHours(0,0,0,0).getTime() >= sortingValue) {
               console.log("KOM IN I DEN ANDRA!");
               var name = "";
               if (row[colname].entryname != null) {
