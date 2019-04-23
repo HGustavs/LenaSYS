@@ -463,7 +463,7 @@ CREATE TABLE list (
 	course 					INT,
 	listid 					INT AUTO_INCREMENT,
 	PRIMARY KEY (listid)
-) CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
+) CHARACTER SET utf8mb4 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
 
 /* This table holds configuration for the entire LenaSYS server */
 CREATE TABLE settings (
