@@ -903,13 +903,13 @@ function smartSearch(splitSearch, row)
             sortingValue = 1;
             sortingType = row[lid].grade;
             break;
+          case "DEADLINE":
           case "DATE":
             var newInputValue = splitSearch[index][1].split("-");
             var date = new Date(splitSearch[index][1]);
             console.log(date);
-            //date.setFullYear(newInputValue[0], newInputValue[1]-1, newInputValue[2]);
-            sortingValue = date;
-            sortingType = row[lid].deadline;
+            sortingValue = date.getTime();
+            sortingType = row[lid].deadline.getTime();
             console.log("SortingValue = "+sortingValue+" sortingType = "+sortingType);
             break;
         }
@@ -935,6 +935,23 @@ function smartSearch(splitSearch, row)
               }
             }
             return false;
+          }else{
+            if (sortingType <== sortingValue) {
+              for (colname in row) {
+                if (colname == "lid:" + row[lid].lid) {
+                  var name = "";
+                  if (row[colname].entryname != null) {
+                    name += row[colname].entryname + " ";
+                  }
+                  var txt = document.createElement("textarea");
+                  txt.innerHTML = name;
+                  var newName2 = txt.value;
+                  if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
+                    return true;
+                  }
+                }
+              }
+              return false;
           }
         }
       }
