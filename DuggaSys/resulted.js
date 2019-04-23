@@ -995,59 +995,6 @@ function renderSortOptions(col, status, colname) {
 	return str;
 }
 
-//--------------------------------------------------------------------------
-// compare
-// ---------------
-//  Callback function with different compare alternatives for the column sort
-//--------------------------------------------------------------------------
-function compare(a, b) {
-	var col = sortableTable.currentTable.getSortcolumn();
-	let kind = sortableTable.currentTable.getSortkind();
-	var tempA;
-	var tempB;
-
-	if (a == null || b == null || typeof (a) === "undefined" || typeof (b) === "undefined")
-		return false;
-
-	if ((typeof a == "undefined") || (typeof b == "undefined"))
-		console.log("sort fail: ", a, b, col, kind)
-
-	if (typeof a == "undefined")
-		return 1;
-	if (typeof b == "undefined")
-		return -1;
-
-	if (col == "FnameLnameSSN") {
-		if (kind == 0 || kind == 1) {
-			tempA = a['firstname'].toUpperCase();
-			tempB = b['firstname'].toUpperCase();
-		} else if (kind == 2 || kind == 3) {
-			tempA = a['lastname'].toUpperCase();
-			tempB = b['lastname'].toUpperCase();
-		} else {
-			tempA = a['ssn'].toUpperCase();
-			tempB = b['ssn'].toUpperCase();
-		}
-
-		if (tempA > tempB) {
-			return 1;
-		} else if (tempA < tempB) {
-			return -1;
-		} else {
-			return 0;
-		}
-	} else {
-		let atmp = conv(a, kind);
-		let btmp = conv(b, kind);
-
-		if (atmp == btmp && a.submitted > b.submitted)
-			atmp += 10;
-		if (atmp == btmp && b.submitted > a.submitted)
-			btmp += 10;
-		return btmp - atmp;
-	}
-}
-
 function conv(item, kind) {
 	var tmp = 7;
 	if (typeof (item) !== "undefined") {

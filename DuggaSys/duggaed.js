@@ -683,30 +683,6 @@ function renderSortOptionsVariant(col,status,colname) {
 	return str;
 }
 
-//Compare to make the table sortable
-function compare(a,b) {
-	var col = sortableTable.currentTable.getSortcolumn();
-	var tempA = a;
-	var tempB = b;
-
-	// Needed so that the counter starts from 0
-	// everytime we sort the table
-	count = 0;
-
-	if (col == "qname"  || col == "quizFile") {
-		tempA = tempA.toUpperCase();
-		tempB = tempB.toUpperCase();
-	}
-
-	if (tempA > tempB || tempB == null) {
-		return 1;
-	} else if (tempA < tempB || tempA == null) {
-		return -1;
-	} else {
-		return 0;
-	}
-}
-
 //Filtering duggas from the searchfield.
 function duggaFilter(row) {
 	if (row.qname.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
