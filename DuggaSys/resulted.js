@@ -927,7 +927,7 @@ function rowFilter(row) {
               if (colname == "lid:"+row[lid].lid) {
                 var name = "";
                 if (row[colname].entryname != null) {
-                  name += row[colname].entryname] + " ";
+                  name += row[colname].entryname + " ";
                 }
                 console.log(name + " - " + columnToSearch);
                 if (name.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
