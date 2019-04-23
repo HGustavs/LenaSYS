@@ -925,8 +925,9 @@ function rowFilter(row) {
 						console.log(row[lid].lid);
 
             for (colname in row) {
-              if (colname == ("lid:"+row[lid].lid)) {
-                console.log("HITTA LIDet "+"lid:"+row[lid]);
+              var nameToFind = "lid:"+row[lid].lid;
+              if (colname == nameToFind) {
+                console.log("HITTA LID:et "+"lid:"+row[lid]);
                 var name = "";
                 if (row[colname][row[lid].entryname] != null) {
                   name += row[colname][row[lid].entryname] + " ";
