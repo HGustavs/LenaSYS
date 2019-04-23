@@ -926,7 +926,7 @@ function rowFilter(row) {
             for (colname in row) {
               if (colname == "lid:"+row[lid].lid) {
                 var name = "";
-                if (row[colname].entryname] != null) {
+                if (row[colname].entryname != null) {
                   name += row[colname][row[lid].entryname] + " ";
                 }
                 console.log(name + " - " + columnToSearch);
