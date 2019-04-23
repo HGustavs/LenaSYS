@@ -936,6 +936,7 @@ function smartSearch(splitSearch, row)
             }
             return false;
           }else if (sortingType <= sortingValue) {
+            console.log("VI KOM IN I ELSE IFEN");
               for (colname in row) {
                 if (colname == "lid:" + row[lid].lid) {
                   var name = "";
