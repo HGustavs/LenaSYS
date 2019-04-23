@@ -1567,6 +1567,7 @@ input.submit-button-newitem {
   font-size: 16px;
   text-align: center;
   transition: 1s background-color;
+  -webkit-appearance: none;
   float: right;
 }
 
