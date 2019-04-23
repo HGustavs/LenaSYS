@@ -2495,7 +2495,6 @@ function mousedownevt(ev) {
 
 function handleSelect() {
     lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
-
     var last = diagram[lastSelectedObject];
 
     if (last.targeted == false && uimode != "MoveAround") {
