@@ -416,7 +416,7 @@ CREATE TABLE partresult (
 	PRIMARY KEY (partname, cid, uid),
 	FOREIGN KEY (partname,cid) REFERENCES subparts (partname,cid),
 	FOREIGN KEY (uid) REFERENCES user (uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /**
  * this table many to many relation between class and course.
