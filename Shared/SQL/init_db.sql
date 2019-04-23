@@ -471,7 +471,7 @@ CREATE TABLE settings (
   motd varchar(4096) DEFAULT NULL,
   readonly tinyint(4) DEFAULT '0',
   PRIMARY KEY (`sid`)
-);
+) CHARACTER SET utf8mb4 COLLATE UTF8_UNICODE_CI ENGINE=INNODB;
 
 
 CREATE TABLE user_push_registration (
