@@ -921,45 +921,25 @@ function rowFilter(row) {
 
 				if (columnToSearch === columnToFind) {
 					if (row[lid].grade === 2) {
-						// DO SOME FILTERING HERE!
 						console.log("VI HITTA COLUMNEN OCH GODKÄNDA BETYG! " + row[lid].entryname + " " + row[lid].grade);
 						console.log(row[lid].lid);
+
             for (colname in row) {
               if (colname == ("lid:"+row[lid])) {
+                console.log("HITTA LIDet "+"lid:"+row[lid]);
                 var name = "";
-                if (row[colname]["firstname"] != null) {
-                  name += row[colname]["firstname"] + " ";
+                if (row[colname][row[lid].entryname] != null) {
+                  name += row[colname][row[lid].entryname] + " ";
                 }
-                if (row[colname]["lastname"] != null) {
-                  name += row[colname]["lastname"];
-                }
-                if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
+                if (name.toUpperCase().indexOf(columnToFind.toUpperCase()) != -1) {
                   return true;
                 }
-
-                if (row[colname]["ssn"] != null) {
-                  if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-                    return true;
-                }
-                if (row[colname]["username"] != null) {
-                  if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-                    return true;
-                }
-                if (row[colname]["class"] != null) {
-                  if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-                    return true;
-                }
-                if (row[colname]["setTeacher"] != null) {
-                  if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-                    return true;
-                }
-              }
-
             }
             return false;
 					}
 				}
 			}
+    }
 		}else{
       for (colname in row) {
         if (colname == "FnameLnameSSN") {
