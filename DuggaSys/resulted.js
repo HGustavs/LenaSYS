@@ -928,8 +928,10 @@ function rowFilter(row) {
 									if (row[colname].entryname != null) {
 										name += row[colname].entryname + " ";
 									}
-									console.log(name + " - " + columnToSearch);
-									if (name.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
+                  var txt = document.createElement("textarea");
+                  txt.innerHTML = name;
+                  var newName2 = txt.value;
+									if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
 										return true;
 									}
 								}
