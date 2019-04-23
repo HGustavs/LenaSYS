@@ -245,7 +245,7 @@ CREATE TABLE sequence (
 	cid 					INT(10) unsigned NOT NULL,
 	exampleseq 				text NOT NULL,
 	PRIMARY KEY (cid,seqid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE wordlist(
