@@ -895,34 +895,37 @@ function smartSearch(splitSearch, row)
           case "MARKG":
             sortingValue = 2;
             sortingType = row[lid].grade;
+            isDate = false;
             break;
           case "MARKVG":
             sortingValue = 3;
             sortingType = row[lid].grade;
+            isDate = false;
             break;
           case "MARKU":
             sortingValue = 1;
             sortingType = row[lid].grade;
+            isDate = false;
             break;
           case "DEADLINE":
           case "DATE":
+            isDate = true;
             var newInputValue = splitSearch[index][1].split("-");
             var date = new Date(splitSearch[index][1]);
-            console.log(date);
             date.setHours(0,0,0,0);
             row[lid].deadline.setHours(0,0,0,0);
             sortingValue = date.getTime();
             sortingType = row[lid].deadline.getTime();
+
             console.log("SortingValue = "+sortingValue+" sortingType = "+sortingType);
-            isDate = true;
+
             break;
         }
 
+        if(!isDate){
         var txt = document.createElement("textarea");
         txt.innerHTML = row[lid].entryname;
         var columnToFind = txt.value;
-
-        if(!isDate){
         if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
           if (sortingType === sortingValue) {
             for (colname in row) {
@@ -961,8 +964,8 @@ function smartSearch(splitSearch, row)
           return false;
       }
     }
-    }
   }
+ }
 }
 
 function rowFilter(row) {
