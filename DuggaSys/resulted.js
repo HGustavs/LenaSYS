@@ -948,7 +948,8 @@ function smartSearch(splitSearch, row)
       }else {
         if(sortingType <= sortingValue) {
           for (colname in row) {
-            if (colname == "lid:" + row[lid].lid) {
+            if (colname.deadline === row[lid].deadline) {
+              console.log("JALLA JALLA");
               var name = "";
               if (row[colname].entryname != null) {
                 name += row[colname].entryname + " ";
