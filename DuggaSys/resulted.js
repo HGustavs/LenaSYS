@@ -906,6 +906,9 @@ function rowFilter(row) {
 	})
 	var columnToSearch;
 	var lid;
+  if(searchterm=="")
+  {
+
 	for (var i = 0; i < splitSearch.length; i++) {
 		// key som värdet ska sökas på
 		// console.log(splitSearch[i][0]);
@@ -942,43 +945,9 @@ function rowFilter(row) {
 				}
 			}
     }
-		}else{
-      for (colname in row) {
-        if (colname == "FnameLnameSSN")
-        {
-          var name = "";
-          if (row[colname]["firstname"] != null) {
-            name += row[colname]["firstname"] + " ";
-          }
-          if (row[colname]["lastname"] != null) {
-            name += row[colname]["lastname"];
-          }
-          if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
-            return true;
-          }
-
-          if (row[colname]["ssn"] != null) {
-            if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-              return true;
-          }
-          if (row[colname]["username"] != null) {
-            if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-              return true;
-          }
-          if (row[colname]["class"] != null) {
-            if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-              return true;
-          }
-          if (row[colname]["setTeacher"] != null) {
-            if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
-              return true;
-          }
-        }
-      }
-      return false;
-    }
+		}
 	}
-  // HÄR SKA ANNARS FILTRERINGEN VARA!
+}else{
   for (colname in row) {
     if (colname == "FnameLnameSSN")
     {
@@ -1012,6 +981,8 @@ function rowFilter(row) {
     }
   }
   return false;
+}
+  // HÄR SKA ANNARS FILTRERINGEN VARA!
 }
 
 function renderSortOptions(col, status, colname) {
