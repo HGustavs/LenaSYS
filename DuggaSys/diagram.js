@@ -921,6 +921,17 @@ function toggleVirtualA4Holes() {
 }
 
 //---------------------------------------
+// resetToolbar: resets the toolbar to it's original position 
+//---------------------------------------
+function resetToolbarPosition(){
+    var myCanvas = document.getElementById('myCanvas');
+    var bound = myCanvas.getBoundingClientRect();
+    //Assign position for the toolbar according to the canvas bounds 
+    document.getElementById("diagram-toolbar").style.top = (bound.top + "px");
+    document.getElementById("diagram-toolbar").style.left = (bound.left + "px");
+}
+
+//---------------------------------------
 // openImportDialog: Opens the dialog menu for import
 //---------------------------------------
 
