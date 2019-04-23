@@ -360,7 +360,7 @@ CREATE TABLE playereditor_playbacks(
 	type					SMALLINT(1) NOT NULL,
 	path	 				VARCHAR(256) NOT NULL,
 	PRIMARY KEY (id, type)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /**
  * This table seems to be intended to store program courses. It does not seem
