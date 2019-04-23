@@ -949,7 +949,7 @@ function smartSearch(splitSearch, row)
         if(sortingType <= sortingValue) {
           console.log("KOM IN I ELSEN");
           for (colname in row) {
-            if (colname.deadline == "lid:" + row[lid].deadline) {
+            if (colname.deadline === row[lid].deadline) {
               console.log("DEADLINE STÄMMER ÖVERRENS!");
               var name = "";
               if (row[colname].entryname != null) {
