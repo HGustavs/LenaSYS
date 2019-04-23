@@ -2498,13 +2498,6 @@ function handleSelect() {
 
     var last = diagram[lastSelectedObject];
 
-    // Test issue #5960
-    if(last.symbolkind == 4) {
-        console.log("LINE");
-        var objectsConnectedToLine = connectedObjects(last);
-        console.log(JSON.stringify(objectsConnectedToLine));
-    }
-
     if (last.targeted == false && uimode != "MoveAround") {
         for (var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
