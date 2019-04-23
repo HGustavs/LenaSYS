@@ -933,13 +933,42 @@ function rowFilter(row) {
               if (colname == "lid:"+row[lid].lid) {
                 console.log("Inne i colname "+"lid:"+row[lid].lid);
                 var name = "";
-                if (row[colname][row[lid].entryname] != null) {
+                if (row[colname].entryname] != null) {
                   name += row[colname][row[lid].entryname] + " ";
                 }
                 if (name.toUpperCase().indexOf(columnToFind.toUpperCase()) != -1) {
+                  name = "";
                   return true;
                 }
-            }
+                if (colname == "FnameLnameSSN")
+                  {
+                    var name = "";
+                    if (row[colname]["firstname"] != null) {
+                      name += row[colname]["firstname"] + " ";
+                    }
+                    if (row[colname]["lastname"] != null) {
+                      name += row[colname]["lastname"];
+                    }
+                    if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
+                      return true;
+                    }
+
+                    if (row[colname]["ssn"] != null) {
+                      if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+                        return true;
+                    }
+                    if (row[colname]["username"] != null) {
+                      if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+                        return true;
+                    }
+                    if (row[colname]["class"] != null) {
+                      if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+                        return true;
+                    }
+                    if (row[colname]["setTeacher"] != null) {
+                      if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+                        return true;
+                    }
 					}
           return false;
 				}
