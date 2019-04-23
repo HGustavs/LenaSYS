@@ -942,9 +942,10 @@ function smartSearch(splitSearch, row)
             }
           }
             return false;
-          }
+        }
       }else {
         if(sortingType <= sortingValue) {
+          console.log("den ena är mindre än den andra!");
           for (colname in row) {
             if (colname == "lid:" + row[lid].lid) {
               var name = "";
