@@ -2684,7 +2684,6 @@ span.arrow {
 .VGc,
 .VGh {
   height: 24px;
-  width: 24px;
   cursor: pointer;
   margin-right: 10px;
 }
@@ -4613,10 +4612,10 @@ textarea#filecont{
 }
 .tsTable td:first-of-type {
   border-left: 1px solid #cdd0d6;
-} 
+}
 .tsTable td:last-of-type {
   border-right: 1px solid #cdd0d6;
-} 
+}
 .tsTable td, .tsTable th {
   border-bottom: 1px solid #cdd0d6;
 }
