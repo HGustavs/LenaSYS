@@ -946,7 +946,7 @@ function smartSearch(splitSearch, row)
         }
       }else {
           for (colname in row) {
-          sortingType = row[colname].deadline.setHours(0,0,0,0);
+          console.log(row[colname]);
             if(sortingType <= sortingValue.getTime()) {
               return true;
             // if (colname.deadline.setHours(0,0,0,0).getTime() >= sortingValue) {
