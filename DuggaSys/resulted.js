@@ -878,6 +878,8 @@ function renderCell(col, celldata, cellid) {
 //----------------------------------------------------------------
 function smartSearch(splitSearch, row)
 {
+  console.log(row[lid].deadline);
+
   var columnToSearch;
   var lid;
   var sortingType;
