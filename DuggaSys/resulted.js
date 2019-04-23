@@ -904,7 +904,7 @@ function rowFilter(row) {
 	var columnToSearch;
 	var lid;
   console.log("splitSearch = "+splitSearch+" searchterm = "+searchterm+ " tempSplitSearch = "+tempSplitSearch);
-	if (searchterm != "" && splitSearch != "") {
+	if (searchterm != "" && splitSearch != searchterm) {
 		for (var i = 0; i < splitSearch.length; i++) {
 			// key som värdet ska sökas på
 			// console.log(splitSearch[i][0]);
