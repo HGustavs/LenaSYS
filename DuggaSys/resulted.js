@@ -924,7 +924,7 @@ function rowFilter(row) {
 				txt.innerHTML = row[lid].entryname;
 				var columnToFind = txt.value;
 
-				if (columnToSearch === columnToFind) {
+				if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
 					if (row[lid].grade === 2) {
 						console.log("VI HITTA COLUMNEN OCH GODKÄNDA BETYG! " + row[lid].entryname + " " + row[lid].grade);
 						console.log(row[lid].lid);
