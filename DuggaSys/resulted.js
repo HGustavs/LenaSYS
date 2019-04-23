@@ -920,9 +920,8 @@ function smartSearch(splitSearch, row)
         txt.innerHTML = row[lid].entryname;
         var columnToFind = txt.value;
 
+        if(!isDate){
         if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
-          console.log("VI KOM IN I COLUMNSEARCH == COLUMNFIND IFEN");
-          if(!isDate){
           if (sortingType === sortingValue) {
             for (colname in row) {
               if (colname == "lid:" + row[lid].lid) {
@@ -940,27 +939,27 @@ function smartSearch(splitSearch, row)
             }
           }
             return false;
-          }else {
-            console.log("VI KOM IN I ELSE IFEN");
-            if(sortingType <= sortingValue) {
-              for (colname in row) {
-                if (colname == "lid:" + row[lid].lid) {
-                  var name = "";
-                  if (row[colname].entryname != null) {
-                    name += row[colname].entryname + " ";
-                  }
-                  var txt = document.createElement("textarea");
-                  txt.innerHTML = name;
-                  var newName2 = txt.value;
-                  if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
-                    return true;
-                  }
-                }
-              }
-              return false;
           }
-        }
+      }else {
+        console.log("VI KOM IN I ELSE IFEN");
+        if(sortingType <= sortingValue) {
+          for (colname in row) {
+            if (colname == "lid:" + row[lid].lid) {
+              var name = "";
+              if (row[colname].entryname != null) {
+                name += row[colname].entryname + " ";
+              }
+              var txt = document.createElement("textarea");
+              txt.innerHTML = name;
+              var newName2 = txt.value;
+              if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
+                return true;
+              }
+            }
+          }
+          return false;
       }
+    }
     }
   }
 }
