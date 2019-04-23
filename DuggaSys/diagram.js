@@ -27,6 +27,13 @@ AJAXService("get", {}, "DIAGRAM");
 
 ************************************************************/
 
+var origoOffsetX = 0.0;
+var origoOffsetY = 0.0;
+var mouseDownPosX = 0.0;
+var mouseDownPosY = 0.0;
+var boundingRect;                   // Canvas offset in browser
+var canvasLeftClick = 0;
+
 var gridSize = 16;
 var crossSize = 4.0;                // Size of point cross
 var tolerance = 8;                  // Size of tolerance area around the point
@@ -37,8 +44,6 @@ var currentMouseCoordinateX = 0;
 var currentMouseCoordinateY = 0;
 var startMouseCoordinateX = 0;
 var startMouseCoordinateY = 0;
-var oldMouseCoordinateX = 0;
-var oldMouseCoordinateY = 0;
 var canvasMouseX = 0;               // Variable for the mouse coordinate X in the canvas on the diagram page.
 var canvasMouseY = 0;               // Variable for the mouse coordinate Y in the canvas on the diagram page.
 var zoomValue = 1.00;
@@ -91,11 +96,6 @@ var classTemplate = {
 };
 var a = [], b = [], c = [];
 var selected_objects = [];              // Is used to store multiple selected objects
-var mousedownX = 0, mousedownY = 0;     // Is used to save the exact coordinants when pressing mousedown while in the "Move Around"-mode
-var mousemoveX = 0, mousemoveY = 0;     // Is used to save the exact coordinants when moving aorund while in the "Move Around"-mode
-var mouseDiffX = 0, mouseDiffY = 0;     // Saves to diff between mousedown and mousemove to know how much to translate the diagram
-var xPos = 0;
-var yPos = 0;
 var globalAppearanceValue = 0;          // Is used to see if the button was pressed or not
 var diagramNumber = 0;                  // Is used for localStorage so that undo and redo works.
 var diagramNumberHistory = 0;           // Is used for undo and redo
@@ -430,6 +430,13 @@ function copySymbol(symbol) {
 
     return diagram.length;
 
+}
+
+function pixelsToCanvas(pixelX, pixelY){
+	return {
+		x: pixelX + origoOffsetX,
+		y: pixelY + origoOffsetY
+	}
 }
 
 //--------------------------------------------------------------------
@@ -820,8 +827,11 @@ function initializeCanvas() {
     setInterval(function() {Save()}, 10000);
     widthWindow = (window.innerWidth - 20);
     heightWindow = (window.innerHeight - 80);
-    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" + (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) + "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
-    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
+    document.getElementById("canvasDiv").innerHTML = "<canvas id='myCanvas' style='border:1px solid #000000;' width='" 
+    				+ (widthWindow * zoomValue) + "' height='" + (heightWindow * zoomValue) 
+    				+ "' onmousemove='mousemoveevt(event,this);' onmousedown='mousedownevt(event);' onmouseup='mouseupevt(event);'></canvas>";
+    document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) 
+    				+ "%   |   <b>Coordinates:</b> X=" + sx + " & Y=" + sy + "</p>";
     canvas = document.getElementById("myCanvas");
     if (canvas.getContext) {
         ctx = canvas.getContext("2d");
@@ -893,16 +903,6 @@ function drawVirtualA4() {
         drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
         drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
     }
-    ctx.restore();
-}
-
-function drawCircle(cx, cy, radius) {
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.beginPath();
-    ctx.arc(0,0, radius, 0, Math.PI * 2);
-    ctx.closePath();
-    ctx.stroke();
     ctx.restore();
 }
 
@@ -978,11 +978,25 @@ function canvasSize() {
 // Listen if the window is the resized
 window.addEventListener('resize', canvasSize);
 
+function mod(n, m) {
+  return ((n % m) + m) % m;
+}
+
 //-------------------------------------------
 // updateGraphics: used to redraw each object on the screen
 //-------------------------------------------
 
 function updateGraphics() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawGrid();
+    diagram.sortConnectors();
+    diagram.draw();
+    points.drawPoints();
+    ctx.fillStyle = "black";
+    ctx.fillRect(origoOffsetX, origoOffsetY, 10, 10);
+
+
+	/*
     ctx.clearRect(sx, sy, (widthWindow / zoomValue), (heightWindow / zoomValue));
     if (moveValue == 1) {
         ctx.translate((-mouseDiffX), (-mouseDiffY));
@@ -999,6 +1013,7 @@ function updateGraphics() {
      if(!ghostingCrosses) {
         drawOrigo();
     }
+    */
 }
 
 function getConnectedLines(object) {
@@ -1119,9 +1134,6 @@ function setMode(mode) { //"CreateClass" yet to be implemented in .php
 
 $(document).ready(function() {
     $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton").click(function() {
-        canvas.removeEventListener('mousedown', getMousePos, false);
-        canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
-        canvas.removeEventListener('mouseup', mouseupcanvas, false);
         $("#moveButton").removeClass("pressed").addClass("unpressed");
         $("#moveButton").css("visibility", "hidden");
         if ($(this).hasClass("pressed")) {
@@ -1182,6 +1194,43 @@ function cross(xCoordinate, yCoordinate) {
 
 function drawGrid() {
     ctx.lineWidth = 1;
+
+    myOffsetX = origoOffsetX % gridSize;
+    myOffsetY = origoOffsetY % gridSize;
+
+    for(let i = 0; i < canvas.width / gridSize; i++){
+        if(mod(myOffsetX, gridSize * 5) == mod(origoOffsetX, gridSize * 5)) {
+            ctx.strokeStyle = "rgb(208, 208, 220)";
+        }
+        else {
+            ctx.strokeStyle = "rgb(238, 238, 250)";
+        }
+        ctx.beginPath();
+        ctx.moveTo(myOffsetX, 0);
+        ctx.lineTo(myOffsetX, canvas.height);
+        ctx.stroke();
+        ctx.closePath();
+
+        if(mod(myOffsetY, gridSize * 5) == mod(origoOffsetY, gridSize * 5)) {
+            ctx.strokeStyle = "rgb(208, 208, 220)";
+        }
+        else {
+            ctx.strokeStyle = "rgb(238, 238, 250)";
+        }
+        ctx.beginPath();
+        ctx.moveTo(0, myOffsetY);
+        ctx.lineTo(canvas.width, myOffsetY);
+        ctx.stroke();
+        ctx.closePath();
+
+        myOffsetX += gridSize;
+        myOffsetY += gridSize;
+    }
+
+
+
+	/*
+    ctx.lineWidth = 1;
     var quadrantX;
     var quadrantY;
 
@@ -1221,6 +1270,7 @@ function drawGrid() {
         ctx.stroke();
         ctx.closePath();
     }
+    */
 }
 
 function drawOrigo() {
@@ -1438,10 +1488,10 @@ function decimalPrecision(value, precision){
 function reWrite() {
     if(!ghostingCrosses) {
         //We are now in debug mode/developer mode
-        document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
-         + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-         + "X=" + decimalPrecision(canvasMouseX, 1).toFixed(1)
-         + " & Y=" + decimalPrecision(canvasMouseY, 1).toFixed(1) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
+		document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> " + Math.round((zoomValue * 100)) + "%" + 
+		"   |   <b>Coordinates:</b> " + "X=" + Math.round(canvasMouseX)	+ " & Y=" + Math.round(canvasMouseY) +  
+		" | topLeft(" + Math.round(-origoOffsetX) + ", " + Math.round(-origoOffsetY) + ")</p>";
+
     } else {
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
@@ -1957,9 +2007,9 @@ const toolbarFree = 3;
 
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
-    var myCanvas = document.getElementById('myCanvas');
-    var bound = myCanvas.getBoundingClientRect();
-    element.style.top = (150+"px");
+    var myCanvas = document.getElementById('myCanvas');    
+    boundingRect = myCanvas.getBoundingClientRect();
+    element.style.top = (boundingRect.top+"px");
     toolbarState = (localStorage.getItem("toolbarState") != null) ? localStorage.getItem("toolbarState") : 0;
     switchToolbar();
     element.style.display = "inline-block";
@@ -2079,7 +2129,7 @@ function zoomInMode() {
     var oldZoom = zoomValue;
     zoomValue = document.getElementById("ZoomSelect").value;
     var newScale = (zoomValue/oldZoom);
-    ctx.scale(newScale,newScale);
+    //ctx.scale(newScale,newScale);
     reWrite();
     updateGraphics();
 }
@@ -2119,26 +2169,27 @@ function pointDistance(point1, point2) {
 }
 
 function mousemoveevt(ev, t) {
-    // Get canvasMouse coordinates for both X & Y.
-    canvasMouseX = (ev.clientX - canvas.offsetLeft) * (1 / zoomValue);
-    canvasMouseY = -(ev.clientY - canvas.offsetTop) * (1 / zoomValue);
-    // Call reWrite() to update the canvasMouseX & canvasMouseY on the page.
-    reWrite();
-    xPos = ev.clientX;
-    yPos = ev.clientY;
-    oldMouseCoordinateX = currentMouseCoordinateX;
-    oldMouseCoordinateY = currentMouseCoordinateY;
-    hovobj = diagram.itemClicked();
-    if (ev.pageX || ev.pageY == 0) { // Chrome. Tracking mouse movement
-        currentMouseCoordinateX = (((ev.pageX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
-        currentMouseCoordinateY = (((ev.pageY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
-    } else if (ev.layerX || ev.layerX == 0) { // Firefox. Tracking mouse movement
-        currentMouseCoordinateX = (((ev.layerX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
-        currentMouseCoordinateY = (((ev.layerY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
-    } else if (ev.offsetX || ev.offsetX == 0) { // Opera. Tracking mouse movement
-        currentMouseCoordinateX = (((ev.offsetX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
-        currentMouseCoordinateY = (((ev.offsetY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
+	canvasMouseX = ev.clientX - boundingRect.x - origoOffsetX;
+    canvasMouseY = ev.clientY - boundingRect.y - origoOffsetY;
+    currentMouseCoordinateX = canvasMouseX;
+    currentMouseCoordinateY = canvasMouseY;
+
+    let currentX = pixelsToCanvas(currentMouseCoordinateX).x;
+    let startX = pixelsToCanvas(startMouseCoordinateX).x;
+    let currentY = pixelsToCanvas(0, currentMouseCoordinateY).y;
+    let startY = pixelsToCanvas(0, startMouseCoordinateY).y;
+
+    if(canvasLeftClick == 1 && uimode == "MoveAround") {
+        origoOffsetX += (ev.clientX - boundingRect.x - origoOffsetX) - mouseDownPosX;
+        origoOffsetY += (ev.clientY - boundingRect.y - origoOffsetY) - mouseDownPosY;
+        mouseDownPosX = ev.clientX - boundingRect.x - origoOffsetX;
+        mouseDownPosY = ev.clientY - boundingRect.y - origoOffsetY;
     }
+
+    reWrite();
+    updateGraphics();
+
+
     if (md == 0) {
         // Select a new point only if mouse is not already moving a point or selection box
         sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
@@ -2163,7 +2214,7 @@ function mousemoveevt(ev, t) {
         // If mouse is pressed down and at a point in selected object - move that point
     } else if (md == 3) {
         // If mouse is pressed down inside a movable object - move that object
-        if (movobj != -1 ) {
+        if (movobj != -1) {
             uimode = "Moved";
             $(".buttonsStyle").removeClass("pressed").addClass("unpressed");
             for (var i = 0; i < diagram.length; i++) {
@@ -2172,10 +2223,11 @@ function mousemoveevt(ev, t) {
                         currentMouseCoordinateX = Math.round(currentMouseCoordinateX / gridSize) * gridSize;
                         currentMouseCoordinateY = Math.round(currentMouseCoordinateY / gridSize) * gridSize;
                     }
-
-                    diagram[i].move(currentMouseCoordinateX - oldMouseCoordinateX, currentMouseCoordinateY - oldMouseCoordinateY);
+                    diagram[i].move(currentMouseCoordinateX - startMouseCoordinateX, currentMouseCoordinateY - startMouseCoordinateY);
                 }
             }
+            startMouseCoordinateX = currentMouseCoordinateX;
+        	startMouseCoordinateY = currentMouseCoordinateY;
         }
     }
     if (md == 4 && uimode == "normal") {
@@ -2185,13 +2237,13 @@ function mousemoveevt(ev, t) {
     }
     updateGraphics();
     // Draw select or create dotted box
-    if (md == 4) {
+    if (md == 4 && uimode != "MoveAround") {
         if (figureType == "Free" && uimode == "CreateFigure") {
             if(p2 != null && !(isFirstPoint)) {
                 ctx.setLineDash([3, 3]);
                 ctx.beginPath();
-                ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
-                ctx.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(currentX, currentY);
                 ctx.strokeStyle = "#000";
                 ctx.stroke();
                 ctx.setLineDash([]);
@@ -2204,11 +2256,11 @@ function mousemoveevt(ev, t) {
         }else if(uimode == "CreateFigure" && figureType == "Square") {
             ctx.setLineDash([3, 3]);
             ctx.beginPath(1);
-            ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
-            ctx.lineTo(currentMouseCoordinateX, startMouseCoordinateY);
-            ctx.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
-            ctx.lineTo(startMouseCoordinateX, currentMouseCoordinateY);
-            ctx.lineTo(startMouseCoordinateX, startMouseCoordinateY);
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(currentX, startY);
+            ctx.lineTo(currentX, currentY);
+            ctx.lineTo(startX, currentY);
+            ctx.lineTo(startX, startY);
             ctx.strokeStyle = "#d51";
             ctx.stroke();
             ctx.setLineDash([]);
@@ -2221,11 +2273,11 @@ function mousemoveevt(ev, t) {
         }else if (uimode == "CreateEREntity") {
             ctx.setLineDash([3, 3]);
             ctx.beginPath(1);
-            ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
-            ctx.lineTo(currentMouseCoordinateX, startMouseCoordinateY);
-            ctx.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
-            ctx.lineTo(startMouseCoordinateX, currentMouseCoordinateY);
-            ctx.lineTo(startMouseCoordinateX, startMouseCoordinateY);
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(currentX, startY);
+            ctx.lineTo(currentX, currentY);
+            ctx.lineTo(startX, currentY);
+            ctx.lineTo(startX, startY);
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
@@ -2237,14 +2289,14 @@ function mousemoveevt(ev, t) {
             }
         } else if(uimode == "CreateERRelation") {
             ctx.setLineDash([3, 3]);
-            var midx = startMouseCoordinateX+((currentMouseCoordinateX-startMouseCoordinateX)/2);
-            var midy = startMouseCoordinateY+((currentMouseCoordinateY-startMouseCoordinateY)/2);
+            var midx = startX+((currentX-startX)/2);
+            var midy = startY+((currentY-startY)/2);
             ctx.beginPath(1);
-            ctx.moveTo(midx, startMouseCoordinateY);
-            ctx.lineTo(currentMouseCoordinateX, midy);
-            ctx.lineTo(midx, currentMouseCoordinateY);
-            ctx.lineTo(startMouseCoordinateX, midy);
-            ctx.lineTo(midx, startMouseCoordinateY);
+            ctx.moveTo(midx, startY);
+            ctx.lineTo(currentX, midy);
+            ctx.lineTo(midx, currentY);
+            ctx.lineTo(startX, midy);
+            ctx.lineTo(midx, startY);
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
@@ -2256,7 +2308,7 @@ function mousemoveevt(ev, t) {
             }
         } else if(uimode == "CreateERAttr") {
             ctx.setLineDash([3, 3]);
-            drawOval(startMouseCoordinateX, startMouseCoordinateY, currentMouseCoordinateX, currentMouseCoordinateY);
+            drawOval(startX, startY, currentX, currentY);
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
@@ -2269,8 +2321,8 @@ function mousemoveevt(ev, t) {
             // Path settings for preview line
             ctx.setLineDash([3, 3]);
             ctx.beginPath();
-            ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
-            ctx.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(currentX, currentY);
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
@@ -2281,16 +2333,16 @@ function mousemoveevt(ev, t) {
             }
         } else {
             ctx.setLineDash([3, 3]);
-            ctx.beginPath(1);
-            ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
-            ctx.lineTo(currentMouseCoordinateX, startMouseCoordinateY);
-            ctx.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
-            ctx.lineTo(startMouseCoordinateX, currentMouseCoordinateY);
-            ctx.lineTo(startMouseCoordinateX, startMouseCoordinateY);
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(currentX, startY);
+            ctx.lineTo(currentX, currentY);
+            ctx.lineTo(startX, currentY);
+            ctx.lineTo(startX, startY);
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            ctx.closePath(1);
+            ctx.closePath();
             if (ghostingCrosses == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
@@ -2301,6 +2353,14 @@ function mousemoveevt(ev, t) {
 }
 
 function mousedownevt(ev) {
+    canvasLeftClick = 1;
+
+    mouseDownPosX = ev.clientX - boundingRect.x - origoOffsetX;
+    mouseDownPosY = ev.clientY - boundingRect.y - origoOffsetY;
+    currentMouseCoordinateX = mouseDownPosX;
+    currentMouseCoordinateY = mouseDownPosY;
+    startMouseCoordinateX = currentMouseCoordinateX;
+    startMouseCoordinateY = currentMouseCoordinateY;
 
     if(uimode == "Moved" && md != 4) {
         uimode = "normal";
@@ -2393,6 +2453,8 @@ function handleSelect() {
 }
 
 function mouseupevt(ev) {
+   	canvasLeftClick = 0;
+
     if (uimode == "CreateFigure" && md == 4) {
         if(figureType == "Text") {
             createText(currentMouseCoordinateX, currentMouseCoordinateY);
@@ -2473,7 +2535,7 @@ function mouseupevt(ev) {
     //----------------------------------------------------------------------
 
     if (uimode == "CreateClass" && md == 4) {
-        classB = new Symbol(1); // UML
+        var classB = new Symbol(1); // UML
         classB.name = "New" + diagram.length;
         classB.operations.push({text:"- makemore()"});
         classB.attributes.push({text:"+ height:Integer"});
@@ -2571,16 +2633,10 @@ function mouseupevt(ev) {
 }
 
 function doubleclick(ev) {
-    var posistionX = (sx + xPos);
-    var posistionY = (sy + yPos);
-
-    var posX = currentMouseCoordinateX;
-    var posY = currentMouseCoordinateY;
-
     if (lastSelectedObject != -1 && diagram[lastSelectedObject].targeted == true) {
         openAppearanceDialogMenu();
     } else {
-        createText(posX, posY);
+        createText(currentMouseCoordinateX, currentMouseCoordinateY);
     }
 }
 
@@ -2641,7 +2697,6 @@ function resize() {
 // MOVING AROUND IN THE CANVAS
 //---------------------------------------
 function movemode(e, t) {
-    uimode = "MoveAround";
 	$(".buttonsStyle").removeClass("pressed").addClass("unpressed");
     var button = document.getElementById("moveButton").className;
     var buttonStyle = document.getElementById("moveButton");
@@ -2650,19 +2705,12 @@ function movemode(e, t) {
         buttonStyle.style.visibility = 'visible';
 		buttonStyle.className = "pressed";
         canvas.style.cursor = "all-scroll";
-        canvas.addEventListener('mousedown', getMousePos, false);
-        canvas.addEventListener('mouseup', mouseupcanvas, false);
+    	uimode = "MoveAround";
     } else {
         buttonStyle.style.visibility = 'hidden';
 		buttonStyle.className = "unpressed";
         canvas.addEventListener('dblclick', doubleclick, false);
-        mousedownX = 0; mousedownY = 0;
-        mousemoveX = 0; mousemoveY = 0;
-        mouseDiffX = 0; mouseDiffY = 0;
         canvas.style.cursor = "default";
-        canvas.removeEventListener('mousedown', getMousePos, false);
-        canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
-        canvas.removeEventListener('mouseup', mouseupcanvas, false);
         uimode = "normal";
     }
 }
@@ -2674,31 +2722,6 @@ function activateMovearound() {
 function deactivateMovearound() {
     movemode();
 }
-
-function getMousePos(e) {
-    mousedownX = e.clientX;
-    mousedownY = e.clientY;
-    canvas.addEventListener('mousemove', mousemoveposcanvas, false);
-}
-
-function mousemoveposcanvas(e) {
-    mousemoveX = e.clientX;
-    mousemoveY = e.clientY;
-    mouseDiffX = (mousedownX - mousemoveX);
-    mouseDiffY = (mousedownY - mousemoveY);
-    sx += mouseDiffX;
-    sy += mouseDiffY;
-    mousedownX = mousemoveX;
-    mousedownY = mousemoveY;
-    moveValue = 1;
-    updateGraphics();
-    reWrite();
-}
-
-function mouseupcanvas(e) {
-    canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
-}
-
 
 //--------------------------------------------------------------------
 // Basic functionality

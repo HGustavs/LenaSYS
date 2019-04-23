@@ -10,11 +10,11 @@
 // Symbol - stores a diagram symbol
 // Function Symbol() handles the CREATE-functions in the diagram.
 //--------------------------------------------------------------------
-function Symbol(kind) {
+function Symbol(symbolkind) {
     this.kind = 2;                  // Diagram object kind is always 2 for symbols
     this.name = "New Class";        // New Class default name in new class
     this.targeted = false;
-    this.symbolkind = kind;         // Symbol kind (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
+    this.symbolkind = symbolkind;   // Symbol kind (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
     this.operations = [];           // Operations array
     this.attributes = [];           // Attributes array
     this.textLines = [];            // Free text array
@@ -760,10 +760,10 @@ function Symbol(kind) {
         this.properties['textSize'] = this.getFontsize();
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
 
-        var x1 = points[this.topLeft].x;
-        var y1 = points[this.topLeft].y;
-        var x2 = points[this.bottomRight].x;
-        var y2 = points[this.bottomRight].y;
+        var x1 = points[this.topLeft].x + origoOffsetX;
+        var y1 = points[this.topLeft].y + origoOffsetY;
+        var x2 = points[this.bottomRight].x + origoOffsetX;
+        var y2 = points[this.bottomRight].y + origoOffsetY;
 
         if(this.locked) {
             this.drawLock();
@@ -840,7 +840,7 @@ function Symbol(kind) {
 
     this.drawUML = function(x1, y1, x2, y2)
     {
-        var midy = points[this.middleDivider].y;
+        var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px Arial";
 
         // Clear Class Box
@@ -1603,15 +1603,15 @@ function Path() {
 
             ctx.beginPath();
             var pseg = this.segments[0];
-            ctx.moveTo(points[pseg.pa].x, points[pseg.pa].y);
+            ctx.moveTo(pixelsToCanvas(points[pseg.pa].x).x, pixelsToCanvas(0, points[pseg.pa].y).y);
             for (var i = 0; i < this.segments.length; i++) {
                 var seg = this.segments[i];
                 // If we start over on another sub-path, we must start with a moveto
                 if (seg.pa != pseg.pb) {
-                    ctx.moveTo(points[seg.pa].x, points[seg.pa].y);
+                    ctx.moveTo(pixelsToCanvas(points[seg.pa].x).x, pixelsToCanvas(0, points[seg.pa].y).y);
                 }
                 // Draw current line
-                ctx.lineTo(points[seg.pb].x, points[seg.pb].y);
+                ctx.lineTo(pixelsToCanvas(points[seg.pb].x).x, pixelsToCanvas(0, points[seg.pb].y).y);
                 // Remember previous segment
                 pseg = seg;
             }
@@ -1637,12 +1637,12 @@ function Path() {
                 var segb = points[this.segments[i].pb];
                 if(this.targeted) {
                     ctx.beginPath();
-                    ctx.arc(seg.x,seg.y,5,0,2*Math.PI,false);
+                    ctx.arc(pixelsToCanvas(seg.x).x, pixelsToCanvas(0, seg.y).y, 5,0,2*Math.PI,false);
                     ctx.fillStyle = '#F82';
                     ctx.fill();
 
                     ctx.beginPath();
-                    ctx.arc(segb.x,segb.y,5,0,2*Math.PI,false);
+                    ctx.arc(pixelsToCanvas(segb.x).x, pixelsToCanvas(0, segb.y).y, 5,0,2*Math.PI,false);
                     ctx.fillStyle = '#F82';
                     ctx.fill();
                 }
