@@ -946,16 +946,12 @@ function smartSearch(splitSearch, row)
         }
       }else {
           for (colname in row) {
-            if(row[colname]!="FnameLnameSSN"){
-              sortingType = row[colname].deadline.setHours(0,0,0,0);
-                if(sortingType.getTime() <= sortingValue) {
-                  console.log("GICK IGENOM!");
-                  return true;
-            }
+            console.log(row[colname].deadline);
             // if (colname.deadline.setHours(0,0,0,0).getTime() >= sortingValue) {
             //   console.log("KOM IN I DEN ANDRA!");
             //   var name = "";
-            //   if (row[colname].entryname != null) {
+            //
+            //  if (row[colname].entryname != null) {
             //     name += row[colname].entryname + " ";
             //   }
             //   var txt = document.createElement("textarea");
