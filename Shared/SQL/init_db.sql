@@ -296,7 +296,7 @@ CREATE TABLE box(
 	fontsize				INT NOT NULL DEFAULT '9',
 	PRIMARY KEY (boxid, exampleid),
 	FOREIGN KEY (exampleid) REFERENCES codeexample (exampleid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* improw contains a list of the important rows for a certain example */
 CREATE TABLE improw(
