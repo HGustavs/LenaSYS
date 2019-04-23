@@ -557,7 +557,7 @@ CREATE TABLE opponents (
 	FOREIGN KEY (lid) REFERENCES listentries(lid),
 	FOREIGN KEY (opponent1) REFERENCES user(uid),
 	FOREIGN KEY (opponent2) REFERENCES user(uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE options (
 	label					varchar(128),
