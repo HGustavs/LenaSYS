@@ -907,8 +907,8 @@ function smartSearch(splitSearch, row)
             var newInputValue = splitSearch[index][1].split("-");
             var date = new Date();
             date.setFullYear(newInputValue[0], newInputValue[1]-1, newInputValue[2]);
-            sortingValue = date.getTime();
-            sortingType = row[lid].date.getTime();
+            sortingValue = date;
+            sortingType = row[lid].date;
 
             console.log("SortingValue = "+sortingValue+" sortingType = "+sortingType);
 
