@@ -1013,6 +1013,7 @@ function rowFilter(row) {
 }
   // HÄR SKA ANNARS FILTRERINGEN VARA!
 }
+}
 
 function renderSortOptions(col, status, colname) {
 	str = "";
