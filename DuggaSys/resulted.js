@@ -908,7 +908,7 @@ function rowFilter(row) {
 	var lid;
   if(searchterm != "")
   {
-
+    console.log("searchterm was not empty "+searchterm);
 	for (var i = 0; i < splitSearch.length; i++) {
 		// key som värdet ska sökas på
 		// console.log(splitSearch[i][0]);
