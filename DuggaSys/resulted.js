@@ -880,7 +880,22 @@ function smartSearch(splitSearch, row)
 {
   var columnToSearch;
   var lid;
+  var sortGrade;
   for (var i = 0; i < splitSearch.length; i++) {
+
+    switch(splitSearch[i][0].toUpperCase())
+    {
+      case "MARKG":
+        sortGrade = 2;
+        break;
+      case "MARKVG":
+        sortGrade = 3;
+        break;
+      case "MARKU":
+        sortGrade = 1;
+        break;
+    }
+
     if (splitSearch[i][0].toUpperCase() == "MARKG") {
       columnToSearch = splitSearch[i][1];
 
@@ -892,7 +907,7 @@ function smartSearch(splitSearch, row)
         var columnToFind = txt.value;
 
         if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
-          if (row[lid].grade === 2) {
+          if (row[lid].grade === sortGrade) {
             for (colname in row) {
               if (colname == "lid:" + row[lid].lid) {
                 var name = "";
