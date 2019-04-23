@@ -446,7 +446,7 @@ CREATE TABLE studentresultat (
 	KEY anmkod (anmkod),
 	KEY pnr (pnr),
 	KEY kurskod (kurskod)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /*
 This table is used by the duggasys system to generate certificates.
