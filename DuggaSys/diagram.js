@@ -1523,11 +1523,6 @@ function lockSelected() {
 }
 
 function align(mode) {
-    for(var i = 0; i < diagram.length; i++) {
-        if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1) {
-            selected_objects.push(diagram[i]);
-        }
-    }
     if(mode == 'top') {
        alignTop(selected_objects);
     }
