@@ -429,7 +429,7 @@ CREATE TABLE programcourse (
 	PRIMARY KEY (cid, class),
 	FOREIGN KEY (cid) REFERENCES course (cid),
 	FOREIGN KEY (class) REFERENCES class (class)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /**
  * This table seems to be intended to store student results from program courses.
