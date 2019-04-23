@@ -2146,7 +2146,7 @@ function mousemoveevt(ev, t) {
 
         if (sel.distance < tolerance) {
         	// Determine direction of cursor depending on whether cornerValue is even or not
-        	let cornerValue = 0;
+        	let cornerValue = -1;
         	for (let i = 0; i < selected_objects.length; i++) {
         		cornerValue = -1;
         		let corners = selected_objects[i].corners();
