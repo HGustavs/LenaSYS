@@ -18,19 +18,24 @@ function setup()
   AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 }
 
-/* Commented out this section because of the empty white box that appeared when mouseover the navbutt. Needs testing to assure it doesnt affect other pages.
+//  Instead of commenting out the functions as previously which caused uncaught reference errors
+//  function content was commented out to avoid having a white empty box appear.
 function hoverc()
 {
+    /*
     $('#dropdowns').css('display','none');
     $('#dropdownc').css('display','block');
+    */
 }
 
 function hovers()
 {
+  /*
   $('#dropdowns').css('display','block');
   $('#dropdownc').css('display','none');
+  */
 }
-*/
+
 function leavec()
 {
 		$('#dropdownc').css('display','none');
