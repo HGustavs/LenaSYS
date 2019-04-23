@@ -390,7 +390,7 @@ CREATE TABLE class (
 	hpProgress 	DECIMAL(3,1),
 	PRIMARY KEY (class,responsible),
 	FOREIGN KEY (responsible) REFERENCES user (uid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /**
  * this table stores the different subparts of each course.
