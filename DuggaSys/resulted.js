@@ -904,6 +904,17 @@ function smartSearch(splitSearch, row)
             sortingValue = 1;
             sortingType = row[lid].grade;
             break;
+          case "DEADLINE":
+            sortingValue = splitSearch[index][1];
+            sortingType = row[lid].deadline;
+            break;
+
+          case "SUBMITTED":
+
+            break;
+          case "MARKED":
+
+            break;
         }
 
         var txt = document.createElement("textarea");
