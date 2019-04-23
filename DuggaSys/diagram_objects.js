@@ -944,7 +944,7 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
-    function removeForcedAttributeFromLineIfEntityIsNormal(x1, y1, x2, y2) {
+    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) {
         var relationMidPoints = [];
         // Need to find the connected entities in order to change lines between relations and entities to normal.
         for(let i = 0; i < diagram.length; i++) {
