@@ -495,7 +495,7 @@ CREATE TABLE `groups` (
     groupVal VARCHAR(8) NOT NULL,
     groupInt INTEGER NOT NULL,
     PRIMARY KEY (groupID)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 INSERT INTO `groups`(groupKind,groupVal,groupInt) VALUES ("No","1",1);
 INSERT INTO `groups`(groupKind,groupVal,groupInt) VALUES ("No","2",2);
