@@ -914,7 +914,7 @@ function rowFilter(row) {
 		// värdet som ska sökas
 		// console.log(splitSearch[i][1]);
 
-		if (splitSearch[i][0] == "markG") {
+		if (splitSearch[i][0].toUpperCase() == "MARKG") {
 			columnToSearch = splitSearch[i][1];
 
 			for (var i = 0; i < moments.length; i++) {
