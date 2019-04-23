@@ -913,9 +913,8 @@ function smartSearch(splitSearch, row)
             var newInputValue = splitSearch[index][1].split("-");
             var date = new Date(splitSearch[index][1]);
             date.setHours(0,0,0,0);
-            row[lid].deadline.setHours(0,0,0,0);
             sortingValue = date.getTime();
-            sortingType = row[lid].deadline.getTime();
+            sortingType = 0;
 
             console.log("SortingValue = "+sortingValue+" sortingType = "+sortingType);
 
@@ -949,7 +948,8 @@ function smartSearch(splitSearch, row)
         if(sortingType <= sortingValue) {
           console.log("KOM IN I DEN FÖRSTA");
           for (colname in row) {
-            console.log(colname.deadline);
+
+              return true;
             // if (colname.deadline.setHours(0,0,0,0).getTime() >= sortingValue) {
             //   console.log("KOM IN I DEN ANDRA!");
             //   var name = "";
