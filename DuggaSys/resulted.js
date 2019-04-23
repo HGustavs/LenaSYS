@@ -880,33 +880,36 @@ function smartSearch(splitSearch, row)
 {
   var columnToSearch;
   var lid;
-  var sortGrade;
+  var sortingType;
+  var sortingValue;
   for (var i = 0; i < splitSearch.length; i++) {
-
-    switch(splitSearch[i][0].toUpperCase())
-    {
-      case "MARKG":
-        sortGrade = 2;
-        break;
-      case "MARKVG":
-        sortGrade = 3;
-        break;
-      case "MARKU":
-        sortGrade = 1;
-        break;
-    }
-
       columnToSearch = splitSearch[i][1];
 
       for (var i = 0; i < moments.length; i++) {
         lid = "lid:" + moments[i]["lid"];
+
+        switch(splitSearch[i][0].toUpperCase())
+        {
+          case "MARKG":
+            sortingValue = 2;
+            sortingType = row[lid].grade;
+            break;
+          case "MARKVG":
+            sortingValue = 3;
+            sortingType = row[lid].grade;
+            break;
+          case "MARKU":
+            sortingValue = 1;
+            sortingType = row[lid].grade;
+            break;
+        }
 
         var txt = document.createElement("textarea");
         txt.innerHTML = row[lid].entryname;
         var columnToFind = txt.value;
 
         if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
-          if (row[lid].grade === sortGrade) {
+          if (sortingType === sortingValue) {
             for (colname in row) {
               if (colname == "lid:" + row[lid].lid) {
                 var name = "";
