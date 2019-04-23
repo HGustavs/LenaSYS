@@ -1112,14 +1112,14 @@ function Symbol(kind) {
                 // Setting the line types to forced if they are normal and the connected entity is weak.
                 if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Forced') {
                     // Looping through the midpoints (top and bot) for relations.
-                    for (let j = 0; j < relationMidXPoints.length; j++) {
-                        for (let c = 0; c < relationMidXPoints.length; c++) {
+                    for (let j = 0; j <= relationMidXPoints.length; j++) {
+                        for (let c = 0; c <= relationMidXPoints.length; c++) {
                             // Checking if the line X coordinate is the same as the relations middle X coordinate
                             if (dtlx == relationMidXPoints[j] || dtrx == relationMidXPoints[j]) {
                                 // Checking if the line Y coordinate is the same as the coordinate for the relation middle top Y or bottom Y
                                 if (dtly == relationMidXPoints[c] || dbly == relationMidXPoints[c]) {
-                                    for (let y = 0; y < attributeMidPoint.length; y++) {
-                                        for (let k = 0; k < attributeMidPoint.length; k++) {
+                                    for (let y = 0; y <= attributeMidPoint.length; y++) {
+                                        for (let k = 0; k <= attributeMidPoint.length; k++) {
                                             // Making sure that lines between relations and attributes aren't set to forced.
                                             if ((dtlx == attributeMidPoint[y] || dtrx == attributeMidPoint[y]) || (dtly == attributeMidPoint[k] || dbly == attributeMidPoint[k])) {
                                                 diagram[i].properties['key_type'] = 'Normal';
@@ -1142,13 +1142,13 @@ function Symbol(kind) {
                         }
                     }
                     // Looping through the midpoints (left and right) for relations.
-                    for (let j = 0; j < relationMidYPoints.length; j++) {
-                        for (let c = 0; c < relationMidYPoints.length; c++) {
+                    for (let j = 0; j <= relationMidYPoints.length; j++) {
+                        for (let c = 0; c <= relationMidYPoints.length; c++) {
                             // checking if the line Y coordinate is the same as the relations middle Y coordinate.
                             if (dtly == relationMidYPoints[j] || dbly == relationMidYPoints[j]) {
                                 if (dtlx == relationMidYPoints[c] || dtrx == relationMidYPoints[c]) {
-                                    for (let y = 0; y < attributeMidPoint.length; y++) {
-                                        for (let k = 0; k < attributeMidPoint.length; k++) {
+                                    for (let y = 0; y <= attributeMidPoint.length; y++) {
+                                        for (let k = 0; k <= attributeMidPoint.length; k++) {
                                             // Making sure that lines between relations and attributes aren't set to forced.
                                             if ((dtlx == attributeMidPoint[y] || dtrx == attributeMidPoint[y]) || (dtly == attributeMidPoint[k] || dbly == attributeMidPoint[k])) {
                                                 diagram[i].properties['key_type'] = 'Normal';
