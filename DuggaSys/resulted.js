@@ -196,8 +196,6 @@ function process() {
 	dstr += makeCustomFilter("onlyPending", "Only pending");
 	dstr += makeCustomFilter("minimode", "Mini mode");
 
-	dstr += "<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
-
 	document.getElementById("customfilter").innerHTML = dstr;
 	var dstr = "";
 
