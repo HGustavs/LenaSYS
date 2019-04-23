@@ -311,7 +311,7 @@ CREATE TABLE improw(
 	PRIMARY KEY (impid, exampleid, boxid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (boxid, exampleid) REFERENCES box (boxid, exampleid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* Wordlist contains a list of important words for a certain code example */
 CREATE TABLE impwordlist(
