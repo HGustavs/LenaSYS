@@ -281,7 +281,7 @@ CREATE TABLE word(
 	PRIMARY KEY (wordid, wordlistid),
 	FOREIGN KEY (uid) REFERENCES user (uid),
 	FOREIGN KEY (wordlistid) REFERENCES wordlist(wordlistid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 /* boxes with information in a certain example */
 CREATE TABLE box(
