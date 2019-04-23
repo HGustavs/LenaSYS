@@ -878,14 +878,12 @@ function renderCell(col, celldata, cellid) {
 //----------------------------------------------------------------
 function smartSearch(splitSearch, row)
 {
-
   var columnToSearch;
   var lid;
   var sortingType;
   var sortingValue;
   for (var i = 0; i < splitSearch.length; i++) {
-    var index = i;
-
+      var index = i;
       columnToSearch = splitSearch[i][1];
 
       for (var i = 0; i < moments.length; i++) {
@@ -909,9 +907,11 @@ function smartSearch(splitSearch, row)
             var newInputValue = splitSearch[index][1].split("-");
             var date = new Date();
             date.setFullYear(newInputValue[0], newInputValue[1]-1, newInputValue[2]);
-            console.log(date);
             sortingValue = date;
             sortingType = row[lid].deadline;
+
+            console.log("SortingValue = "+sortingValue+" sortingType = "+sortingType);
+
             break;
         }
 
