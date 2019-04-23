@@ -1106,7 +1106,7 @@ function Symbol(kind) {
             ctx.lineWidth = this.properties['lineWidth'];
             setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
         } else {
-            removeForcedAttributeFromLineIfEntityIsNormal(x1, y1, x2, y2);
+            removeForcedAttributeFromLineIfEntityIsNotWeak(x1, y1, x2, y2);
         }
 
         ctx.moveTo(x1, y1);
