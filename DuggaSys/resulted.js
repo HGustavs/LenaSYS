@@ -946,8 +946,8 @@ function smartSearch(splitSearch, row)
         }
       }else {
           for (colname in row) {
-          console.log(row[colname]);
-            if(sortingType <= sortingValue.getTime()) {
+            sortingType = row[colname].deadline.setHours(0,0,0,0);
+            if(sortingType.getTime() <= sortingValue) {
               return true;
             // if (colname.deadline.setHours(0,0,0,0).getTime() >= sortingValue) {
             //   console.log("KOM IN I DEN ANDRA!");
