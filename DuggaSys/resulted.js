@@ -933,7 +933,7 @@ function rowFilter(row) {
               if (colname == "lid:"+row[lid].lid) {
                 console.log("Inne i colname "+"lid:"+row[lid].lid);
                 var name = "";
-                if (row[colname].entryname] != null) {
+                if (row[colname].entryname != null) {
                   name += row[colname][row[lid].entryname] + " ";
                 }
                 if (name.toUpperCase().indexOf(columnToFind.toUpperCase()) != -1) {
