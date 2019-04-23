@@ -909,6 +909,7 @@ function smartSearch(splitSearch, row)
             break;
           case "DEADLINE":
             sortingValue = splitSearch[index][1];
+            console.log(splitSearch[index][1]);
             sortingType = row[lid].deadline;
             break;
 
