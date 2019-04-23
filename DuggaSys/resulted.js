@@ -905,10 +905,12 @@ function smartSearch(splitSearch, row)
             break;
           case "DATE":
             var newInputValue = splitSearch[index][1].split("-");
-            var date = new Date();
+            var date1 = new Date();
+            var date2 = new Date();
             date.setFullYear(newInputValue[0], newInputValue[1]-1, newInputValue[2]);
+            date2 = row[lid].deadline;
             sortingValue = date.getTime();
-            sortingType = row[lid].deadline.getTime();
+            sortingType = date2.getTime();
 
             console.log("SortingValue = "+sortingValue+" sortingType = "+sortingType);
 
