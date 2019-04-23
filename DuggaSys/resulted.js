@@ -912,8 +912,6 @@ function smartSearch(splitSearch, row)
             isDate = true;
             var newInputValue = splitSearch[index][1].split("-");
             var date = new Date(splitSearch[index][1]);
-            date.setHours(0,0,0,0);
-            row[lid].deadline.setHours(0,0,0,0);
             sortingValue = date.getTime();
             sortingType = row[lid].deadline.getTime();
 
@@ -946,7 +944,7 @@ function smartSearch(splitSearch, row)
             return false;
           }
       }else {
-        if(sortingType >= sortingValue) {
+        if(sortingType <= sortingValue) {
           for (colname in row) {
             if (colname == "lid:" + row[lid].lid) {
               var name = "";
