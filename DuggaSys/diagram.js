@@ -1,5 +1,5 @@
 /************************************************************
-      
+
     THIS FILE HANDLES THE MAIN FUNCTIONS OF THE DIAGRAM
 
 ************************************************************/
@@ -22,9 +22,9 @@ AJAXService("get", {}, "DIAGRAM");
 */
 
 /************************************************************
-  
+
     Globals
- 
+
 ************************************************************/
 
 var gridSize = 16;
@@ -854,13 +854,18 @@ function toggleGrid() {
 
 function toggleVirtualA4() {
     if (toggleA4) {
+      if (toggleA4Holes) {
+        toggleVirtualA4Holes();
+      }
         toggleA4 = false;
         updateGraphics();
     } else {
         toggleA4 = true;
         updateGraphics();
     }
+    $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
     setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+
 }
 
 function drawVirtualA4() {
@@ -902,6 +907,9 @@ function drawCircle(cx, cy, radius) {
 }
 
 function toggleVirtualA4Holes() {
+    if(!toggleA4){
+      return;
+    }
     if (toggleA4Holes) {
         toggleA4Holes = false;
         updateGraphics();
@@ -910,44 +918,6 @@ function toggleVirtualA4Holes() {
         updateGraphics();
     }
     setCheckbox($(".drop-down-option:contains('Toggle A4 Holes')"), toggleA4Holes);
-}
-
-function drawVirtualA4(){
-    if(!toggleA4){
-        return;
-    }
-    // the correct according to 96dpi size, of a4 milimeters to pixels
-    const pixelsPerMillimeter = 3.781;
-    const a4Width = 210 * pixelsPerMillimeter;
-    const a4Height = 297 * pixelsPerMillimeter;
-    // size of a4 hole, from specification ISO 838 and the swedish "triohålning"
-    const holeOffsetX = 12 * pixelsPerMillimeter;
-    const holeRadius = 3 * pixelsPerMillimeter;
-    ctx.save();
-    ctx.strokeStyle = "black"
-    ctx.setLineDash([10]);
-    ctx.translate(0, 0);
-    ctx.strokeRect(0,0, a4Width, a4Height);
-
-    if(toggleA4Holes) {
-        //Upper 2 holes
-        drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
-        drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
-        //Latter two holes
-        drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
-        drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
-    }
-    ctx.restore();
-}
-
-function drawCircle(cx, cy, radius) {
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.beginPath();
-    ctx.arc(0,0, radius, 0, Math.PI * 2);
-    ctx.closePath();
-    ctx.stroke();
-    ctx.restore();
 }
 
 //---------------------------------------
@@ -1102,7 +1072,7 @@ function eraseObject(object) {
 }
 
 //-------------------------------------------------------------------------
-// changeLoginBoxTitleDelete: Create function that changes 
+// changeLoginBoxTitleDelete: Create function that changes
 //                            the id "loginBoxTitle" to "Delete Object"
 //-------------------------------------------------------------------------
 
@@ -1111,7 +1081,7 @@ function changeLoginBoxTitleDelete() {
 }
 
 //-------------------------------------------------------------------------
-// changeLoginBoxTitleAppearance: Create function that changes 
+// changeLoginBoxTitleAppearance: Create function that changes
 //                                the id "loginBoxTitle" to "Appearance"
 //-------------------------------------------------------------------------
 
@@ -1227,7 +1197,7 @@ function drawGrid() {
 
         if(i == 0 ||i == -0){
             ctx.strokeStyle = "#0fbcf9";
-        }  
+        }
 
         ctx.beginPath();
         ctx.moveTo(i * gridSize, 0 + sy);
@@ -1243,7 +1213,7 @@ function drawGrid() {
 
         if(i == 0 ||i == -0){
             ctx.strokeStyle = "#0fbcf9";
-        }  
+        }
 
         ctx.beginPath();
         ctx.moveTo(0 + sx, i * gridSize);
@@ -1296,7 +1266,7 @@ function gridToSVG(width, height) {
 }
 
 //------------------------------------------------------------------------------
-// clearCanvas: remove all elements in the diagram array. 
+// clearCanvas: remove all elements in the diagram array.
 //              it hides the points by placing them beyond the users view.
 //------------------------------------------------------------------------------
 function clearCanvas() {
@@ -1472,7 +1442,7 @@ function reWrite() {
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
          + "X=" + decimalPrecision(canvasMouseX, 1).toFixed(1)
          + " & Y=" + decimalPrecision(canvasMouseY, 1).toFixed(1) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
-    } else { 
+    } else {
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
          + "X=" + decimalPrecision(canvasMouseX, 1).toFixed(1)
@@ -1527,7 +1497,7 @@ function setRefreshTime() {
 function lockSelected() {
     for(var i = 0; i < selected_objects.length; i++) {
         selected_objects[i].locked = !selected_objects[i].locked;
-        
+
         if(selected_objects[i].locked) {
             selected_objects[i].drawLock();
         }
@@ -1775,7 +1745,7 @@ function sortObjects(selected_objects, mode) {
 }
 
 //----------------------------------------------------------------------
-// distribute: unclear what the purpose is of distribute, 
+// distribute: unclear what the purpose is of distribute,
 //            does not seem to work at all
 //----------------------------------------------------------------------
 function distribute(axis) {
@@ -1866,7 +1836,7 @@ function diagramToSVG() {
 //------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------
-// globalLineThickness: changes the thickness of the lines between objects, 
+// globalLineThickness: changes the thickness of the lines between objects,
 //                      and the lines surrounding each object
 //----------------------------------------------------------------------
 
@@ -2139,7 +2109,7 @@ function toggleToolbarLayout() {
 }
 
 //----------------------------------------------------------------------
-// switchToolbar: function for switching the toolbar state (All, ER, UML), 
+// switchToolbar: function for switching the toolbar state (All, ER, UML),
 //                not sure what the numbers 0 an 3 mean
 //----------------------------------------------------------------------
 function switchToolbar(direction) {
@@ -2658,7 +2628,7 @@ function mouseupevt(ev) {
         selected_objects.push(diagram[lastSelectedObject]);
     } else if (uimode == "CreateLine" && md == 4) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) 
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)
         || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 4 && symbolEndKind != 4) && okToMakeLine) {
             erLineA = new Symbol(4); // Lines
             erLineA.name = "Line" + diagram.length
@@ -2770,7 +2740,7 @@ function resize() {
             currentMouseCoordinateY = startMouseCoordinateY;
             startMouseCoordinateY = tempY;
         }
-        if(uimode == "CreateERRelation" && (currentMouseCoordinateX - startMouseCoordinateX < relationTemplate.width 
+        if(uimode == "CreateERRelation" && (currentMouseCoordinateX - startMouseCoordinateX < relationTemplate.width
             || currentMouseCoordinateY - startMouseCoordinateY < relationTemplate.height)) {
             currentMouseCoordinateX = startMouseCoordinateX + relationTemplate.width;
             currentMouseCoordinateY = startMouseCoordinateY + relationTemplate.height;
@@ -2859,7 +2829,7 @@ function showMenu() {
 //  openAppearanceDialogMenu: Opens the dialog menu for appearance.
 //----------------------------------------------------------------------
 
-function openAppearanceDialogMenu() {    
+function openAppearanceDialogMenu() {
     $(".loginBox").draggable();
     var form = showMenu();
     appearanceMenuOpen = true;
