@@ -353,7 +353,7 @@ CREATE TABLE eventlog(
 	user 					VARCHAR(128),
 	eventtext				TEXT NOT NULL,
 	PRIMARY KEY (eid)
-) CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB;
+) CHARACTER SET utf8mb4 COLLATE utf8_unicode_ci ENGINE=InnoDB;
 
 CREATE TABLE playereditor_playbacks(
 	id						VARCHAR(32) NOT NULL,
