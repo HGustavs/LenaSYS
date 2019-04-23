@@ -943,33 +943,16 @@ function smartSearch(splitSearch, row) {
 				var dates = "";
 				for (colname in row) {
 					if (row[colname].deadline >= sortingValue) {
-						dates += row[colname].deadline + " ";
 
-						if (dates.indexOf(sortingValue) != -1) {
-							console.log("finns här")
+						dates += row[colname].deadline + " ";
+						console.log("dates: " + dates);
+
+						// alla värden läggs in i date, men nu måste vi visa endast dom datumen som passar
+						// i tabellen
+						if (dates.indexOf(sortingValue.toString()) != -1) {
 							return true;
 						}
 					}
-					// if (row[colname] != "FnameLnameSSN") {
-					// sortingType = row[colname].deadline.setHours(0, 0, 0, 0);
-					// if (sortingType.getTime() <= sortingValue) {
-					// console.log("GICK IGENOM!");
-					// return true;
-					// }
-					// if (colname.deadline.setHours(0,0,0,0).getTime() >= sortingValue) {
-					//   console.log("KOM IN I DEN ANDRA!");
-					//   var name = "";
-					//   if (row[colname].entryname != null) {
-					//     name += row[colname].entryname + " ";
-					//   }
-					//   var txt = document.createElement("textarea");
-					//   txt.innerHTML = name;
-					//   var newName2 = txt.value;
-					//   if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
-					//     return true;
-					//   }
-					// }
-					// }
 				}
 			}
 			return false;
