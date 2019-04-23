@@ -838,6 +838,15 @@ function initializeCanvas() {
     });
 }
 
+function deselectObjects() {
+	//Loops over diagram and deselects every object, function is ran
+	for(let i = 0; i < diagram.length; i++) {
+		diagram[i].targeted = false;
+		diagram[i].isSelected = false;
+		diagram[i].isHovered = false;
+	}
+}
+
 //-----------------------------------------------------------------------------------
 // toggleGrid: Function to enable and disable the grid
 //             functionality is related to currentMouseCoordinateX and currentMouseCoordinateY
@@ -1408,9 +1417,11 @@ function loadDiagram() {
             for (var i = 0; i < b.points.length; i++) {
                 points[i] = b.points[i];
             }
-            updateGraphics();
         }
     }
+
+    deselectObjects();
+    updateGraphics();
 
     SaveState();
 }
