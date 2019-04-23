@@ -882,6 +882,7 @@ function smartSearch(splitSearch, row)
   var lid;
   var sortingType;
   var sortingValue;
+  var isDate = false;
   for (var i = 0; i < splitSearch.length; i++) {
       var index = i;
       columnToSearch = splitSearch[i][1];
@@ -911,6 +912,7 @@ function smartSearch(splitSearch, row)
             sortingValue = date.getTime();
             sortingType = row[lid].deadline.getTime();
             console.log("SortingValue = "+sortingValue+" sortingType = "+sortingType);
+            isDate = true;
             break;
         }
 
@@ -919,6 +921,7 @@ function smartSearch(splitSearch, row)
         var columnToFind = txt.value;
 
         if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
+          if(!isDate){
           if (sortingType === sortingValue) {
             for (colname in row) {
               if (colname == "lid:" + row[lid].lid) {
@@ -934,8 +937,10 @@ function smartSearch(splitSearch, row)
                 }
               }
             }
+          }
             return false;
-          }else if (sortingType <= sortingValue) {
+          }else {
+          if (sortingType <= sortingValue) {
             console.log("VI KOM IN I ELSE IFEN");
               for (colname in row) {
                 if (colname == "lid:" + row[lid].lid) {
@@ -957,6 +962,7 @@ function smartSearch(splitSearch, row)
       }
     }
   }
+}
 
 function rowFilter(row) {
 	// Custom filters that remove rows before an actual search
