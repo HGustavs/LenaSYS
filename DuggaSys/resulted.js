@@ -878,7 +878,6 @@ function renderCell(col, celldata, cellid) {
 //----------------------------------------------------------------
 function smartSearch(splitSearch, row)
 {
-  console.log(row[lid].deadline);
 
   var columnToSearch;
   var lid;
@@ -891,6 +890,8 @@ function smartSearch(splitSearch, row)
 
       for (var i = 0; i < moments.length; i++) {
         lid = "lid:" + moments[i]["lid"];
+
+        console.log(row[lid].deadline);
 
         switch(splitSearch[index][0].toUpperCase())
         {
