@@ -929,7 +929,6 @@ function rowFilter(row) {
 
             for (colname in row) {
               if (colname == "lid:"+row[lid].lid) {
-                console.log("HITTA LID:et "+"lid:"+row[lid]);
                 var name = "";
                 if (row[colname][row[lid].entryname] != null) {
                   name += row[colname][row[lid].entryname] + " ";
@@ -975,14 +974,44 @@ function rowFilter(row) {
               return true;
           }
         }
-
       }
       return false;
     }
 	}
-
-
   // HÄR SKA ANNARS FILTRERINGEN VARA!
+  for (colname in row) {
+    if (colname == "FnameLnameSSN")
+    {
+      var name = "";
+      if (row[colname]["firstname"] != null) {
+        name += row[colname]["firstname"] + " ";
+      }
+      if (row[colname]["lastname"] != null) {
+        name += row[colname]["lastname"];
+      }
+      if (name.toUpperCase().indexOf(searchterm.toUpperCase()) != -1) {
+        return true;
+      }
+
+      if (row[colname]["ssn"] != null) {
+        if (row[colname]["ssn"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+          return true;
+      }
+      if (row[colname]["username"] != null) {
+        if (row[colname]["username"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+          return true;
+      }
+      if (row[colname]["class"] != null) {
+        if (row[colname]["class"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+          return true;
+      }
+      if (row[colname]["setTeacher"] != null) {
+        if (row[colname]["setTeacher"].toUpperCase().indexOf(searchterm.toUpperCase()) != -1)
+          return true;
+      }
+    }
+  }
+  return false;
 }
 
 function renderSortOptions(col, status, colname) {
