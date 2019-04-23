@@ -993,6 +993,8 @@ function updateGraphics() {
     diagram.sortConnectors();
     diagram.draw();
     points.drawPoints();
+    drawVirtualA4();
+    drawOrigoLine();
     if(!ghostingCrosses){
     	drawOrigo();    	
     }
@@ -1216,6 +1218,22 @@ function drawOrigo() {
     }
 
     ctx.restore();
+}
+
+function drawOrigoLine() {
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "#0fbcf9";
+    ctx.beginPath();
+    ctx.moveTo(0, origoOffsetY);
+    ctx.lineTo(canvas.width, origoOffsetY);
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.moveTo(origoOffsetX, 0);
+    ctx.lineTo(origoOffsetX, canvas.height);
+    ctx.stroke();
+    ctx.closePath();
 }
 
 //-------------------------------------------
