@@ -950,13 +950,13 @@ function smartSearch(splitSearch, row)
           for (colname in row) {
             if (colname == "lid:" + row[lid].lid) {
               var name = "";
-              if (row[colname].deadline != null) {
-                name += row[colname].deadline + " ";
+              if (row[colname].entryname != null) {
+                name += row[colname].entryname + " ";
               }
               var txt = document.createElement("textarea");
               txt.innerHTML = name;
               var newName2 = txt.value;
-              if (newName2.toUpperCase().indexOf(sortingValue.toUpperCase()) != -1) {
+              if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
                 return true;
               }
             }
