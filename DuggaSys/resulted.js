@@ -876,6 +876,45 @@ function renderCell(col, celldata, cellid) {
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
+function smartSearch(splitSearch, row)
+{
+  var columnToSearch;
+  var lid;
+  for (var i = 0; i < splitSearch.length; i++) {
+    if (splitSearch[i][0].toUpperCase() == "MARKG") {
+      columnToSearch = splitSearch[i][1];
+
+      for (var i = 0; i < moments.length; i++) {
+        lid = "lid:" + moments[i]["lid"];
+
+        var txt = document.createElement("textarea");
+        txt.innerHTML = row[lid].entryname;
+        var columnToFind = txt.value;
+
+        if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
+          if (row[lid].grade === 2) {
+            for (colname in row) {
+              if (colname == "lid:" + row[lid].lid) {
+                var name = "";
+                if (row[colname].entryname != null) {
+                  name += row[colname].entryname + " ";
+                }
+                var txt = document.createElement("textarea");
+                txt.innerHTML = name;
+                var newName2 = txt.value;
+                if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
+                  return true;
+                }
+              }
+            }
+            return false;
+          }
+        }
+      }
+    }
+  }
+}
+
 function rowFilter(row) {
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
@@ -901,42 +940,8 @@ function rowFilter(row) {
 			splitSearch.push(s.trim().split(":"));
 	})
 
-	var columnToSearch;
-	var lid;
 	if (searchterm != "" && splitSearch != searchterm) {
-		for (var i = 0; i < splitSearch.length; i++) {
-			if (splitSearch[i][0].toUpperCase() == "MARKG") {
-				columnToSearch = splitSearch[i][1];
-
-				for (var i = 0; i < moments.length; i++) {
-					lid = "lid:" + moments[i]["lid"];
-
-					var txt = document.createElement("textarea");
-					txt.innerHTML = row[lid].entryname;
-					var columnToFind = txt.value;
-
-					if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
-						if (row[lid].grade === 2) {
-							for (colname in row) {
-								if (colname == "lid:" + row[lid].lid) {
-									var name = "";
-									if (row[colname].entryname != null) {
-										name += row[colname].entryname + " ";
-									}
-                  var txt = document.createElement("textarea");
-                  txt.innerHTML = name;
-                  var newName2 = txt.value;
-									if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
-										return true;
-									}
-								}
-							}
-							return false;
-						}
-					}
-				}
-			}
-		}
+		return smartSearch(splitSearch,row);
 	} else {
 		for (colname in row) {
 			if (colname == "FnameLnameSSN") {
