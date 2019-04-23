@@ -2129,6 +2129,7 @@ function mousemoveevt(ev, t) {
     oldMouseCoordinateX = currentMouseCoordinateX;
     oldMouseCoordinateY = currentMouseCoordinateY;
     hovobj = diagram.itemClicked();
+
     if (ev.pageX || ev.pageY == 0) { // Chrome. Tracking mouse movement
         currentMouseCoordinateX = (((ev.pageX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.pageY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
@@ -2142,6 +2143,14 @@ function mousemoveevt(ev, t) {
     if (md == 0) {
         // Select a new point only if mouse is not already moving a point or selection box
         sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+
+        if (sel.distance < tolerance) {
+        	canvas.style.cursor = "ne-resize";
+        } else {
+        	canvas.style.cursor = "default";
+        }
+
+
         // If mouse is not pressed highlight closest point
         points.clearAllSelects();
         movobj = diagram.itemClicked();
@@ -2150,7 +2159,7 @@ function mousemoveevt(ev, t) {
     } else if (md == 2) {
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
-            sel.point.y = currentMouseCoordinateY;
+            sel.point.y = currentMouseCoordinateY;	
             //If we changed a point of a path object,
             //  we need to recalculate the bounding-box so that it will remain clickable.
             if(diagram[lastSelectedObject].kind == 1) {
@@ -2334,6 +2343,7 @@ function mousedownevt(ev) {
         md = 3;
         handleSelect();
     } else {
+
         md = 4; // Box select or Create mode.
         if(uimode != "CreateFigure") {
             startMouseCoordinateX = currentMouseCoordinateX;
