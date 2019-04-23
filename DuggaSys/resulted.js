@@ -935,8 +935,7 @@ function smartSearch(splitSearch, row)
               }
             }
             return false;
-          }else{
-            if (sortingType <== sortingValue) {
+          }else if (sortingType <= sortingValue) {
               for (colname in row) {
                 if (colname == "lid:" + row[lid].lid) {
                   var name = "";
