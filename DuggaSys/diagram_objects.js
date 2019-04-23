@@ -1102,8 +1102,8 @@ function Symbol(symbolkind) {
     }
 
     this.drawRelation = function(x1, y1, x2, y2) {
-        var midx = points[this.centerPoint].x;
-        var midy = points[this.centerPoint].y;
+        var midx = pixelsToCanvas(points[this.centerPoint].x).x;
+        var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
         ctx.beginPath();
         if (this.properties['key_type'] == 'Weak') {
             ctx.lineWidth = this.properties['lineWidth'];

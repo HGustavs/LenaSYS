@@ -432,7 +432,7 @@ function copySymbol(symbol) {
 
 }
 
-function pixelsToCanvas(pixelX, pixelY){
+function pixelsToCanvas(pixelX = 0, pixelY = 0){
 	return {
 		x: pixelX + origoOffsetX,
 		y: pixelY + origoOffsetY
@@ -448,19 +448,21 @@ points.drawPoints = function() {
     ctx.lineWidth = 2;
     for (var i = 0; i < this.length; i++) {
         var point = this[i];
+        let x = pixelsToCanvas(point.x).x;
+        let y = pixelsToCanvas(0, point.y).y;
         if (!point.isSelected) {
             ctx.beginPath();
-            ctx.moveTo(point.x - crossSize, point.y - crossSize);
-            ctx.lineTo(point.x + crossSize, point.y + crossSize);
-            ctx.moveTo(point.x + crossSize, point.y - crossSize);
-            ctx.lineTo(point.x - crossSize, point.y + crossSize);
+            ctx.moveTo(x - crossSize, y - crossSize);
+            ctx.lineTo(x + crossSize, y + crossSize);
+            ctx.moveTo(x + crossSize, y - crossSize);
+            ctx.lineTo(x - crossSize, y + crossSize);
             ctx.stroke();
         } else {
             ctx.save();
             ctx.fillStyle = crossFillStyle;
             ctx.strokeStyle = crossStrokeStyle2;
-            ctx.fillRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
-            ctx.strokeRect(point.x - crossSize, point.y - crossSize, crossSize * 2, crossSize * 2);
+            ctx.fillRect(x - crossSize, y - crossSize, crossSize * 2, crossSize * 2);
+            ctx.strokeRect(x - crossSize, y - crossSize, crossSize * 2, crossSize * 2);
             ctx.restore();
         }
     }
@@ -982,38 +984,18 @@ function mod(n, m) {
   return ((n % m) + m) % m;
 }
 
-//-------------------------------------------
+//----------------------------------------------------------
 // updateGraphics: used to redraw each object on the screen
-//-------------------------------------------
-
+//----------------------------------------------------------
 function updateGraphics() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
     diagram.sortConnectors();
     diagram.draw();
     points.drawPoints();
-    ctx.fillStyle = "black";
-    ctx.fillRect(origoOffsetX, origoOffsetY, 10, 10);
-
-
-	/*
-    ctx.clearRect(sx, sy, (widthWindow / zoomValue), (heightWindow / zoomValue));
-    if (moveValue == 1) {
-        ctx.translate((-mouseDiffX), (-mouseDiffY));
-        moveValue = 0;
+    if(!ghostingCrosses){
+    	drawOrigo();    	
     }
-
-    diagram.updateQuadrants();
-    drawGrid();
-    diagram.sortConnectors();
-    diagram.draw();
-    points.drawPoints();
-    drawVirtualA4();
-
-     if(!ghostingCrosses) {
-        drawOrigo();
-    }
-    */
 }
 
 function getConnectedLines(object) {
@@ -1177,21 +1159,6 @@ function connectedObjects(line) {
     return privateObjects;
 }
 
-//--------------------------------------------------
-// cross: crosses are only visible in developermode
-//--------------------------------------------------
-
-function cross(xCoordinate, yCoordinate) {
-    ctx.strokeStyle = "#4f6";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(xCoordinate - crossSize, yCoordinate - crossSize);
-    ctx.lineTo(xCoordinate + crossSize, yCoordinate + crossSize);
-    ctx.moveTo(xCoordinate + crossSize, yCoordinate - crossSize);
-    ctx.lineTo(xCoordinate - crossSize, yCoordinate + crossSize);
-    ctx.stroke();
-}
-
 function drawGrid() {
     ctx.lineWidth = 1;
 
@@ -1226,51 +1193,6 @@ function drawGrid() {
         myOffsetX += gridSize;
         myOffsetY += gridSize;
     }
-
-
-
-	/*
-    ctx.lineWidth = 1;
-    var quadrantX;
-    var quadrantY;
-
-    if (sx < 0) quadrantX = sx;
-    else quadrantX = -sx;
-
-    if (sy < 0) quadrantY = sy;
-    else quadrantY = -sy;
-
-    for (var i = 0 + quadrantX; i < quadrantX + (widthWindow / zoomValue); i++) {
-        if (i % 5 == 0) ctx.strokeStyle = "rgb(208, 208, 220)"; //This is a "thick" line
-        else ctx.strokeStyle = "rgb(238, 238, 250)";
-
-        if(i == 0 ||i == -0){
-            ctx.strokeStyle = "#0fbcf9";
-        }
-
-        ctx.beginPath();
-        ctx.moveTo(i * gridSize, 0 + sy);
-        ctx.lineTo(i * gridSize, (heightWindow / zoomValue) + sy);
-        ctx.stroke();
-        ctx.closePath();
-    }
-
-    for (var i = 0 + quadrantY; i < quadrantY + (heightWindow / zoomValue); i++) {
-
-        if (i % 5 == 0) ctx.strokeStyle = "rgb(208, 208, 220)"; //This is a "thick" line
-        else ctx.strokeStyle = "rgb(238, 238, 250)";
-
-        if(i == 0 ||i == -0){
-            ctx.strokeStyle = "#0fbcf9";
-        }
-
-        ctx.beginPath();
-        ctx.moveTo(0 + sx, i * gridSize);
-        ctx.lineTo((widthWindow / zoomValue) + sx, i * gridSize);
-        ctx.stroke();
-        ctx.closePath();
-    }
-    */
 }
 
 function drawOrigo() {
@@ -1285,8 +1207,8 @@ function drawOrigo() {
         let startAngle=i*Math.PI/2;
         let endAngle=startAngle+Math.PI/2;
         ctx.beginPath();
-        ctx.moveTo(0,0);
-        ctx.arc(0,0,radius,startAngle,endAngle);
+        ctx.moveTo(pixelsToCanvas().x, pixelsToCanvas().y);
+        ctx.arc(pixelsToCanvas().x, pixelsToCanvas().y, radius,startAngle,endAngle);
         ctx.closePath();
         ctx.fillStyle=colors[i];
         ctx.fill();
@@ -1348,7 +1270,6 @@ function debugMode() {
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
-        drawOrigo();
         ghostingCrosses = false;
     } else {
         crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
@@ -2289,9 +2210,9 @@ function mousemoveevt(ev, t) {
             }
         } else if(uimode == "CreateERRelation") {
             ctx.setLineDash([3, 3]);
-            var midx = startX+((currentX-startX)/2);
-            var midy = startY+((currentY-startY)/2);
-            ctx.beginPath(1);
+            let midx = startX+((currentX-startX)/2);
+            let midy = startY+((currentY-startY)/2);
+            ctx.beginPath();
             ctx.moveTo(midx, startY);
             ctx.lineTo(currentX, midy);
             ctx.lineTo(midx, currentY);
@@ -2300,7 +2221,7 @@ function mousemoveevt(ev, t) {
             ctx.strokeStyle = "#000";
             ctx.stroke();
             ctx.setLineDash([]);
-            ctx.closePath(1);
+            ctx.closePath();
             if (ghostingCrosses == true) {
                 crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
@@ -2601,7 +2522,6 @@ function mouseupevt(ev) {
         erRelationA.topLeft = p1;
         erRelationA.bottomRight = p2;
         erRelationA.centerPoint = p3;
-
         diagram.push(erRelationA);
         //selecting the newly created relation and open the dialog menu.
         lastSelectedObject = diagram.length -1;
