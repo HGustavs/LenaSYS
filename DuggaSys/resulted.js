@@ -891,8 +891,6 @@ function smartSearch(splitSearch, row)
       for (var i = 0; i < moments.length; i++) {
         lid = "lid:" + moments[i]["lid"];
 
-        console.log(row[lid].deadline);
-
         switch(splitSearch[index][0].toUpperCase())
         {
           case "MARKG":
@@ -907,17 +905,12 @@ function smartSearch(splitSearch, row)
             sortingValue = 1;
             sortingType = row[lid].grade;
             break;
-          case "DEADLINE":
-            sortingValue = splitSearch[index][1];
-            console.log(splitSearch[index][1]);
+          case "DATE":
+            var newInputValue = splitSearch[index][1].split("-");
+            var date = new Date();
+            date.setFullYear(newInputValue[0], newInputValue[1]-1, newInputValue[2]);
+            sortingValue = date;
             sortingType = row[lid].deadline;
-            break;
-
-          case "SUBMITTED":
-
-            break;
-          case "MARKED":
-
             break;
         }
 
