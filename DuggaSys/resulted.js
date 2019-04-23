@@ -928,8 +928,7 @@ function rowFilter(row) {
 						console.log(row[lid].lid);
 
             for (colname in row) {
-              console.log("lid:"+row[lid].lid);
-              if (colname == ("lid:"+row[lid].lid)) {
+              if (colname == "lid:"+row[lid].lid) {
                 console.log("HITTA LID:et "+"lid:"+row[lid]);
                 var name = "";
                 if (row[colname][row[lid].entryname] != null) {
@@ -946,7 +945,8 @@ function rowFilter(row) {
     }
 		}else{
       for (colname in row) {
-        if (colname == "FnameLnameSSN") {
+        if (colname == "FnameLnameSSN")
+        {
           var name = "";
           if (row[colname]["firstname"] != null) {
             name += row[colname]["firstname"] + " ";
