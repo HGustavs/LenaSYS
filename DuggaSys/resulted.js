@@ -905,17 +905,26 @@ function smartSearch(splitSearch, row) {
 					sortingType = row[lid].grade;
 					isDate = false;
 					break;
-				case "DEADLINE":
-				case "DATE":
+        case "SUBMITTED":
           isDate = true;
 
           break;
+				case "DEADLINE":
+				case "DATE":
         case "MARKED":
 					isDate = true;
 					var newInputValue = splitSearch[index][1].split("-");
 					var date = new Date(splitSearch[index][1]);
 					sortingValue = date;
-					sortingType = row[colname].marked;
+
+          if(splitSearch[index][0].toUpperCase() === "DEADLINE"){
+            sortingType = row[colname].deadline;
+          }else if(splitSearch[index][0].toUpperCase() === "MARKED")
+          {
+            sortingType = row[colname].marked;
+          }else{
+            sortingType = row[colname].submitted;
+          }
 					break;
 			}
 
