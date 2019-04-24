@@ -941,18 +941,18 @@ function smartSearch(splitSearch, row) {
 					return false;
 				}
 			} else {
-        if(splitSearch[index][0].toUpperCase() === "DEADLINE"){
-          sortingType = row[colname].deadline;
-        }else if(splitSearch[index][0].toUpperCase() === "MARKED"){
-          sortingType = row[colname].marked;
-        }else if(splitSearch[index][0].toUpperCase() === "SUBMITTED"){
-          sortingType = row[colname].submitted;
-        }else{
-          sortingType = row[colname].deadline;
-        }
-
 				var dates = "";
-				for (colname in row) {sortingType
+				for (colname in row) {
+          if(splitSearch[index][0].toUpperCase() === "DEADLINE"){
+            sortingType = row[colname].deadline;
+          }else if(splitSearch[index][0].toUpperCase() === "MARKED"){
+            sortingType = row[colname].marked;
+          }else if(splitSearch[index][0].toUpperCase() === "SUBMITTED"){
+            sortingType = row[colname].submitted;
+          }else{
+            sortingType = row[colname].deadline;
+          }
+          
 					if (sortingType >= sortingValue) {
 						dates += sortingType + " ";
 					}
