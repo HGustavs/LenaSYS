@@ -94,7 +94,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 				$query->bindParam(':uid', $uid);
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
-						$debug="Error updating user".$error[2];
+						$debug="Error updating user\n".$error[2];
 				}			
 		}else{
 				$debug="Failed to update property ".$prop." with value ".$val;
@@ -135,7 +135,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error updating user".$error[2];
+			$debug="Error updating user\n".$error[2];
 		}
 	} else if(strcmp($opt,"ADDUSR")==0){
         $newUserData = json_decode(htmlspecialchars_decode($newusers));
@@ -189,7 +189,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
               
                       if(!$cstmt->execute()) {
                           $error=$cstmt->errorInfo();
-                          $debug.="Could not read class".$error[2];
+                          $debug.="Could not read class\n".$error[2];
                       }  
 
                       // If class does not exist
@@ -199,7 +199,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
                           $stmt->bindParam(':className', $className);
                           if(!$stmt->execute()) {
                               $error=$stmt->errorInfo();
-                              $debug.="Error updating klasse malmberg".$error[2];
+                              $debug.="Error updating klasse malmberg\n".$error[2];
                           }
                       }              
 
@@ -219,7 +219,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 											if(!$stmt->execute()) {
 												$error=$stmt->errorInfo();
-												$debug.="Error updating entries".$error[2];
+												$debug.="Error updating entries\n".$error[2];
 												$debug.="   ".$username."Does not Exist \n";
 												$debug.=" ".$uid;
 											}
@@ -273,7 +273,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
-		$debug="Error reading user entries".$error[2];
+		$debug="Error reading user entries\n".$error[2];
 	}
 	$result = $query->fetchAll(PDO::FETCH_ASSOC);
 	// Adds all teachers for course to array
@@ -304,7 +304,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
-		$debug="Error reading user entries".$error[2];
+		$debug="Error reading user entries\n".$error[2];
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$teacher = array(
@@ -318,7 +318,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
-		$debug="Error reading user entries".$error[2];
+		$debug="Error reading user entries\n".$error[2];
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$classe = array(
@@ -330,7 +330,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query = $pdo->prepare("SELECT groupval,groupkind,groupint FROM `groups` ORDER BY groupkind,groupint;");
 	if(!$query->execute()){
 		$error=$query->errorInfo();
-		$debug="Error reading group entries".$error[2];
+		$debug="Error reading group entries\n".$error[2];
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		$group = array(
@@ -345,7 +345,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
-		$debug="Error reading courses".$error[2];
+		$debug="Error reading courses\n".$error[2];
 	}else{
 		foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			array_push(
