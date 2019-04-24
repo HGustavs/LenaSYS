@@ -880,8 +880,8 @@ function smartSearch(splitSearch, row) {
 	var columnToSearch;
 	var lid;
 	var sortingType;
-  var sortingDate1;
-  var sortingDate2;
+	var sortingDate1;
+	var sortingDate2;
 	var sortingValue;
 	var isDate = false;
 	for (var i = 0; i < splitSearch.length; i++) {
@@ -911,89 +911,88 @@ function smartSearch(splitSearch, row) {
 					isDate = true;
 					var date = new Date(splitSearch[index][1]);
 					sortingValue = date;
-          sortingDate1 = 0;
-          sortingDate2 = 0;
+					sortingDate1 = 0;
+					sortingDate2 = 0;
 					break;
 			}
-      console.log(splitSearch.length);
-      if(!(splitSearch.length > 1))
-      {
-        console.log("VI ÄR INNE!");
-        if (!isDate) {
-          var txt = document.createElement("textarea");
-          txt.innerHTML = row[lid].entryname;
-          var columnToFind = txt.value;
-          if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
-            if (sortingType === sortingValue) {
-              for (colname in row) {
-                if (colname == "lid:" + row[lid].lid) {
-                  var name = "";
-                  if (row[colname].entryname != null) {
-                    name += row[colname].entryname + " ";
-                  }
-                  var txt = document.createElement("textarea");
-                  txt.innerHTML = name;
-                  var newName2 = txt.value;
-                  if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
-                    return true;
-                  }
-                }
-              }
-            }
-            return false;
-          }
-        } else {
-          var dates = "";
-          for (colname in row) {
-            sortingDate1 = row[colname].marked;
-            sortingDate2 = row[colname].submitted;
-            if (sortingDate1 >= sortingValue) {
-              dates += sortingDate1 + " ";
-            }else if(sortingDate2 >= sortingValue ){
-              dates += sortingDate2 + " ";
-            }
-          }
-          if (dates != "") return true;
-        }
-      }else{
-        var match = false;
-        var txt = document.createElement("textarea");
-        txt.innerHTML = row[lid].entryname;
-        var columnToFind = txt.value;
-        if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
-          if (sortingType === sortingValue) {
-            for (colname in row) {
-              if (colname == "lid:" + row[lid].lid) {
-                var name = "";
-                if (row[colname].entryname != null) {
-                  name += row[colname].entryname + " ";
-                }
-                var txt = document.createElement("textarea");
-                txt.innerHTML = name;
-                var newName2 = txt.value;
-                if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
-                  match = true;
-                }
-              }
-            }
-          }
-          //return false;
-        }
-        var dates = "";
-        for (colname in row) {
-          sortingDate1 = row[colname].marked;
-          sortingDate2 = row[colname].submitted;
-          if (sortingDate1 >= sortingValue) {
-            dates += sortingDate1 + " ";
-          }else if(sortingDate2 >= sortingValue ){
-            dates += sortingDate2 + " ";
-          }
-        }
-        if (dates != "") match = true;
+			console.log(splitSearch.length);
+			if (!(splitSearch.length > 1)) {
+				console.log("VI ÄR INNE!  ");
+				if (!isDate) {
+					var txt = document.createElement("textarea");
+					txt.innerHTML = row[lid].entryname;
+					var columnToFind = txt.value;
+					if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
+						if (sortingType === sortingValue) {
+							for (colname in row) {
+								if (colname == "lid:" + row[lid].lid) {
+									var name = "";
+									if (row[colname].entryname != null) {
+										name += row[colname].entryname + " ";
+									}
+									var txt = document.createElement("textarea");
+									txt.innerHTML = name;
+									var newName2 = txt.value;
+									if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
+										return true;
+									}
+								}
+							}
+						}
+						return false;
+					}
+				} else {
+					var dates = "";
+					for (colname in row) {
+						sortingDate1 = row[colname].marked;
+						sortingDate2 = row[colname].submitted;
+						if (sortingDate1 >= sortingValue) {
+							dates += sortingDate1 + " ";
+						} else if (sortingDate2 >= sortingValue) {
+							dates += sortingDate2 + " ";
+						}
+					}
+					if (dates != "") return true;
+				}
+			} else {
+				var match = false;
+				var txt = document.createElement("textarea");
+				txt.innerHTML = row[lid].entryname;
+				var columnToFind = txt.value;
+				if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
+					if (sortingType === sortingValue) {
+						for (colname in row) {
+							if (colname == "lid:" + row[lid].lid) {
+								var name = "";
+								if (row[colname].entryname != null) {
+									name += row[colname].entryname + " ";
+								}
+								var txt = document.createElement("textarea");
+								txt.innerHTML = name;
+								var newName2 = txt.value;
+								if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
+									match = true;
+								}
+							}
+						}
+					}
+					//return false;
+				}
+				var dates = "";
+				for (colname in row) {
+					sortingDate1 = row[colname].marked;
+					sortingDate2 = row[colname].submitted;
+					if (sortingDate1 >= sortingValue) {
+						dates += sortingDate1 + " ";
+					} else if (sortingDate2 >= sortingValue) {
+						dates += sortingDate2 + " ";
+					}
+				}
+				if (dates != "") match = true;
 
-        if(!match) return false;
-      }
-      return true;
+				if (!match) return false;
+			}
+			return true;
 		}
 	}
 }
