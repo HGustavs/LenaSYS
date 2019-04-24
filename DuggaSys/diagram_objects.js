@@ -1498,18 +1498,11 @@ function Path() {
     // move: Performs a delta-move on all points in a path
     //--------------------------------------------------------------------
     this.move = function(movex, movey) {
-        console.log(points[this.segments[0].pa].x);
         for (var i = 0; i < this.segments.length; i++) {
             points[this.segments[i].pa].x += movex;
             points[this.segments[i].pa].y += movey;
         }
         this.calculateBoundingBox();
-    }
-
-    this.corners = function(){
-        for(seg in this.segments){
-            console.log("Corners: " + points[seg.pa].x);
-        }
     }
 
     //--------------------------------------------------------------------

@@ -2145,39 +2145,7 @@ function mousemoveevt(ev, t) {
         sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
         if (sel.distance < tolerance) {
-        	// Determine direction of cursor depending on whether cornerValue is even or not
-        	let cornerValue = -1;
-        	for (let i = 0; i < selected_objects.length; i++) {
-        		// Check if object is a symbol
-        		if(selected_objects[i].symbolkind){  
-	        		cornerValue = -1;
-	        		let corners = selected_objects[i].corners();
-	        		if(corners.tl.x - tolerance <= currentMouseCoordinateX && corners.tl.x + tolerance >= currentMouseCoordinateX){
-	        			cornerValue = 0;
-	        		}
-	        		else if(corners.br.x - tolerance <= currentMouseCoordinateX && corners.br.x + tolerance >= currentMouseCoordinateX){
-	        			cornerValue = 1;
-	        		}
-	        		if(corners.tl.y - tolerance <= currentMouseCoordinateY && corners.tl.y + tolerance >= currentMouseCoordinateY){
-	        			cornerValue += 1;
-	        		}
-	        		else if(corners.br.y - tolerance <= currentMouseCoordinateY && corners.br.y + tolerance >= currentMouseCoordinateY){
-	        			cornerValue += 2;
-	        		}
-	        		if(cornerValue != -1) {
-	        			if(cornerValue % 2 == 0){
-	        				canvas.style.cursor = "ne-resize";
-	        			}
-	        			else {
-	        				canvas.style.cursor = "nw-resize";        				
-	        			}
-	        		}    			
-        		}
-        		// Free draw object
-        		else {
-        			canvas.style.cursor = "pointer";
-        		}
-        	}
+			canvas.style.cursor = "pointer";
         } else {
         	canvas.style.cursor = "default";
         }
