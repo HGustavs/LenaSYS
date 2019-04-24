@@ -81,6 +81,13 @@ pdoConnect();
     </div>
 		<!--<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>-->
 		<div id='searchBar' style='test-align:right;margin-bottom:15px;'>
+			<div class="tooltip-searchbar">
+				<div class="tooltip-searchbar-box">
+						Keywords: markG, markU, date.
+						ex: markG:färgdugga
+				</div>
+				<span>?</span>
+			</div>
 			<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>
 
 			<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>

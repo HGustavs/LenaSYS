@@ -2339,6 +2339,39 @@ span.arrow {
   border-top: 3px dashed rgba(97,72,117,0);
 }
 
+.tooltip-searchbar {
+  font-size: 20px;
+  padding: 0 2px;
+  position: relative;
+}
+.tooltip-searchbar-box{
+  box-sizing: border-box;
+  display: none;
+  font-size: 13px;
+  position: absolute;
+  background: white;
+  transform: translate(-50%,-110%);
+  border-radius: 4px;
+  padding: 5px;
+  box-shadow: 3px 3px 5px rgba(0,0,0,0.5)
+}
+.tooltip-searchbar-box:after {
+  display: block;
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid white;
+  position: relative;
+  bottom: -5px;
+  margin: 0 auto;
+  transform: translateY(100%);
+}
+.tooltip-searchbar:hover .tooltip-searchbar-box {
+  display: inherit;
+}
+
 /* End DuggaSys resulted*/
 
 /**************************/
