@@ -913,16 +913,7 @@ function smartSearch(splitSearch, row) {
 					var newInputValue = splitSearch[index][1].split("-");
 					var date = new Date(splitSearch[index][1]);
 					sortingValue = date;
-
-          if(splitSearch[index][0].toUpperCase() === "DEADLINE"){
-            sortingType = row[lid].deadline;
-          }else if(splitSearch[index][0].toUpperCase() === "MARKED"){
-            sortingType = row[lid].marked;
-          }else if(splitSearch[index][0].toUpperCase() === "SUBMITTED"){
-            sortingType = row[lid].submitted;
-          }else{
-            sortingType = row[lid].deadline;
-          }
+          sortingType = 0;
 					break;
 			}
 
@@ -950,6 +941,16 @@ function smartSearch(splitSearch, row) {
 					return false;
 				}
 			} else {
+        if(splitSearch[index][0].toUpperCase() === "DEADLINE"){
+          sortingType = row[colname].deadline;
+        }else if(splitSearch[index][0].toUpperCase() === "MARKED"){
+          sortingType = row[colname].marked;
+        }else if(splitSearch[index][0].toUpperCase() === "SUBMITTED"){
+          sortingType = row[colname].submitted;
+        }else{
+          sortingType = row[colname].deadline;
+        }
+
 				var dates = "";
 				for (colname in row) {sortingType
 					if (sortingType >= sortingValue) {
