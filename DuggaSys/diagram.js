@@ -2150,7 +2150,6 @@ function mousemoveevt(ev, t) {
         	canvas.style.cursor = "default";
         }
 
-
         // If mouse is not pressed highlight closest point
         points.clearAllSelects();
         movobj = diagram.itemClicked();
@@ -2310,14 +2309,12 @@ function mousemoveevt(ev, t) {
 }
 
 function mousedownevt(ev) {
-
     if(uimode == "Moved" && md != 4) {
         uimode = "normal";
         md = 0;
     }
 
     if (uimode == "CreateLine") {
-
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
@@ -2331,19 +2328,13 @@ function mousedownevt(ev) {
 
             //Get which kind of symbol mousedownevt execute on
             symbolStartKind = diagram[lineStartObj].symbolkind;
-
         }
-
     } else if (sel.distance < tolerance) {
-        for (var i = 0; i < diagram.length; i++) {
-
-        }
         md = 2;
     } else if (movobj != -1) {
         md = 3;
         handleSelect();
     } else {
-
         md = 4; // Box select or Create mode.
         if(uimode != "CreateFigure") {
             startMouseCoordinateX = currentMouseCoordinateX;
