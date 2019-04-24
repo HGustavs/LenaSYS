@@ -921,7 +921,7 @@ function smartSearch(splitSearch, row) {
           }else if(splitSearch[index][0].toUpperCase() === "MARKED"){
             sortingType = row[lid].marked;
           }else{
-            sortingType = row[lid].submitted;
+            sortingType = row[lid].deadline;
           }
 					break;
 			}
