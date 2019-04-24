@@ -1273,8 +1273,10 @@ function drawSwimlanes() {
   for (var i = 0; i < weekLength; i++) {
     if(i==0){
       addNumb = 0;
+      tempNumb = 4;
     }else if(i > 0){
       tempNumb = 0;
+      addNumb = 4;
     }
     str += "<rect x='" + (i * weekwidth + addNumb) + "' y='" + (15) + "' width='" + (weekwidth+addNumb+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
