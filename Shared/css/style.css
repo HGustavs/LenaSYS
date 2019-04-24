@@ -1714,6 +1714,13 @@ div.submit-button:disabled {
 
 #linebutton {
   margin: 5px 0;
+  display: inline;
+  border-radius: 5px;
+}
+
+#umllinebutton {
+  display: inline;
+  margin: 5px 0;
   border-radius: 5px;
 }
 
