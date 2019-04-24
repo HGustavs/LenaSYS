@@ -2162,6 +2162,7 @@ function mousemoveevt(ev, t) {
     oldMouseCoordinateX = currentMouseCoordinateX;
     oldMouseCoordinateY = currentMouseCoordinateY;
     hovobj = diagram.itemClicked();
+
     if (ev.pageX || ev.pageY == 0) { // Chrome. Tracking mouse movement
         currentMouseCoordinateX = (((ev.pageX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.pageY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
@@ -2175,6 +2176,13 @@ function mousemoveevt(ev, t) {
     if (md == 0) {
         // Select a new point only if mouse is not already moving a point or selection box
         sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+
+        if (sel.distance < tolerance) {
+			canvas.style.cursor = "pointer";
+        } else {
+        	canvas.style.cursor = "default";
+        }
+
         // If mouse is not pressed highlight closest point
         points.clearAllSelects();
         movobj = diagram.itemClicked();
@@ -2183,7 +2191,7 @@ function mousemoveevt(ev, t) {
     } else if (md == 2) {
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
-            sel.point.y = currentMouseCoordinateY;
+            sel.point.y = currentMouseCoordinateY;	
             //If we changed a point of a path object,
             //  we need to recalculate the bounding-box so that it will remain clickable.
             if(diagram[lastSelectedObject].kind == 1) {
@@ -2348,14 +2356,13 @@ function mousemoveevt(ev, t) {
 }
 
 function mousedownevt(ev) {
-
     if(uimode == "Moved" && md != 4) {
         uimode = "normal";
         md = 0;
     }
 
-    if (uimode == "CreateLine" || uimode == "CreateUMLLine") {
 
+    if (uimode == "CreateLine" || uimode == "CreateUMLLine") {
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
@@ -2369,13 +2376,8 @@ function mousedownevt(ev) {
 
             //Get which kind of symbol mousedownevt execute on
             symbolStartKind = diagram[lineStartObj].symbolkind;
-
         }
-
     } else if (sel.distance < tolerance) {
-        for (var i = 0; i < diagram.length; i++) {
-
-        }
         md = 2;
     } else if (movobj != -1) {
         md = 3;
