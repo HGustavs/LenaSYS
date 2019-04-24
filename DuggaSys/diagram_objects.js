@@ -587,7 +587,7 @@ function Symbol(kind) {
     // move: Updates all points referenced by symbol
     //--------------------------------------------------------------------
     this.move = function (movex, movey) {
-        if(this.locked) return;
+        //if(this.locked) return;
         if(this.symbolkind != 4) {
             points[this.topLeft].x += movex;
             points[this.topLeft].y += movey;
@@ -1029,7 +1029,7 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
-    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) 
+    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2)
     {
         var relationMidPoints = [];
         // Need to find the connected entities in order to change lines between relations and entities to normal.
@@ -1045,13 +1045,13 @@ function Symbol(kind) {
                 dbry = diagram[i].corners().br.y;
                 dblx = diagram[i].corners().bl.x;
                 dbly = diagram[i].corners().bl.y;
-                
+
                 // Stores the midpoints for each corner of the relation in an array
                 if (diagram[i].isRelation) {
                     var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
                     var relationMiddleY = ((dbly - dtly) / 2) + dtly;
                     relationMidPoints.push(relationMiddleX, relationMiddleY);
-                } 
+                }
                 // Setting the line types to normal if they are forced and the connected entity is strong.
                 if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
                     // Looping through the midpoints for relation entities.
@@ -1076,7 +1076,7 @@ function Symbol(kind) {
     }
 
     // This function is run when an entity is set to weak. Sets the lines to be forced if possible.
-    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2) 
+    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2)
     {
         var relationMidPoints = [];
         var relationMidYPoints = [];
@@ -1104,7 +1104,7 @@ function Symbol(kind) {
                     relationMidPoints.push(relationMiddleX, relationMiddleY);
                     relationMidXPoints.push(relationMiddleX, dtly, dbly);
                     relationMidYPoints.push(relationMiddleY, dtlx, dtrx);
-                }   
+                }
 
                 // Stores the midpoints for the attributes in an array
                 if (diagram[i].isAttribute) {
@@ -1177,14 +1177,14 @@ function Symbol(kind) {
                         }
                     }
                 }
-            } 
+            }
         }
     }
 
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
         ctx.beginPath();
-        
+
         if (this.properties['key_type'] == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
             ctx.lineTo(x2 + 5, y1 - 5);
@@ -1385,7 +1385,7 @@ function Symbol(kind) {
 
             }
         }
-  
+
         // Draw to start breakpoint based on direction
         if (startLineDirection == "left") {
         ctx.lineTo(breakpointStartX, y1);
