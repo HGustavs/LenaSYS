@@ -908,6 +908,8 @@ function smartSearch(splitSearch, row) {
 					break;
 				case "DEADLINE":
 				case "DATE":
+          break;
+        case "MARKED":
 					isDate = true;
 					var newInputValue = splitSearch[index][1].split("-");
 					var date = new Date(splitSearch[index][1]);
