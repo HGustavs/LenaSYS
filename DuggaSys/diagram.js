@@ -839,7 +839,7 @@ function initializeCanvas() {
 }
 
 function deselectObjects() {
-	//Loops over diagram and deselects every object, function is ran
+	//Loops over diagram and deselects every object
 	for(let i = 0; i < diagram.length; i++) {
 		diagram[i].targeted = false;
 		diagram[i].isSelected = false;
