@@ -918,6 +918,7 @@ function smartSearch(splitSearch, row) {
       console.log(splitSearch.length);
       if(!(splitSearch.length > 1))
       {
+        console.log("VI ÄR INNE!");
         if (!isDate) {
           var txt = document.createElement("textarea");
           txt.innerHTML = row[lid].entryname;
