@@ -905,10 +905,7 @@ function smartSearch(splitSearch, row) {
 					sortingType = row[lid].grade;
 					isDate = false;
 					break;
-        case "SUBMITTED":
-				case "DEADLINE":
 				case "DATE":
-        case "MARKED":
 					isDate = true;
 					var newInputValue = splitSearch[index][1].split("-");
 					var date = new Date(splitSearch[index][1]);
@@ -943,18 +940,22 @@ function smartSearch(splitSearch, row) {
 			} else {
 				var dates = "";
 				for (colname in row) {
-          if(splitSearch[index][0].toUpperCase() === "DEADLINE"){
-            sortingType = row[colname].deadline;
-          }else if(splitSearch[index][0].toUpperCase() === "MARKED"){
-            sortingType = row[colname].marked;
-          }else if(splitSearch[index][0].toUpperCase() === "SUBMITTED"){
-            sortingType = row[colname].submitted;
-          }else{
-            sortingType = row[colname].deadline;
-          }
+
+          // if(splitSearch[index][0].toUpperCase() === "DEADLINE"){
+          //   sortingType = row[colname].deadline;
+          // }else if(splitSearch[index][0].toUpperCase() === "MARKED"){
+          //   sortingType = row[colname].marked;
+          // }else if(splitSearch[index][0].toUpperCase() === "SUBMITTED"){
+          //   sortingType = row[colname].submitted;
+          // }else{
+          //   sortingType = row[colname].deadline;
+          // }
 
 					if (sortingType >= sortingValue) {
+            sortingType = row[colname].marked;
 						dates += sortingType + " ";
+            sortingType = row[colname].submitted;
+            date += sortingType + " ";
 					}
 				}
 				if (dates != "") return true;
