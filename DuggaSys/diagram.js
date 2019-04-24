@@ -1477,12 +1477,12 @@ function reWrite() {
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
          + "X=" + decimalPrecision(canvasMouseX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(canvasMouseY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
+         + " & Y=" + (decimalPrecision(canvasMouseY, 0).toFixed(0)*(-1)) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
     } else {
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
          + "X=" + decimalPrecision(canvasMouseX, 0).toFixed(0)
-         + " & Y=" + decimalPrecision(canvasMouseY, 0).toFixed(0) + "</p>";
+         + " & Y=" + (decimalPrecision(canvasMouseY, 0).toFixed(0)*(-1)) + "</p>";
     }
 }
 //----------------------------------------
