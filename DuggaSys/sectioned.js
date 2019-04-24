@@ -1402,7 +1402,6 @@ function mouseUp(e) {
 //----------------------------------------------------------------------------------
 
 $(window).keyup(function (event) {
-  console.log(event.keyCode);
   if (event.keyCode == 27) {
     // if key is escape
     closeWindows();
@@ -1424,7 +1423,7 @@ $(window).keyup(function (event) {
       newItem();
       showSaveButton();
     } else if (deleteButtonDisplay == 'flex') {
-      // Delete the item, allow enter to act as clicking "yes"  
+      // Delete the item, allow enter to act as clicking "yes"
       confirmBox("deleteItem");
     } else if (isTypeValid() && testsAvailable == true) {
       confirmBox("closeConfirmBox");
