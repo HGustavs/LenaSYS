@@ -951,12 +951,16 @@ function smartSearch(splitSearch, row) {
           //   sortingType = row[colname].deadline;
           // }
 
+          sortingType = row[colname].marked;
 					if (sortingType >= sortingValue) {
-            sortingType = row[colname].marked;
 						dates += sortingType + " ";
-            sortingType = row[colname].submitted;
-            date += sortingType + " ";
 					}
+          sortingType = 0;
+          sortingType = row[colname].submitted;
+          if (sortingType >= sortingValue) {
+            dates += sortingType + " ";
+          }
+
 				}
 				if (dates != "") return true;
 			}
