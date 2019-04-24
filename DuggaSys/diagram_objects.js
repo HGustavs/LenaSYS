@@ -1064,15 +1064,15 @@ function Symbol(kind) {
 		    }
 
 		    // Move the value from the line
-		    cardinality.x = x1 > x2 ? x1-15 : x1+15;
+		    cardinality.x = x1 > x2 ? x1-13 : x1+13;
 		    cardinality.y = y1 > y2 ? y1-15 : y1+15;
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
-		        cardinality.x = x1 > x2 ? x1+15 : x1-15;
+		        cardinality.x = x1 > x2 ? x1+10 : x1-10;
 		    }
 		    else if(cardinality.axis == "Y") {
-		        cardinality.y = y1 > y2 ? y1+15 : y1-15;
+		        cardinality.y = y1 > y2 ? y1+10 : y1-10;
 		    }
 	    }
 	    else if(side == "IncorrectSide") {
