@@ -1275,7 +1275,7 @@ function drawSwimlanes() {
     }else{
       addNumb = 4;
     }
-    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" + (weekwidth+addNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
+    str += "<rect x='" + (i * weekwidth + addNumb) + "' y='" + (15) + "' width='" + (weekwidth+addNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
       str += "fill='#ededed' />";
     } else {
