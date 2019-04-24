@@ -965,6 +965,7 @@ function smartSearch(splitSearch, row) {
 }
 
 function rowFilter(row) {
+  console.log(row);
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
