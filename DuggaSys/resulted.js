@@ -918,12 +918,12 @@ function smartSearch(splitSearch, row) {
 					sortingValue = date;
 
           if(splitSearch[index][0].toUpperCase() === "DEADLINE"){
-            sortingType = row[colname].deadline;
+            sortingType = row[lid].deadline;
           }else if(splitSearch[index][0].toUpperCase() === "MARKED")
           {
-            sortingType = row[colname].marked;
+            sortingType = row[lid].marked;
           }else{
-            sortingType = row[colname].submitted;
+            sortingType = row[lid].submitted;
           }
 					break;
 			}
