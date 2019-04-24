@@ -886,7 +886,7 @@ function smartSearch(splitSearch, row) {
 	var isDate = false;
 	for (var i = 0; i < splitSearch.length; i++) {
 		var index = i;
-		columnToSearch = splitSearch[i][1];
+		columnToSearch += splitSearch[i][1];
 
 		for (var i = 0; i < moments.length; i++) {
 			lid = "lid:" + moments[i]["lid"];
