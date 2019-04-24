@@ -1269,7 +1269,7 @@ function drawSwimlanes() {
 
   var str = "";
   for (var i = 0; i < weekLength; i++) {
-    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" + (weekwidth+2) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
+    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" + (weekwidth+4) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
       str += "fill='#ededed' />";
     } else {
@@ -1279,7 +1279,7 @@ function drawSwimlanes() {
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
-    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" + (weekLength * weekwidth + 20) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
+    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" + (weekLength * weekwidth + 40) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
   }
 
 
