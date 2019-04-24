@@ -406,7 +406,7 @@ function makeSelect(gradesys, cid, vers, moment, uid, mark, ukind, qvariant, qid
 		str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind, "../Shared/icons/Uh.png", "Uh", qvariant, qid);
 	}
 
-	// Gradesystem: 1== UGVG 2== UG 3== U345
+	// Gradesystem: 1== UGVG 2== UG
 	if (gradesys === 1) {
 		if (mark === 2) {
 			str += makeImg(gradesys, cid, vers, moment, uid, mark, ukind, "../Shared/icons/G.png", "G", qvariant, qid);
