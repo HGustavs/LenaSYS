@@ -81,6 +81,9 @@
                                       <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
                                       </button>
+                                      <button id='umllinebutton' onclick='setMode("CreateUMLLine");' class='buttonsStyle unpressed' data="Create UML Line">
+                                          <img class="toolboxButtons" src="../Shared/icons/diagram_create_umlline.svg">
+                                      </button>
                                   </div>
                               </div>
                             </div>
@@ -181,13 +184,12 @@
                             <i id="hotkey-redo">Ctrl + Y</i>
                         </div>
                         <div class="drop-down-divider">
-
                         </div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
                         </div>
                         <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
+                            <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
                         </div>
                         <div class="drop-down-divider">
                         </div>
@@ -196,6 +198,14 @@
                         </div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
+                        </div>
+                        <div class="drop-down-divider">
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='resetToolbarPosition();'>Reset toolbar position</span>
                         </div>
                     </div>
                 </div>

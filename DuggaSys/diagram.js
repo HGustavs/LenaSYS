@@ -66,6 +66,8 @@ var toggleA4Holes = false;          // toggle if a4 holes are drawn
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
+var distanceMovedX = 0;             // the distance moved since last use of resetViewToOrigin()
+var distanceMovedY = 0;
 var minEntityX = 100;               //the minimum size for an Enitny are set by the values seen below.
 var minEntityY = 50;
 var hashUpdateTimer = 5000;         // set timer varibale for hash and saving
@@ -921,6 +923,17 @@ function toggleVirtualA4Holes() {
 }
 
 //---------------------------------------
+// resetToolbar: resets the toolbar to it's original position 
+//---------------------------------------
+function resetToolbarPosition(){
+    var myCanvas = document.getElementById('myCanvas');
+    var bound = myCanvas.getBoundingClientRect();
+    //Assign position for the toolbar according to the canvas bounds 
+    document.getElementById("diagram-toolbar").style.top = (bound.top + "px");
+    document.getElementById("diagram-toolbar").style.left = (bound.left + "px");
+}
+
+//---------------------------------------
 // openImportDialog: Opens the dialog menu for import
 //---------------------------------------
 
@@ -971,6 +984,8 @@ function canvasSize() {
     canvas.setAttribute("height", heightWindow);
     ctx.clearRect(sx, sy, widthWindow, heightWindow);
     ctx.translate(sx, sy);
+    distanceMovedX = -sx;
+    distanceMovedY = -sy;
     ctx.scale(1, 1);
     ctx.scale(zoomValue, zoomValue);
 }
@@ -981,12 +996,13 @@ window.addEventListener('resize', canvasSize);
 //-------------------------------------------
 // updateGraphics: used to redraw each object on the screen
 //-------------------------------------------
-
 function updateGraphics() {
     ctx.clearRect(sx, sy, (widthWindow / zoomValue), (heightWindow / zoomValue));
     if (moveValue == 1) {
         ctx.translate((-mouseDiffX), (-mouseDiffY));
         moveValue = 0;
+        distanceMovedX += mouseDiffX;
+        distanceMovedY += mouseDiffY;
     }
 
     diagram.updateQuadrants();
@@ -999,6 +1015,16 @@ function updateGraphics() {
      if(!ghostingCrosses) {
         drawOrigo();
     }
+}
+
+//---------------------------------------
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas 
+//---------------------------------------
+function resetViewToOrigin(){
+    ctx.translate(distanceMovedX, distanceMovedY);
+    distanceMovedX = 0;
+    distanceMovedY = 0;
+    updateGraphics();
 }
 
 function getConnectedLines(object) {
@@ -1118,7 +1144,7 @@ function setMode(mode) { //"CreateClass" yet to be implemented in .php
 }
 
 $(document).ready(function() {
-    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton").click(function() {
+    $("#linebutton, #attributebutton, #entitybutton, #relationbutton, #squarebutton, #drawfreebutton, #classbutton, #drawtextbutton, #umllinebutton").click(function() {
         canvas.removeEventListener('mousedown', getMousePos, false);
         canvas.removeEventListener('mousemove', mousemoveposcanvas, false);
         canvas.removeEventListener('mouseup', mouseupcanvas, false);
@@ -1440,13 +1466,13 @@ function reWrite() {
         //We are now in debug mode/developer mode
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-         + "X=" + decimalPrecision(canvasMouseX, 1).toFixed(1)
-         + " & Y=" + decimalPrecision(canvasMouseY, 1).toFixed(1) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
-    } else {
+         + "X=" + decimalPrecision(canvasMouseX, 0).toFixed(0)
+         + " & Y=" + decimalPrecision(canvasMouseY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
+    } else { 
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
-         + "X=" + decimalPrecision(canvasMouseX, 1).toFixed(1)
-         + " & Y=" + decimalPrecision(canvasMouseY, 1).toFixed(1) + "</p>";
+         + "X=" + decimalPrecision(canvasMouseX, 0).toFixed(0)
+         + " & Y=" + decimalPrecision(canvasMouseY, 0).toFixed(0) + "</p>";
     }
 }
 //----------------------------------------
@@ -1508,11 +1534,6 @@ function lockSelected() {
 }
 
 function align(mode) {
-    for(var i = 0; i < diagram.length; i++) {
-        if(diagram[i].targeted == true && selected_objects.indexOf(diagram[i]) > -1) {
-            selected_objects.push(diagram[i]);
-        }
-    }
     if(mode == 'top') {
        alignTop(selected_objects);
     }
@@ -2043,6 +2064,8 @@ function switchToolbar(direction) {
     $(".buttonsStyle").hide();
     $("#linebutton").show();
     $("#classbutton").show();
+    $("#linebutton").hide();
+    $("#umllinebutton").show(); 
   }else if(toolbarState == toolbarFree) {
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
@@ -2287,7 +2310,21 @@ function mousemoveevt(ev, t) {
                 crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
                 crossFillStyle = "rgba(255, 102, 68, 0.0)";
             }
-        } else {
+        } else if(uimode == "CreateUMLLine") {
+            // Path settings for preview line
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
+            ctx.lineTo(currentMouseCoordinateX, currentMouseCoordinateY);
+            ctx.strokeStyle = "#000";
+            ctx.stroke();
+            ctx.setLineDash([]);
+            if (ghostingCrosses == true) {
+                crossStrokeStyle1 = "rgba(255, 102, 68, 0.0)";
+                crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
+                crossFillStyle = "rgba(255, 102, 68, 0.0)";
+                }
+            } else {
             ctx.setLineDash([3, 3]);
             ctx.beginPath(1);
             ctx.moveTo(startMouseCoordinateX, startMouseCoordinateY);
@@ -2314,7 +2351,8 @@ function mousedownevt(ev) {
         md = 0;
     }
 
-    if (uimode == "CreateLine") {
+
+    if (uimode == "CreateLine" || uimode == "CreateUMLLine") {
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
@@ -2356,6 +2394,7 @@ function mousedownevt(ev) {
 function handleSelect() {
     lastSelectedObject = diagram.itemClicked(currentMouseCoordinateX, currentMouseCoordinateY);
     var last = diagram[lastSelectedObject];
+
     if (last.targeted == false && uimode != "MoveAround") {
         for (var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
@@ -2468,9 +2507,63 @@ function mouseupevt(ev) {
             }
         }
     }
+    if (uimode == "CreateUMLLine" && md == 4) {
+        saveState = false;
+        //Check if you release on canvas or try to draw a line from entity to entity
+         if (hovobj == -1 || diagram[lineStartObj].symbolkind == 3 && diagram[hovobj].symbolkind == 3) {
+            md = 0;
+         }else {
+              //Get which kind of symbol mouseupevt execute on
+             symbolEndKind = diagram[hovobj].symbolkind;
+
+             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
+            //Check if you not start on a line and not end on a line, if then, set point1 and point2
+            //okToMakeLine is a flag for this
+            var okToMakeLine = true;
+            if(symbolStartKind != 7 && symbolEndKind != 7) {
+                var createNewPoint = false;
+                if (diagram[lineStartObj].symbolkind == 2) {
+                    p1 = diagram[lineStartObj].centerPoint;
+                } else {
+                    createNewPoint = true;
+                }
+
+                //Code for making sure enitities not connect to the same attribute multiple times
+                if(symbolEndKind == 3 && symbolStartKind == 2) {
+                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) > 0) {
+                        okToMakeLine= false;
+                    }
+                } else if(symbolEndKind == 2 && symbolStartKind == 3) {
+                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) > 0) {
+                        okToMakeLine= false;
+                    }
+                } else if(symbolEndKind == 3 && symbolStartKind == 5) {
+                    if(diagram[hovobj].connectorCountFromSymbol(diagram[lineStartObj]) >= 2) okToMakeLine = false;
+                } else if(symbolEndKind == 5 && symbolStartKind == 3) {
+                    if(diagram[lineStartObj].connectorCountFromSymbol(diagram[hovobj]) >= 2) okToMakeLine = false;
+                } else if(symbolEndKind == 5 && symbolStartKind == 5) {
+                    okToMakeLine = false;
+                } else if((symbolEndKind == 1 && symbolStartKind != 1) || (symbolEndKind != 1 && symbolStartKind == 1)) {
+                    okToMakeLine = false;
+                }
+                if(diagram[lineStartObj] == diagram[hovobj]) okToMakeLine = false;
+                if(okToMakeLine) {
+                    saveState = true;
+                    if(createNewPoint) p1 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                    if (diagram[hovobj].symbolkind == 2) {
+                        p2 = diagram[hovobj].centerPoint;
+                    } else {
+                        p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
+                    }
+                    diagram[lineStartObj].connectorTop.push({from:p1, to:p2});
+                    diagram[hovobj].connectorTop.push({from:p2, to:p1});
+                }
+            }
+        }
+    }
 
     // Code for creating symbols when mouse is released
-    // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation)
+    // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
     //----------------------------------------------------------------------
 
     if (uimode == "CreateClass" && md == 4) {
@@ -2561,7 +2654,25 @@ function mouseupevt(ev) {
             //You have to target an object when you start to draw
             if(md != 0) diagram[lastSelectedObject].targeted = true;
         }
-    }
+    } else if (uimode == "CreateUMLLine" && md == 4) {
+        //Code for making a line, if start and end object are different, except attributes
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) 
+        || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 7 && symbolEndKind != 7) && okToMakeLine) {
+            umlLineA = new Symbol(7); //UML Lines
+            umlLineA.name = "Line" + diagram.length
+            umlLineA.topLeft = p1;
+            umlLineA.object_type = "";
+            umlLineA.bottomRight = p2;
+            umlLineA.centerPoint = p3;
+            diagram.push(umlLineA);
+            //selecting the newly created enitity and open the dialogmenu.
+            lastSelectedObject = diagram.length -1;
+            diagram[lastSelectedObject].targeted = true;
+            selected_objects.push(diagram[lastSelectedObject]);
+            createCardinality();
+            updateGraphics();
+            }
+        }
     hashFunction();
     updateGraphics();
     diagram.updateLineRelations();
