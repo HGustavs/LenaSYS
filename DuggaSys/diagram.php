@@ -43,13 +43,14 @@
 </head>
 <!-- Reads the content from the js-files -->
 <!-- updateGraphics() must be last -->
-<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();" onmousedown="mouseDown()" onmouseup="mouseUp()">
+<body onload="initializeCanvas(); canvasSize(); loadDiagram(); debugMode(); initToolbox(); updateGraphics();"
+ onmousedown="mouseDown()" onmouseup="mouseUp()" style="overflow-y: hidden;">
     <?php
         $noup = "SECTION";
         include '../Shared/navheader.php';
     ?>
     <!-- content START -->
-    <div id="content" style="padding-top: 40px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
+    <div id="contentDiagram" style="padding-top: 0px; padding-bottom: 0px; padding-right: 0px; padding-left: 0px;">
         <div id="buttonDiv">
             <div class="document-settings">
                 <div id="diagram-toolbar" class="application-toolbar-wrap" style="display:none">
@@ -79,6 +80,9 @@
                                   <div class="tooltipdialog">
                                       <button id='linebutton' onclick='setMode("CreateLine");' class='buttonsStyle unpressed' data="Create Line">
                                           <img class="toolboxButtons" src="../Shared/icons/diagram_create_line.svg">
+                                      </button>
+                                      <button id='umllinebutton' onclick='setMode("CreateUMLLine");' class='buttonsStyle unpressed' data="Create UML Line">
+                                          <img class="toolboxButtons" src="../Shared/icons/diagram_create_umlline.svg">
                                       </button>
                                   </div>
                               </div>
@@ -180,13 +184,12 @@
                             <i id="hotkey-redo">Ctrl + Y</i>
                         </div>
                         <div class="drop-down-divider">
-
                         </div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
                         </div>
                         <div class="drop-down-item">
-                                <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
+                            <span class="drop-down-option" onclick='openAppearanceDialogMenu();'>Change Appearance</span>
                         </div>
                         <div class="drop-down-divider">
                         </div>
@@ -195,6 +198,14 @@
                         </div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
+                        </div>
+                        <div class="drop-down-divider">
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
+                        </div>
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" onclick='resetToolbarPosition();'>Reset toolbar position</span>
                         </div>
                     </div>
                 </div>
@@ -209,8 +220,8 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
                         </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" onclick='toggleVirtualA4Holes();'>Toggle A4 Holes</span>
+                        <div id="a4-holes-item" class="drop-down-item-disabled">
+                            <span class="drop-down-option" onclick='toggleVirtualA4Holes();'><img src="../Shared/icons/Arrow_down_right.png">Toggle A4 Holes</span>
                         </div>
                     </div>
                 </div>

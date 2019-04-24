@@ -11,9 +11,9 @@ Execution order:
 -------------==============######## Documentation End ###########==============-------------
 */
 
-//----------------------------------------------------------------------------
-//-------------==========########## Globals ##########==========--------------
-//----------------------------------------------------------------------------
+/********************************************************************
+   Globals
+*********************************************************************/
 
 var sessionkind = 0;
 var querystring = parseGet();
@@ -45,7 +45,7 @@ $(function() {
 });
 
 //----------------------------------------------------------------------------
-//-------------==========########## Renderer ##########==========-------------
+// Renderer
 //----------------------------------------------------------------------------
 
 function returnedFile(data) {
@@ -307,8 +307,6 @@ function fileNameSearch(row, colName, searchName) {
 }
 
 //--------------------------------------------------------------------------
-// renderSortOptions
-// ---------------
 //  Callback function that renders the col filter div
 //--------------------------------------------------------------------------
 
@@ -323,6 +321,44 @@ function renderSortOptions(col,status,colname) {
 		str += "<span class='sortableHeading' onclick='fileLink.toggleSortStatus(\"" + col + "\",0)'>" + colname + "<img class='sortingArrow' src='../Shared/icons/asc_white.svg'/></span>";
 	}
 	return str;
+}
+
+//--------------------------------------------------------------------------
+//  Callback function with different compare alternatives for the column sort
+//--------------------------------------------------------------------------
+
+function compare(a,b) {
+    var col = sortableTable.currentTable.getSortcolumn();
+    var tempA = a;
+    var tempB = b;
+    if (col == "filename") {
+        tempA = JSON.parse(tempA);
+        tempB = JSON.parse(tempB);
+        tempA = tempA.shortfilename.toUpperCase();
+        tempB = tempB.shortfilename.toUpperCase();
+    } else if (col == "filesize") {
+        tempA = JSON.parse(tempA);
+        tempB = JSON.parse(tempB);
+        if(tempA.kind != "Link"){
+            tempA = parseInt(tempA.size);
+        } else {
+            tempA = -1;
+        }
+        if(tempB.kind != "Link") {
+            tempB = parseInt(tempB.size);
+        } else {
+            tempB = -1;
+        }
+    }
+
+    if (tempA > tempB) {
+        return 1;
+    } else if (tempA < tempB) {
+        return -1;
+    } else {
+        return 0;
+    }
+    return tempA-tempB;
 }
 
 function formatBytes(bytes,decimals) {
@@ -364,11 +400,9 @@ function createQuickItem()
 }
 
 /*****************************************************************
- * --------------------------------------------------------------*
- * loadFile(), editFile(), cancelEditFile() and closeEditFile()  *
- * makes it possible to open and edit or modify an existing 	 *
- * file (js, css, html and php). Doesn't include markdown!		 *
- * --------------------------------------------------------------*
+  loadFile(), editFile(), cancelEditFile() and closeEditFile()
+  makes it possible to open and edit or modify an existing
+  file (js, css, html and php). Doesn't include markdown!
  *****************************************************************/
 
 function loadFile(fileUrl, fileNamez, fileKind) {
@@ -502,7 +536,9 @@ function updatePreview(str) {
 }
 
 
-// -------------==============######## Setup and Event listeners ###########==============-------------
+// ---------------------------------------------------
+// Event listeners for fab button
+//----------------------------------------------------
 
 $(document).mouseover(function (e) {
 	FABMouseOver(e);

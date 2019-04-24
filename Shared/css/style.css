@@ -181,6 +181,11 @@ p {
   margin: 65px 10px 15px 10px;
 }
 
+#contentDiagram {
+  background: #fff;
+  margin: 65px 10px 15px 10px;
+}
+
 #accessedcontent {
   margin: 0px auto;
   position: relative;
@@ -1311,6 +1316,7 @@ input {
 
 .document-settings {
   font-size: 14px;
+  top: 150px;
 }
 
 .export-drop-down {
@@ -1331,7 +1337,7 @@ input {
 
 .menu-drop-down span.drop-down-label{
   display: block;
-  height: 22px;
+  height: 20px;
   line-height: 22px;
   padding: 0px 8px;
 }
@@ -1423,6 +1429,11 @@ input {
 
 .drop-down-text:hover {
   background-color: rgb(240, 240, 240);
+  cursor: default !important;
+}
+
+.drop-down-item-disabled {
+  opacity: 0.5;
   cursor: default !important;
 }
 
@@ -1708,6 +1719,13 @@ div.submit-button:disabled {
 }
 
 #linebutton {
+  margin: 5px 0;
+  display: inline;
+  border-radius: 5px;
+}
+
+#umllinebutton {
+  display: inline;
   margin: 5px 0;
   border-radius: 5px;
 }
@@ -3621,8 +3639,8 @@ only screen and (max-device-width: 320px) {
   border: 2px solid #d4d4d4;
   height: 34px;
   position: absolute;
-  right: 0;
-  bottom: 25px;
+  right: 18px;
+  bottom: 12px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -3700,7 +3718,7 @@ only screen and (max-device-width: 320px) {
   background: white;
   border: 2px solid #d4d4d4;
   font-size: 14px;
-  bottom: 25px;
+  bottom: 12px;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
