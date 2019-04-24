@@ -915,7 +915,7 @@ function smartSearch(splitSearch, row) {
           sortingDate2 = 0;
 					break;
 			}
-
+      console.log(splitSearch.length);
       if(!(splitSearch.length > 1))
       {
         if (!isDate) {
