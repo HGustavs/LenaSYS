@@ -1030,7 +1030,7 @@ function Symbol(kind) {
         var relationMidPoints = [];
         // Need to find the connected entities in order to change lines between relations and entities to normal.
         for(let i = 0; i < diagram.length; i++) {
-            if (diagram[i] != this) {
+            if (diagram[i] != this && diagram[i].kind == 2) {
                 // Getting each (top) coordinate of the object
                 dtlx = diagram[i].corners().tl.x;
                 dtly = diagram[i].corners().tl.y;
@@ -1081,7 +1081,7 @@ function Symbol(kind) {
 
         // Need to find the connected entities in order to change lines between relations and entities to forced.
         for(let i = 0; i < diagram.length; i++) {
-            if (diagram[i] != this) {
+            if (diagram[i] != this && diagram[i].kind == 2) {
                 // Each (top) coordinate for the current object
                 dtlx = diagram[i].corners().tl.x;
                 dtly = diagram[i].corners().tl.y;
