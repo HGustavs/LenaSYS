@@ -1274,7 +1274,7 @@ function drawSwimlanes() {
     if(i==0){
       addNumb = 0;
       tempNumb = 4;
-    }else{
+    }else if(i > 0){
       addNumb = 4;
       tempNumb = 0;
     }
@@ -1284,7 +1284,7 @@ function drawSwimlanes() {
     } else {
       str += "fill='#ffffff' />";
     }
-    str += "<text x='" + ((i * weekwidth) + (weekwidth * 0.5) + (addNumb * 0.5)) + "' y='" + (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
+    str += "<text x='" + ((i * weekwidth) + (weekwidth * 0.5) + (addNumb * 0.5) + (tempNumb * 0.5)) + "' y='" + (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
