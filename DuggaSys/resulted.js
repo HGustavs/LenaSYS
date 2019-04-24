@@ -906,8 +906,6 @@ function smartSearch(splitSearch, row) {
 					isDate = false;
 					break;
         case "SUBMITTED":
-          isDate = true;
-          break;
 				case "DEADLINE":
 				case "DATE":
         case "MARKED":
@@ -920,6 +918,8 @@ function smartSearch(splitSearch, row) {
             sortingType = row[lid].deadline;
           }else if(splitSearch[index][0].toUpperCase() === "MARKED"){
             sortingType = row[lid].marked;
+          }else if(splitSearch[index][0].toUpperCase() === "SUBMITTED"){
+            sortingType = row[lid].submitted;
           }else{
             sortingType = row[lid].deadline;
           }
