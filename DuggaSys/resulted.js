@@ -952,12 +952,12 @@ function smartSearch(splitSearch, row) {
           }else{
             sortingType = row[colname].deadline;
           }
-          
+
 					if (sortingType >= sortingValue) {
 						dates += sortingType + " ";
 					}
 				}
-        console.log(row[colname].submitted);
+        console.log(sortingType);
 				if (dates != "") return true;
 			}
 		}
