@@ -1,9 +1,9 @@
 
 /************************************************
-    
+
     THIS FILE HANDLES THE OBJECTS AND
     PATHS USED BY THE DIAGRAM FUNCTIONS
-    
+
 ************************************************/
 
 //--------------------------------------------------------------------
@@ -38,6 +38,10 @@ function Symbol(kind) {
     this.minWidth;
     this.minHeight;
     this.locked = false;
+    this.isOval = false;
+    this.isAttribute = false;
+    this.isRelation = false;
+    this.isLine = false;
     // Connector arrays - for connecting and sorting relationships between diagram objects
     this.connectorTop = [];
     this.connectorBottom = [];
@@ -285,7 +289,7 @@ function Symbol(kind) {
             points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
             points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
             points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
-            
+
         } else if (this.symbolkind == 6) {
             var fontsize = this.getFontsize();
             ctx.font = "bold " + fontsize + "px " + this.properties['font'];
@@ -725,6 +729,87 @@ function Symbol(kind) {
         return privatePoints;
     }
 
+    //----------------------------------------------------------------
+    // getConnectedObjects: returns an array with the two objects that a specific line is connected to,
+    //                      function is used on line objects
+    //----------------------------------------------------------------
+
+    this.getConnectedObjects = function () {
+        if (this.symbolkind == 4) {
+            var privateObjects = [];
+
+            // Compare values of all symbols in diagram with current line
+            for (var i = 0; i < diagram.length; i++) {
+                if (diagram[i].kind == 2 && diagram[i].symbolkind != 4) {
+                    // Top left and bottom right corners for the current object
+                    dtlx = diagram[i].corners().tl.x;
+                    dtly = diagram[i].corners().tl.y;
+                    dbrx = diagram[i].corners().br.x;
+                    dbry = diagram[i].corners().br.y;
+
+                    // Top left and bottom right corners (end points) for the clicked line
+                    ltlx = this.corners().tl.x;
+                    ltly = this.corners().tl.y;
+                    lbrx = this.corners().br.x;
+                    lbry = this.corners().br.y;
+
+                    if (diagram[i].symbolkind == 1) { // UML
+                        // If line's either end point is within the corners of the UML symbol
+                        // Can possibly be optimised, currently uses coordinates because the connector
+                        // points aren't saved somehow to the UML's points
+                        if ((ltlx >= dtlx && ltlx <= dbrx) || (lbrx >= dtlx && lbrx <= dbrx)) {
+                            if ((ltly >= dtly && ltly <= dbry) || (lbry >= dtly && lbry <= dbry)) {
+                                privateObjects.push(diagram[i]);
+                            }
+                        }
+                    } else if (diagram[i].symbolkind == 2) { // Attribute
+                        // If line's either end point is the same as an attribute's center point
+                        if (diagram[i].centerPoint == this.topLeft || diagram[i].centerPoint == this.bottomRight) {
+                            privateObjects.push(diagram[i]);
+                        }
+                    } else if (diagram[i].symbolkind == 3) { // Entity
+                        // If line's both end points are included in the entity's list of connectors
+                        if (diagram[i].getPoints().includes(this.topLeft) && diagram[i].getPoints().includes(this.bottomRight)) {
+                            privateObjects.push(diagram[i]);
+                        }
+                    } else if (diagram[i].symbolkind == 5) { // Relation
+                        // If line's either end points matches the coordinates of the Relation symbol's connector pointsSelected
+                        // This can be optimised if these points are added when a Relation symbol is created
+                        var connectedToRelation = false;
+
+                        // Finds middle point coordinates for relation symbols
+                        var relationMiddleX = ((dbrx - dtlx) / 2) + dtlx;
+                        var relationMiddleY = ((dbry - dtly) / 2) + dtly;
+
+                        // Line is connected to object if any of these are true
+                        if ((relationMiddleX == ltlx || relationMiddleX == lbrx) && (dtly == ltly || dtly == lbry)) {
+                            // Top point of diamond
+                            connectedToRelation = true;
+                        } else if ((relationMiddleY == ltly || relationMiddleY == lbry) && (dbrx == ltlx || dbrx == lbrx)) {
+                            // Right point of diamond
+                            connectedToRelation = true;
+                        } else if ((relationMiddleX == ltlx || relationMiddleX == lbrx) && (dbry == ltly || dbry == lbry)) {
+                            // Bottom point of diamond
+                            connectedToRelation = true;
+                        } else if ((relationMiddleY == ltly || relationMiddleY == lbry) && (dtlx == ltlx || dtlx == lbrx)) {
+                            // Left point of diamond
+                            connectedToRelation = true;
+                        }
+
+                        if (connectedToRelation) {
+                            privateObjects.push(diagram[i]);
+                        }
+                    }
+
+                    if (privateObjects.length >= 2) {
+                        break;
+                    }
+                }
+            }
+            return privateObjects;
+        }
+    }
+
     //--------------------------------------------------------------------
     // getLines: Returns all the lines connected to the object
     //--------------------------------------------------------------------
@@ -750,11 +835,11 @@ function Symbol(kind) {
     // draw: Redraws graphics
     //--------------------------------------------------------------------
     //       beginpath - moveto - lineto
-    //      
+    //
     //       To make a dashed line, draw with:
     //       ctx.setLineDash(segments);
     //--------------------------------------------------------------------
-      
+
     this.draw = function () {
         ctx.lineWidth = this.properties['lineWidth'] * 2;
         this.properties['textSize'] = this.getFontsize();
@@ -799,9 +884,13 @@ function Symbol(kind) {
         else if(this.symbolkind == 5) {
             this.drawRelation(x1, y1, x2, y2);
         }
-        // 6 = Text 
+        // 6 = Text
         else if (this.symbolkind == 6) {
             this.drawText(x1, y1, x2, y2);
+        }
+        // 7 = uml line
+        else if(this.symbolkind == 7) {
+            this.drawUMLLine(x1, y1, x2, y2);
         }
 
         ctx.restore();
@@ -818,7 +907,7 @@ function Symbol(kind) {
             ctx.arc(x2,y2,5,0,2*Math.PI,false);
             ctx.fillStyle = '#F82';
             ctx.fill();
-            if(this.symbolkind != 4) {
+            if(this.symbolkind != 4 && this.symbolkind != 7) {
                 ctx.beginPath();
                 ctx.arc(x1,y2,5,0,2*Math.PI,false);
                 ctx.fillStyle = '#F82';
@@ -898,6 +987,7 @@ function Symbol(kind) {
     }
 
     this.drawERAttribute = function(x1, y1, x2, y2) {
+        this.isAttribute = true;
         ctx.fillStyle = this.properties['symbolColor'];
         // Drawing a multivalue attribute
         if (this.properties['key_type'] == 'Multivalue') {
@@ -939,10 +1029,162 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
+    function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) 
+    {
+        var relationMidPoints = [];
+        // Need to find the connected entities in order to change lines between relations and entities to normal.
+        for(let i = 0; i < diagram.length; i++) {
+            if (diagram[i] != this && diagram[i].kind == 2) {
+                // Getting each (top) coordinate of the object
+                dtlx = diagram[i].corners().tl.x;
+                dtly = diagram[i].corners().tl.y;
+                dtrx = diagram[i].corners().tr.x;
+                dtry = diagram[i].corners().tr.y;
+                // Getting each (bottom) coordinate of the object
+                dbrx = diagram[i].corners().br.x;
+                dbry = diagram[i].corners().br.y;
+                dblx = diagram[i].corners().bl.x;
+                dbly = diagram[i].corners().bl.y;
+                
+                // Stores the midpoints for each corner of the relation in an array
+                if (diagram[i].isRelation) {
+                    var relationMiddleX = ((dtrx - dtlx) / 2)+ dtlx;
+                    var relationMiddleY = ((dbly - dtly) / 2) + dtly;
+                    relationMidPoints.push(relationMiddleX, relationMiddleY);
+                } 
+                // Setting the line types to normal if they are forced and the connected entity is strong.
+                if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
+                    // Looping through the midpoints for relation entities.
+                    for (let j = 0; j < relationMidPoints.length; j++) {
+                        // checking if the line is connected to any of the midpoints.
+                        if (dtlx == relationMidPoints[j] || dtrx == relationMidPoints[j] || dtly == relationMidPoints[j] || dbly == relationMidPoints[j]) {
+                            // Making sure that only the correct lines are set to normal
+                            if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
+                                diagram[i].properties['key_type'] = 'Normal';
+                            } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
+                                diagram[i].properties['key_type'] = 'Normal';
+                            }  else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
+                                diagram[i].properties['key_type'] = 'Normal';
+                            } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
+                                diagram[i].properties['key_type'] = 'Normal';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // This function is run when an entity is set to weak. Sets the lines to be forced if possible.
+    function setLinesConnectedToRelationsToForced(x1, y1, x2, y2) 
+    {
+        var relationMidPoints = [];
+        var relationMidYPoints = [];
+        var relationMidXPoints = [];
+        var attributeMidPoint = [];
+
+        // Need to find the connected entities in order to change lines between relations and entities to forced.
+        for(let i = 0; i < diagram.length; i++) {
+            if (diagram[i] != this && diagram[i].kind == 2) {
+                // Each (top) coordinate for the current object
+                dtlx = diagram[i].corners().tl.x;
+                dtly = diagram[i].corners().tl.y;
+                dtrx = diagram[i].corners().tr.x;
+                dtry = diagram[i].corners().tr.y;
+                // Each (bottom) coordinate for the current object
+                dbrx = diagram[i].corners().br.x;
+                dbry = diagram[i].corners().br.y;
+                dblx = diagram[i].corners().bl.x;
+                dbly = diagram[i].corners().bl.y;
+
+                // Stores the midpoints for the relations in an array.
+                if (diagram[i].isRelation) {
+                    var relationMiddleX = ((dtrx - dtlx) / 2) + dtlx;
+                    var relationMiddleY = ((dbly - dtly) / 2) + dtly;
+                    relationMidPoints.push(relationMiddleX, relationMiddleY);
+                    relationMidXPoints.push(relationMiddleX, dtly, dbly);
+                    relationMidYPoints.push(relationMiddleY, dtlx, dtrx);
+                }   
+
+                // Stores the midpoints for the attributes in an array
+                if (diagram[i].isAttribute) {
+                    var attributeMiddleX = ((dtrx - dtlx) / 2) + dtlx;
+                    var attributeMiddleY = ((dbly - dtly) / 2) + dtly;
+                    attributeMidPoint.push(attributeMiddleX, attributeMiddleY);
+                }
+
+                // Setting the line types to forced if they are normal and the connected entity is weak.
+                if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Forced') {
+                    // Looping through the midpoints (top and bot) for relations.
+                    for (let j = 0; j < relationMidXPoints.length; j++) {
+                        for (let c = 0; c < relationMidXPoints.length; c++) {
+                            // Checking if the line X coordinate is the same as the relations middle X coordinate
+                            if (dtlx == relationMidXPoints[j] || dtrx == relationMidXPoints[j]) {
+                                // Checking if the line Y coordinate is the same as the coordinate for the relation middle top Y or bottom Y
+                                if (dtly == relationMidXPoints[c] || dbly == relationMidXPoints[c]) {
+                                    // Going through the array even if empty since it otherwise requires that an attribute is connected to the entity in all cases
+                                    for (let y = 0; y <= attributeMidPoint.length; y++) {
+                                        for (let k = 0; k <= attributeMidPoint.length; k++) {
+                                            // Making sure that lines between relations and attributes aren't set to forced.
+                                            if ((dtlx == attributeMidPoint[y] || dtrx == attributeMidPoint[y]) || (dtly == attributeMidPoint[k] || dbly == attributeMidPoint[k])) {
+                                                diagram[i].properties['key_type'] = 'Normal';
+                                            } else {
+                                                // Checking the current object coordinates against the line coordinates.
+                                                if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                } else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // Looping through the midpoints (left and right) for relations.
+                    for (let j = 0; j < relationMidYPoints.length; j++) {
+                        for (let c = 0; c < relationMidYPoints.length; c++) {
+                            // checking if the line Y coordinate is the same as the relations middle Y coordinate.
+                            if (dtly == relationMidYPoints[j] || dbly == relationMidYPoints[j]) {
+                                if (dtlx == relationMidYPoints[c] || dtrx == relationMidYPoints[c]) {
+                                    // Going through the array even if empty since it otherwise requires that an attribute is connected to the entity in all cases
+                                    for (let y = 0; y <= attributeMidPoint.length; y++) {
+                                        for (let k = 0; k <= attributeMidPoint.length; k++) {
+                                            // Making sure that lines between relations and attributes aren't set to forced.
+                                            if ((dtlx == attributeMidPoint[y] || dtrx == attributeMidPoint[y]) || (dtly == attributeMidPoint[k] || dbly == attributeMidPoint[k])) {
+                                                diagram[i].properties['key_type'] = 'Normal';
+                                            } else {
+                                                // Checking the current object coordinates against the line coordinates.
+                                                if (x1 == dtrx || x2 == dtlx && dtly < y1 && dbly > y2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                } else if (x2 == dtlx || x1 == dtrx && dtry < y1 && dbry > y2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                } else if (y2 == dtly || y2 == dtry && dtlx < x1 && dtrx > x2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                } else if (y1 == dbly || y1 == dbry && dblx < x1 && dbrx > x2) {
+                                                    diagram[i].properties['key_type'] = 'Forced';
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } 
+        }
+    }
 
     this.drawEntity = function(x1, y1, x2, y2) {
         ctx.fillStyle = this.properties['symbolColor'];
         ctx.beginPath();
+        
         if (this.properties['key_type'] == "Weak") {
             ctx.moveTo(x1 - 5, y1 - 5);
             ctx.lineTo(x2 + 5, y1 - 5);
@@ -951,6 +1193,9 @@ function Symbol(kind) {
             ctx.lineTo(x1 - 5, y1 - 5);
             ctx.stroke();
             ctx.lineWidth = this.properties['lineWidth'];
+            setLinesConnectedToRelationsToForced(x1, y1, x2, y2);
+        } else {
+            removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2);
         }
 
         ctx.moveTo(x1, y1);
@@ -975,6 +1220,7 @@ function Symbol(kind) {
     }
 
     this.drawLine = function(x1, y1, x2, y2) {
+        this.isLine = true;
         //Checks if there is cardinality set on this object
         if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
             //Updates x and y position
@@ -1017,6 +1263,155 @@ function Symbol(kind) {
 
         ctx.beginPath();
         ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    }
+
+    this.drawUMLLine = function(x1, y1, x2, y2) {
+        //Checks if there is cardinality set on this object
+        if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
+            //Updates x and y position
+            ctx.fillStyle = '#000';
+            if(this.cardinality[0].symbolKind == 1) {
+                var valX = x1 > x2 ? x1-15 : x1+15;
+                var valY = y1 > y2 ? y1-15 : y1+15;
+                var valY2 = y2 > y1 ? y2-15 : y2+15;
+                var valX2 = x2 > x1 ? x2-15 : x2+15;
+                ctx.fillText(this.cardinality[0].value, valX, valY);
+                ctx.fillText(this.cardinality[0].valueUML, valX2, valY2);
+            }
+            else if(this.cardinality[0].isCorrectSide) {
+                this.moveCardinality(x1, y1, x2, y2, "CorrectSide");
+                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+            }
+            else {
+                this.moveCardinality(x1, y1, x2, y2, "IncorrectSide");
+                ctx.fillText(this.cardinality[0].value, this.cardinality[0].x, this.cardinality[0].y);
+            }
+        }
+
+
+        ctx.lineWidth = this.properties['lineWidth'];
+        if (this.properties['key_type'] == "Forced") {
+            //Draw a thick black line
+            ctx.lineWidth = this.properties['lineWidth']*3;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            //Draw a white line in the middle to simulate space (2 line illusion);
+            ctx.lineWidth = this.properties['lineWidth'];
+            ctx.strokeStyle = "#fff";
+        }
+        else if (this.properties['key_type'] == "Derived") {
+            ctx.lineWidth = this.properties['lineWidth'] * 2;
+            ctx.setLineDash([5, 4]);
+        }
+
+        // Variables for UML line breakpoints
+        var breakpointStartX = 0;     // X Coordinate for start breakpoint
+        var breakpointStartY = 0;     // Y Coordinate for start breakpoint
+        var breakpointEndX = 0;       // X Coordinate for end breakpoint
+        var breakpointEndY = 0;       // Y Coordinate for start breakpoint
+        var middleBreakPointX = 0;    // X Coordinate for mid point between line start and end
+        var middleBreakPointY = 0;    // Y Coordinate for mid point between line start and end
+        var startLineDirection = "";  // Which side of the class the line starts from
+        var endLineDirection = "";    // Which side of the class the line ends in
+
+        // Calculating the mid point between start and end
+        if (x2 > x1) {
+          middleBreakPointX = x1 + (x2 - x1) / 2;
+        } else if (x1 > x2) {
+          middleBreakPointX = x2 + (x1 - x2) / 2;
+        } else {
+          middleBreakPointX = x1;
+        }
+
+        if (y2 > y1) { // The code breaks if you don't use Math.abs, can be removed if fixed
+          middleBreakPointY = Math.abs(y1) + Math.abs(y2 - y1) / 2;
+        } else if (y1 > y2) {
+          middleBreakPointY = Math.abs(y2) + Math.abs(y1 - y2) / 2;
+        } else {
+          middleBreakPointY = Math.abs(y1);
+        }
+
+        // Start line
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+
+        // Check all symbols in diagram and see if anyone matches current line's points coordinate
+        for (var i = 0; i < diagram.length; i++) {
+            if (diagram[i].symbolkind == 1) { // filter UML class
+                var currentSymbol = diagram[i].corners();
+
+                // Check if line's start point matches any class diagram
+                if (x1 == currentSymbol.tl.x) {
+                startLineDirection = "left";
+                breakpointStartX = x1 - 30;
+                breakpointStartY = y1;
+                } else if (x1 == currentSymbol.br.x) {
+                startLineDirection = "right";
+                breakpointStartX = x1 + 30;
+                breakpointStartY = y1;
+                } else if (y1 == currentSymbol.tl.y) {
+                startLineDirection = "up"
+                breakpointStartY = y1 - 30;
+                breakpointStartX = x1;
+                } else if (y1 == currentSymbol.br.y) {
+                startLineDirection = "down"
+                breakpointStartY = y1 + 30;
+                breakpointStartX = x1;
+                }
+
+                // Check if line's end point matches any class diagram
+                if (x2 == currentSymbol.tl.x) {
+                endLineDirection = "left";
+                breakpointEndX = x2 - 30;
+                breakpointEndY = y2;
+                } else if (x2 == currentSymbol.br.x) {
+                endLineDirection = "right";
+                breakpointEndX = x2 + 30;
+                breakpointEndY = y2;
+                } else if (y2 == currentSymbol.tl.y) {
+                endLineDirection = "up"
+                breakpointEndY = y2 - 30;
+                breakpointEndX = x2;
+                } else if (y2 == currentSymbol.br.y) {
+                endLineDirection = "down"
+                breakpointEndY = y2 + 30;
+                breakpointEndX = x2;
+                }
+
+
+            }
+        }
+  
+        // Draw to start breakpoint based on direction
+        if (startLineDirection == "left") {
+        ctx.lineTo(breakpointStartX, y1);
+        } else if (startLineDirection == "right") {
+        ctx.lineTo(breakpointStartX, y1);
+        } else if (startLineDirection == "up") {
+        ctx.lineTo(x1, breakpointStartY);
+        } else if (startLineDirection == "down") {
+        ctx.lineTo(x1, breakpointStartY);
+        }
+
+        ctx.lineTo(breakpointStartX, middleBreakPointY);
+        ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
+        ctx.lineTo(breakpointEndX, middleBreakPointY);
+
+        // Draw to end breakpoint based on direction
+        if (endLineDirection == "left") {
+        ctx.lineTo(breakpointEndX, y2);
+        } else if (endLineDirection == "right") {
+        ctx.lineTo(breakpointEndX, y2);
+        } else if (endLineDirection == "up") {
+        ctx.lineTo(x2, breakpointEndY);
+        } else if (endLineDirection == "down") {
+        ctx.lineTo(x2, breakpointEndY);
+        }
+
         ctx.lineTo(x2, y2);
         ctx.stroke();
     }
@@ -1064,15 +1459,15 @@ function Symbol(kind) {
 		    }
 
 		    // Move the value from the line
-		    cardinality.x = x1 > x2 ? x1-10 : x1+10;
-		    cardinality.y = y1 > y2 ? y1-10 : y1+10;
+		    cardinality.x = x1 > x2 ? x1-13 : x1+13;
+		    cardinality.y = y1 > y2 ? y1-15 : y1+15;
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
 		        cardinality.x = x1 > x2 ? x1+10 : x1-10;
 		    }
-		    else if(cardinality.axis == "Y") {   
-		        cardinality.y = y1 > y2 ? y1+10 : y1-10;                    
+		    else if(cardinality.axis == "Y") {
+		        cardinality.y = y1 > y2 ? y1+10 : y1-10;
 		    }
 	    }
 	    else if(side == "IncorrectSide") {
@@ -1088,20 +1483,21 @@ function Symbol(kind) {
 		    }
 
 		    // Move the value from the line
-		    cardinality.x = x2 > x1 ? x2-10 : x2+10;
-		    cardinality.y = y2 > y1 ? y2-10 : y2+10;
+		    cardinality.x = x2 > x1 ? x2-15 : x2+15;
+		    cardinality.y = y2 > y1 ? y2-15 : y2+15;
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
-		        cardinality.x = x2 > x1 ? x2+10 : x2-10;
+		        cardinality.x = x2 > x1 ? x2+15 : x2-15;
 		    }
-		    else if(cardinality.axis == "Y") {   
-		        cardinality.y = y2 > y1 ? y2+10 : y2-10;                    
+		    else if(cardinality.axis == "Y") {
+		        cardinality.y = y2 > y1 ? y2+15 : y2-15;
 		    }
 	    }
     }
 
     this.drawRelation = function(x1, y1, x2, y2) {
+        this.isRelation = true;
         var midx = points[this.centerPoint].x;
         var midy = points[this.centerPoint].y;
         ctx.beginPath();
@@ -1425,6 +1821,7 @@ function Symbol(kind) {
 }
 
 this.drawOval = function (x1, y1, x2, y2) {
+    this.isOval = true;
     var middleX = x1 + ((x2 - x1) * 0.5);
     var middleY = y1 + ((y2 - y1) * 0.5);
     ctx.beginPath();
@@ -1972,7 +2369,7 @@ function figureFreeDraw() {
     }
 }
 
-function mouseDown() { 
+function mouseDown() {
     globalMouseState = 1;
 }
 

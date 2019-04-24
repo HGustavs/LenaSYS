@@ -196,8 +196,6 @@ function process() {
 	dstr += makeCustomFilter("onlyPending", "Only pending");
 	dstr += makeCustomFilter("minimode", "Mini mode");
 
-	dstr += "<div style='display:flex;justify-content:flex-end;border-top:1px solid #888'><button onclick='leavec()'>Filter</button></div>";
-
 	document.getElementById("customfilter").innerHTML = dstr;
 	var dstr = "";
 
@@ -780,6 +778,13 @@ function renderCell(col, celldata, cellid) {
 			return str;
 		}
 	}
+
+	function hideSSN(ssn){
+		var hiddenSSN;
+		hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
+		return hiddenSSN;
+	}
+
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
 	if (col == "FnameLnameSSN") {
@@ -787,9 +792,7 @@ function renderCell(col, celldata, cellid) {
 		str += "<div class='resultTableText'>";
 		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
 		str += "<div>" + celldata.username + " / " + celldata.class + "</div>";
-		str += "<div>" + celldata.ssn + "</div>";
-		//	str += "<div style='font-style:italic;text-align:right;'>"+celldata.setTeacher+"</div>";
-		//	str += "</div>";
+		str += "<div>" + hideSSN(celldata.ssn) + "</div>";
 		str += "</div>";
 		return str;
 
@@ -980,72 +983,19 @@ function renderSortOptions(col, status, colname) {
 			}
 		} else {
 			if (status == 0) {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'><span style='display:inline-block;background-color:#ffffdd;width:16px;height:16px;border-radius:8px;'>P</span>" + colname + "</span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",1)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>P </span>" + colname + "</span>";
 			} else if (status == 1) {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'><span style='display:inline-block;background-color:#B5D7A8;width:16px;height:16px;border-radius:8px;'>U</span>" + colname + "</span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",2)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>U </span>" + colname + "</span>";
 			} else if (status == 2) {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",3)'><span style='display:inline-block;background-color:#d79b9b;width:16px;height:16px;border-radius:8px;'>G</span>" + colname + "</span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",3)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>G </span>" + colname + "</span>";
 			} else if (status == 3) {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",4)'><span style='display:inline-block;background-color:#d0c0d0;width:16px;height:16px;border-radius:8px;'>VG</span>" + colname + "</span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",4)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>VG </span>" + colname + "</span>";
 			} else {
-				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'><span style='display:inline-block;background-color:#eae8eb;width:16px;height:16px;border-radius:8px;'>-</span>" + colname + "</span>";
+				str += "<span class='sortableHeading' onclick='myTable.toggleSortStatus(\"" + col + "\",0)'><span style='display:inline;background-color:#d79b9b;width:16px;height:16px;border-radius:1px;'>- </span>" + colname + "</span>";
 			}
 		}
 	}
 	return str;
-}
-
-//--------------------------------------------------------------------------
-// compare
-// ---------------
-//  Callback function with different compare alternatives for the column sort
-//--------------------------------------------------------------------------
-function compare(a, b) {
-	var col = sortableTable.currentTable.getSortcolumn();
-	let kind = sortableTable.currentTable.getSortkind();
-	var tempA;
-	var tempB;
-
-	if (a == null || b == null || typeof (a) === "undefined" || typeof (b) === "undefined")
-		return false;
-
-	if ((typeof a == "undefined") || (typeof b == "undefined"))
-		console.log("sort fail: ", a, b, col, kind)
-
-	if (typeof a == "undefined")
-		return 1;
-	if (typeof b == "undefined")
-		return -1;
-
-	if (col == "FnameLnameSSN") {
-		if (kind == 0 || kind == 1) {
-			tempA = a['firstname'].toUpperCase();
-			tempB = b['firstname'].toUpperCase();
-		} else if (kind == 2 || kind == 3) {
-			tempA = a['lastname'].toUpperCase();
-			tempB = b['lastname'].toUpperCase();
-		} else {
-			tempA = a['ssn'].toUpperCase();
-			tempB = b['ssn'].toUpperCase();
-		}
-
-		if (tempA > tempB) {
-			return 1;
-		} else if (tempA < tempB) {
-			return -1;
-		} else {
-			return 0;
-		}
-	} else {
-		let atmp = conv(a, kind);
-		let btmp = conv(b, kind);
-
-		if (atmp == btmp && a.submitted > b.submitted)
-			atmp += 10;
-		if (atmp == btmp && b.submitted > a.submitted)
-			btmp += 10;
-		return btmp - atmp;
-	}
 }
 
 function conv(item, kind) {
@@ -1209,4 +1159,34 @@ function closeLadexport() {
 
 function updateTable() {
 	myTable.renderTable();
+}
+
+function mail() {
+  var reqType = "mail";
+
+  var url_string = window.location.href;
+  var url = new URL(url_string);
+  var cidMail = url.searchParams.get("cid");
+  var crsMail = url.searchParams.get("coursevers");
+
+  $.ajax({
+    url: "resultedservice.php",
+    type: "POST",
+    data: {
+      'courseid': cidMail,
+      'coursevers': crsMail,
+      'searchterm': searchterm,
+      'requestType': reqType
+    },
+    dataType: "JSON",
+    error: function(xhr, status, error) {
+      var err = eval("(" + xhr.responseText + ")");
+      console.log(err.Message);
+    },
+    success: function(data){
+      window.location.assign("mailto:?bcc=" + data);
+      //window.location.assign("mailto:" + data);
+    //  mailto:astark1@unl.edu?bcc=ASTARK1@UNL.EDU
+    }
+  });
 }

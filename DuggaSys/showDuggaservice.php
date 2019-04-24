@@ -485,8 +485,8 @@ $array = array(
 		"grade" => $grade,
 		"submitted" => $submitted,
 		"marked" => $marked,
-		"deadline" => $duggainfo['qrelease'],
-		"release" => $duggainfo['deadline'],
+		"deadline" => $duggainfo['deadline'],
+		"release" => $duggainfo['qrelease'],
 		"files" => $files
 	);
 

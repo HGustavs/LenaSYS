@@ -290,3 +290,21 @@ svg text {
 /* --------------================################================-------------- *
  *                      	    Preview table style     				        *
  * --------------================################================-------------- */
+ #TestPrev {
+   overflow-x: auto;
+ }
+ .previewTable tr {
+     display: table-row;
+     vertical-align: inherit;
+ }
+ .previewTable th {
+   font-weight: bold;
+   text-align: center;
+   vertical-align: inherit;
+   padding-right: 30px;
+   padding-left: 10px;
+ }
+ .previewTable td {
+   padding-right: 30px;
+   padding-left: 10px;
+ }

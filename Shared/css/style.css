@@ -181,6 +181,11 @@ p {
   margin: 65px 10px 15px 10px;
 }
 
+#contentDiagram {
+  background: #fff;
+  margin: 65px 10px 15px 10px;
+}
+
 #accessedcontent {
   margin: 0px auto;
   position: relative;
@@ -1208,7 +1213,7 @@ input {
   vertical-align: bottom;
   cursor: move;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 0px;
 }
 
@@ -1311,6 +1316,7 @@ input {
 
 .document-settings {
   font-size: 14px;
+  top: 150px;
 }
 
 .export-drop-down {
@@ -1331,7 +1337,7 @@ input {
 
 .menu-drop-down span.drop-down-label{
   display: block;
-  height: 22px;
+  height: 20px;
   line-height: 22px;
   padding: 0px 8px;
 }
@@ -1423,6 +1429,11 @@ input {
 
 .drop-down-text:hover {
   background-color: rgb(240, 240, 240);
+  cursor: default !important;
+}
+
+.drop-down-item-disabled {
+  opacity: 0.5;
   cursor: default !important;
 }
 
@@ -1567,7 +1578,13 @@ input.submit-button-newitem {
   font-size: 16px;
   text-align: center;
   transition: 1s background-color;
+  -webkit-appearance: none;
   float: right;
+}
+
+input.submit-button-newitem:hover {
+  transition: 0.4s;
+  background-color: rgb(283, 233, 126);
 }
 
 input.diagram-sidebar-buttons {
@@ -1702,6 +1719,13 @@ div.submit-button:disabled {
 }
 
 #linebutton {
+  margin: 5px 0;
+  display: inline;
+  border-radius: 5px;
+}
+
+#umllinebutton {
+  display: inline;
   margin: 5px 0;
   border-radius: 5px;
 }
@@ -1978,7 +2002,7 @@ input.large-button {
 }
 
 .sortableHeading {
-  display: block;
+  display:inline !important;
   cursor: pointer;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -2684,7 +2708,6 @@ span.arrow {
 .VGc,
 .VGh {
   height: 24px;
-  width: 24px;
   cursor: pointer;
   margin-right: 10px;
 }
@@ -2702,7 +2725,7 @@ span.arrow {
   padding: 8px;
   width: 300px;
   height: 300px;
-  overflow: scroll;
+  overflow-y: scroll;
   font-size: 12px;
   display: none;
   position: absolute;
@@ -2923,13 +2946,12 @@ table {
   border-radius: 5px;
   float: right;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
-  margin-bottom: 5px;
+  margin-bottom: 15px;
+  margin-right: 7px;
 }
 
 #searchinput {
   margin-right: 0;
-  margin-bottom: 5px;
-  margin-top: 5px;
   border-right: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -3617,8 +3639,8 @@ only screen and (max-device-width: 320px) {
   border: 2px solid #d4d4d4;
   height: 34px;
   position: absolute;
-  right: 0;
-  bottom: 25px;
+  right: 18px;
+  bottom: 12px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -3696,7 +3718,7 @@ only screen and (max-device-width: 320px) {
   background: white;
   border: 2px solid #d4d4d4;
   font-size: 14px;
-  bottom: 25px;
+  bottom: 12px;
   position: absolute;
   cursor: default;
   /* Removes the possibility to copy the text in this element */
@@ -3773,6 +3795,7 @@ only screen and (max-device-width: 320px) {
   bottom: 24px;
   right: 24px;
   z-index: 1;
+  touch-action: none;
 }
 .fixed-action-button.sectioned {
   right: 75px;
@@ -4613,10 +4636,10 @@ textarea#filecont{
 }
 .tsTable td:first-of-type {
   border-left: 1px solid #cdd0d6;
-} 
+}
 .tsTable td:last-of-type {
   border-right: 1px solid #cdd0d6;
-} 
+}
 .tsTable td, .tsTable th {
   border-bottom: 1px solid #cdd0d6;
 }

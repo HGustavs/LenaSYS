@@ -72,7 +72,7 @@ if(checklogin()){
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
-				$debug="Error updating entries".$error[2];
+				$debug="Error updating entries\n".$error[2];
 			} 
 		}else if(strcmp($opt,"NEWVRS")===0){
 			$query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt);");
@@ -114,7 +114,7 @@ if(checklogin()){
 			*/
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
-				$debug="Error inserting entries".$error[2];
+				$debug="Error inserting entries\n".$error[2];
 			} 
 
 		}else if(strcmp($opt,"UPDATEVRS")===0){
@@ -126,7 +126,7 @@ if(checklogin()){
 
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
-						$debug="Error updating entries".$error[2];
+						$debug="Error updating entries\n".$error[2];
 				}
 				if($makeactive==3){
 						$query = $pdo->prepare("UPDATE course SET activeversion=:vers WHERE cid=:cid");
@@ -135,7 +135,7 @@ if(checklogin()){
 		
 						if(!$query->execute()) {
 								$error=$query->errorInfo();
-								$debug="Error updating entries".$error[2];
+								$debug="Error updating entries\n".$error[2];
 						}	
 				}
 		}else if(strcmp($opt,"CHGVERS")===0){
@@ -145,7 +145,7 @@ if(checklogin()){
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
-				$debug="Error updating entries".$error[2];
+				$debug="Error updating entries\n".$error[2];
 			}
 		}else if(strcmp($opt, "CPYVRS")===0){
         $query = $pdo->prepare("INSERT INTO vers(cid,coursecode,vers,versname,coursename,coursenamealt,startdate,enddate) values(:cid,:coursecode,:vers,:versname,:coursename,:coursenamealt,:startdate,:enddate);");
@@ -164,7 +164,7 @@ if(checklogin()){
 
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
-					$debug="Error updating entries".$error[2];
+					$debug="Error updating entries\n".$error[2];
 				}
 
 				// Duplicate duggas and dugga variants
@@ -174,7 +174,7 @@ if(checklogin()){
 				$query->bindParam(':oldvers', $copycourse);
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
-						$debug="Error reading quiz".$error[2];
+						$debug="Error reading quiz\n".$error[2];
 				}else{
 						foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 								$ruery = $pdo->prepare("INSERT INTO quiz (cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,vers) SELECT cid,autograde,gradesystem,qname,quizFile,qrelease,deadline,modified,creator,:newvers as vers from quiz WHERE id = :oldid;");
@@ -182,7 +182,7 @@ if(checklogin()){
 								$ruery->bindParam(':newvers', $versid);
 								if(!$ruery->execute()) {
 									$error=$ruery->errorInfo();
-									$debug.="Error copying quiz entry".$error[2];
+									$debug.="Error copying quiz entry\n".$error[2];
 								}else{
 										$duggalist[$row['id']]=$pdo->lastInsertId();
 								}
@@ -200,7 +200,7 @@ if(checklogin()){
 											$ruery->bindParam(':newquizid', $value);
 											if(!$ruery->execute()) {
 												$error=$ruery->errorInfo();
-												$debug.="Error updating entry".$error[2];
+												$debug.="Error updating entry\n".$error[2];
 											}
 									}
 							}
@@ -222,7 +222,7 @@ if(checklogin()){
 								$ruery->bindParam(':newvers', $versid);
 								if(!$ruery->execute()) {
 									$error=$ruery->errorInfo();
-									$debug.="Error copying codeexample entry".$error[2];
+									$debug.="Error copying codeexample entry\n".$error[2];
 								}else{
 										$codeexamplelist[$row['exampleid']]=$pdo->lastInsertId();
 								}
@@ -245,7 +245,7 @@ if(checklogin()){
 												$ruery->bindParam(':newexampleid', $value);
 												if(!$ruery->execute()) {
 													$error=$ruery->errorInfo();
-													$debug.="Error duplicating boxes".$error[2];
+													$debug.="Error duplicating boxes\n".$error[2];
 												}
 										}
 
@@ -254,7 +254,7 @@ if(checklogin()){
 										$pruery->bindParam(':oldexampleid', $key);
 										if(!$pruery->execute()) {
 											$error=$pruery->errorInfo();
-											$debug.="Error finding improws".$error[2];
+											$debug.="Error finding improws\n".$error[2];
 										}
 										foreach ($pruery->fetchAll(PDO::FETCH_ASSOC) as $improwz) {
 												if ($pruery->rowCount() > 0){
@@ -265,7 +265,7 @@ if(checklogin()){
 														$qruery->bindParam(':newexampleid', $value);
 														if(!$qruery->execute()) {
 															$error=$qruery->errorInfo();
-															$debug.="Error duplicating improws".$error[2];
+															$debug.="Error duplicating improws\n".$error[2];
 														}
 												}
 										}
@@ -275,7 +275,7 @@ if(checklogin()){
 										$zruery->bindParam(':oldexampleid', $key);
 										if(!$zruery->execute()) {
 											$error=$zruery->errorInfo();
-											$debug.="Error finding impwords".$error[2];
+											$debug.="Error finding impwords\n".$error[2];
 										}
 										foreach ($zruery->fetchAll(PDO::FETCH_ASSOC) as $impwordz) {
 												if ($zruery->rowCount() > 0){
@@ -298,7 +298,7 @@ if(checklogin()){
 				$query->bindParam(':oldvers', $copycourse);
 				if(!$query->execute()) {
 						$error=$query->errorInfo();
-						$debug="Error reading courses".$error[2];
+						$debug="Error reading courses\n".$error[2];
 				}else{
 						$momentlist=array();
 						foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
@@ -307,7 +307,7 @@ if(checklogin()){
 								$ruery->bindParam(':gubbe', $versid);
 								if(!$ruery->execute()) {
 									$error=$ruery->errorInfo();
-									$debug.="Error copying entry".$error[2];
+									$debug.="Error copying entry\n".$error[2];
 								}else{
 										$momentlist[$row['lid']]=$pdo->lastInsertId();
 								}
@@ -320,7 +320,7 @@ if(checklogin()){
 								$ruery->bindParam(':updvers', $versid);
 								if(!$ruery->execute()) {
 									$error=$ruery->errorInfo();
-									$debug.="Error updating entry".$error[2];
+									$debug.="Error updating entry\n".$error[2];
 								}
 						}
 						// Update to correct dugga
@@ -331,7 +331,7 @@ if(checklogin()){
 								$puery->bindParam(':updvers', $versid);
 								if(!$puery->execute()) {
 									$error=$puery->errorInfo();
-									$debug.="Error updating entry".$error[2];
+									$debug.="Error updating entry\n".$error[2];
 								}
 						}
 
@@ -343,7 +343,7 @@ if(checklogin()){
 								$puery->bindParam(':updvers', $versid);
 								if(!$puery->execute()) {
 									$error=$puery->errorInfo();
-									$debug.="Error updating entry".$error[2];
+									$debug.="Error updating entry\n".$error[2];
 								}
 						}
 						// Update to correct before and after in codeexample
@@ -354,7 +354,7 @@ if(checklogin()){
 								$puery->bindParam(':updvers', $versid);
 								if(!$puery->execute()) {
 									$error=$puery->errorInfo();
-									$debug.="Error updating before link".$error[2];
+									$debug.="Error updating before link\n".$error[2];
 								}
 						}
 						foreach($codeexamplelist as $key => $value){
@@ -364,7 +364,7 @@ if(checklogin()){
 								$puery->bindParam(':updvers', $versid);
 								if(!$puery->execute()) {
 									$error=$puery->errorInfo();
-									$debug.="Error updating after link".$error[2];
+									$debug.="Error updating after link\n".$error[2];
 								}
 						}
 
@@ -377,7 +377,7 @@ if(checklogin()){
 
             if(!$query->execute()) {
               $error=$query->errorInfo();
-              $debug="Error updating entries".$error[2];
+              $debug="Error updating entries\n".$error[2];
             }
 		}
 		
@@ -416,7 +416,7 @@ if(checklogin()){
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
-				$debug="Error updating entries".$error[2];
+				$debug="Error updating entries\n".$error[2];
 			}
 		}else if(strcmp($opt,"SETTINGS")===0){
 		$query = $pdo->prepare("INSERT INTO settings (motd,readonly) VALUES (:motd, :readonly);");
@@ -427,7 +427,7 @@ if(checklogin()){
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error updating entries".$error[2];
+			$debug="Error updating entries\n".$error[2];
 		}
 	}
 	}
@@ -450,7 +450,7 @@ $queryreg->bindParam(':uid', $userid);
 
 if(!$queryreg->execute()) {
     $error=$queryreg->errorInfo();
-    $debug="Error reading courses".$error[2];
+    $debug="Error reading courses\n".$error[2];
 }
 
 $userRegCourses = array();
@@ -463,7 +463,7 @@ $queryz->bindParam(':uid', $userid);
 
 if(!$queryz->execute()) {
 	$error=$queryz->errorInfo();
-	$debug="Error reading courses".$error[2];
+	$debug="Error reading courses\n".$error[2];
 }
 
 $userCourse = array();
@@ -485,7 +485,7 @@ $query = $pdo->prepare("SELECT coursename,coursecode,cid,visibility,activeversio
 
 if(!$query->execute()) {
 	$error=$query->errorInfo();
-	$debug="Error reading courses".$error[2];
+	$debug="Error reading courses\n".$error[2];
 }else{
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$writeAccess = false;
@@ -524,7 +524,7 @@ $query=$pdo->prepare("SELECT cid,coursecode,vers,versname,coursename,coursenamea
 
 if(!$query->execute()) {
 	$error=$query->errorInfo();
-	$debug="Error reading courses".$error[2];
+	$debug="Error reading courses\n".$error[2];
 }else{
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 		array_push(
@@ -546,7 +546,7 @@ $query=$pdo->prepare("SELECT motd,readonly FROM settings;");
 
 if(!$query->execute()) {
 	$error=$query->errorInfo();
-	$debug="Error reading settings".$error[2];
+	$debug="Error reading settings\n".$error[2];
 }else{
 	$motd="UNK";
 	$readonly=false;

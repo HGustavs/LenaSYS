@@ -21,6 +21,9 @@ if(isset($_SESSION['uid'])){
 	$firstname="UNK";
 }
 
+$requestType = getOP('requestType');
+$searchterm = getOP('searchterm');
+$courseid = getOP('courseid');
 $opt = getOP('opt');
 $cid = getOP('cid');
 $luid = getOP('luid');
@@ -66,6 +69,41 @@ $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
 
+if($requestType == "mail"){
+	switch($searchterm)
+	{
+		case strpos($searchterm, ' ') !== false:
+			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND (user.firstname LIKE :searchterm1 AND user.lastname LIKE :searchterm2)");
+			$searchterm = "%".$searchterm."%";
+			$searchterm = explode(' ', $searchterm);
+			$mailQuery->bindParam(':searchterm1', $searchterm[0]);
+			$searchterm[1] = $searchterm[1]."%";
+			$mailQuery->bindParam(':searchterm2', $searchterm[1]);
+			break;
+
+		default:
+			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND (user.firstname LIKE :searchterm OR user.lastname LIKE :searchterm OR user.username LIKE :searchterm OR user.ssn LIKE :searchterm OR user.class LIKE :searchterm)");
+			$searchterm = "%".$searchterm."%";
+			$mailQuery->bindParam(':searchterm', $searchterm);
+			break;
+	}
+	$mailQuery->bindParam(':cid', $courseid);
+	$mailQuery->bindParam(':cvers', $coursevers);
+	$emailsArray = array();
+	if(!$mailQuery->execute()){
+		$error=$mailQuery->errorInfo();
+		$debug="Error reading user entries".$error[2];
+	}
+	// Fetches the emails from the sql_query result $mailQuery and then pushes it into the array $emailsArray.
+	foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row){
+		array_push($emailsArray,$row['email']);
+	}
+	// Seperates the emails with a ;.
+	$implodedEmails=implode('; ',$emailsArray);
+	// Returns the emails in a string representation.
+	echo json_encode($implodedEmails);
+	} else {
+
 //------------------------------------------------------------------------------------------------
 // Services
 //------------------------------------------------------------------------------------------------
@@ -90,7 +128,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
-				$debug="Error updating entries".$error[2];
+				$debug="Error updating entries\n".$error[2];
 			} else {
 				$gradeupdated=true;
 				$duggauser=$luid;
@@ -107,7 +145,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 					$query->bindParam(':uid', $luid);
 					if(!$query->execute()) {
 						$error=$query->errorInfo();
-						$debug="Error updating dugga feedback".$error[2];
+						$debug="Error updating dugga feedback\n".$error[2];
 					}
 			}
 		}else if($ukind=="I"){
@@ -160,7 +198,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 						$query->bindParam(':uid', $luid);
 						if(!$query->execute()) {
 							$error=$query->errorInfo();
-							$debug="Error updating dugga feedback".$error[2];
+							$debug="Error updating dugga feedback\n".$error[2];
 						}
 				}
 			}
@@ -210,7 +248,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 		if(!$query->execute()) {
 			$error=$query->errorInfo();
-			$debug="Error reading entries".$error[2];
+			$debug="Error reading entries\n".$error[2];
 		}
 
 		if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -254,7 +292,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 				if(!$queryp->execute()) {
 					$error=$queryp->errorInfo();
-					$debug="Error reading param".$error[2]." ". __LINE__;
+					$debug="Error reading param\n".$error[2]." ". __LINE__;
 				}
 				if ($row = $queryp->fetch(PDO::FETCH_ASSOC)) {
 					$duggaparam=html_entity_decode($row["param"]);
@@ -285,7 +323,7 @@ if(checklogin() && (hasAccess($_SESSION['uid'], $cid, 'w') || isSuperUser($_SESS
 
 			if(!$query->execute()) {
 					$error=$query->errorInfo();
-					$debug="Error updating entries".$error[2];
+					$debug="Error updating entries\n".$error[2];
 			}
 
 			if ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -581,7 +619,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
-		$debug="Error reading user entries".$error[2];
+		$debug="Error reading user entries\n".$error[2];
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$teacher = array(
@@ -601,7 +639,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()){
 		$error=$query->errorInfo();
-		$debug="Error reading user entries".$error[2];
+		$debug="Error reading user entries\n".$error[2];
 	}
 	foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 			$teacher = array(
@@ -641,7 +679,6 @@ $array = array(
 echo json_encode($array);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php",$userid,$info);
-
-
+}
 
 ?>

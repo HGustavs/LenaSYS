@@ -399,7 +399,7 @@
 		// We add only local files to code (no reading code from external sources) and allow preview to files or links.				
 		if(!$query->execute()) {
 				$error=$query->errorInfo();
-				$debug="Error reading entries".$error[2];
+				$debug="Error reading entries\n".$error[2];
 		}
 		$oldkind=2;
 		foreach($query->fetchAll() as $row) {
@@ -428,7 +428,7 @@
       
 		if(!$queryy->execute()) {
 			$error=$queryy->errorInfo();
-			$debug="Error reading boxes ".$error[2];
+			$debug="Error reading boxes \n".$error[2];
 		}
 		while ($row = $queryy->FETCH(PDO::FETCH_ASSOC)){
       $boxContent=strtoupper($row['boxcontent']);
