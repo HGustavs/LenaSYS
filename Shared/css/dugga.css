@@ -4,6 +4,38 @@ h2{font-family: Calibri,sans-serif;font-size:1.5em; color: #000;}
 h3{font-family: Calibri,sans-serif;font-size:1.3em; color: #000;}
 h4{font-family: Calibri,sans-serif;font-size:1.2em; color: #000;}
 */
+/* --------------================################================-------------- *
+ *                                   Media Queries                                   *
+ * --------------================################================-------------- */
+ /*Meduim screens */
+@media screen and (max-width: 960px) {
+    #Nameof {
+         overflow: hidden;
+         text-overflow: ellipsis;
+         white-space: nowrap;
+    }
+
+}
+@media screen and (min-width: 959px) {
+        #Nameof {
+
+    /* No specific stuff if we want to show the text */
+    }
+}
+
+#Nameof {
+  margin: 5px 0px 0px 0px;
+  padding: 5px;
+}
+
+#hoverRes {
+  display: none;
+  background-color: #fff;
+  position: absolute;
+  padding: 5px;
+  left: 0;
+  border: 2px solid grey;
+}
 
 h1{color: #000;}
 
@@ -19,7 +51,7 @@ strong {font-weight: bold;}
 	border-collapse: collapse;
 }
 
-.noll { 
+.noll {
 	text-align:center;
 	vertical-align:middle;
 	background:#523;
@@ -30,7 +62,7 @@ strong {font-weight: bold;}
 	cursor:pointer;
 }
 
-.ett { 
+.ett {
 	text-align:center;
 	vertical-align:middle;
 	background:#c9a;
@@ -41,7 +73,7 @@ strong {font-weight: bold;}
 	cursor:pointer;
 }
 
-.hexo { 
+.hexo {
 	text-align:center;
 	vertical-align:middle;
 	background:#c9a;
@@ -52,7 +84,7 @@ strong {font-weight: bold;}
 	cursor:pointer;
 }
 
-.hexbutt { 
+.hexbutt {
 	text-align:center;
 	vertical-align:middle;
 	background:#b89;
@@ -71,12 +103,12 @@ strong {font-weight: bold;}
 	padding: 8px;
 	background-color:#523;
 	/* border: 2px outset #000; */
-	background: linear-gradient(to bottom, #fff 10px, #fde 90%); 
+	background: linear-gradient(to bottom, #fff 10px, #fde 90%);
 	border-radius:8px;
 }
 
 .popover, .popover:before {
-	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);  
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 }
 
 .popover:before,
@@ -103,7 +135,7 @@ strong {font-weight: bold;}
 .popover.arrow-top:after {
 	bottom: 100%;
 	left: 10px;
-	margin-bottom: -7px; 
+	margin-bottom: -7px;
 	border-bottom: 0;
 	border-right: 0;
 	background: #fff;
@@ -113,7 +145,7 @@ strong {font-weight: bold;}
 .popover.arrow-topr:after {
 	bottom: 100%;
 	right: 10px;
-	margin-bottom: -7px; 
+	margin-bottom: -7px;
 	border-bottom: 0;
 	border-right: 0;
 	background: #fff;
@@ -131,12 +163,12 @@ strong {font-weight: bold;}
 .instructions-content {
 	-webkit-columns: 2 200px;
 	-moz-columns: 2 200px;
-	columns: 2 200px; 
-	-webkit-column-gap: 40px;        
+	columns: 2 200px;
+	-webkit-column-gap: 40px;
 	-moz-column-gap: 40px;
-	column-gap: 40px; 
+	column-gap: 40px;
 	padding:15px;
-	border:1px solid #ccc;	
+	border:1px solid #ccc;
 }
 
 .instructions-button {
@@ -152,7 +184,7 @@ strong {font-weight: bold;}
 }
 .instructions-button:after {
 	content: '';
-	display: block;  
+	display: block;
 	position: absolute;
 	left: 49%;
 	left: -webkit-calc(50% - 15px);
@@ -175,7 +207,7 @@ strong {font-weight: bold;}
 }
 
 .instructions-button:hover {
-	background-color:#939393;	
+	background-color:#939393;
 }
 
 /* --------------================################================-------------- *
@@ -199,7 +231,7 @@ strong {font-weight: bold;}
 
 .quiz-question{
 	background-color:#614875;
-	padding:6px 15px 6px 15px;	
+	padding:6px 15px 6px 15px;
 }
 
 .quiz-question h3{
@@ -207,7 +239,7 @@ strong {font-weight: bold;}
 }
 
 .quiz-answer{
-	padding:6px 15px 6px 15px;	
+	padding:6px 15px 6px 15px;
 }
 
 
@@ -232,15 +264,18 @@ strong {font-weight: bold;}
     	cursor:pointer;
     	font-size:14px;
     	transition:1s background-color;
-    	border-radius:4px;	
+    	border-radius:4px;
 
 }
 
 .submit:hover {
     	background-color:#7B5A96;
-    	border-radius:4px;	
+    	border-radius:4px;
 }
-						
+
+/* Change odd rows on resulted bg colour */
+#resultTable___tbl___mhv tbody tr:nth-child(odd) {background-color:#ccc;}
+
 table tbody tr:nth-child(even) {background-color:#F0F0F0;}
 .selectedOp {background-color: #c6cdb8 !important;}
 svg text {
@@ -255,22 +290,3 @@ svg text {
 /* --------------================################================-------------- *
  *                      	    Preview table style     				        *
  * --------------================################================-------------- */
-
-.previewTable {
-    width: 100%;
-    border: 1px solid #d4d1d1;
-}
-
-.previewTable th {
-    padding: 6px;
-    text-align: left;
-    background-color: #d4d1d1;
-}
-
-.previewTable td {
-    padding: 6px;
-}
-
-.previewTable tr:nth-child(even) {
-    background-color: #f1f1f1;
-}
