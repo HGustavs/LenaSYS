@@ -877,7 +877,6 @@ function renderCell(col, celldata, cellid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function smartSearch(splitSearch, row) {
-	// console.log(row);
 	var columnToSearch;
 	var lid;
 	var sortingType;
@@ -908,14 +907,15 @@ function smartSearch(splitSearch, row) {
 					break;
 				case "DEADLINE":
 				case "DATE":
+          isDate = true;
+
           break;
         case "MARKED":
 					isDate = true;
 					var newInputValue = splitSearch[index][1].split("-");
 					var date = new Date(splitSearch[index][1]);
-					// date.setHours(0, 0, 0, 0);
 					sortingValue = date;
-					sortingType = 0;
+					sortingType = row[colname].marked;
 					break;
 			}
 
@@ -944,11 +944,9 @@ function smartSearch(splitSearch, row) {
 				}
 			} else {
 				var dates = "";
-				for (colname in row) {
-					if (row[colname].marked >= sortingValue) {
-
-						dates += row[colname].marked + " ";
-						console.log("dates: " + dates);
+				for (colname in row) {sortingType
+					if (sortingType >= sortingValue) {
+						dates += sortingType + " ";
 					}
 				}
 				if (dates != "") return true;
@@ -958,9 +956,7 @@ function smartSearch(splitSearch, row) {
 }
 
 function rowFilter(row) {
-
-	// console.log(row);
-
+  console.log(row);
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
