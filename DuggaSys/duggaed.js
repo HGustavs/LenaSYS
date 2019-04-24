@@ -103,7 +103,7 @@ function updateDugga() {
 	var template = $("#template").val();
   var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
   if($("#qstart").val()=="") {
-		alert("Missing Start Date"); 
+		alert("Missing Start Date");
 		return;
   }
 	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();

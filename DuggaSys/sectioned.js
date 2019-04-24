@@ -945,7 +945,7 @@ function returnedSection(data) {
           if (itemKind === 1) str += "class='section" + hideState + "' ";
           if (itemKind === 4) str += "class='moment" + hideState + "' ";
 
-          str += "><img id='dorf' class='' src='../Shared/icons/Cogwheel.svg' ";
+          str += "><img id='dorf' title='Settings' class='' src='../Shared/icons/Cogwheel.svg' ";
           str += " onclick='selectItem(" + makeparams([item['lid'], item['entryname'], item['kind'], item['visible'], item['link'], momentexists, item['gradesys'], item['highscoremode'], item['comments'], item['grptype']]) + ");' />";
           str += "</td>";
         }
@@ -953,7 +953,7 @@ function returnedSection(data) {
         // trashcan
         if (data['writeaccess']) {
           str += "<td style='width:32px;' class='" + makeTextArray(itemKind, ["header", "section", "code", "test", "moment", "link", "group", "message"]) + " " + hideState + "'>";
-          str += "<img id='dorf' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
+          str += "<img id='dorf' title='Delete item' class='' src='../Shared/icons/Trashcan.svg' onclick='confirmBox(\"openConfirmBox\", this);'>";
           str += "</td>";
         }
 
@@ -1424,7 +1424,7 @@ $(window).keyup(function (event) {
       newItem();
       showSaveButton();
     } else if (deleteButtonDisplay == 'flex') {
-      // Delete the item, allow enter to act as clicking "yes"  
+      // Delete the item, allow enter to act as clicking "yes"
       confirmBox("deleteItem");
     } else if (isTypeValid() && testsAvailable == true) {
       confirmBox("closeConfirmBox");
