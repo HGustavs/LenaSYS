@@ -1105,6 +1105,7 @@ function eraseSelectedObject() {
 }
 
 function setMode(mode) { //"CreateClass" yet to be implemented in .php
+	console.log(mode);
     canvas.style.cursor = "default";
     uimode = mode;
     if(mode == 'Square' || mode == 'Free' || mode == 'Text') {
@@ -2307,14 +2308,18 @@ function mousedownevt(ev) {
     }
 
     if (uimode == "CreateLine") {
-
         md = 4;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
+
+        let hovobj = diagram.checkForHover();
+
         //If you start on canvas or not
         if (hovobj == -1) {
+        	console.log("if");
             md = 0;
         } else {
+        	console.log("else");
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             //Store which object you are hovering over in lineStartObj
             lineStartObj = hovobj;

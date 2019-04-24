@@ -975,6 +975,7 @@ function Symbol(symbolkind) {
     }
 
     this.drawLine = function(x1, y1, x2, y2) {
+        console.log("DRAWLINE");
         //Checks if there is cardinality set on this object
         if(this.cardinality[0].value != "" && this.cardinality[0].value != null) {
             //Updates x and y position
