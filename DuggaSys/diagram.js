@@ -2033,15 +2033,15 @@ function toggleToolbarLayout() {
 //                not sure what the numbers 0 an 3 mean
 //----------------------------------------------------------------------
 function switchToolbar(direction) {
-  var text = ["All", "ER", "UML", "Free"];
+  var text = ["All", "ER", "UML"];
   if(direction == 'left') {
     toolbarState--;
     if(toolbarState < 0) {
-      toolbarState = 3;
+      toolbarState = 2;
     }
   }else if(direction == 'right') {
     toolbarState++;
-    if(toolbarState > 3) {
+    if(toolbarState > 2) {
       toolbarState = 0;
     }
   }
@@ -2062,10 +2062,16 @@ function switchToolbar(direction) {
     $("#attributebutton").show();
     $("#entitybutton").show();
     $("#relationbutton").show();
-  }else if( toolbarState == toolbarUML) {
+    $("#drawerDraw").show();
+    $("#labelDraw").show();
+    $("#squarebutton").show();
+    $("#drawfreebutton").show();
+  }
+  else if( toolbarState == toolbarUML) {
     $(".toolbar-drawer").hide();
     $("#drawerTools").show();
     $("#drawerCreate").show();
+    $("#drawerDraw").show();
     $("#drawerUndo").show();
     $(".tlabel").hide();
     $("#labelCreate").show();
@@ -2075,15 +2081,9 @@ function switchToolbar(direction) {
     $("#linebutton").show();
     $("#classbutton").show();
     $("#linebutton").hide();
-    $("#umllinebutton").show(); 
-  }else if(toolbarState == toolbarFree) {
-    $(".toolbar-drawer").hide();
+    $("#umllinebutton").show();
     $("#drawerDraw").show();
-    $("#drawerUndo").show();
-    $(".tlabel").hide();
     $("#labelDraw").show();
-    $("#labelUndo").show();
-    $(".buttonsStyle").hide();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
   }
