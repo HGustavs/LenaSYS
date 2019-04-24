@@ -1266,20 +1266,26 @@ function drawSwimlanes() {
   var weekwidth = daywidth * 7;
   var colwidth = 60;
   var weekheight = 25;
+  var addNumb;
 
   var str = "";
   for (var i = 0; i < weekLength; i++) {
-    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" + (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
+    if(i=0){
+      addNumb = 0;
+    }else{
+      addNumb = 4;
+    }
+    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" + (weekwidth+addNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
       str += "fill='#ededed' />";
     } else {
       str += "fill='#ffffff' />";
     }
-    str += "<text x='" + ((i * weekwidth) + (weekwidth * 0.5)) + "' y='" + (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
+    str += "<text x='" + ((i * weekwidth) + (weekwidth * 0.5) + (addNumb * 0.5)) + "' y='" + (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
-    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" + (weekLength * weekwidth) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
+    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" + (weekLength * weekwidth + (addNumb*10)) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
   }
 
 
