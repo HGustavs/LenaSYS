@@ -884,6 +884,8 @@ function smartSearch(splitSearch, row) {
   var sortingDate2;
 	var sortingValue;
 	var isDate = false;
+
+  // Loops through the different search attributes that were seperated by &&, if you want to add multiple search this is the place
 	for (var i = 0; i < splitSearch.length; i++) {
 		var index = i;
 		columnToSearch = splitSearch[i][1];
@@ -891,6 +893,7 @@ function smartSearch(splitSearch, row) {
 		for (var i = 0; i < moments.length; i++) {
 			lid = "lid:" + moments[i]["lid"];
 
+      // All the different types of search categories
 			switch (splitSearch[index][0].toUpperCase()) {
 				case "MARKG":
 					sortingValue = 2;
@@ -928,6 +931,7 @@ function smartSearch(splitSearch, row) {
 								if (row[colname].entryname != null) {
 									name += row[colname].entryname + " ";
 								}
+                // Makes sure that compares are posible even with å,ä and ö in the strings.
 								var txt = document.createElement("textarea");
 								txt.innerHTML = name;
 								var newName2 = txt.value;
@@ -950,7 +954,7 @@ function smartSearch(splitSearch, row) {
             dates += sortingDate2 + " ";
           }
 				}
-				if (dates != "") return true;
+				if (dates != "") return true;§
 			}
 		}
 	}
@@ -981,6 +985,7 @@ function rowFilter(row) {
 			splitSearch.push(s.trim().split(":"));
 	})
 
+  // The else makes sure that you can search on names without a search-category.
 	if (searchterm != "" && splitSearch != searchterm) {
 		return smartSearch(splitSearch, row);
 	} else {
