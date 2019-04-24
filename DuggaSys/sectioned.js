@@ -1279,13 +1279,13 @@ function drawSwimlanes() {
       addNumb = 2;
     }
     var test = weekwidth+addNumb;
-    str += "<rect x='" + (i * test) + "' y='" + (15) + "' width='" + (test+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
+    str += "<rect x='" + (i * test) + "' y='" + (15) + "' width='" + (weekwidth+addNumb+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
       str += "fill='#ededed' />";
     } else {
       str += "fill='#ffffff' />";
     }
-    str += "<text x='" + ((i * weekwidth) + (test * 0.5) + (tempNumb * 0.5)) + "' y='" + (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
+    str += "<text x='" + ((i * test) + (test * 0.5) + (tempNumb * 0.5)) + "' y='" + (33) + "' font-family='Arial' font-size='12px' fill='black' text-anchor='middle'>" + (i + 1) + "</text>";
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
