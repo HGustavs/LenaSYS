@@ -1544,6 +1544,7 @@ input.submit-button {
   font-size: 14px;
   transition: 1s background-color;
   float: left;
+  -webkit-appearance: none
 }
 
 div.submit-button {
