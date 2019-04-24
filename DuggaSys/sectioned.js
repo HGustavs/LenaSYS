@@ -1266,17 +1266,17 @@ function drawSwimlanes() {
   var weekwidth = daywidth * 7;
   var colwidth = 60;
   var weekheight = 25;
-  var addNumb = 4;
-  var tempNumb = 4;
+  var addNumb = 2;
+  var tempNumb = 2;
 
   var str = "";
   for (var i = 0; i < weekLength; i++) {
     if(i==0){
       addNumb = 0;
-      tempNumb = 4;
+      tempNumb = 2;
     }else if(i > 0){
       tempNumb = 0;
-      addNumb = 4;
+      addNumb = 2;
     }
     str += "<rect x='" + (i * (weekwidth + addNumb)) + "' y='" + (15) + "' width='" + (weekwidth+addNumb+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
