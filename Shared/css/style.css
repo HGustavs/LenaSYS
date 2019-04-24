@@ -946,6 +946,7 @@ header td {
 
 #editContent input.submit-button {
   margin: 0;
+  -webkit-appearance: none
 }
 
 #impwords,
