@@ -916,7 +916,7 @@ function smartSearch(splitSearch, row) {
 					break;
 			}
 
-      if(!(splitSearch > 1))
+      if(!(splitSearch.length > 1))
       {
         if (!isDate) {
           var txt = document.createElement("textarea");
