@@ -1278,6 +1278,7 @@ function drawSwimlanes() {
       tempNumb = 0;
       addNumb = 4;
     }
+    console.log(addNumb);
     str += "<rect x='" + (i * weekwidth + addNumb) + "' y='" + (15) + "' width='" + (weekwidth+addNumb+tempNumb) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
       str += "fill='#ededed' />";
