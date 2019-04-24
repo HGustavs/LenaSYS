@@ -873,9 +873,6 @@ function renderCell(col, celldata, cellid) {
 	return celldata;
 }
 
-//----------------------------------------------------------------
-// rowFilter <- Callback function that filters rows in the table
-//----------------------------------------------------------------
 function smartSearch(splitSearch, row) {
 	var columnToSearch;
 	var lid;
@@ -954,12 +951,19 @@ function smartSearch(splitSearch, row) {
             dates += sortingDate2 + " ";
           }
 				}
+<<<<<<< HEAD
 				if (dates != "") return true;§
+=======
+				if (dates != "") return true;
+>>>>>>> f0e7dadc4e211a33d0df5b37b204da639b61f3f1
 			}
 		}
 	}
 }
 
+//----------------------------------------------------------------
+// rowFilter <- Callback function that filters rows in the table
+//----------------------------------------------------------------
 function rowFilter(row) {
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
