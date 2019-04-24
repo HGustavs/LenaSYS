@@ -919,8 +919,7 @@ function smartSearch(splitSearch, row) {
 
           if(splitSearch[index][0].toUpperCase() === "DEADLINE"){
             sortingType = row[lid].deadline;
-          }else if(splitSearch[index][0].toUpperCase() === "MARKED")
-          {
+          }else if(splitSearch[index][0].toUpperCase() === "MARKED"){
             sortingType = row[lid].marked;
           }else{
             sortingType = row[lid].submitted;
@@ -966,7 +965,6 @@ function smartSearch(splitSearch, row) {
 }
 
 function rowFilter(row) {
-  console.log(row);
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
