@@ -886,7 +886,7 @@ function smartSearch(splitSearch, row) {
 	var isDate = false;
 	for (var i = 0; i < splitSearch.length; i++) {
 		var index = i;
-		columnToSearch += splitSearch[i][1];
+		columnToSearch = splitSearch[i][1];
 
 		for (var i = 0; i < moments.length; i++) {
 			lid = "lid:" + moments[i]["lid"];
@@ -909,7 +909,6 @@ function smartSearch(splitSearch, row) {
 					break;
 				case "DATE":
 					isDate = true;
-					var newInputValue = splitSearch[index][1].split("-");
 					var date = new Date(splitSearch[index][1]);
 					sortingValue = date;
           sortingDate1 = 0;
@@ -917,42 +916,83 @@ function smartSearch(splitSearch, row) {
 					break;
 			}
 
-			if (!isDate) {
-				var txt = document.createElement("textarea");
-				txt.innerHTML = row[lid].entryname;
-				var columnToFind = txt.value;
-				if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
-					if (sortingType === sortingValue) {
-						for (colname in row) {
-							if (colname == "lid:" + row[lid].lid) {
-								var name = "";
-								if (row[colname].entryname != null) {
-									name += row[colname].entryname + " ";
-								}
-								var txt = document.createElement("textarea");
-								txt.innerHTML = name;
-								var newName2 = txt.value;
-								if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
-									return true;
-								}
-							}
-						}
-					}
-					return false;
-				}
-			} else {
-				var dates = "";
-				for (colname in row) {
+      if(!(splitSearch > 1))
+      {
+        if (!isDate) {
+          var txt = document.createElement("textarea");
+          txt.innerHTML = row[lid].entryname;
+          var columnToFind = txt.value;
+          if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
+            if (sortingType === sortingValue) {
+              for (colname in row) {
+                if (colname == "lid:" + row[lid].lid) {
+                  var name = "";
+                  if (row[colname].entryname != null) {
+                    name += row[colname].entryname + " ";
+                  }
+                  var txt = document.createElement("textarea");
+                  txt.innerHTML = name;
+                  var newName2 = txt.value;
+                  if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
+                    return true;
+                  }
+                }
+              }
+            }
+            return false;
+          }
+        } else {
+          var dates = "";
+          for (colname in row) {
+            sortingDate1 = row[colname].marked;
+            sortingDate2 = row[colname].submitted;
+            if (sortingDate1 >= sortingValue) {
+              dates += sortingDate1 + " ";
+            }else if(sortingDate2 >= sortingValue ){
+              dates += sortingDate2 + " ";
+            }
+          }
+          if (dates != "") return true;
+        }
+      }else{
+        var match = false;
+        var txt = document.createElement("textarea");
+        txt.innerHTML = row[lid].entryname;
+        var columnToFind = txt.value;
+        if (columnToSearch.toUpperCase() === columnToFind.toUpperCase()) {
+          if (sortingType === sortingValue) {
+            for (colname in row) {
+              if (colname == "lid:" + row[lid].lid) {
+                var name = "";
+                if (row[colname].entryname != null) {
+                  name += row[colname].entryname + " ";
+                }
+                var txt = document.createElement("textarea");
+                txt.innerHTML = name;
+                var newName2 = txt.value;
+                if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
+                  match = true;
+                }
+              }
+            }
+          }
+          //return false;
+        }
+        var dates = "";
+        for (colname in row) {
           sortingDate1 = row[colname].marked;
           sortingDate2 = row[colname].submitted;
-					if (sortingDate1 >= sortingValue) {
-						dates += sortingDate1 + " ";
-					}else if(sortingDate2 >= sortingValue ){
+          if (sortingDate1 >= sortingValue) {
+            dates += sortingDate1 + " ";
+          }else if(sortingDate2 >= sortingValue ){
             dates += sortingDate2 + " ";
           }
-				}
-				if (dates != "") return true;
-			}
+        }
+        if (dates != "") match = true;
+
+        if(!match) return false;
+      }
+      return true;
 		}
 	}
 }
