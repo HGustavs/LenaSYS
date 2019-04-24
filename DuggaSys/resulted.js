@@ -877,6 +877,7 @@ function renderCell(col, celldata, cellid) {
 // rowFilter <- Callback function that filters rows in the table
 //----------------------------------------------------------------
 function smartSearch(splitSearch, row) {
+	// console.log(row);
 	var columnToSearch;
 	var lid;
 	var sortingType;
@@ -942,20 +943,14 @@ function smartSearch(splitSearch, row) {
 			} else {
 				var dates = "";
 				for (colname in row) {
-					if (row[colname].deadline >= sortingValue) {
+					if (row[colname].marked >= sortingValue) {
 
-						dates += row[colname].deadline + " ";
+						dates += row[colname].marked + " ";
 						console.log("dates: " + dates);
-
-						// alla värden läggs in i date, men nu måste vi visa endast dom datumen som passar
-						// i tabellen
-						if (dates.indexOf(sortingValue.toString()) != -1) {
-							return true;
-						}
 					}
 				}
+				if (dates != "") return true;
 			}
-			return false;
 		}
 	}
 }
