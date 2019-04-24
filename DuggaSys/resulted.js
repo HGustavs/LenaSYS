@@ -918,7 +918,7 @@ function smartSearch(splitSearch, row) {
             sortingType = row[lid].submitted;
           }else if(splitSearch[index][0].toUpperCase() === "MARKED"){
             sortingType = row[lid].marked;
-          }else{
+          }else if(splitSearch[index][0].toUpperCase() === "DATE" || splitSearch[index][0].toUpperCase() === "DEADLINE"){
             sortingType = row[lid].deadline;
           }
 					break;
