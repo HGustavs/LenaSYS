@@ -65,28 +65,28 @@ if($ha){
 		// Create folder if link textinput or file
 		$currcvd=getcwd();
 		if(!file_exists($currcvd."/submissions")) {
-				if(!mkdir($currcvd."/submissions")) {
+				if(!mkdir($currcvd."/submissions",0775,true)) {
 						echo "Error creating folder: ".$currcvd."/submissions";
 						$error=true;
 				}
 		}
 
 		if(!file_exists ($currcvd."/submissions/".$cid)){
-				if(!mkdir($currcvd."/submissions/".$cid)){
+				if(!mkdir($currcvd."/submissions/".$cid,0775,true)){
 						echo "Error creating folder: ".$currcvd."/submissions/cid";
 						$error=true;
 				}
 		}
 
 		if(!file_exists ($currcvd."/submissions/".$cid."/".$vers)){
-				if(!mkdir($currcvd."/submissions/".$cid."/".$vers)){
+				if(!mkdir($currcvd."/submissions/".$cid."/".$vers,0775,true)){
 						echo "Error creating folder: ".$currcvd."/submissions/cid/vers";
 						$error=true;
 				}
 		}
 
 		if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid)){
-				if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid)){
+				if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid,0775,true)){
 						echo "Error creating folder: ".$currcvd."/submissions/cid/vers/duggaid";
 						$error=true;
 				}

@@ -47,6 +47,7 @@ function sortableInternalSort(a, b) {
 	var ret = 0;
 	//var colname = sortableTable.currentTable.getKeyByValue();
 	var colname = sortableTable.currentTable.getSortcolumn();
+	
 	if ((sortableTable.currentTable.sortkind % 2) == 0) {
 		//alert("Compare: "+a+" "+b);
 		ret = newCompare(a[colname], b[colname]);
@@ -734,13 +735,27 @@ function newCompare(firstCell, secoundCell) {
 				}
 			}
 		}
+		
+		if (col === "requestedpasswordchange") {
+			firstCellTemp = JSON.parse(firstCell);
+			secoundCellTemp = JSON.parse(secoundCell);
+			a = firstCellTemp.requested;
+			b = secoundCellTemp.requested;
+			if (status == 0) {
+				a > b ? val = 1 : a < b ? val = -1 : val = 0;
+			} else {
+				a < b ? val = 1 : a > b ? val = -1 : val = 0;
+			}
+			return val;
+		}
 
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+
 		if (status == 0) {
-			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase());
+			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
-			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase());
+			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		}
 	}
 	else {

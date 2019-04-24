@@ -1318,6 +1318,14 @@ function drawSwimlanes() {
 
 // -------------==============######## Setup and Event listeners ###########==============-------------
 
+$(document).mouseover(function (e) {
+    FABMouseOver(e);
+});
+
+$(document).mouseout(function (e) {
+    FABMouseOut(e);
+});
+
 $(document).mousedown(function (e) {
   mouseDown(e);
 
@@ -1335,13 +1343,20 @@ $(document).mouseup(function (e) {
 });
 
 $(document).on("touchstart", function (e) {
+  if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
+    e.preventDefault();
+  }
+
   mouseDown(e);
-  FABDown(e);
+  TouchFABDown(e);
 });
 
 $(document).on("touchend", function (e) {
+  if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
+    e.preventDefault();
+  }
   mouseUp(e);
-  FABUp(e);
+  TouchFABUp(e);
 });
 
 //----------------------------------------------------------------------------------
@@ -1387,12 +1402,14 @@ function mouseUp(e) {
 //----------------------------------------------------------------------------------
 
 $(window).keyup(function (event) {
+  console.log(event.keyCode);
   if (event.keyCode == 27) {
+    // if key is escape
     closeWindows();
     closeSelect();
     showSaveButton();
     hamburgerChange("escapePress");
-    document.activeElement.blur(); // to lose focus from the newItem button when pressing enter
+    document.activeElement.blur(); // to lose focus from the newItem button when pressing escape
   } else if (event.keyCode == 13) {
     //Remember that keycode 13 = enter button
     document.activeElement.blur();
@@ -1406,6 +1423,9 @@ $(window).keyup(function (event) {
     } else if (submitButtonDisplay == 'block' && editSectionDisplay == 'flex') {
       newItem();
       showSaveButton();
+    } else if (deleteButtonDisplay == 'flex') {
+      // Delete the item, allow enter to act as clicking "yes"  
+      confirmBox("deleteItem");
     } else if (isTypeValid() && testsAvailable == true) {
       confirmBox("closeConfirmBox");
       testsAvailable = false;
@@ -1478,7 +1498,7 @@ function addClasses() {
 }
 
 // Function for automatically create a mail with participating students in current course
-function mail() {
+/*function mail() {
   var reqType = "mail";
 
   var url_string = window.location.href;
@@ -1500,7 +1520,7 @@ function mail() {
       window.location.assign("mailto:" + data + "?subject=" + "!!! Notification !!! " + cname);
     }
   });
-}
+}*/
 
 // Function for checking if a grace time exists and if the submition time is withing that grace time window
 function hasGracetimeExpired(deadline, dateTimeSubmitted) {

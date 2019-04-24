@@ -87,7 +87,7 @@ function selectDugga(qid) {
 	$("#deadlinet3").html(makeoptions(dls.deadline3.substr(11,2),tarro,tarrv));
   $("#deadlinem3").html(makeoptions(dls.deadline3.substr(14,2),marro,marrv));
   if(quiz['qrelease']===null)quiz['qrelease']="";
-  $("#release").val(quiz['qrelease']);
+  $("#release").val(quiz['qrelease'].substr(0,10));
 	$("#releaset").html(makeoptions(quiz['qrelease'].substr(11,2),tarro,tarrv));
   $("#releasem").html(makeoptions(quiz['qrelease'].substr(14,2),marro,marrv));
 
@@ -102,20 +102,25 @@ function updateDugga() {
 	var gradesys = $("#gradesys").val();
 	var template = $("#template").val();
   var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
-  if($("#qstart").val()=="")qstart="UNK";
+  if($("#qstart").val()=="") {
+		alert("Missing Start Date"); 
+		return;
+  }
 	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
-  var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
-  if($("#release").val()=="")release="UNK";
+	var release = $("#release").val()+" "+$("#releaset").val()+":"+$("#releasem").val();
+	if($("#release").val()=="")release="UNK";
   var jsondeadline = {"deadline1":"", "comment1":"","deadline2":"", "comment2":"", "deadline3":"", "comment3":""};
   if($("#deadline").val()!=""){
       jsondeadline.deadline1=deadline;
       jsondeadline.comment1=$("#deadlinecomments1").val();
   }else{
-      deadline="UNK";
-      jsondeadline.deadline1="";
-      jsondeadline.comment1="";
+      alert("Missing Deadline 1");
+      return;
   }
-
+  if(deadline < qstart) {
+		alert("Deadline before start:\nDeadline: "+deadline+" - Start: "+qstart);
+		return;
+  }
   if($("#deadline2").val()!=""){
       jsondeadline.deadline2=$("#deadline2").val()+" "+$("#deadlinet2").val()+":"+$("#deadlinem2").val();
       jsondeadline.comment2=$("#deadlinecomments2").val();
@@ -678,30 +683,6 @@ function renderSortOptionsVariant(col,status,colname) {
 	return str;
 }
 
-//Compare to make the table sortable
-function compare(a,b) {
-	var col = sortableTable.currentTable.getSortcolumn();
-	var tempA = a;
-	var tempB = b;
-
-	// Needed so that the counter starts from 0
-	// everytime we sort the table
-	count = 0;
-
-	if (col == "qname"  || col == "quizFile") {
-		tempA = tempA.toUpperCase();
-		tempB = tempB.toUpperCase();
-	}
-
-	if (tempA > tempB || tempB == null) {
-		return 1;
-	} else if (tempA < tempB || tempA == null) {
-		return -1;
-	} else {
-		return 0;
-	}
-}
-
 //Filtering duggas from the searchfield.
 function duggaFilter(row) {
 	if (row.qname.toLowerCase().indexOf(searchterm.toLowerCase()) != -1){
@@ -784,24 +765,38 @@ $(document).scroll(function(e){
 });
 
 // Start of functions handling the FAB-button functionality
+$(document).mouseover(function (e) {
+	FABMouseOver(e);
+});
+
+$(document).mouseout(function (e) {
+	FABMouseOut(e);
+});
+
 $(document).mousedown(function (e) {
-		mouseDown(e);
+	mouseDown(e);
+
+	if (e.button == 0) {
 		FABDown(e);
+	}
 });
 
 $(document).mouseup(function (e) {
-		mouseUp(e);
+	mouseUp(e);
+
+	if (e.button == 0) {
 		FABUp(e);
+	}
 });
 
-$(document).on("touchstart", function(e){
-		mouseDown(e);
-		FABDown(e);
+$(document).on("touchstart", function (e) {
+	mouseDown(e);
+	TouchFABDown(e);
 });
 
-$(document).on("touchend", function(e){
-		mouseUp(e);
-		FABUp(e);
+$(document).on("touchend", function (e) {
+	mouseUp(e);
+	TouchFABUp(e);
 });
 
 //----------------------------------------------------------------------------------

@@ -337,7 +337,7 @@ function returnedCourse(data)
 	// Show the [LenaSYS] Course Organization System - header. Ellipsis on it if the page gets too narrow
 	str += "<div id='lena' class='head nowrap' style='display: flex; align-items: center;justify-content: center;''><a href='https://github.com/HGustavs/LenaSYS'><span class='sys'><span class='lena'>LENA</span>Sys</span></a><div class='ellipsis'> Course Organization System</div>"
 	if (data['writeaccess']){
-		str+="<img style='margin-left:15px;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings();'>"
+		str+="<img style='margin-left:17px;cursor:pointer;' src='../Shared/icons/Cogwheel.svg' onclick='editSettings(); 'title='Edit Server Settings'>"
 	}
 	str+="</div>";
 	// For now we only have two kinds of sections

@@ -540,18 +540,37 @@ function updatePreview(str) {
 // Event listeners for fab button
 //----------------------------------------------------
 
+$(document).mouseover(function (e) {
+	FABMouseOver(e);
+});
+
+$(document).mouseout(function (e) {
+	FABMouseOut(e);
+});
+
 $(document).mousedown(function (e) {
-  FABDown(e);
+	if (e.button == 0) {
+		FABDown(e);
+	}
 });
 
 $(document).mouseup(function (e) {
-  FABUp(e);
+	if (e.button == 0) {
+		FABUp(e);
+	}
 });
 
-$(document).on("touchstart", function(e){
-  FABDown(e);
+$(document).on("touchstart", function (e) {
+	if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
+		e.preventDefault();
+	}
+
+	TouchFABDown(e);
 });
 
-$(document).on("touchend", function(e){
-  FABUp(e);
+$(document).on("touchend", function (e) {
+	if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
+		e.preventDefault();
+	}
+	TouchFABUp(e);
 });
