@@ -230,10 +230,22 @@ function Symbol(kind) {
         var hh = (points[this.bottomRight].y - y1) * 0.5;
         if (this.symbolkind == 2 || this.symbolkind == 3) {
             if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width) {
-                points[this.bottomRight].x = points[this.topLeft].x + entityTemplate.width;
+                // If the width is less than the minimum, push out the
+                // point that the user is dragging
+                if(points[this.bottomRight] === sel.point) {
+                    points[this.bottomRight].x = points[this.topLeft].x + entityTemplate.width;
+                }else {
+                    points[this.topLeft].x = points[this.bottomRight].x - entityTemplate.width;
+                }
             }
             if(points[this.bottomRight].y - points[this.topLeft].y < entityTemplate.height) {
-                points[this.bottomRight].y = points[this.topLeft].y + entityTemplate.height;
+                // If the height is less than the minimum, push out the
+                // point that the user is dragging
+                if(points[this.bottomRight] === sel.point) {
+                    points[this.bottomRight].y = points[this.topLeft].y + entityTemplate.height;
+                }else {
+                    points[this.topLeft].y = points[this.bottomRight].y - entityTemplate.height;
+                }
             }
             points[this.centerPoint].x = x1 + hw;
             points[this.centerPoint].y = y1 + hh;
