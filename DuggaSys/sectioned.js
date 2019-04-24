@@ -1303,7 +1303,11 @@ function drawSwimlanes() {
         if (fillcol == "#BDBDBD" && entry.deadline - current < 0) {
           textcol = "#FF0000";
         }
-        str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (duggalength * daywidth) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
+        var tempVariable = duggalength*daywidth;
+        if(tempVariable >= 67000){
+          tempVariable = 66012;
+        }
+        str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'>" + entry.text + "</text>";
       }
     }
