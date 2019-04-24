@@ -168,6 +168,12 @@ function changeProperty(targetobj,propertyname,propertyvalue)
 //----------------------------------------------------------------
 var tgroups=[];
 
+function hideSSN(ssn){
+	var hiddenSSN;
+	hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
+	return hiddenSSN;
+}
+
 function renderCell(col,celldata,cellid) {
 		var str="UNK";
 		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "class"||col == "examiner"||col == "groups"||col == "vers"||col == "access"||col == "requestedpasswordchange"){
@@ -176,7 +182,11 @@ function renderCell(col,celldata,cellid) {
 
 		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"){
 			//str = "<div style='display:flex;'><input id='"+col+"_"+obj.uid+"' onKeyDown='if(event.keyCode==13) changeOpt(event)' value=\""+obj[col]+"\" style='margin:0 4px;flex-grow:1;font-size:11px;' size=" + obj[col].toString().length +"></div>";
-			str = "<div style='display:flex;'><span id='"+col+"_"+obj.uid+"' style='margin:0 4px;flex-grow:1;'>"+obj[col]+"</span></div>";
+			if(col == "ssn"){
+				str = "<div style='display:flex;'><span id='"+col+"_"+obj.uid+"' style='margin:0 4px;flex-grow:1;'>"+hideSSN(obj[col])+"</span></div>";
+			} else {
+				str = "<div style='display:flex;'><span id='"+col+"_"+obj.uid+"' style='margin:0 4px;flex-grow:1;'>"+obj[col]+"</span></div>";
+			}
 		}else if(col=="class"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'><option value='None'>None</option>"+makeoptionsItem(obj.class,filez['classes'],"class","class")+"</select>";
 		}else if(col=="examiner"){

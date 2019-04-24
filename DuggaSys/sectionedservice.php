@@ -52,7 +52,7 @@ $grplst=array();
 
 if($gradesys=="UNK") $gradesys=0;
 
-if ($requestType=="mail"){
+/*if ($requestType=="mail"){
 
 	// sql_query to get the emails from the users going the specified courseid and coursevers.
 	$mailQuery = $pdo->prepare("SELECT user.email FROM user LEFT JOIN user_course on user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:vers");
@@ -72,7 +72,7 @@ if ($requestType=="mail"){
 	// Returns the emails in a string representation.
 	echo json_encode($implodedEmails);
 
-}	else {
+}	else {*/
 		// Store current day in string
 		$today = date("Y-m-d H:i:s");
 
@@ -760,5 +760,5 @@ array_push(
 
 		logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "sectionedservice.php",$userid,$info);
 
-	}
+	
 ?>

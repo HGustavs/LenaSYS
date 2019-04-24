@@ -21,6 +21,9 @@ if(isset($_SESSION['uid'])){
 	$firstname="UNK";
 }
 
+$requestType = getOP('requestType');
+$searchterm = getOP('searchterm');
+$courseid = getOP('courseid');
 $opt = getOP('opt');
 $cid = getOP('cid');
 $luid = getOP('luid');
@@ -65,6 +68,41 @@ $debug="NONE!";
 $log_uuid = getOP('log_uuid');
 $info=$opt." ".$cid." ".$coursevers." ".$luid." ".$vers." ".$listentry." ".$mark;
 logServiceEvent($log_uuid, EventTypes::ServiceServerStart, "resultedservice.php",$userid,$info);
+
+if($requestType == "mail"){
+	switch($searchterm)
+	{
+		case strpos($searchterm, ' ') !== false:
+			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND (user.firstname LIKE :searchterm1 AND user.lastname LIKE :searchterm2)");
+			$searchterm = "%".$searchterm."%";
+			$searchterm = explode(' ', $searchterm);
+			$mailQuery->bindParam(':searchterm1', $searchterm[0]);
+			$searchterm[1] = $searchterm[1]."%";
+			$mailQuery->bindParam(':searchterm2', $searchterm[1]);
+			break;
+
+		default:
+			$mailQuery = $pdo->prepare("SELECT user.email FROM user INNER JOIN user_course ON user.uid = user_course.uid WHERE user_course.cid=:cid AND user_course.vers=:cvers AND (user.firstname LIKE :searchterm OR user.lastname LIKE :searchterm OR user.username LIKE :searchterm OR user.ssn LIKE :searchterm OR user.class LIKE :searchterm)");
+			$searchterm = "%".$searchterm."%";
+			$mailQuery->bindParam(':searchterm', $searchterm);
+			break;
+	}
+	$mailQuery->bindParam(':cid', $courseid);
+	$mailQuery->bindParam(':cvers', $coursevers);
+	$emailsArray = array();
+	if(!$mailQuery->execute()){
+		$error=$mailQuery->errorInfo();
+		$debug="Error reading user entries".$error[2];
+	}
+	// Fetches the emails from the sql_query result $mailQuery and then pushes it into the array $emailsArray.
+	foreach($mailQuery->fetchAll(PDO::FETCH_ASSOC) as $row){
+		array_push($emailsArray,$row['email']);
+	}
+	// Seperates the emails with a ;.
+	$implodedEmails=implode('; ',$emailsArray);
+	// Returns the emails in a string representation.
+	echo json_encode($implodedEmails);
+	} else {
 
 //------------------------------------------------------------------------------------------------
 // Services
@@ -641,7 +679,6 @@ $array = array(
 echo json_encode($array);
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "resultedservice.php",$userid,$info);
-
-
+}
 
 ?>

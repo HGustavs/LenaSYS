@@ -1984,7 +1984,7 @@ input.large-button {
 }
 
 .sortableHeading {
-  display: block;
+  display:inline !important;
   cursor: pointer;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -2690,7 +2690,6 @@ span.arrow {
 .VGc,
 .VGh {
   height: 24px;
-  width: 24px;
   cursor: pointer;
   margin-right: 10px;
 }
@@ -2708,7 +2707,7 @@ span.arrow {
   padding: 8px;
   width: 300px;
   height: 300px;
-  overflow: scroll;
+  overflow-y: scroll;
   font-size: 12px;
   display: none;
   position: absolute;
@@ -2929,13 +2928,12 @@ table {
   border-radius: 5px;
   float: right;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.5), 0 2px 10px 0 rgba(0,0,0,0.1);
-  margin-bottom: 5px;
+  margin-bottom: 15px;
+  margin-right: 7px;
 }
 
 #searchinput {
   margin-right: 0;
-  margin-bottom: 5px;
-  margin-top: 5px;
   border-right: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
