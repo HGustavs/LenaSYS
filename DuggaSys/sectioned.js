@@ -1270,7 +1270,7 @@ function drawSwimlanes() {
 
   var str = "";
   for (var i = 0; i < weekLength; i++) {
-    if(i=0){
+    if(i==0){
       addNumb = 0;
     }else{
       addNumb = 4;
