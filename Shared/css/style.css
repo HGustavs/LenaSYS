@@ -946,7 +946,6 @@ header td {
 
 #editContent input.submit-button {
   margin: 0;
-  -webkit-appearance: none
 }
 
 #impwords,
@@ -2385,6 +2384,7 @@ span.arrow {
   line-height: 30px;
   text-align: center;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  -webkit-appearance: none;
 }
 
 #variantSearch{
