@@ -1269,7 +1269,7 @@ function drawSwimlanes() {
 
   var str = "";
   for (var i = 0; i < weekLength; i++) {
-    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" + (weekwidth) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
+    str += "<rect x='" + (i * weekwidth) + "' y='" + (15) + "' width='" + (weekwidth+2) + "' height='" + (weekheight * (deadlineEntries.length + 1)) + "' ";
     if ((i % 2) == 0) {
       str += "fill='#ededed' />";
     } else {
@@ -1279,7 +1279,7 @@ function drawSwimlanes() {
   }
 
   for (var i = 1; i < (deadlineEntries.length + 2); i++) {
-    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" + (weekLength * weekwidth) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
+    str += "<line x1='0' y1='" + ((i * weekheight) + 15) + "' x2='" + (weekLength * weekwidth + 20) + "' y2='" + ((i * weekheight) + 15) + "' stroke='black' />";
   }
 
 
@@ -1304,9 +1304,6 @@ function drawSwimlanes() {
           textcol = "#FF0000";
         }
         var tempVariable = duggalength*daywidth;
-        if(tempVariable >= 67000){
-          tempVariable = 66012;
-        }
         str += "<rect opacity='0.7' x='" + (startday * daywidth) + "' y='" + (weeky) + "' width='" + (tempVariable) + "' height='" + weekheight + "' fill='" + fillcol + "' />";
         str += "<text x='" + (12) + "' y='" + (weeky + 18) + "' font-family='Arial' font-size='12px' fill='" + textcol + "' text-anchor='left'>" + entry.text + "</text>";
       }
