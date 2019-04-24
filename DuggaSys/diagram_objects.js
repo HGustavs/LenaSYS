@@ -1147,6 +1147,7 @@ function Symbol(kind) {
                             // checking if the line Y coordinate is the same as the relations middle Y coordinate.
                             if (dtly == relationMidYPoints[j] || dbly == relationMidYPoints[j]) {
                                 if (dtlx == relationMidYPoints[c] || dtrx == relationMidYPoints[c]) {
+                                    // Going through the array even if empty since it otherwise requires that an attribute is connected to the entity in all cases
                                     for (let y = 0; y <= attributeMidPoint.length; y++) {
                                         for (let k = 0; k <= attributeMidPoint.length; k++) {
                                             // Making sure that lines between relations and attributes aren't set to forced.
