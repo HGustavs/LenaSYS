@@ -63,6 +63,7 @@ var p3 = null;                      // Middlepoint/centerPoint
 var snapToGrid = false;             // Will the clients actions snap to grid
 var toggleA4 = false;               // toggle if a4 outline is drawn
 var toggleA4Holes = false;          // toggle if a4 holes are drawn
+var toggleDeveloperMode = false;    // Toggle DeveloperMode.
 var crossStrokeStyle1 = "#f64";     // set the color for the crosses.
 var crossFillStyle = "#d51";
 var crossStrokeStyle2 = "#d51";
@@ -1340,6 +1341,8 @@ function debugMode() {
         crossStrokeStyle2 = "rgba(255, 102, 68, 0.0)";
         ghostingCrosses = true;
     }
+    /*$("#toolbarOptions").toggleClass("drop-down-item drop-down-item-disabled");
+    setCheckbox($(".drop-down-option:contains('Display Compact Toolbar')"), toggleDeveloperMode);*/ 
     reWrite();
     updateGraphics();
     setCheckbox($(".drop-down-option:contains('Developer mode')"), !ghostingCrosses);

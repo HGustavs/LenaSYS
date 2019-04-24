@@ -143,9 +143,7 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option">Load</span>
                         </div>
-                        <div class="drop-down-divider">
-
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" id="buttonid" onclick="openImportDialog();" value='getImage'>Import</span>
                         </div>
@@ -164,9 +162,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="drop-down-divider">
-
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='clearCanvas(); removeLocalStorage();'>Clear Diagram</span>
                         </div>
@@ -183,8 +179,7 @@
                             <span class="drop-down-option" onclick='redoDiagram()'>Redo</span>
                             <i id="hotkey-redo">Ctrl + Y</i>
                         </div>
-                        <div class="drop-down-divider">
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='globalAppearanceMenu();'>Global Appearance</span>
                         </div>
@@ -199,8 +194,7 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='eraseSelectedObject();'>Delete Object</span>
                         </div>
-                        <div class="drop-down-divider">
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='resetViewToOrigin();'>Reset view to origin</span>
                         </div>
@@ -215,8 +209,10 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='debugMode();'>Developer mode</span>
                         </div>
-                        <div class="drop-down-divider">
+                        <div class="drop-down-item">
+                            <span class="drop-down-option" id="toolbarOptions">Display Toolbar Options</span>
                         </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
                         </div>
@@ -231,8 +227,7 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleGrid(this)">Snap to grid</span>
                         </div>
-                        <div class="drop-down-divider">
-                        </div>
+                        <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="align('top');">Top</span>
                         </div>
