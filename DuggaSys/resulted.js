@@ -951,11 +951,7 @@ function smartSearch(splitSearch, row) {
             dates += sortingDate2 + " ";
           }
 				}
-<<<<<<< HEAD
-				if (dates != "") return true;§
-=======
 				if (dates != "") return true;
->>>>>>> f0e7dadc4e211a33d0df5b37b204da639b61f3f1
 			}
 		}
 	}
