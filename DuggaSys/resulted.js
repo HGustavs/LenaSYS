@@ -880,6 +880,8 @@ function smartSearch(splitSearch, row) {
 	var columnToSearch;
 	var lid;
 	var sortingType;
+  var sortingDate1;
+  var sortingDate2;
 	var sortingValue;
 	var isDate = false;
 	for (var i = 0; i < splitSearch.length; i++) {
@@ -910,7 +912,8 @@ function smartSearch(splitSearch, row) {
 					var newInputValue = splitSearch[index][1].split("-");
 					var date = new Date(splitSearch[index][1]);
 					sortingValue = date;
-          sortingType = 0;
+          sortingDate1 = 0;
+          sortingDate2 = 0;
 					break;
 			}
 
@@ -940,27 +943,13 @@ function smartSearch(splitSearch, row) {
 			} else {
 				var dates = "";
 				for (colname in row) {
-
-          // if(splitSearch[index][0].toUpperCase() === "DEADLINE"){
-          //   sortingType = row[colname].deadline;
-          // }else if(splitSearch[index][0].toUpperCase() === "MARKED"){
-          //   sortingType = row[colname].marked;
-          // }else if(splitSearch[index][0].toUpperCase() === "SUBMITTED"){
-          //   sortingType = row[colname].submitted;
-          // }else{
-          //   sortingType = row[colname].deadline;
-          // }
-
-          sortingType = row[colname].marked;
-					if (sortingType >= sortingValue) {
-						dates += sortingType + " ";
-					}
-          sortingType = 0;
-          sortingType = row[colname].submitted;
-          if (sortingType >= sortingValue) {
-            dates += sortingType + " ";
+          sortingDate1 = row[colname].marked;
+          sortingDate2 = row[colname].submitted;
+					if (sortingDate1 >= sortingValue) {
+						dates += sortingDate1 + " ";
+					}else if(sortingDate2 >= sortingValue ){
+            dates += sortingDate2 + " ";
           }
-
 				}
 				if (dates != "") return true;
 			}
@@ -969,7 +958,6 @@ function smartSearch(splitSearch, row) {
 }
 
 function rowFilter(row) {
-  console.log(row);
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
