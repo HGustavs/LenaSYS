@@ -1,4 +1,11 @@
 <?php
+    /********************************************************************************
+
+        diagramservice.php, reads github activity data for a user (Including number of
+        issues created, comments posted, lines of code modified) for every week and
+        returns it in a JSON object
+
+    ********************************************************************************/
     date_default_timezone_set("Europe/Stockholm");
     // Include basic application services!
     include_once "../Shared/sessions.php";

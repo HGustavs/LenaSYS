@@ -30,7 +30,7 @@ pdoConnect();
 <body>
 
 	<?php
-		$noup="COURSE";
+		$noup="SECTION";
 		include '../Shared/navheader.php';
 	?>
 

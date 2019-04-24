@@ -2632,6 +2632,20 @@ function setLocalStorageProperties(templateId, boxValArray)
 }
 
 //----------------------------------------------------------------------------------
+//	LOADER:	Makes the page content hidden until it is loaded completely and displays a 
+//  loading gif until page has loaded fully     
+//----------------------------------------------------------------------------------
+document.onreadystatechange = function () {
+  var state = document.readyState
+  if (state == 'interactive') {
+       document.getElementById('content').style.visibility="hidden";
+  } else if (state == 'complete') {
+      document.getElementById('loader').style.visibility="hidden";
+      document.getElementById('content').style.visibility="visible";
+  }
+}
+
+//----------------------------------------------------------------------------------
 //Gets box measurements from localstorage and applies them onto the boxes on screen.
 //This is done preinit of boxValArray, so that the init of that array gets these values.
 //		  TODO: Add handling for when localstorage is null or < 0

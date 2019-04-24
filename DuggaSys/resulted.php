@@ -67,6 +67,15 @@ pdoConnect();
         <label>Betygsdatum</label>
         <input id="laddate" type="date" style="font-size:12px;">
       </div>
+			<div style="display:flex; flex-direction:column;justify-content:space-between;margin:5px;">
+				<label>Filtrera efter</label>
+				<select id="gradeFilterScale" onchange="updateTable();">
+					<option value="Filter-none" selected>inget</option>
+					<option value="Filter-G">G</option>
+					<option value="Filter-VG">VG</option>
+					<option value="Filter-U">U</option>
+				</select>
+			</div>
       <button onclick="ladexport();">LadExport</button>
     </div>
 		<!--<div id='searchBar' style='position:fixed; top:129px; right: 5px;'>-->
@@ -85,8 +94,11 @@ pdoConnect();
 
 	<div id='resultpopover' class='resultPopover' style='display:none'>
 		<div class='loginBoxheader'>
-			<h3 style='width:100%;' id='Nameof'>Show Results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
+			<span id="hoverRes" ></span>
+			<h3 style='width:100%;' id='Nameof' onmouseover="hoverResult();"
+			onmouseout="hideHover();" >Show Results</h3><div class='cursorPointer' onclick='closeWindows();'>x</div>
 		</div>
+
 		<div id="MarkCont" style="position:absolute; left:4px; right:204px; top:34px; bottom:4px; border:2px inset #aaa;background:#bbb; overflow:scroll;"> </div>
 		<div style="position:absolute; right:2px; top:34px; background:#bbb; width:200px;"><div id='markMenuPlaceholder'></div><div id="teacherFeedbackTable"></div></div>
 	</div>
