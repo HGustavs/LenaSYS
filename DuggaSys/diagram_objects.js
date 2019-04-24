@@ -1,9 +1,9 @@
 
 /************************************************
-    
+
     THIS FILE HANDLES THE OBJECTS AND
     PATHS USED BY THE DIAGRAM FUNCTIONS
-    
+
 ************************************************/
 
 //--------------------------------------------------------------------
@@ -289,7 +289,7 @@ function Symbol(kind) {
             points[this.bottomRight].y = points[this.topLeft].y + (points[this.bottomRight].x - points[this.topLeft].x) * relationTemplate.height/relationTemplate.width;
             points[this.centerPoint].x = x1 + (points[this.bottomRight].x-points[this.topLeft].x)/2;
             points[this.centerPoint].y = y1 + (points[this.bottomRight].y-points[this.topLeft].y)/2
-            
+
         } else if (this.symbolkind == 6) {
             var fontsize = this.getFontsize();
             ctx.font = "bold " + fontsize + "px " + this.properties['font'];
@@ -835,11 +835,11 @@ function Symbol(kind) {
     // draw: Redraws graphics
     //--------------------------------------------------------------------
     //       beginpath - moveto - lineto
-    //      
+    //
     //       To make a dashed line, draw with:
     //       ctx.setLineDash(segments);
     //--------------------------------------------------------------------
-      
+
     this.draw = function () {
         ctx.lineWidth = this.properties['lineWidth'] * 2;
         this.properties['textSize'] = this.getFontsize();
@@ -884,7 +884,7 @@ function Symbol(kind) {
         else if(this.symbolkind == 5) {
             this.drawRelation(x1, y1, x2, y2);
         }
-        // 6 = Text 
+        // 6 = Text
         else if (this.symbolkind == 6) {
             this.drawText(x1, y1, x2, y2);
         }
@@ -1457,15 +1457,15 @@ function Symbol(kind) {
 		    }
 
 		    // Move the value from the line
-		    cardinality.x = x1 > x2 ? x1-10 : x1+10;
-		    cardinality.y = y1 > y2 ? y1-10 : y1+10;
+		    cardinality.x = x1 > x2 ? x1-13 : x1+13;
+		    cardinality.y = y1 > y2 ? y1-15 : y1+15;
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
 		        cardinality.x = x1 > x2 ? x1+10 : x1-10;
 		    }
-		    else if(cardinality.axis == "Y") {   
-		        cardinality.y = y1 > y2 ? y1+10 : y1-10;                    
+		    else if(cardinality.axis == "Y") {
+		        cardinality.y = y1 > y2 ? y1+10 : y1-10;
 		    }
 	    }
 	    else if(side == "IncorrectSide") {
@@ -1481,15 +1481,15 @@ function Symbol(kind) {
 		    }
 
 		    // Move the value from the line
-		    cardinality.x = x2 > x1 ? x2-10 : x2+10;
-		    cardinality.y = y2 > y1 ? y2-10 : y2+10;
+		    cardinality.x = x2 > x1 ? x2-15 : x2+15;
+		    cardinality.y = y2 > y1 ? y2-15 : y2+15;
 
 		    // Change side of the line to avoid overlap
 		    if(cardinality.axis == "X") {
-		        cardinality.x = x2 > x1 ? x2+10 : x2-10;
+		        cardinality.x = x2 > x1 ? x2+15 : x2-15;
 		    }
-		    else if(cardinality.axis == "Y") {   
-		        cardinality.y = y2 > y1 ? y2+10 : y2-10;                    
+		    else if(cardinality.axis == "Y") {
+		        cardinality.y = y2 > y1 ? y2+15 : y2-15;
 		    }
 	    }
     }
@@ -2367,7 +2367,7 @@ function figureFreeDraw() {
     }
 }
 
-function mouseDown() { 
+function mouseDown() {
     globalMouseState = 1;
 }
 
