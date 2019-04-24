@@ -957,7 +957,6 @@ function smartSearch(splitSearch, row) {
 						dates += sortingType + " ";
 					}
 				}
-        console.log(sortingType);
 				if (dates != "") return true;
 			}
 		}
