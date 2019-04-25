@@ -221,7 +221,7 @@ function process() {
 
 		dstr += "<div class='checkbox-dugga checknarrow ";
 		if (moments[j].visible == 0) {
-			dstr += "checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol" + (j ) + "' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j ) + "' >" + truncatedname + "</label></div>";
+			dstr += "checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol" + (j ) + "' value='" + (j ) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j ) + "' >" + truncatedname + "</label></div>";
 		} else {
 			dstr += "'><input name='sortcol' type='radio' class='sortradio' id='sortcol" + (j ) + "' onclick='sorttype(-1)' value='" + (j ) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j ) + "' >" + truncatedname + "</label></div>";
 		}
