@@ -713,27 +713,48 @@ function newCompare(firstCell, secoundCell) {
     if(typeof firstCell === 'object') {
 		var tempString = col.split("/");
 		if(colOrder.includes(tempString[0])) {
-					//Convert to json object
-					if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
-						firstCellTemp = firstCell.firstname;
-						secoundCellTemp = secoundCell.firstname;
-					} else {
-						firstCell = JSON.parse(firstCell.firstname);
-						secoundCell = JSON.parse(secoundCell.firstname);
-						//Get the first letter from the value.
-						firstCellTemp = Object.values(firstCell.firstname)[0];
-						secoundCellTemp = Object.values(secoundCell.firstname)[0];
-			}
-			firstCellTemp = $('<div/>').html(firstCellTemp).text();
-			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-			
-			if (status == 0) {
-				console.log(status);
-				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+			//Convert to json object
+			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
+				firstCellTemp = firstCell.firstname;
+				secoundCellTemp = secoundCell.firstname;
 			} else {
-				console.log(status);
-				val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+				firstCell = JSON.parse(firstCell.firstname);
+				secoundCell = JSON.parse(secoundCell.firstname);
+				//Get the first letter from the value.
+				firstCellTemp = Object.values(firstCell.firstname)[0];
+				secoundCellTemp = Object.values(secoundCell.firstname)[0];
 			}
+			
+		} else if (colOrder.includes(tempString[1])){
+			if (JSON.stringify(firstCell.lastname) || JSON.stringify(secoundCell.lastname)) {
+				firstCellTemp = firstCell.lastname;
+				secoundCellTemp = secoundCell.lastname;
+			} else {
+				firstCell = JSON.parse(firstCell.lastname);
+				secoundCell = JSON.parse(secoundCell.lastname);
+				//Get the first letter from the value.
+				firstCellTemp = Object.values(firstCell.lastname)[0];
+				secoundCellTemp = Object.values(secoundCell.lastname)[0];
+			}
+		} else if (colOrder.includes(tempString[2])) {
+			if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
+				firstCellTemp = firstCell.ssn;
+				secoundCellTemp = secoundCell.ssn;
+			} else {
+				firstCell = JSON.parse(firstCell.ssn);
+				secoundCell = JSON.parse(secoundCell.ssn);
+				//Get the first letter from the value.
+				firstCellTemp = Object.values(firstCell.ssn)[0];
+				secoundCellTemp = Object.values(secoundCell.ssn)[0];
+			}
+		}
+		firstCellTemp = $('<div/>').html(firstCellTemp).text();
+		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+			
+		if (status == 0) {
+			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+		} else {
+			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		}
        //Check if the cell is a valid cell in the table.
 	} else if (colOrder.includes(col)) {
