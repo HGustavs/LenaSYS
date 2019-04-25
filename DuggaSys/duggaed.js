@@ -103,7 +103,7 @@ function updateDugga() {
 	var template = $("#template").val();
   var qstart = $("#qstart").val()+" "+$("#qstartt").val()+":"+$("#qstartm").val();
   if($("#qstart").val()=="") {
-		alert("Missing Start Date"); 
+		alert("Missing Start Date");
 		return;
   }
 	var deadline = $("#deadline").val()+" "+$("#deadlinet").val()+":"+$("#deadlinem").val();
@@ -453,12 +453,12 @@ function returnedDugga(data) {
 				content += "</div>"
 
 				/* Search engine */
-				content += "<div id='testSearchContainer'>"
+				content += "<td id='testSearchContainer' class='navButt'>"
 						content += "<input id='duggaSearch' class ='searchField' type='search' placeholder='Search...' onkeyup='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'onsearch='searchterm=document.getElementById(\"duggaSearch\").value; searchKeyUp(event); duggaTable.renderTable();'/>"
 						content += "<button id='searchbutton' class='switchContent' onclick='return searchKeyUp(event);' type='button'>"
 						content += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'>"
 						content += "</button>"
-				content += "</div>"
+				content += "</td>"
 
 				/* FAB Button */
 				content += "<div class='fixed-action-button'>"
