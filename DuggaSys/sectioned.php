@@ -33,7 +33,7 @@
 	?>
 
 	<!-- content START -->
-	<div id="content" style="position: absolute; top: 0px; left 0px;">
+	<div id="content" style="position: absolute; top: 0px; left 50px;">
 
 		<div id='TopMenuStatic' style="display:none;">
 
