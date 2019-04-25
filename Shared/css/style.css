@@ -223,7 +223,7 @@ p {
 #content {
   background: var(--color-background);
   min-height: calc(100vh - 80px);
-  margin-top: 65px;
+  margin: 65px 10px 0px 10px;
 }
 
 #TopMenuStatic {
