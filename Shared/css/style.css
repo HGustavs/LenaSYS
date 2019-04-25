@@ -2962,7 +2962,7 @@ table {
 
 }
 
-#searchBar, #testSearchContainer img {
+#searchBar img, #testSearchContainer img {
   margin: 0px;
 }
 
