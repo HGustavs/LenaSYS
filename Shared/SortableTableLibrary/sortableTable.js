@@ -724,6 +724,14 @@ function newCompare(firstCell, secoundCell) {
 						firstCellTemp = Object.values(firstCell.firstname)[0];
 						secoundCellTemp = Object.values(secoundCell.firstname)[0];
 			}
+			firstCellTemp = $('<div/>').html(firstCellTemp).text();
+			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+
+			if (status == 0) {
+				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+			} else {
+				val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+			}
 		}
 		console.log(firstCellTemp);
 		console.log(secoundCellTemp);
@@ -750,14 +758,6 @@ function newCompare(firstCell, secoundCell) {
 					firstCellTemp = Object.values(firstCell)[0];
 					secoundCellTemp = Object.values(secoundCell)[0];
 				}
-			}
-			firstCellTemp = $('<div/>').html(firstCellTemp).text();
-			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-
-			if (status == 0) {
-				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
-			} else {
-				val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 			}
 		}
 		
