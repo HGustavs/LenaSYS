@@ -1987,7 +1987,7 @@ var toolbarState;
 
 const toolbarER = 1;
 const toolbarUML = 2;
-const toolbarFree = 3;
+const toolbarDeveloperMode = 3;
 
 function initToolbox() {
     var element = document.getElementById('diagram-toolbar');
@@ -2036,7 +2036,7 @@ function toggleToolbarLayout() {
 //                not sure what the numbers 0 an 3 mean
 //----------------------------------------------------------------------
 function switchToolbar(direction) {
-  var text = ["All", "ER", "UML"];
+  var text = ["ER", "UML"];
   if(direction == 'left') {
     toolbarState--;
     if(toolbarState < 0) {
@@ -2048,6 +2048,7 @@ function switchToolbar(direction) {
       toolbarState = 0;
     }
   }
+  
   document.getElementById('toolbarTypeText').innerHTML = text[toolbarState];
   localStorage.setItem("toolbarState", toolbarState);
   //hides irrelevant buttons, and shows relevant buttons
@@ -2089,6 +2090,9 @@ function switchToolbar(direction) {
     $("#labelDraw").show();
     $("#squarebutton").show();
     $("#drawfreebutton").show();
+  }
+  else if(toolbarState == toolbarDeveloperMode) {
+
   }
   else { // shows all alternatives in the toolbar
     $(".toolbar-drawer").show();

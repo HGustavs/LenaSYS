@@ -209,9 +209,6 @@
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick='debugMode();'>Developer mode</span>
                         </div>
-                        <div class="drop-down-item">
-                            <span class="drop-down-option" id="toolbarOptions">Display Toolbar Options</span>
-                        </div>
                         <div class="drop-down-divider"></div>
                         <div class="drop-down-item">
                             <span class="drop-down-option" onclick="toggleVirtualA4()">Display Virtual A4</span>
