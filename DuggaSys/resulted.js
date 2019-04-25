@@ -51,13 +51,15 @@ function setup() {
 	filt += "</div>";
 	filt += "</span></td>";
 
-  var sc = document.getElementById('searchinput');
+
 
   filt += "<td id='searchBar' class='navButt'>";
   filt += "<input id='searchinput' type='text' name='search' placeholder='Search..'onkeyup='searchterm="+sc+".value;searchKeyUp(event);myTable.reRender();'/>";
   filt += "<button id='searchbutton' class='switchContent'onclick='searchterm="+sc+".value;searchKeyUp(event);myTable.reRender();' type='button'>";
   filt += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
   filt += "</button></td>";
+
+  var sc = document.getElementById('searchinput');
 
 	$("#menuHook").before(filt);
 
