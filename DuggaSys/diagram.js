@@ -914,26 +914,30 @@ function drawVirtualA4() {
     if(!toggleA4) {
         return;
     }
+    // Origo
+    let zeroX = pixelsToCanvas().x;
+    let zeroY = pixelsToCanvas().y;
+
     // the correct according to 96dpi size, of a4 milimeters to pixels
-    const pixelsPerMillimeter = 3.781;
+    const pixelsPerMillimeter = 3.781 * zoomValue;
     const a4Width = 210 * pixelsPerMillimeter;
     const a4Height = 297 * pixelsPerMillimeter;
     // size of a4 hole, from specification ISO 838 and the swedish "triohålning"
     const holeOffsetX = 12 * pixelsPerMillimeter;
     const holeRadius = 3 * pixelsPerMillimeter;
+
     ctx.save();
     ctx.strokeStyle = "black"
     ctx.setLineDash([10]);
-    ctx.translate(0, 0);
-    ctx.strokeRect(0,0, a4Width, a4Height);
+    ctx.strokeRect(zeroX, zeroY, a4Width, a4Height);
 
     if(toggleA4Holes) {
         //Upper 2 holes
-        drawCircle(holeOffsetX, (a4Height / 2) - (34+21) * pixelsPerMillimeter, holeRadius);
-        drawCircle(holeOffsetX, (a4Height / 2) - 34 * pixelsPerMillimeter, holeRadius);
+        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) - 34 * pixelsPerMillimeter) + zeroY, holeRadius);
         //Latter two holes
-        drawCircle(holeOffsetX, (a4Height / 2) + (34+21) * pixelsPerMillimeter, holeRadius);
-        drawCircle(holeOffsetX, (a4Height / 2) + 34 * pixelsPerMillimeter, holeRadius);
+        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + (34+21) * pixelsPerMillimeter) + zeroY, holeRadius);
+        drawCircle(holeOffsetX + zeroX, ((a4Height / 2) + 34 * pixelsPerMillimeter) + zeroY, holeRadius);
     }
     ctx.restore();
 }
