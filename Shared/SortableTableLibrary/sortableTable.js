@@ -712,7 +712,7 @@ function newCompare(firstCell, secoundCell) {
 
     if(typeof firstCell === 'object') {
 		var tempString = col.split("/");
-		if(colOrder.includes(tempString[0])) {
+		if(colOrder.match("Fname")) {
 			//Convert to json object
 			if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
 				firstCellTemp = firstCell.firstname;
@@ -724,7 +724,7 @@ function newCompare(firstCell, secoundCell) {
 				firstCellTemp = Object.values(firstCell.firstname)[0];
 				secoundCellTemp = Object.values(secoundCell.firstname)[0];
 			}
-		} else if (colOrder.includes(tempString[1])){
+		} else if (colOrder.match("Lname")){
 			if (JSON.stringify(firstCell.lastname) || JSON.stringify(secoundCell.lastname)) {
 				firstCellTemp = firstCell.lastname;
 				secoundCellTemp = secoundCell.lastname;
@@ -735,7 +735,7 @@ function newCompare(firstCell, secoundCell) {
 				firstCellTemp = Object.values(firstCell.lastname)[0];
 				secoundCellTemp = Object.values(secoundCell.lastname)[0];
 			}
-		} else if (colOrder.includes(tempString[2])) {
+		} else if (colOrder.match(SSN)) {
 			if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
 				firstCellTemp = firstCell.ssn;
 				secoundCellTemp = secoundCell.ssn;
@@ -749,7 +749,6 @@ function newCompare(firstCell, secoundCell) {
 		}
 		firstCellTemp = $('<div/>').html(firstCellTemp).text();
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
-			console.log(tempString[0] + tempString[1] + tempString[2]);
 		if (status == 0) {
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
