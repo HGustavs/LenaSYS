@@ -2940,16 +2940,16 @@ table {
 
 /* styling for the search bar in fileed.php */
 
-.barstyle {
+#searchBar, #testSearchContainer {
   padding-left: 20px;
 }
 
-.inputstyle {
+#searchinput, #duggaSearch {
   padding: 0 0 0 2px;
   height: 20px;
 }
 
-.buttonstyle {
+#searchbutton {
   position: relative;
   width: 26px;
   height: 25px;
@@ -2962,7 +2962,7 @@ table {
 
 }
 
-.barstyle img {
+#searchBar, #testSearchContainer img {
   margin: 0px;
 }
 
