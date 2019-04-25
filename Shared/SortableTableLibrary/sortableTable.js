@@ -709,6 +709,7 @@ function newCompare(firstCell, secoundCell) {
 	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
+	console.log(col);
 
 	//Check if the cell is a valid cell in the table.
 	if (colOrder.includes(col)) {
