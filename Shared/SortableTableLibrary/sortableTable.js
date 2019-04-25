@@ -47,7 +47,7 @@ function sortableInternalSort(a, b) {
 	var ret = 0;
 	//var colname = sortableTable.currentTable.getKeyByValue();
 	var colname = sortableTable.currentTable.getSortcolumn();
-	
+
 	if ((sortableTable.currentTable.sortkind % 2) == 0) {
 		//alert("Compare: "+a+" "+b);
 		ret = newCompare(a[colname], b[colname]);
@@ -257,7 +257,7 @@ function SortableTable(param) {
 	this.renderTable = function () {
 		this.reRender();
 	}
-
+	
 	this.getRow = function (rowno) {
 		return tbl.tblbody[rowno];
 	}
@@ -735,7 +735,7 @@ function newCompare(firstCell, secoundCell) {
 				}
 			}
 		}
-		
+
 		if (col === "requestedpasswordchange") {
 			firstCellTemp = JSON.parse(firstCell);
 			secoundCellTemp = JSON.parse(secoundCell);
