@@ -2940,7 +2940,7 @@ table {
 
 /* styling for the search bar in fileed.php */
 
-.barstyle {
+#searchBar {
   /* display: inline-flex;
   height: 24px;
   border-radius: 5px;
@@ -2950,7 +2950,7 @@ table {
   padding-left: 20px;
 }
 
-.inputstyle {
+#searchinput {
   /* margin-right: 0;
   border-right: 0;
   border-top-right-radius: 0;
@@ -2961,7 +2961,7 @@ table {
   height: 20px;
 }
 
-.buttonstyle {
+#searchbutton {
   position: relative;
   width: 26px;
   height: 25px;
@@ -2973,8 +2973,8 @@ table {
   margin-bottom: 5px;
 }
 
-.barstyle img {
-  margin: 0px;
+#searchBar img {
+    margin: 0px;
 }
 
 .searchField{
