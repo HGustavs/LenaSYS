@@ -1299,6 +1299,7 @@ input {
   filter:invert(100%);
 }
 .diagramAction{
+  cursor: pointer;
   border-radius: 5px;
   background-color: #614875;
   width: 47%;
@@ -1714,6 +1715,7 @@ div.submit-button:disabled {
 }
 
 .toolboxButtons {
+  cursor: pointer;
   width: 35px !important;
   height: 25px !important;
 }
@@ -1731,6 +1733,7 @@ div.submit-button:disabled {
 }
 
 #textButton {
+  cursor: pointer;
   width: 35px;
   height: 22px;
   margin-top: 3px;
