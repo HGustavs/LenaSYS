@@ -219,9 +219,9 @@ function process() {
 		}
 
 
-		dstr += "<div class='checkbox-dugga checknarrow ";
+		dstr += "<div class='checkbox-dugga checknarrow style=' text-overflow: clip' ";
 		if (moments[j].visible == 0) {
-			dstr += "checkbox-dugga-hidden'><input name='sortcol' style=' text-overflow: ellipsis;' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol" + (j + 1) + "' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
+			dstr += "checkbox-dugga-hidden'><input name='sortcol' type='radio' class='sortradio' onclick='sorttype(-1)' id='sortcol" + (j + 1) + "' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
 		} else {
 			dstr += "'><input name='sortcol' type='radio' class='sortradio' id='sortcol" + (j + 1) + "' onclick='sorttype(-1)' value='" + (j + 1) + "'><label class='headerlabel' title='" + name + "' for='sortcol" + (j + 1) + "' >" + truncatedname + "</label></div>";
 		}
