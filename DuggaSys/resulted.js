@@ -57,7 +57,7 @@ function setup() {
   filt += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
   filt += "</button></div>";
 
-	//$("#menuHook").before(filt);
+	$("#menuHook").before(filt);
 
 	window.onscroll = function () {
 		magicHeading()
