@@ -186,6 +186,7 @@ CREATE TABLE vers(
 	coursenamealt			VARCHAR(45) NOT NULL,
 	startdate     			DATETIME,
 	enddate       			DATETIME,
+	updated					TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	FOREIGN KEY (cid) REFERENCES course(cid),
 	PRIMARY KEY (cid,vers)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE=InnoDB;
