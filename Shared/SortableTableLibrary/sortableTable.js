@@ -735,7 +735,7 @@ function newCompare(firstCell, secoundCell) {
 				firstCellTemp = Object.values(firstCell.lastname)[0];
 				secoundCellTemp = Object.values(secoundCell.lastname)[0];
 			}
-		} else if (colOrder.match(SSN)) {
+		} else if (colOrder.match("SSN")) {
 			if (JSON.stringify(firstCell.ssn) || JSON.stringify(secoundCell.ssn)) {
 				firstCellTemp = firstCell.ssn;
 				secoundCellTemp = secoundCell.ssn;
