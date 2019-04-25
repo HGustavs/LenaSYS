@@ -193,6 +193,10 @@ function renderCell(col,celldata,cellid) {
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'><option value='None'>None</option>"+makeoptionsItem(obj.examiner,filez['teachers'],"name","uid")+"</select>";
 		}else if(col=="vers"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'>"+makeoptionsItem(obj.vers,filez['courses'],"versname","vers")+"</select>";
+			var checkSubmission = data => data.uid === obj.uid;
+			if (filez['submissions'].some(checkSubmission)) {
+				str+="<img id='oldSubmissionIcon' title='View submission from old version' style='height: 20px; float: right; margin-right: 10px;' src='../Shared/icons/DocumentDark.svg'>";
+			};
 		}else if(col=="access"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'>"+makeoptions(obj.access,["Teacher","Student"],["W","R"])	+"</select>";
 		}else if(col == "requestedpasswordchange") {
