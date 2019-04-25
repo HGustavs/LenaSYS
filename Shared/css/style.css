@@ -223,7 +223,12 @@ p {
 #content {
   background: var(--color-background);
   min-height: calc(100vh - 80px);
-  margin: 65px 10px 15px 10px;
+  margin-top: 65px;
+}
+
+#TopMenuStatic {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 #contentDiagram {
