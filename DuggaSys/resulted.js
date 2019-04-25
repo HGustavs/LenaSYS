@@ -941,12 +941,15 @@ function smartSearch(splitSearch, row) {
 //----------------------------------------------------------------
 // rowFilter <- Callback function that filters rows in the table
 function rowFilter(row) {
-  if(currentRowFilter.length == 0){
-    for(var i = 0; i < myTable.getTable().tblbody.length; i++)
-        currentRowFilter.push(myTable.getRow(i));
-  }
-  console.log(currentRowFilter);
-  console.log("filterlist: "+filterList);
+
+  
+  // if(currentRowFilter.length == 0){
+  //   for(var i = 0; i < myTable.getTable().tblbody.length; i++)
+  //       currentRowFilter.push(myTable.getRow(i));
+  // }
+  // console.log(currentRowFilter);
+
+
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
