@@ -105,8 +105,9 @@
 
 	setupLoginLogoutButton('<?PHP echo json_encode(checklogin()) ?>');
 	function cookieMessage(){
+		hideCookieMessage();
 		localStorage.setItem("cookieMessage", "off");
-		$("#cookiemsg").css("display", "none");
+		//$("#cookiemsg").css("display", "none");
 	}
 	function hoverBack(){
 		$(".dropdown-list-container").css("display", "none");

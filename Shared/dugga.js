@@ -1552,3 +1552,25 @@ function generateTimeSheetOptions(course, moment, selected) {
 	}
 
 }
+
+//----------------------------------------------------------------------------------
+// hideServerMessage/hideCookieMessage : Hide MOTD/cookie messages
+//
+// Functions for animating and hiding MOTD and cookie messages
+//----------------------------------------------------------------------------------
+
+function hideServerMessage() {
+	$("#servermsgcontainer").animate({ opacity: 0, top: 0 }, 200, "easeInOutSine");
+	setTimeout(function () {
+		$("#servermsgcontainer").css("display", "none");
+		$("#servermsgcontainer").css("opacity", "1");
+	}, 200);
+}
+
+function hideCookieMessage() {
+	$("#cookiemsg").animate({ opacity: 0, bottom: -70 }, 200, "easeInOutSine");
+	setTimeout(function () {
+		$("#cookiemsg").css("display", "none");
+		$("#cookiemsg").css("opacity", "1");
+	}, 200);
+}
