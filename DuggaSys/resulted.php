@@ -83,8 +83,8 @@ pdoConnect();
 		<div id='searchBar' style='test-align:right;margin-bottom:15px;'>
 			<div class="tooltip-searchbar">
 				<div class="tooltip-searchbar-box">
-						Keywords: markG, markU, date.
-						ex: markG:färgdugga
+							<b>Keywords:</b> markG, markU, date <br>
+							<b>Ex:</b> markG:färgdugga
 				</div>
 				<span>?</span>
 			</div>
