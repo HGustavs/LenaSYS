@@ -1,7 +1,7 @@
 <?php
 /********************************************************************************
 
-   Documentation 
+   Documentation
 
 *********************************************************************************
 
@@ -19,15 +19,15 @@ http://webblabb.iit.his.se/Dugga/DuggaSys/showDugga.php?cid=16&coursevers=98242&
 date_default_timezone_set("Europe/Stockholm");
 
 // Include basic application services!
-//---------------------------------------------------------------------	
+//---------------------------------------------------------------------
 include_once "../Shared/basic.php";
 include_once "../Shared/sessions.php";
 session_start();
 
 pdoConnect(); // Connect to database and start session
 
-$link=getOP('link');			
-$inputtext=gettheOP('inputtext');			
+$link=getOP('link');
+$inputtext=gettheOP('inputtext');
 $cid=getOP('cid');
 $vers=getOP('coursevers');
 $moment=getOP('moment');
@@ -42,18 +42,18 @@ $seq=0;
 $loginname="";
 $lastname="";
 $firstname="";
-					
+
 if(isset($_SESSION['uid'])){
 	$userid=$_SESSION['uid'];
 	$loginname=$_SESSION['loginname'];
 	$lastname=$_SESSION['lastname'];
 	$firstname=$_SESSION['firstname'];
 }else{
-	$userid="UNK";		
-} 	
+	$userid="UNK";
+}
 
 //  Handle files! One by one  -- if all is ok add file name to database
-//  login for user is successful & has either write access or is superuser					
+//  login for user is successful & has either write access or is superuser
 $filo=print_r($_FILES,true);
 $info=$cid." ".$vers." ".$moment." ".$segment." ".$duggaid." ".$fieldtype." ".$fieldkind." ".$link." ".$filo;
 $log_uuid= rand();
@@ -94,13 +94,13 @@ if($ha){
 
 		// Create a file area with format Lastname-Firstname-Login
 		$userdir = $lastname."_".$firstname."_".$loginname;
-		
+
 		// First replace a predefined list of national characters
 		// Then replace any additional character that is not a-z, a number, period or underscore
 		$national = array("&ouml;", "&Ouml;", "&auml;", "&Auml;", "&aring;", "&Aring;","&uuml;","&Uuml;");
 		$nationalReplace = array("o", "O", "a", "A", "a", "A","u","U");
 		$userdir = str_replace($national, $nationalReplace, $userdir);
-		$userdir=preg_replace("/[^a-zA-Z0-9._]/", "", $userdir);				
+		$userdir=preg_replace("/[^a-zA-Z0-9._]/", "", $userdir);
 
 		if(!file_exists ($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
 				if(!mkdir($currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir)){
@@ -115,12 +115,12 @@ if($ha){
 			$formattedInput = formatTimeSheetInput();
 
 			$fname=$fieldtype;
-			$fname=preg_replace("/[^a-zA-Z0-9._]/", "", $fname);	
+			$fname=preg_replace("/[^a-zA-Z0-9._]/", "", $fname);
 
 			$extension="txt";
 			$mime="txt";
 
-			$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
+			$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
 			$query->bindParam(':did', $duggaid);
 			$query->bindParam(':cid', $cid);
 			$query->bindParam(':fname', $fname);
@@ -128,21 +128,21 @@ if($ha){
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				echo "Error reading submissions a".$error[2];
-			}			 				
+			}
 			foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 						$seq=$row['Dusty'];
 			}
-			$seq++;			
+			$seq++;
 
 			$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
-			$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;	
+			$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;
 			file_put_contents($movname, $formattedInput);
-			
+
 			// Save POST values in an array to loop over them
 			$indexedPOST = array_values($_POST);
 			$postEntries = count(preg_grep("/ts.+_\d+/", array_keys($_POST))) / 4;
 			for($entryIdx = 0; $entryIdx < $postEntries; $entryIdx++) {
-				$date=$indexedPOST[0 + ($entryIdx * 4)];					
+				$date=$indexedPOST[0 + ($entryIdx * 4)];
 				$type=$indexedPOST[1 + ($entryIdx * 4)];
 				$ref=$indexedPOST[2 + ($entryIdx * 4)];
 				$comment=$indexedPOST[3 + ($entryIdx * 4)];
@@ -182,20 +182,20 @@ if($ha){
 			$query->bindParam(':kind', $fieldkind);
 			$query->bindParam(':seq', $seq);
 			$query->bindParam(':segment', $moment);
-			
+
 			if(!$query->execute()) {
 				$error=$query->errorInfo();
 				echo "Error updating file entries".$error[2];
 			}
 		} else if($inputtext!="UNK"){
-				
+
 				$fname=$fieldtype;
-				$fname=preg_replace("/[^a-zA-Z0-9._]/", "", $fname);				
-				
+				$fname=preg_replace("/[^a-zA-Z0-9._]/", "", $fname);
+
 				$extension="txt";
 				$mime="txt";
 
-				$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
+				$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':fname', $fname);
@@ -203,18 +203,18 @@ if($ha){
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					echo "Error reading submissions a".$error[2];
-				}			 				
+				}
 				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 							$seq=$row['Dusty'];
 				}
-				$seq++;		  
+				$seq++;
 
 				$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
-			  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;	
+			  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;
 			  file_put_contents($movname, htmlentities($inputtext, ENT_QUOTES | ENT_IGNORE, "UTF-8"));
-			  
+
 				$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now());");
-				
+
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':vers', $vers);
@@ -227,16 +227,16 @@ if($ha){
 				$query->bindParam(':kind', $fieldkind);
 				$query->bindParam(':seq', $seq);
 				$query->bindParam(':segment', $moment);
-				
+
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					echo "Error updating file entries".$error[2];
-				}			 				
+				}
 
 		}else if($link!="UNK"){
 				// Create a MD5 hash from url to use as file marker - used when giving responsible
-				$md5_filename = md5 ( $link );	
-				$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
+				$md5_filename = md5 ( $link );
+				$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':cid', $cid);
@@ -245,15 +245,15 @@ if($ha){
 				foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 							$seq=$row['Dusty'];
 				}
-				$seq++;		  
+				$seq++;
 
 				$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
 
 				$movname = $currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$md5_filename.$seq;
 				file_put_contents($movname, $link);
 
-				$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,null,null,:kind,:seq,:segment,now());");				
-			
+				$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,null,null,:kind,:seq,:segment,now());");
+
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':vers', $vers);
@@ -264,16 +264,16 @@ if($ha){
 				$query->bindParam(':kind', $fieldkind);
 				$query->bindParam(':seq', $seq);
 				$query->bindParam(':segment', $moment);
-				
+
 				if(!$query->execute()) {
 					$error=$query->errorInfo();
 					echo "Error updating file entries".$error[2];
-				}			 				
+				}
 		}else{
-				// chdir('../'); 
+				// chdir('../');
 
-				
-								
+
+
 				//  if the file is of type "GFILE"(global) or "MFILE"(course local) and it doesn't exists in the db, add a row into the db
 			  //$allowedT = array("applicaton/octet-stream","application/x-zip","application/x-msdownload","application/x-pdf","application/pdf","application/x-rar-compressed","application/zip", "application/octet-stream","application/force-download","application/x-download", "application/x-zip-compressed", "binary/octet-stream", "application/download","application/application-download", "text/html", "application/save");
 				//$allowedX = array("pdf","zip","rar");
@@ -282,33 +282,33 @@ if($ha){
 					"zip"		=> ["application/zip"],
 					//"rar"	=> [
 				];
-				
+
 				$swizzled = swizzleArray($_FILES['uploadedfile']);
-				
+
 				foreach ($swizzled as $key => $filea){
-					
+
 						$filea['type']=str_replace('"', "",$filea['type']);
 						$filea['type']=str_replace("'", "",$filea['type']);
-					
+
 						//  if the file has a name (e.g it is successfully sent to "filereceive.php") begin the upload process.
 						if($filea["name"]!=""){
 								$fname=$filea['name'];
-		
+
 								// Remove white space and non ascii characters
-								$fname=preg_replace("/[^a-zA-Z0-9._]/", "", $fname);				
-								
+								$fname=preg_replace("/[^a-zA-Z0-9._]/", "", $fname);
+
 								$posPeriod = strrpos($fname, ".");
 								if ($posPeriod !== false){
 									$extension = substr($fname, $posPeriod+1);
-									$fname = substr($fname, 0, $posPeriod);								
+									$fname = substr($fname, 0, $posPeriod);
 								} else {
 									$extension = "UNK";
 								}
 								$filetype = mime_content_type($filea["tmp_name"]);
 								//  if file type is allowed, continue the uploading process.
-								if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension], True)){ 
+								if(array_key_exists($extension, $allowedExtensions) && in_array($filetype, $allowedExtensions[$extension], True)){
 										$seq=0;
-										$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));  
+										$query = $pdo->prepare("SELECT COUNT(*) AS Dusty FROM submission WHERE uid=:uid AND did=:did AND filename=:fname AND cid=:cid;", array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL));
 										$query->bindParam(':did', $duggaid);
 										$query->bindParam(':cid', $cid);
 										$query->bindParam(':fname', $fname);
@@ -316,17 +316,17 @@ if($ha){
 										$query->execute();
 										foreach($query->fetchAll(PDO::FETCH_ASSOC) as $row){
 													$seq=$row['Dusty']+1;
-										}															  
-		
-									  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;	
-					
-										// check if upload is successful 
-										if(move_uploaded_file($filea["tmp_name"],$movname)){ 
-		
+										}
+
+									  $movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;
+
+										// check if upload is successful
+										if(move_uploaded_file($filea["tmp_name"],$movname)){
+
 														$query = $pdo->prepare("INSERT INTO submission(fieldnme,uid,cid,vers,did,filepath,filename,extension,mime,kind,seq,segment,updtime) VALUES(:field,:uid,:cid,:vers,:did,:filepath,:filename,:extension,:mime,:kind,:seq,:segment,now());");
-														
+
 														$filepath="submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/";
-		
+
 														$query->bindParam(':uid', $userid);
 														$query->bindParam(':cid', $cid);
 														$query->bindParam(':vers', $vers);
@@ -339,31 +339,31 @@ if($ha){
 														$query->bindParam(':kind', $fieldkind);
 														$query->bindParam(':seq', $seq);
 														$query->bindParam(':segment', $moment);
-														
+
 														if(!$query->execute()) {
 															$error=$query->errorInfo();
 															echo "Error updating file entries".$error[2];
-														}			 				
+														}
 										}else{
 												echo "Error moving file ".$movname;
 												$error=true;
 										}
-				
-								}else{ 
+
+								}else{
 									//if the file extension is not allowed
 									if(!array_key_exists($extension, $allowedExtensions)) echo "Extension \"".$extension."\" not allowed.\n";
 								 	else echo "Type \"$filetype\" not valid for file extension: \"$extension\"" . "\n";
 									$error=true;
 								}
 						}
-				}						
+				}
 
 		}
 
 }
 
 logServiceEvent($log_uuid, EventTypes::ServiceServerEnd, "filerecrive_dugga.php", $userid,$info);
-	
+
 if(!$error){
 		echo "<meta http-equiv='refresh' content='0;URL=showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0' />";  //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }
@@ -372,14 +372,14 @@ function formatTimeSheetInput(){
 	$indexedPOST = array_values($_POST);
 	$entries = count(preg_grep("/ts.+_\d+/", array_keys($_POST))) / 4;
 	for($entryIdx = 0; $entryIdx < $entries; $entryIdx++) {
-		$date=$indexedPOST[0 + ($entryIdx * 4)];					
+		$date=$indexedPOST[0 + ($entryIdx * 4)];
 		$type=$indexedPOST[1 + ($entryIdx * 4)];
 		$ref=$indexedPOST[2 + ($entryIdx * 4)];
 		$comment=$indexedPOST[3 + ($entryIdx * 4)];
 
 		$inputString .= $date." - ".$type." #".$ref.": ".$comment."\n";
 	}
-	
+
 	return $inputString;
 }
 ?>
@@ -387,7 +387,7 @@ function formatTimeSheetInput(){
 <body>
 <?php
 if(!$error){
-		echo "<script>window.gocation.replace('showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
+	echo "<script>window.location.replace('showDugga.php?cid=".$cid."&coursevers=".$vers."&did=".$duggaid."&moment=".$moment."&segment=".$segment."&highscoremode=0');</script>"; //update page, redirect to "fileed.php" with the variables sent for course id and version id
 }else{
 
 }

@@ -31,7 +31,6 @@ function updateCourse()
 	var cid = $("#cid").val();
 	var coursecode = $("#coursecode").val();
 	var visib = $("#visib").val();
-
 	// Show dialog
 	$("#editCourse").css("display", "none");
 
@@ -113,6 +112,7 @@ function selectCourse(cid, coursename, coursecode, visi, vers, edvers)
 	$(".item").css("border", "none");
 	$(".item").css("box-shadow", "none");
 	$(".item").css("background", "#fff");
+
 
 	// Set Name
 	$("#coursename").val(coursename);
@@ -374,7 +374,7 @@ function returnedCourse(data)
 			if (data['writeaccess']) {
         		str += "<div class='ellipsis' style='margin-right:15px;'><a class='"+textStyle+"' href='sectioned.php?courseid=" + item['cid'] + "&coursename=" + item['coursename'] + "&coursevers=" + item['activeversion'] + "' title='\"" + item['coursename'] + "\" [" + item['activeversion'] + "] [Course coordinator]'>" + courseBegin + courseEnd + "</a></div>";
         		str += "<span style='margin-bottom: 0px'>";
-				str += "<span><img id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + htmlFix(item['coursename']) + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" [" + item['activeversion'] + "]'></span>";
+				str += "<span><img id='dorf' style='position: relative; top: 2px;' src='../Shared/icons/Cogwheel.svg' onclick='selectCourse(\"" + item['cid'] + "\",\"" + item['coursename'] + "\",\"" + item['coursecode'] + "\",\"" + item['visibility'] + "\",\"" + item['activeversion'] + "\",\"" + item['activeedversion'] + "\");' title='Edit \"" + item['coursename'] + "\" [" + item['activeversion'] + "]'></span>";
         		str += "</span>";
       		} else {
         		str += "<div class='ellipsis' style='margin-right:15px;'>";
