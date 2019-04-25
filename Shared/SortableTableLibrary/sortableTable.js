@@ -204,7 +204,7 @@ function SortableTable(param) {
 	//------------==========########### Fenced paramters ###########==========------------
 
 	var tbl = getparam(param.data, { tblhead: {}, tblbody: [], tblfoot: {} });
-	var currentRowFilter = tblbody; // This is the currently visible row in the table.
+	var currentRowFilter = tbl.tblbody; // This is the currently visible row in the table.
 	this.tableid = getparam(param.tableElementId, "UNK");
 	var filterid = getparam(param.filterElementId, "UNK");
 	var caption = getparam(param.tableCaption, "UNK");
