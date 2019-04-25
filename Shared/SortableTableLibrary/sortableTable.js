@@ -669,8 +669,26 @@ function SortableTable(param) {
 		}
 	}
 
-	this.mail = function(){
-
+	this.mail = function(cidMail, crsMail, reqType){
+		$.ajax({
+			url: "resultedservice.php",
+			type: "POST",
+			data: {
+				'courseid': cidMail,
+				'coursevers': crsMail,
+				'requestType': reqType
+			},
+			dataType: "JSON",
+			error: function(xhr, status, error) {
+				var err = eval("(" + xhr.responseText + ")");
+				console.log(err.Message);
+			},
+			success: function(data){
+				window.location.assign("mailto:?bcc=" + data);
+				//window.location.assign("mailto:" + data);
+			//  mailto:astark1@unl.edu?bcc=ASTARK1@UNL.EDU
+			}
+		});
 	}
 
 	this.export = function (format, del) {
