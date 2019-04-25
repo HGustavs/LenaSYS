@@ -22,18 +22,14 @@ function setup()
 //  function content was commented out to avoid having a white empty box appear.
 function hoverc()
 {
-    /*
     $('#dropdowns').css('display','none');
     $('#dropdownc').css('display','block');
-    */
 }
 
 function hovers()
 {
-  /*
   $('#dropdowns').css('display','block');
   $('#dropdownc').css('display','none');
-  */
 }
 
 function leavec()
@@ -296,6 +292,25 @@ function rowFilter(row) {
 		return false;
 }
 
+function renderColumnFilter(col, status, colname) {
+	str = "";
+  if (colname == "User")
+    return str;
+	if (status) {
+		str = "<div class='checkbox-dugga'>";
+		str += "<input id=\"" + colname + "\" type='checkbox' checked onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+		str += "</div>"
+	} else {
+		str = "<div class='checkbox-dugga'>";
+		str += "<input id=\"" + colname + "\" type='checkbox' onclick='onToggleFilter(\"" + col + "\")'><label class='headerlabel'>" + colname + "</label>";
+		str += "</div>"
+	}
+	return str;
+}
+
+function onToggleFilter(colId) {
+  myTable.toggleColumn(colId, colId);
+}
 
 //----------------------------------------------------------------------------
 //-------------==========########## Renderer ##########==========-------------
@@ -329,13 +344,15 @@ function returnedAccess(data) {
 		tblbody: data['entries'],
 		tblfoot:{}
 	}
+
 	var colOrder=["username","ssn","firstname","lastname","class","modified","examiner","vers","access","groups","requestedpasswordchange"]
 	myTable = new SortableTable({
-		data:tabledata,
+    data:tabledata,
 		tableElementId:"accessTable",
 		filterElementId:"filterOptions",
 		renderCellCallback:renderCell,
 		renderSortOptionsCallback:renderSortOptions,
+    renderColumnFilterCallback: renderColumnFilter,
 		rowFilterCallback:rowFilter,
 		displayCellEditCallback:displayCellEdit,
 		updateCellCallback:updateCellCallback,
