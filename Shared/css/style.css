@@ -1589,6 +1589,7 @@ input.submit-button {
   font-size: 14px;
   transition: 1s background-color;
   float: left;
+  -webkit-appearance: none
 }
 
 div.submit-button {
@@ -2429,6 +2430,7 @@ span.arrow {
   line-height: 30px;
   text-align: center;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+  -webkit-appearance: none;
 }
 
 #variantSearch{
