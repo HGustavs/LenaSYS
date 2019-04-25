@@ -1250,5 +1250,5 @@ function mail() {
   var cidMail = url.searchParams.get("cid");
   var crsMail = url.searchParams.get("coursevers");
 
-  myTable.mail(cidMail, crsMail, searchterm, reqType);
+  myTable.mail(cidMail, crsMail, reqType);
 }

@@ -669,7 +669,8 @@ function SortableTable(param) {
 		}
 	}
 
-	this.mail = function(cidMail, crsMail, searchterm, reqType){
+	this.mail = function(cidMail, crsMail, reqType){
+		var searchterm = "";
 		$.ajax({
 			url: "resultedservice.php",
 			type: "POST",
