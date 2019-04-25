@@ -710,6 +710,7 @@ function newCompare(firstCell, secoundCell) {
 	var firstCellTemp;
 	var secoundCellTemp;
 	console.log(col);
+	console.log(status);
 
 	//Check if the cell is a valid cell in the table.
 	if (colOrder.includes(col)) {
