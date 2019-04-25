@@ -19,8 +19,10 @@ var duggaPages;
 var isClickedElementBox = false;
 var searchterm = "";
 
+function setup() {
+  AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
+}
 
-AJAXService("GET", { cid: querystring['cid'], coursevers: querystring['coursevers'] }, "DUGGA");
 
 // Detects clicks
 $(document).mousedown(function (e) {
