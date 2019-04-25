@@ -51,7 +51,7 @@ function setup() {
 	filt += "</div>";
 	filt += "</span></td>";
 
-  filt += "<div id='searchBar'>hallo</div>"
+  filt += "<div id='filter'>hallo</div>"
 
 	$("#menuHook").before(filt);
 
