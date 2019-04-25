@@ -51,7 +51,7 @@ function setup() {
 	filt += "</div>";
 	filt += "</span></td>";
 
-  filt += "<div id='searchBar' style='test-align:right;margin-bottom:15px;'>";
+  filt += "<div id='searchBar' class='navButt' style='test-align:right;margin-bottom:15px;'>";
   filt += "<input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById('searchinput').value;searchKeyUp(event);myTable.reRender();'/>";
   filt += "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById('searchinput').value;searchKeyUp(event);myTable.reRender();' type='button'>";
   filt += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
