@@ -2938,7 +2938,7 @@ table {
     bottom: 2px;
 }
 
-/* styling for the search bar in fileed.php */
+/* styling for the search bars in resulted, accessed, duggaed, filed */
 
 #searchBar, #testSearchContainer {
   padding-left: 20px;
@@ -4600,17 +4600,6 @@ textarea#filecont{
   .optionButtons {
     top: 436px;
   }
-}
-
-/* styling for the search bar in duggaed.php */
-#testSearchContainer {
-  display: inline-flex;
-  height: 24px;
-  border-radius: 5px;
-  margin: 0 2px 7px 0;
-  float: right;
-  position: relative;
-  top: -5px;
 }
 
 .flexwrapper{
