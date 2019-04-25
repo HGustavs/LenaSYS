@@ -914,7 +914,6 @@ function smartSearch(splitSearch, row) {
 								txt.innerHTML = name;
 								var newName2 = txt.value;
 								if (newName2.toUpperCase().indexOf(columnToSearch.toUpperCase()) != -1) {
-                  currentRowFilter[colname] = null;
 									return true;
 								}
 							}
@@ -947,6 +946,7 @@ function rowFilter(row) {
         currentRowFilter.push(myTable.getRow(i));
   }
   console.log(currentRowFilter);
+  console.log("filterlist: "+filterList);
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
 		return false;
