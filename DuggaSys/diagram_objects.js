@@ -1028,7 +1028,8 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
-
+  
+    // This function is used in the drawEntity function and is run when ER entities are not in a weak state.
     function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) 
     {
         var relationMidPoints = [];
