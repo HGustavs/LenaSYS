@@ -232,19 +232,21 @@ function Symbol(kind) {
             if(points[this.bottomRight].x - points[this.topLeft].x < entityTemplate.width) {
                 // If the width is less than the minimum, push out the
                 // point that the user is dragging
-                if(points[this.bottomRight] === sel.point) {
-                    points[this.bottomRight].x = points[this.topLeft].x + entityTemplate.width;
+                if(sel && (points[this.topLeft] === sel.point // Checks if topLeft is clicked
+                        || points[this.topLeft] === sel.point.x)) { // Checks if bottomLeft is clicked
+                    points[this.topLeft].x = x1 = points[this.bottomRight].x - entityTemplate.width;
                 }else {
-                    points[this.topLeft].x = points[this.bottomRight].x - entityTemplate.width;
+                    points[this.bottomRight].x = x2 = points[this.topLeft].x + entityTemplate.width;
                 }
             }
             if(points[this.bottomRight].y - points[this.topLeft].y < entityTemplate.height) {
                 // If the height is less than the minimum, push out the
                 // point that the user is dragging
-                if(points[this.bottomRight] === sel.point) {
-                    points[this.bottomRight].y = points[this.topLeft].y + entityTemplate.height;
+                if(sel && (points[this.topLeft]===sel.point || // Checks if topLeft is clicked
+                        points[this.topLeft] === sel.point.y)) { // Checks if topRight is clicked
+                    points[this.topLeft].y = y1 = points[this.bottomRight].y - entityTemplate.height;
                 }else {
-                    points[this.topLeft].y = points[this.bottomRight].y - entityTemplate.height;
+                    points[this.bottomRight].y = y2 = points[this.topLeft].y + entityTemplate.height;
                 }
             }
             points[this.centerPoint].x = x1 + hw;
