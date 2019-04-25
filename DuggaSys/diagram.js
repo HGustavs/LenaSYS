@@ -132,7 +132,16 @@ const escapeKey = 27;
 
 //this block of the code is used to handel keyboard input;
 window.addEventListener("keydown", this.keyDownHandler);
-
+document.addEventListener("mouseup", this.logMouseButton);
+// detects mouse drag
+let drag = false;
+window.addEventListener('mousedown', () => drag = false);
+window.addEventListener('mousemove', () => drag = true);
+window.addEventListener('mouseup', () => console.log(drag ? 'drag' : 'click'));
+// hides the context menu. Needed in order to be able to right click and drag to move the camera.
+window.addEventListener('contextmenu', function (e) {
+                e.preventDefault();
+            }, false);
 var ctrlIsClicked = false;
 
 //--------------------------------------------------------------
@@ -250,6 +259,38 @@ function generateExampleCode() {
 
 var diagram = [];
 
+function logMouseButton(e) {
+    let leftMouseClick = 0;
+    let middleMouseClick = 1;
+    let rightMouseClick = 2;
+    switch (e.button) {
+      case leftMouseClick:
+            // No functionality
+        break;
+      case middleMouseClick:
+            // No functionality
+        break;
+      case rightMouseClick:
+        if (e.stopPropagation) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+        if(uimode != "MoveAround") {
+            e.button = null;
+            e.button = 2;
+            activateMovearound();
+
+            // (3) move the ball on mousemove
+        } else {
+            deactivateMovearound();
+        }
+        updateGraphics();
+        break;
+      default:
+       // console.log(`Unknown button code: ${btnCode});
+    }
+}
+
 function keyDownHandler(e) {
     var key = e.keyCode;
     if(appearanceMenuOpen) return;
@@ -269,6 +310,7 @@ function keyDownHandler(e) {
         }
         updateGraphics();
     } else if(key == upArrow || key == downArrow || key == leftArrow || key == rightArrow) {//arrow keys
+
         arrowKeyPressed(key);
     } else if(key == ctrlKey || key == windowsKey) {
         ctrlIsClicked = true;
