@@ -468,7 +468,7 @@ function returnedGroups(data) {
       if (grp != "") {
         str += "</tbody>";
         str += "</table>";
-        str += "<div style='text-align:right;border-top:2px solid #434343'><a style='white-space:nowrap' href='mailto:" + grpemail + "'>Email group</a></div>"
+        str += "<div style='text-align:left;border-top:2px solid #434343'><a style='white-space:nowrap' href='mailto:" + grpemail + "'>Email group</a></div>"
         grpemail = "";
       }
       grp = cgrp;
