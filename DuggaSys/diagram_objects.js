@@ -1405,6 +1405,10 @@ function Symbol(kind) {
             ctx.lineTo(middleBreakPointX, breakpointStartY);
             ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
             ctx.lineTo(middleBreakPointX, breakpointEndY);
+        }  else if((startLineDirection === "up" || startLineDirection === "down") && (endLineDirection === "left" || endLineDirection === "right")) {
+            ctx.lineTo(middleBreakPointX, breakpointEndY);
+            ctx.lineTo(middleBreakPointX, middleBreakPointY); // Mid point
+            ctx.lineTo(middleBreakPointX, breakpointEndY);
         }
 
         // Draw to end breakpoint based on direction
