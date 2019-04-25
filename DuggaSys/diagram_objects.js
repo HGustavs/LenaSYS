@@ -1534,15 +1534,19 @@ function Symbol(kind) {
         var midx = x1 + ((x2-x1)/2);
         var midy = y1 + ((y2-y1)/2);
         ctx.beginPath();
+        //draw text outline
         if (this.targeted || this.isHovered) {
             ctx.lineWidth = 2;
-            ctx.setLineDash([5, 4]);
             ctx.strokeColor = "F82";
+            //linedash only when hovered and not targeted 
+            if (this.isHovered && !this.targeted) {
+                ctx.setLineDash([5, 4]);
+            }
             ctx.rect(x1, y1, x2-x1, y2-y1);
             ctx.stroke();
         }
         this.properties['textSize'] = this.getFontsize();
-
+        
         ctx.fillStyle = this.properties['fontColor'];
         ctx.textAlign = this.textAlign;
 
