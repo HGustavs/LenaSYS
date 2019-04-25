@@ -32,10 +32,10 @@ function setup()
   filt += "</span></td>";
 
   // Add search bar to nav
-  filt += `<td id='searchBar' class='navButt barstyle'>`;
-  filt += `<input id='searchinput' class='inputstyle' type='text' name='search' placeholder='Search..'`;
+  filt += `<td id='searchBar' class='navButt'>`;
+  filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
   filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
-  filt += `<button id='searchbutton' class='switchContent buttonstyle'`;
+  filt += `<button id='searchbutton' class='switchContent'`;
   filt += `onclick='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();' type='button'>`;
   filt += `<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>`;
   filt += `</button></td>`;
