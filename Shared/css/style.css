@@ -3637,9 +3637,11 @@ only screen and (max-device-width: 320px) {
 #selectDiv {
   border-radius: 6px;
   border: 2px solid #d4d4d4;
-  height: 34px;
+  padding-right: 10px;
+  padding-left: 10px;
+  height: 30px;
   position: absolute;
-  right: 18px;
+  right: 20px;
   bottom: 12px;
   -webkit-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
   -moz-box-shadow: 0px 2px 10px 1px rgba(219, 219, 219, 1);
@@ -3670,7 +3672,38 @@ only screen and (max-device-width: 320px) {
   padding: 0;
 }
 
-#selectDiv .ikonPil {
+#zoomOut {
+  margin: 0;
+}
+
+#zoomOut button{
+  position: relative; bottom: 5px;
+  line-height: 15px;
+  font-size: 15px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: white;
+  color: black;
+}
+
+.b1:hover{
+  background-color: black;
+}
+
+#zoomIn {
+  margin: 0;
+}
+
+#zoomIn button{
+  position: relative; bottom: 5px;
+  line-height: 15px;
+  font-size: 15px;
+}
+
+
+
+
+/* #selectDiv .ikonPil {
   display: block;
   background: url("../icons/arrow.svg") no-repeat;
   position: absolute;
@@ -3688,23 +3721,23 @@ only screen and (max-device-width: 320px) {
 }
 
 /* Used to rotate the picture that is used as a arrow */
-
+/*
 @keyframes roteraPil {
   0% {
     -ms-transform: rotate(0deg);
     /* IE 9 */
-    -webkit-transform: rotate(0deg);
+    /*-webkit-transform: rotate(0deg);
     /* Chrome, Safari, Opera */
-    transform: rotate(0deg);
+    /*transform: rotate(0deg);
   }
   100% {
     -ms-transform: rotate(180deg);
     /* IE 9 */
-    -webkit-transform: rotate(180deg);
+  /*  -webkit-transform: rotate(180deg);
     /* Chrome, Safari, Opera */
-    transform: rotate(180deg);
+  /*  transform: rotate(180deg);
   }
-}
+} */
 
 /* Style for the div that presents the coordinants and zoomvalue in diagram */
 

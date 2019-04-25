@@ -320,7 +320,27 @@
             -->
             <div id='valuesCanvas'></div>
             <div id="selectDiv">
-                <select name="Zoom" id="ZoomSelect" onchange="zoomInMode();">
+              <span id="zoomOut">
+                  <button class="b1"> - </button>
+              </span>
+                <input name="Zoom" id="ZoomSelect" type="range" onchange="zoomInMode();" min="0.1" max="2" value="1" step="0.1">
+                <span id="zoomIn">
+                    <button class="zoomInt"> + </button>
+                </span>
+                <!-- <datalist id="tickmarks">
+                      <option value="0.1" label="10%">
+                      <option value="0.2">
+                      <option value="0.3">
+                      <option value="0.4">
+                      <option value="0.5" label="50%">
+                      <option value="0.6">
+                      <option value="0.7">
+                      <option value="0.8">
+                      <option value="0.9">
+                      <option value="1" label="100%">
+                      <option value="1.1">
+                  </datalist> -->
+                <!-- <select name="Zoom" id="ZoomSelect" onchange="zoomInMode();">
                     <option selected='selected' disabled>Choose zoom</option>
                     <option value="0.3">30%</option>
                     <option value="0.5">50%</option>
@@ -329,7 +349,7 @@
                     <option value="1.5">150%</option>
                     <option value="2">200%</option>
                 </select>
-                <i class="ikonPil"></i>
+                <i class="ikonPil"></i> -->
             </div>
         </div>
     </div>
