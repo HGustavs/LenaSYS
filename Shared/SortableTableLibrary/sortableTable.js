@@ -669,13 +669,14 @@ function SortableTable(param) {
 		}
 	}
 
-	this.mail = function(cidMail, crsMail, reqType){
+	this.mail = function(cidMail, crsMail, searchterm, reqType){
 		$.ajax({
 			url: "resultedservice.php",
 			type: "POST",
 			data: {
 				'courseid': cidMail,
 				'coursevers': crsMail,
+				'searchterm': searchterm,
 				'requestType': reqType
 			},
 			dataType: "JSON",
