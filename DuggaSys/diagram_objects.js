@@ -519,7 +519,7 @@ function Symbol(kind) {
                 tl = {x:bl.x, y:tr.y};
                 br = {x:tr.x, y:bl.y};
             }
-        }else {
+        } else {
             if(p1.y < p2.y) {
                 // We are in the topright
                 tr = {x:p1.x, y:p1.y};
@@ -1028,9 +1028,17 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
+
     function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) 
     {
         var relationMidPoints = [];
+
+        // Map input coordinates to canvas origo offset
+        x1 = canvasToPixels(x1).x;
+        x2 = canvasToPixels(x2).x;
+        y1 = canvasToPixels(0, y1).y;
+        y2 = canvasToPixels(0, y2).y;
+
         // Need to find the connected entities in order to change lines between relations and entities to normal.
         for(let i = 0; i < diagram.length; i++) {
             if (diagram[i] != this && diagram[i].kind == 2) {
@@ -1053,6 +1061,7 @@ function Symbol(kind) {
                 } 
                 // Setting the line types to normal if they are forced and the connected entity is strong.
                 if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
+
                     // Looping through the midpoints for relation entities.
                     for (let j = 0; j < relationMidPoints.length; j++) {
                         // checking if the line is connected to any of the midpoints.
@@ -1082,15 +1091,21 @@ function Symbol(kind) {
         var relationMidXPoints = [];
         var attributeMidPoint = [];
 
+        // Map input coordinates to canvas origo offset
+        x1 = canvasToPixels(x1).x;
+        x2 = canvasToPixels(x2).x;
+        y1 = canvasToPixels(0, y1).y;
+        y2 = canvasToPixels(0, y2).y;
+
         // Need to find the connected entities in order to change lines between relations and entities to forced.
         for(let i = 0; i < diagram.length; i++) {
             if (diagram[i] != this && diagram[i].kind == 2) {
-                // Each (top) coordinate for the current object
+                // Getting each (top) coordinate of the object
                 dtlx = diagram[i].corners().tl.x;
                 dtly = diagram[i].corners().tl.y;
                 dtrx = diagram[i].corners().tr.x;
                 dtry = diagram[i].corners().tr.y;
-                // Each (bottom) coordinate for the current object
+                // Getting each (bottom) coordinate of the object
                 dbrx = diagram[i].corners().br.x;
                 dbry = diagram[i].corners().br.y;
                 dblx = diagram[i].corners().bl.x;
@@ -1122,6 +1137,7 @@ function Symbol(kind) {
                                 // Checking if the line Y coordinate is the same as the coordinate for the relation middle top Y or bottom Y
                                 if (dtly == relationMidXPoints[c] || dbly == relationMidXPoints[c]) {
                                     // Going through the array even if empty since it otherwise requires that an attribute is connected to the entity in all cases
+                                    
                                     for (let y = 0; y <= attributeMidPoint.length; y++) {
                                         for (let k = 0; k <= attributeMidPoint.length; k++) {
                                             // Making sure that lines between relations and attributes aren't set to forced.
