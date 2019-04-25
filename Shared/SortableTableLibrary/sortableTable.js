@@ -752,8 +752,12 @@ function newCompare(firstCell, secoundCell) {
 		secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
 			
 		if (status == 0) {
+			console.log(firstCellTemp);
+			console.log(status);
 			val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
 		} else {
+			console.log(status);
+			console.log(firstCellTemp);
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		}
        //Check if the cell is a valid cell in the table.
