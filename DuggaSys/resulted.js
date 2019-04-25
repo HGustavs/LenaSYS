@@ -54,8 +54,8 @@ function setup() {
   var sc = "searchinput";
 
   filt += "<td id='searchBar' class='navButt'>";
-  filt += "<input id='"+sc+"' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById('"+sc+"').value;searchKeyUp(event);myTable.reRender();'/>";
-  filt += "<button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById('"+sc+"').value;searchKeyUp(event);myTable.reRender();' type='button'>";
+  filt += "<input id='"+sc+"' type='text' name='search' placeholder='Search..'onkeyup='searchterm=document.getElementById('"+sc+"').value;searchKeyUp(event);myTable.reRender();'/>";
+  filt += "<button id='searchbutton' class='switchContent'onclick='searchterm=document.getElementById('"+sc+"').value;searchKeyUp(event);myTable.reRender();' type='button'>";
   filt += "<img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/>";
   filt += "</button></td>";
 
