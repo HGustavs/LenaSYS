@@ -2352,7 +2352,7 @@ function figureFreeDraw() {
             points.splice(p2, 1);
             p2 = startPosition;
             figurePath.addsegment(1, p1, p2);
-            md = 0; // To prevent selectbox spawn when clicking out of freedraw mode
+            md = mouseState.empty; // To prevent selectbox spawn when clicking out of freedraw mode
             diagram.push(figurePath);
             figurePath.figureType = "Free";
             selected_objects.push(figurePath);

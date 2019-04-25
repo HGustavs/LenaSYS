@@ -42,7 +42,7 @@ var oldMouseCoordinateY = 0;
 var canvasMouseX = 0;               // Variable for the mouse coordinate X in the canvas on the diagram page.
 var canvasMouseY = 0;               // Variable for the mouse coordinate Y in the canvas on the diagram page.
 var zoomValue = 1.00;
-var md = 0;                         // Mouse state
+var md = mouseState.empty;          // Mouse state
 var globalMouseState = 0;           // Global mouse state (not only for canvas)
 var hovobj = -1;
 var lineStartObj = -1;
@@ -138,6 +138,14 @@ const symbolKind = {
     erRelation: 5,
     text: 6,
     umlLine: 7
+}
+
+const mouseState = {
+    empty: 0,                       // empty
+    noPointAvailable: 1,            // mouse is pressed down and no point is close show selection box
+    insidePoint: 2,                 // mouse is pressed down and at a point in selected object 
+    insideMovableObject: 3,         // mouse pressed down inside a movable object  
+    boxSelectOrCreateMode: 4        // Box select or Create mode 
 }
 
 //this block of the code is used to handel keyboard input;
@@ -322,12 +330,12 @@ function keyDownHandler(e) {
 //----------------------------------------------------------------------
 
 function cancelFreeDraw() {
-    if(uimode == "CreateFigure" && figureType == "Free" && md == 4) {
+    if(uimode == "CreateFigure" && figureType == "Free" && md == mouseState.boxSelectOrCreateMode) {
         for (var i = 0; i < numberOfPointsInFigure; i++) {
             diagram.pop();
         }
         cleanUp();
-        md = 0;             //Prevents the dashed line box, when drawing a square, to appear immediately
+        md = mouseState.empty;      //Prevents the dashed line box, when drawing a square, to appear immediately
         updateGraphics();
       }
 }
@@ -701,7 +709,7 @@ diagram.checkForHover = function(posX, posY) {
     });
     if (hoveredObjects.length && hoveredObjects[hoveredObjects.length - 1].kind != kind.path) {
         //We only want to set it to true when md is not in selectionbox mode
-        hoveredObjects[hoveredObjects.length - 1].isHovered = md != 4 || uimode != "normal";
+        hoveredObjects[hoveredObjects.length - 1].isHovered = md != mouseState.boxSelectOrCreateMode || uimode != "normal";
     }
     return hoveredObjects[hoveredObjects.length - 1];
 }
@@ -2187,7 +2195,7 @@ function mousemoveevt(ev, t) {
         currentMouseCoordinateX = (((ev.offsetX - canvas.offsetLeft) * (1 / zoomValue)) + (sx * (1 / zoomValue)));
         currentMouseCoordinateY = (((ev.offsetY - canvas.offsetTop) * (1 / zoomValue)) + (sy * (1 / zoomValue)));
     }
-    if (md == 0) {
+    if (md == mouseState.empty) {
         // Select a new point only if mouse is not already moving a point or selection box
         sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
 
@@ -2200,9 +2208,9 @@ function mousemoveevt(ev, t) {
         // If mouse is not pressed highlight closest point
         points.clearAllSelects();
         movobj = diagram.itemClicked();
-    } else if (md == 1) {
+    } else if (md == mouseState.noPointAvailable) {
         // If mouse is pressed down and no point is close show selection box
-    } else if (md == 2) {
+    } else if (md == mouseState.insidePoint) {
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
             sel.point.y = currentMouseCoordinateY;	
@@ -2216,7 +2224,7 @@ function mousemoveevt(ev, t) {
             sel.point.y.y = currentMouseCoordinateY;
         }
         // If mouse is pressed down and at a point in selected object - move that point
-    } else if (md == 3) {
+    } else if (md == mouseState.insideMovableObject) {
         // If mouse is pressed down inside a movable object - move that object
         if (movobj != -1 ) {
             uimode = "Moved";
@@ -2233,14 +2241,14 @@ function mousemoveevt(ev, t) {
             }
         }
     }
-    if (md == 4 && uimode == "normal") {
+    if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY, true);
     } else {
         diagram.checkForHover(currentMouseCoordinateX, currentMouseCoordinateY);
     }
     updateGraphics();
     // Draw select or create dotted box
-    if (md == 4) {
+    if (md == mouseState.boxSelectOrCreateMode) {
         if (figureType == "Free" && uimode == "CreateFigure") {
             if(p2 != null && !(isFirstPoint)) {
                 ctx.setLineDash([3, 3]);
@@ -2370,19 +2378,19 @@ function mousemoveevt(ev, t) {
 }
 
 function mousedownevt(ev) {
-    if(uimode == "Moved" && md != 4) {
+    if(uimode == "Moved" && md != mouseState.boxSelectOrCreateMode) {
         uimode = "normal";
-        md = 0;
+        md = mouseState.empty;
     }
 
 
     if (uimode == "CreateLine" || uimode == "CreateUMLLine") {
-        md = 4;            // Box select or Create mode.
+        md = mouseState.boxSelectOrCreateMode;            // Box select or Create mode.
         startMouseCoordinateX = currentMouseCoordinateX;
         startMouseCoordinateY = currentMouseCoordinateY;
         //If you start on canvas or not
         if (hovobj == -1) {
-            md = 0;
+            md = mouseState.empty;
         } else {
             sel = diagram.closestPoint(currentMouseCoordinateX, currentMouseCoordinateY);
             //Store which object you are hovering over in lineStartObj
@@ -2392,12 +2400,12 @@ function mousedownevt(ev) {
             symbolStartKind = diagram[lineStartObj].symbolkind;
         }
     } else if (sel.distance < tolerance) {
-        md = 2;
+        md = mouseState.insidePoint;
     } else if (movobj != -1) {
-        md = 3;
+        md = mouseState.insideMovableObject;
         handleSelect();
     } else {
-        md = 4; // Box select or Create mode.
+        md = mouseState.boxSelectOrCreateMode; // Box select or Create mode.
         if(uimode != "CreateFigure") {
             startMouseCoordinateX = currentMouseCoordinateX;
             startMouseCoordinateY = currentMouseCoordinateY;
@@ -2457,7 +2465,7 @@ function handleSelect() {
 }
 
 function mouseupevt(ev) {
-    if (uimode == "CreateFigure" && md == 4) {
+    if (uimode == "CreateFigure" && md == mouseState.boxSelectOrCreateMode) {
         if(figureType == "Text") {
             createText(currentMouseCoordinateX, currentMouseCoordinateY);
         }
@@ -2465,7 +2473,7 @@ function mouseupevt(ev) {
         if(figureType == "Free") return;
     }
     // Code for creating a new class
-    if (md == 4 && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
+    if (md == mouseState.boxSelectOrCreateMode && (uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation")) {
         resize();
 
         // Add required points
@@ -2473,15 +2481,15 @@ function mouseupevt(ev) {
         p2 = points.addPoint(currentMouseCoordinateX, currentMouseCoordinateY, false);
         p3 = points.addPoint((startMouseCoordinateX + currentMouseCoordinateX) * 0.5, (startMouseCoordinateY + currentMouseCoordinateY) * 0.5, false);
     }
-    var saveState = md == 4 && uimode != "normal";
+    var saveState = md == mouseState.boxSelectOrCreateMode && uimode != "normal";
     if(movobj > -1) {
         if(diagram[movobj].symbolkind != symbolKind.line && uimode == "Moved") saveState = true;
     }
-    if (uimode == "CreateLine" && md == 4) {
+    if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
          if (hovobj == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erEntity) {
-            md = 0;
+            md = mouseState.empty;
          }else {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
@@ -2531,11 +2539,11 @@ function mouseupevt(ev) {
             }
         }
     }
-    if (uimode == "CreateUMLLine" && md == 4) {
+    if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
         saveState = false;
         //Check if you release on canvas or try to draw a line from entity to entity
          if (hovobj == -1 || diagram[lineStartObj].symbolkind == symbolKind.erEntity && diagram[hovobj].symbolkind == symbolKind.erEntity) {
-            md = 0;
+            md = mouseState.empty;
          }else {
               //Get which kind of symbol mouseupevt execute on
              symbolEndKind = diagram[hovobj].symbolkind;
@@ -2590,7 +2598,7 @@ function mouseupevt(ev) {
     // Symbol (1 UML diagram symbol 2 ER Attribute 3 ER Entity 4 Lines 5 ER Relation 6 Text 7 UML Lines)
     //----------------------------------------------------------------------
 
-    if (uimode == "CreateClass" && md == 4) {
+    if (uimode == "CreateClass" && md == mouseState.boxSelectOrCreateMode) {
         classB = new Symbol(symbolKind.uml); // UML
         classB.name = "New" + diagram.length;
         classB.operations.push({text:"- makemore()"});
@@ -2604,7 +2612,7 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (uimode == "CreateERAttr" && md == 4) {
+    } else if (uimode == "CreateERAttr" && md == mouseState.boxSelectOrCreateMode) {
         erAttributeA = new Symbol(symbolKind.erAttribute); // ER attributes
         erAttributeA.name = "Attr" + diagram.length;
         erAttributeA.topLeft = p1;
@@ -2618,7 +2626,7 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (uimode == "CreateEREntity" && md == 4) {
+    } else if (uimode == "CreateEREntity" && md == mouseState.boxSelectOrCreateMode) {
         erEnityA = new Symbol(symbolKind.erEntity); // ER entity
         erEnityA.name = "Entity" + diagram.length;
         erEnityA.topLeft = p1;
@@ -2633,7 +2641,7 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (uimode == "CreateLine" && md == 4) {
+    } else if (uimode == "CreateLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute)
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.line && symbolEndKind != symbolKind.line) && okToMakeLine) {
@@ -2651,7 +2659,7 @@ function mouseupevt(ev) {
             createCardinality();
             updateGraphics();
         }
-    } else if (uimode == "CreateERRelation" && md == 4) {
+    } else if (uimode == "CreateERRelation" && md == mouseState.boxSelectOrCreateMode) {
         erRelationA = new Symbol(symbolKind.erRelation); // ER Relation
         erRelationA.name = "Relation" + diagram.length;
         erRelationA.topLeft = p1;
@@ -2663,10 +2671,10 @@ function mouseupevt(ev) {
         lastSelectedObject = diagram.length -1;
         diagram[lastSelectedObject].targeted = true;
         selected_objects.push(diagram[lastSelectedObject]);
-    } else if (md == 4 && uimode == "normal") {
+    } else if (md == mouseState.boxSelectOrCreateMode && uimode == "normal") {
         diagram.targetItemsInsideSelectionBox(currentMouseCoordinateX, currentMouseCoordinateY, startMouseCoordinateX, startMouseCoordinateY);
     }
-    else if(uimode != "Moved" && !ctrlIsClicked && md != 4) {
+    else if(uimode != "Moved" && !ctrlIsClicked && md != mouseState.boxSelectOrCreateMode) {
         //Unselects every object.
         for(var i = 0; i < diagram.length; i++) {
             diagram[i].targeted = false;
@@ -2676,9 +2684,9 @@ function mouseupevt(ev) {
         if (lastSelectedObject >= 0) {
             selected_objects.push(diagram[lastSelectedObject]);
             //You have to target an object when you start to draw
-            if(md != 0) diagram[lastSelectedObject].targeted = true;
+            if(md != mouseState.empty) diagram[lastSelectedObject].targeted = true;
         }
-    } else if (uimode == "CreateUMLLine" && md == 4) {
+    } else if (uimode == "CreateUMLLine" && md == mouseState.boxSelectOrCreateMode) {
         //Code for making a line, if start and end object are different, except attributes
         if((symbolStartKind != symbolEndKind || (symbolStartKind == symbolKind.erAttribute && symbolEndKind == symbolKind.erAttribute) 
         || symbolStartKind == symbolKind.uml && symbolEndKind == symbolKind.uml) && (symbolStartKind != symbolKind.umlLine && symbolEndKind != symbolKind.umlLine) && okToMakeLine) {
@@ -2701,7 +2709,7 @@ function mouseupevt(ev) {
     updateGraphics();
     diagram.updateLineRelations();
     // Clear mouse state
-    md = 0;
+    md = mouseState.empty;
     if(saveState) SaveState();
 
 }
@@ -2753,7 +2761,7 @@ function createText(posX, posY) {
 //----------------------------------------------------------------------
 
 function resize() {
-    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == 4) {
+    if ((uimode == "CreateClass" || uimode == "CreateERAttr" || uimode == "CreateEREntity" || uimode == "CreateERRelation") && md == mouseState.boxSelectOrCreateMode) {
         if (currentMouseCoordinateX < startMouseCoordinateX) {
             var tempX = currentMouseCoordinateX;
             currentMouseCoordinateX = startMouseCoordinateX;
