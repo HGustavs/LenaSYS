@@ -108,7 +108,10 @@ if($ha){
 						$error=true;
 				}
 		}
+
+		// For the time sheet dugga
 		if($fieldtype === "timesheet"){
+			// Format the input and save it as a txt file
 			$formattedInput = formatTimeSheetInput();
 
 			$fname=$fieldtype;
@@ -135,6 +138,7 @@ if($ha){
 			$movname=$currcvd."/submissions/".$cid."/".$vers."/".$duggaid."/".$userdir."/".$fname.$seq.".".$extension;
 			file_put_contents($movname, $formattedInput);
 
+			// Save POST values in an array to loop over them
 			$indexedPOST = array_values($_POST);
 			$postEntries = count(preg_grep("/ts.+_\d+/", array_keys($_POST))) / 4;
 			for($entryIdx = 0; $entryIdx < $postEntries; $entryIdx++) {
@@ -143,13 +147,18 @@ if($ha){
 				$ref=$indexedPOST[2 + ($entryIdx * 4)];
 				$comment=$indexedPOST[3 + ($entryIdx * 4)];
 
-				$query = $pdo->prepare("INSERT INTO timesheet(uid, cid, did, vers, moment, day, type, reference, comment) VALUES(:uid,:cid,:did,:vers,:moment,:date,:type,:reference,:comment);");
+				// Convert date to a DateTime object to calculate the week number
+				$datetime = new DateTime($date);
+				$week = $datetime->format("W");
+
+				$query = $pdo->prepare("INSERT INTO timesheet(uid, cid, did, vers, moment, day, week, type, reference, comment) VALUES(:uid,:cid,:did,:vers,:moment,:date,:week,:type,:reference,:comment);");
 				$query->bindParam(':uid', $userid);
 				$query->bindParam(':cid', $cid);
 				$query->bindParam(':vers', $vers);
 				$query->bindParam(':did', $duggaid);
 				$query->bindParam(':moment', $moment);
 				$query->bindParam(':date', $date);
+				$query->bindParam(':week', $week);
 				$query->bindParam(':type', $type);
 				$query->bindParam(':reference', $ref);
 				$query->bindParam(':comment', $comment);
