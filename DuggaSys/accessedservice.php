@@ -366,7 +366,7 @@ if(checklogin() && (hasAccess($userid, $cid, 'w') || isSuperUser($userid))) {
 	}
 
 	// Find user submissions in old versions
-	$query=$pdo->prepare("SELECT course.cid, uid, vers.vers, versname FROM course, submission, vers WHERE course.cid=:cid AND course.cid=submission.cid AND vers.vers=submission.vers AND submission.vers!=activeversion;");
+	$query=$pdo->prepare("SELECT course.cid, uid, vers.vers, versname FROM course, userAnswer, vers WHERE course.cid=:cid AND course.cid=userAnswer.cid AND vers.vers=userAnswer.vers AND userAnswer.vers!=activeversion;");
 	$query->bindParam(':cid', $cid);
 	if(!$query->execute()) {
 		$error=$query->errorInfo();
