@@ -18,19 +18,24 @@ function setup()
   AJAXService("GET",{cid:querystring['cid'],coursevers:querystring['coursevers']},"ACCESS");
 }
 
-/* Commented out this section because of the empty white box that appeared when mouseover the navbutt. Needs testing to assure it doesnt affect other pages.
+//  Instead of commenting out the functions as previously which caused uncaught reference errors
+//  function content was commented out to avoid having a white empty box appear.
 function hoverc()
 {
+    /*
     $('#dropdowns').css('display','none');
     $('#dropdownc').css('display','block');
+    */
 }
 
 function hovers()
 {
+  /*
   $('#dropdowns').css('display','block');
   $('#dropdownc').css('display','none');
+  */
 }
-*/
+
 function leavec()
 {
 		$('#dropdownc').css('display','none');
@@ -163,6 +168,12 @@ function changeProperty(targetobj,propertyname,propertyvalue)
 //----------------------------------------------------------------
 var tgroups=[];
 
+function hideSSN(ssn){
+	var hiddenSSN;
+	hiddenSSN = ssn.replace(ssn, 'XXXXXXXX-XXXX');
+	return hiddenSSN;
+}
+
 function renderCell(col,celldata,cellid) {
 		var str="UNK";
 		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"||col == "class"||col == "examiner"||col == "groups"||col == "vers"||col == "access"||col == "requestedpasswordchange"){
@@ -171,7 +182,11 @@ function renderCell(col,celldata,cellid) {
 
 		if(col == "username"||col == "ssn"||col == "firstname"||col == "lastname"){
 			//str = "<div style='display:flex;'><input id='"+col+"_"+obj.uid+"' onKeyDown='if(event.keyCode==13) changeOpt(event)' value=\""+obj[col]+"\" style='margin:0 4px;flex-grow:1;font-size:11px;' size=" + obj[col].toString().length +"></div>";
-			str = "<div style='display:flex;'><span id='"+col+"_"+obj.uid+"' style='margin:0 4px;flex-grow:1;'>"+obj[col]+"</span></div>";
+			if(col == "ssn"){
+				str = "<div style='display:flex;'><span id='"+col+"_"+obj.uid+"' style='margin:0 4px;flex-grow:1;'>"+hideSSN(obj[col])+"</span></div>";
+			} else {
+				str = "<div style='display:flex;'><span id='"+col+"_"+obj.uid+"' style='margin:0 4px;flex-grow:1;'>"+obj[col]+"</span></div>";
+			}
 		}else if(col=="class"){
 			str="<select onchange='changeOpt(event)' id='"+col+"_"+obj.uid+"'><option value='None'>None</option>"+makeoptionsItem(obj.class,filez['classes'],"class","class")+"</select>";
 		}else if(col=="examiner"){
@@ -229,78 +244,7 @@ function renderSortOptions(col,status,colname) {
 	return str;
 }
 
-//----------------------------------------------------------------
-// rowFilter <- Callback function that sorts rows in the table
-//----------------------------------------------------------------
-/*
-function compare(a,b) {
-	var col = sortableTable.currentTable.getSortcolumn();
-	var tempA = a;
-	var tempB = b;
 
-	// Needed so that the counter starts from 0
-	// everytime we sort the table
-	count = 0;
-	if (col == "examiner") {
-		if(tempA.examiner!=null)tempA = filez.teachers[tempA.examiner].name;
-		if(tempB.examiner!=null)tempB = filez.teachers[tempB.examiner].name;
-	}
-
-  if(tempA != null){
-    tempA = tempA.toUpperCase();
-  }
-  if(tempB != null){
-    tempB = tempB.toUpperCase();
-  }
-
-	if (tempA > tempB) {
-		return 1;
-	} else if (tempA < tempB) {
-		return -1;
-	} else {
-		return 0;
-	}
-}
-*/
-function compare(a,b)
-{
-    // Find out which column and part of column are we sorting on from currentTable
-    let col = sortableTable.currentTable.getSortcolumn();
-    let kind = sortableTable.currentTable.getSortkind();
-    let val=0;
-
-    if (col == "firstname") {
-        a=JSON.parse(a);
-        b=JSON.parse(b);
-        a.firstname=$('<div/>').html(a.firstname).text();
-        b.firstname=$('<div/>').html(b.firstname).text();
-        if(kind==0){
-            val = b.firstname.toLocaleUpperCase().localeCompare(a.firstname.toLocaleUpperCase());
-        }else{
-            val = a.firstname.toLocaleUpperCase().localeCompare(b.firstname.toLocaleUpperCase());
-        }
-    }else if (col == "requestedpasswordchange") {
-			  a=JSON.parse(a);
-				b=JSON.parse(b);
-				if(kind==0){
-					val = b.requested<a.requested;
-			  }else{
-					val = a.requested<b.requested;
-			  }
-		} else {
-        if((kind%2)==0){
-						val=a<b;
-        }else{
-            val=b<a;
-        }
-		}
-		if (val === true) {
-      val = 1;
-    } else if (val === false) {
-      val = -1;
-    }
-    return val;
-}
 //--------------------------------------------------------------------------
 // editCell
 // ---------------
@@ -430,24 +374,45 @@ function showCheckboxes(element) {
     }
 }
 
+$(document).mouseover(function (e) {
+	FABMouseOver(e);
+});
+
+$(document).mouseout(function (e) {
+	FABMouseOut(e);
+});
+
 $(document).mousedown(function (e) {
-		mouseDown(e);
+	mouseDown(e);
+
+	if (e.button == 0) {
 		FABDown(e);
+	}
 });
 
 $(document).mouseup(function (e) {
-		mouseUp(e);
+	mouseUp(e);
+
+	if (e.button == 0) {
 		FABUp(e);
+	}
 });
 
-$(document).on("touchstart", function(e){
-		mouseDown(e);
-		FABDown(e);
+$(document).on("touchstart", function (e) {
+	if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
+		e.preventDefault();
+	}
+
+	mouseDown(e);
+	TouchFABDown(e);
 });
 
-$(document).on("touchend", function(e){
-		mouseUp(e);
-		FABUp(e);
+$(document).on("touchend", function (e) {
+	if ($(e.target).parents(".fixed-action-button").length !== 0 && $(e.target).parents(".fab-btn-list").length === 0) {
+		e.preventDefault();
+	}
+	mouseUp(e);
+	TouchFABUp(e);
 });
 
 //----------------------------------------------------------------------------------
