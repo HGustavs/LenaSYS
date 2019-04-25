@@ -875,7 +875,7 @@ function toggleVirtualA4() {
         updateGraphics();
     }
     $("#a4-holes-item").toggleClass("drop-down-item drop-down-item-disabled");
-    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+    setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);   
 
 }
 
@@ -1330,6 +1330,7 @@ consloe.log = function(gobBluth) {
 var ghostingCrosses = false; // used to repressent a switch for whenever the debugMode is enabled or not.
 function debugMode() {
     if(ghostingCrosses) {
+        console.log('devmode: ON');
         crossStrokeStyle1 = "#f64";
         crossFillStyle = "#d51";
         crossStrokeStyle2 = "#d51";
@@ -1338,9 +1339,13 @@ function debugMode() {
 
         toolbarState = 3;
         switchToolbar('Dev');
-        document.getElementById('toolbarTypeText').innerHTML = 'Dev';
-        console.log('devmode: ON');
-
+        document.getElementById('toolbarTypeText').innerHTML = 'DEV';
+        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");
+        setCheckbox($(".drop-down-option:contains('Display Virtual A4')"), toggleA4);
+        setCheckbox($(".drop-down-option:contains('ER')"), crossER); //Turn off ER.
+        setCheckbox($(".drop-down-option:contains('UML')"), crossUML); //Turn off UML.
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV); //Turn on DEV.
+        
 
         ghostingCrosses = false;
     } else {
@@ -1353,6 +1358,11 @@ function debugMode() {
         document.getElementById('toolbarTypeText').innerHTML = 'ER';
         console.log('devmode: OFF');
 
+        $("#displayAllTools").toggleClass("drop-down-item drop-down-item-disabled");
+        setCheckbox($(".drop-down-option:contains('UML')"), crossUML); //Turn off UML.
+        setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV); //Turn off DEV.
+        setCheckbox($(".drop-down-option:contains('ER')"), !crossER); //Turn on ER.
+
         ghostingCrosses = true;
     }
 
@@ -1361,16 +1371,35 @@ function debugMode() {
     setCheckbox($(".drop-down-option:contains('Developer mode')"), !ghostingCrosses);
 }
 
-function switchToolbarER() {
+var crossER = false;
+function switchToolbarER() { 
     toolbarState = 1;   
     switchToolbar('ER');
     document.getElementById('toolbarTypeText').innerHTML = 'ER';
+    setCheckbox($(".drop-down-option:contains('ER')"), !crossER);
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML);
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossDEV);
 }
-
+var crossUML = false;
 function switchToolbarUML() {
     toolbarState = 2;   
     switchToolbar('UML');
     document.getElementById('toolbarTypeText').innerHTML = 'UML';
+    setCheckbox($(".drop-down-option:contains('UML')"), !crossUML);
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER);
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), crossUML);
+    crossER = false;
+    crossDEV = false;
+}
+
+var crossDEV = false;
+function switchToolbarDev() {
+    toolbarState = 3;   
+    switchToolbar('Dev');
+    document.getElementById('toolbarTypeText').innerHTML = 'DEV';
+    setCheckbox($(".drop-down-option:contains('Display All Tools')"), !crossDEV);
+    setCheckbox($(".drop-down-option:contains('UML')"), crossUML);
+    setCheckbox($(".drop-down-option:contains('ER')"), crossER);
 }
 
 //------------------------------------------------------------------------------
