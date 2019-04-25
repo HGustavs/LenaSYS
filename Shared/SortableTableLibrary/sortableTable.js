@@ -205,7 +205,6 @@ function SortableTable(param) {
 
 	var tbl = getparam(param.data, { tblhead: {}, tblbody: [], tblfoot: {} });
 	var currentRowFilter = tbl.tblbody; // This is the currently visible row in the table.
-	console.log(currentRowFilter);
 	this.tableid = getparam(param.tableElementId, "UNK");
 	var filterid = getparam(param.filterElementId, "UNK");
 	var caption = getparam(param.tableCaption, "UNK");
@@ -680,7 +679,7 @@ function SortableTable(param) {
 			data: {
 				'courseid': cidMail,
 				'coursevers': crsMail,
-				'searchterm': searchterm,
+				'currentRowFilter': currentRowFilter,
 				'requestType': reqType
 			},
 			dataType: "JSON",
