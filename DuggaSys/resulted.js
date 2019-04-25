@@ -767,7 +767,7 @@ function renderCell(col, celldata, cellid) {
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
 	if (col == "FnameLnameSSN") {
-    console.log("celldata: "+celldata["firstname"]);
+    console.log("celldata: "+celldata["email"]);
 		str = "<div class='resultTableCell resultTableNormal'>";
 		str += "<div class='resultTableText'>";
 		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
