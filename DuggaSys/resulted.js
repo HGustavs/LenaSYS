@@ -51,7 +51,7 @@ function setup() {
 	filt += "</div>";
 	filt += "</span></td>";
 
-  filt += "<td id='searchBar' class='navButt'>hallo</td>"
+  filt += "<td id='searchBar' class='navButt'><input id='searchinput' type='text' name='search' placeholder='Search..' onkeyup='searchterm=document.getElementById('searchinput').value;searchKeyUp(event);myTable.reRender();'/><button id='searchbutton' class='switchContent' onclick='searchterm=document.getElementById('searchinput').value;searchKeyUp(event);myTable.reRender();' type='button'><img id='lookingGlassSVG' style='height:18px;' src='../Shared/icons/LookingGlass.svg'/></button></td>";
 
 	$("#menuHook").before(filt);
 
