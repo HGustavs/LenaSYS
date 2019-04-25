@@ -945,7 +945,6 @@ function rowFilter(row) {
     for(var i = 0; i < myTable.getTable().tblbody.length; i++)
         currentRowFilter.push(myTable.getRow(i));
   }
-  currentRowFilter[2] = null;
   console.log(currentRowFilter);
 	// Custom filters that remove rows before an actual search
 	if (!filterList["showTeachers"] && row["FnameLnameSSN"]["access"].toUpperCase().indexOf("W") != -1)
