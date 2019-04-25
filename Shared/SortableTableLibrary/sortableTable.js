@@ -751,6 +751,14 @@ function newCompare(firstCell, secoundCell) {
 					secoundCellTemp = Object.values(secoundCell)[0];
 				}
 			}
+			firstCellTemp = $('<div/>').html(firstCellTemp).text();
+			secoundCellTemp = $('<div/>').html(secoundCellTemp).text();
+
+			if (status == 0) {
+				val = secoundCellTemp.toLocaleUpperCase().localeCompare(firstCellTemp.toLocaleUpperCase(), "sv");
+			} else {
+				val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
+			}
 		}
 		
 		if (col === "requestedpasswordchange") {
