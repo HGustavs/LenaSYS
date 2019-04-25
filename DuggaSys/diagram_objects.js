@@ -519,7 +519,7 @@ function Symbol(kind) {
                 tl = {x:bl.x, y:tr.y};
                 br = {x:tr.x, y:bl.y};
             }
-        }else {
+        } else {
             if(p1.y < p2.y) {
                 // We are in the topright
                 tr = {x:p1.x, y:p1.y};
@@ -845,10 +845,10 @@ function Symbol(kind) {
         this.properties['textSize'] = this.getFontsize();
         ctx.strokeStyle = (this.targeted || this.isHovered) ? "#F82" : this.properties['strokeColor'];
 
-        var x1 = points[this.topLeft].x;
-        var y1 = points[this.topLeft].y;
-        var x2 = points[this.bottomRight].x;
-        var y2 = points[this.bottomRight].y;
+        var x1 = pixelsToCanvas(points[this.topLeft].x).x;
+        var y1 = pixelsToCanvas(0, points[this.topLeft].y).y;
+        var x2 = pixelsToCanvas(points[this.bottomRight].x).x;
+        var y2 = pixelsToCanvas(0, points[this.bottomRight].y).y;
 
         if(this.locked) {
             this.drawLock();
@@ -926,10 +926,9 @@ function Symbol(kind) {
     //---------------------------------------------------------
     // Functions used to draw objects
     //---------------------------------------------------------
-
     this.drawUML = function(x1, y1, x2, y2)
     {
-        var midy = points[this.middleDivider].y;
+        var midy = pixelsToCanvas(0, points[this.middleDivider].y).y;
         ctx.font = "bold " + parseInt(this.properties['textSize']) + "px Arial";
 
         // Clear Class Box
@@ -1029,9 +1028,17 @@ function Symbol(kind) {
             ctx.fillText(this.name, x1 + ((x2 - x1) * 0.5), (y1 + ((y2 - y1) * 0.5)));
         }
     }
+
     function removeForcedAttributeFromLinesIfEntityIsNotWeak(x1, y1, x2, y2) 
     {
         var relationMidPoints = [];
+
+        // Map input coordinates to canvas origo offset
+        x1 = canvasToPixels(x1).x;
+        x2 = canvasToPixels(x2).x;
+        y1 = canvasToPixels(0, y1).y;
+        y2 = canvasToPixels(0, y2).y;
+
         // Need to find the connected entities in order to change lines between relations and entities to normal.
         for(let i = 0; i < diagram.length; i++) {
             if (diagram[i] != this && diagram[i].kind == 2) {
@@ -1054,6 +1061,7 @@ function Symbol(kind) {
                 } 
                 // Setting the line types to normal if they are forced and the connected entity is strong.
                 if (diagram[i].isLine && diagram[i].properties['key_type'] != 'Normal') {
+
                     // Looping through the midpoints for relation entities.
                     for (let j = 0; j < relationMidPoints.length; j++) {
                         // checking if the line is connected to any of the midpoints.
@@ -1083,15 +1091,21 @@ function Symbol(kind) {
         var relationMidXPoints = [];
         var attributeMidPoint = [];
 
+        // Map input coordinates to canvas origo offset
+        x1 = canvasToPixels(x1).x;
+        x2 = canvasToPixels(x2).x;
+        y1 = canvasToPixels(0, y1).y;
+        y2 = canvasToPixels(0, y2).y;
+
         // Need to find the connected entities in order to change lines between relations and entities to forced.
         for(let i = 0; i < diagram.length; i++) {
             if (diagram[i] != this && diagram[i].kind == 2) {
-                // Each (top) coordinate for the current object
+                // Getting each (top) coordinate of the object
                 dtlx = diagram[i].corners().tl.x;
                 dtly = diagram[i].corners().tl.y;
                 dtrx = diagram[i].corners().tr.x;
                 dtry = diagram[i].corners().tr.y;
-                // Each (bottom) coordinate for the current object
+                // Getting each (bottom) coordinate of the object
                 dbrx = diagram[i].corners().br.x;
                 dbry = diagram[i].corners().br.y;
                 dblx = diagram[i].corners().bl.x;
@@ -1123,6 +1137,7 @@ function Symbol(kind) {
                                 // Checking if the line Y coordinate is the same as the coordinate for the relation middle top Y or bottom Y
                                 if (dtly == relationMidXPoints[c] || dbly == relationMidXPoints[c]) {
                                     // Going through the array even if empty since it otherwise requires that an attribute is connected to the entity in all cases
+                                    
                                     for (let y = 0; y <= attributeMidPoint.length; y++) {
                                         for (let k = 0; k <= attributeMidPoint.length; k++) {
                                             // Making sure that lines between relations and attributes aren't set to forced.
@@ -1498,8 +1513,8 @@ function Symbol(kind) {
 
     this.drawRelation = function(x1, y1, x2, y2) {
         this.isRelation = true;
-        var midx = points[this.centerPoint].x;
-        var midy = points[this.centerPoint].y;
+        var midx = pixelsToCanvas(points[this.centerPoint].x).x;
+        var midy = pixelsToCanvas(0, points[this.centerPoint].y).y;
         ctx.beginPath();
         if (this.properties['key_type'] == 'Weak') {
             ctx.lineWidth = this.properties['lineWidth'];
@@ -2004,15 +2019,15 @@ function Path() {
 
             ctx.beginPath();
             var pseg = this.segments[0];
-            ctx.moveTo(points[pseg.pa].x, points[pseg.pa].y);
+            ctx.moveTo(pixelsToCanvas(points[pseg.pa].x).x, pixelsToCanvas(0, points[pseg.pa].y).y);
             for (var i = 0; i < this.segments.length; i++) {
                 var seg = this.segments[i];
                 // If we start over on another sub-path, we must start with a moveto
                 if (seg.pa != pseg.pb) {
-                    ctx.moveTo(points[seg.pa].x, points[seg.pa].y);
+                    ctx.moveTo(pixelsToCanvas(points[seg.pa].x).x, pixelsToCanvas(0, points[seg.pa].y).y);
                 }
                 // Draw current line
-                ctx.lineTo(points[seg.pb].x, points[seg.pb].y);
+                ctx.lineTo(pixelsToCanvas(points[seg.pb].x).x, pixelsToCanvas(0, points[seg.pb].y).y);
                 // Remember previous segment
                 pseg = seg;
             }
@@ -2038,12 +2053,12 @@ function Path() {
                 var segb = points[this.segments[i].pb];
                 if(this.targeted) {
                     ctx.beginPath();
-                    ctx.arc(seg.x,seg.y,5,0,2*Math.PI,false);
+                    ctx.arc(pixelsToCanvas(seg.x).x, pixelsToCanvas(0, seg.y).y, 5,0,2*Math.PI,false);
                     ctx.fillStyle = '#F82';
                     ctx.fill();
 
                     ctx.beginPath();
-                    ctx.arc(segb.x,segb.y,5,0,2*Math.PI,false);
+                    ctx.arc(pixelsToCanvas(segb.x).x, pixelsToCanvas(0, segb.y).y, 5,0,2*Math.PI,false);
                     ctx.fillStyle = '#F82';
                     ctx.fill();
                 }
