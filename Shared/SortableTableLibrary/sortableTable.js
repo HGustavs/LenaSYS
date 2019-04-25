@@ -709,11 +709,24 @@ function newCompare(firstCell, secoundCell) {
 	let colOrder = sortableTable.currentTable.getColumnOrder(); // Get all the columns in the table.
 	var firstCellTemp;
 	var secoundCellTemp;
-	console.log(col);
-	console.log(firstCell.firstname);
 
-	//Check if the cell is a valid cell in the table.
-	if (colOrder.includes(col)) {
+    if(typeof firstCell === 'object') {
+		var tempString = col.split("/");
+		if(colOrder.includes(tempString[0])) {
+					//Convert to json object
+					if (JSON.stringify(firstCell.firstname) || JSON.stringify(secoundCell.firstname)) {
+						firstCellTemp = firstCell.firstname;
+						secoundCellTemp = secoundCell.firstname;
+					} else {
+						firstCell = JSON.parse(firstCell.firstname);
+						secoundCell = JSON.parse(secoundCell.firstname);
+						//Get the first letter from the value.
+						firstCellTemp = Object.values(firstCell.firstname)[0];
+						secoundCellTemp = Object.values(secoundCell.firstname)[0];
+			}
+		}
+       //Check if the cell is a valid cell in the table.
+	} else if (colOrder.includes(col)) {
 		//Check if the cells contains a date object.
 		if (Date.parse(firstCell) && Date.parse(secoundCell)) {
 			firstCellTemp = firstCell;
@@ -759,13 +772,14 @@ function newCompare(firstCell, secoundCell) {
 		} else {
 			val = firstCellTemp.toLocaleUpperCase().localeCompare(secoundCellTemp.toLocaleUpperCase(), "sv");
 		}
-	}
-	else {
+	} else {
 		if ((status % 2) == 0) {
 			val = firstCellTemp < secoundCell;
 		} else {
 			val = secoundCell < firstCellTemp;
 		}
 	}
+	
 	return val;
+
 }
