@@ -51,6 +51,7 @@ function setup() {
 	filt += "</div>";
 	filt += "</span></td>";
 
+  // Add search bar to nav
   filt += `<td id='searchBar' class='navButt'>`;
   filt += `<input id='searchinput' type='text' name='search' placeholder='Search..'`;
   filt += `onkeyup='searchterm=document.getElementById("searchinput").value;searchKeyUp(event);myTable.reRender();'/>`;
