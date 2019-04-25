@@ -931,12 +931,12 @@ function toggleVirtualA4Holes() {
 }
 
 //---------------------------------------
-// resetToolbar: resets the toolbar to it's original position 
+// resetToolbar: resets the toolbar to it's original position
 //---------------------------------------
 function resetToolbarPosition(){
     var myCanvas = document.getElementById('myCanvas');
     var bound = myCanvas.getBoundingClientRect();
-    //Assign position for the toolbar according to the canvas bounds 
+    //Assign position for the toolbar according to the canvas bounds
     document.getElementById("diagram-toolbar").style.top = (bound.top + "px");
     document.getElementById("diagram-toolbar").style.left = (bound.left + "px");
 }
@@ -1026,7 +1026,7 @@ function updateGraphics() {
 }
 
 //---------------------------------------
-// resetViewToOrigin: moves the view to origo based on movement done in the canvas 
+// resetViewToOrigin: moves the view to origo based on movement done in the canvas
 //---------------------------------------
 function resetViewToOrigin(){
     ctx.translate(distanceMovedX, distanceMovedY);
@@ -1478,7 +1478,7 @@ function reWrite() {
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
          + "X=" + decimalPrecision(canvasMouseX, 0).toFixed(0)
          + " & Y=" + decimalPrecision(canvasMouseY, 0).toFixed(0) + " | Top-left Corner(" + sx + ", " + sy + " )</p>";
-    } else { 
+    } else {
         document.getElementById("valuesCanvas").innerHTML = "<p><b>Zoom:</b> "
          + Math.round((zoomValue * 100)) + "%" + "   |   <b>Coordinates:</b> "
          + "X=" + decimalPrecision(canvasMouseX, 0).toFixed(0)
@@ -1678,6 +1678,11 @@ function alignVerticalCenter(selected_objects) {
     }
     selected_center_x = (highest_x-lowest_x)/2;
     for(var i = 0; i < selected_objects.length; i++) {
+        // If the selected objects is locked, temporarily switch to unlock state to align properly.
+        if(selected_objects[i].locked){
+          lockSelected();
+        }
+
         var object_width = (points[selected_objects[i].topLeft].x - points[selected_objects[i].bottomRight].x);
         selected_objects[i].move((-points[selected_objects[i].topLeft].x) + (lowest_x+selected_center_x) + object_width/2, 0);
     }
@@ -1707,6 +1712,11 @@ function alignHorizontalCenter(selected_objects) {
     }
     selected_center_y = (highest_y-lowest_y)/2;
     for(var i = 0; i < selected_objects.length; i++) {
+        // If the selected objects is locked, temporarily switch to unlock state to align properly.
+        if(selected_objects[i].locked){
+          lockSelected();
+        }
+
         var object_height = (points[selected_objects[i].bottomRight].y - points[selected_objects[i].topLeft].y);
         selected_objects[i].move(0, -((points[selected_objects[i].topLeft].y - (lowest_y+selected_center_y))+object_height/2));
     }
@@ -2075,7 +2085,7 @@ function switchToolbar(direction) {
     $("#linebutton").show();
     $("#classbutton").show();
     $("#linebutton").hide();
-    $("#umllinebutton").show(); 
+    $("#umllinebutton").show();
   }else if(toolbarState == toolbarFree) {
     $(".toolbar-drawer").hide();
     $("#drawerDraw").show();
@@ -2191,7 +2201,7 @@ function mousemoveevt(ev, t) {
     } else if (md == 2) {
         if(!sel.point.fake) {
             sel.point.x = currentMouseCoordinateX;
-            sel.point.y = currentMouseCoordinateY;	
+            sel.point.y = currentMouseCoordinateY;
             //If we changed a point of a path object,
             //  we need to recalculate the bounding-box so that it will remain clickable.
             if(diagram[lastSelectedObject].kind == 1) {
@@ -2666,7 +2676,7 @@ function mouseupevt(ev) {
         }
     } else if (uimode == "CreateUMLLine" && md == 4) {
         //Code for making a line, if start and end object are different, except attributes
-        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2) 
+        if((symbolStartKind != symbolEndKind || (symbolStartKind == 2 && symbolEndKind == 2)
         || symbolStartKind == 1 && symbolEndKind == 1) && (symbolStartKind != 7 && symbolEndKind != 7) && okToMakeLine) {
             umlLineA = new Symbol(7); //UML Lines
             umlLineA.name = "Line" + diagram.length
