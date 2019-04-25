@@ -334,11 +334,6 @@ function returnedAccess(data) {
 
 	if(data['debug']!="NONE!") alert(data['debug']);
 
-	// if(data["entries"].length>0){
-	// 		document.getElementById("sort").style.display="table-cell";
-	// 		document.getElementById("select").style.display="table-cell";
-	// }
-
 	var tabledata = {
 		tblhead:{
 			username:"User",
