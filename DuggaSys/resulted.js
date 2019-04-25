@@ -767,7 +767,7 @@ function renderCell(col, celldata, cellid) {
 	// Render normal mode
 	// First column (Fname/Lname/SSN)
 	if (col == "FnameLnameSSN") {
-    console.log("celldata: "+celldata);
+    console.log("celldata: "+celldata["firstname"]);
 		str = "<div class='resultTableCell resultTableNormal'>";
 		str += "<div class='resultTableText'>";
 		str += "<div style='font-weight:bold'>" + celldata.firstname + " " + celldata.lastname + "</div>";
@@ -775,7 +775,7 @@ function renderCell(col, celldata, cellid) {
 		str += "<div>" + hideSSN(celldata.ssn) + "</div>";
     str += "</div>";
     str += "</div>";
-    str += "<div>" + celldata.email + "</div>";
+    str += "<div>" + celldata["firstname"] + "</div>";
 		str += "</div>";
 		return str;
 
