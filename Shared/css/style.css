@@ -2972,6 +2972,11 @@ table {
   box-shadow: none;
   margin-bottom: 5px;
 }
+
+#searchBar img {
+  margin: 0px;
+}
+
 .searchField{
   height: 25px;
   border-bottom-right-radius: 0px;
